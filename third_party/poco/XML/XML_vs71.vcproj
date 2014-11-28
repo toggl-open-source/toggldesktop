@@ -35,10 +35,9 @@
 				ProgramDataBaseFileName="$(IntDir)\vc70.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -52,8 +51,7 @@
 				AdditionalLibraryDirectories="..\lib"
 				SubSystem="1"
 				ImportLibrary="..\lib\PocoXMLd.lib"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -104,8 +102,7 @@
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -120,8 +117,7 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="..\lib\PocoXML.lib"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -167,10 +163,9 @@
 				ProgramDataBaseFileName="..\lib\PocoXMLmtd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -226,8 +221,7 @@
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\lib\PocoXMLmt.lib"/>
@@ -278,10 +272,9 @@
 				ProgramDataBaseFileName="..\lib\PocoXMLmdd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -337,8 +330,7 @@
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\lib\PocoXMLmd.lib"/>
@@ -404,44 +396,7 @@
 				<File
 					RelativePath=".\src\XMLException.cpp"/>
 				<File
-					RelativePath=".\src\XMLString.cpp">
-					<FileConfiguration
-						Name="debug_shared|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release_shared|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug_static_mt|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release_static_mt|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug_static_md|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release_static_md|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
+					RelativePath=".\src\XMLString.cpp"/>
 				<File
 					RelativePath=".\src\XMLWriter.cpp"/>
 			</Filter>
@@ -828,14 +783,12 @@
 		<File
 			RelativePath="..\DLLVersion.rc">
 			<FileConfiguration
-				Name="debug_shared|Win32"
-				ExcludedFromBuild="TRUE">
+				Name="debug_shared|Win32">
 				<Tool
 					Name="VCResourceCompilerTool"/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="release_shared|Win32"
-				ExcludedFromBuild="TRUE">
+				Name="release_shared|Win32">
 				<Tool
 					Name="VCResourceCompilerTool"/>
 			</FileConfiguration>

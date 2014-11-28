@@ -46,8 +46,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -56,7 +55,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
+				AdditionalOptions="/FORCE:MULTIPLE"
 				AdditionalDependencies="ws2.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\shared\md5d.exe"
 				LinkIncremental="2"
@@ -119,8 +118,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -129,7 +127,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
+				AdditionalOptions="/FORCE:MULTIPLE"
 				AdditionalDependencies="ws2.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\shared\md5.exe"
 				LinkIncremental="1"
@@ -193,8 +191,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -203,7 +200,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
+				AdditionalOptions="/FORCE:MULTIPLE"
 				AdditionalDependencies="iphlpapi.lib ws2.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_mt\md5d.exe"
 				LinkIncremental="2"
@@ -269,8 +266,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -279,7 +275,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
+				AdditionalOptions="/FORCE:MULTIPLE"
 				AdditionalDependencies="iphlpapi.lib ws2.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_mt\md5.exe"
 				LinkIncremental="1"
@@ -343,8 +339,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -353,7 +348,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
+				AdditionalOptions="/FORCE:MULTIPLE"
 				AdditionalDependencies="iphlpapi.lib ws2.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_md\md5d.exe"
 				LinkIncremental="2"
@@ -419,8 +414,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -429,7 +423,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
+				AdditionalOptions="/FORCE:MULTIPLE"
 				AdditionalDependencies="iphlpapi.lib ws2.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_md\md5.exe"
 				LinkIncremental="1"

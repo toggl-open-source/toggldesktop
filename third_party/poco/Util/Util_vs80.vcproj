@@ -44,10 +44,9 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -65,8 +64,7 @@
 				AdditionalLibraryDirectories="..\lib"
 				SubSystem="1"
 				ImportLibrary="..\lib\PocoUtild.lib"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -118,8 +116,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -139,8 +136,7 @@
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
 				ImportLibrary="..\lib\PocoUtil.lib"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -189,10 +185,9 @@
 				ProgramDataBaseFileName="..\lib\PocoUtilmtd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -249,8 +244,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -304,10 +298,9 @@
 				ProgramDataBaseFileName="..\lib\PocoUtilmdd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -364,8 +357,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool

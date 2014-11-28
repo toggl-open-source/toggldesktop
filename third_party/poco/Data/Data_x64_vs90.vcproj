@@ -46,8 +46,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -65,8 +64,7 @@
 				AdditionalLibraryDirectories="..\lib64"
 				SubSystem="1"
 				ImportLibrary="..\lib64\PocoDatad.lib"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -118,8 +116,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -139,8 +136,7 @@
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
 				ImportLibrary="..\lib64\PocoData.lib"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -191,8 +187,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -250,8 +245,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -308,8 +302,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -367,8 +360,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool

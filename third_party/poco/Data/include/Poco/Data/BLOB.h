@@ -1,7 +1,7 @@
 //
 // BLOB.h
 //
-// $Id: //poco/1.4/Data/include/Poco/Data/BLOB.h#2 $
+// $Id: //poco/1.4/Data/include/Poco/Data/BLOB.h#1 $
 //
 // Library: Data
 // Package: DataCore
@@ -347,11 +347,6 @@ public:
 	{
 		return false;
 	}
-	
-	const Data::BLOB& value() const
-	{
-		return _val;
-	}	
 	
 private:
 	Data::BLOB _val;

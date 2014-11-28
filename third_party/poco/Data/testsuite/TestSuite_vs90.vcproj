@@ -45,10 +45,9 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -65,8 +64,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="bin\TestSuited.pdb"
 				SubSystem="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -119,8 +117,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -137,8 +134,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -187,10 +183,9 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -208,8 +203,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="bin\static_mt\TestSuited.pdb"
 				SubSystem="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -262,8 +256,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -281,8 +274,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -331,10 +323,9 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -351,8 +342,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="bin\static_md\TestSuited.pdb"
 				SubSystem="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -405,8 +395,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -423,8 +412,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool

@@ -44,10 +44,9 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -65,8 +64,7 @@
 				AdditionalLibraryDirectories="..\lib"
 				SubSystem="1"
 				ImportLibrary="..\lib\PocoXMLd.lib"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -118,8 +116,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -139,8 +136,7 @@
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
 				ImportLibrary="..\lib\PocoXML.lib"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -189,10 +185,9 @@
 				ProgramDataBaseFileName="..\lib\PocoXMLmtd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -249,8 +244,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -304,10 +298,9 @@
 				ProgramDataBaseFileName="..\lib\PocoXMLmdd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -364,8 +357,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -425,44 +417,7 @@
 				<File
 					RelativePath=".\src\XMLException.cpp"/>
 				<File
-					RelativePath=".\src\XMLString.cpp">
-					<FileConfiguration
-						Name="debug_shared|Win32"
-						ExcludedFromBuild="true">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release_shared|Win32"
-						ExcludedFromBuild="true">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug_static_mt|Win32"
-						ExcludedFromBuild="true">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release_static_mt|Win32"
-						ExcludedFromBuild="true">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug_static_md|Win32"
-						ExcludedFromBuild="true">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release_static_md|Win32"
-						ExcludedFromBuild="true">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
+					RelativePath=".\src\XMLString.cpp"/>
 				<File
 					RelativePath=".\src\XMLWriter.cpp"/>
 			</Filter>
@@ -849,14 +804,12 @@
 		<File
 			RelativePath="..\DLLVersion.rc">
 			<FileConfiguration
-				Name="debug_shared|Win32"
-				ExcludedFromBuild="true">
+				Name="debug_shared|Win32">
 				<Tool
 					Name="VCResourceCompilerTool"/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="release_shared|Win32"
-				ExcludedFromBuild="true">
+				Name="release_shared|Win32">
 				<Tool
 					Name="VCResourceCompilerTool"/>
 			</FileConfiguration>

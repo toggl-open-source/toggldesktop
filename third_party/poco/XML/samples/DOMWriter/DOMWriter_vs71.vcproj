@@ -35,9 +35,8 @@
 				ProgramDataBaseFileName="$(IntDir)\vc70.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DebugInformationFormat="4"
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -49,8 +48,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="bin\DOMWriterd.pdb"
 				SubSystem="1"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -100,8 +98,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -115,8 +112,7 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -162,9 +158,8 @@
 				ProgramDataBaseFileName="$(IntDir)\vc70.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DebugInformationFormat="4"
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -176,8 +171,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="bin\static_mt\DOMWriterd.pdb"
 				SubSystem="1"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -227,8 +221,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -242,8 +235,7 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -289,9 +281,8 @@
 				ProgramDataBaseFileName="$(IntDir)\vc70.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DebugInformationFormat="4"
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -303,8 +294,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="bin\static_md\DOMWriterd.pdb"
 				SubSystem="1"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -354,8 +344,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="0"
-				DisableSpecificWarnings="4800;"
-				AdditionalOptions=""/>
+				DisableSpecificWarnings="4800;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -369,8 +358,7 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"
-				AdditionalOptions=""/>
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool

@@ -1,7 +1,7 @@
 #
 # Makefile
 #
-# $Id: //poco/1.4/Util/samples/pkill/Makefile#2 $
+# $Id: //poco/1.4/Util/samples/pkill/Makefile#1 $
 #
 # Makefile for Poco pkill utility
 #

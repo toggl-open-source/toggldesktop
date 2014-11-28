@@ -1,7 +1,7 @@
 //
 // HTTPClientSession.cpp
 //
-// $Id: //poco/1.4/Net/src/HTTPClientSession.cpp#15 $
+// $Id: //poco/1.4/Net/src/HTTPClientSession.cpp#12 $
 //
 // Library: Net
 // Package: HTTPClient
@@ -45,7 +45,7 @@
 #include "Poco/Net/NetException.h"
 #include "Poco/NumberFormatter.h"
 #include "Poco/CountingStream.h"
-#include "Poco/RegularExpression.h"
+#include "Poco/Base64Encoder.h"
 #include <sstream>
 
 
@@ -57,12 +57,9 @@ namespace Poco {
 namespace Net {
 
 
-HTTPClientSession::ProxyConfig HTTPClientSession::_globalProxyConfig;
-
-
 HTTPClientSession::HTTPClientSession():
 	_port(HTTPSession::HTTP_PORT),
-	_proxyConfig(_globalProxyConfig),
+	_proxyPort(HTTPSession::HTTP_PORT),
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
@@ -74,7 +71,7 @@ HTTPClientSession::HTTPClientSession():
 HTTPClientSession::HTTPClientSession(const StreamSocket& socket):
 	HTTPSession(socket),
 	_port(HTTPSession::HTTP_PORT),
-	_proxyConfig(_globalProxyConfig),
+	_proxyPort(HTTPSession::HTTP_PORT),
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
@@ -86,7 +83,7 @@ HTTPClientSession::HTTPClientSession(const StreamSocket& socket):
 HTTPClientSession::HTTPClientSession(const SocketAddress& address):
 	_host(address.host().toString()),
 	_port(address.port()),
-	_proxyConfig(_globalProxyConfig),
+	_proxyPort(HTTPSession::HTTP_PORT),
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
@@ -98,19 +95,7 @@ HTTPClientSession::HTTPClientSession(const SocketAddress& address):
 HTTPClientSession::HTTPClientSession(const std::string& host, Poco::UInt16 port):
 	_host(host),
 	_port(port),
-	_proxyConfig(_globalProxyConfig),
-	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
-	_reconnect(false),
-	_mustReconnect(false),
-	_expectResponseBody(false)
-{
-}
-
-
-HTTPClientSession::HTTPClientSession(const std::string& host, Poco::UInt16 port, const ProxyConfig& proxyConfig):
-	_host(host),
-	_port(port),
-	_proxyConfig(proxyConfig),
+	_proxyPort(HTTPSession::HTTP_PORT),
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
@@ -146,8 +131,8 @@ void HTTPClientSession::setProxy(const std::string& host, Poco::UInt16 port)
 {
 	if (!connected())
 	{
-		_proxyConfig.host = host;
-		_proxyConfig.port = port;
+		_proxyHost = host;
+		_proxyPort = port;
 	}
 	else throw IllegalStateException("Cannot set the proxy host and port for an already connected session");
 }
@@ -156,7 +141,7 @@ void HTTPClientSession::setProxy(const std::string& host, Poco::UInt16 port)
 void HTTPClientSession::setProxyHost(const std::string& host)
 {
 	if (!connected())
-		_proxyConfig.host = host;
+		_proxyHost = host;
 	else
 		throw IllegalStateException("Cannot set the proxy host for an already connected session");
 }
@@ -165,7 +150,7 @@ void HTTPClientSession::setProxyHost(const std::string& host)
 void HTTPClientSession::setProxyPort(Poco::UInt16 port)
 {
 	if (!connected())
-		_proxyConfig.port = port;
+		_proxyPort = port;
 	else
 		throw IllegalStateException("Cannot set the proxy port number for an already connected session");
 }
@@ -173,35 +158,23 @@ void HTTPClientSession::setProxyPort(Poco::UInt16 port)
 
 void HTTPClientSession::setProxyCredentials(const std::string& username, const std::string& password)
 {
-	_proxyConfig.username = username;
-	_proxyConfig.password = password;
+	_proxyUsername = username;
+	_proxyPassword = password;
 }
 
 
 void HTTPClientSession::setProxyUsername(const std::string& username)
 {
-	_proxyConfig.username = username;
+	_proxyUsername = username;
 }
 	
 
 void HTTPClientSession::setProxyPassword(const std::string& password)
 {
-	_proxyConfig.password = password;
+	_proxyPassword = password;
 }
 
-
-void HTTPClientSession::setProxyConfig(const ProxyConfig& config)
-{
-	_proxyConfig = config;
-}
-
-
-void HTTPClientSession::setGlobalProxyConfig(const ProxyConfig& config)
-{
-	_globalProxyConfig = config;
-}
-
-
+	
 void HTTPClientSession::setKeepAliveTimeout(const Poco::Timespan& timeout)
 {
 	_keepAliveTimeout = timeout;
@@ -227,7 +200,7 @@ std::ostream& HTTPClientSession::sendRequest(HTTPRequest& request)
 			request.setKeepAlive(false);
 		if (!request.has(HTTPRequest::HOST))
 			request.setHost(_host, _port);
-		if (!_proxyConfig.host.empty() && !bypassProxy())
+		if (!_proxyHost.empty())
 		{
 			request.setURI(proxyRequestPrefix() + request.getURI());
 			proxyAuthenticate(request);
@@ -359,14 +332,14 @@ int HTTPClientSession::write(const char* buffer, std::streamsize length)
 
 void HTTPClientSession::reconnect()
 {
-	if (_proxyConfig.host.empty() || bypassProxy())
+	if (_proxyHost.empty())
 	{
 		SocketAddress addr(_host, _port);
 		connect(addr);
 	}
 	else
 	{
-		SocketAddress addr(_proxyConfig.host, _proxyConfig.port);
+		SocketAddress addr(_proxyHost, _proxyPort);
 		connect(addr);
 	}
 }
@@ -401,9 +374,9 @@ void HTTPClientSession::proxyAuthenticate(HTTPRequest& request)
 
 void HTTPClientSession::proxyAuthenticateImpl(HTTPRequest& request)
 {
-	if (!_proxyConfig.username.empty())
+	if (!_proxyUsername.empty())
 	{
-		HTTPBasicCredentials creds(_proxyConfig.username, _proxyConfig.password);
+		HTTPBasicCredentials creds(_proxyUsername, _proxyPassword);
 		creds.proxyAuthenticate(request);
 	}
 }
@@ -411,8 +384,7 @@ void HTTPClientSession::proxyAuthenticateImpl(HTTPRequest& request)
 
 StreamSocket HTTPClientSession::proxyConnect()
 {
-	ProxyConfig emptyProxyConfig;
-	HTTPClientSession proxySession(getProxyHost(), getProxyPort(), emptyProxyConfig);
+	HTTPClientSession proxySession(getProxyHost(), getProxyPort());
 	proxySession.setTimeout(getTimeout());
 	std::string targetAddress(_host);
 	targetAddress.append(":");
@@ -435,16 +407,6 @@ void HTTPClientSession::proxyTunnel()
 {
 	StreamSocket ss = proxyConnect();
 	attachSocket(ss);
-}
-
-
-bool HTTPClientSession::bypassProxy() const
-{
-	if (!_proxyConfig.nonProxyHosts.empty())
-	{
-		return RegularExpression::match(_host, _proxyConfig.nonProxyHosts, RegularExpression::RE_CASELESS | RegularExpression::RE_ANCHORED);
-	}
-	else return false;
 }
 
 

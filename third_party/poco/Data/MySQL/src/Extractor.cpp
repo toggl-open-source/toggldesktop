@@ -1,7 +1,7 @@
 //
 // MySQLException.cpp
 //
-// $Id: //poco/1.4/Data/MySQL/src/Extractor.cpp#3 $
+// $Id: //poco/1.4/Data/MySQL/src/Extractor.cpp#2 $
 //
 // Library: Data/MySQL
 // Package: MySQL
@@ -150,24 +150,21 @@ bool Extractor::extract(std::size_t pos, Poco::Data::BLOB& val)
 	if (_metadata.metaColumn(static_cast<Poco::UInt32>(pos)).type() != Poco::Data::MetaColumn::FDT_BLOB)
 		throw MySQLException("Extractor: not a blob");
 
-	unsigned long length = 0;
-	MYSQL_BIND bind = { 0 };
-	bind.buffer = 0;
-	bind.buffer_length = 0;
-	bind.length = &length;
-	if (!_stmt.fetchColumn(pos, &bind))
-		return false;
+  unsigned long length= 0;
+  MYSQL_BIND bind = { 0 };
+  bind.buffer= 0;
+  bind.buffer_length= 0;
+  bind.length= &length;
+  if ( ! _stmt.fetchColumn(pos, &bind) )
+    return false;
 
-	if (!length)
-		return true;
+  std::vector<char> data(length);
+  bind.buffer = &data[0];
+  bind.buffer_length= length;
+  if ( ! _stmt.fetchColumn(pos, &bind) )
+    return false;
 
-	std::vector<char> data(length);
-	bind.buffer = &data[0];
-	bind.buffer_length = length;
-	if (!_stmt.fetchColumn(pos, &bind) )
-		return false;
-
-	val.assignRaw(&data[0], length);
+  val.assignRaw(&data[0], length);
 	return true;
 }
 

@@ -46,8 +46,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -56,8 +55,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="iphlpapi.lib"
+				AdditionalOptions="/FORCE:MULTIPLE"
+				AdditionalDependencies="ws2_32.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\shared\RecordSetd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\lib\$(PlatformName)"
@@ -119,8 +118,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -129,8 +127,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="iphlpapi.lib"
+				AdditionalOptions="/FORCE:MULTIPLE"
+				AdditionalDependencies="ws2_32.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\shared\RecordSet.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\lib\$(PlatformName)"
@@ -193,8 +191,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -203,8 +200,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="iphlpapi.lib iphlpapi.lib"
+				AdditionalOptions="/FORCE:MULTIPLE"
+				AdditionalDependencies="iphlpapi.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_mt\RecordSetd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\lib\$(PlatformName)"
@@ -269,8 +266,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -279,8 +275,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="iphlpapi.lib iphlpapi.lib"
+				AdditionalOptions="/FORCE:MULTIPLE"
+				AdditionalDependencies="iphlpapi.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_mt\RecordSet.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\lib\$(PlatformName)"
@@ -343,8 +339,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800;"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -353,8 +348,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="iphlpapi.lib iphlpapi.lib"
+				AdditionalOptions="/FORCE:MULTIPLE"
+				AdditionalDependencies="iphlpapi.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_md\RecordSetd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\lib\$(PlatformName)"
@@ -419,8 +414,7 @@
 				CompileAs="0"
 				DisableSpecificWarnings="4800"
 				CompileForArchitecture="2"
-				InterworkCalls="false"
-				AdditionalOptions=""/>
+				InterworkCalls="false"/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -429,8 +423,8 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="iphlpapi.lib iphlpapi.lib"
+				AdditionalOptions="/FORCE:MULTIPLE"
+				AdditionalDependencies="iphlpapi.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin\$(PlatformName)\static_md\RecordSet.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\lib\$(PlatformName)"

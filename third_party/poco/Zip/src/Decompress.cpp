@@ -1,7 +1,7 @@
 //
 // Decompress.cpp
 //
-// $Id: //poco/1.4/Zip/src/Decompress.cpp#3 $
+// $Id: //poco/1.4/Zip/src/Decompress.cpp#2 $
 //
 // Library: Zip
 // Package: Zip
@@ -101,8 +101,8 @@ bool Decompress::handleZipEntry(std::istream& zipStream, const ZipLocalFileHeade
 		if (!_flattenDirs)
 		{
 			std::string dirName = hdr.getFileName();
-			if (!ZipCommon::isValidPath(dirName))
-				throw ZipException("Illegal entry name " + dirName + " containing parent directory reference");
+			if (dirName.find(ZipCommon::ILLEGAL_PATH) != std::string::npos)
+				throw ZipException("Illegal entry name " + dirName + " containing " + ZipCommon::ILLEGAL_PATH);
 			Poco::Path dir(_outDir, dirName);
 			dir.makeDirectory();
 			Poco::File aFile(dir);
@@ -121,8 +121,8 @@ bool Decompress::handleZipEntry(std::istream& zipStream, const ZipLocalFileHeade
 			fileName = p.getFileName();
 		}
 
-		if (!ZipCommon::isValidPath(fileName))
-			throw ZipException("Illegal entry name " + fileName + " containing parent directory reference");
+		if (fileName.find(ZipCommon::ILLEGAL_PATH) != std::string::npos)
+			throw ZipException("Illegal entry name " + fileName + " containing " + ZipCommon::ILLEGAL_PATH);
 
 		Poco::Path file(fileName);
 		file.makeFile();

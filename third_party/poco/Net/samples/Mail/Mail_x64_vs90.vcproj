@@ -46,8 +46,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -64,8 +63,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="bin64\Maild.pdb"
 				SubSystem="1"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -117,8 +115,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -135,8 +132,7 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -186,8 +182,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -204,8 +199,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="bin64\static_mt\Maild.pdb"
 				SubSystem="1"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -257,8 +251,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -275,8 +268,7 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -326,8 +318,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -344,8 +335,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="bin64\static_md\Maild.pdb"
 				SubSystem="1"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -397,8 +387,7 @@
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 				CompileAs="0"
-				DisableSpecificWarnings=""
-				AdditionalOptions=""/>
+				DisableSpecificWarnings=""/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"/>
 			<Tool
@@ -415,8 +404,7 @@
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="17"
-				AdditionalOptions=""/>
+				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
