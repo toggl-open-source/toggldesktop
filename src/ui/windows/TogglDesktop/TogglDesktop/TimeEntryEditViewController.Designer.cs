@@ -366,13 +366,13 @@
             this.addTagButton.BackColor = System.Drawing.Color.Transparent;
             this.addTagButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.addTagButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addTagButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.addTagButton.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.addTagButton.Location = new System.Drawing.Point(276, 35);
             this.addTagButton.Name = "addTagButton";
             this.addTagButton.Size = new System.Drawing.Size(24, 24);
             this.addTagButton.TabIndex = 19;
             this.addTagButton.TabStop = false;
-            this.addTagButton.Text = "➕";
+            this.addTagButton.Text = "+";
             this.addTagButton.UseVisualStyleBackColor = false;
             this.addTagButton.Click += new System.EventHandler(this.addTagButton_Click);
             // 
