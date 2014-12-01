@@ -1930,11 +1930,13 @@ void Context::projectLabelAndColorCode(
     if (te->TID()) {
         t = user_->related.TaskByID(te->TID());
     }
+    if (t) {
+        *task_label = t->Name();
+    }
 
     Project *p = 0;
-    if (t) {
+    if (t && t->PID()) {
         p = user_->related.ProjectByID(t->PID());
-        *task_label = t->Name();
     }
     if (!p && te->PID()) {
         p = user_->related.ProjectByID(te->PID());
