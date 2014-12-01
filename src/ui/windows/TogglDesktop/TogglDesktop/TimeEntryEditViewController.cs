@@ -578,6 +578,9 @@ namespace TogglDesktop
                 comboBoxWorkspace.SelectedIndex = -1;
                 comboBoxClient.SelectedIndex = -1;
                 recalculateTabIndexes(false);
+                if (addClientLinkLabel.Text == "cancel") {
+                    addClientLinkLabel_Click(null, null);
+                }
             }
             comboBoxProject.ResetListBox();
             comboBoxDescription.ResetListBox();
