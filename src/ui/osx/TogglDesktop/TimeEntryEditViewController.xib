@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B17" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
@@ -10,7 +10,6 @@
                 <outlet property="addClientButton" destination="sRN-Rb-j5x" id="P58-9L-Te0"/>
                 <outlet property="addProjectBox" destination="fz4-yg-eQZ" id="KJH-d8-GtM"/>
                 <outlet property="addProjectButton" destination="mjR-fr-Qy0" id="2fN-So-QBH"/>
-                <outlet property="as" destination="sRN-Rb-j5x" id="kjf-jg-9jN"/>
                 <outlet property="backButton" destination="zwE-pW-vQN" id="7gS-kR-H67"/>
                 <outlet property="billableCheckbox" destination="sSX-ad-7XC" id="cVv-CO-AcK"/>
                 <outlet property="clientNameTextField" destination="TGq-XU-G0v" id="jY6-Lx-mvf"/>
