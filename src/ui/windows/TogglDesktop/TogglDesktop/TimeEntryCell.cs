@@ -64,7 +64,14 @@ namespace TogglDesktop
         {
             GUID = item.GUID;
 
-            labelDescription.Text = item.Description;
+            if (item.Description.Length == 0)
+            {
+                labelDescription.Text = "(no description)";
+            }
+            else
+            {
+                labelDescription.Text = item.Description;
+            }
             labelProject.ForeColor = ColorTranslator.FromHtml(item.Color);
             labelProject.Text = item.ProjectLabel;
             labelClient.Text = item.ClientLabel;
