@@ -1043,6 +1043,26 @@ TEST(AppTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     ASSERT_LT(te->Start(), te->Stop());
 }
 
+TEST(Formatter, CollectErrors) {
+    {
+        std::vector<error> errors;
+        errors.push_back(error("foo"));
+        errors.push_back(error("bar"));
+        errors.push_back(error("foo"));
+        error err = Formatter::CollectErrors(&errors);
+        ASSERT_EQ("Errors encountered while syncing data: foo bar", err);
+    }
+
+    {
+        std::vector<error> errors;
+        errors.push_back(error("foo\n"));
+        errors.push_back(error("bar\n"));
+        errors.push_back(error("foo\n"));
+        error err = Formatter::CollectErrors(&errors);
+        ASSERT_EQ("Errors encountered while syncing data: foo. bar.", err);
+    }
+}
+
 TEST(Formatter, ParseTimeInput) {
     int hours = 0;
     int minutes = 0;

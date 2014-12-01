@@ -234,8 +234,6 @@ class User : public BaseModel {
         std::vector<TimeEntry *> *dirty,
         std::vector<error> *errors);
 
-    error collectErrors(std::vector<error> *errors) const;
-
     error requestJSON(
         const std::string method,
         const std::string relative_url,

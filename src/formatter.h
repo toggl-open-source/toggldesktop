@@ -5,6 +5,7 @@
 
 #include <string>
 #include <ctime>
+#include <vector>
 
 #include "./task.h"
 #include "./project.h"
@@ -54,6 +55,9 @@ class Formatter {
 
     static std::string FormatTimeForTimeEntryEditor(
         const std::time_t date);
+
+    static error CollectErrors(
+        std::vector<error> * const errors);
 
     // Parse
 

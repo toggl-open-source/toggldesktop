@@ -457,7 +457,7 @@ error User::PushChanges(HTTPSClient *https_client) {
         BatchUpdateResult::ProcessResponseArray(&results, &models, &errors);
 
         if (!errors.empty()) {
-            return collectErrors(&errors);
+            return Formatter::CollectErrors(&errors);
         }
 
         stopwatch.stop();
@@ -512,31 +512,6 @@ error User::Me(
         return ex;
     }
     return noError;
-}
-
-error User::collectErrors(std::vector<error> * const errors) const {
-    std::stringstream ss;
-    ss << "Errors encountered while syncing data: ";
-    std::set<error> unique;
-    for (std::vector<error>::const_iterator it = errors->begin();
-            it != errors->end();
-            it++) {
-        error err = *it;
-        // skip error if not unique
-        if (unique.end() != unique.find(err)) {
-            continue;
-        }
-        if (!err.empty() && err[err.size() - 1] == '\n') {
-            err[err.size() - 1] = '.';
-        }
-        if (it != errors->begin()) {
-            ss << " ";
-        }
-        ss << err;
-        unique.insert(err);
-        logger().error(err);
-    }
-    return error(ss.str());
 }
 
 template <typename T>
