@@ -42,6 +42,7 @@ namespace TogglDesktop
             textBoxEndTime.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             textBoxProjectName.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
             dateTimePickerStartDate.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
+            tagTextBox.MouseWheel += new MouseEventHandler(ignoreMouseWheel);
 
             descriptionButton.Click += descriptionButton_Click;
             projectButton.Click += projectButton_Click;
