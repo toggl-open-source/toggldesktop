@@ -25,4 +25,6 @@
 #define kLostPasswordURL "https://www.toggl.com/forgot-password"
 #define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
 
+#define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
+
 #endif  // SRC_CONST_H_

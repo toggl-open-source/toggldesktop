@@ -37,6 +37,8 @@ bool HTTPSClientConfig::IgnoreCert = false;
 toggl::Proxy HTTPSClientConfig::ProxySettings = Proxy();
 std::string HTTPSClientConfig::CACertPath = std::string("");
 
+bool HTTPSClient::endpoint_gone = false;
+
 error HTTPSClient::PostJSON(
     const std::string relative_url,
     const std::string json,
@@ -87,6 +89,10 @@ error HTTPSClient::request(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
+
+    if (endpoint_gone) {
+        return kEndpointGoneError;
+    }
 
     poco_assert(!method.empty());
     poco_assert(!relative_url.empty());
@@ -214,6 +220,11 @@ error HTTPSClient::request(
         }
 
         logger.trace(*response_body);
+
+        if (410 == response.getStatus()) {
+            endpoint_gone = true;
+            return kEndpointGoneError;
+        }
 
         if (response.getStatus() < 200 || response.getStatus() >= 300) {
             if (response_body->empty()) {

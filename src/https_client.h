@@ -64,6 +64,9 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
+
+    // If we get 410, we'll refuse to connect to the endpoint again
+    static bool endpoint_gone;
 };
 
 }  // namespace toggl
