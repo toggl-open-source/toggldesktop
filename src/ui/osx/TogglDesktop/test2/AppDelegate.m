@@ -521,6 +521,8 @@ void *ctx;
 
 - (void)indicateStoppedTimer
 {
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
 	if (!self.willTerminate)
 	{
 		// Change app dock icon to default
