@@ -29,7 +29,9 @@ class RelatedData {
 
     template<typename T>
     T *modelByID(const Poco::UInt64 id, std::vector<T *> *list) {
-        poco_assert(id > 0);
+        if (!id) {
+            return 0;
+        }
         typedef typename std::vector<T *>::const_iterator iterator;
         for (iterator it = list->begin(); it != list->end(); it++) {
             T *model = *it;
