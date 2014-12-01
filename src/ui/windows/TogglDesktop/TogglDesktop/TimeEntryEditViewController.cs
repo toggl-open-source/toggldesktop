@@ -521,6 +521,7 @@ namespace TogglDesktop
             comboBoxWorkspace.Text = "";
             linkAddProject.Visible = false;
             int boxHeight = panelDuration.Height*3;
+            comboBoxWorkspace.SelectedIndex = 0;
             if (comboBoxWorkspace.Items.Count > 1)
             {
                 labelWorkspace.Visible = true;
@@ -929,6 +930,11 @@ namespace TogglDesktop
                 this.newestClient = addClientTextBox.Text;
             }
             addClientLinkLabel_Click(null, null);
+        }
+
+        private void TimeEntryEditViewController_Paint(object sender, PaintEventArgs e)
+        {
+            comboBoxWorkspace.Select(0, 0);
         }
     }
 }

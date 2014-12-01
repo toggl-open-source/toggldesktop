@@ -634,6 +634,7 @@
             this.Size = new System.Drawing.Size(315, 418);
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.SizeChanged += new System.EventHandler(this.TimeEntryEditViewController_SizeChanged);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.TimeEntryEditViewController_Paint);
             this.Resize += new System.EventHandler(this.TimeEntryEditViewController_SizeChanged);
             this.statusStripLastUpdate.ResumeLayout(false);
             this.statusStripLastUpdate.PerformLayout();
