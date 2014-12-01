@@ -75,7 +75,6 @@
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(249, 20);
             this.password.TabIndex = 1;
-            this.password.Text = "Password";
             this.password.UseSystemPasswordChar = true;
             this.password.Enter += new System.EventHandler(this.password_Enter);
             this.password.Leave += new System.EventHandler(this.password_Leave);
