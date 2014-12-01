@@ -412,6 +412,9 @@ _Bool GUI::isUserError(const error err) const {
             != std::string::npos) {
         return true;
     }
+    if (value.find("Missing workspace ID") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 

@@ -142,9 +142,23 @@ TimeEntry *User::Start(
 
 template<typename T>
 void User::ensureWID(T *model) const {
-    // Set default wid
-    if (!model->WID()) {
+    // Do nothing if TE already has WID assigned
+    if (model->WID()) {
+        return;
+    }
+
+    // Try to set default user WID
+    if (DefaultWID()) {
         model->SetWID(DefaultWID());
+        return;
+    }
+
+    // Try to set first WID available
+    std::vector<Workspace *>::const_iterator it =
+        related.Workspaces.begin();
+    if (it != related.Workspaces.end()) {
+        Workspace *ws = *it;
+        model->SetWID(ws->ID());
     }
 }
 
