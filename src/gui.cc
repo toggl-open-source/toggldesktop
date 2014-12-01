@@ -22,7 +22,7 @@ void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
     on_display_login_(open, user_id);
 }
 
-_Bool GUI::DisplayError(const error err, const std::string calling_method) {
+_Bool GUI::DisplayError(const error err) {
     if (noError == err) {
         return true;
     }

@@ -42,7 +42,7 @@ class GUI {
     ~GUI() {}
 
     void DisplayApp();
-    _Bool DisplayError(const error err, const std::string calling_method);
+    _Bool DisplayError(const error);
     void DisplayOnlineState(const _Bool online, const std::string reason);
     void DisplayReminder();
     void DisplayUpdate(const _Bool open,

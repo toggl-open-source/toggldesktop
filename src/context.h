@@ -300,10 +300,9 @@ class Context : public TimelineDatasource {
 
     void updateUI(std::vector<ModelChange> *changes);
 
-    _Bool displayError(const error err, const std::string calling_method);
+    _Bool displayError(const error err);
 
-    bool canSeeBillable(
-        Workspace *workspace) const;
+    bool canSeeBillable(Workspace *workspace) const;
 
     void scheduleSync();
     void displayOnlineState(const std::string reason);
