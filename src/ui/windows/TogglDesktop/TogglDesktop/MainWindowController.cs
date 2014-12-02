@@ -85,6 +85,13 @@ namespace TogglDesktop
             startHook.KeyPressed +=
                 new EventHandler<KeyPressedEventArgs>(hookStartKeyPressed);
 
+            showHook.KeyPressed +=
+                new EventHandler<KeyPressedEventArgs>(hookShowKeyPressed);
+        }
+
+        void setGlobalShortCutKeys()
+        {
+            startHook.Clear();
             string startKey = Properties.Settings.Default.StartKey;
             if (startKey != null && startKey != "")
             {
@@ -100,9 +107,7 @@ namespace TogglDesktop
                 }
             }
 
-            showHook.KeyPressed +=
-                new EventHandler<KeyPressedEventArgs>(hookShowKeyPressed);
-
+            showHook.Clear();
             string showKey = Properties.Settings.Default.ShowKey;
             if (showKey != null && showKey != "")
             {
@@ -111,7 +116,7 @@ namespace TogglDesktop
                     showHook.RegisterHotKey(
                         Properties.Settings.Default.ShowModifiers,
                         (Keys)Enum.Parse(typeof(Keys), showKey));
-                } 
+                }
                 catch (Exception e)
                 {
                     Console.WriteLine("Could not register show hotkey: ", e);
@@ -292,6 +297,7 @@ namespace TogglDesktop
             remainOnTop = settings.OnTop;
             setWindowPos();
             timerIdleDetection.Enabled = settings.UseIdleDetection;
+            setGlobalShortCutKeys();
         }
 
         private void displayTrayIcon(bool is_online)

@@ -110,6 +110,15 @@ namespace TogglDesktop
         }
 
         #endregion
+
+        internal void Clear()
+        {
+            // unregister all the registered hot keys.
+            for (int i = _currentId; i > 0; i--)
+            {
+                UnregisterHotKey(_window.Handle, i);
+            }
+        }
     }
 
     /// <summary>

@@ -135,11 +135,6 @@ namespace TogglDesktop
 
             settings.RecordTimeline = checkBoxRecordTimeline.Checked;
 
-            if (!Toggl.SetSettings(settings))
-            {
-                return;
-            }
-
             // Save shortcut keys
 
             if (btnRecordShowHideShortcut.Tag != null)
@@ -158,6 +153,11 @@ namespace TogglDesktop
             if (btnClearStartStopTimer.Tag != null)
             {
                 Utils.SetShortcutForStart(null);
+            }
+
+            if (!Toggl.SetSettings(settings))
+            {
+                return;
             }
 
             Close();
