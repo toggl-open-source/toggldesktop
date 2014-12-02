@@ -36,12 +36,20 @@
 @property (nonatomic, strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
 @property (nonatomic, strong) IBOutlet FeedbackWindowController *feedbackWindowController;
 @property (nonatomic, strong) IBOutlet ConsoleViewController *consoleWindowController;
+
+// Remember some app state
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
+@property BOOL lastKnownOnlineState;
+@property uint64_t lastKnownUserID;
+
+// We'll change app icon in the tray. So keep the different state images handy
+@property NSMutableDictionary *statusImages;
+
+// Timers to update app state
 @property NSTimer *menubarTimer;
 @property NSTimer *idleTimer;
-@property uint64_t user_id;
 
-// we'll be updating running TE as a menu item, too
+// We'll be updating running TE as a menu item, too
 @property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
 
 // Where logs are written and db is kept
@@ -60,9 +68,7 @@
 // For testing crash reporter
 @property BOOL forceCrash;
 
-// Avoid showing multiple upgrade dialogs
-@property BOOL upgradeDialogVisible;
-
+// Avoid doing stuff when app is already shutting down
 @property BOOL willTerminate;
 
 @end
@@ -73,6 +79,10 @@ void *ctx;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
+	self.willTerminate = NO;
+	self.lastKnownOnlineState = YES;
+	self.lastKnownUserID = 0;
+
 	NSAssert(ctx, @"ctx is not initialized, cannot continue");
 	char *str = toggl_get_update_channel(ctx);
 	NSAssert(str, @"Could not read update channel value");
@@ -84,10 +94,6 @@ void *ctx;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	NSLog(@"applicationDidFinishLaunching");
-
-	self.willTerminate = NO;
-
-	self.user_id = 0;
 
 	if (![self.environment isEqualToString:@"production"])
 	{
@@ -369,7 +375,7 @@ void *ctx;
 			[self.menubarTimer invalidate];
 			self.menubarTimer = nil;
 		}
-		[self.statusItem setTitle:@""];
+		[self updateStatusItem];
 	}
 
 	// Show/Hide dock icon
@@ -398,7 +404,7 @@ void *ctx;
 	if (cmd.open)
 	{
 		self.preferencesWindowController.originalCmd = cmd;
-		self.preferencesWindowController.user_id = self.user_id;
+		self.preferencesWindowController.user_id = self.lastKnownUserID;
 		[self.preferencesWindowController showWindow:self];
 		[NSApp activateIgnoringOtherApps:YES];
 	}
@@ -431,9 +437,9 @@ void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	self.user_id = cmd.user_id;
+	self.lastKnownUserID = cmd.user_id;
 
-	if (!self.user_id)
+	if (!self.lastKnownUserID)
 	{
 		// maybe its running, but we dont know any more
 		[self indicateStoppedTimer];
@@ -451,24 +457,58 @@ void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	if (!errorMsg)
+	self.lastKnownOnlineState = !errorMsg;
+	[self updateStatusItem];
+}
+
+- (void)updateStatusItem
+{
+	NSString *title = @"";
+
+	if (self.lastKnownRunningTimeEntry && self.lastKnownUserID)
 	{
-		self.currentOnImage = self.onImage;
-		self.currentOffImage = self.offImage;
-	}
-	else
-	{
-		self.currentOnImage = self.offlineOnImage;
-		self.currentOffImage = self.offlineOffImage;
+		title = [title stringByAppendingString:@" "];
+		char *str = toggl_format_tracked_time_duration(self.lastKnownRunningTimeEntry.duration_in_seconds);
+		title = [title stringByAppendingString:[NSString stringWithUTF8String:str]];
+		free(str);
 	}
 
-	if (self.lastKnownRunningTimeEntry)
+	NSString *key = nil;
+	if (self.lastKnownRunningTimeEntry && self.lastKnownUserID)
 	{
-		[self.statusItem setImage:self.currentOnImage];
+		if (self.lastKnownOnlineState)
+		{
+			key = @"on";
+		}
+		else
+		{
+			key = @"offline_on";
+		}
 	}
 	else
 	{
-		[self.statusItem setImage:self.currentOffImage];
+		if (self.lastKnownOnlineState)
+		{
+			key = @"off";
+		}
+		else
+		{
+			key = @"offline_off";
+		}
+	}
+	NSImage *image = [self.statusImages objectForKey:key];
+	NSAssert(image, @"status image not found!");
+
+	NSLog(@"updateStatusItem, title=%@", title);
+
+	if (![title isEqualToString:self.statusItem.title])
+	{
+		[self.statusItem setTitle:title];
+	}
+
+	if (image != self.statusItem.image)
+	{
+		[self.statusItem setImage:image];
 	}
 }
 
@@ -500,7 +540,7 @@ void *ctx;
 			[NSApp setApplicationIconImage:self.activeAppIcon];
 		}
 
-		[self.statusItem setImage:self.currentOnImage];
+		[self updateStatusItem];
 
 		// Change tracking time entry row in menu
 		if (self.lastKnownRunningTimeEntry.Description
@@ -529,8 +569,9 @@ void *ctx;
 		// See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
 		[NSApp setApplicationIconImage:nil];
 	}
-	[self.statusItem setTitle:@""];
-	[self.statusItem setImage:self.currentOffImage];
+
+	[self updateStatusItem];
+
 	[self.runningTimeEntryMenuItem setTitle:@"Timer is not tracking"];
 }
 
@@ -589,27 +630,20 @@ void *ctx;
 
 	NSStatusBar *bar = [NSStatusBar systemStatusBar];
 
-	self.onImage = [NSImage imageNamed:@"on"];
-	[self.onImage setTemplate:YES];
-
-	self.offImage = [NSImage imageNamed:@"off"];
-	[self.offImage setTemplate:YES];
-
-	self.offlineOnImage = [NSImage imageNamed:@"offline_on"];
-	[self.offlineOnImage setTemplate:YES];
-
-	self.offlineOffImage = [NSImage imageNamed:@"offline_off"];
-	[self.offlineOffImage setTemplate:YES];
-
-	self.currentOnImage = self.onImage;
-	self.currentOffImage = self.offImage;
+	self.statusImages = [[NSMutableDictionary alloc] init];
+	for (NSString *key in @[@"on", @"off", @"offline_on", @"offline_off"])
+	{
+		NSImage *image = [NSImage imageNamed:key];
+		[image setTemplate:YES];
+		[self.statusImages setObject:image forKey:key];
+	}
 
 	self.statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
-	[self.statusItem setTitle:@""];
 	[self.statusItem setHighlightMode:YES];
 	[self.statusItem setEnabled:YES];
 	[self.statusItem setMenu:menu];
-	[self.statusItem setImage:self.currentOffImage];
+
+	[self updateStatusItem];
 }
 
 - (IBAction)onConsoleMenuItem:(id)sender
@@ -898,16 +932,7 @@ const NSString *appName = @"osx_native_app";
 
 - (void)menubarTimerFired:(NSTimer *)timer
 {
-	if (!self.lastKnownRunningTimeEntry || !self.user_id)
-	{
-		return;
-	}
-	char *str = toggl_format_tracked_time_duration(
-			self.lastKnownRunningTimeEntry.duration_in_seconds);
-	NSString *statusStr = @" ";
-	statusStr = [statusStr stringByAppendingString:[NSString stringWithUTF8String:str]];
-	free(str);
-	[self.statusItem setTitle:statusStr];
+	[self updateStatusItem];
 }
 
 - (void)idleTimerFired:(NSTimer *)timer
@@ -928,7 +953,7 @@ const NSString *appName = @"osx_native_app";
 	switch ([anItem tag])
 	{
 		case kMenuItemTagContinue :
-			if (0 == self.user_id)
+			if (!self.lastKnownUserID)
 			{
 				return NO;
 			}
@@ -939,7 +964,7 @@ const NSString *appName = @"osx_native_app";
 			break;
 		case kMenuItemTagStop :
 		case kMenuItemTagEdit :
-			if (0 == self.user_id)
+			if (!self.lastKnownUserID)
 			{
 				return NO;
 			}
@@ -954,13 +979,13 @@ const NSString *appName = @"osx_native_app";
 		case kMenuItemTagSendFeedback :
 		case kMenuItemTagOpenBrowser :
 		case kMenuItemTagNew :
-			if (0 == self.user_id)
+			if (!self.lastKnownUserID)
 			{
 				return NO;
 			}
 			break;
 		case kMenuItemRecordTimeline :
-			if (!self.user_id)
+			if (!self.lastKnownUserID)
 			{
 				NSMenuItem *menuItem = (NSMenuItem *)anItem;
 				[menuItem setState:NSOffState];
