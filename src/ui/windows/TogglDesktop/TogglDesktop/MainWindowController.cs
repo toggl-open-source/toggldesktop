@@ -141,6 +141,13 @@ namespace TogglDesktop
             if (Visible)
             {
                 Hide();
+                if (editForm.Visible)
+                {
+                    editForm.CloseButton_Click(null, null);
+                }
+                feedbackWindowController.Close();
+                aboutWindowController.Close();
+                preferencesWindowController.Close();
             }
             else
             {
