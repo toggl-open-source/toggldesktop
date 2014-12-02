@@ -499,8 +499,6 @@ void *ctx;
 	NSImage *image = [self.statusImages objectForKey:key];
 	NSAssert(image, @"status image not found!");
 
-	NSLog(@"updateStatusItem, title=%@", title);
-
 	if (![title isEqualToString:self.statusItem.title])
 	{
 		[self.statusItem setTitle:title];
