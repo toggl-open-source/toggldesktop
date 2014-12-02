@@ -1291,12 +1291,14 @@ TimeEntry *Context::Start(
 
     TimeEntry *te = user_->Start(description, duration, task_id, project_id);
 
-    UI()->DisplayApp();
-
     error err = save();
     if (err != noError) {
         displayError(err);
         return 0;
+    }
+
+    if (te) {
+        displayTimeEntryEditor(true, te, "description");
     }
 
     return te;
