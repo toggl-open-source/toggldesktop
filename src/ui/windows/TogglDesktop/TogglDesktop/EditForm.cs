@@ -116,7 +116,7 @@ namespace TogglDesktop
                 base.WndProc(ref m);
         }
 
-        internal void setPlacement(bool left, int arrowTop, Point p, Screen s)
+        internal void setPlacement(bool left, int arrowTop, Point p, Screen s, MainWindowController main)
         {
             TopMost = true;
             labelArrowLeft.Visible = !left;
@@ -144,7 +144,10 @@ namespace TogglDesktop
                 posY += Math.Abs(p.Y) - newPosY;
                 p.Y = newPosY;
             }
-            if (posY > Height - labelArrowLeft.Height - 5)
+            if ((posY > Height - labelArrowLeft.Height - 5) ||
+                (p.Y + posY) < main.Location.Y ||
+                main.Location.Y + main.Height < p.Y + posY
+                )
             {
                 ClosePopup();
             }

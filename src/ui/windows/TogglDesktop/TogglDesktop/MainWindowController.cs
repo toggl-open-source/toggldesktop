@@ -802,7 +802,7 @@ namespace TogglDesktop
                     ((TimeEntryCell)editableEntry).opened = true;
                 }
             }
-            editForm.setPlacement(left, arrowTop, ctrlpt, s);
+            editForm.setPlacement(left, arrowTop, ctrlpt, s, this);
 
         }
 
