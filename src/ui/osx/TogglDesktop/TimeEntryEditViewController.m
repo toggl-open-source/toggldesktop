@@ -88,7 +88,7 @@ extern void *ctx;
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(setFocus:)
-													 name:NSPopoverDidShowNotification
+													 name:NSPopoverWillShowNotification
 												   object:nil];
 	}
 	return self;
@@ -156,16 +156,18 @@ extern void *ctx;
 {
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
 	{
+		[self.view.window setInitialFirstResponder:self.durationTextField];
 		[self.durationTextField becomeFirstResponder];
-	}
-	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDescription]])
-	{
-		[self.descriptionCombobox becomeFirstResponder];
+		return;
 	}
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
 	{
+		[self.view.window setInitialFirstResponder:self.projectSelect];
 		[self.projectSelect becomeFirstResponder];
+		return;
 	}
+	[self.descriptionCombobox becomeFirstResponder];
+	[self.view.window setInitialFirstResponder:self.descriptionCombobox];
 }
 
 - (void)resetPopover:(NSNotification *)notification
