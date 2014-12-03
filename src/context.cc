@@ -379,7 +379,12 @@ void Context::scheduleSync() {
 void Context::Sync() {
     logger().debug("Sync");
 
-    next_sync_at_ = postpone(kRequestThrottleSeconds * kOneSecondInMicros);
+    Poco::Timestamp::TimeDiff delay = 0;
+    if (next_sync_at_ > 0) {
+        delay = kRequestThrottleSeconds * kOneSecondInMicros;
+    }
+
+    next_sync_at_ = postpone(delay);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onSync);
 
