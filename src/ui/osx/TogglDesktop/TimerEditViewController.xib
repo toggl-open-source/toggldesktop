@@ -35,9 +35,9 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button toolTip="Start" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Fx-4L-YGZ">
-                                            <rect key="frame" x="11" y="6" width="39" height="38"/>
-                                            <buttonCell key="cell" type="round" bezelStyle="circular" image="icon-start-green" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jVO-3V-i8I">
-                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <rect key="frame" x="17" y="15" width="26" height="26"/>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="start_button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="jVO-3V-i8I">
+                                                <behavior key="behavior" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                                 <string key="keyEquivalent" base64-UTF8="YES">
 DQ
@@ -53,7 +53,7 @@ DQ
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="2Fx-4L-YGZ" secondAttribute="trailing" constant="15" id="IA0-yM-ema"/>
                                     <constraint firstAttribute="width" constant="58" id="Rff-cG-Y36"/>
-                                    <constraint firstItem="2Fx-4L-YGZ" firstAttribute="top" secondItem="nFI-HH-zd7" secondAttribute="top" constant="15" id="gBP-7a-tuV"/>
+                                    <constraint firstItem="2Fx-4L-YGZ" firstAttribute="top" secondItem="nFI-HH-zd7" secondAttribute="top" constant="16" id="gBP-7a-tuV"/>
                                 </constraints>
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
@@ -163,6 +163,6 @@ DQ
         </customView>
     </objects>
     <resources>
-        <image name="icon-start-green" width="6.5" height="9"/>
+        <image name="start_button" width="24" height="24"/>
     </resources>
 </document>
