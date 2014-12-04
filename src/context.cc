@@ -48,8 +48,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_idle_seconds_reading_(0)
 , last_idle_started_(0)
 , idle_minutes_(0)
-, last_sync_started_(0)
 , last_sleep_started_(0)
+, last_sync_started_(0)
 , update_check_disabled_(false)
 , quit_(false) {
     Poco::ErrorHandler::set(&error_handler_);
