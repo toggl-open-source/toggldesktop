@@ -22,9 +22,6 @@ namespace TogglDesktop
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool SetProcessDPIAware();
-
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, ref SearchData data);
@@ -89,11 +86,6 @@ namespace TogglDesktop
                     OSVersion = Environment.OSVersion.ToString(),
                     applicationVersion = Version()
                 };
-
-                if (Environment.OSVersion.Version.Major >= 6)
-                {
-                    SetProcessDPIAware();
-                }
 
                 Toggl.OnLogin += delegate(bool open, UInt64 user_id)
                 {
