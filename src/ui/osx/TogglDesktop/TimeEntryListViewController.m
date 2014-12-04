@@ -385,16 +385,6 @@ extern void *ctx;
 		[self resizing:n];
 		self.addedHeight = 0;
 	}
-	return;
-
-	NSSize n = NSMakeSize(self.timeEntrypopover.contentSize.width, self.defaultPopupHeight);
-
-	[self.timeEntrypopover setContentSize:n];
-	NSRect r = NSMakeRect(self.timeEntryEditViewController.view.frame.origin.x,
-						  self.timeEntryEditViewController.view.frame.origin.x,
-						  n.width,
-						  n.height);
-	[self.timeEntryEditViewController.view setFrame:r];
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
