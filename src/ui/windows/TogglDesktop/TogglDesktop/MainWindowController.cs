@@ -512,22 +512,28 @@ namespace TogglDesktop
 
         public static Control FindControlAtPoint(Control container, Point pos)
         {
-            Control child;
+            if (null == container)
+            {
+                return null;
+            }
+
             if (container.GetType() == typeof(TimeEntryCell) || container.GetType() == typeof(TimerEditViewController))
             {
                 return container;
             }
+
             foreach (Control c in container.Controls)
             {
                 if (c.Visible && c.Bounds.Contains(pos))
                 {
-                    child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
+                    Control child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
                     if (child != null && (child.GetType() == typeof(TimeEntryCell) || child.GetType() == typeof(TimerEditViewController)))
                     {
                         return child;
                     }
                 }
             }
+
             return null;
         }
 
