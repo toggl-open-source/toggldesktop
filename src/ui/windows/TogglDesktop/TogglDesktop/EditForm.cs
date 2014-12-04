@@ -72,9 +72,9 @@ namespace TogglDesktop
             bool handled = false;
             if (m.Msg == WM_NCHITTEST || m.Msg == WM_MOUSEMOVE)
             {
-                Size formSize = this.Size;
+                Size formSize = Size;
                 Point screenPoint = new Point(m.LParam.ToInt32());
-                Point clientPoint = this.PointToClient(screenPoint);
+                Point clientPoint = PointToClient(screenPoint);
 
                 Dictionary<UInt32, Rectangle> boxes = new Dictionary<UInt32, Rectangle>() {
             {HTBOTTOMLEFT, new Rectangle(0, formSize.Height - RESIZE_HANDLE_SIZE, RESIZE_HANDLE_SIZE, RESIZE_HANDLE_SIZE)},
@@ -91,7 +91,7 @@ namespace TogglDesktop
                 {
                     if (hitBox.Value.Contains(clientPoint))
                     {
-                        if (this.labelArrowLeft.Visible)
+                        if (labelArrowLeft.Visible)
                         {
                             if (hitBox.Key == HTBOTTOMLEFT || hitBox.Key == HTTOPLEFT || hitBox.Key == HTLEFT)
                             {
@@ -113,7 +113,9 @@ namespace TogglDesktop
             }
 
             if (!handled)
+            {
                 base.WndProc(ref m);
+            }
         }
 
         internal void setPlacement(bool left, int arrowTop, Point p, Screen s, MainWindowController main)
@@ -180,19 +182,20 @@ namespace TogglDesktop
 
         private void resizeHandle_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!isResizing)
+            {
+                return;
+            }
+            isResizing = (e.Button == MouseButtons.Left);
+            ReleaseCapture();
+            int location = (labelArrowRight.Visible) ? HtBottom : HtBottomRight;
             if (isResizing)
             {
-                isResizing = (e.Button == MouseButtons.Left);
-                ReleaseCapture();
-                int location = (labelArrowRight.Visible) ? HtBottom : HtBottomRight;
-                if (isResizing)
-                {
-                    SendMessage(Handle, wmNcLButtonDown, location, 0);
-                }
-                else
-                {
-                    SendMessage(Handle, wmNcLButtonUp, location, 0);
-                }
+                SendMessage(Handle, wmNcLButtonDown, location, 0);
+            }
+            else
+            {
+                SendMessage(Handle, wmNcLButtonUp, location, 0);
             }
         }
     }

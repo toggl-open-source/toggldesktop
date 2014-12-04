@@ -204,10 +204,10 @@ namespace TogglDesktop
             //
             // Custom Combobox Buttons
             //
-            this.projectButton.Height = this.projectButton.Width = this.descriptionButton.Height = this.descriptionButton.Width = this.comboBoxDescription.Height;
-            this.projectButton.Left = this.descriptionButton.Left = this.comboBoxProject.Left + this.comboBoxProject.Width - 1;
-            this.descriptionButton.Top = this.comboBoxDescription.Top;
-            this.projectButton.Top = this.comboBoxProject.Top;
+            projectButton.Height = projectButton.Width = descriptionButton.Height = descriptionButton.Width = comboBoxDescription.Height;
+            projectButton.Left = descriptionButton.Left = comboBoxProject.Left + comboBoxProject.Width - 1;
+            descriptionButton.Top = comboBoxDescription.Top;
+            projectButton.Top = comboBoxProject.Top;
 
             timeEntry = te;
 
@@ -338,10 +338,10 @@ namespace TogglDesktop
             {
                 comboBoxClient.Items.Add(o);
             }
-            if (this.newestClient.Length > 0)
+            if (newestClient.Length > 0)
             {
-                comboBoxClient.Text = this.newestClient;
-                this.newestClient = "";
+                comboBoxClient.Text = newestClient;
+                newestClient = "";
             }
         }
 
@@ -931,7 +931,7 @@ namespace TogglDesktop
             if (clientCreated)
             {
                 comboBoxClient.Text = addClientTextBox.Text;
-                this.newestClient = addClientTextBox.Text;
+                newestClient = addClientTextBox.Text;
             }
             addClientLinkLabel_Click(null, null);
         }

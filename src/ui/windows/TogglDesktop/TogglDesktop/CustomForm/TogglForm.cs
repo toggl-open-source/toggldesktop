@@ -85,7 +85,7 @@ namespace TogglDesktop
             style.ClientAreaPadding = new Padding(0, 30, 0, 0);
             style.IconPadding = new Padding(7, 6, 10, 0);
 
-            this.NonClientAreaDoubleBuffering = true;
+            NonClientAreaDoubleBuffering = true;
 
             return style;
         }

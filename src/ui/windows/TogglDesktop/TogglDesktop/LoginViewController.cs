@@ -84,7 +84,7 @@ namespace TogglDesktop
 
         private void LoginViewController_Load(object sender, EventArgs e)
         {
-            this.Dock = DockStyle.Fill;
+            Dock = DockStyle.Fill;
         }
 
         private void email_Enter(object sender, EventArgs e)

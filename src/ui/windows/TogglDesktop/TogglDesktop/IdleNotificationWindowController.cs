@@ -74,7 +74,7 @@ namespace TogglDesktop
         {
             if (!TogglDesktop.Program.ShuttingDown)
             {
-                this.Hide();
+                Hide();
                 e.Cancel = true;
             }
         }

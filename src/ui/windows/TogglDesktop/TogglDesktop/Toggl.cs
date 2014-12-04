@@ -100,7 +100,7 @@ namespace TogglDesktop
 
             public override string ToString()
             {
-                return this.Text;
+                return Text;
             }
         }
 
