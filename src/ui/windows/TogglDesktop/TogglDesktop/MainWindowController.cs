@@ -451,6 +451,11 @@ namespace TogglDesktop
                 return;
             }
             if (open) {
+                if (editForm.Visible)
+                {
+                    editForm.Hide();
+                    editForm.GUID = null;
+                }
                 contentPanel.Controls.Remove(timeEntryListViewController);
                 contentPanel.Controls.Remove(timeEntryEditViewController);
                 contentPanel.Controls.Add(loginViewController);
