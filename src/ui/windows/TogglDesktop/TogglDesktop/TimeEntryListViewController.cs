@@ -79,6 +79,12 @@ namespace TogglDesktop
             emptyLabel.Visible = (list.Count == 0);
             entries.SuspendLayout();
 
+            // Hide entry list for initial loading to avoid crazy flicker
+            if (entries.Controls.Count == 0)
+            {
+                entries.Visible = false;
+            }
+
             for (int i = 0; i < list.Count; i++)
             {
                 Toggl.TimeEntry te = list.ElementAt(i);
@@ -114,6 +120,11 @@ namespace TogglDesktop
 
             entries.ResumeLayout();
             entries.PerformLayout();
+
+            if (!entries.Visible)
+            {
+                entries.Visible = true;
+            }
         }
 
         private void TimeEntryListViewController_Load(object sender, EventArgs e)
