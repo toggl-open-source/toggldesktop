@@ -247,7 +247,6 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
             if (time_entry_editor_guid_ == ch.GUID()) {
                 // If time entry was deleted, close editor and open list view
                 if (ch.ChangeType() == "delete") {
-                    time_entry_editor_guid_ = "";
                     open_time_entry_list = true;
                     display_time_entries = true;
                 } else {
@@ -1386,6 +1385,10 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         first->IsHeader = true;
     }
 
+    if (open) {
+        time_entry_editor_guid_ = "";
+    }
+
     UI()->DisplayTimeEntryList(open, first);
     time_entry_view_item_clear(first);
 
@@ -1438,6 +1441,14 @@ void Context::displayTimeEntryEditor(const _Bool open,
                                      TimeEntry *te,
                                      const std::string focused_field_name) {
     poco_check_ptr(te);
+
+    // If user is already editing the time entry, toggle the editor
+    // instead of doing nothing
+    if (time_entry_editor_guid_ == te->GUID()) {
+        DisplayTimeEntryList(true);
+        return;
+    }
+
     time_entry_editor_guid_ = te->GUID();
     TogglTimeEntryView *view = timeEntryViewItem(te);
 
