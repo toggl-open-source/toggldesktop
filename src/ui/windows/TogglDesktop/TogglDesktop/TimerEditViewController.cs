@@ -41,13 +41,14 @@ namespace TogglDesktop
             Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
         }
 
-        public AutoCompleteTextBox getDescriptionTextBox() {
-            return descriptionTextBox;
+        public AutoCompleteTextBox DescriptionTextBox
+        {
+            get { return descriptionTextBox; }
         }
 
-        public TextBox getDurationTextBox()
+        public TextBox DurationTextBox
         {
-            return textBoxDuration;
+            get { return textBoxDuration; }
         }
 
         public bool areFieldsFocused()

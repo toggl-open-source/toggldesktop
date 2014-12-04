@@ -28,8 +28,9 @@ namespace TogglDesktop
 
             Toggl.OnTimeEntryList += OnTimeEntryList;
             Toggl.OnLogin += OnLogin;
-            timerEditViewController.getDescriptionTextBox().MouseWheel += TimeEntryListViewController_MouseWheel;
-            timerEditViewController.getDurationTextBox().MouseWheel += TimeEntryListViewController_MouseWheel;
+
+            timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
+            timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
         }
 
         void TimeEntryListViewController_MouseWheel(object sender, MouseEventArgs e)
@@ -40,9 +41,9 @@ namespace TogglDesktop
             }
         }
 
-        public int getEntriesTop()
+        public int EntriesTop
         {
-            return entries.Location.Y;
+            get { return entries.Location.Y; }
         }
 
         public void SetAcceptButton(Form frm)
