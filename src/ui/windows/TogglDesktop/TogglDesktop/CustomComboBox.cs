@@ -17,14 +17,11 @@ namespace TogglDesktop
         private bool _isAdded;
         private String _formerValue = String.Empty;
         public bool fullListOpened = false;
-        private SizeF currentFactor;
-        private int defaultItemHeight;
         private bool mouseEntered = false;
 
         public CustomComboBox()
         {
             InitializeComponent();
-            defaultItemHeight = autoCompleteListBox.ItemHeight;
         }
 
         private void InitializeComponent()
@@ -83,15 +80,8 @@ namespace TogglDesktop
             mouseEntered = true;
         }
 
-        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
-        {
-            base.ScaleControl(factor, specified);
-            currentFactor = factor;
-        }
-
         private void autoCompleteListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            autoCompleteListBox.ItemHeight = (int)(defaultItemHeight*currentFactor.Height);
             e.DrawBackground();
             e.DrawFocusRectangle();
             e.Graphics.DrawString(

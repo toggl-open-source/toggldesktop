@@ -10,14 +10,11 @@ namespace TogglDesktop
         public ListBox autoCompleteListBox;
         private bool _isAdded;
         private String _formerValue = String.Empty;
-        private SizeF currentFactor;
-        private int defaultItemHeight;
         private bool mouseEntered = false;
 
         public AutoCompleteTextBox()
         {
             InitializeComponent();
-            defaultItemHeight = autoCompleteListBox.ItemHeight;
         }
 
         private void InitializeComponent()
@@ -53,14 +50,8 @@ namespace TogglDesktop
             mouseEntered = true;
         }
 
-        public void scaleList(SizeF factor)
-        {
-            currentFactor = factor;
-        }
-
         private void autoCompleteListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            autoCompleteListBox.ItemHeight = (int)(defaultItemHeight * currentFactor.Height);
             e.DrawBackground();
             e.DrawFocusRectangle();
             e.Graphics.DrawString(

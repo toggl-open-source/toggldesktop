@@ -18,7 +18,6 @@ namespace TogglDesktop
         private UInt64 project_id = 0;
         private int defaultDescriptionTop = 20;
         private int projectDescriptionTop = 10;
-        private SizeF currentFactor;
         public Boolean durationFocused = false;
 
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
@@ -54,34 +53,6 @@ namespace TogglDesktop
         public bool areFieldsFocused()
         {
             return descriptionTextBox.Focused || textBoxDuration.Focused;
-        }
-
-        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
-        {
-            base.ScaleControl(factor, specified);
-            this.descriptionTextBox.scaleList(factor);
-            if (factor.Height > 1 && currentFactor != factor)
-            {
-                currentFactor = factor;
-                textBoxDuration.Top = (Height / 2) - (textBoxDuration.Height / 2);
-                reScale();
-            }
-        }
-
-        private void reScale()
-        {
-            scaleChild(descriptionTextBox);
-            scaleChild(linkLabelDescription);
-            scaleChild(textBoxDuration);
-            scaleChild(linkLabelDuration);
-            scaleChild(linkLabelProject);
-            scaleChild(buttonStart);
-        }
-
-        private void scaleChild(Control child)
-        {
-            float scaledFontSize = (float)(int)(child.Font.Size * currentFactor.Height);
-            child.Font = new Font(child.Font.Name, scaledFontSize, GraphicsUnit.Pixel);
         }
 
         public bool focusList()

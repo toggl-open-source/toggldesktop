@@ -14,50 +14,15 @@ namespace TogglDesktop
     {
         public string GUID;
         public bool header = false;
-        private SizeF currentFactor;
-        private bool scaled = false;
         private TimeEntryListViewController list;
         public bool opened = false;
         private Color hoverColor = Color.WhiteSmoke;
         private Color defaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
 
-        public TimeEntryCell(SizeF factor, TimeEntryListViewController listContainer)
+        public TimeEntryCell(TimeEntryListViewController listContainer)
         {
-            currentFactor = factor;
             list = listContainer;
             InitializeComponent();   
-        }
-
-        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
-        {
-            base.ScaleControl(factor, specified);
-            if (factor.Height > 1 && currentFactor != factor)
-            {
-                currentFactor = factor;
-                reScale();
-            }
-            if (currentFactor.Height > 1 && !scaled)
-            {
-                reScale();
-                scaled = true;
-            }
-        }
-
-        private void reScale()
-        {
-            scaleChild(labelDescription);
-            scaleChild(labelProject);
-            scaleChild(labelClient);
-            scaleChild(labelTask);
-            scaleChild(labelDuration);
-            scaleChild(labelFormattedDate);
-            scaleChild(labelDateDuration);
-        }
-
-        private void scaleChild(Control child)
-        {
-            float scaledFontSize = (float)(int)(child.Font.Size * currentFactor.Height);
-            child.Font = new Font(child.Font.Name, 20, GraphicsUnit.Pixel);
         }
 
         internal void Display(Toggl.TimeEntry item)
@@ -93,10 +58,6 @@ namespace TogglDesktop
                 Height = panel.Height;
                 panel.Top = 0;
                 header = false;
-            }
-            if (scaled)
-            {
-                checkLabelHeights();
             }
             headerPanel.Visible = item.IsHeader;
             toolTip.SetToolTip(labelDescription, item.Description);

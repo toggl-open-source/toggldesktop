@@ -40,7 +40,6 @@ namespace TogglDesktop
         private Point errorContentPosition = new System.Drawing.Point(0, 28);
         private bool remainOnTop = false;
         private bool topDisabled = false;
-        private SizeF currentFactor;
 
         private static MainWindowController instance;
 
@@ -162,15 +161,6 @@ namespace TogglDesktop
             Point pt = new Point(Width - 90, 0);
             pt = PointToScreen(pt);
             trayIconMenu.Show(pt);
-        }
-
-        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
-        {
-            base.ScaleControl(factor, specified);
-            if (currentFactor != factor)
-            {
-                currentFactor = factor;
-            }
         }
 
         protected override void OnShown(EventArgs e)
@@ -450,7 +440,7 @@ namespace TogglDesktop
                 return;
             }
 
-            idleNotificationWindowController.ShowWindow(currentFactor);
+            idleNotificationWindowController.ShowWindow();
         }
 
         void OnLogin(bool open, UInt64 user_id)
