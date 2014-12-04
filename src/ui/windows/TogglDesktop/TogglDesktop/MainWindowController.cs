@@ -22,6 +22,8 @@ namespace TogglDesktop
         private const int HtBottomRight = 17;
         private bool isResizing = false;
 
+        private List<Icon> statusIcons = new List<Icon>();
+
         private LoginViewController loginViewController;
         private TimeEntryListViewController timeEntryListViewController;
         private TimeEntryEditViewController timeEntryEditViewController;
@@ -194,10 +196,33 @@ namespace TogglDesktop
             trayIcon.Visible = false;
         }
 
+        private const int kTogglTray = 0;
+        private const int kTogglTrayInactive = 1;
+        private const int kToggl = 2;
+        private const int kTogglInactive = 3;
+        private const int kTogglOfflineActive = 4;
+        private const int kTogglOfflineInactive = 5;
+
+        private void loadStatusIcons()
+        {
+            if (statusIcons.Count > 0)
+            {
+                throw new InvalidOperationException("Status images already loaded");
+            }
+            statusIcons.Add(Properties.Resources.toggltray);
+            statusIcons.Add(Properties.Resources.toggltray_inactive);
+            statusIcons.Add(Properties.Resources.toggl);
+            statusIcons.Add(Properties.Resources.toggl_inactive);
+            statusIcons.Add(Properties.Resources.toggl_offline_active);
+            statusIcons.Add(Properties.Resources.toggl_offline_inactive);
+        }
+
         private void MainWindowController_Load(object sender, EventArgs e)
         {
             troubleBox.BackColor = Color.FromArgb(239, 226, 121);
             contentPanel.Location = defaultContentPosition;
+
+            loadStatusIcons();
 
             Toggl.OnApp += OnApp;
             Toggl.OnError += OnError;
@@ -220,7 +245,7 @@ namespace TogglDesktop
             feedbackWindowController = new FeedbackWindowController();
             idleNotificationWindowController = new IdleNotificationWindowController();
             initEditForm();
-            Utils.LoadWindowLocation(this, this.editForm);
+            Utils.LoadWindowLocation(this, editForm);
 
             timeEntryListViewController.getListing().Scroll += MainWindowControllerEntries_Scroll;
             timeEntryListViewController.getListing().MouseWheel += MainWindowControllerEntries_Scroll;
@@ -254,7 +279,7 @@ namespace TogglDesktop
             }
             isTracking = true;
             enableMenuItems();
-            displayTrayIcon(true);
+            updateStatusIcons(true);
 
             string newText = "Toggl Desktop";
             if (te.Description.Length > 0) {
@@ -286,7 +311,7 @@ namespace TogglDesktop
             }
             isTracking = false;
             enableMenuItems();
-            displayTrayIcon(true);
+            updateStatusIcons(true);
 
             runningToolStripMenuItem.Text = "Timer is not tracking";
             Text = "Toggl Desktop";
@@ -307,36 +332,53 @@ namespace TogglDesktop
             setGlobalShortCutKeys();
         }
 
-        private void displayTrayIcon(bool is_online)
+        private void updateStatusIcons(bool is_online)
         {
-            if (null == trayIcon)
+            if (0 == statusIcons.Count)
             {
                 return;
             }
+
+            Icon tray = null;
+            Icon form = null;
+
             if (is_online)
             {
                 if (TogglDesktop.Program.IsLoggedIn && isTracking)
                 {
-                    trayIcon.Icon = Properties.Resources.toggltray;
-                    Icon = Properties.Resources.toggl;
+                    tray = statusIcons[kTogglTray];
+                    form = statusIcons[kToggl];
                 }
                 else
                 {
-                    trayIcon.Icon = Properties.Resources.toggltray_inactive;
-                    Icon = Properties.Resources.toggl_inactive;
+                    tray = statusIcons[kTogglTrayInactive];
+                    form = statusIcons[kTogglInactive];
                 }
             }
             else
             {
                 if (TogglDesktop.Program.IsLoggedIn && isTracking)
                 {
-                    trayIcon.Icon = Properties.Resources.toggl_offline_active;
-                    Icon = Properties.Resources.toggl;
+                    tray = statusIcons[kTogglOfflineActive];
+                    form = statusIcons[kToggl];
                 }
                 else
                 {
-                    trayIcon.Icon = Properties.Resources.toggl_offline_inactive;
-                    Icon = Properties.Resources.toggl_inactive;
+                    tray = statusIcons[kTogglOfflineInactive];
+                    form = statusIcons[kTogglInactive];
+                }
+            }
+
+            if (Icon != form)
+            {
+                Icon = form;
+            }
+
+            if (null != trayIcon)
+            {
+                if (trayIcon.Icon != tray)
+                {
+                    trayIcon.Icon = tray;
                 }
             }
         }
@@ -355,7 +397,7 @@ namespace TogglDesktop
                 errorLabel.Text = reason;
                 troubleBox.Visible = true;
                 contentPanel.Location = errorContentPosition;
-                displayTrayIcon(false);
+                updateStatusIcons(false);
             }
             else if (isNetworkError)
             {
@@ -363,7 +405,7 @@ namespace TogglDesktop
 
                 troubleBox.Visible = false;
                 contentPanel.Location = defaultContentPosition;
-                displayTrayIcon(true);
+                updateStatusIcons(true);
             }
         }
 
@@ -422,12 +464,12 @@ namespace TogglDesktop
                 contentPanel.Controls.Remove(timeEntryListViewController);
                 contentPanel.Controls.Remove(timeEntryEditViewController);
                 contentPanel.Controls.Add(loginViewController);
-                this.MinimumSize = new Size(loginViewController.MinimumSize.Width, loginViewController.MinimumSize.Height + 40);
+                MinimumSize = new Size(loginViewController.MinimumSize.Width, loginViewController.MinimumSize.Height + 40);
                 loginViewController.SetAcceptButton(this);
                 resizeHandle.Visible = false;
             }
             enableMenuItems();
-            displayTrayIcon(true);
+            updateStatusIcons(true);
 
             if (open || 0 == user_id)
             {
@@ -461,7 +503,7 @@ namespace TogglDesktop
                 troubleBox.Visible = false;
                 contentPanel.Location = defaultContentPosition;
                 contentPanel.Controls.Remove(loginViewController);
-                this.MinimumSize = new Size(230, 86);
+                MinimumSize = new Size(230, 86);
                 contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
                 resizeHandle.Visible = true;
@@ -557,7 +599,7 @@ namespace TogglDesktop
             if (open)
             {
                 contentPanel.Controls.Remove(loginViewController);
-                this.MinimumSize = new Size(230, 86);
+                MinimumSize = new Size(230, 86);
                 timeEntryEditViewController.setupView(this, focused_field_name);
                 PopupInput(te);                
             }
@@ -565,7 +607,7 @@ namespace TogglDesktop
 
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Utils.SaveWindowLocation(this, this.editForm);
+            Utils.SaveWindowLocation(this, editForm);
             WinSparkle.win_sparkle_cleanup();
 
             if (!TogglDesktop.Program.ShuttingDown) {
@@ -598,7 +640,7 @@ namespace TogglDesktop
         {
             if (Visible)
             {
-                Utils.SaveWindowLocation(this, this.editForm);
+                Utils.SaveWindowLocation(this, editForm);
             }
             WinSparkle.win_sparkle_cleanup();
 
@@ -782,7 +824,7 @@ namespace TogglDesktop
 
         private void calculateEditFormPosition(bool running, Screen s)
         {
-            Point ctrlpt = this.PointToScreen(editableEntry.Location);
+            Point ctrlpt = PointToScreen(editableEntry.Location);
             int arrowTop = 0;
             bool left = false;
 
@@ -792,14 +834,14 @@ namespace TogglDesktop
             }
             else
             {
-                if ((editForm.Width + ctrlpt.X + this.Width) > s.Bounds.Width)
+                if ((editForm.Width + ctrlpt.X + Width) > s.Bounds.Width)
                 {
                     ctrlpt.X -= editForm.Width;
                     left = true;
                 }
                 else
                 {
-                    ctrlpt.X += this.Width;
+                    ctrlpt.X += Width;
                 }
             }
 
@@ -838,7 +880,7 @@ namespace TogglDesktop
         private void MainWindowController_SizeChanged(object sender, EventArgs e)
         {
             recalculatePopupPosition();
-            if (this.timeEntryListViewController != null)
+            if (timeEntryListViewController != null)
             {
                 hideHorizontalScrollBar();
             }
@@ -847,7 +889,7 @@ namespace TogglDesktop
         }
 
         private void updateResizeHandleBackground() {
-            if (this.Height <= this.MinimumSize.Height)
+            if (Height <= MinimumSize.Height)
             {
                 String c = "#47bc00";
                 if(isTracking) {
@@ -870,7 +912,7 @@ namespace TogglDesktop
 
         private void hideHorizontalScrollBar()
         {
-            ShowScrollBar(this.timeEntryListViewController.getListing().Handle, SB_HORZ, false);
+            ShowScrollBar(timeEntryListViewController.getListing().Handle, SB_HORZ, false);
         }
 
         private void resizeHandle_MouseDown(object sender, MouseEventArgs e)
