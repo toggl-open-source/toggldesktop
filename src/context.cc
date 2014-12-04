@@ -49,6 +49,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_idle_started_(0)
 , idle_minutes_(0)
 , last_sync_started_(0)
+, last_sleep_started_(0)
 , update_check_disabled_(false)
 , quit_(false) {
     Poco::ErrorHandler::set(&error_handler_);
@@ -2015,6 +2016,7 @@ _Bool Context::CreateClient(
 
 void Context::SetSleep() {
     logger().debug("SetSleep");
+    last_sleep_started_ = time(0);
 }
 
 _Bool Context::OpenReportsInBrowser() {
@@ -2070,6 +2072,15 @@ void Context::SetWake() {
             DisplayTimeEntryList(false);
         }
     }
+
+    if (last_sleep_started_) {
+        int slept_seconds = time(0) - last_sleep_started_;
+        if (slept_seconds > 0) {
+            SetIdleSeconds(slept_seconds);
+        }
+    }
+
+    last_sleep_started_ = 0;
 }
 
 void Context::SetOnline() {

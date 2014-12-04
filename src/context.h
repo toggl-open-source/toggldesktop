@@ -348,9 +348,11 @@ class Context : public TimelineDatasource {
 
     std::string environment_;
 
+    // Idle detection related values
     Poco::UInt64 last_idle_seconds_reading_;
     Poco::UInt64 last_idle_started_;
     Poco::UInt64 idle_minutes_;
+    Poco::UInt64 last_sleep_started_;
 
     Poco::UInt64 last_sync_started_;
 
