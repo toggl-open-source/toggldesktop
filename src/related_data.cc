@@ -261,4 +261,34 @@ void RelatedData::workspaceAutocompleteItems(
     }
 }
 
+std::vector<std::string> RelatedData::TagList() const {
+    std::vector<std::string> tags;
+    std::set<std::string> unique_names;
+    for (std::vector<Tag *>::const_iterator it =
+        Tags.begin();
+            it != Tags.end();
+            it++) {
+        Tag *tag = *it;
+        if (unique_names.find(tag->Name()) != unique_names.end()) {
+            continue;
+        }
+        unique_names.insert(tag->Name());
+        tags.push_back(tag->Name());
+    }
+    std::sort(tags.rbegin(), tags.rend());
+    return tags;
+}
+
+std::vector<Workspace *> RelatedData::WorkspaceList() const {
+    std::vector<Workspace *> result = Workspaces;
+    std::sort(result.rbegin(), result.rend(), CompareWorkspaceByName);
+    return result;
+}
+
+std::vector<Client *> RelatedData::ClientList() const {
+    std::vector<Client *> result = Clients;
+    std::sort(result.rbegin(), result.rend(), CompareClientByName);
+    return result;
+}
+
 }   // namespace toggl

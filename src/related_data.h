@@ -66,6 +66,10 @@ class RelatedData {
         return modelByID(id, &TimeEntries);
     }
 
+    std::vector<std::string> TagList() const;
+    std::vector<Workspace *> WorkspaceList() const;
+    std::vector<Client *> ClientList() const;
+
     template <typename T>
     T *modelByGUID(const guid GUID, std::vector<T *> *list) {
         if (GUID.empty()) {

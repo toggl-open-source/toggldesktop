@@ -274,10 +274,6 @@ class Context : public TimelineDatasource {
         std::string *client_label,
         std::string *color_code) const;
 
-    std::vector<std::string> tags() const;
-    std::vector<Workspace *> workspaces() const;
-    std::vector<Client *> clients() const;
-
     TogglTimeEntryView *timeEntryViewItem(TimeEntry *te);
 
     void displayTimerState();
@@ -349,7 +345,7 @@ class Context : public TimelineDatasource {
     time_t last_sleep_started_;
 
     Poco::UInt64 last_sync_started_;
-    Poco::UInt64 sync_interval_seconds_;
+    Poco::Int64 sync_interval_seconds_;
 
     bool update_check_disabled_;
 

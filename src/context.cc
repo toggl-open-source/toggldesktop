@@ -290,35 +290,40 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
 }
 
 void Context::displayTimeEntryAutocomplete() {
-    if (!user_) {
-        return;
+    if (user_) {
+        std::vector<AutocompleteItem> list =
+            user_->related.AutocompleteItems(true);
+        UI()->DisplayTimeEntryAutocomplete(&list);
     }
-    std::vector<AutocompleteItem> list = user_->related.AutocompleteItems(true);
-    UI()->DisplayTimeEntryAutocomplete(&list);
 }
 
 void Context::displayProjectAutocomplete() {
-    if (!user_) {
-        return;
+    if (user_) {
+        std::vector<AutocompleteItem> list =
+            user_->related.AutocompleteItems(false);
+        UI()->DisplayProjectAutocomplete(&list);
     }
-    std::vector<AutocompleteItem> list =
-        user_->related.AutocompleteItems(false);
-    UI()->DisplayProjectAutocomplete(&list);
 }
 
 void Context::displayClientSelect() {
-    std::vector<Client *> list = clients();
-    UI()->DisplayClientSelect(&list);
+    if (user_) {
+        std::vector<Client *> list =
+            user_->related.ClientList();
+        UI()->DisplayClientSelect(&list);
+    }
 }
 
 void Context::displayWorkspaceSelect() {
-    std::vector<Workspace *> list = workspaces();
+    std::vector<Workspace *> list =
+        user_->related.WorkspaceList();
     UI()->DisplayWorkspaceSelect(&list);
 }
 
 void Context::displayTags() {
-    std::vector<std::string> list = tags();
-    UI()->DisplayTags(&list);
+    if (user_) {
+        std::vector<std::string> list = user_->related.TagList();
+        UI()->DisplayTags(&list);
+    }
 }
 
 Poco::Timestamp postpone(
@@ -1253,49 +1258,6 @@ bool Context::canSeeBillable(
         return false;
     }
     return true;
-}
-
-std::vector<std::string> Context::tags() const {
-    std::vector<std::string> tags;
-    if (!user_) {
-        return tags;
-    }
-    std::set<std::string> unique_names;
-    for (std::vector<Tag *>::const_iterator it =
-        user_->related.Tags.begin();
-            it != user_->related.Tags.end();
-            it++) {
-        Tag *tag = *it;
-        if (unique_names.find(tag->Name()) != unique_names.end()) {
-            continue;
-        }
-        unique_names.insert(tag->Name());
-        tags.push_back(tag->Name());
-    }
-    std::sort(tags.rbegin(), tags.rend());
-    return tags;
-}
-
-std::vector<Workspace *> Context::workspaces() const {
-    std::vector<Workspace *> result;
-    if (!user_) {
-        logger().warning("User logged out, cannot fetch workspaces");
-        return result;
-    }
-    result = user_->related.Workspaces;
-    std::sort(result.rbegin(), result.rend(), CompareWorkspaceByName);
-    return result;
-}
-
-std::vector<Client *> Context::clients() const {
-    std::vector<Client *> result;
-    if (!user_) {
-        logger().warning("User logged out, cannot fetch clients");
-        return result;
-    }
-    result = user_->related.Clients;
-    std::sort(result.rbegin(), result.rend(), CompareClientByName);
-    return result;
 }
 
 TimeEntry *Context::Start(
