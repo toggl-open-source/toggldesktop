@@ -60,7 +60,9 @@ class WebSocketClient {
     error receiveWebSocketMessage(std::string *message);
     void deleteSession();
 
-    Poco::Logger &logger() const;
+    Poco::Logger &logger() const {
+        return Poco::Logger::get("websocket_client");
+    }
 
     Poco::Activity<WebSocketClient> activity_;
     Poco::Net::HTTPSClientSession *session_;

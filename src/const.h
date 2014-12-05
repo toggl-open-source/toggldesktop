@@ -7,9 +7,8 @@
 
 #define kMaxTimeEntryDurationSeconds 3600000
 #define kHTTPClientTimeoutSeconds 10
-#define kPeriodicSyncIntervalSeconds 900
-
-// 86400 seconds = 24 hours
+#define kSyncIntervalRangeSeconds 300
+#define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
 #define kRequestThrottleSeconds 2
 #define kReminderThrottleSeconds 600

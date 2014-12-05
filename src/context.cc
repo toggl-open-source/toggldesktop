@@ -27,6 +27,7 @@
 #include "Poco/FileStream.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
+#include "Poco/Random.h"
 
 namespace toggl {
 
@@ -50,6 +51,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , idle_minutes_(0)
 , last_sleep_started_(0)
 , last_sync_started_(0)
+, sync_interval_seconds_(0)
 , update_check_disabled_(false)
 , quit_(false) {
     Poco::ErrorHandler::set(&error_handler_);
@@ -319,21 +321,22 @@ void Context::displayTags() {
     UI()->DisplayTags(&list);
 }
 
-Poco::Timestamp Context::postpone(
+Poco::Timestamp postpone(
     const Poco::Timestamp::TimeDiff throttleMicros) {
     return Poco::Timestamp() + throttleMicros;
 }
 
-bool Context::isPostponed(
+bool isPostponed(
     const Poco::Timestamp value,
-    const Poco::Timestamp::TimeDiff throttleMicros) const {
+    const Poco::Timestamp::TimeDiff throttleMicros) {
     Poco::Timestamp now;
     if (now > value) {
         return false;
     }
     Poco::Timestamp::TimeDiff diff = value - now;
     if (diff > 2*throttleMicros) {
-        logger().warning("Cannot postpone task, its foo far in the future");
+        Poco::Logger::get("context").warning(
+            "Cannot postpone task, its foo far in the future");
         return false;
     }
     return true;
@@ -356,6 +359,16 @@ _Bool Context::displayError(const error err) {
     return UI()->DisplayError(err);
 }
 
+int nextSyncIntervalSeconds() {
+    Poco::Random random;
+    random.seed();
+    int res = random.next(kSyncIntervalRangeSeconds) + 10 + 1;
+    std::stringstream ss;
+    ss << "Next autosync in " << res << " seconds";
+    Poco::Logger::get("context").trace(ss.str());
+    return res;
+}
+
 void Context::scheduleSync() {
     Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
 
@@ -365,9 +378,9 @@ void Context::scheduleSync() {
         logger().debug(ss.str());
     }
 
-    if (elapsed_seconds < kPeriodicSyncIntervalSeconds) {
+    if (elapsed_seconds < sync_interval_seconds_) {
         std::stringstream ss;
-        ss << "Last sync attempt less than " << kPeriodicSyncIntervalSeconds
+        ss << "Last sync attempt less than " << sync_interval_seconds_
            << " seconds ago, chill";
         logger().trace(ss.str());
         return;
@@ -657,8 +670,10 @@ void Context::startPeriodicSync() {
         new Poco::Util::TimerTaskAdapter<Context>
     (*this, &Context::onPeriodicSync);
 
+    sync_interval_seconds_ = nextSyncIntervalSeconds();
+
     Poco::Timestamp next_periodic_sync_at_ =
-        Poco::Timestamp() + (kPeriodicSyncIntervalSeconds * kOneSecondInMicros);
+        Poco::Timestamp() + (sync_interval_seconds_ * kOneSecondInMicros);
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_sync_at_);
 }
@@ -2085,7 +2100,7 @@ void Context::SetWake() {
     }
 
     if (last_sleep_started_) {
-        int slept_seconds = time(0) - last_sleep_started_;
+        Poco::Int64 slept_seconds = time(0) - last_sleep_started_;
         if (slept_seconds > 0) {
             SetIdleSeconds(slept_seconds);
         }

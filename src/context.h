@@ -253,12 +253,6 @@ class Context : public TimelineDatasource {
 
     void startPeriodicSync();
 
-    bool isPostponed(
-        const Poco::Timestamp value,
-        const Poco::Timestamp::TimeDiff throttleMicros) const;
-    static Poco::Timestamp postpone(
-        const Poco::Timestamp::TimeDiff throttleMicros);
-
     void setUser(User *value, const bool user_logged_in = false);
 
     void displayUI();
@@ -352,9 +346,10 @@ class Context : public TimelineDatasource {
     Poco::UInt64 last_idle_seconds_reading_;
     Poco::UInt64 last_idle_started_;
     Poco::UInt64 idle_minutes_;
-    Poco::UInt64 last_sleep_started_;
+    time_t last_sleep_started_;
 
     Poco::UInt64 last_sync_started_;
+    Poco::UInt64 sync_interval_seconds_;
 
     bool update_check_disabled_;
 

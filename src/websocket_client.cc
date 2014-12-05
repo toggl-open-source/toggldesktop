@@ -8,26 +8,19 @@
 #include <json/json.h>  // NOLINT
 
 #include "Poco/Exception.h"
-#include "Poco/InflatingStream.h"
-#include "Poco/DeflatingStream.h"
 #include "Poco/URI.h"
-#include "Poco/NumberParser.h"
 #include "Poco/Net/Context.h"
-#include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/HTTPMessage.h"
-#include "Poco/Net/HTTPBasicCredentials.h"
 #include "Poco/Net/InvalidCertificateHandler.h"
 #include "Poco/Net/AcceptCertificateHandler.h"
-#include "Poco/Net/SSLManager.h"
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
+#include "Poco/Net/SSLManager.h"
+#include "Poco/Random.h"
 
+#include "./const.h"
 #include "./https_client.h"
 
 namespace toggl {
-
-Poco::Logger &WebSocketClient::logger() const {
-    return Poco::Logger::get("websocket_client");
-}
 
 void WebSocketClient::Start(
     void *ctx,
@@ -239,9 +232,18 @@ error WebSocketClient::poll() {
     return noError;
 }
 
-const int kWebSocketRestartThreshold = 30;
+int nextWebsocketRestartInterval() {
+    Poco::Random random;
+    random.seed();
+    int res = random.next(kWebsocketRestartRangeSeconds) + 1;
+    std::stringstream ss;
+    ss << "Next websocket restart in " << res << " seconds";
+    Poco::Logger::get("websocket_client").trace(ss.str());
+    return res;
+}
 
 void WebSocketClient::runActivity() {
+    int restart_interval = nextWebsocketRestartInterval();
     while (!activity_.isStopped()) {
         if (ws_) {
             error err = poll();
@@ -260,7 +262,8 @@ void WebSocketClient::runActivity() {
             }
         }
 
-        if (time(0) - last_connection_at_ > kWebSocketRestartThreshold) {
+        if (time(0) - last_connection_at_ > restart_interval) {
+            restart_interval = nextWebsocketRestartInterval();
             logger().debug("restarting");
             error err = createSession();
             if (err != noError) {
