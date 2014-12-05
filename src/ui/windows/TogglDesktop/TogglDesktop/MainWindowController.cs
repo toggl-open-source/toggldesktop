@@ -653,6 +653,7 @@ namespace TogglDesktop
             if (WindowState == FormWindowState.Minimized)
             {
                 WindowState = FormWindowState.Normal;
+                show();
                 return;
             }
             if (Visible)
