@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="descriptionLabel" destination="Fiv-ao-qiA" id="00j-67-MmI"/>
+                <outlet property="durationFieldChanged" destination="oie-Un-asQ" id="OHU-Ev-dhK"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
                 <outlet property="projectTextField" destination="tVc-ms-0hr" id="1ee-Q9-eCA"/>
                 <outlet property="startButton" destination="2Fx-4L-YGZ" id="NkN-re-hJo"/>
@@ -88,7 +89,7 @@ DQ
                                     <outlet property="delegate" destination="-2" id="oWZ-rz-Xcn"/>
                                 </connections>
                             </textField>
-                            <textField toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldClickable">
+                            <textField toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
                                 <rect key="frame" x="132" y="24" width="75" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="76" id="x2K-5w-zfF"/>
@@ -99,6 +100,7 @@ DQ
                                     <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                                 <connections>
+                                    <action selector="durationFieldChanged:" target="-2" id="CnG-Zd-OL2"/>
                                     <outlet property="delegate" destination="-2" id="F3b-cL-8I2"/>
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>

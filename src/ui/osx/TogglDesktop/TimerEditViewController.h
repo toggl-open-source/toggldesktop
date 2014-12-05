@@ -8,11 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import "NSTextFieldClickable.h"
+#import "NSTextFieldDuration.h"
 #import "NSCustomTimerComboBox.h"
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate> {
 }
-@property IBOutlet NSTextFieldClickable *durationTextField;
+@property IBOutlet NSTextFieldDuration *durationTextField;
 @property IBOutlet NSCustomTimerComboBox *descriptionComboBox;
 @property IBOutlet NSButton *startButton;
 @property IBOutlet NSTextField *projectTextField;
@@ -22,5 +23,6 @@
 @property NSArray *projectLabelConstraint;
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)descriptionComboBoxChanged:(id)sender;
+- (IBAction)durationFieldChanged:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
 @end

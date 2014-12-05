@@ -19,6 +19,7 @@
 		3C9D53AD1A1CD99D00966170 /* app_icon_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9D53AC1A1CD99D00966170 /* app_icon_pdf.pdf */; };
 		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
+		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
 		3CD7AD6F19ED579700372797 /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
 		3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */; };
 		3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C591913B60F00A94967 /* icon-billable@2x.png */; };
@@ -338,6 +339,8 @@
 		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
 		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
 		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
+		3CC450E71A31ED540012440B /* NSTextFieldDuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldDuration.h; sourceTree = "<group>"; };
+		3CC450E81A31ED540012440B /* NSTextFieldDuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldDuration.m; sourceTree = "<group>"; };
 		3CD7AD6D19ED579700372797 /* NSResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSResize.h; sourceTree = "<group>"; };
 		3CD7AD6E19ED579700372797 /* NSResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSResize.m; sourceTree = "<group>"; };
 		3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-gray@2x.png"; sourceTree = "<group>"; };
@@ -757,6 +760,8 @@
 				3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */,
 				3CD7AD6D19ED579700372797 /* NSResize.h */,
 				3CD7AD6E19ED579700372797 /* NSResize.m */,
+				3CC450E71A31ED540012440B /* NSTextFieldDuration.h */,
+				3CC450E81A31ED540012440B /* NSTextFieldDuration.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1338,6 +1343,7 @@
 				7484F622191D92C30038885C /* Settings.m in Sources */,
 				747B75161A0AD5F500BB3791 /* lbaselib.c in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
+				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				747B75531A0AD5F500BB3791 /* lundump.c in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,

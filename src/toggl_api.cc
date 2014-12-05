@@ -586,6 +586,14 @@ char_t *toggl_get_update_channel(
     return copy_string(update_channel);
 }
 
+int64_t toggl_parse_duration_string_into_seconds(
+    const char_t *duration_string) {
+    if (!duration_string) {
+        return 0;
+    }
+    return toggl::Formatter::ParseDurationString(to_string(duration_string));
+}
+
 void toggl_on_show_app(
     void *context,
     TogglDisplayApp cb) {

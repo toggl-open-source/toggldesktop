@@ -147,10 +147,13 @@ NSString *kInactiveTimerColor = @"#999999";
 	// while time entry is running
 	if (self.time_entry.duration_in_seconds < 0)
 	{
+		[self.durationTextField setDelegate:self];
 		self.descriptionLabel.stringValue = self.time_entry.Description;
 		self.descriptionLabel.toolTip = self.time_entry.Description;
 		[self.descriptionComboBox setHidden:YES];
 		[self.descriptionLabel setHidden:NO];
+		[self.durationTextField setEditable:NO];
+		[self.durationTextField setSelectable:NO];
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
@@ -159,6 +162,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		[self.descriptionComboBox setHidden:NO];
 		[self.descriptionLabel setHidden:YES];
+		[self.durationTextField setEditable:YES];
+		[self.durationTextField setSelectable:YES];
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
@@ -352,6 +357,24 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
+- (IBAction)durationFieldChanged:(id)sender
+{
+	if (![self.durationTextField.stringValue length])
+	{
+		return;
+	}
+
+	// Parse text into seconds
+	const char *duration_string = [self.durationTextField.stringValue UTF8String];
+	int64_t seconds = toggl_parse_duration_string_into_seconds(duration_string);
+
+	// Format seconds as text again
+	char *str = toggl_format_tracking_time_duration(seconds);
+	NSString *newValue = [NSString stringWithUTF8String:str];
+	free(str);
+	[self.durationTextField setStringValue:newValue];
+}
+
 - (IBAction)descriptionComboBoxChanged:(id)sender
 {
 	NSString *key = [self.descriptionComboBox stringValue];
@@ -386,6 +409,9 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
+    if ([[aNotification object] isKindOfClass:[NSTextFieldDuration class]]) {
+        return;
+    }
 	NSComboBox *box = [aNotification object];
 	NSString *filter = [box stringValue];
 

@@ -508,6 +508,9 @@ extern "C" {
     TOGGL_EXPORT char_t *toggl_format_tracked_time_duration(
         const int64_t duration_in_seconds);
 
+    TOGGL_EXPORT int64_t toggl_parse_duration_string_into_seconds(
+        const char_t *duration_string);
+
     // Write to the lib logger
     TOGGL_EXPORT void toggl_debug(
         const char_t *text);
