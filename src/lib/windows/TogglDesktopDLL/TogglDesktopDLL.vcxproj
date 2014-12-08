@@ -106,6 +106,7 @@
     <ClInclude Include="..\..\..\get_focused_window.h" />
     <ClInclude Include="..\..\..\gui.h" />
     <ClInclude Include="..\..\..\https_client.h" />
+    <ClInclude Include="..\..\..\idle.h" />
     <ClInclude Include="..\..\..\toggl_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
     <ClInclude Include="..\..\..\proxy.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
     <ClCompile Include="..\..\..\gui.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
+    <ClCompile Include="..\..\..\idle.cc" />
     <ClCompile Include="..\..\..\toggl_api.cc" />
     <ClCompile Include="..\..\..\toggl_api_private.cc" />
     <ClCompile Include="..\..\..\project.cc" />
