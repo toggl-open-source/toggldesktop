@@ -409,9 +409,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
-    if ([[aNotification object] isKindOfClass:[NSTextFieldDuration class]]) {
-        return;
-    }
+	if ([[aNotification object] isKindOfClass:[NSTextFieldDuration class]])
+	{
+		return;
+	}
 	NSComboBox *box = [aNotification object];
 	NSString *filter = [box stringValue];
 
