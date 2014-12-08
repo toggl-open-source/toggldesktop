@@ -21,13 +21,14 @@
 #include "./gui.h"
 #include "./idle.h"
 
+#include "Poco/Activity.h"
 #include "Poco/Timestamp.h"
-#include "Poco/Util/TimerTask.h"
-#include "Poco/Util/Timer.h"
 #include "Poco/LocalDateTime.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/FormattingChannel.h"
 #include "Poco/PatternFormatter.h"
+#include "Poco/Util/TimerTask.h"
+#include "Poco/Util/Timer.h"
 
 namespace toggl {
 
@@ -219,6 +220,9 @@ class Context : public TimelineDatasource {
     error SaveTimelineEvent(TimelineEvent *event);
     error DeleteTimelineBatch(const std::vector<TimelineEvent> &events);
 
+ protected:
+    void uiUpdaterActivity();
+
  private:
     const std::string updateURL();
 
@@ -349,6 +353,9 @@ class Context : public TimelineDatasource {
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
     bool quit_;
+
+    Poco::Mutex ui_updater_m_;
+    Poco::Activity<Context> ui_updater_;
 };
 
 }  // namespace toggl

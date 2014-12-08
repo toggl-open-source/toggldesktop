@@ -50,7 +50,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_sync_started_(0)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
-, quit_(false) {
+, quit_(false)
+, ui_updater_(this, &Context::uiUpdaterActivity) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -64,10 +65,22 @@ Context::Context(const std::string app_name, const std::string app_version)
     startPeriodicSync();
 
     remindToTrackTime();
+
+    if (!ui_updater_.isRunning()) {
+        ui_updater_.start();
+    }
 }
 
 Context::~Context() {
     SetQuit();
+
+    {
+        Poco::Mutex::ScopedLock lock(ui_updater_m_);
+        if (ui_updater_.isRunning()) {
+            ui_updater_.stop();
+            ui_updater_.wait();
+        }
+    }
 
     {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
@@ -163,6 +176,14 @@ void Context::displayUI() {
 }
 
 void Context::Shutdown() {
+    {
+        Poco::Mutex::ScopedLock lock(ui_updater_m_);
+        if (ui_updater_.isRunning()) {
+            ui_updater_.stop();
+            ui_updater_.wait();
+        }
+    }
+
     {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
         if (window_change_recorder_) {
@@ -1168,6 +1189,10 @@ void Context::setUser(User *value, const bool user_logged_in) {
     }
 
     fetchUpdates();
+
+    if (!ui_updater_.isRunning()) {
+        ui_updater_.start();
+    }
 }
 
 _Bool Context::SetLoggedInUserFromJSON(
@@ -2153,6 +2178,38 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
 
 error Context::DeleteTimelineBatch(const std::vector<TimelineEvent> &events) {
     return db()->DeleteTimelineBatch(events);
+}
+
+void Context::uiUpdaterActivity() {
+    std::string running_time("");
+    while (!ui_updater_.isStopped()) {
+        // Sleep in increments for faster shutdown.
+        for (unsigned int i = 0; i < 4*10; i++) {
+            if (ui_updater_.isStopped()) {
+                return;
+            }
+            Poco::Thread::sleep(250);
+        }
+
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                continue;
+            }
+            TimeEntry *te = user_->RunningTimeEntry();
+            if (!te) {
+                continue;
+            }
+            Poco::Int64 duration = totalDurationForDate(te);
+            std::string date_duration =
+                Formatter::FormatDurationForDateHeader(duration);
+
+            if (running_time != date_duration) {
+                DisplayTimeEntryList(false);
+            }
+            running_time = date_duration;
+        }
+    }
 }
 
 }  // namespace toggl
