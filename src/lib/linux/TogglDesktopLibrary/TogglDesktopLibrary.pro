@@ -20,6 +20,7 @@ SOURCES += \
     ../../../base_model.cc \
     ../../../batch_update_result.cc \
     ../../../client.cc \
+    ../../../idle.cc \
     ../../../context.cc \
     ../../../custom_error_handler.cc \
     ../../../database.cc \
@@ -51,6 +52,7 @@ HEADERS += \
     ../../../batch_update_result.h \
     ../../../client.h \
     ../../../const.h \
+    ../../../idle.h \
     ../../../context.h \
     ../../../custom_error_handler.h \
     ../../../database.h \
