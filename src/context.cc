@@ -1441,7 +1441,7 @@ void Context::displayTimeEntryEditor(const _Bool open,
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
-    if (time_entry_editor_guid_ == te->GUID()) {
+    if (open && (time_entry_editor_guid_ == te->GUID())) {
         DisplayTimeEntryList(true);
         return;
     }
