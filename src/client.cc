@@ -22,14 +22,14 @@ std::string Client::String() const {
 void Client::SetName(const std::string value) {
     if (name_ != value) {
         name_ = value;
-        dirty_ = true;
+        SetDirty();
     }
 }
 
 void Client::SetWID(const Poco::UInt64 value) {
     if (wid_ != value) {
         wid_ = value;
-        dirty_ = true;
+        SetDirty();
     }
 }
 
