@@ -431,9 +431,10 @@ extern void *ctx;
 		[self.lastUpdateTextField setHidden:YES];
 	}
 
-    if (cmd.open) {
-        [self setFocus:nil];
-    }
+	if (cmd.open)
+	{
+		[self setFocus:nil];
+	}
 }
 
 - (NSArray *)    tokenField:(NSTokenField *)tokenField
