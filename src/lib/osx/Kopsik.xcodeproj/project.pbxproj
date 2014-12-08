@@ -23,6 +23,8 @@
 		7421348B195C4D41007EF78B /* libPocoNet.17.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74213483195C4D41007EF78B /* libPocoNet.17.dylib */; };
 		7421348C195C4D41007EF78B /* libPocoFoundation.17.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74213484195C4D41007EF78B /* libPocoFoundation.17.dylib */; };
 		7421348D195C4D41007EF78B /* libPocoCrypto.17.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74213485195C4D41007EF78B /* libPocoCrypto.17.dylib */; };
+		7458ED291A355746007B529E /* idle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7458ED271A355746007B529E /* idle.cc */; };
+		7458ED2A1A355746007B529E /* idle.h in Headers */ = {isa = PBXBuildFile; fileRef = 7458ED281A355746007B529E /* idle.h */; };
 		745E84F5194953A70065E49A /* gui.cc in Sources */ = {isa = PBXBuildFile; fileRef = 745E84F3194953A70065E49A /* gui.cc */; };
 		745E84F6194953A70065E49A /* gui.h in Headers */ = {isa = PBXBuildFile; fileRef = 745E84F4194953A70065E49A /* gui.h */; };
 		7484A2A818887BEE0025A88B /* toggl_api_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A218887BEE0025A88B /* toggl_api_private.h */; };
@@ -92,6 +94,8 @@
 		74213483195C4D41007EF78B /* libPocoNet.17.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.17.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.17.dylib; sourceTree = "<group>"; };
 		74213484195C4D41007EF78B /* libPocoFoundation.17.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.17.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.17.dylib; sourceTree = "<group>"; };
 		74213485195C4D41007EF78B /* libPocoCrypto.17.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.17.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.17.dylib; sourceTree = "<group>"; };
+		7458ED271A355746007B529E /* idle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = idle.cc; path = ../../../idle.cc; sourceTree = "<group>"; };
+		7458ED281A355746007B529E /* idle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = idle.h; path = ../../../idle.h; sourceTree = "<group>"; };
 		745E84F3194953A70065E49A /* gui.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cc; path = ../../../gui.cc; sourceTree = "<group>"; };
 		745E84F4194953A70065E49A /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gui.h; path = ../../../gui.h; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* toggl_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api_private.h; path = ../../../toggl_api_private.h; sourceTree = "<group>"; };
@@ -224,6 +228,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				7458ED271A355746007B529E /* idle.cc */,
+				7458ED281A355746007B529E /* idle.h */,
 				74CBDA3919F97740008494FE /* jsoncpp.cpp */,
 				745E84F3194953A70065E49A /* gui.cc */,
 				745E84F4194953A70065E49A /* gui.h */,
@@ -321,6 +327,7 @@
 				7408EDB518C51CEB00CBE8F1 /* feedback.h in Headers */,
 				7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */,
 				74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */,
+				7458ED2A1A355746007B529E /* idle.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
 				74E16832180F26D90026261C /* websocket_client.h in Headers */,
 				74CAAD1B181860F7001B77BB /* timeline_constants.h in Headers */,
@@ -416,6 +423,7 @@
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
 				74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */,
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
+				7458ED291A355746007B529E /* idle.cc in Sources */,
 				74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */,
 				74BAD32918BEC4FD002FD4CF /* base_model.cc in Sources */,
 				7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */,

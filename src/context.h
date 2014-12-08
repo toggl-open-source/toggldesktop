@@ -19,6 +19,7 @@
 #include "./feedback.h"
 #include "./lib/include/toggl_api.h"
 #include "./gui.h"
+#include "./idle.h"
 
 #include "Poco/Timestamp.h"
 #include "Poco/Util/TimerTask.h"
@@ -190,7 +191,9 @@ class Context : public TimelineDatasource {
 
     _Bool OpenReportsInBrowser();
 
-    void SetIdleSeconds(const Poco::UInt64 idle_seconds);
+    void SetIdleSeconds(const Poco::UInt64 idle_seconds) {
+        idle_.SetIdleSeconds(idle_seconds, user_);
+    }
 
     static void SetLogPath(const std::string path) {
         Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
@@ -298,8 +301,6 @@ class Context : public TimelineDatasource {
     void displayOnlineState(const std::string reason);
     void remindToTrackTime();
 
-    void computeIdleState(const Poco::UInt64 idle_seconds);
-
     Poco::Mutex db_m_;
     Database *db_;
 
@@ -338,11 +339,7 @@ class Context : public TimelineDatasource {
 
     std::string environment_;
 
-    // Idle detection related values
-    Poco::UInt64 last_idle_seconds_reading_;
-    Poco::UInt64 last_idle_started_;
-    Poco::UInt64 idle_minutes_;
-    time_t last_sleep_started_;
+    Idle idle_;
 
     Poco::UInt64 last_sync_started_;
     Poco::Int64 sync_interval_seconds_;

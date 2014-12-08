@@ -10,29 +10,29 @@
 	<string>Kopsik</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>68D4282C-C2E7-4BA9-A2AD-640E47B5FFFA</key>
-		<string>ssh://github.com/toggl/toggldesktop.git</string>
+		<key>1D7F852635BB56BC3FD0F2656845AE6033E255CC</key>
+		<string>github.com:toggl/toggldesktop.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>src/lib/osx/Kopsik.xcodeproj/project.xcworkspace</string>
+	<string>src/lib/osx/Kopsik.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>68D4282C-C2E7-4BA9-A2AD-640E47B5FFFA</key>
+		<key>1D7F852635BB56BC3FD0F2656845AE6033E255CC</key>
 		<string>../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/toggl/toggldesktop.git</string>
+	<string>github.com:toggl/toggldesktop.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>68D4282C-C2E7-4BA9-A2AD-640E47B5FFFA</string>
+	<string>1D7F852635BB56BC3FD0F2656845AE6033E255CC</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>68D4282C-C2E7-4BA9-A2AD-640E47B5FFFA</string>
+			<string>1D7F852635BB56BC3FD0F2656845AE6033E255CC</string>
 			<key>IDESourceControlWCCName</key>
 			<string>toggldesktop</string>
 		</dict>

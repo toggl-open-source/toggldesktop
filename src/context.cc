@@ -46,10 +46,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_reminder_at_(0)
 , time_entry_editor_guid_("")
 , environment_("production")
-, last_idle_seconds_reading_(0)
-, last_idle_started_(0)
-, idle_minutes_(0)
-, last_sleep_started_(0)
+, idle_(&ui_)
 , last_sync_started_(0)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
@@ -1022,7 +1019,7 @@ _Bool Context::DisplaySettings(const _Bool open) {
         record_timeline = user_->RecordTimeline();
     }
 
-    idle_minutes_ = settings.idle_minutes;
+    idle_.SetSettings(settings);
 
     HTTPSClientConfig::UseProxy = use_proxy;
     HTTPSClientConfig::IgnoreCert = false;
@@ -2002,7 +1999,7 @@ _Bool Context::CreateClient(
 
 void Context::SetSleep() {
     logger().debug("SetSleep");
-    last_sleep_started_ = time(0);
+    idle_.SetSleep();
 }
 
 _Bool Context::OpenReportsInBrowser() {
@@ -2059,14 +2056,7 @@ void Context::SetWake() {
         }
     }
 
-    if (last_sleep_started_) {
-        Poco::Int64 slept_seconds = time(0) - last_sleep_started_;
-        if (slept_seconds > 0) {
-            SetIdleSeconds(slept_seconds);
-        }
-    }
-
-    last_sleep_started_ = 0;
+    idle_.SetWake(user_);
 }
 
 void Context::SetOnline() {
@@ -2163,80 +2153,6 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
 
 error Context::DeleteTimelineBatch(const std::vector<TimelineEvent> &events) {
     return db()->DeleteTimelineBatch(events);
-}
-
-void Context::SetIdleSeconds(const Poco::UInt64 idle_seconds) {
-    /*
-    {
-        std::stringstream ss;
-        ss << "SetIdleSeconds idle_seconds=" << idle_seconds;
-        logger().debug(ss.str());
-    }
-    */
-
-    if (user_) {
-        computeIdleState(idle_seconds);
-    }
-
-    last_idle_seconds_reading_ = idle_seconds;
-}
-
-void Context::computeIdleState(const Poco::UInt64 idle_seconds) {
-    if (idle_minutes_ &&
-            (idle_seconds >= (idle_minutes_*60)) &&
-            !last_idle_started_) {
-        last_idle_started_ = time(0) - idle_seconds;
-
-        std::stringstream ss;
-        ss << "User is idle since " << last_idle_started_;
-        logger().debug(ss.str());
-
-        return;
-    }
-
-    if (last_idle_started_ &&
-            idle_seconds < last_idle_seconds_reading_) {
-        time_t now = time(0);
-
-        TimeEntry *te = user_->RunningTimeEntry();
-        if (!te) {
-            logger().warning("Time entry is not tracking, ignoring idleness");
-        } else if (TimeEntry::AbsDuration(te->DurationInSeconds())
-                   < last_idle_seconds_reading_) {
-            logger().warning("Time entry duration is less than idle, ignoring");
-        } else {
-            Settings settings;
-            error err = db()->LoadSettings(&settings);
-            if (err != noError) {
-                displayError(err);
-            }
-            if (settings.use_idle_detection) {
-                std::stringstream since;
-                since << "You have been idle since "
-                      << Formatter::FormatTimeForTimeEntryEditor(
-                          last_idle_started_);
-
-                int minutes = static_cast<int>((now - last_idle_started_) / 60);
-                std::stringstream duration;
-                duration << "(" << minutes << " minute";
-                if (minutes != 1) {
-                    duration << "s";
-                }
-                duration << ")";
-
-                UI()->DisplayIdleNotification(te->GUID(),
-                                              since.str(),
-                                              duration.str(),
-                                              last_idle_started_);
-            }
-        }
-
-        std::stringstream ss;
-        ss << "User is not idle since " << now;
-        logger().debug(ss.str());
-
-        last_idle_started_ = 0;
-    }
 }
 
 }  // namespace toggl
