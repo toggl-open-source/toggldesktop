@@ -233,7 +233,7 @@ error HTTPSClient::request(
                             << response.getStatus();
                 return description.str();
             }
-            return "Request failed with error: " + *response_body;
+            return *response_body;
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
