@@ -50,6 +50,7 @@ class TimeEntryEditorWidget : public QWidget {
 
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
+    void toggleNewClientMode(const bool visible);
 
  private slots:  // NOLINT
     void displayLogin(
@@ -95,6 +96,9 @@ class TimeEntryEditorWidget : public QWidget {
     void on_dateEdit_editingFinished();
     void on_billable_clicked(bool checked);
     void on_tags_itemClicked(QListWidgetItem *item);
+    void on_addNewClientLabel_linkActivated(const QString &link);
+    void on_addClientButton_clicked();
+    void on_cancelNewClientLabel_linkActivated(const QString &link);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_

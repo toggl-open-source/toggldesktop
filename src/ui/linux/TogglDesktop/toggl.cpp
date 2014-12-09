@@ -462,6 +462,14 @@ bool TogglApi::addProject(
                              is_private);
 }
 
+bool TogglApi::createClient(
+    const uint64_t wid,
+    const QString name) {
+    return toggl_create_client(ctx,
+                               wid,
+                               name.toStdString().c_str());
+}
+
 void TogglApi::viewTimeEntryList() {
     toggl_view_time_entry_list(ctx);
 }

@@ -32,6 +32,8 @@ previousTagList("") {
 
     ui->description->installEventFilter(this);
 
+    toggleNewClientMode(false);
+
     setVisible(false);
 
     ui->addNewProject->setText(
@@ -173,8 +175,12 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     if (open) {
+        // Reset adding new project
         ui->newProject->setVisible(false);
         ui->addNewProject->setVisible(true);
+
+        // Reset adding new client
+        toggleNewClientMode(false);
 
         setVisible(true);
 
@@ -381,4 +387,56 @@ void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
     if (previousTagList != list) {
         TogglApi::instance->setTimeEntryTags(guid, list);
     }
+}
+
+void TimeEntryEditorWidget::toggleNewClientMode(const bool visible)
+{
+    // First hide stuff, to avoid expanding
+    ui->cancelNewClientLabel->setVisible(false);
+    ui->addNewClientLabel->setVisible(false);
+    ui->newProjectClient->setVisible(false);
+    ui->newClientName->setVisible(false);
+    ui->addClientButton->setVisible(false);
+
+    // No display whats needed
+    ui->cancelNewClientLabel->setVisible(visible);
+    ui->addNewClientLabel->setVisible(!visible);
+    ui->newProjectClient->setVisible(!visible);
+    ui->newClientName->setVisible(visible);
+    ui->addClientButton->setVisible(visible);
+
+    ui->newClientName->setText("");
+}
+
+void TimeEntryEditorWidget::on_addNewClientLabel_linkActivated(const QString &link)
+{
+    toggleNewClientMode(true);
+}
+
+void TimeEntryEditorWidget::on_addClientButton_clicked()
+{
+    QString name = ui->newClientName->text();
+    if (name.isEmpty()) {
+        ui->newClientName->setFocus();
+        return;
+    }
+    QVariant workspace = ui->newProjectWorkspace->currentData();
+    if (!workspace.canConvert<GenericView *>()) {
+        ui->newProjectWorkspace->setFocus();
+        return;
+    }
+    uint64_t wid = workspace.value<GenericView *>()->ID;
+    if (!wid) {
+        ui->newProjectWorkspace->setFocus();
+        return;
+    }
+    if (!TogglApi::instance->createClient(wid, name)) {
+        return;
+    }
+    toggleNewClientMode(false);
+}
+
+void TimeEntryEditorWidget::on_cancelNewClientLabel_linkActivated(const QString &link)
+{
+    toggleNewClientMode(false);
 }

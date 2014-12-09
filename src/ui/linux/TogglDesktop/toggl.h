@@ -124,6 +124,10 @@ class TogglApi : public QObject {
         const QString project_name,
         const bool is_private);
 
+    bool createClient(
+        const uint64_t wid,
+        const QString name);
+
     bool setProxySettings(
         const bool useProxy,
         const QString proxyHost,
