@@ -26,7 +26,6 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     ui->date->setText(view->DateHeader);
     ui->dateDuration->setText(view->DateDuration);
 
-
     ui->tags->setToolTip(
         QString("<p style='color:black;'>"+
                 (view->Tags).replace(QString("\t"), QString(", "))+"</p>"));
