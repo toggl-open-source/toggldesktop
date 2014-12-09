@@ -48,14 +48,6 @@ QVector<TimeEntryView *> TimeEntryView::importAll(
     return result;
 }
 
-const QString TimeEntryView::timeOverview() {
-    QString result = DateHeader + " from " + StartTimeString;
-    if (DurationInSeconds >= 0) {
-        result = result + " to " + EndTimeString;
-    }
-    return result;
-}
-
 const QString TimeEntryView::lastUpdate() {
     return QString("Last update ") +
            QDateTime::fromTime_t(UpdatedAt).toString();

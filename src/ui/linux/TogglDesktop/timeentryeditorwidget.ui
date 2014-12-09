@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>466</width>
-    <height>581</height>
+    <height>424</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -181,27 +181,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="timeOverview">
-     <property name="text">
-      <string>&lt;a href=&quot;#&quot;&gt;Today from 08:57 PM to 09:01 PM&lt;/a&gt;</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::RichText</enum>
-     </property>
-     <property name="openExternalLinks">
-      <bool>false</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::TextBrowserInteraction</set>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QWidget" name="timeDetails" native="true">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>125</height>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">

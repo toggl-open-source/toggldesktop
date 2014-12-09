@@ -17,7 +17,6 @@ class TimeEntryView : public QObject {
     static TimeEntryView *importOne(TogglTimeEntryView *view);
     static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
 
-    const QString timeOverview();
     const QString lastUpdate();
 
     int64_t DurationInSeconds;

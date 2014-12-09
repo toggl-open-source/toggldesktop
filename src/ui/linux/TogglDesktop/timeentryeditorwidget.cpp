@@ -173,16 +173,13 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     if (open) {
-        ui->timeDetails->setVisible(false);
-        ui->timeOverview->setVisible(true);
-
         ui->newProject->setVisible(false);
         ui->addNewProject->setVisible(true);
 
         setVisible(true);
 
         if (focused_field_name == TogglApi::Duration) {
-            on_timeOverview_linkActivated("");
+            ui->duration->setFocus();
         } else if (focused_field_name == TogglApi::Description) {
             ui->description->setFocus();
         } else if (focused_field_name == TogglApi::Project) {
@@ -210,8 +207,6 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     ui->billable->setChecked(view->Billable);
-    ui->timeOverview->setText(
-        "<a href=\"#view_time_details\">" + view->timeOverview() + "</a>");
 
     ui->lastUpdate->setVisible(view->UpdatedAt);
     ui->lastUpdate->setText(view->lastUpdate());
@@ -294,13 +289,6 @@ void TimeEntryEditorWidget::on_addNewProject_linkActivated(
     ui->addNewProject->setVisible(false);
     ui->newProject->setVisible(true);
     ui->newProjectName->setFocus();
-}
-
-void TimeEntryEditorWidget::on_timeOverview_linkActivated(
-    const QString &link) {
-    ui->timeOverview->setVisible(false);
-    ui->timeDetails->setVisible(true);
-    ui->duration->setFocus();
 }
 
 void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(
