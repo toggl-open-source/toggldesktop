@@ -320,6 +320,11 @@ extern "C" {
         const char_t *email,
         const char_t *password);
 
+    TOGGL_EXPORT _Bool toggl_signup(
+        void *context,
+        const char_t *email,
+        const char_t *password);
+
     TOGGL_EXPORT _Bool toggl_google_login(
         void *context,
         const char_t *access_token);

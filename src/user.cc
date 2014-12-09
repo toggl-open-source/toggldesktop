@@ -505,6 +505,15 @@ error User::Me(
     const std::string email,
     const std::string password,
     std::string *user_data_json) {
+
+    if (email.empty()) {
+        return "Empty email";
+    }
+
+    if (password.empty()) {
+        return "Empty password";
+    }
+
     try {
         poco_check_ptr(user_data_json);
         poco_check_ptr(https_client);
@@ -518,6 +527,46 @@ error User::Me(
                                      email,
                                      password,
                                      user_data_json);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error User::Signup(
+    HTTPSClient *https_client,
+    const std::string email,
+    const std::string password,
+    std::string *user_data_json) {
+
+    if (email.empty()) {
+        return "Empty email";
+    }
+
+    if (password.empty()) {
+        return "Empty password";
+    }
+
+    try {
+        poco_check_ptr(user_data_json);
+        poco_check_ptr(https_client);
+
+        Json::Value user;
+        user["email"] = email;
+        user["password"] = password;
+
+        Json::Value root;
+        root["user"] = user;
+
+        return https_client->PostJSON("/api/v8/signups",
+                                      Json::StyledWriter().write(root),
+                                      "",
+                                      "",
+                                      user_data_json);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

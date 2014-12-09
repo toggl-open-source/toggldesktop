@@ -79,6 +79,14 @@ static int l_toggl_login(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_signup(lua_State *L) {
+    _Bool res = toggl_signup(app,
+                             luaL_checkstring(L, 1),
+                             luaL_checkstring(L, 2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
 static int l_toggl_google_login(lua_State *L) {
     _Bool res = toggl_google_login(app,
                                    luaL_checkstring(L, -1));
@@ -396,6 +404,7 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_websocket_url", l_toggl_set_websocket_url},
     {"show_app", l_toggl_show_app},
     {"login", l_toggl_login},
+    {"signup", l_toggl_signup},
     {"google_login", l_toggl_google_login},
     {"password_forgot", l_toggl_password_forgot},
     {"open_in_browser", l_toggl_open_in_browser},

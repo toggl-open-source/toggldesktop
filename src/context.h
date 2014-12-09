@@ -89,11 +89,15 @@ class Context : public TimelineDatasource {
         const std::string email,
         const std::string password);
 
+    _Bool Signup(
+        const std::string email,
+        const std::string password);
+
     _Bool GoogleLogin(const std::string access_token);
 
     _Bool Logout();
 
-    _Bool SetLoggedInUserFromJSON(const std::string json);
+    _Bool SetLoggedInUserFromJSON(const std::string user_data_json);
 
     _Bool ClearCache();
 

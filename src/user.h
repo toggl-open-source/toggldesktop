@@ -44,6 +44,12 @@ class User : public BaseModel {
     error PullChanges(HTTPSClient *https_client);
     error PushChanges(HTTPSClient *https_client);
 
+    static error Signup(
+        HTTPSClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data_json);
+
     static error Me(
         HTTPSClient *https_client,
         const std::string email,

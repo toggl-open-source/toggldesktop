@@ -136,4 +136,29 @@ extern void *ctx;
 	toggl_google_login(ctx, [auth.accessToken UTF8String]);
 }
 
+- (IBAction)clickSignupButton:(id)sender
+{
+	NSString *email = [self.email stringValue];
+
+	if (email == nil || !email.length)
+	{
+		[self.email becomeFirstResponder];
+		return;
+	}
+
+	NSString *pass = [self.password stringValue];
+	if (pass == nil || !pass.length)
+	{
+		[self.password becomeFirstResponder];
+		return;
+	}
+
+	[self.password setStringValue:@""];
+
+	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String]))
+	{
+		return;
+	}
+}
+
 @end

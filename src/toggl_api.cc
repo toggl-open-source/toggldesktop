@@ -191,6 +191,18 @@ _Bool toggl_login(
                                to_string(password));
 }
 
+_Bool toggl_signup(
+    void *context,
+    const char_t *email,
+    const char_t *password) {
+
+    poco_check_ptr(email);
+    poco_check_ptr(password);
+
+    return app(context)->Signup(to_string(email),
+                                to_string(password));
+}
+
 _Bool toggl_google_login(
     void *context,
     const char_t *access_token) {

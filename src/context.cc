@@ -1099,14 +1099,6 @@ _Bool Context::Login(
     const std::string email,
     const std::string password) {
 
-    if (email.empty()) {
-        return displayError("Empty email");
-    }
-
-    if (password.empty()) {
-        return displayError("Empty password");
-    }
-
     HTTPSClient client;
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
@@ -1114,45 +1106,21 @@ _Bool Context::Login(
         return displayError(err);
     }
 
-    if (user_data_json.empty()) {
-        return false;
-    }
+    return SetLoggedInUserFromJSON(user_data_json);
+}
 
-    Poco::UInt64 userID(0);
-    err = User::UserID(user_data_json, &userID);
+_Bool Context::Signup(
+    const std::string email,
+    const std::string password) {
+
+    HTTPSClient client;
+    std::string user_data_json("");
+    error err = User::Signup(&client, email, password, &user_data_json);
     if (err != noError) {
         return displayError(err);
     }
 
-    if (!userID) {
-        return false;
-    }
-
-    User *user = new User();
-    err = db()->LoadUserByID(userID, user);
-    if (err != noError) {
-        delete user;
-        return displayError(err);
-    }
-
-    err = user->LoadUserAndRelatedDataFromJSONString(user_data_json);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    err = db()->SetCurrentAPIToken(user->APIToken());
-    if (err != noError) {
-        delete user;
-        return displayError(err);
-    }
-
-    logger().debug("setUser from Login");
-
-    setUser(user, true);
-
-    displayUI();
-
-    return displayError(save());
+    return SetLoggedInUserFromJSON(user_data_json);
 }
 
 void Context::setUser(User *value, const bool user_logged_in) {
@@ -1196,28 +1164,47 @@ void Context::setUser(User *value, const bool user_logged_in) {
 }
 
 _Bool Context::SetLoggedInUserFromJSON(
-    const std::string json) {
+    const std::string user_data_json) {
+
+    if (user_data_json.empty()) {
+        return false;
+    }
+
+    Poco::UInt64 userID(0);
+    error err = User::UserID(user_data_json, &userID);
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    if (!userID) {
+        return false;
+    }
 
     User *user = new User();
 
-    user->LoadUserAndRelatedDataFromJSONString(json);
-
-    error err = db()->SetCurrentAPIToken(user->APIToken());
+    err = db()->LoadUserByID(userID, user);
     if (err != noError) {
         delete user;
         return displayError(err);
     }
 
-    logger().debug("setUser from SetLoggedInUserFromJSON");
-
-    setUser(user);
-
-    err = save();
+    err = user->LoadUserAndRelatedDataFromJSONString(user_data_json);
     if (err != noError) {
+        delete user;
         return displayError(err);
     }
 
-    return true;
+    err = db()->SetCurrentAPIToken(user->APIToken());
+    if (err != noError) {
+        delete user;
+        return displayError(err);
+    }
+
+    setUser(user, true);
+
+    displayUI();
+
+    return displayError(save());
 }
 
 _Bool Context::Logout() {
