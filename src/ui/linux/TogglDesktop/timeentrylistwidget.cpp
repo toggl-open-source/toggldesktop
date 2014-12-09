@@ -61,14 +61,14 @@ void TimeEntryListWidget::displayTimeEntryList(
         }
 
         if (!item) {
-            cell = new TimeEntryCellWidget();
             item = new QListWidgetItem();
-
-            item->setSizeHint(cell->getSizeHint(te->IsHeader));
+            cell = new TimeEntryCellWidget();
 
             ui->list->addItem(item);
             ui->list->setItemWidget(item, cell);
         }
+
+        item->setSizeHint(cell->getSizeHint(te->IsHeader));
 
         cell->display(te);
     }
