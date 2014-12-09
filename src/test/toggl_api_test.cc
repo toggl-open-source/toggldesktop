@@ -292,7 +292,13 @@ TEST(TogglApiTest, toggl_set_settings) {
     testing::App app;
 
     ASSERT_TRUE(toggl_set_settings(app.ctx(),
-                                   false, false, false, false, false, 5, false));
+                                   false,
+                                   false,
+                                   false,
+                                   false,
+                                   false,
+                                   5,
+                                   false));
 
     ASSERT_FALSE(testing::testresult::settings.use_idle_detection);
     ASSERT_FALSE(testing::testresult::settings.menubar_timer);
@@ -301,7 +307,13 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_FALSE(testing::testresult::settings.reminder);
 
     ASSERT_TRUE(toggl_set_settings(app.ctx(),
-                                   true, true, true, true, true, 5, false));
+                                   true,
+                                   true,
+                                   true,
+                                   true,
+                                   true,
+                                   5,
+                                   false));
 
     ASSERT_TRUE(testing::testresult::settings.use_idle_detection);
     ASSERT_TRUE(testing::testresult::settings.menubar_timer);
