@@ -418,6 +418,9 @@ _Bool GUI::isUserError(const error err) const {
     if (value.find(kEndpointGoneError) != std::string::npos) {
         return true;
     }
+    if (value.find("Password should be at least") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
