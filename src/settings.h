@@ -15,7 +15,8 @@ class Settings {
     , dock_icon(false)
     , on_top(false)
     , reminder(false)
-    , idle_minutes(0) {}
+    , idle_minutes(0)
+    , focus_on_shortcut(false) {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -24,6 +25,7 @@ class Settings {
     bool on_top;
     bool reminder;
     Poco::UInt64 idle_minutes;
+    bool focus_on_shortcut;
 };
 
 }  // namespace toggl

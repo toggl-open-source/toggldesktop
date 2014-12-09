@@ -105,7 +105,9 @@ extern void *ctx;
 					   [Utils stateToBool:[self.dockIconCheckbox state]],
 					   [Utils stateToBool:[self.ontopCheckbox state]],
 					   [Utils stateToBool:[self.reminderCheckbox state]],
-					   idleMinutes);
+					   idleMinutes,
+	                   // FIXME: take the value from UI, OK?
+					   YES);
 }
 
 - (void)saveProxySettings

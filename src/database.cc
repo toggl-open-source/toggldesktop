@@ -54,10 +54,23 @@ Database::Database(const std::string db_path)
         poco_assert("wal" == mode);
     }
 
+    Poco::Stopwatch stopwatch;
+    stopwatch.start();
+
     err = initialize_tables();
     if (err != noError) {
         logger().error(err);
     }
+
+    stopwatch.stop();
+
+    {
+        std::stringstream ss;
+        ss  << "Migrated in "
+            << stopwatch.elapsed() / 1000 << " ms";
+        logger().debug(ss.str());
+    }
+
     poco_assert(err == noError);
 }
 
@@ -254,7 +267,7 @@ error Database::LoadSettings(Settings *settings) {
 
     try {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
-                  "on_top, reminder, idle_minutes "
+                  "on_top, reminder, idle_minutes, focus_on_shortcut "
                   "from settings",
                   Poco::Data::into(settings->use_idle_detection),
                   Poco::Data::into(settings->menubar_timer),
@@ -262,6 +275,7 @@ error Database::LoadSettings(Settings *settings) {
                   Poco::Data::into(settings->on_top),
                   Poco::Data::into(settings->reminder),
                   Poco::Data::into(settings->idle_minutes),
+                  Poco::Data::into(settings->focus_on_shortcut),
                   Poco::Data::limit(1),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -317,13 +331,15 @@ error Database::SaveSettings(const Settings settings) {
                   "dock_icon = :dock_icon, "
                   "on_top = :on_top, "
                   "reminder = :reminder, "
-                  "idle_minutes = :idle_minutes ",
+                  "idle_minutes = :idle_minutes, "
+                  "focus_on_shortcut = :focus_on_shortcut",
                   Poco::Data::use(settings.use_idle_detection),
                   Poco::Data::use(settings.menubar_timer),
                   Poco::Data::use(settings.dock_icon),
                   Poco::Data::use(settings.on_top),
                   Poco::Data::use(settings.reminder),
                   Poco::Data::use(settings.idle_minutes),
+                  Poco::Data::use(settings.focus_on_shortcut),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2033,9 +2049,6 @@ error Database::initialize_tables() {
 
     poco_check_ptr(session_);
 
-    Poco::Stopwatch stopwatch;
-    stopwatch.start();
-
     std::string table_name;
     // Check if we have migrations table
     *session_ <<
@@ -2535,6 +2548,13 @@ error Database::initialize_tables() {
         return err;
     }
 
+    err = migrate("settings.focus_on_shortcut",
+                  "ALTER TABLE settings "
+                  "ADD COLUMN focus_on_shortcut INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     err = migrate("timeline_installation",
                   "CREATE TABLE timeline_installation("
                   "id INTEGER PRIMARY KEY, "
@@ -2576,15 +2596,6 @@ error Database::initialize_tables() {
         if (err != noError) {
             return err;
         }
-    }
-
-    stopwatch.stop();
-
-    {
-        std::stringstream ss;
-        ss  << "Migrated in "
-            << stopwatch.elapsed() / 1000 << " ms";
-        logger().debug(ss.str());
     }
 
     return noError;

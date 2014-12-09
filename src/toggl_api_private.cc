@@ -289,6 +289,7 @@ TogglSettingsView *settings_view_item_init(
     view->Reminder = settings.reminder;
     view->UseIdleDetection = settings.use_idle_detection;
     view->IdleMinutes = settings.idle_minutes;
+    view->FocusOnShortcut = settings.focus_on_shortcut;
 
     view->UseProxy = use_proxy;
 

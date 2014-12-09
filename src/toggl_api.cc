@@ -77,7 +77,8 @@ _Bool toggl_set_settings(
     const _Bool dock_icon,
     const _Bool on_top,
     const _Bool reminder,
-    const uint64_t idle_minutes) {
+    const uint64_t idle_minutes,
+    const _Bool focus_on_shortcut) {
 
     toggl::Settings settings;
     settings.use_idle_detection = use_idle_detection;
@@ -86,6 +87,7 @@ _Bool toggl_set_settings(
     settings.on_top = on_top;
     settings.reminder = reminder;
     settings.idle_minutes = idle_minutes;
+    settings.focus_on_shortcut = focus_on_shortcut;
 
     return app(context)->SetSettings(settings);
 }

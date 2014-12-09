@@ -146,6 +146,8 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             public bool RecordTimeline;
             public UInt64 IdleMinutes;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool FocusOnShortcut;
         }
 
         // Callbacks
@@ -753,7 +755,9 @@ namespace TogglDesktop
             bool on_top,
             [MarshalAs(UnmanagedType.I1)]
             bool reminder,
-            UInt64 idle_minutes);
+            UInt64 idle_minutes,
+            [MarshalAs(UnmanagedType.I1)]
+            bool focus_on_shortcut);
 
         public static bool SetSettings(Settings settings)
         {
@@ -764,7 +768,8 @@ namespace TogglDesktop
                 true,
                 settings.OnTop,
                 settings.Reminder,
-                settings.IdleMinutes))
+                settings.IdleMinutes,
+                settings.FocusOnShortcut))
             {
                 return false;
             }

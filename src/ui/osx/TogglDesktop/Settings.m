@@ -2,7 +2,6 @@
 //  Settings.m
 //  TogglDesktop
 //
-//  Created by Tanel Lebedev on 10/05/14.
 //  Copyright (c) 2014 Toggl Desktop developers. All rights reserved.
 //
 
@@ -20,6 +19,7 @@
 	self.on_top = data->OnTop;
 	self.reminder = data->Reminder;
 	self.idle_minutes = (int)data->IdleMinutes;
+	self.focus_on_shortcut = data->FocusOnShortcut;
 
 	self.use_proxy = data->UseProxy;
 

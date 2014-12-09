@@ -2,7 +2,6 @@
 //  Settings.h
 //  TogglDesktop
 //
-//  Created by Tanel Lebedev on 10/05/14.
 //  Copyright (c) 2014 Toggl Desktop developers. All rights reserved.
 //
 
@@ -23,4 +22,5 @@
 @property NSString *proxy_password;
 @property BOOL timeline_recording_enabled;
 @property int idle_minutes;
+@property BOOL focus_on_shortcut;
 @end

@@ -241,7 +241,8 @@ static int l_toggl_set_settings(lua_State *L) {
                                    lua_toboolean(L, 3),
                                    lua_toboolean(L, 4),
                                    lua_toboolean(L, 5),
-                                   lua_tointeger(L, 6));
+                                   lua_tointeger(L, 6),
+                                   lua_toboolean(L, 7));
     lua_pushboolean(L, res);
     return 1;
 }
