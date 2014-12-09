@@ -389,8 +389,7 @@ void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
     }
 }
 
-void TimeEntryEditorWidget::toggleNewClientMode(const bool visible)
-{
+void TimeEntryEditorWidget::toggleNewClientMode(const bool visible) {
     // First hide stuff, to avoid expanding
     ui->cancelNewClientLabel->setVisible(false);
     ui->addNewClientLabel->setVisible(false);
@@ -408,13 +407,12 @@ void TimeEntryEditorWidget::toggleNewClientMode(const bool visible)
     ui->newClientName->setText("");
 }
 
-void TimeEntryEditorWidget::on_addNewClientLabel_linkActivated(const QString &link)
-{
+void TimeEntryEditorWidget::on_addNewClientLabel_linkActivated(
+    const QString &link) {
     toggleNewClientMode(true);
 }
 
-void TimeEntryEditorWidget::on_addClientButton_clicked()
-{
+void TimeEntryEditorWidget::on_addClientButton_clicked() {
     QString name = ui->newClientName->text();
     if (name.isEmpty()) {
         ui->newClientName->setFocus();
@@ -436,7 +434,7 @@ void TimeEntryEditorWidget::on_addClientButton_clicked()
     toggleNewClientMode(false);
 }
 
-void TimeEntryEditorWidget::on_cancelNewClientLabel_linkActivated(const QString &link)
-{
+void TimeEntryEditorWidget::on_cancelNewClientLabel_linkActivated(
+    const QString &link) {
     toggleNewClientMode(false);
 }
