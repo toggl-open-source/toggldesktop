@@ -65,9 +65,4 @@ extern void *ctx;
 	[[SUUpdater sharedUpdater] checkForUpdates:self];
 }
 
-- (IBAction)showWindow:(id)sender
-{
-	[super showWindow:sender];
-}
-
 @end

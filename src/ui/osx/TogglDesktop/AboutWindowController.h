@@ -2,14 +2,14 @@
 //  AboutWindowController.h
 //  Toggl Desktop on the Mac
 //
-//  Created by Tanel Lebedev on 29/10/2013.
-//  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
+//  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 #import "DisplayCommand.h"
+#import "Sparkle.h"
 
-@interface AboutWindowController : NSWindowController
+@interface AboutWindowController : NSWindowController <SUUpdaterDelegate>
 @property IBOutlet NSTextField *appnameTextField;
 @property IBOutlet NSTextField *versionTextField;
 @property IBOutlet NSTextView *creditsTextView;
