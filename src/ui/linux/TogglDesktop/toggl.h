@@ -136,12 +136,8 @@ class TogglApi : public QObject {
         const QString proxyPassword);
 
     bool setSettings(const bool useIdleDetection,
-                     const bool menubarTimer,
-                     const bool dockIcon,
-                     const bool onTop,
                      const bool reminder,
-                     const uint64_t idle_minutes,
-                     const bool focusOnShortcut);
+                     const uint64_t idle_minutes);
 
     void toggleTimelineRecording(
         const bool recordTimeline);

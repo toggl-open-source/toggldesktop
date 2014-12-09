@@ -82,9 +82,6 @@ bool PreferencesDialog::setProxySettings() {
 
 bool PreferencesDialog::setSettings() {
     return TogglApi::instance->setSettings(ui->idleDetection->isChecked(),
-                                           false,
-                                           false,
-                                           false,
                                            ui->remindToTrackTime->isChecked(),
                                            ui->idleMinutes->text().toInt());
 }

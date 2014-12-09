@@ -298,20 +298,16 @@ void TogglApi::setIdleSeconds(u_int64_t idleSeconds) {
 }
 
 bool TogglApi::setSettings(const bool useIdleDetection,
-                           const bool menubarTimer,
-                           const bool dockIcon,
-                           const bool onTop,
                            const bool reminder,
-                           const uint64_t idleMinutes,
-                           const bool focusOnShortcut) {
+                           const uint64_t idleMinutes) {
     return toggl_set_settings(ctx,
                               useIdleDetection,
-                              menubarTimer,
-                              dockIcon,
-                              onTop,
+                              false,
+                              false,
+                              false,
                               reminder,
                               idleMinutes,
-                              focusOnShortcut);
+                              false);
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
