@@ -17,4 +17,5 @@
 @property BOOL windowHasLoad;
 - (IBAction)updateChannelSelected:(id)sender;
 - (BOOL)isVisible;
+- (void)checkForUpdates;
 @end

@@ -38,8 +38,12 @@ extern void *ctx;
 
 	[[SUUpdater sharedUpdater] setDelegate:self];
 
-	[[SUUpdater sharedUpdater] resetUpdateCycle];
+	[self checkForUpdates];
+}
 
+- (void)checkForUpdates
+{
+	[[SUUpdater sharedUpdater] resetUpdateCycle];
 	[[SUUpdater sharedUpdater] checkForUpdates:self];
 }
 
@@ -60,9 +64,7 @@ extern void *ctx;
 
 	[Utils setUpdaterChannel:updateChannel];
 
-	[[SUUpdater sharedUpdater] resetUpdateCycle];
-
-	[[SUUpdater sharedUpdater] checkForUpdates:self];
+	[self checkForUpdates];
 }
 
 @end
