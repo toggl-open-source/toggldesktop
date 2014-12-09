@@ -1,9 +1,7 @@
 //
 //  PreferencesWindowController.h
-//  Kopsik
 //
-//  Created by Tanel Lebedev on 22/10/2013.
-//  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
+//  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -28,6 +26,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet MASShortcutView *showHideShortcutView;
 @property IBOutlet MASShortcutView *startStopShortcutView;
 @property IBOutlet NSTextField *idleMinutesTextField;
+@property IBOutlet NSButton *focusOnShortcutCheckbox;
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
@@ -40,6 +39,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)dockIconCheckboxChanged:(id)sender;
 - (IBAction)ontopCheckboxChanged:(id)sender;
 - (IBAction)reminderCheckboxChanged:(id)sender;
+- (IBAction)focusOnShortcutCheckboxChanged:(id)sender;
 @property uint64_t user_id;
 @property DisplayCommand *originalCmd;
 @end

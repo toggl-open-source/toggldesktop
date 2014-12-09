@@ -1,9 +1,7 @@
 //
 //  PreferencesWindowController.m
-//  Kopsik
 //
-//  Created by Tanel Lebedev on 22/10/2013.
-//  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
+//  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
 //
 
 #import "PreferencesWindowController.h"
@@ -68,6 +66,11 @@ extern void *ctx;
 	[self saveSettings];
 }
 
+- (IBAction)focusOnShortcutCheckboxChanged:(id)sender
+{
+	[self saveSettings];
+}
+
 - (IBAction)ignoreCertCheckboxChanged:(id)sender
 {
 	[self saveSettings];
@@ -106,8 +109,7 @@ extern void *ctx;
 					   [Utils stateToBool:[self.ontopCheckbox state]],
 					   [Utils stateToBool:[self.reminderCheckbox state]],
 					   idleMinutes,
-	                   // FIXME: take the value from UI, OK?
-					   YES);
+					   [Utils stateToBool:[self.focusOnShortcutCheckbox state]]);
 }
 
 - (void)saveProxySettings
@@ -176,6 +178,7 @@ extern void *ctx;
 	[self.dockIconCheckbox setState:[Utils boolToState:settings.dock_icon]];
 	[self.ontopCheckbox setState:[Utils boolToState:settings.on_top]];
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
+	[self.focusOnShortcutCheckbox setState:[Utils boolToState:settings.focus_on_shortcut]];
 
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 	[self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];

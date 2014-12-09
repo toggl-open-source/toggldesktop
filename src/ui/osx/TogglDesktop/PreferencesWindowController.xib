@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A388a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B17" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
             <connections>
                 <outlet property="dockIconCheckbox" destination="kR2-Ee-viZ" id="Nm7-te-1KH"/>
+                <outlet property="focusOnShortcutCheckbox" destination="yWA-BY-OMt" id="Dfo-JK-2a2"/>
                 <outlet property="hostTextField" destination="eSt-Rf-LI2" id="Gfl-WB-VWr"/>
                 <outlet property="idleMinutesTextField" destination="nRj-Zh-L5m" id="9Fv-AO-JLv"/>
                 <outlet property="menubarTimerCheckbox" destination="lUE-Lr-nId" id="pmQ-pX-vkg"/>
@@ -29,14 +30,14 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="322" height="388"/>
+            <rect key="contentRect" x="196" y="240" width="322" height="426"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="322" height="388"/>
+                <rect key="frame" x="0.0" y="0.0" width="322" height="426"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <box autoresizesSubviews="NO" fixedFrame="YES" title="Proxy Settings" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="hoK-7e-akc">
-                        <rect key="frame" x="17" y="137" width="288" height="138"/>
+                        <rect key="frame" x="17" y="175" width="288" height="138"/>
                         <view key="contentView">
                             <rect key="frame" x="1" y="1" width="286" height="122"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -127,7 +128,7 @@
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ngI-8N-JMY">
-                        <rect key="frame" x="18" y="288" width="224" height="18"/>
+                        <rect key="frame" x="18" y="326" width="224" height="18"/>
                         <buttonCell key="cell" type="check" title="Use proxy to connect to Toggl" bezelStyle="regularSquare" imagePosition="left" inset="2" id="i3q-EM-jH7">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -138,7 +139,7 @@
                         </connections>
                     </button>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lgk-gZ-8Ha">
-                        <rect key="frame" x="18" y="117" width="286" height="18"/>
+                        <rect key="frame" x="18" y="155" width="286" height="18"/>
                         <buttonCell key="cell" type="check" title="Idle detection" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Z6U-JU-oVS">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -149,7 +150,7 @@
                         </connections>
                     </button>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V28-KN-5Vi">
-                        <rect key="frame" x="18" y="97" width="286" height="18"/>
+                        <rect key="frame" x="18" y="135" width="286" height="18"/>
                         <buttonCell key="cell" type="check" title="Record timeline" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="yIY-fe-UHc">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -160,7 +161,7 @@
                         </connections>
                     </button>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUE-Lr-nId">
-                        <rect key="frame" x="18" y="77" width="286" height="18"/>
+                        <rect key="frame" x="18" y="115" width="286" height="18"/>
                         <buttonCell key="cell" type="check" title="Show timer in menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="d1o-e3-Xs6">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -171,7 +172,7 @@
                         </connections>
                     </button>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kR2-Ee-viZ">
-                        <rect key="frame" x="18" y="57" width="286" height="18"/>
+                        <rect key="frame" x="18" y="95" width="286" height="18"/>
                         <buttonCell key="cell" type="check" title="Dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="L9v-Ys-EtJ">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -182,25 +183,25 @@
                         </connections>
                     </button>
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DLB-Fw-7tX" customClass="MASShortcutView">
-                        <rect key="frame" x="162" y="349" width="140" height="19"/>
+                        <rect key="frame" x="162" y="387" width="140" height="19"/>
                         <connections>
                             <outlet property="nextKeyView" destination="Ft4-tk-xRA" id="Fi4-jZ-hCB"/>
                         </connections>
                     </customView>
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ft4-tk-xRA" customClass="MASShortcutView">
-                        <rect key="frame" x="162" y="322" width="140" height="19"/>
+                        <rect key="frame" x="162" y="360" width="140" height="19"/>
                         <connections>
                             <outlet property="nextKeyView" destination="ngI-8N-JMY" id="CkN-eQ-PNY"/>
                         </connections>
                     </customView>
                     <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="LUN-WN-NDq">
-                        <rect key="frame" x="20" y="311" width="282" height="5"/>
+                        <rect key="frame" x="20" y="349" width="282" height="5"/>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <font key="titleFont" metaFont="system"/>
                     </box>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K6B-0p-RS0">
-                        <rect key="frame" x="18" y="351" width="136" height="17"/>
+                        <rect key="frame" x="18" y="389" width="136" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show/Hide Toggl" id="ZgR-r3-20o">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -208,7 +209,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h4c-1q-AeO">
-                        <rect key="frame" x="18" y="324" width="136" height="17"/>
+                        <rect key="frame" x="18" y="362" width="136" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Start/Stop timer" id="SH4-aB-XUn">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -216,7 +217,7 @@
                         </textFieldCell>
                     </textField>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n4h-zi-TcC">
-                        <rect key="frame" x="18" y="37" width="286" height="18"/>
+                        <rect key="frame" x="18" y="75" width="286" height="18"/>
                         <buttonCell key="cell" type="check" title="On top of other windows" bezelStyle="regularSquare" imagePosition="left" inset="2" id="shd-cT-4Jq">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -227,17 +228,29 @@
                         </connections>
                     </button>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xp1-t9-k72">
-                        <rect key="frame" x="18" y="16" width="286" height="18"/>
+                        <rect key="frame" x="18" y="54" width="286" height="18"/>
                         <buttonCell key="cell" type="check" title="Remind to track time" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="wtz-tA-GQz">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
                             <action selector="reminderCheckboxChanged:" target="-2" id="WET-Re-akD"/>
+                            <outlet property="nextKeyView" destination="yWA-BY-OMt" id="Z2y-7t-BQB"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWA-BY-OMt">
+                        <rect key="frame" x="18" y="34" width="286" height="18"/>
+                        <buttonCell key="cell" type="check" title="Focus app on global shortcut" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="U1R-lf-nkl">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="focusOnShortcutCheckboxChanged:" target="-2" id="Gge-Jq-zME"/>
+                            <outlet property="nextKeyView" destination="DLB-Fw-7tX" id="iA5-j2-FXh"/>
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nRj-Zh-L5m">
-                        <rect key="frame" x="162" y="115" width="29" height="22"/>
+                        <rect key="frame" x="162" y="153" width="29" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="5" drawsBackground="YES" id="t4a-oR-CHq">
                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="56T-Iz-8EG"/>
                             <font key="font" metaFont="system"/>
@@ -250,7 +263,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Khj-es-fgU">
-                        <rect key="frame" x="198" y="119" width="69" height="17"/>
+                        <rect key="frame" x="198" y="157" width="69" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="minutes" id="Zfu-jF-pu2">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -262,6 +275,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
+            <point key="canvasLocation" x="305" y="243"/>
         </window>
     </objects>
 </document>
