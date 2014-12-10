@@ -27,6 +27,7 @@ SOURCES += \
     ../../../feedback.cc \
     ../../../formatter.cc \
     ../../../get_focused_window_linux.cc \
+    ../../../error.cc \
     ../../../gui.cc \
     ../../../https_client.cc \
     $$PWD/../../../../third_party/jsoncpp/dist/jsoncpp.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     ../../../feedback.h \
     ../../../formatter.h \
     ../../../get_focused_window.h \
+    ../../../error.h \
     ../../../gui.h \
     ../../../https_client.h \
     ../../../toggl_api_private.h \
