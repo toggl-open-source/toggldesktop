@@ -836,7 +836,7 @@ namespace TogglDesktop
             }
             else
             {
-                if ((editForm.Width + ctrlpt.X + Width) > s.Bounds.Width)
+                if ((editForm.Width + ctrlpt.X + Width) > (s.WorkingArea.Location.X + s.Bounds.Width))
                 {
                     ctrlpt.X -= editForm.Width;
                     left = true;
