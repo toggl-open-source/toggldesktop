@@ -148,3 +148,6 @@ third_party/lua-5.2.3/src/luac
 app.info
 
 *.autosave
+
+# packaged build
+out
