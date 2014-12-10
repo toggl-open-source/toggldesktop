@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B17" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginViewController">
@@ -62,8 +62,47 @@
                                     <outlet property="nextKeyView" destination="MMO-z4-qcY" id="DFu-Vs-Mus"/>
                                 </connections>
                             </textField>
+                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" borderWidth="0.0" boxType="secondary" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4G0-sP-05G">
+                                <rect key="frame" x="15" y="62" width="223" height="35"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="223" height="35"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMO-z4-qcY">
+                                            <rect key="frame" x="0.0" y="0.0" width="105" height="35"/>
+                                            <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GD1-8h-2ba">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="clickLoginButton:" target="-2" id="FFX-xx-nuh"/>
+                                                <outlet property="nextKeyView" destination="2lp-O3-ha4" id="gvw-0k-Fr9"/>
+                                            </connections>
+                                        </button>
+                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2lp-O3-ha4">
+                                            <rect key="frame" x="117" y="0.0" width="105" height="35"/>
+                                            <buttonCell key="cell" type="bevel" title="Sign up" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4QC-mN-7Ee">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="clickSignupButton:" target="-2" id="npz-sw-FeP"/>
+                                                <outlet property="nextKeyView" destination="oP1-rJ-O83" id="MJg-DH-gnG"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </box>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickablePointer">
-                                <rect key="frame" x="13" y="40" width="223" height="17"/>
+                                <rect key="frame" x="13" y="38" width="223" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Log in with Google Account" id="A3G-xB-gb7">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
@@ -74,7 +113,7 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
-                                <rect key="frame" x="13" y="16" width="223" height="17"/>
+                                <rect key="frame" x="13" y="14" width="223" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Forgot password?" id="sue-36-IQg">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" red="0.38823529410000002" green="0.38823529410000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -84,41 +123,15 @@
                                     <outlet property="delegate" destination="-2" id="CZa-7m-Obk"/>
                                 </connections>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMO-z4-qcY">
-                                <rect key="frame" x="14" y="67" width="110" height="35"/>
-                                <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GD1-8h-2ba">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="smallSystem"/>
-                                    <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="clickLoginButton:" target="-2" id="FFX-xx-nuh"/>
-                                    <outlet property="nextKeyView" destination="2lp-O3-ha4" id="gvw-0k-Fr9"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2lp-O3-ha4">
-                                <rect key="frame" x="126" y="67" width="110" height="35"/>
-                                <buttonCell key="cell" type="bevel" title="Sign up" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4QC-mN-7Ee">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="smallSystem"/>
-                                    <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="clickSignupButton:" target="-2" id="npz-sw-FeP"/>
-                                    <outlet property="nextKeyView" destination="oP1-rJ-O83" id="MJg-DH-gnG"/>
-                                </connections>
-                            </button>
                         </subviews>
                     </view>
                     <constraints>
                         <constraint firstItem="oP1-rJ-O83" firstAttribute="top" secondItem="Kmn-TG-CZe" secondAttribute="bottom" constant="20" id="0aS-7N-0KT"/>
+                        <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="4G0-sP-05G" secondAttribute="centerX" id="EtZ-Af-rac"/>
                         <constraint firstAttribute="centerX" secondItem="jUD-k4-kTh" secondAttribute="centerX" id="JwP-I3-46x"/>
                         <constraint firstAttribute="centerX" secondItem="3Xk-yW-T0s" secondAttribute="centerX" id="LXH-Ma-Rya"/>
                         <constraint firstItem="Kmn-TG-CZe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AeN-Lk-hKy" secondAttribute="leading" constant="20" id="VSo-Hz-jdc"/>
+                        <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="jxX-Y6-49K"/>
                         <constraint firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="kd4-jf-yf7"/>
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="rsN-lc-xqa"/>
                         <constraint firstAttribute="centerX" secondItem="Kmn-TG-CZe" secondAttribute="centerX" id="snE-Wb-daX"/>
@@ -135,6 +148,7 @@ DQ
                 <constraint firstItem="AeN-Lk-hKy" firstAttribute="leading" secondItem="d50-27-v7r" secondAttribute="leading" id="hTr-Vb-1Zw"/>
                 <constraint firstAttribute="centerX" secondItem="AeN-Lk-hKy" secondAttribute="centerX" id="xdo-yh-fqg"/>
             </constraints>
+            <point key="canvasLocation" x="416" y="231"/>
         </customView>
     </objects>
     <resources>
