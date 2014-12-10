@@ -128,7 +128,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(225, 200);
             this.Name = "IdleNotificationWindowController";
-            this.Text = "Toggl Desktop";
+            this.Text = "Idle Notification";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IdleNotificationWindowController_FormClosing);
             this.Load += new System.EventHandler(this.IdleNotificationWindowController_Load);
