@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\..\feedback.h" />
     <ClInclude Include="..\..\..\formatter.h" />
     <ClInclude Include="..\..\..\get_focused_window.h" />
+    <ClInclude Include="..\..\..\error.h" />
     <ClInclude Include="..\..\..\gui.h" />
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\idle.h" />
@@ -138,6 +139,7 @@
     <ClCompile Include="..\..\..\feedback.cc" />
     <ClCompile Include="..\..\..\formatter.cc" />
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
+    <ClCompile Include="..\..\..\error.cc" />
     <ClCompile Include="..\..\..\gui.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\idle.cc" />
