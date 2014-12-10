@@ -373,6 +373,7 @@ toggl_test: clean_test objects test_objects
 
 test_lib: toggl_test
 ifeq ($(uname), Linux)
+	cp src/ssl/cacert.pem test/.
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
 	cp -r $(openssldir)/*so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
