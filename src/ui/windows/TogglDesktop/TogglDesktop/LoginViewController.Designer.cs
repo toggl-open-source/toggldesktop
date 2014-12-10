@@ -36,13 +36,14 @@
             this.passwordForgotTextField = new System.Windows.Forms.LinkLabel();
             this.togglLogoBox = new System.Windows.Forms.PictureBox();
             this.linkLabelPreferences = new System.Windows.Forms.LinkLabel();
+            this.signupButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).BeginInit();
             this.SuspendLayout();
             // 
             // loginButton
             // 
             this.loginButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.loginButton.Location = new System.Drawing.Point(81, 208);
+            this.loginButton.Location = new System.Drawing.Point(15, 208);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(110, 35);
             this.loginButton.TabIndex = 2;
@@ -135,12 +136,24 @@
             this.linkLabelPreferences.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
             this.linkLabelPreferences.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelPreferences_LinkClicked);
             // 
+            // signupButton
+            // 
+            this.signupButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.signupButton.Location = new System.Drawing.Point(154, 208);
+            this.signupButton.Name = "signupButton";
+            this.signupButton.Size = new System.Drawing.Size(110, 35);
+            this.signupButton.TabIndex = 10;
+            this.signupButton.Text = "Sign up";
+            this.signupButton.UseVisualStyleBackColor = true;
+            this.signupButton.Click += new System.EventHandler(this.signupButton_Click);
+            // 
             // LoginViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(69)))), ((int)(((byte)(69)))));
+            this.Controls.Add(this.signupButton);
             this.Controls.Add(this.linkLabelPreferences);
             this.Controls.Add(this.togglLogoBox);
             this.Controls.Add(this.passwordForgotTextField);
@@ -167,5 +180,6 @@
         private System.Windows.Forms.LinkLabel passwordForgotTextField;
         private System.Windows.Forms.PictureBox togglLogoBox;
         private System.Windows.Forms.LinkLabel linkLabelPreferences;
+        private System.Windows.Forms.Button signupButton;
     }
 }

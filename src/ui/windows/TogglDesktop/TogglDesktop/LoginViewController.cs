@@ -21,16 +21,25 @@ namespace TogglDesktop
             frm.AcceptButton = loginButton;
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
+        private bool validateFields()
         {
             if (0 == email.Text.Length)
             {
                 email.Focus();
-                return;
+                return false;
             }
             if (0 == password.Text.Length)
             {
                 password.Focus();
+                return false;
+            }
+            return true;
+        }
+
+        private void loginButton_Click(object sender, EventArgs e)
+        {
+            if (!validateFields())
+            {
                 return;
             }
             Toggl.Login(email.Text, password.Text);
@@ -126,6 +135,22 @@ namespace TogglDesktop
         private void linkLabelPreferences_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Toggl.EditPreferences();
+        }
+
+        private void signupButton_Click(object sender, EventArgs e)
+        {
+            if (!validateFields())
+            {
+                return;
+            }
+            if (password.Text == "Password")
+            {
+                password.Clear();
+                password.Focus();
+                return;
+            }
+            Toggl.Signup(email.Text, password.Text);
+            password.Clear();
         }
     }
 }

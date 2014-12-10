@@ -462,6 +462,20 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_signup(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string email,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string password);
+
+        public static bool Signup(string email, string password)
+        {
+            return toggl_signup(ctx, email, password);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_login(
             IntPtr context,
             [MarshalAs(UnmanagedType.LPWStr)]
