@@ -297,6 +297,9 @@ build/feedback.o: src/feedback.cc
 build/gui.o: src/gui.cc
 	$(cxx) $(cflags) -c src/gui.cc -o build/gui.o
 
+build/error.o: src/error.cc
+	$(cxx) $(cflags) -c src/error.cc -o build/error.o
+
 build/idle.o: src/idle.cc
 	$(cxx) $(cflags) -c src/idle.cc -o build/idle.o
 
@@ -349,6 +352,7 @@ objects: build/jsoncpp.o \
 	build/database.o \
 	build/autocomplete_item.o \
 	build/feedback.o \
+	build/error.o \
 	build/gui.o \
 	build/idle.o \
 	build/context.o \

@@ -53,6 +53,8 @@
 		74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587BA18BBC77E00E9F6CE /* batch_update_result.cc */; };
 		74BAD32918BEC4FD002FD4CF /* base_model.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD32718BEC4FD002FD4CF /* base_model.cc */; };
 		74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */ = {isa = PBXBuildFile; fileRef = 74BAD32818BEC4FD002FD4CF /* base_model.h */; };
+		74BC59DA1A37C6790081104D /* error.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74BC59D81A37C6790081104D /* error.cc */; };
+		74BC59DB1A37C6790081104D /* error.h in Headers */ = {isa = PBXBuildFile; fileRef = 74BC59D91A37C6790081104D /* error.h */; };
 		74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CAAD0218185A9B001B77BB /* Carbon.framework */; };
 		74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */; };
 		74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD11181860F7001B77BB /* get_focused_window.h */; };
@@ -124,6 +126,8 @@
 		74B587BA18BBC77E00E9F6CE /* batch_update_result.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = batch_update_result.cc; path = ../../../batch_update_result.cc; sourceTree = "<group>"; };
 		74BAD32718BEC4FD002FD4CF /* base_model.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base_model.cc; path = ../../../base_model.cc; sourceTree = "<group>"; };
 		74BAD32818BEC4FD002FD4CF /* base_model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base_model.h; path = ../../../base_model.h; sourceTree = "<group>"; };
+		74BC59D81A37C6790081104D /* error.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = error.cc; path = ../../../error.cc; sourceTree = "<group>"; };
+		74BC59D91A37C6790081104D /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = error.h; path = ../../../error.h; sourceTree = "<group>"; };
 		74CAAD0218185A9B001B77BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = get_focused_window_mac.cc; path = ../../../get_focused_window_mac.cc; sourceTree = "<group>"; };
 		74CAAD11181860F7001B77BB /* get_focused_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = get_focused_window.h; path = ../../../get_focused_window.h; sourceTree = "<group>"; };
@@ -228,6 +232,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				74BC59D81A37C6790081104D /* error.cc */,
+				74BC59D91A37C6790081104D /* error.h */,
 				7458ED271A355746007B529E /* idle.cc */,
 				7458ED281A355746007B529E /* idle.h */,
 				74CBDA3919F97740008494FE /* jsoncpp.cpp */,
@@ -311,6 +317,7 @@
 				7408EDB418C51CEB00CBE8F1 /* proxy.h in Headers */,
 				74B587BC18BBC77E00E9F6CE /* tag.h in Headers */,
 				74B587C018BBC77E00E9F6CE /* client.h in Headers */,
+				74BC59DB1A37C6790081104D /* error.h in Headers */,
 				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
 				7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
@@ -408,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74BC59DA1A37C6790081104D /* error.cc in Sources */,
 				7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,

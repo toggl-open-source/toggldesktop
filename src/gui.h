@@ -146,8 +146,6 @@ class GUI {
     }
 
  private:
-    _Bool isNetworkingError(const error) const;
-    _Bool isUserError(const error) const;
     error findMissingCallbacks();
 
     TogglDisplayApp on_display_app_;
