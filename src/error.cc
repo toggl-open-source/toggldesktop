@@ -87,6 +87,9 @@ bool IsNetworkingError(const error err) {
     if (value.find("SSL Exception") != std::string::npos) {
         return true;
     }
+    if (value.find("An internal server error occurred.") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
