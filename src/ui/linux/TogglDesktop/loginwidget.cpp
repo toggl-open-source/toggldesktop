@@ -64,12 +64,7 @@ void LoginWidget::displayTimeEntryList(
 }
 
 void LoginWidget::on_login_clicked() {
-    if (ui->email->text().isEmpty()) {
-        ui->email->setFocus();
-        return;
-    }
-    if (ui->password->text().isEmpty()) {
-        ui->password->setFocus();
+    if (!validateFields()) {
         return;
     }
     TogglApi::instance->login(ui->email->text(), ui->password->text());
@@ -81,4 +76,24 @@ void LoginWidget::on_googleLogin_linkActivated(const QString &link) {
 
 void LoginWidget::loginDone() {
     TogglApi::instance->googleLogin(oauth2->accessToken());
+}
+
+bool LoginWidget::validateFields() {
+    if (ui->email->text().isEmpty()) {
+        ui->email->setFocus();
+        return false;
+    }
+    if (ui->password->text().isEmpty()) {
+        ui->password->setFocus();
+        return false;
+    }
+    return true;
+}
+
+void LoginWidget::on_signup_clicked()
+{
+    if (!validateFields()) {
+        return;
+    }
+    TogglApi::instance->signup(ui->email->text(), ui->password->text());
 }

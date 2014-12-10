@@ -40,6 +40,9 @@ class LoginWidget : public QWidget {
     void on_googleLogin_linkActivated(const QString &link);
 
     void loginDone();
+    bool validateFields();
+
+    void on_signup_clicked();
 
  private:
     Ui::LoginWidget *ui;

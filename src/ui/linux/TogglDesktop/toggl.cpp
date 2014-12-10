@@ -237,6 +237,12 @@ void TogglApi::login(const QString email, const QString password) {
                 password.toStdString().c_str());
 }
 
+void TogglApi::signup(const QString email, const QString password) {
+    toggl_signup(ctx,
+                 email.toStdString().c_str(),
+                 password.toStdString().c_str());
+}
+
 void TogglApi::setEnvironment(const QString environment) {
     toggl_set_environment(ctx, environment.toStdString().c_str());
     Bugsnag::releaseStage = environment;
