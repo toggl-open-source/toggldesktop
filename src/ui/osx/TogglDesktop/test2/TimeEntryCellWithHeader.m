@@ -117,11 +117,19 @@ extern void *ctx;
 	return string;
 }
 
+- (void)resetToDefault
+{
+	[self.backgroundBox.layer setBackgroundColor:[[ConvertHexColor hexCodeToNSColor:@"#FAFAFA"] CGColor]];
+}
+
 - (void)focusFieldName
 {
 	NSPoint globalLocation = [ NSEvent mouseLocation ];
 	NSPoint windowLocation = [ [ self window ] convertScreenToBase:globalLocation ];
 	NSPoint mouseLocation = [ self convertPoint:windowLocation fromView:nil ];
+
+	[self.backgroundBox.layer setBackgroundColor:[[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"] CGColor]];
+
 
 	if (NSPointInRect(mouseLocation, self.projectTextField.frame))
 	{

@@ -27,6 +27,7 @@
 @property NSInteger defaultPopupWidth;
 @property NSInteger addedHeight;
 @property NSInteger minimumEditFormWidth;
+@property NSView *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
 
@@ -171,6 +172,7 @@ extern void *ctx;
 {
 	if (notification.object == self.timeEntrypopover)
 	{
+		[self clearLastSelectedEntry];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
 															object:nil
 														  userInfo:nil];
@@ -263,6 +265,7 @@ extern void *ctx;
 
 - (IBAction)performClick:(id)sender
 {
+	[self clearLastSelectedEntry];
 	NSInteger row = [self.timeEntriesTableView clickedRow];
 
 	if (row < 0)
@@ -277,23 +280,40 @@ extern void *ctx;
 	}
 
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary:NO];
+												 makeIfNecessary  :NO];
+
+	self.selectedEntryCell = nil;
 
 	for (NSView *subview in [latestView subviews])
 	{
 		if ([subview isKindOfClass:[TimeEntryCell class]])
 		{
+			self.selectedEntryCell = subview;
 			[(TimeEntryCell *)subview focusFieldName];
 		}
 		else if ([subview isKindOfClass:[TimeEntryCellWithHeader class]])
 		{
+			self.selectedEntryCell = subview;
 			[(TimeEntryCellWithHeader *)subview focusFieldName];
 		}
 	}
 }
 
+- (void)clearLastSelectedEntry
+{
+	if ([self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
+	{
+		[(TimeEntryCell *)self.selectedEntryCell resetToDefault];
+	}
+	else if ([self.selectedEntryCell isKindOfClass:[TimeEntryCellWithHeader class]])
+	{
+		[(TimeEntryCellWithHeader *)self.selectedEntryCell resetToDefault];
+	}
+}
+
 - (void)resetEditPopoverSize:(NSNotification *)notification
 {
+	[self clearLastSelectedEntry];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
 														object:nil
 													  userInfo:nil];

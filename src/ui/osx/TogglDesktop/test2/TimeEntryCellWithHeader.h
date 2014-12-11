@@ -19,8 +19,10 @@
 @property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
 @property (strong) NSString *GUID;
 @property (strong) IBOutlet NSBox *durationBox;
+@property (strong) IBOutlet NSBox *backgroundBox;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 - (void)focusFieldName;
+- (void)resetToDefault;
 @end
 
