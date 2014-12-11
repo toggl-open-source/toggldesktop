@@ -90,8 +90,7 @@ bool LoginWidget::validateFields() {
     return true;
 }
 
-void LoginWidget::on_signup_clicked()
-{
+void LoginWidget::on_signup_clicked() {
     if (!validateFields()) {
         return;
     }
