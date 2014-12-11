@@ -163,10 +163,8 @@ extern void *ctx;
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
 	{
 		[self.view.window setInitialFirstResponder:self.projectSelect];
-		[self.projectSelect becomeFirstResponder];
 		return;
 	}
-	[self.descriptionCombobox becomeFirstResponder];
 	[self.view.window setInitialFirstResponder:self.descriptionCombobox];
 }
 
