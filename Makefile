@@ -386,3 +386,5 @@ test: test_lib
 lcov: test
 	lcov -q -d . -c -o app.info
 	genhtml -q -o coverage app.info
+
+coverage: lcov
