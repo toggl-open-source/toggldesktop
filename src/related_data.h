@@ -101,8 +101,9 @@ class RelatedData {
         return modelByGUID(GUID, &Clients);
     }
 
-    std::vector<AutocompleteItem> AutocompleteItems(
-        const bool including_time_entries);
+    std::vector<AutocompleteItem> TimeEntryAutocompleteItems();
+
+    std::vector<AutocompleteItem> ProjectAutocompleteItems();
 
     std::vector<AutocompleteItem> StructuredAutocompleteItems();
 

@@ -216,13 +216,17 @@ void RelatedData::projectAutocompleteItems(
     }
 }
 
-std::vector<AutocompleteItem> RelatedData::AutocompleteItems(
-    const bool including_time_entries) {
+std::vector<AutocompleteItem> RelatedData::TimeEntryAutocompleteItems() {
     std::vector<AutocompleteItem> result;
     std::set<std::string> unique_names;
-    if (including_time_entries) {
-        timeEntryAutocompleteItems(&unique_names, &result);
-    }
+    timeEntryAutocompleteItems(&unique_names, &result);
+    std::sort(result.begin(), result.end(), CompareAutocompleteItems);
+    return result;
+}
+
+std::vector<AutocompleteItem> RelatedData::ProjectAutocompleteItems() {
+    std::vector<AutocompleteItem> result;
+    std::set<std::string> unique_names;
     taskAutocompleteItems(&unique_names, 0, &result);
     projectAutocompleteItems(&unique_names, 0, &result);
     std::sort(result.begin(), result.end(), CompareAutocompleteItems);

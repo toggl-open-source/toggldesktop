@@ -310,7 +310,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
 void Context::displayTimeEntryAutocomplete() {
     if (user_) {
         std::vector<AutocompleteItem> list =
-            user_->related.AutocompleteItems(true);
+            user_->related.TimeEntryAutocompleteItems();
         UI()->DisplayTimeEntryAutocomplete(&list);
     }
 }
@@ -318,7 +318,7 @@ void Context::displayTimeEntryAutocomplete() {
 void Context::displayProjectAutocomplete() {
     if (user_) {
         std::vector<AutocompleteItem> list =
-            user_->related.AutocompleteItems(false);
+            user_->related.ProjectAutocompleteItems();
         UI()->DisplayProjectAutocomplete(&list);
     }
 }
