@@ -33,9 +33,9 @@ int getFocusedWindowInfo(
         GetWindowTextW(window_handle, buf, kTitleBufSize);
 
         std::string utf8("");
-        Poco::UnicodeConverter::toUTF8(buf, length, utf8);
+        Poco::UnicodeConverter::toUTF8(buf, utf8);
 
-        *title = utf8;
+		*title = utf8;
     }
 
     // get process by window handle
