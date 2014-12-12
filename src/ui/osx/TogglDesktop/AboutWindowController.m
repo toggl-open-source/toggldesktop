@@ -44,7 +44,7 @@ extern void *ctx;
 - (void)checkForUpdates
 {
 	[[SUUpdater sharedUpdater] resetUpdateCycle];
-	[[SUUpdater sharedUpdater] checkForUpdates:self];
+	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
 - (BOOL)isVisible

@@ -45,6 +45,6 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUShowReleaseNotes</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

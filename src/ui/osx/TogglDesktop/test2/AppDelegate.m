@@ -83,6 +83,8 @@ void *ctx;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 
+	[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
+
 	NSAssert(ctx, @"ctx is not initialized, cannot continue");
 	char *str = toggl_get_update_channel(ctx);
 	NSAssert(str, @"Could not read update channel value");
