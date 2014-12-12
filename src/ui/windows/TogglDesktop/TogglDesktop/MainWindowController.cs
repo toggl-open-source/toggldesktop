@@ -303,6 +303,8 @@ namespace TogglDesktop
             enableMenuItems();
             updateStatusIcons(true);
 
+            editForm.CloseButton_Click(null, null);
+
             runningToolStripMenuItem.Text = "Timer is not tracking";
             Text = "Toggl Desktop";
             trayIcon.Text = Text;
