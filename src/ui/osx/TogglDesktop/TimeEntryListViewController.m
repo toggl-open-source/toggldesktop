@@ -280,7 +280,7 @@ extern void *ctx;
 	}
 
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary  :NO];
+												 makeIfNecessary:NO];
 
 	self.selectedEntryCell = nil;
 
