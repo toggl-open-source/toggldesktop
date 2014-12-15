@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B17" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
@@ -26,6 +26,7 @@
                 <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
                 <outlet property="projectSelectBox" destination="6Sh-4d-bKb" id="gbr-B6-ncX"/>
                 <outlet property="resizeHandle" destination="oCY-bD-X7j" id="jvV-pq-l2V"/>
+                <outlet property="resizeHandleLeft" destination="0ZT-Dr-aT9" id="ukD-qY-mEg"/>
                 <outlet property="saveNewClientButton" destination="z0P-ED-dJk" id="JI2-N7-OMA"/>
                 <outlet property="startDate" destination="xTj-21-Dv1" id="E4C-ml-uuJ"/>
                 <outlet property="startEndTimeBox" destination="TSC-79-BuD" id="6rV-Ia-R9i"/>
@@ -575,8 +576,20 @@
                         <outlet property="delegate" destination="-2" id="Y7v-ic-XoW"/>
                     </connections>
                 </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ZT-Dr-aT9" customClass="NSResize">
+                    <rect key="frame" x="0.0" y="151" width="16" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="||" id="2fC-dQ-TDq">
+                        <font key="font" metaFont="system" size="15"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="-2" id="Vmr-5c-TTO"/>
+                    </connections>
+                </textField>
             </subviews>
             <constraints>
+                <constraint firstItem="0ZT-Dr-aT9" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" constant="4" id="7Jj-f2-0W4"/>
                 <constraint firstAttribute="bottom" secondItem="byc-AI-Ri7" secondAttribute="bottom" constant="5" id="Ajf-70-v6X"/>
                 <constraint firstAttribute="trailing" secondItem="oCY-bD-X7j" secondAttribute="trailing" id="JH8-W0-Oa0"/>
                 <constraint firstItem="Mka-gG-oqB" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" id="Obp-pk-sqd"/>

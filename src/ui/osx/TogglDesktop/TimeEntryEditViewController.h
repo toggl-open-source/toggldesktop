@@ -30,6 +30,7 @@
 @property IBOutlet NSButton *addProjectButton;
 @property IBOutlet NSTextField *workspaceLabel;
 @property IBOutlet NSResize *resizeHandle;
+@property IBOutlet NSResize *resizeHandleLeft;
 - (IBAction)descriptionComboboxChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
@@ -62,5 +63,5 @@
 @property (strong) IBOutlet NSButton *addClientButton;
 @property (strong) IBOutlet NSTextField *clientNameTextField;
 @property (strong) IBOutlet NSButton *saveNewClientButton;
-
+- (void)setDragHandle:(BOOL)onLeft;
 @end

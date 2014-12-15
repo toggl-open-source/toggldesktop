@@ -34,6 +34,7 @@
 @property BOOL resizeOnOpen;
 @property BOOL startTimeChanged;
 @property BOOL endTimeChanged;
+@property BOOL popupOnLeft;
 @property NSString *descriptionComboboxPreviousStringValue;
 @property NSString *projectSelectPreviousStringValue;
 @property NSMutableAttributedString *clientColorTitle;
@@ -52,6 +53,7 @@ extern void *ctx;
 		self.willTerminate = NO;
 		self.startTimeChanged = NO;
 		self.endTimeChanged = NO;
+		self.popupOnLeft = NO;
 
 		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 		self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
@@ -139,6 +141,7 @@ extern void *ctx;
 	[self.addProjectButton setAttributedTitle:colorTitle];
 	[self.addClientButton setAttributedTitle:self.clientColorTitle];
 	[self.resizeHandle setCursor:[NSCursor resizeLeftRightCursor]];
+	[self.resizeHandleLeft setCursor:[NSCursor resizeLeftRightCursor]];
 }
 
 - (void)loadView
@@ -603,6 +606,13 @@ extern void *ctx;
 	return 0;
 }
 
+- (void)setDragHandle:(BOOL)onLeft
+{
+	self.popupOnLeft = onLeft;
+	[self.resizeHandle setHidden:onLeft];
+	[self.resizeHandleLeft setHidden:!onLeft];
+}
+
 - (void)draggingResizeStart:(id)sender
 {
 	self.lastPosition = [NSEvent mouseLocation];
@@ -611,7 +621,16 @@ extern void *ctx;
 - (void)draggingResize:(id)sender
 {
 	NSPoint mouseLoc = [NSEvent mouseLocation];
-	NSNumber *addedWidth = [NSNumber numberWithInt:(mouseLoc.x - self.lastPosition.x)];
+	NSNumber *addedWidth;
+
+	if (self.popupOnLeft)
+	{
+		addedWidth = [NSNumber numberWithInt:-(mouseLoc.x - self.lastPosition.x)];
+	}
+	else
+	{
+		addedWidth = [NSNumber numberWithInt:(mouseLoc.x - self.lastPosition.x)];
+	}
 
 	self.lastPosition = mouseLoc;
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedWidth forKey:@"width"];
