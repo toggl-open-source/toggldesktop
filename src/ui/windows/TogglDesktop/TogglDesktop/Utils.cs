@@ -94,8 +94,8 @@ namespace TogglDesktop
         {
             if (f.WindowState == FormWindowState.Maximized)
             {
-                Properties.Settings.Default.Location = f.RestoreBounds.Location;
-                Properties.Settings.Default.Size = f.RestoreBounds.Size;
+                Properties.Settings.Default.Location = f.Location;
+                Properties.Settings.Default.Size = f.Size;
                 Properties.Settings.Default.Maximized = true;
                 Properties.Settings.Default.Minimized = false;
             }
@@ -108,8 +108,8 @@ namespace TogglDesktop
             }
             else
             {
-                Properties.Settings.Default.Location = f.RestoreBounds.Location;
-                Properties.Settings.Default.Size = f.RestoreBounds.Size;
+                Properties.Settings.Default.Location = f.Location;
+                Properties.Settings.Default.Size = f.Size;
                 Properties.Settings.Default.Maximized = false;
                 Properties.Settings.Default.Minimized = true;
             }
