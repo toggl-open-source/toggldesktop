@@ -50,7 +50,7 @@ namespace TogglDesktop
         [STAThread]
         static void Main()
         {
-            using (Mutex mutex = new Mutex(false, "Global\\" + appGUID))
+            using (Mutex mutex = new Mutex(false, "Global\\" + Environment.UserName + "_" + appGUID))
             {
                 if (!mutex.WaitOne(0, false))
                 {
