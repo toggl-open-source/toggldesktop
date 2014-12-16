@@ -21,6 +21,7 @@
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 - (void)focusFieldName;
+- (void)setFocused;
 - (void)resetToDefault;
 @end
 

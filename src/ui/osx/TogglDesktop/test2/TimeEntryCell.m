@@ -125,7 +125,7 @@ extern void *ctx;
 	NSPoint windowLocation = [ [ self window ] convertScreenToBase:globalLocation ];
 	NSPoint mouseLocation = [ self convertPoint:windowLocation fromView:nil ];
 
-	[self.backgroundBox.layer setBackgroundColor:[[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"] CGColor]];
+	[self setFocused];
 
 	if (NSPointInRect(mouseLocation, self.projectTextField.frame))
 	{
@@ -146,6 +146,11 @@ extern void *ctx;
 	}
 
 	toggl_edit(ctx, [self.GUID UTF8String], false, "");
+}
+
+- (void)setFocused
+{
+	[self.backgroundBox.layer setBackgroundColor:[[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"] CGColor]];
 }
 
 @end
