@@ -460,16 +460,15 @@ extern void *ctx;
 	}
 }
 
-- (void)keyUp:(NSEvent *)event
+- (void)keyDown:(NSEvent *)event
 {
-	if ([event keyCode] == 124)
-	{
+    if ((event.keyCode == 36) || (event.keyCode == 76))
+    {
 		[self.selectedEntryCell openEdit];
-	}
-	else
-	{
-		[super keyUp:event];
-	}
+    }
+    else {
+        [super keyDown:event];
+    }
 }
 
 @end
