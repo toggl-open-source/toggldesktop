@@ -153,4 +153,9 @@ extern void *ctx;
 	[self.backgroundBox.layer setBackgroundColor:[[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"] CGColor]];
 }
 
+- (void)openEdit
+{
+    toggl_edit(ctx, [self.GUID UTF8String], false, "");
+}
+
 @end

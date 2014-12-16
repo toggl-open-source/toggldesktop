@@ -23,5 +23,6 @@
 - (void)focusFieldName;
 - (void)setFocused;
 - (void)resetToDefault;
+- (void)openEdit;
 @end
 

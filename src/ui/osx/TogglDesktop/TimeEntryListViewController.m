@@ -220,6 +220,18 @@ extern void *ctx;
 	return result;
 }
 
+- (BOOL)  tableView:(NSTableView *)aTableView
+	shouldSelectRow:(NSInteger)rowIndex
+{
+	[self clearLastSelectedEntry];
+	TimeEntryCell *cell = [self getSelectedEntryCell:rowIndex];
+	if (cell != nil)
+	{
+		[cell setFocused];
+	}
+	return YES;
+}
+
 - (NSView *) tableView:(NSTableView *)tableView
 	viewForTableColumn:(NSTableColumn *)tableColumn
 				   row:(NSInteger)row
@@ -431,5 +443,18 @@ extern void *ctx;
 		toggl_open_in_browser(ctx);
 	}
 }
+
+- (void)keyUp:(NSEvent *)event
+{
+    if ([event keyCode] == 124)
+    {
+        [self.selectedEntryCell openEdit];
+    }
+    else
+    {
+        [super keyUp:event];
+    }
+}
+
 
 @end
