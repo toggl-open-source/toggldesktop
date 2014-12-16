@@ -92,6 +92,10 @@ extern void *ctx;
 												 selector:@selector(resetEditPopoverSize:)
 													 name:kResetEditPopoverSize
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(focusListing:)
+													 name:kFocusListing
+												   object:nil];
 	}
 	return self;
 }
@@ -444,17 +448,28 @@ extern void *ctx;
 	}
 }
 
-- (void)keyUp:(NSEvent *)event
+- (void)focusListing:(NSNotification *)notification
 {
-    if ([event keyCode] == 124)
-    {
-        [self.selectedEntryCell openEdit];
-    }
-    else
-    {
-        [super keyUp:event];
-    }
+	[[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
+	[self.timeEntriesTableView selectRowIndexes:0 byExtendingSelection:NO];
+	[self clearLastSelectedEntry];
+	TimeEntryCell *cell = [self getSelectedEntryCell:0];
+	if (cell != nil)
+	{
+		[cell setFocused];
+	}
 }
 
+- (void)keyUp:(NSEvent *)event
+{
+	if ([event keyCode] == 124)
+	{
+		[self.selectedEntryCell openEdit];
+	}
+	else
+	{
+		[super keyUp:event];
+	}
+}
 
 @end
