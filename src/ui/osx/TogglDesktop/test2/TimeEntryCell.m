@@ -1,5 +1,5 @@
 //
-//  TableViewCell.m
+//  TimeEntryCell.m
 //  Toggl Desktop on the Mac
 //
 //  Created by Tambet Masik on 9/26/13.
