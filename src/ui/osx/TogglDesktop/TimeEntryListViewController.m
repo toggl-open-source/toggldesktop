@@ -459,6 +459,7 @@ extern void *ctx;
 	{
 		[cell setFocused];
 	}
+	[self.timeEntriesTableView scrollRowToVisible:0];
 }
 
 - (void)keyDown:(NSEvent *)event
