@@ -116,6 +116,7 @@
 	self.CanAddProjects = te->CanAddProjects;
 	self.DefaultWID = te->DefaultWID;
 	self.CanSeeBillable = te->CanSeeBillable;
+	self.WorkspaceName = [NSString stringWithUTF8String:te->WorkspaceName];
 }
 
 - (NSString *)description
