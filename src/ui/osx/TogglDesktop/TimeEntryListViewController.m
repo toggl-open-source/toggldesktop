@@ -462,20 +462,19 @@ extern void *ctx;
 	[self.timeEntriesTableView scrollRowToVisible:0];
 }
 
-- (void)cancelOperation:(id)sender
-{
-	[self clearLastSelectedEntry];
-	self.selectedEntryCell = nil;
-	[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
-														object:nil
-													  userInfo:nil];
-}
-
 - (void)keyDown:(NSEvent *)event
 {
 	if (event.keyCode == kVK_LeftArrow || event.keyCode == kVK_RightArrow)
 	{
 		[self.selectedEntryCell openEdit];
+	}
+	else if (event.keyCode == kVK_ANSI_Z)
+	{
+		[self clearLastSelectedEntry];
+		self.selectedEntryCell = nil;
+		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
+															object:nil
+														  userInfo:nil];
 	}
 	else
 	{
