@@ -102,14 +102,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)focusTimer:(NSNotification *)notification
 {
-	if (self.time_entry.duration_in_seconds < 0)
-	{
-		[self.startButton becomeFirstResponder];
-	}
-	else
-	{
-		[self.descriptionComboBox becomeFirstResponder];
-	}
+    [self.descriptionComboBox becomeFirstResponder];
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
