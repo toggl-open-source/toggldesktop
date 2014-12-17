@@ -231,7 +231,10 @@ void *ctx;
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
 
-	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+	if ([self.environment isEqualToString:@"production"])
+	{
+		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+	}
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center

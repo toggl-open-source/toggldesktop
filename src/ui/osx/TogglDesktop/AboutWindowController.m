@@ -44,7 +44,13 @@ extern void *ctx;
 - (void)checkForUpdates
 {
 	[[SUUpdater sharedUpdater] resetUpdateCycle];
-	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+
+	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+	NSString *env = infoDict[@"KopsikEnvironment"];
+	if ([env isEqualToString:@"production"])
+	{
+		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+	}
 }
 
 - (BOOL)isVisible
