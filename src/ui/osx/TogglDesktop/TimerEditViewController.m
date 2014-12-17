@@ -18,6 +18,7 @@
 #import "NSCustomComboBox.h"
 #import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
+#include <Carbon/Carbon.h>
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
@@ -450,7 +451,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)keyUp:(NSEvent *)event
 {
-	if ([event keyCode] == 125 && ([event modifierFlags] & NSShiftKeyMask))
+	if ([event keyCode] == kVK_DownArrow && ([event modifierFlags] & NSShiftKeyMask))
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusListing
 															object:nil

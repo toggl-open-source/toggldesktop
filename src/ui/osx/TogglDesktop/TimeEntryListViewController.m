@@ -17,6 +17,7 @@
 #import "DisplayCommand.h"
 #import "TimeEntryEditViewController.h"
 #import "ConvertHexColor.h"
+#include <Carbon/Carbon.h>
 
 @interface TimeEntryListViewController ()
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
@@ -462,7 +463,7 @@ extern void *ctx;
 
 - (void)keyDown:(NSEvent *)event
 {
-	if ((event.keyCode == 36) || (event.keyCode == 76))
+	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
 		[self.selectedEntryCell openEdit];
 	}
