@@ -13,6 +13,7 @@
 #import "UIEvents.h"
 #import "MenuItemTags.h"
 #import "DisplayCommand.h"
+#include <Carbon/Carbon.h>
 
 @interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
@@ -188,6 +189,20 @@ extern void *ctx;
 - (IBAction)errorCloseButtonClicked:(id)sender
 {
 	[self closeError];
+}
+
+- (void)keyUp:(NSEvent *)event
+{
+    if ([event keyCode] == kVK_DownArrow && ([event modifierFlags] & NSShiftKeyMask))
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFocusListing
+                                                            object:nil
+                                                          userInfo:nil];
+    }
+    else
+    {
+        [super keyUp:event];
+    }
 }
 
 @end
