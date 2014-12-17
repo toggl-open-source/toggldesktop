@@ -450,15 +450,16 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)keyUp:(NSEvent *)event
 {
-    if ([event keyCode] == 125 && ([event modifierFlags] & NSShiftKeyMask)){
-            [[NSNotificationCenter defaultCenter] postNotificationName:kFocusListing
-                                                                object:nil
-                                                              userInfo:nil];
-    }
-    else
-    {
-        [super keyUp:event];
-    }
+	if ([event keyCode] == 125 && ([event modifierFlags] & NSShiftKeyMask))
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusListing
+															object:nil
+														  userInfo:nil];
+	}
+	else
+	{
+		[super keyUp:event];
+	}
 }
 
 @end
