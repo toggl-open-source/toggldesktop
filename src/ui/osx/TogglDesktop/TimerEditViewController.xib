@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="descriptionLabel" destination="Fiv-ao-qiA" id="00j-67-MmI"/>
-                <outlet property="durationFieldChanged" destination="oie-Un-asQ" id="OHU-Ev-dhK"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
                 <outlet property="projectTextField" destination="tVc-ms-0hr" id="1ee-Q9-eCA"/>
                 <outlet property="startButton" destination="2Fx-4L-YGZ" id="NkN-re-hJo"/>
@@ -100,7 +99,7 @@ DQ
                                     <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                                 <connections>
-                                    <action selector="durationFieldChanged:" target="-2" id="CnG-Zd-OL2"/>
+                                    <action selector="durationFieldChanged:" target="-2" id="kSg-ua-3lq"/>
                                     <outlet property="delegate" destination="-2" id="F3b-cL-8I2"/>
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>
