@@ -73,6 +73,8 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             public bool CanSeeBillable;
             public UInt64 DefaultWID;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string WorkspaceName;
             public IntPtr Next;
         }
 

@@ -66,6 +66,7 @@ extern "C" {
         _Bool CanAddProjects;
         _Bool CanSeeBillable;
         uint64_t DefaultWID;
+        char_t *WorkspaceName;
         // Next in list
         void *Next;
     } TogglTimeEntryView;

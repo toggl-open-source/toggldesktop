@@ -995,20 +995,26 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
         return 0;
     }
 
+    std::string workspace_name("");
     std::string project_and_task_label("");
     std::string task_label("");
     std::string project_label("");
     std::string client_label("");
     std::string color("");
-    projectLabelAndColorCode(te, &project_and_task_label,
-                             &task_label, &project_label,
-                             &client_label, &color);
+    user_->related.ProjectLabelAndColorCode(te,
+                                            &workspace_name,
+                                            &project_and_task_label,
+                                            &task_label,
+                                            &project_label,
+                                            &client_label,
+                                            &color);
 
     Poco::Int64 duration = totalDurationForDate(te);
     std::string date_duration =
         Formatter::FormatDurationForDateHeader(duration);
 
     return time_entry_view_item_init(te,
+                                     workspace_name,
                                      project_and_task_label,
                                      task_label,
                                      project_label,
@@ -1336,14 +1342,19 @@ void Context::DisplayTimeEntryList(const _Bool open) {
             continue;
         }
 
+        std::string workspace_name("");
         std::string project_and_task_label("");
         std::string task_label("");
         std::string project_label("");
         std::string client_label("");
         std::string color("");
-        projectLabelAndColorCode(te, &project_and_task_label,
-                                 &task_label, &project_label,
-                                 &client_label, &color);
+        user_->related.ProjectLabelAndColorCode(te,
+                                                &workspace_name,
+                                                &project_and_task_label,
+                                                &task_label,
+                                                &project_label,
+                                                &client_label,
+                                                &color);
 
         Poco::Int64 duration = date_durations[te->DateHeaderString()];
         std::string date_duration =
@@ -1351,6 +1362,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 
         TogglTimeEntryView *item =
             time_entry_view_item_init(te,
+                                      workspace_name,
                                       project_and_task_label,
                                       task_label,
                                       project_label,
@@ -1906,61 +1918,6 @@ _Bool Context::SaveUpdateChannel(const std::string channel) {
     UI()->DisplayUpdate(false, channel, true, false, "", "");
     fetchUpdates();
     return true;
-}
-
-void Context::projectLabelAndColorCode(
-    TimeEntry *te,
-    std::string *project_and_task_label,
-    std::string *task_label,
-    std::string *project_label,
-    std::string *client_label,
-    std::string *color_code) const {
-
-    poco_check_ptr(te);
-    poco_check_ptr(project_and_task_label);
-    poco_check_ptr(task_label);
-    poco_check_ptr(project_label);
-    poco_check_ptr(client_label);
-    poco_check_ptr(color_code);
-
-    if (!user_) {
-        return;
-    }
-
-    Task *t = 0;
-    if (te->TID()) {
-        t = user_->related.TaskByID(te->TID());
-    }
-    if (t) {
-        *task_label = t->Name();
-    }
-
-    Project *p = 0;
-    if (t && t->PID()) {
-        p = user_->related.ProjectByID(t->PID());
-    }
-    if (!p && te->PID()) {
-        p = user_->related.ProjectByID(te->PID());
-    }
-    if (!p && !te->ProjectGUID().empty()) {
-        p = user_->related.ProjectByGUID(te->ProjectGUID());
-    }
-
-    Client *c = 0;
-    if (p && p->CID()) {
-        c = user_->related.ClientByID(p->CID());
-    }
-
-    *project_and_task_label = Formatter::JoinTaskName(t, p, c);
-
-    if (p) {
-        *color_code = p->ColorCode();
-        *project_label = p->Name();
-    }
-
-    if (c) {
-        *client_label = c->Name();
-    }
 }
 
 _Bool Context::CreateProject(

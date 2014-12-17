@@ -295,4 +295,65 @@ std::vector<Client *> RelatedData::ClientList() const {
     return result;
 }
 
+void RelatedData::ProjectLabelAndColorCode(
+    TimeEntry *te,
+    std::string *workspace_name,
+    std::string *project_and_task_label,
+    std::string *task_label,
+    std::string *project_label,
+    std::string *client_label,
+    std::string *color_code) const {
+
+    poco_check_ptr(te);
+    poco_check_ptr(workspace_name);
+    poco_check_ptr(project_and_task_label);
+    poco_check_ptr(task_label);
+    poco_check_ptr(project_label);
+    poco_check_ptr(client_label);
+    poco_check_ptr(color_code);
+
+    Workspace *ws = 0;
+    if (te->WID()) {
+        ws = WorkspaceByID(te->WID());
+    }
+    if (ws) {
+        *workspace_name = ws->Name();
+    }
+
+    Task *t = 0;
+    if (te->TID()) {
+        t = TaskByID(te->TID());
+    }
+    if (t) {
+        *task_label = t->Name();
+    }
+
+    Project *p = 0;
+    if (t && t->PID()) {
+        p = ProjectByID(t->PID());
+    }
+    if (!p && te->PID()) {
+        p = ProjectByID(te->PID());
+    }
+    if (!p && !te->ProjectGUID().empty()) {
+        p = ProjectByGUID(te->ProjectGUID());
+    }
+
+    Client *c = 0;
+    if (p && p->CID()) {
+        c = ClientByID(p->CID());
+    }
+
+    *project_and_task_label = Formatter::JoinTaskName(t, p, c);
+
+    if (p) {
+        *color_code = p->ColorCode();
+        *project_label = p->Name();
+    }
+
+    if (c) {
+        *client_label = c->Name();
+    }
+}
+
 }   // namespace toggl

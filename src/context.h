@@ -277,14 +277,6 @@ class Context : public TimelineDatasource {
 
     std::vector<TimeEntry *> timeEntries(const bool including_running) const;
 
-    void projectLabelAndColorCode(
-        TimeEntry *te,
-        std::string *project_and_task_label,
-        std::string *task_label,
-        std::string *project_label,
-        std::string *client_label,
-        std::string *color_code) const;
-
     TogglTimeEntryView *timeEntryViewItem(TimeEntry *te);
 
     void displayTimerState();

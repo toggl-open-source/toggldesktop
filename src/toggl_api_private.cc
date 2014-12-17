@@ -155,6 +155,7 @@ int compare_string(const char_t *s1, const char_t *s2) {
 
 TogglTimeEntryView *time_entry_view_item_init(
     toggl::TimeEntry *te,
+    const std::string workspace_name,
     const std::string project_and_task_label,
     const std::string task_label,
     const std::string project_label,
@@ -184,6 +185,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->Started = static_cast<unsigned int>(te->Start());
     view_item->Ended = static_cast<unsigned int>(te->Stop());
 
+    view_item->WorkspaceName = copy_string(workspace_name);
     view_item->ProjectAndTaskLabel = copy_string(project_and_task_label);
     view_item->TaskLabel = copy_string(task_label);
     view_item->ProjectLabel = copy_string(project_label);
@@ -227,6 +229,9 @@ void time_entry_view_item_clear(
     }
     free(item->Description);
     item->Description = 0;
+
+    free(item->WorkspaceName);
+    item->WorkspaceName = 0;
 
     free(item->ProjectAndTaskLabel);
     item->ProjectAndTaskLabel = 0;

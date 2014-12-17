@@ -28,7 +28,7 @@ class RelatedData {
     std::vector<TimeEntry *> TimeEntries;
 
     template<typename T>
-    T *modelByID(const Poco::UInt64 id, std::vector<T *> *list) {
+    T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) const {
         if (!id) {
             return 0;
         }
@@ -42,27 +42,27 @@ class RelatedData {
         return 0;
     }
 
-    Task *TaskByID(const Poco::UInt64 id) {
+    Task *TaskByID(const Poco::UInt64 id) const {
         return modelByID<Task>(id, &Tasks);
     }
 
-    Client *ClientByID(const Poco::UInt64 id) {
+    Client *ClientByID(const Poco::UInt64 id) const {
         return modelByID(id, &Clients);
     }
 
-    Project *ProjectByID(const Poco::UInt64 id) {
+    Project *ProjectByID(const Poco::UInt64 id) const {
         return modelByID(id, &Projects);
     }
 
-    Tag *TagByID(const Poco::UInt64 id) {
+    Tag *TagByID(const Poco::UInt64 id) const {
         return modelByID(id, &Tags);
     }
 
-    Workspace *WorkspaceByID(const Poco::UInt64 id) {
+    Workspace *WorkspaceByID(const Poco::UInt64 id) const {
         return modelByID(id, &Workspaces);
     }
 
-    TimeEntry *TimeEntryByID(const Poco::UInt64 id) {
+    TimeEntry *TimeEntryByID(const Poco::UInt64 id) const {
         return modelByID(id, &TimeEntries);
     }
 
@@ -71,7 +71,7 @@ class RelatedData {
     std::vector<Client *> ClientList() const;
 
     template <typename T>
-    T *modelByGUID(const guid GUID, std::vector<T *> *list) {
+    T *modelByGUID(const guid GUID, std::vector<T *> const *list) const {
         if (GUID.empty()) {
             return 0;
         }
@@ -85,19 +85,19 @@ class RelatedData {
         return 0;
     }
 
-    TimeEntry *TimeEntryByGUID(const guid GUID) {
+    TimeEntry *TimeEntryByGUID(const guid GUID) const {
         return modelByGUID(GUID, &TimeEntries);
     }
 
-    Tag *TagByGUID(const guid GUID) {
+    Tag *TagByGUID(const guid GUID) const {
         return modelByGUID(GUID, &Tags);
     }
 
-    Project *ProjectByGUID(const guid GUID) {
+    Project *ProjectByGUID(const guid GUID) const {
         return modelByGUID(GUID, &Projects);
     }
 
-    Client *ClientByGUID(const guid GUID) {
+    Client *ClientByGUID(const guid GUID) const {
         return modelByGUID(GUID, &Clients);
     }
 
@@ -106,6 +106,15 @@ class RelatedData {
     std::vector<AutocompleteItem> ProjectAutocompleteItems();
 
     std::vector<AutocompleteItem> StructuredAutocompleteItems();
+
+    void ProjectLabelAndColorCode(
+        TimeEntry *te,
+        std::string *workspace_name,
+        std::string *project_and_task_label,
+        std::string *task_label,
+        std::string *project_label,
+        std::string *client_label,
+        std::string *color_code) const;
 
  private:
     void timeEntryAutocompleteItems(
