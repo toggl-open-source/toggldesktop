@@ -234,6 +234,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
             item->setCheckState(Qt::Unchecked);
         }
     }
+
+    ui->workspaceNameLabel->setText(view->WorkspaceName);
 }
 
 void TimeEntryEditorWidget::on_doneButton_clicked() {

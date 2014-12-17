@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>346</width>
-    <height>518</height>
+    <height>543</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -579,6 +579,36 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="workspaceNameWidget">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>117</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>117</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Workspace:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="workspaceNameLabel">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QWidget" name="buttons" native="true">
