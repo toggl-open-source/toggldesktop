@@ -467,6 +467,14 @@ extern void *ctx;
 	{
 		[self.selectedEntryCell openEdit];
 	}
+	else if (event.keyCode == kVK_Escape)
+	{
+		[self clearLastSelectedEntry];
+		self.selectedEntryCell = nil;
+		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
+															object:nil
+														  userInfo:nil];
+	}
 	else
 	{
 		[super keyDown:event];

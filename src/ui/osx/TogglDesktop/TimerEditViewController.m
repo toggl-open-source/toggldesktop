@@ -49,6 +49,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(startDisplayTimeEntryList:)
 													 name:kDisplayTimeEntryList
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(focusTimer:)
+													 name:kFocusTimer
+												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -95,6 +99,18 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[super loadView];
 	[self viewDidLoad];
+}
+
+- (void)focusTimer:(NSNotification *)notification
+{
+	if (self.time_entry.duration_in_seconds < 0)
+	{
+		[self.startButton becomeFirstResponder];
+	}
+	else
+	{
+		[self.descriptionComboBox becomeFirstResponder];
+	}
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification

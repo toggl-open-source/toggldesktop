@@ -35,6 +35,7 @@ NSString *const kResizeEditFormWidth = @"kResizeEditFormWidth";
 NSString *const kResetEditPopover = @"kResetEditPopover";
 NSString *const kResetEditPopoverSize = @"kResetEditPopoverSize";
 NSString *const kFocusListing = @"kFocusListing";
+NSString *const kFocusTimer = @"kFocusTimer";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
