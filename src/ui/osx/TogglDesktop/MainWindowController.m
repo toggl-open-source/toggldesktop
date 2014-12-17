@@ -193,16 +193,16 @@ extern void *ctx;
 
 - (void)keyUp:(NSEvent *)event
 {
-    if ([event keyCode] == kVK_DownArrow && ([event modifierFlags] & NSShiftKeyMask))
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kFocusListing
-                                                            object:nil
-                                                          userInfo:nil];
-    }
-    else
-    {
-        [super keyUp:event];
-    }
+	if ([event keyCode] == kVK_DownArrow && ([event modifierFlags] & NSShiftKeyMask))
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusListing
+															object:nil
+														  userInfo:nil];
+	}
+	else
+	{
+		[super keyUp:event];
+	}
 }
 
 @end
