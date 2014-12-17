@@ -71,6 +71,9 @@
             this.projectButton = new System.Windows.Forms.Button();
             this.comboBoxProject = new TogglDesktop.CustomComboBox();
             this.comboBoxDescription = new TogglDesktop.CustomComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.workspaceNameLabel = new System.Windows.Forms.Label();
             this.statusStripLastUpdate.SuspendLayout();
             this.buttonsPanel.SuspendLayout();
             this.panelBottom.SuspendLayout();
@@ -79,6 +82,7 @@
             this.panelDateTag.SuspendLayout();
             this.panelStartEndTime.SuspendLayout();
             this.panelAddProject.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelDescription
@@ -215,7 +219,7 @@
             this.statusStripLastUpdate.BackColor = System.Drawing.Color.Transparent;
             this.statusStripLastUpdate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelLastUpdate});
-            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 396);
+            this.statusStripLastUpdate.Location = new System.Drawing.Point(0, 451);
             this.statusStripLastUpdate.Name = "statusStripLastUpdate";
             this.statusStripLastUpdate.Size = new System.Drawing.Size(315, 22);
             this.statusStripLastUpdate.SizingGrip = false;
@@ -234,7 +238,7 @@
             this.buttonsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonsPanel.Controls.Add(this.buttonDone);
-            this.buttonsPanel.Location = new System.Drawing.Point(0, 367);
+            this.buttonsPanel.Location = new System.Drawing.Point(0, 422);
             this.buttonsPanel.Name = "buttonsPanel";
             this.buttonsPanel.Size = new System.Drawing.Size(315, 31);
             this.buttonsPanel.TabIndex = 9;
@@ -262,7 +266,7 @@
             this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDelete.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
             this.buttonDelete.Image = global::TogglDesktop.Properties.Resources.trash_can;
-            this.buttonDelete.Location = new System.Drawing.Point(274, 371);
+            this.buttonDelete.Location = new System.Drawing.Point(274, 426);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(26, 26);
             this.buttonDelete.TabIndex = 10;
@@ -293,7 +297,7 @@
             this.checkedListBoxTags.FormattingEnabled = true;
             this.checkedListBoxTags.Location = new System.Drawing.Point(110, 65);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
-            this.checkedListBoxTags.Size = new System.Drawing.Size(190, 80);
+            this.checkedListBoxTags.Size = new System.Drawing.Size(190, 99);
             this.checkedListBoxTags.TabIndex = 7;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             this.checkedListBoxTags.MouseEnter += new System.EventHandler(this.checkedListBoxTags_MouseEnter);
@@ -310,13 +314,14 @@
             this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelBottom.Controls.Add(this.panel1);
             this.panelBottom.Controls.Add(this.panelBillable);
             this.panelBottom.Controls.Add(this.panelDuration);
             this.panelBottom.Controls.Add(this.panelDateTag);
             this.panelBottom.Controls.Add(this.panelStartEndTime);
             this.panelBottom.Location = new System.Drawing.Point(0, 100);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(315, 262);
+            this.panelBottom.Size = new System.Drawing.Size(315, 317);
             this.panelBottom.TabIndex = 3;
             this.panelBottom.TabStop = true;
             // 
@@ -325,7 +330,7 @@
             this.panelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBillable.Controls.Add(this.checkBoxBillable);
-            this.panelBillable.Location = new System.Drawing.Point(0, 231);
+            this.panelBillable.Location = new System.Drawing.Point(0, 258);
             this.panelBillable.Margin = new System.Windows.Forms.Padding(2);
             this.panelBillable.Name = "panelBillable";
             this.panelBillable.Size = new System.Drawing.Size(315, 31);
@@ -357,7 +362,7 @@
             this.panelDateTag.Location = new System.Drawing.Point(0, 60);
             this.panelDateTag.MinimumSize = new System.Drawing.Size(67, 100);
             this.panelDateTag.Name = "panelDateTag";
-            this.panelDateTag.Size = new System.Drawing.Size(315, 173);
+            this.panelDateTag.Size = new System.Drawing.Size(315, 197);
             this.panelDateTag.TabIndex = 6;
             // 
             // addTagButton
@@ -613,6 +618,36 @@
             this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
             this.comboBoxDescription.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.comboBoxDescription_PreviewKeyDown);
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.workspaceNameLabel);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(0, 289);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(315, 31);
+            this.panel1.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Workspace:";
+            // 
+            // workspaceNameLabel
+            // 
+            this.workspaceNameLabel.AutoSize = true;
+            this.workspaceNameLabel.Location = new System.Drawing.Point(108, 10);
+            this.workspaceNameLabel.Name = "workspaceNameLabel";
+            this.workspaceNameLabel.Size = new System.Drawing.Size(91, 13);
+            this.workspaceNameLabel.TabIndex = 10;
+            this.workspaceNameLabel.Text = "Workspace name";
+            // 
             // TimeEntryEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -631,7 +666,7 @@
             this.Controls.Add(this.comboBoxDescription);
             this.Controls.Add(this.labelDescription);
             this.Name = "TimeEntryEditViewController";
-            this.Size = new System.Drawing.Size(315, 418);
+            this.Size = new System.Drawing.Size(315, 473);
             this.Load += new System.EventHandler(this.TimeEntryEditViewController_Load);
             this.SizeChanged += new System.EventHandler(this.TimeEntryEditViewController_SizeChanged);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TimeEntryEditViewController_Paint);
@@ -650,6 +685,8 @@
             this.panelStartEndTime.PerformLayout();
             this.panelAddProject.ResumeLayout(false);
             this.panelAddProject.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -699,5 +736,8 @@
         private System.Windows.Forms.TextBox addClientTextBox;
         private System.Windows.Forms.LinkLabel addClientLinkLabel;
         private System.Windows.Forms.Button addClientButton;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label workspaceNameLabel;
+        private System.Windows.Forms.Label label1;
     }
 }

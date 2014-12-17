@@ -297,6 +297,8 @@ namespace TogglDesktop
                 }
                 setCheckedTags(te);
             }
+
+            workspaceNameLabel.Text = te.WorkspaceName;
         }
 
         private void setTimeValue(TextBox control, string value)
