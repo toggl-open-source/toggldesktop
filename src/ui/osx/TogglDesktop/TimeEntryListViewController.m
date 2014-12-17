@@ -403,7 +403,7 @@ extern void *ctx;
 {
 	if (self.timeEntrypopover.shown)
 	{
-		[self.timeEntrypopover close];
+		[self.selectedEntryCell openEdit];
 		[self setDefaultPopupSize];
 	}
 }
