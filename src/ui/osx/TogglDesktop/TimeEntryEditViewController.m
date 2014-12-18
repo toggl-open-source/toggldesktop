@@ -1047,6 +1047,11 @@ extern void *ctx;
 	[self.clientSelect setHidden:!showAddClient];
 }
 
+- (void)closeEdit
+{
+	toggl_edit(ctx, [self.timeEntry.GUID UTF8String], false, "");
+}
+
 @end
 
 // http://stackoverflow.com/questions/4499262/how-to-programmatically-open-an-nscomboboxs-list

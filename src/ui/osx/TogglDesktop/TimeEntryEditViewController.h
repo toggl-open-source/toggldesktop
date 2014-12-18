@@ -64,4 +64,5 @@
 @property (strong) IBOutlet NSTextField *clientNameTextField;
 @property (strong) IBOutlet NSButton *saveNewClientButton;
 - (void)setDragHandle:(BOOL)onLeft;
+- (void)closeEdit;
 @end

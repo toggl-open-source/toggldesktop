@@ -88,7 +88,7 @@ extern void *ctx;
 													 name:NSPopoverDidCloseNotification
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(closeRunningEditPopup:)
+												 selector:@selector(closeEditPopup:)
 													 name:kCommandStop
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -419,7 +419,7 @@ extern void *ctx;
 	{
 		if (self.runningEdit)
 		{
-			[self.timeEntrypopover close];
+			[self.timeEntryEditViewController closeEdit];
 			self.runningEdit = false;
 		}
 		else
@@ -427,15 +427,6 @@ extern void *ctx;
 			[self.selectedEntryCell openEdit];
 		}
 
-		[self setDefaultPopupSize];
-	}
-}
-
-- (void)closeRunningEditPopup:(NSNotification *)notification
-{
-	if (self.timeEntrypopover.shown)
-	{
-		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
 	}
 }
