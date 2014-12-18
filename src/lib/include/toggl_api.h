@@ -67,6 +67,9 @@ extern "C" {
         _Bool CanSeeBillable;
         uint64_t DefaultWID;
         char_t *WorkspaceName;
+        // If syncing a time entry ended with an error,
+        // the error is attached to the time entry
+        char_t *Error;
         // Next in list
         void *Next;
     } TogglTimeEntryView;
