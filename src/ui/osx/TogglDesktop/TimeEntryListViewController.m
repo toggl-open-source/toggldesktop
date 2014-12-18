@@ -29,6 +29,7 @@
 @property NSInteger addedHeight;
 @property NSInteger minimumEditFormWidth;
 @property NSInteger lastSelectedRowIndex;
+@property BOOL runningEdit;
 @property TimeEntryCell *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
@@ -123,6 +124,7 @@ extern void *ctx;
 	self.addedHeight = 0;
 	self.lastSelectedRowIndex = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
+	self.runningEdit = NO;
 
 	[self setupEmptyLabel];
 }
@@ -204,6 +206,7 @@ extern void *ctx;
 	{
 		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
 		NSRect positionRect = [self.view bounds];
+		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		[self.timeEntrypopover showRelativeToRect:positionRect
 										   ofView:self.view
@@ -414,7 +417,16 @@ extern void *ctx;
 {
 	if (self.timeEntrypopover.shown)
 	{
-		[self.selectedEntryCell openEdit];
+		if (self.runningEdit)
+		{
+			[self.timeEntrypopover close];
+			self.runningEdit = false;
+		}
+		else
+		{
+			[self.selectedEntryCell openEdit];
+		}
+
 		[self setDefaultPopupSize];
 	}
 }
