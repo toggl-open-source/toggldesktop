@@ -421,7 +421,11 @@ extern void *ctx;
 
 - (void)closeRunningEditPopup:(NSNotification *)notification
 {
-	[self closeEditPopup:notification];
+	if (self.timeEntrypopover.shown)
+	{
+		[self.timeEntrypopover close];
+		[self setDefaultPopupSize];
+	}
 }
 
 - (void)setDefaultPopupSize
