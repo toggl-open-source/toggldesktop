@@ -96,6 +96,8 @@ class Database {
  private:
     error initialize_tables();
 
+    error ensureMigrationTable();
+
     error migrate(
         const std::string name,
         const std::string sql);
