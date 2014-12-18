@@ -97,6 +97,10 @@ extern void *ctx;
 												 selector:@selector(focusListing:)
 													 name:kFocusListing
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(focusTimer:)
+													 name:kFocusTimer
+												   object:nil];
 	}
 	return self;
 }
@@ -462,24 +466,10 @@ extern void *ctx;
 	[self.timeEntriesTableView scrollRowToVisible:0];
 }
 
-- (void)keyDown:(NSEvent *)event
+- (void)focusTimer:(NSNotification *)notification
 {
-	if (event.keyCode == kVK_LeftArrow || event.keyCode == kVK_RightArrow)
-	{
-		[self.selectedEntryCell openEdit];
-	}
-	else if (event.keyCode == kVK_ANSI_Z)
-	{
-		[self clearLastSelectedEntry];
-		self.selectedEntryCell = nil;
-		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
-															object:nil
-														  userInfo:nil];
-	}
-	else
-	{
-		[super keyDown:event];
-	}
+	[self clearLastSelectedEntry];
+	self.selectedEntryCell = nil;
 }
 
 @end

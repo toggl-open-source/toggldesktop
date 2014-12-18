@@ -7,6 +7,10 @@
 //
 
 #import "NSUnstripedTableView.h"
+#include <Carbon/Carbon.h>
+#import "UIEvents.h"
+#import "TimeEntryCell.h"
+#import "TimeEntryCellWithHeader.h"
 
 @implementation NSUnstripedTableView
 
@@ -17,6 +21,33 @@
 	NSRect finalClipRect = NSIntersectionRect(clipRect, myClipRect);
 
 	[super drawGridInClipRect:finalClipRect];
+}
+
+- (void)keyDown:(NSEvent *)event
+{
+	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
+	{
+		NSView *latestView = [self rowViewAtRow:[self selectedRow]
+								makeIfNecessary  :NO];
+
+		for (NSView *subview in [latestView subviews])
+		{
+			if ([subview isKindOfClass:[TimeEntryCell class]] || [subview isKindOfClass:[TimeEntryCellWithHeader class]])
+			{
+				[(TimeEntryCell *)subview openEdit];
+			}
+		}
+	}
+	else if (event.keyCode == kVK_Escape)
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
+															object:nil
+														  userInfo:nil];
+	}
+	else
+	{
+		[super keyDown:event];
+	}
 }
 
 @end
