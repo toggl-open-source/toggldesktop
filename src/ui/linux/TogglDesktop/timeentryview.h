@@ -45,6 +45,7 @@ class TimeEntryView : public QObject {
     bool CanSeeBillable;
     uint64_t DefaultWID;
     QString WorkspaceName;
+    QString Error;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_

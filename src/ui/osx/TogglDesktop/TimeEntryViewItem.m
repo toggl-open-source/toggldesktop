@@ -117,6 +117,10 @@
 	self.DefaultWID = te->DefaultWID;
 	self.CanSeeBillable = te->CanSeeBillable;
 	self.WorkspaceName = [NSString stringWithUTF8String:te->WorkspaceName];
+	if (te->Error)
+	{
+		self.Error = [NSString stringWithUTF8String:te->Error];
+	}
 }
 
 - (NSString *)description

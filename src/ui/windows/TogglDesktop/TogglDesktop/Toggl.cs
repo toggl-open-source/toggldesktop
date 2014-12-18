@@ -75,6 +75,8 @@ namespace TogglDesktop
             public UInt64 DefaultWID;
             [MarshalAs(UnmanagedType.LPWStr)]
             public string WorkspaceName;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string Error;
             public IntPtr Next;
         }
 

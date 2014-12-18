@@ -44,4 +44,5 @@
 @property uint64_t DefaultWID;
 @property BOOL CanAddProjects;
 @property (strong) NSString *WorkspaceName;
+@property (strong) NSString *Error;
 @end
