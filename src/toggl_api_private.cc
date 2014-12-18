@@ -314,6 +314,8 @@ TogglSettingsView *settings_view_item_init(
     view->ProxyUsername = copy_string(proxy.username);
     view->ProxyPassword = copy_string(proxy.password);
 
+    view->ReminderMinutes = settings.reminder_minutes;
+
     return view;
 }
 

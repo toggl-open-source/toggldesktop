@@ -27,6 +27,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet MASShortcutView *startStopShortcutView;
 @property IBOutlet NSTextField *idleMinutesTextField;
 @property IBOutlet NSButton *focusOnShortcutCheckbox;
+@property IBOutlet NSTextField *reminderMinutesTextField;
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
@@ -40,6 +41,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)ontopCheckboxChanged:(id)sender;
 - (IBAction)reminderCheckboxChanged:(id)sender;
 - (IBAction)focusOnShortcutCheckboxChanged:(id)sender;
+- (IBAction)reminderMinutesChanged:(id)sender;
 @property uint64_t user_id;
 @property DisplayCommand *originalCmd;
 @end

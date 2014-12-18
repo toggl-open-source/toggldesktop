@@ -101,6 +101,7 @@ extern void *ctx;
 	NSLog(@"saveSettings");
 
 	long idleMinutes = [self.idleMinutesTextField.stringValue intValue];
+	long reminderMinutes = [self.reminderMinutesTextField.stringValue intValue];
 
 	toggl_set_settings(ctx,
 					   [Utils stateToBool:[self.useIdleDetectionButton state]],
@@ -109,7 +110,8 @@ extern void *ctx;
 					   [Utils stateToBool:[self.ontopCheckbox state]],
 					   [Utils stateToBool:[self.reminderCheckbox state]],
 					   idleMinutes,
-					   [Utils stateToBool:[self.focusOnShortcutCheckbox state]]);
+					   [Utils stateToBool:[self.focusOnShortcutCheckbox state]],
+					   reminderMinutes);
 }
 
 - (void)saveProxySettings
@@ -197,9 +199,17 @@ extern void *ctx;
 
 	self.idleMinutesTextField.intValue = settings.idle_minutes;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
+
+	self.reminderMinutesTextField.intValue = settings.reminder_minutes;
+	self.reminderMinutesTextField.enabled = settings.reminder;
 }
 
 - (IBAction)idleMinutesChange:(id)sender
+{
+	[self saveSettings];
+}
+
+- (IBAction)reminderMinutesChanged:(id)sender
 {
 	[self saveSettings];
 }
