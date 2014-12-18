@@ -63,6 +63,7 @@ error TimelineUploader::process() {
 
     err = upload(&batch);
     if (err != noError) {
+        backoff();
         return err;
     }
 
@@ -72,6 +73,8 @@ error TimelineUploader::process() {
             << " event(s) was successful.";
         logger().debug(out.str());
     }
+
+    reset_backoff();
 
     return timeline_datasource_->DeleteTimelineBatch(batch.Events());
 }
