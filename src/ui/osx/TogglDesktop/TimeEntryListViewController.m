@@ -28,6 +28,7 @@
 @property NSInteger defaultPopupWidth;
 @property NSInteger addedHeight;
 @property NSInteger minimumEditFormWidth;
+@property NSInteger lastSelectedRowIndex;
 @property TimeEntryCell *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
@@ -120,6 +121,7 @@ extern void *ctx;
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
 	self.defaultPopupHeight = self.timeEntryPopupEditView.bounds.size.height;
 	self.addedHeight = 0;
+	self.lastSelectedRowIndex = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 
 	[self setupEmptyLabel];
@@ -170,6 +172,7 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
+		[self focusListing:nil];
 	}
 
 	BOOL hasItems = self.timeEntriesTableView.numberOfRows > 0;
@@ -181,7 +184,6 @@ extern void *ctx;
 {
 	if (notification.object == self.timeEntrypopover)
 	{
-		[self clearLastSelectedEntry];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
 															object:nil
 														  userInfo:nil];
@@ -233,6 +235,7 @@ extern void *ctx;
 	shouldSelectRow:(NSInteger)rowIndex
 {
 	[self clearLastSelectedEntry];
+	self.lastSelectedRowIndex = rowIndex;
 	TimeEntryCell *cell = [self getSelectedEntryCell:rowIndex];
 	if (cell != nil)
 	{
@@ -311,10 +314,15 @@ extern void *ctx;
 
 - (TimeEntryCell *)getSelectedEntryCell:(NSInteger)row
 {
-	self.selectedEntryCell = nil;
-
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary:NO];
+												 makeIfNecessary  :NO];
+
+	if (latestView == nil)
+	{
+		return nil;
+	}
+
+	self.selectedEntryCell = nil;
 
 	for (NSView *subview in [latestView subviews])
 	{
@@ -334,7 +342,6 @@ extern void *ctx;
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
 {
-	[self clearLastSelectedEntry];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
 														object:nil
 													  userInfo:nil];
@@ -455,15 +462,20 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
+    if(notification != nil) {
+        self.lastSelectedRowIndex = 0;
+    }
+	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.lastSelectedRowIndex];
+
 	[[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
-	[self.timeEntriesTableView selectRowIndexes:0 byExtendingSelection:NO];
-	[self clearLastSelectedEntry];
-	TimeEntryCell *cell = [self getSelectedEntryCell:0];
+	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
+	TimeEntryCell *cell = [self getSelectedEntryCell:self.lastSelectedRowIndex];
 	if (cell != nil)
 	{
+		[self clearLastSelectedEntry];
 		[cell setFocused];
+		[self.timeEntriesTableView scrollRowToVisible:self.lastSelectedRowIndex];
 	}
-	[self.timeEntriesTableView scrollRowToVisible:0];
 }
 
 - (void)focusTimer:(NSNotification *)notification
