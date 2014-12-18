@@ -462,10 +462,11 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
-	if (notification != nil)
-	{
-		self.lastSelectedRowIndex = 0;
-	}
+    if(notification != nil) {
+        [self clearLastSelectedEntry];
+        self.lastSelectedRowIndex = 0;
+    }
+
 	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.lastSelectedRowIndex];
 
 	[[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
