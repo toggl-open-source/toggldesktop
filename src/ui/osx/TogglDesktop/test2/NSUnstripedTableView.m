@@ -14,6 +14,8 @@
 
 @implementation NSUnstripedTableView
 
+extern void *ctx;
+
 - (void)drawGridInClipRect:(NSRect)clipRect
 {
 	NSRect lastRowRect = [self rectOfRow:[self numberOfRows] - 1];
@@ -27,15 +29,10 @@
 {
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
-		NSView *latestView = [self rowViewAtRow:[self selectedRow]
-								makeIfNecessary  :NO];
-
-		for (NSView *subview in [latestView subviews])
+		TimeEntryCell *cell = [self getSelectedEntryCell];
+		if (cell != nil)
 		{
-			if ([subview isKindOfClass:[TimeEntryCell class]] || [subview isKindOfClass:[TimeEntryCellWithHeader class]])
-			{
-				[(TimeEntryCell *)subview openEdit];
-			}
+			[cell openEdit];
 		}
 	}
 	else if (event.keyCode == kVK_Escape)
@@ -44,9 +41,51 @@
 															object:nil
 														  userInfo:nil];
 	}
+	else if (event.keyCode == kVK_Delete)
+	{
+		[self deleteEntry];
+	}
 	else
 	{
 		[super keyDown:event];
+	}
+}
+
+- (TimeEntryCell *)getSelectedEntryCell
+{
+	NSView *latestView = [self rowViewAtRow:[self selectedRow]
+							makeIfNecessary  :NO];
+
+	for (NSView *subview in [latestView subviews])
+	{
+		if ([subview isKindOfClass:[TimeEntryCell class]] || [subview isKindOfClass:[TimeEntryCellWithHeader class]])
+		{
+			return (TimeEntryCell *)subview;
+		}
+	}
+	return nil;
+}
+
+- (void)deleteEntry
+{
+	TimeEntryCell *cell = [self getSelectedEntryCell];
+
+	if (cell != nil)
+	{
+		NSAlert *alert = [[NSAlert alloc] init];
+		[alert addButtonWithTitle:@"OK"];
+		[alert addButtonWithTitle:@"Cancel"];
+		[alert setMessageText:@"Delete the time entry?"];
+		[alert setInformativeText:@"Deleted time entries cannot be restored."];
+		[alert setAlertStyle:NSWarningAlertStyle];
+		if ([alert runModal] != NSAlertFirstButtonReturn)
+		{
+			return;
+		}
+
+		NSLog(@"Deleting time entry %@", cell.GUID);
+
+		toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
 	}
 }
 
