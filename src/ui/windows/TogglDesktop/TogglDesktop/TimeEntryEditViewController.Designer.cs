@@ -572,12 +572,12 @@
             // 
             // addClientButton
             // 
-            this.addClientButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addClientButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.addClientButton.BackColor = System.Drawing.Color.Transparent;
             this.addClientButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.addClientButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addClientButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.addClientButton.Location = new System.Drawing.Point(262, 88);
+            this.addClientButton.Location = new System.Drawing.Point(262, 100);
             this.addClientButton.Name = "addClientButton";
             this.addClientButton.Size = new System.Drawing.Size(35, 24);
             this.addClientButton.TabIndex = 20;
