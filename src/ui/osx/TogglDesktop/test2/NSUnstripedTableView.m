@@ -37,7 +37,7 @@ extern void *ctx;
 	}
 	else if (event.keyCode == kVK_Escape)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
+		[[NSNotificationCenter defaultCenter] postNotificationName:kEscapeListing
 															object:nil
 														  userInfo:nil];
 	}

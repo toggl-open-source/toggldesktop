@@ -100,8 +100,8 @@ extern void *ctx;
 													 name:kFocusListing
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(focusTimer:)
-													 name:kFocusTimer
+												 selector:@selector(escapeListing:)
+													 name:kEscapeListing
 												   object:nil];
 	}
 	return self;
@@ -488,8 +488,16 @@ extern void *ctx;
 	}
 }
 
-- (void)focusTimer:(NSNotification *)notification
+- (void)escapeListing:(NSNotification *)notification
 {
+	if (self.timeEntrypopover.shown)
+	{
+		[self closeEditPopup:nil];
+		return;
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
+														object:nil
+													  userInfo:nil];
 	[self clearLastSelectedEntry];
 	self.selectedEntryCell = nil;
 }

@@ -39,6 +39,7 @@ extern NSString *const kResetEditPopover;
 extern NSString *const kResetEditPopoverSize;
 extern NSString *const kFocusListing;
 extern NSString *const kFocusTimer;
+extern NSString *const kEscapeListing;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
