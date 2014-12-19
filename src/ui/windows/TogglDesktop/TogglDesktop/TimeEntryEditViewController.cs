@@ -524,9 +524,9 @@ namespace TogglDesktop
             comboBoxWorkspace.Text = "";
             linkAddProject.Visible = false;
             int boxHeight = panelDuration.Height*3;
-            comboBoxWorkspace.SelectedIndex = 0;
             if (comboBoxWorkspace.Items.Count > 1)
             {
+                comboBoxWorkspace.SelectedIndex = 0;
                 labelWorkspace.Visible = true;
                 comboBoxWorkspace.Visible = true;
                 boxHeight = panelDuration.Height * 4;
@@ -602,7 +602,11 @@ namespace TogglDesktop
             }
 
             bool is_public = checkBoxPublic.Checked;
-            ulong workspaceID = ((Toggl.Model)comboBoxWorkspace.Items[0]).ID;
+            ulong workspaceID = timeEntry.WID;
+            if (comboBoxWorkspace.Items.Count > 0)
+            {
+                workspaceID = ((Toggl.Model)comboBoxWorkspace.Items[0]).ID;
+            }
             if (comboBoxWorkspace.Items.Count > 1)
             {
                 workspaceID = selectedItemID(comboBoxWorkspace);
