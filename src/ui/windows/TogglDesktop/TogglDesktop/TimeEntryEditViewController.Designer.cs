@@ -50,6 +50,9 @@
             this.checkedListBoxTags = new System.Windows.Forms.CheckedListBox();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.WorkspacePanel = new System.Windows.Forms.Panel();
+            this.workspaceNameLabel = new System.Windows.Forms.Label();
+            this.WorkspaceLabel = new System.Windows.Forms.Label();
             this.panelBillable = new System.Windows.Forms.Panel();
             this.panelDuration = new System.Windows.Forms.Panel();
             this.panelDateTag = new System.Windows.Forms.Panel();
@@ -71,18 +74,15 @@
             this.projectButton = new System.Windows.Forms.Button();
             this.comboBoxProject = new TogglDesktop.CustomComboBox();
             this.comboBoxDescription = new TogglDesktop.CustomComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.workspaceNameLabel = new System.Windows.Forms.Label();
             this.statusStripLastUpdate.SuspendLayout();
             this.buttonsPanel.SuspendLayout();
             this.panelBottom.SuspendLayout();
+            this.WorkspacePanel.SuspendLayout();
             this.panelBillable.SuspendLayout();
             this.panelDuration.SuspendLayout();
             this.panelDateTag.SuspendLayout();
             this.panelStartEndTime.SuspendLayout();
             this.panelAddProject.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelDescription
@@ -314,7 +314,7 @@
             this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelBottom.Controls.Add(this.panel1);
+            this.panelBottom.Controls.Add(this.WorkspacePanel);
             this.panelBottom.Controls.Add(this.panelBillable);
             this.panelBottom.Controls.Add(this.panelDuration);
             this.panelBottom.Controls.Add(this.panelDateTag);
@@ -324,6 +324,36 @@
             this.panelBottom.Size = new System.Drawing.Size(315, 317);
             this.panelBottom.TabIndex = 3;
             this.panelBottom.TabStop = true;
+            // 
+            // WorkspacePanel
+            // 
+            this.WorkspacePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.WorkspacePanel.Controls.Add(this.workspaceNameLabel);
+            this.WorkspacePanel.Controls.Add(this.WorkspaceLabel);
+            this.WorkspacePanel.Location = new System.Drawing.Point(0, 289);
+            this.WorkspacePanel.Margin = new System.Windows.Forms.Padding(2);
+            this.WorkspacePanel.Name = "WorkspacePanel";
+            this.WorkspacePanel.Size = new System.Drawing.Size(315, 31);
+            this.WorkspacePanel.TabIndex = 9;
+            // 
+            // workspaceNameLabel
+            // 
+            this.workspaceNameLabel.AutoSize = true;
+            this.workspaceNameLabel.Location = new System.Drawing.Point(108, 10);
+            this.workspaceNameLabel.Name = "workspaceNameLabel";
+            this.workspaceNameLabel.Size = new System.Drawing.Size(91, 13);
+            this.workspaceNameLabel.TabIndex = 10;
+            this.workspaceNameLabel.Text = "Workspace name";
+            // 
+            // WorkspaceLabel
+            // 
+            this.WorkspaceLabel.AutoSize = true;
+            this.WorkspaceLabel.Location = new System.Drawing.Point(18, 10);
+            this.WorkspaceLabel.Name = "WorkspaceLabel";
+            this.WorkspaceLabel.Size = new System.Drawing.Size(65, 13);
+            this.WorkspaceLabel.TabIndex = 9;
+            this.WorkspaceLabel.Text = "Workspace:";
             // 
             // panelBillable
             // 
@@ -618,36 +648,6 @@
             this.comboBoxDescription.Leave += new System.EventHandler(this.comboBoxDescription_Leave);
             this.comboBoxDescription.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.comboBoxDescription_PreviewKeyDown);
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.workspaceNameLabel);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(0, 289);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(315, 31);
-            this.panel1.TabIndex = 9;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Workspace:";
-            // 
-            // workspaceNameLabel
-            // 
-            this.workspaceNameLabel.AutoSize = true;
-            this.workspaceNameLabel.Location = new System.Drawing.Point(108, 10);
-            this.workspaceNameLabel.Name = "workspaceNameLabel";
-            this.workspaceNameLabel.Size = new System.Drawing.Size(91, 13);
-            this.workspaceNameLabel.TabIndex = 10;
-            this.workspaceNameLabel.Text = "Workspace name";
-            // 
             // TimeEntryEditViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -675,6 +675,8 @@
             this.statusStripLastUpdate.PerformLayout();
             this.buttonsPanel.ResumeLayout(false);
             this.panelBottom.ResumeLayout(false);
+            this.WorkspacePanel.ResumeLayout(false);
+            this.WorkspacePanel.PerformLayout();
             this.panelBillable.ResumeLayout(false);
             this.panelBillable.PerformLayout();
             this.panelDuration.ResumeLayout(false);
@@ -685,8 +687,6 @@
             this.panelStartEndTime.PerformLayout();
             this.panelAddProject.ResumeLayout(false);
             this.panelAddProject.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -736,8 +736,8 @@
         private System.Windows.Forms.TextBox addClientTextBox;
         private System.Windows.Forms.LinkLabel addClientLinkLabel;
         private System.Windows.Forms.Button addClientButton;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel WorkspacePanel;
         private System.Windows.Forms.Label workspaceNameLabel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label WorkspaceLabel;
     }
 }
