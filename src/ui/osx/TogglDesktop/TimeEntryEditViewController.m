@@ -423,7 +423,7 @@ extern void *ctx;
 		[df_local setTimeZone:[NSTimeZone defaultTimeZone]];
 		[df_local setDateFormat:@"yyyy.MM.dd 'at' HH:mm:ss"];
 		NSString *localDate = [df_local stringFromDate:self.timeEntry.updatedAt];
-		NSString *updatedAt = [@"Last update " stringByAppendingString:localDate];
+		NSString *updatedAt = [@"Last update " stringByAppendingString : localDate];
 		[self.lastUpdateTextField setStringValue:updatedAt];
 		[self.lastUpdateTextField setHidden:NO];
 	}
