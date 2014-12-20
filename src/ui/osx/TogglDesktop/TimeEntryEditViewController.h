@@ -29,8 +29,24 @@
 @property IBOutlet NSButton *backButton;
 @property IBOutlet NSButton *addProjectButton;
 @property IBOutlet NSTextField *workspaceLabel;
+@property IBOutlet NSTextField *currentWorkspaceLabel;
 @property IBOutlet NSResize *resizeHandle;
 @property IBOutlet NSResize *resizeHandleLeft;
+@property (strong) IBOutlet NSBox *timeTextBox;
+@property (strong) IBOutlet NSBox *dateBox;
+@property (strong) IBOutlet NSBox *durationBox;
+@property NSPoint lastPosition;
+@property IBOutlet NSBox *projectSelectBox;
+@property IBOutlet NSBox *addProjectBox;
+@property IBOutlet NSBox *dataholderBox;
+@property IBOutlet NSTextField *projectNameTextField;
+@property IBOutlet NSCustomComboBox *workspaceSelect;
+@property IBOutlet NSCustomComboBox *clientSelect;
+@property (strong) IBOutlet NSTextField *dateTimeTextField;
+@property (strong) IBOutlet NSBox *timeEditBox;
+@property (strong) IBOutlet NSButton *addClientButton;
+@property (strong) IBOutlet NSTextField *clientNameTextField;
+@property (strong) IBOutlet NSButton *saveNewClientButton;
 - (IBAction)descriptionComboboxChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
 - (IBAction)projectSelectChanged:(id)sender;
@@ -42,27 +58,10 @@
 - (IBAction)deleteButtonClicked:(id)sender;
 - (IBAction)backButtonClicked:(id)sender;
 - (IBAction)addProjectButtonClicked:(id)sender;
-@property (strong) IBOutlet NSBox *timeTextBox;
-@property (strong) IBOutlet NSBox *dateBox;
-@property (strong) IBOutlet NSBox *durationBox;
-@property NSPoint lastPosition;
-
-// New project related stuff
-@property IBOutlet NSBox *projectSelectBox;
-@property IBOutlet NSBox *addProjectBox;
-@property IBOutlet NSBox *dataholderBox;
-@property IBOutlet NSTextField *projectNameTextField;
-@property IBOutlet NSCustomComboBox *workspaceSelect;
-@property IBOutlet NSCustomComboBox *clientSelect;
 - (IBAction)workspaceSelectChanged:(id)sender;
 - (IBAction)clientSelectChanged:(id)sender;
 - (IBAction)addClientButtonClicked:(id)sender;
 - (IBAction)saveAddClientButtonClicked:(id)sender;
-@property (strong) IBOutlet NSTextField *dateTimeTextField;
-@property (strong) IBOutlet NSBox *timeEditBox;
-@property (strong) IBOutlet NSButton *addClientButton;
-@property (strong) IBOutlet NSTextField *clientNameTextField;
-@property (strong) IBOutlet NSButton *saveNewClientButton;
 - (void)setDragHandle:(BOOL)onLeft;
 - (void)closeEdit;
 @end

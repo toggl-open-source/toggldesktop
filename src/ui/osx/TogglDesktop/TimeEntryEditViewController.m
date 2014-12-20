@@ -417,6 +417,8 @@ extern void *ctx;
 		}
 	}
 
+	self.currentWorkspaceLabel.stringValue = self.timeEntry.WorkspaceName;
+
 	if (self.timeEntry.updatedAt != nil)
 	{
 		NSDateFormatter *df_local = [[NSDateFormatter alloc] init];
