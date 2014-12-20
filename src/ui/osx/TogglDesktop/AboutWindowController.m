@@ -36,9 +36,25 @@ extern void *ctx;
 	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
 	free(str);
 
-	[[SUUpdater sharedUpdater] setDelegate:self];
+	self.timer = [NSTimer
+				  scheduledTimerWithTimeInterval:1.0
+										  target:self
+										selector:@selector(timerFired:)
+										userInfo:nil
+										 repeats:YES];
 
-	[self checkForUpdates];
+	if (![[SUUpdater sharedUpdater] updateInProgress])
+	{
+		[self checkForUpdates];
+	}
+
+	[self displayUpdateStatus];
+}
+
+- (void)timerFired:(NSTimer *)timer
+{
+	NSLog(@"update in progress %d",
+		  [[SUUpdater sharedUpdater] updateInProgress]);
 }
 
 - (void)checkForUpdates
@@ -50,6 +66,32 @@ extern void *ctx;
 	if ([env isEqualToString:@"production"])
 	{
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+	}
+}
+
+- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
+{
+	NSLog(@"update found: %@", update.displayVersionString);
+
+	self.updateStatus =
+		[NSString stringWithFormat:@"Update found: %@. Downloading..",
+		 update.displayVersionString];
+
+	[self displayUpdateStatus];
+}
+
+- (void)displayUpdateStatus
+{
+	NSLog(@"automaticallyDownloadsUpdates=%d", [[SUUpdater sharedUpdater] automaticallyDownloadsUpdates]);
+
+	if (self.updateStatus)
+	{
+		self.updateStatusTextField.stringValue = self.updateStatus;
+		[self.updateStatusTextField setHidden:NO];
+	}
+	else
+	{
+		[self.updateStatusTextField setHidden:YES];
 	}
 }
 
@@ -71,6 +113,21 @@ extern void *ctx;
 	[Utils setUpdaterChannel:updateChannel];
 
 	[self checkForUpdates];
+}
+
+- (void)updaterDidNotFindUpdate:(SUUpdater *)update
+{
+	NSLog(@"No update found");
+}
+
+- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update
+{
+	NSLog(@"Will install update %@", update.displayVersionString);
+}
+
+- (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
+{
+	NSLog(@"Update check failed with error %@", error);
 }
 
 @end

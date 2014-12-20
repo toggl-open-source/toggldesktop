@@ -13,8 +13,11 @@
 @property IBOutlet NSTextField *appnameTextField;
 @property IBOutlet NSTextField *versionTextField;
 @property IBOutlet NSTextView *creditsTextView;
+@property IBOutlet NSTextField *updateStatusTextField;
 @property IBOutlet NSComboBox *updateChannelComboBox;
 @property BOOL windowHasLoad;
+@property NSString *updateStatus;
+@property NSTimer *timer;
 - (IBAction)updateChannelSelected:(id)sender;
 - (BOOL)isVisible;
 - (void)checkForUpdates;

@@ -231,6 +231,8 @@ void *ctx;
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
 
+	[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
+
 	if ([self.environment isEqualToString:@"production"])
 	{
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
