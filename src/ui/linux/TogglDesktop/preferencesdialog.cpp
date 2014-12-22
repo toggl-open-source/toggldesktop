@@ -61,7 +61,7 @@ void PreferencesDialog::on_proxyPassword_editingFinished() {
 }
 
 void PreferencesDialog::on_idleDetection_clicked(bool checked) {
-    setSettings();
+    TogglApi::instance->setSettingsUseIdleDetection(ui->idleDetection->isChecked());
 }
 
 void PreferencesDialog::on_recordTimeline_clicked(bool checked) {
@@ -69,7 +69,7 @@ void PreferencesDialog::on_recordTimeline_clicked(bool checked) {
 }
 
 void PreferencesDialog::on_remindToTrackTime_clicked(bool checked) {
-    setSettings();
+    TogglApi::instance->setSettingsIdleMinutes(ui->remindToTrackTime->isChecked());
 }
 
 bool PreferencesDialog::setProxySettings() {
@@ -80,16 +80,10 @@ bool PreferencesDialog::setProxySettings() {
             ui->proxyPassword->text());
 }
 
-bool PreferencesDialog::setSettings() {
-    return TogglApi::instance->setSettings(ui->idleDetection->isChecked(),
-                                           ui->remindToTrackTime->isChecked(),
-                                           ui->idleMinutes->text().toInt());
-}
-
 void PreferencesDialog::on_useProxy_clicked(bool checked) {
     setProxySettings();
 }
 
 void PreferencesDialog::on_idleMinutes_editingFinished() {
-    setSettings();
+    TogglApi::instance->setSettingsIdleMinutes(ui->idleMinutes->text().toInt());
 }

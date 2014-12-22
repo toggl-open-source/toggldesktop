@@ -303,17 +303,24 @@ void TogglApi::setIdleSeconds(u_int64_t idleSeconds) {
     toggl_set_idle_seconds(ctx, idleSeconds);
 }
 
-bool TogglApi::setSettings(const bool useIdleDetection,
-                           const bool reminder,
-                           const uint64_t idleMinutes) {
-    return toggl_set_settings(ctx,
-                              useIdleDetection,
-                              false,
-                              false,
-                              false,
-                              reminder,
-                              idleMinutes,
-                              false);
+bool TogglApi::setSettingsUseIdleDetection(const bool useIdleDetection) {
+    return toggl_set_settings_use_idle_detection(ctx,
+                              useIdleDetection);
+}
+
+bool TogglApi::setSettingsReminder(const bool reminder) {
+    return toggl_set_settings_reminder(ctx,
+                              reminder);
+}
+
+bool TogglApi::setSettingsIdleMinutes(const uint64_t idleMinutes) {
+    return toggl_set_settings_idle_minutes(ctx,
+                              idleMinutes);
+}
+
+bool TogglApi::setSettingsReminderMinutes(const uint64_t reminderMinutes) {
+    return toggl_set_settings_reminder_minutes(ctx,
+                              reminderMinutes);
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
