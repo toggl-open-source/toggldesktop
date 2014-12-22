@@ -74,8 +74,6 @@ class User : public BaseModel {
         return RunningTimeEntry() != 0;
     }
 
-    bool HasTrackedTimeToday() const;
-
     TimeEntry *Start(
         const std::string description,
         const std::string duration,

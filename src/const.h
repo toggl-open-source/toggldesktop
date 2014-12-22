@@ -11,7 +11,6 @@
 #define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
 #define kRequestThrottleSeconds 2
-#define kReminderThrottleSeconds 600
 
 #define kAutocompleteItemTE  0
 #define kAutocompleteItemTask 1

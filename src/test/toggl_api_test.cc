@@ -315,10 +315,10 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_FALSE(testing::testresult::settings.reminder);
 
     ASSERT_TRUE(toggl_set_settings_idle_minutes(app.ctx(), 0));
-    ASSERT_EQ(Poco::UInt64(0), testing::testresult::settings.idle_minutes);
+    ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.idle_minutes);
 
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 0));
-    ASSERT_EQ(Poco::UInt64(0), testing::testresult::settings.reminder_minutes);
+    ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.reminder_minutes);
 
     // set to true / not null
 

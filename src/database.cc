@@ -426,10 +426,15 @@ error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
 
     poco_check_ptr(session_);
 
+    Poco::UInt64 new_value = idle_minutes;
+    if (new_value < 1) {
+        new_value = 1;
+    }
+
     try {
         *session_ << "update settings set "
                   "idle_minutes = :idle_minutes ",
-                  Poco::Data::use(idle_minutes),
+                  Poco::Data::use(new_value),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -467,10 +472,15 @@ error Database::SetSettingsReminderMinutes(
 
     poco_check_ptr(session_);
 
+    Poco::UInt64 new_value = reminder_minutes;
+    if (new_value < 1) {
+        new_value = 1;
+    }
+
     try {
         *session_ << "update settings set "
                   "reminder_minutes = :reminder_minutes ",
-                  Poco::Data::use(reminder_minutes),
+                  Poco::Data::use(new_value),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();

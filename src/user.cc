@@ -362,18 +362,6 @@ TimeEntry *User::RunningTimeEntry() const {
     return 0;
 }
 
-bool User::HasTrackedTimeToday() const {
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
-        if ((*it)->IsToday()) {
-            return true;
-        }
-    }
-    return false;
-}
-
 template<typename T>
 void User::CollectPushableModels(
     const std::vector<T *> list,

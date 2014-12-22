@@ -64,8 +64,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 
     startPeriodicSync();
 
-    remindToTrackTime();
-
     if (!ui_updater_.isRunning()) {
         ui_updater_.start();
     }
@@ -995,6 +993,9 @@ _Bool Context::SetSettingsReminder(const _Bool reminder) {
     if (err != noError) {
         return displayError(err);
     }
+
+    remindToTrackTime();
+
     return DisplaySettings(false);
 }
 
@@ -1019,6 +1020,9 @@ _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     if (err != noError) {
         return displayError(err);
     }
+
+    remindToTrackTime();
+
     return DisplaySettings(false);
 }
 
@@ -1248,6 +1252,8 @@ void Context::setUser(User *value, const bool user_logged_in) {
     if (!ui_updater_.isRunning()) {
         ui_updater_.start();
     }
+
+    remindToTrackTime();
 }
 
 _Bool Context::SetLoggedInUserFromJSON(
@@ -2124,28 +2130,6 @@ void Context::SetOnline() {
 }
 
 void Context::remindToTrackTime() {
-    next_reminder_at_ =
-        postpone(kReminderThrottleSeconds * kOneSecondInMicros);
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-    timer_.schedule(ptask, next_reminder_at_);
-}
-
-void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_reminder_at_,
-                    kReminderThrottleSeconds * kOneSecondInMicros)) {
-        logger().debug("onRemind postponed");
-        return;
-    }
-    logger().debug("onRemind executing");
-
-    if (!user_) {
-        logger().warning("User logged out, cannot remind");
-        return;
-    }
-
     Settings settings;
     if (!LoadSettings(&settings)) {
         logger().error("Could not load settings");
@@ -2157,13 +2141,41 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    if (user_ && user_->RunningTimeEntry()) {
-        logger().debug("User is already tracking time, no need to remind");
+    next_reminder_at_ =
+        postpone((settings.reminder_minutes * 60) * kOneSecondInMicros);
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);
+
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_reminder_at_);
+}
+
+void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
+    Settings settings;
+    if (!LoadSettings(&settings)) {
+        logger().error("Could not load settings");
         return;
     }
 
-    if (user_ && user_->HasTrackedTimeToday()) {
-        logger().debug("Already tracked time today, no need to remind");
+    if (!settings.reminder) {
+        logger().debug("Reminder is not enabled by user");
+        return;
+    }
+
+    if (isPostponed(next_reminder_at_,
+                    (settings.reminder_minutes * 60) * kOneSecondInMicros)) {
+        logger().debug("onRemind postponed");
+        return;
+    }
+    logger().debug("onRemind executing");
+
+    if (!user_) {
+        logger().warning("User logged out, cannot remind");
+        return;
+    }
+
+    if (user_ && user_->RunningTimeEntry()) {
+        logger().debug("User is already tracking time, no need to remind");
         return;
     }
 

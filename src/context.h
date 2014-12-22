@@ -191,6 +191,7 @@ class Context : public TimelineDatasource {
 
     _Bool SaveUpdateChannel(
         const std::string channel);
+
     _Bool UpdateChannel(
         std::string *update_channel);
 
@@ -200,12 +201,15 @@ class Context : public TimelineDatasource {
         const std::string project_name,
         const _Bool is_private,
         Project **result);
+
     _Bool CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 
     void SetSleep();
+
     void SetWake();
+
     void SetOnline();
 
     _Bool OpenReportsInBrowser();
