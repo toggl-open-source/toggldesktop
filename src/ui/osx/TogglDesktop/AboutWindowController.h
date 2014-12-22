@@ -17,7 +17,6 @@
 @property IBOutlet NSComboBox *updateChannelComboBox;
 @property BOOL windowHasLoad;
 @property NSString *updateStatus;
-@property NSTimer *timer;
 - (IBAction)updateChannelSelected:(id)sender;
 - (BOOL)isVisible;
 - (void)checkForUpdates;

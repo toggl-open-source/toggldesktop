@@ -36,25 +36,12 @@ extern void *ctx;
 	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
 	free(str);
 
-	self.timer = [NSTimer
-				  scheduledTimerWithTimeInterval:1.0
-										  target:self
-										selector:@selector(timerFired:)
-										userInfo:nil
-										 repeats:YES];
-
 	if (![[SUUpdater sharedUpdater] updateInProgress])
 	{
 		[self checkForUpdates];
 	}
 
 	[self displayUpdateStatus];
-}
-
-- (void)timerFired:(NSTimer *)timer
-{
-	NSLog(@"update in progress %d",
-		  [[SUUpdater sharedUpdater] updateInProgress]);
 }
 
 - (void)checkForUpdates
