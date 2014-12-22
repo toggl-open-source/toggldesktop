@@ -469,7 +469,7 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
-	if (notification != nil)
+	if (notification != nil && !self.timeEntrypopover.shown)
 	{
 		[self clearLastSelectedEntry];
 		self.lastSelectedRowIndex = 0;
