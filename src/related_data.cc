@@ -224,6 +224,16 @@ std::vector<AutocompleteItem> RelatedData::TimeEntryAutocompleteItems() {
     return result;
 }
 
+std::vector<AutocompleteItem> RelatedData::MinitimerAutocompleteItems() {
+    std::vector<AutocompleteItem> result;
+    std::set<std::string> unique_names;
+    timeEntryAutocompleteItems(&unique_names, &result);
+    taskAutocompleteItems(&unique_names, 0, &result);
+    projectAutocompleteItems(&unique_names, 0, &result);
+    std::sort(result.begin(), result.end(), CompareAutocompleteItems);
+    return result;
+}
+
 std::vector<AutocompleteItem> RelatedData::ProjectAutocompleteItems() {
     std::vector<AutocompleteItem> result;
     std::set<std::string> unique_names;

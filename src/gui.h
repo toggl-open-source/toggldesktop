@@ -37,7 +37,8 @@ class GUI {
     , on_display_time_entry_editor_(0)
     , on_display_settings_(0)
     , on_display_timer_state_(0)
-    , on_display_idle_notification_(0) {}
+    , on_display_idle_notification_(0)
+    , on_display_mini_timer_autocomplete_(0) {}
 
     ~GUI() {}
 
@@ -51,6 +52,7 @@ class GUI {
                        const _Bool is_available,
                        const std::string url,
                        const std::string version);
+    void DisplayMinitimerAutocomplete(std::vector<toggl::AutocompleteItem> *);
     void DisplayTimeEntryAutocomplete(std::vector<toggl::AutocompleteItem> *);
     void DisplayProjectAutocomplete(std::vector<toggl::AutocompleteItem> *);
     void DisplayTimeEntryList(const _Bool open,
@@ -145,6 +147,10 @@ class GUI {
         on_display_idle_notification_  = cb;
     }
 
+    void OnDisplayMinitimerAutocomplete(TogglDisplayAutocomplete cb) {
+        on_display_mini_timer_autocomplete_ = cb;
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -165,6 +171,7 @@ class GUI {
     TogglDisplaySettings on_display_settings_;
     TogglDisplayTimerState on_display_timer_state_;
     TogglDisplayIdleNotification on_display_idle_notification_;
+    TogglDisplayAutocomplete on_display_mini_timer_autocomplete_;
 
     Poco::Logger &logger() const {
         return Poco::Logger::get("ui");

@@ -277,6 +277,10 @@ extern "C" {
         void *context,
         TogglDisplayTimeEntryList);
 
+    TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
+        void *context,
+        TogglDisplayAutocomplete);
+
     TOGGL_EXPORT void toggl_on_time_entry_autocomplete(
         void *context,
         TogglDisplayAutocomplete);

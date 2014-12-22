@@ -17,6 +17,7 @@ extern NSString *const kCommandContinue;
 extern NSString *const kDisplayApp;
 extern NSString *const kDisplayTimeEntryList;
 extern NSString *const kDisplayTimeEntryAutocomplete;
+extern NSString *const kDisplayMinitimerAutocomplete;
 extern NSString *const kDisplayProjectAutocomplete;
 extern NSString *const kDisplayClientSelect;
 extern NSString *const kDisplayWorkspaceSelect;

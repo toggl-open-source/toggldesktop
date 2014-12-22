@@ -882,6 +882,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_reminder(ctx, on_reminder);
 	toggl_on_time_entry_list(ctx, on_time_entry_list);
 	toggl_on_time_entry_autocomplete(ctx, on_time_entry_autocomplete);
+	toggl_on_mini_timer_autocomplete(ctx, on_mini_timer_autocomplete);
 	toggl_on_project_autocomplete(ctx, on_project_autocomplete);
 	toggl_on_workspace_select(ctx, on_workspace_select);
 	toggl_on_client_select(ctx, on_client_select);
@@ -1167,18 +1168,14 @@ void on_time_entry_list(const _Bool open,
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)
 {
-	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
-	TogglAutocompleteView *record = first;
-
-	while (record)
-	{
-		AutocompleteItem *item = [[AutocompleteItem alloc] init];
-		[item load:record];
-		[viewitems addObject:item];
-		record = record->Next;
-	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryAutocomplete
-														object:viewitems];
+														object:[AutocompleteItem loadAll:first]];
+}
+
+void on_mini_timer_autocomplete(TogglAutocompleteView *first)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayMinitimerAutocomplete
+														object:[AutocompleteItem loadAll:first]];
 }
 
 void on_project_autocomplete(TogglAutocompleteView *first)

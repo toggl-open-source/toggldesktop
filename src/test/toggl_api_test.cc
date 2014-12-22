@@ -138,6 +138,9 @@ void on_time_entry_list(
 void on_time_entry_autocomplete(TogglAutocompleteView *first) {
 }
 
+void on_mini_timer_autocomplete(TogglAutocompleteView *first) {
+}
+
 void on_project_autocomplete(TogglAutocompleteView *first) {
     testing::testresult::projects.clear();
     TogglAutocompleteView *it = first;
@@ -260,6 +263,7 @@ class App {
         toggl_on_reminder(ctx_, on_reminder);
         toggl_on_time_entry_list(ctx_, on_time_entry_list);
         toggl_on_time_entry_autocomplete(ctx_, on_time_entry_autocomplete);
+        toggl_on_mini_timer_autocomplete(ctx_, on_mini_timer_autocomplete);
         toggl_on_project_autocomplete(ctx_, on_project_autocomplete);
         toggl_on_workspace_select(ctx_, on_workspace_select);
         toggl_on_client_select(ctx_, on_client_select);
@@ -311,10 +315,10 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_FALSE(testing::testresult::settings.reminder);
 
     ASSERT_TRUE(toggl_set_settings_idle_minutes(app.ctx(), 0));
-    ASSERT_EQ(0, testing::testresult::settings.idle_minutes);
+    ASSERT_EQ(Poco::UInt64(0), testing::testresult::settings.idle_minutes);
 
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 0));
-    ASSERT_EQ(0, testing::testresult::settings.reminder_minutes);
+    ASSERT_EQ(Poco::UInt64(0), testing::testresult::settings.reminder_minutes);
 
     // set to true / not null
 
@@ -334,10 +338,11 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_TRUE(testing::testresult::settings.reminder);
 
     ASSERT_TRUE(toggl_set_settings_idle_minutes(app.ctx(), 123));
-    ASSERT_EQ(123, testing::testresult::settings.idle_minutes);
+    ASSERT_EQ(Poco::UInt64(123), testing::testresult::settings.idle_minutes);
 
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 222));
-    ASSERT_EQ(222, testing::testresult::settings.reminder_minutes);
+    ASSERT_EQ(Poco::UInt64(222),
+              testing::testresult::settings.reminder_minutes);
 }
 
 TEST(TogglApiTest, toggl_set_proxy_settings) {

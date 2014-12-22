@@ -103,6 +103,8 @@ class RelatedData {
 
     std::vector<AutocompleteItem> TimeEntryAutocompleteItems();
 
+    std::vector<AutocompleteItem> MinitimerAutocompleteItems();
+
     std::vector<AutocompleteItem> ProjectAutocompleteItems();
 
     std::vector<AutocompleteItem> StructuredAutocompleteItems();

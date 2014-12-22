@@ -38,7 +38,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.autocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
+		self.autocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimerState:)

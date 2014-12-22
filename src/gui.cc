@@ -105,6 +105,9 @@ error GUI::findMissingCallbacks() {
     if (!on_display_idle_notification_) {
         return error("!on_display_idle_notification_");
     }
+    if (!on_display_mini_timer_autocomplete_) {
+        return error("!on_display_mini_timer_autocomplete_");
+    }
     return noError;
 }
 
@@ -153,10 +156,8 @@ void GUI::DisplayUpdate(const _Bool open,
     free(view.Version);
 }
 
-void GUI::DisplayTimeEntryAutocomplete(
+TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::AutocompleteItem> *items) {
-    logger().debug("DisplayTimeEntryAutocomplete");
-
     TogglAutocompleteView *first = 0;
     for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
         items->rbegin(); it != items->rend(); it++) {
@@ -164,7 +165,24 @@ void GUI::DisplayTimeEntryAutocomplete(
         item->Next = first;
         first = item;
     }
+    return first;
+}
+
+void GUI::DisplayTimeEntryAutocomplete(
+    std::vector<toggl::AutocompleteItem> *items) {
+    logger().debug("DisplayTimeEntryAutocomplete");
+
+    TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_time_entry_autocomplete_(first);
+    autocomplete_item_clear(first);
+}
+
+void GUI::DisplayMinitimerAutocomplete(
+    std::vector<toggl::AutocompleteItem> *items) {
+    logger().debug("DisplayMinitimerAutocomplete");
+
+    TogglAutocompleteView *first = autocomplete_list_init(items);
+    on_display_mini_timer_autocomplete_(first);
     autocomplete_item_clear(first);
 }
 
@@ -172,13 +190,7 @@ void GUI::DisplayProjectAutocomplete(
     std::vector<toggl::AutocompleteItem> *items) {
     logger().debug("DisplayProjectAutocomplete");
 
-    TogglAutocompleteView *first = 0;
-    for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
-        items->rbegin(); it != items->rend(); it++) {
-        TogglAutocompleteView *item = autocomplete_item_init(*it);
-        item->Next = first;
-        first = item;
-    }
+    TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_project_autocomplete_(first);
     autocomplete_item_clear(first);
 }

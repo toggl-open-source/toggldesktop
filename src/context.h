@@ -298,6 +298,7 @@ class Context : public TimelineDatasource {
                                 TimeEntry *te,
                                 const std::string focused_field_name);
     void displayTimeEntryAutocomplete();
+    void displayMinitimerAutocomplete();
     void displayProjectAutocomplete();
     void displayWorkspaceSelect();
     void displayClientSelect();

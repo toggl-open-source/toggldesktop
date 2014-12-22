@@ -172,6 +172,7 @@ void Context::displayUI() {
     displayClientSelect();
     displayTags();
     displayTimeEntryAutocomplete();
+    displayMinitimerAutocomplete();
     displayProjectAutocomplete();
 }
 
@@ -233,8 +234,10 @@ error Context::save(const bool push_changes) {
 }
 
 void Context::updateUI(std::vector<ModelChange> *changes) {
+    // Assume nothing needs to be updated
     bool display_time_entries(false);
     bool display_time_entry_autocomplete(false);
+    bool display_mini_timer_autocomplete(false);
     bool display_project_autocomplete(false);
     bool display_client_select(false);
     bool display_tags(false);
@@ -242,25 +245,34 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     bool display_timer_state(false);
     bool display_time_entry_editor(false);
     bool open_time_entry_list(false);
+
+    // Check what needs to be updated in UI
     for (std::vector<ModelChange>::const_iterator it =
         changes->begin();
             it != changes->end();
             it++) {
         ModelChange ch = *it;
+
         if (ch.ModelType() == "tag") {
             display_tags = true;
         }
+
         if (ch.ModelType() != "tag" && ch.ModelType() != "user") {
             display_time_entry_autocomplete = true;
             display_time_entries = true;
+            display_mini_timer_autocomplete = true;
         }
+
         if (ch.ModelType() != "tag" && ch.ModelType() != "user"
                 && ch.ModelType() != "time_entry") {
             display_project_autocomplete = true;
         }
+
         if (ch.ModelType() == "client" || ch.ModelType() == "workspace") {
             display_client_select = true;
         }
+
+        // Check if time entry editor needs to be updated
         if (ch.ModelType() == "time_entry") {
             display_timer_state = true;
             // If time entry was edited, check further
@@ -275,6 +287,8 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
             }
         }
     }
+
+    // Apply updates to UI
     if (display_time_entry_editor) {
         TimeEntry *te = 0;
         if (user_) {
@@ -289,6 +303,9 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     }
     if (display_time_entry_autocomplete) {
         displayTimeEntryAutocomplete();
+    }
+    if (display_mini_timer_autocomplete) {
+        displayMinitimerAutocomplete();
     }
     if (display_project_autocomplete) {
         displayProjectAutocomplete();
@@ -312,6 +329,14 @@ void Context::displayTimeEntryAutocomplete() {
         std::vector<AutocompleteItem> list =
             user_->related.TimeEntryAutocompleteItems();
         UI()->DisplayTimeEntryAutocomplete(&list);
+    }
+}
+
+void Context::displayMinitimerAutocomplete() {
+    if (user_) {
+        std::vector<AutocompleteItem> list =
+            user_->related.MinitimerAutocompleteItems();
+        UI()->DisplayMinitimerAutocomplete(&list);
     }
 }
 

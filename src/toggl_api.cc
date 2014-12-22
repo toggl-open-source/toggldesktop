@@ -732,6 +732,12 @@ void toggl_on_time_entry_list(
     app(context)->UI()->OnDisplayTimeEntryList(cb);
 }
 
+void toggl_on_mini_timer_autocomplete(
+    void *context,
+    TogglDisplayAutocomplete cb) {
+    app(context)->UI()->OnDisplayMinitimerAutocomplete(cb);
+}
+
 void toggl_on_time_entry_autocomplete(
     void *context,
     TogglDisplayAutocomplete cb) {
