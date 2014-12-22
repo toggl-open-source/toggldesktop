@@ -267,7 +267,8 @@ error Database::LoadSettings(Settings *settings) {
 
     try {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
-                  "on_top, reminder, idle_minutes, focus_on_shortcut "
+                  "on_top, reminder, idle_minutes, focus_on_shortcut, "
+                  "reminder_minutes "
                   "from settings",
                   Poco::Data::into(settings->use_idle_detection),
                   Poco::Data::into(settings->menubar_timer),
@@ -276,6 +277,7 @@ error Database::LoadSettings(Settings *settings) {
                   Poco::Data::into(settings->reminder),
                   Poco::Data::into(settings->idle_minutes),
                   Poco::Data::into(settings->focus_on_shortcut),
+                  Poco::Data::into(settings->reminder_minutes),
                   Poco::Data::limit(1),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
@@ -332,7 +334,8 @@ error Database::SaveSettings(const Settings settings) {
                   "on_top = :on_top, "
                   "reminder = :reminder, "
                   "idle_minutes = :idle_minutes, "
-                  "focus_on_shortcut = :focus_on_shortcut",
+                  "focus_on_shortcut = :focus_on_shortcut, "
+                  "reminder_minutes = :reminder_minutes ",
                   Poco::Data::use(settings.use_idle_detection),
                   Poco::Data::use(settings.menubar_timer),
                   Poco::Data::use(settings.dock_icon),
@@ -340,6 +343,7 @@ error Database::SaveSettings(const Settings settings) {
                   Poco::Data::use(settings.reminder),
                   Poco::Data::use(settings.idle_minutes),
                   Poco::Data::use(settings.focus_on_shortcut),
+                  Poco::Data::use(settings.reminder_minutes),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2044,11 +2048,7 @@ error Database::SaveUser(
     return noError;
 }
 
-error Database::initialize_tables() {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
+error Database::ensureMigrationTable() {
     std::string table_name;
     // Check if we have migrations table
     *session_ <<
@@ -2079,6 +2079,19 @@ error Database::initialize_tables() {
         if (err != noError) {
             return err;
         }
+    }
+
+    return noError;
+}
+
+error Database::initialize_tables() {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    error err = ensureMigrationTable();
+    if (err != noError) {
+        return err;
     }
 
     err = migrate("users",
@@ -2551,6 +2564,13 @@ error Database::initialize_tables() {
     err = migrate("settings.focus_on_shortcut",
                   "ALTER TABLE settings "
                   "ADD COLUMN focus_on_shortcut INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.reminder_minutes",
+                  "ALTER TABLE settings "
+                  "ADD COLUMN reminder_minutes INTEGER NOT NULL DEFAULT 10;");
     if (err != noError) {
         return err;
     }

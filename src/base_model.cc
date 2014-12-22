@@ -147,6 +147,8 @@ error BaseModel::ApplyBatchUpdateResult(
         return err;
     }
 
+    SetError(noError);
+
     return LoadFromDataString(update->Body);
 }
 

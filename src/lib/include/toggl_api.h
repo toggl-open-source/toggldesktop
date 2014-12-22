@@ -67,6 +67,9 @@ extern "C" {
         _Bool CanSeeBillable;
         uint64_t DefaultWID;
         char_t *WorkspaceName;
+        // If syncing a time entry ended with an error,
+        // the error is attached to the time entry
+        char_t *Error;
         // Next in list
         void *Next;
     } TogglTimeEntryView;
@@ -110,6 +113,7 @@ extern "C" {
         _Bool RecordTimeline;
         uint64_t IdleMinutes;
         _Bool FocusOnShortcut;
+        uint64_t ReminderMinutes;
     } TogglSettingsView;
 
     typedef struct {
@@ -430,7 +434,8 @@ extern "C" {
         const _Bool on_top,
         const _Bool reminder,
         const uint64_t idle_minutes,
-        const _Bool focus_on_shortcut);
+        const _Bool focus_on_shortcut,
+        const uint64_t reminder_minutes);
 
     TOGGL_EXPORT _Bool toggl_set_proxy_settings(
         void *context,

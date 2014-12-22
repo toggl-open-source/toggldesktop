@@ -16,7 +16,8 @@ class Settings {
     , on_top(false)
     , reminder(false)
     , idle_minutes(0)
-    , focus_on_shortcut(false) {}
+    , focus_on_shortcut(false)
+    , reminder_minutes(0) {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -26,6 +27,7 @@ class Settings {
     bool reminder;
     Poco::UInt64 idle_minutes;
     bool focus_on_shortcut;
+    Poco::UInt64 reminder_minutes;
 };
 
 }  // namespace toggl

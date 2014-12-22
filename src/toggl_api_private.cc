@@ -217,6 +217,12 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->CanSeeBillable = false;
     view_item->DefaultWID = 0;
 
+    if (te->Error() != toggl::noError) {
+        view_item->Error = copy_string(te->Error());
+    } else {
+        view_item->Error = 0;
+    }
+
     view_item->Next = 0;
 
     return view_item;
@@ -269,6 +275,11 @@ void time_entry_view_item_clear(
     free(item->EndTimeString);
     item->EndTimeString = 0;
 
+    if (item->Error) {
+        free(item->Error);
+        item->Error = 0;
+    }
+
     if (item->Next) {
         TogglTimeEntryView *next =
             reinterpret_cast<TogglTimeEntryView *>(item->Next);
@@ -302,6 +313,8 @@ TogglSettingsView *settings_view_item_init(
     view->ProxyPort = proxy.port;
     view->ProxyUsername = copy_string(proxy.username);
     view->ProxyPassword = copy_string(proxy.password);
+
+    view->ReminderMinutes = settings.reminder_minutes;
 
     return view;
 }

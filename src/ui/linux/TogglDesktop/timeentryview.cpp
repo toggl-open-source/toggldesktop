@@ -35,6 +35,7 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->CanAddProjects = view->CanAddProjects;
     result->DefaultWID = view->DefaultWID;
     result->WorkspaceName = QString(view->WorkspaceName);
+    result->Error = QString(view->Error);
     return result;
 }
 

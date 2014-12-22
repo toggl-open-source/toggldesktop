@@ -23,4 +23,5 @@
 @property BOOL timeline_recording_enabled;
 @property int idle_minutes;
 @property BOOL focus_on_shortcut;
+@property int reminder_minutes;
 @end
