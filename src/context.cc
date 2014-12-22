@@ -933,8 +933,64 @@ _Bool Context::LoadSettings(Settings *settings) {
     return displayError(db()->LoadSettings(settings));
 }
 
-_Bool Context::SetSettings(const Settings settings) {
-    error err = db()->SaveSettings(settings);
+_Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
+    error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
+_Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
+    error err = db()->SetSettingsMenubarTimer(menubar_timer);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
+_Bool Context::SetSettingsDockIcon(const _Bool dock_icon) {
+    error err = db()->SetSettingsDockIcon(dock_icon);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
+_Bool Context::SetSettingsOnTop(const _Bool on_top) {
+    error err = db()->SetSettingsOnTop(on_top);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
+_Bool Context::SetSettingsReminder(const _Bool reminder) {
+    error err = db()->SetSettingsReminder(reminder);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
+_Bool Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
+    error err = db()->SetSettingsIdleMinutes(idle_minutes);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
+_Bool Context::SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut) {
+    error err = db()->SetSettingsFocusOnShortcut(focus_on_shortcut);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
+_Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
+    error err = db()->SetSettingsReminderMinutes(reminder_minutes);
     if (err != noError) {
         return displayError(err);
     }

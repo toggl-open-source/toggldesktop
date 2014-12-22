@@ -77,7 +77,21 @@ class Context : public TimelineDatasource {
 
     _Bool LoadSettings(Settings *settings);
 
-    _Bool SetSettings(const Settings);
+    _Bool SetSettingsUseIdleDetection(const _Bool use_idle_detection);
+
+    _Bool SetSettingsMenubarTimer(const _Bool menubar_timer);
+
+    _Bool SetSettingsDockIcon(const _Bool dock_icon);
+
+    _Bool SetSettingsOnTop(const _Bool on_top);
+
+    _Bool SetSettingsReminder(const _Bool reminder);
+
+    _Bool SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
+
+    _Bool SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut);
+
+    _Bool SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
     _Bool ProxySettings(bool *use_proxy, Proxy *proxy);
 

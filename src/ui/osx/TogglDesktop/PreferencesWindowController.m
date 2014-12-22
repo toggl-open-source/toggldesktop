@@ -52,28 +52,28 @@ extern void *ctx;
 
 - (IBAction)useIdleDetectionButtonChanged:(id)sender
 {
-	[self saveSettings];
+	toggl_set_settings_use_idle_detection(ctx,
+										  [Utils stateToBool:[self.useIdleDetectionButton state]]);
+
 	self.idleMinutesTextField.enabled = [Utils stateToBool:self.useIdleDetectionButton.state];
 }
 
 - (IBAction)ontopCheckboxChanged:(id)sender
 {
-	[self saveSettings];
+	toggl_set_settings_on_top(ctx,
+							  [Utils stateToBool:[self.ontopCheckbox state]]);
 }
 
 - (IBAction)reminderCheckboxChanged:(id)sender
 {
-	[self saveSettings];
+	toggl_set_settings_reminder(ctx,
+								[Utils stateToBool:[self.reminderCheckbox state]]);
 }
 
 - (IBAction)focusOnShortcutCheckboxChanged:(id)sender
 {
-	[self saveSettings];
-}
-
-- (IBAction)ignoreCertCheckboxChanged:(id)sender
-{
-	[self saveSettings];
+	toggl_set_settings_focus_on_shortcut(ctx,
+										 [Utils stateToBool:[self.focusOnShortcutCheckbox state]]);
 }
 
 - (IBAction)hostTextFieldChanged:(id)sender
@@ -94,24 +94,6 @@ extern void *ctx;
 - (IBAction)passwordTextFieldChanged:(id)sender
 {
 	[self saveProxySettings];
-}
-
-- (void)saveSettings
-{
-	NSLog(@"saveSettings");
-
-	long idleMinutes = [self.idleMinutesTextField.stringValue intValue];
-	long reminderMinutes = [self.reminderMinutesTextField.stringValue intValue];
-
-	toggl_set_settings(ctx,
-					   [Utils stateToBool:[self.useIdleDetectionButton state]],
-					   [Utils stateToBool:[self.menubarTimerCheckbox state]],
-					   [Utils stateToBool:[self.dockIconCheckbox state]],
-					   [Utils stateToBool:[self.ontopCheckbox state]],
-					   [Utils stateToBool:[self.reminderCheckbox state]],
-					   idleMinutes,
-					   [Utils stateToBool:[self.focusOnShortcutCheckbox state]],
-					   reminderMinutes);
 }
 
 - (void)saveProxySettings
@@ -140,12 +122,14 @@ extern void *ctx;
 
 - (IBAction)menubarTimerCheckboxChanged:(id)sender
 {
-	[self saveSettings];
+	toggl_set_settings_menubar_timer(ctx,
+									 [Utils stateToBool:[self.menubarTimerCheckbox state]]);
 }
 
 - (IBAction)dockIconCheckboxChanged:(id)sender
 {
-	[self saveSettings];
+	toggl_set_settings_dock_icon(ctx,
+								 [Utils stateToBool:[self.dockIconCheckbox state]]);
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -206,12 +190,14 @@ extern void *ctx;
 
 - (IBAction)idleMinutesChange:(id)sender
 {
-	[self saveSettings];
+	toggl_set_settings_idle_minutes(ctx,
+									[self.idleMinutesTextField.stringValue intValue]);
 }
 
 - (IBAction)reminderMinutesChanged:(id)sender
 {
-	[self saveSettings];
+	toggl_set_settings_reminder_minutes(ctx,
+										[self.reminderMinutesTextField.stringValue intValue]);
 }
 
 @end

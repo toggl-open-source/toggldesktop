@@ -7,7 +7,6 @@
 
 #include "./lib/include/toggl_api.h"
 #include "./toggl_api_private.h"
-#include "./database.h"
 #include "./user.h"
 #include "./https_client.h"
 #include "./websocket_client.h"
@@ -70,29 +69,53 @@ void toggl_context_clear(void *context) {
     delete app(context);
 }
 
-_Bool toggl_set_settings(
+_Bool toggl_set_settings_use_idle_detection(
     void *context,
-    const _Bool use_idle_detection,
-    const _Bool menubar_timer,
-    const _Bool dock_icon,
-    const _Bool on_top,
-    const _Bool reminder,
-    const uint64_t idle_minutes,
-    const _Bool focus_on_shortcut,
-    const uint64_t reminder_minutes) {
-
-    toggl::Settings settings;
-    settings.use_idle_detection = use_idle_detection;
-    settings.menubar_timer = menubar_timer;
-    settings.dock_icon = dock_icon;
-    settings.on_top = on_top;
-    settings.reminder = reminder;
-    settings.idle_minutes = idle_minutes;
-    settings.focus_on_shortcut = focus_on_shortcut;
-    settings.reminder_minutes = reminder_minutes;
-
-    return app(context)->SetSettings(settings);
+    const _Bool use_idle_detection) {
+    return app(context)->SetSettingsUseIdleDetection(use_idle_detection);
 }
+
+_Bool toggl_set_settings_menubar_timer(
+    void *context,
+    const _Bool menubar_timer) {
+    return app(context)->SetSettingsMenubarTimer(menubar_timer);
+}
+
+_Bool toggl_set_settings_dock_icon(
+    void *context,
+    const _Bool dock_icon) {
+    return app(context)->SetSettingsDockIcon(dock_icon);
+}
+
+_Bool toggl_set_settings_on_top(
+    void *context,
+    const _Bool on_top) {
+    return app(context)->SetSettingsOnTop(on_top);
+}
+
+_Bool toggl_set_settings_reminder(
+    void *context,
+    const _Bool reminder) {
+    return app(context)->SetSettingsReminder(reminder);
+}
+
+_Bool toggl_set_settings_idle_minutes(
+    void *context,
+    const uint64_t idle_minutes) {
+    return app(context)->SetSettingsIdleMinutes(idle_minutes);
+}
+
+_Bool toggl_set_settings_focus_on_shortcut(
+    void *context,
+    const _Bool focus_on_shortcut) {
+    return app(context)->SetSettingsFocusOnShortcut(focus_on_shortcut);
+}
+
+_Bool toggl_set_settings_reminder_minutes(
+    void *context,
+    const uint64_t reminder_minutes) {
+    return app(context)->SetSettingsReminderMinutes(reminder_minutes);
+};
 
 _Bool toggl_set_proxy_settings(void *context,
                                const _Bool use_proxy,

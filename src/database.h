@@ -46,7 +46,21 @@ class Database {
 
     error LoadSettings(Settings *settings);
 
-    error SaveSettings(const Settings);
+    error SetSettingsUseIdleDetection(const bool use_idle_detection);
+
+    error SetSettingsMenubarTimer(const bool menubar_timer);
+
+    error SetSettingsDockIcon(const bool dock_icon);
+
+    error SetSettingsOnTop(const bool on_top);
+
+    error SetSettingsReminder(const bool reminder);
+
+    error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
+
+    error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
+
+    error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
     error LoadProxySettings(
         bool *use_proxy,

@@ -321,29 +321,15 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
-error Database::SaveSettings(const Settings settings) {
+error Database::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
 
     try {
         *session_ << "update settings set "
-                  "use_idle_detection = :use_idle_detection, "
-                  "menubar_timer = :menubar_timer, "
-                  "dock_icon = :dock_icon, "
-                  "on_top = :on_top, "
-                  "reminder = :reminder, "
-                  "idle_minutes = :idle_minutes, "
-                  "focus_on_shortcut = :focus_on_shortcut, "
-                  "reminder_minutes = :reminder_minutes ",
-                  Poco::Data::use(settings.use_idle_detection),
-                  Poco::Data::use(settings.menubar_timer),
-                  Poco::Data::use(settings.dock_icon),
-                  Poco::Data::use(settings.on_top),
-                  Poco::Data::use(settings.reminder),
-                  Poco::Data::use(settings.idle_minutes),
-                  Poco::Data::use(settings.focus_on_shortcut),
-                  Poco::Data::use(settings.reminder_minutes),
+                  "use_idle_detection = :use_idle_detection ",
+                  Poco::Data::use(use_idle_detection),
                   Poco::Data::now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -352,7 +338,148 @@ error Database::SaveSettings(const Settings settings) {
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("SaveSettings");
+    return last_error("SetSettingsUseIdleDetection");
+}
+
+error Database::SetSettingsMenubarTimer(const bool menubar_timer) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "menubar_timer = :menubar_timer ",
+                  Poco::Data::use(menubar_timer),
+                  Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("SetSettingsMenubarTimer");
+}
+
+error Database::SetSettingsDockIcon(const bool dock_icon) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "dock_icon = :dock_icon ",
+                  Poco::Data::use(dock_icon),
+                  Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("SetSettingsDockIcon");
+}
+
+error Database::SetSettingsOnTop(const bool on_top) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "on_top = :on_top ",
+                  Poco::Data::use(on_top),
+                  Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("SetSettingsOnTop");
+}
+
+error Database::SetSettingsReminder(const bool reminder) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "reminder = :reminder ",
+                  Poco::Data::use(reminder),
+                  Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("SetSettingsReminder");
+}
+
+error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "idle_minutes = :idle_minutes ",
+                  Poco::Data::use(idle_minutes),
+                  Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("SetSettingsIdleMinutes");
+}
+
+error Database::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "focus_on_shortcut = :focus_on_shortcut ",
+                  Poco::Data::use(focus_on_shortcut),
+                  Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("SetSettingsFocusOnShortcut");
+}
+
+error Database::SetSettingsReminderMinutes(
+    const Poco::UInt64 reminder_minutes) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "reminder_minutes = :reminder_minutes ",
+                  Poco::Data::use(reminder_minutes),
+                  Poco::Data::now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("SetSettingsReminderMinutes");
 }
 
 error Database::SaveProxySettings(

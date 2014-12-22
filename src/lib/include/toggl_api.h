@@ -426,15 +426,36 @@ extern "C" {
         const uint64_t at,
         const _Bool split_into_new_entry);
 
-    TOGGL_EXPORT _Bool toggl_set_settings(
+    TOGGL_EXPORT _Bool toggl_set_settings_use_idle_detection(
         void *context,
-        const _Bool use_idle_detection,
-        const _Bool menubar_timer,
-        const _Bool dock_icon,
-        const _Bool on_top,
-        const _Bool reminder,
-        const uint64_t idle_minutes,
-        const _Bool focus_on_shortcut,
+        const _Bool use_idle_detection);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_menubar_timer(
+        void *context,
+        const _Bool menubar_timer);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_dock_icon(
+        void *context,
+        const _Bool dock_icon);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_on_top(
+        void *context,
+        const _Bool on_top);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_reminder(
+        void *context,
+        const _Bool reminder);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_idle_minutes(
+        void *context,
+        const uint64_t idle_minutes);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_focus_on_shortcut(
+        void *context,
+        const _Bool focus_on_shortcut);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_reminder_minutes(
+        void *context,
         const uint64_t reminder_minutes);
 
     TOGGL_EXPORT _Bool toggl_set_proxy_settings(

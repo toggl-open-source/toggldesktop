@@ -242,16 +242,58 @@ static int l_toggl_discard_time_at(lua_State *L) {
     return 1;
 }
 
-static int l_toggl_set_settings(lua_State *L) {
-    _Bool res = toggl_set_settings(app,
-                                   lua_toboolean(L, 1),
-                                   lua_toboolean(L, 2),
-                                   lua_toboolean(L, 3),
-                                   lua_toboolean(L, 4),
-                                   lua_toboolean(L, 5),
-                                   lua_tointeger(L, 6),
-                                   lua_toboolean(L, 7),
-                                   lua_toboolean(L, 8));
+static int l_toggl_set_settings_use_idle_detection(lua_State *L) {
+    _Bool res = toggl_set_settings_use_idle_detection(app,
+                lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_menubar_timer(lua_State *L) {
+    _Bool res = toggl_set_settings_menubar_timer(app,
+                lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_dock_icon(lua_State *L) {
+    _Bool res = toggl_set_settings_dock_icon(app,
+                lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_on_top(lua_State *L) {
+    _Bool res = toggl_set_settings_on_top(app,
+                                          lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_reminder(lua_State *L) {
+    _Bool res = toggl_set_settings_reminder(app,
+                                            lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_idle_minutes(lua_State *L) {
+    _Bool res = toggl_set_settings_idle_minutes(app,
+                lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_focus_on_shortcut(lua_State *L) {
+    _Bool res = toggl_set_settings_focus_on_shortcut(app,
+                lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_reminder_minutes(lua_State *L) {
+    _Bool res = toggl_set_settings_reminder_minutes(app,
+                lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
@@ -428,7 +470,16 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_time_entry_description", l_toggl_set_time_entry_description},
     {"stop", l_toggl_stop},
     {"discard_time_at", l_toggl_discard_time_at},
-    {"set_settings", l_toggl_set_settings},
+    {   "set_settings_use_idle_detection",
+        l_toggl_set_settings_use_idle_detection
+    },
+    {"set_settings_menubar_timer", l_toggl_set_settings_menubar_timer},
+    {"set_settings_dock_icon", l_toggl_set_settings_dock_icon},
+    {"set_settings_on_top", l_toggl_set_settings_on_top},
+    {"set_settings_reminder", l_toggl_set_settings_reminder},
+    {"set_settings_idle_minutes", l_toggl_set_settings_idle_minutes},
+    {"set_settings_focus_on_shortcut", l_toggl_set_settings_focus_on_shortcut},
+    {"set_settings_reminder_minutes", l_toggl_set_settings_reminder_minutes},
     {"set_proxy_settings", l_toggl_set_proxy_settings},
     {"logout", l_toggl_logout},
     {"clear_cache", l_toggl_clear_cache},

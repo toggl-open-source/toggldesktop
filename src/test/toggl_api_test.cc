@@ -186,6 +186,8 @@ void on_display_settings(
     testing::testresult::settings.reminder = settings->Reminder;
     testing::testresult::settings.dock_icon = settings->DockIcon;
     testing::testresult::settings.on_top = settings->OnTop;
+    testing::testresult::settings.idle_minutes = settings->IdleMinutes;
+    testing::testresult::settings.reminder_minutes = settings->ReminderMinutes;
 
     testing::testresult::use_proxy = settings->UseProxy;
 
@@ -291,35 +293,51 @@ TEST(TogglApiTest, toggl_context_init) {
 TEST(TogglApiTest, toggl_set_settings) {
     testing::App app;
 
-    ASSERT_TRUE(toggl_set_settings(app.ctx(),
-                                   false,
-                                   false,
-                                   false,
-                                   false,
-                                   false,
-                                   5,
-                                   false));
+    // set to false/null
 
+    ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), false));
     ASSERT_FALSE(testing::testresult::settings.use_idle_detection);
+
+    ASSERT_TRUE(toggl_set_settings_menubar_timer(app.ctx(), false));
     ASSERT_FALSE(testing::testresult::settings.menubar_timer);
+
+    ASSERT_TRUE(toggl_set_settings_dock_icon(app.ctx(), false));
     ASSERT_FALSE(testing::testresult::settings.dock_icon);
+
+    ASSERT_TRUE(toggl_set_settings_on_top(app.ctx(), false));
     ASSERT_FALSE(testing::testresult::settings.on_top);
+
+    ASSERT_TRUE(toggl_set_settings_reminder(app.ctx(), false));
     ASSERT_FALSE(testing::testresult::settings.reminder);
 
-    ASSERT_TRUE(toggl_set_settings(app.ctx(),
-                                   true,
-                                   true,
-                                   true,
-                                   true,
-                                   true,
-                                   5,
-                                   false));
+    ASSERT_TRUE(toggl_set_settings_idle_minutes(app.ctx(), 0));
+    ASSERT_EQ(0, testing::testresult::settings.idle_minutes);
 
+    ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 0));
+    ASSERT_EQ(0, testing::testresult::settings.reminder_minutes);
+
+    // set to true / not null
+
+    ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.use_idle_detection);
+
+    ASSERT_TRUE(toggl_set_settings_menubar_timer(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.menubar_timer);
+
+    ASSERT_TRUE(toggl_set_settings_dock_icon(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.dock_icon);
+
+    ASSERT_TRUE(toggl_set_settings_on_top(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.on_top);
+
+    ASSERT_TRUE(toggl_set_settings_reminder(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.reminder);
+
+    ASSERT_TRUE(toggl_set_settings_idle_minutes(app.ctx(), 123));
+    ASSERT_EQ(123, testing::testresult::settings.idle_minutes);
+
+    ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 222));
+    ASSERT_EQ(222, testing::testresult::settings.reminder_minutes);
 }
 
 TEST(TogglApiTest, toggl_set_proxy_settings) {
