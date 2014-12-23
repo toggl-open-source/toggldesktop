@@ -34,7 +34,7 @@ namespace TogglDesktop
             defaultDescriptionTop = descriptionTextBox.Top;
             projectDescriptionTop = defaultDescriptionTop - (descriptionTextBox.Height / 2);
 
-            Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
+            Toggl.OnMinitimerAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnRunningTimerState += OnRunningTimerState;
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
 
