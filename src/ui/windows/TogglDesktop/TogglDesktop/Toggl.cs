@@ -152,6 +152,7 @@ namespace TogglDesktop
             public UInt64 IdleMinutes;
             [MarshalAs(UnmanagedType.I1)]
             public bool FocusOnShortcut;
+            public UInt64 ReminderMinutes;
         }
 
         // Callbacks
@@ -412,6 +413,11 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_on_time_entry_autocomplete(
+            IntPtr context,
+            TogglDisplayAutocomplete cb);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void toggl_on_mini_timer_autocomplete(
             IntPtr context,
             TogglDisplayAutocomplete cb);
 
@@ -1014,6 +1020,7 @@ namespace TogglDesktop
         public static event DisplayReminder OnReminder = delegate { };
         public static event DisplayTimeEntryList OnTimeEntryList = delegate { };
         public static event DisplayAutocomplete OnTimeEntryAutocomplete = delegate { };
+        public static event DisplayAutocomplete OnMinitimerAutocomplete = delegate { };
         public static event DisplayAutocomplete OnProjectAutocomplete = delegate { };
         public static event DisplayTimeEntryEditor OnTimeEntryEditor = delegate { };
         public static event DisplayViewItems OnWorkspaceSelect = delegate { };
@@ -1076,6 +1083,11 @@ namespace TogglDesktop
             toggl_on_time_entry_autocomplete(ctx, delegate(IntPtr first)
             {
                 OnTimeEntryAutocomplete(ConvertToAutocompleteList(first));
+            });
+
+            toggl_on_mini_timer_autocomplete(ctx, delegate(IntPtr first)
+            {
+                OnMinitimerAutocomplete(ConvertToAutocompleteList(first));
             });
 
             toggl_on_project_autocomplete(ctx, delegate(IntPtr first)
