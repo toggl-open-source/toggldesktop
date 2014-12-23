@@ -34,7 +34,7 @@ class TimerWidget : public QWidget {
     void displayRunningTimerState(
         TimeEntryView *te);
 
-    void displayTimeEntryAutocomplete(
+    void displayMinitimerAutocomplete(
         QVector<AutocompleteView *> list);
 
     void start();

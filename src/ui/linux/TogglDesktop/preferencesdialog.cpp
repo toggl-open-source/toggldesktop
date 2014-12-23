@@ -33,10 +33,15 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->proxyUsername->setText(settings->ProxyUsername);
     ui->proxyPassword->setText(settings->ProxyPassword);
 
-    ui->idleDetection->setChecked(settings->UseIdleDetection);
     ui->recordTimeline->setChecked(settings->RecordTimeline);  // user based!
-    ui->remindToTrackTime->setChecked(settings->Reminder);
+
+    ui->idleDetection->setChecked(settings->UseIdleDetection);
     ui->idleMinutes->setText(QString::number(settings->IdleMinutes));
+    ui->idleMinutes->setEnabled(ui->idleDetection->isChecked());
+
+    ui->remindToTrackTime->setChecked(settings->Reminder);
+    ui->reminderMinutes->setText(QString::number(settings->ReminderMinutes));
+    ui->reminderMinutes->setEnabled(ui->remindToTrackTime->isChecked());
 }
 
 void PreferencesDialog::displayLogin(const bool open,
@@ -61,7 +66,7 @@ void PreferencesDialog::on_proxyPassword_editingFinished() {
 }
 
 void PreferencesDialog::on_idleDetection_clicked(bool checked) {
-    TogglApi::instance->setSettingsUseIdleDetection(ui->idleDetection->isChecked());
+    TogglApi::instance->setSettingsUseIdleDetection(checked);
 }
 
 void PreferencesDialog::on_recordTimeline_clicked(bool checked) {
@@ -69,7 +74,7 @@ void PreferencesDialog::on_recordTimeline_clicked(bool checked) {
 }
 
 void PreferencesDialog::on_remindToTrackTime_clicked(bool checked) {
-    TogglApi::instance->setSettingsIdleMinutes(ui->remindToTrackTime->isChecked());
+    TogglApi::instance->setSettingsReminder(checked);
 }
 
 bool PreferencesDialog::setProxySettings() {
@@ -85,5 +90,11 @@ void PreferencesDialog::on_useProxy_clicked(bool checked) {
 }
 
 void PreferencesDialog::on_idleMinutes_editingFinished() {
-    TogglApi::instance->setSettingsIdleMinutes(ui->idleMinutes->text().toInt());
+    TogglApi::instance->setSettingsIdleMinutes(
+        ui->idleMinutes->text().toInt());
+}
+
+void PreferencesDialog::on_reminderMinutes_editingFinished() {
+    TogglApi::instance->setSettingsReminderMinutes(
+        ui->reminderMinutes->text().toInt());
 }

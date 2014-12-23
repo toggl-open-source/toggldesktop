@@ -216,6 +216,9 @@ class TogglApi : public QObject {
     void displayTimeEntryAutocomplete(
         QVector<AutocompleteView *> list);
 
+    void displayMinitimerAutocomplete(
+        QVector<AutocompleteView *> list);
+
     void displayProjectAutocomplete(
         QVector<AutocompleteView *> list);
 

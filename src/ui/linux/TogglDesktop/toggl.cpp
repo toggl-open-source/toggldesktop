@@ -86,6 +86,12 @@ void on_display_time_entry_autocomplete(
         AutocompleteView::importAll(first));
 }
 
+void on_display_mini_timer_autocomplete(
+    TogglAutocompleteView *first) {
+    TogglApi::instance->displayMinitimerAutocomplete(
+        AutocompleteView::importAll(first));
+}
+
 void on_display_project_autocomplete(
     TogglAutocompleteView *first) {
     TogglApi::instance->displayProjectAutocomplete(
@@ -191,6 +197,7 @@ TogglApi::TogglApi(QObject *parent)
     toggl_on_reminder(ctx, on_display_reminder);
     toggl_on_time_entry_list(ctx, on_display_time_entry_list);
     toggl_on_time_entry_autocomplete(ctx, on_display_time_entry_autocomplete);
+    toggl_on_mini_timer_autocomplete(ctx, on_display_mini_timer_autocomplete);
     toggl_on_project_autocomplete(ctx, on_display_project_autocomplete);
     toggl_on_workspace_select(ctx, on_display_workspace_select);
     toggl_on_client_select(ctx, on_display_client_select);

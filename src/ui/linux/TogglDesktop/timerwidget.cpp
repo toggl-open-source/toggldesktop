@@ -20,8 +20,8 @@ timeEntryAutocompleteNeedsUpdate(false) {
     connect(TogglApi::instance, SIGNAL(displayRunningTimerState(TimeEntryView*)),  // NOLINT
             this, SLOT(displayRunningTimerState(TimeEntryView*)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)),  // NOLINT
-            this, SLOT(displayTimeEntryAutocomplete(QVector<AutocompleteView*>)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayMinitimerAutocomplete(QVector<AutocompleteView*>)),  // NOLINT
+            this, SLOT(displayMinitimerAutocomplete(QVector<AutocompleteView*>)));  // NOLINT
 
     connect(qApp, SIGNAL(focusChanged(QWidget*, QWidget*)),
             this, SLOT(focusChanged(QWidget*, QWidget*)));
@@ -50,7 +50,7 @@ void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
             ui->description->setEditText(descriptionPlaceholder);
         }
         if (timeEntryAutocompleteNeedsUpdate) {
-            displayTimeEntryAutocomplete(timeEntryAutocompleteUpdate);
+            displayMinitimerAutocomplete(timeEntryAutocompleteUpdate);
         }
     }
     if (now == ui->description &&
@@ -140,7 +140,7 @@ void TimerWidget::stop() {
     TogglApi::instance->stop();
 }
 
-void TimerWidget::displayTimeEntryAutocomplete(
+void TimerWidget::displayMinitimerAutocomplete(
     QVector<AutocompleteView *> list) {
     timeEntryAutocompleteUpdate = list;
     timeEntryAutocompleteNeedsUpdate = true;
