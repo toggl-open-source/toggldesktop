@@ -59,11 +59,16 @@ namespace TogglDesktop
             textBoxProxyPort.Text = settings.ProxyPort.ToString();
             textBoxProxyUsername.Text = settings.ProxyUsername;
             textBoxProxyPassword.Text = settings.ProxyPassword;
-            checkBoxIdleDetection.Checked = settings.UseIdleDetection;
             checkBoxRecordTimeline.Checked = settings.RecordTimeline;
             checkBoxOnTop.Checked = settings.OnTop;
-            checkBoxRemindToTrackTime.Checked = settings.Reminder;
+
+            checkBoxIdleDetection.Checked = settings.UseIdleDetection;
             textBoxIdleMinutes.Text = settings.IdleMinutes.ToString();
+            textBoxIdleMinutes.Enabled = checkBoxIdleDetection.Checked;
+
+            checkBoxRemindToTrackTime.Checked = settings.Reminder;
+            textBoxReminderMinutes.Text = settings.ReminderMinutes.ToString();
+            textBoxReminderMinutes.Enabled = checkBoxRemindToTrackTime.Checked;
 
             // Load shortcuts
             {
@@ -111,11 +116,11 @@ namespace TogglDesktop
                 port = 0;
             }
 
-            ulong idleMinutes = 5;
-            if (!ulong.TryParse(textBoxIdleMinutes.Text, out idleMinutes))
-            {
-                idleMinutes = 5;
-            }
+            ulong idleMinutes = 0;
+            ulong.TryParse(textBoxIdleMinutes.Text, out idleMinutes);
+
+            ulong reminderMinutes = 0;
+            ulong.TryParse(textBoxReminderMinutes.Text, out reminderMinutes);
 
             Toggl.Settings settings = new Toggl.Settings();
 
@@ -125,9 +130,12 @@ namespace TogglDesktop
             settings.ProxyUsername = textBoxProxyUsername.Text;
             settings.ProxyPassword = textBoxProxyPassword.Text;
 
-            settings.UseIdleDetection = checkBoxIdleDetection.Checked;
             settings.OnTop = checkBoxOnTop.Checked;
+
             settings.Reminder = checkBoxRemindToTrackTime.Checked;
+            settings.ReminderMinutes = reminderMinutes;
+
+            settings.UseIdleDetection = checkBoxIdleDetection.Checked;
             settings.IdleMinutes = idleMinutes;
 
             settings.MenubarTimer = true;
@@ -236,6 +244,11 @@ namespace TogglDesktop
         private void btnRecordStartStopShortcut_KeyUp(object sender, KeyEventArgs e)
         {
             handleKeyPress(btnRecordStartStopShortcut, btnClearStartStopTimer, e);
+        }
+
+        private void checkBoxRemindToTrackTime_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxReminderMinutes.Enabled = checkBoxRemindToTrackTime.Checked;
         }
     }
 }

@@ -767,34 +767,73 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool toggl_set_settings(
+        private static extern bool toggl_set_settings_use_idle_detection(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
-            bool use_idle_detection,
-            [MarshalAs(UnmanagedType.I1)]
-            bool menubar_timer,
-            [MarshalAs(UnmanagedType.I1)]
-            bool dock_icon,
-            [MarshalAs(UnmanagedType.I1)]
-            bool on_top,
-            [MarshalAs(UnmanagedType.I1)]
-            bool reminder,
-            UInt64 idle_minutes,
+            bool use_idle_detection);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_settings_focus_on_shortcut(
+            IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
             bool focus_on_shortcut);
 
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_settings_idle_minutes(
+            IntPtr context,
+            UInt64 idle_minutes);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_settings_on_top(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.I1)]
+            bool on_top);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_settings_reminder(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.I1)]
+            bool reminder);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_settings_reminder_minutes(
+            IntPtr context,
+            UInt64 reminder_minutes);
+
         public static bool SetSettings(Settings settings)
         {
-            if (!toggl_set_settings(
-                ctx,
-                settings.UseIdleDetection,
-                true,
-                true,
-                settings.OnTop,
-                settings.Reminder,
-                settings.IdleMinutes,
-                settings.FocusOnShortcut))
-            {
+            if (!toggl_set_settings_use_idle_detection(ctx, 
+                    settings.UseIdleDetection)) {
+                return false;
+            }
+
+            if (!toggl_set_settings_on_top(ctx,
+                    settings.OnTop)) {
+                return false;
+            }
+
+            if (!toggl_set_settings_reminder(ctx,
+                    settings.Reminder)) {
+                return false;
+            }
+
+            if (!toggl_set_settings_idle_minutes(ctx,
+                    settings.IdleMinutes)) {
+                return false;
+            }
+
+            if (!toggl_set_settings_reminder_minutes(ctx,
+                    settings.ReminderMinutes)) {
+                return false;
+            }
+
+            if (!toggl_set_settings_focus_on_shortcut(ctx,
+                    settings.FocusOnShortcut)) {
                 return false;
             }
 

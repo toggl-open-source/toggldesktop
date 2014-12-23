@@ -46,6 +46,8 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.textBoxReminderMinutes = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnClearStartStopTimer = new System.Windows.Forms.Button();
             this.btnRecordStartStopShortcut = new System.Windows.Forms.Button();
@@ -174,21 +176,20 @@
             this.checkBoxRecordTimeline.Location = new System.Drawing.Point(15, 211);
             this.checkBoxRecordTimeline.Name = "checkBoxRecordTimeline";
             this.checkBoxRecordTimeline.Size = new System.Drawing.Size(99, 17);
-            this.checkBoxRecordTimeline.TabIndex = 4;
+            this.checkBoxRecordTimeline.TabIndex = 5;
             this.checkBoxRecordTimeline.Text = "Record timeline";
             this.checkBoxRecordTimeline.UseVisualStyleBackColor = true;
             // 
             // checkBoxRemindToTrackTime
             // 
             this.checkBoxRemindToTrackTime.AutoSize = true;
-            this.checkBoxRemindToTrackTime.Checked = true;
-            this.checkBoxRemindToTrackTime.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxRemindToTrackTime.Location = new System.Drawing.Point(15, 257);
             this.checkBoxRemindToTrackTime.Name = "checkBoxRemindToTrackTime";
             this.checkBoxRemindToTrackTime.Size = new System.Drawing.Size(123, 17);
-            this.checkBoxRemindToTrackTime.TabIndex = 6;
+            this.checkBoxRemindToTrackTime.TabIndex = 7;
             this.checkBoxRemindToTrackTime.Text = "Remind to track time";
             this.checkBoxRemindToTrackTime.UseVisualStyleBackColor = true;
+            this.checkBoxRemindToTrackTime.CheckedChanged += new System.EventHandler(this.checkBoxRemindToTrackTime_CheckedChanged);
             // 
             // checkBoxOnTop
             // 
@@ -196,7 +197,7 @@
             this.checkBoxOnTop.Location = new System.Drawing.Point(15, 234);
             this.checkBoxOnTop.Name = "checkBoxOnTop";
             this.checkBoxOnTop.Size = new System.Drawing.Size(141, 17);
-            this.checkBoxOnTop.TabIndex = 5;
+            this.checkBoxOnTop.TabIndex = 6;
             this.checkBoxOnTop.Text = "On top of other windows";
             this.checkBoxOnTop.UseVisualStyleBackColor = true;
             // 
@@ -205,7 +206,7 @@
             this.buttonSave.Location = new System.Drawing.Point(15, 362);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
-            this.buttonSave.TabIndex = 7;
+            this.buttonSave.TabIndex = 11;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
@@ -215,13 +216,15 @@
             this.buttonCancel.Location = new System.Drawing.Point(96, 362);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 8;
+            this.buttonCancel.TabIndex = 12;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.textBoxReminderMinutes);
+            this.panelMain.Controls.Add(this.label8);
             this.panelMain.Controls.Add(this.groupBox1);
             this.panelMain.Controls.Add(this.textBoxIdleMinutes);
             this.panelMain.Controls.Add(this.label5);
@@ -237,7 +240,23 @@
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(280, 410);
-            this.panelMain.TabIndex = 9;
+            this.panelMain.TabIndex = 6;
+            // 
+            // textBoxReminderMinutes
+            // 
+            this.textBoxReminderMinutes.Location = new System.Drawing.Point(167, 255);
+            this.textBoxReminderMinutes.Name = "textBoxReminderMinutes";
+            this.textBoxReminderMinutes.Size = new System.Drawing.Size(31, 20);
+            this.textBoxReminderMinutes.TabIndex = 8;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(204, 257);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(43, 13);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "minutes";
             // 
             // groupBox1
             // 
@@ -250,7 +269,7 @@
             this.groupBox1.Location = new System.Drawing.Point(15, 280);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(252, 76);
-            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Global shortcuts";
             // 
@@ -327,7 +346,7 @@
             this.label5.Location = new System.Drawing.Point(204, 188);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 13);
-            this.label5.TabIndex = 10;
+            this.label5.TabIndex = 4;
             this.label5.Text = "minutes";
             // 
             // PreferencesWindowController
@@ -381,5 +400,7 @@
         private System.Windows.Forms.Button btnRecordShowHideShortcut;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxReminderMinutes;
+        private System.Windows.Forms.Label label8;
     }
 }
