@@ -20,7 +20,7 @@ namespace TogglDesktop
         private int projectDescriptionTop = 10;
         public Boolean durationFocused = false;
 
-        private List<Toggl.AutocompleteItem> minitimerAutocompleteUpdate;
+        private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
         private List<Toggl.AutocompleteItem> autoCompleteList;
 
         public TimerEditViewController()
@@ -34,7 +34,7 @@ namespace TogglDesktop
             defaultDescriptionTop = descriptionTextBox.Top;
             projectDescriptionTop = defaultDescriptionTop - (descriptionTextBox.Height / 2);
 
-            Toggl.OnMinitimerAutocomplete += OnMinitimerAutocomplete;
+            Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnRunningTimerState += OnRunningTimerState;
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
 
@@ -234,14 +234,14 @@ namespace TogglDesktop
             project_id = 0;
         }
 
-        void OnMinitimerAutocomplete(List<Toggl.AutocompleteItem> list)
+        void OnTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { OnMinitimerAutocomplete(list); });
+                Invoke((MethodInvoker)delegate { OnTimeEntryAutocomplete(list); });
                 return;
             }
-            minitimerAutocompleteUpdate = list;
+            timeEntryAutocompleteUpdate = list;
             autoCompleteList = list;
         }
 

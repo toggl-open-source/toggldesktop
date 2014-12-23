@@ -57,9 +57,9 @@
     <ApplicationIcon>Resources\toggl.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bugsnag.Library, Version=1.0.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Bugsnag.Library.1.0.16.0\lib\net40\Bugsnag.Library.dll</HintPath>
+    <Reference Include="Bugsnag.Library">
+      <HintPath>..\packages\Bugsnag.Library.1.0.6.0\lib\net40\Bugsnag.Library.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis">
       <HintPath>..\packages\Google.Apis.1.8.2\lib\net40\Google.Apis.dll</HintPath>
@@ -121,7 +121,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutWindowController.cs" />
+    <Compile Include="AboutWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AboutWindowController.Designer.cs">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </Compile>
@@ -149,12 +151,16 @@
     <Compile Include="EditForm.Designer.cs">
       <DependentUpon>EditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FeedbackWindowController.cs" />
+    <Compile Include="FeedbackWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FeedbackWindowController.Designer.cs">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalShortcuts.cs" />
-    <Compile Include="IdleNotificationWindowController.cs" />
+    <Compile Include="IdleNotificationWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="IdleNotificationWindowController.Designer.cs">
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
@@ -170,11 +176,15 @@
     <Compile Include="LoginViewController.Designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowController.cs" />
+    <Compile Include="MainWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesWindowController.cs" />
+    <Compile Include="PreferencesWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PreferencesWindowController.Designer.cs">
       <DependentUpon>PreferencesWindowController.cs</DependentUpon>
     </Compile>
