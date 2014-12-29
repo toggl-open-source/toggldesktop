@@ -71,6 +71,9 @@
 // Avoid doing stuff when app is already shutting down
 @property BOOL willTerminate;
 
+// Show or not show menubar timer
+@property BOOL showMenuBarTimer;
+
 @end
 
 @implementation AppDelegate
@@ -82,6 +85,7 @@ void *ctx;
 	self.willTerminate = NO;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
+	self.showMenuBarTimer = NO;
 
 	[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
 
@@ -360,7 +364,9 @@ void *ctx;
 		}
 	}
 
+
 	// Start menubar timer if its enabled
+	self.showMenuBarTimer = cmd.settings.menubar_timer;
 	if (cmd.settings.menubar_timer)
 	{
 		NSLog(@"Starting menubar timer");
@@ -472,7 +478,7 @@ void *ctx;
 {
 	NSString *title = @"";
 
-	if (self.lastKnownRunningTimeEntry && self.lastKnownUserID)
+	if (self.showMenuBarTimer && self.lastKnownRunningTimeEntry && self.lastKnownUserID)
 	{
 		title = [title stringByAppendingString:@" "];
 		char *str = toggl_format_tracked_time_duration(self.lastKnownRunningTimeEntry.duration_in_seconds);
