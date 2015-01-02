@@ -106,7 +106,9 @@
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgba(45, 45, 45, 255);
-color: rgb(200, 200, 200);combobox-popup: 0;</string>
+color: rgb(200, 200, 200);
+combobox-popup: 0;
+font-size: 14px;</string>
            </property>
            <property name="editable">
             <bool>true</bool>
