@@ -258,13 +258,12 @@
             // 
             // labelDuration
             // 
-            this.labelDuration.AutoSize = true;
             this.labelDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.Location = new System.Drawing.Point(239, 0);
-            this.labelDuration.MaximumSize = new System.Drawing.Size(0, 55);
-            this.labelDuration.MinimumSize = new System.Drawing.Size(0, 55);
+            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
             this.labelDuration.Name = "labelDuration";
             this.labelDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
             this.labelDuration.Size = new System.Drawing.Size(75, 55);
@@ -289,7 +288,6 @@
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
-            this.panel.PerformLayout();
             this.tagBillableContinuePanel.ResumeLayout(false);
             this.taskProjectPanel.ResumeLayout(false);
             this.taskProjectPanel.PerformLayout();
