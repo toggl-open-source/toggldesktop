@@ -249,7 +249,7 @@
             this.buttonDone.Location = new System.Drawing.Point(10, 4);
             this.buttonDone.Name = "buttonDone";
             this.buttonDone.Size = new System.Drawing.Size(75, 23);
-            this.buttonDone.TabIndex = 9;
+            this.buttonDone.TabIndex = 11;
             this.buttonDone.Text = "Back";
             this.buttonDone.UseVisualStyleBackColor = true;
             this.buttonDone.Click += new System.EventHandler(this.buttonDone_Click);
@@ -269,7 +269,7 @@
             this.buttonDelete.Location = new System.Drawing.Point(274, 426);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(26, 26);
-            this.buttonDelete.TabIndex = 10;
+            this.buttonDelete.TabIndex = 12;
             this.buttonDelete.UseVisualStyleBackColor = false;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
@@ -281,7 +281,7 @@
             this.checkBoxBillable.Location = new System.Drawing.Point(110, 5);
             this.checkBoxBillable.Name = "checkBoxBillable";
             this.checkBoxBillable.Size = new System.Drawing.Size(63, 19);
-            this.checkBoxBillable.TabIndex = 8;
+            this.checkBoxBillable.TabIndex = 10;
             this.checkBoxBillable.Text = "Billable";
             this.checkBoxBillable.UseVisualStyleBackColor = true;
             this.checkBoxBillable.CheckedChanged += new System.EventHandler(this.checkBoxBillable_CheckedChanged);
@@ -298,7 +298,7 @@
             this.checkedListBoxTags.Location = new System.Drawing.Point(110, 65);
             this.checkedListBoxTags.Name = "checkedListBoxTags";
             this.checkedListBoxTags.Size = new System.Drawing.Size(190, 99);
-            this.checkedListBoxTags.TabIndex = 7;
+            this.checkedListBoxTags.TabIndex = 9;
             this.checkedListBoxTags.Leave += new System.EventHandler(this.checkedListBoxTags_Leave);
             this.checkedListBoxTags.MouseEnter += new System.EventHandler(this.checkedListBoxTags_MouseEnter);
             this.checkedListBoxTags.MouseLeave += new System.EventHandler(this.checkedListBoxTags_MouseLeave);
@@ -364,7 +364,7 @@
             this.panelBillable.Margin = new System.Windows.Forms.Padding(2);
             this.panelBillable.Name = "panelBillable";
             this.panelBillable.Size = new System.Drawing.Size(315, 31);
-            this.panelBillable.TabIndex = 8;
+            this.panelBillable.TabIndex = 10;
             // 
             // panelDuration
             // 
@@ -405,8 +405,7 @@
             this.addTagButton.Location = new System.Drawing.Point(276, 35);
             this.addTagButton.Name = "addTagButton";
             this.addTagButton.Size = new System.Drawing.Size(24, 24);
-            this.addTagButton.TabIndex = 19;
-            this.addTagButton.TabStop = false;
+            this.addTagButton.TabIndex = 8;
             this.addTagButton.Text = "+";
             this.addTagButton.UseVisualStyleBackColor = false;
             this.addTagButton.Click += new System.EventHandler(this.addTagButton_Click);
@@ -420,7 +419,7 @@
             this.tagTextBox.Location = new System.Drawing.Point(110, 35);
             this.tagTextBox.Name = "tagTextBox";
             this.tagTextBox.Size = new System.Drawing.Size(167, 24);
-            this.tagTextBox.TabIndex = 6;
+            this.tagTextBox.TabIndex = 7;
             this.tagTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tagTextBox_KeyUp);
             this.tagTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.tagTextBox_PreviewKeyDown);
             // 
