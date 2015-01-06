@@ -33,7 +33,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include"
+				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_CONSOLE;_CRT_SECURE_NO_WARNINGS;"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -106,7 +106,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include"
+				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_CONSOLE;_CRT_SECURE_NO_WARNINGS;"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -180,7 +180,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include"
+				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);POCO_STATIC;_CONSOLE;_CRT_SECURE_NO_WARNINGS;"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -256,7 +256,7 @@
 				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include"
+				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include"
 				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);POCO_STATIC;_CONSOLE;_CRT_SECURE_NO_WARNINGS;"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -330,7 +330,7 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include"
+				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include"
 				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);POCO_STATIC;_CONSOLE;_CRT_SECURE_NO_WARNINGS;"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -406,7 +406,7 @@
 				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include"
+				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include"
 				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);POCO_STATIC;_CONSOLE;_CRT_SECURE_NO_WARNINGS;"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -507,6 +507,8 @@
 				<File
 					RelativePath=".\src\IniFileConfigurationTest.h"/>
 				<File
+					RelativePath=".\src\JSONConfigurationTest.h"/>
+				<File
 					RelativePath=".\src\LayeredConfigurationTest.h"/>
 				<File
 					RelativePath=".\src\LoggingConfiguratorTest.h"/>
@@ -533,6 +535,8 @@
 					RelativePath=".\src\FilesystemConfigurationTest.cpp"/>
 				<File
 					RelativePath=".\src\IniFileConfigurationTest.cpp"/>
+				<File
+					RelativePath=".\src\JSONConfigurationTest.cpp"/>
 				<File
 					RelativePath=".\src\LayeredConfigurationTest.cpp"/>
 				<File

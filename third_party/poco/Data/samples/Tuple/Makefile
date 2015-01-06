@@ -1,7 +1,7 @@
 #
 # Makefile
 #
-# $Id: //poco/1.4/Data/samples/Tuple/Makefile#2 $
+# $Id: //poco/Main/Data/samples/Tuple/Makefile#2 $
 #
 # Makefile for Poco Data Tuple sample
 #

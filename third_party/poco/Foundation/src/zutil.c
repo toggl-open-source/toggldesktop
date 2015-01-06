@@ -3,7 +3,7 @@
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
-/* @(#) $Id: //poco/1.4/Foundation/src/zutil.c#4 $ */
+/* @(#) $Id: //poco/1.4/Foundation/src/zutil.c#3 $ */
 
 #include "zutil.h"
 #ifndef Z_SOLO
@@ -61,7 +61,7 @@ uLong ZEXPORT zlibCompileFlags()
     case 8:     flags += 2 << 6;        break;
     default:    flags += 3 << 6;
     }
-#ifdef DEBUG
+#ifdef ZLIB_DEBUG
     flags += 1 << 8;
 #endif
 #if defined(ASMV) || defined(ASMINF)
@@ -115,7 +115,7 @@ uLong ZEXPORT zlibCompileFlags()
     return flags;
 }
 
-#ifdef DEBUG
+#ifdef ZLIB_DEBUG
 
 #  ifndef verbose
 #    define verbose 0

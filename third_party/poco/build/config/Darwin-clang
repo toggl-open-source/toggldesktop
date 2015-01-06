@@ -1,5 +1,5 @@
 #
-# $Id: //poco/1.4/build/config/Darwin-clang#5 $
+# $Id: //poco/1.4/build/config/Darwin-clang#4 $
 #
 # Darwin
 #
@@ -52,7 +52,7 @@ SHAREDLIBLINKEXT = .dylib
 # Compiler and Linker Flags
 #
 CFLAGS          = $(ARCHFLAGS)
-CXXFLAGS        = $(ARCHFLAGS) -Wall -Wno-sign-compare
+CXXFLAGS        = $(ARCHFLAGS) -Wall -Wno-sign-compare -Wno-unused-variable -Wno-unused-function -Wno-unneeded-internal-declaration
 LINKFLAGS       = $(ARCHFLAGS)
 SHLIBFLAGS      = $(ARCHFLAGS)
 DYLIBFLAGS      = $(ARCHFLAGS)

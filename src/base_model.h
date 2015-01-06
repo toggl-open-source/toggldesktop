@@ -31,19 +31,19 @@ class BaseModel {
     , updated_at_(0) {}
     virtual ~BaseModel() {}
 
-    Poco::Int64 LocalID() const {
+    const Poco::Int64 &LocalID() const {
         return local_id_;
     }
     void SetLocalID(const Poco::Int64 value) {
         local_id_ = value;
     }
 
-    Poco::UInt64 ID() const {
+    const Poco::UInt64 &ID() const {
         return id_;
     }
     void SetID(const Poco::UInt64 value);
 
-    Poco::UInt64 UIModifiedAt() const {
+    const Poco::UInt64 &UIModifiedAt() const {
         return ui_modified_at_;
     }
     void SetUIModifiedAt(const Poco::UInt64 value);
@@ -51,12 +51,12 @@ class BaseModel {
         SetUIModifiedAt(time(0));
     }
 
-    std::string GUID() const {
+    const std::string &GUID() const {
         return guid_;
     }
     void SetGUID(const std::string value);
 
-    Poco::UInt64 UID() const {
+    const Poco::UInt64 &UID() const {
         return uid_;
     }
     void SetUID(const Poco::UInt64 value);
@@ -64,7 +64,7 @@ class BaseModel {
     void SetDirty() {
         dirty_ = true;
     }
-    bool Dirty() const {
+    const bool &Dirty() const {
         return dirty_;
     }
     void ClearDirty() {
@@ -73,12 +73,12 @@ class BaseModel {
 
     // Deleting a time entry hides it from
     // UI and flags it for removal from server:
-    Poco::UInt64 DeletedAt() const {
+    const Poco::UInt64 &DeletedAt() const {
         return deleted_at_;
     }
     void SetDeletedAt(const Poco::UInt64 value);
 
-    Poco::UInt64 UpdatedAt() const {
+    const Poco::UInt64 &UpdatedAt() const {
         return updated_at_;
     }
     void SetUpdatedAt(const Poco::UInt64 value);

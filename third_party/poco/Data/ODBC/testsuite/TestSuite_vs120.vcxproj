@@ -311,6 +311,7 @@
     <ClInclude Include="src\ODBCPostgreSQLTest.h"/>
     <ClInclude Include="src\ODBCSQLiteTest.h"/>
     <ClInclude Include="src\ODBCSQLServerTest.h"/>
+    <ClInclude Include="src\ODBCTest.h"/>
     <ClInclude Include="src\ODBCTestSuite.h"/>
     <ClInclude Include="src\SQLExecutor.h"/>
   </ItemGroup>
@@ -323,6 +324,7 @@
     <ClCompile Include="src\ODBCPostgreSQLTest.cpp"/>
     <ClCompile Include="src\ODBCSQLiteTest.cpp"/>
     <ClCompile Include="src\ODBCSQLServerTest.cpp"/>
+    <ClCompile Include="src\ODBCTest.cpp"/>
     <ClCompile Include="src\ODBCTestSuite.cpp"/>
     <ClCompile Include="src\SQLExecutor.cpp"/>
   </ItemGroup>

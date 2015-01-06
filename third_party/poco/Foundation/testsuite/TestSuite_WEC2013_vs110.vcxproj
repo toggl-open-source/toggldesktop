@@ -119,7 +119,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -148,7 +148,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -176,7 +176,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -203,7 +203,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -228,7 +228,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -257,7 +257,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -281,16 +281,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AnyTest.cpp" />
+    <ClCompile Include="src\ArrayTest.cpp" />
     <ClCompile Include="src\AutoPtrTest.cpp" />
     <ClCompile Include="src\AutoReleasePoolTest.cpp" />
     <ClCompile Include="src\ByteOrderTest.cpp" />
     <ClCompile Include="src\CoreTest.cpp" />
     <ClCompile Include="src\CoreTestSuite.cpp" />
+    <ClCompile Include="src\DirectoryIteratorsTest.cpp" />
     <ClCompile Include="src\DirectoryWatcherTest.cpp" />
-    <ClCompile Include="src\DynamicAnyTest.cpp" />
     <ClCompile Include="src\DynamicFactoryTest.cpp" />
+    <ClCompile Include="src\FIFOBufferStreamTest.cpp" />
     <ClCompile Include="src\FormatTest.cpp" />
     <ClCompile Include="src\FPETest.cpp" />
+    <ClCompile Include="src\ListMapTest.cpp" />
     <ClCompile Include="src\MemoryPoolTest.cpp" />
     <ClCompile Include="src\NamedTuplesTest.cpp" />
     <ClCompile Include="src\NDCTest.cpp" />
@@ -304,6 +307,7 @@
     <ClCompile Include="src\StringTokenizerTest.cpp" />
     <ClCompile Include="src\TuplesTest.cpp" />
     <ClCompile Include="src\TypeListTest.cpp" />
+    <ClCompile Include="src\Base32Test.cpp" />
     <ClCompile Include="src\Base64Test.cpp" />
     <ClCompile Include="src\BinaryReaderWriterTest.cpp" />
     <ClCompile Include="src\CountingStreamTest.cpp" />
@@ -316,6 +320,7 @@
     <ClCompile Include="src\StreamsTestSuite.cpp" />
     <ClCompile Include="src\StreamTokenizerTest.cpp" />
     <ClCompile Include="src\TeeStreamTest.cpp" />
+    <ClCompile Include="src\VarTest.cpp" />
     <ClCompile Include="src\WinCEDriver.cpp" />
     <ClCompile Include="src\ZLibTest.cpp" />
     <ClCompile Include="src\CryptTestSuite.cpp" />
@@ -414,16 +419,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AnyTest.h" />
+    <ClInclude Include="src\ArrayTest.h" />
     <ClInclude Include="src\AutoPtrTest.h" />
     <ClInclude Include="src\AutoReleasePoolTest.h" />
     <ClInclude Include="src\ByteOrderTest.h" />
     <ClInclude Include="src\CoreTest.h" />
     <ClInclude Include="src\CoreTestSuite.h" />
+    <ClInclude Include="src\DirectoryIteratorsTest.h" />
     <ClInclude Include="src\DirectoryWatcherTest.h" />
-    <ClInclude Include="src\DynamicAnyTest.h" />
     <ClInclude Include="src\DynamicFactoryTest.h" />
+    <ClInclude Include="src\FIFOBufferStreamTest.h" />
     <ClInclude Include="src\FormatTest.h" />
     <ClInclude Include="src\FPETest.h" />
+    <ClInclude Include="src\ListMapTest.h" />
     <ClInclude Include="src\MemoryPoolTest.h" />
     <ClInclude Include="src\NamedTuplesTest.h" />
     <ClInclude Include="src\NDCTest.h" />
@@ -437,6 +445,7 @@
     <ClInclude Include="src\StringTokenizerTest.h" />
     <ClInclude Include="src\TuplesTest.h" />
     <ClInclude Include="src\TypeListTest.h" />
+    <ClInclude Include="src\Base32Test.h" />
     <ClInclude Include="src\Base64Test.h" />
     <ClInclude Include="src\BinaryReaderWriterTest.h" />
     <ClInclude Include="src\CountingStreamTest.h" />
@@ -449,6 +458,7 @@
     <ClInclude Include="src\StreamsTestSuite.h" />
     <ClInclude Include="src\StreamTokenizerTest.h" />
     <ClInclude Include="src\TeeStreamTest.h" />
+    <ClInclude Include="src\VarTest.h" />
     <ClInclude Include="src\ZLibTest.h" />
     <ClInclude Include="src\CryptTestSuite.h" />
     <ClInclude Include="src\DigestStreamTest.h" />

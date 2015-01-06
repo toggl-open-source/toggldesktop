@@ -94,13 +94,13 @@ error WebSocketClient::createSession() {
             context);
         if (HTTPSClientConfig::ProxySettings.IsConfigured()) {
             session_->setProxy(
-                HTTPSClientConfig::ProxySettings.host,
+                HTTPSClientConfig::ProxySettings.Host(),
                 static_cast<Poco::UInt16>(
-                    HTTPSClientConfig::ProxySettings.port));
+                    HTTPSClientConfig::ProxySettings.Port()));
             if (HTTPSClientConfig::ProxySettings.HasCredentials()) {
                 session_->setProxyCredentials(
-                    HTTPSClientConfig::ProxySettings.username,
-                    HTTPSClientConfig::ProxySettings.password);
+                    HTTPSClientConfig::ProxySettings.Username(),
+                    HTTPSClientConfig::ProxySettings.Password());
             }
         }
         req_ = new Poco::Net::HTTPRequest(

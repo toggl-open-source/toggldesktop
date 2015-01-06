@@ -1,7 +1,7 @@
 #
 # Foundation.vxbuild
 #
-# $Id: //poco/1.4/Foundation/Foundation.vxbuild#7 $
+# $Id: //poco/1.4/Foundation/Foundation.vxbuild#5 $
 #
 TARGET=pocoFoundation
 SOURCES="
@@ -20,7 +20,6 @@ SOURCES="
 	ByteOrder.cpp 
 	Channel.cpp 
 	Checksum.cpp 
-	Clock.cpp
 	Condition.cpp 
 	Configurable.cpp 
 	ConsoleChannel.cpp 
@@ -34,7 +33,7 @@ SOURCES="
 	DigestEngine.cpp 
 	DigestStream.cpp 
 	DirectoryIterator.cpp 
-	DirectoryWatcher.cpp
+	DirectoryWatcher.cpp 
 	DynamicAny.cpp 
 	DynamicAnyHolder.cpp
 	Environment.cpp
@@ -144,6 +143,14 @@ SOURCES="
 	inftrees.c
 	trees.c 
 	zutil.c
+	pcre_config.c
+	pcre_byte_order.c
+	pcre_dfa_exec.c
+	pcre_get.c
+	pcre_jit_compile.c
+	pcre_refcount.c
+	pcre_string_utils.c
+	pcre_version.c
 	pcre_chartables.c
 	pcre_compile.c
 	pcre_exec.c
@@ -154,7 +161,6 @@ SOURCES="
 	pcre_ord2utf8.c
 	pcre_study.c
 	pcre_tables.c
-	pcre_try_flipped.c
 	pcre_ucd.c
 	pcre_valid_utf8.c
 	pcre_xclass.c

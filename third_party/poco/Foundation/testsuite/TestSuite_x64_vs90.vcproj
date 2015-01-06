@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="debug_shared|x64"
-			OutputDirectory="obj64\$(ConfigurationName)"
-			IntermediateDirectory="obj64\$(ConfigurationName)"
+			OutputDirectory="obj64\TestSuite\$(ConfigurationName)"
+			IntermediateDirectory="obj64\TestSuite\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="2"
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\CppUnit\WinTestRunner\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0500"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -98,8 +98,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_shared|x64"
-			OutputDirectory="obj64\$(ConfigurationName)"
-			IntermediateDirectory="obj64\$(ConfigurationName)"
+			OutputDirectory="obj64\TestSuite\$(ConfigurationName)"
+			IntermediateDirectory="obj64\TestSuite\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="2"
@@ -127,7 +127,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\CppUnit\WinTestRunner\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;WINVER=0x0500"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;WINVER=0x0501"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -184,8 +184,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_static_md|x64"
-			OutputDirectory="obj64\$(ConfigurationName)"
-			IntermediateDirectory="obj64\$(ConfigurationName)"
+			OutputDirectory="obj64\TestSuite\$(ConfigurationName)"
+			IntermediateDirectory="obj64\TestSuite\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="2"
@@ -213,7 +213,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\CppUnit\WinTestRunner\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;WINVER=0x0500;POCO_STATIC"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;WINVER=0x0501;POCO_STATIC"
 				StringPooling="true"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
@@ -271,8 +271,8 @@
 		</Configuration>
 		<Configuration
 			Name="debug_static_md|x64"
-			OutputDirectory="obj64\$(ConfigurationName)"
-			IntermediateDirectory="obj64\$(ConfigurationName)"
+			OutputDirectory="obj64\TestSuite\$(ConfigurationName)"
+			IntermediateDirectory="obj64\TestSuite\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="2"
@@ -296,7 +296,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\CppUnit\WinTestRunner\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0500;POCO_STATIC"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501;POCO_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -352,8 +352,8 @@
 		</Configuration>
 		<Configuration
 			Name="debug_static_mt|x64"
-			OutputDirectory="obj64\$(ConfigurationName)"
-			IntermediateDirectory="obj64\$(ConfigurationName)"
+			OutputDirectory="obj64\TestSuite\$(ConfigurationName)"
+			IntermediateDirectory="obj64\TestSuite\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
 			CharacterSet="2"
@@ -377,7 +377,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\CppUnit\WinTestRunner\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0500;POCO_STATIC"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501;POCO_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -434,8 +434,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_static_mt|x64"
-			OutputDirectory="obj64\$(ConfigurationName)"
-			IntermediateDirectory="obj64\$(ConfigurationName)"
+			OutputDirectory="obj64\TestSuite\$(ConfigurationName)"
+			IntermediateDirectory="obj64\TestSuite\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
 			CharacterSet="2"
@@ -463,7 +463,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\include;..\..\CppUnit\include;..\..\CppUnit\WinTestRunner\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;WINVER=0x0500;POCO_STATIC"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;WINVER=0x0501;POCO_STATIC"
 				StringPooling="true"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
@@ -536,6 +536,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\ArrayTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\AutoPtrTest.cpp"
 					>
 				</File>
@@ -556,7 +560,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\DynamicAnyTest.cpp"
+					RelativePath=".\src\DirectoryIteratorsTest.cpp"
 					>
 				</File>
 				<File
@@ -569,6 +573,10 @@
 				</File>
 				<File
 					RelativePath=".\src\FPETest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ListMapTest.cpp"
 					>
 				</File>
 				<File
@@ -628,6 +636,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\ArrayTest.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\AutoPtrTest.h"
 					>
 				</File>
@@ -648,6 +660,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\DirectoryIteratorsTest.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\DynamicAnyTest.h"
 					>
 				</File>
@@ -661,6 +677,10 @@
 				</File>
 				<File
 					RelativePath=".\src\FPETest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ListMapTest.h"
 					>
 				</File>
 				<File
@@ -720,6 +740,10 @@
 				Name="Source Files"
 				>
 				<File
+					RelativePath=".\src\Base32Test.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Base64Test.cpp"
 					>
 				</File>
@@ -729,6 +753,10 @@
 				</File>
 				<File
 					RelativePath=".\src\CountingStreamTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\FIFOBufferStreamTest.cpp"
 					>
 				</File>
 				<File
@@ -776,6 +804,10 @@
 				Name="Header Files"
 				>
 				<File
+					RelativePath=".\src\Base32Test.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Base64Test.h"
 					>
 				</File>
@@ -785,6 +817,10 @@
 				</File>
 				<File
 					RelativePath=".\src\CountingStreamTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\FIFOBufferStreamTest.h"
 					>
 				</File>
 				<File
@@ -1789,6 +1825,26 @@
 				</File>
 				<File
 					RelativePath=".\src\SimpleHashTableTest.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Dynamic"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\src\VarTest.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\src\VarTest.cpp"
 					>
 				</File>
 			</Filter>

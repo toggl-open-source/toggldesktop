@@ -102,50 +102,50 @@ class User : public BaseModel {
 
     std::string DateDuration(TimeEntry *te) const;
 
-    std::string APIToken() const {
+    const std::string &APIToken() const {
         return api_token_;
     }
     void SetAPIToken(std::string api_token);
 
-    Poco::UInt64 DefaultWID() const {
+    const Poco::UInt64 &DefaultWID() const {
         return default_wid_;
     }
     void SetDefaultWID(Poco::UInt64 value);
 
     // Unix timestamp of the user data; returned from API
-    Poco::UInt64 Since() const {
+    const Poco::UInt64 &Since() const {
         return since_;
     }
     void SetSince(const Poco::UInt64 value);
 
-    std::string Fullname() const {
+    const std::string &Fullname() const {
         return fullname_;
     }
     void SetFullname(std::string value);
 
-    std::string TimeOfDayFormat() const {
+    const std::string &TimeOfDayFormat() const {
         return timeofday_format_;
     }
     void SetTimeOfDayFormat(std::string value);
 
-    std::string Email() const {
+    const std::string &Email() const {
         return email_;
     }
     void SetEmail(const std::string value);
 
-    bool RecordTimeline() const {
+    const bool &RecordTimeline() const {
         return record_timeline_;
     }
     void SetRecordTimeline(const bool value);
 
-    void SetDurationFormat(const std::string);
-    std::string DurationFormat() const {
+    const std::string &DurationFormat() const {
         return duration_format_;
     }
+    void SetDurationFormat(const std::string);
 
     void ActiveProjects(std::vector<Project *> *list) const;
 
-    bool StoreStartAndStopTime() const {
+    const bool &StoreStartAndStopTime() const {
         return store_start_and_stop_time_;
     }
     void SetStoreStartAndStopTime(const bool value);

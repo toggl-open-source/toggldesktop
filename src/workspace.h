@@ -24,22 +24,22 @@ class Workspace : public BaseModel {
 
     std::string String() const;
 
-    std::string Name() const {
+    const std::string &Name() const {
         return name_;
     }
     void SetName(const std::string value);
 
-    bool Premium() const {
+    const bool &Premium() const {
         return premium_;
     }
     void SetPremium(const bool value);
 
-    bool OnlyAdminsMayCreateProjects() const {
+    const bool &OnlyAdminsMayCreateProjects() const {
         return only_admins_may_create_projects_;
     }
     void SetOnlyAdminsMayCreateProjects(const bool);
 
-    bool Admin() const {
+    const bool &Admin() const {
         return admin_;
     }
     void SetAdmin(const bool);

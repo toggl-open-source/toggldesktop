@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="debug_shared|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="1"
 			>
@@ -44,7 +44,7 @@
 				ExecutionBucket="7"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\include;.\wcelibcex-1.0\src"
-				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;POCO_NO_LOCALE"
+				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="3"
@@ -113,8 +113,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_shared|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="1"
 			>
@@ -141,7 +141,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".\include;.\wcelibcex-1.0\src"
-				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;POCO_NO_LOCALE"
+				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -209,8 +209,8 @@
 		</Configuration>
 		<Configuration
 			Name="debug_static_mt|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -235,7 +235,7 @@
 				ExecutionBucket="7"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\include;.\wcelibcex-1.0\src"
-				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;POCO_NO_LOCALE"
+				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="1"
@@ -292,8 +292,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_static_mt|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -320,7 +320,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".\include;.\wcelibcex-1.0\src"
-				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;POCO_NO_LOCALE"
+				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -377,8 +377,8 @@
 		</Configuration>
 		<Configuration
 			Name="debug_static_md|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -403,7 +403,7 @@
 				ExecutionBucket="7"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\include;.\wcelibcex-1.0\src"
-				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;POCO_NO_LOCALE"
+				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="3"
@@ -460,8 +460,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_static_md|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\Foundation\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -488,7 +488,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".\include;.\wcelibcex-1.0\src"
-				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;POCO_NO_LOCALE"
+				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;PCRE_STATIC;POCO_STATIC;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -554,6 +554,14 @@
 				Name="Source Files"
 				>
 				<File
+					RelativePath=".\src\Base32Decoder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\Base32Encoder.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Base64Decoder.cpp"
 					>
 				</File>
@@ -575,6 +583,10 @@
 				</File>
 				<File
 					RelativePath=".\src\DeflatingStream.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\FIFOBufferStream.cpp"
 					>
 				</File>
 				<File
@@ -730,6 +742,14 @@
 				Name="Header Files"
 				>
 				<File
+					RelativePath=".\include\Poco\Base32Decoder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\Base32Encoder.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Poco\Base64Decoder.h"
 					>
 				</File>
@@ -763,6 +783,10 @@
 				</File>
 				<File
 					RelativePath=".\include\Poco\DeflatingStream.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\FIFOBufferStream.h"
 					>
 				</File>
 				<File
@@ -2282,7 +2306,35 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\pcre_try_flipped.c"
+					RelativePath=".\src\pcre_byte_order.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pcre_config.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pcre_dfa_exec.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pcre_get.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pcre_jit_compile.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pcre_version.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pcre_refcount.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pcre_string_utils.c"
 					>
 				</File>
 				<File
@@ -2935,14 +2987,6 @@
 				>
 				<File
 					RelativePath=".\src\pocomsg.mc"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Resource Files"
-				>
-				<File
-					RelativePath=".\src\pocomsg.rc"
 					>
 				</File>
 			</Filter>
@@ -5326,6 +5370,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\UTF32Encoding.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\UTF8Encoding.cpp"
 					>
 				</File>
@@ -5366,6 +5414,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Poco\ListMap.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Poco\Latin9Encoding.h"
 					>
 				</File>
@@ -5399,6 +5451,10 @@
 				</File>
 				<File
 					RelativePath=".\include\Poco\UTF16Encoding.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\UTF32Encoding.h"
 					>
 				</File>
 				<File
@@ -5530,6 +5586,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Poco\DirectoryIteratorStrategy.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Poco\Delegate.h"
 					>
 				</File>
@@ -5575,6 +5635,14 @@
 				</File>
 				<File
 					RelativePath=".\include\Poco\PriorityStrategy.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\RecursiveDirectoryIterator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\RecursiveDirectoryIteratorImpl.h"
 					>
 				</File>
 			</Filter>
@@ -5942,14 +6010,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\DynamicAny.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\DynamicAnyHolder.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\Environment.cpp"
 					>
 				</File>
@@ -6212,6 +6272,10 @@
 							Name="VCCLCompilerTool"
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\Error.cpp"
+					>
 				</File>
 				<File
 					RelativePath=".\src\Exception.cpp"
@@ -6506,7 +6570,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\SortedDirectoryIterator.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\String.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\NumericString.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\DirectoryIteratorStrategy.cpp"
 					>
 				</File>
 				<File
@@ -6523,6 +6599,10 @@
 				>
 				<File
 					RelativePath=".\include\Poco\Any.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\Array.h"
 					>
 				</File>
 				<File
@@ -6562,14 +6642,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\Poco\DynamicAny.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\Poco\DynamicAnyHolder.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\Poco\DynamicFactory.h"
 					>
 				</File>
@@ -6598,7 +6670,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Poco\Error.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Poco\Exception.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\FIFOBuffer.h"
 					>
 				</File>
 				<File
@@ -6666,6 +6746,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Poco\NumericString.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Poco\ObjectPool.h"
 					>
 				</File>
@@ -6706,6 +6790,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Poco\SortedDirectoryIterator.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Poco\String.h"
 					>
 				</File>
@@ -6730,6 +6818,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Poco\UTFString.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Poco\Version.h"
 					>
 				</File>
@@ -6739,42 +6831,50 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath="..\DLLVersion.rc"
+		<Filter
+			Name="Dynamic"
 			>
-			<FileConfiguration
-				Name="debug_static_mt|Digi JumpStart (ARMV4I)"
-				ExcludedFromBuild="true"
+			<Filter
+				Name="Header Files"
 				>
-				<Tool
-					Name="VCResourceCompilerTool"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="release_static_mt|Digi JumpStart (ARMV4I)"
-				ExcludedFromBuild="true"
+				<File
+					RelativePath=".\include\Poco\Dynamic\Pair.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\Dynamic\Struct.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\Dynamic\Var.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\Dynamic\VarHolder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Poco\Dynamic\VarIterator.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
 				>
-				<Tool
-					Name="VCResourceCompilerTool"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="debug_static_md|Digi JumpStart (ARMV4I)"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCResourceCompilerTool"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="release_static_md|Digi JumpStart (ARMV4I)"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCResourceCompilerTool"
-				/>
-			</FileConfiguration>
-		</File>
+				<File
+					RelativePath=".\src\Var.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\VarHolder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\VarIterator.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

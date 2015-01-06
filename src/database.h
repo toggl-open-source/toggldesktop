@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "Poco/Logger.h"
-#include "Poco/Data/Common.h"
+#include "Poco/Data/Session.h"
 #include "Poco/Data/SQLite/Connector.h"
 
 #include "./types.h"
@@ -46,7 +46,7 @@ class Database {
 
     error LoadSettings(Settings *settings);
 
-    error SetSettingsUseIdleDetection(const bool use_idle_detection);
+    error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
     error SetSettingsMenubarTimer(const bool menubar_timer);
 
@@ -67,8 +67,8 @@ class Database {
         Proxy *proxy);
 
     error SaveProxySettings(
-        const bool use_proxy,
-        const Proxy proxy);
+        const bool &use_proxy,
+        const Proxy &proxy);
 
     error LoadUpdateChannel(
         std::string *update_channel);
@@ -168,7 +168,7 @@ class Database {
 
     error deleteAllFromTableByUID(
         const std::string table_name,
-        const Poco::Int64 UID);
+        const Poco::Int64 &UID);
 
     error saveModel(
         Workspace *model,

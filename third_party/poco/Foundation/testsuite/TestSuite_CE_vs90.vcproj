@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="debug_shared|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			CharacterSet="1"
@@ -110,8 +110,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_shared|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			CharacterSet="1"
@@ -206,8 +206,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_static_mt|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			CharacterSet="1"
@@ -301,8 +301,8 @@
 		</Configuration>
 		<Configuration
 			Name="debug_static_mt|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			CharacterSet="1"
@@ -392,8 +392,8 @@
 		</Configuration>
 		<Configuration
 			Name="debug_static_md|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			CharacterSet="1"
@@ -483,8 +483,8 @@
 		</Configuration>
 		<Configuration
 			Name="release_static_md|Digi JumpStart (ARMV4I)"
-			OutputDirectory="obj\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="obj\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="obj\TestSuite\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			CharacterSet="1"
@@ -591,6 +591,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\ArrayTest.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\AutoPtrTest.cpp"
 					>
 				</File>
@@ -611,7 +615,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\DynamicAnyTest.cpp"
+					RelativePath=".\src\DirectoryIteratorsTest.cpp"
 					>
 				</File>
 				<File
@@ -624,6 +628,10 @@
 				</File>
 				<File
 					RelativePath=".\src\FPETest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ListMapTest.cpp"
 					>
 				</File>
 				<File
@@ -683,6 +691,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\ArrayTest.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\AutoPtrTest.h"
 					>
 				</File>
@@ -703,7 +715,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\DynamicAnyTest.h"
+					RelativePath=".\src\DirectoryIteratorsTest.h"
 					>
 				</File>
 				<File
@@ -716,6 +728,10 @@
 				</File>
 				<File
 					RelativePath=".\src\FPETest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ListMapTest.h"
 					>
 				</File>
 				<File
@@ -775,6 +791,10 @@
 				Name="Source Files"
 				>
 				<File
+					RelativePath=".\src\Base32Test.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Base64Test.cpp"
 					>
 				</File>
@@ -784,6 +804,10 @@
 				</File>
 				<File
 					RelativePath=".\src\CountingStreamTest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\FIFOBufferStreamTest.cpp"
 					>
 				</File>
 				<File
@@ -831,6 +855,10 @@
 				Name="Header Files"
 				>
 				<File
+					RelativePath=".\src\Base32Test.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Base64Test.h"
 					>
 				</File>
@@ -840,6 +868,10 @@
 				</File>
 				<File
 					RelativePath=".\src\CountingStreamTest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\FIFOBufferStreamTest.h"
 					>
 				</File>
 				<File
@@ -1848,6 +1880,34 @@
 				</File>
 				<File
 					RelativePath=".\src\SimpleHashTableTest.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Dynamic"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\src\DynamicTestSuite.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\VarTest.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\src\DynamicTestSuite.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\VarTest.cpp"
 					>
 				</File>
 			</Filter>

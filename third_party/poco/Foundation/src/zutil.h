@@ -8,7 +8,7 @@
    subject to change. Applications should only use zlib.h.
  */
 
-/* @(#) $Id: //poco/1.4/Foundation/src/zutil.h#4 $ */
+/* @(#) $Id: //poco/1.4/Foundation/src/zutil.h#3 $ */
 
 #ifndef ZUTIL_H
 #define ZUTIL_H
@@ -216,7 +216,7 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 #endif
 
 /* Diagnostic functions */
-#ifdef DEBUG
+#ifdef ZLIB_DEBUG
 #  include <stdio.h>
    extern int ZLIB_INTERNAL z_verbose;
    extern void ZLIB_INTERNAL z_error OF((char *m));

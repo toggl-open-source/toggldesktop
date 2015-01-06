@@ -26,38 +26,38 @@ class Project : public BaseModel {
     , billable_(false)
     , client_guid_("") {}
 
-    Poco::UInt64 WID() const {
+    const Poco::UInt64 &WID() const {
         return wid_;
     }
     void SetWID(const Poco::UInt64 value);
 
-    Poco::UInt64 CID() const {
+    const Poco::UInt64 &CID() const {
         return cid_;
     }
     void SetCID(const Poco::UInt64 value);
 
-    std::string ClientGUID() const {
+    const std::string &ClientGUID() const {
         return client_guid_;
     }
     void SetClientGUID(const std::string);
 
-    std::string Name() const {
+    const std::string &Name() const {
         return name_;
     }
     void SetName(const std::string value);
 
-    std::string Color() const {
+    const std::string &Color() const {
         return color_;
     }
     void SetColor(const std::string value);
     std::string ColorCode() const;
 
-    bool Active() const {
+    const bool &Active() const {
         return active_;
     }
     void SetActive(const bool value);
 
-    bool IsPrivate() const {
+    const bool &IsPrivate() const {
         return private_;
     }
     void SetPrivate(const bool value);
@@ -66,7 +66,7 @@ class Project : public BaseModel {
 
     static std::vector<std::string> color_codes;
 
-    bool Billable() const {
+    const bool &Billable() const {
         return billable_;
     }
     void SetBillable(const bool value);

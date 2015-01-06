@@ -309,10 +309,10 @@ TogglSettingsView *settings_view_item_init(
 
     view->UseProxy = use_proxy;
 
-    view->ProxyHost = copy_string(proxy.host);
-    view->ProxyPort = proxy.port;
-    view->ProxyUsername = copy_string(proxy.username);
-    view->ProxyPassword = copy_string(proxy.password);
+    view->ProxyHost = copy_string(proxy.Host());
+    view->ProxyPort = proxy.Port();
+    view->ProxyUsername = copy_string(proxy.Username());
+    view->ProxyPassword = copy_string(proxy.Password());
 
     view->ReminderMinutes = settings.reminder_minutes;
 

@@ -1,5 +1,5 @@
 #
-# $Id: //poco/1.4/build/config/QNX#4 $
+# $Id: //poco/1.4/build/config/QNX#3 $
 #
 # QNX
 #
@@ -82,7 +82,7 @@ RELEASEOPT_LINK = -O2
 #
 # System Specific Flags
 #
-SYSFLAGS = -D_QNX_SOURCE -DPOCO_NO_GCC_ATOMICS
+SYSFLAGS = -D_QNX_SOURCE
 
 #
 # System Specific Libraries
