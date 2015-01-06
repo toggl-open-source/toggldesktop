@@ -19,7 +19,6 @@ namespace TogglDesktop
         private int defaultDescriptionTop = 20;
         private int projectDescriptionTop = 10;
         public Boolean durationFocused = false;
-        private String GUID = null;
 
         private List<Toggl.AutocompleteItem> timeEntryAutocompleteUpdate;
         private List<Toggl.AutocompleteItem> autoCompleteList;
@@ -97,10 +96,6 @@ namespace TogglDesktop
         {
             if (buttonStart.Text != "Start")
             {
-                if (this.GUID != null)
-                {
-                    Toggl.Edit(this.GUID, true, Toggl.Description);
-                }
                 Toggl.Stop();
                 return;
             }
@@ -116,12 +111,12 @@ namespace TogglDesktop
             {
                 duration = "";
             }
-            this.GUID = Toggl.Start(
+
+            if (Toggl.Start(
                 description,
                 duration,
                 task_id,
-                project_id);
-            if (GUID == null)
+                project_id) == null)
             {
                 task_id = 0;
                 project_id = 0;
