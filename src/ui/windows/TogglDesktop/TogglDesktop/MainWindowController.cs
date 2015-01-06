@@ -236,6 +236,7 @@ namespace TogglDesktop
             idleNotificationWindowController = new IdleNotificationWindowController();
             initEditForm();
             Utils.LoadWindowLocation(this, editForm);
+            timeEntryListViewController.setEditPopup(editForm);
 
             timeEntryListViewController.getListing().Scroll += MainWindowControllerEntries_Scroll;
             timeEntryListViewController.getListing().MouseWheel += MainWindowControllerEntries_Scroll;

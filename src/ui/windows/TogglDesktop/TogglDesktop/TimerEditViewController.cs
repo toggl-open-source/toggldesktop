@@ -91,12 +91,16 @@ namespace TogglDesktop
 
         private const string defaultDescription = "What are you doing?";
         private const string defaultDuration = "00:00:00";
+        public EditForm editForm;
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (buttonStart.Text != "Start")
             {
                 Toggl.Stop();
+                if(editForm.Visible) {
+                    editForm.ClosePopup();
+                }
                 return;
             }
 
