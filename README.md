@@ -96,5 +96,3 @@ Linux
 -----
 * [app](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=beta) (64 bit)
 * [deb](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=beta) (64 bit)
-
-We'll provide a rpm package soon, too.
