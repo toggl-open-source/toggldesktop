@@ -623,6 +623,7 @@ error Database::loadUsersRelatedData(User *user) {
     if (err != noError) {
         return err;
     }
+
     err = loadClients(user->ID(), &user->related.Clients);
     if (err != noError) {
         return err;
