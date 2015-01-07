@@ -35,11 +35,11 @@ class Database {
         const bool with_related_data);
 
     error LoadUserByID(
-        const Poco::UInt64 UID,
+        const Poco::UInt64 &UID,
         User *user);
 
     error LoadUserByAPIToken(
-        const std::string api_token,
+        const std::string &api_token,
         User *user);
 
     error LoadCurrentUser(User *user);
@@ -48,17 +48,17 @@ class Database {
 
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
-    error SetSettingsMenubarTimer(const bool menubar_timer);
+    error SetSettingsMenubarTimer(const bool &menubar_timer);
 
-    error SetSettingsDockIcon(const bool dock_icon);
+    error SetSettingsDockIcon(const bool &dock_icon);
 
-    error SetSettingsOnTop(const bool on_top);
+    error SetSettingsOnTop(const bool &on_top);
 
-    error SetSettingsReminder(const bool reminder);
+    error SetSettingsReminder(const bool &reminder);
 
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
-    error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
+    error SetSettingsFocusOnShortcut(const bool &focus_on_shortcut);
 
     error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
@@ -74,7 +74,7 @@ class Database {
         std::string *update_channel);
 
     error SaveUpdateChannel(
-        const std::string update_channel);
+        const std::string &update_channel);
 
     error UInt(
         const std::string sql,
@@ -93,7 +93,7 @@ class Database {
     error SetCurrentAPIToken(const std::string &token);
     error ClearCurrentAPIToken();
 
-    error SelectTimelineBatch(const Poco::UInt64 user_id,
+    error SelectTimelineBatch(const Poco::UInt64 &user_id,
                               std::vector<TimelineEvent> *timeline_events);
 
     static std::string GenerateGUID();
@@ -113,7 +113,7 @@ class Database {
     error ensureMigrationTable();
 
     error migrate(
-        const std::string name,
+        const std::string &name,
         const std::string sql);
 
     error execute(
@@ -128,27 +128,27 @@ class Database {
     error loadUsersRelatedData(User *user);
 
     error loadWorkspaces(
-        const Poco::UInt64 UID,
+        const Poco::UInt64 &UID,
         std::vector<Workspace *> *list);
 
     error loadClients(
-        const Poco::UInt64 UID,
+        const Poco::UInt64 &UID,
         std::vector<Client *> *list);
 
     error loadProjects(
-        const Poco::UInt64 UID,
+        const Poco::UInt64 &UID,
         std::vector<Project *> *list);
 
     error loadTasks(
-        const Poco::UInt64 UID,
+        const Poco::UInt64 &UID,
         std::vector<Task *> *list);
 
     error loadTags(
-        const Poco::UInt64 UID,
+        const Poco::UInt64 &UID,
         std::vector<Tag *> *list);
 
     error loadTimeEntries(
-        const Poco::UInt64 UID,
+        const Poco::UInt64 &UID,
         std::vector<TimeEntry *> *list);
 
     error loadTimeEntriesFromSQLStatement(
@@ -164,7 +164,7 @@ class Database {
 
     error deleteFromTable(
         const std::string table_name,
-        const Poco::Int64 local_id);
+        const Poco::Int64 &local_id);
 
     error deleteAllFromTableByUID(
         const std::string table_name,

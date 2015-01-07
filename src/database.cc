@@ -197,7 +197,7 @@ Poco::Logger &Database::logger() const {
 
 error Database::deleteFromTable(
     const std::string table_name,
-    const Poco::Int64 local_id) {
+    const Poco::Int64 &local_id) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -328,7 +328,8 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
-error Database::SetSettingsUseIdleDetection(const bool &use_idle_detection) {
+error Database::SetSettingsUseIdleDetection(
+    const bool &use_idle_detection) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
@@ -348,7 +349,8 @@ error Database::SetSettingsUseIdleDetection(const bool &use_idle_detection) {
     return last_error("SetSettingsUseIdleDetection");
 }
 
-error Database::SetSettingsMenubarTimer(const bool menubar_timer) {
+error Database::SetSettingsMenubarTimer(
+    const bool &menubar_timer) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
@@ -368,7 +370,7 @@ error Database::SetSettingsMenubarTimer(const bool menubar_timer) {
     return last_error("SetSettingsMenubarTimer");
 }
 
-error Database::SetSettingsDockIcon(const bool dock_icon) {
+error Database::SetSettingsDockIcon(const bool &dock_icon) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
@@ -388,7 +390,7 @@ error Database::SetSettingsDockIcon(const bool dock_icon) {
     return last_error("SetSettingsDockIcon");
 }
 
-error Database::SetSettingsOnTop(const bool on_top) {
+error Database::SetSettingsOnTop(const bool &on_top) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
@@ -408,7 +410,7 @@ error Database::SetSettingsOnTop(const bool on_top) {
     return last_error("SetSettingsOnTop");
 }
 
-error Database::SetSettingsReminder(const bool reminder) {
+error Database::SetSettingsReminder(const bool &reminder) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
@@ -453,7 +455,7 @@ error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return last_error("SetSettingsIdleMinutes");
 }
 
-error Database::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
+error Database::SetSettingsFocusOnShortcut(const bool &focus_on_shortcut) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
@@ -554,7 +556,7 @@ error Database::LoadUpdateChannel(
 }
 
 error Database::SaveUpdateChannel(
-    const std::string update_channel) {
+    const std::string &update_channel) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -582,7 +584,7 @@ error Database::SaveUpdateChannel(
 }
 
 error Database::LoadUserByAPIToken(
-    const std::string api_token,
+    const std::string &api_token,
     User *model) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -653,7 +655,7 @@ error Database::loadUsersRelatedData(User *user) {
 }
 
 error Database::LoadUserByID(
-    const Poco::UInt64 UID,
+    const Poco::UInt64 &UID,
     User *user) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -741,7 +743,7 @@ error Database::LoadUserByID(
 }
 
 error Database::loadWorkspaces(
-    const Poco::UInt64 UID,
+    const Poco::UInt64 &UID,
     std::vector<Workspace *> *list) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -794,7 +796,7 @@ error Database::loadWorkspaces(
 }
 
 error Database::loadClients(
-    const Poco::UInt64 UID,
+    const Poco::UInt64 &UID,
     std::vector<Client *> *list) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -845,7 +847,7 @@ error Database::loadClients(
 }
 
 error Database::loadProjects(
-    const Poco::UInt64 UID,
+    const Poco::UInt64 &UID,
     std::vector<Project *> *list) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -901,7 +903,7 @@ error Database::loadProjects(
 }
 
 error Database::loadTasks(
-    const Poco::UInt64 UID,
+    const Poco::UInt64 &UID,
     std::vector<Task *> *list) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -951,7 +953,7 @@ error Database::loadTasks(
 }
 
 error Database::loadTags(
-    const Poco::UInt64 UID,
+    const Poco::UInt64 &UID,
     std::vector<Tag *> *list) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -1001,7 +1003,7 @@ error Database::loadTags(
 }
 
 error Database::loadTimeEntries(
-    const Poco::UInt64 UID,
+    const Poco::UInt64 &UID,
     std::vector<TimeEntry *> *list) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -2850,7 +2852,7 @@ error Database::saveDesktopID() {
 }
 
 error Database::migrate(
-    const std::string name,
+    const std::string &name,
     const std::string sql) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -2929,7 +2931,7 @@ error Database::execute(
 }
 
 error Database::SelectTimelineBatch(
-    const Poco::UInt64 user_id,
+    const Poco::UInt64 &user_id,
     std::vector<TimelineEvent> *timeline_events) {
 
     Poco::Mutex::ScopedLock lock(session_m_);
