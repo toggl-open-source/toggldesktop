@@ -826,10 +826,18 @@ error Database::loadClients(
             while (more) {
                 Client *model = new Client();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetID(rs[1].convert<Poco::UInt64>());
+                if (rs[1].isEmpty()) {
+                    model->SetID(0);
+                } else {
+                    model->SetID(rs[1].convert<Poco::UInt64>());
+                }
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
-                model->SetGUID(rs[4].convert<std::string>());
+                if (rs[4].isEmpty()) {
+                    model->SetGUID("");
+                } else {
+                    model->SetGUID(rs[4].convert<std::string>());
+                }
                 model->SetWID(rs[5].convert<Poco::UInt64>());
                 model->ClearDirty();
                 list->push_back(model);
@@ -877,16 +885,36 @@ error Database::loadProjects(
             while (more) {
                 Project *model = new Project();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetID(rs[1].convert<Poco::UInt64>());
+                if (rs[1].isEmpty()) {
+                    model->SetID(0);
+                } else {
+                    model->SetID(rs[1].convert<Poco::UInt64>());
+                }
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
-                model->SetGUID(rs[4].convert<std::string>());
+                if (rs[4].isEmpty()) {
+                    model->SetGUID("");
+                } else {
+                    model->SetGUID(rs[4].convert<std::string>());
+                }
                 model->SetWID(rs[5].convert<Poco::UInt64>());
-                model->SetColor(rs[6].convert<std::string>());
-                model->SetCID(rs[7].convert<Poco::UInt64>());
+                if (rs[6].isEmpty()) {
+                    model->SetColor("");
+                } else {
+                    model->SetColor(rs[6].convert<std::string>());
+                }
+                if (rs[7].isEmpty()) {
+                    model->SetCID(0);
+                } else {
+                    model->SetCID(rs[7].convert<Poco::UInt64>());
+                }
                 model->SetActive(rs[8].convert<bool>());
                 model->SetBillable(rs[9].convert<bool>());
-                model->SetClientGUID(rs[10].convert<std::string>());
+                if (rs[10].isEmpty()) {
+                    model->SetClientGUID("");
+                } else {
+                    model->SetClientGUID(rs[10].convert<std::string>());
+                }
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -932,11 +960,19 @@ error Database::loadTasks(
             while (more) {
                 Task *model = new Task();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetID(rs[1].convert<Poco::UInt64>());
+                if (rs[1].isEmpty()) {
+                    model->SetID(0);
+                } else {
+                    model->SetID(rs[1].convert<Poco::UInt64>());
+                }
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 model->SetWID(rs[4].convert<Poco::UInt64>());
-                model->SetPID(rs[5].convert<Poco::UInt64>());
+                if (rs[5].isEmpty()) {
+                    model->SetPID(0);
+                } else {
+                    model->SetPID(rs[5].convert<Poco::UInt64>());
+                }
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -982,11 +1018,19 @@ error Database::loadTags(
             while (more) {
                 Tag *model = new Tag();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetID(rs[1].convert<Poco::UInt64>());
+                if (rs[1].isEmpty()) {
+                    model->SetID(0);
+                } else {
+                    model->SetID(rs[1].convert<Poco::UInt64>());
+                }
                 model->SetUID(rs[2].convert<Poco::UInt64>());
                 model->SetName(rs[3].convert<std::string>());
                 model->SetWID(rs[4].convert<Poco::UInt64>());
-                model->SetGUID(rs[5].convert<std::string>());
+                if (rs[5].isEmpty()) {
+                    model->SetGUID("");
+                } else {
+                    model->SetGUID(rs[5].convert<std::string>());
+                }
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1068,24 +1112,68 @@ error Database::loadTimeEntriesFromSQLStatement(
             while (more) {
                 TimeEntry *model = new TimeEntry();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
-                model->SetID(rs[1].convert<Poco::UInt64>());
+                if (rs[1].isEmpty()) {
+                    model->SetID(0);
+                } else {
+                    model->SetID(rs[1].convert<Poco::UInt64>());
+                }
                 model->SetUID(rs[2].convert<Poco::UInt64>());
-                model->SetDescription(rs[3].convert<std::string>());
+                if (rs[3].isEmpty()) {
+                    model->SetDescription("");
+                } else {
+                    model->SetDescription(rs[3].convert<std::string>());
+                }
                 model->SetWID(rs[4].convert<Poco::UInt64>());
                 model->SetGUID(rs[5].convert<std::string>());
-                model->SetPID(rs[6].convert<Poco::UInt64>());
-                model->SetTID(rs[7].convert<Poco::UInt64>());
+                if (rs[6].isEmpty()) {
+                    model->SetPID(0);
+                } else {
+                    model->SetPID(rs[6].convert<Poco::UInt64>());
+                }
+                if (rs[7].isEmpty()) {
+                    model->SetTID(0);
+                } else {
+                    model->SetTID(rs[7].convert<Poco::UInt64>());
+                }
                 model->SetBillable(rs[8].convert<bool>());
                 model->SetDurOnly(rs[9].convert<bool>());
-                model->SetUIModifiedAt(rs[10].convert<Poco::UInt64>());
+                if (rs[10].isEmpty()) {
+                    model->SetUIModifiedAt(0);
+                } else {
+                    model->SetUIModifiedAt(rs[10].convert<Poco::UInt64>());
+                }
                 model->SetStart(rs[11].convert<Poco::UInt64>());
-                model->SetStop(rs[12].convert<Poco::UInt64>());
+                if (rs[12].isEmpty()) {
+                    model->SetStop(0);
+                } else {
+                    model->SetStop(rs[12].convert<Poco::UInt64>());
+                }
                 model->SetDurationInSeconds(rs[13].convert<Poco::Int64>());
-                model->SetTags(rs[14].convert<std::string>());
-                model->SetCreatedWith(rs[15].convert<std::string>());
-                model->SetDeletedAt(rs[16].convert<Poco::UInt64>());
-                model->SetUpdatedAt(rs[17].convert<Poco::UInt64>());
-                model->SetProjectGUID(rs[18].convert<std::string>());
+                if (rs[14].isEmpty()) {
+                    model->SetTags("");
+                } else {
+                    model->SetTags(rs[14].convert<std::string>());
+                }
+                if (rs[15].isEmpty()) {
+                    model->SetCreatedWith("");
+                } else {
+                    model->SetCreatedWith(rs[15].convert<std::string>());
+                }
+                if (rs[16].isEmpty()) {
+                    model->SetDeletedAt(0);
+                } else {
+                    model->SetDeletedAt(rs[16].convert<Poco::UInt64>());
+                }
+                if (rs[17].isEmpty()) {
+                    model->SetUpdatedAt(0);
+                } else {
+                    model->SetUpdatedAt(rs[17].convert<Poco::UInt64>());
+                }
+                if (rs[18].isEmpty()) {
+                    model->SetProjectGUID("");
+                } else {
+                    model->SetProjectGUID(rs[18].convert<std::string>());
+                }
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -2949,7 +3037,8 @@ error Database::SelectTimelineBatch(
 
     Poco::Data::Statement select(*session_);
     select << "SELECT id, title, filename, start_time, end_time, idle "
-           "FROM timeline_events WHERE user_id = :user_id "
+           "FROM timeline_events "
+           "WHERE user_id = :user_id "
            "LIMIT 100",
            useRef(user_id);
     Poco::Data::RecordSet rs(select);
@@ -2959,10 +3048,16 @@ error Database::SelectTimelineBatch(
         while (more) {
             TimelineEvent event;
             event.id = rs[0].convert<unsigned int>();
-            event.title = rs[1].convert<std::string>();
-            event.filename = rs[2].convert<std::string>();
+            if (!rs[1].isEmpty()) {
+                event.title = rs[1].convert<std::string>();
+            }
+            if (!rs[2].isEmpty()) {
+                event.filename = rs[2].convert<std::string>();
+            }
             event.start_time = rs[3].convert<int>();
-            event.end_time = rs[4].convert<int>();
+            if (!rs[4].isEmpty()) {
+                event.end_time = rs[4].convert<int>();
+            }
             event.idle = rs[5].convert<bool>();
             event.user_id = static_cast<unsigned int>(user_id);
             timeline_events->push_back(event);
