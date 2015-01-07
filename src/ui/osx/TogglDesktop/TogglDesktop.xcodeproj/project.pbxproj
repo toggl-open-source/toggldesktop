@@ -34,6 +34,7 @@
 		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
 		74098C331919899600CBDFB9 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
 		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
+		7420DD6C1A5DEA5B00A0A5FF /* libPocoJSON.30.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7420DD6B1A5DEA5B00A0A5FF /* libPocoJSON.30.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
 		7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
 		74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -294,6 +295,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				7420DD6C1A5DEA5B00A0A5FF /* libPocoJSON.30.dylib in CopyFiles */,
 				742134BB195C63A3007EF78B /* libPocoUtil.30.dylib in CopyFiles */,
 				742134BC195C63A3007EF78B /* libPocoData.30.dylib in CopyFiles */,
 				742134BD195C63A3007EF78B /* libPocoNetSSL.30.dylib in CopyFiles */,
@@ -360,6 +362,7 @@
 		74098C321919899600CBDFB9 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = ../Utils.m; sourceTree = "<group>"; };
 		741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTextFieldWithBackground.h; path = ../NSTextFieldWithBackground.h; sourceTree = "<group>"; };
 		741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTextFieldWithBackground.m; path = ../NSTextFieldWithBackground.m; sourceTree = "<group>"; };
+		7420DD6B1A5DEA5B00A0A5FF /* libPocoJSON.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.30.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.30.dylib; sourceTree = "<group>"; };
 		742134B3195C63A3007EF78B /* libPocoUtil.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.30.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.30.dylib; sourceTree = "<group>"; };
 		742134B4195C63A3007EF78B /* libPocoData.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.30.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoData.30.dylib; sourceTree = "<group>"; };
 		742134B5195C63A3007EF78B /* libPocoNetSSL.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.30.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.30.dylib; sourceTree = "<group>"; };
@@ -596,6 +599,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				7420DD6B1A5DEA5B00A0A5FF /* libPocoJSON.30.dylib */,
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
 				742134C3195C63AE007EF78B /* poco */,
