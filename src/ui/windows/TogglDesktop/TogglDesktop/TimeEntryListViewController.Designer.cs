@@ -76,7 +76,8 @@
             this.emptyLabel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.emptyLabel.Size = new System.Drawing.Size(314, 150);
             this.emptyLabel.TabIndex = 2;
-            this.emptyLabel.Text = "Welcome back! Your previous entries are available in the web under reports";
+            this.emptyLabel.Text = "Welcome, let\'s start tracking! If you have previous entries, click here to see th" +
+    "em in reports";
             this.emptyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.emptyLabel.Visible = false;
             this.emptyLabel.Click += new System.EventHandler(this.emptyLabel_Click);

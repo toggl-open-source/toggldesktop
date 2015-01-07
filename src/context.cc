@@ -1307,8 +1307,6 @@ _Bool Context::Logout() {
             return true;
         }
 
-        Shutdown();
-
         error err = db()->ClearCurrentAPIToken();
         if (err != noError) {
             return displayError(err);
@@ -1319,6 +1317,7 @@ _Bool Context::Logout() {
         setUser(0);
 
         UI()->DisplayApp();
+		Shutdown();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
