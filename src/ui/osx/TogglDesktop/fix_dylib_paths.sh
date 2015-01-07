@@ -27,6 +27,7 @@ fix_poco_paths() {
 	fix $f libPocoNet.30.dylib
 	fix $f libPocoFoundation.30.dylib
 	fix $f libPocoCrypto.30.dylib
+	fix $f libPocoJSON.30.dylib
 }
 
 for f in src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib
