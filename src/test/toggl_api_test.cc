@@ -196,8 +196,10 @@ void on_display_settings(
 
     testing::testresult::proxy.SetHost(std::string(settings->ProxyHost));
     testing::testresult::proxy.SetPort(settings->ProxyPort);
-    testing::testresult::proxy.SetUsername(std::string(settings->ProxyUsername));
-    testing::testresult::proxy.SetPassword(std::string(settings->ProxyPassword));
+    testing::testresult::proxy.SetUsername(
+        std::string(settings->ProxyUsername));
+    testing::testresult::proxy.SetPassword(
+        std::string(settings->ProxyPassword));
 }
 
 void on_display_timer_state(TogglTimeEntryView *te) {

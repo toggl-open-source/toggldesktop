@@ -23,6 +23,11 @@
 
 namespace toggl {
 
+using Poco::Data::Keywords::useRef;
+using Poco::Data::Keywords::limit;
+using Poco::Data::Keywords::into;
+using Poco::Data::Keywords::now;
+
 Database::Database(const std::string db_path)
     : session_(0)
 , desktop_id_("") {
@@ -134,8 +139,8 @@ error Database::deleteAllFromTableByUID(
 
     try {
         *session_ << "delete from " + table_name + " where uid = :uid",
-                  Poco::Data::Keywords::useRef(UID),
-                  Poco::Data::Keywords::now;
+                  useRef(UID),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -154,8 +159,8 @@ error Database::journalMode(std::string *mode) {
 
     try {
         *session_ << "PRAGMA journal_mode",
-                  Poco::Data::Keywords::into(*mode),
-                  Poco::Data::Keywords::now;
+                  into(*mode),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -175,7 +180,7 @@ error Database::setJournalMode(const std::string mode) {
 
     try {
         *session_ << "PRAGMA journal_mode=" << mode,
-                  Poco::Data::Keywords::now;
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -212,8 +217,8 @@ error Database::deleteFromTable(
     try {
         *session_ << "delete from " + table_name +
                   " where local_id = :local_id",
-                  Poco::Data::Keywords::useRef(local_id),
-                  Poco::Data::Keywords::now;
+                  useRef(local_id),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -266,16 +271,16 @@ error Database::LoadSettings(Settings *settings) {
                   "on_top, reminder, idle_minutes, focus_on_shortcut, "
                   "reminder_minutes "
                   "from settings",
-                  Poco::Data::Keywords::into(settings->use_idle_detection),
-                  Poco::Data::Keywords::into(settings->menubar_timer),
-                  Poco::Data::Keywords::into(settings->dock_icon),
-                  Poco::Data::Keywords::into(settings->on_top),
-                  Poco::Data::Keywords::into(settings->reminder),
-                  Poco::Data::Keywords::into(settings->idle_minutes),
-                  Poco::Data::Keywords::into(settings->focus_on_shortcut),
-                  Poco::Data::Keywords::into(settings->reminder_minutes),
-                  Poco::Data::Keywords::limit(1),
-                  Poco::Data::Keywords::now;
+                  into(settings->use_idle_detection),
+                  into(settings->menubar_timer),
+                  into(settings->dock_icon),
+                  into(settings->on_top),
+                  into(settings->reminder),
+                  into(settings->idle_minutes),
+                  into(settings->focus_on_shortcut),
+                  into(settings->reminder_minutes),
+                  limit(1),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -302,13 +307,13 @@ error Database::LoadProxySettings(
         *session_ << "select use_proxy, proxy_host, proxy_port, "
                   "proxy_username, proxy_password "
                   "from settings",
-                  Poco::Data::Keywords::into(*use_proxy),
-                  Poco::Data::Keywords::into(host),
-                  Poco::Data::Keywords::into(port),
-                  Poco::Data::Keywords::into(username),
-                  Poco::Data::Keywords::into(password),
-                  Poco::Data::Keywords::limit(1),
-                  Poco::Data::Keywords::now;
+                  into(*use_proxy),
+                  into(host),
+                  into(port),
+                  into(username),
+                  into(password),
+                  limit(1),
+                  now;
         proxy->SetHost(host);
         proxy->SetPort(port);
         proxy->SetUsername(username);
@@ -331,8 +336,8 @@ error Database::SetSettingsUseIdleDetection(const bool &use_idle_detection) {
     try {
         *session_ << "update settings set "
                   "use_idle_detection = :use_idle_detection ",
-                  Poco::Data::Keywords::useRef(use_idle_detection),
-                  Poco::Data::Keywords::now;
+                  useRef(use_idle_detection),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -351,8 +356,8 @@ error Database::SetSettingsMenubarTimer(const bool menubar_timer) {
     try {
         *session_ << "update settings set "
                   "menubar_timer = :menubar_timer ",
-                  Poco::Data::Keywords::useRef(menubar_timer),
-                  Poco::Data::Keywords::now;
+                  useRef(menubar_timer),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -371,8 +376,8 @@ error Database::SetSettingsDockIcon(const bool dock_icon) {
     try {
         *session_ << "update settings set "
                   "dock_icon = :dock_icon ",
-                  Poco::Data::Keywords::useRef(dock_icon),
-                  Poco::Data::Keywords::now;
+                  useRef(dock_icon),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -391,8 +396,8 @@ error Database::SetSettingsOnTop(const bool on_top) {
     try {
         *session_ << "update settings set "
                   "on_top = :on_top ",
-                  Poco::Data::Keywords::useRef(on_top),
-                  Poco::Data::Keywords::now;
+                  useRef(on_top),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -411,8 +416,8 @@ error Database::SetSettingsReminder(const bool reminder) {
     try {
         *session_ << "update settings set "
                   "reminder = :reminder ",
-                  Poco::Data::Keywords::useRef(reminder),
-                  Poco::Data::Keywords::now;
+                  useRef(reminder),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -436,8 +441,8 @@ error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     try {
         *session_ << "update settings set "
                   "idle_minutes = :idle_minutes ",
-                  Poco::Data::Keywords::useRef(new_value),
-                  Poco::Data::Keywords::now;
+                  useRef(new_value),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -456,8 +461,8 @@ error Database::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
     try {
         *session_ << "update settings set "
                   "focus_on_shortcut = :focus_on_shortcut ",
-                  Poco::Data::Keywords::useRef(focus_on_shortcut),
-                  Poco::Data::Keywords::now;
+                  useRef(focus_on_shortcut),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -482,8 +487,8 @@ error Database::SetSettingsReminderMinutes(
     try {
         *session_ << "update settings set "
                   "reminder_minutes = :reminder_minutes ",
-                  Poco::Data::Keywords::useRef(new_value),
-                  Poco::Data::Keywords::now;
+                  useRef(new_value),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -509,12 +514,12 @@ error Database::SaveProxySettings(
                   "proxy_port = :proxy_port, "
                   "proxy_username = :proxy_username, "
                   "proxy_password = :proxy_password ",
-                  Poco::Data::Keywords::useRef(use_proxy),
-                  Poco::Data::Keywords::useRef(proxy.Host()),
-                  Poco::Data::Keywords::useRef(proxy.Port()),
-                  Poco::Data::Keywords::useRef(proxy.Username()),
-                  Poco::Data::Keywords::useRef(proxy.Password()),
-                  Poco::Data::Keywords::now;
+                  useRef(use_proxy),
+                  useRef(proxy.Host()),
+                  useRef(proxy.Port()),
+                  useRef(proxy.Username()),
+                  useRef(proxy.Password()),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -535,9 +540,9 @@ error Database::LoadUpdateChannel(
 
     try {
         *session_ << "select update_channel from settings",
-                  Poco::Data::Keywords::into(*update_channel),
-                  Poco::Data::Keywords::limit(1),
-                  Poco::Data::Keywords::now;
+                  into(*update_channel),
+                  limit(1),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -564,8 +569,8 @@ error Database::SaveUpdateChannel(
     try {
         *session_ << "update settings set "
                   "update_channel = :update_channel",
-                  Poco::Data::Keywords::useRef(update_channel),
-                  Poco::Data::Keywords::now;
+                  useRef(update_channel),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -592,10 +597,10 @@ error Database::LoadUserByAPIToken(
 
     try {
         *session_ << "select id from users where api_token = :api_token",
-                  Poco::Data::Keywords::into(uid),
-                  Poco::Data::Keywords::useRef(api_token),
-                  Poco::Data::Keywords::limit(1),
-                  Poco::Data::Keywords::now;
+                  into(uid),
+                  useRef(api_token),
+                  limit(1),
+                  now;
         error err = last_error("LoadUserByAPIToken");
         if (err != noError) {
             return err;
@@ -678,20 +683,20 @@ error Database::LoadUserByID(
                   "email, record_timeline, store_start_and_stop_time, "
                   "timeofday_format, duration_format "
                   "from users where id = :id",
-                  Poco::Data::Keywords::into(local_id),
-                  Poco::Data::Keywords::into(id),
-                  Poco::Data::Keywords::into(api_token),
-                  Poco::Data::Keywords::into(default_wid),
-                  Poco::Data::Keywords::into(since),
-                  Poco::Data::Keywords::into(fullname),
-                  Poco::Data::Keywords::into(email),
-                  Poco::Data::Keywords::into(record_timeline),
-                  Poco::Data::Keywords::into(store_start_and_stop_time),
-                  Poco::Data::Keywords::into(timeofday_format),
-                  Poco::Data::Keywords::into(duration_format),
-                  Poco::Data::Keywords::useRef(UID),
-                  Poco::Data::Keywords::limit(1),
-                  Poco::Data::Keywords::now;
+                  into(local_id),
+                  into(id),
+                  into(api_token),
+                  into(default_wid),
+                  into(since),
+                  into(fullname),
+                  into(email),
+                  into(record_timeline),
+                  into(store_start_and_stop_time),
+                  into(timeofday_format),
+                  into(duration_format),
+                  useRef(UID),
+                  limit(1),
+                  now;
 
         error err = last_error("LoadUserByID");
         if (err != noError) {
@@ -754,7 +759,7 @@ error Database::loadWorkspaces(
                "FROM workspaces "
                "WHERE uid = :uid "
                "ORDER BY name",
-               Poco::Data::Keywords::useRef(UID);
+               useRef(UID);
         error err = last_error("loadWorkspaces");
         if (err != noError) {
             return err;
@@ -805,7 +810,7 @@ error Database::loadClients(
                "FROM clients "
                "WHERE uid = :uid "
                "ORDER BY name",
-               Poco::Data::Keywords::useRef(UID);
+               useRef(UID);
 
         error err = last_error("loadClients");
         if (err != noError) {
@@ -857,7 +862,7 @@ error Database::loadProjects(
                "FROM projects "
                "WHERE uid = :uid "
                "ORDER BY name",
-               Poco::Data::Keywords::useRef(UID);
+               useRef(UID);
         error err = last_error("loadProjects");
         if (err != noError) {
             return err;
@@ -912,7 +917,7 @@ error Database::loadTasks(
                "FROM tasks "
                "WHERE uid = :uid "
                "ORDER BY name",
-               Poco::Data::Keywords::useRef(UID);
+               useRef(UID);
         error err = last_error("loadTasks");
         if (err != noError) {
             return err;
@@ -962,7 +967,7 @@ error Database::loadTags(
                "FROM tags "
                "WHERE uid = :uid "
                "ORDER BY name",
-               Poco::Data::Keywords::useRef(UID);
+               useRef(UID);
         error err = last_error("loadTags");
         if (err != noError) {
             return err;
@@ -1015,7 +1020,7 @@ error Database::loadTimeEntries(
                "FROM time_entries "
                "WHERE uid = :uid "
                "ORDER BY start DESC",
-               Poco::Data::Keywords::useRef(UID);
+               useRef(UID);
         error err = last_error("loadTimeEntries");
         if (err != noError) {
             return err;
@@ -1184,26 +1189,26 @@ error Database::saveModel(
                           "updated_at = :updated_at, "
                           "project_guid = :project_guid "
                           "where local_id = :local_id",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Description()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::useRef(model->PID()),
-                          Poco::Data::Keywords::useRef(model->TID()),
-                          Poco::Data::Keywords::useRef(model->Billable()),
-                          Poco::Data::Keywords::useRef(model->DurOnly()),
-                          Poco::Data::Keywords::useRef(model->UIModifiedAt()),
-                          Poco::Data::Keywords::useRef(model->Start()),
-                          Poco::Data::Keywords::useRef(model->Stop()),
-                          Poco::Data::Keywords::useRef(model->DurationInSeconds()),
-                          Poco::Data::Keywords::useRef(model->Tags()),
-                          Poco::Data::Keywords::useRef(model->CreatedWith()),
-                          Poco::Data::Keywords::useRef(model->DeletedAt()),
-                          Poco::Data::Keywords::useRef(model->UpdatedAt()),
-                          Poco::Data::Keywords::useRef(model->ProjectGUID()),
-                          Poco::Data::Keywords::useRef(model->LocalID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Description()),
+                          useRef(model->WID()),
+                          useRef(model->GUID()),
+                          useRef(model->PID()),
+                          useRef(model->TID()),
+                          useRef(model->Billable()),
+                          useRef(model->DurOnly()),
+                          useRef(model->UIModifiedAt()),
+                          useRef(model->Start()),
+                          useRef(model->Stop()),
+                          useRef(model->DurationInSeconds()),
+                          useRef(model->Tags()),
+                          useRef(model->CreatedWith()),
+                          useRef(model->DeletedAt()),
+                          useRef(model->UpdatedAt()),
+                          useRef(model->ProjectGUID()),
+                          useRef(model->LocalID()),
+                          now;
             } else {
                 *session_ << "update time_entries set "
                           "uid = :uid, description = :description, wid = :wid, "
@@ -1217,25 +1222,25 @@ error Database::saveModel(
                           "updated_at = :updated_at, "
                           "project_guid = :project_guid "
                           "where local_id = :local_id",
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Description()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::useRef(model->PID()),
-                          Poco::Data::Keywords::useRef(model->TID()),
-                          Poco::Data::Keywords::useRef(model->Billable()),
-                          Poco::Data::Keywords::useRef(model->DurOnly()),
-                          Poco::Data::Keywords::useRef(model->UIModifiedAt()),
-                          Poco::Data::Keywords::useRef(model->Start()),
-                          Poco::Data::Keywords::useRef(model->Stop()),
-                          Poco::Data::Keywords::useRef(model->DurationInSeconds()),
-                          Poco::Data::Keywords::useRef(model->Tags()),
-                          Poco::Data::Keywords::useRef(model->CreatedWith()),
-                          Poco::Data::Keywords::useRef(model->DeletedAt()),
-                          Poco::Data::Keywords::useRef(model->UpdatedAt()),
-                          Poco::Data::Keywords::useRef(model->ProjectGUID()),
-                          Poco::Data::Keywords::useRef(model->LocalID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->UID()),
+                          useRef(model->Description()),
+                          useRef(model->WID()),
+                          useRef(model->GUID()),
+                          useRef(model->PID()),
+                          useRef(model->TID()),
+                          useRef(model->Billable()),
+                          useRef(model->DurOnly()),
+                          useRef(model->UIModifiedAt()),
+                          useRef(model->Start()),
+                          useRef(model->Stop()),
+                          useRef(model->DurationInSeconds()),
+                          useRef(model->Tags()),
+                          useRef(model->CreatedWith()),
+                          useRef(model->DeletedAt()),
+                          useRef(model->UpdatedAt()),
+                          useRef(model->ProjectGUID()),
+                          useRef(model->LocalID()),
+                          now;
             }
             error err = last_error("saveTimeEntry");
             if (err != noError) {
@@ -1266,25 +1271,25 @@ error Database::saveModel(
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
                           ":project_guid)",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Description()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::useRef(model->PID()),
-                          Poco::Data::Keywords::useRef(model->TID()),
-                          Poco::Data::Keywords::useRef(model->Billable()),
-                          Poco::Data::Keywords::useRef(model->DurOnly()),
-                          Poco::Data::Keywords::useRef(model->UIModifiedAt()),
-                          Poco::Data::Keywords::useRef(model->Start()),
-                          Poco::Data::Keywords::useRef(model->Stop()),
-                          Poco::Data::Keywords::useRef(model->DurationInSeconds()),
-                          Poco::Data::Keywords::useRef(model->Tags()),
-                          Poco::Data::Keywords::useRef(model->CreatedWith()),
-                          Poco::Data::Keywords::useRef(model->DeletedAt()),
-                          Poco::Data::Keywords::useRef(model->UpdatedAt()),
-                          Poco::Data::Keywords::useRef(model->ProjectGUID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Description()),
+                          useRef(model->WID()),
+                          useRef(model->GUID()),
+                          useRef(model->PID()),
+                          useRef(model->TID()),
+                          useRef(model->Billable()),
+                          useRef(model->DurOnly()),
+                          useRef(model->UIModifiedAt()),
+                          useRef(model->Start()),
+                          useRef(model->Stop()),
+                          useRef(model->DurationInSeconds()),
+                          useRef(model->Tags()),
+                          useRef(model->CreatedWith()),
+                          useRef(model->DeletedAt()),
+                          useRef(model->UpdatedAt()),
+                          useRef(model->ProjectGUID()),
+                          now;
             } else {
                 *session_ << "insert into time_entries(uid, description, wid, "
                           "guid, pid, tid, billable, "
@@ -1299,24 +1304,24 @@ error Database::saveModel(
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
                           ":project_guid)",
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Description()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::useRef(model->PID()),
-                          Poco::Data::Keywords::useRef(model->TID()),
-                          Poco::Data::Keywords::useRef(model->Billable()),
-                          Poco::Data::Keywords::useRef(model->DurOnly()),
-                          Poco::Data::Keywords::useRef(model->UIModifiedAt()),
-                          Poco::Data::Keywords::useRef(model->Start()),
-                          Poco::Data::Keywords::useRef(model->Stop()),
-                          Poco::Data::Keywords::useRef(model->DurationInSeconds()),
-                          Poco::Data::Keywords::useRef(model->Tags()),
-                          Poco::Data::Keywords::useRef(model->CreatedWith()),
-                          Poco::Data::Keywords::useRef(model->DeletedAt()),
-                          Poco::Data::Keywords::useRef(model->UpdatedAt()),
-                          Poco::Data::Keywords::useRef(model->ProjectGUID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->UID()),
+                          useRef(model->Description()),
+                          useRef(model->WID()),
+                          useRef(model->GUID()),
+                          useRef(model->PID()),
+                          useRef(model->TID()),
+                          useRef(model->Billable()),
+                          useRef(model->DurOnly()),
+                          useRef(model->UIModifiedAt()),
+                          useRef(model->Start()),
+                          useRef(model->Stop()),
+                          useRef(model->DurationInSeconds()),
+                          useRef(model->Tags()),
+                          useRef(model->CreatedWith()),
+                          useRef(model->DeletedAt()),
+                          useRef(model->UpdatedAt()),
+                          useRef(model->ProjectGUID()),
+                          now;
             }
             error err = last_error("saveTimeEntry");
             if (err != noError) {
@@ -1324,8 +1329,8 @@ error Database::saveModel(
             }
             Poco::Int64 local_id(0);
             *session_ << "select last_insert_rowid()",
-                      Poco::Data::Keywords::into(local_id),
-                      Poco::Data::Keywords::now;
+                      into(local_id),
+                      now;
             err = last_error("saveTimeEntry");
             if (err != noError) {
                 return err;
@@ -1370,14 +1375,14 @@ error Database::saveModel(
                       "only_admins_may_create_projects = "
                       ":only_admins_may_create_projects, admin = :admin "
                       "where local_id = :local_id",
-                      Poco::Data::Keywords::useRef(model->ID()),
-                      Poco::Data::Keywords::useRef(model->UID()),
-                      Poco::Data::Keywords::useRef(model->Name()),
-                      Poco::Data::Keywords::useRef(model->Premium()),
-                      Poco::Data::Keywords::useRef(model->OnlyAdminsMayCreateProjects()),
-                      Poco::Data::Keywords::useRef(model->Admin()),
-                      Poco::Data::Keywords::useRef(model->LocalID()),
-                      Poco::Data::Keywords::now;
+                      useRef(model->ID()),
+                      useRef(model->UID()),
+                      useRef(model->Name()),
+                      useRef(model->Premium()),
+                      useRef(model->OnlyAdminsMayCreateProjects()),
+                      useRef(model->Admin()),
+                      useRef(model->LocalID()),
+                      now;
             error err = last_error("saveWorkspace");
             if (err != noError) {
                 return err;
@@ -1395,21 +1400,21 @@ error Database::saveModel(
                       "only_admins_may_create_projects, admin) "
                       "values(:id, :uid, :name, :premium, "
                       ":only_admins_may_create_projects, :admin)",
-                      Poco::Data::Keywords::useRef(model->ID()),
-                      Poco::Data::Keywords::useRef(model->UID()),
-                      Poco::Data::Keywords::useRef(model->Name()),
-                      Poco::Data::Keywords::useRef(model->Premium()),
-                      Poco::Data::Keywords::useRef(model->OnlyAdminsMayCreateProjects()),
-                      Poco::Data::Keywords::useRef(model->Admin()),
-                      Poco::Data::Keywords::now;
+                      useRef(model->ID()),
+                      useRef(model->UID()),
+                      useRef(model->Name()),
+                      useRef(model->Premium()),
+                      useRef(model->OnlyAdminsMayCreateProjects()),
+                      useRef(model->Admin()),
+                      now;
             error err = last_error("saveWorkspace");
             if (err != noError) {
                 return err;
             }
             Poco::Int64 local_id(0);
             *session_ << "select last_insert_rowid()",
-                      Poco::Data::Keywords::into(local_id),
-                      Poco::Data::Keywords::now;
+                      into(local_id),
+                      now;
             err = last_error("saveWorkspace");
             if (err != noError) {
                 return err;
@@ -1453,24 +1458,24 @@ error Database::saveModel(
                 *session_ << "update clients set "
                           "id = :id, uid = :uid, name = :name, wid = :wid "
                           "where local_id = :local_id",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->LocalID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->WID()),
+                          useRef(model->LocalID()),
+                          now;
             } else {
                 *session_ << "update clients set "
                           "id = :id, uid = :uid, name = :name, guid = :guid, "
                           "wid = :wid "
                           "where local_id = :local_id",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->LocalID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->GUID()),
+                          useRef(model->WID()),
+                          useRef(model->LocalID()),
+                          now;
             }
             error err = last_error("saveClient");
             if (err != noError) {
@@ -1487,20 +1492,20 @@ error Database::saveModel(
             if (model->GUID().empty()) {
                 *session_ << "insert into clients(id, uid, name, wid) "
                           "values(:id, :uid, :name, :wid)",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->WID()),
+                          now;
             } else {
                 *session_ << "insert into clients(id, uid, name, guid, wid) "
                           "values(:id, :uid, :name, :guid, :wid)",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->GUID()),
+                          useRef(model->WID()),
+                          now;
             }
             error err = last_error("saveClient");
             if (err != noError) {
@@ -1508,8 +1513,8 @@ error Database::saveModel(
             }
             Poco::Int64 local_id(0);
             *session_ << "select last_insert_rowid()",
-                      Poco::Data::Keywords::into(local_id),
-                      Poco::Data::Keywords::now;
+                      into(local_id),
+                      now;
             err = last_error("saveClient");
             if (err != noError) {
                 return err;
@@ -1565,17 +1570,17 @@ error Database::saveModel(
                               "active = :active, billable = :billable, "
                               "client_guid = :client_guid "
                               "where local_id = :local_id",
-                              Poco::Data::Keywords::useRef(model->ID()),
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::useRef(model->LocalID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->ID()),
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              useRef(model->LocalID()),
+                              now;
                 } else {
                     *session_ << "update projects set "
                               "id = :id, uid = :uid, name = :name, "
@@ -1584,18 +1589,18 @@ error Database::saveModel(
                               "active = :active, billable = :billable, "
                               "client_guid = :client_guid "
                               "where local_id = :local_id",
-                              Poco::Data::Keywords::useRef(model->ID()),
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->GUID()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::useRef(model->LocalID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->ID()),
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->GUID()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              useRef(model->LocalID()),
+                              now;
                 }
             } else {
                 if (model->GUID().empty()) {
@@ -1605,16 +1610,16 @@ error Database::saveModel(
                               "active = :active, billable = :billable, "
                               "client_guid = :client_guid "
                               "where local_id = :local_id",
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::useRef(model->LocalID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              useRef(model->LocalID()),
+                              now;
                 } else {
                     *session_ << "update projects set "
                               "uid = :uid, name = :name, guid = :guid,"
@@ -1622,17 +1627,17 @@ error Database::saveModel(
                               "active = :active, billable = :billable, "
                               "client_guid = :client_guid "
                               "where local_id = :local_id",
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->GUID()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::useRef(model->LocalID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->GUID()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              useRef(model->LocalID()),
+                              now;
                 }
             }
             error err = last_error("saveProject");
@@ -1657,17 +1662,17 @@ error Database::saveModel(
                               ":id, :uid, :name, :wid, :color, :cid, :active, "
                               ":is_private, :billable, :client_guid"
                               ")",
-                              Poco::Data::Keywords::useRef(model->ID()),
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->IsPrivate()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->ID()),
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->IsPrivate()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              now;
                 } else {
                     *session_ <<
                               "insert into projects("
@@ -1679,18 +1684,18 @@ error Database::saveModel(
                               ":active, :is_private, "
                               ":billable, :client_guid"
                               ")",
-                              Poco::Data::Keywords::useRef(model->ID()),
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->GUID()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->IsPrivate()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->ID()),
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->GUID()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->IsPrivate()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              now;
                 }
             } else {
                 if (model->GUID().empty()) {
@@ -1702,16 +1707,16 @@ error Database::saveModel(
                               ":uid, :name, :wid, :color, :cid, :active, "
                               ":is_private, :billable, :client_guid"
                               ")",
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->IsPrivate()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->IsPrivate()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              now;
                 } else {
                     *session_ <<
                               "insert into projects("
@@ -1723,17 +1728,17 @@ error Database::saveModel(
                               ":active, :is_private, :billable, "
                               ":client_guid "
                               ")",
-                              Poco::Data::Keywords::useRef(model->UID()),
-                              Poco::Data::Keywords::useRef(model->Name()),
-                              Poco::Data::Keywords::useRef(model->GUID()),
-                              Poco::Data::Keywords::useRef(model->WID()),
-                              Poco::Data::Keywords::useRef(model->Color()),
-                              Poco::Data::Keywords::useRef(model->CID()),
-                              Poco::Data::Keywords::useRef(model->Active()),
-                              Poco::Data::Keywords::useRef(model->IsPrivate()),
-                              Poco::Data::Keywords::useRef(model->Billable()),
-                              Poco::Data::Keywords::useRef(model->ClientGUID()),
-                              Poco::Data::Keywords::now;
+                              useRef(model->UID()),
+                              useRef(model->Name()),
+                              useRef(model->GUID()),
+                              useRef(model->WID()),
+                              useRef(model->Color()),
+                              useRef(model->CID()),
+                              useRef(model->Active()),
+                              useRef(model->IsPrivate()),
+                              useRef(model->Billable()),
+                              useRef(model->ClientGUID()),
+                              now;
                 }
             }
             error err = last_error("saveProject");
@@ -1742,8 +1747,8 @@ error Database::saveModel(
             }
             Poco::Int64 local_id(0);
             *session_ << "select last_insert_rowid()",
-                      Poco::Data::Keywords::into(local_id),
-                      Poco::Data::Keywords::now;
+                      into(local_id),
+                      now;
             err = last_error("saveProject");
             if (err != noError) {
                 return err;
@@ -1787,13 +1792,13 @@ error Database::saveModel(
                       "id = :id, uid = :uid, name = :name, wid = :wid, "
                       "pid = :pid "
                       "where local_id = :local_id",
-                      Poco::Data::Keywords::useRef(model->ID()),
-                      Poco::Data::Keywords::useRef(model->UID()),
-                      Poco::Data::Keywords::useRef(model->Name()),
-                      Poco::Data::Keywords::useRef(model->WID()),
-                      Poco::Data::Keywords::useRef(model->PID()),
-                      Poco::Data::Keywords::useRef(model->LocalID()),
-                      Poco::Data::Keywords::now;
+                      useRef(model->ID()),
+                      useRef(model->UID()),
+                      useRef(model->Name()),
+                      useRef(model->WID()),
+                      useRef(model->PID()),
+                      useRef(model->LocalID()),
+                      now;
             error err = last_error("saveTask");
             if (err != noError) {
                 return err;
@@ -1808,20 +1813,20 @@ error Database::saveModel(
             logger().trace(ss.str());
             *session_ << "insert into tasks(id, uid, name, wid, pid) "
                       "values(:id, :uid, :name, :wid, :pid)",
-                      Poco::Data::Keywords::useRef(model->ID()),
-                      Poco::Data::Keywords::useRef(model->UID()),
-                      Poco::Data::Keywords::useRef(model->Name()),
-                      Poco::Data::Keywords::useRef(model->WID()),
-                      Poco::Data::Keywords::useRef(model->PID()),
-                      Poco::Data::Keywords::now;
+                      useRef(model->ID()),
+                      useRef(model->UID()),
+                      useRef(model->Name()),
+                      useRef(model->WID()),
+                      useRef(model->PID()),
+                      now;
             error err = last_error("saveTask");
             if (err != noError) {
                 return err;
             }
             Poco::Int64 local_id(0);
             *session_ << "select last_insert_rowid()",
-                      Poco::Data::Keywords::into(local_id),
-                      Poco::Data::Keywords::now;
+                      into(local_id),
+                      now;
             err = last_error("saveTask");
             if (err != noError) {
                 return err;
@@ -1865,24 +1870,24 @@ error Database::saveModel(
                 *session_ << "update tags set "
                           "id = :id, uid = :uid, name = :name, wid = :wid "
                           "where local_id = :local_id",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->LocalID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->WID()),
+                          useRef(model->LocalID()),
+                          now;
             } else {
                 *session_ << "update tags set "
                           "id = :id, uid = :uid, name = :name, wid = :wid, "
                           "guid = :guid "
                           "where local_id = :local_id",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::useRef(model->LocalID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->WID()),
+                          useRef(model->GUID()),
+                          useRef(model->LocalID()),
+                          now;
             }
             error err = last_error("saveTag");
             if (err != noError) {
@@ -1899,20 +1904,20 @@ error Database::saveModel(
             if (model->GUID().empty()) {
                 *session_ << "insert into tags(id, uid, name, wid) "
                           "values(:id, :uid, :name, :wid)",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->WID()),
+                          now;
             } else {
                 *session_ << "insert into tags(id, uid, name, wid, guid) "
                           "values(:id, :uid, :name, :wid, :guid)",
-                          Poco::Data::Keywords::useRef(model->ID()),
-                          Poco::Data::Keywords::useRef(model->UID()),
-                          Poco::Data::Keywords::useRef(model->Name()),
-                          Poco::Data::Keywords::useRef(model->WID()),
-                          Poco::Data::Keywords::useRef(model->GUID()),
-                          Poco::Data::Keywords::now;
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->WID()),
+                          useRef(model->GUID()),
+                          now;
             }
             error err = last_error("saveTag");
             if (err != noError) {
@@ -1920,8 +1925,8 @@ error Database::saveModel(
             }
             Poco::Int64 local_id(0);
             *session_ << "select last_insert_rowid()",
-                      Poco::Data::Keywords::into(local_id),
-                      Poco::Data::Keywords::now;
+                      into(local_id),
+                      now;
             err = last_error("saveTag");
             if (err != noError) {
                 return err;
@@ -1992,18 +1997,18 @@ error Database::SaveUser(
                           "timeofday_format = :timeofday_format, "
                           "duration_format = :duration_format "
                           "where local_id = :local_id",
-                          Poco::Data::Keywords::useRef(user->APIToken()),
-                          Poco::Data::Keywords::useRef(user->DefaultWID()),
-                          Poco::Data::Keywords::useRef(user->Since()),
-                          Poco::Data::Keywords::useRef(user->ID()),
-                          Poco::Data::Keywords::useRef(user->Fullname()),
-                          Poco::Data::Keywords::useRef(user->Email()),
-                          Poco::Data::Keywords::useRef(user->RecordTimeline()),
-                          Poco::Data::Keywords::useRef(user->StoreStartAndStopTime()),
-                          Poco::Data::Keywords::useRef(user->TimeOfDayFormat()),
-                          Poco::Data::Keywords::useRef(user->DurationFormat()),
-                          Poco::Data::Keywords::useRef(user->LocalID()),
-                          Poco::Data::Keywords::now;
+                          useRef(user->APIToken()),
+                          useRef(user->DefaultWID()),
+                          useRef(user->Since()),
+                          useRef(user->ID()),
+                          useRef(user->Fullname()),
+                          useRef(user->Email()),
+                          useRef(user->RecordTimeline()),
+                          useRef(user->StoreStartAndStopTime()),
+                          useRef(user->TimeOfDayFormat()),
+                          useRef(user->DurationFormat()),
+                          useRef(user->LocalID()),
+                          now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
                     session_->rollback();
@@ -2026,17 +2031,17 @@ error Database::SaveUser(
                           ":record_timeline, :store_start_and_stop_time, "
                           ":timeofday_format, :duration_format "
                           ")",
-                          Poco::Data::Keywords::useRef(user->ID()),
-                          Poco::Data::Keywords::useRef(user->APIToken()),
-                          Poco::Data::Keywords::useRef(user->DefaultWID()),
-                          Poco::Data::Keywords::useRef(user->Since()),
-                          Poco::Data::Keywords::useRef(user->Fullname()),
-                          Poco::Data::Keywords::useRef(user->Email()),
-                          Poco::Data::Keywords::useRef(user->RecordTimeline()),
-                          Poco::Data::Keywords::useRef(user->StoreStartAndStopTime()),
-                          Poco::Data::Keywords::useRef(user->TimeOfDayFormat()),
-                          Poco::Data::Keywords::useRef(user->DurationFormat()),
-                          Poco::Data::Keywords::now;
+                          useRef(user->ID()),
+                          useRef(user->APIToken()),
+                          useRef(user->DefaultWID()),
+                          useRef(user->Since()),
+                          useRef(user->Fullname()),
+                          useRef(user->Email()),
+                          useRef(user->RecordTimeline()),
+                          useRef(user->StoreStartAndStopTime()),
+                          useRef(user->TimeOfDayFormat()),
+                          useRef(user->DurationFormat()),
+                          now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
                     session_->rollback();
@@ -2044,8 +2049,8 @@ error Database::SaveUser(
                 }
                 Poco::Int64 local_id(0);
                 *session_ << "select last_insert_rowid()",
-                          Poco::Data::Keywords::into(local_id),
-                          Poco::Data::Keywords::now;
+                          into(local_id),
+                          now;
                 err = last_error("SaveUser");
                 if (err != noError) {
                     session_->rollback();
@@ -2193,9 +2198,9 @@ error Database::ensureMigrationTable() {
     *session_ <<
               "select name from sqlite_master "
               "where type='table' and name='kopsik_migrations'",
-              Poco::Data::Keywords::into(table_name),
-              Poco::Data::Keywords::limit(1),
-              Poco::Data::Keywords::now;
+              into(table_name),
+              limit(1),
+              now;
     error err = last_error("initialize_tables");
     if (err != noError) {
         return err;
@@ -2205,7 +2210,7 @@ error Database::ensureMigrationTable() {
         *session_ <<
                   "create table kopsik_migrations(id integer primary key, "
                   "name varchar not null)",
-                  Poco::Data::Keywords::now;
+                  now;
         error err = last_error("initialize_tables");
         if (err != noError) {
             return err;
@@ -2213,7 +2218,7 @@ error Database::ensureMigrationTable() {
         *session_ <<
                   "CREATE UNIQUE INDEX id_kopsik_migrations_name "
                   "ON kopsik_migrations (name);",
-                  Poco::Data::Keywords::now;
+                  now;
         err = last_error("initialize_tables");
         if (err != noError) {
             return err;
@@ -2770,9 +2775,9 @@ error Database::CurrentAPIToken(std::string *token) {
 
     try {
         *session_ << "select api_token from sessions",
-                  Poco::Data::Keywords::into(*token),
-                  Poco::Data::Keywords::limit(1),
-                  Poco::Data::Keywords::now;
+                  into(*token),
+                  limit(1),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2789,7 +2794,7 @@ error Database::ClearCurrentAPIToken() {
     poco_check_ptr(session_);
 
     try {
-        *session_ << "delete from sessions", Poco::Data::Keywords::now;
+        *session_ << "delete from sessions", now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2811,8 +2816,8 @@ error Database::SetCurrentAPIToken(const std::string &token) {
     }
     try {
         *session_ << "insert into sessions(api_token) values(:api_token)",
-                  Poco::Data::Keywords::useRef(token),
-                  Poco::Data::Keywords::now;
+                  useRef(token),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2831,8 +2836,8 @@ error Database::saveDesktopID() {
     try {
         *session_ << "INSERT INTO timeline_installation(desktop_id) "
                   "VALUES(:desktop_id)",
-                  Poco::Data::Keywords::useRef(desktop_id_),
-                  Poco::Data::Keywords::now;
+                  useRef(desktop_id_),
+                  now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2857,9 +2862,9 @@ error Database::migrate(
     try {
         int count = 0;
         *session_ << "select count(*) from kopsik_migrations where name=:name",
-                  Poco::Data::Keywords::into(count),
-                  Poco::Data::Keywords::useRef(name),
-                  Poco::Data::Keywords::now;
+                  into(count),
+                  useRef(name),
+                  now;
         error err = last_error("migrate");
         if (err != noError) {
             return err;
@@ -2881,8 +2886,8 @@ error Database::migrate(
         }
 
         *session_ << "insert into kopsik_migrations(name) values(:name)",
-                  Poco::Data::Keywords::useRef(name),
-                  Poco::Data::Keywords::now;
+                  useRef(name),
+                  now;
         err = last_error("migrate");
         if (err != noError) {
             return err;
@@ -2907,7 +2912,7 @@ error Database::execute(
     poco_assert(!sql.empty());
 
     try {
-        *session_ << sql, Poco::Data::Keywords::now;
+        *session_ << sql, now;
         error err = last_error("execute");
         if (err != noError) {
             return err;
@@ -2943,7 +2948,7 @@ error Database::SelectTimelineBatch(
     select << "SELECT id, title, filename, start_time, end_time, idle "
            "FROM timeline_events WHERE user_id = :user_id "
            "LIMIT 100",
-           Poco::Data::Keywords::useRef(user_id);
+           useRef(user_id);
     Poco::Data::RecordSet rs(select);
     while (!select.done()) {
         select.execute();
@@ -3008,13 +3013,13 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
               ") VALUES ("
               ":user_id, :title, :filename, :start_time, :end_time, :idle"
               ")",
-              Poco::Data::Keywords::useRef(event->user_id),
-              Poco::Data::Keywords::useRef(event->title),
-              Poco::Data::Keywords::useRef(event->filename),
-              Poco::Data::Keywords::useRef(start_time),
-              Poco::Data::Keywords::useRef(end_time),
-              Poco::Data::Keywords::useRef(event->idle),
-              Poco::Data::Keywords::now;
+              useRef(event->user_id),
+              useRef(event->title),
+              useRef(event->filename),
+              useRef(start_time),
+              useRef(end_time),
+              useRef(event->idle),
+              now;
     return last_error("InsertTimelineEvent");
 }
 
@@ -3041,8 +3046,8 @@ error Database::DeleteTimelineBatch(
     }
 
     *session_ << "DELETE FROM timeline_events WHERE id = :id",
-              Poco::Data::Keywords::useRef(ids),
-              Poco::Data::Keywords::now;
+              useRef(ids),
+              now;
     return last_error("DeleteTimelineBatch");
 }
 
@@ -3060,8 +3065,8 @@ error Database::String(
     try {
         std::string value("");
         *session_ << sql,
-        Poco::Data::Keywords::into(value),
-        Poco::Data::Keywords::now;
+        into(value),
+        now;
         *result = value;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -3087,8 +3092,8 @@ error Database::UInt(
     try {
         Poco::UInt64 value(0);
         *session_ << sql,
-        Poco::Data::Keywords::into(value),
-        Poco::Data::Keywords::now;
+        into(value),
+        now;
         *result = value;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
