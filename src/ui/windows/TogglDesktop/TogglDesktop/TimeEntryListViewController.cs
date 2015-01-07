@@ -188,5 +188,10 @@ namespace TogglDesktop
             }
             return null;
         }
+
+        internal void setEditPopup(EditForm editForm)
+        {
+            timerEditViewController.editForm = editForm;
+        }
     }
 }
