@@ -164,14 +164,15 @@ lib:
 	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp $(openssldir)/*so* src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.17 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.17 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.30 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoJSON.so.30 src/lib/linux/TogglDesktopLibrary/build/release
 endif
 
 
