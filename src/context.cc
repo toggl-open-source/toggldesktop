@@ -1317,7 +1317,7 @@ _Bool Context::Logout() {
         setUser(0);
 
         UI()->DisplayApp();
-		Shutdown();
+        Shutdown();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
