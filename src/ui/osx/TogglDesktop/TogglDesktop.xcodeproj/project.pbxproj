@@ -64,17 +64,7 @@
 		74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74762BA018A139D4004433A9 /* NSUnstripedTableView.m */; };
 		747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B74851A0AD28200BB3791 /* ConsoleViewController.m */; };
 		747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 747B74861A0AD28200BB3791 /* ConsoleViewController.xib */; };
-		747B75071A0AD5F500BB3791 /* contents.html in Resources */ = {isa = PBXBuildFile; fileRef = 747B749A1A0AD5F500BB3791 /* contents.html */; };
-		747B75081A0AD5F500BB3791 /* logo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 747B749B1A0AD5F500BB3791 /* logo.gif */; };
-		747B75091A0AD5F500BB3791 /* lua.1 in Resources */ = {isa = PBXBuildFile; fileRef = 747B749C1A0AD5F500BB3791 /* lua.1 */; };
-		747B750A1A0AD5F500BB3791 /* lua.css in Resources */ = {isa = PBXBuildFile; fileRef = 747B749D1A0AD5F500BB3791 /* lua.css */; };
-		747B750B1A0AD5F500BB3791 /* luac.1 in Resources */ = {isa = PBXBuildFile; fileRef = 747B749E1A0AD5F500BB3791 /* luac.1 */; };
-		747B750C1A0AD5F500BB3791 /* manual.css in Resources */ = {isa = PBXBuildFile; fileRef = 747B749F1A0AD5F500BB3791 /* manual.css */; };
-		747B750D1A0AD5F500BB3791 /* manual.html in Resources */ = {isa = PBXBuildFile; fileRef = 747B74A01A0AD5F500BB3791 /* manual.html */; };
-		747B750E1A0AD5F500BB3791 /* osi-certified-72x60.png in Resources */ = {isa = PBXBuildFile; fileRef = 747B74A11A0AD5F500BB3791 /* osi-certified-72x60.png */; };
-		747B750F1A0AD5F500BB3791 /* readme.html in Resources */ = {isa = PBXBuildFile; fileRef = 747B74A21A0AD5F500BB3791 /* readme.html */; };
 		747B75101A0AD5F500BB3791 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 747B74A31A0AD5F500BB3791 /* Makefile */; };
-		747B75111A0AD5F500BB3791 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 747B74A41A0AD5F500BB3791 /* README */; };
 		747B75121A0AD5F500BB3791 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 747B74A61A0AD5F500BB3791 /* lapi.c */; };
 		747B75141A0AD5F500BB3791 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 747B74A91A0AD5F500BB3791 /* lauxlib.c */; };
 		747B75161A0AD5F500BB3791 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 747B74AC1A0AD5F500BB3791 /* lbaselib.c */; };
@@ -1265,11 +1255,9 @@
 				3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
-				747B75081A0AD5F500BB3791 /* logo.gif in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
-				747B75091A0AD5F500BB3791 /* lua.1 in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
@@ -1280,30 +1268,22 @@
 				3C9D53AD1A1CD99D00966170 /* app_icon_pdf.pdf in Resources */,
 				3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
-				747B750B1A0AD5F500BB3791 /* luac.1 in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
-				747B750E1A0AD5F500BB3791 /* osi-certified-72x60.png in Resources */,
-				747B750D1A0AD5F500BB3791 /* manual.html in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				747B750C1A0AD5F500BB3791 /* manual.css in Resources */,
 				3C8979B71920B7B7007061E0 /* continue.pdf in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
-				747B750A1A0AD5F500BB3791 /* lua.css in Resources */,
 				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
-				747B75111A0AD5F500BB3791 /* README in Resources */,
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
 				74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
-				747B75071A0AD5F500BB3791 /* contents.html in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
-				747B750F1A0AD5F500BB3791 /* readme.html in Resources */,
 				3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
 			);
