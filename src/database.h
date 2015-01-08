@@ -116,6 +116,17 @@ class Database {
         const std::string &name,
         const std::string sql);
 
+    error migrateSettings();
+    error migrateTimeEntries();
+    error migrateUsers();
+    error migrateTimeline();
+    error migrateProjects();
+    error migrateWorkspaces();
+    error migrateSessions();
+    error migrateTags();
+    error migrateTasks();
+    error migrateClients();
+
     error execute(
         const std::string sql);
 

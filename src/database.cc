@@ -2329,65 +2329,184 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate("users",
-                  "create table users("
-                  "local_id integer primary key, "
-                  "id integer not null, "
-                  "api_token varchar not null, "
-                  "default_wid integer, "
-                  "since integer, "
-                  "fullname varchar, "
-                  "email varchar not null, "
-                  "record_timeline integer not null default 0"
-                  "); ");
+    err = migrateUsers();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateWorkspaces();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateClients();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateProjects();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateTasks();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateTags();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateTimeEntries();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateSessions();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateSettings();
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrateTimeline();
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
+}
+
+error Database::migrateClients() {
+    error err = migrate(
+        "clients",
+        "create table clients("
+        "local_id integer primary key,"
+        "id integer, "  // ID can be null when its not pushed to server yet
+        "uid integer not null, "
+        "name varchar not null, "
+        "guid varchar, "
+        "wid integer not null, "
+        "constraint fk_clients_wid foreign key (wid) "
+        "   references workpaces(id) on delete no action on update no action,"
+        "constraint fk_clients_uid foreign key (uid) "
+        "   references users(id) on delete no action on update no action"
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("clients.id",
+                  "CREATE UNIQUE INDEX id_clients_id ON clients (uid, id); ");
     if (err != noError) {
         return err;
     }
 
     err = migrate(
-        "users.store_start_and_stop_time",
-        "ALTER TABLE users "
-        "ADD COLUMN store_start_and_stop_time INT NOT NULL DEFAULT 0;");
+        "clients.guid",
+        "CREATE UNIQUE INDEX id_clients_guid ON clients (uid, guid);");
+    if (err != noError) {
+        return err;
+    }
+
+    return err;
+}
+
+error Database::migrateTasks() {
+    error err = migrate(
+        "tasks",
+        "create table tasks("
+        "local_id integer primary key, "
+        "id integer not null, "
+        "uid integer not null, "
+        "name varchar not null, "
+        "wid integer not null, "
+        "pid integer, "
+        "constraint fk_tasks_wid foreign key (wid) "
+        "   references workpaces(id) on delete no action on update no action, "
+        "constraint fk_tasks_pid foreign key (pid) "
+        "   references projects(id) on delete no action on update no action, "
+        "constraint fk_tasks_uid foreign key (uid) "
+        "   references users(id) on delete no action on update no action "
+        "); ");
     if (err != noError) {
         return err;
     }
 
     err = migrate(
-        "users.timeofday_format",
-        "ALTER TABLE users "
-        "ADD COLUMN timeofday_format varchar NOT NULL DEFAULT 'HH:mm';");
+        "tasks.id",
+        "CREATE UNIQUE INDEX id_tasks_id ON tasks (uid, id);");
     if (err != noError) {
         return err;
     }
 
-    err = migrate("users.id",
-                  "CREATE UNIQUE INDEX id_users_id ON users (id);");
-    if (err != noError) {
-        return err;
-    }
+    return noError;
+}
 
-    err = migrate("users.duration_format",
-                  "alter table users "
-                  "add column duration_format varchar "
-                  "not null default 'classic';");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("drop users.email index",
-                  "DROP INDEX IF EXISTS id_users_email;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "users.api_token",
-        "CREATE UNIQUE INDEX id_users_api_token ON users (api_token);");
+error Database::migrateTags() {
+    error err = migrate(
+        "tags",
+        "create table tags("
+        "local_id integer primary key, "
+        "id integer not null, "
+        "uid integer not null, "
+        "name varchar not null, "
+        "wid integer not null, "
+        "guid varchar, "
+        "constraint fk_tags_wid foreign key (wid) "
+        "   references workspaces(id) on delete no action on update no action,"
+        "constraint fk_tags_uid foreign key (uid) "
+        "   references users(id) on delete no action on update no action"
+        "); ");
     if (err != noError) {
         return err;
     }
 
     err = migrate(
+        "tags.id",
+        "CREATE UNIQUE INDEX id_tags_id ON tags (uid, id); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "tags.guid",
+        "CREATE UNIQUE INDEX id_tags_guid ON tags (uid, guid); ");
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
+}
+
+error Database::migrateSessions() {
+    error err = migrate("sessions",
+                        "create table sessions("
+                        "local_id integer primary key, "
+                        "api_token varchar not null, "
+                        "active integer not null default 1 "
+                        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "sessions.active",
+        "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
+    if (err != noError) {
+        return err;
+    }
+
+    return err;
+}
+
+error Database::migrateWorkspaces() {
+    error err = migrate(
         "workspaces",
         "create table workspaces("
         "local_id integer primary key,"
@@ -2432,38 +2551,11 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate(
-        "clients",
-        "create table clients("
-        "local_id integer primary key,"
-        "id integer, "  // ID can be null when its not pushed to server yet
-        "uid integer not null, "
-        "name varchar not null, "
-        "guid varchar, "
-        "wid integer not null, "
-        "constraint fk_clients_wid foreign key (wid) "
-        "   references workpaces(id) on delete no action on update no action,"
-        "constraint fk_clients_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
+    return err;
+}
 
-    err = migrate("clients.id",
-                  "CREATE UNIQUE INDEX id_clients_id ON clients (uid, id); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "clients.guid",
-        "CREATE UNIQUE INDEX id_clients_guid ON clients (uid, guid);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
+error Database::migrateProjects() {
+    error err = migrate(
         "projects",
         "create table projects("
         "local_id integer primary key, "
@@ -2518,66 +2610,120 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate(
-        "tasks",
-        "create table tasks("
-        "local_id integer primary key, "
-        "id integer not null, "
-        "uid integer not null, "
-        "name varchar not null, "
-        "wid integer not null, "
-        "pid integer, "
-        "constraint fk_tasks_wid foreign key (wid) "
-        "   references workpaces(id) on delete no action on update no action, "
-        "constraint fk_tasks_pid foreign key (pid) "
-        "   references projects(id) on delete no action on update no action, "
-        "constraint fk_tasks_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action "
-        "); ");
+    return err;
+}
+
+error Database::migrateTimeline() {
+    error err = migrate("timeline_installation",
+                        "CREATE TABLE timeline_installation("
+                        "id INTEGER PRIMARY KEY, "
+                        "desktop_id VARCHAR NOT NULL"
+                        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("timeline_installation.desktop_id",
+                  "CREATE UNIQUE INDEX id_timeline_installation_desktop_id "
+                  "ON timeline_installation(desktop_id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("timeline_events",
+                  "CREATE TABLE timeline_events("
+                  "id INTEGER PRIMARY KEY, "
+                  "user_id INTEGER NOT NULL, "
+                  "title VARCHAR, "
+                  "filename VARCHAR, "
+                  "start_time INTEGER NOT NULL, "
+                  "end_time INTEGER, "
+                  "idle INTEGER NOT NULL"
+                  ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = String("SELECT desktop_id FROM timeline_installation LIMIT 1",
+                 &desktop_id_);
+    if (err != noError) {
+        return err;
+    }
+    if (desktop_id_.empty()) {
+        desktop_id_ = GenerateGUID();
+        err = saveDesktopID();
+        if (err != noError) {
+            return err;
+        }
+    }
+
+    return noError;
+}
+
+error Database::migrateUsers() {
+    error err = migrate("users",
+                        "create table users("
+                        "local_id integer primary key, "
+                        "id integer not null, "
+                        "api_token varchar not null, "
+                        "default_wid integer, "
+                        "since integer, "
+                        "fullname varchar, "
+                        "email varchar not null, "
+                        "record_timeline integer not null default 0"
+                        "); ");
     if (err != noError) {
         return err;
     }
 
     err = migrate(
-        "tasks.id",
-        "CREATE UNIQUE INDEX id_tasks_id ON tasks (uid, id);");
+        "users.store_start_and_stop_time",
+        "ALTER TABLE users "
+        "ADD COLUMN store_start_and_stop_time INT NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }
 
     err = migrate(
-        "tags",
-        "create table tags("
-        "local_id integer primary key, "
-        "id integer not null, "
-        "uid integer not null, "
-        "name varchar not null, "
-        "wid integer not null, "
-        "guid varchar, "
-        "constraint fk_tags_wid foreign key (wid) "
-        "   references workspaces(id) on delete no action on update no action,"
-        "constraint fk_tags_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action"
-        "); ");
+        "users.timeofday_format",
+        "ALTER TABLE users "
+        "ADD COLUMN timeofday_format varchar NOT NULL DEFAULT 'HH:mm';");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("users.id",
+                  "CREATE UNIQUE INDEX id_users_id ON users (id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("users.duration_format",
+                  "alter table users "
+                  "add column duration_format varchar "
+                  "not null default 'classic';");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("drop users.email index",
+                  "DROP INDEX IF EXISTS id_users_email;");
     if (err != noError) {
         return err;
     }
 
     err = migrate(
-        "tags.id",
-        "CREATE UNIQUE INDEX id_tags_id ON tags (uid, id); ");
+        "users.api_token",
+        "CREATE UNIQUE INDEX id_users_api_token ON users (api_token);");
     if (err != noError) {
         return err;
     }
 
-    err = migrate(
-        "tags.guid",
-        "CREATE UNIQUE INDEX id_tags_guid ON tags (uid, guid); ");
-    if (err != noError) {
-        return err;
-    }
+    return err;
+}
 
-    err = migrate(
+error Database::migrateTimeEntries() {
+    error err = migrate(
         "time_entries",
         "create table time_entries("
         "local_id integer primary key, "
@@ -2708,32 +2854,19 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrate("sessions",
-                  "create table sessions("
-                  "local_id integer primary key, "
-                  "api_token varchar not null, "
-                  "active integer not null default 1 "
-                  "); ");
-    if (err != noError) {
-        return err;
-    }
+    return noError;
+}
 
-    err = migrate(
-        "sessions.active",
-        "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings",
-                  "create table settings("
-                  "local_id integer primary key, "
-                  "use_proxy integer not null default 0, "
-                  "proxy_host varchar, "
-                  "proxy_port integer, "
-                  "proxy_username varchar, "
-                  "proxy_password varchar, "
-                  "use_idle_detection integer not null default 1)");
+error Database::migrateSettings() {
+    error err = migrate("settings",
+                        "create table settings("
+                        "local_id integer primary key, "
+                        "use_proxy integer not null default 0, "
+                        "proxy_host varchar, "
+                        "proxy_port integer, "
+                        "proxy_username varchar, "
+                        "proxy_password varchar, "
+                        "use_idle_detection integer not null default 1)");
     if (err != noError) {
         return err;
     }
@@ -2808,49 +2941,6 @@ error Database::initialize_tables() {
                   "ADD COLUMN reminder_minutes INTEGER NOT NULL DEFAULT 10;");
     if (err != noError) {
         return err;
-    }
-
-    err = migrate("timeline_installation",
-                  "CREATE TABLE timeline_installation("
-                  "id INTEGER PRIMARY KEY, "
-                  "desktop_id VARCHAR NOT NULL"
-                  ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("timeline_installation.desktop_id",
-                  "CREATE UNIQUE INDEX id_timeline_installation_desktop_id "
-                  "ON timeline_installation(desktop_id);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("timeline_events",
-                  "CREATE TABLE timeline_events("
-                  "id INTEGER PRIMARY KEY, "
-                  "user_id INTEGER NOT NULL, "
-                  "title VARCHAR, "
-                  "filename VARCHAR, "
-                  "start_time INTEGER NOT NULL, "
-                  "end_time INTEGER, "
-                  "idle INTEGER NOT NULL"
-                  ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = String("SELECT desktop_id FROM timeline_installation LIMIT 1",
-                 &desktop_id_);
-    if (err != noError) {
-        return err;
-    }
-    if (desktop_id_.empty()) {
-        desktop_id_ = GenerateGUID();
-        err = saveDesktopID();
-        if (err != noError) {
-            return err;
-        }
     }
 
     return noError;
