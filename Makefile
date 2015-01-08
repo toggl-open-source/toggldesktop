@@ -90,6 +90,7 @@ libs=-framework Carbon \
 	-lPocoCrypto \
 	-lPocoUtil \
 	-lPocoXML \
+	-lPocoJSON \
 	-lPocoFoundation \
 	-lpthread \
 	-L$(openssldir) \
@@ -108,6 +109,7 @@ libs=-lX11 \
 	-lPocoCrypto \
 	-lPocoUtil \
 	-lPocoXML \
+	-lPocoJSON \
 	-lPocoFoundation \
 	-lpthread \
 	-L$(openssldir) \
