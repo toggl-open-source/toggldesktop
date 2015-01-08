@@ -83,8 +83,8 @@ class Formatter {
 
     static void take(
         const std::string delimiter,
-        double &value,
-        std::string &whatsleft);
+        double *value,
+        std::string *whatsleft);
 
     static bool parseTimeInputAMPM(
         const std::string numbers,
@@ -112,7 +112,7 @@ class Formatter {
         int *parsed_seconds);
 
     static int parseDurationStringHoursMinutesSeconds(
-        std::string &whatsleft);
+        std::string *whatsleft);
 };
 
 bool CompareClientByName(Client *a, Client *b);

@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./feedback.h"
+#include "../src/feedback.h"
 
 #include <sstream>
 

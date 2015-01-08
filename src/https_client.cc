@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./https_client.h"
+#include "../src/https_client.h"
 
 #include <string>
 #include <sstream>

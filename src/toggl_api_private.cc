@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./toggl_api_private.h"
+#include "../src/toggl_api_private.h"
 
 #include <cstdlib>
 

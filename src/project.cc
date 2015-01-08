@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./project.h"
+#include "../src/project.h"
 
 #include <sstream>
 #include <ctime>

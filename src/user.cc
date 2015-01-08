@@ -1,6 +1,7 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./user.h"
+#include "../src/user.h"
+
 #include <time.h>
 #include <sstream>
 
@@ -12,8 +13,8 @@ namespace toggl {
 
 template<class T>
 void deleteZombies(
-    std::vector<T> &list,
-    std::set<Poco::UInt64> &alive) {
+    const std::vector<T> &list,
+    const std::set<Poco::UInt64> &alive) {
     for (size_t i = 0; i < list.size(); ++i) {
         BaseModel *model = list[i];
         if (!model->ID()) {

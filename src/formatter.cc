@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./formatter.h"
+#include "../src/formatter.h"
 
 #include <time.h>
 #include <sstream>
@@ -294,45 +294,45 @@ bool Formatter::parseDurationStringHHMM(const std::string value,
 
 void Formatter::take(
     const std::string delimiter,
-    double &value,
-    std::string &whatsleft) {
+    double *value,
+    std::string *whatsleft) {
 
-    size_t pos = whatsleft.find(delimiter);
+    size_t pos = whatsleft->find(delimiter);
     if (std::string::npos == pos) {
         return;
     }
 
-    std::string token = whatsleft.substr(0, pos);
+    std::string token = whatsleft->substr(0, pos);
 
     if (token.length()) {
         double d(0);
         if (Poco::NumberParser::tryParseFloat(token, d)) {
-            value = d;
+            *value = d;
         }
-        whatsleft.erase(0, whatsleft.find(delimiter) + delimiter.length());
+        whatsleft->erase(0, whatsleft->find(delimiter) + delimiter.length());
     }
 }
 
 int Formatter::parseDurationStringHoursMinutesSeconds(
-    std::string &whatsleft) {
+    std::string *whatsleft) {
 
     double hours = 0;
-    take("hours", hours, whatsleft);
-    take("hour", hours, whatsleft);
-    take("hr", hours, whatsleft);
-    take("h", hours, whatsleft);
+    take("hours", &hours, whatsleft);
+    take("hour", &hours, whatsleft);
+    take("hr", &hours, whatsleft);
+    take("h", &hours, whatsleft);
 
     double minutes = 0;
-    take("minutes", minutes, whatsleft);
-    take("minute", minutes, whatsleft);
-    take("min", minutes, whatsleft);
-    take("m", minutes, whatsleft);
+    take("minutes", &minutes, whatsleft);
+    take("minute", &minutes, whatsleft);
+    take("min", &minutes, whatsleft);
+    take("m", &minutes, whatsleft);
 
     double seconds = 0;
-    take("seconds", seconds, whatsleft);
-    take("second", seconds, whatsleft);
-    take("sec", seconds, whatsleft);
-    take("s", seconds, whatsleft);
+    take("seconds", &seconds, whatsleft);
+    take("second", &seconds, whatsleft);
+    take("sec", &seconds, whatsleft);
+    take("s", &seconds, whatsleft);
 
     return Poco::Timespan(hours*3600 + minutes*60 + seconds, 0).totalSeconds();
 }
@@ -387,7 +387,7 @@ int Formatter::ParseDurationString(const std::string value) {
         }
     }
 
-    int seconds = parseDurationStringHoursMinutesSeconds(input);
+    int seconds = parseDurationStringHoursMinutesSeconds(&input);
 
     // 15
     if (input.find(".") == std::string::npos) {

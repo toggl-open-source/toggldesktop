@@ -6,7 +6,7 @@
 // class, the ownership does not change and you
 // must not delete the pointers you got.
 
-#include "./idle.h"
+#include "../src/idle.h"
 
 #include "./formatter.h"
 

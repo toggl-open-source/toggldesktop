@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./tag.h"
+#include "../src/tag.h"
 
 #include <sstream>
 

@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./client.h"
+#include "../src/client.h"
 
 #include <sstream>
 #include <cstring>

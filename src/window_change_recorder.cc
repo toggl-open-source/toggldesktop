@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./window_change_recorder.h"
+#include "../src/window_change_recorder.h"
 
 #include <sstream>
 

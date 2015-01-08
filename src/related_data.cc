@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./related_data.h"
+#include "../src/related_data.h"
 
 #include <sstream>
 

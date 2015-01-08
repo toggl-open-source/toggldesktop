@@ -9,7 +9,7 @@
 // from context, using specific functions, not
 // setters.
 
-#include "./time_entry.h"
+#include "../src/time_entry.h"
 
 #include <sstream>
 #include <algorithm>

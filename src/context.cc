@@ -6,7 +6,7 @@
 // class, the ownership does not change and you
 // must not delete the pointers you got.
 
-#include "./context.h"
+#include "../src/context.h"
 
 #include <iostream>  // NOLINT
 
@@ -925,7 +925,7 @@ _Bool Context::SendFeedback(Feedback fb) {
     timer_.schedule(ptask, Poco::Timestamp());
 
     return true;
-};
+}
 
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");

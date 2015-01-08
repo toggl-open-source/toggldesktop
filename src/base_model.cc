@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./base_model.h"
+#include "../src/base_model.h"
 
 #include <sstream>
 

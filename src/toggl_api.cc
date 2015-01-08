@@ -115,7 +115,7 @@ _Bool toggl_set_settings_reminder_minutes(
     void *context,
     const uint64_t reminder_minutes) {
     return app(context)->SetSettingsReminderMinutes(reminder_minutes);
-};
+}
 
 _Bool toggl_set_proxy_settings(void *context,
                                const _Bool use_proxy,

@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./settings.h"
+#include "../src/settings.h"
 
 namespace toggl {
 

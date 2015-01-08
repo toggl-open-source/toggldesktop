@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./timeline_uploader.h"
+#include "../src/timeline_uploader.h"
 
 #include <sstream>
 #include <string>

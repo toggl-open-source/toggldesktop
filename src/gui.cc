@@ -1,7 +1,7 @@
 
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./gui.h"
+#include "../src/gui.h"
 
 #include <cstdlib>
 #include <sstream>

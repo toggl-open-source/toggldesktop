@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./proxy.h"
+#include "../src/proxy.h"
 
 #include <sstream>
 

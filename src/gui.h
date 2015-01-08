@@ -117,7 +117,7 @@ class GUI {
 
     void OnDisplayClientSelect(TogglDisplayViewItems cb) {
         on_display_client_select_ = cb;
-    };
+    }
 
     void OnDisplayTags(TogglDisplayViewItems cb) {
         on_display_tags_ = cb;

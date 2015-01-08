@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./workspace.h"
+#include "../src/workspace.h"
 
 #include <sstream>
 #include <cstring>

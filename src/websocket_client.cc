@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./websocket_client.h"
+#include "../src/websocket_client.h"
 
 #include <string>
 #include <sstream>

@@ -2,7 +2,7 @@
 
 // All session access should be locked.
 
-#include "./database.h"
+#include "../src/database.h"
 
 #include <limits>
 #include <string>

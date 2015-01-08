@@ -1,3 +1,3 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./autocomplete_item.h"
+#include "../src/autocomplete_item.h"
