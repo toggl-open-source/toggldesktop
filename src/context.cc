@@ -1052,10 +1052,10 @@ _Bool Context::SetProxySettings(
     }
 
     if (use_proxy != was_using_proxy
-            || proxy.host != previous_proxy_settings.host
-            || proxy.port != previous_proxy_settings.port
-            || proxy.username != previous_proxy_settings.username
-            || proxy.password != previous_proxy_settings.password) {
+            || proxy.Host() != previous_proxy_settings.Host()
+            || proxy.Port() != previous_proxy_settings.Port()
+            || proxy.Username() != previous_proxy_settings.Username()
+            || proxy.Password() != previous_proxy_settings.Password()) {
         Sync();
         switchWebSocketOn();
     }

@@ -302,7 +302,7 @@ void TimeEntry::SetProjectGUID(const std::string value) {
     }
 }
 
-std::string TimeEntry::Tags() const {
+const std::string TimeEntry::Tags() const {
     std::stringstream ss;
     for (std::vector<std::string>::const_iterator it =
         TagNames.begin();

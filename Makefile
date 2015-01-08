@@ -90,6 +90,7 @@ libs=-framework Carbon \
 	-lPocoCrypto \
 	-lPocoUtil \
 	-lPocoXML \
+	-lPocoJSON \
 	-lPocoFoundation \
 	-lpthread \
 	-L$(openssldir) \
@@ -108,6 +109,7 @@ libs=-lX11 \
 	-lPocoCrypto \
 	-lPocoUtil \
 	-lPocoXML \
+	-lPocoJSON \
 	-lPocoFoundation \
 	-lpthread \
 	-L$(openssldir) \
@@ -164,14 +166,15 @@ lib:
 	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp $(openssldir)/*so* src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.17 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.17 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.30 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoJSON.so.30 src/lib/linux/TogglDesktopLibrary/build/release
 endif
 
 
@@ -224,7 +227,8 @@ endif
 
 poco:
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --fPIC \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples --cflags=-fPIC \
+	--sqlite-thread-safe=1 \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
 

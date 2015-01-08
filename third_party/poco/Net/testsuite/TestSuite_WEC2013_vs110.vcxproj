@@ -310,6 +310,7 @@
     <ClInclude Include="src\DNSTest.h"/>
     <ClInclude Include="src\IPAddressTest.h"/>
     <ClInclude Include="src\NetCoreTestSuite.h"/>
+    <ClInclude Include="src\NetworkInterfaceTest.h"/>
     <ClInclude Include="src\SocketAddressTest.h"/>
     <ClInclude Include="src\NetTestSuite.h"/>
     <ClInclude Include="src\DatagramSocketTest.h"/>
@@ -318,7 +319,6 @@
     <ClInclude Include="src\EchoServer.h"/>
     <ClInclude Include="src\MulticastEchoServer.h"/>
     <ClInclude Include="src\MulticastSocketTest.h"/>
-    <ClInclude Include="src\NetworkInterfaceTest.h"/>
     <ClInclude Include="src\RawSocketTest.h"/>
     <ClInclude Include="src\SocketsTestSuite.h"/>
     <ClInclude Include="src\SocketStreamTest.h"/>
@@ -359,14 +359,20 @@
     <ClInclude Include="src\ICMPClientTest.h"/>
     <ClInclude Include="src\ICMPClientTestSuite.h"/>
     <ClInclude Include="src\ICMPSocketTest.h"/>
+    <ClInclude Include="src\NTPClientTest.h"/>
+    <ClInclude Include="src\NTPClientTestSuite.h"/>
     <ClInclude Include="src\SyslogTest.h"/>
     <ClInclude Include="src\WebSocketTest.h"/>
     <ClInclude Include="src\WebSocketTestSuite.h"/>
+    <ClInclude Include="src\OAuth10CredentialsTest.h"/>
+    <ClInclude Include="src\OAuth20CredentialsTest.h"/>
+    <ClInclude Include="src\OAuthTestSuite.h"/>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DNSTest.cpp"/>
     <ClCompile Include="src\IPAddressTest.cpp"/>
     <ClCompile Include="src\NetCoreTestSuite.cpp"/>
+    <ClCompile Include="src\NetworkInterfaceTest.cpp"/>
     <ClCompile Include="src\SocketAddressTest.cpp"/>
     <ClCompile Include="src\NetTestSuite.cpp"/>
     <ClCompile Include="src\WinCEDriver.cpp"/>
@@ -376,7 +382,6 @@
     <ClCompile Include="src\EchoServer.cpp"/>
     <ClCompile Include="src\MulticastEchoServer.cpp"/>
     <ClCompile Include="src\MulticastSocketTest.cpp"/>
-    <ClCompile Include="src\NetworkInterfaceTest.cpp"/>
     <ClCompile Include="src\RawSocketTest.cpp"/>
     <ClCompile Include="src\SocketsTestSuite.cpp"/>
     <ClCompile Include="src\SocketStreamTest.cpp"/>
@@ -417,9 +422,14 @@
     <ClCompile Include="src\ICMPClientTest.cpp"/>
     <ClCompile Include="src\ICMPClientTestSuite.cpp"/>
     <ClCompile Include="src\ICMPSocketTest.cpp"/>
+    <ClCompile Include="src\NTPClientTest.cpp"/>
+    <ClCompile Include="src\NTPClientTestSuite.cpp"/>
     <ClCompile Include="src\SyslogTest.cpp"/>
     <ClCompile Include="src\WebSocketTest.cpp"/>
     <ClCompile Include="src\WebSocketTestSuite.cpp"/>
+    <ClCompile Include="src\OAuth10CredentialsTest.cpp"/>
+    <ClCompile Include="src\OAuth20CredentialsTest.cpp"/>
+    <ClCompile Include="src\OAuthTestSuite.cpp"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <ImportGroup Label="ExtensionTargets"/>

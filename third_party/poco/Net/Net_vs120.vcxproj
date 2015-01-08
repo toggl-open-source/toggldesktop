@@ -328,6 +328,7 @@
     <ClInclude Include="include\Poco\Net\ICMPSocketImpl.h"/>
     <ClInclude Include="include\Poco\Net\ICMPv4PacketImpl.h"/>
     <ClInclude Include="include\Poco\Net\IPAddress.h"/>
+    <ClInclude Include="include\Poco\Net\IPAddressImpl.h"/>
     <ClInclude Include="include\Poco\Net\MailMessage.h"/>
     <ClInclude Include="include\Poco\Net\MailRecipient.h"/>
     <ClInclude Include="include\Poco\Net\MailStream.h"/>
@@ -340,9 +341,17 @@
     <ClInclude Include="include\Poco\Net\Net.h"/>
     <ClInclude Include="include\Poco\Net\NetException.h"/>
     <ClInclude Include="include\Poco\Net\NetworkInterface.h"/>
+    <ClInclude Include="include\Poco\Net\NTPClient.h"/>
+    <ClInclude Include="include\Poco\Net\NTPEventArgs.h"/>
+    <ClInclude Include="include\Poco\Net\NTPPacket.h"/>
     <ClInclude Include="include\Poco\Net\NullPartHandler.h"/>
+    <ClInclude Include="include\Poco\Net\OAuth10Credentials.h"/>
+    <ClInclude Include="include\Poco\Net\OAuth20Credentials.h"/>
+    <ClInclude Include="include\Poco\Net\ParallelSocketAcceptor.h"/>
+    <ClInclude Include="include\Poco\Net\ParallelSocketReactor.h"/>
     <ClInclude Include="include\Poco\Net\PartHandler.h"/>
     <ClInclude Include="include\Poco\Net\PartSource.h"/>
+    <ClInclude Include="include\Poco\Net\PartStore.h"/>
     <ClInclude Include="include\Poco\Net\POP3ClientSession.h"/>
     <ClInclude Include="include\Poco\Net\QuotedPrintableDecoder.h"/>
     <ClInclude Include="include\Poco\Net\QuotedPrintableEncoder.h"/>
@@ -352,10 +361,12 @@
     <ClInclude Include="include\Poco\Net\RemoteSyslogListener.h"/>
     <ClInclude Include="include\Poco\Net\ServerSocket.h"/>
     <ClInclude Include="include\Poco\Net\ServerSocketImpl.h"/>
+    <ClInclude Include="include\Poco\Net\SMTPChannel.h"/>
     <ClInclude Include="include\Poco\Net\SMTPClientSession.h"/>
     <ClInclude Include="include\Poco\Net\Socket.h"/>
     <ClInclude Include="include\Poco\Net\SocketAcceptor.h"/>
     <ClInclude Include="include\Poco\Net\SocketAddress.h"/>
+    <ClInclude Include="include\Poco\Net\SocketAddressImpl.h"/>
     <ClInclude Include="include\Poco\Net\SocketConnector.h"/>
     <ClInclude Include="include\Poco\Net\SocketDefs.h"/>
     <ClInclude Include="include\Poco\Net\SocketImpl.h"/>
@@ -423,6 +434,7 @@
     <ClCompile Include="src\ICMPSocketImpl.cpp"/>
     <ClCompile Include="src\ICMPv4PacketImpl.cpp"/>
     <ClCompile Include="src\IPAddress.cpp"/>
+    <ClCompile Include="src\IPAddressImpl.cpp"/>
     <ClCompile Include="src\MailMessage.cpp"/>
     <ClCompile Include="src\MailRecipient.cpp"/>
     <ClCompile Include="src\MailStream.cpp"/>
@@ -432,11 +444,18 @@
     <ClCompile Include="src\MultipartReader.cpp"/>
     <ClCompile Include="src\MultipartWriter.cpp"/>
     <ClCompile Include="src\NameValueCollection.cpp"/>
+    <ClCompile Include="src\Net.cpp"/>
     <ClCompile Include="src\NetException.cpp"/>
     <ClCompile Include="src\NetworkInterface.cpp"/>
+    <ClCompile Include="src\NTPClient.cpp"/>
+    <ClCompile Include="src\NTPEventArgs.cpp"/>
+    <ClCompile Include="src\NTPPacket.cpp"/>
     <ClCompile Include="src\NullPartHandler.cpp"/>
+    <ClCompile Include="src\OAuth10Credentials.cpp"/>
+    <ClCompile Include="src\OAuth20Credentials.cpp"/>
     <ClCompile Include="src\PartHandler.cpp"/>
     <ClCompile Include="src\PartSource.cpp"/>
+    <ClCompile Include="src\PartStore.cpp"/>
     <ClCompile Include="src\POP3ClientSession.cpp"/>
     <ClCompile Include="src\QuotedPrintableDecoder.cpp"/>
     <ClCompile Include="src\QuotedPrintableEncoder.cpp"/>
@@ -446,9 +465,11 @@
     <ClCompile Include="src\RemoteSyslogListener.cpp"/>
     <ClCompile Include="src\ServerSocket.cpp"/>
     <ClCompile Include="src\ServerSocketImpl.cpp"/>
+    <ClCompile Include="src\SMTPChannel.cpp"/>
     <ClCompile Include="src\SMTPClientSession.cpp"/>
     <ClCompile Include="src\Socket.cpp"/>
     <ClCompile Include="src\SocketAddress.cpp"/>
+    <ClCompile Include="src\SocketAddressImpl.cpp"/>
     <ClCompile Include="src\SocketImpl.cpp"/>
     <ClCompile Include="src\SocketNotification.cpp"/>
     <ClCompile Include="src\SocketNotifier.cpp"/>
@@ -467,8 +488,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\DLLVersion.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>

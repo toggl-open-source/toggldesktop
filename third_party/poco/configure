@@ -2,7 +2,7 @@
 #
 # configure
 #
-# $Id: //poco/1.4/dist/configure#4 $
+# $Id: //poco/1.4/dist/configure#2 $
 #
 # Configuration script for POCO.
 #
@@ -19,7 +19,7 @@ Options:
   --help
     Display this help screen.
 
-  --config=<config_name>   
+  --config=<config_name>
     Use the given build configuration.
     Available configurations are:
 
@@ -59,15 +59,37 @@ Options:
     Compile with -DPOCO_NO_SHAREDLIBS.
     For systems that don't support shared library loading.
 
+  --no-ipv6
+    Compile with -DPOCO_NET_NO_IPv6.
+    For systems that don't support IPv6.
+
+  --sqlite-fts=<path>
+    Compile with -DPOCO_DATA_SQLITE_FTS.
+    Compile SQLite with Full Text Search support.
+
+  --sqlite-thread-safe=<value>
+    Compile with -DSQLITE_THREADSAFE=<value>.
+    Valid values are:
+		- 0 single-thread, no thread safety
+		- 1 serial access, highest thread safety
+		- 2 multi-threaded, without session sharing support  
+	
+
   --omit=<component>{,<component>}
     Do not build the specified component(s).
     Example: --omit=Data/MySQL,Data/ODBC,Zip
-    
+
   --include-path=<path>
     Add search path for header files.
-    
+
   --library-path=<path>
     Add search path for library files.
+
+  --odbc-lib=<path>
+    Specify the directory where ODBC library is located.
+
+  --odbc-include=<path>
+    Specify the directory where ODBC header files are located.
 
   --cflags=<flags>
     Pass additional flags to compiler.
@@ -78,14 +100,14 @@ Options:
     statically for embedded targets.
 
   --unbundled
-    Use system-provided zlib, pcre, expat and sqlite instead of 
+    Use system-provided zlib, pcre, expat and sqlite instead of
     bundled ones.
-    
+
   --static
     Build static libraries. Overrides default mode, which
     depends upon target. Can be specified together
     with --shared to build both.
-    
+
   --shared
     Build shared libraries. Overrides default mode, which
     depends upon target. Can be specified together
@@ -100,13 +122,6 @@ build=`pwd`
 cd `dirname $0`
 base=`pwd`
 cd $build
-if [ `uname` = "QNX" ] ; then
-	EXPR=expr
-	NOTFOUND=0
-else
-	EXPR="expr --"
-	NOTFOUND=""
-fi
 
 tests=1
 samples=1
@@ -114,108 +129,105 @@ flags=""
 omit=""
 includepath=""
 librarypath=""
+odbclib=""
+odbcinclude=""
 unbundled=""
 static=""
 shared=""
 # parse arguments
-while [ "$1" != "" ] ; do
-	val=`$EXPR "$1" : '--config=\(.*\)'`
-	if [ "$val" != "$NOTFOUND" ] ; then
-		config=$val
-	fi
-	
-	val=`$EXPR "$1" : '--prefix=\(.*\)'`
-	if [ "$val" != "$NOTFOUND" ] ; then
-		prefix=$val
-	fi
+while [ $# -ge 1 ]; do
+	case "$1" in
+	--config=*)
+		config="`echo ${1} | awk '{print substr($0,10)}'`" ;;
 
-	val=`$EXPR $1 : '--stdcxx-base=\(.*\)'`
-	if [ "$val" != "$NOTFOUND" ] ; then
-		stdcxx_base=$val
-	fi
+	--prefix=*)
+		prefix="`echo ${1} | awk '{print substr($0,10)}'`" ;;
 
-	val=`$EXPR "$1" : '--omit=\(.*\)'`
-	if [ "$val" != "$NOTFOUND" ] ; then
-		omit="$omit `echo $val | tr ',;' '  '`"
-	fi
+	--stdcxx-base=*)
+		stdcxx_base="`echo ${1} | awk '{print substr($0,15)}'`" ;;
 
-	val=`$EXPR "$1" : '--include-path=\(.*\)'`
-	if [ "$val" != "$NOTFOUND" ] ; then
-		includepath="$includepath `echo $val | tr ',;' '  '`"
-	fi
+	--omit=*)
+		omit="`echo ${1} | awk '{print substr($0,8)}' | tr ',;' '  '`" ;;
 
-	val=`$EXPR "$1" : '--library-path=\(.*\)'`
-	if [ "$val" != "$NOTFOUND" ] ; then
-		librarypath="$librarypath `echo $val | tr ',;' '  '`"
-	fi
+	--include-path=*)
+		includepath="`echo ${1} | awk '{print substr($0,16)}' | tr ',;' '  '`" ;;
 
-	val=`$EXPR "$1" : '--cflags=\(.*\)'`
-	if [ "$val" != "$NOTFOUND" ] ; then
-		flags="$flags $val"
-	fi
-	
-	if [ "$1" = "--no-samples" ] ; then
-		samples=""
-	fi
-	
-	if [ "$1" = "--no-tests" ] ; then
-		tests=""
-	fi
-	
-	if [ "$1" = "--no-wstring" ] ; then
-		flags="$flags -DPOCO_NO_WSTRING"
-	fi
+	--library-path=*)
+		librarypath="`echo ${1} | awk '{print substr($0,16)}' | tr ',;' '  '`" ;;
 
-	if [ "$1" = "--no-fpenvironment" ] ; then
-		flags="$flags -DPOCO_NO_FPENVIRONMENT"
-	fi
+	--odbc-lib=*)
+		odbclib="`echo ${1} | awk '{print substr($0,12)}'`" ;;
 
-	if [ "$1" = "--no-sharedmemory" ] ; then
-		flags="$flags -DPOCO_NO_SHAREDMEMORY"
-	fi
+	--odbc-include=*)
+		odbcinclude="`echo ${1} | awk '{print substr($0,16)}'`" ;;
 
-	if [ "$1" = "--no-sharedlibs" ] ; then
-		flags="$flags -DPOCO_NO_SHAREDLIBS"
-	fi
+	--cflags=*)
+		flags="`echo ${1} | awk '{print substr($0,10)}'`" ;;
 
-	if [ "$1" = "--poquito" ] ; then
-		flags="$flags -DPOCO_NO_FILECHANNEL -DPOCO_NO_SPLITTERCHANNEL -DPOCO_NO_SYSLOGCHANNEL -DPOCO_UTIL_NO_INIFILECONFIGURATION -DPOCO_UTIL_NO_XMLCONFIGURATION"
-	fi
+	--no-samples)
+		samples="" ;;
 
-	if [ "$1" = "--unbundled" ] ; then
-		flags="$flags -DPOCO_UNBUNDLED"
-		unbundled=1
-	fi
+	--no-tests)
+		tests="" ;;
 
-	if [ "$1" = "--static" ] ; then
-		static=1
-	fi
-	
-	if [ "$1" = "--shared" ] ; then
-		shared=1
-	fi
-	
-	if [ "$1" = "--help" ] ; then
+	--no-wstring)
+		flags="$flags -DPOCO_NO_WSTRING" ;;
+
+	--no-fpenvironment)
+		flags="$flags -DPOCO_NO_FPENVIRONMENT" ;;
+
+	--no-sharedmemory)
+		flags="$flags -DPOCO_NO_SHAREDMEMORY" ;;
+
+	--no-sharedlibs)
+		flags="$flags -DPOCO_NO_SHAREDLIBS" ;;
+
+	--no-ipv6)
+		flags="$flags -DPOCO_NET_NO_IPv6" ;;
+
+	--sqlite-thread-safe=*)
+		flags="$flags -DSQLITE_THREADSAFE=`echo ${1} | awk '{print substr($0,22)}'`" ;;
+		
+	--sqlite-fts)
+		flags="$flags -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" ;;
+
+	--poquito)
+		flags="$flags -DPOCO_NO_FILECHANNEL -DPOCO_NO_SPLITTERCHANNEL -DPOCO_NO_SYSLOGCHANNEL -DPOCO_UTIL_NO_INIFILECONFIGURATION -DPOCO_UTIL_NO_JSONCONFIGURATION -DPOCO_UTIL_NO_XMLCONFIGURATION" ;;
+
+	--unbundled)
+ 		flags="$flags -DPOCO_UNBUNDLED"
+ 		unbundled=1
+		;;
+
+	--static)
+		static=1 ;;
+
+	--shared)
+		shared=1 ;;
+
+	--help)
+ 		showhelp
+ 		exit 0
+		;;
+
+	*)
 		showhelp
-		exit 0
-	fi
+		exit 1
+		;;
+	esac
 
-	shift
+ 	shift
 done
-
 # autodetect build environment
 # ...special cases for CYGWIN or MinGW
 if [ "$config" = "" ] ; then
-	config=`uname`
-	cyg=`$EXPR $config : '\(CYGWIN\).*'`
-	if [ "$cyg" = "CYGWIN" ] ; then
-		config=CYGWIN
-    else
-        ming=`$EXPR $config : '\(MINGW\).*'`
-        if [ "$ming" = "MINGW" ] ; then
-            config=MinGW
-        fi
-    fi
+ 	config=`uname`
+	case "$config" in
+	CYGWIN*)
+		config=CYGWIN ;;
+	MINGW*)
+		config=MinGW ;;
+	esac
 fi
 
 if [ ! -f "$base/build/config/$config" ] ; then
@@ -226,7 +238,7 @@ if [ ! -f "$base/build/config/$config" ] ; then
 	exit 1
 fi
 
-if [ "$prefix" = "" ] ; then
+if [ -z "$prefix" ] ; then
 	prefix=/usr/local
 fi
 
@@ -240,11 +252,11 @@ if [ "$base" != "$build" ] ; then
 	cp $base/Makefile $build
 fi
 
-if [ "$static" != "" -a "$shared" != "" ] ; then
+if [ -n "$static" -a -n "$shared" ] ; then
 	linkmode=BOTH
-elif [ "$static" != "" ] ; then
+elif [ -n "$static" ] ; then
 	linkmode=STATIC
-elif [ "$shared" != "" ] ; then
+elif [ -n "$shared" ] ; then
 	linkmode=SHARED
 else
 	linkmode=""
@@ -258,44 +270,63 @@ echo "POCO_BUILD = $build" >>$build/config.make
 echo "POCO_PREFIX = $prefix" >>$build/config.make
 echo "POCO_FLAGS = $flags" >>$build/config.make
 echo "OMIT = $omit" >>$build/config.make
-if [ "$stdcxx_base" != "" ] ; then
+if [ -n "$stdcxx_base" ] ; then
 	echo "STDCXX_BASE = $stdcxx_base" >>$build/config.make
 fi
-if [ "$includepath" != "" ] ; then
+if [ -n "$includepath" ] ; then
 	echo "POCO_ADD_INCLUDE = $includepath" >>$build/config.make
 fi
-if [ "$librarypath" != "" ] ; then
+if [ -n "$librarypath" ] ; then
 	echo "POCO_ADD_LIBRARY = $librarypath" >>$build/config.make
 fi
-if [ "$unbundled" != "" ] ; then
+if [ -n "$odbclib" ] ; then
+        echo "POCO_ODBC_LIB = $odbclib" >>$build/config.make
+fi
+if [ -n "$odbcinclude" ] ; then
+        echo "POCO_ODBC_INCLUDE = $odbcinclude" >>$build/config.make
+fi
+if [ -n "$unbundled" ] ; then
 	echo "POCO_UNBUNDLED = 1" >>$build/config.make
 fi
-if [ "$linkmode" != "" ] ; then
+if [ -n "$linkmode" ] ; then
 	echo "LINKMODE = $linkmode" >>$build/config.make
 fi
-echo "export POCO_CONFIG" >>$build/config.make
-echo "export POCO_BASE" >>$build/config.make
-echo "export POCO_BUILD" >>$build/config.make
-echo "export POCO_PREFIX" >>$build/config.make
-echo "export POCO_FLAGS" >>$build/config.make
-if [ "$stdcxx_base" != "" ] ; then
+
+cat <<__EOF__ >>$build/config.make
+export POCO_CONFIG
+export POCO_BASE
+export POCO_BUILD
+export POCO_PREFIX
+export POCO_FLAGS
+__EOF__
+
+if [ -n "$stdcxx_base" ] ; then
 	echo "export STDCXX_BASE" >>$build/config.make
 fi
-if [ "$includepath" != "" ] ; then
+if [ -n "$includepath" ] ; then
 	echo "export POCO_ADD_INCLUDE" >>$build/config.make
 fi
-if [ "$librarypath" != "" ] ; then
+if [ -n "$librarypath" ] ; then
 	echo "export POCO_ADD_LIBRARY" >>$build/config.make
 fi
-if [ "$unbundled" != "" ] ; then
+if [ -n "$odbclib" ] ; then
+        echo "export POCO_ODBC_LIB" >>$build/config.make
+fi
+if [ -n "$odbcinclude" ] ; then
+        echo "export POCO_ODBC_INCLUDE" >>$build/config.make
+fi
+if [ -n "$unbundled" ] ; then
 	echo "export POCO_UNBUNDLED" >>$build/config.make
 fi
-if [ "$linkmode" != "" ] ; then
+if [ -n "$linkmode" ] ; then
 	echo "export LINKMODE" >>$build/config.make
 fi
-cat <<END >>$build/config.make
+
+# create config.build
+echo '# config.build generated by configure script' >$build/config.build
+cat <<__EOF__ >>$build/config.build
 TESTS = $tests
 SAMPLES = $samples
-END
+__EOF__
 
 echo "Configured for $config"

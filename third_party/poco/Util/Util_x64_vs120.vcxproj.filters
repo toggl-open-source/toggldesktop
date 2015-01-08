@@ -2,58 +2,58 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Application">
-      <UniqueIdentifier>{a94b6b8b-91f6-4552-9b65-53c11cbd0600}</UniqueIdentifier>
+      <UniqueIdentifier>{6fe495d6-6694-4e04-b29f-0f6a4468d51a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Header Files">
-      <UniqueIdentifier>{04cbd7da-a547-4a80-bbe1-a8098c980816}</UniqueIdentifier>
+      <UniqueIdentifier>{e8fdfb49-ef03-45a2-aaad-98af7a2b7d90}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Source Files">
-      <UniqueIdentifier>{929fe018-febb-40ea-828c-70c843c39000}</UniqueIdentifier>
+      <UniqueIdentifier>{443d71cd-5b65-438b-b64e-af05c4084f14}</UniqueIdentifier>
     </Filter>
     <Filter Include="Configuration">
-      <UniqueIdentifier>{12f1a723-1f74-4933-a833-f8e2134107c5}</UniqueIdentifier>
+      <UniqueIdentifier>{dd018b98-a984-404b-aad2-c2c3194ae35d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Configuration\Header Files">
-      <UniqueIdentifier>{7f4cc4a1-ee6c-4fd2-b5e8-65835d989c71}</UniqueIdentifier>
+      <UniqueIdentifier>{be49342f-9e0f-4152-a20f-e761102cbad8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Configuration\Source Files">
-      <UniqueIdentifier>{90a4685f-b9a8-4a45-ade4-f4906cda96e5}</UniqueIdentifier>
+      <UniqueIdentifier>{f6a098eb-c03a-4202-bab7-d3154a5b2044}</UniqueIdentifier>
     </Filter>
     <Filter Include="Options">
-      <UniqueIdentifier>{31568e33-9e83-4c86-92de-e921d72b148f}</UniqueIdentifier>
+      <UniqueIdentifier>{3b198407-25af-4583-8554-83f38fc7aabf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Options\Header Files">
-      <UniqueIdentifier>{03de8173-f42e-41ef-b82e-3335f8502c2a}</UniqueIdentifier>
+      <UniqueIdentifier>{c4c57263-f8ff-4afe-8ef2-6284b85974f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Options\Source Files">
-      <UniqueIdentifier>{b4220d64-8663-4788-b2a9-8bc00ddab90e}</UniqueIdentifier>
+      <UniqueIdentifier>{b0e7d4ed-0178-4f7d-b992-bb3874722d9d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Windows">
-      <UniqueIdentifier>{45bc6f92-43f7-416d-9015-41f80cccb8ac}</UniqueIdentifier>
+      <UniqueIdentifier>{9cc51694-315e-4d20-b467-6a93bdbc7100}</UniqueIdentifier>
     </Filter>
     <Filter Include="Windows\Header Files">
-      <UniqueIdentifier>{a0b69f9d-ff1d-4d6f-81c7-e2fe00f81e7e}</UniqueIdentifier>
+      <UniqueIdentifier>{8273648f-e432-4224-982e-bcd5ee94beec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Windows\Source Files">
-      <UniqueIdentifier>{11dd9ab6-6795-42da-ad6f-e12837408951}</UniqueIdentifier>
+      <UniqueIdentifier>{8284299d-f9a0-4b1c-abe6-6797769dca65}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util">
-      <UniqueIdentifier>{6f30f0ff-6088-4555-8cb9-b6d512fdd00c}</UniqueIdentifier>
+      <UniqueIdentifier>{d80019a5-58cf-4b74-87a9-207901f5ff50}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util\Header Files">
-      <UniqueIdentifier>{f7114520-c1a7-4a82-bee8-d4ddcfe77357}</UniqueIdentifier>
+      <UniqueIdentifier>{01cd2232-f62c-463e-b6af-271a8dd50adf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util\Source Files">
-      <UniqueIdentifier>{ee4b497c-5931-47e4-a89a-816ad5deba7a}</UniqueIdentifier>
+      <UniqueIdentifier>{5b01c67f-7b84-4c43-bbee-478061c31dc0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Timer">
-      <UniqueIdentifier>{cf2f4fab-b36e-4719-a7ab-66c61272419e}</UniqueIdentifier>
+      <UniqueIdentifier>{4410863a-7dab-498b-84e2-12860c663f1b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Timer\Header Files">
-      <UniqueIdentifier>{89086a40-4d8c-447b-969c-e2de6731403e}</UniqueIdentifier>
+      <UniqueIdentifier>{487eb310-c2ba-444c-b200-42191a9d75cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Timer\Source Files">
-      <UniqueIdentifier>{e8d5cdd1-5b01-455e-8423-0d889118ec16}</UniqueIdentifier>
+      <UniqueIdentifier>{49d5c28b-8175-49f3-a631-839d50baebd4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +82,9 @@
       <Filter>Configuration\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Util\IniFileConfiguration.h">
+      <Filter>Configuration\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Util\JSONConfiguration.h">
       <Filter>Configuration\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Util\LayeredConfiguration.h">
@@ -177,6 +180,9 @@
       <Filter>Configuration\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\IniFileConfiguration.cpp">
+      <Filter>Configuration\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSONConfiguration.cpp">
       <Filter>Configuration\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LayeredConfiguration.cpp">

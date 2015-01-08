@@ -194,10 +194,12 @@ void on_display_settings(
 
     testing::testresult::use_proxy = settings->UseProxy;
 
-    testing::testresult::proxy.host = std::string(settings->ProxyHost);
-    testing::testresult::proxy.port = settings->ProxyPort;
-    testing::testresult::proxy.username = std::string(settings->ProxyUsername);
-    testing::testresult::proxy.password = std::string(settings->ProxyPassword);
+    testing::testresult::proxy.SetHost(std::string(settings->ProxyHost));
+    testing::testresult::proxy.SetPort(settings->ProxyPort);
+    testing::testresult::proxy.SetUsername(
+        std::string(settings->ProxyUsername));
+    testing::testresult::proxy.SetPassword(
+        std::string(settings->ProxyPassword));
 }
 
 void on_display_timer_state(TogglTimeEntryView *te) {
@@ -353,13 +355,13 @@ TEST(TogglApiTest, toggl_set_proxy_settings) {
 
     ASSERT_TRUE(testing::testresult::use_proxy);
     ASSERT_EQ(std::string("localhost"),
-              std::string(testing::testresult::proxy.host));
+              std::string(testing::testresult::proxy.Host()));
     ASSERT_EQ(8000,
-              static_cast<int>(testing::testresult::proxy.port));
+              static_cast<int>(testing::testresult::proxy.Port()));
     ASSERT_EQ(std::string("johnsmith"),
-              std::string(testing::testresult::proxy.username));
+              std::string(testing::testresult::proxy.Username()));
     ASSERT_EQ(std::string("secret"),
-              std::string(testing::testresult::proxy.password));
+              std::string(testing::testresult::proxy.Password()));
 }
 
 TEST(TogglApiTest, toggl_set_update_channel) {
@@ -1153,8 +1155,8 @@ TEST(ProxyTest, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());
 
-    p.host = "localhost";
-    p.port = 123;
+    p.SetHost("localhost");
+    p.SetPort(123);
     ASSERT_TRUE(p.IsConfigured());
 }
 
@@ -1162,8 +1164,8 @@ TEST(ProxyTest, HasCredentials) {
     Proxy p;
     ASSERT_FALSE(p.HasCredentials());
 
-    p.username = "foo";
-    p.password = "bar";
+    p.SetUsername("foo");
+    p.SetPassword("bar");
     ASSERT_TRUE(p.HasCredentials());
 }
 

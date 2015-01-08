@@ -432,8 +432,17 @@ std::string Formatter::FormatDuration(
 
     if (Format::Decimal == format_name) {
         double hours = duration / 3600.0;
+        // Following rounding up is needed
+        // to be compatible with Toggl web site.
+        double a = hours * 100.0;
+        int b = hours * 100;
+        double d = a - std::floor(a);
+        if (d > 0.5) {
+            b++;
+        }
+        double c = b / 100.0;
         std::stringstream ss;
-        ss << Poco::NumberFormatter::format(hours, 2) << " h";
+        ss << Poco::NumberFormatter::format(c, 2) << " h";
         return ss.str();
     }
 

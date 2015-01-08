@@ -15,8 +15,6 @@ MACRO_CFLAGS="-g \\
 	-ei1516,1643,1604 \\
 	-Xlocal-data-area-static-only \\
 	-Xsize-opt \\
-	-Xcode-absolute-far \\
-	-Xdata-absolute-far \\
 	-I. \\
 	-I\$(WIND_BASE)/target/h/ \\
 	-I../../include \\
@@ -37,8 +35,6 @@ MACRO_CFLAGS_AS="-g \\
 	-ei1516,1643,1604 \\
 	-Xlocal-data-area-static-only \\
 	-Xsize-opt \\
-	-Xcode-absolute-far \\
-	-Xdata-absolute-far \\
 	-Xpreprocess-assembly \\
 	-c \\
 	-I. \\
