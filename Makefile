@@ -48,7 +48,7 @@ osname=linux
 endif
 
 ifeq ($(uname), Darwin)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
