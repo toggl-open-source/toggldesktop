@@ -1463,6 +1463,13 @@ TEST(JSON, Client) {
     ASSERT_EQ("Big Client", c.Name());
     ASSERT_EQ(Poco::UInt64(123456789), c.WID());
     ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
+
+    Client c2;
+    c2.LoadFromJSONString(c.SaveToJSONString());
+    ASSERT_EQ(c.ID(), c2.ID());
+    ASSERT_EQ(c.Name(), c2.Name());
+    ASSERT_EQ(c.WID(), c2.WID());
+    ASSERT_EQ(c.GUID(), c2.GUID());
 }
 
 TEST(JSON, TimeEntry) {
