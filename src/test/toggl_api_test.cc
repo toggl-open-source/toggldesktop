@@ -191,6 +191,8 @@ void on_display_settings(
     testing::testresult::settings.on_top = settings->OnTop;
     testing::testresult::settings.idle_minutes = settings->IdleMinutes;
     testing::testresult::settings.reminder_minutes = settings->ReminderMinutes;
+    testing::testresult::settings.focus_on_shortcut = settings->FocusOnShortcut;
+    testing::testresult::settings.manual_mode = settings->ManualMode;
 
     testing::testresult::use_proxy = settings->UseProxy;
 
@@ -322,6 +324,12 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 0));
     ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.reminder_minutes);
 
+    ASSERT_TRUE(toggl_set_settings_focus_on_shortcut(app.ctx(), false));
+    ASSERT_FALSE(testing::testresult::settings.focus_on_shortcut);
+
+    ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), false));
+    ASSERT_FALSE(testing::testresult::settings.manual_mode);
+
     // set to true / not null
 
     ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), true));
@@ -345,6 +353,12 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 222));
     ASSERT_EQ(Poco::UInt64(222),
               testing::testresult::settings.reminder_minutes);
+
+    ASSERT_TRUE(toggl_set_settings_focus_on_shortcut(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.focus_on_shortcut);
+
+    ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.manual_mode);
 }
 
 TEST(TogglApiTest, toggl_set_proxy_settings) {
