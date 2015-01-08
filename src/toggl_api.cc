@@ -111,6 +111,12 @@ _Bool toggl_set_settings_focus_on_shortcut(
     return app(context)->SetSettingsFocusOnShortcut(focus_on_shortcut);
 }
 
+_Bool toggl_set_settings_manual_mode(
+    void *context,
+    const _Bool manual_mode) {
+    return app(context)->SetSettingsManualMode(manual_mode);
+}
+
 _Bool toggl_set_settings_reminder_minutes(
     void *context,
     const uint64_t reminder_minutes) {

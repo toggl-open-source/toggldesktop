@@ -153,6 +153,8 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             public bool FocusOnShortcut;
             public UInt64 ReminderMinutes;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool ManualMode;
         }
 
         // Callbacks

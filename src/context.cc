@@ -1015,6 +1015,14 @@ _Bool Context::SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut) {
     return DisplaySettings(false);
 }
 
+_Bool Context::SetSettingsManualMode(const _Bool manual_mode) {
+    error err = db()->SetSettingsManualMode(manual_mode);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
 _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     error err = db()->SetSettingsReminderMinutes(reminder_minutes);
     if (err != noError) {

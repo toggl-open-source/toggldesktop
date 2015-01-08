@@ -269,7 +269,7 @@ error Database::LoadSettings(Settings *settings) {
     try {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
                   "on_top, reminder, idle_minutes, focus_on_shortcut, "
-                  "reminder_minutes "
+                  "reminder_minutes, manual_mode "
                   "from settings",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
@@ -279,6 +279,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->idle_minutes),
                   into(settings->focus_on_shortcut),
                   into(settings->reminder_minutes),
+                  into(settings->manual_mode),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -330,140 +331,53 @@ error Database::LoadProxySettings(
 
 error Database::SetSettingsUseIdleDetection(
     const bool &use_idle_detection) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
-    try {
-        *session_ << "update settings set "
-                  "use_idle_detection = :use_idle_detection ",
-                  useRef(use_idle_detection),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SetSettingsUseIdleDetection");
+    return setSettingsValue("use_idle_detection", use_idle_detection);
 }
 
 error Database::SetSettingsMenubarTimer(
     const bool &menubar_timer) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
-    try {
-        *session_ << "update settings set "
-                  "menubar_timer = :menubar_timer ",
-                  useRef(menubar_timer),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SetSettingsMenubarTimer");
+    return setSettingsValue("menubar_timer", menubar_timer);
 }
 
 error Database::SetSettingsDockIcon(const bool &dock_icon) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
-    try {
-        *session_ << "update settings set "
-                  "dock_icon = :dock_icon ",
-                  useRef(dock_icon),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SetSettingsDockIcon");
+    return setSettingsValue("dock_icon", dock_icon);
 }
 
 error Database::SetSettingsOnTop(const bool &on_top) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
-    try {
-        *session_ << "update settings set "
-                  "on_top = :on_top ",
-                  useRef(on_top),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SetSettingsOnTop");
+    return setSettingsValue("on_top", on_top);
 }
 
 error Database::SetSettingsReminder(const bool &reminder) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
-    try {
-        *session_ << "update settings set "
-                  "reminder = :reminder ",
-                  useRef(reminder),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SetSettingsReminder");
+    return setSettingsValue("reminder", reminder);
 }
 
 error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     Poco::UInt64 new_value = idle_minutes;
     if (new_value < 1) {
         new_value = 1;
     }
-
-    try {
-        *session_ << "update settings set "
-                  "idle_minutes = :idle_minutes ",
-                  useRef(new_value),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SetSettingsIdleMinutes");
+    return setSettingsValue("idle_minutes", new_value);
 }
 
 error Database::SetSettingsFocusOnShortcut(const bool &focus_on_shortcut) {
+    return setSettingsValue("focus_on_shortcut", focus_on_shortcut);
+}
+
+error Database::SetSettingsManualMode(const bool &manual_mode) {
+    return setSettingsValue("manual_mode", manual_mode);
+}
+
+template<typename T>
+error Database::setSettingsValue(
+    const std::string field_name,
+    const T &value) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
 
     try {
-        *session_ << "update settings set "
-                  "focus_on_shortcut = :focus_on_shortcut ",
-                  useRef(focus_on_shortcut),
+        *session_ << "update settings set " + field_name + " = :" + field_name,
+                  useRef(value),
                   now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -472,33 +386,16 @@ error Database::SetSettingsFocusOnShortcut(const bool &focus_on_shortcut) {
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("SetSettingsFocusOnShortcut");
+    return last_error("setSettingsValue");
 }
 
 error Database::SetSettingsReminderMinutes(
     const Poco::UInt64 reminder_minutes) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     Poco::UInt64 new_value = reminder_minutes;
     if (new_value < 1) {
         new_value = 1;
     }
-
-    try {
-        *session_ << "update settings set "
-                  "reminder_minutes = :reminder_minutes ",
-                  useRef(new_value),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SetSettingsReminderMinutes");
+    return setSettingsValue("reminder_minutes", new_value);
 }
 
 error Database::SaveProxySettings(
@@ -558,29 +455,13 @@ error Database::LoadUpdateChannel(
 error Database::SaveUpdateChannel(
     const std::string &update_channel) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     if (update_channel != "stable" &&
             update_channel != "beta" &&
             update_channel != "dev") {
         return error("Invalid update channel");
     }
 
-    try {
-        *session_ << "update settings set "
-                  "update_channel = :update_channel",
-                  useRef(update_channel),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("SaveUpdateChannel");
+    return setSettingsValue("update_channel", update_channel);
 }
 
 error Database::LoadUserByAPIToken(
@@ -2939,6 +2820,13 @@ error Database::migrateSettings() {
     err = migrate("settings.reminder_minutes",
                   "ALTER TABLE settings "
                   "ADD COLUMN reminder_minutes INTEGER NOT NULL DEFAULT 10;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("settings.manual_mode",
+                  "ALTER TABLE settings "
+                  "ADD COLUMN manual_mode INTEGER NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }

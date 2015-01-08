@@ -62,6 +62,8 @@ class Database {
 
     error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
+    error SetSettingsManualMode(const bool &manual_mode);
+
     error LoadProxySettings(
         bool *use_proxy,
         Proxy *proxy);
@@ -126,6 +128,11 @@ class Database {
     error migrateTags();
     error migrateTasks();
     error migrateClients();
+
+    template<typename T>
+    error setSettingsValue(
+        const std::string field_name,
+        const T &value);
 
     error execute(
         const std::string sql);

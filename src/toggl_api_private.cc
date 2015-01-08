@@ -306,6 +306,8 @@ TogglSettingsView *settings_view_item_init(
     view->UseIdleDetection = settings.use_idle_detection;
     view->IdleMinutes = settings.idle_minutes;
     view->FocusOnShortcut = settings.focus_on_shortcut;
+    view->ReminderMinutes = settings.reminder_minutes;
+    view->ManualMode = settings.manual_mode;
 
     view->UseProxy = use_proxy;
 
@@ -313,8 +315,6 @@ TogglSettingsView *settings_view_item_init(
     view->ProxyPort = proxy.Port();
     view->ProxyUsername = copy_string(proxy.Username());
     view->ProxyPassword = copy_string(proxy.Password());
-
-    view->ReminderMinutes = settings.reminder_minutes;
 
     return view;
 }

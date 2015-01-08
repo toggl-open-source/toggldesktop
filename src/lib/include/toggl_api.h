@@ -114,6 +114,7 @@ extern "C" {
         uint64_t IdleMinutes;
         _Bool FocusOnShortcut;
         uint64_t ReminderMinutes;
+        _Bool ManualMode;
     } TogglSettingsView;
 
     typedef struct {
@@ -461,6 +462,10 @@ extern "C" {
     TOGGL_EXPORT _Bool toggl_set_settings_reminder_minutes(
         void *context,
         const uint64_t reminder_minutes);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_manual_mode(
+        void *context,
+        const _Bool manual_mode);
 
     TOGGL_EXPORT _Bool toggl_set_proxy_settings(
         void *context,

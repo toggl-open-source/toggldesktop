@@ -93,6 +93,8 @@ class Context : public TimelineDatasource {
 
     _Bool SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
+    _Bool SetSettingsManualMode(const _Bool manual_mode);
+
     _Bool ProxySettings(bool *use_proxy, Proxy *proxy);
 
     _Bool SetProxySettings(
