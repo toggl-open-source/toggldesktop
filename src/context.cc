@@ -1325,6 +1325,7 @@ _Bool Context::Logout() {
         setUser(0);
 
         UI()->DisplayApp();
+
         Shutdown();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -1531,6 +1532,10 @@ void Context::displayTimeEntryEditor(const _Bool open,
                                      TimeEntry *te,
                                      const std::string focused_field_name) {
     poco_check_ptr(te);
+
+    if (open) {
+        UI()->DisplayApp();
+    }
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
