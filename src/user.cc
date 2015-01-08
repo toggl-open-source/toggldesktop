@@ -47,15 +47,6 @@ User::~User() {
     clearList(&related.TimeEntries);
 }
 
-void User::ActiveProjects(std::vector<Project *> *list) const {
-    for (unsigned int i = 0; i < related.Projects.size(); i++) {
-        toggl::Project *p = related.Projects[i];
-        if (p->Active()) {
-            list->push_back(p);
-        }
-    }
-}
-
 Project *User::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,

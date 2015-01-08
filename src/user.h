@@ -145,8 +145,6 @@ class User : public BaseModel {
     }
     void SetDurationFormat(const std::string);
 
-    void ActiveProjects(std::vector<Project *> *list) const;
-
     const bool &StoreStartAndStopTime() const {
         return store_start_and_stop_time_;
     }
