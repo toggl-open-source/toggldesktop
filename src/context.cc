@@ -1926,13 +1926,17 @@ _Bool Context::DiscardTimeAt(
         return true;
     }
 
-    TimeEntry *stopped = user_->DiscardTimeAt(guid, at, split_into_new_entry);
-    if (!stopped) {
-        logger().warning("Time entry not found");
-        return true;
+    TimeEntry *split = user_->DiscardTimeAt(guid, at, split_into_new_entry);
+    error err = save();
+    if (err != noError) {
+        return displayError(err);
     }
 
-    return displayError(save());
+    if (split_into_new_entry && split) {
+        displayTimeEntryEditor(true, split, "");
+    }
+
+    return true;
 }
 
 _Bool Context::RunningTimeEntry(

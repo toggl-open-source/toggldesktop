@@ -346,9 +346,10 @@ TimeEntry *User::DiscardTimeAt(
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         related.TimeEntries.push_back(split);
+        return split;
     }
 
-    return te;
+    return 0;
 }
 
 TimeEntry *User::RunningTimeEntry() const {

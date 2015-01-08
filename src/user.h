@@ -85,6 +85,8 @@ class User : public BaseModel {
 
     std::vector<TimeEntry *> Stop();
 
+    // Discard time. Return a new time entry if
+    // the discarded time was split into a new time entry
     TimeEntry *DiscardTimeAt(
         const std::string guid,
         const Poco::Int64 at,
