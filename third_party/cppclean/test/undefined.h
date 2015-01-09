@@ -1,0 +1,4 @@
+namespace undefined
+{
+    void function();
+}

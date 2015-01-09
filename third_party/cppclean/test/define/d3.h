@@ -1,0 +1,4 @@
+
+namespace Namespace {
+void Function();
+}

@@ -1,0 +1,2 @@
+MyMacro(Get)
+MyMacro(Set)
