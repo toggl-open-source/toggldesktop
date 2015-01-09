@@ -2,6 +2,7 @@
 
 #include "../src/related_data.h"
 
+#include <algorithm>
 #include <sstream>
 
 #include "Poco/UTF8String.h"
