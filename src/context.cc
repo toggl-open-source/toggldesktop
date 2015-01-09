@@ -6,28 +6,37 @@
 // class, the ownership does not change and you
 // must not delete the pointers you got.
 
-#include "./context.h"
+#include "../src/context.h"
 
 #include <iostream>  // NOLINT
 
-#include "./formatter.h"
-#include "./time_entry.h"
 #include "./const.h"
-#include "./toggl_api_private.h"
+#include "./database.h"
+#include "./formatter.h"
+#include "./project.h"
 #include "./settings.h"
-#include "./timeline_notifications.h"
+#include "./time_entry.h"
+#include "./timeline_uploader.h"
+#include "./toggl_api_private.h"
+#include "./websocket_client.h"
+#include "./window_change_recorder.h"
+#include "./workspace.h"
 
-#include "Poco/Util/Timer.h"
-#include "Poco/Util/TimerTask.h"
-#include "Poco/Util/TimerTaskAdapter.h"
+#include "Poco/Crypto/OpenSSLInitializer.h"
+#include "Poco/DateTimeFormat.h"
+#include "Poco/DateTimeFormatter.h"
 #include "Poco/Environment.h"
-#include "Poco/Timestamp.h"
-#include "Poco/Stopwatch.h"
+#include "Poco/FormattingChannel.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
-#include "Poco/DateTimeFormatter.h"
-#include "Poco/DateTimeFormat.h"
+#include "Poco/Logger.h"
+#include "Poco/Net/NetSSL.h"
+#include "Poco/PatternFormatter.h"
+#include "Poco/SimpleFileChannel.h"
 #include "Poco/Random.h"
+#include "Poco/Stopwatch.h"
+#include "Poco/Util/TimerTask.h"
+#include "Poco/Util/TimerTaskAdapter.h"
 
 namespace toggl {
 
@@ -367,21 +376,21 @@ void Context::displayTags() {
     }
 }
 
-Poco::Timestamp postpone(
-    const Poco::Timestamp::TimeDiff throttleMicros) {
+Poco::Timestamp Context::postpone(
+    const Poco::Timestamp::TimeDiff throttleMicros) const {
     return Poco::Timestamp() + throttleMicros;
 }
 
-bool isPostponed(
+bool Context::isPostponed(
     const Poco::Timestamp value,
-    const Poco::Timestamp::TimeDiff throttleMicros) {
+    const Poco::Timestamp::TimeDiff throttleMicros) const {
     Poco::Timestamp now;
     if (now > value) {
         return false;
     }
     Poco::Timestamp::TimeDiff diff = value - now;
     if (diff > 2*throttleMicros) {
-        Poco::Logger::get("context").warning(
+        logger().warning(
             "Cannot postpone task, its foo far in the future");
         return false;
     }
@@ -405,13 +414,13 @@ _Bool Context::displayError(const error err) {
     return UI()->DisplayError(err);
 }
 
-int nextSyncIntervalSeconds() {
+int Context::nextSyncIntervalSeconds() const {
     Poco::Random random;
     random.seed();
     int res = random.next(kSyncIntervalRangeSeconds) + 10 + 1;
     std::stringstream ss;
     ss << "Next autosync in " << res << " seconds";
-    Poco::Logger::get("context").trace(ss.str());
+    logger().trace(ss.str());
     return res;
 }
 
@@ -552,20 +561,6 @@ void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
     ws_client_->Shutdown();
-}
-
-void on_websocket_message(
-    void *context,
-    std::string json) {
-
-    poco_check_ptr(context);
-
-    if (json.empty()) {
-        return;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-    ctx->LoadUpdateFromJSONString(json);
 }
 
 _Bool Context::LoadUpdateFromJSONString(const std::string json) {
@@ -925,7 +920,7 @@ _Bool Context::SendFeedback(Feedback fb) {
     timer_.schedule(ptask, Poco::Timestamp());
 
     return true;
-};
+}
 
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
@@ -1015,6 +1010,14 @@ _Bool Context::SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut) {
     return DisplaySettings(false);
 }
 
+_Bool Context::SetSettingsManualMode(const _Bool manual_mode) {
+    error err = db()->SetSettingsManualMode(manual_mode);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
 _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     error err = db()->SetSettingsReminderMinutes(reminder_minutes);
     if (err != noError) {
@@ -1052,10 +1055,10 @@ _Bool Context::SetProxySettings(
     }
 
     if (use_proxy != was_using_proxy
-            || proxy.host != previous_proxy_settings.host
-            || proxy.port != previous_proxy_settings.port
-            || proxy.username != previous_proxy_settings.username
-            || proxy.password != previous_proxy_settings.password) {
+            || proxy.Host() != previous_proxy_settings.Host()
+            || proxy.Port() != previous_proxy_settings.Port()
+            || proxy.Username() != previous_proxy_settings.Username()
+            || proxy.Password() != previous_proxy_settings.Password()) {
         Sync();
         switchWebSocketOn();
     }
@@ -1317,7 +1320,8 @@ _Bool Context::Logout() {
         setUser(0);
 
         UI()->DisplayApp();
-		Shutdown();
+
+        Shutdown();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -1523,6 +1527,10 @@ void Context::displayTimeEntryEditor(const _Bool open,
                                      TimeEntry *te,
                                      const std::string focused_field_name) {
     poco_check_ptr(te);
+
+    if (open) {
+        UI()->DisplayApp();
+    }
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
@@ -1918,13 +1926,17 @@ _Bool Context::DiscardTimeAt(
         return true;
     }
 
-    TimeEntry *stopped = user_->DiscardTimeAt(guid, at, split_into_new_entry);
-    if (!stopped) {
-        logger().warning("Time entry not found");
-        return true;
+    TimeEntry *split = user_->DiscardTimeAt(guid, at, split_into_new_entry);
+    error err = save();
+    if (err != noError) {
+        return displayError(err);
     }
 
-    return displayError(save());
+    if (split_into_new_entry && split) {
+        displayTimeEntryEditor(true, split, "");
+    }
+
+    return true;
 }
 
 _Bool Context::RunningTimeEntry(
@@ -2246,6 +2258,39 @@ void Context::uiUpdaterActivity() {
             running_time = date_duration;
         }
     }
+}
+
+void Context::SetLogPath(const std::string path) {
+    Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
+        new Poco::SimpleFileChannel);
+    simpleFileChannel->setProperty("path", path);
+    simpleFileChannel->setProperty("rotation", "1 M");
+
+    Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
+        new Poco::FormattingChannel(
+            new Poco::PatternFormatter(
+                "%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
+    formattingChannel->setChannel(simpleFileChannel);
+
+    Poco::Logger::get("").setChannel(formattingChannel);
+}
+
+Poco::Logger &Context::logger() const {
+    return Poco::Logger::get("context");
+}
+
+void on_websocket_message(
+    void *context,
+    std::string json) {
+
+    poco_check_ptr(context);
+
+    if (json.empty()) {
+        return;
+    }
+
+    Context *ctx = reinterpret_cast<Context *>(context);
+    ctx->LoadUpdateFromJSONString(json);
 }
 
 }  // namespace toggl

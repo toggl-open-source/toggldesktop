@@ -6,11 +6,14 @@
 #include <string>
 #include <sstream>
 
-#include "./const.h"
-
 #include "Poco/Types.h"
 
 namespace toggl {
+
+#define kAutocompleteItemTE  0
+#define kAutocompleteItemTask 1
+#define kAutocompleteItemProject 2
+#define kAutocompleteItemWorkspace 3
 
 class AutocompleteItem {
  public:

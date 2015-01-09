@@ -1,13 +1,15 @@
 
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./gui.h"
+#include "../src/gui.h"
 
 #include <cstdlib>
 #include <sstream>
 
 #include "./error.h"
+#include "./toggl_api_private.h"
 
+#include "Poco/Logger.h"
 #include "Poco/Stopwatch.h"
 
 namespace toggl {
@@ -156,18 +158,6 @@ void GUI::DisplayUpdate(const _Bool open,
     free(view.Version);
 }
 
-TogglAutocompleteView *autocomplete_list_init(
-    std::vector<toggl::AutocompleteItem> *items) {
-    TogglAutocompleteView *first = 0;
-    for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
-        items->rbegin(); it != items->rend(); it++) {
-        TogglAutocompleteView *item = autocomplete_item_init(*it);
-        item->Next = first;
-        first = item;
-    }
-    return first;
-}
-
 void GUI::DisplayTimeEntryAutocomplete(
     std::vector<toggl::AutocompleteItem> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");
@@ -313,6 +303,10 @@ void GUI::DisplayIdleNotification(const std::string guid,
     free(guid_s);
     free(since_s);
     free(duration_s);
+}
+
+Poco::Logger &GUI::logger() const {
+    return Poco::Logger::get("ui");
 }
 
 }  // namespace toggl

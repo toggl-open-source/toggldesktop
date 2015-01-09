@@ -12,11 +12,6 @@
 #define kCheckUpdateIntervalSeconds 86400
 #define kRequestThrottleSeconds 2
 
-#define kAutocompleteItemTE  0
-#define kAutocompleteItemTask 1
-#define kAutocompleteItemProject 2
-#define kAutocompleteItemWorkspace 3
-
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
 #define kWebSocketURL "https://stream.toggl.com"

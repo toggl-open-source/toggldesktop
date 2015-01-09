@@ -22,12 +22,12 @@ class Client : public BaseModel {
     , wid_(0)
     , name_("") {}
 
-    Poco::UInt64 WID() const {
+    const Poco::UInt64 &WID() const {
         return wid_;
     }
     void SetWID(const Poco::UInt64 value);
 
-    std::string Name() const {
+    const std::string &Name() const {
         return name_;
     }
     void SetName(const std::string value);

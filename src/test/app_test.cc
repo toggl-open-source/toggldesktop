@@ -4,21 +4,23 @@
 
 #include <iostream>  // NOLINT
 
-#include "./../user.h"
-#include "./../workspace.h"
 #include "./../client.h"
+#include "./../database.h"
+#include "./../formatter.h"
 #include "./../project.h"
+#include "./../tag.h"
 #include "./../task.h"
 #include "./../time_entry.h"
-#include "./../tag.h"
-#include "./../database.h"
-#include "./test_data.h"
-#include "./../formatter.h"
 #include "./../timeline_event.h"
 #include "./../timeline_uploader.h"
+#include "./../user.h"
+#include "./../workspace.h"
 
-#include "Poco/FileStream.h"
+#include "./test_data.h"
+
 #include "Poco/File.h"
+#include "Poco/FileStream.h"
+#include "Poco/Logger.h"
 #include "Poco/LocalDateTime.h"
 
 namespace toggl {
@@ -47,36 +49,6 @@ class Database {
 };
 
 }  // namespace testing
-
-TEST(TimeEntry, DontPostTooSmallTimeEntries) {
-    {
-        TimeEntry te;
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(5);
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(10);
-        ASSERT_TRUE(te.NeedsPOST());
-    }
-
-    {
-        TimeEntry te;
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(-time(0));
-        ASSERT_TRUE(te.NeedsPOST());
-
-        te.StopTracking();
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(-time(0)+10);
-        ASSERT_TRUE(te.NeedsPOST());
-
-        te.StopTracking();
-        ASSERT_TRUE(te.NeedsPOST());
-    }
-}
 
 TEST(TimeEntry, TimeEntryReturnsTags) {
     TimeEntry te;
@@ -1463,6 +1435,13 @@ TEST(JSON, Client) {
     ASSERT_EQ("Big Client", c.Name());
     ASSERT_EQ(Poco::UInt64(123456789), c.WID());
     ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
+
+    Client c2;
+    c2.LoadFromJSONString(c.SaveToJSONString());
+    ASSERT_EQ(c.ID(), c2.ID());
+    ASSERT_EQ(c.Name(), c2.Name());
+    ASSERT_EQ(c.WID(), c2.WID());
+    ASSERT_EQ(c.GUID(), c2.GUID());
 }
 
 TEST(JSON, TimeEntry) {

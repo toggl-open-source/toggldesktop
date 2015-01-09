@@ -10,7 +10,7 @@
 
 #include "./types.h"
 
-#include "Poco/Notification.h"
+#include "Poco/Types.h"
 
 namespace toggl {
 
@@ -60,6 +60,8 @@ class TimelineBatch {
 
 class TimelineDatasource {
  public:
+    virtual ~TimelineDatasource() {}
+
     // Find timeline events for upload,
     virtual error SaveTimelineEvent(TimelineEvent *event) = 0;
 

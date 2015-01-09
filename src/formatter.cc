@@ -1,31 +1,35 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./formatter.h"
+#include "../src/formatter.h"
 
 #include <time.h>
 #include <sstream>
 #include <cctype>
 #include <set>
 
+#include "./client.h"
+#include "./project.h"
+#include "./task.h"
 #include "./time_entry.h"
 
-#include "Poco/Types.h"
-#include "Poco/UTF8String.h"
-#include "Poco/String.h"
-#include "Poco/Timestamp.h"
-#include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#include "Poco/NumberParser.h"
-#include "Poco/StringTokenizer.h"
+#include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeParser.h"
 #include "Poco/LocalDateTime.h"
+#include "Poco/Logger.h"
 #include "Poco/NumberFormatter.h"
+#include "Poco/NumberParser.h"
+#include "Poco/String.h"
+#include "Poco/StringTokenizer.h"
+#include "Poco/Timestamp.h"
+#include "Poco/Types.h"
+#include "Poco/UTF8String.h"
 
 namespace toggl {
 
-std::string Format::Classic = std::string("classic");
-std::string Format::Improved = std::string("improved");
-std::string Format::Decimal = std::string("decimal");
+const std::string Format::Classic = std::string("classic");
+const std::string Format::Improved = std::string("improved");
+const std::string Format::Decimal = std::string("decimal");
 
 std::string Formatter::TimeOfDayFormat = std::string("");
 std::string Formatter::DurationFormat = Format::Improved;
@@ -294,45 +298,45 @@ bool Formatter::parseDurationStringHHMM(const std::string value,
 
 void Formatter::take(
     const std::string delimiter,
-    double &value,
-    std::string &whatsleft) {
+    double *value,
+    std::string *whatsleft) {
 
-    size_t pos = whatsleft.find(delimiter);
+    size_t pos = whatsleft->find(delimiter);
     if (std::string::npos == pos) {
         return;
     }
 
-    std::string token = whatsleft.substr(0, pos);
+    std::string token = whatsleft->substr(0, pos);
 
     if (token.length()) {
         double d(0);
         if (Poco::NumberParser::tryParseFloat(token, d)) {
-            value = d;
+            *value = d;
         }
-        whatsleft.erase(0, whatsleft.find(delimiter) + delimiter.length());
+        whatsleft->erase(0, whatsleft->find(delimiter) + delimiter.length());
     }
 }
 
 int Formatter::parseDurationStringHoursMinutesSeconds(
-    std::string &whatsleft) {
+    std::string *whatsleft) {
 
     double hours = 0;
-    take("hours", hours, whatsleft);
-    take("hour", hours, whatsleft);
-    take("hr", hours, whatsleft);
-    take("h", hours, whatsleft);
+    take("hours", &hours, whatsleft);
+    take("hour", &hours, whatsleft);
+    take("hr", &hours, whatsleft);
+    take("h", &hours, whatsleft);
 
     double minutes = 0;
-    take("minutes", minutes, whatsleft);
-    take("minute", minutes, whatsleft);
-    take("min", minutes, whatsleft);
-    take("m", minutes, whatsleft);
+    take("minutes", &minutes, whatsleft);
+    take("minute", &minutes, whatsleft);
+    take("min", &minutes, whatsleft);
+    take("m", &minutes, whatsleft);
 
     double seconds = 0;
-    take("seconds", seconds, whatsleft);
-    take("second", seconds, whatsleft);
-    take("sec", seconds, whatsleft);
-    take("s", seconds, whatsleft);
+    take("seconds", &seconds, whatsleft);
+    take("second", &seconds, whatsleft);
+    take("sec", &seconds, whatsleft);
+    take("s", &seconds, whatsleft);
 
     return Poco::Timespan(hours*3600 + minutes*60 + seconds, 0).totalSeconds();
 }
@@ -387,7 +391,7 @@ int Formatter::ParseDurationString(const std::string value) {
         }
     }
 
-    int seconds = parseDurationStringHoursMinutesSeconds(input);
+    int seconds = parseDurationStringHoursMinutesSeconds(&input);
 
     // 15
     if (input.find(".") == std::string::npos) {
@@ -432,8 +436,17 @@ std::string Formatter::FormatDuration(
 
     if (Format::Decimal == format_name) {
         double hours = duration / 3600.0;
+        // Following rounding up is needed
+        // to be compatible with Toggl web site.
+        double a = hours * 100.0;
+        int b = hours * 100;
+        double d = a - std::floor(a);
+        if (d > 0.5) {
+            b++;
+        }
+        double c = b / 100.0;
         std::stringstream ss;
-        ss << Poco::NumberFormatter::format(hours, 2) << " h";
+        ss << Poco::NumberFormatter::format(c, 2) << " h";
         return ss.str();
     }
 

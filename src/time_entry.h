@@ -33,40 +33,40 @@ class TimeEntry : public BaseModel {
 
     std::vector<std::string> TagNames;
 
-    std::string Tags() const;
+    const std::string Tags() const;
     void SetTags(const std::string tags);
 
-    Poco::UInt64 WID() const {
+    const Poco::UInt64 &WID() const {
         return wid_;
     }
     void SetWID(const Poco::UInt64 value);
 
-    Poco::UInt64 PID() const {
+    const Poco::UInt64 &PID() const {
         return pid_;
     }
     void SetPID(const Poco::UInt64 value);
 
-    Poco::UInt64 TID() const {
+    const Poco::UInt64 &TID() const {
         return tid_;
     }
     void SetTID(const Poco::UInt64 value);
 
-    bool Billable() const {
+    const bool &Billable() const {
         return billable_;
     }
     void SetBillable(const bool value);
 
-    Poco::Int64 DurationInSeconds() const {
+    const Poco::Int64 &DurationInSeconds() const {
         return duration_in_seconds_;
     }
     void SetDurationInSeconds(const Poco::Int64 value);
 
-    bool DurOnly() const {
+    const bool &DurOnly() const {
         return duronly_;
     }
     void SetDurOnly(const bool value);
 
-    std::string Description() const {
+    const std::string &Description() const {
         return description_;
     }
     void SetDescription(const std::string value);
@@ -74,7 +74,7 @@ class TimeEntry : public BaseModel {
     std::string StartString() const;
     void SetStartString(const std::string value);
 
-    Poco::UInt64 Start() const {
+    const Poco::UInt64 &Start() const {
         return start_;
     }
     void SetStart(const Poco::UInt64 value);
@@ -84,12 +84,12 @@ class TimeEntry : public BaseModel {
     std::string StopString() const;
     void SetStopString(const std::string value);
 
-    Poco::UInt64 Stop() const {
+    const Poco::UInt64 &Stop() const {
         return stop_;
     }
     void SetStop(const Poco::UInt64 value);
 
-    std::string CreatedWith() const {
+    const std::string &CreatedWith() const {
         return created_with_;
     }
     void SetCreatedWith(const std::string value);
@@ -100,7 +100,7 @@ class TimeEntry : public BaseModel {
 
     bool IsToday() const;
 
-    std::string ProjectGUID() const {
+    const std::string &ProjectGUID() const {
         return project_guid_;
     }
     void SetProjectGUID(const std::string);
@@ -127,8 +127,6 @@ class TimeEntry : public BaseModel {
     void StopTracking();
 
     virtual bool ResolveError(const error err);
-
-    bool NeedsPOST() const;
 
     static Poco::UInt64 AbsDuration(const Poco::Int64 value);
 

@@ -1,41 +1,24 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./user.h"
+#include "../src/user.h"
+
 #include <time.h>
 #include <sstream>
 
+#include "./client.h"
 #include "./formatter.h"
+#include "./https_client.h"
+#include "./project.h"
+#include "./tag.h"
+#include "./task.h"
+#include "./time_entry.h"
+#include "./workspace.h"
 
+#include "Poco/Logger.h"
 #include "Poco/Stopwatch.h"
+#include "Poco/UTF8String.h"
 
 namespace toggl {
-
-template<class T>
-void deleteZombies(
-    std::vector<T> &list,
-    std::set<Poco::UInt64> &alive) {
-    for (size_t i = 0; i < list.size(); ++i) {
-        BaseModel *model = list[i];
-        if (!model->ID()) {
-            // If model has no server-assigned ID, it's not even
-            // pushed to server. So actually we don't know if it's
-            // a zombie or not. Ignore:
-            continue;
-        }
-        if (alive.end() == alive.find(model->ID())) {
-            model->MarkAsDeletedOnServer();
-        }
-    }
-}
-
-template<typename T>
-void clearList(std::vector<T *> *list) {
-    for (size_t i = 0; i < list->size(); i++) {
-        T *value = (*list)[i];
-        delete value;
-    }
-    list->clear();
-}
 
 User::~User() {
     clearList(&related.Workspaces);
@@ -44,15 +27,6 @@ User::~User() {
     clearList(&related.Tasks);
     clearList(&related.Tags);
     clearList(&related.TimeEntries);
-}
-
-void User::ActiveProjects(std::vector<Project *> *list) const {
-    for (unsigned int i = 0; i < related.Projects.size(); i++) {
-        toggl::Project *p = related.Projects[i];
-        if (p->Active()) {
-            list->push_back(p);
-        }
-    }
 }
 
 Project *User::CreateProject(
@@ -345,9 +319,10 @@ TimeEntry *User::DiscardTimeAt(
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         related.TimeEntries.push_back(split);
+        return split;
     }
 
-    return te;
+    return 0;
 }
 
 TimeEntry *User::RunningTimeEntry() const {
@@ -564,19 +539,6 @@ error User::Signup(
     }
     return noError;
 }
-
-template <typename T>
-void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
-        if (model->WID() == wid) {
-            model->MarkAsDeletedOnServer();
-        }
-    }
-}
-
 void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
     deleteRelatedModelsWithWorkspace(wid, &related.Clients);
     deleteRelatedModelsWithWorkspace(wid, &related.Projects);
@@ -591,18 +553,6 @@ void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
         Project *model = *it;
         if (model->CID() == cid) {
             model->SetCID(0);
-        }
-    }
-}
-
-template <typename T>
-void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
-        if (model->PID() == pid) {
-            model->SetPID(0);
         }
     }
 }
@@ -732,7 +682,7 @@ void User::loadUserUpdateFromJSON(
     std::string model = node["model"].asString();
     std::string action = node["action"].asString();
 
-    Poco::toLowerInPlace(action);
+    Poco::UTF8::toLowerInPlace(action);
 
     std::stringstream ss;
     ss << "Update parsed into action=" << action
@@ -1050,6 +1000,57 @@ std::string User::updateJSON(
 
     Json::StyledWriter writer;
     return writer.write(c);
+}
+
+template<class T>
+void deleteZombies(
+    const std::vector<T> &list,
+    const std::set<Poco::UInt64> &alive) {
+    for (size_t i = 0; i < list.size(); ++i) {
+        BaseModel *model = list[i];
+        if (!model->ID()) {
+            // If model has no server-assigned ID, it's not even
+            // pushed to server. So actually we don't know if it's
+            // a zombie or not. Ignore:
+            continue;
+        }
+        if (alive.end() == alive.find(model->ID())) {
+            model->MarkAsDeletedOnServer();
+        }
+    }
+}
+
+template<typename T>
+void clearList(std::vector<T *> *list) {
+    for (size_t i = 0; i < list->size(); i++) {
+        T *value = (*list)[i];
+        delete value;
+    }
+    list->clear();
+}
+
+template <typename T>
+void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
+                                      std::vector<T *> *list) {
+    typedef typename std::vector<T *>::iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->WID() == wid) {
+            model->MarkAsDeletedOnServer();
+        }
+    }
+}
+
+template <typename T>
+void removeProjectFromRelatedModels(const Poco::UInt64 pid,
+                                    std::vector<T *> *list) {
+    typedef typename std::vector<T *>::iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->PID() == pid) {
+            model->SetPID(0);
+        }
+    }
 }
 
 }  // namespace toggl

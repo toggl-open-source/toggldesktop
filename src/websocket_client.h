@@ -8,14 +8,19 @@
 #include <ctime>
 
 #include "Poco/Activity.h"
-#include "Poco/Net/WebSocket.h"
-#include "Poco/Net/HTTPSClientSession.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
-#include "Poco/Logger.h"
 
 #include "./types.h"
-#include "./proxy.h"
+
+namespace Poco {
+class Logger;
+
+namespace Net {
+class HTTPSClientSession;
+class HTTPRequest;
+class HTTPResponse;
+class WebSocket;
+}
+}
 
 namespace toggl {
 
@@ -54,15 +59,20 @@ class WebSocketClient {
 
  private:
     error createSession();
+
     void authenticate();
+
     error poll();
+
     std::string parseWebSocketMessageType(const std::string json);
+
     error receiveWebSocketMessage(std::string *message);
+
     void deleteSession();
 
-    Poco::Logger &logger() const {
-        return Poco::Logger::get("websocket_client");
-    }
+    int nextWebsocketRestartInterval();
+
+    Poco::Logger &logger() const;
 
     Poco::Activity<WebSocketClient> activity_;
     Poco::Net::HTTPSClientSession *session_;

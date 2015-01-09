@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./batch_update_result.h"
+#include "../src/batch_update_result.h"
 
 #include <sstream>
 #include <cstring>

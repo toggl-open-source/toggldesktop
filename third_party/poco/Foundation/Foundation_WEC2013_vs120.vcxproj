@@ -288,8 +288,6 @@
     <ClCompile Include="src\Checksum.cpp" />
     <ClCompile Include="src\Debugger.cpp" />
     <ClCompile Include="src\DirectoryWatcher.cpp" />
-    <ClCompile Include="src\DynamicAny.cpp" />
-    <ClCompile Include="src\DynamicAnyHolder.cpp" />
     <ClCompile Include="src\Environment.cpp" />
     <ClCompile Include="src\Environment_UNIX.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
@@ -323,23 +321,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\Environment_WINCE.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\Error.cpp" />
     <ClCompile Include="src\Exception.cpp" />
-    <ClCompile Include="src\File_WINCE.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\FIFOBufferStream.cpp" />
     <ClCompile Include="src\Format.cpp" />
     <ClCompile Include="src\FPEnvironment.cpp" />
     <ClCompile Include="src\FPEnvironment_C99.cpp">
@@ -384,42 +368,19 @@
     </ClCompile>
     <ClCompile Include="src\Latin2Encoding.cpp" />
     <ClCompile Include="src\MemoryPool.cpp" />
-    <ClCompile Include="src\Mutex_WINCE.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\NestedDiagnosticContext.cpp" />
     <ClCompile Include="src\NumberFormatter.cpp" />
     <ClCompile Include="src\NumberParser.cpp" />
     <ClCompile Include="src\Path_WINCE.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\Process_WINCE.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\RefCountedObject.cpp" />
-    <ClCompile Include="src\RWLock_WINCE.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\SortedDirectoryIterator.cpp" />
     <ClCompile Include="src\String.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
@@ -428,24 +389,24 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\NumericString.cpp" />
+    <ClCompile Include="src\DirectoryIteratorStrategy.cpp" />
     <ClCompile Include="src\StringTokenizer.cpp" />
-    <ClCompile Include="src\Thread_WINCE.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\Timezone_WINCE.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\UTF32Encoding.cpp" />
+    <ClCompile Include="src\Var.cpp" />
+    <ClCompile Include="src\VarHolder.cpp" />
+    <ClCompile Include="src\VarIterator.cpp" />
     <ClCompile Include="src\Void.cpp" />
+    <ClCompile Include="src\Base32Decoder.cpp" />
+    <ClCompile Include="src\Base32Encoder.cpp" />
     <ClCompile Include="src\Base64Decoder.cpp" />
     <ClCompile Include="src\Base64Encoder.cpp" />
     <ClCompile Include="src\BinaryReader.cpp" />
@@ -490,14 +451,6 @@
     <ClCompile Include="src\trees.c" />
     <ClCompile Include="src\Windows1250Encoding.cpp" />
     <ClCompile Include="src\Windows1251Encoding.cpp" />
-    <ClCompile Include="src\WindowsConsoleChannel.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="src\zutil.c" />
     <ClCompile Include="src\ActiveDispatcher.cpp" />
     <ClCompile Include="src\Condition.cpp" />
@@ -651,8 +604,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\RegularExpression.cpp" />
+    <ClCompile Include="src\pcre_version.c" />
+    <ClCompile Include="src\pcre_byte_order.c" />
     <ClCompile Include="src\pcre_chartables.c" />
+    <ClCompile Include="src\pcre_config.c" />
     <ClCompile Include="src\pcre_compile.c" />
+    <ClCompile Include="src\pcre_get.c" />
+    <ClCompile Include="src\pcre_jit_compile.c" />
+    <ClCompile Include="src\pcre_refcount.c" />
+    <ClCompile Include="src\pcre_string_utils.c" />
+    <ClCompile Include="src\pcre_dfa_exec.c" />
     <ClCompile Include="src\pcre_exec.c" />
     <ClCompile Include="src\pcre_fullinfo.c" />
     <ClCompile Include="src\pcre_globals.c" />
@@ -661,7 +622,6 @@
     <ClCompile Include="src\pcre_ord2utf8.c" />
     <ClCompile Include="src\pcre_study.c" />
     <ClCompile Include="src\pcre_tables.c" />
-    <ClCompile Include="src\pcre_try_flipped.c" />
     <ClCompile Include="src\pcre_ucd.c" />
     <ClCompile Include="src\pcre_valid_utf8.c" />
     <ClCompile Include="src\pcre_xclass.c" />
@@ -671,8 +631,8 @@
     <ClCompile Include="src\Configurable.cpp" />
     <ClCompile Include="src\ConsoleChannel.cpp" />
     <ClCompile Include="src\EventLogChannel.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
@@ -741,6 +701,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\WindowsConsoleChannel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_md|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|SDK_AM335X_SK_WEC2013_V310'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\AbstractObserver.cpp" />
     <ClCompile Include="src\Notification.cpp" />
@@ -1054,7 +1022,9 @@
     <ClCompile Include="src\HashStatistic.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Poco\Alignment.h" />
     <ClInclude Include="include\Poco\Any.h" />
+    <ClInclude Include="include\Poco\Array.h" />
     <ClInclude Include="include\Poco\Ascii.h" />
     <ClInclude Include="include\Poco\AtomicCounter.h" />
     <ClInclude Include="include\Poco\AutoPtr.h" />
@@ -1064,19 +1034,25 @@
     <ClInclude Include="include\Poco\ByteOrder.h" />
     <ClInclude Include="include\Poco\Checksum.h" />
     <ClInclude Include="include\Poco\Config.h" />
-    <ClInclude Include="include\Poco\Debugger.h" />
     <ClInclude Include="include\Poco\DirectoryWatcher.h" />
+    <ClInclude Include="include\Poco\Debugger.h" />
     <ClInclude Include="include\Poco\DynamicAny.h" />
     <ClInclude Include="include\Poco\DynamicAnyHolder.h" />
     <ClInclude Include="include\Poco\DynamicFactory.h" />
+    <ClInclude Include="include\Poco\Dynamic\Pair.h" />
+    <ClInclude Include="include\Poco\Dynamic\Struct.h" />
+    <ClInclude Include="include\Poco\Dynamic\Var.h" />
+    <ClInclude Include="include\Poco\Dynamic\VarHolder.h" />
+    <ClInclude Include="include\Poco\Dynamic\VarIterator.h" />
     <ClInclude Include="include\Poco\Environment.h" />
     <ClInclude Include="include\Poco\Environment_UNIX.h" />
     <ClInclude Include="include\Poco\Environment_VMS.h" />
     <ClInclude Include="include\Poco\Environment_WIN32.h" />
     <ClInclude Include="include\Poco\Environment_WIN32U.h" />
-    <ClInclude Include="include\Poco\Environment_WINCE.h" />
+    <ClInclude Include="include\Poco\Error.h" />
     <ClInclude Include="include\Poco\Exception.h" />
-    <ClInclude Include="include\Poco\File_WINCE.h" />
+    <ClInclude Include="include\Poco\FIFOBuffer.h" />
+    <ClInclude Include="include\Poco\FIFOBufferStream.h" />
     <ClInclude Include="include\Poco\Format.h" />
     <ClInclude Include="include\Poco\Foundation.h" />
     <ClInclude Include="include\Poco\FPEnvironment.h" />
@@ -1087,14 +1063,15 @@
     <ClInclude Include="include\Poco\FPEnvironment_WIN32.h" />
     <ClInclude Include="include\Poco\Instantiator.h" />
     <ClInclude Include="include\Poco\Latin2Encoding.h" />
+    <ClInclude Include="include\Poco\ListMap.h" />
     <ClInclude Include="include\Poco\MemoryPool.h" />
     <ClInclude Include="include\Poco\MetaProgramming.h" />
-    <ClInclude Include="include\Poco\Mutex_WINCE.h" />
     <ClInclude Include="include\Poco\NamedTuple.h" />
     <ClInclude Include="include\Poco\NestedDiagnosticContext.h" />
     <ClInclude Include="include\Poco\Nullable.h" />
     <ClInclude Include="include\Poco\NumberFormatter.h" />
     <ClInclude Include="include\Poco\NumberParser.h" />
+    <ClInclude Include="include\Poco\NumericString.h" />
     <ClInclude Include="include\Poco\ObjectPool.h" />
     <ClInclude Include="include\Poco\Optional.h" />
     <ClInclude Include="include\Poco\Path_WINCE.h" />
@@ -1105,20 +1082,25 @@
     <ClInclude Include="include\Poco\Platform_WIN32.h" />
     <ClInclude Include="include\Poco\Poco.h" />
     <ClInclude Include="include\Poco\PriorityStrategy.h" />
-    <ClInclude Include="include\Poco\Process_WINCE.h" />
+    <ClInclude Include="include\Poco\RecursiveDirectoryIterator.h" />
+    <ClInclude Include="include\Poco\RecursiveDirectoryIteratorImpl.h" />
+    <ClInclude Include="include\Poco\DirectoryIteratorStrategy.h" />
     <ClInclude Include="include\Poco\RefCountedObject.h" />
-    <ClInclude Include="include\Poco\RWLock_WINCE.h" />
     <ClInclude Include="include\Poco\SharedPtr.h" />
     <ClInclude Include="include\Poco\SingletonHolder.h" />
+    <ClInclude Include="include\Poco\SortedDirectoryIterator.h" />
     <ClInclude Include="include\Poco\String.h" />
     <ClInclude Include="include\Poco\StringTokenizer.h" />
-    <ClInclude Include="include\Poco\Thread_WINCE.h" />
     <ClInclude Include="include\Poco\Tuple.h" />
     <ClInclude Include="include\Poco\TypeList.h" />
     <ClInclude Include="include\Poco\Types.h" />
     <ClInclude Include="include\Poco\UnWindows.h" />
+    <ClInclude Include="include\Poco\UTF32Encoding.h" />
+    <ClInclude Include="include\Poco\UTFString.h" />
     <ClInclude Include="include\Poco\Version.h" />
     <ClInclude Include="include\Poco\Void.h" />
+    <ClInclude Include="include\Poco\Base32Decoder.h" />
+    <ClInclude Include="include\Poco\Base32Encoder.h" />
     <ClInclude Include="include\Poco\Base64Decoder.h" />
     <ClInclude Include="include\Poco\Base64Encoder.h" />
     <ClInclude Include="include\Poco\BinaryReader.h" />

@@ -1,13 +1,19 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./related_data.h"
+#include "../src/related_data.h"
 
+#include <algorithm>
 #include <sstream>
 
 #include "Poco/UTF8String.h"
 
-#include "./autocomplete_item.h"
 #include "./formatter.h"
+#include "./client.h"
+#include "./project.h"
+#include "./tag.h"
+#include "./task.h"
+#include "./time_entry.h"
+#include "./workspace.h"
 
 namespace toggl {
 
@@ -364,6 +370,76 @@ void RelatedData::ProjectLabelAndColorCode(
     if (c) {
         *client_label = c->Name();
     }
+}
+
+Task *RelatedData::TaskByID(const Poco::UInt64 id) const {
+    return modelByID<Task>(id, &Tasks);
+}
+
+Client *RelatedData::ClientByID(const Poco::UInt64 id) const {
+    return modelByID(id, &Clients);
+}
+
+Project *RelatedData::ProjectByID(const Poco::UInt64 id) const {
+    return modelByID(id, &Projects);
+}
+
+Tag *RelatedData::TagByID(const Poco::UInt64 id) const {
+    return modelByID(id, &Tags);
+}
+
+Workspace *RelatedData::WorkspaceByID(const Poco::UInt64 id) const {
+    return modelByID(id, &Workspaces);
+}
+
+TimeEntry *RelatedData::TimeEntryByID(const Poco::UInt64 id) const {
+    return modelByID(id, &TimeEntries);
+}
+
+TimeEntry *RelatedData::TimeEntryByGUID(const guid GUID) const {
+    return modelByGUID(GUID, &TimeEntries);
+}
+
+Tag *RelatedData::TagByGUID(const guid GUID) const {
+    return modelByGUID(GUID, &Tags);
+}
+
+Project *RelatedData::ProjectByGUID(const guid GUID) const {
+    return modelByGUID(GUID, &Projects);
+}
+
+Client *RelatedData::ClientByGUID(const guid GUID) const {
+    return modelByGUID(GUID, &Clients);
+}
+
+template <typename T>
+T *modelByGUID(const guid GUID, std::vector<T *> const *list) {
+    if (GUID.empty()) {
+        return 0;
+    }
+    typedef typename std::vector<T *>::const_iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->GUID() == GUID) {
+            return model;
+        }
+    }
+    return 0;
+}
+
+template<typename T>
+T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) {
+    if (!id) {
+        return 0;
+    }
+    typedef typename std::vector<T *>::const_iterator iterator;
+    for (iterator it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->ID() == id) {
+            return model;
+        }
+    }
+    return 0;
 }
 
 }   // namespace toggl

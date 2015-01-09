@@ -56,7 +56,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="iphlpapi.lib"
+				AdditionalDependencies="ws2_32.lib iphlpapi.lib"
 				OutputFile="bin64\TypeHandlerd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\lib64"
@@ -127,7 +127,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="iphlpapi.lib"
+				AdditionalDependencies="ws2_32.lib iphlpapi.lib"
 				OutputFile="bin64\TypeHandler.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\lib64"
@@ -196,7 +196,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="iphlpapi.lib winmm.lib iphlpapi.lib"
+				AdditionalDependencies="iphlpapi.lib winmm.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin64\static_mt\TypeHandlerd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\lib64"
@@ -267,7 +267,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="iphlpapi.lib winmm.lib iphlpapi.lib"
+				AdditionalDependencies="iphlpapi.lib winmm.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin64\static_mt\TypeHandler.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\lib64"
@@ -336,7 +336,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="iphlpapi.lib winmm.lib iphlpapi.lib"
+				AdditionalDependencies="iphlpapi.lib winmm.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin64\static_md\TypeHandlerd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\lib64"
@@ -407,7 +407,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="iphlpapi.lib winmm.lib iphlpapi.lib"
+				AdditionalDependencies="iphlpapi.lib winmm.lib ws2_32.lib iphlpapi.lib"
 				OutputFile="bin64\static_md\TypeHandler.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\lib64"

@@ -15,8 +15,7 @@ class TimelineEvent {
     filename(""),
     start_time(0),
     end_time(0),
-    idle(false) {
-    };
+    idle(false) {}
 
     unsigned int id;
     unsigned int user_id;

@@ -309,7 +309,7 @@
     <ClInclude Include="src\DataTest.h"/>
     <ClInclude Include="src\DataTestSuite.h"/>
     <ClInclude Include="src\Extractor.h"/>
-    <ClInclude Include="src\Preparation.h"/>
+    <ClInclude Include="src\Preparator.h"/>
     <ClInclude Include="src\SessionImpl.h"/>
     <ClInclude Include="src\SessionPoolTest.h"/>
     <ClInclude Include="src\TestStatementImpl.h"/>
@@ -321,7 +321,7 @@
     <ClCompile Include="src\DataTestSuite.cpp"/>
     <ClCompile Include="src\Driver.cpp"/>
     <ClCompile Include="src\Extractor.cpp"/>
-    <ClCompile Include="src\Preparation.cpp"/>
+    <ClCompile Include="src\Preparator.cpp"/>
     <ClCompile Include="src\SessionImpl.cpp"/>
     <ClCompile Include="src\SessionPoolTest.cpp"/>
     <ClCompile Include="src\TestStatementImpl.cpp"/>

@@ -2,13 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="ODBC">
-      <UniqueIdentifier>{46e6e904-ed22-4615-8758-553061d8d1ae}</UniqueIdentifier>
+      <UniqueIdentifier>{41adc3cd-455e-45df-80e9-65e02fadbd40}</UniqueIdentifier>
     </Filter>
     <Filter Include="ODBC\Header Files">
-      <UniqueIdentifier>{5b62640f-46ad-4ec3-8402-424b7114c3f3}</UniqueIdentifier>
+      <UniqueIdentifier>{07800ffd-5d2d-44eb-a107-45448dabe41a}</UniqueIdentifier>
     </Filter>
     <Filter Include="ODBC\Source Files">
-      <UniqueIdentifier>{02e2c92f-75db-4aea-b4fc-6d5d99c18f68}</UniqueIdentifier>
+      <UniqueIdentifier>{6afd03f6-f232-40c8-aa80-b178c4f0f222}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -19,9 +19,6 @@
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Data\ODBC\Connector.h">
-      <Filter>ODBC\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Poco\Data\ODBC\DataTypes.h">
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Data\ODBC\Diagnostics.h">
@@ -42,10 +39,10 @@
     <ClInclude Include="include\Poco\Data\ODBC\ODBC.h">
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Poco\Data\ODBC\ODBCColumn.h">
+    <ClInclude Include="include\Poco\Data\ODBC\ODBCException.h">
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Poco\Data\ODBC\ODBCException.h">
+    <ClInclude Include="include\Poco\Data\ODBC\ODBCMetaColumn.h">
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Data\ODBC\ODBCStatementImpl.h">
@@ -54,10 +51,22 @@
     <ClInclude Include="include\Poco\Data\ODBC\Parameter.h">
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Poco\Data\ODBC\Preparation.h">
+    <ClInclude Include="include\Poco\Data\ODBC\Preparator.h">
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Data\ODBC\SessionImpl.h">
+      <Filter>ODBC\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Data\ODBC\TypeInfo.h">
+      <Filter>ODBC\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Data\ODBC\Unicode.h">
+      <Filter>ODBC\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Data\ODBC\Unicode_UNIXODBC.h">
+      <Filter>ODBC\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Data\ODBC\Unicode_WIN32.h">
       <Filter>ODBC\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Data\ODBC\Utility.h">
@@ -74,19 +83,16 @@
     <ClCompile Include="src\Connector.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\DataTypes.cpp">
-      <Filter>ODBC\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\EnvironmentHandle.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Extractor.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ODBCColumn.cpp">
+    <ClCompile Include="src\ODBCException.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ODBCException.cpp">
+    <ClCompile Include="src\ODBCMetaColumn.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ODBCStatementImpl.cpp">
@@ -95,17 +101,26 @@
     <ClCompile Include="src\Parameter.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Preparation.cpp">
+    <ClCompile Include="src\Preparator.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SessionImpl.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TypeInfo.cpp">
+      <Filter>ODBC\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Unicode.cpp">
+      <Filter>ODBC\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Unicode_UNIXODBC.cpp">
+      <Filter>ODBC\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Unicode_WIN32.cpp">
+      <Filter>ODBC\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Utility.cpp">
       <Filter>ODBC\Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\..\DLLVersion.rc" />
   </ItemGroup>
 </Project>

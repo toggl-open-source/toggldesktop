@@ -21,17 +21,17 @@ class Task : public BaseModel {
     , wid_(0)
     , pid_(0) {}
 
-    std::string Name() const {
+    const std::string &Name() const {
         return name_;
     }
     void SetName(const std::string value);
 
-    Poco::UInt64 WID() const {
+    const Poco::UInt64 &WID() const {
         return wid_;
     }
     void SetWID(const Poco::UInt64 value);
 
-    Poco::UInt64 PID() const {
+    const Poco::UInt64 &PID() const {
         return pid_;
     }
     void SetPID(const Poco::UInt64 value);

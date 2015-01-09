@@ -5,13 +5,14 @@
 
 #include <string>
 
-#include "./timeline_event.h"
 #include "./timeline_notifications.h"
-#include "./timeline_constants.h"
 #include "./types.h"
 
 #include "Poco/Activity.h"
-#include "Poco/Logger.h"
+
+namespace Poco {
+class Logger;
+}
 
 namespace toggl {
 
@@ -45,9 +46,7 @@ class WindowChangeRecorder {
 
     bool hasIdlenessChanged(const bool &idle) const;
 
-    Poco::Logger &logger() {
-        return Poco::Logger::get("WindowChangeRecorder");
-    }
+    Poco::Logger &logger();
 
     // Last window focus event data
     std::string last_title_;

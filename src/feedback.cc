@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./feedback.h"
+#include "../src/feedback.h"
 
 #include <sstream>
 
@@ -11,6 +11,8 @@
 #include "Poco/Base64Encoder.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/Path.h"
+
+#include <json/json.h>  // NOLINT
 
 namespace toggl {
 

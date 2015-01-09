@@ -10,9 +10,11 @@
 
 #include "qtsingleapplication.h"  // NOLINT
 
+#include "./autocompleteview.h"
+#include "./bugsnag.h"
+#include "./genericview.h"
 #include "./mainwindowcontroller.h"
 #include "./toggl.h"
-#include "./bugsnag.h"
 
 class TogglApplication : public QtSingleApplication {
  public:

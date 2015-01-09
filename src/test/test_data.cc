@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./test_data.h"
+#include "../../src/test/test_data.h"
 
 #include <sstream>
 

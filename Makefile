@@ -48,7 +48,7 @@ osname=linux
 endif
 
 ifeq ($(uname), Darwin)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -90,6 +90,7 @@ libs=-framework Carbon \
 	-lPocoCrypto \
 	-lPocoUtil \
 	-lPocoXML \
+	-lPocoJSON \
 	-lPocoFoundation \
 	-lpthread \
 	-L$(openssldir) \
@@ -108,6 +109,7 @@ libs=-lX11 \
 	-lPocoCrypto \
 	-lPocoUtil \
 	-lPocoXML \
+	-lPocoJSON \
 	-lPocoFoundation \
 	-lpthread \
 	-L$(openssldir) \
@@ -150,6 +152,11 @@ clean_test:
 lint:
 	./third_party/cpplint/cpplint.py $(source_dirs)
 
+cppclean:
+	./third_party/cppclean/cppclean -q --include-path=src/lib/include --include-path=third_party/poco/Crypto/include --include-path=third_party/poco/Net/include --include-path=third_party/poco/NetSSL_OpenSSL/include --include-path=third_party/poco/Foundation/include --include-path=third_party/poco/Util/include --include-path=third_party/poco/Data/include --include-path=third_party/poco/Data/SQLite/include --include-path=third_party/poco/Data/SQLite/src --include-path=third_party/lua-5.2.3/src src/*.*
+
+qa: lint fmt cppclean test
+
 fmt: fmt_lib fmt_ui
 
 app: lib ui
@@ -164,14 +171,15 @@ lib:
 	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
 	cd ../../../../ && \
 	cp $(openssldir)/*so* src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.17 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.17 src/lib/linux/TogglDesktopLibrary/build/release && \
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.17 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.30 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.30 src/lib/linux/TogglDesktopLibrary/build/release && \
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoJSON.so.30 src/lib/linux/TogglDesktopLibrary/build/release
 endif
 
 
@@ -224,7 +232,8 @@ endif
 
 poco:
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip --no-tests --no-samples --fPIC \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples --cflags=-fPIC \
+	--sqlite-thread-safe=1 \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
 

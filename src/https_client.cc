@@ -1,28 +1,32 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "./https_client.h"
+#include "../src/https_client.h"
 
 #include <string>
 #include <sstream>
 
 #include <json/json.h>  // NOLINT
 
+#include "Poco/DeflatingStream.h"
 #include "Poco/Exception.h"
 #include "Poco/InflatingStream.h"
-#include "Poco/DeflatingStream.h"
 #include "Poco/Logger.h"
-#include "Poco/URI.h"
 #include "Poco/NumberParser.h"
-#include "Poco/Net/Context.h"
-#include "Poco/Net/NameValueCollection.h"
-#include "Poco/Net/HTTPMessage.h"
-#include "Poco/Net/HTTPBasicCredentials.h"
-#include "Poco/Net/InvalidCertificateHandler.h"
 #include "Poco/Net/AcceptCertificateHandler.h"
-#include "Poco/Net/SSLManager.h"
+#include "Poco/Net/Context.h"
+#include "Poco/Net/HTTPBasicCredentials.h"
+#include "Poco/Net/HTTPMessage.h"
+#include "Poco/Net/HTTPRequest.h"
+#include "Poco/Net/HTTPResponse.h"
+#include "Poco/Net/HTTPSClientSession.h"
+#include "Poco/Net/InvalidCertificateHandler.h"
+#include "Poco/Net/NameValueCollection.h"
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 #include "Poco/Net/SecureStreamSocket.h"
+#include "Poco/Net/Session.h"
+#include "Poco/Net/SSLManager.h"
 #include "Poco/TextEncoding.h"
+#include "Poco/URI.h"
 #include "Poco/UTF8Encoding.h"
 
 #include "./const.h"
@@ -127,13 +131,13 @@ error HTTPSClient::request(
         if (HTTPSClientConfig::UseProxy &&
                 HTTPSClientConfig::ProxySettings.IsConfigured()) {
             session.setProxy(
-                HTTPSClientConfig::ProxySettings.host,
+                HTTPSClientConfig::ProxySettings.Host(),
                 static_cast<Poco::UInt16>(
-                    HTTPSClientConfig::ProxySettings.port));
+                    HTTPSClientConfig::ProxySettings.Port()));
             if (HTTPSClientConfig::ProxySettings.HasCredentials()) {
                 session.setProxyCredentials(
-                    HTTPSClientConfig::ProxySettings.username,
-                    HTTPSClientConfig::ProxySettings.password);
+                    HTTPSClientConfig::ProxySettings.Username(),
+                    HTTPSClientConfig::ProxySettings.Password());
             }
         }
         session.setKeepAlive(false);

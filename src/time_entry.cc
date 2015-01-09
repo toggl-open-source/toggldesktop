@@ -9,30 +9,24 @@
 // from context, using specific functions, not
 // setters.
 
-#include "./time_entry.h"
+#include "../src/time_entry.h"
 
 #include <sstream>
 #include <algorithm>
 
 #include <json/json.h>  // NOLINT
 
-#include "./formatter.h"
 #include "./const.h"
+#include "./formatter.h"
 #include "./https_client.h"
 
-#include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
+#include "Poco/Logger.h"
 #include "Poco/NumberParser.h"
+#include "Poco/Timestamp.h"
 
 namespace toggl {
-
-bool TimeEntry::NeedsPOST() const {
-    if (BaseModel::NeedsPOST()) {
-        return ((duration_in_seconds_ < 0) || (duration_in_seconds_ > 5));
-    }
-    return false;
-}
 
 bool TimeEntry::ResolveError(const error err) {
     if (durationTooLarge(err) && Stop() && Start()) {
@@ -302,7 +296,7 @@ void TimeEntry::SetProjectGUID(const std::string value) {
     }
 }
 
-std::string TimeEntry::Tags() const {
+const std::string TimeEntry::Tags() const {
     std::stringstream ss;
     for (std::vector<std::string>::const_iterator it =
         TagNames.begin();

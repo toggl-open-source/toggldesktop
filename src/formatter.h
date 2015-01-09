@@ -7,20 +7,22 @@
 #include <ctime>
 #include <vector>
 
-#include "./task.h"
-#include "./project.h"
-#include "./client.h"
-#include "./time_entry.h"
 #include "./autocomplete_item.h"
+#include "./types.h"
 
 namespace toggl {
 
 class Format {
  public:
-    static std::string Classic;
-    static std::string Improved;
-    static std::string Decimal;
+    static const std::string Classic;
+    static const std::string Improved;
+    static const std::string Decimal;
 };
+
+class Client;
+class Project;
+class Task;
+class TimeEntry;
 
 class Formatter {
  public:
@@ -83,8 +85,8 @@ class Formatter {
 
     static void take(
         const std::string delimiter,
-        double &value,
-        std::string &whatsleft);
+        double *value,
+        std::string *whatsleft);
 
     static bool parseTimeInputAMPM(
         const std::string numbers,
@@ -112,7 +114,7 @@ class Formatter {
         int *parsed_seconds);
 
     static int parseDurationStringHoursMinutesSeconds(
-        std::string &whatsleft);
+        std::string *whatsleft);
 };
 
 bool CompareClientByName(Client *a, Client *b);
@@ -120,6 +122,8 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
 bool CompareStructuredAutocompleteItems(
     AutocompleteItem a, AutocompleteItem b);
+
+bool timeIsWithinLimits(int *hours, int *minutes);
 
 }  // namespace toggl
 

@@ -132,7 +132,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -162,7 +162,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -190,7 +190,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -221,7 +221,7 @@
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -251,7 +251,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -282,7 +282,7 @@
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\CppUnit\include;..\..\Foundation\include;..\..\XML\include;..\..\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;POCO_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -314,6 +314,7 @@
     <ClInclude Include="src\FilesystemConfigurationTest.h"/>
     <ClInclude Include="src\HelpFormatterTest.h"/>
     <ClInclude Include="src\IniFileConfigurationTest.h"/>
+    <ClInclude Include="src\JSONConfigurationTest.h"/>
     <ClInclude Include="src\LayeredConfigurationTest.h"/>
     <ClInclude Include="src\LoggingConfiguratorTest.h"/>
     <ClInclude Include="src\MapConfigurationTest.h"/>
@@ -340,6 +341,7 @@
     <ClCompile Include="src\FilesystemConfigurationTest.cpp"/>
     <ClCompile Include="src\HelpFormatterTest.cpp"/>
     <ClCompile Include="src\IniFileConfigurationTest.cpp"/>
+    <ClCompile Include="src\JSONConfigurationTest.cpp"/>
     <ClCompile Include="src\LayeredConfigurationTest.cpp"/>
     <ClCompile Include="src\LoggingConfiguratorTest.cpp"/>
     <ClCompile Include="src\MapConfigurationTest.cpp"/>

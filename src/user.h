@@ -11,13 +11,6 @@
 #include <json/json.h>  // NOLINT
 
 #include "./types.h"
-#include "./https_client.h"
-#include "./workspace.h"
-#include "./client.h"
-#include "./project.h"
-#include "./task.h"
-#include "./time_entry.h"
-#include "./tag.h"
 #include "./related_data.h"
 #include "./batch_update_result.h"
 #include "./base_model.h"
@@ -25,6 +18,8 @@
 #include "Poco/Types.h"
 
 namespace toggl {
+
+class HTTPSClient;
 
 class User : public BaseModel {
  public:
@@ -85,6 +80,8 @@ class User : public BaseModel {
 
     std::vector<TimeEntry *> Stop();
 
+    // Discard time. Return a new time entry if
+    // the discarded time was split into a new time entry
     TimeEntry *DiscardTimeAt(
         const std::string guid,
         const Poco::Int64 at,
@@ -102,50 +99,48 @@ class User : public BaseModel {
 
     std::string DateDuration(TimeEntry *te) const;
 
-    std::string APIToken() const {
+    const std::string &APIToken() const {
         return api_token_;
     }
     void SetAPIToken(std::string api_token);
 
-    Poco::UInt64 DefaultWID() const {
+    const Poco::UInt64 &DefaultWID() const {
         return default_wid_;
     }
     void SetDefaultWID(Poco::UInt64 value);
 
     // Unix timestamp of the user data; returned from API
-    Poco::UInt64 Since() const {
+    const Poco::UInt64 &Since() const {
         return since_;
     }
     void SetSince(const Poco::UInt64 value);
 
-    std::string Fullname() const {
+    const std::string &Fullname() const {
         return fullname_;
     }
     void SetFullname(std::string value);
 
-    std::string TimeOfDayFormat() const {
+    const std::string &TimeOfDayFormat() const {
         return timeofday_format_;
     }
     void SetTimeOfDayFormat(std::string value);
 
-    std::string Email() const {
+    const std::string &Email() const {
         return email_;
     }
     void SetEmail(const std::string value);
 
-    bool RecordTimeline() const {
+    const bool &RecordTimeline() const {
         return record_timeline_;
     }
     void SetRecordTimeline(const bool value);
 
-    void SetDurationFormat(const std::string);
-    std::string DurationFormat() const {
+    const std::string &DurationFormat() const {
         return duration_format_;
     }
+    void SetDurationFormat(const std::string);
 
-    void ActiveProjects(std::vector<Project *> *list) const;
-
-    bool StoreStartAndStopTime() const {
+    const bool &StoreStartAndStopTime() const {
         return store_start_and_stop_time_;
     }
     void SetStoreStartAndStopTime(const bool value);
@@ -262,6 +257,22 @@ class User : public BaseModel {
     std::string timeofday_format_;
     std::string duration_format_;
 };
+
+template<class T>
+void deleteZombies(
+    const std::vector<T> &list,
+    const std::set<Poco::UInt64> &alive);
+
+template<typename T>
+void clearList(std::vector<T *> *list);
+
+template <typename T>
+void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
+                                      std::vector<T *> *list);
+
+template <typename T>
+void removeProjectFromRelatedModels(const Poco::UInt64 pid,
+                                    std::vector<T *> *list);
 
 }  // namespace toggl
 

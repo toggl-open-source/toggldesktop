@@ -2,22 +2,22 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Zip">
-      <UniqueIdentifier>{3eceb4d5-b276-4adc-b8ec-63c4fafdd495}</UniqueIdentifier>
+      <UniqueIdentifier>{fc8b7d00-c445-4144-86b2-c4f9af5f7055}</UniqueIdentifier>
     </Filter>
     <Filter Include="Zip\Header Files">
-      <UniqueIdentifier>{0db0b1b0-7764-4f60-93e3-3f2e2cb50747}</UniqueIdentifier>
+      <UniqueIdentifier>{5e35c17e-4669-4dad-979e-d8602c5a7b92}</UniqueIdentifier>
     </Filter>
     <Filter Include="Zip\Source Files">
-      <UniqueIdentifier>{ff8c194f-026c-44fb-997a-304c65d7f06d}</UniqueIdentifier>
+      <UniqueIdentifier>{24cd7923-bced-42bc-bf35-54da06d88f50}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manipulation">
-      <UniqueIdentifier>{835ee624-dcb9-4979-a8b0-26d739429836}</UniqueIdentifier>
+      <UniqueIdentifier>{d1a787ca-ffe1-4a2b-aa01-b50af5d58233}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manipulation\Header Files">
-      <UniqueIdentifier>{0fe75689-dc1d-4646-abbd-385c9c10da35}</UniqueIdentifier>
+      <UniqueIdentifier>{16560866-89fc-4376-8778-50cb0543c06b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manipulation\Source Files">
-      <UniqueIdentifier>{ebbbd91a-9efa-466e-915b-df6b8c511b94}</UniqueIdentifier>
+      <UniqueIdentifier>{85ee2d13-1549-4f8e-bffa-a0d5ad98f66f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

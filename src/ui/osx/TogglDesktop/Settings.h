@@ -24,4 +24,5 @@
 @property int idle_minutes;
 @property BOOL focus_on_shortcut;
 @property int reminder_minutes;
+@property BOOL manual_mode;
 @end

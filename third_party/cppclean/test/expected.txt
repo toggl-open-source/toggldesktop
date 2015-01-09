@@ -1,0 +1,53 @@
+test/baz.h:1: 'bar.h' does not need to be #included; use a forward declaration instead
+test/cxx.cxx: unable to find header file with matching name
+test/cxx.cxx:1: 'cxx' not found in any directly #included header
+test/empty.cc: unable to find header file with matching name
+test/enum.h:18: static data 'color'
+test/foo.h:13: 'Baz' forward declared, but needs to be #included
+test/foo.h:14: 'Unused' not used
+test/foo.h:61: 'ProtoArray' not used
+test/foo.h:86: 'bar.h' already #included on line 5
+test/foo.h:113: 'not-used.h' does not need to be #included
+test/foo.h:150: 'AR' not used
+test/foo.h:221: unable to find 'dir//bar.h'
+test/foo.h:234 'Colon' has virtual methods without a virtual dtor
+test/foo.h:20: static data 'd'
+test/foo.h:101: static data 'ptof'
+test/foo.h:106: static data 'data'
+test/foo.h:208: static data 'garbage_state'
+test/foo.h:225: static data 'flags_'
+test/foo.h:239: static data 'foo'
+test/foo.h:241: static data 'GlobalKey'
+test/foo.h:268: static data 'instance_'
+test/foo.h:274: static data 'string_list'
+test/include.h:1: 'empty.cc' does not need to be #included
+test/include.h:1: should not #include C++ source file 'empty.cc'
+test/include.h:3: 'include.h' #includes itself
+test/include.h:3: 'include.h' does not need to be #included
+test/include.h:4: 'foo.h' already #included on line 2
+test/include.h:4: 'foo.h' does not need to be #included
+test/itself.h:1: 'itself.h' #includes itself
+test/itself.h:1: 'itself.h' does not need to be #included
+test/latin1.cc: unable to find header file with matching name
+test/latin1.cc:2: 'latin1' not found in any directly #included header
+test/latin1.cc:4: static data 'x'
+test/need-class.h:4: 'Bar' forward declared, but needs to be #included
+test/need-class.h:5: 'Baz' forward declared, but needs to be #included
+test/need-class.h:6: 'Bong' forward declared, but needs to be #included
+test/need-class.h:7: 'Bling' forward declared, but needs to be #included
+test/test.cc:2: 'bar.h' already #included in 'test/test.h'
+test/typedef.h:1: 'Foo' forward declared, but needs to be #included
+test/undefined.h:3: 'function' declared but not defined
+test/unused_static.cc:1: static data 'x'
+test/unused_static.cc:2: static data 'y'
+test/unused_static.cc:4: static data 'plugged'
+test/unused_static.cc:5: static data 'array'
+test/unused_static.cc:3: unused variable 'z'
+test/with_main.cc:9: 'Foo' forward declaration not expected in source file
+test/with_main.cc:10: 'Bar' forward declaration not expected in source file
+test/define/d1.cc:11: 'SomeFunction1' not found in expected header 'test/define/d1.h' or any other directly #included header
+test/define/d1.cc:15: expected to find 'SomeOtherFunction1' in 'test/define/d1.h', but found in 'test/define/other_defined1.h'
+test/define/d1.h:4: 'OnlyDeclared' declared but not defined
+test/define/d2.cc: unable to find header file with matching name
+test/define/d2.cc:2: 'SomeFunction' not found in any directly #included header
+test/define/d7.h:4 'Bar' has virtual methods without a virtual dtor

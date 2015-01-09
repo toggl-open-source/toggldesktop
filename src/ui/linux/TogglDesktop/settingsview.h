@@ -28,6 +28,7 @@ class SettingsView : public QObject {
         result->RecordTimeline = view->RecordTimeline;
         result->IdleMinutes = view->IdleMinutes;
         result->ReminderMinutes = view->ReminderMinutes;
+        result->ManualMode = view->ManualMode;
         return result;
     }
 
@@ -44,6 +45,7 @@ class SettingsView : public QObject {
     bool RecordTimeline;
     uint64_t IdleMinutes;
     uint64_t ReminderMinutes;
+    bool ManualMode;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_

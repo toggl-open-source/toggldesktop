@@ -9,28 +9,27 @@
 #include <set>
 #include <iostream> // NOLINT
 
-#include "./types.h"
-#include "./database.h"
-#include "./websocket_client.h"
-#include "./window_change_recorder.h"
-#include "./timeline_uploader.h"
 #include "./custom_error_handler.h"
-#include "./autocomplete_item.h"
 #include "./feedback.h"
-#include "./lib/include/toggl_api.h"
 #include "./gui.h"
+#include "./https_client.h"
 #include "./idle.h"
+#include "./lib/include/toggl_api.h"
+#include "./model_change.h"
+#include "./timeline_notifications.h"
+#include "./types.h"
 
 #include "Poco/Activity.h"
-#include "Poco/Timestamp.h"
 #include "Poco/LocalDateTime.h"
-#include "Poco/SimpleFileChannel.h"
-#include "Poco/FormattingChannel.h"
-#include "Poco/PatternFormatter.h"
-#include "Poco/Util/TimerTask.h"
+#include "Poco/Timestamp.h"
 #include "Poco/Util/Timer.h"
 
 namespace toggl {
+
+class Database;
+class TimelineUploader;
+class WebSocketClient;
+class WindowChangeRecorder;
 
 class Context : public TimelineDatasource {
  public:
@@ -92,6 +91,8 @@ class Context : public TimelineDatasource {
     _Bool SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut);
 
     _Bool SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
+
+    _Bool SetSettingsManualMode(const _Bool manual_mode);
 
     _Bool ProxySettings(bool *use_proxy, Proxy *proxy);
 
@@ -218,20 +219,7 @@ class Context : public TimelineDatasource {
         idle_.SetIdleSeconds(idle_seconds, user_);
     }
 
-    static void SetLogPath(const std::string path) {
-        Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
-            new Poco::SimpleFileChannel);
-        simpleFileChannel->setProperty("path", path);
-        simpleFileChannel->setProperty("rotation", "1 M");
-
-        Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
-            new Poco::FormattingChannel(
-                new Poco::PatternFormatter(
-                    "%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
-        formattingChannel->setChannel(simpleFileChannel);
-
-        Poco::Logger::get("").setChannel(formattingChannel);
-    }
+    static void SetLogPath(const std::string path);
 
     void SetQuit() {
         quit_ = true;
@@ -251,9 +239,7 @@ class Context : public TimelineDatasource {
     static const std::string installerPlatform();
     static const std::string linuxPlatformName();
 
-    Poco::Logger &logger() const {
-        return Poco::Logger::get("context");
-    }
+    Poco::Logger &logger() const;
 
     void sync(const bool full_sync);
 
@@ -317,8 +303,19 @@ class Context : public TimelineDatasource {
     bool canSeeBillable(Workspace *workspace) const;
 
     void scheduleSync();
+
     void displayOnlineState(const std::string reason);
+
     void remindToTrackTime();
+
+    int nextSyncIntervalSeconds() const;
+
+    bool isPostponed(
+        const Poco::Timestamp value,
+        const Poco::Timestamp::TimeDiff throttleMicros) const;
+
+    Poco::Timestamp postpone(
+        const Poco::Timestamp::TimeDiff throttleMicros) const;
 
     Poco::Mutex db_m_;
     Database *db_;
@@ -372,6 +369,10 @@ class Context : public TimelineDatasource {
     Poco::Mutex ui_updater_m_;
     Poco::Activity<Context> ui_updater_;
 };
+
+void on_websocket_message(
+    void *context,
+    std::string json);
 
 }  // namespace toggl
 

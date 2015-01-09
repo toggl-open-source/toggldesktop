@@ -10,9 +10,9 @@ include $(POCO_BASE)/build/rules/global
 
 include ODBC.make
 
-objects = Binder ConnectionHandle Connector DataTypes EnvironmentHandle \
-	Extractor ODBCColumn ODBCException ODBCStatementImpl \
-	Parameter Preparation SessionImpl Utility 
+objects = Binder ConnectionHandle Connector EnvironmentHandle \
+	Extractor ODBCException ODBCMetaColumn ODBCStatementImpl \
+	Parameter Preparator SessionImpl TypeInfo Unicode Utility 
 
 target         = PocoDataODBC
 target_version = $(LIBVERSION)

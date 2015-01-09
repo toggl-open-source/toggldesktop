@@ -20,6 +20,8 @@
 	self.reminder = data->Reminder;
 	self.idle_minutes = (int)data->IdleMinutes;
 	self.focus_on_shortcut = data->FocusOnShortcut;
+	self.reminder_minutes = (int)data->ReminderMinutes;
+	self.manual_mode = data->ManualMode;
 
 	self.use_proxy = data->UseProxy;
 
@@ -27,8 +29,6 @@
 	self.proxy_port = data->ProxyPort;
 	self.proxy_username = [NSString stringWithUTF8String:data->ProxyUsername];
 	self.proxy_password = [NSString stringWithUTF8String:data->ProxyPassword];
-
-	self.reminder_minutes = (int)data->ReminderMinutes;
 }
 
 @end

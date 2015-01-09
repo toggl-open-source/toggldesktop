@@ -5,10 +5,11 @@
 #include "gtest/gtest.h"
 
 #include "./../lib/include/toggl_api.h"
+#include "./../proxy.h"
+#include "./../settings.h"
+#include "./../time_entry.h"
 #include "./../toggl_api_private.h"
 #include "./test_data.h"
-#include "./../settings.h"
-#include "./../proxy.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
@@ -191,13 +192,17 @@ void on_display_settings(
     testing::testresult::settings.on_top = settings->OnTop;
     testing::testresult::settings.idle_minutes = settings->IdleMinutes;
     testing::testresult::settings.reminder_minutes = settings->ReminderMinutes;
+    testing::testresult::settings.focus_on_shortcut = settings->FocusOnShortcut;
+    testing::testresult::settings.manual_mode = settings->ManualMode;
 
     testing::testresult::use_proxy = settings->UseProxy;
 
-    testing::testresult::proxy.host = std::string(settings->ProxyHost);
-    testing::testresult::proxy.port = settings->ProxyPort;
-    testing::testresult::proxy.username = std::string(settings->ProxyUsername);
-    testing::testresult::proxy.password = std::string(settings->ProxyPassword);
+    testing::testresult::proxy.SetHost(std::string(settings->ProxyHost));
+    testing::testresult::proxy.SetPort(settings->ProxyPort);
+    testing::testresult::proxy.SetUsername(
+        std::string(settings->ProxyUsername));
+    testing::testresult::proxy.SetPassword(
+        std::string(settings->ProxyPassword));
 }
 
 void on_display_timer_state(TogglTimeEntryView *te) {
@@ -320,6 +325,12 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 0));
     ASSERT_EQ(Poco::UInt64(1), testing::testresult::settings.reminder_minutes);
 
+    ASSERT_TRUE(toggl_set_settings_focus_on_shortcut(app.ctx(), false));
+    ASSERT_FALSE(testing::testresult::settings.focus_on_shortcut);
+
+    ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), false));
+    ASSERT_FALSE(testing::testresult::settings.manual_mode);
+
     // set to true / not null
 
     ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), true));
@@ -343,6 +354,12 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_TRUE(toggl_set_settings_reminder_minutes(app.ctx(), 222));
     ASSERT_EQ(Poco::UInt64(222),
               testing::testresult::settings.reminder_minutes);
+
+    ASSERT_TRUE(toggl_set_settings_focus_on_shortcut(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.focus_on_shortcut);
+
+    ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.manual_mode);
 }
 
 TEST(TogglApiTest, toggl_set_proxy_settings) {
@@ -353,13 +370,13 @@ TEST(TogglApiTest, toggl_set_proxy_settings) {
 
     ASSERT_TRUE(testing::testresult::use_proxy);
     ASSERT_EQ(std::string("localhost"),
-              std::string(testing::testresult::proxy.host));
+              std::string(testing::testresult::proxy.Host()));
     ASSERT_EQ(8000,
-              static_cast<int>(testing::testresult::proxy.port));
+              static_cast<int>(testing::testresult::proxy.Port()));
     ASSERT_EQ(std::string("johnsmith"),
-              std::string(testing::testresult::proxy.username));
+              std::string(testing::testresult::proxy.Username()));
     ASSERT_EQ(std::string("secret"),
-              std::string(testing::testresult::proxy.password));
+              std::string(testing::testresult::proxy.Password()));
 }
 
 TEST(TogglApiTest, toggl_set_update_channel) {
@@ -1153,8 +1170,8 @@ TEST(ProxyTest, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());
 
-    p.host = "localhost";
-    p.port = 123;
+    p.SetHost("localhost");
+    p.SetPort(123);
     ASSERT_TRUE(p.IsConfigured());
 }
 
@@ -1162,8 +1179,8 @@ TEST(ProxyTest, HasCredentials) {
     Proxy p;
     ASSERT_FALSE(p.HasCredentials());
 
-    p.username = "foo";
-    p.password = "bar";
+    p.SetUsername("foo");
+    p.SetPassword("bar");
     ASSERT_TRUE(p.HasCredentials());
 }
 

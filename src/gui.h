@@ -9,15 +9,17 @@
 #include "./lib/include/toggl_api.h"
 #include "./types.h"
 #include "./autocomplete_item.h"
-#include "./time_entry.h"
-#include "./workspace.h"
-#include "./client.h"
-#include "./project.h"
 #include "./settings.h"
 #include "./proxy.h"
-#include "./toggl_api_private.h"
+
+namespace Poco {
+class Logger;
+}
 
 namespace toggl {
+
+class Client;
+class Workspace;
 
 class GUI {
  public:
@@ -117,7 +119,7 @@ class GUI {
 
     void OnDisplayClientSelect(TogglDisplayViewItems cb) {
         on_display_client_select_ = cb;
-    };
+    }
 
     void OnDisplayTags(TogglDisplayViewItems cb) {
         on_display_tags_ = cb;
@@ -173,9 +175,7 @@ class GUI {
     TogglDisplayIdleNotification on_display_idle_notification_;
     TogglDisplayAutocomplete on_display_mini_timer_autocomplete_;
 
-    Poco::Logger &logger() const {
-        return Poco::Logger::get("ui");
-    }
+    Poco::Logger &logger() const;
 };
 
 }  // namespace toggl
