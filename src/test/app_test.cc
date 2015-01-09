@@ -50,36 +50,6 @@ class Database {
 
 }  // namespace testing
 
-TEST(TimeEntry, DontPostTooSmallTimeEntries) {
-    {
-        TimeEntry te;
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(5);
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(10);
-        ASSERT_TRUE(te.NeedsPOST());
-    }
-
-    {
-        TimeEntry te;
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(-time(0));
-        ASSERT_TRUE(te.NeedsPOST());
-
-        te.StopTracking();
-        ASSERT_FALSE(te.NeedsPOST());
-
-        te.SetDurationInSeconds(-time(0)+10);
-        ASSERT_TRUE(te.NeedsPOST());
-
-        te.StopTracking();
-        ASSERT_TRUE(te.NeedsPOST());
-    }
-}
-
 TEST(TimeEntry, TimeEntryReturnsTags) {
     TimeEntry te;
     te.SetTags("alfa|beeta");
