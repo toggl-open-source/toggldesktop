@@ -10,13 +10,13 @@
 
 #include <stdint.h>
 
-#include "./timeentryview.h"
-#include "./genericview.h"
-#include "./autocompleteview.h"
-
 namespace Ui {
 class TimeEntryEditorWidget;
 }
+
+class AutocompleteView;
+class GenericView;
+class TimeEntryView;
 
 class TimeEntryEditorWidget : public QWidget {
     Q_OBJECT

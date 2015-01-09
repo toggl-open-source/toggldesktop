@@ -7,13 +7,12 @@
 #include <QVector>
 #include <QTimer>
 
-#include "./timeentryview.h"
-#include "./timerwidget.h"
-#include "./autocompleteview.h"
-
 namespace Ui {
 class TimerWidget;
 }
+
+class AutocompleteView;
+class TimeEntryView;
 
 class TimerWidget : public QWidget {
     Q_OBJECT

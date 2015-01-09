@@ -4,16 +4,18 @@
 #define SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_
 
 #include <QObject>
-#include <QVector>
 #include <QUrl>
+#include <QVector>
 
 #include <stdint.h>
 
-#include "./updateview.h"
-#include "./timeentryview.h"
-#include "./autocompleteview.h"
-#include "./genericview.h"
-#include "./settingsview.h"
+#include "./toggl_api.h"
+
+class AutocompleteView;
+class GenericView;
+class SettingsView;
+class TimeEntryView;
+class UpdateView;
 
 class TogglApi : public QObject {
     Q_OBJECT
@@ -234,5 +236,56 @@ class TogglApi : public QObject {
         const QString time,
         const bool start);
 };
+
+// callbacks used internally by the app instance
+void on_display_app(const _Bool open);
+void on_display_error(
+    const char *errmsg,
+    const _Bool user_error);
+void on_display_update(
+    const _Bool open,
+    TogglUpdateView *update);
+void on_display_online_state(
+    const bool is_online,
+    const char *reason);
+void on_display_url(
+    const char *url);
+void on_display_login(
+    const _Bool open,
+    const uint64_t user_id);
+void on_display_reminder(
+    const char *title,
+    const char *informative_text);
+void on_display_time_entry_list(
+    const _Bool open,
+    TogglTimeEntryView *first);
+void on_display_time_entry_autocomplete(
+    TogglAutocompleteView *first);
+void on_display_mini_timer_autocomplete(
+    TogglAutocompleteView *first);
+void on_display_project_autocomplete(
+    TogglAutocompleteView *first);
+void on_display_workspace_select(
+    TogglGenericView *first);
+void on_display_client_select(
+    TogglGenericView *first);
+void on_display_tags(
+    TogglGenericView *first);
+void on_display_time_entry_editor(
+    const _Bool open,
+    TogglTimeEntryView *te,
+    const char *focused_field_name);
+void on_display_settings(
+    const _Bool open,
+    TogglSettingsView *settings);
+void on_display_timer_state(
+    TogglTimeEntryView *te);
+void on_display_idle_notification(
+    const char *guid,
+    const char *since,
+    const char *duration,
+    const uint64_t started);
+
+
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_

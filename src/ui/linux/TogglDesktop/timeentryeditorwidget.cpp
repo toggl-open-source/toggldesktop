@@ -3,10 +3,13 @@
 #include "./timeentryeditorwidget.h"
 #include "./ui_timeentryeditorwidget.h"
 
-#include <QMessageBox>  // NOLINT
-#include <QDebug>  // NOLINT
 #include <QCompleter>  // NOLINT
+#include <QDebug>  // NOLINT
+#include <QMessageBox>  // NOLINT
 
+#include "./autocompleteview.h"
+#include "./genericview.h"
+#include "./timeentryview.h"
 #include "./toggl.h"
 
 TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) : QWidget(parent),
