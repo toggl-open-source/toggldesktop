@@ -4,7 +4,6 @@
 #define SRC_LIB_INCLUDE_TOGGL_API_LUA_H_
 
 #include "lua.h"  // NOLINT
-#include "lualib.h"  // NOLINT
 #include "lauxlib.h"  // NOLINT
 
 #include "./toggl_api.h"

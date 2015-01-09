@@ -20,8 +20,6 @@
   __eintr_result__;\
 })
 
-static const int kFilenameBufferSize = 255;
-
 static const char kNetActiveWindow[] = "_NET_ACTIVE_WINDOW";
 static const int kMaxPropertyValueLen = 4096;
 

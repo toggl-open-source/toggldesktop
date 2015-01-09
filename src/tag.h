@@ -5,8 +5,6 @@
 
 #include <string>
 
-#include "./types.h"
-
 #include "Poco/Types.h"
 
 #include "./base_model.h"

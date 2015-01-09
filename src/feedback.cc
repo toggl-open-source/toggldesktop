@@ -12,6 +12,8 @@
 #include "Poco/StreamCopier.h"
 #include "Poco/Path.h"
 
+#include <json/json.h>  // NOLINT
+
 namespace toggl {
 
 const std::string Feedback::JSON() const {

@@ -8,15 +8,23 @@
 #include <string>
 #include <map>
 
-#include "./workspace.h"
-#include "./client.h"
-#include "./project.h"
-#include "./task.h"
-#include "./tag.h"
-#include "./time_entry.h"
 #include "./autocomplete_item.h"
+#include "./types.h"
 
 namespace toggl {
+
+class Client;
+class Project;
+class Tag;
+class Task;
+class TimeEntry;
+class Workspace;
+
+template<typename T>
+T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
+
+template <typename T>
+T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
 class RelatedData {
  public:
@@ -27,79 +35,21 @@ class RelatedData {
     std::vector<Tag *> Tags;
     std::vector<TimeEntry *> TimeEntries;
 
-    template<typename T>
-    T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) const {
-        if (!id) {
-            return 0;
-        }
-        typedef typename std::vector<T *>::const_iterator iterator;
-        for (iterator it = list->begin(); it != list->end(); it++) {
-            T *model = *it;
-            if (model->ID() == id) {
-                return model;
-            }
-        }
-        return 0;
-    }
-
-    Task *TaskByID(const Poco::UInt64 id) const {
-        return modelByID<Task>(id, &Tasks);
-    }
-
-    Client *ClientByID(const Poco::UInt64 id) const {
-        return modelByID(id, &Clients);
-    }
-
-    Project *ProjectByID(const Poco::UInt64 id) const {
-        return modelByID(id, &Projects);
-    }
-
-    Tag *TagByID(const Poco::UInt64 id) const {
-        return modelByID(id, &Tags);
-    }
-
-    Workspace *WorkspaceByID(const Poco::UInt64 id) const {
-        return modelByID(id, &Workspaces);
-    }
-
-    TimeEntry *TimeEntryByID(const Poco::UInt64 id) const {
-        return modelByID(id, &TimeEntries);
-    }
+    Task *TaskByID(const Poco::UInt64 id) const;
+    Client *ClientByID(const Poco::UInt64 id) const;
+    Project *ProjectByID(const Poco::UInt64 id) const;
+    Tag *TagByID(const Poco::UInt64 id) const;
+    Workspace *WorkspaceByID(const Poco::UInt64 id) const;
+    TimeEntry *TimeEntryByID(const Poco::UInt64 id) const;
 
     std::vector<std::string> TagList() const;
     std::vector<Workspace *> WorkspaceList() const;
     std::vector<Client *> ClientList() const;
 
-    template <typename T>
-    T *modelByGUID(const guid GUID, std::vector<T *> const *list) const {
-        if (GUID.empty()) {
-            return 0;
-        }
-        typedef typename std::vector<T *>::const_iterator iterator;
-        for (iterator it = list->begin(); it != list->end(); it++) {
-            T *model = *it;
-            if (model->GUID() == GUID) {
-                return model;
-            }
-        }
-        return 0;
-    }
-
-    TimeEntry *TimeEntryByGUID(const guid GUID) const {
-        return modelByGUID(GUID, &TimeEntries);
-    }
-
-    Tag *TagByGUID(const guid GUID) const {
-        return modelByGUID(GUID, &Tags);
-    }
-
-    Project *ProjectByGUID(const guid GUID) const {
-        return modelByGUID(GUID, &Projects);
-    }
-
-    Client *ClientByGUID(const guid GUID) const {
-        return modelByGUID(GUID, &Clients);
-    }
+    TimeEntry *TimeEntryByGUID(const guid GUID) const;
+    Tag *TagByGUID(const guid GUID) const;
+    Project *ProjectByGUID(const guid GUID) const;
+    Client *ClientByGUID(const guid GUID) const;
 
     std::vector<AutocompleteItem> TimeEntryAutocompleteItems();
 

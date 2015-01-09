@@ -12,18 +12,31 @@
 #include <string>
 #include <vector>
 
-#include "Poco/Logger.h"
-#include "Poco/Data/Session.h"
 #include "Poco/Data/SQLite/Connector.h"
 
 #include "./types.h"
-#include "./proxy.h"
-#include "./user.h"
 #include "./model_change.h"
-#include "./settings.h"
 #include "./timeline_event.h"
 
+namespace Poco {
+class Logger;
+
+namespace Data {
+class Session;
+class Statement;
+}
+}
 namespace toggl {
+
+class Client;
+class Project;
+class Proxy;
+class Settings;
+class Tag;
+class Task;
+class TimeEntry;
+class User;
+class Workspace;
 
 class Database {
  public:

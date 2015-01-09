@@ -16,14 +16,15 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "./formatter.h"
 #include "./const.h"
+#include "./formatter.h"
 #include "./https_client.h"
 
-#include "Poco/Timestamp.h"
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
+#include "Poco/Logger.h"
 #include "Poco/NumberParser.h"
+#include "Poco/Timestamp.h"
 
 namespace toggl {
 

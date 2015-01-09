@@ -8,17 +8,23 @@
 
 #include "./timeline_event.h"
 #include "./timeline_notifications.h"
-#include "./timeline_constants.h"
 #include "./types.h"
 
 #include "Poco/Activity.h"
-#include "Poco/Logger.h"
+
+namespace Poco {
+class Logger;
+}
 
 namespace toggl {
 
 std::string convertTimelineToJSON(
     const std::vector<TimelineEvent> &timeline_events,
     const std::string &desktop_id);
+
+const unsigned int kTimelineUploadIntervalSeconds = 60;
+const unsigned int kTimelineUploadMaxBackoffSeconds =
+    kTimelineUploadIntervalSeconds * 10;
 
 class TimelineUploader {
  public:
@@ -51,9 +57,7 @@ class TimelineUploader {
     void backoff();
     void reset_backoff();
 
-    Poco::Logger &logger() const {
-        return Poco::Logger::get("timeline_uploader");
-    }
+    Poco::Logger &logger() const;
 
     error process();
     void sleep();

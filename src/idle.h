@@ -6,13 +6,13 @@
 #include <sstream>
 
 #include "./settings.h"
-#include "./gui.h"
 #include "./user.h"
 
 #include "Poco/Types.h"
-#include "Poco/Logger.h"
 
 namespace toggl {
+
+class GUI;
 
 class Idle {
  public:
@@ -47,9 +47,7 @@ class Idle {
         const Poco::UInt64 idle_seconds,
         User *current_user);
 
-    Poco::Logger &logger() const {
-        return Poco::Logger::get("idle");
-    }
+    Poco::Logger &logger() const;
 
     // Idle detection related values
     Poco::UInt64 last_idle_seconds_reading_;

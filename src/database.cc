@@ -8,7 +8,15 @@
 #include <string>
 #include <vector>
 
+#include "./client.h"
+#include "./project.h"
+#include "./proxy.h"
+#include "./settings.h"
+#include "./tag.h"
+#include "./task.h"
+#include "./time_entry.h"
 #include "./user.h"
+#include "./workspace.h"
 
 #include "Poco/Logger.h"
 #include "Poco/UUID.h"

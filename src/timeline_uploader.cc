@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 
-#include "./timeline_constants.h"
 #include "./https_client.h"
 #include "./formatter.h"
 
@@ -13,7 +12,13 @@
 #include "Poco/Util/Application.h"
 #include "Poco/Thread.h"
 
+#include <json/json.h>  // NOLINT
+
 namespace toggl {
+
+Poco::Logger &TimelineUploader::logger() const {
+    return Poco::Logger::get("timeline_uploader");
+}
 
 void TimelineUploader::sleep() {
     // Sleep in increments for faster shutdown.

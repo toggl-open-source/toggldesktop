@@ -7,11 +7,8 @@
 #include <ctime>
 #include <vector>
 
-#include "./task.h"
-#include "./project.h"
-#include "./client.h"
-#include "./time_entry.h"
 #include "./autocomplete_item.h"
+#include "./types.h"
 
 namespace toggl {
 
@@ -21,6 +18,11 @@ class Format {
     static std::string Improved;
     static std::string Decimal;
 };
+
+class Client;
+class Project;
+class Task;
+class TimeEntry;
 
 class Formatter {
  public:
@@ -120,6 +122,8 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
 bool CompareStructuredAutocompleteItems(
     AutocompleteItem a, AutocompleteItem b);
+
+bool timeIsWithinLimits(int *hours, int *minutes);
 
 }  // namespace toggl
 

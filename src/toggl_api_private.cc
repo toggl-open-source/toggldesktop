@@ -4,9 +4,14 @@
 
 #include <cstdlib>
 
-#include "./formatter.h"
+#include "./client.h"
 #include "./context.h"
+#include "./formatter.h"
+#include "./project.h"
+#include "./time_entry.h"
+#include "./workspace.h"
 
+#include "Poco/Logger.h"
 #include "Poco/UnicodeConverter.h"
 
 TogglAutocompleteView *autocomplete_item_init(
@@ -327,6 +332,28 @@ void settings_view_item_clear(TogglSettingsView *view) {
     free(view->ProxyPassword);
 
     delete view;
+}
+
+TogglAutocompleteView *autocomplete_list_init(
+    std::vector<toggl::AutocompleteItem> *items) {
+    TogglAutocompleteView *first = 0;
+    for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
+        items->rbegin(); it != items->rend(); it++) {
+        TogglAutocompleteView *item = autocomplete_item_init(*it);
+        item->Next = first;
+        first = item;
+    }
+    return first;
+}
+
+Poco::Logger &logger() {
+    return Poco::Logger::get("toggl_api");
+}
+
+toggl::Context *app(void *context) {
+    poco_check_ptr(context);
+
+    return reinterpret_cast<toggl::Context *>(context);
 }
 
 _Bool testing_set_logged_in_user(

@@ -8,14 +8,19 @@
 #include <json/json.h>  // NOLINT
 
 #include "Poco/Exception.h"
-#include "Poco/URI.h"
+#include "Poco/Logger.h"
+#include "Poco/Net/AcceptCertificateHandler.h"
 #include "Poco/Net/Context.h"
 #include "Poco/Net/HTTPMessage.h"
+#include "Poco/Net/HTTPRequest.h"
+#include "Poco/Net/HTTPResponse.h"
+#include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/Net/InvalidCertificateHandler.h"
-#include "Poco/Net/AcceptCertificateHandler.h"
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 #include "Poco/Net/SSLManager.h"
+#include "Poco/Net/WebSocket.h"
 #include "Poco/Random.h"
+#include "Poco/URI.h"
 
 #include "./const.h"
 #include "./https_client.h"
@@ -232,16 +237,6 @@ error WebSocketClient::poll() {
     return noError;
 }
 
-int nextWebsocketRestartInterval() {
-    Poco::Random random;
-    random.seed();
-    int res = random.next(kWebsocketRestartRangeSeconds) + 1;
-    std::stringstream ss;
-    ss << "Next websocket restart in " << res << " seconds";
-    Poco::Logger::get("websocket_client").trace(ss.str());
-    return res;
-}
-
 void WebSocketClient::runActivity() {
     int restart_interval = nextWebsocketRestartInterval();
     while (!activity_.isStopped()) {
@@ -310,6 +305,20 @@ void WebSocketClient::deleteSession() {
     }
 
     logger().debug("session deleted");
+}
+
+Poco::Logger &WebSocketClient::logger() const {
+    return Poco::Logger::get("websocket_client");
+}
+
+int WebSocketClient::nextWebsocketRestartInterval() {
+    Poco::Random random;
+    random.seed();
+    int res = random.next(kWebsocketRestartRangeSeconds) + 1;
+    std::stringstream ss;
+    ss << "Next websocket restart in " << res << " seconds";
+    logger().trace(ss.str());
+    return res;
 }
 
 }   // namespace toggl

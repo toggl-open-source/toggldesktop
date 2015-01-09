@@ -11,13 +11,6 @@
 #include <json/json.h>  // NOLINT
 
 #include "./types.h"
-#include "./https_client.h"
-#include "./workspace.h"
-#include "./client.h"
-#include "./project.h"
-#include "./task.h"
-#include "./time_entry.h"
-#include "./tag.h"
 #include "./related_data.h"
 #include "./batch_update_result.h"
 #include "./base_model.h"
@@ -25,6 +18,8 @@
 #include "Poco/Types.h"
 
 namespace toggl {
+
+class HTTPSClient;
 
 class User : public BaseModel {
  public:
@@ -262,6 +257,22 @@ class User : public BaseModel {
     std::string timeofday_format_;
     std::string duration_format_;
 };
+
+template<class T>
+void deleteZombies(
+    const std::vector<T> &list,
+    const std::set<Poco::UInt64> &alive);
+
+template<typename T>
+void clearList(std::vector<T *> *list);
+
+template <typename T>
+void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
+                                      std::vector<T *> *list);
+
+template <typename T>
+void removeProjectFromRelatedModels(const Poco::UInt64 pid,
+                                    std::vector<T *> *list);
 
 }  // namespace toggl
 

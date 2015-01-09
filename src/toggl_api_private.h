@@ -4,15 +4,24 @@
 #define SRC_TOGGL_API_PRIVATE_H_
 
 #include <string>
+#include <vector>
 
 #include "./lib/include/toggl_api.h"
-#include "./project.h"
-#include "./client.h"
 #include "./autocomplete_item.h"
-#include "./workspace.h"
-#include "./time_entry.h"
 #include "./settings.h"
 #include "./proxy.h"
+
+namespace Poco {
+class Logger;
+}
+
+namespace toggl {
+class Client;
+class Context;
+class Project;
+class TimeEntry;
+class Workspace;
+}
 
 int compare_string(const char_t *s1, const char_t *s2);
 char_t *copy_string(const std::string s);
@@ -59,6 +68,13 @@ TogglSettingsView *settings_view_item_init(
     const toggl::Proxy proxy);
 
 void settings_view_item_clear(TogglSettingsView *view);
+
+TogglAutocompleteView *autocomplete_list_init(
+    std::vector<toggl::AutocompleteItem> *items);
+
+Poco::Logger &logger();
+
+toggl::Context *app(void *context);
 
 // For testing only
 _Bool testing_set_logged_in_user(

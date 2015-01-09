@@ -10,24 +10,33 @@
 
 #include <iostream>  // NOLINT
 
-#include "./formatter.h"
-#include "./time_entry.h"
 #include "./const.h"
-#include "./toggl_api_private.h"
+#include "./database.h"
+#include "./formatter.h"
+#include "./project.h"
 #include "./settings.h"
-#include "./timeline_notifications.h"
+#include "./time_entry.h"
+#include "./timeline_uploader.h"
+#include "./toggl_api_private.h"
+#include "./websocket_client.h"
+#include "./window_change_recorder.h"
+#include "./workspace.h"
 
-#include "Poco/Util/Timer.h"
-#include "Poco/Util/TimerTask.h"
-#include "Poco/Util/TimerTaskAdapter.h"
+#include "Poco/Crypto/OpenSSLInitializer.h"
+#include "Poco/DateTimeFormat.h"
+#include "Poco/DateTimeFormatter.h"
 #include "Poco/Environment.h"
-#include "Poco/Timestamp.h"
-#include "Poco/Stopwatch.h"
+#include "Poco/FormattingChannel.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
-#include "Poco/DateTimeFormatter.h"
-#include "Poco/DateTimeFormat.h"
+#include "Poco/Logger.h"
+#include "Poco/Net/NetSSL.h"
+#include "Poco/PatternFormatter.h"
+#include "Poco/SimpleFileChannel.h"
 #include "Poco/Random.h"
+#include "Poco/Stopwatch.h"
+#include "Poco/Util/TimerTask.h"
+#include "Poco/Util/TimerTaskAdapter.h"
 
 namespace toggl {
 
@@ -367,21 +376,21 @@ void Context::displayTags() {
     }
 }
 
-Poco::Timestamp postpone(
-    const Poco::Timestamp::TimeDiff throttleMicros) {
+Poco::Timestamp Context::postpone(
+    const Poco::Timestamp::TimeDiff throttleMicros) const {
     return Poco::Timestamp() + throttleMicros;
 }
 
-bool isPostponed(
+bool Context::isPostponed(
     const Poco::Timestamp value,
-    const Poco::Timestamp::TimeDiff throttleMicros) {
+    const Poco::Timestamp::TimeDiff throttleMicros) const {
     Poco::Timestamp now;
     if (now > value) {
         return false;
     }
     Poco::Timestamp::TimeDiff diff = value - now;
     if (diff > 2*throttleMicros) {
-        Poco::Logger::get("context").warning(
+        logger().warning(
             "Cannot postpone task, its foo far in the future");
         return false;
     }
@@ -405,13 +414,13 @@ _Bool Context::displayError(const error err) {
     return UI()->DisplayError(err);
 }
 
-int nextSyncIntervalSeconds() {
+int Context::nextSyncIntervalSeconds() const {
     Poco::Random random;
     random.seed();
     int res = random.next(kSyncIntervalRangeSeconds) + 10 + 1;
     std::stringstream ss;
     ss << "Next autosync in " << res << " seconds";
-    Poco::Logger::get("context").trace(ss.str());
+    logger().trace(ss.str());
     return res;
 }
 
@@ -552,20 +561,6 @@ void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
     ws_client_->Shutdown();
-}
-
-void on_websocket_message(
-    void *context,
-    std::string json) {
-
-    poco_check_ptr(context);
-
-    if (json.empty()) {
-        return;
-    }
-
-    Context *ctx = reinterpret_cast<Context *>(context);
-    ctx->LoadUpdateFromJSONString(json);
 }
 
 _Bool Context::LoadUpdateFromJSONString(const std::string json) {
@@ -2263,6 +2258,39 @@ void Context::uiUpdaterActivity() {
             running_time = date_duration;
         }
     }
+}
+
+void Context::SetLogPath(const std::string path) {
+    Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
+        new Poco::SimpleFileChannel);
+    simpleFileChannel->setProperty("path", path);
+    simpleFileChannel->setProperty("rotation", "1 M");
+
+    Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
+        new Poco::FormattingChannel(
+            new Poco::PatternFormatter(
+                "%Y-%m-%d %H:%M:%S.%i [%P %I]:%s:%q:%t")));
+    formattingChannel->setChannel(simpleFileChannel);
+
+    Poco::Logger::get("").setChannel(formattingChannel);
+}
+
+Poco::Logger &Context::logger() const {
+    return Poco::Logger::get("context");
+}
+
+void on_websocket_message(
+    void *context,
+    std::string json) {
+
+    poco_check_ptr(context);
+
+    if (json.empty()) {
+        return;
+    }
+
+    Context *ctx = reinterpret_cast<Context *>(context);
+    ctx->LoadUpdateFromJSONString(json);
 }
 
 }  // namespace toggl

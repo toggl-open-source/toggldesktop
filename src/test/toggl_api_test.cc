@@ -5,10 +5,11 @@
 #include "gtest/gtest.h"
 
 #include "./../lib/include/toggl_api.h"
+#include "./../proxy.h"
+#include "./../settings.h"
+#include "./../time_entry.h"
 #include "./../toggl_api_private.h"
 #include "./test_data.h"
-#include "./../settings.h"
-#include "./../proxy.h"
 
 #include "Poco/FileStream.h"
 #include "Poco/File.h"

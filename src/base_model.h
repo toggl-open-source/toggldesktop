@@ -10,12 +10,16 @@
 #include <json/json.h>  // NOLINT
 
 #include "./types.h"
-#include "./batch_update_result.h"
 
 #include "Poco/Types.h"
-#include "Poco/Logger.h"
+
+namespace Poco {
+class Logger;
+}
 
 namespace toggl {
+
+class BatchUpdateResult;
 
 class BaseModel {
  public:
@@ -144,9 +148,7 @@ class BaseModel {
     Json::Value BatchUpdateJSON();
 
  protected:
-    Poco::Logger &logger() const {
-        return Poco::Logger::get(ModelName());
-    }
+    Poco::Logger &logger() const;
 
     bool userCannotAccessWorkspace(const toggl::error err) const;
 

@@ -6,11 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "Poco/Activity.h"
-#include "Poco/Net/HTTPSClientSession.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
-
 #include "./types.h"
 #include "./proxy.h"
 

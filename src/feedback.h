@@ -3,8 +3,6 @@
 #ifndef SRC_FEEDBACK_H_
 #define SRC_FEEDBACK_H_
 
-#include "./feedback.h"
-
 #include <string>
 
 #include "./types.h"

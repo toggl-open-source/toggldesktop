@@ -4,21 +4,23 @@
 
 #include <iostream>  // NOLINT
 
-#include "./../user.h"
-#include "./../workspace.h"
 #include "./../client.h"
+#include "./../database.h"
+#include "./../formatter.h"
 #include "./../project.h"
+#include "./../tag.h"
 #include "./../task.h"
 #include "./../time_entry.h"
-#include "./../tag.h"
-#include "./../database.h"
-#include "./test_data.h"
-#include "./../formatter.h"
 #include "./../timeline_event.h"
 #include "./../timeline_uploader.h"
+#include "./../user.h"
+#include "./../workspace.h"
 
-#include "Poco/FileStream.h"
+#include "./test_data.h"
+
 #include "Poco/File.h"
+#include "Poco/FileStream.h"
+#include "Poco/Logger.h"
 #include "Poco/LocalDateTime.h"
 
 namespace toggl {

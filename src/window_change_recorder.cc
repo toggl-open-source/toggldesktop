@@ -5,11 +5,16 @@
 #include <sstream>
 
 #include "./get_focused_window.h"
-#include "./timeline_event.h"
+#include "./timeline_constants.h"
 
+#include "Poco/Logger.h"
 #include "Poco/Thread.h"
 
 namespace toggl {
+
+Poco::Logger &WindowChangeRecorder::logger() {
+    return Poco::Logger::get("WindowChangeRecorder");
+}
 
 bool WindowChangeRecorder::hasWindowChanged(
     const std::string &title,

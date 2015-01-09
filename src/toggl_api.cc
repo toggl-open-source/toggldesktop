@@ -6,36 +6,26 @@
 #include <set>
 
 #include "./lib/include/toggl_api.h"
+
+#include "./const.h"
+#include "./context.h"
+#include "./custom_error_handler.h"
+#include "./feedback.h"
+#include "./formatter.h"
+#include "./https_client.h"
+#include "./project.h"
+#include "./proxy.h"
+#include "./time_entry.h"
+#include "./timeline_uploader.h"
 #include "./toggl_api_private.h"
 #include "./user.h"
-#include "./https_client.h"
 #include "./websocket_client.h"
-#include "./timeline_uploader.h"
 #include "./window_change_recorder.h"
-#include "./custom_error_handler.h"
-#include "./proxy.h"
-#include "./context.h"
-#include "./formatter.h"
-#include "./feedback.h"
 
 #include "Poco/Bugcheck.h"
 #include "Poco/Path.h"
 #include "Poco/Logger.h"
 #include "Poco/UnicodeConverter.h"
-
-inline Poco::Logger &logger() {
-    return Poco::Logger::get("toggl_api");
-}
-
-inline Poco::Logger &rootLogger() {
-    return Poco::Logger::get("");
-}
-
-inline toggl::Context *app(void *context) {
-    poco_check_ptr(context);
-
-    return reinterpret_cast<toggl::Context *>(context);
-}
 
 void *toggl_context_init(
     const char_t *app_name,
@@ -186,7 +176,7 @@ void toggl_set_log_path(const char_t *path) {
 void toggl_set_log_level(const char_t *level) {
     poco_check_ptr(level);
 
-    rootLogger().setLevel(to_string(level));
+    Poco::Logger::get("").setLevel(to_string(level));
 }
 
 void toggl_set_api_url(
