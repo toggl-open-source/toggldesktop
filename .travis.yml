@@ -4,7 +4,7 @@ compiler:
   - clang
 install: make deps > /dev/null
 script:
-  - source /opt/qt53/bin/qt53-env.sh && make clean && make fmt && make lint && make test && make
+  - source /opt/qt53/bin/qt53-env.sh && make clean && make qa && make
 branches:
   only:
     - master
