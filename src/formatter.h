@@ -14,9 +14,9 @@ namespace toggl {
 
 class Format {
  public:
-    static std::string Classic;
-    static std::string Improved;
-    static std::string Decimal;
+    static const std::string Classic;
+    static const std::string Improved;
+    static const std::string Decimal;
 };
 
 class Client;
