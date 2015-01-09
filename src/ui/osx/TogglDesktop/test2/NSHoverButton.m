@@ -14,6 +14,7 @@
 // http://stackoverflow.com/questions/7889419/cocoa-button-rollovers-with-mouseentered-and-mouseexited
 - (void)awakeFromNib
 {
+	self.alpha = 0.5;
 	NSTrackingAreaOptions focusTrackingAreaOptions = NSTrackingActiveInActiveApp;
 
 	focusTrackingAreaOptions |= NSTrackingMouseEnteredAndExited;
@@ -27,12 +28,17 @@
 
 - (void)mouseEntered:(NSEvent *)theEvent
 {
-	[self.animator setAlphaValue:0.5];
+	[self.animator setAlphaValue:self.alpha];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
 	[self.animator setAlphaValue:1];
+}
+
+- (void)setHoverAlpha:(CGFloat)alphaValue
+{
+	self.alpha = alphaValue;
 }
 
 @end

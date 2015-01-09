@@ -92,6 +92,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	[[self.durationTextField cell] setPlaceholderAttributedString:durationLightString];
 	[[self.descriptionLabel cell] setPlaceholderAttributedString:descriptionLightString];
 	[[self.descriptionComboBox cell] setPlaceholderAttributedString:descriptionLightString];
+
+	[self.startButton setHoverAlpha:0.75];
 }
 
 - (void)loadView
