@@ -11,9 +11,12 @@
 #import "NSTextFieldDuration.h"
 #import "NSCustomTimerComboBox.h"
 #import "NSHoverButton.h"
+#import "NSBoxClickable.h"
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate> {
 }
+@property (strong) IBOutlet NSBox *hidingBox;
+@property (strong) IBOutlet NSBoxClickable *mainBox;
 @property IBOutlet NSTextFieldDuration *durationTextField;
 @property IBOutlet NSCustomTimerComboBox *descriptionComboBox;
 @property IBOutlet NSHoverButton *startButton;

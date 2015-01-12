@@ -32,6 +32,8 @@ extern void *ctx;
 
 NSString *kTrackingColor = @"#d0d0d0";
 NSString *kInactiveTimerColor = @"#999999";
+NSString *kTrackingBackgroundColor = @"#035400";
+NSColor *kInactiveBackgroundColor;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -94,6 +96,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	[[self.descriptionComboBox cell] setPlaceholderAttributedString:descriptionLightString];
 
 	[self.startButton setHoverAlpha:0.75];
+
+	kInactiveBackgroundColor = [self.durationTextField backgroundColor];
 }
 
 - (void)loadView
@@ -175,6 +179,11 @@ NSString *kInactiveTimerColor = @"#999999";
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
+
+		// Change timer backgrounds
+		[self.mainBox setFillColor:[ConvertHexColor hexCodeToNSColor:kTrackingBackgroundColor]];
+		[self.durationTextField setBackgroundColor:[ConvertHexColor hexCodeToNSColor:kTrackingBackgroundColor]];
+		[self.hidingBox setFillColor:[ConvertHexColor hexCodeToNSColor:kTrackingBackgroundColor]];
 	}
 	else
 	{
@@ -185,6 +194,11 @@ NSString *kInactiveTimerColor = @"#999999";
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
+
+		// Change timer backgrounds
+		[self.mainBox setFillColor:kInactiveBackgroundColor];
+		[self.durationTextField setBackgroundColor:kInactiveBackgroundColor];
+		[self.hidingBox setFillColor:kInactiveBackgroundColor];
 	}
 
 	[self checkProjectConstraints];
