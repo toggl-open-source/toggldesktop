@@ -31,6 +31,10 @@ class Formatter {
     static std::string TimeOfDayFormat;
     static std::string DurationFormat;
 
+    static std::string JoinProjectName(
+        Project * const,
+        Client * const);
+
     static std::string JoinTaskName(
         Task * const,
         Project * const,
