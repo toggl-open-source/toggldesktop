@@ -624,6 +624,9 @@ void *ctx;
 	[menu addItemWithTitle:@"Record Timeline"
 					action:@selector(onToggleRecordTimeline:)
 			 keyEquivalent:@""].tag = kMenuItemRecordTimeline;
+	[menu addItemWithTitle:@"Use manual mode"
+					action:@selector(onModeChange:)
+			 keyEquivalent:@""].tag = kMenuItemTagMode;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"About"
 					action:@selector(onAboutMenuItem:)
@@ -705,6 +708,11 @@ void *ctx;
 {
 	toggl_timeline_toggle_recording(ctx,
 									!toggl_timeline_is_recording_enabled(ctx));
+}
+
+- (IBAction)onModeChange:(id)sender
+{
+	NSLog(@"Mode change");
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender
@@ -986,6 +994,7 @@ const NSString *appName = @"osx_native_app";
 				return NO;
 			}
 			break;
+		case kMenuItemTagMode :
 		case kMenuItemTagSync :
 		case kMenuItemTagLogout :
 		case kMenuItemTagClearCache :
