@@ -7,11 +7,13 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
+                <outlet property="addEntryLabel" destination="Pm5-UM-PRp" id="jNk-Yh-0Wy"/>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="descriptionLabel" destination="Fiv-ao-qiA" id="00j-67-MmI"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
                 <outlet property="hidingBox" destination="ow2-8J-rMh" id="8fs-gf-fqC"/>
                 <outlet property="mainBox" destination="Fga-BR-x8G" id="PWb-gS-hxU"/>
+                <outlet property="manualBox" destination="NZl-PW-g8z" id="YwT-hG-JqV"/>
                 <outlet property="projectTextField" destination="tVc-ms-0hr" id="1ee-Q9-eCA"/>
                 <outlet property="startButton" destination="2Fx-4L-YGZ" id="NkN-re-hJo"/>
                 <outlet property="startButtonBox" destination="nFI-HH-zd7" id="06Y-Px-SXz"/>
@@ -156,10 +158,43 @@ DQ
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
+                <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" customClass="NSBoxClickable">
+                    <rect key="frame" x="1" y="-4" width="256" height="56"/>
+                    <view key="contentView">
+                        <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pm5-UM-PRp" customClass="NSTextFieldClickable">
+                                <rect key="frame" x="57" y="24" width="142" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="jI3-Oy-ic9"/>
+                                </constraints>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="+ Add time entry" placeholderString="" id="6je-P7-19t">
+                                    <font key="font" metaFont="system" size="16"/>
+                                    <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <outlet property="delegate" destination="-2" id="iNe-M6-RCx"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="Pm5-UM-PRp" secondAttribute="centerX" id="uaN-HV-WBL"/>
+                        <constraint firstAttribute="centerY" secondItem="Pm5-UM-PRp" secondAttribute="centerY" id="ufC-5r-y0J"/>
+                    </constraints>
+                    <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
+                    <color key="fillColor" red="0.1764705882" green="0.1764705882" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                </box>
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Fga-BR-x8G" secondAttribute="trailing" constant="1" id="6oC-eJ-dBs"/>
                 <constraint firstAttribute="bottom" secondItem="Fga-BR-x8G" secondAttribute="bottom" constant="1" id="Cub-Lx-DNo"/>
+                <constraint firstAttribute="bottom" secondItem="NZl-PW-g8z" secondAttribute="bottom" constant="1" id="GEM-KV-XwC"/>
+                <constraint firstAttribute="trailing" secondItem="NZl-PW-g8z" secondAttribute="trailing" constant="1" id="RCT-tX-z04"/>
+                <constraint firstItem="NZl-PW-g8z" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="1" id="cHB-65-vOW"/>
+                <constraint firstItem="NZl-PW-g8z" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="re3-37-RgS"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="1" id="s0O-bN-wX6"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="wJK-xr-4eQ"/>
             </constraints>

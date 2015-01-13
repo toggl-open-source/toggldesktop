@@ -54,6 +54,15 @@ NSColor *kInactiveBackgroundColor;
 												 selector:@selector(focusTimer:)
 													 name:kFocusTimer
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(toggleTimer:)
+													 name:kToggleTimerMode
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(toggleManual:)
+													 name:kToggleManualMode
+												   object:nil];
+
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -305,19 +314,9 @@ NSColor *kInactiveBackgroundColor;
 
 	if (nil == self.time_entry || nil == self.time_entry.GUID)
 	{
-		if (sender == self.durationTextField)
+		if (sender == self.addEntryLabel)
 		{
-			char *guid = toggl_start(ctx,
-									 [self.descriptionComboBox.stringValue UTF8String],
-									 "0",
-									 self.time_entry.TaskID,
-									 self.time_entry.ProjectID);
-			[self clear];
-			self.time_entry = [[TimeEntryViewItem alloc] init];
-			NSString *GUID = [NSString stringWithUTF8String:guid];
-			free(guid);
-
-			toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDuration);
+			[self addButtonClicked];
 		}
 		return;
 	}
@@ -478,6 +477,32 @@ NSColor *kInactiveBackgroundColor;
 	free(str);
 
 	[self.durationTextField setStringValue:newValue];
+}
+
+- (void)toggleTimer:(NSNotification *)notification
+{
+	[self.manualBox setHidden:YES];
+}
+
+- (void)toggleManual:(NSNotification *)notification
+{
+	[self.manualBox setHidden:NO];
+}
+
+- (void)addButtonClicked
+{
+	char *guid = toggl_start(ctx,
+							 [self.descriptionComboBox.stringValue UTF8String],
+							 "0",
+							 self.time_entry.TaskID,
+							 self.time_entry.ProjectID);
+
+	[self clear];
+	self.time_entry = [[TimeEntryViewItem alloc] init];
+	NSString *GUID = [NSString stringWithUTF8String:guid];
+	free(guid);
+
+	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDuration);
 }
 
 @end

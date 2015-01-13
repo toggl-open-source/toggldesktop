@@ -15,6 +15,7 @@
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate> {
 }
+@property (strong) IBOutlet NSBoxClickable *manualBox;
 @property (strong) IBOutlet NSBox *hidingBox;
 @property (strong) IBOutlet NSBoxClickable *mainBox;
 @property IBOutlet NSTextFieldDuration *durationTextField;
@@ -28,5 +29,6 @@
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)descriptionComboBoxChanged:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
+@property (strong) IBOutlet NSTextFieldClickable *addEntryLabel;
 - (void)timerFired:(NSTimer *)timer;
 @end

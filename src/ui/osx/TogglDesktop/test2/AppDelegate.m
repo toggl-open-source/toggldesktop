@@ -74,6 +74,11 @@
 // Show or not show menubar timer
 @property BOOL showMenuBarTimer;
 
+// Manual mode
+@property BOOL manualMode;
+@property NSMenuItem *manualModeMenuItem;
+
+
 @end
 
 @implementation AppDelegate
@@ -86,6 +91,7 @@ void *ctx;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
+	self.manualMode = NO;
 
 	[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
 
@@ -624,9 +630,10 @@ void *ctx;
 	[menu addItemWithTitle:@"Record Timeline"
 					action:@selector(onToggleRecordTimeline:)
 			 keyEquivalent:@""].tag = kMenuItemRecordTimeline;
-	[menu addItemWithTitle:@"Use manual mode"
-					action:@selector(onModeChange:)
-			 keyEquivalent:@""].tag = kMenuItemTagMode;
+	self.manualModeMenuItem = [menu addItemWithTitle:@"Use manual mode"
+											  action:@selector(onModeChange:)
+									   keyEquivalent:@""];
+	self.manualModeMenuItem.tag = kMenuItemTagMode;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"About"
 					action:@selector(onAboutMenuItem:)
@@ -712,7 +719,16 @@ void *ctx;
 
 - (IBAction)onModeChange:(id)sender
 {
-	NSLog(@"Mode change");
+	self.manualMode = !self.manualMode;
+	[self.manualModeMenuItem setTitle:@"Use manual mode"];
+	NSString *mode = kToggleTimerMode;
+	if (self.manualMode)
+	{
+		mode = kToggleManualMode;
+		[self.manualModeMenuItem setTitle:@"Use timer"];
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:mode
+														object:nil];
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender
