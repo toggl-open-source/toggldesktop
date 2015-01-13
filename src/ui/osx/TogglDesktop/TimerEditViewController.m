@@ -185,6 +185,7 @@ NSColor *kInactiveBackgroundColor;
 		[self.descriptionLabel setHidden:NO];
 		[self.durationTextField setEditable:NO];
 		[self.durationTextField setSelectable:NO];
+		[self.durationTextField setHidden:NO];
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
@@ -200,6 +201,7 @@ NSColor *kInactiveBackgroundColor;
 		[self.descriptionLabel setHidden:YES];
 		[self.durationTextField setEditable:YES];
 		[self.durationTextField setSelectable:YES];
+		[self.durationTextField setHidden:YES];
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];

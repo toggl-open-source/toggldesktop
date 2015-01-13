@@ -63,7 +63,7 @@ DQ
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
                             <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
-                                <rect key="frame" x="4" y="29" width="136" height="20"/>
+                                <rect key="frame" x="4" y="29" width="215" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="WR0-PJ-917"/>
                                 </constraints>
@@ -92,7 +92,7 @@ DQ
                                     <outlet property="delegate" destination="-2" id="oWZ-rz-Xcn"/>
                                 </connections>
                             </textField>
-                            <textField toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
+                            <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
                                 <rect key="frame" x="132" y="24" width="75" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="76" id="x2K-5w-zfF"/>
@@ -137,9 +137,9 @@ DQ
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="123" id="1Qf-HH-85e"/>
+                        <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="35" id="1Qf-HH-85e"/>
                         <constraint firstItem="Fiv-ao-qiA" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" priority="750" constant="16" id="7lz-aM-ViJ"/>
-                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="68" id="ABe-hl-Ilz"/>
+                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="-18" id="ABe-hl-Ilz"/>
                         <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="14" id="CGd-ds-Uhq"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
                         <constraint firstItem="ow2-8J-rMh" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="12" id="KVr-pZ-9LR"/>
