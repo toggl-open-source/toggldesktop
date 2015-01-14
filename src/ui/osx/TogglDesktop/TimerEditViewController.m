@@ -489,6 +489,7 @@ NSColor *kInactiveBackgroundColor;
 - (void)toggleManual:(NSNotification *)notification
 {
 	[self.manualBox setHidden:NO];
+	[self.view.window makeFirstResponder:self.manualBox];
 }
 
 - (void)addButtonClicked
