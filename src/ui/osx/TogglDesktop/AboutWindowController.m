@@ -32,28 +32,39 @@ extern void *ctx;
 
 	self.windowHasLoad = YES;
 
-	char *str = toggl_get_update_channel(ctx);
-	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
-	free(str);
-
-	if (![[SUUpdater sharedUpdater] updateInProgress])
+	if ([self updateCheckEnabled])
 	{
-		[self checkForUpdates];
-	}
+		self.updateChannelComboBox.hidden = NO;
+		self.updateChannelLabel.hidden = NO;
 
-	[self displayUpdateStatus];
+		char *str = toggl_get_update_channel(ctx);
+		self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
+		free(str);
+
+		if (![[SUUpdater sharedUpdater] updateInProgress])
+		{
+			[self checkForUpdates];
+		}
+
+		[self displayUpdateStatus];
+	}
+}
+
+- (BOOL)updateCheckEnabled
+{
+	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+
+	return [infoDict[@"KopsikCheckForUpdates"] boolValue];
 }
 
 - (void)checkForUpdates
 {
-	[[SUUpdater sharedUpdater] resetUpdateCycle];
-
-	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-	NSString *env = infoDict[@"KopsikEnvironment"];
-	if ([env isEqualToString:@"production"])
+	if (![self updateCheckEnabled])
 	{
-		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+		return;
 	}
+	[[SUUpdater sharedUpdater] resetUpdateCycle];
+	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update

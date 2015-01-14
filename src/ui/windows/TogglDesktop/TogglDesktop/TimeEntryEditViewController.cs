@@ -238,6 +238,7 @@ namespace TogglDesktop
                 setTimeValue(textBoxStartTime, te.StartTimeString);
                 setTimeValue(textBoxEndTime, te.EndTimeString);
                 dateTimePickerStartDate.Value = Toggl.DateTimeFromUnix(te.Started);
+                resetTagFilter();
             }
             else
             {
@@ -845,6 +846,12 @@ namespace TogglDesktop
             }
         }
 
+        private void resetTagFilter()
+        {
+            tagTextBox.Text = "";
+            tagTextBox_KeyUp(null, null);
+        }
+
         private void addTagButton_Click(object sender, EventArgs e)
         {
             String word = tagTextBox.Text;
@@ -852,8 +859,7 @@ namespace TogglDesktop
             {
                 return;
             }
-            tagTextBox.Text = "";
-            tagTextBox_KeyUp(null, null);
+            resetTagFilter();
             int index = checkedListBoxTags.Items.IndexOf(word);
             if (index != -1)
             {
@@ -865,7 +871,6 @@ namespace TogglDesktop
                 checkedListBoxTags.SetItemChecked(0, true);
                 saveTimeEntryTags();
             }
-            
         }
 
         private void saveTimeEntryTags()

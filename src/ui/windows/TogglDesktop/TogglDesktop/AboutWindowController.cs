@@ -84,5 +84,10 @@ namespace TogglDesktop
             string channel = Toggl.UpdateChannel();
             comboBoxChannel.SelectedIndex = comboBoxChannel.Items.IndexOf(channel);
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            check();
+        }
     }
 }

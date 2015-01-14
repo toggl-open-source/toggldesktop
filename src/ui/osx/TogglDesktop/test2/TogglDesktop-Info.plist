@@ -26,6 +26,8 @@
 	<string>development</string>
 	<key>KopsikLogUserInterfaceToFile</key>
 	<false/>
+	<key>KopsikCheckForUpdates</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>

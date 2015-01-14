@@ -1810,20 +1810,36 @@ _Bool Context::SetTimeEntryStop(
         return true;
     }
 
-    Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Stop()));
+    Poco::LocalDateTime stop(
+        Poco::Timestamp::fromEpochTime(te->Stop()));
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
         return false;
     }
 
-    Poco::LocalDateTime dt(
-        local.tzd(),
-        local.year(), local.month(), local.day(),
-        hours, minutes, local.second(), 0, 0);
+    // By default, keep end date, only change hour && minute
+    Poco::LocalDateTime new_stop(
+        stop.tzd(),
+        stop.year(), stop.month(), stop.day(),
+        hours, minutes, stop.second(), 0, 0);
+
+    // If end time is on same date as start,
+    // but is not less than start by hour & minute, then
+    // assume that the end must be on same date as start.
+    Poco::LocalDateTime start(
+        Poco::Timestamp::fromEpochTime(te->Start()));
+    if (new_stop.day() != start.day()) {
+        if (new_stop.hour() >= start.hour()) {
+            new_stop = Poco::LocalDateTime(
+                start.tzd(),
+                start.year(), start.month(), start.day(),
+                hours, minutes, stop.second(), 0, 0);
+        }
+    }
 
     std::string s = Poco::DateTimeFormatter::format(
-        dt, Poco::DateTimeFormat::ISO8601_FORMAT);
+        new_stop, Poco::DateTimeFormat::ISO8601_FORMAT);
 
     te->SetStopUserInput(s);
 
