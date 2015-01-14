@@ -57,8 +57,6 @@ class RelatedData {
 
     std::vector<AutocompleteItem> ProjectAutocompleteItems();
 
-    std::vector<AutocompleteItem> StructuredAutocompleteItems();
-
     void ProjectLabelAndColorCode(
         TimeEntry *te,
         std::string *workspace_name,
