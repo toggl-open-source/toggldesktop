@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <cstring>
+#include <ctime>
 
 #include <json/json.h>  // NOLINT
 
