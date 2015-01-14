@@ -1166,6 +1166,32 @@ TEST(TogglApiTest, toggl_set_time_entry_end) {
     ASSERT_FALSE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "12:558"));
 }
 
+TEST(TogglApiTest, toggl_set_time_entry_end_prefers_same_day) {
+    testing::App app;
+    std::string json =
+        loadTestDataFile("../testdata/time_entry_ending_tomorrow.json");
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    const std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+
+    ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "06:34"));
+
+    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
+
+    Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
+    ASSERT_EQ(2013, start.year());
+    ASSERT_EQ(9, start.month());
+    ASSERT_EQ(5, start.day());
+    ASSERT_EQ(6, start.hour());
+    ASSERT_EQ(33, start.minute());
+    ASSERT_EQ(50, start.second());
+
+    Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
+    ASSERT_EQ(start.year(), end.year());
+    ASSERT_EQ(start.month(), end.month());
+    ASSERT_EQ(start.day(), end.day());
+}
+
 TEST(ProxyTest, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());
