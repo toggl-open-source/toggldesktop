@@ -21,7 +21,6 @@
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
 + (bool)isNumeric:(NSString *)checkText;
 + (void)addUnderlineToTextField:(NSTextField *)field;
-+ (void)setUpdaterChannel:(NSString *)channel;
 + (ScriptResult *)runScript:(NSString *)script;
 @end
 

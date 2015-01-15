@@ -23,7 +23,6 @@
 #import "MenuItemTags.h"
 #import "PreferencesWindowController.h"
 #import "Settings.h"
-#import "Sparkle.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Utils.h"
@@ -97,18 +96,6 @@ BOOL manualMode = NO;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
-
-	if ([self updateCheckEnabled])
-	{
-		[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
-
-		NSAssert(ctx, @"ctx is not initialized, cannot continue");
-		char *str = toggl_get_update_channel(ctx);
-		NSAssert(str, @"Could not read update channel value");
-		NSString *channel = [NSString stringWithUTF8String:str];
-		free(str);
-		[Utils setUpdaterChannel:channel];
-	}
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -264,12 +251,6 @@ BOOL manualMode = NO;
 
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
-
-	if ([self updateCheckEnabled])
-	{
-		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
-		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
-	}
 
 	if (self.scriptPath)
 	{
