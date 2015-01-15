@@ -17,17 +17,17 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.0.0</string>
+	<string>7.4.330</string>
 	<key>CFBundleSignature</key>
 	<string>td70</string>
 	<key>CFBundleVersion</key>
-	<string>7.0.0</string>
+	<string>7.4.330</string>
 	<key>KopsikCheckForUpdates</key>
 	<false/>
 	<key>KopsikEnvironment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>KopsikLogUserInterfaceToFile</key>
-	<false/>
+	<true/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
@@ -35,7 +35,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2017 Toggl Desktop developers. All rights reserved.</string>
+	<string>Copyright © 2019 Toggl Desktop developers. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
