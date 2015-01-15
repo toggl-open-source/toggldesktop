@@ -38,26 +38,26 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    if (([[self window] firstResponder] == [self currentEditor]) && [NSApp isActive])
-    {
-        NSPoint origin = { 0.0,0.0 };
-        NSRect rect;
-        rect.origin = origin;
-        rect.size.width  = [self bounds].size.width - 20;
-        rect.size.height = [self bounds].size.height;
+	if (([[self window] firstResponder] == [self currentEditor]) && [NSApp isActive])
+	{
+		NSPoint origin = { 0.0, 0.0 };
+		NSRect rect;
+		rect.origin = origin;
+		rect.size.width  = [self bounds].size.width - 20;
+		rect.size.height = [self bounds].size.height;
 
-        NSBezierPath * path;
-        path = [NSBezierPath bezierPathWithRect:rect];
+		NSBezierPath *path;
+		path = [NSBezierPath bezierPathWithRect:rect];
 
-        [NSGraphicsContext saveGraphicsState];
-        NSSetFocusRingStyle(NSFocusRingOnly);
-        [path fill];
-        [NSGraphicsContext restoreGraphicsState];
-    }
-    else
-    {
-        [super drawRect:dirtyRect];
-    }
+		[NSGraphicsContext saveGraphicsState];
+		NSSetFocusRingStyle(NSFocusRingOnly);
+		[path fill];
+		[NSGraphicsContext restoreGraphicsState];
+	}
+	else
+	{
+		[super drawRect:dirtyRect];
+	}
 }
 
 @end
