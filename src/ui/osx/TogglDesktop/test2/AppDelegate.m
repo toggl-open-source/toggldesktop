@@ -23,7 +23,6 @@
 #import "MenuItemTags.h"
 #import "PreferencesWindowController.h"
 #import "Settings.h"
-#import "Sparkle.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Utils.h"
@@ -99,6 +98,7 @@ BOOL onTop = NO;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
+<<<<<<< HEAD
 
 	if ([self updateCheckEnabled])
 	{
@@ -112,6 +112,8 @@ BOOL onTop = NO;
 		[Utils setUpdaterChannel:channel];
 	}
 	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+=======
+>>>>>>> 28d333e... Remove traces of Sparkle
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -272,6 +274,7 @@ BOOL onTop = NO;
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
 
+<<<<<<< HEAD
 	if ([self updateCheckEnabled])
 	{
 		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
@@ -294,6 +297,8 @@ BOOL onTop = NO;
 												 name:NSWindowDidDeminiaturizeNotification
 											   object:nil];
 
+=======
+>>>>>>> 28d333e... Remove traces of Sparkle
 	if (self.scriptPath)
 	{
 		[self performSelectorInBackground:@selector(runScript:)
