@@ -1174,18 +1174,15 @@ TEST(TogglApiTest, toggl_set_time_entry_end_prefers_same_day) {
 
     const std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
 
+    // Set start time so it will be local time
+    ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(), guid.c_str(), time(0)));
+    ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "06:33"));
+
     ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "06:34"));
 
     toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
 
     Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
-    ASSERT_EQ(2013, start.year());
-    ASSERT_EQ(9, start.month());
-    ASSERT_EQ(5, start.day());
-    ASSERT_EQ(6, start.hour());
-    ASSERT_EQ(33, start.minute());
-    ASSERT_EQ(50, start.second());
-
     Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
     ASSERT_EQ(start.year(), end.year());
     ASSERT_EQ(start.month(), end.month());
