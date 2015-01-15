@@ -17,17 +17,17 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.0.0</string>
+	<string>7.1.177</string>
 	<key>CFBundleSignature</key>
 	<string>td70</string>
 	<key>CFBundleVersion</key>
-	<string>7.0.0</string>
-	<key>KopsikEnvironment</key>
-	<string>development</string>
-	<key>KopsikLogUserInterfaceToFile</key>
-	<false/>
+	<string>7.1.177</string>
 	<key>KopsikCheckForUpdates</key>
 	<false/>
+	<key>KopsikEnvironment</key>
+	<string>production</string>
+	<key>KopsikLogUserInterfaceToFile</key>
+	<true/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
@@ -35,17 +35,17 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2014 Toggl Desktop developers. All rights reserved.</string>
+	<string>Copyright © 2015 Toggl Desktop developers. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>SUFeedURL</key>
 	<string>https://assets.toggl.com/installers/darwin_stable_appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
 	<key>SUShowReleaseNotes</key>
 	<false/>
 </dict>
