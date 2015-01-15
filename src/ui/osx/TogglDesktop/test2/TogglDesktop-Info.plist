@@ -35,7 +35,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2017 Toggl Desktop developers. All rights reserved.</string>
+	<string>Copyright © 2018 Toggl Desktop developers. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
