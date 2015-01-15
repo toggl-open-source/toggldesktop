@@ -7,7 +7,6 @@
 //
 
 #import "Utils.h"
-#import "Sparkle.h"
 #import "NSAlert+Utils.h"
 
 #include "toggl_api.h"
@@ -55,30 +54,6 @@ extern void *ctx;
 	}
 
 	return result;
-}
-
-+ (void)runClearCommand
-{
-	NSString *location = @"Library/Application Support/TogglDesktop/.Sparkle";
-	NSFileManager *fm = [NSFileManager defaultManager];
-	NSString *userPath = NSHomeDirectory();
-	NSString *directory = [userPath stringByAppendingPathComponent:location];
-	NSError *error = nil;
-	BOOL success = [fm removeItemAtPath:directory error:&error];
-
-	if (!success)
-	{
-		NSLog(@"Failed to clear old updates folder at: %@", directory);
-	}
-}
-
-+ (void)setUpdaterChannel:(NSString *)channel
-{
-	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/darwin_%@_appcast.xml", channel];
-
-	NSAssert([SUUpdater sharedUpdater], @"No updater found");
-	NSLog(@"Setting updater feed URL to %@", url);
-	[[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:url]];
 }
 
 + (NSInteger)boolToState:(BOOL)value
