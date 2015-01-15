@@ -98,6 +98,10 @@ bool IsUserError(const error err) {
         return false;
     }
     std::string value(err);
+    if (value.find("So short time entries, perhaps accidentally?")
+            != std::string::npos) {
+        return true;
+    }
     if (value.find("Cannot write file") != std::string::npos) {
         return true;
     }
