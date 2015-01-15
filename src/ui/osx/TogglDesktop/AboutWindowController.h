@@ -7,9 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DisplayCommand.h"
-#import "Sparkle.h"
 
-@interface AboutWindowController : NSWindowController <SUUpdaterDelegate>
+@interface AboutWindowController : NSWindowController
 @property IBOutlet NSTextField *appnameTextField;
 @property IBOutlet NSTextField *versionTextField;
 @property IBOutlet NSTextView *creditsTextView;
