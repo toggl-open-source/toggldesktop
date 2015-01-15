@@ -63,5 +63,6 @@
 - (IBAction)addClientButtonClicked:(id)sender;
 - (IBAction)saveAddClientButtonClicked:(id)sender;
 - (void)setDragHandle:(BOOL)onLeft;
+- (void)setInsertionPointColor;
 - (void)closeEdit;
 @end
