@@ -117,6 +117,10 @@ class Database {
         return desktop_id_;
     }
 
+    std::string AnalyticsClientID() const {
+        return analytics_client_id_;
+    }
+
     error InsertTimelineEvent(TimelineEvent *info);
 
     error DeleteTimelineBatch(
@@ -135,6 +139,7 @@ class Database {
     error migrateTimeEntries();
     error migrateUsers();
     error migrateTimeline();
+    error migrateAnalytics();
     error migrateProjects();
     error migrateWorkspaces();
     error migrateSessions();
@@ -226,6 +231,7 @@ class Database {
         std::vector<ModelChange> *changes);
 
     error saveDesktopID();
+    error saveAnalyticsClientID();
 
     Poco::Logger &logger() const;
 
@@ -233,6 +239,7 @@ class Database {
     Poco::Data::Session *session_;
 
     std::string desktop_id_;
+    std::string analytics_client_id_;
 };
 
 }  // namespace toggl

@@ -38,7 +38,8 @@ using Poco::Data::Keywords::now;
 
 Database::Database(const std::string db_path)
     : session_(0)
-, desktop_id_("") {
+, desktop_id_("")
+, analytics_client_id_("") {
     Poco::Data::SQLite::Connector::registerConnector();
 
     session_ = new Poco::Data::Session("SQLite", db_path);
@@ -2279,6 +2280,11 @@ error Database::initialize_tables() {
         return err;
     }
 
+    err = migrateAnalytics();
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -2511,6 +2517,39 @@ error Database::migrateProjects() {
     }
 
     return err;
+}
+
+error Database::migrateAnalytics() {
+    error err = migrate("analytics_settings",
+                        "CREATE TABLE analytics_settings("
+                        "id INTEGER PRIMARY KEY, "
+                        "analytics_client_id VARCHAR NOT NULL"
+                        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("analytics_settings.analytics_client_id",
+                  "CREATE UNIQUE INDEX id_analytics_settings_client_id "
+                  "ON analytics_settings(analytics_client_id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = String("SELECT analytics_client_id FROM analytics_settings LIMIT 1",
+                 &analytics_client_id_);
+    if (err != noError) {
+        return err;
+    }
+    if (analytics_client_id_.empty()) {
+        analytics_client_id_ = GenerateGUID();
+        err = saveAnalyticsClientID();
+        if (err != noError) {
+            return err;
+        }
+    }
+
+    return noError;
 }
 
 error Database::migrateTimeline() {
@@ -2940,7 +2979,27 @@ error Database::saveDesktopID() {
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("SaveDesktopID");
+    return last_error("saveDesktopID");
+}
+
+error Database::saveAnalyticsClientID() {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "INSERT INTO analytics_settings(analytics_client_id) "
+                  "VALUES(:analytics_client_id)",
+                  useRef(analytics_client_id_),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("saveAnalyticsClientID");
 }
 
 error Database::migrate(

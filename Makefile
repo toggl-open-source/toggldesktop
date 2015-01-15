@@ -312,6 +312,9 @@ build/error.o: src/error.cc
 build/idle.o: src/idle.cc
 	$(cxx) $(cflags) -c src/idle.cc -o build/idle.o
 
+build/analytics.o: src/analytics.cc
+	$(cxx) $(cflags) -c src/analytics.cc -o build/analytics.o
+
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
@@ -364,6 +367,7 @@ objects: build/jsoncpp.o \
 	build/error.o \
 	build/gui.o \
 	build/idle.o \
+	build/analytics.o \
 	build/context.o \
 	build/toggl_api_private.o \
 	build/toggl_api.o \

@@ -18,6 +18,7 @@
 #include "./model_change.h"
 #include "./timeline_notifications.h"
 #include "./types.h"
+#include "./analytics.h"
 
 #include "Poco/Activity.h"
 #include "Poco/LocalDateTime.h"
@@ -376,6 +377,8 @@ class Context : public TimelineDatasource {
 
     Poco::Timestamp last_timer_started_at_;
     int timer_start_interval_;
+
+    Analytics analytics_;
 };
 
 void on_websocket_message(

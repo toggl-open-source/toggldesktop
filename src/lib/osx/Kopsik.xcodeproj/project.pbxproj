@@ -27,6 +27,8 @@
 		7458ED2A1A355746007B529E /* idle.h in Headers */ = {isa = PBXBuildFile; fileRef = 7458ED281A355746007B529E /* idle.h */; };
 		745E84F5194953A70065E49A /* gui.cc in Sources */ = {isa = PBXBuildFile; fileRef = 745E84F3194953A70065E49A /* gui.cc */; };
 		745E84F6194953A70065E49A /* gui.h in Headers */ = {isa = PBXBuildFile; fileRef = 745E84F4194953A70065E49A /* gui.h */; };
+		74699F6B1A67053600691986 /* analytics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74699F691A67053600691986 /* analytics.cc */; };
+		74699F6C1A67053600691986 /* analytics.h in Headers */ = {isa = PBXBuildFile; fileRef = 74699F6A1A67053600691986 /* analytics.h */; };
 		7484A2A818887BEE0025A88B /* toggl_api_private.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A218887BEE0025A88B /* toggl_api_private.h */; };
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
@@ -100,6 +102,8 @@
 		7458ED281A355746007B529E /* idle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = idle.h; path = ../../../idle.h; sourceTree = "<group>"; };
 		745E84F3194953A70065E49A /* gui.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui.cc; path = ../../../gui.cc; sourceTree = "<group>"; };
 		745E84F4194953A70065E49A /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gui.h; path = ../../../gui.h; sourceTree = "<group>"; };
+		74699F691A67053600691986 /* analytics.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = analytics.cc; path = ../../../analytics.cc; sourceTree = "<group>"; };
+		74699F6A1A67053600691986 /* analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = analytics.h; path = ../../../analytics.h; sourceTree = "<group>"; };
 		7484A2A218887BEE0025A88B /* toggl_api_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = toggl_api_private.h; path = ../../../toggl_api_private.h; sourceTree = "<group>"; };
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
@@ -232,6 +236,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				74699F691A67053600691986 /* analytics.cc */,
+				74699F6A1A67053600691986 /* analytics.h */,
 				74BC59D81A37C6790081104D /* error.cc */,
 				74BC59D91A37C6790081104D /* error.h */,
 				7458ED271A355746007B529E /* idle.cc */,
@@ -322,6 +328,7 @@
 				7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
 				74B587BE18BBC77E00E9F6CE /* task.h in Headers */,
+				74699F6C1A67053600691986 /* analytics.h in Headers */,
 				74B587C218BBC77E00E9F6CE /* workspace.h in Headers */,
 				74CAAD1F181860F7001B77BB /* timeline_notifications.h in Headers */,
 				74B587BF18BBC77E00E9F6CE /* user.h in Headers */,
@@ -431,6 +438,7 @@
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
 				74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */,
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
+				74699F6B1A67053600691986 /* analytics.cc in Sources */,
 				7458ED291A355746007B529E /* idle.cc in Sources */,
 				74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */,
 				74BAD32918BEC4FD002FD4CF /* base_model.cc in Sources */,
