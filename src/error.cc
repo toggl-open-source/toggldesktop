@@ -98,6 +98,9 @@ bool IsUserError(const error err) {
         return false;
     }
     std::string value(err);
+    if (value.find("Cannot write file") != std::string::npos) {
+        return true;
+    }
     if (value.find("is suspended") != std::string::npos) {
         return true;
     }
