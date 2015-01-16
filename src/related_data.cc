@@ -192,7 +192,7 @@ void RelatedData::projectAutocompleteItems(
             c = ClientByID(p->CID());
         }
 
-        std::string text = Formatter::JoinProjectName(p, c);
+        std::string text = Formatter::JoinTaskName(0, p, c);
         if (text.empty()) {
             continue;
         }
