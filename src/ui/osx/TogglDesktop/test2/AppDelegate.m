@@ -75,7 +75,6 @@
 @property BOOL showMenuBarTimer;
 
 // Manual mode
-@property BOOL manualMode;
 @property NSMenuItem *manualModeMenuItem;
 
 
@@ -84,6 +83,7 @@
 @implementation AppDelegate
 
 void *ctx;
+BOOL manualMode = NO;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
@@ -91,7 +91,6 @@ void *ctx;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
-	self.manualMode = NO;
 
 	if ([self updateCheckEnabled])
 	{
@@ -436,6 +435,19 @@ void *ctx;
 		[self.preferencesWindowController showWindow:self];
 		[NSApp activateIgnoringOtherApps:YES];
 	}
+
+	NSString *mode = kToggleTimerMode;
+	if (cmd.settings.manual_mode)
+	{
+		mode = kToggleManualMode;
+		[self.manualModeMenuItem setTitle:@"Use timer"];
+	}
+	else
+	{
+		[self.manualModeMenuItem setTitle:@"Use manual mode"];
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:mode
+														object:nil];
 }
 
 - (void)startDisplayApp:(NSNotification *)notification
@@ -728,16 +740,8 @@ void *ctx;
 
 - (IBAction)onModeChange:(id)sender
 {
-	self.manualMode = !self.manualMode;
-	[self.manualModeMenuItem setTitle:@"Use manual mode"];
-	NSString *mode = kToggleTimerMode;
-	if (self.manualMode)
-	{
-		mode = kToggleManualMode;
-		[self.manualModeMenuItem setTitle:@"Use timer"];
-	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:mode
-														object:nil];
+	manualMode = !manualMode;
+	toggl_set_settings_manual_mode(ctx, manualMode);
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender
