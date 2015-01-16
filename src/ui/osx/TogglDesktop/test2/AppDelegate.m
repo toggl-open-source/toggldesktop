@@ -653,7 +653,7 @@ BOOL manualMode = NO;
 			 keyEquivalent:@""].tag = kMenuItemRecordTimeline;
 	self.manualModeMenuItem = [menu addItemWithTitle:@"Use manual mode"
 											  action:@selector(onModeChange:)
-									   keyEquivalent:@""];
+									   keyEquivalent:@"d"];
 	self.manualModeMenuItem.tag = kMenuItemTagMode;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"About"

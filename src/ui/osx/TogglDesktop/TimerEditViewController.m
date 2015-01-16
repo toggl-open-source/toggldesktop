@@ -163,6 +163,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		self.startButton.toolTip = @"Stop";
 		[self.startButton setImage:[NSImage imageNamed:@"stop_button.pdf"]];
+		toggl_set_settings_manual_mode(ctx, NO);
 	}
 	else
 	{
