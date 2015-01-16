@@ -68,7 +68,7 @@ bool TimeEntry::ResolveError(const error err) {
 
 bool TimeEntry::isMissingCreatedWith(const error err) const {
     return std::string::npos != std::string(err).find(
-        "created_with needs to be provided a valid string");
+        "created_with needs to be provided an a valid string");
 }
 
 bool TimeEntry::userCannotAccessTheSelectedProject(
