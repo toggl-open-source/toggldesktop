@@ -791,6 +791,24 @@ TEST(TogglApiTest, toggl_continue) {
     ASSERT_EQ("More work", testing::testresult::timer_state.Description());
 }
 
+TEST(TogglApiTest, toggl_continue_disallow_flooding) {
+    testing::App app;
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    std::string guid("6c97dc31-582e-7662-1d6f-5e9d623b1685");
+
+    ASSERT_TRUE(toggl_continue(app.ctx(), guid.c_str()));
+    ASSERT_FALSE(toggl_continue(app.ctx(), guid.c_str()));
+    ASSERT_FALSE(toggl_continue(app.ctx(), guid.c_str()));
+    ASSERT_FALSE(toggl_continue(app.ctx(), guid.c_str()));
+
+    testing_set_timer_start_interval(app.ctx(), 0);
+
+    ASSERT_TRUE(toggl_continue(app.ctx(), guid.c_str()));
+}
+
 TEST(TogglApiTest, toggl_check_view_struct_size) {
     toggl_check_view_struct_size(
         sizeof(TogglTimeEntryView),
@@ -878,6 +896,21 @@ TEST(TogglApiTest, toggl_continue_latest) {
     ASSERT_EQ("arendus käib", testing::testresult::timer_state.Description());
 }
 
+TEST(TogglApiTest, toggl_continue_latest_disallow_flooding) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    ASSERT_TRUE(toggl_continue_latest(app.ctx()));
+    ASSERT_FALSE(toggl_continue_latest(app.ctx()));
+    ASSERT_FALSE(toggl_continue_latest(app.ctx()));
+    ASSERT_FALSE(toggl_continue_latest(app.ctx()));
+
+    testing_set_timer_start_interval(app.ctx(), 0);
+
+    ASSERT_TRUE(toggl_continue_latest(app.ctx()));
+}
+
 TEST(TogglApiTest, toggl_delete_time_entry) {
     testing::App app;
     std::string json = loadTestData();
@@ -953,6 +986,35 @@ TEST(TogglApiTest, toggl_stop) {
     ASSERT_TRUE(testing::testresult::timer_state.GUID().empty());
 }
 
+TEST(TogglApiTest, toggl_start) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing::testresult::timer_state = TimeEntry();
+
+    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+    ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
+}
+
+TEST(TogglApiTest, toggl_start_disallow_flooding) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing::testresult::timer_state = TimeEntry();
+
+    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+
+    ASSERT_FALSE(toggl_start(app.ctx(), "test", "", 0, 0));
+    ASSERT_FALSE(toggl_start(app.ctx(), "test", "", 0, 0));
+    ASSERT_FALSE(toggl_start(app.ctx(), "test", "", 0, 0));
+
+    testing_set_timer_start_interval(app.ctx(), 0);
+
+    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+}
+
 TEST(TogglApiTest, toggl_set_time_entry_billable) {
     testing::App app;
     std::string json = loadTestData();
@@ -998,6 +1060,8 @@ TEST(TogglApiTest, toggl_discard_time_at) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing_set_timer_start_interval(app.ctx(), 0);
 
     testing::testresult::timer_state = TimeEntry();
 
@@ -1174,18 +1238,15 @@ TEST(TogglApiTest, toggl_set_time_entry_end_prefers_same_day) {
 
     const std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
 
+    // Set start time so it will be local time
+    ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(), guid.c_str(), time(0)));
+    ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "06:33"));
+
     ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "06:34"));
 
     toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
 
     Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
-    ASSERT_EQ(2013, start.year());
-    ASSERT_EQ(9, start.month());
-    ASSERT_EQ(5, start.day());
-    ASSERT_EQ(6, start.hour());
-    ASSERT_EQ(33, start.minute());
-    ASSERT_EQ(50, start.second());
-
     Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
     ASSERT_EQ(start.year(), end.year());
     ASSERT_EQ(start.month(), end.month());

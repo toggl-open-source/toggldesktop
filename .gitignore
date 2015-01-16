@@ -24,6 +24,7 @@ test/*
 third_party/bugsnag-qt/.git
 third_party/bugsnag-qt/build
 
+third_party/openssl/**/*.o-*
 third_party/openssl/stnrUhYw
 third_party/openssl/Makefile*
 third_party/openssl/test/*test

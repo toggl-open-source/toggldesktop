@@ -11,6 +11,7 @@
 #define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
 #define kRequestThrottleSeconds 2
+#define kTimerStartInterval 10
 
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
@@ -19,5 +20,6 @@
 #define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
 
 #define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
+#define kTooShortTimeEntries "So short time entries, perhaps accidentally?"
 
 #endif  // SRC_CONST_H_

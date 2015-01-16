@@ -81,4 +81,9 @@ _Bool testing_set_logged_in_user(
     void *context,
     const char *json);
 
+// For testing only
+void testing_set_timer_start_interval(
+    void *context,
+    const int seconds);
+
 #endif  // SRC_TOGGL_API_PRIVATE_H_

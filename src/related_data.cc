@@ -243,15 +243,6 @@ std::vector<AutocompleteItem> RelatedData::MinitimerAutocompleteItems() {
 std::vector<AutocompleteItem> RelatedData::ProjectAutocompleteItems() {
     std::vector<AutocompleteItem> result;
     std::set<std::string> unique_names;
-    taskAutocompleteItems(&unique_names, 0, &result);
-    projectAutocompleteItems(&unique_names, 0, &result);
-    std::sort(result.begin(), result.end(), CompareAutocompleteItems);
-    return result;
-}
-
-std::vector<AutocompleteItem> RelatedData::StructuredAutocompleteItems() {
-    std::vector<AutocompleteItem> result;
-    std::set<std::string> unique_names;
     std::map<Poco::UInt64, std::string> ws_names;
     workspaceAutocompleteItems(&unique_names, &ws_names, &result);
     projectAutocompleteItems(&unique_names, &ws_names, &result);
