@@ -111,9 +111,9 @@ extern void *ctx;
 {
 	[super loadView];
 	[self.timeEntriesTableView registerNib:self.nibTimeEntryCell
-							 forIdentifier:@"TimeEntryCell"];
+							 forIdentifier :@"TimeEntryCell"];
 	[self.timeEntriesTableView registerNib:self.nibTimeEntryCellWithHeader
-							 forIdentifier:@"TimeEntryCellWithHeader"];
+							 forIdentifier :@"TimeEntryCellWithHeader"];
 
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
@@ -319,7 +319,7 @@ extern void *ctx;
 - (TimeEntryCell *)getSelectedEntryCell:(NSInteger)row
 {
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary:NO];
+												 makeIfNecessary  :NO];
 
 	if (latestView == nil)
 	{
@@ -361,7 +361,7 @@ extern void *ctx;
 		return;
 	}
 	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
-													  makeIfNecessary:NO];
+													  makeIfNecessary  :NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
 }

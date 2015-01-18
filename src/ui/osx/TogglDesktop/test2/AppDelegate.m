@@ -1282,7 +1282,7 @@ void on_error(const char *errmsg, const _Bool is_user_error)
 		NSString *channel = [NSString stringWithUTF8String:str];
 		free(str);
 		[Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]
-				 withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil]];
+			   withData :[NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil]];
 	}
 }
 
