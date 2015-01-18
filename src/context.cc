@@ -532,7 +532,6 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     error err = user_->PushChanges(&client);
     if (err != noError) {
         displayError(err);
-        return;
     }
 
     err = save(false);
@@ -1678,6 +1677,7 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
             return false;
         }
     }
+    te->ClearValidationError();
     te->Delete();
     return displayError(save());
 }
@@ -1743,6 +1743,7 @@ _Bool Context::SetTimeEntryProject(
     te->SetProjectGUID(project_guid);
 
     if (te->Dirty()) {
+        te->ClearValidationError();
         te->SetUIModified();
     }
 
@@ -1891,7 +1892,9 @@ _Bool Context::SetTimeEntryTags(
         return true;
     }
     te->SetTags(value);
+
     if (te->Dirty()) {
+        te->ClearValidationError();
         te->SetUIModified();
     }
 
@@ -1914,7 +1917,9 @@ _Bool Context::SetTimeEntryBillable(
         return true;
     }
     te->SetBillable(value);
+
     if (te->Dirty()) {
+        te->ClearValidationError();
         te->SetUIModified();
     }
 
@@ -1937,7 +1942,9 @@ _Bool Context::SetTimeEntryDescription(
         return true;
     }
     te->SetDescription(value);
+
     if (te->Dirty()) {
+        te->ClearValidationError();
         te->SetUIModified();
     }
 

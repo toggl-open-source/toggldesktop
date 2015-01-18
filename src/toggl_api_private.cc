@@ -222,8 +222,8 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->CanSeeBillable = false;
     view_item->DefaultWID = 0;
 
-    if (te->Error() != toggl::noError) {
-        view_item->Error = copy_string(te->Error());
+    if (te->ValidationError() != toggl::noError) {
+        view_item->Error = copy_string(te->ValidationError());
     } else {
         view_item->Error = 0;
     }

@@ -212,6 +212,7 @@ void TimeEntry::SetStopUserInput(const std::string value) {
     }
 
     if (Dirty()) {
+        ClearValidationError();
         SetUIModified();
     }
 }
@@ -264,6 +265,7 @@ void TimeEntry::SetStartUserInput(const std::string value) {
     SetStart(start);
 
     if (Dirty()) {
+        ClearValidationError();
         SetUIModified();
     }
 }
@@ -285,6 +287,7 @@ void TimeEntry::SetDurationUserInput(const std::string value) {
     SetStop(Start() + seconds);
 
     if (Dirty()) {
+        ClearValidationError();
         SetUIModified();
     }
 }

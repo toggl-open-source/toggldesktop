@@ -56,6 +56,22 @@ TEST(TimeEntry, TimeEntryReturnsTags) {
     ASSERT_EQ(std::string("alfa|beeta"), te.Tags());
 }
 
+TEST(TimeEntry, WillNotPushUnlessValidationErrorIsCleared) {
+    TimeEntry te;
+    ASSERT_TRUE(te.NeedsPush());
+
+    // Simulate getting an error from backend
+    te.SetValidationError("All you do is wrong");
+    ASSERT_EQ("All you do is wrong", te.ValidationError());
+    ASSERT_FALSE(te.NeedsPush());
+
+    // Simulate user changing the data,
+    // which should wipe the validation error.
+    te.SetDurationUserInput("10 seconds");
+    ASSERT_EQ("", te.ValidationError());
+    ASSERT_TRUE(te.NeedsPush());
+}
+
 TEST(TimeEntry, SetDurationUserInput) {
     TimeEntry te;
     ASSERT_FALSE(te.Dirty());

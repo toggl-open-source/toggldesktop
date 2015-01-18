@@ -952,7 +952,7 @@ error Database::loadTimeEntries(
         select << "SELECT local_id, id, uid, description, wid, guid, pid, "
                "tid, billable, duronly, ui_modified_at, start, stop, "
                "duration, tags, created_with, deleted_at, updated_at, "
-               "project_guid "
+               "project_guid, validation_error "
                "FROM time_entries "
                "WHERE uid = :uid "
                "ORDER BY start DESC",
@@ -1063,6 +1063,11 @@ error Database::loadTimeEntriesFromSQLStatement(
                 } else {
                     model->SetProjectGUID(rs[18].convert<std::string>());
                 }
+                if (rs[19].isEmpty()) {
+                    model->SetValidationError("");
+                } else {
+                    model->SetValidationError(rs[19].convert<std::string>());
+                }
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1167,7 +1172,8 @@ error Database::saveModel(
                           "tags = :tags, created_with = :created_with, "
                           "deleted_at = :deleted_at, "
                           "updated_at = :updated_at, "
-                          "project_guid = :project_guid "
+                          "project_guid = :project_guid, "
+                          "validation_error = :validation_error "
                           "where local_id = :local_id",
                           useRef(model->ID()),
                           useRef(model->UID()),
@@ -1187,6 +1193,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
+                          useRef(model->ValidationError()),
                           useRef(model->LocalID()),
                           now;
             } else {
@@ -1200,7 +1207,8 @@ error Database::saveModel(
                           "tags = :tags, created_with = :created_with, "
                           "deleted_at = :deleted_at, "
                           "updated_at = :updated_at, "
-                          "project_guid = :project_guid "
+                          "project_guid = :project_guid, "
+                          "validation_error = :validation_error "
                           "where local_id = :local_id",
                           useRef(model->UID()),
                           useRef(model->Description()),
@@ -1219,6 +1227,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
+                          useRef(model->ValidationError()),
                           useRef(model->LocalID()),
                           now;
             }
@@ -1244,13 +1253,13 @@ error Database::saveModel(
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
                           "tags, created_with, deleted_at, updated_at, "
-                          "project_guid) "
+                          "project_guid, validation_error) "
                           "values(:id, :uid, :description, :wid, "
                           ":guid, :pid, :tid, :billable, "
                           ":duronly, :ui_modified_at, "
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
-                          ":project_guid)",
+                          ":project_guid, :validation_error)",
                           useRef(model->ID()),
                           useRef(model->UID()),
                           useRef(model->Description()),
@@ -1269,6 +1278,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
+                          useRef(model->ValidationError()),
                           now;
             } else {
                 *session_ << "insert into time_entries(uid, description, wid, "
@@ -1276,14 +1286,14 @@ error Database::saveModel(
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
                           "tags, created_with, deleted_at, updated_at, "
-                          "project_guid "
+                          "project_guid, validation_error "
                           ") values ("
                           ":uid, :description, :wid, "
                           ":guid, :pid, :tid, :billable, "
                           ":duronly, :ui_modified_at, "
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
-                          ":project_guid)",
+                          ":project_guid, :validation_error)",
                           useRef(model->UID()),
                           useRef(model->Description()),
                           useRef(model->WID()),
@@ -1301,6 +1311,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
+                          useRef(model->ValidationError()),
                           now;
             }
             error err = last_error("saveTimeEntry");
@@ -2739,6 +2750,13 @@ error Database::migrateTimeEntries() {
     err = migrate("time_entries.guid not null, step 6",
                   "CREATE UNIQUE INDEX id_time_entries_guid "
                   "   ON time_entries (uid, guid); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate("time_entries.validation_error",
+                  "ALTER TABLE time_entries "
+                  "ADD COLUMN validation_error VARCHAR;");
     if (err != noError) {
         return err;
     }

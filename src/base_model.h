@@ -33,7 +33,8 @@ class BaseModel {
     , dirty_(false)
     , deleted_at_(0)
     , is_marked_as_deleted_on_server_(false)
-    , updated_at_(0) {}
+    , updated_at_(0)
+    , validation_error_("") {}
     virtual ~BaseModel() {}
 
     const Poco::Int64 &LocalID() const {
@@ -66,9 +67,7 @@ class BaseModel {
     }
     void SetUID(const Poco::UInt64 value);
 
-    void SetDirty() {
-        dirty_ = true;
-    }
+    void SetDirty();
     const bool &Dirty() const {
         return dirty_;
     }
@@ -111,11 +110,10 @@ class BaseModel {
 
     void EnsureGUID();
 
-    void SetError(const toggl::error value) {
-        error_ = value;
-    }
-    toggl::error Error() const {
-        return error_;
+    void ClearValidationError();
+    void SetValidationError(const std::string value);
+    const std::string &ValidationError() const {
+        return validation_error_;
     }
 
     virtual std::string String() const = 0;
@@ -169,7 +167,7 @@ class BaseModel {
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    toggl::error error_;
+    std::string validation_error_;
 };
 
 }  // namespace toggl

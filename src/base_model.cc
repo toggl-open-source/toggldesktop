@@ -17,7 +17,13 @@
 namespace toggl {
 
 bool BaseModel::NeedsPush() const {
-    return NeedsPOST() || NeedsPUT() || NeedsDELETE();
+    // Note that if a model has a validation error previously
+    // received and attached from the backend, the model won't be
+    // pushed again unless the error is somehow fixed by error.
+    // We will assume that if user modifies the model, the error
+    // will go away. But until then, don't push the errored data.
+    return ValidationError().empty() &&
+           (NeedsPOST() || NeedsPUT() || NeedsDELETE());
 }
 
 bool BaseModel::NeedsPOST() const {
@@ -44,6 +50,17 @@ void BaseModel::EnsureGUID() {
         return;
     }
     SetGUID(Database::GenerateGUID());
+}
+
+void BaseModel::ClearValidationError() {
+    SetValidationError(noError);
+}
+
+void BaseModel::SetValidationError(const std::string value) {
+    if (validation_error_ != value) {
+        validation_error_ = value;
+        SetDirty();
+    }
 }
 
 void BaseModel::SetDeletedAt(const Poco::UInt64 value) {
@@ -145,11 +162,11 @@ error BaseModel::ApplyBatchUpdateResult(
             return noError;
         }
 
-        SetError(err);
+        SetValidationError(err);
         return err;
     }
 
-    SetError(noError);
+    SetValidationError(noError);
 
     return LoadFromDataString(update->Body);
 }
@@ -200,6 +217,10 @@ Json::Value BaseModel::BatchUpdateJSON() {
 
 Poco::Logger &BaseModel::logger() const {
     return Poco::Logger::get(ModelName());
+}
+
+void BaseModel::SetDirty() {
+    dirty_ = true;
 }
 
 }   // namespace toggl
