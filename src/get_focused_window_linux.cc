@@ -12,6 +12,8 @@
 #include <cstring>
 #include <string>
 
+#include "./get_focused_window.h"
+
 #define HANDLE_EINTR(x) ({ \
   typeof(x) __eintr_result__; \
   do { \

@@ -64,8 +64,6 @@ class Project : public BaseModel {
 
     std::string String() const;
 
-    static std::vector<std::string> color_codes;
-
     const bool &Billable() const {
         return billable_;
     }
@@ -88,6 +86,8 @@ class Project : public BaseModel {
  private:
     bool clientIsInAnotherWorkspace(const toggl::error) const;
 
+    static std::vector<std::string> color_codes;
+
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;
     std::string name_;
@@ -97,6 +97,8 @@ class Project : public BaseModel {
     bool billable_;
     std::string client_guid_;
 };
+
+template<typename T, size_t N> T *end(T (&ra)[N]);
 
 }  // namespace toggl
 

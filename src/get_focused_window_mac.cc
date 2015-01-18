@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "./get_focused_window.h"
+
 static const int kTitleBufferSize = 255;
 static const int kFilenameBufferSize = 255;
 

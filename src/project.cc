@@ -17,9 +17,11 @@ const char *known_colors[] = {
     "#8ab734", "#14a88e", "#268bb5", "#6668b4", "#a4506c",
     "#67412c", "#3c6526", "#094558", "#bc2d07", "#999999"
 };
+
 template<typename T, size_t N> T *end(T (&ra)[N]) {
     return ra + N;
 }
+
 std::vector<std::string> Project::color_codes(known_colors, end(known_colors));
 
 std::string Project::String() const {

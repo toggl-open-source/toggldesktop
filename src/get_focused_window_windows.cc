@@ -8,6 +8,8 @@
 
 #include "Poco/UnicodeConverter.h"
 
+#include "./get_focused_window.h"
+
 static const int kFilenameBufferSize = 255;
 static const int kTitleBufSize = 500;
 
