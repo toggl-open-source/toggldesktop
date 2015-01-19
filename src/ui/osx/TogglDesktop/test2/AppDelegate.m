@@ -437,6 +437,7 @@ BOOL manualMode = NO;
 	}
 
 	NSString *mode = kToggleTimerMode;
+	manualMode = cmd.settings.manual_mode;
 	if (cmd.settings.manual_mode)
 	{
 		mode = kToggleManualMode;
