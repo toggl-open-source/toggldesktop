@@ -470,12 +470,14 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)toggleTimer:(NSNotification *)notification
 {
+	[self.mainBox setHidden:NO];
 	[self.manualBox setHidden:YES];
 }
 
 - (void)toggleManual:(NSNotification *)notification
 {
 	[self.manualBox setHidden:NO];
+	[self.mainBox setHidden:YES];
 	[self.view.window makeFirstResponder:self.manualBox];
 }
 
