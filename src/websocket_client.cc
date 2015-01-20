@@ -65,7 +65,7 @@ void WebSocketClient::Shutdown() {
 error WebSocketClient::createSession() {
     logger().debug("createSession");
 
-    poco_assert(!HTTPSClientConfig::CACertPath.empty());
+    poco_assert(!HTTPSClient::Config.CACertPath.empty());
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -82,12 +82,12 @@ error WebSocketClient::createSession() {
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPSClientConfig::IgnoreCert) {
+        if (HTTPSClient::Config.IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPSClientConfig::CACertPath,
+            HTTPSClient::Config.CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
@@ -97,22 +97,22 @@ error WebSocketClient::createSession() {
             uri.getHost(),
             uri.getPort(),
             context);
-        if (HTTPSClientConfig::ProxySettings.IsConfigured()) {
+        if (HTTPSClient::Config.ProxySettings.IsConfigured()) {
             session_->setProxy(
-                HTTPSClientConfig::ProxySettings.Host(),
+                HTTPSClient::Config.ProxySettings.Host(),
                 static_cast<Poco::UInt16>(
-                    HTTPSClientConfig::ProxySettings.Port()));
-            if (HTTPSClientConfig::ProxySettings.HasCredentials()) {
+                    HTTPSClient::Config.ProxySettings.Port()));
+            if (HTTPSClient::Config.ProxySettings.HasCredentials()) {
                 session_->setProxyCredentials(
-                    HTTPSClientConfig::ProxySettings.Username(),
-                    HTTPSClientConfig::ProxySettings.Password());
+                    HTTPSClient::Config.ProxySettings.Username(),
+                    HTTPSClient::Config.ProxySettings.Password());
             }
         }
         req_ = new Poco::Net::HTTPRequest(
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",
             Poco::Net::HTTPMessage::HTTP_1_1);
         req_->set("Origin", "https://localhost");
-        req_->set("User-Agent", HTTPSClientConfig::UserAgent());
+        req_->set("User-Agent", HTTPSClient::Config.UserAgent());
         res_ = new Poco::Net::HTTPResponse();
         ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
         ws_->setBlocking(false);

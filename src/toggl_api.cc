@@ -133,7 +133,7 @@ void toggl_set_cacert_path(
     const char_t *path) {
     poco_check_ptr(path);
 
-    toggl::HTTPSClientConfig::CACertPath = to_string(path);
+    toggl::HTTPSClient::Config.CACertPath = to_string(path);
 }
 
 _Bool toggl_set_db_path(

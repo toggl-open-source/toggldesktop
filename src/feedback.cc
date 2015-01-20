@@ -20,7 +20,7 @@ const std::string Feedback::JSON() const {
     Json::Value root;
 
     root["desktop"] = true;
-    root["toggl_version"] = HTTPSClientConfig::AppVersion;
+    root["toggl_version"] = HTTPSClient::Config.AppVersion;
     root["details"] = Formatter::EscapeJSONString(details_);
     root["subject"] = Formatter::EscapeJSONString(subject_);
     if (!attachment_path_.empty()) {

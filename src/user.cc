@@ -71,7 +71,7 @@ TimeEntry *User::Start(
     ss << "User::Start now=" << now;
 
     TimeEntry *te = new TimeEntry();
-    te->SetCreatedWith(HTTPSClientConfig::UserAgent());
+    te->SetCreatedWith(HTTPSClient::Config.UserAgent());
     te->SetDescription(description);
     te->SetUID(ID());
     te->SetPID(project_id);
@@ -155,7 +155,7 @@ toggl::error User::Continue(
     }
 
     TimeEntry *result = new TimeEntry();
-    result->SetCreatedWith(HTTPSClientConfig::UserAgent());
+    result->SetCreatedWith(HTTPSClient::Config.UserAgent());
     result->SetDescription(existing->Description());
     result->SetDurOnly(existing->DurOnly());
     result->SetWID(existing->WID());
@@ -166,7 +166,7 @@ toggl::error User::Continue(
     result->SetUID(ID());
     result->SetStart(time(0));
     result->SetDurationInSeconds(-time(0));
-    result->SetCreatedWith(HTTPSClientConfig::UserAgent());
+    result->SetCreatedWith(HTTPSClient::Config.UserAgent());
 
     related.TimeEntries.push_back(result);
 
@@ -313,7 +313,7 @@ TimeEntry *User::DiscardTimeAt(
 
     if (te && split_into_new_entry) {
         TimeEntry *split = new TimeEntry();
-        split->SetCreatedWith(HTTPSClientConfig::UserAgent());
+        split->SetCreatedWith(HTTPSClient::Config.UserAgent());
         split->SetDurOnly(te->DurOnly());
         split->SetUID(ID());
         split->SetStart(at);
@@ -485,7 +485,7 @@ error User::Me(
 
         std::stringstream relative_url;
         relative_url << "/api/v8/me"
-                     << "?app_name=" << HTTPSClientConfig::AppName
+                     << "?app_name=" << HTTPSClient::Config.AppName
                      << "&with_related_data=true";
 
         return https_client->GetJSON(kAPIURL,

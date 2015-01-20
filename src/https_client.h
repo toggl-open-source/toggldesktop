@@ -9,18 +9,39 @@
 #include "./types.h"
 #include "./proxy.h"
 
+#include "Poco/Timestamp.h"
+
 namespace toggl {
+
+class ServerStatus {
+ public:
+    ServerStatus() {}
+    virtual ~ServerStatus() {}
+
+ private:
+    bool gone_;
+    Poco::Timestamp next_try_at_;
+};
 
 class HTTPSClientConfig {
  public:
-    static std::string AppName;
-    static std::string AppVersion;
-    static bool UseProxy;
-    static toggl::Proxy ProxySettings;
-    static bool IgnoreCert;
-    static std::string CACertPath;
+    HTTPSClientConfig()
+        : AppName("")
+    , AppVersion("")
+    , UseProxy(false)
+    , ProxySettings(Proxy())
+    , IgnoreCert(false)
+    , CACertPath("") {}
+    ~HTTPSClientConfig() {}
 
-    static std::string UserAgent() {
+    std::string AppName;
+    std::string AppVersion;
+    bool UseProxy;
+    toggl::Proxy ProxySettings;
+    bool IgnoreCert;
+    std::string CACertPath;
+
+    std::string UserAgent() {
         return AppName + "/" + AppVersion;
     }
 };
@@ -44,6 +65,9 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
+
+    static HTTPSClientConfig Config;
+    static ServerStatus BackendStatus;;
 
  private:
     error request(
