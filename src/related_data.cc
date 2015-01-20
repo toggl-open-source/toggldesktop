@@ -57,7 +57,7 @@ void RelatedData::timeEntryAutocompleteItems(
         }
 
         std::string project_task_label =
-            Formatter::JoinTaskNameReverse(t, p, c);
+            Formatter::JoinTaskName(t, p, c);
 
         std::string description = te->Description();
 
@@ -130,7 +130,7 @@ void RelatedData::taskAutocompleteItems(
             c = ClientByID(p->CID());
         }
 
-        std::string text = Formatter::JoinTaskNameReverse(t, p, c);
+        std::string text = Formatter::JoinTaskName(t, p, c);
         if (text.empty()) {
             continue;
         }
