@@ -1184,7 +1184,7 @@ namespace TogglDesktop
             string path = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
             System.IO.Directory.CreateDirectory(path);
-            string logPath = Path.Combine(path, "kopsik.log");
+            string logPath = Path.Combine(path, "toggl_desktop.log");
             toggl_set_log_path(logPath);
             toggl_set_log_level("debug");
             string databasePath = Path.Combine(path, "kopsik.db");

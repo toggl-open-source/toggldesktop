@@ -884,7 +884,7 @@ const NSString *appName = @"osx_native_app";
 
 	self.app_path = [Utils applicationSupportDirectory:self.environment];
 	self.db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
-	self.log_path = [self.app_path stringByAppendingPathComponent:@"kopsik.log"];
+	self.log_path = [self.app_path stringByAppendingPathComponent:@"toggl_desktop.log"];
 	self.log_level = @"debug";
 
 	[self parseCommandLineArguments];
