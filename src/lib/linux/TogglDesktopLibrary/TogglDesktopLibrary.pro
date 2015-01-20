@@ -21,6 +21,7 @@ SOURCES += \
     ../../../batch_update_result.cc \
     ../../../client.cc \
     ../../../idle.cc \
+    ../../../analytics.cc \
     ../../../context.cc \
     ../../../custom_error_handler.cc \
     ../../../database.cc \
@@ -54,6 +55,7 @@ HEADERS += \
     ../../../client.h \
     ../../../const.h \
     ../../../idle.h \
+    ../../../analytics.h \
     ../../../context.h \
     ../../../custom_error_handler.h \
     ../../../database.h \
