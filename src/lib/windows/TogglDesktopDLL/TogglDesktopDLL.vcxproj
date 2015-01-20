@@ -93,6 +93,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\analytics.h" />
     <ClInclude Include="..\..\..\autocomplete_item.h" />
     <ClInclude Include="..\..\..\base_model.h" />
     <ClInclude Include="..\..\..\batch_update_result.h" />
@@ -129,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\third_party\jsoncpp\dist\jsoncpp.cpp" />
+    <ClCompile Include="..\..\..\analytics.cc" />
     <ClCompile Include="..\..\..\autocomplete_item.cc" />
     <ClCompile Include="..\..\..\base_model.cc" />
     <ClCompile Include="..\..\..\batch_update_result.cc" />
