@@ -350,21 +350,6 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.LPWStr)]
             string level);
 
-        // API URL can be overriden from UI. Optional
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_set_api_url(
-            IntPtr context,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string path);
-
-        // WebSocket URL can be overriden from UI. Optional
-
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_set_websocket_url(
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string path);
-
         // User can tell the lib to display the app.
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]

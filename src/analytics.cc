@@ -7,7 +7,6 @@
 #include "../src/analytics.h"
 
 #include <sstream>
-#include <istream>
 
 #include "./https_client.h"
 
@@ -16,12 +15,8 @@
 #include "Poco/Net/HTMLForm.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
-#include "Poco/NumberFormatter.h"
-#include "Poco/URI.h"
 
 namespace toggl {
-
-const std::string kTrackingID("UA-3215787-27");
 
 void Analytics::TrackAutocompleteUsage(const std::string client_id,
                                        const bool was_using_autocomplete) {
@@ -29,58 +24,37 @@ void Analytics::TrackAutocompleteUsage(const std::string client_id,
     if (was_using_autocomplete) {
         value = 1;
     }
-    start(new TrackEvent(client_id, "timer", "start", "was_using_autocomplete",
-                         value));
+    start(new TrackEvent(
+        client_id, "timer", "start", "was_using_autocomplete", value));
+}
+
+const std::string TrackEvent::relativeURL() {
+    std::stringstream ss;
+    ss << "/collect"
+       << "?v=" << "1"
+       << "&tid=" << "UA-3215787-27"
+       << "&cid=" << client_id_
+       << "&t=" << "event"
+       << "&ec=" << category_
+       << "&ea=" << action_
+       << "&el=" << opt_label_
+       << "&ev=" << opt_value_;
+    return ss.str();
 }
 
 void TrackEvent::runTask() {
-    Poco::Logger& logger = Poco::Logger::get("TrackEvent");
-    try {
-        Poco::URI uri("http://www.google-analytics.com/collect");
-        uri.addQueryParameter("v", "1");
-        uri.addQueryParameter("tid", kTrackingID);
-        uri.addQueryParameter("cid", client_id_);
-        uri.addQueryParameter("t", "event");
-        uri.addQueryParameter("ec", category_);
-        uri.addQueryParameter("ea", action_);
-        uri.addQueryParameter("el", opt_label_);
-        uri.addQueryParameter("ev", Poco::NumberFormatter::format(opt_value_));
+    std::string response_body("");
+    HTTPSClient https_client;
+    error err = https_client.GetJSON(
+        "https://ssl.google-analytics.com",
+        relativeURL(),
+        std::string(""),
+        std::string(""),
+        &response_body);
 
-        std::string encoded_url("");
-        Poco::URI::encode(uri.getPathAndQuery(), "", encoded_url);
-
-        Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
-        Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_POST,
-                                   encoded_url,
-                                   Poco::Net::HTTPMessage::HTTP_1_1);
-
-        req.set("User-Agent", HTTPSClientConfig::UserAgent());
-
-        // Log out request contents
-        std::stringstream request_string;
-        req.write(request_string);
-        logger.debug(uri.toString());
-        logger.debug(request_string.str());
-
-        Poco::Net::HTTPResponse response;
-        session.receiveResponse(response);
-
-        std::stringstream ss;
-        ss << "Analytics response status code " << response.getStatus()
-           << ", content length " << response.getContentLength()
-           << ", content type " << response.getContentType();
-        if (response.has("Content-Encoding")) {
-            ss << ", content encoding " << response.get("Content-Encoding");
-        } else {
-            ss << ", unknown content encoding";
-        }
-        logger.debug(ss.str());
-    } catch(const Poco::Exception& exc) {
-        logger.error(exc.displayText());
-    } catch(const std::exception& ex) {
-        logger.error(ex.what());
-    } catch(const std::string& ex) {
-        logger.error(ex);
+    if (err != noError) {
+        Poco::Logger::get("Analytics").error(err);
+        return;
     }
 }
 

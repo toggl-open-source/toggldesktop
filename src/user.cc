@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "./client.h"
+#include "./const.h"
 #include "./formatter.h"
 #include "./https_client.h"
 #include "./project.h"
@@ -414,7 +415,8 @@ error User::PushChanges(HTTPSClient *https_client) {
         logger().debug(json);
 
         std::string response_body("");
-        error err = https_client->PostJSON("/api/v8/batch_updates",
+        error err = https_client->PostJSON(kAPIURL,
+                                           "/api/v8/batch_updates",
                                            json,
                                            APIToken(),
                                            "api_token",
@@ -486,7 +488,8 @@ error User::Me(
                      << "?app_name=" << HTTPSClientConfig::AppName
                      << "&with_related_data=true";
 
-        return https_client->GetJSON(relative_url.str(),
+        return https_client->GetJSON(kAPIURL,
+                                     relative_url.str(),
                                      email,
                                      password,
                                      user_data_json);
@@ -525,7 +528,8 @@ error User::Signup(
         Json::Value root;
         root["user"] = user;
 
-        return https_client->PostJSON("/api/v8/signups",
+        return https_client->PostJSON(kAPIURL,
+                                      "/api/v8/signups",
                                       Json::StyledWriter().write(root),
                                       "",
                                       "",

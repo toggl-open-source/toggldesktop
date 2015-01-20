@@ -5,12 +5,13 @@
 #include <sstream>
 #include <string>
 
-#include "./https_client.h"
+#include "./const.h"
 #include "./formatter.h"
+#include "./https_client.h"
 
 #include "Poco/Foundation.h"
-#include "Poco/Util/Application.h"
 #include "Poco/Thread.h"
+#include "Poco/Util/Application.h"
 
 #include <json/json.h>  // NOLINT
 
@@ -95,7 +96,8 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     std::string json = convertTimelineToJSON(batch->Events(),
                        batch->DesktopID());
     std::string response_body("");
-    return client.PostJSON("/api/v8/timeline",
+    return client.PostJSON(kAPIURL,
+                           "/api/v8/timeline",
                            json,
                            batch->APIToken(),
                            "api_token",

@@ -61,10 +61,6 @@
 // Environment (development, production, etc)
 @property NSString *environment;
 
-// Websocket and API hosts can be overriden
-@property NSString *websocket_url_override;
-@property NSString *api_url_override;
-
 // For testing crash reporter
 @property BOOL forceCrash;
 
@@ -866,20 +862,6 @@ const NSString *appName = @"osx_native_app";
 			NSLog(@"log level overriden with '%@'", self.log_level);
 			continue;
 		}
-		if (([argument rangeOfString:@"api"].location != NSNotFound) &&
-			([argument rangeOfString:@"url"].location != NSNotFound))
-		{
-			self.api_url_override = arguments[i + 1];
-			NSLog(@"API URL overriden with '%@'", self.api_url_override);
-			continue;
-		}
-		if (([argument rangeOfString:@"websocket"].location != NSNotFound) &&
-			([argument rangeOfString:@"url"].location != NSNotFound))
-		{
-			self.websocket_url_override = arguments[i + 1];
-			NSLog(@"Websocket URL overriden with '%@'", self.websocket_url_override);
-			continue;
-		}
 	}
 }
 
@@ -964,16 +946,6 @@ const NSString *appName = @"osx_native_app";
 		NSString *logPath =
 			[self.app_path stringByAppendingPathComponent:@"ui.log"];
 		freopen([logPath fileSystemRepresentation], "a+", stderr);
-	}
-
-	if (self.api_url_override != nil)
-	{
-		toggl_set_api_url(ctx, [self.api_url_override UTF8String]);
-	}
-
-	if (self.websocket_url_override != nil)
-	{
-		toggl_set_websocket_url(ctx, [self.websocket_url_override UTF8String]);
 	}
 
 	NSLog(@"AppDelegate init done");

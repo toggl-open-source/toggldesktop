@@ -15,7 +15,6 @@ class HTTPSClientConfig {
  public:
     static std::string AppName;
     static std::string AppVersion;
-    static std::string APIURL;
     static bool UseProxy;
     static toggl::Proxy ProxySettings;
     static bool IgnoreCert;
@@ -32,6 +31,7 @@ class HTTPSClient {
     virtual ~HTTPSClient() {}
 
     virtual error PostJSON(
+        const std::string host,
         const std::string relative_url,
         const std::string json,
         const std::string basic_auth_username,
@@ -39,6 +39,7 @@ class HTTPSClient {
         std::string *response_body);
 
     virtual error GetJSON(
+        const std::string host,
         const std::string relative_url,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
@@ -47,21 +48,21 @@ class HTTPSClient {
  private:
     error request(
         const std::string method,
+        const std::string host,
         const std::string relative_url,
         const std::string payload,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
+
     error requestJSON(
         const std::string method,
+        const std::string host,
         const std::string relative_url,
         const std::string json,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body);
-
-    // If we get 410, we'll refuse to connect to the endpoint again
-    static bool endpoint_gone;
 };
 
 }  // namespace toggl

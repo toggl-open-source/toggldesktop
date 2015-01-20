@@ -30,8 +30,7 @@ typedef void (*WebSocketMessageCallback)(
 
 class WebSocketClient {
  public:
-    explicit WebSocketClient(
-        const std::string websocket_url) :
+    WebSocketClient() :
     activity_(this, &WebSocketClient::runActivity),
     session_(0),
     req_(0),
@@ -39,7 +38,6 @@ class WebSocketClient {
     ws_(0),
     on_websocket_message_(0),
     ctx_(0),
-    websocket_url_(websocket_url),
     last_connection_at_(0),
     api_token_("") {}
     virtual ~WebSocketClient();
@@ -49,10 +47,6 @@ class WebSocketClient {
         const std::string api_token,
         WebSocketMessageCallback on_websocket_message);
     virtual void Shutdown();
-
-    void SetWebsocketURL(const std::string value) {
-        websocket_url_ = value;
-    }
 
  protected:
     void runActivity();
@@ -81,8 +75,6 @@ class WebSocketClient {
     Poco::Net::WebSocket *ws_;
     WebSocketMessageCallback on_websocket_message_;
     void *ctx_;
-
-    std::string websocket_url_;
 
     std::time_t last_connection_at_;
 

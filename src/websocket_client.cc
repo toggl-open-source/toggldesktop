@@ -74,7 +74,7 @@ error WebSocketClient::createSession() {
     last_connection_at_ = time(0);
 
     try {
-        Poco::URI uri(websocket_url_);
+        Poco::URI uri(kWebSocketURL);
 
         Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
         acceptCertHandler =

@@ -39,6 +39,8 @@ class TrackEvent : public Poco::Task {
     std::string action_;
     std::string opt_label_;
     int opt_value_;
+
+    const std::string relativeURL();
 };
 
 }  // namespace toggl

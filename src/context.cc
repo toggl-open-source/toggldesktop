@@ -13,12 +13,12 @@
 #include "./const.h"
 #include "./database.h"
 #include "./formatter.h"
+#include "./https_client.h"
 #include "./project.h"
 #include "./settings.h"
 #include "./time_entry.h"
 #include "./timeline_uploader.h"
 #include "./toggl_api_private.h"
-#include "./websocket_client.h"
 #include "./window_change_recorder.h"
 #include "./workspace.h"
 
@@ -43,10 +43,8 @@ namespace toggl {
 Context::Context(const std::string app_name, const std::string app_version)
     : db_(0)
 , user_(0)
-, ws_client_(0)
 , timeline_uploader_(0)
 , window_change_recorder_(0)
-, timeline_upload_url_("")
 , feedback_("", "", "")
 , next_sync_at_(0)
 , next_push_changes_at_(0)
@@ -62,7 +60,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , last_timer_started_at_(0)
-, timer_start_interval_(kTimerStartInterval) {
+, timer_start_interval_(kTimerStartInterval)
+, api_gone_(false) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -111,11 +110,7 @@ Context::~Context() {
 
     {
         Poco::Mutex::ScopedLock lock(ws_client_m_);
-        if (ws_client_) {
-            ws_client_->Shutdown();
-            delete ws_client_;
-            ws_client_ = 0;
-        }
+        ws_client_.Shutdown();
     }
 
     {
@@ -203,9 +198,7 @@ void Context::Shutdown() {
 
     {
         Poco::Mutex::ScopedLock lock(ws_client_m_);
-        if (ws_client_) {
-            ws_client_->Shutdown();
-        }
+        ws_client_.Shutdown();
     }
 
     {
@@ -400,6 +393,10 @@ bool Context::isPostponed(
 }
 
 _Bool Context::displayError(const error err) {
+    if (kEndpointGoneError == err) {
+        api_gone_ = true;
+    }
+
     if (err.find("Request to server failed with status code: 403")
             != std::string::npos) {
         if (!user_) {
@@ -477,6 +474,11 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
+    if (api_gone_) {
+        displayError(kEndpointGoneError);
+        return;
+    }
+
     HTTPSClient client;
     error err = user_->PullAllUserData(&client);
     if (err != noError) {
@@ -528,6 +530,11 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onPushChanges executing");
 
+    if (api_gone_) {
+        displayError(kEndpointGoneError);
+        return;
+    }
+
     HTTPSClient client;
     error err = user_->PushChanges(&client);
     if (err != noError) {
@@ -558,10 +565,7 @@ void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchWebSocketOff");
 
     Poco::Mutex::ScopedLock lock(ws_client_m_);
-    if (!ws_client_) {
-        return;
-    }
-    ws_client_->Shutdown();
+    ws_client_.Shutdown();
 }
 
 _Bool Context::LoadUpdateFromJSONString(const std::string json) {
@@ -598,7 +602,7 @@ void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
     poco_assert(!user_->APIToken().empty());
 
     Poco::Mutex::ScopedLock lock(ws_client_m_);
-    ws_client_->Start(this, user_->APIToken(), on_websocket_message);
+    ws_client_.Start(this, user_->APIToken(), on_websocket_message);
 }
 
 // Start/stop timeline recording on local machine
@@ -669,7 +673,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete timeline_uploader_;
             timeline_uploader_ = 0;
         }
-        timeline_uploader_ = new TimelineUploader(timeline_upload_url_, this);
+        timeline_uploader_ = new TimelineUploader(this);
     }
 
     {
@@ -780,9 +784,15 @@ void Context::executeUpdateCheck() {
     }
     UI()->DisplayUpdate(false, update_channel, true, false, "", "");
 
+    if (api_gone_) {
+        displayError(kEndpointGoneError);
+        return;
+    }
+
     std::string response_body("");
     HTTPSClient https_client;
-    err = https_client.GetJSON(updateURL(),
+    err = https_client.GetJSON(kAPIURL,
+                               updateURL(),
                                std::string(""),
                                std::string(""),
                                &response_body);
@@ -888,15 +898,22 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
         json = kRecordTimelineEnabledJSON;
     }
 
+    if (api_gone_) {
+        displayError(kEndpointGoneError);
+        return;
+    }
+
     std::string response_body("");
     HTTPSClient https_client;
-    error err = https_client.PostJSON("/api/v8/timeline_settings",
+    error err = https_client.PostJSON(kAPIURL,
+                                      "/api/v8/timeline_settings",
                                       json,
                                       user_->APIToken(),
                                       "api_token",
                                       &response_body);
     if (err != noError) {
-        logger().warning(err);
+        displayError(err);
+        logger().error(err);
     }
 }
 
@@ -926,9 +943,15 @@ _Bool Context::SendFeedback(Feedback fb) {
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
 
+    if (api_gone_) {
+        displayError(kEndpointGoneError);
+        return;
+    }
+
     std::string response_body("");
     HTTPSClient https_client;
-    error err = https_client.PostJSON("/api/v8/feedback",
+    error err = https_client.PostJSON(kAPIURL,
+                                      "/api/v8/feedback",
                                       feedback_.JSON(),
                                       user_->APIToken(),
                                       "api_token",
@@ -937,14 +960,6 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
         displayError(err);
         return;
     }
-}
-
-void Context::SetWebSocketClientURL(const std::string value) {
-    Poco::Mutex::ScopedLock lock(ws_client_m_);
-    if (ws_client_) {
-        delete ws_client_;
-    }
-    ws_client_ = new WebSocketClient(value);
 }
 
 _Bool Context::LoadSettings(Settings *settings) {
@@ -1194,6 +1209,10 @@ _Bool Context::Login(
     const std::string email,
     const std::string password) {
 
+    if (api_gone_) {
+        return displayError(kEndpointGoneError);
+    }
+
     HTTPSClient client;
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
@@ -1207,6 +1226,10 @@ _Bool Context::Login(
 _Bool Context::Signup(
     const std::string email,
     const std::string password) {
+
+    if (api_gone_) {
+        return displayError(kEndpointGoneError);
+    }
 
     HTTPSClient client;
     std::string user_data_json("");
@@ -2131,9 +2154,14 @@ _Bool Context::OpenReportsInBrowser() {
         return displayError("You must log in to view reports");
     }
 
+    if (api_gone_) {
+        return displayError(kEndpointGoneError);
+    }
+
     std::string response_body("");
     HTTPSClient https_client;
-    error err = https_client.PostJSON("/api/v8/desktop_login_tokens",
+    error err = https_client.PostJSON(kAPIURL,
+                                      "/api/v8/desktop_login_tokens",
                                       "{}",
                                       user_->APIToken(),
                                       "api_token",

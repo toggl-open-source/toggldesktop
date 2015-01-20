@@ -227,18 +227,6 @@ extern "C" {
     TOGGL_EXPORT void toggl_set_log_level(
         const char_t *level);
 
-    // API URL can be overriden from UI. Optional
-
-    TOGGL_EXPORT void toggl_set_api_url(
-        void *context,
-        const char_t *api_url);
-
-    // WebSocket URL can be overriden from UI. Optional
-
-    TOGGL_EXPORT void toggl_set_websocket_url(
-        void *context,
-        const char_t *websocket_url);
-
     // Various parts of UI can tell the app to show itself.
 
     TOGGL_EXPORT void toggl_show_app(

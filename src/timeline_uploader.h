@@ -28,9 +28,8 @@ const unsigned int kTimelineUploadMaxBackoffSeconds =
 
 class TimelineUploader {
  public:
-    TimelineUploader(const std::string upload_url, TimelineDatasource *ds)
+    explicit TimelineUploader(TimelineDatasource *ds)
         : current_upload_interval_seconds_(kTimelineUploadIntervalSeconds)
-    , upload_url_(upload_url)
     , timeline_datasource_(ds)
     , uploading_(this, &TimelineUploader::upload_loop_activity) {
         start();
@@ -61,8 +60,6 @@ class TimelineUploader {
 
     error process();
     void sleep();
-
-    std::string upload_url_;
 
     TimelineDatasource *timeline_datasource_;
 

@@ -36,10 +36,6 @@ void *toggl_context_init(
     toggl::Context *ctx =
         new toggl::Context(to_string(app_name), to_string(app_version));
 
-    ctx->SetAPIURL(kAPIURL);
-    ctx->SetTimelineUploadURL(kTimelineUploadURL);
-    ctx->SetWebSocketClientURL(kWebSocketURL);
-
     return ctx;
 }
 
@@ -177,22 +173,6 @@ void toggl_set_log_level(const char_t *level) {
     poco_check_ptr(level);
 
     Poco::Logger::get("").setLevel(to_string(level));
-}
-
-void toggl_set_api_url(
-    void *context,
-    const char_t *api_url) {
-    poco_check_ptr(api_url);
-
-    app(context)->SetAPIURL(to_string(api_url));
-}
-
-void toggl_set_websocket_url(
-    void *context,
-    const char_t *websocket_url) {
-    poco_check_ptr(websocket_url);
-
-    app(context)->SetWebSocketClientURL(to_string(websocket_url));
 }
 
 void toggl_show_app(

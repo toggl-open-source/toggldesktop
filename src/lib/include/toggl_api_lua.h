@@ -53,18 +53,6 @@ static int l_toggl_set_log_level(lua_State *L) {
     return 0;
 }
 
-static int l_toggl_set_api_url(lua_State *L) {
-    toggl_set_api_url(app,
-                      luaL_checkstring(L, -1));
-    return 0;
-}
-
-static int l_toggl_set_websocket_url(lua_State *L) {
-    toggl_set_websocket_url(app,
-                            luaL_checkstring(L, -1));
-    return 0;
-}
-
 static int l_toggl_show_app(lua_State *L) {
     toggl_show_app(app);
     return 0;
@@ -442,8 +430,6 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_db_path", l_toggl_set_db_path},
     {"set_log_path", l_toggl_set_log_path},
     {"set_log_level", l_toggl_set_log_level},
-    {"set_api_url", l_toggl_set_api_url},
-    {"set_websocket_url", l_toggl_set_websocket_url},
     {"show_app", l_toggl_show_app},
     {"login", l_toggl_login},
     {"signup", l_toggl_signup},

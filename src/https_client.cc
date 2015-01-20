@@ -35,21 +35,20 @@ namespace toggl {
 
 std::string HTTPSClientConfig::AppName = std::string("");
 std::string HTTPSClientConfig::AppVersion = std::string("");
-std::string HTTPSClientConfig::APIURL = std::string(kAPIURL);
 bool HTTPSClientConfig::UseProxy = false;
 bool HTTPSClientConfig::IgnoreCert = false;
 toggl::Proxy HTTPSClientConfig::ProxySettings = Proxy();
 std::string HTTPSClientConfig::CACertPath = std::string("");
 
-bool HTTPSClient::endpoint_gone = false;
-
 error HTTPSClient::PostJSON(
+    const std::string host,
     const std::string relative_url,
     const std::string json,
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
     return requestJSON(Poco::Net::HTTPRequest::HTTP_POST,
+                       host,
                        relative_url,
                        json,
                        basic_auth_username,
@@ -58,11 +57,13 @@ error HTTPSClient::PostJSON(
 }
 
 error HTTPSClient::GetJSON(
+    const std::string host,
     const std::string relative_url,
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
     return requestJSON(Poco::Net::HTTPRequest::HTTP_GET,
+                       host,
                        relative_url,
                        "",
                        basic_auth_username,
@@ -72,6 +73,7 @@ error HTTPSClient::GetJSON(
 
 error HTTPSClient::requestJSON(
     const std::string method,
+    const std::string host,
     const std::string relative_url,
     const std::string json,
     const std::string basic_auth_username,
@@ -79,6 +81,7 @@ error HTTPSClient::requestJSON(
     std::string *response_body) {
     return request(
         method,
+        host,
         relative_url,
         json,
         basic_auth_username,
@@ -88,16 +91,14 @@ error HTTPSClient::requestJSON(
 
 error HTTPSClient::request(
     const std::string method,
+    const std::string host,
     const std::string relative_url,
     const std::string payload,
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
 
-    if (endpoint_gone) {
-        return kEndpointGoneError;
-    }
-
+    poco_assert(!host.empty());
     poco_assert(!method.empty());
     poco_assert(!relative_url.empty());
     poco_assert(!HTTPSClientConfig::CACertPath.empty());
@@ -107,7 +108,7 @@ error HTTPSClient::request(
     *response_body = "";
 
     try {
-        Poco::URI uri(HTTPSClientConfig::APIURL);
+        Poco::URI uri(host);
 
         Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
         acceptCertHandler =
@@ -226,7 +227,6 @@ error HTTPSClient::request(
         logger.trace(*response_body);
 
         if (410 == response.getStatus()) {
-            endpoint_gone = true;
             return kEndpointGoneError;
         }
 

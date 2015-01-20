@@ -9,16 +9,16 @@
 #include <set>
 #include <iostream> // NOLINT
 
+#include "./analytics.h"
 #include "./custom_error_handler.h"
 #include "./feedback.h"
 #include "./gui.h"
-#include "./https_client.h"
 #include "./idle.h"
 #include "./lib/include/toggl_api.h"
 #include "./model_change.h"
 #include "./timeline_notifications.h"
 #include "./types.h"
-#include "./analytics.h"
+#include "./websocket_client.h"
 
 #include "Poco/Activity.h"
 #include "Poco/LocalDateTime.h"
@@ -29,7 +29,6 @@ namespace toggl {
 
 class Database;
 class TimelineUploader;
-class WebSocketClient;
 class WindowChangeRecorder;
 
 class Context : public TimelineDatasource {
@@ -56,12 +55,6 @@ class Context : public TimelineDatasource {
     // Load model update from JSON string (from WebSocket)
     _Bool LoadUpdateFromJSONString(const std::string json);
 
-    void SetAPIURL(const std::string value) {
-        HTTPSClientConfig::APIURL = value;
-    }
-    void SetTimelineUploadURL(const std::string value) {
-        timeline_upload_url_ = value;
-    }
     void SetWebSocketClientURL(const std::string value);
 
     _Bool SetDBPath(const std::string path);
@@ -330,15 +323,13 @@ class Context : public TimelineDatasource {
     User *user_;
 
     Poco::Mutex ws_client_m_;
-    WebSocketClient *ws_client_;
+    WebSocketClient ws_client_;
 
     Poco::Mutex timeline_uploader_m_;
     TimelineUploader *timeline_uploader_;
 
     Poco::Mutex window_change_recorder_m_;
     WindowChangeRecorder *window_change_recorder_;
-
-    std::string timeline_upload_url_;
 
     custom_error_handler error_handler_;
 
@@ -379,6 +370,9 @@ class Context : public TimelineDatasource {
     int timer_start_interval_;
 
     Analytics analytics_;
+
+    // If we get 410, we'll refuse to connect to the endpoint again
+    bool api_gone_;
 };
 
 void on_websocket_message(
