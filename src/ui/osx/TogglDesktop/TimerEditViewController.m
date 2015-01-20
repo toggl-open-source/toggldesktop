@@ -349,10 +349,11 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (IBAction)startButtonClicked:(id)sender
 {
-    if (![self.manualBox isHidden]) {
-        [self addButtonClicked];
-        return;
-    }
+	if (![self.manualBox isHidden])
+	{
+		[self addButtonClicked];
+		return;
+	}
 	if (self.time_entry.duration_in_seconds < 0)
 	{
 		[self clear];
