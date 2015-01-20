@@ -113,7 +113,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)focusTimer:(NSNotification *)notification
 {
-	if (self.time_entry.duration < 0)
+	if (self.time_entry.duration < 0 || ![self.manualBox isHidden])
 	{
 		[self.view.window makeFirstResponder:self.startButton];
 	}
@@ -349,6 +349,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (IBAction)startButtonClicked:(id)sender
 {
+    if (![self.manualBox isHidden]) {
+        [self addButtonClicked];
+        return;
+    }
 	if (self.time_entry.duration_in_seconds < 0)
 	{
 		[self clear];
@@ -478,7 +482,7 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.manualBox setHidden:NO];
 	[self.mainBox setHidden:YES];
-	[self.view.window makeFirstResponder:self.manualBox];
+	[self.view.window makeFirstResponder:self.startButton];
 }
 
 - (void)addButtonClicked
