@@ -494,7 +494,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	NSString *GUID = [NSString stringWithUTF8String:guid];
 	free(guid);
 
-	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDuration);
+	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
 }
 
 @end
