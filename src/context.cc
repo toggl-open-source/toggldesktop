@@ -60,8 +60,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , last_timer_started_at_(0)
-, timer_start_interval_(kTimerStartInterval)
-, api_gone_(false) {
+, timer_start_interval_(kTimerStartInterval) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -393,10 +392,6 @@ bool Context::isPostponed(
 }
 
 _Bool Context::displayError(const error err) {
-    if (kEndpointGoneError == err) {
-        api_gone_ = true;
-    }
-
     if (err.find("Request to server failed with status code: 403")
             != std::string::npos) {
         if (!user_) {
@@ -474,11 +469,6 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    if (api_gone_) {
-        displayError(kEndpointGoneError);
-        return;
-    }
-
     HTTPSClient client;
     error err = user_->PullAllUserData(&client);
     if (err != noError) {
@@ -529,11 +519,6 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
     logger().debug("onPushChanges executing");
-
-    if (api_gone_) {
-        displayError(kEndpointGoneError);
-        return;
-    }
 
     HTTPSClient client;
     error err = user_->PushChanges(&client);
@@ -784,11 +769,6 @@ void Context::executeUpdateCheck() {
     }
     UI()->DisplayUpdate(false, update_channel, true, false, "", "");
 
-    if (api_gone_) {
-        displayError(kEndpointGoneError);
-        return;
-    }
-
     std::string response_body("");
     HTTPSClient https_client;
     err = https_client.GetJSON(kAPIURL,
@@ -898,11 +878,6 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
         json = kRecordTimelineEnabledJSON;
     }
 
-    if (api_gone_) {
-        displayError(kEndpointGoneError);
-        return;
-    }
-
     std::string response_body("");
     HTTPSClient https_client;
     error err = https_client.PostJSON(kAPIURL,
@@ -942,11 +917,6 @@ _Bool Context::SendFeedback(Feedback fb) {
 
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
-
-    if (api_gone_) {
-        displayError(kEndpointGoneError);
-        return;
-    }
 
     std::string response_body("");
     HTTPSClient https_client;
@@ -1209,10 +1179,6 @@ _Bool Context::Login(
     const std::string email,
     const std::string password) {
 
-    if (api_gone_) {
-        return displayError(kEndpointGoneError);
-    }
-
     HTTPSClient client;
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
@@ -1226,10 +1192,6 @@ _Bool Context::Login(
 _Bool Context::Signup(
     const std::string email,
     const std::string password) {
-
-    if (api_gone_) {
-        return displayError(kEndpointGoneError);
-    }
 
     HTTPSClient client;
     std::string user_data_json("");
@@ -2152,10 +2114,6 @@ void Context::SetSleep() {
 _Bool Context::OpenReportsInBrowser() {
     if (!user_) {
         return displayError("You must log in to view reports");
-    }
-
-    if (api_gone_) {
-        return displayError(kEndpointGoneError);
     }
 
     std::string response_body("");

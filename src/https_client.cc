@@ -33,6 +33,32 @@
 
 namespace toggl {
 
+ServerStatus::ServerStatus() {
+    m_ = new Poco::Mutex();
+}
+
+ServerStatus::~ServerStatus() {
+    delete m_;
+    m_ = 0;
+}
+
+void ServerStatus::SetGone(const std::string host, const bool value) {
+    Poco::Mutex::ScopedLock lock(*m_);
+    if (value) {
+        gone_.insert(host);
+        return;
+    }
+    std::set<std::string>::iterator it = gone_.find(host);
+    if (it != gone_.end()) {
+        gone_.erase(it);
+    }
+}
+
+bool ServerStatus::Gone(const std::string host) {
+    Poco::Mutex::ScopedLock lock(*m_);
+    return gone_.find(host) != gone_.end();
+}
+
 HTTPSClientConfig HTTPSClient::Config = HTTPSClientConfig();
 ServerStatus HTTPSClient::BackendStatus = ServerStatus();
 
@@ -75,14 +101,45 @@ error HTTPSClient::requestJSON(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
-    return request(
+
+    if (BackendStatus.Gone(host)) {
+        return kEndpointGoneError;
+    }
+
+    int response_status(0);
+    error err = request(
         method,
         host,
         relative_url,
         json,
         basic_auth_username,
         basic_auth_password,
-        response_body);
+        response_body,
+        &response_status);
+
+    // Some exception occurred
+    if (err != noError) {
+        return err;
+    }
+
+    // HTTP status gone away
+    if (410 == response_status) {
+        BackendStatus.SetGone(host, true);
+        return kEndpointGoneError;
+    }
+
+    // Other HTTP status
+    if (response_status < 200 || response_status >= 300) {
+        if (response_body->empty()) {
+            std::stringstream description;
+            description << "Request to server failed with status code: "
+                        << response_status;
+            return description.str();
+        }
+        return *response_body;
+    }
+
+    return noError;
 }
 
 error HTTPSClient::request(
@@ -92,7 +149,8 @@ error HTTPSClient::request(
     const std::string payload,
     const std::string basic_auth_username,
     const std::string basic_auth_password,
-    std::string *response_body) {
+    std::string *response_body,
+    int *response_status) {
 
     poco_assert(!host.empty());
     poco_assert(!method.empty());
@@ -190,6 +248,8 @@ error HTTPSClient::request(
         Poco::Net::HTTPResponse response;
         std::istream& is = session.receiveResponse(response);
 
+        *response_status = response.getStatus();
+
         {
             std::stringstream ss;
             ss << "Response status code " << response.getStatus()
@@ -221,20 +281,6 @@ error HTTPSClient::request(
         }
 
         logger.trace(*response_body);
-
-        if (410 == response.getStatus()) {
-            return kEndpointGoneError;
-        }
-
-        if (response.getStatus() < 200 || response.getStatus() >= 300) {
-            if (response_body->empty()) {
-                std::stringstream description;
-                description << "Request to server failed with status code: "
-                            << response.getStatus();
-                return description.str();
-            }
-            return *response_body;
-        }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

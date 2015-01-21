@@ -5,22 +5,30 @@
 
 #include <string>
 #include <vector>
+#include <set>
 
-#include "./types.h"
 #include "./proxy.h"
+#include "./types.h"
 
 #include "Poco/Timestamp.h"
+
+namespace Poco {
+class Mutex;
+}
 
 namespace toggl {
 
 class ServerStatus {
  public:
-    ServerStatus() {}
-    virtual ~ServerStatus() {}
+    ServerStatus();
+    virtual ~ServerStatus();
+    void SetGone(const std::string host, const bool value);
+    bool Gone(const std::string host);
 
  private:
-    bool gone_;
+    std::set<std::string> gone_;
     Poco::Timestamp next_try_at_;
+    Poco::Mutex *m_;
 };
 
 class HTTPSClientConfig {
@@ -67,7 +75,7 @@ class HTTPSClient {
         std::string *response_body);
 
     static HTTPSClientConfig Config;
-    static ServerStatus BackendStatus;;
+    static ServerStatus BackendStatus;
 
  private:
     error request(
@@ -77,7 +85,8 @@ class HTTPSClient {
         const std::string payload,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
-        std::string *response_body);
+        std::string *response_body,
+        int *response_status);
 
     error requestJSON(
         const std::string method,
