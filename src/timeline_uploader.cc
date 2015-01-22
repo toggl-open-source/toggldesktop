@@ -96,7 +96,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     std::string json = convertTimelineToJSON(batch->Events(),
                        batch->DesktopID());
     std::string response_body("");
-    return client.PostJSON(kAPIURL,
+    return client.PostJSON(kTimelineUploadURL,
                            "/api/v8/timeline",
                            json,
                            batch->APIToken(),
