@@ -14,6 +14,7 @@ my $pack_errcode;
 my $load_errcode;
 
 my $errcount;
+my $year = (localtime)[5] + 1900;
 
 while (@ARGV) {
 	my $arg = $ARGV[0];
@@ -250,7 +251,7 @@ while (($hdr, $lib) = each %libinc)
 
 	if ($gotfile) {
 	  while(<IN>) {
-		if(/^\#define\s+(\S+)\s+(\S+)/) {
+		if(/^\#\s*define\s+(\S+)\s+(\S+)/) {
 			$name = $1;
 			$code = $2;
 			next if $name =~ /^${lib}err/;
@@ -391,7 +392,7 @@ foreach $lib (keys %csrc)
 	} else {
 	    push @out,
 "/* ====================================================================\n",
-" * Copyright (c) 2001-2011 The OpenSSL Project.  All rights reserved.\n",
+" * Copyright (c) 2001-$year The OpenSSL Project.  All rights reserved.\n",
 " *\n",
 " * Redistribution and use in source and binary forms, with or without\n",
 " * modification, are permitted provided that the following conditions\n",
@@ -576,7 +577,7 @@ EOF
 	print OUT <<"EOF";
 /* $cfile */
 /* ====================================================================
- * Copyright (c) 1999-2011 The OpenSSL Project.  All rights reserved.
+ * Copyright (c) 1999-$year The OpenSSL Project.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
