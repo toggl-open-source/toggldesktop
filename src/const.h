@@ -20,6 +20,13 @@
 #define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
 
 #define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
+#define kForbiddenError "Invalid e-mail or password!"
+#define kUnsupportedAppError "This version of the app is not supported any more. Please visit Toggl website to download a supported app." // NOLINT
 #define kTooShortTimeEntries "So short time entries, perhaps accidentally?"
+#define kUnauthorizedError "Unauthorized! Please login again."
+#define kCannotConnectError "Cannot connect to Toggl"
+#define kBadRequestError "Data that you are sending is not valid/acceptable"
+#define kRequestIsNotPossible "Request is not possible"
+#define kPaymentRequiredError "Requested action allowed only for Pro workspace. Please upgrade!"  // NOLINT
 
 #endif  // SRC_CONST_H_

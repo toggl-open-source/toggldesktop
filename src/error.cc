@@ -11,6 +11,9 @@ namespace toggl {
 
 bool IsNetworkingError(const error err) {
     std::string value(err);
+    if (value.find(kCannotConnectError) != std::string::npos) {
+        return true;
+    }
     if (value.find("Cannot establish proxy connection") != std::string::npos) {
         return true;
     }
@@ -98,6 +101,12 @@ bool IsUserError(const error err) {
         return false;
     }
     std::string value(err);
+    if (value.find(kPaymentRequiredError) != std::string::npos) {
+        return true;
+    }
+    if (value.find(kBadRequestError) != std::string::npos) {
+        return true;
+    }
     if (value.find("So short time entries, perhaps accidentally?")
             != std::string::npos) {
         return true;

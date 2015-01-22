@@ -73,6 +73,15 @@ error WebSocketClient::createSession() {
 
     last_connection_at_ = time(0);
 
+    error err = TogglClient::TogglStatus.Status();
+    if (err != noError) {
+        std::stringstream ss;
+        ss << "Will not start Websocket sessions, ";
+        ss << "because of known bad Toggl status: " << err;
+        logger().error(ss.str());
+        return err;
+    }
+
     try {
         Poco::URI uri(kWebSocketURL);
 

@@ -19,7 +19,7 @@
 
 namespace toggl {
 
-class HTTPSClient;
+class TogglClient;
 
 class User : public BaseModel {
  public:
@@ -35,18 +35,18 @@ class User : public BaseModel {
 
     ~User();
 
-    error PullAllUserData(HTTPSClient *https_client);
-    error PullChanges(HTTPSClient *https_client);
-    error PushChanges(HTTPSClient *https_client);
+    error PullAllUserData(TogglClient *https_client);
+    error PullChanges(TogglClient *https_client);
+    error PushChanges(TogglClient *https_client);
 
     static error Signup(
-        HTTPSClient *https_client,
+        TogglClient *https_client,
         const std::string email,
         const std::string password,
         std::string *user_data_json);
 
     static error Me(
-        HTTPSClient *https_client,
+        TogglClient *https_client,
         const std::string email,
         const std::string password,
         std::string *user_data);

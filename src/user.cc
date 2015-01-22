@@ -363,7 +363,7 @@ void User::CollectPushableModels(
 }
 
 error User::PullAllUserData(
-    HTTPSClient *https_client) {
+    TogglClient *https_client) {
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -391,7 +391,7 @@ error User::PullAllUserData(
     return noError;
 }
 
-error User::PushChanges(HTTPSClient *https_client) {
+error User::PushChanges(TogglClient *https_client) {
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -466,7 +466,7 @@ std::string User::String() const {
 }
 
 error User::Me(
-    HTTPSClient *https_client,
+    TogglClient *https_client,
     const std::string email,
     const std::string password,
     std::string *user_data_json) {
@@ -485,7 +485,7 @@ error User::Me(
 
         std::stringstream relative_url;
         relative_url << "/api/v8/me"
-                     << "?app_name=" << HTTPSClient::Config.AppName
+                     << "?app_name=" << TogglClient::Config.AppName
                      << "&with_related_data=true";
 
         return https_client->GetJSON(kAPIURL,
@@ -504,7 +504,7 @@ error User::Me(
 }
 
 error User::Signup(
-    HTTPSClient *https_client,
+    TogglClient *https_client,
     const std::string email,
     const std::string password,
     std::string *user_data_json) {

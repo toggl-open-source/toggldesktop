@@ -44,8 +44,8 @@ const std::string TrackEvent::relativeURL() {
 
 void TrackEvent::runTask() {
     std::string response_body("");
-    HTTPSClient https_client;
-    error err = https_client.GetJSON(
+    HTTPSClient client;
+    error err = client.GetJSON(
         "https://ssl.google-analytics.com",
         relativeURL(),
         std::string(""),

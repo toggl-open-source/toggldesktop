@@ -5,30 +5,50 @@
 
 #include <string>
 #include <vector>
-#include <set>
 
 #include "./proxy.h"
 #include "./types.h"
 
-#include "Poco/Timestamp.h"
+#include "Poco/Activity.h"
 
 namespace Poco {
-class Mutex;
+class Logger;
+namespace Util {
+}
 }
 
 namespace toggl {
 
 class ServerStatus {
  public:
-    ServerStatus();
-    virtual ~ServerStatus();
-    void SetGone(const std::string host, const bool value);
-    bool Gone(const std::string host);
+    ServerStatus()
+        : gone_(false)
+    , checker_(this, &ServerStatus::runActivity)
+    , fast_retry_(true) {}
+
+    virtual ~ServerStatus() {
+        stopStatusCheck();
+    }
+
+    error Status();
+    error UpdateStatus(const Poco::Int64 status_code);
+
+ protected:
+    void runActivity();
 
  private:
-    std::set<std::string> gone_;
-    Poco::Timestamp next_try_at_;
-    Poco::Mutex *m_;
+    bool gone_;
+    Poco::Activity<ServerStatus> checker_;
+    bool fast_retry_;
+
+    void setGone(const bool value);
+    bool gone();
+
+    void startStatusCheck();
+    void stopStatusCheck();
+    bool checkingStatus();
+
+    Poco::Logger &logger() const;
 };
 
 class HTTPSClientConfig {
@@ -75,10 +95,9 @@ class HTTPSClient {
         std::string *response_body);
 
     static HTTPSClientConfig Config;
-    static ServerStatus BackendStatus;
 
- private:
-    error request(
+ protected:
+    virtual error request(
         const std::string method,
         const std::string host,
         const std::string relative_url,
@@ -87,15 +106,22 @@ class HTTPSClient {
         const std::string basic_auth_password,
         std::string *response_body,
         int *response_status);
+};
 
-    error requestJSON(
+class TogglClient : public HTTPSClient {
+ public:
+    static ServerStatus TogglStatus;
+
+ protected:
+    virtual error request(
         const std::string method,
         const std::string host,
         const std::string relative_url,
         const std::string json,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
-        std::string *response_body);
+        std::string *response_body,
+        int *response_status);
 };
 
 }  // namespace toggl

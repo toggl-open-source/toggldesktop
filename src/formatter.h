@@ -7,6 +7,8 @@
 #include <ctime>
 #include <vector>
 
+#include "Poco/Timestamp.h"
+
 #include "./autocomplete_item.h"
 #include "./types.h"
 
@@ -51,6 +53,9 @@ class Formatter {
 
     static std::string Format8601(
         const std::time_t date);
+
+    static std::string Format8601(
+        const Poco::Timestamp ts);
 
     static std::string FormatDateHeader(
         const std::time_t date);

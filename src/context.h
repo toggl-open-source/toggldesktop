@@ -370,9 +370,6 @@ class Context : public TimelineDatasource {
     int timer_start_interval_;
 
     Analytics analytics_;
-
-    // If we get 410, we'll refuse to connect to the endpoint again
-    bool api_gone_;
 };
 
 void on_websocket_message(

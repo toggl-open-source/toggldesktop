@@ -124,7 +124,10 @@ void GUI::DisplayReminder() {
 }
 
 void GUI::DisplayOnlineState(const _Bool is_online, const std::string reason) {
-    logger().debug("DisplayOnlineState");
+    std::stringstream ss;
+    ss << "DisplayOnlineState is_online: " << is_online
+       << ", reason: " << reason;
+    logger().debug(ss.str());
 
     char_t *reason_s = copy_string(reason);
     on_display_online_state_(is_online, reason_s);

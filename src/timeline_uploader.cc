@@ -86,7 +86,7 @@ error TimelineUploader::process() {
 }
 
 error TimelineUploader::upload(TimelineBatch *batch) {
-    HTTPSClient client;
+    TogglClient client;
 
     std::stringstream out;
     out << "Uploading " << batch->Events().size()

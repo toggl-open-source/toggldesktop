@@ -21,7 +21,6 @@
 #include "Poco/NumberParser.h"
 #include "Poco/String.h"
 #include "Poco/StringTokenizer.h"
-#include "Poco/Timestamp.h"
 #include "Poco/Types.h"
 #include "Poco/UTF8String.h"
 
@@ -534,6 +533,10 @@ std::string Formatter::Format8601(const std::time_t date) {
         return "null";
     }
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
+    return Format8601(ts);
+}
+
+std::string Formatter::Format8601(const Poco::Timestamp ts) {
     return Poco::DateTimeFormatter::format(
         ts,
         Poco::DateTimeFormat::ISO8601_FORMAT);

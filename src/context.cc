@@ -392,18 +392,11 @@ bool Context::isPostponed(
 }
 
 _Bool Context::displayError(const error err) {
-    if (err.find("Request to server failed with status code: 403")
-            != std::string::npos) {
-        if (!user_) {
-            return UI()->DisplayError("Invalid e-mail or password!");
+    if ((err.find(kForbiddenError) != std::string::npos)
+            || (err.find(kUnauthorizedError) != std::string::npos)) {
+        if (user_) {
+            setUser(0);
         }
-        setUser(0);
-    }
-    if (err.find("Request to server failed with status code: 418")
-            != std::string::npos) {
-        return UI()->DisplayError(
-            "This version of the app is not supported any more. "
-            "Please visit Toggl website to download a supported app.");
     }
     return UI()->DisplayError(err);
 }
@@ -452,6 +445,11 @@ void Context::Sync() {
 
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_sync_at_);
+
+    std::stringstream ss;
+    ss << "Next sync at "
+       << Formatter::Format8601(next_sync_at_);
+    logger().debug(ss.str());
 }
 
 void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
@@ -469,7 +467,7 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    HTTPSClient client;
+    TogglClient client;
     error err = user_->PullAllUserData(&client);
     if (err != noError) {
         displayError(err);
@@ -510,6 +508,11 @@ void Context::pushChanges() {
 
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_push_changes_at_);
+
+    std::stringstream ss;
+    ss << "Next push at "
+       << Formatter::Format8601(next_push_changes_at_);
+    logger().debug(ss.str());
 }
 
 void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
@@ -520,10 +523,12 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onPushChanges executing");
 
-    HTTPSClient client;
+    TogglClient client;
     error err = user_->PushChanges(&client);
     if (err != noError) {
         displayError(err);
+    } else {
+        displayOnlineState("Changes pushed");
     }
 
     err = save(false);
@@ -531,8 +536,6 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         displayError(err);
         return;
     }
-
-    displayOnlineState("Changes pushed");
 }
 
 void Context::switchWebSocketOff() {
@@ -682,6 +685,11 @@ void Context::fetchUpdates() {
 
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_fetch_updates_at_);
+
+    std::stringstream ss;
+    ss << "Next update fetch at "
+       << Formatter::Format8601(next_fetch_updates_at_);
+    logger().debug(ss.str());
 }
 
 void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
@@ -707,6 +715,11 @@ void Context::startPeriodicSync() {
         Poco::Timestamp() + (sync_interval_seconds_ * kOneSecondInMicros);
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_sync_at_);
+
+    std::stringstream ss;
+    ss << "Next periodic sync at "
+       << Formatter::Format8601(next_periodic_sync_at_);
+    logger().debug(ss.str());
 }
 
 void Context::onPeriodicSync(Poco::Util::TimerTask& task) {  // NOLINT
@@ -729,6 +742,11 @@ void Context::startPeriodicUpdateCheck() {
     Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_check_at);
+
+    std::stringstream ss;
+    ss << "Next periodic update check at "
+       << Formatter::Format8601(next_periodic_check_at);
+    logger().debug(ss.str());
 }
 
 void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
@@ -770,7 +788,7 @@ void Context::executeUpdateCheck() {
     UI()->DisplayUpdate(false, update_channel, true, false, "", "");
 
     std::string response_body("");
-    HTTPSClient https_client;
+    TogglClient https_client;
     err = https_client.GetJSON(kAPIURL,
                                updateURL(),
                                std::string(""),
@@ -859,6 +877,11 @@ void Context::TimelineUpdateServerSettings() {
 
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_update_timeline_settings_at_);
+
+    std::stringstream ss;
+    ss << "Next timeline settings update at "
+       << Formatter::Format8601(next_update_timeline_settings_at_);
+    logger().debug(ss.str());
 }
 
 const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
@@ -879,7 +902,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     }
 
     std::string response_body("");
-    HTTPSClient https_client;
+    TogglClient https_client;
     error err = https_client.PostJSON(kAPIURL,
                                       "/api/v8/timeline_settings",
                                       json,
@@ -919,7 +942,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
 
     std::string response_body("");
-    HTTPSClient https_client;
+    TogglClient https_client;
     error err = https_client.PostJSON(kAPIURL,
                                       "/api/v8/feedback",
                                       feedback_.JSON(),
@@ -1179,7 +1202,7 @@ _Bool Context::Login(
     const std::string email,
     const std::string password) {
 
-    HTTPSClient client;
+    TogglClient client;
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
     if (err != noError) {
@@ -1193,7 +1216,7 @@ _Bool Context::Signup(
     const std::string email,
     const std::string password) {
 
-    HTTPSClient client;
+    TogglClient client;
     std::string user_data_json("");
     error err = User::Signup(&client, email, password, &user_data_json);
     if (err != noError) {
@@ -1204,7 +1227,11 @@ _Bool Context::Signup(
 }
 
 void Context::setUser(User *value, const bool user_logged_in) {
-    logger().debug("setUser");
+    {
+        std::stringstream ss;
+        ss << "setUser user_logged_in=" << user_logged_in;
+        logger().debug(ss.str());
+    }
 
     Poco::Mutex::ScopedLock lock(user_m_);
     if (user_) {
@@ -1391,10 +1418,10 @@ TimeEntry *Context::Start(
         return 0;
     }
 
-    if ("production" == environment_) {
-        analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
-                                          task_id || project_id);
-    }
+    // if ("production" == environment_) {
+    analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
+                                      task_id || project_id);
+    // }
 
     return te;
 }
@@ -2117,7 +2144,7 @@ _Bool Context::OpenReportsInBrowser() {
     }
 
     std::string response_body("");
-    HTTPSClient https_client;
+    TogglClient https_client;
     error err = https_client.PostJSON(kAPIURL,
                                       "/api/v8/desktop_login_tokens",
                                       "{}",
@@ -2181,6 +2208,11 @@ void Context::SetOnline() {
 
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_sync_at_);
+
+    std::stringstream ss;
+    ss << "Next sync at "
+       << Formatter::Format8601(next_sync_at_);
+    logger().debug(ss.str());
 }
 
 void Context::remindToTrackTime() {
@@ -2202,6 +2234,11 @@ void Context::remindToTrackTime() {
 
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_reminder_at_);
+
+    std::stringstream ss;
+    ss << "Next reminder to track time at "
+       << Formatter::Format8601(next_reminder_at_);
+    logger().debug(ss.str());
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
