@@ -19,7 +19,8 @@ class Task : public BaseModel {
         : BaseModel()
     , name_("")
     , wid_(0)
-    , pid_(0) {}
+    , pid_(0)
+    , active_(false) {}
 
     const std::string &Name() const {
         return name_;
@@ -36,6 +37,11 @@ class Task : public BaseModel {
     }
     void SetPID(const Poco::UInt64 value);
 
+    const bool &Active() const {
+        return active_;
+    }
+    void SetActive(const bool value);
+
     std::string String() const;
 
     std::string ModelName() const {
@@ -51,6 +57,7 @@ class Task : public BaseModel {
     std::string name_;
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;
+    bool active_;
 };
 
 }  // namespace toggl

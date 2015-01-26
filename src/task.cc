@@ -37,6 +37,13 @@ void Task::SetName(const std::string value) {
     }
 }
 
+void Task::SetActive(const bool value) {
+    if (active_ != value) {
+        active_ = value;
+        SetDirty();
+    }
+}
+
 void Task::LoadFromJSON(Json::Value data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());

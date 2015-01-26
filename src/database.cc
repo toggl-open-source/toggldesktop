@@ -834,7 +834,7 @@ error Database::loadTasks(
 
     try {
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, id, uid, name, wid, pid "
+        select << "SELECT local_id, id, uid, name, wid, pid, active "
                "FROM tasks "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -863,6 +863,7 @@ error Database::loadTasks(
                 } else {
                     model->SetPID(rs[5].convert<Poco::UInt64>());
                 }
+                model->SetActive(rs[6].convert<bool>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -1782,13 +1783,14 @@ error Database::saveModel(
 
             *session_ << "update tasks set "
                       "id = :id, uid = :uid, name = :name, wid = :wid, "
-                      "pid = :pid "
+                      "pid = :pid, active = :active "
                       "where local_id = :local_id",
                       useRef(model->ID()),
                       useRef(model->UID()),
                       useRef(model->Name()),
                       useRef(model->WID()),
                       useRef(model->PID()),
+                      useRef(model->Active()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveTask");
@@ -1803,13 +1805,14 @@ error Database::saveModel(
             ss << "Inserting task " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
-            *session_ << "insert into tasks(id, uid, name, wid, pid) "
-                      "values(:id, :uid, :name, :wid, :pid)",
+            *session_ << "insert into tasks(id, uid, name, wid, pid, active) "
+                      "values(:id, :uid, :name, :wid, :pid, :active)",
                       useRef(model->ID()),
                       useRef(model->UID()),
                       useRef(model->Name()),
                       useRef(model->WID()),
                       useRef(model->PID()),
+                      useRef(model->Active()),
                       now;
             error err = last_error("saveTask");
             if (err != noError) {
@@ -2347,6 +2350,13 @@ error Database::migrateTasks() {
     err = migrate(
         "tasks.id",
         "CREATE UNIQUE INDEX id_tasks_id ON tasks (uid, id);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "tasks.active",
+        "alter table tasks add column active integer not null default 1;");
     if (err != noError) {
         return err;
     }
