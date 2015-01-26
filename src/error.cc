@@ -107,6 +107,9 @@ bool IsUserError(const error err) {
     if (value.find(kBadRequestError) != std::string::npos) {
         return true;
     }
+    if (value.find(kUnauthorizedError) != std::string::npos) {
+        return true;
+    }
     if (value.find("So short time entries, perhaps accidentally?")
             != std::string::npos) {
         return true;
