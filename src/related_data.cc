@@ -116,6 +116,10 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
+        if (!t->Active()) {
+            continue;
+        }
+
         Project *p = 0;
         if (t->PID()) {
             p = ProjectByID(t->PID());

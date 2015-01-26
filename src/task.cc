@@ -49,6 +49,7 @@ void Task::LoadFromJSON(Json::Value data) {
     SetName(data["name"].asString());
     SetPID(data["pid"].asUInt64());
     SetWID(data["wid"].asUInt64());
+    SetActive(data["active"].asBool());
 }
 
 }   // namespace toggl
