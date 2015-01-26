@@ -43,6 +43,9 @@ extern void *ctx;
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 
 	[self displaySettings:self.originalCmd];
+
+	[self.idleMinutesTextField setDelegate:self];
+	[self.reminderMinutesTextField setDelegate:self];
 }
 
 - (IBAction)useProxyButtonChanged:(id)sender
@@ -198,6 +201,21 @@ extern void *ctx;
 {
 	toggl_set_settings_reminder_minutes(ctx,
 										[self.reminderMinutesTextField.stringValue intValue]);
+}
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+	if ([aNotification object] == self.idleMinutesTextField)
+	{
+		toggl_set_settings_idle_minutes(ctx,
+										[self.idleMinutesTextField.stringValue intValue]);
+	}
+
+	if ([aNotification object] == self.reminderMinutesTextField)
+	{
+		toggl_set_settings_reminder_minutes(ctx,
+											[self.reminderMinutesTextField.stringValue intValue]);
+	}
 }
 
 @end
