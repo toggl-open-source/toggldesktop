@@ -77,6 +77,7 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsoncppdir) \
+	-Ithird_party/lua/src \
 	-DNDEBUG
 endif
 
