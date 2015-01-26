@@ -355,8 +355,10 @@ void User::CollectPushableModels(
             continue;
         }
         ensureWID(model);
+        model->EnsureGUID();
         result->push_back(model);
         if (models) {
+            poco_assert(!model->GUID().empty());
             (*models)[model->GUID()] = model;
         }
     }
@@ -973,7 +975,7 @@ error User::LoginToken(
 std::string User::updateJSON(
     std::vector<Client *> * const clients,
     std::vector<Project *> * const projects,
-    std::vector<TimeEntry *> * const time_entries) {
+    std::vector<TimeEntry *> * const time_entries) const {
 
     poco_check_ptr(clients);
     poco_check_ptr(projects);

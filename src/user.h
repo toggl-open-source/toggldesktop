@@ -177,7 +177,7 @@ class User : public BaseModel {
     std::string updateJSON(
         std::vector<Client *> * const,
         std::vector<Project *> * const,
-        std::vector<TimeEntry *> * const);
+        std::vector<TimeEntry *> * const) const;
 
     void loadUserTagFromJSON(
         Json::Value data,
