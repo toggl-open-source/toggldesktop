@@ -104,6 +104,9 @@ bool IsUserError(const error err) {
     if (value.find(kPaymentRequiredError) != std::string::npos) {
         return true;
     }
+    if (value.find("SSL context exception") != std::string::npos) {
+        return true;
+    }
     if (value.find("Access to file denied") != std::string::npos) {
         return true;
     }
