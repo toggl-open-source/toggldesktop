@@ -57,6 +57,7 @@
 		743D942618279290000E6F70 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
 		743D94281827929C000E6F70 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D94271827929C000E6F70 /* Carbon.framework */; };
 		743D942F1827C633000E6F70 /* IdleEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 743D942E1827C633000E6F70 /* IdleEvent.m */; };
+		743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 743E584F1A775BB300F17CB0 /* Localizable.strings */; };
 		74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; };
 		74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
@@ -387,11 +388,12 @@
 		743D94291827A0E0000E6F70 /* idler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = idler.h; sourceTree = "<group>"; };
 		743D942D1827C633000E6F70 /* IdleEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IdleEvent.h; path = ../IdleEvent.h; sourceTree = "<group>"; };
 		743D942E1827C633000E6F70 /* IdleEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IdleEvent.m; path = ../IdleEvent.m; sourceTree = "<group>"; };
+		743E58461A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		743E58481A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		743E58491A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = et; path = et.lproj/Credits.rtf; sourceTree = "<group>"; };
+		743E584A1A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		743E584E1A775BB300F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/Localizable.strings; sourceTree = "<group>"; };
 		74456B9F1A774E12002A6338 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		74456BA01A775192002A6338 /* et-EE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "et-EE"; path = "et-EE.lproj/MainMenu.strings"; sourceTree = "<group>"; };
-		74456BA21A775192002A6338 /* et-EE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "et-EE"; path = "et-EE.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		74456BA31A775192002A6338 /* et-EE */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = "et-EE"; path = "et-EE.lproj/Credits.rtf"; sourceTree = "<group>"; };
-		74456BA41A775192002A6338 /* et-EE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "et-EE"; path = "et-EE.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		744E126617F22AB900ABE72A /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		744FC07F1A76907F00CA2954 /* lutf8lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lutf8lib.c; sourceTree = "<group>"; };
 		745126B419A28AA500390F47 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../../../../third_party/Reachability/Reachability/Reachability.h; sourceTree = "<group>"; };
@@ -770,6 +772,7 @@
 		69FC17FB17E6534400B96425 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				743E584F1A775BB300F17CB0 /* Localizable.strings */,
 				69FC17FC17E6534400B96425 /* TogglDesktop-Info.plist */,
 				69FC17FD17E6534400B96425 /* InfoPlist.strings */,
 				69FC180017E6534400B96425 /* main.m */,
@@ -1124,7 +1127,7 @@
 			knownRegions = (
 				en,
 				Base,
-				"et-EE",
+				et,
 			);
 			mainGroup = 69FC17E817E6534400B96425;
 			productRefGroup = 69FC17F217E6534400B96425 /* Products */;
@@ -1275,6 +1278,7 @@
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
+				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
@@ -1445,7 +1449,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				69FC17FE17E6534400B96425 /* en */,
-				74456BA21A775192002A6338 /* et-EE */,
+				743E58481A775B7700F17CB0 /* et */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1454,7 +1458,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				69FC180417E6534400B96425 /* en */,
-				74456BA31A775192002A6338 /* et-EE */,
+				743E58491A775B7700F17CB0 /* et */,
 			);
 			name = Credits.rtf;
 			sourceTree = "<group>";
@@ -1463,7 +1467,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				74456B9F1A774E12002A6338 /* Base */,
-				74456BA01A775192002A6338 /* et-EE */,
+				743E58461A775B7700F17CB0 /* et */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1472,9 +1476,17 @@
 			isa = PBXVariantGroup;
 			children = (
 				69FC181B17E6534500B96425 /* en */,
-				74456BA41A775192002A6338 /* et-EE */,
+				743E584A1A775B7700F17CB0 /* et */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		743E584F1A775BB300F17CB0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				743E584E1A775BB300F17CB0 /* et */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

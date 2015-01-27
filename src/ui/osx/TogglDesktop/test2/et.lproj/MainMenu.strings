@@ -1,6 +1,8 @@
-
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
 "5.title" = "Bring All to Front";
+
+/* Class = "NSMenuItem"; title = "New"; ObjectID = "8Ix-qa-ila"; */
+"8Ix-qa-ila.title" = "New";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
 "19.title" = "Window";
@@ -22,6 +24,9 @@
 
 /* Class = "NSMenuItem"; title = "About Toggl Desktop"; ObjectID = "58"; */
 "58.title" = "About Toggl Desktop";
+
+/* Class = "NSMenuItem"; title = "Account"; ObjectID = "92o-Sa-9cW"; */
+"92o-Sa-9cW.title" = "Account";
 
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129"; */
 "129.title" = "Preferences…";
@@ -95,12 +100,6 @@
 /* Class = "NSSegmentedCell"; 1459.ibShadowedLabels[1] = "Quick selection"; ObjectID = "1459"; */
 "1459.ibShadowedLabels[1]" = "Quick selection";
 
-/* Class = "NSMenuItem"; title = "New"; ObjectID = "8Ix-qa-ila"; */
-"8Ix-qa-ila.title" = "New";
-
-/* Class = "NSMenuItem"; title = "Account"; ObjectID = "92o-Sa-9cW"; */
-"92o-Sa-9cW.title" = "Account";
-
 /* Class = "NSMenuItem"; title = "Timer"; ObjectID = "GTG-gQ-pHZ"; */
 "GTG-gQ-pHZ.title" = "Timer";
 
@@ -141,7 +140,7 @@
 "iZQ-ua-rvv.title" = "Continue";
 
 /* Class = "NSMenuItem"; title = "Console"; ObjectID = "ibF-Ws-y2e"; */
-"ibF-Ws-y2e.title" = "Console";
+"ibF-Ws-y2e.title" = "Konsool";
 
 /* Class = "NSMenuItem"; title = "Stop"; ObjectID = "oJx-X6-U4T"; */
 "oJx-X6-U4T.title" = "Stop";
@@ -154,3 +153,4 @@
 
 /* Class = "NSMenu"; title = "File"; ObjectID = "xIs-PZ-bVL"; */
 "xIs-PZ-bVL.title" = "File";
+

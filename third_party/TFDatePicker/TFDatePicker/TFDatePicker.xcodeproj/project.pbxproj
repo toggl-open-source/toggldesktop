@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		74456BA11A775192002A6338 /* et-EE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "et-EE"; path = "et-EE.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		743E58471A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E2D656E6160A18F100DEC117 /* TFDatePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TFDatePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2D656E9160A18F100DEC117 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E2D656EC160A18F100DEC117 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -156,6 +156,7 @@
 			knownRegions = (
 				en,
 				"et-EE",
+				et,
 			);
 			mainGroup = E2D656DA160A18F000DEC117;
 			productRefGroup = E2D656E7160A18F100DEC117 /* Products */;
@@ -197,7 +198,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				E2D656F3160A18F100DEC117 /* en */,
-				74456BA11A775192002A6338 /* et-EE */,
+				743E58471A775B7700F17CB0 /* et */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
