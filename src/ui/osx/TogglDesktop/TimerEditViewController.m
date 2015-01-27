@@ -30,8 +30,8 @@
 
 extern void *ctx;
 
-const NSString *kTrackingColor = @"#d0d0d0";
-const NSString *kInactiveTimerColor = @"#999999";
+NSString *kTrackingColor = @"#d0d0d0";
+NSString *kInactiveTimerColor = @"#999999";
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
