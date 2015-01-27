@@ -15,7 +15,7 @@ fi
 
 set -e
 
-out=out/linux
+out=out/linux/toggldesktop
 
 rm -rf toggldesktop*.tar.gz $out
 
@@ -55,5 +55,7 @@ cp src/ssl/cacert.pem $out/.
 chmod -x $out/lib/*
 chmod -w $out/lib/*
 
-tar cvfz toggldesktop_$(uname -m).tar.gz $out
+cd $out/..
+
+tar cvfz toggldesktop_$(uname -m).tar.gz toggldesktop
 
