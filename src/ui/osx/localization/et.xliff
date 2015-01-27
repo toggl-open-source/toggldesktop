@@ -288,6 +288,10 @@
         <source>Delete shortcut</source>
         <note>Tooltip for hint button near the non-empty shortcut</note>
       </trans-unit>
+      <trans-unit id="Last update ">
+        <source>Last update </source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
       <trans-unit id="No Connection">
         <source>No Connection</source>
         <note>No comment provided by engineer.</note>
@@ -323,6 +327,10 @@
       <trans-unit id="Use Old Shortcut">
         <source>Use Old Shortcut</source>
         <note>Cancel action button for non-empty shortcut in recording state</note>
+      </trans-unit>
+      <trans-unit id="What are you doing?">
+        <source>What are you doing?</source>
+        <note>No comment provided by engineer.</note>
       </trans-unit>
       <trans-unit id="WiFi">
         <source>WiFi</source>

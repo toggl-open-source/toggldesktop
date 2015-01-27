@@ -92,11 +92,13 @@ const NSString *kInactiveTimerColor = @"#999999";
 		NSForegroundColorAttributeName : color
 	};
 
-	NSAttributedString *descriptionLightString = [[NSAttributedString alloc] initWithString:@"What are you doing?"
-																				 attributes:descriptionDictionary];
+	NSAttributedString *descriptionLightString =
+		[[NSAttributedString alloc] initWithString:NSLocalizedString(@"What are you doing?", nil)
+										attributes:descriptionDictionary];
 
-	NSAttributedString *durationLightString = [[NSAttributedString alloc] initWithString:@"00:00:00"
-																			  attributes:durationDictionary];
+	NSAttributedString *durationLightString =
+		[[NSAttributedString alloc] initWithString:@"00:00:00"
+										attributes:durationDictionary];
 
 	[[self.durationTextField cell] setPlaceholderAttributedString:durationLightString];
 	[[self.descriptionLabel cell] setPlaceholderAttributedString:descriptionLightString];
