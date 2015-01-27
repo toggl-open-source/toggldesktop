@@ -97,7 +97,8 @@ libs=-framework Carbon \
 	-L$(openssldir) \
 	-lssl \
 	-lcrypto \
-	-ldl
+	-ldl \
+	-Ithird_party/lua/src
 endif
 
 ifeq ($(uname), Linux)
