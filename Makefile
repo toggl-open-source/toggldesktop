@@ -346,9 +346,6 @@ build/test/lauxlib.o: third_party/lua/src/lauxlib.c
 build/test/lbaselib.o: third_party/lua/src/lbaselib.c
 	$(cxx) $(cflags) -c third_party/lua/src/lbaselib.c -o build/test/lbaselib.o
 
-build/test/lbaselib.o: third_party/lua/src/lbaselib.c
-	$(cxx) $(cflags) -c third_party/lua/src/lbaselib.c -o build/test/lbaselib.o
-
 build/test/lbitlib.o: third_party/lua/src/lbitlib.c
 	$(cxx) $(cflags) -c third_party/lua/src/lbitlib.c -o build/test/lbitlib.o
 
@@ -378,9 +375,6 @@ build/test/linit.o: third_party/lua/src/linit.c
 
 build/test/llex.o: third_party/lua/src/llex.c
 	$(cxx) $(cflags) -c third_party/lua/src/llex.c -o build/test/llex.o
-
-build/test/lmathlib.o: third_party/lua/src/lmathlib.c
-	$(cxx) $(cflags) -c third_party/lua/src/lmathlib.c -o build/test/lmathlib.o
 
 build/test/lmathlib.o: third_party/lua/src/lmathlib.c
 	$(cxx) $(cflags) -c third_party/lua/src/lmathlib.c -o build/test/lmathlib.o
