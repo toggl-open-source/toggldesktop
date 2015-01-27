@@ -1,0 +1,156 @@
+
+/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
+"5.title" = "Bring All to Front";
+
+/* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
+"19.title" = "Window";
+
+/* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "23"; */
+"23.title" = "Minimize";
+
+/* Class = "NSMenu"; title = "Window"; ObjectID = "24"; */
+"24.title" = "Window";
+
+/* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
+"29.title" = "AMainMenu";
+
+/* Class = "NSMenuItem"; title = "Toggl Desktop"; ObjectID = "56"; */
+"56.title" = "Toggl Desktop";
+
+/* Class = "NSMenu"; title = "Toggl Desktop"; ObjectID = "57"; */
+"57.title" = "Toggl Desktop";
+
+/* Class = "NSMenuItem"; title = "About Toggl Desktop"; ObjectID = "58"; */
+"58.title" = "About Toggl Desktop";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129"; */
+"129.title" = "Preferences…";
+
+/* Class = "NSMenuItem"; title = "Hide Toggl Desktop"; ObjectID = "134"; */
+"134.title" = "Hide Toggl Desktop";
+
+/* Class = "NSMenuItem"; title = "Quit Toggl Desktop"; ObjectID = "136"; */
+"136.title" = "Quit Toggl Desktop";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145"; */
+"145.title" = "Hide Others";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "150"; */
+"150.title" = "Show All";
+
+/* Class = "NSMenuItem"; title = "Copy"; ObjectID = "197"; */
+"197.title" = "Copy";
+
+/* Class = "NSMenuItem"; title = "Select All"; ObjectID = "198"; */
+"198.title" = "Select All";
+
+/* Class = "NSMenuItem"; title = "Cut"; ObjectID = "199"; */
+"199.title" = "Cut";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "202"; */
+"202.title" = "Delete";
+
+/* Class = "NSMenuItem"; title = "Paste"; ObjectID = "203"; */
+"203.title" = "Paste";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "205"; */
+"205.title" = "Edit";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "207"; */
+"207.title" = "Undo";
+
+/* Class = "NSMenuItem"; title = "Find…"; ObjectID = "209"; */
+"209.title" = "Find…";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "215"; */
+"215.title" = "Redo";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "217"; */
+"217.title" = "Edit";
+
+/* Class = "NSMenuItem"; title = "Find"; ObjectID = "218"; */
+"218.title" = "Find";
+
+/* Class = "NSMenu"; title = "Find"; ObjectID = "220"; */
+"220.title" = "Find";
+
+/* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "239"; */
+"239.title" = "Zoom";
+
+/* Class = "NSMenuItem"; title = "Paste and Match Style"; ObjectID = "485"; */
+"485.title" = "Paste and Match Style";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "490"; */
+"490.title" = "Help";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "491"; */
+"491.title" = "Help";
+
+/* Class = "NSMenuItem"; title = "Toggl Desktop Help"; ObjectID = "492"; */
+"492.title" = "Toggl Desktop Help";
+
+/* Class = "NSSegmentedCell"; 1459.ibShadowedLabels[0] = "Weekly log"; ObjectID = "1459"; */
+"1459.ibShadowedLabels[0]" = "Weekly log";
+
+/* Class = "NSSegmentedCell"; 1459.ibShadowedLabels[1] = "Quick selection"; ObjectID = "1459"; */
+"1459.ibShadowedLabels[1]" = "Quick selection";
+
+/* Class = "NSMenuItem"; title = "New"; ObjectID = "8Ix-qa-ila"; */
+"8Ix-qa-ila.title" = "New";
+
+/* Class = "NSMenuItem"; title = "Account"; ObjectID = "92o-Sa-9cW"; */
+"92o-Sa-9cW.title" = "Account";
+
+/* Class = "NSMenuItem"; title = "Timer"; ObjectID = "GTG-gQ-pHZ"; */
+"GTG-gQ-pHZ.title" = "Timer";
+
+/* Class = "NSMenuItem"; title = "File"; ObjectID = "H4K-an-adb"; */
+"H4K-an-adb.title" = "File";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "Hl1-5B-r9O"; */
+"Hl1-5B-r9O.title" = "Edit";
+
+/* Class = "NSMenuItem"; title = "Hide Main Window"; ObjectID = "O2e-Kb-cHX"; */
+"O2e-Kb-cHX.title" = "Hide Main Window";
+
+/* Class = "NSMenuItem"; title = "Clear cache"; ObjectID = "OCn-tS-va2"; */
+"OCn-tS-va2.title" = "Clear cache";
+
+/* Class = "NSMenu"; title = "Account"; ObjectID = "ORM-ao-M0m"; */
+"ORM-ao-M0m.title" = "Account";
+
+/* Class = "NSMenuItem"; title = "Logout"; ObjectID = "R7N-z5-83z"; */
+"R7N-z5-83z.title" = "Logout";
+
+/* Class = "NSMenuItem"; title = "Switch mode"; ObjectID = "Yrv-QP-Oob"; */
+"Yrv-QP-Oob.title" = "Switch mode";
+
+/* Class = "NSMenuItem"; title = "New"; ObjectID = "eJF-ps-vzM"; */
+"eJF-ps-vzM.title" = "New";
+
+/* Class = "NSMenuItem"; title = "Show"; ObjectID = "er4-3b-wWC"; */
+"er4-3b-wWC.title" = "Show";
+
+/* Class = "NSMenuItem"; title = "Check for update.."; ObjectID = "fZK-ps-0cd"; */
+"fZK-ps-0cd.title" = "Check for update..";
+
+/* Class = "NSMenu"; title = "Timer"; ObjectID = "fl1-3L-kSt"; */
+"fl1-3L-kSt.title" = "Timer";
+
+/* Class = "NSMenuItem"; title = "Continue"; ObjectID = "iZQ-ua-rvv"; */
+"iZQ-ua-rvv.title" = "Continue";
+
+/* Class = "NSMenuItem"; title = "Console"; ObjectID = "ibF-Ws-y2e"; */
+"ibF-Ws-y2e.title" = "Console";
+
+/* Class = "NSMenuItem"; title = "Stop"; ObjectID = "oJx-X6-U4T"; */
+"oJx-X6-U4T.title" = "Stop";
+
+/* Class = "NSMenuItem"; title = "Sync"; ObjectID = "qrV-uu-7qU"; */
+"qrV-uu-7qU.title" = "Sync";
+
+/* Class = "NSMenuItem"; title = "Send Feedback"; ObjectID = "tQk-RP-c2H"; */
+"tQk-RP-c2H.title" = "Send Feedback";
+
+/* Class = "NSMenu"; title = "File"; ObjectID = "xIs-PZ-bVL"; */
+"xIs-PZ-bVL.title" = "File";
