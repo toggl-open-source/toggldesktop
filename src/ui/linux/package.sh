@@ -59,3 +59,4 @@ cd $out/..
 
 tar cvfz toggldesktop_$(uname -m).tar.gz toggldesktop
 
+echo "Packaging done"
