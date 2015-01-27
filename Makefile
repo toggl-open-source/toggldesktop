@@ -539,3 +539,8 @@ lcov: test
 	genhtml -q -o coverage app.info
 
 coverage: lcov
+
+loco:
+ifeq ($(uname), Darwin)
+	xcodebuild -exportLocalizations -localizationPath src/ui/osx/localization -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj
+endif

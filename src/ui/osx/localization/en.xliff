@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="test2/Base.lproj/MainMenu.xib" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.1.1" build-num="6A2008a"/>
+    </header>
+    <body>
+      <trans-unit id="5.title">
+        <source>Bring All to Front</source>
+        <note>Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5";</note>
+      </trans-unit>
+      <trans-unit id="8Ix-qa-ila.title">
+        <source>New</source>
+        <note>Class = "NSMenuItem"; title = "New"; ObjectID = "8Ix-qa-ila";</note>
+      </trans-unit>
+      <trans-unit id="19.title">
+        <source>Window</source>
+        <note>Class = "NSMenuItem"; title = "Window"; ObjectID = "19";</note>
+      </trans-unit>
+      <trans-unit id="23.title">
+        <source>Minimize</source>
+        <note>Class = "NSMenuItem"; title = "Minimize"; ObjectID = "23";</note>
+      </trans-unit>
+      <trans-unit id="24.title">
+        <source>Window</source>
+        <note>Class = "NSMenu"; title = "Window"; ObjectID = "24";</note>
+      </trans-unit>
+      <trans-unit id="29.title">
+        <source>AMainMenu</source>
+        <note>Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29";</note>
+      </trans-unit>
+      <trans-unit id="56.title">
+        <source>Toggl Desktop</source>
+        <note>Class = "NSMenuItem"; title = "Toggl Desktop"; ObjectID = "56";</note>
+      </trans-unit>
+      <trans-unit id="57.title">
+        <source>Toggl Desktop</source>
+        <note>Class = "NSMenu"; title = "Toggl Desktop"; ObjectID = "57";</note>
+      </trans-unit>
+      <trans-unit id="58.title">
+        <source>About Toggl Desktop</source>
+        <note>Class = "NSMenuItem"; title = "About Toggl Desktop"; ObjectID = "58";</note>
+      </trans-unit>
+      <trans-unit id="92o-Sa-9cW.title">
+        <source>Account</source>
+        <note>Class = "NSMenuItem"; title = "Account"; ObjectID = "92o-Sa-9cW";</note>
+      </trans-unit>
+      <trans-unit id="129.title">
+        <source>Preferences…</source>
+        <note>Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129";</note>
+      </trans-unit>
+      <trans-unit id="134.title">
+        <source>Hide Toggl Desktop</source>
+        <note>Class = "NSMenuItem"; title = "Hide Toggl Desktop"; ObjectID = "134";</note>
+      </trans-unit>
+      <trans-unit id="136.title">
+        <source>Quit Toggl Desktop</source>
+        <note>Class = "NSMenuItem"; title = "Quit Toggl Desktop"; ObjectID = "136";</note>
+      </trans-unit>
+      <trans-unit id="145.title">
+        <source>Hide Others</source>
+        <note>Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145";</note>
+      </trans-unit>
+      <trans-unit id="150.title">
+        <source>Show All</source>
+        <note>Class = "NSMenuItem"; title = "Show All"; ObjectID = "150";</note>
+      </trans-unit>
+      <trans-unit id="197.title">
+        <source>Copy</source>
+        <note>Class = "NSMenuItem"; title = "Copy"; ObjectID = "197";</note>
+      </trans-unit>
+      <trans-unit id="198.title">
+        <source>Select All</source>
+        <note>Class = "NSMenuItem"; title = "Select All"; ObjectID = "198";</note>
+      </trans-unit>
+      <trans-unit id="199.title">
+        <source>Cut</source>
+        <note>Class = "NSMenuItem"; title = "Cut"; ObjectID = "199";</note>
+      </trans-unit>
+      <trans-unit id="202.title">
+        <source>Delete</source>
+        <note>Class = "NSMenuItem"; title = "Delete"; ObjectID = "202";</note>
+      </trans-unit>
+      <trans-unit id="203.title">
+        <source>Paste</source>
+        <note>Class = "NSMenuItem"; title = "Paste"; ObjectID = "203";</note>
+      </trans-unit>
+      <trans-unit id="205.title">
+        <source>Edit</source>
+        <note>Class = "NSMenu"; title = "Edit"; ObjectID = "205";</note>
+      </trans-unit>
+      <trans-unit id="207.title">
+        <source>Undo</source>
+        <note>Class = "NSMenuItem"; title = "Undo"; ObjectID = "207";</note>
+      </trans-unit>
+      <trans-unit id="209.title">
+        <source>Find…</source>
+        <note>Class = "NSMenuItem"; title = "Find…"; ObjectID = "209";</note>
+      </trans-unit>
+      <trans-unit id="215.title">
+        <source>Redo</source>
+        <note>Class = "NSMenuItem"; title = "Redo"; ObjectID = "215";</note>
+      </trans-unit>
+      <trans-unit id="217.title">
+        <source>Edit</source>
+        <note>Class = "NSMenuItem"; title = "Edit"; ObjectID = "217";</note>
+      </trans-unit>
+      <trans-unit id="218.title">
+        <source>Find</source>
+        <note>Class = "NSMenuItem"; title = "Find"; ObjectID = "218";</note>
+      </trans-unit>
+      <trans-unit id="220.title">
+        <source>Find</source>
+        <note>Class = "NSMenu"; title = "Find"; ObjectID = "220";</note>
+      </trans-unit>
+      <trans-unit id="239.title">
+        <source>Zoom</source>
+        <note>Class = "NSMenuItem"; title = "Zoom"; ObjectID = "239";</note>
+      </trans-unit>
+      <trans-unit id="485.title">
+        <source>Paste and Match Style</source>
+        <note>Class = "NSMenuItem"; title = "Paste and Match Style"; ObjectID = "485";</note>
+      </trans-unit>
+      <trans-unit id="490.title">
+        <source>Help</source>
+        <note>Class = "NSMenuItem"; title = "Help"; ObjectID = "490";</note>
+      </trans-unit>
+      <trans-unit id="491.title">
+        <source>Help</source>
+        <note>Class = "NSMenu"; title = "Help"; ObjectID = "491";</note>
+      </trans-unit>
+      <trans-unit id="492.title">
+        <source>Toggl Desktop Help</source>
+        <note>Class = "NSMenuItem"; title = "Toggl Desktop Help"; ObjectID = "492";</note>
+      </trans-unit>
+      <trans-unit id="1459.ibShadowedLabels[0]">
+        <source>Weekly log</source>
+        <note>Class = "NSSegmentedCell"; 1459.ibShadowedLabels[0] = "Weekly log"; ObjectID = "1459";</note>
+      </trans-unit>
+      <trans-unit id="1459.ibShadowedLabels[1]">
+        <source>Quick selection</source>
+        <note>Class = "NSSegmentedCell"; 1459.ibShadowedLabels[1] = "Quick selection"; ObjectID = "1459";</note>
+      </trans-unit>
+      <trans-unit id="GTG-gQ-pHZ.title">
+        <source>Timer</source>
+        <note>Class = "NSMenuItem"; title = "Timer"; ObjectID = "GTG-gQ-pHZ";</note>
+      </trans-unit>
+      <trans-unit id="H4K-an-adb.title">
+        <source>File</source>
+        <note>Class = "NSMenuItem"; title = "File"; ObjectID = "H4K-an-adb";</note>
+      </trans-unit>
+      <trans-unit id="Hl1-5B-r9O.title">
+        <source>Edit</source>
+        <note>Class = "NSMenuItem"; title = "Edit"; ObjectID = "Hl1-5B-r9O";</note>
+      </trans-unit>
+      <trans-unit id="O2e-Kb-cHX.title">
+        <source>Hide Main Window</source>
+        <note>Class = "NSMenuItem"; title = "Hide Main Window"; ObjectID = "O2e-Kb-cHX";</note>
+      </trans-unit>
+      <trans-unit id="OCn-tS-va2.title">
+        <source>Clear cache</source>
+        <note>Class = "NSMenuItem"; title = "Clear cache"; ObjectID = "OCn-tS-va2";</note>
+      </trans-unit>
+      <trans-unit id="ORM-ao-M0m.title">
+        <source>Account</source>
+        <note>Class = "NSMenu"; title = "Account"; ObjectID = "ORM-ao-M0m";</note>
+      </trans-unit>
+      <trans-unit id="R7N-z5-83z.title">
+        <source>Logout</source>
+        <note>Class = "NSMenuItem"; title = "Logout"; ObjectID = "R7N-z5-83z";</note>
+      </trans-unit>
+      <trans-unit id="Yrv-QP-Oob.title">
+        <source>Switch mode</source>
+        <note>Class = "NSMenuItem"; title = "Switch mode"; ObjectID = "Yrv-QP-Oob";</note>
+      </trans-unit>
+      <trans-unit id="eJF-ps-vzM.title">
+        <source>New</source>
+        <note>Class = "NSMenuItem"; title = "New"; ObjectID = "eJF-ps-vzM";</note>
+      </trans-unit>
+      <trans-unit id="er4-3b-wWC.title">
+        <source>Show</source>
+        <note>Class = "NSMenuItem"; title = "Show"; ObjectID = "er4-3b-wWC";</note>
+      </trans-unit>
+      <trans-unit id="fZK-ps-0cd.title">
+        <source>Check for update..</source>
+        <note>Class = "NSMenuItem"; title = "Check for update.."; ObjectID = "fZK-ps-0cd";</note>
+      </trans-unit>
+      <trans-unit id="fl1-3L-kSt.title">
+        <source>Timer</source>
+        <note>Class = "NSMenu"; title = "Timer"; ObjectID = "fl1-3L-kSt";</note>
+      </trans-unit>
+      <trans-unit id="iZQ-ua-rvv.title">
+        <source>Continue</source>
+        <note>Class = "NSMenuItem"; title = "Continue"; ObjectID = "iZQ-ua-rvv";</note>
+      </trans-unit>
+      <trans-unit id="ibF-Ws-y2e.title">
+        <source>Console</source>
+        <note>Class = "NSMenuItem"; title = "Console"; ObjectID = "ibF-Ws-y2e";</note>
+      </trans-unit>
+      <trans-unit id="oJx-X6-U4T.title">
+        <source>Stop</source>
+        <note>Class = "NSMenuItem"; title = "Stop"; ObjectID = "oJx-X6-U4T";</note>
+      </trans-unit>
+      <trans-unit id="qrV-uu-7qU.title">
+        <source>Sync</source>
+        <note>Class = "NSMenuItem"; title = "Sync"; ObjectID = "qrV-uu-7qU";</note>
+      </trans-unit>
+      <trans-unit id="tQk-RP-c2H.title">
+        <source>Send Feedback</source>
+        <note>Class = "NSMenuItem"; title = "Send Feedback"; ObjectID = "tQk-RP-c2H";</note>
+      </trans-unit>
+      <trans-unit id="xIs-PZ-bVL.title">
+        <source>File</source>
+        <note>Class = "NSMenu"; title = "File"; ObjectID = "xIs-PZ-bVL";</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="test2/Localizable.strings" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.1.1" build-num="6A2008a"/>
+    </header>
+    <body>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <note>Cancel action button in recording state</note>
+      </trans-unit>
+      <trans-unit id="Cellular">
+        <source>Cellular</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Click to record new shortcut">
+        <source>Click to record new shortcut</source>
+        <note>Tooltip for non-empty shortcut button</note>
+      </trans-unit>
+      <trans-unit id="Delete shortcut">
+        <source>Delete shortcut</source>
+        <note>Tooltip for hint button near the non-empty shortcut</note>
+      </trans-unit>
+      <trans-unit id="No Connection">
+        <source>No Connection</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <note>Alert button when shortcut is already used</note>
+      </trans-unit>
+      <trans-unit id="Record Shortcut">
+        <source>Record Shortcut</source>
+        <note>Empty shortcut button in normal state</note>
+      </trans-unit>
+      <trans-unit id="Space">
+        <source>Space</source>
+        <note>Shortcut glyph name for SPACE key</note>
+      </trans-unit>
+      <trans-unit id="The key combination %@ cannot be used">
+        <source>The key combination %@ cannot be used</source>
+        <note>Title for alert when shortcut is already used</note>
+      </trans-unit>
+      <trans-unit id="This shortcut cannot be used because it is already used by the menu item ‘%@’.">
+        <source>This shortcut cannot be used because it is already used by the menu item ‘%@’.</source>
+        <note>Message for alert when shortcut is already used</note>
+      </trans-unit>
+      <trans-unit id="Type New Shortcut">
+        <source>Type New Shortcut</source>
+        <note>Non-empty shortcut button in recording state</note>
+      </trans-unit>
+      <trans-unit id="Type Shortcut">
+        <source>Type Shortcut</source>
+        <note>Empty shortcut button in recording state</note>
+      </trans-unit>
+      <trans-unit id="Use Old Shortcut">
+        <source>Use Old Shortcut</source>
+        <note>Cancel action button for non-empty shortcut in recording state</note>
+      </trans-unit>
+      <trans-unit id="WiFi">
+        <source>WiFi</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="test2/TogglDesktop-Info.plist" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.1.1" build-num="6A2008a"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>TogglDesktop</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>7.0.0</source>
+      </trans-unit>
+      <trans-unit id="NSHumanReadableCopyright">
+        <source>Copyright © 2014 Toggl Desktop developers. All rights reserved.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
