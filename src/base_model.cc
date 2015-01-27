@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "./batch_update_result.h"
+#include "./const.h"
 #include "./database.h"
 #include "./formatter.h"
 #include "./model_change.h"
@@ -173,7 +174,7 @@ error BaseModel::ApplyBatchUpdateResult(
 
 bool BaseModel::userCannotAccessWorkspace(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
-        "cannot access workspace"));
+        kCannotAccessWorkspaceError));
 }
 
 std::string BaseModel::batchUpdateRelativeURL() const {
