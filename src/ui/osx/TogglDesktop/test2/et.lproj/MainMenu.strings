@@ -1,17 +1,17 @@
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
-"5.title" = "Bring All to Front";
+"5.title" = "Too kõik ette";
 
 /* Class = "NSMenuItem"; title = "New"; ObjectID = "8Ix-qa-ila"; */
-"8Ix-qa-ila.title" = "New";
+"8Ix-qa-ila.title" = "Uus";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
-"19.title" = "Window";
+"19.title" = "Aken";
 
 /* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "23"; */
-"23.title" = "Minimize";
+"23.title" = "Minimeeri";
 
 /* Class = "NSMenu"; title = "Window"; ObjectID = "24"; */
-"24.title" = "Window";
+"24.title" = "Aken";
 
 /* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
 "29.title" = "AMainMenu";
@@ -23,76 +23,76 @@
 "57.title" = "Toggl Desktop";
 
 /* Class = "NSMenuItem"; title = "About Toggl Desktop"; ObjectID = "58"; */
-"58.title" = "About Toggl Desktop";
+"58.title" = "Teave Toggl Desktop kohta";
 
 /* Class = "NSMenuItem"; title = "Account"; ObjectID = "92o-Sa-9cW"; */
-"92o-Sa-9cW.title" = "Account";
+"92o-Sa-9cW.title" = "Kasutajakonto";
 
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129"; */
-"129.title" = "Preferences…";
+"129.title" = "Eelistused…";
 
 /* Class = "NSMenuItem"; title = "Hide Toggl Desktop"; ObjectID = "134"; */
-"134.title" = "Hide Toggl Desktop";
+"134.title" = "Peida Toggl Desktop";
 
 /* Class = "NSMenuItem"; title = "Quit Toggl Desktop"; ObjectID = "136"; */
-"136.title" = "Quit Toggl Desktop";
+"136.title" = "Välju rakendusest Toggl Desktop";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145"; */
-"145.title" = "Hide Others";
+"145.title" = "Peida teised";
 
 /* Class = "NSMenuItem"; title = "Show All"; ObjectID = "150"; */
-"150.title" = "Show All";
+"150.title" = "Kuva kõik";
 
 /* Class = "NSMenuItem"; title = "Copy"; ObjectID = "197"; */
-"197.title" = "Copy";
+"197.title" = "Kopeeri";
 
 /* Class = "NSMenuItem"; title = "Select All"; ObjectID = "198"; */
-"198.title" = "Select All";
+"198.title" = "Vali kõik";
 
 /* Class = "NSMenuItem"; title = "Cut"; ObjectID = "199"; */
-"199.title" = "Cut";
+"199.title" = "Lõika";
 
 /* Class = "NSMenuItem"; title = "Delete"; ObjectID = "202"; */
-"202.title" = "Delete";
+"202.title" = "Kustuta";
 
 /* Class = "NSMenuItem"; title = "Paste"; ObjectID = "203"; */
-"203.title" = "Paste";
+"203.title" = "Kleebi";
 
 /* Class = "NSMenu"; title = "Edit"; ObjectID = "205"; */
-"205.title" = "Edit";
+"205.title" = "Muuda";
 
 /* Class = "NSMenuItem"; title = "Undo"; ObjectID = "207"; */
-"207.title" = "Undo";
+"207.title" = "Võta tagasi";
 
 /* Class = "NSMenuItem"; title = "Find…"; ObjectID = "209"; */
-"209.title" = "Find…";
+"209.title" = "Otsi…";
 
 /* Class = "NSMenuItem"; title = "Redo"; ObjectID = "215"; */
-"215.title" = "Redo";
+"215.title" = "Tee uuesti";
 
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "217"; */
-"217.title" = "Edit";
+"217.title" = "Muuda";
 
 /* Class = "NSMenuItem"; title = "Find"; ObjectID = "218"; */
-"218.title" = "Find";
+"218.title" = "Otsi";
 
 /* Class = "NSMenu"; title = "Find"; ObjectID = "220"; */
-"220.title" = "Find";
+"220.title" = "Otsi";
 
 /* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "239"; */
-"239.title" = "Zoom";
+"239.title" = "Suumi";
 
 /* Class = "NSMenuItem"; title = "Paste and Match Style"; ObjectID = "485"; */
-"485.title" = "Paste and Match Style";
+"485.title" = "Kleebi ja ühita laad";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "490"; */
-"490.title" = "Help";
+"490.title" = "Abi";
 
 /* Class = "NSMenu"; title = "Help"; ObjectID = "491"; */
-"491.title" = "Help";
+"491.title" = "Abi";
 
 /* Class = "NSMenuItem"; title = "Toggl Desktop Help"; ObjectID = "492"; */
-"492.title" = "Toggl Desktop Help";
+"492.title" = "Toote Toggl Desktop abi";
 
 /* Class = "NSSegmentedCell"; 1459.ibShadowedLabels[0] = "Weekly log"; ObjectID = "1459"; */
 "1459.ibShadowedLabels[0]" = "Weekly log";
@@ -101,56 +101,56 @@
 "1459.ibShadowedLabels[1]" = "Quick selection";
 
 /* Class = "NSMenuItem"; title = "Timer"; ObjectID = "GTG-gQ-pHZ"; */
-"GTG-gQ-pHZ.title" = "Timer";
+"GTG-gQ-pHZ.title" = "Taimer";
 
 /* Class = "NSMenuItem"; title = "File"; ObjectID = "H4K-an-adb"; */
-"H4K-an-adb.title" = "File";
+"H4K-an-adb.title" = "Fail";
 
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "Hl1-5B-r9O"; */
-"Hl1-5B-r9O.title" = "Edit";
+"Hl1-5B-r9O.title" = "Muuda";
 
 /* Class = "NSMenuItem"; title = "Hide Main Window"; ObjectID = "O2e-Kb-cHX"; */
-"O2e-Kb-cHX.title" = "Hide Main Window";
+"O2e-Kb-cHX.title" = "Peida põhiaken";
 
 /* Class = "NSMenuItem"; title = "Clear cache"; ObjectID = "OCn-tS-va2"; */
-"OCn-tS-va2.title" = "Clear cache";
+"OCn-tS-va2.title" = "Kustuta taimeri andmed";
 
 /* Class = "NSMenu"; title = "Account"; ObjectID = "ORM-ao-M0m"; */
-"ORM-ao-M0m.title" = "Account";
+"ORM-ao-M0m.title" = "Kasutajakonto";
 
 /* Class = "NSMenuItem"; title = "Logout"; ObjectID = "R7N-z5-83z"; */
-"R7N-z5-83z.title" = "Logout";
+"R7N-z5-83z.title" = "Väljalogimine";
 
 /* Class = "NSMenuItem"; title = "Switch mode"; ObjectID = "Yrv-QP-Oob"; */
-"Yrv-QP-Oob.title" = "Switch mode";
+"Yrv-QP-Oob.title" = "Vaheta resiimi";
 
 /* Class = "NSMenuItem"; title = "New"; ObjectID = "eJF-ps-vzM"; */
-"eJF-ps-vzM.title" = "New";
+"eJF-ps-vzM.title" = "Uus";
 
 /* Class = "NSMenuItem"; title = "Show"; ObjectID = "er4-3b-wWC"; */
-"er4-3b-wWC.title" = "Show";
+"er4-3b-wWC.title" = "Kuva";
 
 /* Class = "NSMenuItem"; title = "Check for update.."; ObjectID = "fZK-ps-0cd"; */
-"fZK-ps-0cd.title" = "Check for update..";
+"fZK-ps-0cd.title" = "Otsi uuendusi..";
 
 /* Class = "NSMenu"; title = "Timer"; ObjectID = "fl1-3L-kSt"; */
-"fl1-3L-kSt.title" = "Timer";
+"fl1-3L-kSt.title" = "Taimer";
 
 /* Class = "NSMenuItem"; title = "Continue"; ObjectID = "iZQ-ua-rvv"; */
-"iZQ-ua-rvv.title" = "Continue";
+"iZQ-ua-rvv.title" = "Jätka";
 
 /* Class = "NSMenuItem"; title = "Console"; ObjectID = "ibF-Ws-y2e"; */
 "ibF-Ws-y2e.title" = "Konsool";
 
 /* Class = "NSMenuItem"; title = "Stop"; ObjectID = "oJx-X6-U4T"; */
-"oJx-X6-U4T.title" = "Stop";
+"oJx-X6-U4T.title" = "Peata";
 
 /* Class = "NSMenuItem"; title = "Sync"; ObjectID = "qrV-uu-7qU"; */
-"qrV-uu-7qU.title" = "Sync";
+"qrV-uu-7qU.title" = "Sünkroniseeri";
 
 /* Class = "NSMenuItem"; title = "Send Feedback"; ObjectID = "tQk-RP-c2H"; */
-"tQk-RP-c2H.title" = "Send Feedback";
+"tQk-RP-c2H.title" = "Anna tagasisidet";
 
 /* Class = "NSMenu"; title = "File"; ObjectID = "xIs-PZ-bVL"; */
-"xIs-PZ-bVL.title" = "File";
+"xIs-PZ-bVL.title" = "Fail";
 

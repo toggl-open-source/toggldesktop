@@ -7,27 +7,27 @@
     <body>
       <trans-unit id="5.title">
         <source>Bring All to Front</source>
-        <target>Bring All to Front</target>
+        <target>Too kõik ette</target>
         <note>Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5";</note>
       </trans-unit>
       <trans-unit id="8Ix-qa-ila.title">
         <source>New</source>
-        <target>New</target>
+        <target>Uus</target>
         <note>Class = "NSMenuItem"; title = "New"; ObjectID = "8Ix-qa-ila";</note>
       </trans-unit>
       <trans-unit id="19.title">
         <source>Window</source>
-        <target>Window</target>
+        <target>Aken</target>
         <note>Class = "NSMenuItem"; title = "Window"; ObjectID = "19";</note>
       </trans-unit>
       <trans-unit id="23.title">
         <source>Minimize</source>
-        <target>Minimize</target>
+        <target>Minimeeri</target>
         <note>Class = "NSMenuItem"; title = "Minimize"; ObjectID = "23";</note>
       </trans-unit>
       <trans-unit id="24.title">
         <source>Window</source>
-        <target>Window</target>
+        <target>Aken</target>
         <note>Class = "NSMenu"; title = "Window"; ObjectID = "24";</note>
       </trans-unit>
       <trans-unit id="29.title">
@@ -47,122 +47,122 @@
       </trans-unit>
       <trans-unit id="58.title">
         <source>About Toggl Desktop</source>
-        <target>About Toggl Desktop</target>
+        <target>Teave Toggl Desktop kohta</target>
         <note>Class = "NSMenuItem"; title = "About Toggl Desktop"; ObjectID = "58";</note>
       </trans-unit>
       <trans-unit id="92o-Sa-9cW.title">
         <source>Account</source>
-        <target>Account</target>
+        <target>Kasutajakonto</target>
         <note>Class = "NSMenuItem"; title = "Account"; ObjectID = "92o-Sa-9cW";</note>
       </trans-unit>
       <trans-unit id="129.title">
         <source>Preferences…</source>
-        <target>Preferences…</target>
+        <target>Eelistused…</target>
         <note>Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129";</note>
       </trans-unit>
       <trans-unit id="134.title">
         <source>Hide Toggl Desktop</source>
-        <target>Hide Toggl Desktop</target>
+        <target>Peida Toggl Desktop</target>
         <note>Class = "NSMenuItem"; title = "Hide Toggl Desktop"; ObjectID = "134";</note>
       </trans-unit>
       <trans-unit id="136.title">
         <source>Quit Toggl Desktop</source>
-        <target>Quit Toggl Desktop</target>
+        <target>Välju rakendusest Toggl Desktop</target>
         <note>Class = "NSMenuItem"; title = "Quit Toggl Desktop"; ObjectID = "136";</note>
       </trans-unit>
       <trans-unit id="145.title">
         <source>Hide Others</source>
-        <target>Hide Others</target>
+        <target>Peida teised</target>
         <note>Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145";</note>
       </trans-unit>
       <trans-unit id="150.title">
         <source>Show All</source>
-        <target>Show All</target>
+        <target>Kuva kõik</target>
         <note>Class = "NSMenuItem"; title = "Show All"; ObjectID = "150";</note>
       </trans-unit>
       <trans-unit id="197.title">
         <source>Copy</source>
-        <target>Copy</target>
+        <target>Kopeeri</target>
         <note>Class = "NSMenuItem"; title = "Copy"; ObjectID = "197";</note>
       </trans-unit>
       <trans-unit id="198.title">
         <source>Select All</source>
-        <target>Select All</target>
+        <target>Vali kõik</target>
         <note>Class = "NSMenuItem"; title = "Select All"; ObjectID = "198";</note>
       </trans-unit>
       <trans-unit id="199.title">
         <source>Cut</source>
-        <target>Cut</target>
+        <target>Lõika</target>
         <note>Class = "NSMenuItem"; title = "Cut"; ObjectID = "199";</note>
       </trans-unit>
       <trans-unit id="202.title">
         <source>Delete</source>
-        <target>Delete</target>
+        <target>Kustuta</target>
         <note>Class = "NSMenuItem"; title = "Delete"; ObjectID = "202";</note>
       </trans-unit>
       <trans-unit id="203.title">
         <source>Paste</source>
-        <target>Paste</target>
+        <target>Kleebi</target>
         <note>Class = "NSMenuItem"; title = "Paste"; ObjectID = "203";</note>
       </trans-unit>
       <trans-unit id="205.title">
         <source>Edit</source>
-        <target>Edit</target>
+        <target>Muuda</target>
         <note>Class = "NSMenu"; title = "Edit"; ObjectID = "205";</note>
       </trans-unit>
       <trans-unit id="207.title">
         <source>Undo</source>
-        <target>Undo</target>
+        <target>Võta tagasi</target>
         <note>Class = "NSMenuItem"; title = "Undo"; ObjectID = "207";</note>
       </trans-unit>
       <trans-unit id="209.title">
         <source>Find…</source>
-        <target>Find…</target>
+        <target>Otsi…</target>
         <note>Class = "NSMenuItem"; title = "Find…"; ObjectID = "209";</note>
       </trans-unit>
       <trans-unit id="215.title">
         <source>Redo</source>
-        <target>Redo</target>
+        <target>Tee uuesti</target>
         <note>Class = "NSMenuItem"; title = "Redo"; ObjectID = "215";</note>
       </trans-unit>
       <trans-unit id="217.title">
         <source>Edit</source>
-        <target>Edit</target>
+        <target>Muuda</target>
         <note>Class = "NSMenuItem"; title = "Edit"; ObjectID = "217";</note>
       </trans-unit>
       <trans-unit id="218.title">
         <source>Find</source>
-        <target>Find</target>
+        <target>Otsi</target>
         <note>Class = "NSMenuItem"; title = "Find"; ObjectID = "218";</note>
       </trans-unit>
       <trans-unit id="220.title">
         <source>Find</source>
-        <target>Find</target>
+        <target>Otsi</target>
         <note>Class = "NSMenu"; title = "Find"; ObjectID = "220";</note>
       </trans-unit>
       <trans-unit id="239.title">
         <source>Zoom</source>
-        <target>Zoom</target>
+        <target>Suumi</target>
         <note>Class = "NSMenuItem"; title = "Zoom"; ObjectID = "239";</note>
       </trans-unit>
       <trans-unit id="485.title">
         <source>Paste and Match Style</source>
-        <target>Paste and Match Style</target>
+        <target>Kleebi ja ühita laad</target>
         <note>Class = "NSMenuItem"; title = "Paste and Match Style"; ObjectID = "485";</note>
       </trans-unit>
       <trans-unit id="490.title">
         <source>Help</source>
-        <target>Help</target>
+        <target>Abi</target>
         <note>Class = "NSMenuItem"; title = "Help"; ObjectID = "490";</note>
       </trans-unit>
       <trans-unit id="491.title">
         <source>Help</source>
-        <target>Help</target>
+        <target>Abi</target>
         <note>Class = "NSMenu"; title = "Help"; ObjectID = "491";</note>
       </trans-unit>
       <trans-unit id="492.title">
         <source>Toggl Desktop Help</source>
-        <target>Toggl Desktop Help</target>
+        <target>Toote Toggl Desktop abi</target>
         <note>Class = "NSMenuItem"; title = "Toggl Desktop Help"; ObjectID = "492";</note>
       </trans-unit>
       <trans-unit id="1459.ibShadowedLabels[0]">
@@ -177,67 +177,67 @@
       </trans-unit>
       <trans-unit id="GTG-gQ-pHZ.title">
         <source>Timer</source>
-        <target>Timer</target>
+        <target>Taimer</target>
         <note>Class = "NSMenuItem"; title = "Timer"; ObjectID = "GTG-gQ-pHZ";</note>
       </trans-unit>
       <trans-unit id="H4K-an-adb.title">
         <source>File</source>
-        <target>File</target>
+        <target>Fail</target>
         <note>Class = "NSMenuItem"; title = "File"; ObjectID = "H4K-an-adb";</note>
       </trans-unit>
       <trans-unit id="Hl1-5B-r9O.title">
         <source>Edit</source>
-        <target>Edit</target>
+        <target>Muuda</target>
         <note>Class = "NSMenuItem"; title = "Edit"; ObjectID = "Hl1-5B-r9O";</note>
       </trans-unit>
       <trans-unit id="O2e-Kb-cHX.title">
         <source>Hide Main Window</source>
-        <target>Hide Main Window</target>
+        <target>Peida põhiaken</target>
         <note>Class = "NSMenuItem"; title = "Hide Main Window"; ObjectID = "O2e-Kb-cHX";</note>
       </trans-unit>
       <trans-unit id="OCn-tS-va2.title">
         <source>Clear cache</source>
-        <target>Clear cache</target>
+        <target>Kustuta taimeri andmed</target>
         <note>Class = "NSMenuItem"; title = "Clear cache"; ObjectID = "OCn-tS-va2";</note>
       </trans-unit>
       <trans-unit id="ORM-ao-M0m.title">
         <source>Account</source>
-        <target>Account</target>
+        <target>Kasutajakonto</target>
         <note>Class = "NSMenu"; title = "Account"; ObjectID = "ORM-ao-M0m";</note>
       </trans-unit>
       <trans-unit id="R7N-z5-83z.title">
         <source>Logout</source>
-        <target>Logout</target>
+        <target>Väljalogimine</target>
         <note>Class = "NSMenuItem"; title = "Logout"; ObjectID = "R7N-z5-83z";</note>
       </trans-unit>
       <trans-unit id="Yrv-QP-Oob.title">
         <source>Switch mode</source>
-        <target>Switch mode</target>
+        <target>Vaheta resiimi</target>
         <note>Class = "NSMenuItem"; title = "Switch mode"; ObjectID = "Yrv-QP-Oob";</note>
       </trans-unit>
       <trans-unit id="eJF-ps-vzM.title">
         <source>New</source>
-        <target>New</target>
+        <target>Uus</target>
         <note>Class = "NSMenuItem"; title = "New"; ObjectID = "eJF-ps-vzM";</note>
       </trans-unit>
       <trans-unit id="er4-3b-wWC.title">
         <source>Show</source>
-        <target>Show</target>
+        <target>Kuva</target>
         <note>Class = "NSMenuItem"; title = "Show"; ObjectID = "er4-3b-wWC";</note>
       </trans-unit>
       <trans-unit id="fZK-ps-0cd.title">
         <source>Check for update..</source>
-        <target>Check for update..</target>
+        <target>Otsi uuendusi..</target>
         <note>Class = "NSMenuItem"; title = "Check for update.."; ObjectID = "fZK-ps-0cd";</note>
       </trans-unit>
       <trans-unit id="fl1-3L-kSt.title">
         <source>Timer</source>
-        <target>Timer</target>
+        <target>Taimer</target>
         <note>Class = "NSMenu"; title = "Timer"; ObjectID = "fl1-3L-kSt";</note>
       </trans-unit>
       <trans-unit id="iZQ-ua-rvv.title">
         <source>Continue</source>
-        <target>Continue</target>
+        <target>Jätka</target>
         <note>Class = "NSMenuItem"; title = "Continue"; ObjectID = "iZQ-ua-rvv";</note>
       </trans-unit>
       <trans-unit id="ibF-Ws-y2e.title">
@@ -247,22 +247,22 @@
       </trans-unit>
       <trans-unit id="oJx-X6-U4T.title">
         <source>Stop</source>
-        <target>Stop</target>
+        <target>Peata</target>
         <note>Class = "NSMenuItem"; title = "Stop"; ObjectID = "oJx-X6-U4T";</note>
       </trans-unit>
       <trans-unit id="qrV-uu-7qU.title">
         <source>Sync</source>
-        <target>Sync</target>
+        <target>Sünkroniseeri</target>
         <note>Class = "NSMenuItem"; title = "Sync"; ObjectID = "qrV-uu-7qU";</note>
       </trans-unit>
       <trans-unit id="tQk-RP-c2H.title">
         <source>Send Feedback</source>
-        <target>Send Feedback</target>
+        <target>Anna tagasisidet</target>
         <note>Class = "NSMenuItem"; title = "Send Feedback"; ObjectID = "tQk-RP-c2H";</note>
       </trans-unit>
       <trans-unit id="xIs-PZ-bVL.title">
         <source>File</source>
-        <target>File</target>
+        <target>Fail</target>
         <note>Class = "NSMenu"; title = "File"; ObjectID = "xIs-PZ-bVL";</note>
       </trans-unit>
     </body>
