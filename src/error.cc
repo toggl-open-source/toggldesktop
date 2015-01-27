@@ -158,6 +158,9 @@ bool IsUserError(const error err) {
     if (value.find("Invalid e-mail") != std::string::npos) {
         return true;
     }
+    if (value.find("cannot access workspace") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
