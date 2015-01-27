@@ -48,7 +48,7 @@ void *ctx;
 		}
 		else if (lua_isnumber(L, -1))
 		{
-			[self appendToResultView:[NSString stringWithFormat:@"%ld\n", lua_tointeger(L, -1)]];
+			[self appendToResultView:[NSString stringWithFormat:@"%lld\n", lua_tointeger(L, -1)]];
 		}
 		else if (lua_isboolean(L, -1))
 		{
