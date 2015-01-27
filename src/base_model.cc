@@ -173,7 +173,7 @@ error BaseModel::ApplyBatchUpdateResult(
 
 bool BaseModel::userCannotAccessWorkspace(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
-        "User cannot access workspace"));
+        "cannot access workspace"));
 }
 
 std::string BaseModel::batchUpdateRelativeURL() const {
