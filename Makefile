@@ -60,6 +60,7 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsoncppdir) \
+	-Ithird_party/lua/src \
 	-DNDEBUG
 endif
 
@@ -97,8 +98,7 @@ libs=-framework Carbon \
 	-L$(openssldir) \
 	-lssl \
 	-lcrypto \
-	-ldl \
-	-Ithird_party/lua/src
+	-ldl
 endif
 
 ifeq ($(uname), Linux)
