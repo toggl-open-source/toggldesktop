@@ -39,7 +39,6 @@
 		7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
 		74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		74213492195C50C1007EF78B /* Kopsik.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74B680AD180759C300B697AA /* Kopsik.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		742134BB195C63A3007EF78B /* libPocoUtil.30.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B3195C63A3007EF78B /* libPocoUtil.30.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		742134BC195C63A3007EF78B /* libPocoData.30.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B4195C63A3007EF78B /* libPocoData.30.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		742134BD195C63A3007EF78B /* libPocoNetSSL.30.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B5195C63A3007EF78B /* libPocoNetSSL.30.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -58,6 +57,8 @@
 		743D942618279290000E6F70 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
 		743D94281827929C000E6F70 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D94271827929C000E6F70 /* Carbon.framework */; };
 		743D942F1827C633000E6F70 /* IdleEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 743D942E1827C633000E6F70 /* IdleEvent.m */; };
+		74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; };
+		74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		744FC0801A76907F00CA2954 /* lutf8lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 744FC07F1A76907F00CA2954 /* lutf8lib.c */; };
 		745126B619A28AA600390F47 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
@@ -153,7 +154,6 @@
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
-		C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA1FB817F19647001C4565 /* Kopsik.dylib */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
 		C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FC217F1B38B001C4565 /* LoginViewController.m */; };
@@ -161,6 +161,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		74456B991A774858002A6338 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C55DA59C17F06A3B00B42178;
+			remoteInfo = TogglDesktopLibrary;
+		};
+		74456B9B1A77486B002A6338 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C55DA59B17F06A3B00B42178;
+			remoteInfo = TogglDesktopLibrary;
+		};
 		745126C619A28AA600390F47 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
@@ -259,20 +273,6 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CrashReporter-MacOSX";
 		};
-		74B680AC180759C300B697AA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C55DA59C17F06A3B00B42178;
-			remoteInfo = Kopsik;
-		};
-		74B680AE18075A4300B697AA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C55DA59B17F06A3B00B42178;
-			remoteInfo = Kopsik;
-		};
 		74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
@@ -296,6 +296,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
 				7420DD6C1A5DEA5B00A0A5FF /* libPocoJSON.30.dylib in CopyFiles */,
 				742134BB195C63A3007EF78B /* libPocoUtil.30.dylib in CopyFiles */,
 				742134BC195C63A3007EF78B /* libPocoData.30.dylib in CopyFiles */,
@@ -305,7 +306,6 @@
 				742134C0195C63A3007EF78B /* libPocoNet.30.dylib in CopyFiles */,
 				742134C1195C63A3007EF78B /* libPocoFoundation.30.dylib in CopyFiles */,
 				742134C2195C63A3007EF78B /* libPocoCrypto.30.dylib in CopyFiles */,
-				74213492195C50C1007EF78B /* Kopsik.dylib in CopyFiles */,
 				74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */,
 				74A3D06219E418CB00C51BB6 /* Sparkle.framework in CopyFiles */,
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
@@ -497,7 +497,7 @@
 		74AA946F180909F50000539F /* GTMOAuth2WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2WindowController.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.h"; sourceTree = "<group>"; };
 		74AA9470180909F50000539F /* GTMOAuth2WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2WindowController.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.m"; sourceTree = "<group>"; };
 		74AA947718090A8E0000539F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		74B680A8180759C300B697AA /* Kopsik.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kopsik.xcodeproj; path = ../../../lib/osx/Kopsik.xcodeproj; sourceTree = "<group>"; };
+		74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TogglDesktopLibrary.xcodeproj; path = ../../../lib/osx/TogglDesktopLibrary.xcodeproj; sourceTree = "<group>"; };
 		74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHoverButton.h; sourceTree = "<group>"; };
 		74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHoverButton.m; sourceTree = "<group>"; };
 		74BAAA0917F37B140079386F /* TimeEntryViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryViewItem.h; sourceTree = SOURCE_ROOT; };
@@ -580,6 +580,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */,
 				743D94281827929C000E6F70 /* Carbon.framework in Frameworks */,
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
 				74AA947818090A8E0000539F /* Security.framework in Frameworks */,
@@ -591,7 +592,6 @@
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
-				C5DA1FB917F19647001C4565 /* Kopsik.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,7 +607,7 @@
 				742134C3195C63AE007EF78B /* poco */,
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
-				74B680A8180759C300B697AA /* Kopsik.xcodeproj */,
+				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				745E7FC1192D247300747C18 /* images */,
 				74E1682E180F269F0026261C /* gtm */,
@@ -810,6 +810,14 @@
 			name = poco;
 			sourceTree = "<group>";
 		};
+		74456B871A774858002A6338 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		745E7FC1192D247300747C18 /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -941,14 +949,6 @@
 				749A3A6B18D889BE000AD2DB /* DemoCrash-iOS-Device.app */,
 				749A3A6D18D889BE000AD2DB /* DemoCrash-iOS-Simulator.app */,
 				749A3A6F18D889BE000AD2DB /* Fuzz Testing */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		74B680A9180759C300B697AA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				74B680AD180759C300B697AA /* Kopsik.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1095,9 +1095,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				74456B9C1A77486B002A6338 /* PBXTargetDependency */,
 				749A3A7318D89F23000AD2DB /* PBXTargetDependency */,
 				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
-				74B680AF18075A4300B697AA /* PBXTargetDependency */,
 			);
 			name = TogglDesktop;
 			productName = test2;
@@ -1129,12 +1129,12 @@
 					ProjectRef = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
 				},
 				{
-					ProductGroup = 74B680A9180759C300B697AA /* Products */;
-					ProjectRef = 74B680A8180759C300B697AA /* Kopsik.xcodeproj */;
-				},
-				{
 					ProductGroup = 74FD8CD818A8EEE200F7DB80 /* Products */;
 					ProjectRef = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
+				},
+				{
+					ProductGroup = 74456B871A774858002A6338 /* Products */;
+					ProjectRef = 74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1147,6 +1147,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = TogglDesktopLibrary.dylib;
+			remoteRef = 74456B991A774858002A6338 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		745126C719A28AA600390F47 /* CrashReporter.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1236,13 +1243,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = "Fuzz Testing";
 			remoteRef = 749A3A6E18D889BE000AD2DB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		74B680AD180759C300B697AA /* Kopsik.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = Kopsik.dylib;
-			remoteRef = 74B680AC180759C300B697AA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */ = {
@@ -1417,15 +1417,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		74456B9C1A77486B002A6338 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TogglDesktopLibrary;
+			targetProxy = 74456B9B1A77486B002A6338 /* PBXContainerItemProxy */;
+		};
 		749A3A7318D89F23000AD2DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CrashReporter-MacOSX";
 			targetProxy = 749A3A7218D89F23000AD2DB /* PBXContainerItemProxy */;
-		};
-		74B680AF18075A4300B697AA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Kopsik;
-			targetProxy = 74B680AE18075A4300B697AA /* PBXContainerItemProxy */;
 		};
 		74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

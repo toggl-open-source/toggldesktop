@@ -164,7 +164,7 @@ app: lib ui
 
 ifeq ($(uname), Darwin)
 lib:
-	xcodebuild -project src/lib/osx/Kopsik.xcodeproj && \
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj && \
 	!(otool -L ./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
 endif
 ifeq ($(uname), Linux)

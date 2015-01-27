@@ -147,7 +147,7 @@
 		74EB0F1617F9A2600046ABC1 /* https_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = https_client.h; path = ../../../https_client.h; sourceTree = "<group>"; };
 		74F7CDD918199FA300630BD0 /* window_change_recorder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = window_change_recorder.cc; path = ../../../window_change_recorder.cc; sourceTree = "<group>"; };
 		74F7CDDA18199FA300630BD0 /* window_change_recorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = window_change_recorder.h; path = ../../../window_change_recorder.h; sourceTree = "<group>"; };
-		C55DA59C17F06A3B00B42178 /* Kopsik.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Kopsik.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		C55DA59C17F06A3B00B42178 /* TogglDesktopLibrary.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = TogglDesktopLibrary.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DA5A017F06A3B00B42178 /* Kopsik-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kopsik-Prefix.pch"; sourceTree = "<group>"; };
 		C55DA5A117F06A3B00B42178 /* KopsikProj.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = KopsikProj.xcconfig; sourceTree = "<group>"; };
 		C55DA5A217F06A3B00B42178 /* KopsikTarget.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = KopsikTarget.xcconfig; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 		C55DA59D17F06A3B00B42178 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C55DA59C17F06A3B00B42178 /* Kopsik.dylib */,
+				C55DA59C17F06A3B00B42178 /* TogglDesktopLibrary.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -357,9 +357,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C55DA59B17F06A3B00B42178 /* Kopsik */ = {
+		C55DA59B17F06A3B00B42178 /* TogglDesktopLibrary */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C55DA5A917F06A3B00B42178 /* Build configuration list for PBXNativeTarget "Kopsik" */;
+			buildConfigurationList = C55DA5A917F06A3B00B42178 /* Build configuration list for PBXNativeTarget "TogglDesktopLibrary" */;
 			buildPhases = (
 				C55DA59817F06A3B00B42178 /* Sources */,
 				C55DA59917F06A3B00B42178 /* Frameworks */,
@@ -370,9 +370,9 @@
 			);
 			dependencies = (
 			);
-			name = Kopsik;
+			name = TogglDesktopLibrary;
 			productName = Kopsik;
-			productReference = C55DA59C17F06A3B00B42178 /* Kopsik.dylib */;
+			productReference = C55DA59C17F06A3B00B42178 /* TogglDesktopLibrary.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -384,7 +384,7 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Tambet Masik";
 			};
-			buildConfigurationList = C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "Kopsik" */;
+			buildConfigurationList = C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "TogglDesktopLibrary" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -396,7 +396,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C55DA59B17F06A3B00B42178 /* Kopsik */,
+				C55DA59B17F06A3B00B42178 /* TogglDesktopLibrary */,
 			);
 		};
 /* End PBXProject section */
@@ -413,7 +413,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $TARGET_BUILD_DIR/Kopsik.dylib $PROJECT_DIR/build";
+			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $TARGET_BUILD_DIR/*.dylib $PROJECT_DIR/build";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -573,7 +573,7 @@
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
@@ -602,7 +602,7 @@
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Release;
@@ -610,7 +610,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "Kopsik" */ = {
+		C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "TogglDesktopLibrary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C55DA5A717F06A3B00B42178 /* Debug */,
@@ -619,7 +619,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C55DA5A917F06A3B00B42178 /* Build configuration list for PBXNativeTarget "Kopsik" */ = {
+		C55DA5A917F06A3B00B42178 /* Build configuration list for PBXNativeTarget "TogglDesktopLibrary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C55DA5AA17F06A3B00B42178 /* Debug */,
