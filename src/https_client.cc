@@ -144,9 +144,9 @@ Poco::Logger &ServerStatus::logger() const {
 }
 
 void ServerStatus::runActivity() {
-    int delay_seconds = 10;
+    int delay_seconds = 60;
     if (!fast_retry_) {
-        delay_seconds = 60;
+        delay_seconds = 60*15;
     }
 
     {
