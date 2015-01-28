@@ -22,7 +22,6 @@
 #define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
 #define kForbiddenError "Invalid e-mail or password!"
 #define kUnsupportedAppError "This version of the app is not supported any more. Please visit Toggl website to download a supported app." // NOLINT
-#define kTooShortTimeEntries "So short time entries, perhaps accidentally?"
 #define kUnauthorizedError "Unauthorized! Please login again."
 #define kCannotConnectError "Cannot connect to Toggl"
 #define kBackendIsDownError "Backend is down"

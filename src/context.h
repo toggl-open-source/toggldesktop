@@ -224,9 +224,6 @@ class Context : public TimelineDatasource {
     error SaveTimelineEvent(TimelineEvent *event);
     error DeleteTimelineBatch(const std::vector<TimelineEvent> &events);
 
-    // Testing
-    void SetTimerStartInterval(const int seconds);
-
  protected:
     void uiUpdaterActivity();
 
@@ -365,9 +362,6 @@ class Context : public TimelineDatasource {
 
     Poco::Mutex ui_updater_m_;
     Poco::Activity<Context> ui_updater_;
-
-    Poco::Timestamp last_timer_started_at_;
-    int timer_start_interval_;
 
     Analytics analytics_;
 };

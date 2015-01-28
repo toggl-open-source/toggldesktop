@@ -58,9 +58,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
 , quit_(false)
-, ui_updater_(this, &Context::uiUpdaterActivity)
-, last_timer_started_at_(0)
-, timer_start_interval_(kTimerStartInterval) {
+, ui_updater_(this, &Context::uiUpdaterActivity) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -1384,21 +1382,6 @@ bool Context::canSeeBillable(
     return true;
 }
 
-bool Context::allowTimerToStart() {
-    if (!last_timer_started_at_.isElapsed(
-        timer_start_interval_*kOneSecondInMicros)) {
-        displayError(kTooShortTimeEntries);
-        return false;
-    }
-    last_timer_started_at_ = Poco::Timestamp();
-    return true;
-}
-
-void Context::SetTimerStartInterval(
-    const int seconds) {
-    timer_start_interval_ = seconds;
-}
-
 TimeEntry *Context::Start(
     const std::string description,
     const std::string duration,
@@ -1407,10 +1390,6 @@ TimeEntry *Context::Start(
 
     if (!user_) {
         logger().warning("Cannot start tracking, user logged out");
-        return 0;
-    }
-
-    if (!allowTimerToStart()) {
         return 0;
     }
 
@@ -1635,10 +1614,6 @@ _Bool Context::ContinueLatest() {
         return true;
     }
 
-    if (!allowTimerToStart()) {
-        return false;
-    }
-
     error err = user_->Continue(latest->GUID());
     if (err != noError) {
         return displayError(err);
@@ -1659,10 +1634,6 @@ _Bool Context::Continue(
 
     if (GUID.empty()) {
         return displayError("Missing GUID");
-    }
-
-    if (!allowTimerToStart()) {
-        return false;
     }
 
     error err = user_->Continue(GUID);

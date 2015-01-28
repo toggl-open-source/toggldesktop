@@ -364,11 +364,3 @@ _Bool testing_set_logged_in_user(
     toggl::Context *ctx = reinterpret_cast<toggl::Context *>(context);
     return ctx->SetLoggedInUserFromJSON(std::string(json));
 }
-
-void testing_set_timer_start_interval(
-    void *context,
-    const int seconds) {
-
-    toggl::Context *ctx = reinterpret_cast<toggl::Context *>(context);
-    return ctx->SetTimerStartInterval(seconds);
-}
