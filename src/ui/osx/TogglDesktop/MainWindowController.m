@@ -40,8 +40,6 @@ extern void *ctx;
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
-		self.isNetworkIssue = NO;
-
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayLogin:)
 													 name:kDisplayLogin
@@ -139,8 +137,6 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	self.isNetworkIssue = NO;
-
 	[self.errorLabel setStringValue:msg];
 	self.contentViewTop.constant = 50;
 	[self.troubleBox setHidden:NO];
@@ -153,22 +149,21 @@ extern void *ctx;
 						waitUntilDone:NO];
 }
 
-- (void)displayOnlineState:(NSString *)msg
+- (void)displayOnlineState:(NSNumber *)status
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	if (msg)
+	switch ([status intValue])
 	{
-		self.isNetworkIssue = YES;
-
-		[self.errorLabel setStringValue:msg];
-		self.contentViewTop.constant = 50;
-		[self.troubleBox setHidden:NO];
-	}
-	else if (self.isNetworkIssue)
-	{
-		self.isNetworkIssue = NO;
-		[self closeError];
+		case 1 :
+			[self.onlineStatusTextField setStringValue:@"Status: Offline, no network"];
+			break;
+		case 2 :
+			[self.onlineStatusTextField setStringValue:@"Status: Offline, Toggl not responding"];
+			break;
+		default :
+			[self.onlineStatusTextField setStringValue:@"Status: Online"];
+			break;
 	}
 }
 

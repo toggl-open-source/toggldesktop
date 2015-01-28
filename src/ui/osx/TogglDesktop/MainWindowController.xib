@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C106a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
@@ -11,6 +11,7 @@
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
                 <outlet property="errorLabel" destination="3yn-Zh-JYn" id="2lh-8u-0eG"/>
                 <outlet property="mainView" destination="2" id="tVF-qk-gqj"/>
+                <outlet property="onlineStatusTextField" destination="fXQ-pa-GDD" id="bj3-uu-3Ey"/>
                 <outlet property="troubleBox" destination="gBV-Qp-t6E" id="7gd-fC-wYR"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -28,7 +29,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="1" width="300" height="346"/>
+                        <rect key="frame" x="0.0" y="20" width="300" height="327"/>
                     </customView>
                     <box hidden="YES" autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-Qp-t6E">
                         <rect key="frame" x="0.0" y="348" width="300" height="50"/>
@@ -70,12 +71,26 @@
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" red="0.92484454719999998" green="0.87390986770000001" blue="0.37178904140000002" alpha="1" colorSpace="calibratedRGB"/>
                     </box>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fXQ-pa-GDD">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="aDb-MB-STD"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Status: Online" id="iCQ-vt-0Yg">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" id="4zZ-n1-ALD"/>
+                    <constraint firstItem="fXQ-pa-GDD" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="-2" id="BaB-uj-sTK"/>
+                    <constraint firstAttribute="trailing" secondItem="fXQ-pa-GDD" secondAttribute="trailing" constant="-2" id="CFW-2g-1Zg"/>
                     <constraint firstItem="gBV-Qp-t6E" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="H4l-Qk-9du"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
+                    <constraint firstAttribute="bottom" secondItem="fXQ-pa-GDD" secondAttribute="bottom" id="TGf-wj-BiJ"/>
                     <constraint firstItem="gBV-Qp-t6E" firstAttribute="top" secondItem="2" secondAttribute="top" id="acY-4H-9r7"/>
+                    <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" constant="20" id="dey-uV-HtZ"/>
                     <constraint firstAttribute="trailing" secondItem="gBV-Qp-t6E" secondAttribute="trailing" id="hAW-oO-ES1"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>
                 </constraints>

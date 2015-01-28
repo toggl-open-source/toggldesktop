@@ -32,7 +32,7 @@ std::string reminder_informative_text("");
 std::string error("");
 
 // on_online_state
-bool online_state(false);
+int64_t online_state(0);
 
 // on_login
 uint64_t user_id(0);
@@ -102,8 +102,8 @@ void on_update(
     testresult::update_channel = std::string(view->UpdateChannel);
 }
 
-void on_online_state(const _Bool is_online, const char *reason) {
-    testresult::online_state = is_online;
+void on_online_state(const int64_t state) {
+    testresult::online_state = state;
 }
 
 void on_url(const char *url) {

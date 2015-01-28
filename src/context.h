@@ -301,7 +301,7 @@ class Context : public TimelineDatasource {
 
     void scheduleSync();
 
-    void displayOnlineState(const std::string reason);
+    void setOnline(const std::string reason);
 
     void remindToTrackTime();
 

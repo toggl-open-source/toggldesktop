@@ -14,6 +14,9 @@ bool IsNetworkingError(const error err) {
     if (value.find(kCannotConnectError) != std::string::npos) {
         return true;
     }
+    if (value.find(kBackendIsDownError) != std::string::npos) {
+        return true;
+    }
     if (value.find("Cannot establish proxy connection") != std::string::npos) {
         return true;
     }

@@ -33,88 +33,6 @@
 
 namespace toggl {
 
-error ServerStatus::Status() {
-    if (gone()) {
-        return kEndpointGoneError;
-    }
-    if (checkingStatus()) {
-        return kCannotConnectError;
-    }
-    return noError;
-}
-
-error ServerStatus::UpdateStatus(const Poco::Int64 code) {
-    {
-        std::stringstream ss;
-        ss << "UpdateStatus status_code=" << code;
-        logger().debug(ss.str());
-    }
-
-    if (code >= 500 && code < 600) {
-        fast_retry_ = 500 != code;
-        startStatusCheck();
-    } else {
-        stopStatusCheck();
-    }
-
-    switch (code) {
-    case 200:
-    case 201:
-    case 202:
-        return noError;
-    case 400:
-        // data that you sending is not valid/acceptable
-        return kBadRequestError;
-    case 401:
-        // ask user to enter login again, do not obtain new token automatically
-        return kUnauthorizedError;
-    case 402:
-        // requested action allowed only for pro workspace show user upsell
-        // page / ask for workspace pro upgrade. do not retry same request
-        // unless known that client is pro
-        return kPaymentRequiredError;
-    case 403:
-        // client has no right to perform given request. Server
-        return kForbiddenError;
-    case 404:
-        // request is not possible
-        // (or not allowed and server does not tell why)
-        return kRequestIsNotPossible;
-    case 410:
-        setGone(true);
-        return kEndpointGoneError;
-    case 418:
-        return kUnsupportedAppError;
-    case 500:
-        return kCannotConnectError;
-    case 501:
-    case 502:
-    case 503:
-    case 504:
-    case 505:
-        return kCannotConnectError;
-    }
-
-    {
-        std::stringstream ss;
-        ss << "Unexpected HTTP status code from backend: " << code;
-        logger().error(ss.str());
-    }
-
-    return kCannotConnectError;
-}
-
-void ServerStatus::setGone(const bool value) {
-    std::stringstream ss;
-    ss << "setGone value=" << value;
-    logger().debug(ss.str());
-    gone_ = value;
-}
-
-bool ServerStatus::gone() {
-    return gone_;
-}
-
 void ServerStatus::startStatusCheck() {
     std::stringstream ss;
     ss << "startStatusCheck fast_retry=" << fast_retry_;
@@ -126,17 +44,17 @@ void ServerStatus::startStatusCheck() {
     checker_.start();
 }
 
-void ServerStatus::stopStatusCheck() {
+void ServerStatus::stopStatusCheck(const std::string reason) {
     if (!checker_.isRunning() || checker_.isStopped()) {
         return;
     }
-    logger().debug("stopStatusCheck");
+
+    std::stringstream ss;
+    ss << "stopStatusCheck, because " << reason;
+    logger().debug(ss.str());
+
     checker_.stop();
     checker_.wait();
-}
-
-bool ServerStatus::checkingStatus() {
-    return checker_.isRunning() && !checker_.isStopped();
 }
 
 Poco::Logger &ServerStatus::logger() const {
@@ -144,7 +62,7 @@ Poco::Logger &ServerStatus::logger() const {
 }
 
 void ServerStatus::runActivity() {
-    int delay_seconds = 60;
+    int delay_seconds = 60*3;
     if (!fast_retry_) {
         delay_seconds = 60*15;
     }
@@ -199,8 +117,89 @@ void ServerStatus::runActivity() {
             continue;
         }
 
-        stopStatusCheck();
+        stopStatusCheck("No error from backend");
     }
+}
+
+error ServerStatus::Status() {
+    if (gone_) {
+        return kEndpointGoneError;
+    }
+    if (checker_.isRunning() && !checker_.isStopped()) {
+        return kBackendIsDownError;
+    }
+    return noError;
+}
+
+void ServerStatus::UpdateStatus(const Poco::Int64 code) {
+    {
+        std::stringstream ss;
+        ss << "UpdateStatus status_code=" << code;
+        logger().debug(ss.str());
+    }
+
+    gone_ = 410 == code;
+
+    if (code >= 500 && code < 600) {
+        fast_retry_ = 500 != code;
+        startStatusCheck();
+        return;
+    }
+
+    std::stringstream ss;
+    ss << "Status code " << code;
+    stopStatusCheck(ss.str());
+}
+
+Poco::Logger &HTTPSClient::logger() const {
+    return Poco::Logger::get("HTTPSClient");
+}
+
+error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
+    switch (status_code) {
+    case 200:
+    case 201:
+    case 202:
+        return noError;
+    case 400:
+        // data that you sending is not valid/acceptable
+        return kBadRequestError;
+    case 401:
+        // ask user to enter login again, do not obtain new token automatically
+        return kUnauthorizedError;
+    case 402:
+        // requested action allowed only for pro workspace show user upsell
+        // page / ask for workspace pro upgrade. do not retry same request
+        // unless known that client is pro
+        return kPaymentRequiredError;
+    case 403:
+        // client has no right to perform given request. Server
+        return kForbiddenError;
+    case 404:
+        // request is not possible
+        // (or not allowed and server does not tell why)
+        return kRequestIsNotPossible;
+    case 410:
+        return kEndpointGoneError;
+    case 418:
+        return kUnsupportedAppError;
+    case 500:
+        return kBackendIsDownError;
+    case 501:
+    case 502:
+    case 503:
+    case 504:
+    case 505:
+        return kBackendIsDownError;
+    }
+
+    {
+        std::stringstream ss;
+        ss << "Unexpected HTTP status code: " << status_code;
+        logger().error(ss.str());
+    }
+
+    return kCannotConnectError;
 }
 
 HTTPSClientConfig HTTPSClient::Config;
@@ -214,7 +213,7 @@ error HTTPSClient::PostJSON(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
-    int status_code(0);
+    Poco::Int64 status_code(0);
     return request(Poco::Net::HTTPRequest::HTTP_POST,
                    host,
                    relative_url,
@@ -231,7 +230,7 @@ error HTTPSClient::GetJSON(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body) {
-    int status_code(0);
+    Poco::Int64 status_code(0);
     return request(Poco::Net::HTTPRequest::HTTP_GET,
                    host,
                    relative_url,
@@ -242,43 +241,9 @@ error HTTPSClient::GetJSON(
                    &status_code);
 }
 
-error TogglClient::request(
-    const std::string method,
-    const std::string host,
-    const std::string relative_url,
-    const std::string json,
-    const std::string basic_auth_username,
-    const std::string basic_auth_password,
-    std::string *response_body,
-    int *status_code) {
-
-    error err = TogglStatus.Status();
-    if (err != noError) {
-        std::stringstream ss;
-        ss << "Will not connect, because of known bad Toggl status: " << err;
-        Poco::Logger::get("TogglClient").error(ss.str());
-        return err;
-    }
-
-    err = HTTPSClient::request(
-        method,
-        host,
-        relative_url,
-        json,
-        basic_auth_username,
-        basic_auth_password,
-        response_body,
-        status_code);
-    if (err != noError) {
-        return err;
-    }
-
-    // We only update Toggl status from this
-    // client, not websocket or regular http client,
-    // as they are not critical.
-    return TogglStatus.UpdateStatus(*status_code);
-}
-
+// NB! returns an error only if the request actually fails for some reason.
+// Meaning that HTTP status codes 400, 500 etc *will not* result in error,
+// as the request itself was successfully made to server.
 error HTTPSClient::request(
     const std::string method,
     const std::string host,
@@ -287,7 +252,7 @@ error HTTPSClient::request(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body,
-    int *status_code) {
+    Poco::Int64 *status_code) {
 
     poco_assert(!host.empty());
     poco_assert(!method.empty());
@@ -338,11 +303,10 @@ error HTTPSClient::request(
         session.setTimeout(Poco::Timespan(kHTTPClientTimeoutSeconds
                                           * Poco::Timespan::SECONDS));
 
-        Poco::Logger &logger = Poco::Logger::get("https_client");
         {
             std::stringstream ss;
             ss << "Sending request to " << relative_url << " ..";
-            logger.debug(ss.str());
+            logger().debug(ss.str());
         }
 
         std::string encoded_url("");
@@ -379,9 +343,9 @@ error HTTPSClient::request(
         // Log out request contents
         std::stringstream request_string;
         req.write(request_string);
-        logger.debug(request_string.str());
+        logger().debug(request_string.str());
 
-        logger.debug("Request sent. Receiving response..");
+        logger().debug("Request sent. Receiving response..");
 
         // Receive response
         Poco::Net::HTTPResponse response;
@@ -399,7 +363,7 @@ error HTTPSClient::request(
             } else {
                 ss << ", unknown content encoding";
             }
-            logger.debug(ss.str());
+            logger().debug(ss.str());
         }
 
         // Inflate, if gzip was sent
@@ -419,7 +383,9 @@ error HTTPSClient::request(
                 std::string(std::istreambuf_iterator<char>(is), eos);
         }
 
-        logger.trace(*response_body);
+        logger().trace(*response_body);
+
+        return statusCodeToError(*status_code);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -428,6 +394,46 @@ error HTTPSClient::request(
         return ex;
     }
     return noError;
+}
+
+Poco::Logger &TogglClient::logger() const {
+    return Poco::Logger::get("TogglClient");
+}
+
+error TogglClient::request(
+    const std::string method,
+    const std::string host,
+    const std::string relative_url,
+    const std::string json,
+    const std::string basic_auth_username,
+    const std::string basic_auth_password,
+    std::string *response_body,
+    Poco::Int64 *status_code) {
+
+    error err = TogglStatus.Status();
+    if (err != noError) {
+        std::stringstream ss;
+        ss << "Will not connect, because of known bad Toggl status: " << err;
+        Poco::Logger::get("TogglClient").error(ss.str());
+        return err;
+    }
+
+    err = HTTPSClient::request(
+        method,
+        host,
+        relative_url,
+        json,
+        basic_auth_username,
+        basic_auth_password,
+        response_body,
+        status_code);
+
+    // We only update Toggl status from this
+    // client, not websocket or regular http client,
+    // as they are not critical.
+    TogglStatus.UpdateStatus(*status_code);
+
+    return err;
 }
 
 }   // namespace toggl

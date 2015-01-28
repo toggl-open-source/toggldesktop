@@ -27,11 +27,11 @@ class ServerStatus {
     , fast_retry_(true) {}
 
     virtual ~ServerStatus() {
-        stopStatusCheck();
+        stopStatusCheck("destructor");
     }
 
     error Status();
-    error UpdateStatus(const Poco::Int64 status_code);
+    void UpdateStatus(const Poco::Int64 status_code);
 
  protected:
     void runActivity();
@@ -45,7 +45,7 @@ class ServerStatus {
     bool gone();
 
     void startStatusCheck();
-    void stopStatusCheck();
+    void stopStatusCheck(const std::string reason);
     bool checkingStatus();
 
     Poco::Logger &logger() const;
@@ -105,7 +105,12 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body,
-        int *response_status);
+        Poco::Int64 *response_status);
+
+    virtual Poco::Logger &logger() const;
+
+ private:
+    error statusCodeToError(const Poco::Int64 status_code) const;
 };
 
 class TogglClient : public HTTPSClient {
@@ -121,7 +126,9 @@ class TogglClient : public HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body,
-        int *response_status);
+        Poco::Int64 *response_status);
+
+    virtual Poco::Logger &logger() const;
 };
 
 }  // namespace toggl

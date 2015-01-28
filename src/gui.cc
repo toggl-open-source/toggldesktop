@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 
+#include "./const.h"
 #include "./error.h"
 #include "./toggl_api_private.h"
 
@@ -36,7 +37,11 @@ _Bool GUI::DisplayError(const error err) {
     if (IsNetworkingError(err)) {
         std::stringstream ss;
         ss << "You are offline (" << err << ")";
-        DisplayOnlineState(false, ss.str());
+        if (kBackendIsDownError == err) {
+            DisplayOnlineState(kOnlineStateBackendDown);
+        } else {
+            DisplayOnlineState(kOnlineStateNoNetwork);
+        }
         return false;
     }
 
@@ -123,15 +128,28 @@ void GUI::DisplayReminder() {
     free(s2);
 }
 
-void GUI::DisplayOnlineState(const _Bool is_online, const std::string reason) {
+void GUI::DisplayOnlineState(const Poco::Int64 state) {
+    poco_assert(kOnlineStateOnline == state
+                || kOnlineStateNoNetwork == state
+                || kOnlineStateBackendDown == state);
+
     std::stringstream ss;
-    ss << "DisplayOnlineState is_online: " << is_online
-       << ", reason: " << reason;
+    ss << "DisplayOnlineState ";
+
+    switch (state) {
+    case kOnlineStateOnline:
+        ss << "online";
+        break;
+    case kOnlineStateNoNetwork:
+        ss << "no network";
+        break;
+    case kOnlineStateBackendDown:
+        ss << "backend is down";
+        break;
+    }
     logger().debug(ss.str());
 
-    char_t *reason_s = copy_string(reason);
-    on_display_online_state_(is_online, reason_s);
-    free(reason_s);
+    on_display_online_state_(state);
 }
 
 void GUI::DisplayUpdate(const _Bool open,

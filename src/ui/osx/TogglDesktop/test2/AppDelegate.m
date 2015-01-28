@@ -490,11 +490,11 @@ BOOL manualMode = NO;
 						waitUntilDone:NO];
 }
 
-- (void)displayOnlineState:(NSString *)errorMsg
+- (void)displayOnlineState:(NSNumber *)state
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	self.lastKnownOnlineState = !errorMsg;
+	self.lastKnownOnlineState = ![state intValue];
 	[self updateStatusItem];
 }
 
@@ -1121,17 +1121,10 @@ const NSString *appName = @"osx_native_app";
 	}
 }
 
-void on_online_state(const _Bool is_online, const char *reason)
+void on_online_state(const int64_t state)
 {
-	NSString *err = nil;
-
-	if (!is_online)
-	{
-		err = [NSString stringWithUTF8String:reason];
-	}
-
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayOnlineState
-														object:err];
+														object:[NSNumber numberWithLong:state]];
 }
 
 void on_login(const _Bool open, const uint64_t user_id)

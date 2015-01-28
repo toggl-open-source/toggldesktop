@@ -139,8 +139,7 @@ extern "C" {
         TogglUpdateView *update);
 
     typedef void (*TogglDisplayOnlineState)(
-        const _Bool is_online,
-        const char_t *reason);
+        const int64_t state);
 
     typedef void(*TogglDisplayURL)(
         const char_t *url);

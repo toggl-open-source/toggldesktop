@@ -14,6 +14,6 @@
 @property IBOutlet NSTextField *errorLabel;
 @property IBOutlet NSBox *troubleBox;
 @property IBOutlet NSButton *closeTroubleBoxButton;
-@property BOOL isNetworkIssue;
 @property (strong) IBOutlet NSView *mainView;
+@property (strong) IBOutlet NSTextField *onlineStatusTextField;
 @end

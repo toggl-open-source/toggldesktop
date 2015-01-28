@@ -25,9 +25,14 @@
 #define kTooShortTimeEntries "So short time entries, perhaps accidentally?"
 #define kUnauthorizedError "Unauthorized! Please login again."
 #define kCannotConnectError "Cannot connect to Toggl"
+#define kBackendIsDownError "Backend is down"
 #define kBadRequestError "Data that you are sending is not valid/acceptable"
 #define kRequestIsNotPossible "Request is not possible"
 #define kPaymentRequiredError "Requested action allowed only for Pro workspace. Please upgrade!"  // NOLINT
 #define kCannotAccessWorkspaceError "cannot access workspace"
+
+#define kOnlineStateOnline 0
+#define kOnlineStateNoNetwork 1
+#define kOnlineStateBackendDown 2
 
 #endif  // SRC_CONST_H_

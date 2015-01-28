@@ -486,14 +486,20 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    displayOnlineState("Sync done");
+    setOnline("Sync done");
 }
 
-void Context::displayOnlineState(const std::string reason) {
+void Context::setOnline(const std::string reason) {
+    std::stringstream ss;
+    ss << "setOnline, reason:" << reason;
+    logger().debug(ss.str());
+
     if (quit_) {
         return;
     }
-    UI()->DisplayOnlineState(true, reason);
+
+    UI()->DisplayOnlineState(kOnlineStateOnline);
+
     scheduleSync();
 }
 
@@ -528,7 +534,7 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     if (err != noError) {
         displayError(err);
     } else {
-        displayOnlineState("Changes pushed");
+        setOnline("Changes pushed");
     }
 
     err = save(false);

@@ -46,7 +46,7 @@ class GUI {
 
     void DisplayApp();
     _Bool DisplayError(const error);
-    void DisplayOnlineState(const _Bool online, const std::string reason);
+    void DisplayOnlineState(const Poco::Int64 state);
     void DisplayReminder();
     void DisplayUpdate(const _Bool open,
                        const std::string update_channel,
