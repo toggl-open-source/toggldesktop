@@ -174,8 +174,7 @@ class TogglApi : public QObject {
         UpdateView *update);
 
     void displayOnlineState(
-        const bool is_online,
-        const QString reason);
+        int64_t state);
 
     void displayLogin(
         const bool open,

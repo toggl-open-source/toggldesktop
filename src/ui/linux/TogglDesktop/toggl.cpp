@@ -46,10 +46,8 @@ void on_display_update(
 }
 
 void on_display_online_state(
-    const bool is_online,
-    const char *reason) {
-    TogglApi::instance->displayOnlineState(is_online,
-                                           QString(reason));
+    int64_t state) {
+    TogglApi::instance->displayOnlineState(state);
 }
 
 void on_display_url(

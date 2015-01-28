@@ -7,7 +7,6 @@
 ErrorViewController::ErrorViewController(QWidget *parent)
     : QWidget(parent)
 , ui(new Ui::ErrorViewController)
-, networkError(false)
 , loginError(false)
 , uid(0) {
     ui->setupUi(this);
@@ -16,8 +15,8 @@ ErrorViewController::ErrorViewController(QWidget *parent)
     connect(TogglApi::instance, SIGNAL(displayError(QString,bool)),  // NOLINT
             this, SLOT(displayError(QString,bool)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayOnlineState(bool,QString)),  // NOLINT
-            this, SLOT(displayOnlineState(bool,QString)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayOnlineState(int64_t)),  // NOLINT
+            this, SLOT(displayOnlineState(int64_t)));  // NOLINT
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
@@ -34,7 +33,6 @@ void ErrorViewController::on_pushButton_clicked() {
 void ErrorViewController::displayError(
     const QString errmsg,
     const bool user_error) {
-    networkError = false;
     loginError = !uid;
     ui->errorMessage->setText(errmsg);
     setVisible(true);
@@ -45,15 +43,8 @@ void ErrorViewController::displayError(
 }
 
 void ErrorViewController::displayOnlineState(
-    const bool is_online,
-    const QString reason) {
-    if (!is_online && !reason.isEmpty()) {
-        networkError = true;
-        ui->errorMessage->setText(reason);
-        setVisible(true);
-    } else if (is_online && networkError) {
-        setVisible(false);
-    }
+    int64_t state) {
+    // FIXME: need separate online state label
 }
 
 void ErrorViewController::displayLogin(
