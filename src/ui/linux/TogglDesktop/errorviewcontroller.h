@@ -26,7 +26,7 @@ class ErrorViewController : public QWidget {
         const bool user_error);
 
     void displayOnlineState(
-	int64_t state);
+        int64_t state);
 
     void displayLogin(
         const bool open,
