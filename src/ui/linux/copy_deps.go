@@ -20,6 +20,7 @@ var knownDeps = []string{
 	"libjson",
 	"libssl",
 	"libcrypto",
+	"libxcb",
 }
 
 func main() {
@@ -43,6 +44,8 @@ func main() {
 	deps := strings.Split(string(b), "\n")
 
 	fmt.Println(len(deps), "dependencies found")
+
+	copied := 0
 
 	for _, s := range deps {
 		if !strings.Contains(s, "=>") {
@@ -70,6 +73,7 @@ func main() {
 		if !required {
 			continue
 		}
+		copied += 1
 		_, err := exec.Command("cp", name, *destination).CombinedOutput()
 		if err != nil {
 			fmt.Println(err, string(b))
@@ -79,7 +83,7 @@ func main() {
 		}
 	}
 
-	fmt.Println(len(deps), "dependencies copied")
+	fmt.Println(copied, "dependencies copied")
 
 	os.Exit(0)
 }
