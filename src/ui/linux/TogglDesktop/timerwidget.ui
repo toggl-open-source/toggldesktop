@@ -99,9 +99,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
+             <pointsize>-1</pointsize>
             </font>
            </property>
            <property name="styleSheet">
@@ -154,6 +152,12 @@ font-size: 14px;</string>
       </item>
       <item>
        <widget class="QLineEdit" name="duration">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>100</width>
