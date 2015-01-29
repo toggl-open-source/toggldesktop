@@ -181,6 +181,10 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         // Reset adding new project
         ui->newProject->setVisible(false);
         ui->addNewProject->setVisible(true);
+        ui->newProjectName->setText("");
+        ui->publicProject->setChecked(false);
+        ui->newProjectWorkspace->setCurrentIndex(-1);
+        ui->newProjectClient->setCurrentIndex(-1);
 
         // Reset adding new client
         toggleNewClientMode(false);
