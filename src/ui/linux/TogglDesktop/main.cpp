@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) try {
     Bugsnag::apiKey = "2a46aa1157256f759053289f2d687c2f";
 
     qRegisterMetaType<uint64_t>("uint64_t");
+    qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<_Bool>("_Bool");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*");
