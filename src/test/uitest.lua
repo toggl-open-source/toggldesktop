@@ -1,4 +1,6 @@
 
+toggl.set_environment("test")
+
 assert(toggl.logout())
 
 local f = assert(io.open("testdata/me.json", "r"))
