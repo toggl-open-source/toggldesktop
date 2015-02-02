@@ -76,9 +76,4 @@ Poco::Logger &logger();
 
 toggl::Context *app(void *context);
 
-// For testing only
-_Bool testing_set_logged_in_user(
-    void *context,
-    const char *json);
-
 #endif  // SRC_TOGGL_API_PRIVATE_H_

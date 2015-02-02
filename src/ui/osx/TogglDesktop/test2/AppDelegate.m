@@ -1060,14 +1060,14 @@ const NSString *appName = @"osx_native_app";
 		toggl_register_lua(ctx, luaState);
 		lua_settop(luaState, 0);
 		NSString *script = [NSString stringWithContentsOfFile:scriptFile encoding:NSUTF8StringEncoding error:nil];
-		[Utils runScript:script withState:luaState];
+		result = [Utils runScript:script withState:luaState];
 	}
 	@catch (NSException *e) {
 		NSLog(@"Script exception: %@", e);
 	} @finally {
 		lua_close(luaState);
 		NSLog(@"Script result: %@", result);
-		if (!result.err)
+		if (result && !result.err)
 		{
 			[[NSApplication sharedApplication] terminate:self];
 		}

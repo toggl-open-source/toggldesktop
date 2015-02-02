@@ -382,8 +382,11 @@ test_objects: build/test/gtest-all.o \
 	build/test/app_test.o \
 	build/test/toggl_api_test.o
 
-uitest: app
-	./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop --script-path $(pwd)/src/test/start_stop_test.lua
+uitest:
+	./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop \
+		--script-path $(pwd)/src/test/uitest.lua \
+		--log-path $(pwd)/test/uitest.log \
+		--db-path $(pwd)/test/uitest.db
 
 toggl_test: clean_test objects test_objects
 	mkdir -p test

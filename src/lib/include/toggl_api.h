@@ -555,8 +555,13 @@ extern "C" {
         const int settings_size);
 
     // Testing helpers. May change any time
-    TOGGL_EXPORT void toggl_sleep(
+    TOGGL_EXPORT void testing_sleep(
         const int seconds);
+
+    // For testing only
+    _Bool testing_set_logged_in_user(
+        void *context,
+        const char *json);
 
 #undef TOGGL_EXPORT
 

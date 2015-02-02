@@ -8,7 +8,6 @@
 
 #include "./toggl_api.h"
 
-// FIXME: cant we keep it somehow better, in lua state, perhaps?
 static void *app = 0;
 
 static int l_toggl_environment(lua_State *L) {
@@ -422,10 +421,17 @@ static int l_toggl_debug(lua_State *L) {
     return 0;
 }
 
-static int l_toggl_sleep(lua_State *L) {
-    toggl_sleep(
+static int l_testing_sleep(lua_State *L) {
+    testing_sleep(
         lua_tointeger(L, -1));
     return 0;
+}
+
+static int l_testing_set_logged_in_user(lua_State *L) {
+    _Bool res = testing_set_logged_in_user(app,
+                                           luaL_checkstring(L, -1));
+    lua_pushboolean(L, res);
+    return 1;
 }
 
 static const struct luaL_Reg toggl_f[] = {
@@ -494,7 +500,8 @@ static const struct luaL_Reg toggl_f[] = {
         l_toggl_format_tracked_time_duration
     },
     {"debug", l_toggl_debug},
-    {"sleep", l_toggl_sleep},
+    {"sleep", l_testing_sleep},
+    {"set_logged_in_user", l_testing_set_logged_in_user},
     {NULL, NULL}
 };
 
@@ -505,7 +512,6 @@ static int luaopen_toggl(lua_State *L) {
 }
 
 static int toggl_register_lua(void *ctx, lua_State *L) {
-    // FIXME: can't we keep it in lua state instead?
     app = ctx;
 
     luaL_requiref(L, "toggl", luaopen_toggl, 1);

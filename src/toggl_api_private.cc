@@ -355,12 +355,3 @@ toggl::Context *app(void *context) {
 
     return reinterpret_cast<toggl::Context *>(context);
 }
-
-_Bool testing_set_logged_in_user(
-    void *context,
-    const char *json) {
-    poco_check_ptr(json);
-
-    toggl::Context *ctx = reinterpret_cast<toggl::Context *>(context);
-    return ctx->SetLoggedInUserFromJSON(std::string(json));
-}

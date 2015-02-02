@@ -787,7 +787,16 @@ void toggl_set_idle_seconds(
     app(context)->SetIdleSeconds(idle_seconds);
 }
 
-void toggl_sleep(
+void testing_sleep(
     const int seconds) {
     Poco::Thread::sleep(seconds*1000);
+}
+
+_Bool testing_set_logged_in_user(
+    void *context,
+    const char *json) {
+    poco_check_ptr(json);
+
+    toggl::Context *ctx = reinterpret_cast<toggl::Context *>(context);
+    return ctx->SetLoggedInUserFromJSON(std::string(json));
 }
