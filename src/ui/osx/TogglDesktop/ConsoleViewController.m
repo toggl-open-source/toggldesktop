@@ -7,13 +7,21 @@
 
 #import "ConsoleViewController.h"
 
-@interface ConsoleViewController ()
+#import "Utils.h"
 
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+
+#include "toggl_api_lua.h"
+
+@interface ConsoleViewController ()
 @end
 
 @implementation ConsoleViewController
 
 void *ctx;
+lua_State *L;
 
 - (void)windowDidLoad
 {
@@ -31,38 +39,10 @@ void *ctx;
 
 - (IBAction)onRun:(id)sender
 {
-	int err = luaL_loadstring(L, [self.entryTextField.stringValue UTF8String]);
+	NSString *result = [Utils runScript:self.entryTextField.stringValue withState:L];
 
-	if (!err)
-	{
-		err = lua_pcall(L, 0, LUA_MULTRET, 0);
-	}
+	[self appendToResultView:result];
 
-	int argc = lua_gettop(L);
-	[self appendToResultView:[NSString stringWithFormat:@"%d value(s) returned\n", argc]];
-	for (int i = 0; i < argc; i++)
-	{
-		if (lua_isstring(L, -1))
-		{
-			[self appendToResultView:[NSString stringWithFormat:@"%s\n", lua_tostring(L, -1)]];
-		}
-		else if (lua_isnumber(L, -1))
-		{
-			[self appendToResultView:[NSString stringWithFormat:@"%lld\n", lua_tointeger(L, -1)]];
-		}
-		else if (lua_isboolean(L, -1))
-		{
-			[self appendToResultView:[NSString stringWithFormat:@"%d\n", lua_toboolean(L, -1)]];
-		}
-		else
-		{
-			[self appendToResultView:@"ok\n"];
-		}
-		lua_pop(L, -1);
-	}
-	[self appendToResultView:@"\n"];
-
-	self.lastEntry = self.entryTextField.stringValue;
 	self.entryTextField.stringValue = @"";
 }
 

@@ -554,6 +554,10 @@ extern "C" {
         const int view_item_size,
         const int settings_size);
 
+    // Testing helpers. May change any time
+    TOGGL_EXPORT void toggl_sleep(
+        const int seconds);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

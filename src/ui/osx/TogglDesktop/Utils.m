@@ -9,7 +9,68 @@
 #import "Utils.h"
 #import "Sparkle.h"
 
+#include "lualib.h"
+#include "lauxlib.h"
+
+@implementation ScriptResult
+
+- (void)append:(NSString *)moreText
+{
+	if (!self.text)
+	{
+		self.text = @"";
+	}
+	self.text = [self.text stringByAppendingString:moreText];
+}
+
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"err: %d, text: %@",
+			self.err, self.text];
+}
+
+@end
+
 @implementation Utils
+
++ (ScriptResult *)runScript:(NSString *)script withState:(lua_State *)L
+{
+	ScriptResult *result = [[ScriptResult alloc] init];
+
+	result.err = luaL_loadstring(L, [script UTF8String]);
+
+	if (!result.err)
+	{
+		result.err = lua_pcall(L, 0, LUA_MULTRET, 0);
+	}
+
+	int argc = lua_gettop(L);
+
+	result.text = [NSString stringWithFormat:@"%d value(s) returned\n", argc];
+
+	for (int i = 0; i < argc; i++)
+	{
+		if (lua_isstring(L, -1))
+		{
+			[result append:[NSString stringWithFormat:@"%s\n", lua_tostring(L, -1)]];
+		}
+		else if (lua_isnumber(L, -1))
+		{
+			[result append:[NSString stringWithFormat:@"%lld\n", lua_tointeger(L, -1)]];
+		}
+		else if (lua_isboolean(L, -1))
+		{
+			[result append:[NSString stringWithFormat:@"%d\n", lua_toboolean(L, -1)]];
+		}
+		else
+		{
+			[result append:@"ok\n"];
+		}
+		lua_pop(L, -1);
+	}
+	[result append:@"\n"];
+	return result;
+}
 
 + (void)setUpdaterChannel:(NSString *)channel
 {

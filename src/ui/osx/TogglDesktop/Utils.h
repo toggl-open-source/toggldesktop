@@ -8,8 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Utils : NSObject
+#include "lua.h"
 
+@interface ScriptResult : NSObject
+- (void)append:(NSString *)moreText;
+@property NSString *text;
+@property int err;
+@end
+
+@interface Utils : NSObject
 + (NSInteger)boolToState:(BOOL)value;
 + (unsigned int)stateToBool:(NSInteger)state;
 + (void)disallowDuplicateInstances;
@@ -17,6 +24,7 @@
 + (bool)isNumeric:(NSString *)checkText;
 + (void)addUnderlineToTextField:(NSTextField *)field;
 + (void)setUpdaterChannel:(NSString *)channel;
++ (ScriptResult *)runScript:(NSString *)script withState:(lua_State *)L;
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem();

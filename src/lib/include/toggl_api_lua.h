@@ -422,6 +422,12 @@ static int l_toggl_debug(lua_State *L) {
     return 0;
 }
 
+static int l_toggl_sleep(lua_State *L) {
+    toggl_sleep(
+        lua_tointeger(L, -1));
+    return 0;
+}
+
 static const struct luaL_Reg toggl_f[] = {
     {"set_environment", l_toggl_set_environment},
     {"environment", l_toggl_environment},
@@ -488,6 +494,7 @@ static const struct luaL_Reg toggl_f[] = {
         l_toggl_format_tracked_time_duration
     },
     {"debug", l_toggl_debug},
+    {"sleep", l_toggl_sleep},
     {NULL, NULL}
 };
 

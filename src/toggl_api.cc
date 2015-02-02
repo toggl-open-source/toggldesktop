@@ -786,3 +786,8 @@ void toggl_set_idle_seconds(
     const uint64_t idle_seconds) {
     app(context)->SetIdleSeconds(idle_seconds);
 }
+
+void toggl_sleep(
+    const int seconds) {
+    Poco::Thread::sleep(seconds*1000);
+}
