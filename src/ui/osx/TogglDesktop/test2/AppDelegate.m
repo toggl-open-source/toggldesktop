@@ -76,7 +76,6 @@
 // Manual mode
 @property NSMenuItem *manualModeMenuItem;
 
-
 @end
 
 @implementation AppDelegate
