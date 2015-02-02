@@ -555,7 +555,7 @@ extern "C" {
         const int settings_size);
 
     // Testing helpers. May change any time
-    TOGGL_EXPORT void testing_sleep(
+    void testing_sleep(
         const int seconds);
 
     // For testing only
