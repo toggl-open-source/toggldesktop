@@ -663,7 +663,7 @@ error Database::loadWorkspaces(
         return error("Cannot load user workspaces without an user ID");
     }
 
-           Poco::Mutex::ScopedLock lock(session_m_);
+    Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -718,7 +718,7 @@ error Database::loadClients(
         return error("Cannot load user clients without an user ID");
     }
 
-           Poco::Mutex::ScopedLock lock(session_m_);
+    Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -779,7 +779,7 @@ error Database::loadProjects(
         return error("Cannot load user projects without an user ID");
     }
 
-           Poco::Mutex::ScopedLock lock(session_m_);
+    Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -857,7 +857,7 @@ error Database::loadTasks(
         return error("Cannot load user tasks without an user ID");
     }
 
-           Poco::Mutex::ScopedLock lock(session_m_);
+    Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -918,7 +918,7 @@ error Database::loadTags(
         return error("Cannot load user tags without an user ID");
     }
 
-           Poco::Mutex::ScopedLock lock(session_m_);
+    Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -978,7 +978,7 @@ error Database::loadTimeEntries(
         return error("Cannot load user time entries without an user ID");
     }
 
-           Poco::Mutex::ScopedLock lock(session_m_);
+    Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -1131,7 +1131,7 @@ error Database::saveRelatedModels(
         return error("Cannot save user related data without an user ID");
     }
 
-           poco_check_ptr(list);
+    poco_check_ptr(list);
     poco_check_ptr(changes);
 
     typedef typename std::vector<T *>::iterator iterator;
