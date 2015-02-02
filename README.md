@@ -92,6 +92,8 @@ Windows
 -------
 Toggl built and signed app for Windows is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=stable). App has been tested on Windows 7, 8 and 8.1
 
+Windows app is also available [as portable app, as a zip file](https://www.toggl.com/api/v8/installer?platform=portable&app=td&channel=stable).
+
 Linux
 -----
 * [app](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=beta) (64 bit)
