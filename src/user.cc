@@ -1061,7 +1061,9 @@ error User::updateJSON(
     }
 
     Json::StyledWriter writer;
-    return writer.write(c);
+    *result = writer.write(c);
+
+    return noError;
 }
 
 template<class T>
