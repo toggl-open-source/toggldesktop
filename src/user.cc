@@ -585,6 +585,11 @@ void User::loadUserTagFromJSON(
     // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
+
     Tag *model = related.TagByID(id);
 
     if (!model) {
@@ -640,6 +645,11 @@ void User::loadUserTaskFromJSON(
     // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
+
     Task *model = related.TaskByID(id);
 
     // Tasks have no GUID
@@ -720,6 +730,10 @@ void User::loadUserWorkspaceFromJSON(
     // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
     Workspace *model = related.WorkspaceByID(id);
 
     // Workspaces have no GUID
@@ -772,6 +786,11 @@ error User::LoadUserAndRelatedDataFromJSONString(
 void User::loadUserAndRelatedDataFromJSON(
     Json::Value data) {
 
+    if (!data["id"].asUInt64()) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
+
     SetID(data["id"].asUInt64());
     SetDefaultWID(data["default_wid"].asUInt64());
     SetAPIToken(data["api_token"].asString());
@@ -809,6 +828,10 @@ void User::loadUserClientFromJSON(
     // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
     Client *model = related.ClientByID(id);
 
     if (!model) {
@@ -852,6 +875,11 @@ void User::loadUserProjectFromJSON(
     // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
+
     Project *model = related.ProjectByID(id);
 
     if (!model) {
@@ -895,6 +923,11 @@ void User::loadUserTimeEntryFromJSON(
     // alive can be 0, dont assert/check it
 
     Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
+
     TimeEntry *model = related.TimeEntryByID(id);
 
     if (!model) {
