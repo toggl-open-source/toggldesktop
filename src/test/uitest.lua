@@ -1,4 +1,6 @@
 
+toggl.logout()
+
 local f = assert(io.open("testdata/me.json", "r"))
 local json = assert(f:read("*all"))
 f:close()
