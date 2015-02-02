@@ -246,6 +246,12 @@ BOOL manualMode = NO;
 		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	}
+
+	if (self.scriptPath)
+	{
+		[self performSelectorInBackground:@selector(runScript:)
+							   withObject:self.scriptPath];
+	}
 }
 
 - (BOOL)updateCheckEnabled
@@ -958,12 +964,6 @@ const NSString *appName = @"osx_native_app";
 	}
 
 	NSLog(@"AppDelegate init done");
-
-	if (self.scriptPath)
-	{
-		[self performSelectorInBackground:@selector(runScript:)
-							   withObject:self.scriptPath];
-	}
 
 	return self;
 }
