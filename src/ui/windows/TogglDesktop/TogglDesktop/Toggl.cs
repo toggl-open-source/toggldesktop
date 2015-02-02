@@ -180,14 +180,10 @@ namespace TogglDesktop
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayOnlineState(
-            [MarshalAs(UnmanagedType.I1)]
-            bool is_online,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string reason);
+            Int64 state);
 
         public delegate void DisplayOnlineState(
-            bool is_online,
-            string reason);
+            Int64 state);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayURL(
@@ -1086,9 +1082,9 @@ namespace TogglDesktop
                 OnError(errmsg, user_error);
             });
 
-            toggl_on_online_state(ctx, delegate(bool is_online, string reason)
+            toggl_on_online_state(ctx, delegate(Int64 state)
             {
-                OnOnlineState(is_online, reason);
+                OnOnlineState(state);
             });
 
             toggl_on_login(ctx, delegate(bool open, UInt64 user_id)

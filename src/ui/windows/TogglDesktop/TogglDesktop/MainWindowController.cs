@@ -35,7 +35,6 @@ namespace TogglDesktop
         private Control editableEntry;
 
         private bool isTracking = false;
-        private bool isNetworkError = false;
         private Point defaultContentPosition =  new System.Drawing.Point(0, 0);
         private Point errorContentPosition = new System.Drawing.Point(0, 28);
         private bool remainOnTop = false;
@@ -374,30 +373,15 @@ namespace TogglDesktop
             }
         }
 
-        void OnOnlineState(bool is_online, string reason)
+        void OnOnlineState(Int64 state)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { OnOnlineState(is_online, reason); });
+                Invoke((MethodInvoker)delegate { OnOnlineState(state); });
                 return;
             }
-            if (!is_online)
-            {
-                isNetworkError = true;
-
-                errorLabel.Text = reason;
-                troubleBox.Visible = true;
-                contentPanel.Location = errorContentPosition;
-                updateStatusIcons(false);
-            }
-            else if (isNetworkError)
-            {
-                isNetworkError = false;
-
-                troubleBox.Visible = false;
-                contentPanel.Location = defaultContentPosition;
-                updateStatusIcons(true);
-            }
+            // FIXME: render online state on bottom of the window
+            updateStatusIcons(0 == state);
         }
 
         void OnURL(string url)
@@ -424,8 +408,6 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnError(errmsg, user_error); });
                 return;
             }
-
-            isNetworkError = false;
 
             errorLabel.Text = errmsg;
             troubleBox.Visible = true;
