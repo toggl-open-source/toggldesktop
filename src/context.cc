@@ -128,10 +128,12 @@ Context::~Context() {
 _Bool Context::StartEvents() {
     logger().debug("StartEvents");
 
-    poco_assert(!user_);
+    if (user_) {
+        return displayError("Cannot start UI, user already logged in!");
+    }
 
     if (HTTPSClient::Config.CACertPath.empty()) {
-        return displayError(error("Missing CA cert bundle path!"));
+        return displayError("Missing CA cert bundle path!");
     }
 
     // Check that UI is wired up
@@ -140,7 +142,7 @@ _Bool Context::StartEvents() {
         logger().error(err);
         std::cerr << err << std::endl;
         std::cout << err << std::endl;
-        return false;
+        return displayError("UI is not properly wired up!");
     }
 
     if (!DisplaySettings(false)) {
@@ -591,7 +593,10 @@ void Context::switchWebSocketOn() {
 void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchWebSocketOn");
 
-    poco_assert(!user_->APIToken().empty());
+    if (user_->APIToken().empty()) {
+        logger().error("No API token, cannot switch Websocket on");
+        return;
+    }
 
     Poco::Mutex::ScopedLock lock(ws_client_m_);
     ws_client_.Start(this, user_->APIToken(), on_websocket_message);
@@ -791,10 +796,17 @@ void Context::executeUpdateCheck() {
     }
     UI()->DisplayUpdate(false, update_channel, true, false, "", "");
 
+    std::string update_url("");
+    err = updateURL(&update_url);
+    if (err != noError) {
+        displayError(err);
+        return;
+    }
+
     std::string response_body("");
     TogglClient https_client;
     err = https_client.GetJSON(kAPIURL,
-                               updateURL(),
+                               update_url,
                                std::string(""),
                                std::string(""),
                                &response_body);
@@ -822,15 +834,16 @@ void Context::executeUpdateCheck() {
     UI()->DisplayUpdate(false, update_channel, false, true, url, version);
 }
 
-const std::string Context::updateURL() {
+error Context::updateURL(std::string *result) {
     std::string update_channel("");
     error err = db()->LoadUpdateChannel(&update_channel);
     if (err != noError) {
-        displayError(err);
-        return "";
+        return err;
     }
 
-    poco_assert(!HTTPSClient::Config.AppVersion.empty());
+    if (HTTPSClient::Config.AppVersion.empty()) {
+        return error("Cannot check for updates without app version");
+    }
 
     std::stringstream relative_url;
     relative_url << "/api/v8/updates?app=td"
@@ -840,7 +853,9 @@ const std::string Context::updateURL() {
                  << "&osname=" << Poco::Environment::osName()
                  << "&osversion=" << Poco::Environment::osVersion()
                  << "&osarch=" << Poco::Environment::osArchitecture();
-    return relative_url.str();
+    *result = relative_url.str();
+
+    return noError;
 }
 
 const std::string Context::installerPlatform() {
@@ -1187,9 +1202,14 @@ _Bool Context::SetDBPath(
 }
 
 void Context::SetEnvironment(const std::string value) {
-    poco_assert("production" == value ||
-                "development" == value ||
-                "test" == value);
+    if (!("production" == value ||
+            "development" == value ||
+            "test" == value)) {
+        std::stringstream ss;
+        ss << "Invalid environment '" << value << "'!";
+        logger().error(ss.str());
+        return;
+    }
     environment_ = value;
 }
 
@@ -1512,7 +1532,10 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 void Context::Edit(const std::string GUID,
                    const _Bool edit_running_entry,
                    const std::string focused_field_name) {
-    poco_assert(!GUID.empty() || edit_running_entry);
+    if (!edit_running_entry && GUID.empty()) {
+        logger().error("Cannot edit time entry without a GUID");
+        return;
+    }
 
     if (!user_) {
         logger().warning("Cannot edit time entry, user logged out");
@@ -1596,8 +1619,9 @@ _Bool Context::ContinueLatest() {
             it != user_->related.TimeEntries.end(); it++) {
         TimeEntry *te = *it;
 
-        poco_assert(!te->GUID().empty());
-
+        if (te->GUID().empty()) {
+            return displayError("Found a time entry without a GUID!");
+        }
         if (te->DurationInSeconds() < 0) {
             continue;
         }
@@ -2038,8 +2062,10 @@ std::vector<TimeEntry *> Context::timeEntries(
             it != user_->related.TimeEntries.end(); it++) {
         TimeEntry *te = *it;
 
-        poco_assert(!te->GUID().empty());
-
+        if (te->GUID().empty()) {
+            logger().error("Ignoring a time entry without a GUID!");
+            continue;
+        }
         if (te->DurationInSeconds() < 0 && !including_running) {
             continue;
         }

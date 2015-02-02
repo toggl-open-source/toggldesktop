@@ -64,7 +64,11 @@ void BatchUpdateResult::ProcessResponseArray(
 
         logger.debug(result.String());
 
-        poco_assert(!result.GUID.empty());
+        if (result.GUID.empty()) {
+            logger.error("Batch update result has no GUID");
+            continue;
+        }
+
         BaseModel *model = (*models)[result.GUID];
         if (!model) {
             std::stringstream ss;

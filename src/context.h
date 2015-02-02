@@ -228,7 +228,7 @@ class Context : public TimelineDatasource {
     void uiUpdaterActivity();
 
  private:
-    const std::string updateURL();
+    error updateURL(std::string *result);
 
     static const std::string installerPlatform();
     static const std::string linuxPlatformName();

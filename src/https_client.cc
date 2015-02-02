@@ -254,10 +254,18 @@ error HTTPSClient::request(
     std::string *response_body,
     Poco::Int64 *status_code) {
 
-    poco_assert(!host.empty());
-    poco_assert(!method.empty());
-    poco_assert(!relative_url.empty());
-    poco_assert(!HTTPSClient::Config.CACertPath.empty());
+    if (host.empty()) {
+        return error("Cannot make a HTTP request without a host");
+    }
+    if (method.empty()) {
+        return error("Cannot make a HTTP request without a method");
+    }
+    if (relative_url.empty()) {
+        return error("Cannot make a HTTP request without a relative URL");
+    }
+    if (HTTPSClient::Config.CACertPath.empty()) {
+        return error("Cannot make a HTTP request without certificates");
+    }
 
     poco_check_ptr(response_body);
     poco_check_ptr(status_code);

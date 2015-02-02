@@ -51,21 +51,34 @@ Database::Database(const std::string db_path)
         ss << "sqlite3_threadsafe()=" << is_sqlite_threadsafe;
         logger().debug(ss.str());
 
-        poco_assert(is_sqlite_threadsafe);
+        if (!is_sqlite_threadsafe) {
+            logger().error("Database is not thread safe!");
+            return;
+        }
     }
 
     error err = setJournalMode("wal");
-    poco_assert(err == noError);
-    {
-        std::string mode("");
-        error err = journalMode(&mode);
-        poco_assert(err == noError);
+    if (err != noError) {
+        logger().error("Failed to set journal mode to wal!");
+        return;
+    }
 
+    std::string mode("");
+    err = journalMode(&mode);
+    if (err != noError) {
+        logger().error("Could not detect journal mode!");
+        return;
+    }
+
+    {
         std::stringstream ss;
         ss << "PRAGMA journal_mode=" << mode;
         logger().debug(ss.str());
+    }
 
-        poco_assert("wal" == mode);
+    if ("wal" != mode) {
+        logger().error("Failed to enable wal journal mode!");
+        return;
     }
 
     Poco::Stopwatch stopwatch;
@@ -74,6 +87,7 @@ Database::Database(const std::string db_path)
     err = initialize_tables();
     if (err != noError) {
         logger().error(err);
+        return;
     }
 
     stopwatch.stop();
@@ -84,8 +98,6 @@ Database::Database(const std::string db_path)
             << stopwatch.elapsed() / 1000 << " ms";
         logger().debug(ss.str());
     }
-
-    poco_assert(err == noError);
 }
 
 Database::~Database() {
@@ -143,8 +155,12 @@ error Database::deleteAllFromTableByUID(
 
     poco_check_ptr(session_);
 
-    poco_assert(UID > 0);
-    poco_assert(!table_name.empty());
+    if (!UID) {
+        return error("Cannot delete user data without user ID");
+    }
+    if (table_name.empty()) {
+        return error("Cannot delete from table without table name");
+    }
 
     try {
         *session_ << "delete from " + table_name + " where uid = :uid",
@@ -181,11 +197,12 @@ error Database::journalMode(std::string *mode) {
 }
 
 error Database::setJournalMode(const std::string mode) {
+    if (mode.empty()) {
+        return error("Cannot set journal mode without a mode");
+    }
+
     Poco::Mutex::ScopedLock lock(session_m_);
-
     poco_check_ptr(session_);
-
-    poco_assert(!mode.empty());
 
     try {
         *session_ << "PRAGMA journal_mode=" << mode,
@@ -208,11 +225,12 @@ error Database::deleteFromTable(
     const std::string table_name,
     const Poco::Int64 &local_id) {
 
+    if (table_name.empty()) {
+        return error("Cannot delete from table without table name");
+    }
+
     Poco::Mutex::ScopedLock lock(session_m_);
-
     poco_check_ptr(session_);
-
-    poco_assert(!table_name.empty());
 
     if (!local_id) {
         return noError;
@@ -477,12 +495,14 @@ error Database::LoadUserByAPIToken(
     const std::string &api_token,
     User *model) {
 
+    if (api_token.empty()) {
+        return error("Cannot load user by API token without a token");
+    }
+
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
     poco_check_ptr(model);
-
-    poco_assert(!api_token.empty());
 
     Poco::UInt64 uid(0);
     model->SetAPIToken(api_token);
@@ -548,12 +568,15 @@ error Database::LoadUserByID(
     const Poco::UInt64 &UID,
     User *user) {
 
+    if (!UID) {
+        return error("Cannot load user by ID without an ID");
+    }
+
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(user);
     poco_check_ptr(session_);
 
-    poco_assert(UID > 0);
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -636,9 +659,11 @@ error Database::loadWorkspaces(
     const Poco::UInt64 &UID,
     std::vector<Workspace *> *list) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
+    if (!UID) {
+        return error("Cannot load user workspaces without an user ID");
+    }
 
-    poco_assert(UID > 0);
+           Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -689,9 +714,11 @@ error Database::loadClients(
     const Poco::UInt64 &UID,
     std::vector<Client *> *list) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
+    if (!UID) {
+        return error("Cannot load user clients without an user ID");
+    }
 
-    poco_assert(UID > 0);
+           Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -748,9 +775,11 @@ error Database::loadProjects(
     const Poco::UInt64 &UID,
     std::vector<Project *> *list) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
+    if (!UID) {
+        return error("Cannot load user projects without an user ID");
+    }
 
-    poco_assert(UID > 0);
+           Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -824,9 +853,11 @@ error Database::loadTasks(
     const Poco::UInt64 &UID,
     std::vector<Task *> *list) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
+    if (!UID) {
+        return error("Cannot load user tasks without an user ID");
+    }
 
-    poco_assert(UID > 0);
+           Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -883,9 +914,11 @@ error Database::loadTags(
     const Poco::UInt64 &UID,
     std::vector<Tag *> *list) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
+    if (!UID) {
+        return error("Cannot load user tags without an user ID");
+    }
 
-    poco_assert(UID > 0);
+           Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -941,9 +974,11 @@ error Database::loadTimeEntries(
     const Poco::UInt64 &UID,
     std::vector<TimeEntry *> *list) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
+    if (!UID) {
+        return error("Cannot load user time entries without an user ID");
+    }
 
-    poco_assert(UID > 0);
+           Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(list);
 
@@ -1092,9 +1127,11 @@ error Database::saveRelatedModels(
     std::vector<T *> *list,
     std::vector<ModelChange> *changes) {
 
-    poco_assert(UID > 0);
+    if (!UID) {
+        return error("Cannot save user related data without an user ID");
+    }
 
-    poco_check_ptr(list);
+           poco_check_ptr(list);
     poco_check_ptr(changes);
 
     typedef typename std::vector<T *>::iterator iterator;
@@ -1150,7 +1187,9 @@ error Database::saveModel(
     // Time entries need to have a GUID,
     // we expect it everywhere in the UI
     model->EnsureGUID();
-    poco_assert(!model->GUID().empty());
+    if (model->GUID().empty()) {
+        return error("Cannot save time entry without a GUID");
+    }
 
     if (!model->NeedsToBeSaved()) {
         return noError;
@@ -1541,7 +1580,9 @@ error Database::saveModel(
     // projects, so don't mess with their GUIDs
     if (!model->ID()) {
         model->EnsureGUID();
-        poco_assert(!model->GUID().empty());
+        if (model->GUID().empty()) {
+            return error("Cannot save project without a GUID");
+        }
     }
 
     if (!model->NeedsToBeSaved()) {
@@ -3020,8 +3061,12 @@ error Database::migrate(
 
     poco_check_ptr(session_);
 
-    poco_assert(!name.empty());
-    poco_assert(!sql.empty());
+    if (name.empty()) {
+        return error("Cannot run a migration without name");
+    }
+    if (sql.empty()) {
+        return error("Cannot run a migration without SQL");
+    }
 
     try {
         int count = 0;
@@ -3073,7 +3118,9 @@ error Database::execute(
 
     poco_check_ptr(session_);
 
-    poco_assert(!sql.empty());
+    if (sql.empty()) {
+        return error("Cannot execute empty SQL");
+    }
 
     try {
         *session_ << sql, now;
@@ -3101,8 +3148,14 @@ error Database::SelectTimelineBatch(
     out << "SelectTimelineBatch user_id = " << user_id;
     logger().debug(out.str());
 
-    poco_assert(user_id > 0);
-    poco_assert(timeline_events->empty());
+    if (!user_id) {
+        return error("Cannot load timeline without a user ID");
+    }
+
+    if (!timeline_events->empty()) {
+        return error("Timeline events already loaded");
+    }
+
     if (!session_) {
         logger().warning("select_batch database is not open, ignoring request");
         return noError;
@@ -3168,9 +3221,16 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
         << event->title;
     logger().debug(out.str());
 
-    poco_assert(event->user_id > 0);
-    poco_assert(event->start_time > 0);
-    poco_assert(event->end_time > 0);
+    if (!event->user_id) {
+        return error("Cannot save timeline event without an user ID");
+    }
+    if (!event->start_time) {
+        return error("Cannot save timeline event without start time");
+    }
+    if (!event->end_time) {
+        return error("Cannot save timeline event without end time");
+    }
+
     if (!session_) {
         logger().warning("InsertTimelineEvent db closed, ignoring request");
         return noError;
@@ -3203,7 +3263,10 @@ error Database::DeleteTimelineBatch(
     out << "DeleteTimelineBatch " << timeline_events.size() << " events.";
     logger().debug(out.str());
 
-    poco_assert(!timeline_events.empty());
+    if (timeline_events.empty()) {
+        return error("Cannot delete empty timeline batch");
+    }
+
     if (!session_) {
         logger().warning("DeleteTimelineBatch db closed, ignoring request");
         return noError;
@@ -3231,7 +3294,9 @@ error Database::String(
     poco_check_ptr(session_);
     poco_check_ptr(result);
 
-    poco_assert(!sql.empty());
+    if (sql.empty()) {
+        return error("Cannot select from database with empty SQL");
+    }
 
     try {
         std::string value("");
@@ -3258,7 +3323,9 @@ error Database::UInt(
     poco_check_ptr(session_);
     poco_check_ptr(result);
 
-    poco_assert(!sql.empty());
+    if (sql.empty()) {
+        return error("Cannot select a numeric from database with empty SQL");
+    }
 
     try {
         Poco::UInt64 value(0);

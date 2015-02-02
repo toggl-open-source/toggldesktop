@@ -174,10 +174,11 @@ class User : public BaseModel {
         std::string *result);
 
  private:
-    std::string updateJSON(
+    error updateJSON(
         std::vector<Client *> * const,
         std::vector<Project *> * const,
-        std::vector<TimeEntry *> * const) const;
+        std::vector<TimeEntry *> * const,
+        std::string *result) const;
 
     void loadUserTagFromJSON(
         Json::Value data,

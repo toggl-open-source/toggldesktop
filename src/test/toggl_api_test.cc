@@ -864,7 +864,10 @@ TEST(TogglApiTest, toggl_continue_latest) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    ASSERT_TRUE(toggl_continue_latest(app.ctx()));
+    testing::testresult::error = noError;
+    bool res = toggl_continue_latest(app.ctx());
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(res);
     ASSERT_EQ("arendus käib", testing::testresult::timer_state.Description());
 }
 

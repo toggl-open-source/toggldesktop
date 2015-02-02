@@ -300,7 +300,11 @@ TimeEntry *User::DiscardTimeAt(
     const std::string guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
-    poco_assert(at > 0);
+
+    if (!(at > 0)) {
+        logger().error("Cannot discard without valid timestamp");
+        return 0;
+    }
 
     std::stringstream ss;
     ss << "User is discarding time entry " << guid << " at " << at;
@@ -357,8 +361,7 @@ void User::CollectPushableModels(
         ensureWID(model);
         model->EnsureGUID();
         result->push_back(model);
-        if (models) {
-            poco_assert(!model->GUID().empty());
+        if (models && !model->GUID().empty()) {
             (*models)[model->GUID()] = model;
         }
     }
@@ -412,17 +415,21 @@ error User::PushChanges(TogglClient *https_client) {
             return noError;
         }
 
-        std::string json = updateJSON(&clients, &projects, &time_entries);
+        std::string json("");
+        error err = updateJSON(&clients, &projects, &time_entries, &json);
+        if (err != noError) {
+            return err;
+        }
 
         logger().debug(json);
 
         std::string response_body("");
-        error err = https_client->PostJSON(kAPIURL,
-                                           "/api/v8/batch_updates",
-                                           json,
-                                           APIToken(),
-                                           "api_token",
-                                           &response_body);
+        err = https_client->PostJSON(kAPIURL,
+                                     "/api/v8/batch_updates",
+                                     json,
+                                     APIToken(),
+                                     "api_token",
+                                     &response_body);
         if (err != noError) {
             return err;
         }
@@ -1005,10 +1012,11 @@ error User::LoginToken(
     return noError;
 }
 
-std::string User::updateJSON(
+error User::updateJSON(
     std::vector<Client *> * const clients,
     std::vector<Project *> * const projects,
-    std::vector<TimeEntry *> * const time_entries) const {
+    std::vector<TimeEntry *> * const time_entries,
+    std::string *result) const {
 
     poco_check_ptr(clients);
     poco_check_ptr(projects);
@@ -1020,21 +1028,36 @@ std::string User::updateJSON(
     for (std::vector<Client *>::const_iterator it =
         clients->begin();
             it != clients->end(); it++) {
-        c.append((*it)->BatchUpdateJSON());
+        Json::Value update;
+        error err = (*it)->BatchUpdateJSON(&update);
+        if (err != noError) {
+            return err;
+        }
+        c.append(update);
     }
 
     // First, projects, because time entries depend on projects
     for (std::vector<Project *>::const_iterator it =
         projects->begin();
             it != projects->end(); it++) {
-        c.append((*it)->BatchUpdateJSON());
+        Json::Value update;
+        error err = (*it)->BatchUpdateJSON(&update);
+        if (err != noError) {
+            return err;
+        }
+        c.append(update);
     }
 
     // Time entries go last
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries->begin();
             it != time_entries->end(); it++) {
-        c.append((*it)->BatchUpdateJSON());
+        Json::Value update;
+        error err = (*it)->BatchUpdateJSON(&update);
+        if (err != noError) {
+            return err;
+        }
+        c.append(update);
     }
 
     Json::StyledWriter writer;

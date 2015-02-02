@@ -35,7 +35,10 @@ void WebSocketClient::Start(
     poco_check_ptr(ctx);
     poco_check_ptr(on_websocket_message);
 
-    poco_assert(!api_token.empty());
+    if (api_token.empty()) {
+        logger().error("API token is empty, cannot start websocket");
+        return;
+    }
 
     Poco::Mutex::ScopedLock lock(mutex_);
 
@@ -65,7 +68,9 @@ void WebSocketClient::Shutdown() {
 error WebSocketClient::createSession() {
     logger().debug("createSession");
 
-    poco_assert(!HTTPSClient::Config.CACertPath.empty());
+    if (HTTPSClient::Config.CACertPath.empty()) {
+        return error("Missing CA certifcate, cannot start Websocket");
+    }
 
     Poco::Mutex::ScopedLock lock(mutex_);
 

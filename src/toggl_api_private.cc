@@ -41,7 +41,10 @@ TogglGenericView *view_item_init() {
 }
 
 TogglGenericView *project_to_view_item(toggl::Project * const p) {
-    poco_assert(p);
+    if (!p) {
+        logger().error("Cannot render 0 project");
+        return 0;
+    }
 
     TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(p->ID());

@@ -99,19 +99,23 @@ bool TimeEntry::billableIsAPremiumFeature(const error err) const {
 }
 
 void TimeEntry::DiscardAt(const Poco::UInt64 at) {
-    poco_assert(at);
+    if (!at) {
+        logger().error("Cannot discard time entry without a timestamp");
+        return;
+    }
 
     Poco::Int64 duration = at + DurationInSeconds();
     if (duration < 0) {
         duration = -1 * duration;
     }
 
+    if (duration < 0) {
+        logger().error("Discarding with this time entry would result in negative duration");  // NOLINT
+        return;
+    }
+
     SetDurationInSeconds(duration);
-
-    poco_assert(DurationInSeconds() >= 0);
-
     SetStop(at);
-
     SetUIModified();
 }
 
@@ -205,7 +209,10 @@ void TimeEntry::SetStopUserInput(const std::string value) {
         SetStop(ts.epochTime());
     }
 
-    poco_assert(Stop() >= Start());
+    if (Stop() < Start()) {
+        logger().error("Stop time must be after start time!");
+        return;
+    }
 
     if (!IsTracking()) {
         SetDurationInSeconds(Stop() - Start());

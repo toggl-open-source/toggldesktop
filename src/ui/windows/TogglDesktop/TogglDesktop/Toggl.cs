@@ -1027,7 +1027,7 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_check_view_struct_size(
+        private static extern bool toggl_check_view_struct_size(
     		int time_entry_view_item_size,
 		    int autocomplete_view_item_size,
 		    int view_item_size,
@@ -1065,11 +1065,14 @@ namespace TogglDesktop
                 "cacert.pem");
             toggl_set_cacert_path(ctx, cacert_path);
 
-            toggl_check_view_struct_size(
+            bool valid = toggl_check_view_struct_size(
                 Marshal.SizeOf(new TimeEntry()),
                 Marshal.SizeOf(new AutocompleteItem()),
                 Marshal.SizeOf(new Model()),
                 Marshal.SizeOf(new Settings()));
+            if (!valid) {
+                throw new System.InvalidOperationException("Invalid struct size, please check log file(s)");
+            }
 
             // Wire up events
             toggl_on_show_app(ctx, delegate(bool open)

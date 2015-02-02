@@ -200,18 +200,20 @@ std::string BaseModel::batchUpdateMethod() const {
 }
 
 // Convert model JSON into batch update format.
-Json::Value BaseModel::BatchUpdateJSON() const {
-    poco_assert(!GUID().empty());
+error BaseModel::BatchUpdateJSON(Json::Value *result) const {
+    if (GUID().empty()) {
+        return error("Cannot export model to batch update without a GUID");
+    }
 
     Json::Value body;
     body[ModelName()] = SaveToJSON();
 
-    Json::Value update;
-    update["method"] = batchUpdateMethod();
-    update["relative_url"] = batchUpdateRelativeURL();
-    update["guid"] = GUID();
-    update["body"] = body;
-    return update;
+    (*result)["method"] = batchUpdateMethod();
+    (*result)["relative_url"] = batchUpdateRelativeURL();
+    (*result)["guid"] = GUID();
+    (*result)["body"] = body;
+
+    return noError;
 }
 
 Poco::Logger &BaseModel::logger() const {

@@ -129,9 +129,14 @@ void GUI::DisplayReminder() {
 }
 
 void GUI::DisplayOnlineState(const Poco::Int64 state) {
-    poco_assert(kOnlineStateOnline == state
-                || kOnlineStateNoNetwork == state
-                || kOnlineStateBackendDown == state);
+    if (!(kOnlineStateOnline == state
+            || kOnlineStateNoNetwork == state
+            || kOnlineStateBackendDown == state)) {
+        std::stringstream ss;
+        ss << "Invalid online state " << state;
+        logger().error(ss.str());
+        return;
+    }
 
     std::stringstream ss;
     ss << "DisplayOnlineState ";

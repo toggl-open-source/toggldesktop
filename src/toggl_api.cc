@@ -545,8 +545,16 @@ _Bool toggl_discard_time_at(
     const char_t *guid,
     const uint64_t at,
     const _Bool split_into_new_entry) {
-    poco_check_ptr(guid);
-    poco_assert(at);
+
+    if (!guid) {
+        logger().error("Cannot discard time without GUID");
+        return false;
+    }
+
+    if (!at) {
+        logger().error("Cannot discard time without a timestamp");
+        return false;
+    }
 
     logger().debug("toggl_discard_time_at");
 
@@ -754,7 +762,7 @@ void toggl_debug(const char_t *text) {
     logger().debug(to_string(text));
 }
 
-void toggl_check_view_struct_size(
+_Bool toggl_check_view_struct_size(
     const int time_entry_view_item_size,
     const int autocomplete_view_item_size,
     const int view_item_size,
@@ -762,23 +770,24 @@ void toggl_check_view_struct_size(
     int size = sizeof(TogglTimeEntryView);
     if (time_entry_view_item_size != size) {
         logger().error("Invalid time entry view item struct size");
-        poco_assert(false);
+        return false;
     }
     size = sizeof(TogglAutocompleteView);
     if (autocomplete_view_item_size != size) {
         logger().error("Invalid autocomplete view item struct size");
-        poco_assert(false);
+        return false;
     }
     size = sizeof(TogglGenericView);
     if (view_item_size != size) {
         logger().error("Invalid view item struct size");
-        poco_assert(false);
+        return false;
     }
     size = sizeof(TogglSettingsView);
     if (settings_size != size) {
         logger().error("Invalid settings view item struct size");
-        poco_assert(false);
+        return false;
     }
+    return true;
 }
 
 void toggl_set_idle_seconds(
