@@ -383,6 +383,7 @@ test_objects: build/test/gtest-all.o \
 	build/test/toggl_api_test.o
 
 uitest:
+	mkdir -p test
 	./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop \
 		--script-path $(pwd)/src/test/uitest.lua \
 		--log-path $(pwd)/test/uitest.log \
