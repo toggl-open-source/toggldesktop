@@ -45,10 +45,10 @@ cp $QPATH/plugins/iconengines/libqsvgicon.so $(pwd)/$out/iconengines/
 cp -r src/ui/linux/TogglDesktop/icons $out/icons
 
 # SSL library needs to be copied manually
-# else local system installed library will get packaged
+# else local system installed library will get packaged?!?!
 rm -rf $out/lib/libssl* $out/lib/libcrypto*
-cp third_party/openssl/libssl.so.1.0.0 $out/lib/libssl.so.10
-cp third_party/openssl/libcrypto.so.1.0.0 $out/lib/libcrypto.so.10
+cp third_party/openssl/libssl.so.1.0.0 $out/lib/
+cp third_party/openssl/libcrypto.so.1.0.0 $out/lib/
 
 cp src/ssl/cacert.pem $out/.
 
