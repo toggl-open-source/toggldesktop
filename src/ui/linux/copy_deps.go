@@ -21,6 +21,7 @@ var knownDeps = []string{
 	"libssl",
 	"libcrypto",
 	"libxcb",
+	"libpng",
 }
 
 func main() {
