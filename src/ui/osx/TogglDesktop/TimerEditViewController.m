@@ -60,6 +60,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(toggleManual:)
 													 name:kToggleManualMode
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayLogin:)
+													 name:kDisplayLogin
+												   object:nil];
 
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
@@ -111,6 +115,11 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[super loadView];
 	[self viewDidLoad];
+}
+
+- (void)startDisplayLogin:(NSNotification *)notification
+{
+	[self clear];
 }
 
 - (void)focusTimer:(NSNotification *)notification
