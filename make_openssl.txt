@@ -1,5 +1,0 @@
-cd third_party\openssl
-perl Configure VC-WIN32
-ms\do_ms
-nmake -f ms\ntdll.mak clean
-nmake -f ms\ntdll.mak
