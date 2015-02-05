@@ -155,7 +155,10 @@ void on_display_idle_notification(
         started);
 }
 
-TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverride)
+TogglApi::TogglApi(
+    QObject *parent,
+    QString logPathOverride,
+    QString dbPathOverride)
     : QObject(parent)
 , shutdown(false)
 , ctx(0) {
@@ -173,9 +176,9 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
 
     QString logPath("");
     if (logPathOverride.isEmpty()) {
-	logPath = appDir.filePath("toggldesktop.log");
+        logPath = appDir.filePath("toggldesktop.log");
     } else {
-	logPath = logPathOverride;
+        logPath = logPathOverride;
     }
     toggl_set_log_path(logPath.toUtf8().constData());
     qDebug() << "Log path " << logPath;
@@ -184,7 +187,7 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
 
     QString dbPath("");
     if (dbPathOverride.isEmpty()) {
-	dbPath = appDir.filePath("toggldesktop.db");
+        dbPath = appDir.filePath("toggldesktop.db");
     } else {
         dbPath = dbPathOverride;
     }
