@@ -23,7 +23,7 @@ mkdir -p $out/lib $out/platforms
 
 cp $QPATH/plugins/platforms/libqxcb.so $out/platforms/.
 
-(chrpath -r $QLIBPATH $out/platforms/* || true)
+(chrpath -r "\$ORIGIN/lib" $out/platforms/* || true)
 
 go run src/ui/linux/copy_deps.go --executable $(pwd)/$out/platforms/libqxcb.so --destination $(pwd)/$out/lib
 
