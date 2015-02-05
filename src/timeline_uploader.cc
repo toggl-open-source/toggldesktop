@@ -114,9 +114,7 @@ std::string convertTimelineToJSON(
             i != timeline_events.end();
             ++i) {
         const TimelineEvent &event = *i;
-        // initialize new event node
         Json::Value n;
-        // add fields to event node
         if (event.idle) {
             n["idle"] = true;
         } else {
@@ -127,8 +125,6 @@ std::string convertTimelineToJSON(
         n["end_time"] = Json::Int64(event.end_time);
         n["desktop_id"] = desktop_id;
         n["created_with"] = "timeline";
-
-        // Push event node to array
         root.append(n);
     }
 
