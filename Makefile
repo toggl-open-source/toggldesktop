@@ -384,7 +384,7 @@ test_objects: build/test/gtest-all.o \
 
 uitest:
 	mkdir -p test
-	./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop \
+	$(executable) \
 		--script-path $(pwd)/src/test/uitest.lua \
 		--log-path $(pwd)/test/uitest.log \
 		--db-path $(pwd)/test/uitest.db
