@@ -5,11 +5,13 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "./proxy.h"
 #include "./types.h"
 
 #include "Poco/Activity.h"
+#include "Poco/Timestamp.h"
 
 namespace Poco {
 class Logger;
@@ -110,6 +112,9 @@ class HTTPSClient {
     virtual Poco::Logger &logger() const;
 
  private:
+    // We only make requests if this timestamp lies in the past.
+    static std::map<std::string, Poco::Timestamp> banned_until_;
+
     error statusCodeToError(const Poco::Int64 status_code) const;
 };
 

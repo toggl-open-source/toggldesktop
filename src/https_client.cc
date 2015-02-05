@@ -7,6 +7,9 @@
 
 #include <json/json.h>  // NOLINT
 
+#include "./const.h"
+#include "./formatter.h"
+
 #include "Poco/DeflatingStream.h"
 #include "Poco/Exception.h"
 #include "Poco/InflatingStream.h"
@@ -28,8 +31,6 @@
 #include "Poco/TextEncoding.h"
 #include "Poco/URI.h"
 #include "Poco/UTF8Encoding.h"
-
-#include "./const.h"
 
 namespace toggl {
 
@@ -151,6 +152,9 @@ void ServerStatus::UpdateStatus(const Poco::Int64 code) {
     stopStatusCheck(ss.str());
 }
 
+HTTPSClientConfig HTTPSClient::Config;
+std::map<std::string, Poco::Timestamp> HTTPSClient::banned_until_;
+
 Poco::Logger &HTTPSClient::logger() const {
     return Poco::Logger::get("HTTPSClient");
 }
@@ -183,6 +187,8 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
         return kEndpointGoneError;
     case 418:
         return kUnsupportedAppError;
+    case 429:
+        return kCannotConnectError;
     case 500:
         return kBackendIsDownError;
     case 501:
@@ -201,10 +207,6 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
 
     return kCannotConnectError;
 }
-
-HTTPSClientConfig HTTPSClient::Config;
-
-ServerStatus TogglClient::TogglStatus;
 
 error HTTPSClient::PostJSON(
     const std::string host,
@@ -253,6 +255,12 @@ error HTTPSClient::request(
     const std::string basic_auth_password,
     std::string *response_body,
     Poco::Int64 *status_code) {
+
+    Poco::Timestamp now;
+    if (banned_until_[host] >= now) {
+        logger().warning("Cannot connect, because we made too many requests");
+        return kCannotConnectError;
+    }
 
     if (host.empty()) {
         return error("Cannot make a HTTP request without a host");
@@ -393,6 +401,17 @@ error HTTPSClient::request(
 
         logger().trace(*response_body);
 
+        if (429 == *status_code) {
+            Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);
+            banned_until_[host] = ts;
+
+            std::stringstream ss;
+            ss << "Server indicated we're making too many requests to host "
+               << host << ". So we cannot make new requests until "
+               << Formatter::Format8601(ts);
+            logger().debug(ss.str());
+        }
+
         return statusCodeToError(*status_code);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -403,6 +422,8 @@ error HTTPSClient::request(
     }
     return noError;
 }
+
+ServerStatus TogglClient::TogglStatus;
 
 Poco::Logger &TogglClient::logger() const {
     return Poco::Logger::get("TogglClient");
@@ -422,7 +443,7 @@ error TogglClient::request(
     if (err != noError) {
         std::stringstream ss;
         ss << "Will not connect, because of known bad Toggl status: " << err;
-        Poco::Logger::get("TogglClient").error(ss.str());
+        logger().error(ss.str());
         return err;
     }
 
