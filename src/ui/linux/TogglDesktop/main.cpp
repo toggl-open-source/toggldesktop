@@ -59,6 +59,31 @@ int main(int argc, char *argv[]) try {
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
 
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Toggl Desktop");
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    QCommandLineOption logPathOption(
+        QStringList() << "log-path",
+        "<path> of the app log file",
+        "path");
+    parser.addOption(logPathOption);
+
+    QCommandLineOption dbPathOption(
+        QStringList() << "db-path",
+        "<path> of the app DB file",
+        "path");
+    parser.addOption(dbPathOption);
+
+    QCommandLineOption scriptPathOption(
+        QStringList() << "script-path",
+        "<path> of a Lua script to run",
+        "path");
+    parser.addOption(scriptPathOption);
+
+    parser.process(a);
+
     MainWindowController w;
     w.show();
 
