@@ -67,7 +67,7 @@ cd to the project folder, then
 ```
 cd third_party\openssl
 perl Configure VC-WIN32
-ms\do_ms
+ms\do_nasm
 nmake -f ms\ntdll.mak clean
 nmake -f ms\ntdll.mak 
 ```
