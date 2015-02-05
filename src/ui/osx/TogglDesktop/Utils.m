@@ -9,8 +9,9 @@
 #import "Utils.h"
 #import "Sparkle.h"
 
-#include "lualib.h"
-#include "lauxlib.h"
+#include "toggl_api.h"
+
+extern void *ctx;
 
 @implementation ScriptResult
 
@@ -25,7 +26,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"err: %d, text: %@",
+	return [NSString stringWithFormat:@"err: %lld, text: %@",
 			self.err, self.text];
 }
 
@@ -33,42 +34,25 @@
 
 @implementation Utils
 
-+ (ScriptResult *)runScript:(NSString *)script withState:(lua_State *)L
++ (ScriptResult *)runScript:(NSString *)script
 {
-	ScriptResult *result = [[ScriptResult alloc] init];
+	ScriptResult *result = nil;
+	char *text = 0;
 
-	result.err = luaL_loadstring(L, [script UTF8String]);
-
-	if (!result.err)
-	{
-		result.err = lua_pcall(L, 0, LUA_MULTRET, 0);
+	@try {
+		int64_t err = 0;
+		text = toggl_run_script(ctx, [script UTF8String], &err);
+		result = [[ScriptResult alloc] init];
+		result.err = err;
+		result.text = [NSString stringWithUTF8String:text];
+	}
+	@catch (NSException *e) {
+		NSLog(@"Script exception: %@", e);
+	} @finally {
+		free(text);
+		NSLog(@"Script result: %@", result);
 	}
 
-	int argc = lua_gettop(L);
-
-	result.text = [NSString stringWithFormat:@"%d value(s) returned\n", argc];
-
-	for (int i = 0; i < argc; i++)
-	{
-		if (lua_isstring(L, -1))
-		{
-			[result append:[NSString stringWithFormat:@"%s\n", lua_tostring(L, -1)]];
-		}
-		else if (lua_isnumber(L, -1))
-		{
-			[result append:[NSString stringWithFormat:@"%lld\n", lua_tointeger(L, -1)]];
-		}
-		else if (lua_isboolean(L, -1))
-		{
-			[result append:[NSString stringWithFormat:@"%d\n", lua_toboolean(L, -1)]];
-		}
-		else
-		{
-			[result append:@"ok\n"];
-		}
-		lua_pop(L, -1);
-	}
-	[result append:@"\n"];
 	return result;
 }
 

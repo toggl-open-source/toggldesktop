@@ -554,6 +554,11 @@ extern "C" {
         const int view_item_size,
         const int settings_size);
 
+    TOGGL_EXPORT char_t *toggl_run_script(
+        void *context,
+        const char* script,
+        int64_t *err);
+
     // Testing helpers. May change any time
     void testing_sleep(
         const int seconds);
