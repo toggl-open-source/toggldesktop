@@ -25,7 +25,11 @@ class MainWindowController : public QMainWindow {
     Q_OBJECT
 
  public:
-    explicit MainWindowController(QWidget *parent = 0);
+    MainWindowController(
+	QWidget *parent = 0,
+	QString logPathOverride = "",
+	QString dbPathOverride = "",
+	QString scriptPath = "");
     ~MainWindowController();
 
     static MainWindowController *Instance;

@@ -22,10 +22,14 @@
 #include "./timeentrylistwidget.h"
 #include "./timeentryeditorwidget.h"
 
-MainWindowController::MainWindowController(QWidget *parent)
+MainWindowController::MainWindowController(
+	QWidget *parent,
+	QString logPathOverride,
+	QString dbPathOverride,
+	QString scriptPath)
     : QMainWindow(parent),
   ui(new Ui::MainWindowController),
-  togglApi(new TogglApi()),
+  togglApi(new TogglApi(0, logPathOverride, dbPathOverride)),
   tracking(false),
   loggedIn(false),
   actionNew(0),

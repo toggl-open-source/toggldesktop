@@ -21,7 +21,7 @@ class TogglApi : public QObject {
     Q_OBJECT
 
  public:
-    explicit TogglApi(QObject *parent = 0);
+    TogglApi(QObject *parent = 0, QString logPathOverride = "", QString dbPathOverride = "");
     ~TogglApi();
 
     static TogglApi *instance;
