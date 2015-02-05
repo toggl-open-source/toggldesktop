@@ -9,6 +9,7 @@
 #include <stdbool.h>
 
 #include "qtsingleapplication.h"  // NOLINT
+#include <QCommandLineParser>
 
 #include "./autocompleteview.h"
 #include "./bugsnag.h"
@@ -52,6 +53,8 @@ int main(int argc, char *argv[]) try {
                  "This instance will now quit.";
         return 0;
     }
+
+    a.setApplicationName("Toggl Desktop");
 
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
