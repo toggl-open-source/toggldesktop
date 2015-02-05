@@ -1,15 +1,15 @@
 // Copyright 2014 Toggl Desktop developers.
 
 #include <QApplication>
-#include <QMetaType>
+#include <QCommandLineParser>
 #include <QDebug>
+#include <QMetaType>
 #include <QVector>
 
 #include <stdint.h>
 #include <stdbool.h>
 
 #include "qtsingleapplication.h"  // NOLINT
-#include <QCommandLineParser>
 
 #include "./autocompleteview.h"
 #include "./bugsnag.h"
