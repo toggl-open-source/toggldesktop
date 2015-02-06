@@ -27,6 +27,8 @@ namespace TogglDesktop
             TogglForm.ApplyFont("roboto", this.labelFormattedDate);
             TogglForm.ApplyFont("roboto", this.labelDateDuration);
             TogglForm.ApplyFont("roboto-medium", this.labelProject);
+            TogglForm.ApplyFont("roboto-medium", this.labelClient);
+            TogglForm.ApplyFont("roboto", this.labelTask);
             TogglForm.ApplyFont("roboto", this.labelDescription);
             TogglForm.ApplyFont("roboto-light", this.labelDuration);
         }

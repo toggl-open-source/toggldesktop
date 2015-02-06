@@ -43,6 +43,8 @@ namespace TogglDesktop
             TogglForm.ApplyFont("roboto", this.descriptionTextBox);
             TogglForm.ApplyFont("roboto", this.buttonStart);
             TogglForm.ApplyFont("roboto-light", this.DurationTextBox);
+            TogglForm.ApplyFont("roboto", this.linkLabelDescription);
+            TogglForm.ApplyFont("roboto-light", this.linkLabelDuration);
         }
 
         public AutoCompleteTextBox DescriptionTextBox
@@ -165,8 +167,8 @@ namespace TogglDesktop
             duration_in_seconds = 0;
 
             buttonStart.Text = "Start";
-            buttonStart.BackColor = ColorTranslator.FromHtml("#47bc00");
-            buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#47bc00");
+            buttonStart.BackColor = ColorTranslator.FromHtml("#4dd965");
+            buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#4dd965");
 
             if (!descriptionTextBox.Focused)
             {
@@ -205,8 +207,8 @@ namespace TogglDesktop
             labelClearProject.Visible = false;
 
             buttonStart.Text = "Stop";
-            buttonStart.BackColor = ColorTranslator.FromHtml("#e20000");
-            buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#e20000");
+            buttonStart.BackColor = ColorTranslator.FromHtml("#ff3d32");
+            buttonStart.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#ff3d32");
             if (te.ProjectAndTaskLabel.Length > 0)
             {
                 linkLabelProject.Text = te.ProjectAndTaskLabel;

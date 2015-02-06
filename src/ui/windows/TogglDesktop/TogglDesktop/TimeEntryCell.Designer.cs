@@ -55,7 +55,7 @@
             this.labelFormattedDate.AccessibleName = "Date";
             this.labelFormattedDate.AutoSize = true;
             this.labelFormattedDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
+            this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelFormattedDate.Location = new System.Drawing.Point(15, 15);
             this.labelFormattedDate.Name = "labelFormattedDate";
             this.labelFormattedDate.Size = new System.Drawing.Size(67, 15);
@@ -69,7 +69,7 @@
             this.labelDateDuration.AutoSize = true;
             this.labelDateDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDateDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
+            this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelDateDuration.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.labelDateDuration.Location = new System.Drawing.Point(238, 0);
             this.labelDateDuration.MaximumSize = new System.Drawing.Size(0, 45);
@@ -86,7 +86,7 @@
             // 
             this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.headerPanel.Controls.Add(this.labelFormattedDate);
             this.headerPanel.Controls.Add(this.labelDateDuration);
             this.headerPanel.Location = new System.Drawing.Point(0, 0);
@@ -99,7 +99,7 @@
             // 
             this.panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.panel.BackColor = System.Drawing.Color.White;
             this.panel.Controls.Add(this.tagBillableContinuePanel);
             this.panel.Controls.Add(this.taskProjectPanel);
             this.panel.Controls.Add(this.labelDescription);
@@ -113,7 +113,7 @@
             // 
             // tagBillableContinuePanel
             // 
-            this.tagBillableContinuePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.tagBillableContinuePanel.BackColor = System.Drawing.Color.White;
             this.tagBillableContinuePanel.Controls.Add(this.labelContinue);
             this.tagBillableContinuePanel.Controls.Add(this.labelBillable);
             this.tagBillableContinuePanel.Controls.Add(this.labelTag);
@@ -198,6 +198,7 @@
             this.labelTask.AccessibleName = "Task name";
             this.labelTask.AutoSize = true;
             this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelTask.Location = new System.Drawing.Point(3, 0);
             this.labelTask.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.labelTask.Name = "labelTask";
@@ -215,6 +216,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProject.AutoSize = true;
             this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelProject.Location = new System.Drawing.Point(77, 0);
             this.labelProject.Margin = new System.Windows.Forms.Padding(0);
             this.labelProject.Name = "labelProject";
@@ -230,7 +232,7 @@
             this.labelClient.AccessibleName = "Client name";
             this.labelClient.AutoSize = true;
             this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.labelClient.ForeColor = System.Drawing.Color.Gray;
+            this.labelClient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelClient.Location = new System.Drawing.Point(183, 0);
             this.labelClient.Margin = new System.Windows.Forms.Padding(0);
             this.labelClient.Name = "labelClient";
@@ -247,6 +249,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDescription.AutoEllipsis = true;
             this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelDescription.Location = new System.Drawing.Point(15, 9);
             this.labelDescription.Name = "labelDescription";
             this.labelDescription.Size = new System.Drawing.Size(154, 17);
@@ -258,9 +261,10 @@
             // 
             // labelDuration
             // 
-            this.labelDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.labelDuration.BackColor = System.Drawing.Color.White;
             this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelDuration.Location = new System.Drawing.Point(239, 0);
             this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
             this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
@@ -278,7 +282,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.Controls.Add(this.panel);
             this.Controls.Add(this.headerPanel);
             this.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
