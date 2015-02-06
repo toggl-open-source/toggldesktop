@@ -335,6 +335,108 @@ build/test/toggl_api_test.o: src/test/toggl_api_test.cc
 build/test/app_test.o: src/test/app_test.cc
 	$(cxx) $(cflags) -c src/test/app_test.cc -o build/test/app_test.o
 
+build/lua.o: third_party/lua/src/lua.c
+	$(cxx) $(cflags) -c third_party/lua/src/lua.c -o build/lua.o
+
+build/lutf8lib.o: third_party/lua/src/lutf8lib.c
+	$(cxx) $(cflags) -c third_party/lua/src/lutf8lib.c -o build/lutf8lib.o
+
+build/lapi.o: third_party/lua/src/lapi.c
+	$(cxx) $(cflags) -c third_party/lua/src/lapi.c -o build/lapi.o
+
+build/lauxlib.o: third_party/lua/src/lauxlib.c
+	$(cxx) $(cflags) -c third_party/lua/src/lauxlib.c -o build/lauxlib.o
+
+build/lbaselib.o: third_party/lua/src/lbaselib.c
+	$(cxx) $(cflags) -c third_party/lua/src/lbaselib.c -o build/lbaselib.o
+
+build/lbitlib.o: third_party/lua/src/lbitlib.c
+	$(cxx) $(cflags) -c third_party/lua/src/lbitlib.c -o build/lbitlib.o
+
+build/lcode.o: third_party/lua/src/lcode.c
+	$(cxx) $(cflags) -c third_party/lua/src/lcode.c -o build/lcode.o
+
+build/lctype.o: third_party/lua/src/lctype.c
+	$(cxx) $(cflags) -c third_party/lua/src/lctype.c -o build/lctype.o
+
+build/ldblib.o: third_party/lua/src/ldblib.c
+	$(cxx) $(cflags) -c third_party/lua/src/ldblib.c -o build/ldblib.o
+
+build/ldebug.o: third_party/lua/src/ldebug.c
+	$(cxx) $(cflags) -c third_party/lua/src/ldebug.c -o build/ldebug.o
+
+build/ldo.o: third_party/lua/src/ldo.c
+	$(cxx) $(cflags) -c third_party/lua/src/ldo.c -o build/ldo.o
+
+build/ldump.o: third_party/lua/src/ldump.c
+	$(cxx) $(cflags) -c third_party/lua/src/ldump.c -o build/ldump.o
+
+build/lgc.o: third_party/lua/src/lgc.c
+	$(cxx) $(cflags) -c third_party/lua/src/lgc.c -o build/lgc.o
+
+build/linit.o: third_party/lua/src/linit.c
+	$(cxx) $(cflags) -c third_party/lua/src/linit.c -o build/linit.o
+
+build/llex.o: third_party/lua/src/llex.c
+	$(cxx) $(cflags) -c third_party/lua/src/llex.c -o build/llex.o
+
+build/lmathlib.o: third_party/lua/src/lmathlib.c
+	$(cxx) $(cflags) -c third_party/lua/src/lmathlib.c -o build/lmathlib.o
+
+build/lmem.o: third_party/lua/src/lmem.c
+	$(cxx) $(cflags) -c third_party/lua/src/lmem.c -o build/lmem.o
+
+build/loadlib.o: third_party/lua/src/loadlib.c
+	$(cxx) $(cflags) -c third_party/lua/src/loadlib.c -o build/loadlib.o
+
+build/lobject.o: third_party/lua/src/lobject.c
+	$(cxx) $(cflags) -c third_party/lua/src/lobject.c -o build/lobject.o
+
+build/lopcodes.o: third_party/lua/src/lopcodes.c
+	$(cxx) $(cflags) -c third_party/lua/src/lopcodes.c -o build/lopcodes.o
+
+build/loslib.o: third_party/lua/src/loslib.c
+	$(cxx) $(cflags) -c third_party/lua/src/loslib.c -o build/loslib.o
+
+build/lparser.o: third_party/lua/src/lparser.c
+	$(cxx) $(cflags) -c third_party/lua/src/lparser.c -o build/lparser.o
+
+build/lstring.o: third_party/lua/src/lstring.c
+	$(cxx) $(cflags) -c third_party/lua/src/lstring.c -o build/lstring.o
+
+build/lstrlib.o: third_party/lua/src/lstrlib.c
+	$(cxx) $(cflags) -c third_party/lua/src/lstrlib.c -o build/lstrlib.o
+
+build/ltablib.o: third_party/lua/src/ltablib.c
+	$(cxx) $(cflags) -c third_party/lua/src/ltablib.c -o build/ltablib.o
+
+build/ltm.o: third_party/lua/src/ltm.c
+	$(cxx) $(cflags) -c third_party/lua/src/ltm.c -o build/ltm.o
+
+build/lundump.o: third_party/lua/src/lundump.c
+	$(cxx) $(cflags) -c third_party/lua/src/lundump.c -o build/lundump.o
+
+build/lvm.o: third_party/lua/src/lvm.c
+	$(cxx) $(cflags) -c third_party/lua/src/lvm.c -o build/lvm.o
+
+build/lzio.o: third_party/lua/src/lzio.c
+	$(cxx) $(cflags) -c third_party/lua/src/lzio.c -o build/lzio.o
+
+build/lcorolib.o: third_party/lua/src/lcorolib.c
+	$(cxx) $(cflags) -c third_party/lua/src/lcorolib.c -o build/lcorolib.o
+
+build/liolib.o: third_party/lua/src/liolib.c
+	$(cxx) $(cflags) -c third_party/lua/src/liolib.c -o build/liolib.o
+
+build/ltable.o: third_party/lua/src/ltable.c
+	$(cxx) $(cflags) -c third_party/lua/src/ltable.c -o build/ltable.o
+
+build/lstate.o: third_party/lua/src/lstate.c
+	$(cxx) $(cflags) -c third_party/lua/src/lstate.c -o build/lstate.o
+
+build/lfunc.o: third_party/lua/src/lfunc.c
+	$(cxx) $(cflags) -c third_party/lua/src/lfunc.c -o build/lfunc.o
+
 build/get_focused_window_$(osname).o: src/get_focused_window_$(osname).cc
 	$(cxx) $(cflags) -c src/get_focused_window_$(osname).cc -o build/get_focused_window_$(osname).o
 
@@ -348,6 +450,40 @@ build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
 
 objects: build/jsoncpp.o \
+	build/lcorolib.o \
+	build/liolib.o \
+	build/ltable.o \
+	build/lstate.o \
+	build/lfunc.o \
+	build/lua.o \
+	build/lutf8lib.o \
+	build/lapi.o \
+	build/lauxlib.o \
+	build/lbaselib.o \
+	build/lbitlib.o \
+	build/lcode.o \
+	build/lctype.o \
+	build/ldblib.o \
+	build/ldebug.o \
+	build/ldo.o \
+	build/ldump.o \
+	build/lgc.o \
+	build/linit.o \
+	build/llex.o \
+	build/lmathlib.o \
+	build/lmem.o \
+	build/loadlib.o \
+	build/lobject.o \
+	build/lopcodes.o \
+	build/loslib.o \
+	build/lparser.o \
+	build/lstring.o \
+	build/lstrlib.o \
+	build/ltablib.o \
+	build/ltm.o \
+	build/lundump.o \
+	build/lvm.o \
+	build/lzio.o \
 	build/proxy.o \
 	build/https_client.o \
 	build/websocket_client.o \

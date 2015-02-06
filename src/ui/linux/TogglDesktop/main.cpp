@@ -85,9 +85,9 @@ int main(int argc, char *argv[]) try {
     parser.process(a);
 
     MainWindowController w(0,
-	parser.value(logPathOption),
-	parser.value(dbPathOption),
-	parser.value(scriptPathOption));
+                           parser.value(logPathOption),
+                           parser.value(dbPathOption),
+                           parser.value(scriptPathOption));
     w.show();
 
     return a.exec();

@@ -102,5 +102,5 @@ Windows app is also available [as portable app, as a zip file](https://www.toggl
 
 Linux (64 bit only)
 -------------------
-* [app](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable)
+* [tarball](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable)
 * [deb](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=stable)

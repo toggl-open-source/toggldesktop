@@ -29,8 +29,6 @@
 #import "DisplayCommand.h"
 #import "Sparkle.h"
 
-#include "toggl_api_lua.h"
-
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
 @property (nonatomic, strong) IBOutlet PreferencesWindowController *preferencesWindowController;
@@ -251,6 +249,17 @@ BOOL manualMode = NO;
 	{
 		[self performSelectorInBackground:@selector(runScript:)
 							   withObject:self.scriptPath];
+	}
+}
+
+- (void)runScript:(NSString *)scriptFile
+{
+	NSString *script = [NSString stringWithContentsOfFile:scriptFile encoding:NSUTF8StringEncoding error:nil];
+	ScriptResult *result = [Utils runScript:script];
+
+	if (result && !result.err)
+	{
+		[[NSApplication sharedApplication] terminate:self];
 	}
 }
 
@@ -1046,31 +1055,6 @@ const NSString *appName = @"osx_native_app";
 			break;
 	}
 	return YES;
-}
-
-- (void)runScript:(NSString *)scriptFile
-{
-	lua_State *luaState = 0;
-	ScriptResult *result = nil;
-
-	@try {
-		luaState = luaL_newstate();
-		luaL_openlibs(luaState);
-		toggl_register_lua(ctx, luaState);
-		lua_settop(luaState, 0);
-		NSString *script = [NSString stringWithContentsOfFile:scriptFile encoding:NSUTF8StringEncoding error:nil];
-		result = [Utils runScript:script withState:luaState];
-	}
-	@catch (NSException *e) {
-		NSLog(@"Script exception: %@", e);
-	} @finally {
-		lua_close(luaState);
-		NSLog(@"Script result: %@", result);
-		if (result && !result.err)
-		{
-			[[NSApplication sharedApplication] terminate:self];
-		}
-	}
 }
 
 - (void)startDisplayIdleNotification:(NSNotification *)notification
