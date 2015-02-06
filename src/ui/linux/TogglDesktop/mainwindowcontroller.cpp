@@ -44,7 +44,8 @@ MainWindowController::MainWindowController(
   aboutDialog(new AboutDialog(this)),
   feedbackDialog(new FeedbackDialog(this)),
   idleNotificationDialog(new IdleNotificationDialog(this)),
-  reminder(false) {
+  reminder(false),
+  script(scriptPath) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
     ui->setupUi(this);
@@ -287,14 +288,15 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 
 void MainWindowController::showEvent(QShowEvent *event) {
     QMainWindow::showEvent(event);
-    if (TogglApi::instance->startEvents()) {
-        return;
+    if (!TogglApi::instance->startEvents()) {
+        QMessageBox(
+		QMessageBox::Warning,
+		"Error",
+		"The application could not start. Please inspect the log file. Sorry!",
+		QMessageBox::Ok|QMessageBox::Cancel).exec();
+	return;
     }
-    QMessageBox(
-        QMessageBox::Warning,
-        "Error",
-        "The application could not start. Please inspect the log file. Sorry!",
-        QMessageBox::Ok|QMessageBox::Cancel).exec();
+    runScript();
 }
 
 void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
@@ -311,4 +313,11 @@ void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
         QDesktopServices::openUrl(QUrl(view->URL));
         quitApp();
     }
+}
+
+void MainWindowController::runScript() {
+	if (script.isEmpty()) {
+		return;
+	}
+	// FIXME: load and execute Lua script
 }

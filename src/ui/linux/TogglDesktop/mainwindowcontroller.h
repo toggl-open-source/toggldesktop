@@ -90,6 +90,8 @@ class MainWindowController : public QMainWindow {
 
     QIcon icon;
 
+    QString script;
+
     bool reminder;
 
     void readSettings();
@@ -98,6 +100,8 @@ class MainWindowController : public QMainWindow {
     void connectMenuActions();
     void connectMenuAction(QAction *action);
     void enableMenuActions();
+
+    void runScript();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_
