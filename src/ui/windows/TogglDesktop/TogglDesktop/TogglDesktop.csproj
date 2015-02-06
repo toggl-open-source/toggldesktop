@@ -307,6 +307,10 @@
     <None Include="Resources\continue.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\Roboto-Bold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Roboto-Light.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Roboto-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Roboto-Regular.ttf" />
     <None Include="Resources\toggl.ico" />
   </ItemGroup>
   <ItemGroup>
