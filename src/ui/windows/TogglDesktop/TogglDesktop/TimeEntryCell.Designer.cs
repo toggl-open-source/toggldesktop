@@ -33,22 +33,22 @@
             this.labelDateDuration = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.panel = new System.Windows.Forms.Panel();
+            this.taskProjectPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelTask = new System.Windows.Forms.Label();
+            this.labelClient = new System.Windows.Forms.Label();
+            this.labelProject = new System.Windows.Forms.Label();
+            this.labelDescription = new System.Windows.Forms.Label();
+            this.labelDuration = new System.Windows.Forms.Label();
             this.tagBillableContinuePanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelContinue = new System.Windows.Forms.Label();
             this.labelBillable = new System.Windows.Forms.Label();
             this.labelTag = new System.Windows.Forms.Label();
-            this.taskProjectPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.labelTask = new System.Windows.Forms.Label();
-            this.labelProject = new System.Windows.Forms.Label();
-            this.labelClient = new System.Windows.Forms.Label();
-            this.labelDescription = new System.Windows.Forms.Label();
-            this.labelDuration = new System.Windows.Forms.Label();
             this.ProjectColorPanel = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.headerPanel.SuspendLayout();
             this.panel.SuspendLayout();
-            this.tagBillableContinuePanel.SuspendLayout();
             this.taskProjectPanel.SuspendLayout();
+            this.tagBillableContinuePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelFormattedDate
@@ -101,10 +101,10 @@
             this.panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel.BackColor = System.Drawing.Color.White;
-            this.panel.Controls.Add(this.tagBillableContinuePanel);
             this.panel.Controls.Add(this.taskProjectPanel);
             this.panel.Controls.Add(this.labelDescription);
             this.panel.Controls.Add(this.labelDuration);
+            this.panel.Controls.Add(this.tagBillableContinuePanel);
             this.panel.Controls.Add(this.ProjectColorPanel);
             this.panel.Location = new System.Drawing.Point(0, 45);
             this.panel.Name = "panel";
@@ -112,6 +112,110 @@
             this.panel.TabIndex = 15;
             this.panel.Click += new System.EventHandler(this.edit_Click);
             this.panel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // taskProjectPanel
+            // 
+            this.taskProjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.taskProjectPanel.Controls.Add(this.labelTask);
+            this.taskProjectPanel.Controls.Add(this.labelClient);
+            this.taskProjectPanel.Controls.Add(this.labelProject);
+            this.taskProjectPanel.Location = new System.Drawing.Point(12, 9);
+            this.taskProjectPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.taskProjectPanel.Name = "taskProjectPanel";
+            this.taskProjectPanel.Size = new System.Drawing.Size(154, 17);
+            this.taskProjectPanel.TabIndex = 15;
+            this.taskProjectPanel.WrapContents = false;
+            this.taskProjectPanel.Click += new System.EventHandler(this.project_Click);
+            this.taskProjectPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelTask
+            // 
+            this.labelTask.AccessibleName = "Task name";
+            this.labelTask.AutoSize = true;
+            this.labelTask.Dock = System.Windows.Forms.DockStyle.Left;
+            this.labelTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelTask.Location = new System.Drawing.Point(3, 0);
+            this.labelTask.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.labelTask.Name = "labelTask";
+            this.labelTask.Size = new System.Drawing.Size(74, 16);
+            this.labelTask.TabIndex = 10;
+            this.labelTask.Text = "TaskName";
+            this.labelTask.UseMnemonic = false;
+            this.labelTask.Click += new System.EventHandler(this.project_Click);
+            this.labelTask.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelClient
+            // 
+            this.labelClient.AccessibleName = "Client name";
+            this.labelClient.AutoSize = true;
+            this.labelClient.Dock = System.Windows.Forms.DockStyle.Left;
+            this.labelClient.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelClient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelClient.Location = new System.Drawing.Point(77, 0);
+            this.labelClient.Margin = new System.Windows.Forms.Padding(0);
+            this.labelClient.Name = "labelClient";
+            this.labelClient.Size = new System.Drawing.Size(81, 16);
+            this.labelClient.TabIndex = 11;
+            this.labelClient.Text = "ClientName";
+            this.labelClient.UseMnemonic = false;
+            this.labelClient.Click += new System.EventHandler(this.project_Click);
+            // 
+            // labelProject
+            // 
+            this.labelProject.AccessibleName = "Project name";
+            this.labelProject.AutoSize = true;
+            this.labelProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelProject.Location = new System.Drawing.Point(158, 0);
+            this.labelProject.Margin = new System.Windows.Forms.Padding(0);
+            this.labelProject.Name = "labelProject";
+            this.labelProject.Size = new System.Drawing.Size(95, 16);
+            this.labelProject.TabIndex = 9;
+            this.labelProject.Text = "NEW - TOGGL";
+            this.labelProject.UseMnemonic = false;
+            this.labelProject.Click += new System.EventHandler(this.project_Click);
+            this.labelProject.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelDescription
+            // 
+            this.labelDescription.AccessibleName = "Time entry description";
+            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDescription.AutoEllipsis = true;
+            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelDescription.Location = new System.Drawing.Point(15, 29);
+            this.labelDescription.Name = "labelDescription";
+            this.labelDescription.Size = new System.Drawing.Size(154, 17);
+            this.labelDescription.TabIndex = 6;
+            this.labelDescription.Text = "Blogpost about ne...";
+            this.labelDescription.UseMnemonic = false;
+            this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
+            this.labelDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelDuration
+            // 
+            this.labelDuration.BackColor = System.Drawing.Color.White;
+            this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelDuration.Location = new System.Drawing.Point(169, 0);
+            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
+            this.labelDuration.Size = new System.Drawing.Size(75, 55);
+            this.labelDuration.TabIndex = 8;
+            this.labelDuration.Text = "03:21:30";
+            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelDuration.UseMnemonic = false;
+            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
+            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // tagBillableContinuePanel
             // 
@@ -121,7 +225,7 @@
             this.tagBillableContinuePanel.Controls.Add(this.labelTag);
             this.tagBillableContinuePanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.tagBillableContinuePanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.tagBillableContinuePanel.Location = new System.Drawing.Point(169, 0);
+            this.tagBillableContinuePanel.Location = new System.Drawing.Point(244, 0);
             this.tagBillableContinuePanel.Name = "tagBillableContinuePanel";
             this.tagBillableContinuePanel.Size = new System.Drawing.Size(70, 55);
             this.tagBillableContinuePanel.TabIndex = 16;
@@ -179,107 +283,6 @@
             this.labelTag.Click += new System.EventHandler(this.edit_Click);
             this.labelTag.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
-            // taskProjectPanel
-            // 
-            this.taskProjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.taskProjectPanel.Controls.Add(this.labelTask);
-            this.taskProjectPanel.Controls.Add(this.labelProject);
-            this.taskProjectPanel.Controls.Add(this.labelClient);
-            this.taskProjectPanel.Location = new System.Drawing.Point(12, 29);
-            this.taskProjectPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.taskProjectPanel.Name = "taskProjectPanel";
-            this.taskProjectPanel.Size = new System.Drawing.Size(154, 17);
-            this.taskProjectPanel.TabIndex = 15;
-            this.taskProjectPanel.WrapContents = false;
-            this.taskProjectPanel.Click += new System.EventHandler(this.project_Click);
-            this.taskProjectPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // labelTask
-            // 
-            this.labelTask.AccessibleName = "Task name";
-            this.labelTask.AutoSize = true;
-            this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.labelTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelTask.Location = new System.Drawing.Point(3, 0);
-            this.labelTask.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.labelTask.Name = "labelTask";
-            this.labelTask.Size = new System.Drawing.Size(74, 16);
-            this.labelTask.TabIndex = 10;
-            this.labelTask.Text = "TaskName";
-            this.labelTask.UseMnemonic = false;
-            this.labelTask.Click += new System.EventHandler(this.project_Click);
-            this.labelTask.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // labelProject
-            // 
-            this.labelProject.AccessibleName = "Project name";
-            this.labelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelProject.AutoSize = true;
-            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelProject.Location = new System.Drawing.Point(77, 0);
-            this.labelProject.Margin = new System.Windows.Forms.Padding(0);
-            this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(106, 16);
-            this.labelProject.TabIndex = 9;
-            this.labelProject.Text = "NEW - TOGGL";
-            this.labelProject.UseMnemonic = false;
-            this.labelProject.Click += new System.EventHandler(this.project_Click);
-            this.labelProject.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // labelClient
-            // 
-            this.labelClient.AccessibleName = "Client name";
-            this.labelClient.AutoSize = true;
-            this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.labelClient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelClient.Location = new System.Drawing.Point(183, 0);
-            this.labelClient.Margin = new System.Windows.Forms.Padding(0);
-            this.labelClient.Name = "labelClient";
-            this.labelClient.Size = new System.Drawing.Size(81, 16);
-            this.labelClient.TabIndex = 11;
-            this.labelClient.Text = "ClientName";
-            this.labelClient.UseMnemonic = false;
-            this.labelClient.Click += new System.EventHandler(this.project_Click);
-            // 
-            // labelDescription
-            // 
-            this.labelDescription.AccessibleName = "Time entry description";
-            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDescription.AutoEllipsis = true;
-            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelDescription.Location = new System.Drawing.Point(15, 9);
-            this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(154, 17);
-            this.labelDescription.TabIndex = 6;
-            this.labelDescription.Text = "Blogpost about ne...";
-            this.labelDescription.UseMnemonic = false;
-            this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
-            this.labelDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // labelDuration
-            // 
-            this.labelDuration.BackColor = System.Drawing.Color.White;
-            this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
-            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelDuration.Location = new System.Drawing.Point(239, 0);
-            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
-            this.labelDuration.Size = new System.Drawing.Size(75, 55);
-            this.labelDuration.TabIndex = 8;
-            this.labelDuration.Text = "03:21:30";
-            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDuration.UseMnemonic = false;
-            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
-            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
             // ProjectColorPanel
             // 
             this.ProjectColorPanel.Location = new System.Drawing.Point(0, 0);
@@ -301,9 +304,9 @@
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
-            this.tagBillableContinuePanel.ResumeLayout(false);
             this.taskProjectPanel.ResumeLayout(false);
             this.taskProjectPanel.PerformLayout();
+            this.tagBillableContinuePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
