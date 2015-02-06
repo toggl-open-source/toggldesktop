@@ -26,6 +26,10 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 #endregion
@@ -89,5 +93,82 @@ namespace TogglDesktop
 
             return style;
         }
+
+
+        // Custom ttf Font loading
+        private static PrivateFontCollection s_FontCollection = new PrivateFontCollection();
+
+        public static FontFamily[] FontFamilies
+        {
+            get
+            {
+                if (s_FontCollection.Families.Length == 0)
+                    LoadFonts();
+
+                return s_FontCollection.Families;
+            }
+        }
+
+        public static void ApplyFont(int family, Control control)
+        {
+            control.Font = new Font(FontFamilies[family], control.Font.Size, control.Font.Style);
+        }
+
+        public static void ApplyFont(string family, Control control)
+        {
+            foreach (FontFamily font in FontFamilies)
+            {
+                if (font.Name.ToLower().Equals(family.ToLower()))
+                {
+                    control.Font = new Font(font, control.Font.Size, control.Font.Style);
+                }
+            }
+        }
+
+        public static void LoadFonts()
+        {
+            if (Assembly.GetEntryAssembly() == null || Assembly.GetEntryAssembly().GetManifestResourceNames() == null)
+                return;
+
+            foreach (string resource in Assembly.GetEntryAssembly().GetManifestResourceNames())
+            {
+                // Load TTF files from your Fonts resource folder.
+                if (resource.Contains(".Fonts.") && resource.ToLower().EndsWith(".ttf"))
+                {
+                    using (Stream stream = Assembly.GetEntryAssembly().GetManifestResourceStream(resource))
+                    {
+                        try
+                        {
+                            // create an unsafe memory block for the font data
+                            System.IntPtr data = Marshal.AllocCoTaskMem((int)stream.Length);
+
+                            // create a buffer to read in to
+                            byte[] fontdata = new byte[stream.Length];
+
+                            // read the font data from the resource
+                            stream.Read(fontdata, 0, (int)stream.Length);
+
+                            // copy the bytes to the unsafe memory block
+                            Marshal.Copy(fontdata, 0, data, (int)stream.Length);
+
+                            // pass the font to the font collection
+                            s_FontCollection.AddMemoryFont(data, (int)stream.Length);
+
+                            // close the resource stream
+                            stream.Close();
+
+                            // free up the unsafe memory
+                            Marshal.FreeCoTaskMem(data);
+                        }
+                        catch(Exception e)
+                        {
+                            System.Console.WriteLine("Error loading font: " + resource.ToLower());
+                            System.Console.WriteLine(e.StackTrace);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
