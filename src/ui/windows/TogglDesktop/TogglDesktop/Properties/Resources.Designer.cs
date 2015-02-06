@@ -182,6 +182,16 @@ namespace TogglDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap darkBg {
+            get {
+                object obj = ResourceManager.GetObject("darkBg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_billable {
             get {
                 object obj = ResourceManager.GetObject("icon-billable", resourceCulture);
@@ -396,6 +406,16 @@ namespace TogglDesktop.Properties {
             get {
                 object obj = ResourceManager.GetObject("Roboto_Regular", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap timerDarkBg {
+            get {
+                object obj = ResourceManager.GetObject("timerDarkBg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

@@ -397,6 +397,12 @@
   <ItemGroup>
     <None Include="Resources\resize.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\darkBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\timerDarkBg.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

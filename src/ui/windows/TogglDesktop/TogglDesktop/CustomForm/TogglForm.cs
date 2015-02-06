@@ -58,7 +58,7 @@ namespace TogglDesktop
         {
             FormStyle style = new FormStyle();
             
-            style.NormalState.Image = TogglDesktop.Properties.Resources.Border;
+            style.NormalState.Image = TogglDesktop.Properties.Resources.darkBg;
             style.NormalState.SizeMode = ImageSizeMode.Tiled;
             style.NormalState.StretchMargins = new Padding(3, 30, 3, 3);
 
@@ -86,7 +86,7 @@ namespace TogglDesktop
             style.TitleColor = Color.White;
             style.TitleFont = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular);
 
-            style.ClientAreaPadding = new Padding(0, 30, 0, 0);
+            style.ClientAreaPadding = new Padding(0, 40, 0, 0);
             style.IconPadding = new Padding(7, 6, 10, 0);
 
             NonClientAreaDoubleBuffering = true;

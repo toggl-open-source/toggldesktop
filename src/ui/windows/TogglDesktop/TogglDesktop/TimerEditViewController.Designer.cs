@@ -163,6 +163,8 @@
             // 
             // panelLeft
             // 
+            this.panelLeft.BackColor = System.Drawing.Color.Transparent;
+            this.panelLeft.BackgroundImage = global::TogglDesktop.Properties.Resources.timerDarkBg;
             this.panelLeft.Controls.Add(this.durationPanel);
             this.panelLeft.Controls.Add(this.panelDescription);
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -189,6 +191,7 @@
             this.panelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelDescription.BackColor = System.Drawing.Color.Transparent;
             this.panelDescription.Controls.Add(this.linkLabelDescription);
             this.panelDescription.Controls.Add(this.labelClearProject);
             this.panelDescription.Controls.Add(this.descriptionTextBox);
