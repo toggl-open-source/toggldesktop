@@ -51,7 +51,7 @@
             this.textBoxDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.textBoxDuration.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.textBoxDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
+            this.textBoxDuration.ForeColor = System.Drawing.Color.White;
             this.textBoxDuration.Location = new System.Drawing.Point(4, 17);
             this.textBoxDuration.Margin = new System.Windows.Forms.Padding(5, 3, 4, 3);
             this.textBoxDuration.Name = "textBoxDuration";
@@ -64,7 +64,7 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
+            this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(217)))), ((int)(((byte)(101)))));
             this.buttonStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.buttonStart.Dock = System.Windows.Forms.DockStyle.Right;
             this.buttonStart.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
@@ -94,7 +94,7 @@
             this.linkLabelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.linkLabelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
+            this.linkLabelProject.ForeColor = System.Drawing.Color.White;
             this.linkLabelProject.Location = new System.Drawing.Point(17, 35);
             this.linkLabelProject.Name = "linkLabelProject";
             this.linkLabelProject.Size = new System.Drawing.Size(146, 20);
@@ -114,7 +114,7 @@
             this.linkLabelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.linkLabelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.linkLabelDescription.ForeColor = System.Drawing.Color.White;
             this.linkLabelDescription.Location = new System.Drawing.Point(17, 0);
             this.linkLabelDescription.Name = "linkLabelDescription";
             this.linkLabelDescription.Size = new System.Drawing.Size(146, 23);
@@ -131,7 +131,7 @@
             this.linkLabelDuration.AccessibleName = "Time entry duration";
             this.linkLabelDuration.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
             this.linkLabelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.linkLabelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
+            this.linkLabelDuration.ForeColor = System.Drawing.Color.White;
             this.linkLabelDuration.Location = new System.Drawing.Point(2, 32);
             this.linkLabelDuration.Margin = new System.Windows.Forms.Padding(0);
             this.linkLabelDuration.Name = "linkLabelDuration";
@@ -208,7 +208,7 @@
             this.descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.descriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.descriptionTextBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.descriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(185)))), ((int)(((byte)(185)))));
+            this.descriptionTextBox.ForeColor = System.Drawing.Color.White;
             this.descriptionTextBox.Location = new System.Drawing.Point(20, 20);
             this.descriptionTextBox.Name = "descriptionTextBox";
             this.descriptionTextBox.Size = new System.Drawing.Size(142, 20);
