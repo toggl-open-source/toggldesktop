@@ -22,7 +22,13 @@ namespace TogglDesktop
         public TimeEntryCell(TimeEntryListViewController listContainer)
         {
             list = listContainer;
-            InitializeComponent();   
+            InitializeComponent();
+
+            TogglForm.ApplyFont("roboto", this.labelFormattedDate);
+            TogglForm.ApplyFont("roboto", this.labelDateDuration);
+            TogglForm.ApplyFont("roboto-medium", this.labelProject);
+            TogglForm.ApplyFont("roboto", this.labelDescription);
+            TogglForm.ApplyFont("roboto-light", this.labelDuration);
         }
 
         internal void Display(Toggl.TimeEntry item)

@@ -39,6 +39,10 @@ namespace TogglDesktop
             Toggl.OnStoppedTimerState += OnStoppedTimerState;
 
             Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
+
+            TogglForm.ApplyFont("roboto", this.descriptionTextBox);
+            TogglForm.ApplyFont("roboto", this.buttonStart);
+            TogglForm.ApplyFont("roboto-light", this.DurationTextBox);
         }
 
         public AutoCompleteTextBox DescriptionTextBox
