@@ -43,6 +43,7 @@
             this.labelClient = new System.Windows.Forms.Label();
             this.labelDescription = new System.Windows.Forms.Label();
             this.labelDuration = new System.Windows.Forms.Label();
+            this.ProjectColorPanel = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.headerPanel.SuspendLayout();
             this.panel.SuspendLayout();
@@ -104,6 +105,7 @@
             this.panel.Controls.Add(this.taskProjectPanel);
             this.panel.Controls.Add(this.labelDescription);
             this.panel.Controls.Add(this.labelDuration);
+            this.panel.Controls.Add(this.ProjectColorPanel);
             this.panel.Location = new System.Drawing.Point(0, 45);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(314, 55);
@@ -278,6 +280,13 @@
             this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
             this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
+            // ProjectColorPanel
+            // 
+            this.ProjectColorPanel.Location = new System.Drawing.Point(0, 0);
+            this.ProjectColorPanel.Name = "ProjectColorPanel";
+            this.ProjectColorPanel.Size = new System.Drawing.Size(4, 55);
+            this.ProjectColorPanel.TabIndex = 17;
+            // 
             // TimeEntryCell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -316,5 +325,6 @@
         private System.Windows.Forms.Label labelTask;
         private System.Windows.Forms.Label labelClient;
         private System.Windows.Forms.FlowLayoutPanel tagBillableContinuePanel;
+        private System.Windows.Forms.Panel ProjectColorPanel;
     }
 }

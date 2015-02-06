@@ -45,7 +45,7 @@ namespace TogglDesktop
             {
                 labelDescription.Text = item.Description;
             }
-            labelProject.ForeColor = ColorTranslator.FromHtml(item.Color);
+            labelProject.ForeColor = ProjectColorPanel.BackColor = ColorTranslator.FromHtml(item.Color);
             labelProject.Text = item.ProjectLabel;
             labelClient.Text = item.ClientLabel;
             labelTask.Text = item.TaskLabel;
