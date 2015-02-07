@@ -48,7 +48,7 @@ osname=linux
 endif
 
 ifeq ($(uname), Darwin)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -98,6 +98,7 @@ libs=-framework Carbon \
 	-L$(openssldir) \
 	-lssl \
 	-lcrypto \
+	-lreadline \
 	-ldl
 endif
 
@@ -335,9 +336,6 @@ build/test/toggl_api_test.o: src/test/toggl_api_test.cc
 build/test/app_test.o: src/test/app_test.cc
 	$(cxx) $(cflags) -c src/test/app_test.cc -o build/test/app_test.o
 
-build/lua.o: third_party/lua/src/lua.c
-	$(cxx) $(cflags) -c third_party/lua/src/lua.c -o build/lua.o
-
 build/lutf8lib.o: third_party/lua/src/lutf8lib.c
 	$(cxx) $(cflags) -c third_party/lua/src/lutf8lib.c -o build/lutf8lib.o
 
@@ -455,7 +453,6 @@ objects: build/jsoncpp.o \
 	build/ltable.o \
 	build/lstate.o \
 	build/lfunc.o \
-	build/lua.o \
 	build/lutf8lib.o \
 	build/lapi.o \
 	build/lauxlib.o \
