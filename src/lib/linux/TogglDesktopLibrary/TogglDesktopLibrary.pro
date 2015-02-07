@@ -46,7 +46,41 @@ SOURCES += \
     ../../../user.cc \
     ../../../websocket_client.cc \
     ../../../window_change_recorder.cc \
-    ../../../workspace.cc
+    ../../../workspace.cc \
+    ../../../../third_party/lua/src/lapi.c \
+    ../../../../third_party/lua/src/lauxlib.c \
+    ../../../../third_party/lua/src/lbaselib.c \
+    ../../../../third_party/lua/src/lbitlib.c \
+    ../../../../third_party/lua/src/lcode.c \
+    ../../../../third_party/lua/src/lcorolib.c \
+    ../../../../third_party/lua/src/lctype.c \
+    ../../../../third_party/lua/src/ldblib.c \
+    ../../../../third_party/lua/src/ldebug.c \
+    ../../../../third_party/lua/src/ldo.c \
+    ../../../../third_party/lua/src/ldump.c \
+    ../../../../third_party/lua/src/lfunc.c \
+    ../../../../third_party/lua/src/lgc.c \
+    ../../../../third_party/lua/src/linit.c \
+    ../../../../third_party/lua/src/liolib.c \
+    ../../../../third_party/lua/src/llex.c \
+    ../../../../third_party/lua/src/lmathlib.c \
+    ../../../../third_party/lua/src/lmem.c \
+    ../../../../third_party/lua/src/loadlib.c \
+    ../../../../third_party/lua/src/lobject.c \
+    ../../../../third_party/lua/src/lopcodes.c \
+    ../../../../third_party/lua/src/loslib.c \
+    ../../../../third_party/lua/src/lparser.c \
+    ../../../../third_party/lua/src/lstate.c \
+    ../../../../third_party/lua/src/lstring.c \
+    ../../../../third_party/lua/src/lstrlib.c \
+    ../../../../third_party/lua/src/ltable.c \
+    ../../../../third_party/lua/src/ltablib.c \
+    ../../../../third_party/lua/src/ltm.c \
+    ../../../../third_party/lua/src/luac.c \
+    ../../../../third_party/lua/src/lundump.c \
+    ../../../../third_party/lua/src/lutf8lib.c \
+    ../../../../third_party/lua/src/lvm.c \
+    ../../../../third_party/lua/src/lzio.c
 
 HEADERS += \
     ../../../autocomplete_item.h \
@@ -83,7 +117,33 @@ HEADERS += \
     ../../../websocket_client.h \
     ../../../window_change_recorder.h \
     ../../../workspace.h \
-    ../../include/toggl_api.h
+    ../../include/toggl_api.h \
+    ../../../../third_party/lua/src/lapi.h \
+    ../../../../third_party/lua/src/lauxlib.h \
+    ../../../../third_party/lua/src/lcode.h \
+    ../../../../third_party/lua/src/lctype.h \
+    ../../../../third_party/lua/src/ldebug.h \
+    ../../../../third_party/lua/src/ldo.h \
+    ../../../../third_party/lua/src/lfunc.h \
+    ../../../../third_party/lua/src/lgc.h \
+    ../../../../third_party/lua/src/llex.h \
+    ../../../../third_party/lua/src/llimits.h \
+    ../../../../third_party/lua/src/lmem.h \
+    ../../../../third_party/lua/src/lobject.h \
+    ../../../../third_party/lua/src/lopcodes.h \
+    ../../../../third_party/lua/src/lparser.h \
+    ../../../../third_party/lua/src/lprefix.h \
+    ../../../../third_party/lua/src/lstate.h \
+    ../../../../third_party/lua/src/lstring.h \
+    ../../../../third_party/lua/src/ltable.h \
+    ../../../../third_party/lua/src/ltm.h \
+    ../../../../third_party/lua/src/lua.hpp \
+    ../../../../third_party/lua/src/luaconf.h \
+    ../../../../third_party/lua/src/lualib.h \
+    ../../../../third_party/lua/src/lundump.h \
+    ../../../../third_party/lua/src/lvm.h \
+    ../../../../third_party/lua/src/lzio.h \
+    ../../../../third_party/lua/src/lua.h
 
 pocolib = $$PWD/../../../../third_party/poco/lib/Linux/$$system(uname -m)
 openssldir = $$PWD/../../../../third_party/openssl
@@ -93,11 +153,14 @@ LIBS += -L$$pocolib -lPocoDataSQLite -lPocoData -lPocoNet -lPocoNetSSL -lPocoCry
 LIBS += -L$$openssldir -lssl -lcrypto
 LIBS += -lX11
 
-INCLUDEPATH += $$PWD/../../../../third_party/poco/Foundation/include
-DEPENDPATH += $$PWD/../../../../third_party/poco/Foundation/include
-
 INCLUDEPATH += $$PWD/../../../../third_party/jsoncpp/dist
 DEPENDPATH += $$PWD/../../../../third_party/jsoncpp/dist
+
+INCLUDEPATH += $$PWD/../../../../third_party/lua/src
+DEPENDPATH += $$PWD/../../../../third_party/lua/src
+
+INCLUDEPATH += $$PWD/../../../../third_party/poco/Foundation/include
+DEPENDPATH += $$PWD/../../../../third_party/poco/Foundation/include
 
 INCLUDEPATH += $$PWD/../../../../third_party/poco/Util/include
 DEPENDPATH += $$PWD/../../../../third_party/poco/Util/include
