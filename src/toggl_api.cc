@@ -7,9 +7,17 @@
 
 #include "./lib/include/toggl_api.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+
+#ifdef __cplusplus
+}
+#endif
 
 #include "./lib/include/toggl_api_lua.h"
 
