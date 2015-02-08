@@ -325,7 +325,7 @@ error HTTPSClient::request(
 
         {
             std::stringstream ss;
-            ss << "Sending request to " << relative_url << " ..";
+            ss << "Sending request to " << host << relative_url << " ..";
             logger().debug(ss.str());
         }
 
