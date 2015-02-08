@@ -290,11 +290,11 @@ void MainWindowController::showEvent(QShowEvent *event) {
     QMainWindow::showEvent(event);
     if (!TogglApi::instance->startEvents()) {
         QMessageBox(
-		QMessageBox::Warning,
-		"Error",
-		"The application could not start. Please inspect the log file. Sorry!",
-		QMessageBox::Ok|QMessageBox::Cancel).exec();
-	return;
+            QMessageBox::Warning,
+            "Error",
+            "The application could not start. Please inspect the log file.",
+            QMessageBox::Ok|QMessageBox::Cancel).exec();
+        return;
     }
     runScript();
 }
@@ -316,8 +316,8 @@ void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
 }
 
 void MainWindowController::runScript() {
-	if (script.isEmpty()) {
-		return;
-	}
-	// FIXME: load and execute Lua script
+    if (script.isEmpty()) {
+        return;
+    }
+    // FIXME: load and execute Lua script
 }
