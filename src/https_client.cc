@@ -256,10 +256,14 @@ error HTTPSClient::request(
     std::string *response_body,
     Poco::Int64 *status_code) {
 
-    Poco::Timestamp now;
-    if (banned_until_[host] >= now) {
-        logger().warning("Cannot connect, because we made too many requests");
-        return kCannotConnectError;
+    std::map<std::string, Poco::Timestamp>::const_iterator cit =
+        banned_until_.find(host);
+    if (cit != banned_until_.end()) {
+        if (cit->second >= Poco::Timestamp()) {
+            logger().warning(
+                "Cannot connect, because we made too many requests");
+            return kCannotConnectError;
+        }
     }
 
     if (host.empty()) {
