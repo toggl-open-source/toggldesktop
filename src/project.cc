@@ -150,7 +150,7 @@ bool Project::clientIsInAnotherWorkspace(const toggl::error err) const {
 }
 
 bool Project::onlyAdminsCanChangeProjectVisibility(
-        const toggl::error err) const {
+    const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
         "Only admins can change project visibility"));
 }

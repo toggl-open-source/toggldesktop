@@ -351,8 +351,8 @@ bool TogglApi::runScriptFile(const QString filename) {
     free(result);
 
     if (err) {
-	    qDebug() << "script finished with error: " << err;
-}
+        qDebug() << "script finished with error: " << err;
+    }
 
     qDebug() << "script output: " << textOutput;
 

@@ -302,8 +302,8 @@ void MainWindowController::showEvent(QShowEvent *event) {
         return;
     }
     qDebug() << "will run script: " << script;
-  
-    QtConcurrent::run(this, &MainWindowController::runScript); 
+
+    QtConcurrent::run(this, &MainWindowController::runScript);
 }
 
 void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
