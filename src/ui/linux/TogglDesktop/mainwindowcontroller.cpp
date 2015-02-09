@@ -297,7 +297,7 @@ void MainWindowController::showEvent(QShowEvent *event) {
             QMessageBox::Ok|QMessageBox::Cancel).exec();
         return;
     }
-    if(script.isEmpty()) {
+    if (script.isEmpty()) {
         qDebug() << "no script to run";
         return;
     }
