@@ -922,7 +922,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kAPIURL,
+    error err = https_client.PostJSON(kTimelineUploadURL,
                                       "/api/v8/timeline_settings",
                                       json,
                                       user_->APIToken(),
