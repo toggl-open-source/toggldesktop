@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "./../lib/include/toggl_api.h"
+#include "./../toggl_api.h"
 #include "./../proxy.h"
 #include "./../settings.h"
 #include "./../time_entry.h"

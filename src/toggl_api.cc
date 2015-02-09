@@ -2,24 +2,12 @@
 
 // No exceptions should be thrown from this library.
 
+#include "./toggl_api.h"
+
 #include <cstring>
 #include <set>
 
-#include "./lib/include/toggl_api.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
-
-#ifdef __cplusplus
-}
-#endif
-
-#include "./lib/include/toggl_api_lua.h"
+#include "./toggl_api_lua.h"
 
 #include "./const.h"
 #include "./context.h"

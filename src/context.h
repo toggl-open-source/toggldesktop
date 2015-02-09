@@ -14,7 +14,7 @@
 #include "./feedback.h"
 #include "./gui.h"
 #include "./idle.h"
-#include "./lib/include/toggl_api.h"
+#include "./toggl_api.h"
 #include "./model_change.h"
 #include "./timeline_notifications.h"
 #include "./types.h"

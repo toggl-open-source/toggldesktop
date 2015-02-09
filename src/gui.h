@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "./lib/include/toggl_api.h"
+#include "./toggl_api.h"
 #include "./types.h"
 #include "./autocomplete_item.h"
 #include "./settings.h"
