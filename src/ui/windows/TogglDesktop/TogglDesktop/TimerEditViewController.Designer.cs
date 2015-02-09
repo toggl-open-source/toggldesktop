@@ -136,7 +136,7 @@ namespace TogglDesktop
             this.linkLabelDuration.Location = new System.Drawing.Point(2, 32);
             this.linkLabelDuration.Margin = new System.Windows.Forms.Padding(0);
             this.linkLabelDuration.Name = "linkLabelDuration";
-            this.linkLabelDuration.Size = new System.Drawing.Size(103, 23);
+            this.linkLabelDuration.Size = new System.Drawing.Size(104, 23);
             this.linkLabelDuration.TabIndex = 9;
             this.linkLabelDuration.Text = "00:00:00";
             this.linkLabelDuration.UseMnemonic = false;
@@ -182,9 +182,9 @@ namespace TogglDesktop
             this.durationPanel.Controls.Add(this.textBoxDuration);
             this.durationPanel.Controls.Add(this.linkLabelDuration);
             this.durationPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.durationPanel.Location = new System.Drawing.Point(99, 0);
+            this.durationPanel.Location = new System.Drawing.Point(98, 0);
             this.durationPanel.Name = "durationPanel";
-            this.durationPanel.Size = new System.Drawing.Size(105, 56);
+            this.durationPanel.Size = new System.Drawing.Size(106, 56);
             this.durationPanel.TabIndex = 2;
             // 
             // panelDescription
