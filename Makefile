@@ -119,6 +119,7 @@ libs=-lX11 \
 	-lssl \
 	-lcrypto \
 	-lrt \
+	-llua \
 	-ldl
 endif
 
