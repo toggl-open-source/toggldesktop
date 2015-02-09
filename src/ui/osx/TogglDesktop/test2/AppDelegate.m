@@ -1030,7 +1030,6 @@ BOOL manualMode = NO;
 - (IBAction)onAboutMenuItem:(id)sender
 {
 	[self.aboutWindowController showWindow:self];
-	[self.aboutWindowController checkForUpdates];
 	[NSApp activateIgnoringOtherApps:YES];
 }
 
