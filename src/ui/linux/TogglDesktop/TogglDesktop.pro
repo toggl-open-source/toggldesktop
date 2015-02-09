@@ -100,7 +100,7 @@ LIBS += -L$$PWD/../../../lib/linux/TogglDesktopLibrary/build/release -lTogglDesk
 LIBS += -L$$PWD/../../../../third_party/bugsnag-qt/build/release -lbugsnag-qt
 LIBS += -lX11 -lXss
 
-INCLUDEPATH += $$PWD/../../../lib/include
+INCLUDEPATH += $$PWD/../../../
 INCLUDEPATH += $$PWD/../../../../third_party/bugsnag-qt
 INCLUDEPATH += $$PWD/../../../../third_party/qt-solutions/qtsingleapplication/src/
 INCLUDEPATH += $$PWD/../../../../third_party/qt-oauth-lib
