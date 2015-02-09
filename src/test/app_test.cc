@@ -97,6 +97,14 @@ TEST(Project, ProjectsHaveColorCodes) {
     ASSERT_EQ("#a4506c", p.ColorCode());
 }
 
+TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
+    Project p;
+    p.SetPrivate(false);
+    error err = error("Only admins can change project visibility");
+    ASSERT_TRUE(p.ResolveError(err));
+    ASSERT_TRUE(p.IsPrivate());
+}
+
 TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
     testing::Database db;
 
