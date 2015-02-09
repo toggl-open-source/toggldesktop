@@ -20,6 +20,4 @@
 @property IBOutlet NSTextField *updateChannelLabel;
 @property (strong) IBOutlet NSButton *restartButton;
 - (BOOL)isVisible;
-- (void)checkForUpdates;
-- (IBAction)clickRestartButton:(id)sender;
 @end
