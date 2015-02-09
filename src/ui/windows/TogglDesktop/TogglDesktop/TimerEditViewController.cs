@@ -40,6 +40,8 @@ namespace TogglDesktop
 
             Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
 
+            this.textBoxDuration.BackAlpha = 0;
+
             TogglForm.ApplyFont("roboto", this.descriptionTextBox);
             TogglForm.ApplyFont("roboto", this.buttonStart);
             TogglForm.ApplyFont("roboto-light", this.DurationTextBox);
