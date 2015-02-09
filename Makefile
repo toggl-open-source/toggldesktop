@@ -397,6 +397,7 @@ test_objects: build/test/gtest-all.o \
 	build/test/toggl_api_test.o
 
 uitest:
+	rm -rf test
 	mkdir -p test
 	$(executable) \
 		--script-path $(pwd)/src/test/uitest.lua \

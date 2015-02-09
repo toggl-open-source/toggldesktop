@@ -40,6 +40,8 @@ class MainWindowController : public QMainWindow {
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 
+    void runScript();
+
  private slots:  // NOLINT
     void displayApp(const bool open);
     void displayRunningTimerState(TimeEntryView *te);
@@ -100,8 +102,6 @@ class MainWindowController : public QMainWindow {
     void connectMenuActions();
     void connectMenuAction(QAction *action);
     void enableMenuActions();
-
-    void runScript();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_

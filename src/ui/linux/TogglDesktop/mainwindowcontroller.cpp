@@ -5,16 +5,17 @@
 
 #include <iostream>  // NOLINT
 
-#include <QSettings>  // NOLINT
+#include <QAction>  // NOLINT
 #include <QCloseEvent>  // NOLINT
-#include <QMessageBox>  // NOLINT
-#include <QLabel>  // NOLINT
-#include <QVBoxLayout>  // NOLINT
+#include <QtConcurrent/QtConcurrent>  // NOLINT
 #include <QDebug>  // NOLINT
 #include <QDesktopServices>  // NOLINT
-#include <QAction>  // NOLINT
-#include <QMenu>  // NOLINT
 #include <QImageReader>  // NOLINT
+#include <QLabel>  // NOLINT
+#include <QMenu>  // NOLINT
+#include <QMessageBox>  // NOLINT
+#include <QSettings>  // NOLINT
+#include <QVBoxLayout>  // NOLINT
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
@@ -296,7 +297,13 @@ void MainWindowController::showEvent(QShowEvent *event) {
             QMessageBox::Ok|QMessageBox::Cancel).exec();
         return;
     }
-    runScript();
+    if(script.isEmpty()) {
+        qDebug() << "no script to run";
+        return;
+    }
+    qDebug() << "will run script: " << script;
+  
+    QtConcurrent::run(this, &MainWindowController::runScript); 
 }
 
 void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
@@ -316,8 +323,7 @@ void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
 }
 
 void MainWindowController::runScript() {
-    if (script.isEmpty()) {
-        return;
+    if (TogglApi::instance->runScriptFile(script)) {
+        quitApp();
     }
-    // FIXME: load and execute Lua script
 }
