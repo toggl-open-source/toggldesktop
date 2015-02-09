@@ -32,6 +32,7 @@
             this.labelFormattedDate = new System.Windows.Forms.Label();
             this.labelDateDuration = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
+            this.panelShadow = new System.Windows.Forms.Panel();
             this.panel = new System.Windows.Forms.Panel();
             this.taskProjectPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelTask = new System.Windows.Forms.Label();
@@ -88,6 +89,7 @@
             this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.headerPanel.Controls.Add(this.panelShadow);
             this.headerPanel.Controls.Add(this.labelFormattedDate);
             this.headerPanel.Controls.Add(this.labelDateDuration);
             this.headerPanel.Location = new System.Drawing.Point(0, 0);
@@ -95,6 +97,18 @@
             this.headerPanel.Size = new System.Drawing.Size(314, 45);
             this.headerPanel.TabIndex = 12;
             this.headerPanel.Visible = false;
+            // 
+            // panelShadow
+            // 
+            this.panelShadow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelShadow.BackColor = System.Drawing.Color.Transparent;
+            this.panelShadow.BackgroundImage = global::TogglDesktop.Properties.Resources.shadow;
+            this.panelShadow.Location = new System.Drawing.Point(0, 0);
+            this.panelShadow.Margin = new System.Windows.Forms.Padding(0);
+            this.panelShadow.Name = "panelShadow";
+            this.panelShadow.Size = new System.Drawing.Size(314, 4);
+            this.panelShadow.TabIndex = 12;
             // 
             // panel
             // 
@@ -329,5 +343,6 @@
         private System.Windows.Forms.Label labelClient;
         private System.Windows.Forms.FlowLayoutPanel tagBillableContinuePanel;
         private System.Windows.Forms.Panel ProjectColorPanel;
+        private System.Windows.Forms.Panel panelShadow;
     }
 }

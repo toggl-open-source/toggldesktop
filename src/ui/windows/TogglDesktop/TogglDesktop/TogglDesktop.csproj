@@ -407,6 +407,12 @@
   <ItemGroup>
     <None Include="Resources\timerDarkBg.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_arrow_back_grey600_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shadow.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
