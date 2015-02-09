@@ -246,12 +246,17 @@
             // buttonDone
             // 
             this.buttonDone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonDone.BackColor = System.Drawing.Color.Transparent;
+            this.buttonDone.BackgroundImage = global::TogglDesktop.Properties.Resources.ic_arrow_back_grey600_24dp;
+            this.buttonDone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonDone.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonDone.FlatAppearance.BorderSize = 0;
+            this.buttonDone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDone.Location = new System.Drawing.Point(10, 4);
             this.buttonDone.Name = "buttonDone";
-            this.buttonDone.Size = new System.Drawing.Size(75, 23);
+            this.buttonDone.Size = new System.Drawing.Size(23, 23);
             this.buttonDone.TabIndex = 11;
-            this.buttonDone.Text = "Back";
-            this.buttonDone.UseVisualStyleBackColor = true;
+            this.buttonDone.UseVisualStyleBackColor = false;
             this.buttonDone.Click += new System.EventHandler(this.buttonDone_Click);
             // 
             // buttonDelete
@@ -262,13 +267,15 @@
             this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDelete.AutoSize = true;
             this.buttonDelete.BackColor = System.Drawing.Color.Transparent;
+            this.buttonDelete.BackgroundImage = global::TogglDesktop.Properties.Resources.trash_can;
+            this.buttonDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonDelete.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonDelete.FlatAppearance.BorderSize = 0;
             this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDelete.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(186)));
-            this.buttonDelete.Image = global::TogglDesktop.Properties.Resources.trash_can;
-            this.buttonDelete.Location = new System.Drawing.Point(274, 426);
+            this.buttonDelete.Location = new System.Drawing.Point(270, 422);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(26, 26);
+            this.buttonDelete.Size = new System.Drawing.Size(30, 30);
             this.buttonDelete.TabIndex = 12;
             this.buttonDelete.UseVisualStyleBackColor = false;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
