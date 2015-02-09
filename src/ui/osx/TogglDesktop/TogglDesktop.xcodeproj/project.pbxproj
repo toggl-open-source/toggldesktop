@@ -23,6 +23,7 @@
 		3C0A57321C22E16B00301D77 /* MKColorWell+Bindings.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */; };
 		3C0A57331C22E16B00301D77 /* MKColorWell.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57161C22E12E00301D77 /* MKColorWell.h */; };
 		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
+		3C10E3A11A88FAE2001D431B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C10E3A01A88FAE1001D431B /* Images.xcassets */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A41A2F2AE0007DC17F /* start_button.pdf */; };
 		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
@@ -318,6 +319,7 @@
 		3C0A57171C22E12E00301D77 /* MKColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWell.m; sourceTree = "<group>"; };
 		3C0A57181C22E12E00301D77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
+		3C10E3A01A88FAE1001D431B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2645A41A2F2AE0007DC17F /* start_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = start_button.pdf; sourceTree = "<group>"; };
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 				3CBF85321B81E72700DD3B55 /* libPocoUtil.31.dylib */,
 				3CBF85331B81E72700DD3B55 /* libPocoJSON.31.dylib */,
 				3CBF851B1B81E62C00DD3B55 /* libPocoJSON.31.dylib */,
+				3C10E3A01A88FAE1001D431B /* Images.xcassets */,
 				3D711DBA1A67535900B4C830 /* TogglDesktop.entitlements */,
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
@@ -1182,6 +1185,7 @@
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
+				3C10E3A11A88FAE2001D431B /* Images.xcassets in Resources */,
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
 				3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */,
 				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
@@ -1487,6 +1491,7 @@
 		69FC182317E6534500B96425 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -1529,6 +1534,7 @@
 		69FC182417E6534500B96425 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
