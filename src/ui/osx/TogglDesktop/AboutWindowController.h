@@ -21,6 +21,4 @@
 @property (strong) IBOutlet NSButton *restartButton;
 - (IBAction)updateChannelSelected:(id)sender;
 - (BOOL)isVisible;
-- (void)checkForUpdates;
-- (IBAction)clickRestartButton:(id)sender;
 @end
