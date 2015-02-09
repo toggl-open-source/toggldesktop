@@ -133,6 +133,9 @@
     <Compile Include="AddProjectViewController.Designer.cs">
       <DependentUpon>AddProjectViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlphaBlendTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AutoCompleteTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -215,6 +218,7 @@
       <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
+    <Compile Include="win32.cs" />
     <Compile Include="WinSparkle.cs" />
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using ZBobb;
 
 namespace TogglDesktop
 {
-    public class AutoCompleteTextBox : TextBox
+    public class AutoCompleteTextBox : AlphaBlendTextBox
     {
         public ListBox autoCompleteListBox;
         private bool _isAdded;
@@ -29,6 +30,8 @@ namespace TogglDesktop
             autoCompleteListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom )));
             autoCompleteListBox.Visible = false;
+
+            this.BackAlpha = 0;
         }
 
         void autoCompleteListBox_MouseLeave(object sender, EventArgs e)

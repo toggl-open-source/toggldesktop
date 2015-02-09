@@ -1,4 +1,5 @@
-﻿namespace TogglDesktop
+﻿using ZBobb;
+namespace TogglDesktop
 {
     partial class TimerEditViewController
     {
@@ -29,7 +30,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.textBoxDuration = new System.Windows.Forms.TextBox();
+            this.textBoxDuration = new ZBobb.AlphaBlendTextBox();
             this.buttonStart = new System.Windows.Forms.Button();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.linkLabelProject = new System.Windows.Forms.Label();
@@ -244,7 +245,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxDuration;
+        private ZBobb.AlphaBlendTextBox textBoxDuration;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Timer timerRunningDuration;
         private System.Windows.Forms.Label linkLabelProject;
