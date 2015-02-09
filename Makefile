@@ -227,8 +227,14 @@ clean_deps:
 
 deps: clean_deps openssl poco lua
 
+ifeq ($(uname), Linux)
 lua:
-	cd third_party/lua && make local
+	cd third_party/lua && make linux && make local
+endif
+ifeq ($(uname), Darwin)
+lua:
+	cd third_party/lua && make macosx && make local
+endif
 
 openssl:
 ifeq ($(uname), Darwin)
@@ -399,7 +405,7 @@ toggl_test: clean_test objects test_objects
 	mkdir -p test
 	$(cxx) -coverage -o test/toggl_test build/*.o build/test/*.o $(libs)
 
-test_lib: toggl_test
+test_lib: lua toggl_test
 ifeq ($(uname), Linux)
 	cp src/ssl/cacert.pem test/.
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
