@@ -18,7 +18,7 @@ extern "C" {
 #include <stdint.h>
 
 #ifdef _WIN32
-#define _Bool bool
+typedef bool _Bool;
 #else
 #include <stdbool.h>
 #endif

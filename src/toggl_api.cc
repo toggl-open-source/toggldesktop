@@ -7,7 +7,9 @@
 #include <cstring>
 #include <set>
 
+#ifndef _WIN32
 #include "./toggl_api_lua.h"
+#endif
 
 #include "./const.h"
 #include "./context.h"
@@ -798,6 +800,7 @@ void toggl_set_idle_seconds(
     app(context)->SetIdleSeconds(idle_seconds);
 }
 
+#ifndef _WIN32
 char_t *toggl_run_script(
     void *context,
     const char* script,
@@ -837,6 +840,7 @@ char_t *toggl_run_script(
 
     return copy_string(ss.str());
 }
+#endif
 
 void testing_sleep(
     const int seconds) {
