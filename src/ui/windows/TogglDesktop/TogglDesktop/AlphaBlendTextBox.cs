@@ -71,9 +71,12 @@ namespace ZBobb
         {
 
             base.OnResize(e);
-            this.myBitmap = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);//(this.Width,this.Height);
-            this.myAlphaBitmap = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);//(this.Width,this.Height);
-            myUpToDate = false;
+            if (this.ClientRectangle.Width > 0)
+            {
+                this.myBitmap = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);//(this.Width,this.Height);
+                this.myAlphaBitmap = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);//(this.Width,this.Height);
+                myUpToDate = false;
+            }
             this.Invalidate();
         }
 
