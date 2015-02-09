@@ -1,13 +1,13 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#ifndef SRC_LIB_INCLUDE_TOGGL_API_LUA_H_
-#define SRC_LIB_INCLUDE_TOGGL_API_LUA_H_
+#ifndef SRC_TOGGL_API_LUA_H_
+#define SRC_TOGGL_API_LUA_H_
 
-#include <cstdlib>
+#include "./toggl_api.h"
 
 #include <lua.hpp>
 
-#include "./toggl_api.h"
+#include <cstdlib>
 
 static void *toggl_app_instance_ = 0;
 
@@ -519,4 +519,4 @@ static int toggl_register_lua(void *ctx, lua_State *L) {
     return 1;
 }
 
-#endif  // SRC_LIB_INCLUDE_TOGGL_API_LUA_H_
+#endif  // SRC_TOGGL_API_LUA_H_

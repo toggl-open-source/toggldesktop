@@ -6,8 +6,8 @@
 // src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs
 // to fix this.
 
-#ifndef SRC_LIB_INCLUDE_TOGGL_API_H_
-#define SRC_LIB_INCLUDE_TOGGL_API_H_
+#ifndef SRC_TOGGL_API_H_
+#define SRC_TOGGL_API_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -574,4 +574,4 @@ extern "C" {
 }
 #endif
 
-#endif  // SRC_LIB_INCLUDE_TOGGL_API_H_
+#endif  // SRC_TOGGL_API_H_

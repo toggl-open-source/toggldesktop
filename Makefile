@@ -11,7 +11,7 @@ jsoncppdir=third_party/jsoncpp/dist
 
 GTEST_ROOT=third_party/googletest-read-only
 
-source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h src/lib/include/*.h \
+source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
 	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp \
 	src/ui/linux/TogglDesktop/aboutdialog.h src/ui/linux/TogglDesktop/aboutdialog.cpp \
 	src/ui/linux/TogglDesktop/autocompleteview.h src/ui/linux/TogglDesktop/autocompleteview.cpp \

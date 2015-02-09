@@ -2,7 +2,7 @@
 
 // No exceptions should be thrown from this library.
 
-#include "./toggl_api.h"
+#include "./../src/toggl_api.h"
 
 #include <cstring>
 #include <set>

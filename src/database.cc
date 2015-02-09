@@ -3138,9 +3138,44 @@ error Database::execute(
     return noError;
 }
 
+error Database::deleteTooOldTimeline(
+    const Poco::UInt64 &UID) {
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    if (!UID) {
+        return error("Cannot delete old timeline without UID");
+    }
+
+    time_t minimum_time = time(0) - kTimelineSecondsToKeep;
+
+    try {
+        *session_ << "delete from timeline_events "
+                  "where user_id = :uid "
+                  "and start_time < :minimum_time",
+                  useRef(UID),
+                  useRef(minimum_time),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("deleteTooOldTimeline");
+}
+
 error Database::SelectTimelineBatch(
     const Poco::UInt64 &user_id,
     std::vector<TimelineEvent> *timeline_events) {
+
+    error err = deleteTooOldTimeline(user_id);
+    if (err != noError) {
+        return err;
+    }
 
     Poco::Mutex::ScopedLock lock(session_m_);
 

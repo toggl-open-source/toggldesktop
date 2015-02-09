@@ -5,6 +5,7 @@
 #include <iostream>  // NOLINT
 
 #include "./../client.h"
+#include "./../const.h"
 #include "./../database.h"
 #include "./../formatter.h"
 #include "./../project.h"
@@ -94,6 +95,44 @@ TEST(Project, ProjectsHaveColorCodes) {
     ASSERT_EQ("#4dc3ff", p.ColorCode());
     p.SetColor("999");
     ASSERT_EQ("#a4506c", p.ColorCode());
+}
+
+TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
+    testing::Database db;
+
+    const Poco::UInt64 user_id = 123;
+
+    TimelineEvent good;
+    good.user_id = user_id;
+    good.start_time = time(0) - 60;  // started 1 minute ago
+    good.end_time = time(0);  // lasted until now
+    good.filename = "Notepad.exe";
+    good.title = "untitled";
+
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&good));
+
+    TimelineEvent bad;
+    bad.user_id = user_id;
+    bad.start_time = time(0) - kTimelineSecondsToKeep - 1;  // 7 days ago
+    bad.end_time = bad.end_time + 120;  // lasted 2 minutes
+    bad.filename = "Notepad.exe";
+    bad.title = "untitled";
+
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&bad));
+
+    std::vector<TimelineEvent> timeline_events;
+    ASSERT_EQ(noError, db.instance()->SelectTimelineBatch(
+        user_id, &timeline_events));
+
+    ASSERT_EQ(size_t(1), timeline_events.size());
+
+    TimelineEvent ready_for_upload = timeline_events[0];
+    ASSERT_EQ(good.user_id, ready_for_upload.user_id);
+    ASSERT_EQ(good.start_time, ready_for_upload.start_time);
+    ASSERT_EQ(good.end_time, ready_for_upload.end_time);
+    ASSERT_EQ(good.filename, ready_for_upload.filename);
+    ASSERT_EQ(good.title, ready_for_upload.title);
+    ASSERT_EQ(good.idle, ready_for_upload.idle);
 }
 
 TEST(Database, SaveAndLoadCurrentAPIToken) {
