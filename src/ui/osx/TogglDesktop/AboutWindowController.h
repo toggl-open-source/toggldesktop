@@ -19,5 +19,4 @@
 @property IBOutlet NSTextField *updateChannelLabel;
 - (IBAction)updateChannelSelected:(id)sender;
 - (BOOL)isVisible;
-- (void)checkForUpdates;
 @end
