@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.1.177</string>
+	<string>7.1.200</string>
 	<key>CFBundleSignature</key>
 	<string>td70</string>
 	<key>CFBundleVersion</key>
-	<string>7.1.177</string>
+	<string>7.1.200</string>
 	<key>KopsikCheckForUpdates</key>
 	<false/>
 	<key>KopsikEnvironment</key>
