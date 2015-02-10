@@ -56,11 +56,11 @@
             // 
             this.labelFormattedDate.AccessibleName = "Date";
             this.labelFormattedDate.AutoSize = true;
-            this.labelFormattedDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelFormattedDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelFormattedDate.Location = new System.Drawing.Point(15, 15);
             this.labelFormattedDate.Name = "labelFormattedDate";
-            this.labelFormattedDate.Size = new System.Drawing.Size(67, 15);
+            this.labelFormattedDate.Size = new System.Drawing.Size(61, 14);
             this.labelFormattedDate.TabIndex = 10;
             this.labelFormattedDate.Text = "Thu 22. Jan";
             this.labelFormattedDate.UseMnemonic = false;
@@ -70,15 +70,15 @@
             this.labelDateDuration.AccessibleName = "Total time tracked per date";
             this.labelDateDuration.AutoSize = true;
             this.labelDateDuration.Dock = System.Windows.Forms.DockStyle.Right;
-            this.labelDateDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDateDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelDateDuration.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDateDuration.Location = new System.Drawing.Point(238, 0);
+            this.labelDateDuration.Location = new System.Drawing.Point(246, 0);
             this.labelDateDuration.MaximumSize = new System.Drawing.Size(0, 45);
             this.labelDateDuration.MinimumSize = new System.Drawing.Size(0, 45);
             this.labelDateDuration.Name = "labelDateDuration";
             this.labelDateDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
-            this.labelDateDuration.Size = new System.Drawing.Size(76, 45);
+            this.labelDateDuration.Size = new System.Drawing.Size(68, 45);
             this.labelDateDuration.TabIndex = 11;
             this.labelDateDuration.Text = "2 h 12 min";
             this.labelDateDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -149,12 +149,12 @@
             this.labelTask.AutoSize = true;
             this.labelTask.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelTask.Location = new System.Drawing.Point(3, 0);
             this.labelTask.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.labelTask.Name = "labelTask";
-            this.labelTask.Size = new System.Drawing.Size(74, 16);
+            this.labelTask.Size = new System.Drawing.Size(56, 14);
             this.labelTask.TabIndex = 10;
             this.labelTask.Text = "TaskName";
             this.labelTask.UseMnemonic = false;
@@ -167,12 +167,12 @@
             this.labelClient.AutoSize = true;
             this.labelClient.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelClient.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.labelClient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelClient.Location = new System.Drawing.Point(77, 0);
+            this.labelClient.Location = new System.Drawing.Point(59, 0);
             this.labelClient.Margin = new System.Windows.Forms.Padding(0);
             this.labelClient.Name = "labelClient";
-            this.labelClient.Size = new System.Drawing.Size(81, 16);
+            this.labelClient.Size = new System.Drawing.Size(61, 14);
             this.labelClient.TabIndex = 11;
             this.labelClient.Text = "ClientName";
             this.labelClient.UseMnemonic = false;
@@ -183,12 +183,12 @@
             this.labelProject.AccessibleName = "Project name";
             this.labelProject.AutoSize = true;
             this.labelProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelProject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelProject.Location = new System.Drawing.Point(158, 0);
+            this.labelProject.Location = new System.Drawing.Point(120, 0);
             this.labelProject.Margin = new System.Windows.Forms.Padding(0);
             this.labelProject.Name = "labelProject";
-            this.labelProject.Size = new System.Drawing.Size(95, 16);
+            this.labelProject.Size = new System.Drawing.Size(73, 14);
             this.labelProject.TabIndex = 9;
             this.labelProject.Text = "NEW - TOGGL";
             this.labelProject.UseMnemonic = false;
@@ -201,7 +201,7 @@
             this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDescription.AutoEllipsis = true;
-            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelDescription.Location = new System.Drawing.Point(15, 29);
             this.labelDescription.Name = "labelDescription";
@@ -216,7 +216,7 @@
             // 
             this.labelDuration.BackColor = System.Drawing.Color.White;
             this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
-            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelDuration.Location = new System.Drawing.Point(169, 0);
             this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
