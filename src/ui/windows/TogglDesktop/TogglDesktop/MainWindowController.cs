@@ -415,11 +415,15 @@ namespace TogglDesktop
         }
 
         void OnIdleNotification(
-            string guid, string since, string duration, UInt64 started)
+            string guid,
+            string since,
+            string duration,
+            UInt64 started,
+            string description)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { OnIdleNotification(guid, since, duration, started); });
+                Invoke((MethodInvoker)delegate { OnIdleNotification(guid, since, duration, started, description); });
                 return;
             }
 

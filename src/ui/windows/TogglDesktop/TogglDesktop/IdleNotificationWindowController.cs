@@ -35,18 +35,26 @@ namespace TogglDesktop
             Close();
         }
 
-        void OnIdleNotification(string guid,
-            string since, string duration, UInt64 started)
+        void OnIdleNotification(
+            string guid,
+            string since,
+            string duration,
+            UInt64 started,
+            string description)
         {
-            DisplayIdleNotification(guid, since, duration, started);
+            DisplayIdleNotification(guid, since, duration, started, description);
         }
 
         void DisplayIdleNotification(
-            string guid, string since, string duration, UInt64 started)
+            string guid,
+            string since,
+            string duration,
+            UInt64 started,
+            string description)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { DisplayIdleNotification(guid, since, duration, started); });
+                Invoke((MethodInvoker)delegate { DisplayIdleNotification(guid, since, duration, started, description); });
                 return;
             }
 
@@ -55,6 +63,7 @@ namespace TogglDesktop
             labelIdleSince.Text = since;
             labelIdleDuration.Text = duration;
             idle_started_at = started;
+            // FIXME: show description
         }
 
         void OnStoppedTimerState()
