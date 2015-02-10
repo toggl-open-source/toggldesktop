@@ -147,12 +147,14 @@ void on_display_idle_notification(
     const char *guid,
     const char *since,
     const char *duration,
-    const uint64_t started) {
+    const uint64_t started,
+    const char *description) {
     TogglApi::instance->displayIdleNotification(
         QString(guid),
         QString(since),
         QString(duration),
-        started);
+        started,
+        QString(description));
 }
 
 TogglApi::TogglApi(

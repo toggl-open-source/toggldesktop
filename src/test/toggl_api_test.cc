@@ -51,6 +51,7 @@ std::string idle_guid("");
 std::string idle_since("");
 std::string idle_duration("");
 uint64_t idle_started(0);
+std::string idle_description("");
 
 // on_display_timer_state
 TimeEntry timer_state;
@@ -224,11 +225,13 @@ void on_display_idle_notification(
     const char *guid,
     const char *since,
     const char *duration,
-    const uint64_t started) {
+    const uint64_t started,
+    const char *description) {
     testing::testresult::idle_since = std::string(since);
     testing::testresult::idle_started = started;
     testing::testresult::idle_duration = std::string(duration);
     testing::testresult::idle_guid = std::string(guid);
+    testing::testresult::idle_description = std::string(description);
 }
 
 void on_apply_settings(

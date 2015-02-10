@@ -211,7 +211,8 @@ class TogglApi : public QObject {
         const QString guid,
         const QString since,
         const QString duration,
-        const uint64_t started);
+        const uint64_t started,
+	const QString description);
 
     void displayClientSelect(
         QVector<GenericView *> list);
