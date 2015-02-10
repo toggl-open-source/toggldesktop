@@ -17,10 +17,10 @@ IdleNotificationDialog::IdleNotificationDialog(QWidget *parent)
     ui->setupUi(this);
 
     connect(
-	TogglApi::instance,
-	SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t,QString)),  // NOLINT
+        TogglApi::instance,
+        SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t,QString)),  // NOLINT
         this,
-	SLOT(displayIdleNotification(QString,QString,QString,uint64_t,QString)));  // NOLINT
+        SLOT(displayIdleNotification(QString,QString,QString,uint64_t,QString)));  // NOLINT
 
     connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
             this, SLOT(displaySettings(bool,SettingsView*)));  // NOLINT

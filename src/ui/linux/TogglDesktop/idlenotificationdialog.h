@@ -33,7 +33,7 @@ class IdleNotificationDialog : public QDialog {
         const QString since,
         const QString duration,
         const uint64_t started,
-	const QString description);
+        const QString description);
 
     void displaySettings(
         const bool open,
