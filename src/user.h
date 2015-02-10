@@ -43,18 +43,6 @@ class User : public BaseModel {
     error PullChanges(TogglClient *https_client);
     error PushChanges(TogglClient *https_client);
 
-    static error Signup(
-        TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data_json);
-
-    static error Me(
-        TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data);
-
     std::string String() const;
 
     bool HasPremiumWorkspaces() const;
@@ -181,6 +169,23 @@ class User : public BaseModel {
     static error LoginToken(
         const std::string json_data_string,
         std::string *result);
+
+    static error GenerateOfflineLogin(
+        const std::string email,
+        const std::string password,
+        std::string *result);
+
+    static error Signup(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data_json);
+
+    static error Me(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data);
 
  private:
     error updateJSON(

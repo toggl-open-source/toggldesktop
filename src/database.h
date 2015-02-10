@@ -55,6 +55,10 @@ class Database {
         const std::string &api_token,
         User *user);
 
+    error LoadUserByOfflineData(
+        const std::string &offline_data,
+        User *model);
+
     error LoadCurrentUser(User *user);
 
     error LoadSettings(Settings *settings);

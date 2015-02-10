@@ -300,7 +300,7 @@ error Database::LoadSettings(Settings *settings) {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
                   "on_top, reminder, idle_minutes, focus_on_shortcut, "
                   "reminder_minutes, manual_mode "
-                  "from settings",
+                  "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
                   into(settings->dock_icon),
@@ -337,7 +337,7 @@ error Database::LoadProxySettings(
         Poco::UInt64 port(0);
         *session_ << "select use_proxy, proxy_host, proxy_port, "
                   "proxy_username, proxy_password "
-                  "from settings",
+                  "from settings limit 1",
                   into(*use_proxy),
                   into(host),
                   into(port),
@@ -468,7 +468,7 @@ error Database::LoadUpdateChannel(
     poco_check_ptr(update_channel);
 
     try {
-        *session_ << "select update_channel from settings",
+        *session_ << "select update_channel from settings limit 1",
                   into(*update_channel),
                   limit(1),
                   now;
@@ -511,12 +511,54 @@ error Database::LoadUserByAPIToken(
     model->SetAPIToken(api_token);
 
     try {
-        *session_ << "select id from users where api_token = :api_token",
+        *session_ << "select id from users"
+                  " where api_token = :api_token"
+                  " limit 1",
                   into(uid),
                   useRef(api_token),
                   limit(1),
                   now;
         error err = last_error("LoadUserByAPIToken");
+        if (err != noError) {
+            return err;
+        }
+        if (uid <= 0) {
+            return noError;
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return LoadUserByID(uid, model);
+}
+
+error Database::LoadUserByOfflineData(
+    const std::string &offline_data,
+    User *model) {
+
+    if (offline_data.empty()) {
+        return error("Cannot load user by offline data without offline data");
+    }
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+    poco_check_ptr(model);
+
+    Poco::UInt64 uid(0);
+
+    try {
+        *session_ << "select id from users"
+                  " where offline_data = :offline_data"
+                  " limit 1",
+                  into(uid),
+                  useRef(offline_data),
+                  limit(1),
+                  now;
+        error err = last_error("LoadUserByOfflineData");
         if (err != noError) {
             return err;
         }
@@ -602,7 +644,7 @@ error Database::LoadUserByID(
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
                   "timeofday_format, duration_format, offline_data "
-                  "from users where id = :id",
+                  "from users where id = :id limit 1",
                   into(local_id),
                   into(id),
                   into(api_token),
@@ -2976,7 +3018,7 @@ error Database::CurrentAPIToken(std::string *token) {
     *token = "";
 
     try {
-        *session_ << "select api_token from sessions",
+        *session_ << "select api_token from sessions limit 1",
                   into(*token),
                   limit(1),
                   now;
