@@ -7,15 +7,13 @@ using System.Windows.Forms;
 
 using System.Drawing.Imaging;
 
-namespace ZBobb
+namespace TogglDesktop
 {
     /// <summary>
     /// AlphaBlendTextBox: A .Net textbox that can be translucent to the background.
     /// (C) 2003 Bob Bradley / ZBobb@hotmail.com
     /// </summary>
     /// 
-
-
 
     public class AlphaBlendTextBox : System.Windows.Forms.TextBox
     {

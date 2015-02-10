@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 
 
-namespace ZBobb
+namespace TogglDesktop
 {
     /// <summary>
     /// Win32 support code.
