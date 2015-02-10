@@ -206,12 +206,12 @@ TEST(Database, AllowsSameEmail) {
     ASSERT_NE(user.APIToken(), user2.APIToken());
 }
 
-TEST(AppTest, EscapeControlCharactersInJSONString) {
+TEST(Formatter, EscapeControlCharactersInJSONString) {
     std::string text("\x16");
     ASSERT_EQ(" ", Formatter::EscapeJSONString(text));
 }
 
-TEST(AppTest, UpdatesTimeEntryFromFullUserJSON) {
+TEST(User, UpdatesTimeEntryFromFullUserJSON) {
     testing::Database db;
 
     std::string json = loadTestData();
@@ -236,7 +236,7 @@ TEST(AppTest, UpdatesTimeEntryFromFullUserJSON) {
     ASSERT_EQ("Even more important!", te->Description());
 }
 
-TEST(AppTest, SavesAndLoadsUserFields) {
+TEST(Database, SavesAndLoadsUserFields) {
     testing::Database db;
 
     User user;
@@ -265,7 +265,7 @@ TEST(AppTest, SavesAndLoadsUserFields) {
     ASSERT_TRUE(user3.StoreStartAndStopTime());
 }
 
-TEST(AppTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
+TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
     User user;
@@ -311,7 +311,7 @@ TEST(AppTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     }
 }
 
-TEST(AppTest,
+TEST(Database,
      SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
     testing::Database db;
 
@@ -399,7 +399,7 @@ TEST(AppTest,
     ASSERT_EQ(uint(5), n);
 }
 
-TEST(AppTest, TestStartTimeEntryWithDuration) {
+TEST(User, TestStartTimeEntryWithDuration) {
     testing::Database db;
 
     User user;
@@ -417,7 +417,7 @@ TEST(AppTest, TestStartTimeEntryWithDuration) {
     ASSERT_EQ(3600, te->DurationInSeconds());
 }
 
-TEST(AppTest, TestStartTimeEntryWithoutDuration) {
+TEST(User, TestStartTimeEntryWithoutDuration) {
     testing::Database db;
 
     User user;
@@ -431,7 +431,7 @@ TEST(AppTest, TestStartTimeEntryWithoutDuration) {
     ASSERT_GT(0, te->DurationInSeconds());
 }
 
-TEST(AppTest, TestDeletionSteps) {
+TEST(User, TestDeletionSteps) {
     testing::Database db;
 
     User user;
@@ -467,7 +467,7 @@ TEST(AppTest, TestDeletionSteps) {
     }
 }
 
-TEST(AppTest, SavesModels) {
+TEST(Database, SavesModels) {
     User user;
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
@@ -480,7 +480,7 @@ TEST(AppTest, SavesModels) {
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, false, &changes));
 }
 
-TEST(AppTest, AssignsGUID) {
+TEST(Database, AssignsGUID) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
@@ -502,7 +502,7 @@ TEST(AppTest, AssignsGUID) {
     ASSERT_EQ(te->ID(), te2->ID());
 }
 
-TEST(AppTest, ParsesAndSavesData) {
+TEST(User, ParsesAndSavesData) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
@@ -724,7 +724,7 @@ TEST(AppTest, ParsesAndSavesData) {
     ASSERT_EQ(Poco::UInt64(0), n);
 }
 
-TEST(AppTest, ParsesDurationLikeOnTheWeb) {
+TEST(TimeEntry, ParsesDurationLikeOnTheWeb) {
     TimeEntry te;
 
     te.SetDurationUserInput("00:00:15");
@@ -1001,7 +1001,7 @@ TEST(AppTest, ParsesDurationLikeOnTheWeb) {
                       toggl::Format::Improved));
 }
 
-TEST(AppTest, ParseDurationLargerThan24Hours) {
+TEST(TimeEntry, ParseDurationLargerThan24Hours) {
     TimeEntry te;
 
     te.SetDurationInSeconds(0);
@@ -1011,7 +1011,7 @@ TEST(AppTest, ParseDurationLargerThan24Hours) {
                       toggl::Format::Improved));
 }
 
-TEST(AppTest, InterpretsCrazyStartAndStopAsMissingValues) {
+TEST(TimeEntry, InterpretsCrazyStartAndStopAsMissingValues) {
     TimeEntry te;
 
     ASSERT_EQ(Poco::UInt64(0), te.Start());
@@ -1023,7 +1023,7 @@ TEST(AppTest, InterpretsCrazyStartAndStopAsMissingValues) {
     ASSERT_EQ(Poco::UInt64(0), te.Stop());
 }
 
-TEST(AppTest, Continue) {
+TEST(User, Continue) {
     testing::Database db;
 
     User user;
@@ -1055,7 +1055,7 @@ TEST(AppTest, Continue) {
     ASSERT_EQ(count+1, user.related.TimeEntries.size());
 }
 
-TEST(AppTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
+TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     testing::Database db;
 
     std::string json = loadTestDataFile("../testdata/user_with_duronly.json");
