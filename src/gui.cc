@@ -318,17 +318,21 @@ void GUI::DisplayTimerState(TogglTimeEntryView *te) {
 void GUI::DisplayIdleNotification(const std::string guid,
                                   const std::string since,
                                   const std::string duration,
-                                  const uint64_t started) {
+                                  const uint64_t started,
+                                  const std::string description) {
     char_t *guid_s = copy_string(guid);
     char_t *since_s = copy_string(since);
     char_t *duration_s = copy_string(duration);
+    char_t *description_s = copy_string(description);
     on_display_idle_notification_(guid_s,
                                   since_s,
                                   duration_s,
-                                  started);
+                                  started,
+                                  description_s);
     free(guid_s);
     free(since_s);
     free(duration_s);
+    free(description_s);
 }
 
 Poco::Logger &GUI::logger() const {

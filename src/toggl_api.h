@@ -178,7 +178,8 @@ extern "C" {
         const char_t *guid,
         const char_t *since,
         const char_t *duration,
-        const uint64_t started);
+        const uint64_t started,
+        const char_t *description);
 
     // Initialize/destroy an instance of the app
 

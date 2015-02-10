@@ -77,7 +77,8 @@ class GUI {
     void DisplayIdleNotification(const std::string guid,
                                  const std::string since,
                                  const std::string duration,
-                                 const uint64_t started);
+                                 const uint64_t started,
+                                 const std::string description);
 
     error VerifyCallbacks();
 
