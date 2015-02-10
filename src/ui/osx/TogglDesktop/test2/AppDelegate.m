@@ -1306,7 +1306,8 @@ void on_idle_notification(
 	const char *guid,
 	const char *since,
 	const char *duration,
-	const uint64_t started)
+	const uint64_t started,
+	const char *description)
 {
 	IdleEvent *idleEvent = [[IdleEvent alloc] init];
 
@@ -1314,6 +1315,7 @@ void on_idle_notification(
 	idleEvent.since = [NSString stringWithUTF8String:since];
 	idleEvent.duration = [NSString stringWithUTF8String:duration];
 	idleEvent.started = started;
+	idleEvent.timeEntryDescription = [NSString stringWithUTF8String:description];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification object:idleEvent];
 }
 
