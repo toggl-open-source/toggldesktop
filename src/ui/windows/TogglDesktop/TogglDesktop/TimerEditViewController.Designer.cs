@@ -54,7 +54,7 @@ namespace TogglDesktop
             this.buttonStart.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
             this.buttonStart.FlatAppearance.BorderSize = 0;
             this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStart.Font = new System.Drawing.Font("Lucida Sans Unicode", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.buttonStart.Font = new System.Drawing.Font("Lucida Sans Unicode", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.buttonStart.ForeColor = System.Drawing.Color.White;
             this.buttonStart.Location = new System.Drawing.Point(204, 0);
             this.buttonStart.Margin = new System.Windows.Forms.Padding(0);
@@ -77,7 +77,7 @@ namespace TogglDesktop
             this.linkLabelProject.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
             this.linkLabelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.linkLabelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.linkLabelProject.ForeColor = System.Drawing.Color.White;
             this.linkLabelProject.Location = new System.Drawing.Point(17, 35);
             this.linkLabelProject.Name = "linkLabelProject";
@@ -97,7 +97,7 @@ namespace TogglDesktop
             this.linkLabelDescription.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
             this.linkLabelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.linkLabelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.linkLabelDescription.ForeColor = System.Drawing.Color.White;
             this.linkLabelDescription.Location = new System.Drawing.Point(17, 0);
             this.linkLabelDescription.Name = "linkLabelDescription";
@@ -114,7 +114,7 @@ namespace TogglDesktop
     "itor";
             this.linkLabelDuration.AccessibleName = "Time entry duration";
             this.linkLabelDuration.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
-            this.linkLabelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.linkLabelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.linkLabelDuration.ForeColor = System.Drawing.Color.White;
             this.linkLabelDuration.Location = new System.Drawing.Point(2, 32);
             this.linkLabelDuration.Margin = new System.Windows.Forms.Padding(0);
@@ -213,11 +213,11 @@ namespace TogglDesktop
             this.descriptionTextBox.BackAlpha = 0;
             this.descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.descriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.descriptionTextBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.descriptionTextBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.descriptionTextBox.ForeColor = System.Drawing.Color.White;
             this.descriptionTextBox.Location = new System.Drawing.Point(20, 20);
             this.descriptionTextBox.Name = "descriptionTextBox";
-            this.descriptionTextBox.Size = new System.Drawing.Size(87, 20);
+            this.descriptionTextBox.Size = new System.Drawing.Size(87, 16);
             this.descriptionTextBox.TabIndex = 1;
             this.descriptionTextBox.Text = "What are you doing?";
             this.descriptionTextBox.Enter += new System.EventHandler(this.descriptionTextBox_Enter);
