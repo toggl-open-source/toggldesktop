@@ -4,18 +4,18 @@
 
 #include "gtest/gtest.h"
 
-#include "./../toggl_api.h"
 #include "./../proxy.h"
 #include "./../settings.h"
 #include "./../time_entry.h"
+#include "./../toggl_api.h"
 #include "./../toggl_api_private.h"
 #include "./test_data.h"
 
-#include "Poco/FileStream.h"
-#include "Poco/File.h"
-#include "Poco/Path.h"
 #include "Poco/DateTime.h"
+#include "Poco/File.h"
+#include "Poco/FileStream.h"
 #include "Poco/LocalDateTime.h"
+#include "Poco/Path.h"
 
 namespace toggl {
 

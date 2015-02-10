@@ -3,17 +3,17 @@
 #ifndef SRC_USER_H_
 #define SRC_USER_H_
 
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
-#include <map>
 
 #include <json/json.h>  // NOLINT
 
-#include "./types.h"
-#include "./related_data.h"
-#include "./batch_update_result.h"
 #include "./base_model.h"
+#include "./batch_update_result.h"
+#include "./related_data.h"
+#include "./types.h"
 
 #include "Poco/Types.h"
 
@@ -31,9 +31,13 @@ class User : public BaseModel {
     email_(""),
     record_timeline_(false),
     timeofday_format_(""),
-    duration_format_("") {}
+    duration_format_(""),
+    offline_data_("") {}
 
     ~User();
+
+    error EnableOfflineLogin(
+        const std::string password);
 
     error PullAllUserData(TogglClient *https_client);
     error PullChanges(TogglClient *https_client);
@@ -144,6 +148,11 @@ class User : public BaseModel {
         return store_start_and_stop_time_;
     }
     void SetStoreStartAndStopTime(const bool value);
+
+    const std::string& OfflineData() const {
+        return offline_data_;
+    }
+    void SetOfflineData(const std::string);
 
     RelatedData related;
 
@@ -257,6 +266,7 @@ class User : public BaseModel {
     bool store_start_and_stop_time_;
     std::string timeofday_format_;
     std::string duration_format_;
+    std::string offline_data_;
 };
 
 template<class T>

@@ -14,7 +14,6 @@
 
 #include "Poco/Data/SQLite/Connector.h"
 
-#include "./const.h"
 #include "./model_change.h"
 #include "./timeline_event.h"
 #include "./types.h"

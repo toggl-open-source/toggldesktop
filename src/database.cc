@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "./client.h"
+#include "./const.h"
 #include "./project.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -18,16 +19,18 @@
 #include "./user.h"
 #include "./workspace.h"
 
-#include "Poco/Logger.h"
-#include "Poco/UUID.h"
-#include "Poco/UUIDGenerator.h"
-#include "Poco/Stopwatch.h"
+#include "Poco/Data/Binding.h"
 #include "Poco/Data/RecordSet.h"
 #include "Poco/Data/SessionImpl.h"
-#include "Poco/Data/Statement.h"
-#include "Poco/Data/Binding.h"
 #include "Poco/Data/SQLite/SessionImpl.h"
 #include "Poco/Data/SQLite/Utility.h"
+#include "Poco/Data/Statement.h"
+#include "Poco/FileStream.h"
+#include "Poco/Logger.h"
+#include "Poco/Stopwatch.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/UUID.h"
+#include "Poco/UUIDGenerator.h"
 
 namespace toggl {
 
@@ -593,11 +596,12 @@ error Database::LoadUserByID(
         bool store_start_and_stop_time(false);
         std::string timeofday_format("");
         std::string duration_format("");
+        std::string offline_data("");
         *session_ <<
                   "select local_id, id, api_token, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
-                  "timeofday_format, duration_format "
+                  "timeofday_format, duration_format, offline_data "
                   "from users where id = :id",
                   into(local_id),
                   into(id),
@@ -610,6 +614,7 @@ error Database::LoadUserByID(
                   into(store_start_and_stop_time),
                   into(timeofday_format),
                   into(duration_format),
+                  into(offline_data),
                   useRef(UID),
                   limit(1),
                   now;
@@ -635,6 +640,7 @@ error Database::LoadUserByID(
         user->SetStoreStartAndStopTime(store_start_and_stop_time);
         user->SetTimeOfDayFormat(timeofday_format);
         user->SetDurationFormat(duration_format);
+        user->SetOfflineData(offline_data);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2031,7 +2037,8 @@ error Database::SaveUser(
                           "store_start_and_stop_time = "
                           " :store_start_and_stop_time, "
                           "timeofday_format = :timeofday_format, "
-                          "duration_format = :duration_format "
+                          "duration_format = :duration_format, "
+                          "offline_data = :offline_data "
                           "where local_id = :local_id",
                           useRef(user->APIToken()),
                           useRef(user->DefaultWID()),
@@ -2043,6 +2050,7 @@ error Database::SaveUser(
                           useRef(user->StoreStartAndStopTime()),
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
+                          useRef(user->OfflineData()),
                           useRef(user->LocalID()),
                           now;
                 error err = last_error("SaveUser");
@@ -2060,12 +2068,12 @@ error Database::SaveUser(
                 *session_ << "insert into users("
                           "id, api_token, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
-                          "timeofday_format, duration_format "
+                          "timeofday_format, duration_format, offline_data "
                           ") values("
                           ":id, :api_token, :default_wid, :since, :fullname, "
                           ":email, "
                           ":record_timeline, :store_start_and_stop_time, "
-                          ":timeofday_format, :duration_format "
+                          ":timeofday_format, :duration_format, :offline_data "
                           ")",
                           useRef(user->ID()),
                           useRef(user->APIToken()),
@@ -2077,6 +2085,7 @@ error Database::SaveUser(
                           useRef(user->StoreStartAndStopTime()),
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
+                          useRef(user->OfflineData()),
                           now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
@@ -2705,6 +2714,14 @@ error Database::migrateUsers() {
     err = migrate(
         "users.api_token",
         "CREATE UNIQUE INDEX id_users_api_token ON users (api_token);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "users.offline_data",
+        "alter table users"
+        " add column offline_data varchar");
     if (err != noError) {
         return err;
     }

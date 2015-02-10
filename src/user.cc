@@ -3,6 +3,7 @@
 #include "../src/user.h"
 
 #include <time.h>
+
 #include <sstream>
 
 #include "./client.h"
@@ -15,7 +16,15 @@
 #include "./time_entry.h"
 #include "./workspace.h"
 
+#include "Poco/Crypto/Cipher.h"
+#include "Poco/Crypto/CipherFactory.h"
+#include "Poco/Crypto/CipherKey.h"
+#include "Poco/Crypto/CryptoStream.h"
+#include "Poco/DigestStream.h"
 #include "Poco/Logger.h"
+#include "Poco/Random.h"
+#include "Poco/RandomStream.h"
+#include "Poco/SHA1Engine.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/UTF8String.h"
 
@@ -236,6 +245,13 @@ void User::SetDurationFormat(const std::string value) {
     Formatter::DurationFormat = value;
     if (duration_format_ != value) {
         duration_format_ = value;
+        SetDirty();
+    }
+}
+
+void User::SetOfflineData(const std::string value) {
+    if (offline_data_ != value) {
+        offline_data_ = value;
         SetDirty();
     }
 }
@@ -1063,6 +1079,46 @@ error User::updateJSON(
     Json::StyledWriter writer;
     *result = writer.write(c);
 
+    return noError;
+}
+
+error User::EnableOfflineLogin(
+    const std::string password) {
+
+    try {
+        Poco::Crypto::CipherFactory& factory =
+            Poco::Crypto::CipherFactory::defaultFactory();
+
+        Poco::SHA1Engine sha1;
+        Poco::DigestOutputStream outstr(sha1);
+        outstr << Email();
+        outstr << password;
+        outstr.flush();
+        const Poco::DigestEngine::Digest &digest = sha1.digest();
+        std::string key = Poco::DigestEngine::digestToHex(digest);
+
+        std::string salt("");
+        Poco::RandomInputStream ri;
+        ri >> salt;
+
+        Poco::Crypto::Cipher* pCipher = factory.createCipher(
+            Poco::Crypto::CipherKey("aes-256-cbc", key, salt) );
+
+        std::string encrypted = pCipher->encryptString(
+            APIToken(),
+            Poco::Crypto::Cipher::ENC_BASE64);
+
+        delete pCipher;
+        pCipher = 0;
+
+        SetOfflineData(encrypted);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
     return noError;
 }
 

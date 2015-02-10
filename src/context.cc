@@ -26,14 +26,14 @@
 #include "Poco/DateTimeFormat.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/Environment.h"
-#include "Poco/FormattingChannel.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
+#include "Poco/FormattingChannel.h"
 #include "Poco/Logger.h"
 #include "Poco/Net/NetSSL.h"
 #include "Poco/PatternFormatter.h"
-#include "Poco/SimpleFileChannel.h"
 #include "Poco/Random.h"
+#include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
@@ -1233,7 +1233,18 @@ _Bool Context::Login(
         return displayError(err);
     }
 
-    return SetLoggedInUserFromJSON(user_data_json);
+    if (!SetLoggedInUserFromJSON(user_data_json)) {
+        return false;
+    }
+
+    if (!user_) {
+        logger().error("cannot enable offline login, no user");
+        return true;
+    }
+
+    user_->EnableOfflineLogin(password);
+
+    return displayError(save());
 }
 
 _Bool Context::Signup(
