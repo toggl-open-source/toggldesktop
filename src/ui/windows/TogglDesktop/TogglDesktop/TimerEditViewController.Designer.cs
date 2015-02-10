@@ -1,4 +1,4 @@
-﻿using ZBobb;
+﻿using TogglDesktop;
 namespace TogglDesktop
 {
     partial class TimerEditViewController
@@ -30,7 +30,6 @@ namespace TogglDesktop
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.textBoxDuration = new ZBobb.AlphaBlendTextBox();
             this.buttonStart = new System.Windows.Forms.Button();
             this.timerRunningDuration = new System.Windows.Forms.Timer(this.components);
             this.linkLabelProject = new System.Windows.Forms.Label();
@@ -40,28 +39,12 @@ namespace TogglDesktop
             this.panelLeft = new System.Windows.Forms.Panel();
             this.durationPanel = new System.Windows.Forms.Panel();
             this.panelDescription = new System.Windows.Forms.Panel();
+            this.textBoxDuration = new TogglDesktop.AlphaBlendTextBox();
             this.descriptionTextBox = new TogglDesktop.AutoCompleteTextBox();
             this.panelLeft.SuspendLayout();
             this.durationPanel.SuspendLayout();
             this.panelDescription.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // textBoxDuration
-            // 
-            this.textBoxDuration.AccessibleName = "Time entry duration";
-            this.textBoxDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
-            this.textBoxDuration.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.textBoxDuration.ForeColor = System.Drawing.Color.White;
-            this.textBoxDuration.Location = new System.Drawing.Point(4, 17);
-            this.textBoxDuration.Margin = new System.Windows.Forms.Padding(5, 3, 4, 3);
-            this.textBoxDuration.Name = "textBoxDuration";
-            this.textBoxDuration.Size = new System.Drawing.Size(95, 28);
-            this.textBoxDuration.TabIndex = 2;
-            this.textBoxDuration.Text = "00:00:00";
-            this.textBoxDuration.Click += new System.EventHandler(this.textBoxDuration_Click);
-            this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
-            this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
             // 
             // buttonStart
             // 
@@ -202,6 +185,24 @@ namespace TogglDesktop
             this.panelDescription.Size = new System.Drawing.Size(108, 53);
             this.panelDescription.TabIndex = 1;
             // 
+            // textBoxDuration
+            // 
+            this.textBoxDuration.AccessibleName = "Time entry duration";
+            this.textBoxDuration.BackAlpha = 10;
+            this.textBoxDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.textBoxDuration.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.textBoxDuration.ForeColor = System.Drawing.Color.White;
+            this.textBoxDuration.Location = new System.Drawing.Point(4, 17);
+            this.textBoxDuration.Margin = new System.Windows.Forms.Padding(5, 3, 4, 3);
+            this.textBoxDuration.Name = "textBoxDuration";
+            this.textBoxDuration.Size = new System.Drawing.Size(95, 24);
+            this.textBoxDuration.TabIndex = 2;
+            this.textBoxDuration.Text = "00:00:00";
+            this.textBoxDuration.Click += new System.EventHandler(this.textBoxDuration_Click);
+            this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
+            this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
+            // 
             // descriptionTextBox
             // 
             this.descriptionTextBox.AcceptsTab = true;
@@ -246,7 +247,7 @@ namespace TogglDesktop
 
         #endregion
 
-        private ZBobb.AlphaBlendTextBox textBoxDuration;
+        private TogglDesktop.AlphaBlendTextBox textBoxDuration;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Timer timerRunningDuration;
         private System.Windows.Forms.Label linkLabelProject;
