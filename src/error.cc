@@ -104,6 +104,12 @@ bool IsUserError(const error err) {
         return false;
     }
     std::string value(err);
+    if (value.find(kEmailNotFoundCannotLogInOffline) != std::string::npos) {
+        return true;
+    }
+    if (value.find(kInvalidPassword) != std::string::npos) {
+        return true;
+    }
     if (value.find(kPaymentRequiredError) != std::string::npos) {
         return true;
     }

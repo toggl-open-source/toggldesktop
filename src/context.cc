@@ -475,19 +475,20 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    err = user_->PushChanges(&client);
+    setOnline("Data pulled");
+
+    bool had_something_to_push(true);
+    err = user_->PushChanges(&client, &had_something_to_push);
     if (err != noError) {
         displayError(err);
         return;
     }
 
-    err = save(false);
-    if (err != noError) {
-        displayError(err);
-        return;
+    if (had_something_to_push) {
+        setOnline("Data pushed");
     }
 
-    setOnline("Sync done");
+    displayError(save(false));
 }
 
 void Context::setOnline(const std::string reason) {
@@ -531,10 +532,11 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onPushChanges executing");
 
     TogglClient client;
-    error err = user_->PushChanges(&client);
+    bool had_something_to_push(true);
+    error err = user_->PushChanges(&client, &had_something_to_push);
     if (err != noError) {
         displayError(err);
-    } else {
+    } else if (had_something_to_push) {
         setOnline("Changes pushed");
     }
 
@@ -1243,13 +1245,13 @@ error Context::attemptOfflineLogin(const std::string email,
 
     if (!user->ID()) {
         delete user;
-        return error("E-mail not found, cannot log in offline.");
+        return error(kEmailNotFoundCannotLogInOffline);
     }
 
     err = user->SetAPITokenFromOfflineData(password);
     if ("I/O error" == err) {
         delete user;
-        return error("Invalid password");
+        return error(kInvalidPassword);
     }
     if (err != noError) {
         delete user;
@@ -1277,14 +1279,18 @@ _Bool Context::Login(
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
     if (err != noError) {
-        if (IsNetworkingError(err)) {
-            std::stringstream ss;
-            ss << "Got networking error " << err
-               << " will attempt offline login";
-            logger().debug(ss.str());
-            err = attemptOfflineLogin(email, password);
+        if (!IsNetworkingError(err)) {
+            return displayError(err);
         }
-        return displayError(err);
+        // Indicate we're offline
+        displayError(err);
+
+        std::stringstream ss;
+        ss << "Got networking error " << err
+           << " will attempt offline login";
+        logger().debug(ss.str());
+
+        return displayError(attemptOfflineLogin(email, password));
     }
 
     if (!SetLoggedInUserFromJSON(user_data_json)) {

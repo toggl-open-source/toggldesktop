@@ -41,7 +41,9 @@ class User : public BaseModel {
 
     error PullAllUserData(TogglClient *https_client);
     error PullChanges(TogglClient *https_client);
-    error PushChanges(TogglClient *https_client);
+    error PushChanges(
+        TogglClient *https_client,
+        bool *had_something_to_push);
 
     std::string String() const;
 

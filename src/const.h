@@ -30,6 +30,8 @@
 #define kRequestIsNotPossible "Request is not possible"
 #define kPaymentRequiredError "Requested action allowed only for Pro workspace. Please upgrade!"  // NOLINT
 #define kCannotAccessWorkspaceError "cannot access workspace"
+#define kEmailNotFoundCannotLogInOffline "E-mail not found, cannot log in offline."  // NOLINT
+#define kInvalidPassword "Invalid password"
 
 #define kOnlineStateOnline 0
 #define kOnlineStateNoNetwork 1

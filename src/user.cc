@@ -414,7 +414,11 @@ error User::PullAllUserData(
     return noError;
 }
 
-error User::PushChanges(TogglClient *https_client) {
+error User::PushChanges(
+    TogglClient *https_client,
+    bool *had_something_to_push) {
+    poco_check_ptr(had_something_to_push);
+    *had_something_to_push = true;
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -430,6 +434,7 @@ error User::PushChanges(TogglClient *https_client) {
         CollectPushableModels(related.Clients, &clients, &models);
 
         if (time_entries.empty() && projects.empty() && clients.empty()) {
+            *had_something_to_push = false;
             return noError;
         }
 
@@ -1116,31 +1121,16 @@ error User::SetAPITokenFromOfflineData(const std::string password) {
             return error("failed to parse offline data");
         }
 
+        std::istringstream istr(data["salt"].asString());
+        Poco::Base64Decoder decoder(istr);
         std::string salt("");
-        {
-            std::istringstream istr(data["salt"].asString());
-            Poco::Base64Decoder decoder(istr);
-            decoder >> salt;
-        }
-
-        std::string iv("");
-        {
-            std::istringstream istr(data["iv"].asString());
-            Poco::Base64Decoder decoder(istr);
-            decoder >> iv;
-        }
-
-        std::string encrypted = data["encrypted"].asString();
-
-        Poco::Crypto::CipherKey::ByteVec vec;
-        std::copy(iv.begin(), iv.end(), std::back_inserter(vec));
+        decoder >> salt;
 
         Poco::Crypto::CipherKey ckey("aes-256-cbc", key, salt);
-        ckey.setIV(vec);
         Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
 
         std::string decrypted = pCipher->decryptString(
-            encrypted,
+            data["encrypted"].asString(),
             Poco::Crypto::Cipher::ENC_BASE64);
 
         delete pCipher;
@@ -1182,23 +1172,13 @@ error User::EnableOfflineLogin(
 
         Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
 
-        const Poco::Crypto::CipherKey::ByteVec &iv = ckey.getIV();
+        std::ostringstream str;
+        Poco::Base64Encoder enc(str);
+        enc << salt;
+        enc.close();
 
         Json::Value data;
-        {
-            std::ostringstream str;
-            Poco::Base64Encoder enc(str);
-            enc << salt;
-            enc.close();
-            data["salt"] = str.str();
-        }
-        {
-            std::ostringstream str;
-            Poco::Base64Encoder enc(str);
-            enc << std::string(iv.begin(), iv.end());
-            enc.close();
-            data["iv"] = str.str();
-        }
+        data["salt"] = str.str();
         data["encrypted"] = pCipher->encryptString(
             APIToken(),
             Poco::Crypto::Cipher::ENC_BASE64);
