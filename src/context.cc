@@ -12,6 +12,7 @@
 
 #include "./const.h"
 #include "./database.h"
+#include "./error.h"
 #include "./formatter.h"
 #include "./https_client.h"
 #include "./project.h"
@@ -1222,6 +1223,52 @@ _Bool Context::GoogleLogin(const std::string access_token) {
     return Login(access_token, "google_access_token");
 }
 
+error Context::attemptOfflineLogin(const std::string email,
+                                   const std::string password) {
+    if (email.empty()) {
+        return error("cannot login offline without an e-mail");
+    }
+
+    if (password.empty()) {
+        return error("cannot login offline without a password");
+    }
+
+    User *user = new User();
+
+    error err = db()->LoadUserByEmail(email, user);
+    if (err != noError) {
+        delete user;
+        return err;
+    }
+
+    if (!user->ID()) {
+        delete user;
+        return error("E-mail not found, cannot log in offline.");
+    }
+
+    err = user->SetAPITokenFromOfflineData(password);
+    if ("I/O error" == err) {
+        delete user;
+        return error("Invalid password");
+    }
+    if (err != noError) {
+        delete user;
+        return err;
+    }
+
+    err = db()->SetCurrentAPIToken(user->APIToken());
+    if (err != noError) {
+        delete user;
+        return err;
+    }
+
+    setUser(user, true);
+
+    displayUI();
+
+    return save();
+}
+
 _Bool Context::Login(
     const std::string email,
     const std::string password) {
@@ -1230,6 +1277,13 @@ _Bool Context::Login(
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
     if (err != noError) {
+        if (IsNetworkingError(err)) {
+            std::stringstream ss;
+            ss << "Got networking error " << err
+               << " will attempt offline login";
+            logger().debug(ss.str());
+            err = attemptOfflineLogin(email, password);
+        }
         return displayError(err);
     }
 
@@ -1242,7 +1296,10 @@ _Bool Context::Login(
         return true;
     }
 
-    user_->EnableOfflineLogin(password);
+    err = user_->EnableOfflineLogin(password);
+    if (err != noError) {
+        return displayError(err);
+    }
 
     return displayError(save());
 }

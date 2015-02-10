@@ -311,7 +311,8 @@ class Context : public TimelineDatasource {
     Poco::Timestamp postpone(
         const Poco::Timestamp::TimeDiff throttleMicros) const;
 
-    bool allowTimerToStart();
+    error attemptOfflineLogin(const std::string email,
+                              const std::string password);
 
     Poco::Mutex db_m_;
     Database *db_;

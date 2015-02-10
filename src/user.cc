@@ -16,6 +16,8 @@
 #include "./time_entry.h"
 #include "./workspace.h"
 
+#include "Poco/Base64Decoder.h"
+#include "Poco/Base64Encoder.h"
 #include "Poco/Crypto/Cipher.h"
 #include "Poco/Crypto/CipherFactory.h"
 #include "Poco/Crypto/CipherKey.h"
@@ -1082,36 +1084,139 @@ error User::updateJSON(
     return noError;
 }
 
-error User::EnableOfflineLogin(
-    const std::string password) {
+std::string User::generateKey(const std::string password) {
+    Poco::SHA1Engine sha1;
+    Poco::DigestOutputStream outstr(sha1);
+    outstr << Email();
+    outstr << password;
+    outstr.flush();
+    const Poco::DigestEngine::Digest &digest = sha1.digest();
+    return Poco::DigestEngine::digestToHex(digest);
+}
 
+error User::SetAPITokenFromOfflineData(const std::string password) {
+    if (Email().empty()) {
+        return error("cannot decrypt offline data without an e-mail");
+    }
+    if (password.empty()) {
+        return error("cannot decrypt offline data without a password");
+    }
+    if (OfflineData().empty()) {
+        return error("cannot decrypy empty string");
+    }
     try {
         Poco::Crypto::CipherFactory& factory =
             Poco::Crypto::CipherFactory::defaultFactory();
 
-        Poco::SHA1Engine sha1;
-        Poco::DigestOutputStream outstr(sha1);
-        outstr << Email();
-        outstr << password;
-        outstr.flush();
-        const Poco::DigestEngine::Digest &digest = sha1.digest();
-        std::string key = Poco::DigestEngine::digestToHex(digest);
+        std::string key = generateKey(password);
+
+        Json::Value data;
+        Json::Reader reader;
+        if (!reader.parse(OfflineData(), data)) {
+            return error("failed to parse offline data");
+        }
 
         std::string salt("");
-        Poco::RandomInputStream ri;
-        ri >> salt;
+        {
+            std::istringstream istr(data["salt"].asString());
+            Poco::Base64Decoder decoder(istr);
+            decoder >> salt;
+        }
 
-        Poco::Crypto::Cipher* pCipher = factory.createCipher(
-            Poco::Crypto::CipherKey("aes-256-cbc", key, salt) );
+        std::string iv("");
+        {
+            std::istringstream istr(data["iv"].asString());
+            Poco::Base64Decoder decoder(istr);
+            decoder >> iv;
+        }
 
-        std::string encrypted = pCipher->encryptString(
-            APIToken(),
+        std::string encrypted = data["encrypted"].asString();
+
+        Poco::Crypto::CipherKey::ByteVec vec;
+        std::copy(iv.begin(), iv.end(), std::back_inserter(vec));
+
+        Poco::Crypto::CipherKey ckey("aes-256-cbc", key, salt);
+        ckey.setIV(vec);
+        Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
+
+        std::string decrypted = pCipher->decryptString(
+            encrypted,
             Poco::Crypto::Cipher::ENC_BASE64);
 
         delete pCipher;
         pCipher = 0;
 
-        SetOfflineData(encrypted);
+        SetAPIToken(decrypted);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error User::EnableOfflineLogin(
+    const std::string password) {
+    if (Email().empty()) {
+        return error("cannot enable offline login without an e-mail");
+    }
+    if (password.empty()) {
+        return error("cannot enable offline login without a password");
+    }
+    if (APIToken().empty()) {
+        return error("cannot enable offline login without an API token");
+    }
+    try {
+        Poco::Crypto::CipherFactory& factory =
+            Poco::Crypto::CipherFactory::defaultFactory();
+
+        std::string key = generateKey(password);
+
+        std::string salt("");
+        Poco::RandomInputStream ri;
+        ri >> salt;
+
+        Poco::Crypto::CipherKey ckey("aes-256-cbc", key, salt);
+
+        Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
+
+        const Poco::Crypto::CipherKey::ByteVec &iv = ckey.getIV();
+
+        Json::Value data;
+        {
+            std::ostringstream str;
+            Poco::Base64Encoder enc(str);
+            enc << salt;
+            enc.close();
+            data["salt"] = str.str();
+        }
+        {
+            std::ostringstream str;
+            Poco::Base64Encoder enc(str);
+            enc << std::string(iv.begin(), iv.end());
+            enc.close();
+            data["iv"] = str.str();
+        }
+        data["encrypted"] = pCipher->encryptString(
+            APIToken(),
+            Poco::Crypto::Cipher::ENC_BASE64);
+        std::string json = Json::FastWriter().write(data);
+
+        delete pCipher;
+        pCipher = 0;
+
+        SetOfflineData(json);
+
+        std::string token = APIToken();
+        error err = SetAPITokenFromOfflineData(password);
+        if (err != noError) {
+            return err;
+        }
+        if (token != APIToken()) {
+            return error("offline login encryption failed");
+        }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

@@ -162,6 +162,8 @@ class User : public BaseModel {
     error LoadUserAndRelatedDataFromJSONString(
         const std::string &json);
 
+    error SetAPITokenFromOfflineData(const std::string password);
+
     static error UserID(
         const std::string json_data_string,
         Poco::UInt64 *result);
@@ -260,6 +262,8 @@ class User : public BaseModel {
 
     template<typename T>
     void ensureWID(T *model) const;
+
+    std::string generateKey(const std::string password);
 
     std::string api_token_;
     Poco::UInt64 default_wid_;

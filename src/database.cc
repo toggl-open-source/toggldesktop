@@ -535,30 +535,32 @@ error Database::LoadUserByAPIToken(
     return LoadUserByID(uid, model);
 }
 
-error Database::LoadUserByOfflineData(
-    const std::string &offline_data,
+error Database::LoadUserByEmail(
+    const std::string &email,
     User *model) {
 
-    if (offline_data.empty()) {
-        return error("Cannot load user by offline data without offline data");
+    if (email.empty()) {
+        return error("Cannot load user by email token without an email");
     }
+
+    poco_check_ptr(model);
 
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
-    poco_check_ptr(model);
 
     Poco::UInt64 uid(0);
+    model->SetEmail(email);
 
     try {
         *session_ << "select id from users"
-                  " where offline_data = :offline_data"
+                  " where email = :email"
                   " limit 1",
                   into(uid),
-                  useRef(offline_data),
+                  useRef(email),
                   limit(1),
                   now;
-        error err = last_error("LoadUserByOfflineData");
+        error err = last_error("LoadUserByEmail");
         if (err != noError) {
             return err;
         }
