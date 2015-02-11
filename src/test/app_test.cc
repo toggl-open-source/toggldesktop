@@ -146,12 +146,15 @@ TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
 TEST(Database, SaveAndLoadCurrentAPIToken) {
     testing::Database db;
     std::string api_token("");
-    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token));
+    Poco::UInt64 uid(0);
+    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token, &uid));
     ASSERT_EQ("", api_token);
+    ASSERT_EQ(Poco::UInt64(0), uid);
 
     api_token = "abc123";
-    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token));
-    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token));
+    uid = 123;
+    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token, uid));
+    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token, uid));
 
     Poco::UInt64 n(0);
     ASSERT_EQ(noError,
@@ -159,16 +162,21 @@ TEST(Database, SaveAndLoadCurrentAPIToken) {
     ASSERT_EQ(Poco::UInt64(1), n);
 
     std::string api_token_from_db("");
-    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token_from_db));
+    Poco::UInt64 uid_from_db(0);
+    ASSERT_EQ(noError,
+              db.instance()->CurrentAPIToken(&api_token_from_db, &uid_from_db));
     ASSERT_EQ("abc123", api_token_from_db);
+    ASSERT_EQ(Poco::UInt64(123), uid_from_db);
 
     ASSERT_EQ(noError, db.instance()->ClearCurrentAPIToken());
     ASSERT_EQ(noError,
               db.instance()->UInt("select count(1) from sessions", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token_from_db));
+    ASSERT_EQ(noError,
+              db.instance()->CurrentAPIToken(&api_token_from_db, &uid_from_db));
     ASSERT_EQ("", api_token_from_db);
+    ASSERT_EQ(Poco::UInt64(0), uid_from_db);
 }
 
 TEST(User, UpdatesTimeEntryFromJSON) {

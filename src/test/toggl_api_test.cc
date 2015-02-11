@@ -508,7 +508,9 @@ TEST(TogglApiTest, toggl_set_environment) {
 TEST(TogglApiTest, testing_set_logged_in_user) {
     std::string json = loadTestData();
     testing::App app;
+    testing::testresult::error = "";
     _Bool res = testing_set_logged_in_user(app.ctx(), json.c_str());
+    ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
 }

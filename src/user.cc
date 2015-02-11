@@ -280,10 +280,9 @@ void User::SetEmail(const std::string value) {
 }
 
 void User::SetAPIToken(const std::string value) {
-    if (api_token_ != value) {
-        api_token_ = value;
-        SetDirty();
-    }
+    // API token is not saved into DB, so no
+    // no dirty checking needed for it.
+    api_token_ = value;
 }
 
 void User::SetSince(const Poco::UInt64 value) {
@@ -387,6 +386,11 @@ void User::CollectPushableModels(
 
 error User::PullAllUserData(
     TogglClient *https_client) {
+
+    if (APIToken().empty()) {
+        return error("cannot pull user data without API token");
+    }
+
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -417,7 +421,13 @@ error User::PullAllUserData(
 error User::PushChanges(
     TogglClient *https_client,
     bool *had_something_to_push) {
+
+    if (APIToken().empty()) {
+        return error("cannot push changes without API token");
+    }
+
     poco_check_ptr(had_something_to_push);
+
     *had_something_to_push = true;
     try {
         Poco::Stopwatch stopwatch;
@@ -504,7 +514,7 @@ error User::Me(
     std::string *user_data_json) {
 
     if (email.empty()) {
-        return "Empty email";
+        return "Empty email or API token";
     }
 
     if (password.empty()) {

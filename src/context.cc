@@ -1258,7 +1258,7 @@ error Context::attemptOfflineLogin(const std::string email,
         return err;
     }
 
-    err = db()->SetCurrentAPIToken(user->APIToken());
+    err = db()->SetCurrentAPIToken(user->APIToken(), user->ID());
     if (err != noError) {
         delete user;
         return err;
@@ -1401,7 +1401,7 @@ _Bool Context::SetLoggedInUserFromJSON(
         return displayError(err);
     }
 
-    err = db()->SetCurrentAPIToken(user->APIToken());
+    err = db()->SetCurrentAPIToken(user->APIToken(), user->ID());
     if (err != noError) {
         delete user;
         return displayError(err);

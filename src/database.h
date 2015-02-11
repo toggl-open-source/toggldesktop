@@ -51,10 +51,6 @@ class Database {
         const Poco::UInt64 &UID,
         User *user);
 
-    error LoadUserByAPIToken(
-        const std::string &api_token,
-        User *user);
-
     error LoadUserByEmail(
         const std::string &email,
         User *model);
@@ -108,8 +104,12 @@ class Database {
 
     error LoadTimeEntriesForUpload(User *user);
 
-    error CurrentAPIToken(std::string *token);
-    error SetCurrentAPIToken(const std::string &token);
+    error CurrentAPIToken(
+        std::string *token,
+        Poco::UInt64 *uid);
+    error SetCurrentAPIToken(
+        const std::string &token,
+        const Poco::UInt64 &uid);
     error ClearCurrentAPIToken();
 
     error SelectTimelineBatch(const Poco::UInt64 &user_id,
