@@ -36,6 +36,7 @@ namespace TogglDesktop
         internal void Display(Toggl.TimeEntry item)
         {
             GUID = item.GUID;
+            string Color = (item.Color.Length > 0) ? item.Color : "#999999";
 
             if (item.Description.Length == 0)
             {
@@ -45,7 +46,8 @@ namespace TogglDesktop
             {
                 labelDescription.Text = item.Description;
             }
-            labelProject.ForeColor = ProjectColorPanel.BackColor = ColorTranslator.FromHtml(item.Color);
+
+            labelProject.ForeColor = ProjectColorPanel.BackColor = ColorTranslator.FromHtml(Color);
             labelProject.Text = (item.ClientLabel.Length > 0) ? "• " + item.ProjectLabel : item.ProjectLabel;
             labelClient.Text = item.ClientLabel;
             labelTask.Text = item.TaskLabel;
