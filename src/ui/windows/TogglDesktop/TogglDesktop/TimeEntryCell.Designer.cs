@@ -107,9 +107,9 @@
             // 
             this.panelShadow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelShadow.BackColor = System.Drawing.Color.Transparent;
+            this.panelShadow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.panelShadow.BackgroundImage = global::TogglDesktop.Properties.Resources.shadow;
-            this.panelShadow.Location = new System.Drawing.Point(0, 0);
+            this.panelShadow.Location = new System.Drawing.Point(0, -1);
             this.panelShadow.Margin = new System.Windows.Forms.Padding(0);
             this.panelShadow.Name = "panelShadow";
             this.panelShadow.Size = new System.Drawing.Size(314, 4);
