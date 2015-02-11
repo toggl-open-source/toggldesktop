@@ -34,46 +34,51 @@
             this.headerPanel = new System.Windows.Forms.Panel();
             this.panelShadow = new System.Windows.Forms.Panel();
             this.panel = new System.Windows.Forms.Panel();
+            this.tagBillableContinuePanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelContinue = new System.Windows.Forms.Label();
+            this.labelDuration = new System.Windows.Forms.Label();
+            this.labelBillable = new System.Windows.Forms.Label();
+            this.labelTag = new System.Windows.Forms.Label();
+            this.ProjectColorPanel = new System.Windows.Forms.Panel();
+            this.labelDescription = new System.Windows.Forms.Label();
             this.taskProjectPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelTask = new System.Windows.Forms.Label();
             this.labelClient = new System.Windows.Forms.Label();
             this.labelProject = new System.Windows.Forms.Label();
-            this.labelDescription = new System.Windows.Forms.Label();
-            this.labelDuration = new System.Windows.Forms.Label();
-            this.tagBillableContinuePanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.labelContinue = new System.Windows.Forms.Label();
-            this.labelBillable = new System.Windows.Forms.Label();
-            this.labelTag = new System.Windows.Forms.Label();
-            this.ProjectColorPanel = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.headerPanel.SuspendLayout();
             this.panel.SuspendLayout();
-            this.taskProjectPanel.SuspendLayout();
             this.tagBillableContinuePanel.SuspendLayout();
+            this.taskProjectPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelFormattedDate
             // 
             this.labelFormattedDate.AccessibleName = "Date";
             this.labelFormattedDate.AutoSize = true;
+            this.labelFormattedDate.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelFormattedDate.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelFormattedDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelFormattedDate.Location = new System.Drawing.Point(15, 15);
+            this.labelFormattedDate.Location = new System.Drawing.Point(0, 0);
+            this.labelFormattedDate.MaximumSize = new System.Drawing.Size(0, 45);
+            this.labelFormattedDate.MinimumSize = new System.Drawing.Size(0, 45);
             this.labelFormattedDate.Name = "labelFormattedDate";
-            this.labelFormattedDate.Size = new System.Drawing.Size(61, 14);
+            this.labelFormattedDate.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.labelFormattedDate.Size = new System.Drawing.Size(76, 45);
             this.labelFormattedDate.TabIndex = 10;
             this.labelFormattedDate.Text = "Thu 22. Jan";
+            this.labelFormattedDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelFormattedDate.UseMnemonic = false;
             // 
             // labelDateDuration
             // 
             this.labelDateDuration.AccessibleName = "Total time tracked per date";
             this.labelDateDuration.AutoSize = true;
-            this.labelDateDuration.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelDateDuration.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelDateDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelDateDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(111)))), ((int)(((byte)(111)))), ((int)(((byte)(111)))));
             this.labelDateDuration.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDateDuration.Location = new System.Drawing.Point(246, 0);
+            this.labelDateDuration.Location = new System.Drawing.Point(76, 0);
             this.labelDateDuration.MaximumSize = new System.Drawing.Size(0, 45);
             this.labelDateDuration.MinimumSize = new System.Drawing.Size(0, 45);
             this.labelDateDuration.Name = "labelDateDuration";
@@ -90,8 +95,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.headerPanel.Controls.Add(this.panelShadow);
-            this.headerPanel.Controls.Add(this.labelFormattedDate);
             this.headerPanel.Controls.Add(this.labelDateDuration);
+            this.headerPanel.Controls.Add(this.labelFormattedDate);
             this.headerPanel.Location = new System.Drawing.Point(0, 0);
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(314, 45);
@@ -125,6 +130,114 @@
             this.panel.TabIndex = 15;
             this.panel.Click += new System.EventHandler(this.edit_Click);
             this.panel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // tagBillableContinuePanel
+            // 
+            this.tagBillableContinuePanel.BackColor = System.Drawing.Color.White;
+            this.tagBillableContinuePanel.Controls.Add(this.labelContinue);
+            this.tagBillableContinuePanel.Controls.Add(this.labelDuration);
+            this.tagBillableContinuePanel.Controls.Add(this.labelBillable);
+            this.tagBillableContinuePanel.Controls.Add(this.labelTag);
+            this.tagBillableContinuePanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tagBillableContinuePanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.tagBillableContinuePanel.Location = new System.Drawing.Point(119, 0);
+            this.tagBillableContinuePanel.Name = "tagBillableContinuePanel";
+            this.tagBillableContinuePanel.Size = new System.Drawing.Size(195, 55);
+            this.tagBillableContinuePanel.TabIndex = 16;
+            this.tagBillableContinuePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            this.tagBillableContinuePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tagBillableContinuePanel_MouseUp);
+            // 
+            // labelContinue
+            // 
+            this.labelContinue.AccessibleDescription = "A button with a play image, to continue the time entry";
+            this.labelContinue.AccessibleName = "Continue time entry";
+            this.labelContinue.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
+            this.labelContinue.Location = new System.Drawing.Point(145, 15);
+            this.labelContinue.Margin = new System.Windows.Forms.Padding(24, 15, 26, 0);
+            this.labelContinue.Name = "labelContinue";
+            this.labelContinue.Size = new System.Drawing.Size(24, 24);
+            this.labelContinue.TabIndex = 14;
+            this.labelContinue.UseMnemonic = false;
+            this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
+            this.labelContinue.MouseEnter += new System.EventHandler(this.labelContinue_MouseEnter);
+            this.labelContinue.MouseLeave += new System.EventHandler(this.labelContinue_MouseLeave);
+            this.labelContinue.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelDuration
+            // 
+            this.labelDuration.BackColor = System.Drawing.Color.White;
+            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelDuration.Location = new System.Drawing.Point(43, 0);
+            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
+            this.labelDuration.Size = new System.Drawing.Size(75, 55);
+            this.labelDuration.TabIndex = 8;
+            this.labelDuration.Text = "03:21:30";
+            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelDuration.UseMnemonic = false;
+            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
+            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelBillable
+            // 
+            this.labelBillable.AccessibleDescription = "A label with a dollar sign image, indicating if the time entry is billable";
+            this.labelBillable.AccessibleName = "Billable label";
+            this.labelBillable.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
+            this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
+            this.labelBillable.Location = new System.Drawing.Point(24, 20);
+            this.labelBillable.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
+            this.labelBillable.Name = "labelBillable";
+            this.labelBillable.Size = new System.Drawing.Size(13, 13);
+            this.labelBillable.TabIndex = 5;
+            this.labelBillable.UseMnemonic = false;
+            this.labelBillable.Click += new System.EventHandler(this.edit_Click);
+            this.labelBillable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelTag
+            // 
+            this.labelTag.AccessibleDescription = "A label with an image of tags, indicating if the time entry has any tags";
+            this.labelTag.AccessibleName = "Tags label";
+            this.labelTag.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
+            this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
+            this.labelTag.Location = new System.Drawing.Point(5, 0);
+            this.labelTag.Name = "labelTag";
+            this.labelTag.Size = new System.Drawing.Size(13, 55);
+            this.labelTag.TabIndex = 13;
+            this.labelTag.UseMnemonic = false;
+            this.labelTag.Click += new System.EventHandler(this.edit_Click);
+            this.labelTag.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // ProjectColorPanel
+            // 
+            this.ProjectColorPanel.Location = new System.Drawing.Point(0, 0);
+            this.ProjectColorPanel.Name = "ProjectColorPanel";
+            this.ProjectColorPanel.Size = new System.Drawing.Size(4, 55);
+            this.ProjectColorPanel.TabIndex = 17;
+            // 
+            // labelDescription
+            // 
+            this.labelDescription.AccessibleName = "Time entry description";
+            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDescription.AutoEllipsis = true;
+            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelDescription.Location = new System.Drawing.Point(15, 29);
+            this.labelDescription.Name = "labelDescription";
+            this.labelDescription.Size = new System.Drawing.Size(154, 17);
+            this.labelDescription.TabIndex = 6;
+            this.labelDescription.Text = "Blogpost about ne...";
+            this.labelDescription.UseMnemonic = false;
+            this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
+            this.labelDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // taskProjectPanel
             // 
@@ -194,114 +307,6 @@
             this.labelProject.Click += new System.EventHandler(this.project_Click);
             this.labelProject.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
-            // labelDescription
-            // 
-            this.labelDescription.AccessibleName = "Time entry description";
-            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDescription.AutoEllipsis = true;
-            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelDescription.Location = new System.Drawing.Point(15, 29);
-            this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(154, 17);
-            this.labelDescription.TabIndex = 6;
-            this.labelDescription.Text = "Blogpost about ne...";
-            this.labelDescription.UseMnemonic = false;
-            this.labelDescription.Click += new System.EventHandler(this.labelDescription_Click);
-            this.labelDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // labelDuration
-            // 
-            this.labelDuration.BackColor = System.Drawing.Color.White;
-            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelDuration.Location = new System.Drawing.Point(43, 0);
-            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Padding = new System.Windows.Forms.Padding(0, 0, 11, 0);
-            this.labelDuration.Size = new System.Drawing.Size(75, 55);
-            this.labelDuration.TabIndex = 8;
-            this.labelDuration.Text = "03:21:30";
-            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDuration.UseMnemonic = false;
-            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
-            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // tagBillableContinuePanel
-            // 
-            this.tagBillableContinuePanel.BackColor = System.Drawing.Color.White;
-            this.tagBillableContinuePanel.Controls.Add(this.labelContinue);
-            this.tagBillableContinuePanel.Controls.Add(this.labelDuration);
-            this.tagBillableContinuePanel.Controls.Add(this.labelBillable);
-            this.tagBillableContinuePanel.Controls.Add(this.labelTag);
-            this.tagBillableContinuePanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tagBillableContinuePanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.tagBillableContinuePanel.Location = new System.Drawing.Point(119, 0);
-            this.tagBillableContinuePanel.Name = "tagBillableContinuePanel";
-            this.tagBillableContinuePanel.Size = new System.Drawing.Size(195, 55);
-            this.tagBillableContinuePanel.TabIndex = 16;
-            this.tagBillableContinuePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            this.tagBillableContinuePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tagBillableContinuePanel_MouseUp);
-            // 
-            // labelContinue
-            // 
-            this.labelContinue.AccessibleDescription = "A button with a play image, to continue the time entry";
-            this.labelContinue.AccessibleName = "Continue time entry";
-            this.labelContinue.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
-            this.labelContinue.Location = new System.Drawing.Point(145, 15);
-            this.labelContinue.Margin = new System.Windows.Forms.Padding(24, 15, 26, 0);
-            this.labelContinue.Name = "labelContinue";
-            this.labelContinue.Size = new System.Drawing.Size(24, 24);
-            this.labelContinue.TabIndex = 14;
-            this.labelContinue.UseMnemonic = false;
-            this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
-            this.labelContinue.MouseEnter += new System.EventHandler(this.labelContinue_MouseEnter);
-            this.labelContinue.MouseLeave += new System.EventHandler(this.labelContinue_MouseLeave);
-            this.labelContinue.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // labelBillable
-            // 
-            this.labelBillable.AccessibleDescription = "A label with a dollar sign image, indicating if the time entry is billable";
-            this.labelBillable.AccessibleName = "Billable label";
-            this.labelBillable.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
-            this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
-            this.labelBillable.Location = new System.Drawing.Point(24, 20);
-            this.labelBillable.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
-            this.labelBillable.Name = "labelBillable";
-            this.labelBillable.Size = new System.Drawing.Size(13, 13);
-            this.labelBillable.TabIndex = 5;
-            this.labelBillable.UseMnemonic = false;
-            this.labelBillable.Click += new System.EventHandler(this.edit_Click);
-            this.labelBillable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // labelTag
-            // 
-            this.labelTag.AccessibleDescription = "A label with an image of tags, indicating if the time entry has any tags";
-            this.labelTag.AccessibleName = "Tags label";
-            this.labelTag.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
-            this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
-            this.labelTag.Location = new System.Drawing.Point(5, 0);
-            this.labelTag.Name = "labelTag";
-            this.labelTag.Size = new System.Drawing.Size(13, 55);
-            this.labelTag.TabIndex = 13;
-            this.labelTag.UseMnemonic = false;
-            this.labelTag.Click += new System.EventHandler(this.edit_Click);
-            this.labelTag.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
-            // ProjectColorPanel
-            // 
-            this.ProjectColorPanel.Location = new System.Drawing.Point(0, 0);
-            this.ProjectColorPanel.Name = "ProjectColorPanel";
-            this.ProjectColorPanel.Size = new System.Drawing.Size(4, 55);
-            this.ProjectColorPanel.TabIndex = 17;
-            // 
             // TimeEntryCell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -317,9 +322,9 @@
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
+            this.tagBillableContinuePanel.ResumeLayout(false);
             this.taskProjectPanel.ResumeLayout(false);
             this.taskProjectPanel.PerformLayout();
-            this.tagBillableContinuePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
