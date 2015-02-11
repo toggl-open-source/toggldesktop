@@ -155,10 +155,10 @@
             this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
-            this.labelContinue.Location = new System.Drawing.Point(145, 15);
-            this.labelContinue.Margin = new System.Windows.Forms.Padding(24, 15, 26, 0);
+            this.labelContinue.Location = new System.Drawing.Point(139, 9);
+            this.labelContinue.Margin = new System.Windows.Forms.Padding(18, 9, 20, 0);
             this.labelContinue.Name = "labelContinue";
-            this.labelContinue.Size = new System.Drawing.Size(24, 24);
+            this.labelContinue.Size = new System.Drawing.Size(36, 36);
             this.labelContinue.TabIndex = 14;
             this.labelContinue.UseMnemonic = false;
             this.labelContinue.Click += new System.EventHandler(this.labelContinue_Click);
