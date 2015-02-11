@@ -173,5 +173,17 @@ namespace TogglDesktop
         {
             labelContinue.Image = ((System.Drawing.Image)(Properties.Resources._continue));
         }
+
+        private void TimeEntryCell_Resize(object sender, EventArgs e)
+        {
+            if (Width < list.Width)
+            {
+                labelContinue.Margin = new Padding(24, 15, 26, 0);
+            }
+            else
+            {
+                labelContinue.Margin = new Padding(24, 15, 43, 0);
+            }
+        }
     }
 }
