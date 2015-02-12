@@ -1717,7 +1717,12 @@ _Bool Context::ContinueLatest() {
         return displayError(err);
     }
 
-    UI()->DisplayApp();
+    Settings settings;
+    if (LoadSettings(&settings)) {
+        if (settings.focus_on_shortcut) {
+            UI()->DisplayApp();
+        }
+    }
 
     return displayError(save());
 }
@@ -1739,7 +1744,12 @@ _Bool Context::Continue(
         return displayError(err);
     }
 
-    UI()->DisplayApp();
+    Settings settings;
+    if (LoadSettings(&settings)) {
+        if (settings.focus_on_shortcut) {
+            UI()->DisplayApp();
+        }
+    }
 
     err = save();
     if (err != noError) {
@@ -2055,7 +2065,12 @@ _Bool Context::Stop() {
         return true;
     }
 
-    UI()->DisplayApp();
+    Settings settings;
+    if (LoadSettings(&settings)) {
+        if (settings.focus_on_shortcut) {
+            UI()->DisplayApp();
+        }
+    }
 
     return displayError(save());
 }
