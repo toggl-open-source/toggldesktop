@@ -45,10 +45,19 @@ _Bool GUI::DisplayError(const error err) {
         return false;
     }
 
-    logger().debug("DisplayError");
+    std::string actionable = MakeErrorActionable(err);
+    bool is_user_error = IsUserError(err);
 
-    char_t *err_s = copy_string(err);
-    on_display_error_(err_s, IsUserError(err));
+    {
+        std::stringstream ss;
+        ss << "DisplayError err=" << err
+           << " actionable=" << actionable
+           << " is_user_error=" << is_user_error;
+        logger().debug(ss.str());
+    }
+
+    char_t *err_s = copy_string(actionable);
+    on_display_error_(err_s, is_user_error);
     free(err_s);
 
     return false;

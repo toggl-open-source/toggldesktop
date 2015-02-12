@@ -10,90 +10,90 @@
 namespace toggl {
 
 bool IsNetworkingError(const error err) {
-    std::string value(err);
-    if (value.find(kCannotConnectError) != std::string::npos) {
+    if (noError == err) {
+        return false;
+    }
+    if (err.find(kCannotConnectError) != std::string::npos) {
         return true;
     }
-    if (value.find(kBackendIsDownError) != std::string::npos) {
+    if (err.find(kBackendIsDownError) != std::string::npos) {
         return true;
     }
-    if (value.find("Cannot establish proxy connection") != std::string::npos) {
+    if (err.find(kCannotEstablishProxyConnection) != std::string::npos) {
         return true;
     }
-    if (value.find("certificate verify failed") != std::string::npos) {
+    if (err.find(kCertificateVerifyFailed) != std::string::npos) {
         return true;
     }
-    if (value.find("Proxy Authentication Required") != std::string::npos) {
+    if (err.find(kProxyAuthenticationRequired) != std::string::npos) {
         return true;
     }
-    if (value.find("Cannot assign requested address") != std::string::npos) {
+    if (err.find("Cannot assign requested address") != std::string::npos) {
         return true;
     }
-    if (value.find("Certificate validation error") != std::string::npos) {
+    if (err.find(kCertificateValidationError) != std::string::npos) {
         return true;
     }
-    if (value.find("Unacceptable certificate from www.toggl.com")
+    if (err.find(kUnacceptableCertificate) != std::string::npos) {
+        return true;
+    }
+    if (err.find("Host not found") != std::string::npos) {
+        return true;
+    }
+    if (err.find(kCannotUpgradeToWebSocketConnection) != std::string::npos) {
+        return true;
+    }
+    if (err.find("No message received") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Connection refused") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Connection timed out") != std::string::npos) {
+        return true;
+    }
+    if (err.find("connect timed out") != std::string::npos) {
+        return true;
+    }
+    if (err.find("SSL connection unexpectedly closed") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Network is down") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Network is unreachable") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Host is down") != std::string::npos) {
+        return true;
+    }
+    if (err.find("No route to host") != std::string::npos) {
+        return true;
+    }
+    if ((err.find("I/O error: 1") != std::string::npos)
+            && (err.find(":443") != std::string::npos)) {
+        return true;
+    }
+    if (err.find("The request timed out") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Could not connect to the server") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Connection reset by peer") != std::string::npos) {
+        return true;
+    }
+    if (err.find("The Internet connection appears to be offline")
             != std::string::npos) {
         return true;
     }
-    if (value.find("Host not found") != std::string::npos) {
+    if (err.find("Timeout") != std::string::npos) {
         return true;
     }
-    if (value.find("Cannot upgrade to WebSocket connection")
-            != std::string::npos) { // NOLINT
+    if (err.find(kSSLException) != std::string::npos) {
         return true;
     }
-    if (value.find("No message received") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Connection refused") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Connection timed out") != std::string::npos) {
-        return true;
-    }
-    if (value.find("connect timed out") != std::string::npos) {
-        return true;
-    }
-    if (value.find("SSL connection unexpectedly closed") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Network is down") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Network is unreachable") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Host is down") != std::string::npos) {
-        return true;
-    }
-    if (value.find("No route to host") != std::string::npos) {
-        return true;
-    }
-    if ((value.find("I/O error: 1") != std::string::npos)
-            && (value.find(":443") != std::string::npos)) {
-        return true;
-    }
-    if (value.find("The request timed out") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Could not connect to the server") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Connection reset by peer") != std::string::npos) {
-        return true;
-    }
-    if (value.find("The Internet connection appears to be offline")
-            != std::string::npos) {
-        return true;
-    }
-    if (value.find("Timeout") != std::string::npos) {
-        return true;
-    }
-    if (value.find("SSL Exception") != std::string::npos) {
-        return true;
-    }
-    if (value.find("An internal server error occurred.") != std::string::npos) {
+    if (err.find("An internal server error occurred.") != std::string::npos) {
         return true;
     }
     return false;
@@ -103,83 +103,121 @@ bool IsUserError(const error err) {
     if (noError == err) {
         return false;
     }
-    std::string value(err);
-    if (value.find(kEmailNotFoundCannotLogInOffline) != std::string::npos) {
+    if (err.find(kEmailNotFoundCannotLogInOffline) != std::string::npos) {
         return true;
     }
-    if (value.find(kInvalidPassword) != std::string::npos) {
+    if (err.find(kInvalidPassword) != std::string::npos) {
         return true;
     }
-    if (value.find(kPaymentRequiredError) != std::string::npos) {
+    if (err.find(kPaymentRequiredError) != std::string::npos) {
         return true;
     }
-    if (value.find("File not found") != std::string::npos) {
+    if (err.find("File not found") != std::string::npos) {
         return true;
     }
-    if (value.find("SSL context exception") != std::string::npos) {
+    if (err.find("SSL context exception") != std::string::npos) {
         return true;
     }
-    if (value.find("Access to file denied") != std::string::npos) {
+    if (err.find("Access to file denied") != std::string::npos) {
         return true;
     }
-    if (value.find(kBadRequestError) != std::string::npos) {
+    if (err.find(kBadRequestError) != std::string::npos) {
         return true;
     }
-    if (value.find(kUnauthorizedError) != std::string::npos) {
+    if (err.find(kUnauthorizedError) != std::string::npos) {
         return true;
     }
-    if (value.find("So short time entries, perhaps accidentally?")
+    if (err.find(kCannotWriteFile) != std::string::npos) {
+        return true;
+    }
+    if (err.find(kIsSuspended) != std::string::npos) {
+        return true;
+    }
+    if (err.find(kRequestToServerFailedWithStatusCode403)
             != std::string::npos) {
         return true;
     }
-    if (value.find("Cannot write file") != std::string::npos) {
+    if (err.find(kThisVersionOfTheAppIsNotSupported) != std::string::npos) {
         return true;
     }
-    if (value.find("is suspended") != std::string::npos) {
-        return true;
-    }
-    if (value.find("Request to server failed with status code: 403")
+    if (err.find("Stop time must be after start time")
             != std::string::npos) {
         return true;
     }
-    if (value.find("This version of the app is not supported")
+    if (err.find("Invalid e-mail or password") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Maximum length for description") != std::string::npos) {
+        return true;
+    }
+    if (err.find("Start time year must be between 2010 and 2100")
             != std::string::npos) {
         return true;
     }
-    if (value.find("Stop time must be after start time")
-            != std::string::npos) {
+    if (err.find(kMissingWorkspaceID) != std::string::npos) {
         return true;
     }
-    if (value.find("Invalid e-mail or password") != std::string::npos) {
+    if (err.find(kEndpointGoneError) != std::string::npos) {
         return true;
     }
-    if (value.find("Maximum length for description") != std::string::npos) {
+    if (err.find("Password should be at least") != std::string::npos) {
         return true;
     }
-    if (value.find("Start time year must be between 2010 and 2100")
-            != std::string::npos) {
-        return true;
-    }
-    if (value.find("Missing workspace ID") != std::string::npos) {
-        return true;
-    }
-    if (value.find(kEndpointGoneError) != std::string::npos) {
-        return true;
-    }
-    if (value.find("Password should be at least") != std::string::npos) {
-        return true;
-    }
-    if (value.find("User with this email already exists") !=
+    if (err.find("User with this email already exists") !=
             std::string::npos) {
         return true;
     }
-    if (value.find("Invalid e-mail") != std::string::npos) {
+    if (err.find("Invalid e-mail") != std::string::npos) {
         return true;
     }
-    if (value.find(kCannotAccessWorkspaceError) != std::string::npos) {
+    if (err.find(kCannotAccessWorkspaceError) != std::string::npos) {
         return true;
     }
     return false;
+}
+
+std::string MakeErrorActionable(const error err) {
+    if (noError == err) {
+        return err;
+    }
+    if (err.find(kCannotEstablishProxyConnection) != std::string::npos) {
+        return kCheckYourProxySetup;
+    }
+    if (err.find(kCertificateVerifyFailed) != std::string::npos) {
+        return kCheckYourFirewall;
+    }
+    if (err.find(kProxyAuthenticationRequired) != std::string::npos) {
+        return kCheckYourProxySetup;
+    }
+    if (err.find(kCertificateValidationError) != std::string::npos) {
+        return kCheckYourFirewall;
+    }
+    if (err.find(kUnacceptableCertificate) != std::string::npos) {
+        return kCheckYourFirewall;
+    }
+    if (err.find(kCannotUpgradeToWebSocketConnection) != std::string::npos) {
+        return kCheckYourFirewall;
+    }
+    if (err.find(kSSLException) != std::string::npos) {
+        return kCheckYourFirewall;
+    }
+    if (err.find(kCannotWriteFile) != std::string::npos) {
+        return "Check your user permissions";
+    }
+    if (err.find(kIsSuspended) != std::string::npos) {
+        return "The workspace is suspended, please check your payments";
+    }
+    if (err.find(kRequestToServerFailedWithStatusCode403)
+            != std::string::npos) {
+        return "You do not have access to this workspace";
+    }
+    if (err.find(kThisVersionOfTheAppIsNotSupported) != std::string::npos) {
+        return "Please upgrade your Toggl Desktop";
+    }
+    if (err.find(kMissingWorkspaceID) != std::string::npos) {
+        return "Please select a project";
+    }
+    return err;
 }
 
 }  // namespace toggl

@@ -32,6 +32,20 @@
 #define kCannotAccessWorkspaceError "cannot access workspace"
 #define kEmailNotFoundCannotLogInOffline "E-mail not found, cannot log in offline."  // NOLINT
 #define kInvalidPassword "Invalid password"
+#define kCannotEstablishProxyConnection "Cannot establish proxy connection"
+#define kCertificateVerifyFailed "certificate verify failed"
+#define kCheckYourProxySetup "Check your proxy setup"
+#define kCheckYourFirewall "Check your firewall"
+#define kProxyAuthenticationRequired "Proxy Authentication Required"
+#define kCertificateValidationError "Certificate validation error"
+#define kUnacceptableCertificate "Unacceptable certificate from www.toggl.com"
+#define kCannotUpgradeToWebSocketConnection "Cannot upgrade to WebSocket connection"  // NOLINT
+#define kSSLException "SSL Exception"
+#define kCannotWriteFile "Cannot write file"
+#define kIsSuspended "is suspended"
+#define kRequestToServerFailedWithStatusCode403 "Request to server failed with status code: 403"  // NOLINT
+#define kThisVersionOfTheAppIsNotSupported "This version of the app is not supported"  // NOLINT
+#define kMissingWorkspaceID "Missing workspace ID"
 
 #define kOnlineStateOnline 0
 #define kOnlineStateNoNetwork 1
