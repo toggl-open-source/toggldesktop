@@ -178,11 +178,11 @@ namespace TogglDesktop
         {
             if (Width < list.Width)
             {
-                labelContinue.Margin = new Padding(18, 9, 20, 0);
+                labelContinue.Margin = new Padding(3, 9, 5, 0);
             }
             else
             {
-                labelContinue.Margin = new Padding(18, 9, 37, 0);
+                labelContinue.Margin = new Padding(3, 9, 22, 0);
             }
         }
     }
