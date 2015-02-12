@@ -2928,15 +2928,16 @@ error Database::migrateTimeEntries() {
 }
 
 error Database::migrateSettings() {
-    error err = migrate("settings",
-                        "create table settings("
-                        "local_id integer primary key, "
-                        "use_proxy integer not null default 0, "
-                        "proxy_host varchar, "
-                        "proxy_port integer, "
-                        "proxy_username varchar, "
-                        "proxy_password varchar, "
-                        "use_idle_detection integer not null default 1)");
+    error err = migrate(
+        "settings",
+        "create table settings("
+        "local_id integer primary key, "
+        "use_proxy integer not null default 0, "
+        "proxy_host varchar, "
+        "proxy_port integer, "
+        "proxy_username varchar, "
+        "proxy_password varchar, "
+        "use_idle_detection integer not null default 1)");
     if (err != noError) {
         return err;
     }
@@ -3016,6 +3017,65 @@ error Database::migrateSettings() {
     err = migrate("settings.manual_mode",
                   "ALTER TABLE settings "
                   "ADD COLUMN manual_mode INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #1",
+        "ALTER TABLE settings RENAME TO tmp_settings");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #2",
+        "create table settings("
+        "   local_id integer primary key, "
+        "   use_proxy integer not null default 0, "
+        "   proxy_host varchar, "
+        "   proxy_port integer, "
+        "   proxy_username varchar, "
+        "   proxy_password varchar, "
+        "   use_idle_detection integer not null default 1, "
+        "   update_channel varchar not null default 'stable', "
+        "   menubar_timer integer not null default 0, "
+        "   dock_icon INTEGER NOT NULL DEFAULT 1, "
+        "   on_top INTEGER NOT NULL DEFAULT 0, "
+        "   reminder INTEGER NOT NULL DEFAULT 1, "
+        "   ignore_cert INTEGER NOT NULL DEFAULT 0, "
+        "   idle_minutes INTEGER NOT NULL DEFAULT 5, "
+        "   focus_on_shortcut INTEGER NOT NULL DEFAULT 1, "
+        "   reminder_minutes INTEGER NOT NULL DEFAULT 10, "
+        "   manual_mode INTEGER NOT NULL DEFAULT 0 "
+        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #3",
+        "insert into settings"
+        " select local_id, use_proxy, "
+        " proxy_host, proxy_port, proxy_username, proxy_password, "
+        " use_idle_detection, update_channel, menubar_timer, "
+        " dock_icon, on_top, reminder, ignore_cert, idle_minutes, "
+        " focus_on_shortcut, reminder_minutes, manual_mode "
+        " from tmp_settings");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #4",
+        "drop table tmp_settings");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #5",
+        "update settings set focus_on_shortcut = 1");
     if (err != noError) {
         return err;
     }
