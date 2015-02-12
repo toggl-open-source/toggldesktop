@@ -157,7 +157,7 @@ namespace TogglDesktop
 
         public void toggleMenu()
         {
-            Point pt = new Point(Width - 110, 0);
+            Point pt = new Point(Width - 80, 0);
             pt = PointToScreen(pt);
             trayIconMenu.Show(pt);
         }
