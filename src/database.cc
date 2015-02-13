@@ -285,7 +285,7 @@ std::string Database::GenerateGUID() {
 error Database::LoadCurrentUser(User *user) {
     poco_check_ptr(user);
 
-	logger().debug("LoadCurrentUser");
+    logger().debug("LoadCurrentUser");
 
     std::string api_token("");
     Poco::UInt64 uid(0);
@@ -296,9 +296,9 @@ error Database::LoadCurrentUser(User *user) {
     if (api_token.empty()) {
         return noError;
     }
-	if (!uid) {
-		return noError;
-	}
+    if (!uid) {
+        return noError;
+    }
     user->SetAPIToken(api_token);
     return LoadUserByID(uid, user);
 }
