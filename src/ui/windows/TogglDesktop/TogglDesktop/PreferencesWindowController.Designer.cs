@@ -275,17 +275,17 @@
             // 
             // btnClearStartStopTimer
             // 
-            this.btnClearStartStopTimer.Location = new System.Drawing.Point(201, 47);
+            this.btnClearStartStopTimer.Location = new System.Drawing.Point(227, 47);
             this.btnClearStartStopTimer.Name = "btnClearStartStopTimer";
-            this.btnClearStartStopTimer.Size = new System.Drawing.Size(45, 23);
+            this.btnClearStartStopTimer.Size = new System.Drawing.Size(19, 23);
             this.btnClearStartStopTimer.TabIndex = 5;
-            this.btnClearStartStopTimer.Text = "Clear";
+            this.btnClearStartStopTimer.Text = "x";
             this.btnClearStartStopTimer.UseVisualStyleBackColor = true;
             this.btnClearStartStopTimer.Click += new System.EventHandler(this.btnClearStartStopTimer_Click);
             // 
             // btnRecordStartStopShortcut
             // 
-            this.btnRecordStartStopShortcut.Location = new System.Drawing.Point(103, 47);
+            this.btnRecordStartStopShortcut.Location = new System.Drawing.Point(128, 47);
             this.btnRecordStartStopShortcut.Name = "btnRecordStartStopShortcut";
             this.btnRecordStartStopShortcut.Size = new System.Drawing.Size(101, 23);
             this.btnRecordStartStopShortcut.TabIndex = 4;
@@ -296,17 +296,17 @@
             // 
             // btnClearShowHideShortcut
             // 
-            this.btnClearShowHideShortcut.Location = new System.Drawing.Point(201, 19);
+            this.btnClearShowHideShortcut.Location = new System.Drawing.Point(227, 19);
             this.btnClearShowHideShortcut.Name = "btnClearShowHideShortcut";
-            this.btnClearShowHideShortcut.Size = new System.Drawing.Size(45, 23);
+            this.btnClearShowHideShortcut.Size = new System.Drawing.Size(19, 23);
             this.btnClearShowHideShortcut.TabIndex = 3;
-            this.btnClearShowHideShortcut.Text = "Clear";
+            this.btnClearShowHideShortcut.Text = "x";
             this.btnClearShowHideShortcut.UseVisualStyleBackColor = true;
             this.btnClearShowHideShortcut.Click += new System.EventHandler(this.btnClearShowHideShortcut_Click);
             // 
             // btnRecordShowHideShortcut
             // 
-            this.btnRecordShowHideShortcut.Location = new System.Drawing.Point(103, 19);
+            this.btnRecordShowHideShortcut.Location = new System.Drawing.Point(128, 19);
             this.btnRecordShowHideShortcut.Name = "btnRecordShowHideShortcut";
             this.btnRecordShowHideShortcut.Size = new System.Drawing.Size(101, 23);
             this.btnRecordShowHideShortcut.TabIndex = 2;
@@ -320,9 +320,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 52);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(81, 13);
+            this.label7.Size = new System.Drawing.Size(101, 13);
             this.label7.TabIndex = 1;
-            this.label7.Text = "Start/Stop timer";
+            this.label7.Text = "Continue/Stop timer";
             // 
             // label6
             // 
