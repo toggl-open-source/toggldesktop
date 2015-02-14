@@ -141,13 +141,14 @@ namespace TogglDesktop
 
         static void notifyBugsnag(Exception e)
         {
-            try 
+            try
             {
                 bugsnag.Notify(e, new
                 {
                     UserID = uid.ToString(),
                     channel = Toggl.UpdateChannel()
                 });
+            }
             catch (Exception ex)
             {
                 Console.WriteLine("Could not notify bugsnag: ", ex);
