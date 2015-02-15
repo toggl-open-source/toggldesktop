@@ -59,6 +59,11 @@ int main(int argc, char *argv[]) try {
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
 
+    // Select some font to get predictable font
+    QFont font("Helvetica", 10);
+    QApplication::setFont(font);
+    qDebug() << "Application font: " << QApplication::font().toString();
+
     QCommandLineParser parser;
     parser.setApplicationDescription("Toggl Desktop");
     parser.addHelpOption();
