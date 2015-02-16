@@ -3392,7 +3392,7 @@ error Database::SelectTimelineBatch(
     return last_error("SelectTimelineBatch");
 }
 
-const int kMaxTimelineStringSize = 500;
+const int kMaxTimelineStringSize = 300;
 
 error Database::InsertTimelineEvent(TimelineEvent *event) {
     Poco::Mutex::ScopedLock lock(session_m_);
