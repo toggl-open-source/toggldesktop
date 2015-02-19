@@ -47,6 +47,7 @@ namespace TogglDesktop
             TogglForm.ApplyFont("roboto-light", this.DurationTextBox);
             TogglForm.ApplyFont("roboto", this.linkLabelDescription);
             TogglForm.ApplyFont("roboto-light", this.linkLabelDuration);
+            TogglForm.ApplyFont("roboto", this.linkLabelProject);
         }
 
         public AutoCompleteTextBox DescriptionTextBox
