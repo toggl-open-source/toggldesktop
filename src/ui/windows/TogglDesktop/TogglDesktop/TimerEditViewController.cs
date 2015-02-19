@@ -176,6 +176,7 @@ namespace TogglDesktop
             {
                 descriptionTextBox.Text = defaultDescription;
             }
+            descriptionTextBox.Refresh();
             descriptionTextBox.Visible = true;
 
             linkLabelDescription.Visible = false;
@@ -185,6 +186,7 @@ namespace TogglDesktop
             {
                 textBoxDuration.Text = defaultDuration;
             }
+            DurationTextBox.Refresh();
             textBoxDuration.Visible = true;
 
             linkLabelDuration.Visible = false;
