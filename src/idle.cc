@@ -84,7 +84,8 @@ void Idle::computeIdleState(
             ui_->DisplayIdleNotification(te->GUID(),
                                          since.str(),
                                          duration.str(),
-                                         last_idle_started_);
+                                         last_idle_started_,
+                                         te->Description());
         }
 
         std::stringstream ss;

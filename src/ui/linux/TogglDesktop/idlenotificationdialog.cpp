@@ -16,8 +16,11 @@ IdleNotificationDialog::IdleNotificationDialog(QWidget *parent)
   timeEntryGUID("") {
     ui->setupUi(this);
 
-    connect(TogglApi::instance, SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t)),  // NOLINT
-            this, SLOT(displayIdleNotification(QString,QString,QString,uint64_t)));  // NOLINT
+    connect(
+        TogglApi::instance,
+        SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t,QString)),  // NOLINT
+        this,
+        SLOT(displayIdleNotification(QString,QString,QString,uint64_t,QString)));  // NOLINT
 
     connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
             this, SLOT(displaySettings(bool,SettingsView*)));  // NOLINT
@@ -69,12 +72,15 @@ void IdleNotificationDialog::displayIdleNotification(
     const QString guid,
     const QString since,
     const QString duration,
-    const uint64_t started) {
+    const uint64_t started,
+    const QString description) {
     idleStarted = started;
     timeEntryGUID = guid;
 
     ui->idleSince->setText(since);
     ui->idleDuration->setText(duration);
+
+    // FIXME: show description somewhere, too
 
     show();
 }

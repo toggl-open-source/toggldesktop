@@ -3,17 +3,17 @@
 #ifndef SRC_USER_H_
 #define SRC_USER_H_
 
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
-#include <map>
 
 #include <json/json.h>  // NOLINT
 
-#include "./types.h"
-#include "./related_data.h"
-#include "./batch_update_result.h"
 #include "./base_model.h"
+#include "./batch_update_result.h"
+#include "./related_data.h"
+#include "./types.h"
 
 #include "Poco/Types.h"
 
@@ -31,25 +31,19 @@ class User : public BaseModel {
     email_(""),
     record_timeline_(false),
     timeofday_format_(""),
-    duration_format_("") {}
+    duration_format_(""),
+    offline_data_("") {}
 
     ~User();
 
+    error EnableOfflineLogin(
+        const std::string password);
+
     error PullAllUserData(TogglClient *https_client);
     error PullChanges(TogglClient *https_client);
-    error PushChanges(TogglClient *https_client);
-
-    static error Signup(
+    error PushChanges(
         TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data_json);
-
-    static error Me(
-        TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data);
+        bool *had_something_to_push);
 
     std::string String() const;
 
@@ -145,6 +139,11 @@ class User : public BaseModel {
     }
     void SetStoreStartAndStopTime(const bool value);
 
+    const std::string& OfflineData() const {
+        return offline_data_;
+    }
+    void SetOfflineData(const std::string);
+
     RelatedData related;
 
     std::string ModelName() const {
@@ -165,6 +164,8 @@ class User : public BaseModel {
     error LoadUserAndRelatedDataFromJSONString(
         const std::string &json);
 
+    error SetAPITokenFromOfflineData(const std::string password);
+
     static error UserID(
         const std::string json_data_string,
         Poco::UInt64 *result);
@@ -172,6 +173,23 @@ class User : public BaseModel {
     static error LoginToken(
         const std::string json_data_string,
         std::string *result);
+
+    static error GenerateOfflineLogin(
+        const std::string email,
+        const std::string password,
+        std::string *result);
+
+    static error Signup(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data_json);
+
+    static error Me(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data);
 
  private:
     error updateJSON(
@@ -247,6 +265,8 @@ class User : public BaseModel {
     template<typename T>
     void ensureWID(T *model) const;
 
+    std::string generateKey(const std::string password);
+
     std::string api_token_;
     Poco::UInt64 default_wid_;
     // Unix timestamp of the user data; returned from API
@@ -257,6 +277,7 @@ class User : public BaseModel {
     bool store_start_and_stop_time_;
     std::string timeofday_format_;
     std::string duration_format_;
+    std::string offline_data_;
 };
 
 template<class T>

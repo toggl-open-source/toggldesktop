@@ -40,6 +40,8 @@ class MainWindowController : public QMainWindow {
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
 
+    void runScript();
+
  private slots:  // NOLINT
     void displayApp(const bool open);
     void displayRunningTimerState(TimeEntryView *te);
@@ -89,6 +91,8 @@ class MainWindowController : public QMainWindow {
     IdleNotificationDialog *idleNotificationDialog;
 
     QIcon icon;
+
+    QString script;
 
     bool reminder;
 

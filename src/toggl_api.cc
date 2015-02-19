@@ -2,10 +2,14 @@
 
 // No exceptions should be thrown from this library.
 
+#include "./../src/toggl_api.h"
+
 #include <cstring>
 #include <set>
 
-#include "./lib/include/toggl_api.h"
+#ifndef _WIN32
+#include "./toggl_api_lua.h"
+#endif
 
 #include "./const.h"
 #include "./context.h"
@@ -795,6 +799,48 @@ void toggl_set_idle_seconds(
     const uint64_t idle_seconds) {
     app(context)->SetIdleSeconds(idle_seconds);
 }
+
+#ifndef _WIN32
+char_t *toggl_run_script(
+    void *context,
+    const char* script,
+    int64_t *err) {
+
+    lua_State *L = luaL_newstate();
+    luaL_openlibs(L);
+    toggl_register_lua(context, L);
+    lua_settop(L, 0);
+
+    *err = luaL_loadstring(L, script);
+
+    if (!*err) {
+        *err = lua_pcall(L, 0, LUA_MULTRET, 0);
+    }
+
+    int argc = lua_gettop(L);
+
+    std::stringstream ss;
+    ss << argc << " value(s) returned" << std::endl;
+
+    for (int i = 0; i < argc; i++) {
+        if (lua_isstring(L, -1)) {
+            ss << lua_tostring(L, -1);
+        } else if (lua_isnumber(L, -1)) {
+            ss << lua_tointeger(L, -1);
+        } else if (lua_isboolean(L, -1)) {
+            ss << lua_toboolean(L, -1);
+        } else {
+            ss << "ok";
+        }
+        lua_pop(L, -1);
+    }
+    ss << std::endl << std::endl;
+
+    lua_close(L);
+
+    return copy_string(ss.str());
+}
+#endif
 
 void testing_sleep(
     const int seconds) {

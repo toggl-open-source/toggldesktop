@@ -16,7 +16,7 @@ class Settings {
     , on_top(false)
     , reminder(false)
     , idle_minutes(0)
-    , focus_on_shortcut(false)
+    , focus_on_shortcut(true)
     , reminder_minutes(0)
     , manual_mode(false) {}
     ~Settings() {}

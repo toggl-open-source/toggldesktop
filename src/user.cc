@@ -3,6 +3,7 @@
 #include "../src/user.h"
 
 #include <time.h>
+
 #include <sstream>
 
 #include "./client.h"
@@ -15,7 +16,17 @@
 #include "./time_entry.h"
 #include "./workspace.h"
 
+#include "Poco/Base64Decoder.h"
+#include "Poco/Base64Encoder.h"
+#include "Poco/Crypto/Cipher.h"
+#include "Poco/Crypto/CipherFactory.h"
+#include "Poco/Crypto/CipherKey.h"
+#include "Poco/Crypto/CryptoStream.h"
+#include "Poco/DigestStream.h"
 #include "Poco/Logger.h"
+#include "Poco/Random.h"
+#include "Poco/RandomStream.h"
+#include "Poco/SHA1Engine.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/UTF8String.h"
 
@@ -240,6 +251,13 @@ void User::SetDurationFormat(const std::string value) {
     }
 }
 
+void User::SetOfflineData(const std::string value) {
+    if (offline_data_ != value) {
+        offline_data_ = value;
+        SetDirty();
+    }
+}
+
 void User::SetStoreStartAndStopTime(const bool value) {
     if (store_start_and_stop_time_ != value) {
         store_start_and_stop_time_ = value;
@@ -262,10 +280,9 @@ void User::SetEmail(const std::string value) {
 }
 
 void User::SetAPIToken(const std::string value) {
-    if (api_token_ != value) {
-        api_token_ = value;
-        SetDirty();
-    }
+    // API token is not saved into DB, so no
+    // no dirty checking needed for it.
+    api_token_ = value;
 }
 
 void User::SetSince(const Poco::UInt64 value) {
@@ -369,6 +386,11 @@ void User::CollectPushableModels(
 
 error User::PullAllUserData(
     TogglClient *https_client) {
+
+    if (APIToken().empty()) {
+        return error("cannot pull user data without API token");
+    }
+
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -396,7 +418,17 @@ error User::PullAllUserData(
     return noError;
 }
 
-error User::PushChanges(TogglClient *https_client) {
+error User::PushChanges(
+    TogglClient *https_client,
+    bool *had_something_to_push) {
+
+    if (APIToken().empty()) {
+        return error("cannot push changes without API token");
+    }
+
+    poco_check_ptr(had_something_to_push);
+
+    *had_something_to_push = true;
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -412,6 +444,7 @@ error User::PushChanges(TogglClient *https_client) {
         CollectPushableModels(related.Clients, &clients, &models);
 
         if (time_entries.empty() && projects.empty() && clients.empty()) {
+            *had_something_to_push = false;
             return noError;
         }
 
@@ -481,7 +514,7 @@ error User::Me(
     std::string *user_data_json) {
 
     if (email.empty()) {
-        return "Empty email";
+        return "Empty email or API token";
     }
 
     if (password.empty()) {
@@ -1063,6 +1096,124 @@ error User::updateJSON(
     Json::StyledWriter writer;
     *result = writer.write(c);
 
+    return noError;
+}
+
+std::string User::generateKey(const std::string password) {
+    Poco::SHA1Engine sha1;
+    Poco::DigestOutputStream outstr(sha1);
+    outstr << Email();
+    outstr << password;
+    outstr.flush();
+    const Poco::DigestEngine::Digest &digest = sha1.digest();
+    return Poco::DigestEngine::digestToHex(digest);
+}
+
+error User::SetAPITokenFromOfflineData(const std::string password) {
+    if (Email().empty()) {
+        return error("cannot decrypt offline data without an e-mail");
+    }
+    if (password.empty()) {
+        return error("cannot decrypt offline data without a password");
+    }
+    if (OfflineData().empty()) {
+        return error("cannot decrypy empty string");
+    }
+    try {
+        Poco::Crypto::CipherFactory& factory =
+            Poco::Crypto::CipherFactory::defaultFactory();
+
+        std::string key = generateKey(password);
+
+        Json::Value data;
+        Json::Reader reader;
+        if (!reader.parse(OfflineData(), data)) {
+            return error("failed to parse offline data");
+        }
+
+        std::istringstream istr(data["salt"].asString());
+        Poco::Base64Decoder decoder(istr);
+        std::string salt("");
+        decoder >> salt;
+
+        Poco::Crypto::CipherKey ckey("aes-256-cbc", key, salt);
+        Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
+
+        std::string decrypted = pCipher->decryptString(
+            data["encrypted"].asString(),
+            Poco::Crypto::Cipher::ENC_BASE64);
+
+        delete pCipher;
+        pCipher = 0;
+
+        SetAPIToken(decrypted);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error User::EnableOfflineLogin(
+    const std::string password) {
+    if (Email().empty()) {
+        return error("cannot enable offline login without an e-mail");
+    }
+    if (password.empty()) {
+        return error("cannot enable offline login without a password");
+    }
+    if (APIToken().empty()) {
+        return error("cannot enable offline login without an API token");
+    }
+    try {
+        Poco::Crypto::CipherFactory& factory =
+            Poco::Crypto::CipherFactory::defaultFactory();
+
+        std::string key = generateKey(password);
+
+        std::string salt("");
+        Poco::RandomInputStream ri;
+        ri >> salt;
+
+        Poco::Crypto::CipherKey ckey("aes-256-cbc", key, salt);
+
+        Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
+
+        std::ostringstream str;
+        Poco::Base64Encoder enc(str);
+        enc << salt;
+        enc.close();
+
+        Json::Value data;
+        data["salt"] = str.str();
+        data["encrypted"] = pCipher->encryptString(
+            APIToken(),
+            Poco::Crypto::Cipher::ENC_BASE64);
+        std::string json = Json::FastWriter().write(data);
+
+        delete pCipher;
+        pCipher = 0;
+
+        SetOfflineData(json);
+
+        std::string token = APIToken();
+        error err = SetAPITokenFromOfflineData(password);
+        if (err != noError) {
+            return err;
+        }
+        if (token != APIToken()) {
+            return error("offline login encryption failed");
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
     return noError;
 }
 

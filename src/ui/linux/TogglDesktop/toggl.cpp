@@ -13,7 +13,7 @@
 
 #include <iostream>   // NOLINT
 
-#include "./../../../lib/include/toggl_api.h"
+#include "./../../../toggl_api.h"
 
 #include "./updateview.h"
 #include "./timeentryview.h"
@@ -147,12 +147,14 @@ void on_display_idle_notification(
     const char *guid,
     const char *since,
     const char *duration,
-    const uint64_t started) {
+    const uint64_t started,
+    const char *description) {
     TogglApi::instance->displayIdleNotification(
         QString(guid),
         QString(since),
         QString(duration),
-        started);
+        started,
+        QString(description));
 }
 
 TogglApi::TogglApi(
@@ -315,6 +317,48 @@ bool TogglApi::discardTimeAt(const QString guid,
                                  guid.toStdString().c_str(),
                                  at,
                                  split_into_new_time_entry);
+}
+
+// Returns true if script file was successfully
+// executed. If returns false, check log.
+bool TogglApi::runScriptFile(const QString filename) {
+    if (filename.isEmpty()) {
+        qDebug() << "no script to run";
+        return false;
+    }
+
+    QFile textFile(filename);
+    if (!textFile.open(QIODevice::ReadOnly)) {
+        qDebug() << "could not open script "
+                 << filename;
+        return false;
+    }
+
+    QTextStream textStream(&textFile);
+    QStringList contents;
+    while (!textStream.atEnd()) {
+        contents.append(textStream.readLine());
+    }
+
+    QString code = contents.join("\r\n");
+    qDebug() << "script contents: " << code;
+
+    int64_t err(0);
+    QString textOutput("");
+    char_t *result = toggl_run_script(
+        ctx,
+        code.toUtf8().constData(),
+        &err);
+    textOutput = QString(result);
+    free(result);
+
+    if (err) {
+        qDebug() << "script finished with error: " << err;
+    }
+
+    qDebug() << "script output: " << textOutput;
+
+    return !err;
 }
 
 void TogglApi::setIdleSeconds(u_int64_t idleSeconds) {

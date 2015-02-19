@@ -161,6 +161,8 @@ class TogglApi : public QObject {
                        const uint64_t at,
                        const bool split_into_new_time_entry);
 
+    bool runScriptFile(const QString filename);
+
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 
@@ -209,7 +211,8 @@ class TogglApi : public QObject {
         const QString guid,
         const QString since,
         const QString duration,
-        const uint64_t started);
+        const uint64_t started,
+        const QString description);
 
     void displayClientSelect(
         QVector<GenericView *> list);

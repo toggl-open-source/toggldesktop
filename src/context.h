@@ -14,7 +14,7 @@
 #include "./feedback.h"
 #include "./gui.h"
 #include "./idle.h"
-#include "./lib/include/toggl_api.h"
+#include "./toggl_api.h"
 #include "./model_change.h"
 #include "./timeline_notifications.h"
 #include "./types.h"
@@ -311,7 +311,8 @@ class Context : public TimelineDatasource {
     Poco::Timestamp postpone(
         const Poco::Timestamp::TimeDiff throttleMicros) const;
 
-    bool allowTimerToStart();
+    error attemptOfflineLogin(const std::string email,
+                              const std::string password);
 
     Poco::Mutex db_m_;
     Database *db_;

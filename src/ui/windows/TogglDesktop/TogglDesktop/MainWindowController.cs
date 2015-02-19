@@ -237,9 +237,12 @@ namespace TogglDesktop
             Utils.LoadWindowLocation(this, editForm);
             timeEntryListViewController.setEditPopup(editForm);
 
-            timeEntryListViewController.getListing().Scroll += MainWindowControllerEntries_Scroll;
-            timeEntryListViewController.getListing().MouseWheel += MainWindowControllerEntries_Scroll;
-
+            FlowLayoutPanel listing = timeEntryListViewController.getListing();
+            if (listing != null)
+            {
+                listing.Scroll += MainWindowControllerEntries_Scroll;
+                listing.MouseWheel += MainWindowControllerEntries_Scroll;
+            }
             if (!Toggl.Start(TogglDesktop.Program.Version()))
             {
                 try
@@ -415,11 +418,15 @@ namespace TogglDesktop
         }
 
         void OnIdleNotification(
-            string guid, string since, string duration, UInt64 started)
+            string guid,
+            string since,
+            string duration,
+            UInt64 started,
+            string description)
         {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { OnIdleNotification(guid, since, duration, started); });
+                Invoke((MethodInvoker)delegate { OnIdleNotification(guid, since, duration, started, description); });
                 return;
             }
 

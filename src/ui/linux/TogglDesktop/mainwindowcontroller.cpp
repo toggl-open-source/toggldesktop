@@ -5,16 +5,17 @@
 
 #include <iostream>  // NOLINT
 
-#include <QSettings>  // NOLINT
+#include <QAction>  // NOLINT
 #include <QCloseEvent>  // NOLINT
-#include <QMessageBox>  // NOLINT
-#include <QLabel>  // NOLINT
-#include <QVBoxLayout>  // NOLINT
+#include <QtConcurrent/QtConcurrent>  // NOLINT
 #include <QDebug>  // NOLINT
 #include <QDesktopServices>  // NOLINT
-#include <QAction>  // NOLINT
-#include <QMenu>  // NOLINT
 #include <QImageReader>  // NOLINT
+#include <QLabel>  // NOLINT
+#include <QMenu>  // NOLINT
+#include <QMessageBox>  // NOLINT
+#include <QSettings>  // NOLINT
+#include <QVBoxLayout>  // NOLINT
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
@@ -44,7 +45,8 @@ MainWindowController::MainWindowController(
   aboutDialog(new AboutDialog(this)),
   feedbackDialog(new FeedbackDialog(this)),
   idleNotificationDialog(new IdleNotificationDialog(this)),
-  reminder(false) {
+  reminder(false),
+  script(scriptPath) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
     ui->setupUi(this);
@@ -287,14 +289,21 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 
 void MainWindowController::showEvent(QShowEvent *event) {
     QMainWindow::showEvent(event);
-    if (TogglApi::instance->startEvents()) {
+    if (!TogglApi::instance->startEvents()) {
+        QMessageBox(
+            QMessageBox::Warning,
+            "Error",
+            "The application could not start. Please inspect the log file.",
+            QMessageBox::Ok|QMessageBox::Cancel).exec();
         return;
     }
-    QMessageBox(
-        QMessageBox::Warning,
-        "Error",
-        "The application could not start. Please inspect the log file. Sorry!",
-        QMessageBox::Ok|QMessageBox::Cancel).exec();
+    if (script.isEmpty()) {
+        qDebug() << "no script to run";
+        return;
+    }
+    qDebug() << "will run script: " << script;
+
+    QtConcurrent::run(this, &MainWindowController::runScript);
 }
 
 void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
@@ -309,6 +318,12 @@ void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
         + " Continue with download?",
         QMessageBox::No|QMessageBox::Yes).exec()) {
         QDesktopServices::openUrl(QUrl(view->URL));
+        quitApp();
+    }
+}
+
+void MainWindowController::runScript() {
+    if (TogglApi::instance->runScriptFile(script)) {
         quitApp();
     }
 }

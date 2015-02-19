@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "./client.h"
+#include "./const.h"
 #include "./project.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -18,16 +19,18 @@
 #include "./user.h"
 #include "./workspace.h"
 
-#include "Poco/Logger.h"
-#include "Poco/UUID.h"
-#include "Poco/UUIDGenerator.h"
-#include "Poco/Stopwatch.h"
+#include "Poco/Data/Binding.h"
 #include "Poco/Data/RecordSet.h"
 #include "Poco/Data/SessionImpl.h"
-#include "Poco/Data/Statement.h"
-#include "Poco/Data/Binding.h"
 #include "Poco/Data/SQLite/SessionImpl.h"
 #include "Poco/Data/SQLite/Utility.h"
+#include "Poco/Data/Statement.h"
+#include "Poco/FileStream.h"
+#include "Poco/Logger.h"
+#include "Poco/Stopwatch.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/UUID.h"
+#include "Poco/UUIDGenerator.h"
 
 namespace toggl {
 
@@ -114,7 +117,12 @@ error Database::DeleteUser(
 
     poco_check_ptr(model);
 
-    error err = deleteFromTable("users", model->LocalID());
+    error err = deleteFromTable("sessions", model->LocalID());
+    if (err != noError) {
+        return err;
+    }
+
+    err = deleteFromTable("users", model->LocalID());
     if (err != noError) {
         return err;
     }
@@ -277,15 +285,22 @@ std::string Database::GenerateGUID() {
 error Database::LoadCurrentUser(User *user) {
     poco_check_ptr(user);
 
+    logger().debug("LoadCurrentUser");
+
     std::string api_token("");
-    error err = CurrentAPIToken(&api_token);
+    Poco::UInt64 uid(0);
+    error err = CurrentAPIToken(&api_token, &uid);
     if (err != noError) {
         return err;
     }
     if (api_token.empty()) {
         return noError;
     }
-    return LoadUserByAPIToken(api_token, user);
+    if (!uid) {
+        return noError;
+    }
+    user->SetAPIToken(api_token);
+    return LoadUserByID(uid, user);
 }
 
 error Database::LoadSettings(Settings *settings) {
@@ -297,7 +312,7 @@ error Database::LoadSettings(Settings *settings) {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
                   "on_top, reminder, idle_minutes, focus_on_shortcut, "
                   "reminder_minutes, manual_mode "
-                  "from settings",
+                  "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
                   into(settings->dock_icon),
@@ -334,7 +349,7 @@ error Database::LoadProxySettings(
         Poco::UInt64 port(0);
         *session_ << "select use_proxy, proxy_host, proxy_port, "
                   "proxy_username, proxy_password "
-                  "from settings",
+                  "from settings limit 1",
                   into(*use_proxy),
                   into(host),
                   into(port),
@@ -465,7 +480,7 @@ error Database::LoadUpdateChannel(
     poco_check_ptr(update_channel);
 
     try {
-        *session_ << "select update_channel from settings",
+        *session_ << "select update_channel from settings limit 1",
                   into(*update_channel),
                   limit(1),
                   now;
@@ -491,29 +506,32 @@ error Database::SaveUpdateChannel(
     return setSettingsValue("update_channel", update_channel);
 }
 
-error Database::LoadUserByAPIToken(
-    const std::string &api_token,
+error Database::LoadUserByEmail(
+    const std::string &email,
     User *model) {
 
-    if (api_token.empty()) {
-        return error("Cannot load user by API token without a token");
+    if (email.empty()) {
+        return error("Cannot load user by email token without an email");
     }
+
+    poco_check_ptr(model);
 
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
-    poco_check_ptr(model);
 
     Poco::UInt64 uid(0);
-    model->SetAPIToken(api_token);
+    model->SetEmail(email);
 
     try {
-        *session_ << "select id from users where api_token = :api_token",
+        *session_ << "select id from users"
+                  " where email = :email"
+                  " limit 1",
                   into(uid),
-                  useRef(api_token),
+                  useRef(email),
                   limit(1),
                   now;
-        error err = last_error("LoadUserByAPIToken");
+        error err = last_error("LoadUserByEmail");
         if (err != noError) {
             return err;
         }
@@ -572,11 +590,11 @@ error Database::LoadUserByID(
         return error("Cannot load user by ID without an ID");
     }
 
+    poco_check_ptr(user);
+
     Poco::Mutex::ScopedLock lock(session_m_);
 
-    poco_check_ptr(user);
     poco_check_ptr(session_);
-
 
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -584,7 +602,6 @@ error Database::LoadUserByID(
     try {
         Poco::Int64 local_id(0);
         Poco::UInt64 id(0);
-        std::string api_token("");
         Poco::UInt64 default_wid(0);
         Poco::UInt64 since(0);
         std::string fullname("");
@@ -593,15 +610,15 @@ error Database::LoadUserByID(
         bool store_start_and_stop_time(false);
         std::string timeofday_format("");
         std::string duration_format("");
+        std::string offline_data("");
         *session_ <<
-                  "select local_id, id, api_token, default_wid, since, "
+                  "select local_id, id, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
-                  "timeofday_format, duration_format "
-                  "from users where id = :id",
+                  "timeofday_format, duration_format, offline_data "
+                  "from users where id = :id limit 1",
                   into(local_id),
                   into(id),
-                  into(api_token),
                   into(default_wid),
                   into(since),
                   into(fullname),
@@ -610,6 +627,7 @@ error Database::LoadUserByID(
                   into(store_start_and_stop_time),
                   into(timeofday_format),
                   into(duration_format),
+                  into(offline_data),
                   useRef(UID),
                   limit(1),
                   now;
@@ -626,7 +644,6 @@ error Database::LoadUserByID(
 
         user->SetLocalID(local_id);
         user->SetID(id);
-        user->SetAPIToken(api_token);
         user->SetDefaultWID(default_wid);
         user->SetSince(since);
         user->SetFullname(fullname);
@@ -635,6 +652,7 @@ error Database::LoadUserByID(
         user->SetStoreStartAndStopTime(store_start_and_stop_time);
         user->SetTimeOfDayFormat(timeofday_format);
         user->SetDurationFormat(duration_format);
+        user->SetOfflineData(offline_data);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2025,15 +2043,15 @@ error Database::SaveUser(
                 logger().trace(ss.str());
 
                 *session_ << "update users set "
-                          "api_token = :api_token, default_wid = :default_wid, "
+                          "default_wid = :default_wid, "
                           "since = :since, id = :id, fullname = :fullname, "
                           "email = :email, record_timeline = :record_timeline, "
                           "store_start_and_stop_time = "
                           " :store_start_and_stop_time, "
                           "timeofday_format = :timeofday_format, "
-                          "duration_format = :duration_format "
+                          "duration_format = :duration_format, "
+                          "offline_data = :offline_data "
                           "where local_id = :local_id",
-                          useRef(user->APIToken()),
                           useRef(user->DefaultWID()),
                           useRef(user->Since()),
                           useRef(user->ID()),
@@ -2043,6 +2061,7 @@ error Database::SaveUser(
                           useRef(user->StoreStartAndStopTime()),
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
+                          useRef(user->OfflineData()),
                           useRef(user->LocalID()),
                           now;
                 error err = last_error("SaveUser");
@@ -2058,17 +2077,16 @@ error Database::SaveUser(
                    << " in thread " << Poco::Thread::currentTid();
                 logger().trace(ss.str());
                 *session_ << "insert into users("
-                          "id, api_token, default_wid, since, fullname, email, "
+                          "id, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
-                          "timeofday_format, duration_format "
+                          "timeofday_format, duration_format, offline_data "
                           ") values("
-                          ":id, :api_token, :default_wid, :since, :fullname, "
+                          ":id, :default_wid, :since, :fullname, "
                           ":email, "
                           ":record_timeline, :store_start_and_stop_time, "
-                          ":timeofday_format, :duration_format "
+                          ":timeofday_format, :duration_format, :offline_data "
                           ")",
                           useRef(user->ID()),
-                          useRef(user->APIToken()),
                           useRef(user->DefaultWID()),
                           useRef(user->Since()),
                           useRef(user->Fullname()),
@@ -2077,6 +2095,7 @@ error Database::SaveUser(
                           useRef(user->StoreStartAndStopTime()),
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
+                          useRef(user->OfflineData()),
                           now;
                 error err = last_error("SaveUser");
                 if (err != noError) {
@@ -2459,6 +2478,13 @@ error Database::migrateSessions() {
         return err;
     }
 
+    err = migrate(
+        "sessions.uid",
+        "alter table sessions add column uid integer references users (id);");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 
@@ -2709,6 +2735,58 @@ error Database::migrateUsers() {
         return err;
     }
 
+    err = migrate(
+        "users.offline_data",
+        "alter table users"
+        " add column offline_data varchar");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "no api token step #1",
+        "ALTER TABLE users RENAME TO tmp_users");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "no api token step #2",
+        "create table users("
+        "   local_id integer primary key, "
+        "   id integer not null unique, "
+        "   default_wid integer, "
+        "   since integer, "
+        "   fullname varchar, "
+        "   email varchar not null, "
+        "   record_timeline integer not null default 0, "
+        "   store_start_and_stop_time INT NOT NULL DEFAULT 0, "
+        "   timeofday_format varchar NOT NULL DEFAULT 'HH:mm', "
+        "   duration_format varchar not null default 'classic', "
+        "   offline_data varchar"
+        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "no api token step #3",
+        "insert into users"
+        " select local_id, id, default_wid, since, fullname, email,"
+        " record_timeline, store_start_and_stop_time, timeofday_format,"
+        " duration_format, offline_data"
+        " from tmp_users");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "no api token step #4",
+        "drop table tmp_users");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 
@@ -2855,15 +2933,16 @@ error Database::migrateTimeEntries() {
 }
 
 error Database::migrateSettings() {
-    error err = migrate("settings",
-                        "create table settings("
-                        "local_id integer primary key, "
-                        "use_proxy integer not null default 0, "
-                        "proxy_host varchar, "
-                        "proxy_port integer, "
-                        "proxy_username varchar, "
-                        "proxy_password varchar, "
-                        "use_idle_detection integer not null default 1)");
+    error err = migrate(
+        "settings",
+        "create table settings("
+        "local_id integer primary key, "
+        "use_proxy integer not null default 0, "
+        "proxy_host varchar, "
+        "proxy_port integer, "
+        "proxy_username varchar, "
+        "proxy_password varchar, "
+        "use_idle_detection integer not null default 1)");
     if (err != noError) {
         return err;
     }
@@ -2947,20 +3026,87 @@ error Database::migrateSettings() {
         return err;
     }
 
+    err = migrate(
+        "focus on shortcut by default #1",
+        "ALTER TABLE settings RENAME TO tmp_settings");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #2",
+        "create table settings("
+        "   local_id integer primary key, "
+        "   use_proxy integer not null default 0, "
+        "   proxy_host varchar, "
+        "   proxy_port integer, "
+        "   proxy_username varchar, "
+        "   proxy_password varchar, "
+        "   use_idle_detection integer not null default 1, "
+        "   update_channel varchar not null default 'stable', "
+        "   menubar_timer integer not null default 0, "
+        "   dock_icon INTEGER NOT NULL DEFAULT 1, "
+        "   on_top INTEGER NOT NULL DEFAULT 0, "
+        "   reminder INTEGER NOT NULL DEFAULT 1, "
+        "   ignore_cert INTEGER NOT NULL DEFAULT 0, "
+        "   idle_minutes INTEGER NOT NULL DEFAULT 5, "
+        "   focus_on_shortcut INTEGER NOT NULL DEFAULT 1, "
+        "   reminder_minutes INTEGER NOT NULL DEFAULT 10, "
+        "   manual_mode INTEGER NOT NULL DEFAULT 0 "
+        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #3",
+        "insert into settings"
+        " select local_id, use_proxy, "
+        " proxy_host, proxy_port, proxy_username, proxy_password, "
+        " use_idle_detection, update_channel, menubar_timer, "
+        " dock_icon, on_top, reminder, ignore_cert, idle_minutes, "
+        " focus_on_shortcut, reminder_minutes, manual_mode "
+        " from tmp_settings");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #4",
+        "drop table tmp_settings");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "focus on shortcut by default #5",
+        "update settings set focus_on_shortcut = 1");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
-error Database::CurrentAPIToken(std::string *token) {
-    Poco::Mutex::ScopedLock lock(session_m_);
+error Database::CurrentAPIToken(
+    std::string *token,
+    Poco::UInt64 *uid) {
+
+    poco_check_ptr(token);
+    poco_check_ptr(uid);
 
     poco_check_ptr(session_);
-    poco_check_ptr(token);
+    Poco::Mutex::ScopedLock lock(session_m_);
 
     *token = "";
+    *uid = 0;
 
     try {
-        *session_ << "select api_token from sessions",
+        *session_ <<
+                  "select api_token, uid "
+                  " from sessions limit 1",
                   into(*token),
+                  into(*uid),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -2990,8 +3136,17 @@ error Database::ClearCurrentAPIToken() {
     return last_error("ClearCurrentAPIToken");
 }
 
-error Database::SetCurrentAPIToken(const std::string &token) {
+error Database::SetCurrentAPIToken(
+    const std::string &token,
+    const Poco::UInt64 &uid) {
     Poco::Mutex::ScopedLock lock(session_m_);
+
+    if (token.empty()) {
+        return error("cannot start session without API token");
+    }
+    if (!uid) {
+        return error("cannot start session without user ID");
+    }
 
     poco_check_ptr(session_);
 
@@ -3000,8 +3155,11 @@ error Database::SetCurrentAPIToken(const std::string &token) {
         return err;
     }
     try {
-        *session_ << "insert into sessions(api_token) values(:api_token)",
+        *session_ <<
+                  "insert into sessions(api_token, uid) "
+                  " values(:api_token, :uid)",
                   useRef(token),
+                  useRef(uid),
                   now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -3138,9 +3296,44 @@ error Database::execute(
     return noError;
 }
 
+error Database::deleteTooOldTimeline(
+    const Poco::UInt64 &UID) {
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    if (!UID) {
+        return error("Cannot delete old timeline without UID");
+    }
+
+    time_t minimum_time = time(0) - kTimelineSecondsToKeep;
+
+    try {
+        *session_ << "delete from timeline_events "
+                  "where user_id = :uid "
+                  "and start_time < :minimum_time",
+                  useRef(UID),
+                  useRef(minimum_time),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("deleteTooOldTimeline");
+}
+
 error Database::SelectTimelineBatch(
     const Poco::UInt64 &user_id,
     std::vector<TimelineEvent> *timeline_events) {
+
+    error err = deleteTooOldTimeline(user_id);
+    if (err != noError) {
+        return err;
+    }
 
     Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -3199,7 +3392,7 @@ error Database::SelectTimelineBatch(
     return last_error("SelectTimelineBatch");
 }
 
-const int kMaxTimelineStringSize = 500;
+const int kMaxTimelineStringSize = 300;
 
 error Database::InsertTimelineEvent(TimelineEvent *event) {
     Poco::Mutex::ScopedLock lock(session_m_);

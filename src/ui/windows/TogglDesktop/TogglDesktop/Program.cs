@@ -141,11 +141,18 @@ namespace TogglDesktop
 
         static void notifyBugsnag(Exception e)
         {
-            bugsnag.Notify(e, new
+            try
             {
-                UserID = uid.ToString(),
-                channel = Toggl.UpdateChannel()
-            });
+                bugsnag.Notify(e, new
+                {
+                    UserID = uid.ToString(),
+                    channel = Toggl.UpdateChannel()
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not notify bugsnag: ", ex);
+            }
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

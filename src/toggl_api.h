@@ -6,8 +6,8 @@
 // src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs
 // to fix this.
 
-#ifndef SRC_LIB_INCLUDE_TOGGL_API_H_
-#define SRC_LIB_INCLUDE_TOGGL_API_H_
+#ifndef SRC_TOGGL_API_H_
+#define SRC_TOGGL_API_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,7 +18,7 @@ extern "C" {
 #include <stdint.h>
 
 #ifdef _WIN32
-#define _Bool bool
+    typedef bool _Bool;
 #else
 #include <stdbool.h>
 #endif
@@ -178,7 +178,8 @@ extern "C" {
         const char_t *guid,
         const char_t *since,
         const char_t *duration,
-        const uint64_t started);
+        const uint64_t started,
+        const char_t *description);
 
     // Initialize/destroy an instance of the app
 
@@ -554,6 +555,11 @@ extern "C" {
         const int view_item_size,
         const int settings_size);
 
+    TOGGL_EXPORT char_t *toggl_run_script(
+        void *context,
+        const char* script,
+        int64_t *err);
+
     // Testing helpers. May change any time
     void testing_sleep(
         const int seconds);
@@ -569,4 +575,4 @@ extern "C" {
 }
 #endif
 
-#endif  // SRC_LIB_INCLUDE_TOGGL_API_H_
+#endif  // SRC_TOGGL_API_H_
