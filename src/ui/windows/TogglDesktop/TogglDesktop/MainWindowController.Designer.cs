@@ -258,7 +258,7 @@
             this.resizeHandle.BackColor = System.Drawing.Color.WhiteSmoke;
             this.resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.resizeHandle.Image = global::TogglDesktop.Properties.Resources.resize;
-            this.resizeHandle.Location = new System.Drawing.Point(284, 254);
+            this.resizeHandle.Location = new System.Drawing.Point(284, 244);
             this.resizeHandle.Name = "resizeHandle";
             this.resizeHandle.Size = new System.Drawing.Size(16, 16);
             this.resizeHandle.TabIndex = 8;

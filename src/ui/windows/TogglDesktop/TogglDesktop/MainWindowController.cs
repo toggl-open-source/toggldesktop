@@ -893,7 +893,7 @@ namespace TogglDesktop
             {
                 hideHorizontalScrollBar();
             }
-            resizeHandle.Location = new Point(Width-16, Height-46);
+            resizeHandle.Location = new Point(Width-16, Height-56);
             updateResizeHandleBackground();
         }
 
