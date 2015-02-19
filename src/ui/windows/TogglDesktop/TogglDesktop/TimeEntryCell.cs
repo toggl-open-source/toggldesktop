@@ -16,14 +16,16 @@ namespace TogglDesktop
         public bool header = false;
         private TimeEntryListViewController list;
         public bool opened = false;
-        private Color hoverColor = Color.WhiteSmoke;
-        private Color defaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+        private Color hoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
+        private Color defaultColor = Color.White;
         private int defaultDurationX = 150;
 
         public TimeEntryCell(TimeEntryListViewController listContainer)
         {
             list = listContainer;
             InitializeComponent();
+
+            this.defaultColor = this.panel.BackColor;
 
             TogglForm.ApplyFont("roboto", this.labelFormattedDate);
             TogglForm.ApplyFont("roboto", this.labelDateDuration);
