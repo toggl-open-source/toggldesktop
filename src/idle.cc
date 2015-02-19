@@ -33,11 +33,20 @@ void Idle::SetIdleSeconds(
         logger().debug(ss.str());
     }
     */
-
-    if (current_user) {
-        computeIdleState(idle_seconds, current_user);
+    if (!current_user) {
+        return;
     }
-
+    try {
+        if (current_user) {
+            computeIdleState(idle_seconds, current_user);
+        }
+    } catch(const Poco::Exception& exc) {
+        logger().error(exc.displayText());
+    } catch(const std::exception& ex) {
+        return logger().error(ex.what());
+    } catch(const std::string& ex) {
+        return logger().error(ex);
+    }
     last_idle_seconds_reading_ = idle_seconds;
 }
 

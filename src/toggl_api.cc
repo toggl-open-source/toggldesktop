@@ -797,7 +797,9 @@ _Bool toggl_check_view_struct_size(
 void toggl_set_idle_seconds(
     void *context,
     const uint64_t idle_seconds) {
-    app(context)->SetIdleSeconds(idle_seconds);
+    if (context) {
+        app(context)->SetIdleSeconds(idle_seconds);
+    }
 }
 
 #ifndef _WIN32
