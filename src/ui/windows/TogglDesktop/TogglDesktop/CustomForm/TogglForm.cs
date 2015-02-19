@@ -63,31 +63,32 @@ namespace TogglDesktop
             style.NormalState.StretchMargins = new Padding(3, 30, 3, 3);
 
             style.CloseButton.Size = TogglDesktop.Properties.Resources.Close.Size;
-            style.CloseButton.Margin = new Padding(0, 10, 10, 0);
+            style.CloseButton.Margin = new Padding(0, 16, 8, 0);
             style.CloseButton.NormalState.Image = TogglDesktop.Properties.Resources.Close;
             style.CloseButton.DisabledState.Image = TogglDesktop.Properties.Resources.CloseDisabled;
             style.CloseButton.ActiveState.Image = TogglDesktop.Properties.Resources.CloseHot;
             style.CloseButton.HoverState.Image = TogglDesktop.Properties.Resources.CloseHot;
 
             style.MinimizeButton.Size = TogglDesktop.Properties.Resources.Minimize.Size;
-            style.MinimizeButton.Margin = new Padding(0, 10, 15, 0);
+            style.MinimizeButton.Margin = new Padding(0, 13, 16, 0);
             style.MinimizeButton.NormalState.Image = TogglDesktop.Properties.Resources.Minimize;
             style.MinimizeButton.DisabledState.Image = TogglDesktop.Properties.Resources.MinimizeDisabled;
             style.MinimizeButton.ActiveState.Image = TogglDesktop.Properties.Resources.MinimizeHot;
             style.MinimizeButton.HoverState.Image = TogglDesktop.Properties.Resources.MinimizeHot;
 
             style.HelpButton.Size = TogglDesktop.Properties.Resources.cog.Size;
-            style.HelpButton.Margin = new Padding(0, 10, 15, 0);
+            style.HelpButton.Margin = new Padding(0, 14, 14, 0);
             style.HelpButton.NormalState.Image = TogglDesktop.Properties.Resources.cog;
-            style.HelpButton.DisabledState.Image = TogglDesktop.Properties.Resources.cogDisabled;
-            style.HelpButton.ActiveState.Image = TogglDesktop.Properties.Resources.cogPressed;
+            style.HelpButton.DisabledState.Image = TogglDesktop.Properties.Resources.cog;
+            style.HelpButton.ActiveState.Image = TogglDesktop.Properties.Resources.cogHot;
             style.HelpButton.HoverState.Image = TogglDesktop.Properties.Resources.cogHot;
 
             Font f = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular);
             style.TitleColor = Color.White;
             style.TitleFont = GetFont("roboto-light", f);
             style.ClientAreaPadding = new Padding(0, 40, 0, 0);
-            style.IconPadding = new Padding(7, 11, 10, 0);
+            style.IconPadding = new Padding(11, 11, 10, 0);
+            style.TitlePadding = new Padding(5, 0, 0, 0);
             NonClientAreaDoubleBuffering = true;
 
             return style;
