@@ -18,6 +18,7 @@ namespace TogglDesktop
         public bool opened = false;
         private Color hoverColor = Color.WhiteSmoke;
         private Color defaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+        private int defaultDurationX = 150;
 
         public TimeEntryCell(TimeEntryListViewController listContainer)
         {
@@ -178,11 +179,13 @@ namespace TogglDesktop
         {
             if (Width < list.Width)
             {
-                labelContinue.Margin = new Padding(3, 9, 5, 0);
+                labelDuration.Left = Width - defaultDurationX + 17;
+                labelContinue.Margin = new Padding(18, 9, 5, 0);
             }
             else
             {
-                labelContinue.Margin = new Padding(3, 9, 22, 0);
+                labelDuration.Left = Width - defaultDurationX;
+                labelContinue.Margin = new Padding(18, 9, 22, 0);
             }
         }
     }
