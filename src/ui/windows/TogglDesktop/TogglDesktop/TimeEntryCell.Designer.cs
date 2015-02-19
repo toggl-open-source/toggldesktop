@@ -121,8 +121,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel.BackColor = System.Drawing.Color.White;
             this.panel.Controls.Add(this.labelBillable);
-            this.panel.Controls.Add(this.labelDuration);
             this.panel.Controls.Add(this.labelTag);
+            this.panel.Controls.Add(this.labelDuration);
             this.panel.Controls.Add(this.tagBillableContinuePanel);
             this.panel.Controls.Add(this.ProjectColorPanel);
             this.panel.Controls.Add(this.labelDescription);
@@ -140,12 +140,13 @@
             this.labelBillable.AccessibleName = "Billable label";
             this.labelBillable.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
             this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelBillable.BackColor = System.Drawing.Color.Transparent;
             this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
-            this.labelBillable.Location = new System.Drawing.Point(143, 0);
+            this.labelBillable.Location = new System.Drawing.Point(165, 0);
             this.labelBillable.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
             this.labelBillable.Name = "labelBillable";
             this.labelBillable.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.labelBillable.Size = new System.Drawing.Size(19, 55);
+            this.labelBillable.Size = new System.Drawing.Size(22, 55);
             this.labelBillable.TabIndex = 5;
             this.labelBillable.UseMnemonic = false;
             this.labelBillable.Click += new System.EventHandler(this.edit_Click);
@@ -154,7 +155,7 @@
             // labelDuration
             // 
             this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDuration.BackColor = System.Drawing.Color.White;
+            this.labelDuration.BackColor = System.Drawing.Color.Transparent;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.labelDuration.Location = new System.Drawing.Point(163, 0);
@@ -175,11 +176,12 @@
             this.labelTag.AccessibleName = "Tags label";
             this.labelTag.AccessibleRole = System.Windows.Forms.AccessibleRole.Graphic;
             this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelTag.BackColor = System.Drawing.Color.Transparent;
             this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
-            this.labelTag.Location = new System.Drawing.Point(127, 0);
+            this.labelTag.Location = new System.Drawing.Point(143, 0);
             this.labelTag.Name = "labelTag";
-            this.labelTag.Padding = new System.Windows.Forms.Padding(3, 0, 19, 0);
-            this.labelTag.Size = new System.Drawing.Size(38, 55);
+            this.labelTag.Padding = new System.Windows.Forms.Padding(3, 0, 4, 0);
+            this.labelTag.Size = new System.Drawing.Size(23, 55);
             this.labelTag.TabIndex = 13;
             this.labelTag.UseMnemonic = false;
             this.labelTag.Click += new System.EventHandler(this.edit_Click);
