@@ -2272,20 +2272,28 @@ _Bool Context::OpenReportsInBrowser() {
 void Context::SetWake() {
     logger().debug("SetWake");
 
-    remindToTrackTime();
+    try {
+        remindToTrackTime();
 
-    scheduleSync();
+        scheduleSync();
 
-    if (user_) {
-        Poco::LocalDateTime now;
-        if (now.year() != last_time_entry_list_render_at_.year()
-                || now.month() != last_time_entry_list_render_at_.month()
-                || now.day() != last_time_entry_list_render_at_.day()) {
-            DisplayTimeEntryList(false);
+        if (user_) {
+            Poco::LocalDateTime now;
+            if (now.year() != last_time_entry_list_render_at_.year()
+                    || now.month() != last_time_entry_list_render_at_.month()
+                    || now.day() != last_time_entry_list_render_at_.day()) {
+                DisplayTimeEntryList(false);
+            }
         }
-    }
 
-    idle_.SetWake(user_);
+        idle_.SetWake(user_);
+    } catch(const Poco::Exception& exc) {
+        logger().error(exc.displayText());
+    } catch(const std::exception& ex) {
+        logger().error(ex.what());
+    } catch(const std::string& ex) {
+        logger().error(ex);
+    }
 }
 
 void Context::SetOnline() {
