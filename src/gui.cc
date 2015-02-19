@@ -45,10 +45,19 @@ _Bool GUI::DisplayError(const error err) {
         return false;
     }
 
-    logger().debug("DisplayError");
+    std::string actionable = MakeErrorActionable(err);
+    bool is_user_error = IsUserError(err);
 
-    char_t *err_s = copy_string(err);
-    on_display_error_(err_s, IsUserError(err));
+    {
+        std::stringstream ss;
+        ss << "DisplayError err=" << err
+           << " actionable=" << actionable
+           << " is_user_error=" << is_user_error;
+        logger().debug(ss.str());
+    }
+
+    char_t *err_s = copy_string(actionable);
+    on_display_error_(err_s, is_user_error);
     free(err_s);
 
     return false;
@@ -318,17 +327,21 @@ void GUI::DisplayTimerState(TogglTimeEntryView *te) {
 void GUI::DisplayIdleNotification(const std::string guid,
                                   const std::string since,
                                   const std::string duration,
-                                  const uint64_t started) {
+                                  const uint64_t started,
+                                  const std::string description) {
     char_t *guid_s = copy_string(guid);
     char_t *since_s = copy_string(since);
     char_t *duration_s = copy_string(duration);
+    char_t *description_s = copy_string(description);
     on_display_idle_notification_(guid_s,
                                   since_s,
                                   duration_s,
-                                  started);
+                                  started,
+                                  description_s);
     free(guid_s);
     free(since_s);
     free(duration_s);
+    free(description_s);
 }
 
 Poco::Logger &GUI::logger() const {

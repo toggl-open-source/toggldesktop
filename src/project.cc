@@ -149,6 +149,12 @@ bool Project::clientIsInAnotherWorkspace(const toggl::error err) const {
         "client is in another workspace"));
 }
 
+bool Project::onlyAdminsCanChangeProjectVisibility(
+    const toggl::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "Only admins can change project visibility"));
+}
+
 bool Project::ResolveError(const toggl::error err) {
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
@@ -156,6 +162,10 @@ bool Project::ResolveError(const toggl::error err) {
     }
     if (clientIsInAnotherWorkspace(err)) {
         SetCID(0);
+        return true;
+    }
+    if (!IsPrivate() && onlyAdminsCanChangeProjectVisibility(err)) {
+        SetPrivate(true);
         return true;
     }
     return false;

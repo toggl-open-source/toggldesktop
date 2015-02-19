@@ -9,39 +9,25 @@
 
 #import "Utils.h"
 
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-
-#include "toggl_api_lua.h"
-
 @interface ConsoleViewController ()
 @end
 
 @implementation ConsoleViewController
 
 void *ctx;
-lua_State *L;
 
 - (void)windowDidLoad
 {
 	[super windowDidLoad];
-
-	L = luaL_newstate();
-	luaL_openlibs(L);
-
-	toggl_register_lua(ctx, L);
-
-	lua_settop(L, 0);
 
 	[self.entryTextField becomeFirstResponder];
 }
 
 - (IBAction)onRun:(id)sender
 {
-	NSString *result = [Utils runScript:self.entryTextField.stringValue withState:L];
+	ScriptResult *result = [Utils runScript:self.entryTextField.stringValue];
 
-	[self appendToResultView:result];
+	[self appendToResultView:result.text];
 
 	self.entryTextField.stringValue = @"";
 }

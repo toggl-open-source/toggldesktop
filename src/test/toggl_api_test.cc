@@ -4,18 +4,18 @@
 
 #include "gtest/gtest.h"
 
-#include "./../lib/include/toggl_api.h"
 #include "./../proxy.h"
 #include "./../settings.h"
 #include "./../time_entry.h"
+#include "./../toggl_api.h"
 #include "./../toggl_api_private.h"
 #include "./test_data.h"
 
-#include "Poco/FileStream.h"
-#include "Poco/File.h"
-#include "Poco/Path.h"
 #include "Poco/DateTime.h"
+#include "Poco/File.h"
+#include "Poco/FileStream.h"
 #include "Poco/LocalDateTime.h"
+#include "Poco/Path.h"
 
 namespace toggl {
 
@@ -51,6 +51,7 @@ std::string idle_guid("");
 std::string idle_since("");
 std::string idle_duration("");
 uint64_t idle_started(0);
+std::string idle_description("");
 
 // on_display_timer_state
 TimeEntry timer_state;
@@ -224,11 +225,13 @@ void on_display_idle_notification(
     const char *guid,
     const char *since,
     const char *duration,
-    const uint64_t started) {
+    const uint64_t started,
+    const char *description) {
     testing::testresult::idle_since = std::string(since);
     testing::testresult::idle_started = started;
     testing::testresult::idle_duration = std::string(duration);
     testing::testresult::idle_guid = std::string(guid);
+    testing::testresult::idle_description = std::string(description);
 }
 
 void on_apply_settings(
@@ -505,7 +508,9 @@ TEST(TogglApiTest, toggl_set_environment) {
 TEST(TogglApiTest, testing_set_logged_in_user) {
     std::string json = loadTestData();
     testing::App app;
+    testing::testresult::error = "";
     _Bool res = testing_set_logged_in_user(app.ctx(), json.c_str());
+    ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
 }

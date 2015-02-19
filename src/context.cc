@@ -12,6 +12,7 @@
 
 #include "./const.h"
 #include "./database.h"
+#include "./error.h"
 #include "./formatter.h"
 #include "./https_client.h"
 #include "./project.h"
@@ -26,14 +27,14 @@
 #include "Poco/DateTimeFormat.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/Environment.h"
-#include "Poco/FormattingChannel.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
+#include "Poco/FormattingChannel.h"
 #include "Poco/Logger.h"
 #include "Poco/Net/NetSSL.h"
 #include "Poco/PatternFormatter.h"
-#include "Poco/SimpleFileChannel.h"
 #include "Poco/Random.h"
+#include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
@@ -474,19 +475,20 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    err = user_->PushChanges(&client);
+    setOnline("Data pulled");
+
+    bool had_something_to_push(true);
+    err = user_->PushChanges(&client, &had_something_to_push);
     if (err != noError) {
         displayError(err);
         return;
     }
 
-    err = save(false);
-    if (err != noError) {
-        displayError(err);
-        return;
+    if (had_something_to_push) {
+        setOnline("Data pushed");
     }
 
-    setOnline("Sync done");
+    displayError(save(false));
 }
 
 void Context::setOnline(const std::string reason) {
@@ -530,10 +532,11 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onPushChanges executing");
 
     TogglClient client;
-    error err = user_->PushChanges(&client);
+    bool had_something_to_push(true);
+    error err = user_->PushChanges(&client, &had_something_to_push);
     if (err != noError) {
         displayError(err);
-    } else {
+    } else if (had_something_to_push) {
         setOnline("Changes pushed");
     }
 
@@ -922,7 +925,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kAPIURL,
+    error err = https_client.PostJSON(kTimelineUploadURL,
                                       "/api/v8/timeline_settings",
                                       json,
                                       user_->APIToken(),
@@ -1222,6 +1225,52 @@ _Bool Context::GoogleLogin(const std::string access_token) {
     return Login(access_token, "google_access_token");
 }
 
+error Context::attemptOfflineLogin(const std::string email,
+                                   const std::string password) {
+    if (email.empty()) {
+        return error("cannot login offline without an e-mail");
+    }
+
+    if (password.empty()) {
+        return error("cannot login offline without a password");
+    }
+
+    User *user = new User();
+
+    error err = db()->LoadUserByEmail(email, user);
+    if (err != noError) {
+        delete user;
+        return err;
+    }
+
+    if (!user->ID()) {
+        delete user;
+        return error(kEmailNotFoundCannotLogInOffline);
+    }
+
+    err = user->SetAPITokenFromOfflineData(password);
+    if ("I/O error" == err) {
+        delete user;
+        return error(kInvalidPassword);
+    }
+    if (err != noError) {
+        delete user;
+        return err;
+    }
+
+    err = db()->SetCurrentAPIToken(user->APIToken(), user->ID());
+    if (err != noError) {
+        delete user;
+        return err;
+    }
+
+    setUser(user, true);
+
+    displayUI();
+
+    return save();
+}
+
 _Bool Context::Login(
     const std::string email,
     const std::string password) {
@@ -1230,10 +1279,35 @@ _Bool Context::Login(
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
     if (err != noError) {
+        if (!IsNetworkingError(err)) {
+            return displayError(err);
+        }
+        // Indicate we're offline
+        displayError(err);
+
+        std::stringstream ss;
+        ss << "Got networking error " << err
+           << " will attempt offline login";
+        logger().debug(ss.str());
+
+        return displayError(attemptOfflineLogin(email, password));
+    }
+
+    if (!SetLoggedInUserFromJSON(user_data_json)) {
+        return false;
+    }
+
+    if (!user_) {
+        logger().error("cannot enable offline login, no user");
+        return true;
+    }
+
+    err = user_->EnableOfflineLogin(password);
+    if (err != noError) {
         return displayError(err);
     }
 
-    return SetLoggedInUserFromJSON(user_data_json);
+    return displayError(save());
 }
 
 _Bool Context::Signup(
@@ -1327,7 +1401,7 @@ _Bool Context::SetLoggedInUserFromJSON(
         return displayError(err);
     }
 
-    err = db()->SetCurrentAPIToken(user->APIToken());
+    err = db()->SetCurrentAPIToken(user->APIToken(), user->ID());
     if (err != noError) {
         delete user;
         return displayError(err);
@@ -1643,7 +1717,12 @@ _Bool Context::ContinueLatest() {
         return displayError(err);
     }
 
-    UI()->DisplayApp();
+    Settings settings;
+    if (LoadSettings(&settings)) {
+        if (settings.focus_on_shortcut) {
+            UI()->DisplayApp();
+        }
+    }
 
     return displayError(save());
 }
@@ -1665,7 +1744,12 @@ _Bool Context::Continue(
         return displayError(err);
     }
 
-    UI()->DisplayApp();
+    Settings settings;
+    if (LoadSettings(&settings)) {
+        if (settings.focus_on_shortcut) {
+            UI()->DisplayApp();
+        }
+    }
 
     err = save();
     if (err != noError) {
@@ -1981,7 +2065,12 @@ _Bool Context::Stop() {
         return true;
     }
 
-    UI()->DisplayApp();
+    Settings settings;
+    if (LoadSettings(&settings)) {
+        if (settings.focus_on_shortcut) {
+            UI()->DisplayApp();
+        }
+    }
 
     return displayError(save());
 }

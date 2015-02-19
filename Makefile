@@ -11,7 +11,7 @@ jsoncppdir=third_party/jsoncpp/dist
 
 GTEST_ROOT=third_party/googletest-read-only
 
-source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h src/lib/include/*.h \
+source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
 	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp \
 	src/ui/linux/TogglDesktop/aboutdialog.h src/ui/linux/TogglDesktop/aboutdialog.cpp \
 	src/ui/linux/TogglDesktop/autocompleteview.h src/ui/linux/TogglDesktop/autocompleteview.cpp \
@@ -48,7 +48,7 @@ osname=linux
 endif
 
 ifeq ($(uname), Darwin)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -60,12 +60,12 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsoncppdir) \
-	-Ithird_party/lua/src \
+	-Ithird_party/lua/install/include \
 	-DNDEBUG
 endif
 
 ifeq ($(uname), Linux)
-cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -78,7 +78,7 @@ cflags=-g -DNDEBUG -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(pocodir)/Net/include \
 	-I$(pocodir)/NetSSL_OpenSSL/include \
 	-I$(jsoncppdir) \
-	-Ithird_party/lua/src \
+	-Ithird_party/lua/install/include \
 	-DNDEBUG
 endif
 
@@ -98,6 +98,8 @@ libs=-framework Carbon \
 	-L$(openssldir) \
 	-lssl \
 	-lcrypto \
+        -Lthird_party/lua/install/lib \
+	-llua \
 	-ldl
 endif
 
@@ -118,6 +120,8 @@ libs=-lX11 \
 	-lssl \
 	-lcrypto \
 	-lrt \
+        -Lthird_party/lua/install/lib \
+	-llua \
 	-ldl
 endif
 
@@ -155,7 +159,7 @@ lint:
 	./third_party/cpplint/cpplint.py $(source_dirs)
 
 cppclean:
-	./third_party/cppclean/cppclean -q --include-path=src/lib/include --include-path=third_party/poco/Crypto/include --include-path=third_party/poco/Net/include --include-path=third_party/poco/NetSSL_OpenSSL/include --include-path=third_party/poco/Foundation/include --include-path=third_party/poco/Util/include --include-path=third_party/poco/Data/include --include-path=third_party/poco/Data/SQLite/include --include-path=third_party/poco/Data/SQLite/src --include-path=third_party/lua/src src/*.*
+	./third_party/cppclean/cppclean -q --include-path=src/lib/include --include-path=third_party/poco/Crypto/include --include-path=third_party/poco/Net/include --include-path=third_party/poco/NetSSL_OpenSSL/include --include-path=third_party/poco/Foundation/include --include-path=third_party/poco/Util/include --include-path=third_party/poco/Data/include --include-path=third_party/poco/Data/SQLite/include --include-path=third_party/poco/Data/SQLite/src --include-path=third_party/lua/install/include src/*.*
 
 qa: lint fmt cppclean test
 
@@ -221,8 +225,18 @@ clean_deps:
 	cd $(pocodir) && (make clean || true)
 	rm -rf $(pocodir)/**/.dep
 	cd $(openssldir) && (make clean || true)
+	cd third_party/lua && make clean
 
-deps: clean_deps openssl poco
+deps: clean_deps openssl poco lua
+
+ifeq ($(uname), Linux)
+lua:
+	cd third_party/lua && make linux && make local
+endif
+ifeq ($(uname), Darwin)
+lua:
+	cd third_party/lua && make macosx && make local
+endif
 
 openssl:
 ifeq ($(uname), Darwin)
@@ -383,6 +397,7 @@ test_objects: build/test/gtest-all.o \
 	build/test/toggl_api_test.o
 
 uitest:
+	rm -rf test
 	mkdir -p test
 	$(executable) \
 		--script-path $(pwd)/src/test/uitest.lua \
@@ -393,7 +408,7 @@ toggl_test: clean_test objects test_objects
 	mkdir -p test
 	$(cxx) -coverage -o test/toggl_test build/*.o build/test/*.o $(libs)
 
-test_lib: toggl_test
+test_lib: lua toggl_test
 ifeq ($(uname), Linux)
 	cp src/ssl/cacert.pem test/.
 	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.

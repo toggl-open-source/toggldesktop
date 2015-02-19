@@ -152,3 +152,8 @@ app.info
 
 # packaged build
 out
+
+# Built Lua
+third_party/lua/src/lua
+third_party/lua/src/luac
+third_party/lua/install

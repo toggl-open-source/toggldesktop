@@ -14,9 +14,9 @@
 
 #include "Poco/Data/SQLite/Connector.h"
 
-#include "./types.h"
 #include "./model_change.h"
 #include "./timeline_event.h"
+#include "./types.h"
 
 namespace Poco {
 class Logger;
@@ -51,9 +51,9 @@ class Database {
         const Poco::UInt64 &UID,
         User *user);
 
-    error LoadUserByAPIToken(
-        const std::string &api_token,
-        User *user);
+    error LoadUserByEmail(
+        const std::string &email,
+        User *model);
 
     error LoadCurrentUser(User *user);
 
@@ -104,8 +104,12 @@ class Database {
 
     error LoadTimeEntriesForUpload(User *user);
 
-    error CurrentAPIToken(std::string *token);
-    error SetCurrentAPIToken(const std::string &token);
+    error CurrentAPIToken(
+        std::string *token,
+        Poco::UInt64 *uid);
+    error SetCurrentAPIToken(
+        const std::string &token,
+        const Poco::UInt64 &uid);
     error ClearCurrentAPIToken();
 
     error SelectTimelineBatch(const Poco::UInt64 &user_id,
@@ -232,6 +236,9 @@ class Database {
 
     error saveDesktopID();
     error saveAnalyticsClientID();
+
+    error deleteTooOldTimeline(
+        const Poco::UInt64 &UID);
 
     Poco::Logger &logger() const;
 

@@ -85,6 +85,7 @@ class Project : public BaseModel {
 
  private:
     bool clientIsInAnotherWorkspace(const toggl::error) const;
+    bool onlyAdminsCanChangeProjectVisibility(const toggl::error err) const;
 
     static std::vector<std::string> color_codes;
 

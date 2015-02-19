@@ -33,6 +33,7 @@
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
 		7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A618887BEE0025A88B /* toggl_api_private.cc */; };
+		74A026E11A884D5A0087570A /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74A026E01A884D5A0087570A /* liblua.a */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
 		74B587BC18BBC77E00E9F6CE /* tag.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B587A718BBC77E00E9F6CE /* tag.h */; };
@@ -108,6 +109,7 @@
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
 		7484A2A618887BEE0025A88B /* toggl_api_private.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = toggl_api_private.cc; path = ../../../toggl_api_private.cc; sourceTree = "<group>"; };
+		74A026E01A884D5A0087570A /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../../third_party/lua/install/lib/liblua.a; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
 		74B587A718BBC77E00E9F6CE /* tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tag.h; path = ../../../tag.h; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				74213489195C4D41007EF78B /* libPocoXML.30.dylib in Frameworks */,
 				7421348A195C4D41007EF78B /* libPocoDataSQLite.30.dylib in Frameworks */,
 				7421348B195C4D41007EF78B /* libPocoNet.30.dylib in Frameworks */,
+				74A026E11A884D5A0087570A /* liblua.a in Frameworks */,
 				7421348C195C4D41007EF78B /* libPocoFoundation.30.dylib in Frameworks */,
 				7421348D195C4D41007EF78B /* libPocoCrypto.30.dylib in Frameworks */,
 				74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */,
@@ -215,6 +218,7 @@
 				C5DA1F9917F18D2B001C4565 /* libPocoNetSSL.a */,
 				C5DA1F9A17F18D2B001C4565 /* libPocoUtil.a */,
 				C5DA1F9B17F18D2B001C4565 /* libPocoXML.a */,
+				74A026E01A884D5A0087570A /* liblua.a */,
 				C5DA1F9217F18CBB001C4565 /* libcrypto.a */,
 				C5DA1F9017F18CB6001C4565 /* libssl.a */,
 				C55DA5DA17F06EF200B42178 /* libc++.dylib */,
@@ -497,6 +501,7 @@
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
+					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -540,6 +545,7 @@
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
+					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -572,6 +578,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
+					../../../third_party/lua/install/lib,
+					/Users/tanellebedev/projects/toggl/toggldesktop/third_party/lua/install/lib,
 				);
 				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -601,6 +609,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
+					../../../third_party/lua/install/lib,
+					/Users/tanellebedev/projects/toggl/toggldesktop/third_party/lua/install/lib,
 				);
 				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;

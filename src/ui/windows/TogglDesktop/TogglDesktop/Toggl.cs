@@ -278,13 +278,16 @@ namespace TogglDesktop
             string since,
             [MarshalAs(UnmanagedType.LPWStr)]
             string duration,
-            UInt64 started);
+            UInt64 started,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string description);
 
         public delegate void DisplayIdleNotification(
             string guid,
             string since,
             string duration,
-            UInt64 started);
+            UInt64 started,
+            string description);
 
         // Initialize/destroy an instance of the app
 
@@ -1167,9 +1170,13 @@ namespace TogglDesktop
             });
 
             toggl_on_idle_notification(ctx, delegate(
-                string guid, string since, string duration, UInt64 started)
+                string guid,
+                string since,
+                string duration,
+                UInt64 started,
+                string description)
             {
-                OnIdleNotification(guid, since, duration, started);
+                OnIdleNotification(guid, since, duration, started, description);
             });
 
             toggl_set_environment(ctx, Properties.Settings.Default.Environment);

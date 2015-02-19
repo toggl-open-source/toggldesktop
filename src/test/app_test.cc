@@ -5,6 +5,7 @@
 #include <iostream>  // NOLINT
 
 #include "./../client.h"
+#include "./../const.h"
 #include "./../database.h"
 #include "./../formatter.h"
 #include "./../project.h"
@@ -96,15 +97,64 @@ TEST(Project, ProjectsHaveColorCodes) {
     ASSERT_EQ("#a4506c", p.ColorCode());
 }
 
+TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
+    Project p;
+    p.SetPrivate(false);
+    error err = error("Only admins can change project visibility");
+    ASSERT_TRUE(p.ResolveError(err));
+    ASSERT_TRUE(p.IsPrivate());
+}
+
+TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
+    testing::Database db;
+
+    const Poco::UInt64 user_id = 123;
+
+    TimelineEvent good;
+    good.user_id = user_id;
+    good.start_time = time(0) - 60;  // started 1 minute ago
+    good.end_time = time(0);  // lasted until now
+    good.filename = "Notepad.exe";
+    good.title = "untitled";
+
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&good));
+
+    TimelineEvent bad;
+    bad.user_id = user_id;
+    bad.start_time = time(0) - kTimelineSecondsToKeep - 1;  // 7 days ago
+    bad.end_time = bad.end_time + 120;  // lasted 2 minutes
+    bad.filename = "Notepad.exe";
+    bad.title = "untitled";
+
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&bad));
+
+    std::vector<TimelineEvent> timeline_events;
+    ASSERT_EQ(noError, db.instance()->SelectTimelineBatch(
+        user_id, &timeline_events));
+
+    ASSERT_EQ(size_t(1), timeline_events.size());
+
+    TimelineEvent ready_for_upload = timeline_events[0];
+    ASSERT_EQ(good.user_id, ready_for_upload.user_id);
+    ASSERT_EQ(good.start_time, ready_for_upload.start_time);
+    ASSERT_EQ(good.end_time, ready_for_upload.end_time);
+    ASSERT_EQ(good.filename, ready_for_upload.filename);
+    ASSERT_EQ(good.title, ready_for_upload.title);
+    ASSERT_EQ(good.idle, ready_for_upload.idle);
+}
+
 TEST(Database, SaveAndLoadCurrentAPIToken) {
     testing::Database db;
     std::string api_token("");
-    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token));
+    Poco::UInt64 uid(0);
+    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token, &uid));
     ASSERT_EQ("", api_token);
+    ASSERT_EQ(Poco::UInt64(0), uid);
 
     api_token = "abc123";
-    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token));
-    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token));
+    uid = 123;
+    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token, uid));
+    ASSERT_EQ(noError, db.instance()->SetCurrentAPIToken(api_token, uid));
 
     Poco::UInt64 n(0);
     ASSERT_EQ(noError,
@@ -112,16 +162,21 @@ TEST(Database, SaveAndLoadCurrentAPIToken) {
     ASSERT_EQ(Poco::UInt64(1), n);
 
     std::string api_token_from_db("");
-    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token_from_db));
+    Poco::UInt64 uid_from_db(0);
+    ASSERT_EQ(noError,
+              db.instance()->CurrentAPIToken(&api_token_from_db, &uid_from_db));
     ASSERT_EQ("abc123", api_token_from_db);
+    ASSERT_EQ(Poco::UInt64(123), uid_from_db);
 
     ASSERT_EQ(noError, db.instance()->ClearCurrentAPIToken());
     ASSERT_EQ(noError,
               db.instance()->UInt("select count(1) from sessions", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
-    ASSERT_EQ(noError, db.instance()->CurrentAPIToken(&api_token_from_db));
+    ASSERT_EQ(noError,
+              db.instance()->CurrentAPIToken(&api_token_from_db, &uid_from_db));
     ASSERT_EQ("", api_token_from_db);
+    ASSERT_EQ(Poco::UInt64(0), uid_from_db);
 }
 
 TEST(User, UpdatesTimeEntryFromJSON) {
@@ -159,12 +214,12 @@ TEST(Database, AllowsSameEmail) {
     ASSERT_NE(user.APIToken(), user2.APIToken());
 }
 
-TEST(AppTest, EscapeControlCharactersInJSONString) {
+TEST(Formatter, EscapeControlCharactersInJSONString) {
     std::string text("\x16");
     ASSERT_EQ(" ", Formatter::EscapeJSONString(text));
 }
 
-TEST(AppTest, UpdatesTimeEntryFromFullUserJSON) {
+TEST(User, UpdatesTimeEntryFromFullUserJSON) {
     testing::Database db;
 
     std::string json = loadTestData();
@@ -189,7 +244,7 @@ TEST(AppTest, UpdatesTimeEntryFromFullUserJSON) {
     ASSERT_EQ("Even more important!", te->Description());
 }
 
-TEST(AppTest, SavesAndLoadsUserFields) {
+TEST(Database, SavesAndLoadsUserFields) {
     testing::Database db;
 
     User user;
@@ -218,7 +273,7 @@ TEST(AppTest, SavesAndLoadsUserFields) {
     ASSERT_TRUE(user3.StoreStartAndStopTime());
 }
 
-TEST(AppTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
+TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
     User user;
@@ -264,7 +319,7 @@ TEST(AppTest, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     }
 }
 
-TEST(AppTest,
+TEST(Database,
      SavesModelsAndKnowsToUpdateWithSeparateUserInstances) {
     testing::Database db;
 
@@ -352,7 +407,7 @@ TEST(AppTest,
     ASSERT_EQ(uint(5), n);
 }
 
-TEST(AppTest, TestStartTimeEntryWithDuration) {
+TEST(User, TestStartTimeEntryWithDuration) {
     testing::Database db;
 
     User user;
@@ -370,7 +425,7 @@ TEST(AppTest, TestStartTimeEntryWithDuration) {
     ASSERT_EQ(3600, te->DurationInSeconds());
 }
 
-TEST(AppTest, TestStartTimeEntryWithoutDuration) {
+TEST(User, TestStartTimeEntryWithoutDuration) {
     testing::Database db;
 
     User user;
@@ -384,7 +439,7 @@ TEST(AppTest, TestStartTimeEntryWithoutDuration) {
     ASSERT_GT(0, te->DurationInSeconds());
 }
 
-TEST(AppTest, TestDeletionSteps) {
+TEST(User, TestDeletionSteps) {
     testing::Database db;
 
     User user;
@@ -420,7 +475,7 @@ TEST(AppTest, TestDeletionSteps) {
     }
 }
 
-TEST(AppTest, SavesModels) {
+TEST(Database, SavesModels) {
     User user;
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
@@ -433,7 +488,7 @@ TEST(AppTest, SavesModels) {
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, false, &changes));
 }
 
-TEST(AppTest, AssignsGUID) {
+TEST(Database, AssignsGUID) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
@@ -455,7 +510,7 @@ TEST(AppTest, AssignsGUID) {
     ASSERT_EQ(te->ID(), te2->ID());
 }
 
-TEST(AppTest, ParsesAndSavesData) {
+TEST(User, ParsesAndSavesData) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
@@ -677,7 +732,7 @@ TEST(AppTest, ParsesAndSavesData) {
     ASSERT_EQ(Poco::UInt64(0), n);
 }
 
-TEST(AppTest, ParsesDurationLikeOnTheWeb) {
+TEST(TimeEntry, ParsesDurationLikeOnTheWeb) {
     TimeEntry te;
 
     te.SetDurationUserInput("00:00:15");
@@ -954,7 +1009,7 @@ TEST(AppTest, ParsesDurationLikeOnTheWeb) {
                       toggl::Format::Improved));
 }
 
-TEST(AppTest, ParseDurationLargerThan24Hours) {
+TEST(TimeEntry, ParseDurationLargerThan24Hours) {
     TimeEntry te;
 
     te.SetDurationInSeconds(0);
@@ -964,7 +1019,7 @@ TEST(AppTest, ParseDurationLargerThan24Hours) {
                       toggl::Format::Improved));
 }
 
-TEST(AppTest, InterpretsCrazyStartAndStopAsMissingValues) {
+TEST(TimeEntry, InterpretsCrazyStartAndStopAsMissingValues) {
     TimeEntry te;
 
     ASSERT_EQ(Poco::UInt64(0), te.Start());
@@ -976,7 +1031,7 @@ TEST(AppTest, InterpretsCrazyStartAndStopAsMissingValues) {
     ASSERT_EQ(Poco::UInt64(0), te.Stop());
 }
 
-TEST(AppTest, Continue) {
+TEST(User, Continue) {
     testing::Database db;
 
     User user;
@@ -1008,7 +1063,7 @@ TEST(AppTest, Continue) {
     ASSERT_EQ(count+1, user.related.TimeEntries.size());
 }
 
-TEST(AppTest, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
+TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     testing::Database db;
 
     std::string json = loadTestDataFile("../testdata/user_with_duronly.json");

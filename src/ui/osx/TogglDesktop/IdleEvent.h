@@ -13,4 +13,5 @@
 @property (strong) NSString *since;
 @property (strong) NSString *duration;
 @property uint64_t started;
+@property (strong) NSString *timeEntryDescription;
 @end

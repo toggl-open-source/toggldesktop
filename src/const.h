@@ -6,12 +6,13 @@
 #define kOneSecondInMicros 1000000
 
 #define kMaxTimeEntryDurationSeconds 3600000
-#define kHTTPClientTimeoutSeconds 10
+#define kHTTPClientTimeoutSeconds 15
 #define kSyncIntervalRangeSeconds 300
 #define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
 #define kRequestThrottleSeconds 2
 #define kTimerStartInterval 10
+#define kTimelineSecondsToKeep 604800
 
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
@@ -29,6 +30,22 @@
 #define kRequestIsNotPossible "Request is not possible"
 #define kPaymentRequiredError "Requested action allowed only for Pro workspace. Please upgrade!"  // NOLINT
 #define kCannotAccessWorkspaceError "cannot access workspace"
+#define kEmailNotFoundCannotLogInOffline "E-mail not found, cannot log in offline."  // NOLINT
+#define kInvalidPassword "Invalid password"
+#define kCannotEstablishProxyConnection "Cannot establish proxy connection"
+#define kCertificateVerifyFailed "certificate verify failed"
+#define kCheckYourProxySetup "Check your proxy setup"
+#define kCheckYourFirewall "Check your firewall"
+#define kProxyAuthenticationRequired "Proxy Authentication Required"
+#define kCertificateValidationError "Certificate validation error"
+#define kUnacceptableCertificate "Unacceptable certificate from www.toggl.com"
+#define kCannotUpgradeToWebSocketConnection "Cannot upgrade to WebSocket connection"  // NOLINT
+#define kSSLException "SSL Exception"
+#define kCannotWriteFile "Cannot write file"
+#define kIsSuspended "is suspended"
+#define kRequestToServerFailedWithStatusCode403 "Request to server failed with status code: 403"  // NOLINT
+#define kThisVersionOfTheAppIsNotSupported "This version of the app is not supported"  // NOLINT
+#define kMissingWorkspaceID "Missing workspace ID"
 
 #define kOnlineStateOnline 0
 #define kOnlineStateNoNetwork 1

@@ -36,11 +36,11 @@ namespace TogglDesktop
         private void comboBoxChannel_SelectedIndexChanged(object sender, EventArgs e)
         {
             Toggl.SetUpdateChannel(comboBoxChannel.Text);
-            check();
+            check(true);
             loaded = true;
         }
 
-        private void check()
+        private void check(bool ui)
         {
             if (Toggl.IsUpdateCheckDisabled())
             {
@@ -54,7 +54,7 @@ namespace TogglDesktop
             WinSparkle.win_sparkle_set_appcast_url(url);
             WinSparkle.setupWinSparkle();
             WinSparkle.win_sparkle_init();
-            if (!loaded)
+            if (!loaded || !ui)
             {
                 WinSparkle.win_sparkle_check_update_without_ui();
             }
@@ -87,7 +87,7 @@ namespace TogglDesktop
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            check();
+            check(false);
         }
     }
 }
