@@ -87,7 +87,8 @@ namespace TogglDesktop
             style.TitleColor = Color.White;
             style.TitleFont = GetFont("roboto-light", f);
             style.ClientAreaPadding = new Padding(0, 40, 0, 0);
-            style.IconPadding = new Padding(7, 11, 10, 0);
+            style.IconPadding = new Padding(11, 11, 10, 0);
+            style.TitlePadding = new Padding(5, 0, 0, 0);
             NonClientAreaDoubleBuffering = true;
 
             return style;
