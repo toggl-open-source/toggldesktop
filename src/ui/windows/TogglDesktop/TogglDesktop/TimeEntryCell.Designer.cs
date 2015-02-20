@@ -35,8 +35,8 @@
             this.panelShadow = new System.Windows.Forms.Panel();
             this.panel = new System.Windows.Forms.Panel();
             this.labelBillable = new System.Windows.Forms.Label();
-            this.labelDuration = new System.Windows.Forms.Label();
             this.labelTag = new System.Windows.Forms.Label();
+            this.labelDuration = new System.Windows.Forms.Label();
             this.tagBillableContinuePanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelContinue = new System.Windows.Forms.Label();
             this.ProjectColorPanel = new System.Windows.Forms.Panel();
@@ -175,7 +175,7 @@
             this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelDuration.Location = new System.Drawing.Point(161, 0);
+            this.labelDuration.Location = new System.Drawing.Point(178, 0);
             this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
             this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
             this.labelDuration.Name = "labelDuration";
@@ -193,10 +193,10 @@
             this.tagBillableContinuePanel.Controls.Add(this.labelContinue);
             this.tagBillableContinuePanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.tagBillableContinuePanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.tagBillableContinuePanel.Location = new System.Drawing.Point(236, 0);
+            this.tagBillableContinuePanel.Location = new System.Drawing.Point(253, 0);
             this.tagBillableContinuePanel.Margin = new System.Windows.Forms.Padding(0);
             this.tagBillableContinuePanel.Name = "tagBillableContinuePanel";
-            this.tagBillableContinuePanel.Size = new System.Drawing.Size(78, 55);
+            this.tagBillableContinuePanel.Size = new System.Drawing.Size(61, 55);
             this.tagBillableContinuePanel.TabIndex = 16;
             this.tagBillableContinuePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             this.tagBillableContinuePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tagBillableContinuePanel_MouseUp);
@@ -209,7 +209,7 @@
             this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
-            this.labelContinue.Location = new System.Drawing.Point(37, 9);
+            this.labelContinue.Location = new System.Drawing.Point(20, 9);
             this.labelContinue.Margin = new System.Windows.Forms.Padding(18, 9, 5, 0);
             this.labelContinue.Name = "labelContinue";
             this.labelContinue.Size = new System.Drawing.Size(36, 36);
