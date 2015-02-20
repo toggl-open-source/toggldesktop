@@ -1117,7 +1117,7 @@ error User::SetAPITokenFromOfflineData(const std::string password) {
         return error("cannot decrypt offline data without a password");
     }
     if (OfflineData().empty()) {
-        return error("cannot decrypy empty string");
+        return error("cannot decrypt empty string");
     }
     try {
         Poco::Crypto::CipherFactory& factory =
