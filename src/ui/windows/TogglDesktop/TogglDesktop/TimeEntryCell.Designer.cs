@@ -209,8 +209,8 @@
             this.labelContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
-            this.labelContinue.Location = new System.Drawing.Point(20, 9);
-            this.labelContinue.Margin = new System.Windows.Forms.Padding(18, 9, 22, 0);
+            this.labelContinue.Location = new System.Drawing.Point(37, 9);
+            this.labelContinue.Margin = new System.Windows.Forms.Padding(18, 9, 5, 0);
             this.labelContinue.Name = "labelContinue";
             this.labelContinue.Size = new System.Drawing.Size(36, 36);
             this.labelContinue.TabIndex = 14;
@@ -323,7 +323,6 @@
             this.Name = "TimeEntryCell";
             this.Size = new System.Drawing.Size(314, 101);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCellWithHeader_MouseClick);
-            this.Resize += new System.EventHandler(this.TimeEntryCell_Resize);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
