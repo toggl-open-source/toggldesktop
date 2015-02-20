@@ -152,24 +152,6 @@
             this.labelBillable.Click += new System.EventHandler(this.edit_Click);
             this.labelBillable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
-            // labelDuration
-            // 
-            this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDuration.BackColor = System.Drawing.Color.Transparent;
-            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelDuration.Location = new System.Drawing.Point(163, 0);
-            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Size = new System.Drawing.Size(75, 55);
-            this.labelDuration.TabIndex = 8;
-            this.labelDuration.Text = "03:21:30";
-            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDuration.UseMnemonic = false;
-            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
-            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
             // labelTag
             // 
             this.labelTag.AccessibleDescription = "A label with an image of tags, indicating if the time entry has any tags";
@@ -186,6 +168,24 @@
             this.labelTag.UseMnemonic = false;
             this.labelTag.Click += new System.EventHandler(this.edit_Click);
             this.labelTag.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
+            // labelDuration
+            // 
+            this.labelDuration.BackColor = System.Drawing.Color.Transparent;
+            this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelDuration.Location = new System.Drawing.Point(161, 0);
+            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Size = new System.Drawing.Size(75, 55);
+            this.labelDuration.TabIndex = 8;
+            this.labelDuration.Text = "03:21:30";
+            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelDuration.UseMnemonic = false;
+            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
+            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
             // tagBillableContinuePanel
             // 
