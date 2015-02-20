@@ -35,8 +35,8 @@
             this.panelShadow = new System.Windows.Forms.Panel();
             this.panel = new System.Windows.Forms.Panel();
             this.labelBillable = new System.Windows.Forms.Label();
-            this.labelDuration = new System.Windows.Forms.Label();
             this.labelTag = new System.Windows.Forms.Label();
+            this.labelDuration = new System.Windows.Forms.Label();
             this.tagBillableContinuePanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelContinue = new System.Windows.Forms.Label();
             this.ProjectColorPanel = new System.Windows.Forms.Panel();
@@ -152,24 +152,6 @@
             this.labelBillable.Click += new System.EventHandler(this.edit_Click);
             this.labelBillable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
-            // labelDuration
-            // 
-            this.labelDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDuration.BackColor = System.Drawing.Color.Transparent;
-            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.labelDuration.Location = new System.Drawing.Point(163, 0);
-            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
-            this.labelDuration.Name = "labelDuration";
-            this.labelDuration.Size = new System.Drawing.Size(75, 55);
-            this.labelDuration.TabIndex = 8;
-            this.labelDuration.Text = "03:21:30";
-            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelDuration.UseMnemonic = false;
-            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
-            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
-            // 
             // labelTag
             // 
             this.labelTag.AccessibleDescription = "A label with an image of tags, indicating if the time entry has any tags";
@@ -187,16 +169,34 @@
             this.labelTag.Click += new System.EventHandler(this.edit_Click);
             this.labelTag.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             // 
+            // labelDuration
+            // 
+            this.labelDuration.BackColor = System.Drawing.Color.Transparent;
+            this.labelDuration.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelDuration.Location = new System.Drawing.Point(178, 0);
+            this.labelDuration.MaximumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.MinimumSize = new System.Drawing.Size(75, 55);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Size = new System.Drawing.Size(75, 55);
+            this.labelDuration.TabIndex = 8;
+            this.labelDuration.Text = "03:21:30";
+            this.labelDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelDuration.UseMnemonic = false;
+            this.labelDuration.Click += new System.EventHandler(this.labelDuration_Click);
+            this.labelDuration.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
+            // 
             // tagBillableContinuePanel
             // 
             this.tagBillableContinuePanel.BackColor = System.Drawing.Color.Transparent;
             this.tagBillableContinuePanel.Controls.Add(this.labelContinue);
             this.tagBillableContinuePanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.tagBillableContinuePanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.tagBillableContinuePanel.Location = new System.Drawing.Point(236, 0);
+            this.tagBillableContinuePanel.Location = new System.Drawing.Point(253, 0);
             this.tagBillableContinuePanel.Margin = new System.Windows.Forms.Padding(0);
             this.tagBillableContinuePanel.Name = "tagBillableContinuePanel";
-            this.tagBillableContinuePanel.Size = new System.Drawing.Size(78, 55);
+            this.tagBillableContinuePanel.Size = new System.Drawing.Size(61, 55);
             this.tagBillableContinuePanel.TabIndex = 16;
             this.tagBillableContinuePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.item_MouseMove);
             this.tagBillableContinuePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tagBillableContinuePanel_MouseUp);
@@ -210,7 +210,7 @@
             this.labelContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelContinue.Image = global::TogglDesktop.Properties.Resources._continue;
             this.labelContinue.Location = new System.Drawing.Point(20, 9);
-            this.labelContinue.Margin = new System.Windows.Forms.Padding(18, 9, 22, 0);
+            this.labelContinue.Margin = new System.Windows.Forms.Padding(18, 9, 5, 0);
             this.labelContinue.Name = "labelContinue";
             this.labelContinue.Size = new System.Drawing.Size(36, 36);
             this.labelContinue.TabIndex = 14;
@@ -323,7 +323,6 @@
             this.Name = "TimeEntryCell";
             this.Size = new System.Drawing.Size(314, 101);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TimeEntryCellWithHeader_MouseClick);
-            this.Resize += new System.EventHandler(this.TimeEntryCell_Resize);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.panel.ResumeLayout(false);
