@@ -34,6 +34,17 @@ namespace TogglDesktop
             this.BackAlpha = 0;
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            // Paste occurred
+            if (m.Msg == 0x302)
+            {
+                //Paste occurred get text from all lines
+                Text = Clipboard.GetText();
+            }
+            base.WndProc(ref m);
+        }
+
         void autoCompleteListBox_MouseLeave(object sender, EventArgs e)
         {
             mouseEntered = false;
