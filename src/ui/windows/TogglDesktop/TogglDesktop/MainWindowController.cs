@@ -602,12 +602,13 @@ namespace TogglDesktop
         private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
         {
             Utils.SaveWindowLocation(this, editForm);
-            WinSparkle.win_sparkle_cleanup();
 
-            if (!TogglDesktop.Program.ShuttingDown) {
+            if (!TogglDesktop.Program.ShuttingDown)
+            {
                 Hide();
                 e.Cancel = true;
             }
+
             if (editForm.Visible)
             {
                 if (editableEntry.GetType() == typeof(TimeEntryCell))
@@ -637,9 +638,21 @@ namespace TogglDesktop
                 Utils.SaveWindowLocation(this, editForm);
             }
 
-            WinSparkle.win_sparkle_cleanup();
+            cleanupWinSparkle();
 
             TogglDesktop.Program.Shutdown(0);
+        }
+
+        private void cleanupWinSparkle()
+        {
+            try
+            {
+                WinSparkle.win_sparkle_cleanup();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not cleanup winsparkle: ", e);
+            }
         }
 
         private void toggleVisibility()
