@@ -562,7 +562,10 @@ namespace TogglDesktop
             }
             editForm.reset();
             editableEntry = getSelectedEntryByGUID(te.GUID);
-            if (editableEntry == null) return;
+            if (null == editableEntry)
+            {
+                return;
+            }
             setEditFormLocation(te.DurationInSeconds < 0);
             editForm.GUID = te.GUID;
             editForm.Show();
@@ -633,6 +636,7 @@ namespace TogglDesktop
             {
                 Utils.SaveWindowLocation(this, editForm);
             }
+
             WinSparkle.win_sparkle_cleanup();
 
             TogglDesktop.Program.Shutdown(0);
