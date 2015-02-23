@@ -17,6 +17,7 @@ tmp/*
 build/*
 src/lib/osx/build
 src/ui/*/TogglDesktop/build/
+src/ui/*/TogglDesktop/bin/
 toggl
 test/*
 *.bak
