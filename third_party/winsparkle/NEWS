@@ -1,0 +1,49 @@
+
+Version 0.4
+-----------
+
+- Added API for gracefully shutting down the host app.
+- Added the ability to disable automatic checks.
+- Added the ability to change the update checks interval.
+- Added x64 support.
+- Added Visual Studio 201x project files.
+- Release notes included in appcast's <description> element are now recognized.
+- Added support for build numbers and shortVersionString.
+- Added support for sparkle:os="windows" attribute on appcast items.
+- Fixed appcasts over HTTPS.
+- Use application icon in the UI.
+- In-app downloads.
+
+
+Version 0.3
+-----------
+
+- Added win_sparkle_set_app_details() for setting app metadata from code,
+  as an alternative to their extraction from resources.
+- It is no longer necessary to call win_sparkle_set_appcast_url(), the
+  feed can be specified in FeedURL resource with type set to APPCAST.
+- Added win_sparkle_set_registry_path().
+
+
+Version 0.2
+-----------
+
+- Display error if update info couldn't be retrieved while manually checking
+  for updates.
+- WinSparkle window is now resizable only when showing release notes.
+- Bypass cache and proxies in manual checks.
+
+
+Version 0.1.1
+-------------
+
+- Fixed Sparkle namespace in appcast parser; it now looks for the correct
+  `http://www.andymatuschak.org/xml-namespaces/sparkle` value. Appcasts
+  using the incorrect `http://www.andymatuschak.org/xml-namespaces`
+  URI must be updated.
+
+
+Version 0.1
+-----------
+
+- Initial release.
