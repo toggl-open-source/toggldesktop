@@ -917,7 +917,7 @@ const NSString *appName = @"osx_native_app";
 		  self.db_path, self.log_path, self.log_level);
 
 	toggl_set_log_path([self.log_path UTF8String]);
-	toggl_set_log_level("trace");
+	toggl_set_log_level([self.log_level UTF8String]);
 
 	NSString *version = infoDict[@"CFBundleShortVersionString"];
 
