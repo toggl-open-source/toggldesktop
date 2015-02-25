@@ -1395,7 +1395,7 @@ _Bool Context::SetLoggedInUserFromJSON(
         return displayError(err);
     }
 
-    err = user->LoadUserAndRelatedDataFromJSONString(user_data_json);
+    err = user->LoadUserAndRelatedDataFromJSONString(user_data_json, true);
     if (err != noError) {
         delete user;
         return displayError(err);

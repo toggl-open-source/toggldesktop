@@ -401,7 +401,7 @@ error User::PullAllUserData(
             return err;
         }
 
-        LoadUserAndRelatedDataFromJSONString(user_data_json);
+        LoadUserAndRelatedDataFromJSONString(user_data_json, true);
 
         stopwatch.stop();
         std::stringstream ss;
@@ -654,30 +654,6 @@ void User::loadUserTagFromJSON(
     model->LoadFromJSON(data);
 }
 
-void User::loadUserTagsFromJSON(
-    Json::Value list) {
-
-    std::set<Poco::UInt64> alive;
-
-    for (unsigned int i = 0; i < list.size(); i++) {
-        loadUserTagFromJSON(list[i], &alive);
-    }
-
-    deleteZombies(related.Tags, alive);
-}
-
-void User::loadUserTasksFromJSON(
-    Json::Value list) {
-
-    std::set<Poco::UInt64> alive;
-
-    for (unsigned int i = 0; i < list.size(); i++) {
-        loadUserTaskFromJSON(list[i], &alive);
-    }
-
-    deleteZombies(related.Tasks, alive);
-}
-
 void User::loadUserTaskFromJSON(
     Json::Value data,
     std::set<Poco::UInt64> *alive) {
@@ -759,7 +735,7 @@ void User::loadUserUpdateFromJSON(
     } else if ("tag" == model) {
         loadUserTagFromJSON(data);
     } else if ("user" == model) {
-        loadUserAndRelatedDataFromJSON(data);
+        loadUserAndRelatedDataFromJSON(data, false);
     }
 }
 
@@ -797,7 +773,8 @@ void User::loadUserWorkspaceFromJSON(
 }
 
 error User::LoadUserAndRelatedDataFromJSONString(
-    const std::string &json) {
+    const std::string &json,
+    const bool &including_related_data) {
 
     if (json.empty()) {
         Poco::Logger &logger = Poco::Logger::get("json");
@@ -818,13 +795,14 @@ error User::LoadUserAndRelatedDataFromJSONString(
     s << "User data as of: " << Since();
     logger.debug(s.str());
 
-    loadUserAndRelatedDataFromJSON(root["data"]);
+    loadUserAndRelatedDataFromJSON(root["data"], including_related_data);
 
     return noError;
 }
 
 void User::loadUserAndRelatedDataFromJSON(
-    Json::Value data) {
+    Json::Value data,
+    const bool &including_related_data) {
 
     if (!data["id"].asUInt64()) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
@@ -841,23 +819,100 @@ void User::loadUserAndRelatedDataFromJSON(
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
 
-    if (data.isMember("projects")) {
-        loadUserProjectsFromJSON(data["projects"]);
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("projects")) {
+            Json::Value list = data["projects"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserProjectFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Projects, alive);
+        }
     }
-    if (data.isMember("tags")) {
-        loadUserTagsFromJSON(data["tags"]);
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("tags")) {
+            Json::Value list = data["tags"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserTagFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Tags, alive);
+        }
     }
-    if (data.isMember("tasks")) {
-        loadUserTasksFromJSON(data["tasks"]);
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("tasks")) {
+            Json::Value list = data["tasks"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserTaskFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Tasks, alive);
+        }
     }
-    if (data.isMember("time_entries")) {
-        loadUserTimeEntriesFromJSON(data["time_entries"]);
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("time_entries")) {
+            Json::Value list = data["time_entries"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserTimeEntryFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.TimeEntries, alive);
+        }
     }
-    if (data.isMember("workspaces")) {
-        loadUserWorkspacesFromJSON(data["workspaces"]);
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("workspaces")) {
+            Json::Value list = data["workspaces"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserWorkspaceFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Workspaces, alive);
+        }
     }
-    if (data.isMember("clients")) {
-        loadUserClientsFromJSON(data["clients"]);
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("clients")) {
+            Json::Value list = data["clients"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserClientFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Clients, alive);
+        }
     }
 }
 
@@ -896,18 +951,6 @@ void User::loadUserClientFromJSON(
     model->LoadFromJSON(data);
 }
 
-void User::loadUserClientsFromJSON(
-    Json::Value list) {
-
-    std::set<Poco::UInt64> alive;
-
-    for (unsigned int i = 0; i < list.size(); i++) {
-        loadUserClientFromJSON(list[i], &alive);
-    }
-
-    deleteZombies(related.Clients, alive);
-}
-
 void User::loadUserProjectFromJSON(
     Json::Value data,
     std::set<Poco::UInt64> *alive) {
@@ -942,18 +985,6 @@ void User::loadUserProjectFromJSON(
     }
     model->SetUID(ID());
     model->LoadFromJSON(data);
-}
-
-void User::loadUserProjectsFromJSON(
-    Json::Value list) {
-
-    std::set<Poco::UInt64> alive;
-
-    for (unsigned int i = 0; i < list.size(); i++) {
-        loadUserProjectFromJSON(list[i], &alive);
-    }
-
-    deleteZombies(related.Projects, alive);
 }
 
 void User::loadUserTimeEntryFromJSON(
@@ -991,30 +1022,6 @@ void User::loadUserTimeEntryFromJSON(
     model->SetUID(ID());
     model->LoadFromJSON(data);
     model->EnsureGUID();
-}
-
-void User::loadUserWorkspacesFromJSON(
-    Json::Value list) {
-
-    std::set<Poco::UInt64> alive;
-
-    for (unsigned int i = 0; i < list.size(); i++) {
-        loadUserWorkspaceFromJSON(list[i], &alive);
-    }
-
-    deleteZombies(related.Workspaces, alive);
-}
-
-void User::loadUserTimeEntriesFromJSON(
-    Json::Value list) {
-
-    std::set<Poco::UInt64> alive;
-
-    for (unsigned int i = 0; i < list.size(); i++) {
-        loadUserTimeEntryFromJSON(list[i], &alive);
-    }
-
-    deleteZombies(related.TimeEntries, alive);
 }
 
 error User::UserID(

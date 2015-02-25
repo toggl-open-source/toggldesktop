@@ -182,7 +182,7 @@ TEST(Database, SaveAndLoadCurrentAPIToken) {
 TEST(User, UpdatesTimeEntryFromJSON) {
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -192,12 +192,32 @@ TEST(User, UpdatesTimeEntryFromJSON) {
     ASSERT_EQ("Changed", te->Description());
 }
 
+TEST(User, DeletesZombies) {
+    User user;
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+
+    TimeEntry *te = user.related.TimeEntryByID(89818605);
+    ASSERT_TRUE(te);
+    ASSERT_FALSE(te->IsMarkedAsDeletedOnServer());
+
+    std::string json =
+        loadTestDataFile("../testdata/me_without_time_entries.json");
+
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(json, true));
+
+    te = user.related.TimeEntryByID(89818605);
+    ASSERT_TRUE(te);
+    ASSERT_TRUE(te->IsMarkedAsDeletedOnServer());
+}
+
 TEST(Database, AllowsSameEmail) {
     testing::Database db;
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
@@ -205,7 +225,7 @@ TEST(Database, AllowsSameEmail) {
     User user2;
     std::string json = loadTestDataFile("../testdata/same_email.json");
     ASSERT_EQ(noError,
-              user2.LoadUserAndRelatedDataFromJSONString(json));
+              user2.LoadUserAndRelatedDataFromJSONString(json, true));
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -226,7 +246,7 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
@@ -238,7 +258,7 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
                         "Even more important!");
 
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json));
+              user.LoadUserAndRelatedDataFromJSONString(json, true));
     te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
     ASSERT_EQ("Even more important!", te->Description());
@@ -249,7 +269,7 @@ TEST(Database, SavesAndLoadsUserFields) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     ASSERT_TRUE(user.StoreStartAndStopTime());
     // Change fields
@@ -278,7 +298,7 @@ TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     Poco::UInt64 n;
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
@@ -327,7 +347,7 @@ TEST(Database,
 
     User user1;
     ASSERT_EQ(noError,
-              user1.LoadUserAndRelatedDataFromJSONString(json));
+              user1.LoadUserAndRelatedDataFromJSONString(json, true));
 
     std::vector<ModelChange> changes;
     ASSERT_EQ(noError, db.instance()->SaveUser(&user1, true, &changes));
@@ -377,7 +397,7 @@ TEST(Database,
               user2.related.TimeEntries.size());
 
     ASSERT_EQ(noError,
-              user2.LoadUserAndRelatedDataFromJSONString(json));
+              user2.LoadUserAndRelatedDataFromJSONString(json, true));
 
     ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
 
@@ -412,7 +432,7 @@ TEST(User, TestStartTimeEntryWithDuration) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     size_t count = user.related.TimeEntries.size();
 
@@ -430,7 +450,7 @@ TEST(User, TestStartTimeEntryWithoutDuration) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     user.Start("Old work", "", 0, 0);
 
@@ -444,7 +464,7 @@ TEST(User, TestDeletionSteps) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     // first, mark time entry as deleted
     user.Start("My new time entry", "", 0, 0);
@@ -478,7 +498,7 @@ TEST(User, TestDeletionSteps) {
 TEST(Database, SavesModels) {
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     testing::Database db;
 
@@ -494,7 +514,7 @@ TEST(Database, AssignsGUID) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json));
+              user.LoadUserAndRelatedDataFromJSONString(json, true));
 
     ASSERT_EQ(uint(5), user.related.TimeEntries.size());
     TimeEntry *te = user.related.TimeEntryByID(89837445);
@@ -516,7 +536,7 @@ TEST(User, ParsesAndSavesData) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json));
+              user.LoadUserAndRelatedDataFromJSONString(json, true));
     ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
     ASSERT_EQ(Poco::UInt64(10471231), user.ID());
     ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());
@@ -1036,7 +1056,7 @@ TEST(User, Continue) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData()));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     // User wants to continue time entries,
     // not create new ones
@@ -1070,7 +1090,7 @@ TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
 
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json));
+              user.LoadUserAndRelatedDataFromJSONString(json, true));
 
     TimeEntry *te = user.related.TimeEntryByID(164891639);
     ASSERT_TRUE(te);

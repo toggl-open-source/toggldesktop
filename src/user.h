@@ -162,7 +162,8 @@ class User : public BaseModel {
     error LoadUserUpdateFromJSONString(const std::string json);
 
     error LoadUserAndRelatedDataFromJSONString(
-        const std::string &json);
+        const std::string &json,
+        const bool &including_related_data);
 
     error SetAPITokenFromOfflineData(const std::string password);
 
@@ -202,25 +203,9 @@ class User : public BaseModel {
         Json::Value data,
         std::set<Poco::UInt64> *alive = 0);
 
-    void loadUserAndRelatedDataFromJSON(Json::Value node);
-
-    void loadUserProjectsFromJSON(
-        Json::Value list);
-
-    void loadUserTagsFromJSON(
-        Json::Value list);
-
-    void loadUserClientsFromJSON(
-        Json::Value list);
-
-    void loadUserTasksFromJSON(
-        Json::Value list);
-
-    void loadUserTimeEntriesFromJSON(
-        Json::Value list);
-
-    void loadUserWorkspacesFromJSON(
-        Json::Value list);
+    void loadUserAndRelatedDataFromJSON(
+        Json::Value node,
+        const bool &including_related_data);
 
     void loadUserUpdateFromJSON(
         Json::Value list);
@@ -258,6 +243,7 @@ class User : public BaseModel {
         const std::string json,
         const bool authenticate_with_api_token,
         std::string *response_body);
+
     void parseResponseArray(
         const std::string response_body,
         std::vector<BatchUpdateResult> *responses);
