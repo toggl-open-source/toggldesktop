@@ -265,7 +265,8 @@ BOOL manualMode = NO;
 
 - (BOOL)updateCheckEnabled
 {
-	if (![self.environment isEqualToString:@"production"]) {
+	if (![self.environment isEqualToString:@"production"])
+	{
 		return NO;
 	}
 

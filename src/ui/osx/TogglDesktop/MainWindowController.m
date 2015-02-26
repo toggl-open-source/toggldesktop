@@ -154,43 +154,42 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-    [self setContentViewBottomConstraint];
-    
-    switch ([status intValue])
-    {
-        case 1 :
-            [self.onlineStatusTextField setHidden:NO];
-            [self.onlineStatusTextField setStringValue:@"Status: Offline, no network"];
-            self.contentViewBottom.constant = -20;
-            break;
-        case 2 :
-            [self.onlineStatusTextField setHidden:NO];
-            [self.onlineStatusTextField setStringValue:@"Status: Offline, Toggl not responding"];
-            self.contentViewBottom.constant = -20;
-            break;
-        default :
-            [self.onlineStatusTextField setHidden:YES];
-            [self.onlineStatusTextField setStringValue:@"Status: Online"];
-            self.contentViewBottom.constant = 0;
-            break;
-    }
+	[self setContentViewBottomConstraint];
+
+	switch ([status intValue])
+	{
+		case 1 :
+			[self.onlineStatusTextField setHidden:NO];
+			[self.onlineStatusTextField setStringValue:@"Status: Offline, no network"];
+			self.contentViewBottom.constant = -20;
+			break;
+		case 2 :
+			[self.onlineStatusTextField setHidden:NO];
+			[self.onlineStatusTextField setStringValue:@"Status: Offline, Toggl not responding"];
+			self.contentViewBottom.constant = -20;
+			break;
+		default :
+			[self.onlineStatusTextField setHidden:YES];
+			[self.onlineStatusTextField setStringValue:@"Status: Online"];
+			self.contentViewBottom.constant = 0;
+			break;
+	}
 }
 
-- (void) setContentViewBottomConstraint
+- (void)setContentViewBottomConstraint
 {
-    if (!self.contentViewBottom)
-    {
-        self.contentViewBottom = [NSLayoutConstraint constraintWithItem:self.contentView
-                                                              attribute:NSLayoutAttributeBottom
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.mainView
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1
-                                                               constant:0];
-        [self.mainView addConstraint:self.contentViewBottom];
-    }
+	if (!self.contentViewBottom)
+	{
+		self.contentViewBottom = [NSLayoutConstraint constraintWithItem:self.contentView
+															  attribute:NSLayoutAttributeBottom
+															  relatedBy:NSLayoutRelationEqual
+																 toItem:self.mainView
+															  attribute:NSLayoutAttributeBottom
+															 multiplier:1
+															   constant:0];
+		[self.mainView addConstraint:self.contentViewBottom];
+	}
 }
-
 
 - (void)stopDisplayError:(NSNotification *)notification
 {
