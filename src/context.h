@@ -129,8 +129,6 @@ class Context : public TimelineDatasource {
               const _Bool edit_running_entry,
               const std::string focused_field_name);
 
-    void About();
-
     _Bool SetTimeEntryDuration(
         const std::string GUID,
         const std::string duration);

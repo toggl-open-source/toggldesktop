@@ -166,33 +166,6 @@ void GUI::DisplayOnlineState(const Poco::Int64 state) {
     on_display_online_state_(state);
 }
 
-void GUI::DisplayUpdate(const _Bool open,
-                        const std::string update_channel,
-                        const _Bool is_checking,
-                        const _Bool is_available,
-                        const std::string url,
-                        const std::string version) {
-    if (!on_display_update_) {
-        logger().debug("This GUI has own update system, will not use lib.");
-        return;
-    }
-
-    logger().debug("DisplayUpdate");
-
-    TogglUpdateView view;
-    view.UpdateChannel = copy_string(update_channel);
-    view.IsChecking = is_checking;
-    view.IsUpdateAvailable = is_available;
-    view.URL = copy_string(url);
-    view.Version = copy_string(version);
-
-    on_display_update_(open, &view);
-
-    free(view.UpdateChannel);
-    free(view.URL);
-    free(view.Version);
-}
-
 void GUI::DisplayTimeEntryAutocomplete(
     std::vector<toggl::AutocompleteItem> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");

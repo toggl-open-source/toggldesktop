@@ -403,7 +403,9 @@ error HTTPSClient::request(
                 std::string(std::istreambuf_iterator<char>(is), eos);
         }
 
-        logger().trace(*response_body);
+        if (response_body->size() < 1204 * 10) {
+            logger().trace(*response_body);
+        }
 
         if (429 == *status_code) {
             Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);

@@ -379,10 +379,6 @@ void toggl_edit(
                        to_string(focused_field_name));
 }
 
-void toggl_about(void *context) {
-    app(context)->About();
-}
-
 void toggl_edit_preferences(void *context) {
     app(context)->DisplaySettings(true);
 }
@@ -633,13 +629,6 @@ void toggl_on_error(
     TogglDisplayError cb) {
 
     app(context)->UI()->OnDisplayError(cb);
-}
-
-void toggl_on_update(
-    void *context,
-    TogglDisplayUpdate cb) {
-
-    app(context)->UI()->OnDisplayUpdate(cb);
 }
 
 void toggl_on_online_state(

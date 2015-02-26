@@ -43,9 +43,6 @@ Settings settings;
 bool use_proxy(false);
 Proxy proxy;
 
-// on_update
-std::string update_channel("");
-
 // on_display_idle_notification
 std::string idle_guid("");
 std::string idle_since("");
@@ -95,12 +92,6 @@ void on_error(
         return;
     }
     testresult::error = std::string("");
-}
-
-void on_update(
-    const _Bool open,
-    TogglUpdateView *view) {
-    testresult::update_channel = std::string(view->UpdateChannel);
 }
 
 void on_online_state(const int64_t state) {
@@ -264,7 +255,6 @@ class App {
 
         toggl_on_show_app(ctx_, on_app);
         toggl_on_error(ctx_, on_error);
-        toggl_on_update(ctx_, on_update);
         toggl_on_online_state(ctx_, on_online_state);
         toggl_on_login(ctx_, on_login);
         toggl_on_url(ctx_, on_url);
@@ -387,10 +377,6 @@ TEST(TogglApiTest, toggl_set_update_channel) {
 
     std::string default_channel("stable");
 
-    toggl_about(app.ctx());
-
-    ASSERT_EQ(default_channel, testing::testresult::update_channel);
-
     // Also check that the API itself thinks the default channel is
     char *str = toggl_get_update_channel(app.ctx());
     ASSERT_EQ(default_channel, std::string(str));
@@ -405,8 +391,6 @@ TEST(TogglApiTest, toggl_set_update_channel) {
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "beta"));
 
-    ASSERT_EQ(std::string("beta"), testing::testresult::update_channel);
-
     // The channel should have been changed in the API
     str = toggl_get_update_channel(app.ctx());
     ASSERT_EQ(std::string("beta"), std::string(str));
@@ -414,16 +398,12 @@ TEST(TogglApiTest, toggl_set_update_channel) {
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "dev"));
 
-    ASSERT_EQ(std::string("dev"), testing::testresult::update_channel);
-
     // The channel should have been changed in the API
     str = toggl_get_update_channel(app.ctx());
     ASSERT_EQ(std::string("dev"), std::string(str));
     free(str);
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "stable"));
-
-    ASSERT_EQ(std::string("stable"), testing::testresult::update_channel);
 
     // The channel should have been changed in the API
     str = toggl_get_update_channel(app.ctx());

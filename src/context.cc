@@ -783,22 +783,25 @@ _Bool Context::UpdateChannel(
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 
-    if ("production" != environment_) {
-        return;
-    }
+    /* FIXME:
+        if ("production" != environment_) {
+            return;
+        }
+    */
 
     if (update_check_disabled_) {
         return;
     }
 
+    // Load current update channel
     std::string update_channel("");
     error err = db()->LoadUpdateChannel(&update_channel);
     if (err != noError) {
         displayError(err);
         return;
     }
-    UI()->DisplayUpdate(false, update_channel, true, false, "", "");
 
+    // Get update check URL
     std::string update_url("");
     err = updateURL(&update_url);
     if (err != noError) {
@@ -819,7 +822,7 @@ void Context::executeUpdateCheck() {
     }
 
     if ("null" == response_body) {
-        UI()->DisplayUpdate(false, update_channel, false, false, "", "");
+        logger().debug("The app is up to date");
         return;
     }
 
@@ -834,7 +837,20 @@ void Context::executeUpdateCheck() {
     std::string url = root["url"].asString();
     std::string version = root["version"].asString();
 
-    UI()->DisplayUpdate(false, update_channel, false, true, url, version);
+    {
+        std::stringstream ss;
+        ss << "Found update " << version << " (" << url << ")";
+        logger().debug(ss.str());
+    }
+
+    // FIXME: if there's already an "update" in the app folder,
+    // don't do anything. perhaps somethings broken. or we already
+    // got an update previously.
+
+    // FIXME: now, download the URL and save it as "update" (?) in
+    // the app folder.
+
+    // After file is downloaded, chill. There's nothing more we can do.
 }
 
 error Context::updateURL(std::string *result) {
@@ -1631,17 +1647,6 @@ void Context::Edit(const std::string GUID,
     displayTimeEntryEditor(true, te, focused_field_name);
 }
 
-void Context::About() {
-    std::string update_channel("");
-    error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-    UI()->DisplayUpdate(true, update_channel, true, false, "", "");
-    fetchUpdates();
-}
-
 void Context::displayTimeEntryEditor(const _Bool open,
                                      TimeEntry *te,
                                      const std::string focused_field_name) {
@@ -2174,7 +2179,6 @@ _Bool Context::SaveUpdateChannel(const std::string channel) {
     if (err != noError) {
         return displayError(err);
     }
-    UI()->DisplayUpdate(false, channel, true, false, "", "");
     fetchUpdates();
     return true;
 }
