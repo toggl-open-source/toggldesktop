@@ -470,6 +470,11 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
+	if (self.timeEntriesTableView.numberOfRows == 0)
+	{
+		return;
+	}
+
 	if (notification != nil && !self.timeEntrypopover.shown)
 	{
 		[self clearLastSelectedEntry];
