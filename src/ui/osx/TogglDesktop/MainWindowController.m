@@ -19,6 +19,7 @@
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property NSLayoutConstraint *contentViewTop;
+@property NSLayoutConstraint *contentViewBottom;
 
 @end
 
@@ -153,19 +154,43 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	switch ([status intValue])
-	{
-		case 1 :
-			[self.onlineStatusTextField setStringValue:@"Status: Offline, no network"];
-			break;
-		case 2 :
-			[self.onlineStatusTextField setStringValue:@"Status: Offline, Toggl not responding"];
-			break;
-		default :
-			[self.onlineStatusTextField setStringValue:@"Status: Online"];
-			break;
-	}
+    [self setContentViewBottomConstraint];
+    
+    switch ([status intValue])
+    {
+        case 1 :
+            [self.onlineStatusTextField setHidden:NO];
+            [self.onlineStatusTextField setStringValue:@"Status: Offline, no network"];
+            self.contentViewBottom.constant = -20;
+            break;
+        case 2 :
+            [self.onlineStatusTextField setHidden:NO];
+            [self.onlineStatusTextField setStringValue:@"Status: Offline, Toggl not responding"];
+            self.contentViewBottom.constant = -20;
+            break;
+        default :
+            [self.onlineStatusTextField setHidden:YES];
+            [self.onlineStatusTextField setStringValue:@"Status: Online"];
+            self.contentViewBottom.constant = 0;
+            break;
+    }
 }
+
+- (void) setContentViewBottomConstraint
+{
+    if (!self.contentViewBottom)
+    {
+        self.contentViewBottom = [NSLayoutConstraint constraintWithItem:self.contentView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.mainView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1
+                                                               constant:0];
+        [self.mainView addConstraint:self.contentViewBottom];
+    }
+}
+
 
 - (void)stopDisplayError:(NSNotification *)notification
 {
