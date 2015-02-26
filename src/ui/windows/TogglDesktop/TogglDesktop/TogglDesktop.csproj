@@ -219,7 +219,6 @@
     </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="win32.cs" />
-    <Compile Include="WinSparkle.cs" />
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
