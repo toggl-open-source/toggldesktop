@@ -422,7 +422,6 @@
     <PostBuildEvent>XCOPY $(SolutionDir)..\..\..\..\src\ui\windows\TogglDesktop\Release\TogglDesktopDLL.dll $(TargetDir) /Y
 XCOPY $(SolutionDir)..\..\..\..\third_party\poco\bin\*.dll $(TargetDir) /Y
 XCOPY $(SolutionDir)..\..\..\..\third_party\openssl\out32dll\*eay32.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)..\..\..\..\third_party\winsparkle\Release\WinSparkle.dll $(TargetDir) /Y
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
