@@ -142,11 +142,11 @@
             this.labelBillable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBillable.BackColor = System.Drawing.Color.Transparent;
             this.labelBillable.Image = global::TogglDesktop.Properties.Resources.icon_billable;
-            this.labelBillable.Location = new System.Drawing.Point(165, 0);
-            this.labelBillable.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
+            this.labelBillable.Location = new System.Drawing.Point(168, 0);
+            this.labelBillable.Margin = new System.Windows.Forms.Padding(3, 20, 0, 0);
             this.labelBillable.Name = "labelBillable";
-            this.labelBillable.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.labelBillable.Size = new System.Drawing.Size(22, 55);
+            this.labelBillable.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.labelBillable.Size = new System.Drawing.Size(13, 55);
             this.labelBillable.TabIndex = 5;
             this.labelBillable.UseMnemonic = false;
             this.labelBillable.Click += new System.EventHandler(this.edit_Click);
@@ -160,7 +160,7 @@
             this.labelTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTag.BackColor = System.Drawing.Color.Transparent;
             this.labelTag.Image = global::TogglDesktop.Properties.Resources.icon_tags;
-            this.labelTag.Location = new System.Drawing.Point(143, 0);
+            this.labelTag.Location = new System.Drawing.Point(147, 0);
             this.labelTag.Name = "labelTag";
             this.labelTag.Padding = new System.Windows.Forms.Padding(3, 0, 4, 0);
             this.labelTag.Size = new System.Drawing.Size(23, 55);
