@@ -638,21 +638,7 @@ namespace TogglDesktop
                 Utils.SaveWindowLocation(this, editForm);
             }
 
-            cleanupWinSparkle();
-
             TogglDesktop.Program.Shutdown(0);
-        }
-
-        private void cleanupWinSparkle()
-        {
-            try
-            {
-                WinSparkle.win_sparkle_cleanup();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Could not cleanup winsparkle: ", e);
-            }
         }
 
         private void toggleVisibility()
