@@ -38,6 +38,7 @@
 #include "Poco/Stopwatch.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
+#include "Poco/URI.h"
 
 namespace toggl {
 
@@ -783,74 +784,115 @@ _Bool Context::UpdateChannel(
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 
-    /* FIXME:
-        if ("production" != environment_) {
-            return;
+    error err = downloadUpdate();
+    if (err != noError) {
+        displayError(err);
+    }
+}
+
+error Context::downloadUpdate() {
+    try {
+        /* FIXME:
+            if ("production" != environment_) {
+                return noError;
+            }
+        */
+
+        if (update_check_disabled_) {
+            return noError;
         }
-    */
 
-    if (update_check_disabled_) {
-        return;
+        // FIXME: if there's already an "update" in the app folder,
+        // don't do anything. perhaps somethings broken. or we already
+        // got an update previously.
+
+        // Load current update channel
+        std::string update_channel("");
+        error err = db()->LoadUpdateChannel(&update_channel);
+        if (err != noError) {
+            return err;
+        }
+
+        // Get update check URL
+        std::string update_url("");
+        err = updateURL(&update_url);
+        if (err != noError) {
+            return err;
+        }
+
+
+        std::string url(""), version("");
+        {
+            std::string body("");
+            TogglClient client;
+            err = client.Get(kAPIURL,
+                             update_url,
+                             std::string(""),
+                             std::string(""),
+                             &body);
+            if (err != noError) {
+                return err;
+            }
+
+            if ("null" == body) {
+                logger().debug("The app is up to date");
+                return noError;
+            }
+
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(body, root)) {
+                return error("Error parsing update check response body");
+            }
+
+            url = root["url"].asString();
+            version = root["version"].asString();
+
+            std::stringstream ss;
+            ss << "Found update " << version << " (" << url << ")";
+            logger().debug(ss.str());
+        }
+
+        Poco::URI uri(url);
+
+        {
+            std::string body("");
+            TogglClient client;
+            err = client.Get(uri.getScheme() + "://" + uri.getHost(),
+                             uri.getPathEtc(),
+                             std::string(""),
+                             std::string(""),
+                             &body);
+            if (err != noError) {
+                return err;
+            }
+
+            if ("null" == body || !body.size()) {
+                return error("Failed to download update");
+            }
+
+            std::vector<std::string> path_segments;
+            uri.getPathSegments(path_segments);
+            std::string file = path_segments.back();
+
+            std::stringstream ss;
+            ss << "Writing update to file " << file;
+            logger().debug(ss.str());
+
+            Poco::FileOutputStream fos(file, std::ios::binary);
+            fos << body;
+            fos.close();
+
+            logger().debug("Update written");
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-
-    // Load current update channel
-    std::string update_channel("");
-    error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-
-    // Get update check URL
-    std::string update_url("");
-    err = updateURL(&update_url);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-
-    std::string response_body("");
-    TogglClient https_client;
-    err = https_client.GetJSON(kAPIURL,
-                               update_url,
-                               std::string(""),
-                               std::string(""),
-                               &response_body);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-
-    if ("null" == response_body) {
-        logger().debug("The app is up to date");
-        return;
-    }
-
-    Json::Value root;
-    Json::Reader reader;
-    bool ok = reader.parse(response_body, root);
-    if (!ok) {
-        displayError(error("Error parsing update check response body"));
-        return;
-    }
-
-    std::string url = root["url"].asString();
-    std::string version = root["version"].asString();
-
-    {
-        std::stringstream ss;
-        ss << "Found update " << version << " (" << url << ")";
-        logger().debug(ss.str());
-    }
-
-    // FIXME: if there's already an "update" in the app folder,
-    // don't do anything. perhaps somethings broken. or we already
-    // got an update previously.
-
-    // FIXME: now, download the URL and save it as "update" (?) in
-    // the app folder.
-
-    // After file is downloaded, chill. There's nothing more we can do.
+    return noError;
 }
 
 error Context::updateURL(std::string *result) {
@@ -941,12 +983,12 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kTimelineUploadURL,
-                                      "/api/v8/timeline_settings",
-                                      json,
-                                      user_->APIToken(),
-                                      "api_token",
-                                      &response_body);
+    error err = https_client.Post(kTimelineUploadURL,
+                                  "/api/v8/timeline_settings",
+                                  json,
+                                  user_->APIToken(),
+                                  "api_token",
+                                  &response_body);
     if (err != noError) {
         displayError(err);
         logger().error(err);
@@ -981,12 +1023,12 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kAPIURL,
-                                      "/api/v8/feedback",
-                                      feedback_.JSON(),
-                                      user_->APIToken(),
-                                      "api_token",
-                                      &response_body);
+    error err = https_client.Post(kAPIURL,
+                                  "/api/v8/feedback",
+                                  feedback_.JSON(),
+                                  user_->APIToken(),
+                                  "api_token",
+                                  &response_body);
     if (err != noError) {
         displayError(err);
         return;
@@ -2241,12 +2283,12 @@ _Bool Context::OpenReportsInBrowser() {
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kAPIURL,
-                                      "/api/v8/desktop_login_tokens",
-                                      "{}",
-                                      user_->APIToken(),
-                                      "api_token",
-                                      &response_body);
+    error err = https_client.Post(kAPIURL,
+                                  "/api/v8/desktop_login_tokens",
+                                  "{}",
+                                  user_->APIToken(),
+                                  "api_token",
+                                  &response_body);
     if (err != noError) {
         return displayError(err);
     }

@@ -81,7 +81,7 @@ class HTTPSClient {
     HTTPSClient() {}
     virtual ~HTTPSClient() {}
 
-    virtual error PostJSON(
+    virtual error Post(
         const std::string host,
         const std::string relative_url,
         const std::string json,
@@ -89,7 +89,7 @@ class HTTPSClient {
         const std::string basic_auth_password,
         std::string *response_body);
 
-    virtual error GetJSON(
+    virtual error Get(
         const std::string host,
         const std::string relative_url,
         const std::string basic_auth_username,

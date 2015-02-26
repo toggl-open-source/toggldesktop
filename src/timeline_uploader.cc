@@ -96,12 +96,12 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     std::string json = convertTimelineToJSON(batch->Events(),
                        batch->DesktopID());
     std::string response_body("");
-    return client.PostJSON(kTimelineUploadURL,
-                           "/api/v8/timeline",
-                           json,
-                           batch->APIToken(),
-                           "api_token",
-                           &response_body);
+    return client.Post(kTimelineUploadURL,
+                       "/api/v8/timeline",
+                       json,
+                       batch->APIToken(),
+                       "api_token",
+                       &response_body);
 }
 
 std::string convertTimelineToJSON(

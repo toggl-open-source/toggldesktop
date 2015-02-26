@@ -457,12 +457,12 @@ error User::PushChanges(
         logger().debug(json);
 
         std::string response_body("");
-        err = https_client->PostJSON(kAPIURL,
-                                     "/api/v8/batch_updates",
-                                     json,
-                                     APIToken(),
-                                     "api_token",
-                                     &response_body);
+        err = https_client->Post(kAPIURL,
+                                 "/api/v8/batch_updates",
+                                 json,
+                                 APIToken(),
+                                 "api_token",
+                                 &response_body);
         if (err != noError) {
             return err;
         }
@@ -530,11 +530,11 @@ error User::Me(
                      << "?app_name=" << TogglClient::Config.AppName
                      << "&with_related_data=true";
 
-        return https_client->GetJSON(kAPIURL,
-                                     relative_url.str(),
-                                     email,
-                                     password,
-                                     user_data_json);
+        return https_client->Get(kAPIURL,
+                                 relative_url.str(),
+                                 email,
+                                 password,
+                                 user_data_json);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -570,12 +570,12 @@ error User::Signup(
         Json::Value root;
         root["user"] = user;
 
-        return https_client->PostJSON(kAPIURL,
-                                      "/api/v8/signups",
-                                      Json::StyledWriter().write(root),
-                                      "",
-                                      "",
-                                      user_data_json);
+        return https_client->Post(kAPIURL,
+                                  "/api/v8/signups",
+                                  Json::StyledWriter().write(root),
+                                  "",
+                                  "",
+                                  user_data_json);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

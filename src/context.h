@@ -312,6 +312,8 @@ class Context : public TimelineDatasource {
     error attemptOfflineLogin(const std::string email,
                               const std::string password);
 
+    error downloadUpdate();
+
     Poco::Mutex db_m_;
     Database *db_;
 
