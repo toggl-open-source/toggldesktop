@@ -265,6 +265,10 @@ BOOL manualMode = NO;
 
 - (BOOL)updateCheckEnabled
 {
+	if (![self.environment isEqualToString:@"production"]) {
+		return NO;
+	}
+
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 
 	return [infoDict[@"KopsikCheckForUpdates"] boolValue];
