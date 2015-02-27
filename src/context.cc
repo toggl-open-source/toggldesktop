@@ -819,7 +819,7 @@ error Context::downloadUpdate() {
             return err;
         }
 
-		// Ask if we have updates from Toggl
+        // Ask if we have updates from Toggl
         std::string url("");
         {
             std::string body("");
@@ -847,12 +847,12 @@ error Context::downloadUpdate() {
             url = root["url"].asString();
 
             std::stringstream ss;
-			ss << "Found update " << root["version"].asString()
-				<< " (" << url << ")";
+            ss << "Found update " << root["version"].asString()
+               << " (" << url << ")";
             logger().debug(ss.str());
         }
 
-		// Download update if it's not downloaded yet.
+        // Download update if it's not downloaded yet.
         {
 			Poco::URI uri(url);
 
