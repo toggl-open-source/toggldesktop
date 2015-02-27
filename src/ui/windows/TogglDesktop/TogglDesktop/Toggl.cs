@@ -1242,7 +1242,6 @@ namespace TogglDesktop
                         {
                             Console.WriteLine("Failed to start updater process");
                         }
-                        return false;
                     }
                     else
                     {
