@@ -784,10 +784,7 @@ _Bool Context::UpdateChannel(
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 
-    error err = downloadUpdate();
-    if (err != noError) {
-        displayError(err);
-    }
+    displayError(downloadUpdate());
 }
 
 error Context::downloadUpdate() {
@@ -801,10 +798,6 @@ error Context::downloadUpdate() {
         if (update_check_disabled_) {
             return noError;
         }
-
-        // FIXME: if there's already an "update" in the app folder,
-        // don't do anything. perhaps somethings broken. or we already
-        // got an update previously.
 
         // Load current update channel
         std::string update_channel("");
@@ -820,8 +813,8 @@ error Context::downloadUpdate() {
             return err;
         }
 
-
-        std::string url(""), version("");
+		// Ask if we have updates from Toggl
+        std::string url("");
         {
             std::string body("");
             TogglClient client;
@@ -846,17 +839,29 @@ error Context::downloadUpdate() {
             }
 
             url = root["url"].asString();
-            version = root["version"].asString();
 
             std::stringstream ss;
-            ss << "Found update " << version << " (" << url << ")";
+			ss << "Found update " << root["version"].asString()
+				<< " (" << url << ")";
             logger().debug(ss.str());
         }
 
-        Poco::URI uri(url);
-
+		// Download update if it's not downloaded yet.
         {
-            std::string body("");
+			Poco::URI uri(url);
+
+			std::vector<std::string> path_segments;
+			uri.getPathSegments(path_segments);
+			std::string file = path_segments.back();
+
+			Poco::File f(file);
+			if (f.exists()) {
+				logger().debug("File already exists: " + file);
+				return noError;
+			}
+			
+			// Download file
+			std::string body("");
             TogglClient client;
             err = client.Get(uri.getScheme() + "://" + uri.getHost(),
                              uri.getPathEtc(),
@@ -870,10 +875,6 @@ error Context::downloadUpdate() {
             if ("null" == body || !body.size()) {
                 return error("Failed to download update");
             }
-
-            std::vector<std::string> path_segments;
-            uri.getPathSegments(path_segments);
-            std::string file = path_segments.back();
 
             std::stringstream ss;
             ss << "Writing update to file " << file;
