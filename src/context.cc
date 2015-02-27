@@ -813,7 +813,7 @@ error Context::downloadUpdate() {
             return err;
         }
 
-		// Ask if we have updates from Toggl
+        // Ask if we have updates from Toggl
         std::string url("");
         {
             std::string body("");
@@ -841,27 +841,27 @@ error Context::downloadUpdate() {
             url = root["url"].asString();
 
             std::stringstream ss;
-			ss << "Found update " << root["version"].asString()
-				<< " (" << url << ")";
+            ss << "Found update " << root["version"].asString()
+               << " (" << url << ")";
             logger().debug(ss.str());
         }
 
-		// Download update if it's not downloaded yet.
+        // Download update if it's not downloaded yet.
         {
-			Poco::URI uri(url);
+            Poco::URI uri(url);
 
-			std::vector<std::string> path_segments;
-			uri.getPathSegments(path_segments);
-			std::string file = path_segments.back();
+            std::vector<std::string> path_segments;
+            uri.getPathSegments(path_segments);
+            std::string file = path_segments.back();
 
-			Poco::File f(file);
-			if (f.exists()) {
-				logger().debug("File already exists: " + file);
-				return noError;
-			}
-			
-			// Download file
-			std::string body("");
+            Poco::File f(file);
+            if (f.exists()) {
+                logger().debug("File already exists: " + file);
+                return noError;
+            }
+
+            // Download file
+            std::string body("");
             TogglClient client;
             err = client.Get(uri.getScheme() + "://" + uri.getHost(),
                              uri.getPathEtc(),
