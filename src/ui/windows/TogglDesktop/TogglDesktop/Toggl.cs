@@ -1206,8 +1206,53 @@ namespace TogglDesktop
                 Directory.Move(oldpath, path);
             }
 
+            // If there are updates waiting, install those
+            string updatePath = Path.Combine(path, "updates");
+            if (Directory.Exists(updatePath))
+            {
+                DirectoryInfo di = new DirectoryInfo(updatePath);
+                FileInfo[] files = di.GetFiles("TogglDesktopInstaller*.exe",
+                    SearchOption.TopDirectoryOnly);
+                if (files.Length > 1)
+                {
+                    // Somethings fubar. Delete the updates to start over
+                    foreach(FileInfo fi in files)
+                    {
+                        fi.Delete();
+                    }
+                }
+                else if (files.Length == 1)
+                {
+                    // Attempt to install the first update found in the folder.
+                    string updater = Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory,
+                        "TogglDesktopUpdater.exe");
+                    if (File.Exists(updater))
+                    {
+                        ProcessStartInfo psi = new ProcessStartInfo();
+                        psi.FileName = updater;
+                        psi.Arguments = Process.GetCurrentProcess().Id.ToString()
+                            + " " + files[0].FullName;
+                        Process process = Process.Start(psi);
+                        if (!process.HasExited && process.Id != 0)
+                        {
+                            Environment.Exit(0);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to start updater process");
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("TogglDesktopUpdater.exe not found");
+                    }
+                }
+            }
+
             // Configure log, db path
-            System.IO.Directory.CreateDirectory(path);
+            Directory.CreateDirectory(path);
 
             string logPath = Path.Combine(path, "toggldesktop.log");
             toggl_set_log_path(logPath);
@@ -1225,7 +1270,6 @@ namespace TogglDesktop
                 throw new System.Exception("Failed to initialize database at " + databasePath);
             }
 
-            string updatePath = Path.Combine(path, "updates");
             toggl_set_update_path(ctx, updatePath);
 
             // Start pumping UI events
