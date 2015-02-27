@@ -21,6 +21,8 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
+	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
+
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = [infoDict objectForKey:@"CFBundleShortVersionString"];
 	[self.versionTextField setStringValue:[NSString stringWithFormat:@"Version %@", version]];
