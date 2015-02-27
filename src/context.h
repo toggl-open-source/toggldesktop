@@ -59,6 +59,10 @@ class Context : public TimelineDatasource {
 
     _Bool SetDBPath(const std::string path);
 
+	void SetUpdatePath(const std::string path) {
+		update_path_ = path;
+	}
+
     void SetEnvironment(const std::string environment);
     std::string Environment() const {
         return environment_;
@@ -365,6 +369,8 @@ class Context : public TimelineDatasource {
     Poco::Activity<Context> ui_updater_;
 
     Analytics analytics_;
+
+	std::string update_path_;
 };
 
 void on_websocket_message(

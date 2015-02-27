@@ -33,6 +33,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Net/NetSSL.h"
 #include "Poco/PatternFormatter.h"
+#include "Poco/Path.h"
 #include "Poco/Random.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
@@ -60,7 +61,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
 , quit_(false)
-, ui_updater_(this, &Context::uiUpdaterActivity) {
+, ui_updater_(this, &Context::uiUpdaterActivity)
+, update_path_("") {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -799,6 +801,10 @@ error Context::downloadUpdate() {
             return noError;
         }
 
+		if (update_path_.empty()) {
+			return error("update path is empty, cannot download update");
+		}
+
         // Load current update channel
         std::string update_channel("");
         error err = db()->LoadUpdateChannel(&update_channel);
@@ -852,13 +858,18 @@ error Context::downloadUpdate() {
 
 			std::vector<std::string> path_segments;
 			uri.getPathSegments(path_segments);
-			std::string file = path_segments.back();
+
+			Poco::Path save_location(update_path_);
+			save_location.append(path_segments.back());
+			std::string file = save_location.toString();
 
 			Poco::File f(file);
 			if (f.exists()) {
 				logger().debug("File already exists: " + file);
 				return noError;
 			}
+
+			Poco::File(update_path_).createDirectory();
 			
 			// Download file
 			std::string body("");
