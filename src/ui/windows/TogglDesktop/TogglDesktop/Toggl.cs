@@ -335,6 +335,14 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.LPWStr)]
             string path);
 
+        // Configure updates download path to use the silent updater
+
+        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
+        private static extern void toggl_set_update_path(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string path);
+
         // Log path must be configured from UI
 
         [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
@@ -1186,18 +1194,39 @@ namespace TogglDesktop
                 toggl_disable_update_check(ctx);
             }
 
-            // Configure log, db path
-            string path = Path.Combine(Environment.GetFolderPath(
+            // Move "old" format app data folder, if it exists
+            string oldpath = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
+
+            string path = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+
+            if (Directory.Exists(oldpath))
+            {
+                Directory.Move(oldpath, path);
+            }
+
+            // Configure log, db path
             System.IO.Directory.CreateDirectory(path);
-            string logPath = Path.Combine(path, "toggl_desktop.log");
+
+            string logPath = Path.Combine(path, "toggldesktop.log");
             toggl_set_log_path(logPath);
             toggl_set_log_level("debug");
-            string databasePath = Path.Combine(path, "kopsik.db");
+
+            string olddatabasepath = Path.Combine(path, "kopsik.db");
+            string databasePath = Path.Combine(path, "toggldesktop.db");
+            if (File.Exists(olddatabasepath))
+            {
+                File.Move(olddatabasepath, databasePath);
+            }
+
             if (!toggl_set_db_path(ctx, databasePath))
             {
                 throw new System.Exception("Failed to initialize database at " + databasePath);
             }
+
+            string updatePath = Path.Combine(path, "updates");
+            toggl_set_update_path(ctx, updatePath);
 
             // Start pumping UI events
             return toggl_ui_start(ctx);
