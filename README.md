@@ -74,6 +74,10 @@ nmake -f ms\ntdll.mak clean
 nmake -f ms\ntdll.mak 
 ```
 
+Instead of do_nasm (use NASM) you can also use do_ms (no asm at all), or do_masm (use MASM). 
+NASM can be downloaded here: http://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D
+
+
 Then open the solution in Visual Studio. Next, you'll need to install the net-bugsnag package: from the Tools menu select NuGet Package Manager, then Package Manager Console. Into the console, type:
 
 ```
