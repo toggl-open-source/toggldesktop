@@ -791,11 +791,9 @@ void Context::executeUpdateCheck() {
 
 error Context::downloadUpdate() {
     try {
-        /* FIXME:
-            if ("production" != environment_) {
-                return noError;
-            }
-        */
+        if ("production" != environment_) {
+            return noError;
+        }
 
         if (update_check_disabled_) {
             return noError;
