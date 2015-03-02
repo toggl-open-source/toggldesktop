@@ -1193,59 +1193,15 @@ namespace TogglDesktop
             // Move "old" format app data folder, if it exists
             string oldpath = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
-
             string path = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
-
-            if (Directory.Exists(oldpath))
+            if (Directory.Exists(oldpath) && !Directory.Exists(path))
             {
                 Directory.Move(oldpath, path);
             }
 
-            // If there are updates waiting, install those
             string updatePath = Path.Combine(path, "updates");
-            if (Directory.Exists(updatePath))
-            {
-                DirectoryInfo di = new DirectoryInfo(updatePath);
-                FileInfo[] files = di.GetFiles("TogglDesktopInstaller*.exe",
-                    SearchOption.TopDirectoryOnly);
-                if (files.Length > 1)
-                {
-                    // Somethings fubar. Delete the updates to start over
-                    foreach(FileInfo fi in files)
-                    {
-                        fi.Delete();
-                    }
-                }
-                else if (files.Length == 1)
-                {
-                    // Attempt to install the first update found in the folder.
-                    string updater = Path.Combine(
-                        AppDomain.CurrentDomain.BaseDirectory,
-                        "TogglDesktopUpdater.exe");
-                    if (File.Exists(updater))
-                    {
-                        ProcessStartInfo psi = new ProcessStartInfo();
-                        psi.FileName = updater;
-                        psi.Arguments = Process.GetCurrentProcess().Id.ToString()
-                            + " " + files[0].FullName
-                            + " " + System.Reflection.Assembly.GetEntryAssembly().Location;
-                        Process process = Process.Start(psi);
-                        if (!process.HasExited && process.Id != 0)
-                        {
-                            Environment.Exit(0);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Failed to start updater process");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("TogglDesktopUpdater.exe not found");
-                    }
-                }
-            }
+            installPendingUpdates(updatePath);
 
             // Configure log, db path
             Directory.CreateDirectory(path);
@@ -1254,9 +1210,10 @@ namespace TogglDesktop
             toggl_set_log_path(logPath);
             toggl_set_log_level("debug");
 
+            // Rename database file, if not done yet
             string olddatabasepath = Path.Combine(path, "kopsik.db");
             string databasePath = Path.Combine(path, "toggldesktop.db");
-            if (File.Exists(olddatabasepath))
+            if (File.Exists(olddatabasepath) && !File.Exists(databasePath))
             {
                 File.Move(olddatabasepath, databasePath);
             }
@@ -1270,6 +1227,56 @@ namespace TogglDesktop
 
             // Start pumping UI events
             return toggl_ui_start(ctx);
+        }
+
+        private static void installPendingUpdates(string updatePath)
+        {
+            if (!Directory.Exists(updatePath))
+            {
+                return;
+            }
+
+            DirectoryInfo di = new DirectoryInfo(updatePath);
+            FileInfo[] files = di.GetFiles("TogglDesktopInstaller*.exe",
+                SearchOption.TopDirectoryOnly);
+            if (files.Length > 1)
+            {
+                // Somethings fubar. Delete the updates to start over
+                foreach (FileInfo fi in files)
+                {
+                    fi.Delete();
+                }
+                return;
+            }
+
+            if (files.Length < 1) 
+            {
+                return;
+            }
+
+            string updater = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "TogglDesktopUpdater.exe");
+            if (!File.Exists(updater))
+            {
+                Console.WriteLine("TogglDesktopUpdater.exe not found");
+                return;
+            }
+
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = updater;
+            psi.Arguments = Process.GetCurrentProcess().Id.ToString()
+                + " " + files[0].FullName
+                + " " + System.Reflection.Assembly.GetEntryAssembly().Location;
+            Process process = Process.Start(psi);
+            if (!process.HasExited && process.Id != 0)
+            {
+                // Update has started. Quit, installer will restart me.
+                Environment.Exit(0);
+                return;
+            }
+
+            Console.WriteLine("Failed to start updater process");
         }
 
         public static List<Model> ConvertToViewItemList(IntPtr first)
