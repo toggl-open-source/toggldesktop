@@ -855,7 +855,8 @@ error Context::downloadUpdate() {
         // Ignore update if not compatible with this client version
 
         if (url.find(".exe") == std::string::npos) {
-            logger().debug("Update is not compatible with this client, will ignore");
+            logger().debug("Update is not compatible with this client,"
+                           " will ignore");
             return noError;
         }
 
