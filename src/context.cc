@@ -852,6 +852,13 @@ error Context::downloadUpdate() {
             logger().debug(ss.str());
         }
 
+		// Ignore update if not compatible with this client version
+
+		if (url.find(".exe") == std::string::npos) {
+			logger().debug("Update is not compatible with this client, will ignore");
+			return noError;
+		}
+
         // Download update if it's not downloaded yet.
         {
 			Poco::URI uri(url);
