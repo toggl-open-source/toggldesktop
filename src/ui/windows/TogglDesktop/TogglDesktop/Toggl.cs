@@ -314,10 +314,6 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.LPWStr)]
             string environment);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_disable_update_check(
-            IntPtr context);
-
         // CA cert bundle path must be configured from UI
 
         [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
