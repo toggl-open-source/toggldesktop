@@ -205,11 +205,11 @@ extern "C" {
         void *context,
         const char_t *path);
 
-	// Configure update download path for silent updates
+    // Configure update download path for silent updates
 
-	TOGGL_EXPORT void toggl_set_update_path(
-		void *context,
-		const char_t *path);
+    TOGGL_EXPORT void toggl_set_update_path(
+        void *context,
+        const char_t *path);
 
     // Log path must be configured from UI
 

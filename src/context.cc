@@ -801,9 +801,9 @@ error Context::downloadUpdate() {
             return noError;
         }
 
-		if (update_path_.empty()) {
-			return error("update path is empty, cannot download update");
-		}
+        if (update_path_.empty()) {
+            return error("update path is empty, cannot download update");
+        }
 
         // Load current update channel
         std::string update_channel("");
@@ -852,34 +852,34 @@ error Context::downloadUpdate() {
             logger().debug(ss.str());
         }
 
-		// Ignore update if not compatible with this client version
+        // Ignore update if not compatible with this client version
 
-		if (url.find(".exe") == std::string::npos) {
-			logger().debug("Update is not compatible with this client, will ignore");
-			return noError;
-		}
+        if (url.find(".exe") == std::string::npos) {
+            logger().debug("Update is not compatible with this client, will ignore");
+            return noError;
+        }
 
         // Download update if it's not downloaded yet.
         {
-			Poco::URI uri(url);
+            Poco::URI uri(url);
 
-			std::vector<std::string> path_segments;
-			uri.getPathSegments(path_segments);
+            std::vector<std::string> path_segments;
+            uri.getPathSegments(path_segments);
 
-			Poco::Path save_location(update_path_);
-			save_location.append(path_segments.back());
-			std::string file = save_location.toString();
+            Poco::Path save_location(update_path_);
+            save_location.append(path_segments.back());
+            std::string file = save_location.toString();
 
-			Poco::File f(file);
-			if (f.exists()) {
-				logger().debug("File already exists: " + file);
-				return noError;
-			}
+            Poco::File f(file);
+            if (f.exists()) {
+                logger().debug("File already exists: " + file);
+                return noError;
+            }
 
-			Poco::File(update_path_).createDirectory();
-			
-			// Download file
-			std::string body("");
+            Poco::File(update_path_).createDirectory();
+
+            // Download file
+            std::string body("");
             TogglClient client;
             err = client.Get(uri.getScheme() + "://" + uri.getHost(),
                              uri.getPathEtc(),

@@ -149,11 +149,11 @@ _Bool toggl_set_db_path(
 }
 
 void toggl_set_update_path(
-	void *context,
-	const char_t *path) {
-	poco_check_ptr(path);
+    void *context,
+    const char_t *path) {
+    poco_check_ptr(path);
 
-	return app(context)->SetUpdatePath(to_string(path));
+    return app(context)->SetUpdatePath(to_string(path));
 }
 
 void toggl_set_environment(
