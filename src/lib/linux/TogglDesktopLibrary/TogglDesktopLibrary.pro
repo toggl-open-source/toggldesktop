@@ -108,7 +108,6 @@ HEADERS += \
     ../../../tag.h \
     ../../../task.h \
     ../../../time_entry.h \
-    ../../../timeline_constants.h \
     ../../../timeline_event.h \
     ../../../timeline_notifications.h \
     ../../../timeline_uploader.h \

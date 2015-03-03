@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "./get_focused_window.h"
-#include "./timeline_constants.h"
+#include "./const.h"
 
 #include "Poco/Logger.h"
 #include "Poco/Thread.h"

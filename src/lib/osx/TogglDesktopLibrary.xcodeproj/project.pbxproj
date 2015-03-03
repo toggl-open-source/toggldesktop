@@ -61,7 +61,6 @@
 		74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CAAD0218185A9B001B77BB /* Carbon.framework */; };
 		74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */; };
 		74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD11181860F7001B77BB /* get_focused_window.h */; };
-		74CAAD1B181860F7001B77BB /* timeline_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD12181860F7001B77BB /* timeline_constants.h */; };
 		74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD15181860F7001B77BB /* timeline_event.h */; };
 		74CAAD1F181860F7001B77BB /* timeline_notifications.h in Headers */ = {isa = PBXBuildFile; fileRef = 74CAAD16181860F7001B77BB /* timeline_notifications.h */; };
 		74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74CAAD17181860F7001B77BB /* timeline_uploader.cc */; };
@@ -137,7 +136,6 @@
 		74CAAD0218185A9B001B77BB /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = get_focused_window_mac.cc; path = ../../../get_focused_window_mac.cc; sourceTree = "<group>"; };
 		74CAAD11181860F7001B77BB /* get_focused_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = get_focused_window.h; path = ../../../get_focused_window.h; sourceTree = "<group>"; };
-		74CAAD12181860F7001B77BB /* timeline_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timeline_constants.h; path = ../../../timeline_constants.h; sourceTree = "<group>"; };
 		74CAAD15181860F7001B77BB /* timeline_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timeline_event.h; path = ../../../timeline_event.h; sourceTree = "<group>"; };
 		74CAAD16181860F7001B77BB /* timeline_notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timeline_notifications.h; path = ../../../timeline_notifications.h; sourceTree = "<group>"; };
 		74CAAD17181860F7001B77BB /* timeline_uploader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = timeline_uploader.cc; path = ../../../timeline_uploader.cc; sourceTree = "<group>"; };
@@ -286,7 +284,6 @@
 				74F7CDDA18199FA300630BD0 /* window_change_recorder.h */,
 				74CAAD10181860F7001B77BB /* get_focused_window_mac.cc */,
 				74CAAD11181860F7001B77BB /* get_focused_window.h */,
-				74CAAD12181860F7001B77BB /* timeline_constants.h */,
 				74CAAD15181860F7001B77BB /* timeline_event.h */,
 				74CAAD16181860F7001B77BB /* timeline_notifications.h */,
 				74CAAD17181860F7001B77BB /* timeline_uploader.cc */,
@@ -348,7 +345,6 @@
 				7458ED2A1A355746007B529E /* idle.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
 				74E16832180F26D90026261C /* websocket_client.h in Headers */,
-				74CAAD1B181860F7001B77BB /* timeline_constants.h in Headers */,
 				7484A2A818887BEE0025A88B /* toggl_api_private.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
 				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,

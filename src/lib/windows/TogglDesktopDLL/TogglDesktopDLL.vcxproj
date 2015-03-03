@@ -115,7 +115,6 @@
     <ClInclude Include="..\..\..\related_data.h" />
     <ClInclude Include="..\..\..\tag.h" />
     <ClInclude Include="..\..\..\task.h" />
-    <ClInclude Include="..\..\..\timeline_constants.h" />
     <ClInclude Include="..\..\..\timeline_event.h" />
     <ClInclude Include="..\..\..\timeline_notifications.h" />
     <ClInclude Include="..\..\..\timeline_uploader.h" />

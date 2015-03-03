@@ -81,9 +81,6 @@
     <ClInclude Include="..\..\..\time_entry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\timeline_constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\timeline_event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
