@@ -1289,6 +1289,7 @@ void Context::SetEnvironment(const std::string value) {
         logger().error(ss.str());
         return;
     }
+    logger().debug("SetEnvironment " + value);
     environment_ = value;
 }
 
