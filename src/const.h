@@ -14,6 +14,7 @@
 #define kTimerStartInterval 10
 #define kTimelineSecondsToKeep 604800
 #define kWindowFocusThresholdSeconds 5
+#define kTimelineChunkSeconds 900
 
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"

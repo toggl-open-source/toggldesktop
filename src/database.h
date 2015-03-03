@@ -240,6 +240,14 @@ class Database {
     error deleteTooOldTimeline(
         const Poco::UInt64 &UID);
 
+    error selectCompressedTimelineBatch(
+        const Poco::UInt64 &user_id,
+        std::vector<TimelineEvent> *timeline_events);
+
+    error selectUnompressedTimelineEvents(
+        const Poco::UInt64 &user_id,
+        std::vector<TimelineEvent> *timeline_events);
+
     Poco::Logger &logger() const;
 
     Poco::Mutex session_m_;
@@ -248,6 +256,11 @@ class Database {
     std::string desktop_id_;
     std::string analytics_client_id_;
 };
+
+void loadTimelineEvents(
+    const Poco::UInt64 &user_id,
+    Poco::Data::Statement *select,
+    std::vector<TimelineEvent> *timeline_events);
 
 }  // namespace toggl
 

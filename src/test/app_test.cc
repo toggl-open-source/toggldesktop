@@ -110,23 +110,45 @@ TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
 
     const Poco::UInt64 user_id = 123;
 
+    // Event that happened at least 15 minutes ago,
+    // can be uploaded to Toggl backend.
     TimelineEvent good;
     good.user_id = user_id;
-    good.start_time = time(0) - 60;  // started 1 minute ago
-    good.end_time = time(0);  // lasted until now
+    good.start_time = time(0) - 60*16;  // started 16 minutes ago
+    good.end_time = good.start_time + 30;  // lasted 30 seconds
     good.filename = "Notepad.exe";
     good.title = "untitled";
-
     ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&good));
 
-    TimelineEvent bad;
-    bad.user_id = user_id;
-    bad.start_time = time(0) - kTimelineSecondsToKeep - 1;  // 7 days ago
-    bad.end_time = bad.end_time + 120;  // lasted 2 minutes
-    bad.filename = "Notepad.exe";
-    bad.title = "untitled";
+    // Another event that happened at least 15 minutes ago,
+    // can be uploaded to Toggl backend.
+    TimelineEvent good2;
+    good2.user_id = user_id;
+    good2.start_time = good.end_time + 1;  // started after first event
+    good2.end_time = good2.start_time + 20;
+    good2.filename = "Notepad.exe";
+    good2.title = "untitled";
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&good2));
 
-    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&bad));
+    // This event happened less than 15 minutes ago,
+    // so it must not be uploaded
+    TimelineEvent too_fresh;
+    too_fresh.user_id = user_id;
+    too_fresh.start_time = time(0) - 60;  // started 1 minute ago
+    too_fresh.end_time = time(0);  // lasted until now
+    too_fresh.filename = "Notepad.exe";
+    too_fresh.title = "notes";
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&too_fresh));
+
+    // This event happened more than 7 days ago,
+    // so it must not be uploaded, just deleted
+    TimelineEvent too_old;
+    too_old.user_id = user_id;
+    too_old.start_time = time(0) - kTimelineSecondsToKeep - 1;  // 7 days ago
+    too_old.end_time = too_old.end_time + 120;  // lasted 2 minutes
+    too_old.filename = "Notepad.exe";
+    too_old.title = "diary";
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&too_old));
 
     std::vector<TimelineEvent> timeline_events;
     ASSERT_EQ(noError, db.instance()->SelectTimelineBatch(
@@ -136,8 +158,12 @@ TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
 
     TimelineEvent ready_for_upload = timeline_events[0];
     ASSERT_EQ(good.user_id, ready_for_upload.user_id);
-    ASSERT_EQ(good.start_time, ready_for_upload.start_time);
-    ASSERT_EQ(good.end_time, ready_for_upload.end_time);
+    ASSERT_EQ(
+        (good.start_time / kTimelineChunkSeconds) * kTimelineChunkSeconds,
+        ready_for_upload.start_time);
+    ASSERT_EQ(
+        (good.end_time - good.start_time) + (good2.end_time - good2.start_time),
+        ready_for_upload.end_time - ready_for_upload.start_time);
     ASSERT_EQ(good.filename, ready_for_upload.filename);
     ASSERT_EQ(good.title, ready_for_upload.title);
     ASSERT_EQ(good.idle, ready_for_upload.idle);
