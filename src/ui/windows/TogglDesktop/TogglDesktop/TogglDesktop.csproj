@@ -121,9 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AboutWindowController.cs" />
     <Compile Include="AboutWindowController.Designer.cs">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </Compile>
@@ -154,16 +152,12 @@
     <Compile Include="EditForm.Designer.cs">
       <DependentUpon>EditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FeedbackWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FeedbackWindowController.cs" />
     <Compile Include="FeedbackWindowController.Designer.cs">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalShortcuts.cs" />
-    <Compile Include="IdleNotificationWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="IdleNotificationWindowController.cs" />
     <Compile Include="IdleNotificationWindowController.Designer.cs">
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
@@ -179,15 +173,11 @@
     <Compile Include="LoginViewController.Designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MainWindowController.cs" />
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="PreferencesWindowController.cs" />
     <Compile Include="PreferencesWindowController.Designer.cs">
       <DependentUpon>PreferencesWindowController.cs</DependentUpon>
     </Compile>
@@ -219,7 +209,6 @@
     </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="win32.cs" />
-    <Compile Include="WinSparkle.cs" />
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
@@ -420,9 +409,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>XCOPY $(SolutionDir)..\..\..\..\src\ui\windows\TogglDesktop\Release\TogglDesktopDLL.dll $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\src\ui\windows\TogglDesktop\TogglDesktopUpdater\bin\Release\TogglDesktopUpdater.exe $(TargetDir) /Y
 XCOPY $(SolutionDir)..\..\..\..\third_party\poco\bin\*.dll $(TargetDir) /Y
 XCOPY $(SolutionDir)..\..\..\..\third_party\openssl\out32dll\*eay32.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)..\..\..\..\third_party\winsparkle\Release\WinSparkle.dll $(TargetDir) /Y
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

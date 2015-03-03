@@ -59,6 +59,10 @@ class Context : public TimelineDatasource {
 
     _Bool SetDBPath(const std::string path);
 
+    void SetUpdatePath(const std::string path) {
+        update_path_ = path;
+    }
+
     void SetEnvironment(const std::string environment);
     std::string Environment() const {
         return environment_;
@@ -128,8 +132,6 @@ class Context : public TimelineDatasource {
     void Edit(const std::string GUID,
               const _Bool edit_running_entry,
               const std::string focused_field_name);
-
-    void About();
 
     _Bool SetTimeEntryDuration(
         const std::string GUID,
@@ -314,6 +316,8 @@ class Context : public TimelineDatasource {
     error attemptOfflineLogin(const std::string email,
                               const std::string password);
 
+    error downloadUpdate();
+
     Poco::Mutex db_m_;
     Database *db_;
 
@@ -365,6 +369,8 @@ class Context : public TimelineDatasource {
     Poco::Activity<Context> ui_updater_;
 
     Analytics analytics_;
+
+    std::string update_path_;
 };
 
 void on_websocket_message(

@@ -117,14 +117,6 @@ extern "C" {
         _Bool ManualMode;
     } TogglSettingsView;
 
-    typedef struct {
-        char_t *UpdateChannel;
-        _Bool IsChecking;
-        _Bool IsUpdateAvailable;
-        char_t *URL;
-        char_t *Version;
-    } TogglUpdateView;
-
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -133,10 +125,6 @@ extern "C" {
     typedef void (*TogglDisplayError)(
         const char_t *errmsg,
         const _Bool user_error);
-
-    typedef void (*TogglDisplayUpdate)(
-        const _Bool open,
-        TogglUpdateView *update);
 
     typedef void (*TogglDisplayOnlineState)(
         const int64_t state);
@@ -217,6 +205,12 @@ extern "C" {
         void *context,
         const char_t *path);
 
+    // Configure update download path for silent updates
+
+    TOGGL_EXPORT void toggl_set_update_path(
+        void *context,
+        const char_t *path);
+
     // Log path must be configured from UI
 
     TOGGL_EXPORT void toggl_set_log_path(
@@ -241,10 +235,6 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_error(
         void *context,
         TogglDisplayError);
-
-    TOGGL_EXPORT void toggl_on_update(
-        void *context,
-        TogglDisplayUpdate);
 
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,
@@ -341,9 +331,6 @@ extern "C" {
         const char_t *topic,
         const char_t *details,
         const char_t *filename);
-
-    TOGGL_EXPORT void toggl_about(
-        void *context);
 
     TOGGL_EXPORT void toggl_view_time_entry_list(
         void *context);
@@ -555,6 +542,7 @@ extern "C" {
         const int view_item_size,
         const int settings_size);
 
+    // You must free() the result
     TOGGL_EXPORT char_t *toggl_run_script(
         void *context,
         const char* script,

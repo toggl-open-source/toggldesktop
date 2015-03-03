@@ -33,11 +33,13 @@
 #include "Poco/Logger.h"
 #include "Poco/Net/NetSSL.h"
 #include "Poco/PatternFormatter.h"
+#include "Poco/Path.h"
 #include "Poco/Random.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
+#include "Poco/URI.h"
 
 namespace toggl {
 
@@ -59,7 +61,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
 , quit_(false)
-, ui_updater_(this, &Context::uiUpdaterActivity) {
+, ui_updater_(this, &Context::uiUpdaterActivity)
+, update_path_("") {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -783,58 +786,131 @@ _Bool Context::UpdateChannel(
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 
-    if ("production" != environment_) {
-        return;
+    displayError(downloadUpdate());
+}
+
+error Context::downloadUpdate() {
+    try {
+        if ("production" != environment_) {
+            return noError;
+        }
+
+        if (update_check_disabled_) {
+            return noError;
+        }
+
+        if (update_path_.empty()) {
+            return error("update path is empty, cannot download update");
+        }
+
+        // Load current update channel
+        std::string update_channel("");
+        error err = db()->LoadUpdateChannel(&update_channel);
+        if (err != noError) {
+            return err;
+        }
+
+        // Get update check URL
+        std::string update_url("");
+        err = updateURL(&update_url);
+        if (err != noError) {
+            return err;
+        }
+
+        // Ask if we have updates from Toggl
+        std::string url("");
+        {
+            std::string body("");
+            TogglClient client;
+            err = client.Get(kAPIURL,
+                             update_url,
+                             std::string(""),
+                             std::string(""),
+                             &body);
+            if (err != noError) {
+                return err;
+            }
+
+            if ("null" == body) {
+                logger().debug("The app is up to date");
+                return noError;
+            }
+
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(body, root)) {
+                return error("Error parsing update check response body");
+            }
+
+            url = root["url"].asString();
+
+            std::stringstream ss;
+            ss << "Found update " << root["version"].asString()
+               << " (" << url << ")";
+            logger().debug(ss.str());
+        }
+
+        // Ignore update if not compatible with this client version
+
+        if (url.find(".exe") == std::string::npos) {
+            logger().debug("Update is not compatible with this client,"
+                           " will ignore");
+            return noError;
+        }
+
+        // Download update if it's not downloaded yet.
+        {
+            Poco::URI uri(url);
+
+            std::vector<std::string> path_segments;
+            uri.getPathSegments(path_segments);
+
+            Poco::Path save_location(update_path_);
+            save_location.append(path_segments.back());
+            std::string file = save_location.toString();
+
+            Poco::File f(file);
+            if (f.exists()) {
+                logger().debug("File already exists: " + file);
+                return noError;
+            }
+
+            Poco::File(update_path_).createDirectory();
+
+            // Download file
+            std::string body("");
+            TogglClient client;
+            err = client.Get(uri.getScheme() + "://" + uri.getHost(),
+                             uri.getPathEtc(),
+                             std::string(""),
+                             std::string(""),
+                             &body);
+            if (err != noError) {
+                return err;
+            }
+
+            if ("null" == body || !body.size()) {
+                return error("Failed to download update");
+            }
+
+            std::stringstream ss;
+            ss << "Writing update to file " << file;
+            logger().debug(ss.str());
+
+            Poco::FileOutputStream fos(file, std::ios::binary);
+            fos << body;
+            fos.close();
+
+            logger().debug("Update written");
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
     }
-
-    if (update_check_disabled_) {
-        return;
-    }
-
-    std::string update_channel("");
-    error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-    UI()->DisplayUpdate(false, update_channel, true, false, "", "");
-
-    std::string update_url("");
-    err = updateURL(&update_url);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-
-    std::string response_body("");
-    TogglClient https_client;
-    err = https_client.GetJSON(kAPIURL,
-                               update_url,
-                               std::string(""),
-                               std::string(""),
-                               &response_body);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-
-    if ("null" == response_body) {
-        UI()->DisplayUpdate(false, update_channel, false, false, "", "");
-        return;
-    }
-
-    Json::Value root;
-    Json::Reader reader;
-    bool ok = reader.parse(response_body, root);
-    if (!ok) {
-        displayError(error("Error parsing update check response body"));
-        return;
-    }
-
-    std::string url = root["url"].asString();
-    std::string version = root["version"].asString();
-
-    UI()->DisplayUpdate(false, update_channel, false, true, url, version);
+    return noError;
 }
 
 error Context::updateURL(std::string *result) {
@@ -925,12 +1001,12 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kTimelineUploadURL,
-                                      "/api/v8/timeline_settings",
-                                      json,
-                                      user_->APIToken(),
-                                      "api_token",
-                                      &response_body);
+    error err = https_client.Post(kTimelineUploadURL,
+                                  "/api/v8/timeline_settings",
+                                  json,
+                                  user_->APIToken(),
+                                  "api_token",
+                                  &response_body);
     if (err != noError) {
         displayError(err);
         logger().error(err);
@@ -965,12 +1041,12 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kAPIURL,
-                                      "/api/v8/feedback",
-                                      feedback_.JSON(),
-                                      user_->APIToken(),
-                                      "api_token",
-                                      &response_body);
+    error err = https_client.Post(kAPIURL,
+                                  "/api/v8/feedback",
+                                  feedback_.JSON(),
+                                  user_->APIToken(),
+                                  "api_token",
+                                  &response_body);
     if (err != noError) {
         displayError(err);
         return;
@@ -1631,17 +1707,6 @@ void Context::Edit(const std::string GUID,
     displayTimeEntryEditor(true, te, focused_field_name);
 }
 
-void Context::About() {
-    std::string update_channel("");
-    error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-    UI()->DisplayUpdate(true, update_channel, true, false, "", "");
-    fetchUpdates();
-}
-
 void Context::displayTimeEntryEditor(const _Bool open,
                                      TimeEntry *te,
                                      const std::string focused_field_name) {
@@ -2174,7 +2239,6 @@ _Bool Context::SaveUpdateChannel(const std::string channel) {
     if (err != noError) {
         return displayError(err);
     }
-    UI()->DisplayUpdate(false, channel, true, false, "", "");
     fetchUpdates();
     return true;
 }
@@ -2237,12 +2301,12 @@ _Bool Context::OpenReportsInBrowser() {
 
     std::string response_body("");
     TogglClient https_client;
-    error err = https_client.PostJSON(kAPIURL,
-                                      "/api/v8/desktop_login_tokens",
-                                      "{}",
-                                      user_->APIToken(),
-                                      "api_token",
-                                      &response_body);
+    error err = https_client.Post(kAPIURL,
+                                  "/api/v8/desktop_login_tokens",
+                                  "{}",
+                                  user_->APIToken(),
+                                  "api_token",
+                                  &response_body);
     if (err != noError) {
         return displayError(err);
     }

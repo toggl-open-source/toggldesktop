@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutWindowController));
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.labelAppName = new System.Windows.Forms.Label();
@@ -38,7 +37,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabelGithub = new System.Windows.Forms.LinkLabel();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.timerCheckForUpdates = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
@@ -137,20 +135,14 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(300, 298);
+            this.panelMain.Size = new System.Drawing.Size(300, 288);
             this.panelMain.TabIndex = 0;
-            // 
-            // timerCheckForUpdates
-            // 
-            this.timerCheckForUpdates.Enabled = true;
-            this.timerCheckForUpdates.Interval = 3600000;
-            this.timerCheckForUpdates.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // AboutWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 298);
+            this.ClientSize = new System.Drawing.Size(300, 288);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(300, 328);
@@ -175,6 +167,5 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabelGithub;
         private System.Windows.Forms.Panel panelMain;
-        private System.Windows.Forms.Timer timerCheckForUpdates;
     }
 }

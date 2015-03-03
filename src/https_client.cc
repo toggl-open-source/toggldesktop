@@ -92,7 +92,7 @@ void ServerStatus::runActivity() {
         // Check server status
         HTTPSClient client;
         std::string response;
-        error err = client.GetJSON(
+        error err = client.Get(
             kAPIURL, "/api/v8/status", "", "", &response);
         if (noError != err) {
             logger().error(err);
@@ -208,7 +208,7 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
     return kCannotConnectError;
 }
 
-error HTTPSClient::PostJSON(
+error HTTPSClient::Post(
     const std::string host,
     const std::string relative_url,
     const std::string json,
@@ -226,7 +226,7 @@ error HTTPSClient::PostJSON(
                    &status_code);
 }
 
-error HTTPSClient::GetJSON(
+error HTTPSClient::Get(
     const std::string host,
     const std::string relative_url,
     const std::string basic_auth_username,
@@ -335,7 +335,9 @@ error HTTPSClient::request(
                                    encoded_url,
                                    Poco::Net::HTTPMessage::HTTP_1_1);
         req.setKeepAlive(false);
-        req.setContentType("application/json");
+        if (payload.size()) {
+            req.setContentType("application/json");
+        }
         req.set("User-Agent", HTTPSClient::Config.UserAgent());
         req.setChunkedTransferEncoding(true);
 
@@ -403,7 +405,9 @@ error HTTPSClient::request(
                 std::string(std::istreambuf_iterator<char>(is), eos);
         }
 
-        logger().trace(*response_body);
+        if (response_body->size() < 1204 * 10) {
+            logger().trace(*response_body);
+        }
 
         if (429 == *status_code) {
             Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);

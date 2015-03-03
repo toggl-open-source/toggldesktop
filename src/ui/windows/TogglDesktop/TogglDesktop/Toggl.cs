@@ -314,10 +314,6 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.LPWStr)]
             string environment);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-        private static extern void toggl_disable_update_check(
-            IntPtr context);
-
         // CA cert bundle path must be configured from UI
 
         [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
@@ -331,6 +327,14 @@ namespace TogglDesktop
         [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_db_path(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string path);
+
+        // Configure updates download path to use the silent updater
+
+        [DllImport(dll, CharSet = CharSet.Unicode, CallingConvention = convention)]
+        private static extern void toggl_set_update_path(
             IntPtr context,
             [MarshalAs(UnmanagedType.LPWStr)]
             string path);
@@ -1008,6 +1012,10 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void toggl_disable_update_check(
+            IntPtr context);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_set_idle_seconds(
             IntPtr context,
             UInt64 idle_seconds);
@@ -1186,21 +1194,93 @@ namespace TogglDesktop
                 toggl_disable_update_check(ctx);
             }
 
-            // Configure log, db path
-            string path = Path.Combine(Environment.GetFolderPath(
+            // Move "old" format app data folder, if it exists
+            string oldpath = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), "Kopsik");
-            System.IO.Directory.CreateDirectory(path);
-            string logPath = Path.Combine(path, "toggl_desktop.log");
+            string path = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+            if (Directory.Exists(oldpath) && !Directory.Exists(path))
+            {
+                Directory.Move(oldpath, path);
+            }
+
+            string updatePath = Path.Combine(path, "updates");
+            installPendingUpdates(updatePath);
+
+            // Configure log, db path
+            Directory.CreateDirectory(path);
+
+            string logPath = Path.Combine(path, "toggldesktop.log");
             toggl_set_log_path(logPath);
             toggl_set_log_level("debug");
-            string databasePath = Path.Combine(path, "kopsik.db");
+
+            // Rename database file, if not done yet
+            string olddatabasepath = Path.Combine(path, "kopsik.db");
+            string databasePath = Path.Combine(path, "toggldesktop.db");
+            if (File.Exists(olddatabasepath) && !File.Exists(databasePath))
+            {
+                File.Move(olddatabasepath, databasePath);
+            }
+
             if (!toggl_set_db_path(ctx, databasePath))
             {
                 throw new System.Exception("Failed to initialize database at " + databasePath);
             }
 
+            toggl_set_update_path(ctx, updatePath);
+
             // Start pumping UI events
             return toggl_ui_start(ctx);
+        }
+
+        private static void installPendingUpdates(string updatePath)
+        {
+            if (!Directory.Exists(updatePath))
+            {
+                return;
+            }
+
+            DirectoryInfo di = new DirectoryInfo(updatePath);
+            FileInfo[] files = di.GetFiles("TogglDesktopInstaller*.exe",
+                SearchOption.TopDirectoryOnly);
+            if (files.Length > 1)
+            {
+                // Somethings fubar. Delete the updates to start over
+                foreach (FileInfo fi in files)
+                {
+                    fi.Delete();
+                }
+                return;
+            }
+
+            if (files.Length < 1) 
+            {
+                return;
+            }
+
+            string updater = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "TogglDesktopUpdater.exe");
+            if (!File.Exists(updater))
+            {
+                Console.WriteLine("TogglDesktopUpdater.exe not found");
+                return;
+            }
+
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = updater;
+            psi.Arguments = Process.GetCurrentProcess().Id.ToString()
+                + " " + files[0].FullName
+                + " " + System.Reflection.Assembly.GetEntryAssembly().Location;
+            Process process = Process.Start(psi);
+            if (!process.HasExited && process.Id != 0)
+            {
+                // Update has started. Quit, installer will restart me.
+                Environment.Exit(0);
+                return;
+            }
+
+            Console.WriteLine("Failed to start updater process");
         }
 
         public static List<Model> ConvertToViewItemList(IntPtr first)

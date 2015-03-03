@@ -148,6 +148,14 @@ _Bool toggl_set_db_path(
     return app(context)->SetDBPath(to_string(path));
 }
 
+void toggl_set_update_path(
+    void *context,
+    const char_t *path) {
+    poco_check_ptr(path);
+
+    return app(context)->SetUpdatePath(to_string(path));
+}
+
 void toggl_set_environment(
     void *context,
     const char_t *environment) {
@@ -377,10 +385,6 @@ void toggl_edit(
     app(context)->Edit(to_string(guid),
                        edit_running_entry,
                        to_string(focused_field_name));
-}
-
-void toggl_about(void *context) {
-    app(context)->About();
 }
 
 void toggl_edit_preferences(void *context) {
@@ -633,13 +637,6 @@ void toggl_on_error(
     TogglDisplayError cb) {
 
     app(context)->UI()->OnDisplayError(cb);
-}
-
-void toggl_on_update(
-    void *context,
-    TogglDisplayUpdate cb) {
-
-    app(context)->UI()->OnDisplayUpdate(cb);
 }
 
 void toggl_on_online_state(

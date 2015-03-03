@@ -105,11 +105,6 @@ static int l_toggl_feedback_send(lua_State *L) {
     return 1;
 }
 
-static int l_toggl_about(lua_State *L) {
-    toggl_about(toggl_app_instance_);
-    return 0;
-}
-
 static int l_toggl_view_time_entry_list(lua_State *L) {
     toggl_view_time_entry_list(toggl_app_instance_);
     return 0;
@@ -451,7 +446,6 @@ static const struct luaL_Reg toggl_f[] = {
     {"open_in_browser", l_toggl_open_in_browser},
     {"get_support", l_toggl_get_support},
     {"feedback_send", l_toggl_feedback_send},
-    {"about", l_toggl_about},
     {"view_time_entry_list", l_toggl_view_time_entry_list},
     {"edit", l_toggl_edit},
     {"edit_preferences", l_toggl_edit_preferences},

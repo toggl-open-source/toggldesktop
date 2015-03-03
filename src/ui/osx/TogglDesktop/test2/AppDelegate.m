@@ -928,9 +928,11 @@ const NSString *appName = @"osx_native_app";
 
 	ctx = toggl_context_init([appName UTF8String], [version UTF8String]);
 
+	// Using sparkle instead of self updater:
+	toggl_disable_update_check(ctx);
+
 	toggl_on_show_app(ctx, on_app);
 	toggl_on_error(ctx, on_error);
-	toggl_on_update(ctx, 0);
 	toggl_on_online_state(ctx, on_online_state);
 	toggl_on_login(ctx, on_login);
 	toggl_on_url(ctx, on_url);

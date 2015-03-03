@@ -25,7 +25,6 @@ class GUI {
  public:
     GUI() : on_display_app_(0)
     , on_display_error_(0)
-    , on_display_update_(0)
     , on_display_online_state_(0)
     , on_display_login_(0)
     , on_display_url_(0)
@@ -48,12 +47,6 @@ class GUI {
     _Bool DisplayError(const error);
     void DisplayOnlineState(const Poco::Int64 state);
     void DisplayReminder();
-    void DisplayUpdate(const _Bool open,
-                       const std::string update_channel,
-                       const _Bool is_checking,
-                       const _Bool is_available,
-                       const std::string url,
-                       const std::string version);
     void DisplayMinitimerAutocomplete(std::vector<toggl::AutocompleteItem> *);
     void DisplayTimeEntryAutocomplete(std::vector<toggl::AutocompleteItem> *);
     void DisplayProjectAutocomplete(std::vector<toggl::AutocompleteItem> *);
@@ -88,10 +81,6 @@ class GUI {
 
     void OnDisplayError(TogglDisplayError cb) {
         on_display_error_ = cb;
-    }
-
-    void OnDisplayUpdate(TogglDisplayUpdate cb) {
-        on_display_update_ = cb;
     }
 
     void OnDisplayOnlineState(TogglDisplayOnlineState cb) {
@@ -159,7 +148,6 @@ class GUI {
 
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;
-    TogglDisplayUpdate on_display_update_;
     TogglDisplayOnlineState on_display_online_state_;
     TogglDisplayLogin on_display_login_;
     TogglDisplayURL on_display_url_;
