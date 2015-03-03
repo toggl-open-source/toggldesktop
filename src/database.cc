@@ -2673,6 +2673,14 @@ error Database::migrateTimeline() {
         }
     }
 
+    err = migrate(
+        "timeline_events.chunked",
+        "alter table timeline_events"
+        "   add column chunked integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
