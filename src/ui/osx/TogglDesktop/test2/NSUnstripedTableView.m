@@ -53,7 +53,11 @@ extern void *ctx;
 
 - (TimeEntryCell *)getSelectedEntryCell
 {
-	NSView *latestView = [self rowViewAtRow:[self selectedRow]
+	if (self.selectedRow != -1)
+	{
+		self.latestSelectedRow = self.selectedRow;
+	}
+	NSView *latestView = [self rowViewAtRow:[self latestSelectedRow]
 							makeIfNecessary  :NO];
 
 	for (NSView *subview in [latestView subviews])

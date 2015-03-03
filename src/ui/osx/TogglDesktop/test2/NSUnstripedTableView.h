@@ -9,5 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSUnstripedTableView : NSTableView
-
+@property NSInteger latestSelectedRow;
 @end
