@@ -155,7 +155,7 @@ extern void *ctx;
 
 - (void)openEdit
 {
-	toggl_edit(ctx, [self.GUID UTF8String], false, "");
+	toggl_edit(ctx, [self.GUID UTF8String], false, kKeyboardShortcut);
 }
 
 @end

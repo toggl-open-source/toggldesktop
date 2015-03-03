@@ -47,3 +47,4 @@ extern NSString *const kToggleTimerMode;
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
 const char *kFocusedFieldNameProject;
+const char *kKeyboardShortcut;
