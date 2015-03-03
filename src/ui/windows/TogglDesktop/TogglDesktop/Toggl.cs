@@ -1071,6 +1071,8 @@ namespace TogglDesktop
         {
             ctx = toggl_context_init("windows_native_app", version);
 
+			toggl_set_environment(ctx, Properties.Settings.Default.Environment);
+
             string cacert_path = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "cacert.pem");
@@ -1186,8 +1188,6 @@ namespace TogglDesktop
             {
                 OnIdleNotification(guid, since, duration, started, description);
             });
-
-            toggl_set_environment(ctx, Properties.Settings.Default.Environment);
 
             if (IsUpdateCheckDisabled())
             {
