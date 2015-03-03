@@ -1012,6 +1012,10 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        private static extern void toggl_disable_update_check(
+            IntPtr context);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_set_idle_seconds(
             IntPtr context,
             UInt64 idle_seconds);
