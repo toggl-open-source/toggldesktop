@@ -20,7 +20,7 @@ namespace toggl {
 bool BaseModel::NeedsPush() const {
     // Note that if a model has a validation error previously
     // received and attached from the backend, the model won't be
-    // pushed again unless the error is somehow fixed by error.
+    // pushed again unless the error is somehow fixed by user.
     // We will assume that if user modifies the model, the error
     // will go away. But until then, don't push the errored data.
     return ValidationError().empty() &&
