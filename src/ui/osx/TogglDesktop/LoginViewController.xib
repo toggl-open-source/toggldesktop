@@ -152,6 +152,7 @@ DQ
         </customView>
     </objects>
     <resources>
+        <image name="icon-google" width="20" height="20"/>
         <image name="toggl-logo-white" width="204" height="114"/>
     </resources>
 </document>
