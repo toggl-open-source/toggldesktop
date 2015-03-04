@@ -33,7 +33,7 @@
                             <textField focusRingType="none" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-rJ-O83">
                                 <rect key="frame" x="15" y="241" width="218" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="FQH-VE-Gcc"/>
+                                    <constraint firstAttribute="height" constant="40" id="FQH-VE-Gcc"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" placeholderString="Your email address" drawsBackground="YES" id="2P3-Ts-4er" customClass="NSTextFieldVerticallyAligned">
                                     <font key="font" metaFont="cellTitle"/>
@@ -47,7 +47,7 @@
                             <textField focusRingType="none" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sok-9q-fwV">
                                 <rect key="frame" x="15" y="196" width="218" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="c1m-OY-oBi"/>
+                                    <constraint firstAttribute="height" constant="40" id="c1m-OY-oBi"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" placeholderString="Password" drawsBackground="YES" id="0Xp-Z1-qCJ" customClass="NSSecureTextFieldVerticallyAligned">
                                     <font key="font" metaFont="cellTitle"/>
