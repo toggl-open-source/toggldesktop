@@ -850,6 +850,11 @@ error Context::downloadUpdate() {
             logger().debug(ss.str());
         }
 
+        if (UI()->CanDisplayUpdate()) {
+            UI()->DisplayUpdate(url);
+            return noError;
+        }
+
         // Ignore update if not compatible with this client version
 
         if (url.find(".exe") == std::string::npos) {

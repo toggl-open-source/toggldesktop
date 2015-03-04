@@ -210,7 +210,7 @@ extern "C" {
 
     // Configure update download path for silent updates
     // Need to configure only if you have
-    // enabled update check and have not set the 
+    // enabled update check and have not set the
     // display update callback
 
     TOGGL_EXPORT void toggl_set_update_path(

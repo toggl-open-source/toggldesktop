@@ -150,6 +150,10 @@ class GUI {
         on_display_update_ = cb;
     }
 
+    const bool CanDisplayUpdate() {
+        return !!on_display_update_;
+    }
+
  private:
     error findMissingCallbacks();
 

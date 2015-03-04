@@ -267,11 +267,19 @@ void GUI::DisplayTimeEntryEditor(const _Bool open,
 }
 
 void GUI::DisplayURL(const std::string URL) {
-    logger().debug("DisplayURL");
+    logger().debug("DisplayURL " + URL);
 
-    char_t *url_s = copy_string(URL);
-    on_display_url_(url_s);
-    free(url_s);
+    char_t *url = copy_string(URL);
+    on_display_url_(url);
+    free(url);
+}
+
+void GUI::DisplayUpdate(const std::string URL) {
+    logger().debug("DisplayUpdate " + URL);
+
+    char_t *url = copy_string(URL);
+    on_display_update_(url);
+    free(url);
 }
 
 void GUI::DisplaySettings(const _Bool open,
