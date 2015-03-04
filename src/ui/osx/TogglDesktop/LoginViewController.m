@@ -15,19 +15,6 @@
 
 extern void *ctx;
 
-- (void)viewDidLoad
-{
-	[Utils addUnderlineToTextField:self.googleLoginTextField];
-	[Utils addUnderlineToTextField:self.forgotPasswordTextField];
-	[self.view.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
-}
-
-- (void)loadView
-{
-	[super loadView];
-	[self viewDidLoad];
-}
-
 - (IBAction)clickLoginButton:(id)sender
 {
 	NSString *email = [self.email stringValue];
