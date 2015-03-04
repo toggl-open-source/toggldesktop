@@ -759,6 +759,12 @@ void toggl_on_idle_notification(
     app(context)->UI()->OnDisplayIdleNotification(cb);
 }
 
+void toggl_on_update(
+    void *context,
+    TogglDisplayUpdate cb) {
+    app(context)->UI()->OnDisplayUpdate(cb);
+}
+
 void toggl_debug(const char_t *text) {
     logger().debug(to_string(text));
 }

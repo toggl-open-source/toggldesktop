@@ -78,8 +78,8 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayUpdate(bool,UpdateView*)),  // NOLINT
-            this, SLOT(displayUpdate(bool,UpdateView*)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayUpdate(bool,QString)),  // NOLINT
+            this, SLOT(displayUpdate(bool,QString)));  // NOLINT
 
     icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
     setWindowIcon(icon);
@@ -220,7 +220,7 @@ void MainWindowController::onActionPreferences() {
 }
 
 void MainWindowController::onActionAbout() {
-    TogglApi::instance->about();
+    aboutDialog->show();
 }
 
 void MainWindowController::onActionSend_Feedback() {
@@ -306,18 +306,17 @@ void MainWindowController::showEvent(QShowEvent *event) {
     QtConcurrent::run(this, &MainWindowController::runScript);
 }
 
-void MainWindowController::displayUpdate(const bool open, UpdateView *view) {
-    if (open || aboutDialog->isVisible()
-            || view->IsChecking || !view->IsUpdateAvailable) {
+void MainWindowController::displayUpdate(const QString url) {
+    if (aboutDialog->isVisible()) {
         return;
     }
     if (QMessageBox::Yes == QMessageBox(
         QMessageBox::Question,
         "Download new version?",
-        "A new version of Toggl Desktop is available (" + view->Version + ")."
-        + " Continue with download?",
+        "A new version of Toggl Desktop is available."
+        " Continue with download?",
         QMessageBox::No|QMessageBox::Yes).exec()) {
-        QDesktopServices::openUrl(QUrl(view->URL));
+        QDesktopServices::openUrl(QUrl(url));
         quitApp();
     }
 }

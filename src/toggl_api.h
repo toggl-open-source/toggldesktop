@@ -169,6 +169,9 @@ extern "C" {
         const uint64_t started,
         const char_t *description);
 
+    typedef void (*TogglDisplayUpdate)(
+        const char_t *url);
+
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(
@@ -206,6 +209,9 @@ extern "C" {
         const char_t *path);
 
     // Configure update download path for silent updates
+    // Need to configure only if you have
+    // enabled update check and have not set the 
+    // display update callback
 
     TOGGL_EXPORT void toggl_set_update_path(
         void *context,
@@ -295,6 +301,15 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_idle_notification(
         void *context,
         TogglDisplayIdleNotification);
+
+    // If you configure this callback, the app will not
+    // download the update itself, only give you the
+    // update URL, so the user can choose to download
+    // the updated app
+
+    TOGGL_EXPORT void toggl_on_update(
+        void *context,
+        TogglDisplayUpdate);
 
     // After UI callbacks are configured, start pumping UI events
 

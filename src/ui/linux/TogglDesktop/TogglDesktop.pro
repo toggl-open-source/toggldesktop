@@ -24,7 +24,6 @@ CONFIG(debug, debug|release) {
 }
 
 SOURCES += main.cpp\
-    updateview.cpp \
     timeentryview.cpp \
     autocompleteview.cpp \
     genericview.cpp \
@@ -52,7 +51,6 @@ SOURCES += main.cpp\
     clickablelabel.cpp
 
 HEADERS  += \
-    updateview.h \
     timeentryview.h \
     autocompleteview.h \
     genericview.h \

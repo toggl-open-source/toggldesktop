@@ -39,7 +39,8 @@ class GUI {
     , on_display_settings_(0)
     , on_display_timer_state_(0)
     , on_display_idle_notification_(0)
-    , on_display_mini_timer_autocomplete_(0) {}
+    , on_display_mini_timer_autocomplete_(0)
+    , on_display_update_(0) {}
 
     ~GUI() {}
 
@@ -72,6 +73,8 @@ class GUI {
                                  const std::string duration,
                                  const uint64_t started,
                                  const std::string description);
+
+    void DisplayUpdate(const std::string url);
 
     error VerifyCallbacks();
 
@@ -143,6 +146,10 @@ class GUI {
         on_display_mini_timer_autocomplete_ = cb;
     }
 
+    void OnDisplayUpdate(TogglDisplayUpdate cb) {
+        on_display_update_ = cb;
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -163,6 +170,7 @@ class GUI {
     TogglDisplayTimerState on_display_timer_state_;
     TogglDisplayIdleNotification on_display_idle_notification_;
     TogglDisplayAutocomplete on_display_mini_timer_autocomplete_;
+    TogglDisplayUpdate on_display_update_;
 
     Poco::Logger &logger() const;
 };

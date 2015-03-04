@@ -52,7 +52,7 @@ class MainWindowController : public QMainWindow {
     void displayReminder(
         const QString title,
         const QString informative_text);
-    void displayUpdate(const bool open, UpdateView *view);
+    void displayUpdate(const QString url);
 
     void onActionNew();
     void onActionContinue();

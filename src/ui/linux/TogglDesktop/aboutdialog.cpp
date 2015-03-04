@@ -19,30 +19,21 @@ ui(new Ui::AboutDialog) {
 
     ui->version->setText(QApplication::applicationVersion());
 
-    connect(TogglApi::instance, SIGNAL(displayUpdate(bool,UpdateView*)),  // NOLINT
-            this, SLOT(displayUpdate(bool,UpdateView*)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayUpdate(QString)),  // NOLINT
+            this, SLOT(displayUpdate(QString)));  // NOLINT
 }
 
 AboutDialog::~AboutDialog() {
     delete ui;
 }
 
-void AboutDialog::displayUpdate(const bool open, UpdateView *view) {
-    if (open) {
-        show();
-    }
+void AboutDialog::displayUpdate(QString update_url) {
+    url = update_url;
 
-    url = view->URL;
+    ui->updateButton->setEnabled(!url.isEmpty());
 
-    ui->releaseChannel->setCurrentText(view->UpdateChannel);
-    ui->releaseChannel->setEnabled(!view->IsChecking);
-    ui->updateButton->setEnabled(!view->IsChecking && view->IsUpdateAvailable);
-
-    if (view->IsChecking) {
-        ui->updateButton->setText("Checking for update..");
-    } else if (view->IsUpdateAvailable) {
-        ui->updateButton->setText(
-            "Click here to download update! (" + view->Version + ")");
+    if (!url.isEmpty()) {
+        ui->updateButton->setText("Click here to download update!");
     } else {
         ui->updateButton->setText("Toggl Desktop is up to date");
     }

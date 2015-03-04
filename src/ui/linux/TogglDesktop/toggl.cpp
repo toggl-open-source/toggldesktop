@@ -15,7 +15,6 @@
 
 #include "./../../../toggl_api.h"
 
-#include "./updateview.h"
 #include "./timeentryview.h"
 #include "./genericview.h"
 #include "./autocompleteview.h"
@@ -136,6 +135,11 @@ void on_display_timer_state(
     TogglApi::instance->displayStoppedTimerState();
 }
 
+void on_display_update(
+    const char *url) {
+    TogglApi::instance->displayUpdate(QString(url));
+}
+
 void on_display_idle_notification(
     const char *guid,
     const char *since,
@@ -161,6 +165,7 @@ TogglApi::TogglApi(
     ctx = toggl_context_init("linux_native_app",
                              version.toStdString().c_str());
 
+    // FIXME: enable
     toggl_disable_update_check(ctx);
 
     QString appDirPath =
@@ -213,6 +218,7 @@ TogglApi::TogglApi(
     toggl_on_settings(ctx, on_display_settings);
     toggl_on_timer_state(ctx, on_display_timer_state);
     toggl_on_idle_notification(ctx, on_display_idle_notification);
+    toggl_on_update(ctx, on_display_update);
 
     char *env = toggl_environment(ctx);
     if (env) {
@@ -441,10 +447,6 @@ void TogglApi::sync() {
 
 void TogglApi::openInBrowser() {
     toggl_open_in_browser(ctx);
-}
-
-void TogglApi::about() {
-    toggl_about(ctx);
 }
 
 bool TogglApi::clearCache() {

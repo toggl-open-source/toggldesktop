@@ -5,8 +5,6 @@
 
 #include <QDialog>
 
-#include "./updateview.h"
-
 namespace Ui {
 class AboutDialog;
 }
@@ -19,7 +17,7 @@ class AboutDialog : public QDialog {
     ~AboutDialog();
 
  private slots:  // NOLINT
-    void displayUpdate(const bool open, UpdateView *view);
+    void displayUpdate(const QString update_url);
 
     void on_updateButton_clicked();
 
