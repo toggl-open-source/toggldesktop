@@ -19,6 +19,7 @@ extern void *ctx;
 {
 	[Utils addUnderlineToTextField:self.googleLoginTextField];
 	[Utils addUnderlineToTextField:self.forgotPasswordTextField];
+	[self.view.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
 }
 
 - (void)loadView
