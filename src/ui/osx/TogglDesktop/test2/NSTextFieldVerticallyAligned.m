@@ -15,7 +15,7 @@
 	NSInteger offset = floor((NSHeight(frame) -
 							  ([[self font] ascender] - [[self font] descender])) / 3) - 1;
 
-	return NSInsetRect(frame, 0.0, offset);
+	return NSInsetRect(frame, 5.0, offset);
 }
 
 - (void)editWithFrame:(NSRect)aRect inView:(NSView *)controlView
@@ -38,6 +38,17 @@
 {
 	[super drawInteriorWithFrame:
 	 [self adjustedFrameToVerticallyCenterText:frame] inView:view];
+}
+
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
+    NSBezierPath *betterBounds = [NSBezierPath bezierPathWithRoundedRect:cellFrame xRadius:3 yRadius:3];
+    [betterBounds addClip];
+    [super drawWithFrame:cellFrame inView:controlView];
+    if (self.isBezeled) {
+        [betterBounds setLineWidth:2];
+        [self.backgroundColor setStroke];
+        [betterBounds stroke];
+    }
 }
 
 @end

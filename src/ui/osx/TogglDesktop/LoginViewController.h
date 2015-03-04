@@ -9,13 +9,12 @@
 #import <Cocoa/Cocoa.h>
 #import "toggl_api.h"
 #import "NSTextFieldClickablePointer.h"
-#import "NSTextFieldRoundedCorners.h"
 
 @interface LoginViewController : NSViewController
 @property (strong) IBOutlet NSBox *signUpBox;
 @property (strong) IBOutlet NSBox *loginBox;
-@property IBOutlet NSTextFieldRoundedCorners *email;
-@property IBOutlet NSTextFieldRoundedCorners *password;
+@property IBOutlet NSTextField *email;
+@property IBOutlet NSTextField *password;
 @property IBOutlet NSTextFieldClickablePointer *googleLoginTextField;
 @property IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
 @property (strong) IBOutlet NSTextFieldClickablePointer *signUpLink;

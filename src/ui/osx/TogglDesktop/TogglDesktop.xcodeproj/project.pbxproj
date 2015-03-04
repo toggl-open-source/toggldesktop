@@ -21,7 +21,6 @@
 		3C9D53AD1A1CD99D00966170 /* app_icon_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9D53AC1A1CD99D00966170 /* app_icon_pdf.pdf */; };
 		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
-		3CAFDFE11AA705EE0022CD40 /* NSTextFieldRoundedCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAFDFE01AA705EE0022CD40 /* NSTextFieldRoundedCorners.m */; };
 		3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CAFDFF41AA713830022CD40 /* icon-google.pdf */; };
 		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
 		3CD7AD6F19ED579700372797 /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
@@ -305,8 +304,6 @@
 		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
 		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
 		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
-		3CAFDFDF1AA705EE0022CD40 /* NSTextFieldRoundedCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldRoundedCorners.h; sourceTree = "<group>"; };
-		3CAFDFE01AA705EE0022CD40 /* NSTextFieldRoundedCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldRoundedCorners.m; sourceTree = "<group>"; };
 		3CAFDFF41AA713830022CD40 /* icon-google.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "icon-google.pdf"; sourceTree = "<group>"; };
 		3CC450E71A31ED540012440B /* NSTextFieldDuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldDuration.h; sourceTree = "<group>"; };
 		3CC450E81A31ED540012440B /* NSTextFieldDuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldDuration.m; sourceTree = "<group>"; };
@@ -669,8 +666,6 @@
 				74098C321919899600CBDFB9 /* Utils.m */,
 				74BAD31C18BD7D83002FD4CF /* ViewItem.h */,
 				74BAD31D18BD7D83002FD4CF /* ViewItem.m */,
-				3CAFDFDF1AA705EE0022CD40 /* NSTextFieldRoundedCorners.h */,
-				3CAFDFE01AA705EE0022CD40 /* NSTextFieldRoundedCorners.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1154,7 +1149,6 @@
 				7484F622191D92C30038885C /* Settings.m in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
-				3CAFDFE11AA705EE0022CD40 /* NSTextFieldRoundedCorners.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
