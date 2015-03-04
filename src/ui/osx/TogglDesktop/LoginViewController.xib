@@ -77,6 +77,7 @@
                                             </textFieldCell>
                                             <connections>
                                                 <outlet property="delegate" destination="-2" id="qtU-ic-uLL"/>
+                                                <outlet property="nextKeyView" destination="Pac-Wf-TBM" id="YCh-1I-etG"/>
                                             </connections>
                                         </textField>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XvF-yu-GZx">
@@ -98,6 +99,7 @@ DQ
                                             </buttonCell>
                                             <connections>
                                                 <action selector="clickLoginButton:" target="-2" id="FFX-xx-nuh"/>
+                                                <outlet property="nextKeyView" destination="3Xk-yW-T0s" id="i3c-UK-kwT"/>
                                             </connections>
                                         </button>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eG-O6-U2n">
@@ -117,6 +119,7 @@ DQ
                                             </textFieldCell>
                                             <connections>
                                                 <outlet property="delegate" destination="-2" id="oo0-wo-hIu"/>
+                                                <outlet property="nextKeyView" destination="oP1-rJ-O83" id="6EJ-3c-MTD"/>
                                             </connections>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
@@ -128,6 +131,7 @@ DQ
                                             </textFieldCell>
                                             <connections>
                                                 <outlet property="delegate" destination="-2" id="CZa-7m-Obk"/>
+                                                <outlet property="nextKeyView" destination="MMO-z4-qcY" id="qAL-mT-MVv"/>
                                             </connections>
                                         </textField>
                                     </subviews>
