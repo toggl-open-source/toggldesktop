@@ -15,7 +15,7 @@
 	NSInteger offset = floor((NSHeight(frame) -
 							  ([[self font] ascender] - [[self font] descender])) / 3) - 1;
 
-	return NSInsetRect(frame, 10.0, offset);
+	return NSInsetRect(frame, 0.0, offset);
 }
 
 - (void)editWithFrame:(NSRect)aRect inView:(NSView *)controlView
