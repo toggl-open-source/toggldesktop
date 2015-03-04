@@ -19,6 +19,7 @@
 {
 	NSRect outlineFrame = NSMakeRect(0.0, 0.0, [self bounds].size.width, [self bounds].size.height - 1.0);
 	NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:self.backgroundColor endingColor:self.backgroundColor];
+
 	[gradient drawInBezierPath:[NSBezierPath bezierPathWithRoundedRect:outlineFrame xRadius:2 yRadius:2] angle:190];
 }
 

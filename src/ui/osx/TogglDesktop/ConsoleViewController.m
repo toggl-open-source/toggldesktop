@@ -35,11 +35,11 @@ void *ctx;
 - (void)appendToResultView:(NSString *)text
 {
 	dispatch_async(dispatch_get_main_queue(), ^{
-					   NSAttributedString *attr = [[NSAttributedString alloc] initWithString:text];
+		NSAttributedString *attr = [[NSAttributedString alloc] initWithString:text];
 
-					   [[self.resultTextView textStorage] appendAttributedString:attr];
-					   [self.resultTextView scrollRangeToVisible:NSMakeRange([[self.resultTextView string] length], 0)];
-				   });
+		[[self.resultTextView textStorage] appendAttributedString:attr];
+		[self.resultTextView scrollRangeToVisible:NSMakeRange([[self.resultTextView string] length], 0)];
+	});
 }
 
 @end
