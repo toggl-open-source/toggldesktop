@@ -16,6 +16,7 @@
 #include <QMessageBox>  // NOLINT
 #include <QSettings>  // NOLINT
 #include <QVBoxLayout>  // NOLINT
+#include <QStatusBar>  // NOLINT
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
@@ -81,6 +82,9 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(displayUpdate(QString)),  // NOLINT
             this, SLOT(displayUpdate(QString)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayOnlineState(int64_t)),  // NOLINT
+            this, SLOT(displayOnlineState(int64_t)));  // NOLINT
+
     icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
     setWindowIcon(icon);
 
@@ -93,6 +97,25 @@ MainWindowController::~MainWindowController() {
     togglApi = 0;
 
     delete ui;
+}
+
+void MainWindowController::displayOnlineState(
+    int64_t state) {
+
+    switch (state) {
+    case 0: // online
+        statusBar()->clearMessage();
+        break;
+    case 1: // no network
+        statusBar()->showMessage("Status: Offline, no network");
+        break;
+    case 2: // backend down
+        statusBar()->showMessage("Status: Offline, Toggl not responding");
+        break;
+    default:
+        qDebug() << "Unknown online state " << state;
+        break;
+    }
 }
 
 void MainWindowController::displayReminder(
