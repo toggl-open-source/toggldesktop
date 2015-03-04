@@ -103,13 +103,13 @@ void MainWindowController::displayOnlineState(
     int64_t state) {
 
     switch (state) {
-    case 0: // online
+    case 0:  // online
         statusBar()->clearMessage();
         break;
-    case 1: // no network
+    case 1:  // no network
         statusBar()->showMessage("Status: Offline, no network");
         break;
-    case 2: // backend down
+    case 2:  // backend down
         statusBar()->showMessage("Status: Offline, Toggl not responding");
         break;
     default:

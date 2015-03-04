@@ -61,7 +61,8 @@ int main(int argc, char *argv[]) try {
     Bugsnag::app.version = APP_VERSION;
 
     // Use bundled fonts
-    int id = QFontDatabase::addApplicationFont(":/fonts/RobotoTTF/Roboto-Regular.ttf");
+    int id = QFontDatabase::addApplicationFont(
+        ":/fonts/RobotoTTF/Roboto-Regular.ttf");
     if (-1 == id) {
         qDebug() << "Error! Could not load bundled font!";
     } else {
