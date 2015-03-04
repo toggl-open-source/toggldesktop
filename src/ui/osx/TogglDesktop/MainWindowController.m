@@ -65,6 +65,13 @@ extern void *ctx;
 	return self;
 }
 
+- (void)windowDidLoad
+{
+	[super windowDidLoad];
+
+	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
+}
+
 - (void)addErrorBoxConstraint
 {
 	if (!self.contentViewTop)

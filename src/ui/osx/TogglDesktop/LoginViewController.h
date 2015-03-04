@@ -12,10 +12,14 @@
 #import "NSTextFieldRoundedCorners.h"
 
 @interface LoginViewController : NSViewController
+@property (strong) IBOutlet NSBox *signUpBox;
+@property (strong) IBOutlet NSBox *loginBox;
 @property IBOutlet NSTextFieldRoundedCorners *email;
 @property IBOutlet NSTextFieldRoundedCorners *password;
 @property IBOutlet NSTextFieldClickablePointer *googleLoginTextField;
 @property IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
+@property (strong) IBOutlet NSTextFieldClickablePointer *signUpLink;
+@property (strong) IBOutlet NSTextFieldClickablePointer *loginLink;
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 @end

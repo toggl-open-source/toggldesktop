@@ -53,6 +53,24 @@ extern void *ctx;
 		toggl_password_forgot(ctx);
 		return;
 	}
+
+	if (sender == self.signUpLink)
+	{
+		[self changeView:YES];
+		return;
+	}
+
+	if (sender == self.loginLink)
+	{
+		[self changeView:NO];
+		return;
+	}
+}
+
+- (void)changeView:(BOOL)hide
+{
+	[self.loginBox setHidden:hide];
+	[self.signUpBox setHidden:!hide];
 }
 
 - (void)startGoogleLogin
