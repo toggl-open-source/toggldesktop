@@ -142,6 +142,7 @@ DQ
                                     <constraint firstItem="jUD-k4-kTh" firstAttribute="top" secondItem="4G0-sP-05G" secondAttribute="top" constant="5" id="JY1-DN-DCC"/>
                                     <constraint firstItem="3Xk-yW-T0s" firstAttribute="top" secondItem="MMO-z4-qcY" secondAttribute="bottom" constant="25" id="Qfe-aJ-tne"/>
                                     <constraint firstItem="XvF-yu-GZx" firstAttribute="top" secondItem="MMO-z4-qcY" secondAttribute="bottom" constant="15" id="Qtn-Xy-8vZ"/>
+                                    <constraint firstAttribute="centerX" secondItem="MMO-z4-qcY" secondAttribute="centerX" id="UCX-hZ-ZSe"/>
                                     <constraint firstAttribute="bottom" secondItem="Pac-Wf-TBM" secondAttribute="bottom" constant="6" id="bZn-up-ozK"/>
                                 </constraints>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -186,6 +187,7 @@ DQ
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="Sef-d6-OO0" secondAttribute="centerX" id="84B-K7-GQ4"/>
+                                    <constraint firstAttribute="centerX" secondItem="AJ3-f3-hRV" secondAttribute="centerX" id="qaV-wi-dM1"/>
                                     <constraint firstItem="AJ3-f3-hRV" firstAttribute="top" secondItem="eFn-63-UsG" secondAttribute="top" constant="36" id="vu8-ra-pPg"/>
                                     <constraint firstAttribute="bottom" secondItem="Sef-d6-OO0" secondAttribute="bottom" constant="6" id="x4s-1e-RXr"/>
                                 </constraints>
@@ -199,11 +201,13 @@ DQ
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="top" secondItem="oP1-rJ-O83" secondAttribute="bottom" constant="15" id="9R3-Sa-oee"/>
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="eFn-63-UsG" secondAttribute="centerX" id="LWh-nu-qI9"/>
                         <constraint firstItem="Kmn-TG-CZe" firstAttribute="top" secondItem="AeN-Lk-hKy" secondAttribute="top" constant="25" id="LeC-Fw-bcR"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4G0-sP-05G" secondAttribute="bottom" constant="10" id="c4X-BW-ig5"/>
                         <constraint firstItem="4G0-sP-05G" firstAttribute="centerX" secondItem="Sok-9q-fwV" secondAttribute="centerX" id="eXL-DJ-kgb"/>
                         <constraint firstItem="4G0-sP-05G" firstAttribute="top" secondItem="Sok-9q-fwV" secondAttribute="bottom" id="fCH-Rw-h9i"/>
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="jxX-Y6-49K"/>
                         <constraint firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="kd4-jf-yf7"/>
                         <constraint firstItem="eFn-63-UsG" firstAttribute="top" secondItem="Sok-9q-fwV" secondAttribute="bottom" id="loC-7C-J2r"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="eFn-63-UsG" secondAttribute="bottom" constant="10" id="nbl-wM-bSv"/>
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="rsN-lc-xqa"/>
                         <constraint firstAttribute="centerX" secondItem="Kmn-TG-CZe" secondAttribute="centerX" id="snE-Wb-daX"/>
                     </constraints>
