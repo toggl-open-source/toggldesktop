@@ -78,8 +78,8 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayUpdate(bool,QString)),  // NOLINT
-            this, SLOT(displayUpdate(bool,QString)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayUpdate(QString)),  // NOLINT
+            this, SLOT(displayUpdate(QString)));  // NOLINT
 
     icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
     setWindowIcon(icon);
