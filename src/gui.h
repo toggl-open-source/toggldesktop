@@ -176,6 +176,10 @@ class GUI : public SyncStateMonitor {
         on_display_unsynced_items_ = cb;
     }
 
+    const bool CanDisplayUpdate() {
+        return !!on_display_update_;
+    }
+
  private:
     error findMissingCallbacks();
 
