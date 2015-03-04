@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QMetaType>
 #include <QVector>
+#include <QFontDatabase>
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -59,9 +60,15 @@ int main(int argc, char *argv[]) try {
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
 
-    // Select some font to get predictable font
-    QFont font("Helvetica", 10);
-    QApplication::setFont(font);
+    // Use bundled fonts
+    int id = QFontDatabase::addApplicationFont(":/fonts/RobotoTTF/Roboto-Regular.ttf");
+    if (-1 == id) {
+	qDebug() << "Error! Could not load bundled font!";
+    } else {
+	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+	QFont font(family);
+    	QApplication::setFont(font);
+    }
     qDebug() << "Application font: " << QApplication::font().toString();
 
     QCommandLineParser parser;

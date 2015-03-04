@@ -13,5 +13,23 @@
         <file>icons/128x128/toggldesktop.png</file>
         <file>icons/256x256/toggldesktop.png</file>
         <file>icons/1024x1024/toggldesktop.png</file>
+        <file>fonts/RobotoTTF/Roboto-Black.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-BlackItalic.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-Bold.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-BoldItalic.ttf</file>
+        <file>fonts/RobotoTTF/RobotoCondensed-Bold.ttf</file>
+        <file>fonts/RobotoTTF/RobotoCondensed-BoldItalic.ttf</file>
+        <file>fonts/RobotoTTF/RobotoCondensed-Italic.ttf</file>
+        <file>fonts/RobotoTTF/RobotoCondensed-Light.ttf</file>
+        <file>fonts/RobotoTTF/RobotoCondensed-LightItalic.ttf</file>
+        <file>fonts/RobotoTTF/RobotoCondensed-Regular.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-Italic.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-Light.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-LightItalic.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-Medium.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-MediumItalic.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-Regular.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-Thin.ttf</file>
+        <file>fonts/RobotoTTF/Roboto-ThinItalic.ttf</file>
     </qresource>
 </RCC>
