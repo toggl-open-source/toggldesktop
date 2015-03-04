@@ -63,11 +63,11 @@ int main(int argc, char *argv[]) try {
     // Use bundled fonts
     int id = QFontDatabase::addApplicationFont(":/fonts/RobotoTTF/Roboto-Regular.ttf");
     if (-1 == id) {
-	qDebug() << "Error! Could not load bundled font!";
+        qDebug() << "Error! Could not load bundled font!";
     } else {
-	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
-	QFont font(family);
-    	QApplication::setFont(font);
+        QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+        QFont font(family);
+        QApplication::setFont(font);
     }
     qDebug() << "Application font: " << QApplication::font().toString();
 
