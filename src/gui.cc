@@ -19,6 +19,12 @@ void GUI::DisplayApp() {
     on_display_app_(true);
 }
 
+void GUI::DisplaySyncState(const Poco::Int64 state) {
+    if (on_display_sync_state_) {
+        on_display_sync_state_(state);
+    }
+}
+
 void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
     std::stringstream ss;
     ss << "DisplayLogin open=" << open << ", user_id=" << user_id;

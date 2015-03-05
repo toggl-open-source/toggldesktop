@@ -11,6 +11,7 @@
 #include "./autocomplete_item.h"
 #include "./settings.h"
 #include "./proxy.h"
+#include "./https_client.h"
 
 namespace Poco {
 class Logger;
@@ -21,7 +22,7 @@ namespace toggl {
 class Client;
 class Workspace;
 
-class GUI {
+class GUI : public SyncStateMonitor {
  public:
     GUI() : on_display_app_(0)
     , on_display_error_(0)
@@ -39,34 +40,55 @@ class GUI {
     , on_display_settings_(0)
     , on_display_timer_state_(0)
     , on_display_idle_notification_(0)
-    , on_display_mini_timer_autocomplete_(0) {}
+    , on_display_mini_timer_autocomplete_(0)
+    , on_display_sync_state_(0) {}
 
     ~GUI() {}
 
     void DisplayApp();
+
     _Bool DisplayError(const error);
+
+    void DisplaySyncState(const Poco::Int64 state);
+
     void DisplayOnlineState(const Poco::Int64 state);
+
     void DisplayReminder();
+
     void DisplayMinitimerAutocomplete(std::vector<toggl::AutocompleteItem> *);
+
     void DisplayTimeEntryAutocomplete(std::vector<toggl::AutocompleteItem> *);
+
     void DisplayProjectAutocomplete(std::vector<toggl::AutocompleteItem> *);
-    void DisplayTimeEntryList(const _Bool open,
-                              TogglTimeEntryView *first);
+
+    void DisplayTimeEntryList(
+        const _Bool open,
+        TogglTimeEntryView *first);
+
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
+
     void DisplayClientSelect(std::vector<toggl::Client *> *clients);
+
     void DisplayTags(std::vector<std::string> *tags);
+
     void DisplayTimeEntryEditor(
         const _Bool open,
         TogglTimeEntryView *te,
         const std::string focused_field_name);
+
     void DisplayURL(const std::string);
+
     void DisplayLogin(const _Bool open, const uint64_t user_id);
-    void DisplaySettings(const _Bool open,
-                         const _Bool record_timeline,
-                         const Settings settings,
-                         const _Bool use_proxy,
-                         const Proxy proxy);
+
+    void DisplaySettings(
+        const _Bool open,
+        const _Bool record_timeline,
+        const Settings settings,
+        const _Bool use_proxy,
+        const Proxy proxy);
+
     void DisplayTimerState(TogglTimeEntryView *te);
+
     void DisplayIdleNotification(const std::string guid,
                                  const std::string since,
                                  const std::string duration,
@@ -143,6 +165,10 @@ class GUI {
         on_display_mini_timer_autocomplete_ = cb;
     }
 
+    void OnDisplaySyncState(TogglDisplaySyncState cb) {
+        on_display_sync_state_ = cb;
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -163,6 +189,7 @@ class GUI {
     TogglDisplayTimerState on_display_timer_state_;
     TogglDisplayIdleNotification on_display_idle_notification_;
     TogglDisplayAutocomplete on_display_mini_timer_autocomplete_;
+    TogglDisplaySyncState on_display_sync_state_;
 
     Poco::Logger &logger() const;
 };

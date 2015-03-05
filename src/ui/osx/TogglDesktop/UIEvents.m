@@ -25,6 +25,7 @@ NSString *const kDisplayLogin = @"kDisplayLogin";
 NSString *const kDisplayError = @"kDisplayError";
 NSString *const kDisplayIdleNotification = @"kDisplayIdleNotification";
 NSString *const kDisplayOnlineState = @"kDisplayOnlineState";
+NSString *const kDisplaySyncState = @"kDisplaySyncState";
 NSString *const kDisplaySettings = @"kDisplaySettings";
 NSString *const kDisplayProxySettings = @"kDisplayProxySettings";
 NSString *const kDisplayTimerState = @"kDisplayTimerState";

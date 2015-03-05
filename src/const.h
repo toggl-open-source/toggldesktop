@@ -53,4 +53,7 @@
 #define kOnlineStateNoNetwork 1
 #define kOnlineStateBackendDown 2
 
+#define kSyncStateIdle 0
+#define kSyncStateWork 1
+
 #endif  // SRC_CONST_H_

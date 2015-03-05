@@ -28,6 +28,7 @@ extern NSString *const kDisplayError;
 extern NSString *const kDisplayUpdate;
 extern NSString *const kDisplayIdleNotification;
 extern NSString *const kDisplayOnlineState;
+extern NSString *const kDisplaySyncState;
 extern NSString *const kDisplaySettings;
 extern NSString *const kDisplayProxySettings;
 extern NSString *const kDisplayTimerState;

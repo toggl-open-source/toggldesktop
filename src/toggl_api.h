@@ -122,6 +122,9 @@ extern "C" {
     typedef void (*TogglDisplayApp)(
         const _Bool open);
 
+    typedef void (*TogglDisplaySyncState)(
+        const int64_t state);
+
     typedef void (*TogglDisplayError)(
         const char_t *errmsg,
         const _Bool user_error);
@@ -231,6 +234,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_show_app(
         void *context,
         TogglDisplayApp);
+
+    TOGGL_EXPORT void toggl_on_sync_state(
+        void *context,
+        TogglDisplaySyncState);
 
     TOGGL_EXPORT void toggl_on_error(
         void *context,
