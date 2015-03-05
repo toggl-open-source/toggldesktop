@@ -70,6 +70,13 @@ extern void *ctx;
 	[super windowDidLoad];
 
 	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
+
+	NSMutableAttributedString *attrTitle =
+		[[NSMutableAttributedString alloc] initWithAttributedString:[self.closeTroubleBoxButton attributedTitle]];
+	NSRange range = NSMakeRange(0, [attrTitle length]);
+	[attrTitle addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:range];
+	[attrTitle fixAttributesInRange:range];
+	[self.closeTroubleBoxButton setAttributedTitle:attrTitle];
 }
 
 - (void)addErrorBoxConstraint

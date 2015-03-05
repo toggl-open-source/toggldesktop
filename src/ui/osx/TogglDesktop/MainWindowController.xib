@@ -41,18 +41,18 @@
                                     <rect key="frame" x="7" y="27" width="275" height="17"/>
                                     <textFieldCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Login failed!" id="epU-2w-W4x">
                                         <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
                                 <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgB-wf-G92">
-                                    <rect key="frame" x="283" y="28" width="8" height="17"/>
+                                    <rect key="frame" x="283" y="28" width="12" height="17"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="8" id="WmO-N8-iCw"/>
+                                        <constraint firstAttribute="width" constant="12" id="WmO-N8-iCw"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressTemplate" imagePosition="overlaps" alignment="center" controlSize="mini" state="on" imageScaling="proportionallyDown" inset="2" id="mM6-E6-qpw">
+                                    <buttonCell key="cell" type="roundTextured" title="x" bezelStyle="texturedRounded" imagePosition="overlaps" alignment="center" controlSize="mini" state="on" imageScaling="proportionallyDown" inset="2" id="mM6-E6-qpw">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system" size="7"/>
+                                        <font key="font" metaFont="cellTitle"/>
                                     </buttonCell>
                                     <connections>
                                         <action selector="errorCloseButtonClicked:" target="-2" id="GHW-09-Ovo"/>
@@ -69,7 +69,7 @@
                             <constraint firstItem="3yn-Zh-JYn" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="top" constant="6" id="tW0-nR-BCV"/>
                         </constraints>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" red="0.92484454719999998" green="0.87390986770000001" blue="0.37178904140000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="fillColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="0.35000000000000003" colorSpace="custom" customColorSpace="sRGB"/>
                     </box>
                     <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fXQ-pa-GDD">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="22"/>
@@ -100,7 +100,4 @@
             </connections>
         </window>
     </objects>
-    <resources>
-        <image name="NSStopProgressTemplate" width="11" height="11"/>
-    </resources>
 </document>
