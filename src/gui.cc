@@ -25,6 +25,12 @@ void GUI::DisplaySyncState(const Poco::Int64 state) {
     }
 }
 
+void GUI::DisplayUnsyncedItems(const Poco::Int64 count) {
+    if (on_display_unsynced_items_) {
+        on_display_unsynced_items_(count);
+    }
+}
+
 void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
     std::stringstream ss;
     ss << "DisplayLogin open=" << open << ", user_id=" << user_id;

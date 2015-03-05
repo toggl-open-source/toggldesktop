@@ -3636,7 +3636,7 @@ error Database::DeleteTimelineBatch(
         logger().warning("DeleteTimelineBatch db closed, ignoring request");
         return noError;
     }
-    std::vector<int> ids;
+    std::vector<Poco::Int64> ids;
     for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
             i != timeline_events.end();
             ++i) {

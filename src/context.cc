@@ -235,6 +235,20 @@ error Context::save(const bool push_changes) {
         pushChanges();
     }
 
+    // Display number of unsynced time entries
+    Poco::Int64 count(0);
+    if (user_) {
+        for (std::vector<TimeEntry *>::const_iterator it =
+            user_->related.TimeEntries.begin();
+                it != user_->related.TimeEntries.end(); it++) {
+            TimeEntry *te = *it;
+            if (te->NeedsPush()) {
+                count++;
+            }
+        }
+    }
+    UI()->DisplayUnsyncedItems(count);
+
     return noError;
 }
 

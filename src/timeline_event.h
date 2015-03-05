@@ -6,6 +6,8 @@
 #include <time.h>
 #include <string>
 
+#include "Poco/Types.h"
+
 class TimelineEvent {
  public:
     TimelineEvent() :
@@ -18,8 +20,8 @@ class TimelineEvent {
     idle(false),
     chunked(false) {}
 
-    unsigned int id;
-    unsigned int user_id;
+    Poco::Int64 id;
+    Poco::UInt64 user_id;
     std::string title;
     std::string filename;
     time_t start_time;

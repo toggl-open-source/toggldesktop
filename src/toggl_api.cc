@@ -639,6 +639,13 @@ void toggl_on_sync_state(
     app(context)->UI()->OnDisplaySyncState(cb);
 }
 
+void toggl_on_unsynced_items(
+    void *context,
+    TogglDisplayUnsyncedItems cb) {
+
+    app(context)->UI()->OnDisplayUnsyncedItems(cb);
+}
+
 void toggl_on_error(
     void *context,
     TogglDisplayError cb) {

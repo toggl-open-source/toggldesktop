@@ -125,6 +125,9 @@ extern "C" {
     typedef void (*TogglDisplaySyncState)(
         const int64_t state);
 
+    typedef void (*TogglDisplayUnsyncedItems)(
+        const int64_t count);
+
     typedef void (*TogglDisplayError)(
         const char_t *errmsg,
         const _Bool user_error);
@@ -238,6 +241,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_sync_state(
         void *context,
         TogglDisplaySyncState);
+
+    TOGGL_EXPORT void toggl_on_unsynced_items(
+        void *context,
+        TogglDisplayUnsyncedItems);
 
     TOGGL_EXPORT void toggl_on_error(
         void *context,

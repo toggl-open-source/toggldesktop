@@ -41,7 +41,8 @@ class GUI : public SyncStateMonitor {
     , on_display_timer_state_(0)
     , on_display_idle_notification_(0)
     , on_display_mini_timer_autocomplete_(0)
-    , on_display_sync_state_(0) {}
+    , on_display_sync_state_(0)
+    , on_display_unsynced_items_(0) {}
 
     ~GUI() {}
 
@@ -52,6 +53,8 @@ class GUI : public SyncStateMonitor {
     void DisplaySyncState(const Poco::Int64 state);
 
     void DisplayOnlineState(const Poco::Int64 state);
+
+    void DisplayUnsyncedItems(const Poco::Int64 count);
 
     void DisplayReminder();
 
@@ -169,6 +172,10 @@ class GUI : public SyncStateMonitor {
         on_display_sync_state_ = cb;
     }
 
+    void OnDisplayUnsyncedItems(TogglDisplayUnsyncedItems cb) {
+        on_display_unsynced_items_ = cb;
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -190,6 +197,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayIdleNotification on_display_idle_notification_;
     TogglDisplayAutocomplete on_display_mini_timer_autocomplete_;
     TogglDisplaySyncState on_display_sync_state_;
+    TogglDisplayUnsyncedItems on_display_unsynced_items_;
 
     Poco::Logger &logger() const;
 };
