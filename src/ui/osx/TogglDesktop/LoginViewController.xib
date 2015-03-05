@@ -21,10 +21,10 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="d50-27-v7r">
-            <rect key="frame" x="0.0" y="0.0" width="250" height="417"/>
+            <rect key="frame" x="0.0" y="0.0" width="252" height="459"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" transparent="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="AeN-Lk-hKy" userLabel="mainBox">
+                <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="AeN-Lk-hKy" userLabel="mainBox">
                     <rect key="frame" x="0.0" y="0.0" width="250" height="417"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="250" height="417"/>
@@ -81,7 +81,11 @@
                                             </connections>
                                         </textField>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XvF-yu-GZx">
-                                            <rect key="frame" x="-78" y="67" width="246" height="40"/>
+                                            <rect key="frame" x="25" y="67" width="40" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="3ZB-ph-H36"/>
+                                                <constraint firstAttribute="width" constant="40" id="YTk-5A-MsU"/>
+                                            </constraints>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="icon-google" id="vXI-OM-KgZ"/>
                                         </imageView>
                                         <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMO-z4-qcY">
@@ -144,6 +148,7 @@ DQ
                                     <constraint firstItem="XvF-yu-GZx" firstAttribute="top" secondItem="MMO-z4-qcY" secondAttribute="bottom" constant="15" id="Qtn-Xy-8vZ"/>
                                     <constraint firstAttribute="centerX" secondItem="MMO-z4-qcY" secondAttribute="centerX" id="UCX-hZ-ZSe"/>
                                     <constraint firstAttribute="bottom" secondItem="Pac-Wf-TBM" secondAttribute="bottom" constant="6" id="bZn-up-ozK"/>
+                                    <constraint firstItem="0eG-O6-U2n" firstAttribute="top" relation="greaterThanOrEqual" secondItem="XvF-yu-GZx" secondAttribute="bottom" constant="20" id="zTS-Ts-x8Q"/>
                                 </constraints>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -198,6 +203,7 @@ DQ
                     </view>
                     <constraints>
                         <constraint firstItem="oP1-rJ-O83" firstAttribute="top" secondItem="Kmn-TG-CZe" secondAttribute="bottom" constant="25" id="0aS-7N-0KT"/>
+                        <constraint firstItem="jUD-k4-kTh" firstAttribute="centerX" secondItem="Sok-9q-fwV" secondAttribute="centerX" id="3on-h8-U9w"/>
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="top" secondItem="oP1-rJ-O83" secondAttribute="bottom" constant="15" id="9R3-Sa-oee"/>
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="eFn-63-UsG" secondAttribute="centerX" id="LWh-nu-qI9"/>
                         <constraint firstItem="Kmn-TG-CZe" firstAttribute="top" secondItem="AeN-Lk-hKy" secondAttribute="top" constant="25" id="LeC-Fw-bcR"/>
@@ -222,7 +228,7 @@ DQ
                 <constraint firstItem="AeN-Lk-hKy" firstAttribute="leading" secondItem="d50-27-v7r" secondAttribute="leading" id="hTr-Vb-1Zw"/>
                 <constraint firstAttribute="centerX" secondItem="AeN-Lk-hKy" secondAttribute="centerX" id="xdo-yh-fqg"/>
             </constraints>
-            <point key="canvasLocation" x="410" y="282.5"/>
+            <point key="canvasLocation" x="411" y="292.5"/>
         </customView>
     </objects>
     <resources>
