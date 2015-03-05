@@ -1574,10 +1574,10 @@ TimeEntry *Context::Start(
         return 0;
     }
 
-    // if ("production" == environment_) {
-    analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
-                                      task_id || project_id);
-    // }
+    if ("production" == environment_) {
+        analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
+                                          task_id || project_id);
+    }
 
     return te;
 }
