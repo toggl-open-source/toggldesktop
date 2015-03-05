@@ -161,8 +161,6 @@ TogglApi::TogglApi(
     ctx = toggl_context_init("linux_native_app",
                              version.toStdString().c_str());
 
-    toggl_disable_update_check(ctx);
-
     QString appDirPath =
         QStandardPaths::writableLocation(
             QStandardPaths::DataLocation);

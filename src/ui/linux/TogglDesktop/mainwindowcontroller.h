@@ -44,15 +44,22 @@ class MainWindowController : public QMainWindow {
 
  private slots:  // NOLINT
     void displayApp(const bool open);
+
     void displayRunningTimerState(TimeEntryView *te);
+
     void displayStoppedTimerState();
+
     void displayLogin(
         const bool open,
         const uint64_t user_id);
+
     void displayReminder(
         const QString title,
         const QString informative_text);
-    void displayUpdate(const bool open, UpdateView *view);
+
+    void displayUpdate(const QString url);
+
+    void displayOnlineState(int64_t);
 
     void onActionNew();
     void onActionContinue();
@@ -92,9 +99,9 @@ class MainWindowController : public QMainWindow {
 
     QIcon icon;
 
-    QString script;
-
     bool reminder;
+
+    QString script;
 
     void readSettings();
     void writeSettings();
