@@ -52,7 +52,7 @@
                                     </constraints>
                                     <buttonCell key="cell" type="roundTextured" title="x" bezelStyle="texturedRounded" imagePosition="overlaps" alignment="center" controlSize="mini" state="on" imageScaling="proportionallyDown" inset="2" id="mM6-E6-qpw">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="cellTitle"/>
+                                        <font key="font" metaFont="system" size="16"/>
                                     </buttonCell>
                                     <connections>
                                         <action selector="errorCloseButtonClicked:" target="-2" id="GHW-09-Ovo"/>
@@ -88,7 +88,7 @@
                     <constraint firstAttribute="trailing" secondItem="fXQ-pa-GDD" secondAttribute="trailing" constant="-2" id="CFW-2g-1Zg"/>
                     <constraint firstItem="gBV-Qp-t6E" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="H4l-Qk-9du"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
-                    <constraint firstAttribute="bottom" secondItem="fXQ-pa-GDD" secondAttribute="bottom" id="TGf-wj-BiJ"/>
+                    <constraint firstAttribute="bottom" secondItem="fXQ-pa-GDD" secondAttribute="bottom" constant="-1" id="TGf-wj-BiJ"/>
                     <constraint firstItem="gBV-Qp-t6E" firstAttribute="top" secondItem="2" secondAttribute="top" id="acY-4H-9r7"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" priority="750" id="dey-uV-HtZ"/>
                     <constraint firstAttribute="trailing" secondItem="gBV-Qp-t6E" secondAttribute="trailing" id="hAW-oO-ES1"/>
