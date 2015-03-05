@@ -40,15 +40,18 @@
 	 [self adjustedFrameToVerticallyCenterText:frame] inView:view];
 }
 
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
-    NSBezierPath *betterBounds = [NSBezierPath bezierPathWithRoundedRect:cellFrame xRadius:3 yRadius:3];
-    [betterBounds addClip];
-    [super drawWithFrame:cellFrame inView:controlView];
-    if (self.isBezeled) {
-        [betterBounds setLineWidth:2];
-        [self.backgroundColor setStroke];
-        [betterBounds stroke];
-    }
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
+{
+	NSBezierPath *betterBounds = [NSBezierPath bezierPathWithRoundedRect:cellFrame xRadius:3 yRadius:3];
+
+	[betterBounds addClip];
+	[super drawWithFrame:cellFrame inView:controlView];
+	if (self.isBezeled)
+	{
+		[betterBounds setLineWidth:2];
+		[self.backgroundColor setStroke];
+		[betterBounds stroke];
+	}
 }
 
 @end
