@@ -77,6 +77,8 @@ class Database {
 
     error SetSettingsManualMode(const bool &manual_mode);
 
+    error SetSettingsAutodetectProxy(const bool &autodetect_proxy);
+
     error LoadProxySettings(
         bool *use_proxy,
         Proxy *proxy);

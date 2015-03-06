@@ -311,7 +311,7 @@ error Database::LoadSettings(Settings *settings) {
     try {
         *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
                   "on_top, reminder, idle_minutes, focus_on_shortcut, "
-                  "reminder_minutes, manual_mode "
+                  "reminder_minutes, manual_mode, autodetect_proxy "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
@@ -322,6 +322,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->focus_on_shortcut),
                   into(settings->reminder_minutes),
                   into(settings->manual_mode),
+                  into(settings->autodetect_proxy),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -407,6 +408,10 @@ error Database::SetSettingsFocusOnShortcut(const bool &focus_on_shortcut) {
 
 error Database::SetSettingsManualMode(const bool &manual_mode) {
     return setSettingsValue("manual_mode", manual_mode);
+}
+
+error Database::SetSettingsAutodetectProxy(const bool &autodetect_proxy) {
+    return setSettingsValue("autodetect_proxy", autodetect_proxy);
 }
 
 template<typename T>
@@ -3089,6 +3094,14 @@ error Database::migrateSettings() {
     err = migrate(
         "focus on shortcut by default #5",
         "update settings set focus_on_shortcut = 1");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.autodetect_proxy",
+        "ALTER TABLE settings "
+        "ADD COLUMN autodetect_proxy INTEGER NOT NULL DEFAULT 1;");
     if (err != noError) {
         return err;
     }

@@ -65,6 +65,12 @@ _Bool toggl_set_settings_use_idle_detection(
     return app(context)->SetSettingsUseIdleDetection(use_idle_detection);
 }
 
+_Bool toggl_set_settings_autodetect_proxy(
+    void *context,
+    const _Bool autodetect_proxy) {
+    return app(context)->SetSettingsAutodetectProxy(autodetect_proxy);
+}
+
 _Bool toggl_set_settings_menubar_timer(
     void *context,
     const _Bool menubar_timer) {

@@ -115,6 +115,7 @@ extern "C" {
         _Bool FocusOnShortcut;
         uint64_t ReminderMinutes;
         _Bool ManualMode;
+        _Bool AutodetectProxy;
     } TogglSettingsView;
 
     // Callbacks that need to be implemented in UI
@@ -423,6 +424,10 @@ extern "C" {
     TOGGL_EXPORT _Bool toggl_set_settings_use_idle_detection(
         void *context,
         const _Bool use_idle_detection);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_autodetect_proxy(
+        void *context,
+        const _Bool autodetect_proxy);
 
     TOGGL_EXPORT _Bool toggl_set_settings_menubar_timer(
         void *context,

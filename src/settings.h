@@ -18,7 +18,8 @@ class Settings {
     , idle_minutes(0)
     , focus_on_shortcut(true)
     , reminder_minutes(0)
-    , manual_mode(false) {}
+    , manual_mode(false)
+    , autodetect_proxy(true) {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -30,6 +31,7 @@ class Settings {
     bool focus_on_shortcut;
     Poco::UInt64 reminder_minutes;
     bool manual_mode;
+    bool autodetect_proxy;
 };
 
 }  // namespace toggl

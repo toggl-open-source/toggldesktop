@@ -316,6 +316,7 @@ TogglSettingsView *settings_view_item_init(
     view->FocusOnShortcut = settings.focus_on_shortcut;
     view->ReminderMinutes = settings.reminder_minutes;
     view->ManualMode = settings.manual_mode;
+    view->AutodetectProxy = settings.autodetect_proxy;
 
     view->UseProxy = use_proxy;
 

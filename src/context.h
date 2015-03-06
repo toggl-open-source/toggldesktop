@@ -92,6 +92,8 @@ class Context : public TimelineDatasource {
 
     _Bool SetSettingsManualMode(const _Bool manual_mode);
 
+    _Bool SetSettingsAutodetectProxy(const _Bool autodetect_proxy);
+
     _Bool ProxySettings(bool *use_proxy, Proxy *proxy);
 
     _Bool SetProxySettings(

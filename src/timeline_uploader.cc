@@ -90,7 +90,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
 
     std::stringstream ss;
     ss << "Uploading " << batch->Events().size()
-        << " event(s) of user " << batch->UserID();
+       << " event(s) of user " << batch->UserID();
     logger().debug(ss.str());
 
     std::string json = convertTimelineToJSON(batch->Events(),

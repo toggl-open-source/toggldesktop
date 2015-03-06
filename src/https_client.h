@@ -61,7 +61,8 @@ class HTTPSClientConfig {
     , UseProxy(false)
     , ProxySettings(Proxy())
     , IgnoreCert(false)
-    , CACertPath("") {}
+    , CACertPath("")
+    , AutodetectProxy(true) {}
     ~HTTPSClientConfig() {}
 
     std::string AppName;
@@ -70,6 +71,7 @@ class HTTPSClientConfig {
     toggl::Proxy ProxySettings;
     bool IgnoreCert;
     std::string CACertPath;
+    bool AutodetectProxy;
 
     std::string UserAgent() {
         return AppName + "/" + AppVersion;

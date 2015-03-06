@@ -1072,6 +1072,14 @@ _Bool Context::LoadSettings(Settings *settings) {
     return displayError(db()->LoadSettings(settings));
 }
 
+_Bool Context::SetSettingsAutodetectProxy(const _Bool autodetect_proxy) {
+    error err = db()->SetSettingsAutodetectProxy(autodetect_proxy);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
 _Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
     if (err != noError) {
@@ -1260,6 +1268,7 @@ _Bool Context::DisplaySettings(const _Bool open) {
     HTTPSClient::Config.UseProxy = use_proxy;
     HTTPSClient::Config.IgnoreCert = false;
     HTTPSClient::Config.ProxySettings = proxy;
+    HTTPSClient::Config.AutodetectProxy = settings.autodetect_proxy;
 
     UI()->DisplaySettings(open,
                           record_timeline,

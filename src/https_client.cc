@@ -307,6 +307,8 @@ error HTTPSClient::request(
 
         Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
                                               context);
+
+        // Try to use user-configured proxy
         if (HTTPSClient::Config.UseProxy &&
                 HTTPSClient::Config.ProxySettings.IsConfigured()) {
             session.setProxy(
@@ -318,6 +320,9 @@ error HTTPSClient::request(
                     HTTPSClient::Config.ProxySettings.Username(),
                     HTTPSClient::Config.ProxySettings.Password());
             }
+            // If enabled, try to autodetect proxy
+        } else if (HTTPSClient::Config.AutodetectProxy) {
+            // FIXME: autodetect proxy
         }
         session.setKeepAlive(false);
         session.setTimeout(Poco::Timespan(kHTTPClientTimeoutSeconds
