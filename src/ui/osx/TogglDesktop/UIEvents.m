@@ -25,9 +25,11 @@ NSString *const kDisplayLogin = @"kDisplayLogin";
 NSString *const kDisplayError = @"kDisplayError";
 NSString *const kDisplayIdleNotification = @"kDisplayIdleNotification";
 NSString *const kDisplayOnlineState = @"kDisplayOnlineState";
+NSString *const kDisplaySyncState = @"kDisplaySyncState";
 NSString *const kDisplaySettings = @"kDisplaySettings";
 NSString *const kDisplayProxySettings = @"kDisplayProxySettings";
 NSString *const kDisplayTimerState = @"kDisplayTimerState";
+NSString *const kDisplayUnsyncedItems = @"kDisplayUnsyncedItems";
 
 NSString *const kHideDisplayError = @"kHideDisplayError";
 NSString *const kForceCloseEditPopover = @"kForceCloseEditPopover";

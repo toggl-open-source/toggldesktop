@@ -118,8 +118,17 @@ class HTTPSClient {
     error statusCodeToError(const Poco::Int64 status_code) const;
 };
 
+class SyncStateMonitor {
+ public:
+    virtual ~SyncStateMonitor() {}
+
+    virtual void DisplaySyncState(const Poco::Int64 state) = 0;
+};
+
 class TogglClient : public HTTPSClient {
  public:
+    explicit TogglClient(SyncStateMonitor *monitor = 0) : monitor_(monitor) {}
+
     static ServerStatus TogglStatus;
 
  protected:
@@ -134,6 +143,9 @@ class TogglClient : public HTTPSClient {
         Poco::Int64 *response_status);
 
     virtual Poco::Logger &logger() const;
+
+ private:
+    SyncStateMonitor *monitor_;
 };
 
 }  // namespace toggl

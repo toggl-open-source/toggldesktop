@@ -455,6 +455,10 @@ error TogglClient::request(
         return err;
     }
 
+    if (monitor_) {
+        monitor_->DisplaySyncState(kSyncStateWork);
+    }
+
     err = HTTPSClient::request(
         method,
         host,
@@ -464,6 +468,10 @@ error TogglClient::request(
         basic_auth_password,
         response_body,
         status_code);
+
+    if (monitor_) {
+        monitor_->DisplaySyncState(kSyncStateIdle);
+    }
 
     // We only update Toggl status from this
     // client, not websocket or regular http client,

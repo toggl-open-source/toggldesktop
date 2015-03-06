@@ -235,6 +235,20 @@ error Context::save(const bool push_changes) {
         pushChanges();
     }
 
+    // Display number of unsynced time entries
+    Poco::Int64 count(0);
+    if (user_) {
+        for (std::vector<TimeEntry *>::const_iterator it =
+            user_->related.TimeEntries.begin();
+                it != user_->related.TimeEntries.end(); it++) {
+            TimeEntry *te = *it;
+            if (te->NeedsPush()) {
+                count++;
+            }
+        }
+    }
+    UI()->DisplayUnsyncedItems(count);
+
     return noError;
 }
 
@@ -471,7 +485,7 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    TogglClient client;
+    TogglClient client(UI());
     error err = user_->PullAllUserData(&client);
     if (err != noError) {
         displayError(err);
@@ -534,7 +548,7 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onPushChanges executing");
 
-    TogglClient client;
+    TogglClient client(UI());
     bool had_something_to_push(true);
     error err = user_->PushChanges(&client, &had_something_to_push);
     if (err != noError) {
@@ -1000,13 +1014,13 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     }
 
     std::string response_body("");
-    TogglClient https_client;
-    error err = https_client.Post(kTimelineUploadURL,
-                                  "/api/v8/timeline_settings",
-                                  json,
-                                  user_->APIToken(),
-                                  "api_token",
-                                  &response_body);
+    TogglClient client(UI());
+    error err = client.Post(kTimelineUploadURL,
+                            "/api/v8/timeline_settings",
+                            json,
+                            user_->APIToken(),
+                            "api_token",
+                            &response_body);
     if (err != noError) {
         displayError(err);
         logger().error(err);
@@ -1040,13 +1054,13 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
 
     std::string response_body("");
-    TogglClient https_client;
-    error err = https_client.Post(kAPIURL,
-                                  "/api/v8/feedback",
-                                  feedback_.JSON(),
-                                  user_->APIToken(),
-                                  "api_token",
-                                  &response_body);
+    TogglClient client(UI());
+    error err = client.Post(kAPIURL,
+                            "/api/v8/feedback",
+                            feedback_.JSON(),
+                            user_->APIToken(),
+                            "api_token",
+                            &response_body);
     if (err != noError) {
         displayError(err);
         return;
@@ -1352,7 +1366,7 @@ _Bool Context::Login(
     const std::string email,
     const std::string password) {
 
-    TogglClient client;
+    TogglClient client(UI());
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json);
     if (err != noError) {
@@ -1391,7 +1405,7 @@ _Bool Context::Signup(
     const std::string email,
     const std::string password) {
 
-    TogglClient client;
+    TogglClient client(UI());
     std::string user_data_json("");
     error err = User::Signup(&client, email, password, &user_data_json);
     if (err != noError) {
@@ -1574,10 +1588,10 @@ TimeEntry *Context::Start(
         return 0;
     }
 
-    // if ("production" == environment_) {
-    analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
-                                      task_id || project_id);
-    // }
+    if ("production" == environment_) {
+        analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
+                                          task_id || project_id);
+    }
 
     return te;
 }
@@ -2301,13 +2315,13 @@ _Bool Context::OpenReportsInBrowser() {
     }
 
     std::string response_body("");
-    TogglClient https_client;
-    error err = https_client.Post(kAPIURL,
-                                  "/api/v8/desktop_login_tokens",
-                                  "{}",
-                                  user_->APIToken(),
-                                  "api_token",
-                                  &response_body);
+    TogglClient client(UI());
+    error err = client.Post(kAPIURL,
+                            "/api/v8/desktop_login_tokens",
+                            "{}",
+                            user_->APIToken(),
+                            "api_token",
+                            &response_body);
     if (err != noError) {
         return displayError(err);
     }

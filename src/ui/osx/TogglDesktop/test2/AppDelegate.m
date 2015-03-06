@@ -182,6 +182,14 @@ BOOL manualMode = NO;
 												 name:kDisplayOnlineState
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplaySyncState:)
+												 name:kDisplaySyncState
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayUnsyncedItems:)
+												 name:kDisplayUnsyncedItems
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayTimerState:)
 												 name:kDisplayTimerState
 											   object:nil];
@@ -518,6 +526,38 @@ BOOL manualMode = NO;
 
 	self.lastKnownOnlineState = ![state intValue];
 	[self updateStatusItem];
+}
+
+- (void)startDisplaySyncState:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displaySyncState:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displaySyncState:(NSNumber *)state
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	NSLog(@"displaySyncState %d", [state intValue]);
+
+	// FIXME: hide/show a spinner
+}
+
+- (void)startDisplayUnsyncedItems:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayUnsyncedItems:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayUnsyncedItems:(NSNumber *)count
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	NSLog(@"displayUnsyncedItems %d", [count intValue]);
+
+	// FIXME: hide/show number of unsynced time entries
 }
 
 - (void)updateStatusItem
@@ -931,6 +971,8 @@ const NSString *appName = @"osx_native_app";
 	// Using sparkle instead of self updater:
 	toggl_disable_update_check(ctx);
 
+	toggl_on_sync_state(ctx, on_sync_state);
+	toggl_on_unsynced_items(ctx, on_unsynced_items);
 	toggl_on_show_app(ctx, on_app);
 	toggl_on_error(ctx, on_error);
 	toggl_on_online_state(ctx, on_online_state);
@@ -1156,6 +1198,18 @@ void on_online_state(const int64_t state)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayOnlineState
 														object:[NSNumber numberWithLong:state]];
+}
+
+void on_sync_state(const int64_t state)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplaySyncState
+														object:[NSNumber numberWithLong:state]];
+}
+
+void on_unsynced_items(const int64_t count)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayUnsyncedItems
+														object:[NSNumber numberWithLong:count]];
 }
 
 void on_login(const _Bool open, const uint64_t user_id)
