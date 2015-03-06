@@ -68,8 +68,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="223" height="200"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickablePointer">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="10" y="78" width="223" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="223" id="eFb-g5-Dlf"/>
+                                            </constraints>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="LOG IN WITH GOOGLE" id="A3G-xB-gb7">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -146,8 +149,10 @@ DQ
                                     <constraint firstItem="jUD-k4-kTh" firstAttribute="top" secondItem="4G0-sP-05G" secondAttribute="top" constant="5" id="JY1-DN-DCC"/>
                                     <constraint firstItem="3Xk-yW-T0s" firstAttribute="top" secondItem="MMO-z4-qcY" secondAttribute="bottom" constant="25" id="Qfe-aJ-tne"/>
                                     <constraint firstItem="XvF-yu-GZx" firstAttribute="top" secondItem="MMO-z4-qcY" secondAttribute="bottom" constant="15" id="Qtn-Xy-8vZ"/>
+                                    <constraint firstAttribute="centerX" secondItem="0eG-O6-U2n" secondAttribute="centerX" id="T8Q-Nn-iiJ"/>
                                     <constraint firstAttribute="centerX" secondItem="MMO-z4-qcY" secondAttribute="centerX" id="UCX-hZ-ZSe"/>
                                     <constraint firstAttribute="bottom" secondItem="Pac-Wf-TBM" secondAttribute="bottom" constant="6" id="bZn-up-ozK"/>
+                                    <constraint firstItem="3Xk-yW-T0s" firstAttribute="leading" secondItem="4G0-sP-05G" secondAttribute="leading" constant="9" id="d5f-ST-7Pa"/>
                                     <constraint firstItem="0eG-O6-U2n" firstAttribute="top" relation="greaterThanOrEqual" secondItem="XvF-yu-GZx" secondAttribute="bottom" constant="20" id="zTS-Ts-x8Q"/>
                                 </constraints>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
