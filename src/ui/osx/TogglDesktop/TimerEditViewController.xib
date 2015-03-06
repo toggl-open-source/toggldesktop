@@ -26,7 +26,7 @@
             <rect key="frame" x="0.0" y="0.0" width="258" height="48"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" customClass="NSBoxClickable">
+                <box autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
                     <rect key="frame" x="1" y="-8" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
@@ -151,14 +151,14 @@ DQ
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
                         <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="lNg-Zn-u1m"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="70" id="naG-qG-gq3"/>
-                        <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="12" id="q1b-AH-TNO"/>
+                        <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="6" id="q1b-AH-TNO"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="18" id="sKm-6j-h1k"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="13" id="tbX-SU-uAB"/>
                     </constraints>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
-                <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" customClass="NSBoxClickable">
+                <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
                     <rect key="frame" x="1" y="-4" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
