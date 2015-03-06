@@ -88,13 +88,15 @@ error TimelineUploader::process() {
 error TimelineUploader::upload(TimelineBatch *batch) {
     TogglClient client;
 
-    std::stringstream out;
-    out << "Uploading " << batch->Events().size()
+    std::stringstream ss;
+    ss << "Uploading " << batch->Events().size()
         << " event(s) of user " << batch->UserID();
-    logger().debug(out.str());
+    logger().debug(ss.str());
 
     std::string json = convertTimelineToJSON(batch->Events(),
                        batch->DesktopID());
+    logger().debug(json);
+
     std::string response_body("");
     return client.Post(kTimelineUploadURL,
                        "/api/v8/timeline",
