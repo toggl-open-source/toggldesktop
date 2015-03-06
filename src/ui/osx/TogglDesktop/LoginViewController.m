@@ -69,6 +69,8 @@ extern void *ctx;
 
 - (void)changeView:(BOOL)hide
 {
+	[[NSNotificationCenter defaultCenter] postNotificationName:kHideDisplayError
+														object:nil];
 	[self.loginBox setHidden:hide];
 	[self.signUpBox setHidden:!hide];
 }
