@@ -539,9 +539,12 @@ BOOL manualMode = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	if ([state intValue]) {
+	if ([state intValue])
+	{
 		// FIXME: display syncing spinner
-	} else {
+	}
+	else
+	{
 		// FIXME: hide syncing spinner
 	}
 }
