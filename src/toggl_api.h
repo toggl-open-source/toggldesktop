@@ -107,6 +107,7 @@ extern "C" {
         char_t *ProxyPassword;
         _Bool UseIdleDetection;
         _Bool MenubarTimer;
+	 _Bool MenubarProject;
         _Bool DockIcon;
         _Bool OnTop;
         _Bool Reminder;
@@ -432,6 +433,10 @@ extern "C" {
     TOGGL_EXPORT _Bool toggl_set_settings_menubar_timer(
         void *context,
         const _Bool menubar_timer);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_menubar_project(
+        void *context,
+        const _Bool menubar_project);
 
     TOGGL_EXPORT _Bool toggl_set_settings_dock_icon(
         void *context,

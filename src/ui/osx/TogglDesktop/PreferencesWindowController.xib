@@ -11,6 +11,7 @@
                 <outlet property="focusOnShortcutCheckbox" destination="yWA-BY-OMt" id="Dfo-JK-2a2"/>
                 <outlet property="hostTextField" destination="eSt-Rf-LI2" id="Gfl-WB-VWr"/>
                 <outlet property="idleMinutesTextField" destination="nRj-Zh-L5m" id="9Fv-AO-JLv"/>
+                <outlet property="menubarProjectCheckbox" destination="jRq-Fm-A6k" id="uGL-1S-r9p"/>
                 <outlet property="menubarTimerCheckbox" destination="lUE-Lr-nId" id="pmQ-pX-vkg"/>
                 <outlet property="ontopCheckbox" destination="n4h-zi-TcC" id="ZIf-sx-04h"/>
                 <outlet property="passwordTextField" destination="bcT-3P-lAf" id="hcg-zO-nf5"/>
@@ -169,18 +170,7 @@
                         </buttonCell>
                         <connections>
                             <action selector="menubarTimerCheckboxChanged:" target="-2" id="EP1-N2-8ue"/>
-                            <outlet property="nextKeyView" destination="kR2-Ee-viZ" id="yWb-8e-9cw"/>
-                        </connections>
-                    </button>
-                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kR2-Ee-viZ">
-                        <rect key="frame" x="18" y="95" width="286" height="18"/>
-                        <buttonCell key="cell" type="check" title="Dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="L9v-Ys-EtJ">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="dockIconCheckboxChanged:" target="-2" id="7av-HG-YKn"/>
-                            <outlet property="nextKeyView" destination="n4h-zi-TcC" id="bcD-S1-o0a"/>
+                            <outlet property="nextKeyView" destination="jRq-Fm-A6k" id="vmR-eT-ZuL"/>
                         </connections>
                     </button>
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DLB-Fw-7tX" customClass="MASShortcutView">
@@ -217,39 +207,6 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n4h-zi-TcC">
-                        <rect key="frame" x="18" y="75" width="286" height="18"/>
-                        <buttonCell key="cell" type="check" title="On top of other windows" bezelStyle="regularSquare" imagePosition="left" inset="2" id="shd-cT-4Jq">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="ontopCheckboxChanged:" target="-2" id="nUW-Em-4oo"/>
-                            <outlet property="nextKeyView" destination="Xp1-t9-k72" id="4m1-Ud-jq9"/>
-                        </connections>
-                    </button>
-                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xp1-t9-k72">
-                        <rect key="frame" x="18" y="54" width="286" height="18"/>
-                        <buttonCell key="cell" type="check" title="Remind to track time" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="wtz-tA-GQz">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="reminderCheckboxChanged:" target="-2" id="WET-Re-akD"/>
-                            <outlet property="nextKeyView" destination="V8f-W0-M8n" id="PcC-Af-OxL"/>
-                        </connections>
-                    </button>
-                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWA-BY-OMt">
-                        <rect key="frame" x="18" y="34" width="286" height="18"/>
-                        <buttonCell key="cell" type="check" title="Focus app on global shortcut" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="U1R-lf-nkl">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="focusOnShortcutCheckboxChanged:" target="-2" id="Gge-Jq-zME"/>
-                            <outlet property="nextKeyView" destination="DLB-Fw-7tX" id="iA5-j2-FXh"/>
-                        </connections>
-                    </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nRj-Zh-L5m">
                         <rect key="frame" x="190" y="153" width="38" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="5" drawsBackground="YES" id="t4a-oR-CHq">
@@ -271,8 +228,63 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRq-Fm-A6k">
+                        <rect key="frame" x="18" y="95" width="286" height="18"/>
+                        <buttonCell key="cell" type="check" title="Show project in menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CM9-BW-DQq">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="menubarProjectCheckboxChanged:" target="-2" id="H5i-0g-x5W"/>
+                            <outlet property="nextKeyView" destination="kR2-Ee-viZ" id="wgz-Iq-3B1"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kR2-Ee-viZ">
+                        <rect key="frame" x="18" y="75" width="286" height="18"/>
+                        <buttonCell key="cell" type="check" title="Dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="L9v-Ys-EtJ">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="dockIconCheckboxChanged:" target="-2" id="7av-HG-YKn"/>
+                            <outlet property="nextKeyView" destination="n4h-zi-TcC" id="bcD-S1-o0a"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n4h-zi-TcC">
+                        <rect key="frame" x="18" y="55" width="286" height="18"/>
+                        <buttonCell key="cell" type="check" title="On top of other windows" bezelStyle="regularSquare" imagePosition="left" inset="2" id="shd-cT-4Jq">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="ontopCheckboxChanged:" target="-2" id="nUW-Em-4oo"/>
+                            <outlet property="nextKeyView" destination="Xp1-t9-k72" id="4m1-Ud-jq9"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xp1-t9-k72">
+                        <rect key="frame" x="18" y="34" width="286" height="18"/>
+                        <buttonCell key="cell" type="check" title="Remind to track time" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="wtz-tA-GQz">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="reminderCheckboxChanged:" target="-2" id="WET-Re-akD"/>
+                            <outlet property="nextKeyView" destination="V8f-W0-M8n" id="PcC-Af-OxL"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWA-BY-OMt">
+                        <rect key="frame" x="18" y="14" width="286" height="18"/>
+                        <buttonCell key="cell" type="check" title="Focus app on global shortcut" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="U1R-lf-nkl">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="focusOnShortcutCheckboxChanged:" target="-2" id="Gge-Jq-zME"/>
+                            <outlet property="nextKeyView" destination="DLB-Fw-7tX" id="iA5-j2-FXh"/>
+                        </connections>
+                    </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V8f-W0-M8n">
-                        <rect key="frame" x="190" y="52" width="38" height="22"/>
+                        <rect key="frame" x="190" y="32" width="38" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="5" drawsBackground="YES" id="TKE-C5-Vuh">
                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="pR5-hk-ays"/>
                             <font key="font" metaFont="system"/>
@@ -285,7 +297,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a29-6k-BQX">
-                        <rect key="frame" x="235" y="56" width="69" height="17"/>
+                        <rect key="frame" x="235" y="36" width="69" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="minutes" id="1ep-PE-OEB">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>

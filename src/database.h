@@ -63,6 +63,8 @@ class Database {
 
     error SetSettingsMenubarTimer(const bool &menubar_timer);
 
+    error SetSettingsMenubarProject(const bool &menubar_project);
+
     error SetSettingsDockIcon(const bool &dock_icon);
 
     error SetSettingsOnTop(const bool &on_top);

@@ -12,6 +12,7 @@ class Settings {
     Settings()
         : use_idle_detection(false)
     , menubar_timer(false)
+     , menubar_project(false)
     , dock_icon(false)
     , on_top(false)
     , reminder(false)
@@ -24,6 +25,7 @@ class Settings {
 
     bool use_idle_detection;
     bool menubar_timer;
+     bool menubar_project;
     bool dock_icon;
     bool on_top;
     bool reminder;

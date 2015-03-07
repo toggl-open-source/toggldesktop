@@ -309,6 +309,7 @@ TogglSettingsView *settings_view_item_init(
 
     view->DockIcon = settings.dock_icon;
     view->MenubarTimer = settings.menubar_timer;
+    view->MenubarProject = settings.menubar_project;
     view->OnTop = settings.on_top;
     view->Reminder = settings.reminder;
     view->UseIdleDetection = settings.use_idle_detection;

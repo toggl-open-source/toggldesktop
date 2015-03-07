@@ -12,6 +12,7 @@
 - (void)load:(TogglSettingsView *)data;
 @property BOOL idle_detection;
 @property BOOL menubar_timer;
+@property BOOL menubar_project;
 @property BOOL dock_icon;
 @property BOOL on_top;
 @property BOOL reminder;

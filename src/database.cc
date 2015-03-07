@@ -309,12 +309,13 @@ error Database::LoadSettings(Settings *settings) {
     poco_check_ptr(session_);
 
     try {
-        *session_ << "select use_idle_detection, menubar_timer, dock_icon, "
+        *session_ << "select use_idle_detection, menubar_timer, menubar_project, dock_icon,"
                   "on_top, reminder, idle_minutes, focus_on_shortcut, "
                   "reminder_minutes, manual_mode, autodetect_proxy "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
+		  into(settings->menubar_project),
                   into(settings->dock_icon),
                   into(settings->on_top),
                   into(settings->reminder),
@@ -380,6 +381,12 @@ error Database::SetSettingsUseIdleDetection(
 error Database::SetSettingsMenubarTimer(
     const bool &menubar_timer) {
     return setSettingsValue("menubar_timer", menubar_timer);
+}
+
+
+error Database::SetSettingsMenubarProject(
+    const bool &menubar_project) {
+    return setSettingsValue("menubar_project", menubar_project);
 }
 
 error Database::SetSettingsDockIcon(const bool &dock_icon) {
@@ -2983,6 +2990,13 @@ error Database::migrateSettings() {
         return err;
     }
 
+    err = migrate("settings.menubar_project",
+                  "ALTER TABLE settings "
+                  "ADD COLUMN menubar_project integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
     err = migrate("settings.dock_icon",
                   "ALTER TABLE settings "
                   "ADD COLUMN dock_icon INTEGER NOT NULL DEFAULT 1;");
@@ -3058,6 +3072,7 @@ error Database::migrateSettings() {
         "   use_idle_detection integer not null default 1, "
         "   update_channel varchar not null default 'stable', "
         "   menubar_timer integer not null default 0, "
+	 "   menubar_project integer not null default 0, "
         "   dock_icon INTEGER NOT NULL DEFAULT 1, "
         "   on_top INTEGER NOT NULL DEFAULT 0, "
         "   reminder INTEGER NOT NULL DEFAULT 1, "
@@ -3076,7 +3091,7 @@ error Database::migrateSettings() {
         "insert into settings"
         " select local_id, use_proxy, "
         " proxy_host, proxy_port, proxy_username, proxy_password, "
-        " use_idle_detection, update_channel, menubar_timer, "
+        " use_idle_detection, update_channel, menubar_timer, menubar_project, "
         " dock_icon, on_top, reminder, ignore_cert, idle_minutes, "
         " focus_on_shortcut, reminder_minutes, manual_mode "
         " from tmp_settings");

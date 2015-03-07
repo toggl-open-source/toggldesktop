@@ -15,6 +15,7 @@
 
 	self.idle_detection = data->UseIdleDetection;
 	self.menubar_timer = data->MenubarTimer;
+	self.menubar_project = data->MenubarProject;
 	self.dock_icon = data->DockIcon;
 	self.on_top = data->OnTop;
 	self.reminder = data->Reminder;

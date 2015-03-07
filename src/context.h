@@ -78,6 +78,8 @@ class Context : public TimelineDatasource {
 
     _Bool SetSettingsMenubarTimer(const _Bool menubar_timer);
 
+    _Bool SetSettingsMenubarProject(const _Bool menubar_project);
+
     _Bool SetSettingsDockIcon(const _Bool dock_icon);
 
     _Bool SetSettingsOnTop(const _Bool on_top);
