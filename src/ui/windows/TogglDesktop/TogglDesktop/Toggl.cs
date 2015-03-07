@@ -142,6 +142,8 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.I1)]
             public bool MenubarTimer;
             [MarshalAs(UnmanagedType.I1)]
+            public bool MenubarProject;
+            [MarshalAs(UnmanagedType.I1)]
             public bool DockIcon;
             [MarshalAs(UnmanagedType.I1)]
             public bool OnTop;
@@ -155,6 +157,8 @@ namespace TogglDesktop
             public UInt64 ReminderMinutes;
             [MarshalAs(UnmanagedType.I1)]
             public bool ManualMode;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool AutodetectProxy;
         }
 
         // Callbacks
