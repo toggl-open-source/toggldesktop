@@ -114,13 +114,15 @@ Linux (64 bit only)
 
 Contribute
 ==========
-Fork the repor and hack away! Before sending us a pull request, please format the source code:
+Fork the repo and hack away!
+
+Before sending us a pull request, please format the source code:
 
 ```
 make fmt
 ```
 
-Also, pleae check for any cpplint issues:
+Also, please check for any cpplint issues:
 
 ```
 make lint
