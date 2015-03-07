@@ -110,3 +110,18 @@ Linux (64 bit only)
 -------------------
 * [tarball](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable)
 * [deb](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=stable)
+
+
+Contribute
+==========
+Fork the repor and hack away! Before sending us a pull request, please format the source code:
+
+```
+make fmt
+```
+
+Also, pleae check for any cpplint issues:
+
+```
+make lint
+```
