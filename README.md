@@ -127,3 +127,10 @@ Also, please check for any cpplint issues:
 ```
 make lint
 ```
+
+Check if unit tests continue to pass:
+
+```
+make test
+```
+
