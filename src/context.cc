@@ -1096,8 +1096,8 @@ _Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
     return DisplaySettings(false);
 }
 
-_Bool Context::SetSettingsMenubarProject(const _Bool 
-menubar_project) {
+_Bool Context::SetSettingsMenubarProject(const _Bool
+        menubar_project) {
     error err = db()->SetSettingsMenubarProject(menubar_project);
     if (err != noError) {
         return displayError(err);

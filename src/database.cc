@@ -309,13 +309,14 @@ error Database::LoadSettings(Settings *settings) {
     poco_check_ptr(session_);
 
     try {
-        *session_ << "select use_idle_detection, menubar_timer, menubar_project, dock_icon,"
-                  "on_top, reminder, idle_minutes, focus_on_shortcut, "
-                  "reminder_minutes, manual_mode, autodetect_proxy "
+        *session_ << "select use_idle_detection, menubar_timer, "
+                  "menubar_project, dock_icon, on_top, reminder,  "
+                  "idle_minutes, focus_on_shortcut, reminder_minutes, "
+                  "manual_mode, autodetect_proxy "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
-		  into(settings->menubar_project),
+                  into(settings->menubar_project),
                   into(settings->dock_icon),
                   into(settings->on_top),
                   into(settings->reminder),
@@ -3072,7 +3073,7 @@ error Database::migrateSettings() {
         "   use_idle_detection integer not null default 1, "
         "   update_channel varchar not null default 'stable', "
         "   menubar_timer integer not null default 0, "
-	 "   menubar_project integer not null default 0, "
+        "   menubar_project integer not null default 0, "
         "   dock_icon INTEGER NOT NULL DEFAULT 1, "
         "   on_top INTEGER NOT NULL DEFAULT 0, "
         "   reminder INTEGER NOT NULL DEFAULT 1, "

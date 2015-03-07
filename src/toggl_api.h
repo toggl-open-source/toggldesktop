@@ -107,7 +107,7 @@ extern "C" {
         char_t *ProxyPassword;
         _Bool UseIdleDetection;
         _Bool MenubarTimer;
-	 _Bool MenubarProject;
+        _Bool MenubarProject;
         _Bool DockIcon;
         _Bool OnTop;
         _Bool Reminder;

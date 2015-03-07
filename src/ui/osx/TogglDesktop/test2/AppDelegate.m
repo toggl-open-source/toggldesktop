@@ -575,31 +575,30 @@ BOOL manualMode = NO;
 {
 	NSString *title = @"";
 
-    if (self.lastKnownRunningTimeEntry && self.lastKnownUserID)
-    {
-        if (self.showMenuBarProject)
-        {
-            title = [title stringByAppendingString:self.lastKnownRunningTimeEntry.ProjectLabel];
-        }
-        
-        if (self.showMenuBarTimer)
-        {
-            char *str = toggl_format_tracked_time_duration(self.lastKnownRunningTimeEntry.duration_in_seconds);
-            
-            if (self.showMenuBarProject)
-            {
-                title = [NSString stringWithFormat:@"%@ (%@)", title, [NSString stringWithUTF8String:str]];
-            }
-            else
-            {
-                title = [title stringByAppendingString:[NSString stringWithUTF8String:str]];
-            }
-            
-            free(str);
-        }
-        
-    }
-	
+	if (self.lastKnownRunningTimeEntry && self.lastKnownUserID)
+	{
+		if (self.showMenuBarProject)
+		{
+			title = [title stringByAppendingString:self.lastKnownRunningTimeEntry.ProjectLabel];
+		}
+
+		if (self.showMenuBarTimer)
+		{
+			char *str = toggl_format_tracked_time_duration(self.lastKnownRunningTimeEntry.duration_in_seconds);
+
+			if (self.showMenuBarProject)
+			{
+				title = [NSString stringWithFormat:@"%@ (%@)", title, [NSString stringWithUTF8String:str]];
+			}
+			else
+			{
+				title = [title stringByAppendingString:[NSString stringWithUTF8String:str]];
+			}
+
+			free(str);
+		}
+	}
+
 	NSString *key = nil;
 	if (self.lastKnownRunningTimeEntry && self.lastKnownUserID)
 	{

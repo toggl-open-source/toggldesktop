@@ -132,9 +132,8 @@ extern void *ctx;
 - (IBAction)menubarProjectCheckboxChanged:(id)sender
 {
 	toggl_set_settings_menubar_project(ctx,
-									 [Utils stateToBool:[self.menubarProjectCheckbox state]]);
+									   [Utils stateToBool:[self.menubarProjectCheckbox state]]);
 }
-
 
 - (IBAction)dockIconCheckboxChanged:(id)sender
 {
