@@ -1096,6 +1096,15 @@ _Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
     return DisplaySettings(false);
 }
 
+_Bool Context::SetSettingsMenubarProject(const _Bool
+        menubar_project) {
+    error err = db()->SetSettingsMenubarProject(menubar_project);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings(false);
+}
+
 _Bool Context::SetSettingsDockIcon(const _Bool dock_icon) {
     error err = db()->SetSettingsDockIcon(dock_icon);
     if (err != noError) {

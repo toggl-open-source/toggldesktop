@@ -77,6 +77,12 @@ _Bool toggl_set_settings_menubar_timer(
     return app(context)->SetSettingsMenubarTimer(menubar_timer);
 }
 
+_Bool toggl_set_settings_menubar_project(
+    void *context,
+    const _Bool menubar_project) {
+    return app(context)->SetSettingsMenubarProject(menubar_project);
+}
+
 _Bool toggl_set_settings_dock_icon(
     void *context,
     const _Bool dock_icon) {

@@ -71,6 +71,9 @@
 // Show or not show menubar timer
 @property BOOL showMenuBarTimer;
 
+// Show or not show menubar project
+@property BOOL showMenuBarProject;
+
 // Manual mode
 @property NSMenuItem *manualModeMenuItem;
 
@@ -431,6 +434,9 @@ BOOL manualMode = NO;
 		[self updateStatusItem];
 	}
 
+	// Show/Hide project in menubar
+	self.showMenuBarProject = cmd.settings.menubar_project;
+
 	// Show/Hide dock icon
 	ProcessSerialNumber psn = { 0, kCurrentProcess };
 	if (cmd.settings.dock_icon)
@@ -569,12 +575,28 @@ BOOL manualMode = NO;
 {
 	NSString *title = @"";
 
-	if (self.showMenuBarTimer && self.lastKnownRunningTimeEntry && self.lastKnownUserID)
+	if (self.lastKnownRunningTimeEntry && self.lastKnownUserID)
 	{
-		title = [title stringByAppendingString:@" "];
-		char *str = toggl_format_tracked_time_duration(self.lastKnownRunningTimeEntry.duration_in_seconds);
-		title = [title stringByAppendingString:[NSString stringWithUTF8String:str]];
-		free(str);
+		if (self.showMenuBarProject)
+		{
+			title = [title stringByAppendingString:self.lastKnownRunningTimeEntry.ProjectLabel];
+		}
+
+		if (self.showMenuBarTimer)
+		{
+			char *str = toggl_format_tracked_time_duration(self.lastKnownRunningTimeEntry.duration_in_seconds);
+
+			if (self.showMenuBarProject)
+			{
+				title = [NSString stringWithFormat:@"%@ (%@)", title, [NSString stringWithUTF8String:str]];
+			}
+			else
+			{
+				title = [title stringByAppendingString:[NSString stringWithUTF8String:str]];
+			}
+
+			free(str);
+		}
 	}
 
 	NSString *key = nil;

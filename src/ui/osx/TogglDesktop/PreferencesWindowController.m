@@ -129,6 +129,12 @@ extern void *ctx;
 									 [Utils stateToBool:[self.menubarTimerCheckbox state]]);
 }
 
+- (IBAction)menubarProjectCheckboxChanged:(id)sender
+{
+	toggl_set_settings_menubar_project(ctx,
+									   [Utils stateToBool:[self.menubarProjectCheckbox state]]);
+}
+
 - (IBAction)dockIconCheckboxChanged:(id)sender
 {
 	toggl_set_settings_dock_icon(ctx,
@@ -164,6 +170,7 @@ extern void *ctx;
 
 	[self.useIdleDetectionButton setState:[Utils boolToState:settings.idle_detection]];
 	[self.menubarTimerCheckbox setState:[Utils boolToState:settings.menubar_timer]];
+	[self.menubarProjectCheckbox setState:[Utils boolToState:settings.menubar_project]];
 	[self.dockIconCheckbox setState:[Utils boolToState:settings.dock_icon]];
 	[self.ontopCheckbox setState:[Utils boolToState:settings.on_top]];
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
