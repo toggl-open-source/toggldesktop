@@ -3372,201 +3372,34 @@ error Database::SelectTimelineBatch(
         return err;
     }
 
-    // Load all uncompressed timeline events into memory
-    std::vector<TimelineEvent> uncompressed;
-    err = selectUnompressedTimelineEvents(user_id, &uncompressed);
-    if (err != noError) {
-        return err;
-    }
-
-    // Group events by app name into chunks
-    std::map<std::string, TimelineEvent> compressed;
-    for (std::vector<TimelineEvent>::iterator i = uncompressed.begin();
-            i != uncompressed.end();
-            ++i) {
-        TimelineEvent &event = *i;
-        poco_assert(!event.chunked);
-
-        time_t chunk_start_time =
-            (event.start_time / kTimelineChunkSeconds) * kTimelineChunkSeconds;
-
-        std::stringstream ss;
-        ss << event.filename;
-        ss << "::";
-        ss << event.title;
-        ss << "::";
-        ss << event.idle;
-        ss << "::";
-        ss << chunk_start_time;
-        std::string key = ss.str();
-
-        time_t duration = event.end_time - event.start_time;
-        if (duration < 0) {
-            duration = 0;
-        }
-
-        if (compressed.find(key) == compressed.end()) {
-            TimelineEvent chunk;
-            chunk.user_id = user_id;
-            chunk.start_time = chunk_start_time;
-            chunk.end_time = chunk.start_time + duration;
-            chunk.filename = event.filename;
-            chunk.title = event.title;
-            chunk.idle = event.idle;
-            chunk.chunked = true;
-            compressed[key] = chunk;
-        } else {
-            TimelineEvent chunk = compressed[key];
-            chunk.end_time = chunk.end_time + duration;
-            compressed[key] = chunk;
-        }
-    }
-
-    // Save the new, chunked events
-    for (std::map<std::string, TimelineEvent>::iterator i = compressed.begin();
-            i != compressed.end();
-            ++i) {
-        TimelineEvent &event = i->second;
-        poco_assert(event.chunked);
-        err = InsertTimelineEvent(&event);
-        if (err != noError) {
-            return err;
-        }
-    }
-
-    // Delete the uncompressed events now
-    err = DeleteTimelineBatch(uncompressed);
-    if (err != noError) {
-        return err;
-    }
-
-    err = selectCompressedTimelineBatch(
-        user_id, timeline_events);
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::selectUnompressedTimelineEvents(
-    const Poco::UInt64 &user_id,
-    std::vector<TimelineEvent> *timeline_events) {
-
-    if (!user_id) {
-        return error("Cannot load timeline without a user ID");
-    }
-
-    if (!timeline_events->empty()) {
-        return error("Timeline events already loaded");
-    }
-
-    if (!session_) {
-        logger().warning("select_batch database is not open, ignoring request");
-        return noError;
-    }
-
-    time_t chunk_up_to = time(0) - kTimelineChunkSeconds;
-
-    {
-        std::stringstream s;
-        s << "selectUnompressedTimelineEvents user_id = "
-          << user_id
-          << ", chunk_up_to = " << chunk_up_to;
-        logger().debug(s.str());
-    }
-
     Poco::Mutex::ScopedLock lock(session_m_);
-
-    try {
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked "
-               "FROM timeline_events "
-               "WHERE user_id = :user_id "
-               "AND start_time < :seconds_ago "
-               "AND NOT chunked ",
-               useRef(user_id),
-               useRef(chunk_up_to);
-        loadTimelineEvents(user_id, &select, timeline_events);
-
-        {
-            std::stringstream s;
-            s << "selectUnompressedTimelineEvents found "
-              << timeline_events->size()
-              << " events.";
-            logger().debug(s.str());
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("selectUnompressedTimelineEvents");
-}
-
-error Database::selectCompressedTimelineBatch(
-    const Poco::UInt64 &user_id,
-    std::vector<TimelineEvent> *timeline_events) {
-
-    if (!user_id) {
-        return error("Cannot load timeline without a user ID");
-    }
-
-    if (!timeline_events->empty()) {
-        return error("Timeline events already loaded");
-    }
-
-    if (!session_) {
-        logger().warning("select_batch database is not open, ignoring request");
-        return noError;
-    }
 
     std::stringstream out;
-    out << "selectCompressedTimelineBatch user_id = " << user_id;
+    out << "SelectTimelineBatch user_id = " << user_id;
     logger().debug(out.str());
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    try {
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked "
-               "FROM timeline_events "
-               "WHERE user_id = :user_id "
-               "AND chunked "
-               "LIMIT 100",
-               useRef(user_id);
-        loadTimelineEvents(user_id, &select, timeline_events);
-
-        std::stringstream event_count;
-        event_count << "selectCompressedTimelineBatch found "
-                    << timeline_events->size()
-                    << " events.";
-        logger().debug(event_count.str());
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
+    if (!user_id) {
+        return error("Cannot load timeline without a user ID");
     }
-    return last_error("selectCompressedTimelineBatch");
-}
 
-void loadTimelineEvents(
-    const Poco::UInt64 &user_id,
-    Poco::Data::Statement *select,
-    std::vector<TimelineEvent> *timeline_events) {
+    if (!timeline_events->empty()) {
+        return error("Timeline events already loaded");
+    }
 
-    Poco::Data::RecordSet rs(*select);
+    if (!session_) {
+        logger().warning("select_batch database is not open, ignoring request");
+        return noError;
+    }
 
-    while (!select->done()) {
-        select->execute();
+    Poco::Data::Statement select(*session_);
+    select << "SELECT id, title, filename, start_time, end_time, idle "
+           "FROM timeline_events "
+           "WHERE user_id = :user_id "
+           "LIMIT 100",
+           useRef(user_id);
+    Poco::Data::RecordSet rs(select);
+    while (!select.done()) {
+        select.execute();
         bool more = rs.moveFirst();
         while (more) {
             TimelineEvent event;
@@ -3583,11 +3416,17 @@ void loadTimelineEvents(
             }
             event.idle = rs[5].convert<bool>();
             event.user_id = static_cast<unsigned int>(user_id);
-            event.chunked = rs[6].convert<bool>();
             timeline_events->push_back(event);
             more = rs.moveNext();
         }
     }
+
+    std::stringstream event_count;
+    event_count << "SelectTimelineBatch found " << timeline_events->size()
+                <<  " events.";
+    logger().debug(event_count.str());
+
+    return last_error("SelectTimelineBatch");
 }
 
 const int kMaxTimelineStringSize = 300;
@@ -3631,11 +3470,9 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
     Poco::Int64 end_time(event->end_time);
 
     *session_ << "INSERT INTO timeline_events("
-              "user_id, title, filename, start_time, end_time, idle, "
-              "chunked"
+              "user_id, title, filename, start_time, end_time, idle"
               ") VALUES ("
-              ":user_id, :title, :filename, :start_time, :end_time, :idle, "
-              ":chunked"
+              ":user_id, :title, :filename, :start_time, :end_time, :idle"
               ")",
               useRef(event->user_id),
               useRef(event->title),
@@ -3643,7 +3480,6 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
               useRef(start_time),
               useRef(end_time),
               useRef(event->idle),
-              useRef(event->chunked),
               now;
     return last_error("InsertTimelineEvent");
 }
@@ -3651,15 +3487,15 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
 error Database::DeleteTimelineBatch(
     const std::vector<TimelineEvent> &timeline_events) {
 
-    if (timeline_events.empty()) {
-        return noError;
-    }
-
     Poco::Mutex::ScopedLock lock(session_m_);
 
     std::stringstream out;
     out << "DeleteTimelineBatch " << timeline_events.size() << " events.";
     logger().debug(out.str());
+
+    if (timeline_events.empty()) {
+        return error("Cannot delete empty timeline batch");
+    }
 
     if (!session_) {
         logger().warning("DeleteTimelineBatch db closed, ignoring request");
