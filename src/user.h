@@ -190,7 +190,8 @@ class User : public BaseModel {
         TogglClient *https_client,
         const std::string email,
         const std::string password,
-        std::string *user_data);
+        std::string *user_data,
+        const Poco::UInt64 since);
 
  private:
     error updateJSON(

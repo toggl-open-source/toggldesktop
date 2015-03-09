@@ -1386,7 +1386,7 @@ _Bool Context::Login(
 
     TogglClient client(UI());
     std::string user_data_json("");
-    error err = User::Me(&client, email, password, &user_data_json);
+    error err = User::Me(&client, email, password, &user_data_json, 0);
     if (err != noError) {
         if (!IsNetworkingError(err)) {
             return displayError(err);

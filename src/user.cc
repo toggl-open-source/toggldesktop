@@ -396,12 +396,17 @@ error User::PullAllUserData(
         stopwatch.start();
 
         std::string user_data_json("");
-        error err = Me(https_client, APIToken(), "api_token", &user_data_json);
+        error err = Me(
+            https_client,
+            APIToken(),
+            "api_token",
+            &user_data_json,
+            Since());
         if (err != noError) {
             return err;
         }
 
-        LoadUserAndRelatedDataFromJSONString(user_data_json, true);
+        LoadUserAndRelatedDataFromJSONString(user_data_json, !Since());
 
         stopwatch.stop();
         std::stringstream ss;
@@ -511,7 +516,8 @@ error User::Me(
     TogglClient *https_client,
     const std::string email,
     const std::string password,
-    std::string *user_data_json) {
+    std::string *user_data_json,
+    const Poco::UInt64 since) {
 
     if (email.empty()) {
         return "Empty email or API token";
@@ -528,7 +534,8 @@ error User::Me(
         std::stringstream relative_url;
         relative_url << "/api/v8/me"
                      << "?app_name=" << TogglClient::Config.AppName
-                     << "&with_related_data=true";
+                     << "&with_related_data=true"
+                     << "&since=" << since;
 
         return https_client->Get(kAPIURL,
                                  relative_url.str(),
