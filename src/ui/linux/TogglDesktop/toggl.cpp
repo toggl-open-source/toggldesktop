@@ -15,7 +15,6 @@
 
 #include "./../../../toggl_api.h"
 
-#include "./updateview.h"
 #include "./timeentryview.h"
 #include "./genericview.h"
 #include "./autocompleteview.h"
@@ -30,6 +29,10 @@ QString TogglApi::Description = QString("description");
 
 void on_display_app(const _Bool open) {
     TogglApi::instance->displayApp(open);
+}
+
+void on_display_update(const char *url) {
+    TogglApi::instance->displayUpdate(QString(url));
 }
 
 void on_display_error(
@@ -195,6 +198,7 @@ TogglApi::TogglApi(
     toggl_set_cacert_path(ctx, cacertPath.toUtf8().constData());
 
     toggl_on_show_app(ctx, on_display_app);
+    toggl_on_update(ctx, on_display_update);
     toggl_on_error(ctx, on_display_error);
     toggl_on_online_state(ctx, on_display_online_state);
     toggl_on_url(ctx, on_display_url);
@@ -439,10 +443,6 @@ void TogglApi::sync() {
 
 void TogglApi::openInBrowser() {
     toggl_open_in_browser(ctx);
-}
-
-void TogglApi::about() {
-    toggl_about(ctx);
 }
 
 bool TogglApi::clearCache() {

@@ -805,16 +805,8 @@ void Context::executeUpdateCheck() {
 
 error Context::downloadUpdate() {
     try {
-        if ("production" != environment_) {
-            return noError;
-        }
-
         if (update_check_disabled_) {
             return noError;
-        }
-
-        if (update_path_.empty()) {
-            return error("update path is empty, cannot download update");
         }
 
         // Load current update channel
@@ -868,6 +860,11 @@ error Context::downloadUpdate() {
         if (UI()->CanDisplayUpdate()) {
             UI()->DisplayUpdate(url);
             return noError;
+        }
+
+        // we need a path to download to, when going this way
+        if (update_path_.empty()) {
+            return error("update path is empty, cannot download update");
         }
 
         // Ignore update if not compatible with this client version

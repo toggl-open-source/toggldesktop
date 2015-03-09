@@ -15,7 +15,6 @@ class AutocompleteView;
 class GenericView;
 class SettingsView;
 class TimeEntryView;
-class UpdateView;
 
 class TogglApi : public QObject {
     Q_OBJECT
@@ -69,8 +68,6 @@ class TogglApi : public QObject {
     void openInBrowser();
 
     void sync();
-
-    void about();
 
     bool clearCache();
 
@@ -175,8 +172,7 @@ class TogglApi : public QObject {
         const bool user_error);
 
     void displayUpdate(
-        const bool open,
-        UpdateView *update);
+        const QString url);
 
     void displayOnlineState(
         int64_t state);
@@ -248,8 +244,7 @@ void on_display_error(
     const char *errmsg,
     const _Bool user_error);
 void on_display_update(
-    const _Bool open,
-    TogglUpdateView *update);
+    const char *url);
 void on_display_online_state(
     const bool is_online,
     const char *reason);
