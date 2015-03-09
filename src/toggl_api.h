@@ -177,6 +177,9 @@ extern "C" {
         const uint64_t started,
         const char_t *description);
 
+    typedef void (*TogglDisplayUpdate)(
+        const char_t *url);
+
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(
@@ -253,6 +256,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_error(
         void *context,
         TogglDisplayError);
+
+    TOGGL_EXPORT void toggl_on_update(
+        void *context,
+        TogglDisplayUpdate);
 
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,

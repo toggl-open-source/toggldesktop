@@ -42,7 +42,8 @@ class GUI : public SyncStateMonitor {
     , on_display_idle_notification_(0)
     , on_display_mini_timer_autocomplete_(0)
     , on_display_sync_state_(0)
-    , on_display_unsynced_items_(0) {}
+    , on_display_unsynced_items_(0)
+    , on_display_update_(0) {}
 
     ~GUI() {}
 
@@ -98,7 +99,13 @@ class GUI : public SyncStateMonitor {
                                  const uint64_t started,
                                  const std::string description);
 
+    void DisplayUpdate(const std::string URL);
+
     error VerifyCallbacks();
+
+    void OnDisplayUpdate(TogglDisplayUpdate cb) {
+        on_display_update_ = cb;
+    }
 
     void OnDisplayApp(TogglDisplayApp cb) {
         on_display_app_ = cb;
@@ -176,7 +183,7 @@ class GUI : public SyncStateMonitor {
         on_display_unsynced_items_ = cb;
     }
 
-    const bool CanDisplayUpdate() {
+    bool CanDisplayUpdate() const {
         return !!on_display_update_;
     }
 
@@ -202,6 +209,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayAutocomplete on_display_mini_timer_autocomplete_;
     TogglDisplaySyncState on_display_sync_state_;
     TogglDisplayUnsyncedItems on_display_unsynced_items_;
+    TogglDisplayUpdate on_display_update_;
 
     Poco::Logger &logger() const;
 };

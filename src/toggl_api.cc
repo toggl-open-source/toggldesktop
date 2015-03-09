@@ -672,6 +672,13 @@ void toggl_on_online_state(
     app(context)->UI()->OnDisplayOnlineState(cb);
 }
 
+void toggl_on_update(
+    void *context,
+    TogglDisplayUpdate cb) {
+
+    app(context)->UI()->OnDisplayUpdate(cb);
+}
+
 void toggl_on_url(
     void *context,
     TogglDisplayURL cb) {
