@@ -864,6 +864,7 @@ error Context::downloadUpdate() {
             logger().debug(ss.str());
         }
 
+        // linux has non-silent updates, just pass on the URL
         if (UI()->CanDisplayUpdate()) {
             UI()->DisplayUpdate(url);
             return noError;
