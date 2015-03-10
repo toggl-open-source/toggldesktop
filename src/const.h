@@ -7,7 +7,7 @@
 
 #define kMaxTimeEntryDurationSeconds 3600000
 #define kHTTPClientTimeoutSeconds 30
-#define kSyncIntervalRangeSeconds 300
+#define kSyncIntervalRangeSeconds 900
 #define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
 #define kRequestThrottleSeconds 2

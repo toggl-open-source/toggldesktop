@@ -422,11 +422,11 @@ _Bool Context::displayError(const error err) {
 int Context::nextSyncIntervalSeconds() const {
     Poco::Random random;
     random.seed();
-    int res = random.next(kSyncIntervalRangeSeconds) + 10 + 1;
+    int n = random.next(kSyncIntervalRangeSeconds) + kSyncIntervalRangeSeconds;
     std::stringstream ss;
-    ss << "Next autosync in " << res << " seconds";
+    ss << "Next autosync in " << n << " seconds";
     logger().trace(ss.str());
-    return res;
+    return n;
 }
 
 void Context::scheduleSync() {
