@@ -45,7 +45,6 @@
 #define kCannotWriteFile "Cannot write file"
 #define kIsSuspended "is suspended"
 #define kRequestToServerFailedWithStatusCode403 "Request to server failed with status code: 403"  // NOLINT
-#define kThisVersionOfTheAppIsNotSupported "This version of the app is not supported"  // NOLINT
 #define kMissingWorkspaceID "Missing workspace ID"
 
 #define kOnlineStateOnline 0

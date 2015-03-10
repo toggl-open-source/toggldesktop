@@ -62,7 +62,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , update_check_disabled_(false)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
-, update_path_("") {
+, update_path_("")
+, im_a_teapot_(false) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -416,6 +417,9 @@ _Bool Context::displayError(const error err) {
             setUser(0);
         }
     }
+    if (err.find(kUnsupportedAppError) != std::string::npos) {
+        im_a_teapot_ = true;
+    }
     return UI()->DisplayError(err);
 }
 
@@ -430,6 +434,11 @@ int Context::nextSyncIntervalSeconds() const {
 }
 
 void Context::scheduleSync() {
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
+        return;
+    }
+
     Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
 
     {
@@ -451,6 +460,11 @@ void Context::scheduleSync() {
 
 void Context::Sync() {
     logger().debug("Sync");
+
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
+        return;
+    }
 
     Poco::Timestamp::TimeDiff delay = 0;
     if (next_sync_at_ > 0) {
@@ -482,6 +496,11 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 
     if (!user_) {
         logger().warning("User is not logged in, cannot sync yet");
+        return;
+    }
+
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
         return;
     }
 
@@ -525,6 +544,11 @@ void Context::setOnline(const std::string reason) {
 void Context::pushChanges() {
     logger().debug("pushChanges");
 
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
+        return;
+    }
+
     next_push_changes_at_ =
         postpone(kRequestThrottleSeconds * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
@@ -547,6 +571,11 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
     logger().debug("onPushChanges executing");
+
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
+        return;
+    }
 
     TogglClient client(UI());
     bool had_something_to_push(true);
@@ -1007,6 +1036,11 @@ const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
 const std::string kRecordTimelineDisabledJSON = "{\"record_timeline\": false}";
 
 void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
+        return;
+    }
+
     if (isPostponed(next_update_timeline_settings_at_,
                     kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onTimelineUpdateServerSettings postponed");
@@ -1058,6 +1092,11 @@ _Bool Context::SendFeedback(Feedback fb) {
 }
 
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
+        return;
+    }
+
     logger().debug("onSendFeedback");
 
     std::string response_body("");
@@ -1391,6 +1430,10 @@ _Bool Context::Login(
     const std::string email,
     const std::string password) {
 
+    if (im_a_teapot_) {
+        return displayError(kUnsupportedAppError);
+    }
+
     TogglClient client(UI());
     std::string user_data_json("");
     error err = User::Me(&client, email, password, &user_data_json, 0);
@@ -1429,6 +1472,10 @@ _Bool Context::Login(
 _Bool Context::Signup(
     const std::string email,
     const std::string password) {
+
+    if (im_a_teapot_) {
+        return displayError(kUnsupportedAppError);
+    }
 
     TogglClient client(UI());
     std::string user_data_json("");
@@ -1597,6 +1644,11 @@ TimeEntry *Context::Start(
     const std::string duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id) {
+
+    if (im_a_teapot_) {
+        displayError(kUnsupportedAppError);
+        return 0;
+    }
 
     if (!user_) {
         logger().warning("Cannot start tracking, user logged out");
@@ -1785,6 +1837,10 @@ void Context::displayTimeEntryEditor(const _Bool open,
 }
 
 _Bool Context::ContinueLatest() {
+    if (im_a_teapot_) {
+        return displayError(kUnsupportedAppError);
+    }
+
     if (!user_) {
         logger().warning("Cannot continue tracking, user logged out");
         return true;
@@ -1835,6 +1891,10 @@ _Bool Context::ContinueLatest() {
 _Bool Context::Continue(
     const std::string GUID) {
 
+    if (im_a_teapot_) {
+        return displayError(kUnsupportedAppError);
+    }
+
     if (!user_) {
         logger().warning("Cannot continue time entry, user logged out");
         return true;
@@ -1867,6 +1927,9 @@ _Bool Context::Continue(
 }
 
 _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
+    if (im_a_teapot_) {
+        return displayError(kUnsupportedAppError);
+    }
     if (!user_) {
         logger().warning("Cannot delete time entry, user logged out");
         return true;
@@ -2335,6 +2398,10 @@ void Context::SetSleep() {
 }
 
 _Bool Context::OpenReportsInBrowser() {
+    if (im_a_teapot_) {
+        return displayError(kUnsupportedAppError);
+    }
+
     if (!user_) {
         return displayError("You must log in to view reports");
     }

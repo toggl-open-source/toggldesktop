@@ -375,6 +375,8 @@ class Context : public TimelineDatasource {
     Analytics analytics_;
 
     std::string update_path_;
+
+    bool im_a_teapot_;
 };
 
 void on_websocket_message(

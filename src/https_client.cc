@@ -243,9 +243,6 @@ error HTTPSClient::Get(
                    &status_code);
 }
 
-// NB! returns an error only if the request actually fails for some reason.
-// Meaning that HTTP status codes 400, 500 etc *will not* result in error,
-// as the request itself was successfully made to server.
 error HTTPSClient::request(
     const std::string method,
     const std::string host,

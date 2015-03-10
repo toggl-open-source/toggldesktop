@@ -137,7 +137,7 @@ bool IsUserError(const error err) {
             != std::string::npos) {
         return true;
     }
-    if (err.find(kThisVersionOfTheAppIsNotSupported) != std::string::npos) {
+    if (err.find(kUnsupportedAppError) != std::string::npos) {
         return true;
     }
     if (err.find("Stop time must be after start time")
@@ -210,9 +210,6 @@ std::string MakeErrorActionable(const error err) {
     if (err.find(kRequestToServerFailedWithStatusCode403)
             != std::string::npos) {
         return "You do not have access to this workspace";
-    }
-    if (err.find(kThisVersionOfTheAppIsNotSupported) != std::string::npos) {
-        return "Please upgrade your Toggl Desktop";
     }
     if (err.find(kMissingWorkspaceID) != std::string::npos) {
         return "Please select a project";
