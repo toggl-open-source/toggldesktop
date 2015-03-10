@@ -754,7 +754,11 @@ void Context::startPeriodicSync() {
 void Context::onPeriodicSync(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onPeriodicSync");
 
-    scheduleSync();
+    if (ws_client_.Up()) {
+        logger().debug("Skipping periodic sync, because Websocket is up");
+    } else {
+        scheduleSync();
+    }
 
     startPeriodicSync();
 }

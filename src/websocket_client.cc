@@ -27,6 +27,14 @@
 
 namespace toggl {
 
+bool WebSocketClient::Up() const {
+    return activity_.isRunning() && !activity_.isStopped();
+}
+
+WebSocketClient::~WebSocketClient() {
+    deleteSession();
+}
+
 void WebSocketClient::Start(
     void *ctx,
     const std::string api_token,
@@ -121,6 +129,8 @@ error WebSocketClient::createSession() {
                     HTTPSClient::Config.ProxySettings.Username(),
                     HTTPSClient::Config.ProxySettings.Password());
             }
+        } else if (HTTPSClient::Config.AutodetectProxy) {
+            // FIXME: autodetect proxy
         }
         req_ = new Poco::Net::HTTPRequest(
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",
@@ -290,10 +300,6 @@ void WebSocketClient::runActivity() {
     }
 
     logger().debug("activity finished");
-}
-
-WebSocketClient::~WebSocketClient() {
-    deleteSession();
 }
 
 void WebSocketClient::deleteSession() {
