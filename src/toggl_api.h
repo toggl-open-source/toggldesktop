@@ -525,6 +525,14 @@ extern "C" {
     TOGGL_EXPORT char_t *toggl_get_update_channel(
         void *context);
 
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_user_fullname(
+        void *context);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_user_email(
+        void *context);
+
     TOGGL_EXPORT void toggl_sync(
         void *context);
 

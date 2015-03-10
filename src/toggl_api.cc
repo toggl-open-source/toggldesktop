@@ -629,6 +629,20 @@ char_t *toggl_get_update_channel(
     return copy_string(update_channel);
 }
 
+char_t *toggl_get_user_fullname(
+    void *context) {
+
+    std::string fullname = app(context)->UserFullName();
+    return copy_string(fullname);
+}
+
+char_t *toggl_get_user_email(
+    void *context) {
+
+    std::string email = app(context)->UserEmail();
+    return copy_string(email);
+}
+
 int64_t toggl_parse_duration_string_into_seconds(
     const char_t *duration_string) {
     if (!duration_string) {
@@ -844,9 +858,13 @@ char_t *toggl_run_script(
     lua_settop(L, 0);
 
     *err = luaL_loadstring(L, script);
+    if (*err) {
+        return copy_string(lua_tostring(L, -1));
+    }
 
-    if (!*err) {
-        *err = lua_pcall(L, 0, LUA_MULTRET, 0);
+    *err = lua_pcall(L, 0, LUA_MULTRET, 0);
+    if (*err) {
+        return copy_string(lua_tostring(L, -1));
     }
 
     int argc = lua_gettop(L);

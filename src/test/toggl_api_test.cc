@@ -372,6 +372,36 @@ TEST(TogglApiTest, toggl_set_proxy_settings) {
               std::string(testing::testresult::proxy.Password()));
 }
 
+TEST(TogglApiTest, toggl_get_user_fullname) {
+    testing::App app;
+
+    char *str = toggl_get_user_fullname(app.ctx());
+    ASSERT_EQ("", std::string(str));
+    free(str);
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    str = toggl_get_user_fullname(app.ctx());
+    ASSERT_EQ("John Smith", std::string(str));
+    free(str);
+}
+
+TEST(TogglApiTest, toggl_get_user_email) {
+    testing::App app;
+
+    char *str = toggl_get_user_email(app.ctx());
+    ASSERT_EQ("", std::string(str));
+    free(str);
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    str = toggl_get_user_email(app.ctx());
+    ASSERT_EQ("johnsmith@toggl.com", std::string(str));
+    free(str);
+}
+
 TEST(TogglApiTest, toggl_set_update_channel) {
     testing::App app;
 

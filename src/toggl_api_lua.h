@@ -356,6 +356,18 @@ static int l_toggl_get_update_channel(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_get_user_fullname(lua_State *L) {
+    char_t *str = toggl_get_user_fullname(toggl_app_instance_);
+    lua_pushstring(L, str);
+    return 1;
+}
+
+static int l_toggl_get_user_email(lua_State *L) {
+    char_t *str = toggl_get_user_email(toggl_app_instance_);
+    lua_pushstring(L, str);
+    return 1;
+}
+
 static int l_toggl_sync(lua_State *L) {
     toggl_sync(toggl_app_instance_);
     return 0;
@@ -481,6 +493,8 @@ static const struct luaL_Reg toggl_f[] = {
     {"create_client", l_toggl_create_client},
     {"set_update_channel", l_toggl_set_update_channel},
     {"get_update_channel", l_toggl_get_update_channel},
+    {"get_user_fullname", l_toggl_get_user_fullname},
+    {"get_user_email", l_toggl_get_user_email},
     {"sync", l_toggl_sync},
     {"timeline_toggle_recording", l_toggl_timeline_toggle_recording},
     {"timeline_is_recording_enabled", l_toggl_timeline_is_recording_enabled},

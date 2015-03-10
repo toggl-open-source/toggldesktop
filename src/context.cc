@@ -830,6 +830,20 @@ _Bool Context::UpdateChannel(
     return true;
 }
 
+std::string Context::UserFullName() const {
+    if (!user_) {
+        return "";
+    }
+    return user_->Fullname();
+}
+
+std::string Context::UserEmail() const {
+    if (!user_) {
+        return "";
+    }
+    return user_->Email();
+}
+
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
 

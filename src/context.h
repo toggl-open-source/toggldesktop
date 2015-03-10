@@ -225,6 +225,10 @@ class Context : public TimelineDatasource {
         quit_ = true;
     }
 
+    std::string UserFullName() const;
+
+    std::string UserEmail() const;
+
     // Timeline datasource
     error CreateTimelineBatch(TimelineBatch *batch);
     error SaveTimelineEvent(TimelineEvent *event);
