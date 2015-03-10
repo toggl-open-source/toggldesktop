@@ -1400,6 +1400,14 @@ error Context::attemptOfflineLogin(const std::string email,
 
     if (!user->ID()) {
         delete user;
+        logger().debug("User data not found in local database for " + email);
+        return error(kEmailNotFoundCannotLogInOffline);
+    }
+
+    if (user->OfflineData().empty()) {
+        delete user;
+        logger().debug("Offline data not found in local database for "
+                       + email);
         return error(kEmailNotFoundCannotLogInOffline);
     }
 
