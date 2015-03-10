@@ -52,13 +52,13 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         time_t time_delta = now - last_event_started_at_;
 
         // if window was focussed at least X seconds, save it to timeline
-        if (time_delta >= kWindowFocusThresholdSeconds) {
+        if (time_delta >= kWindowFocusThresholdSeconds && !last_idle_) {
             TimelineEvent event;
             event.start_time = last_event_started_at_;
             event.end_time = now;
             event.filename = last_filename_;
             event.title = last_title_;
-            event.idle = last_idle_;
+            event.idle = false;
 
             error err = timeline_datasource_->SaveTimelineEvent(&event);
             if (err != noError) {
