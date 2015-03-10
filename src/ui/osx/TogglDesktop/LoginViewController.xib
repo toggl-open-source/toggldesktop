@@ -31,7 +31,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField focusRingType="none" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-rJ-O83">
-                                <rect key="frame" x="15" y="241" width="218" height="30"/>
+                                <rect key="frame" x="15" y="241" width="218" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="FQH-VE-Gcc"/>
                                 </constraints>
