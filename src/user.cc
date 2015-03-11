@@ -549,7 +549,6 @@ error User::Me(
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
 }
 
 error User::Signup(
@@ -590,8 +589,8 @@ error User::Signup(
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
 }
+
 void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
     deleteRelatedModelsWithWorkspace(wid, &related.Clients);
     deleteRelatedModelsWithWorkspace(wid, &related.Projects);

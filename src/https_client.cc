@@ -430,7 +430,6 @@ error HTTPSClient::request(
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
 }
 
 ServerStatus TogglClient::TogglStatus;
