@@ -47,6 +47,8 @@
 #define kIsSuspended "is suspended"
 #define kRequestToServerFailedWithStatusCode403 "Request to server failed with status code: 403"  // NOLINT
 #define kMissingWorkspaceID "Missing workspace ID"
+#define kCannotContinueDeletedTimeEntry "Cannot continue deleted time entry"
+#define kCannotDeleteDeletedTimeEntry "Cannot delete deleted time entry"
 
 #define kOnlineStateOnline 0
 #define kOnlineStateNoNetwork 1

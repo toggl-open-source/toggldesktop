@@ -176,6 +176,12 @@ bool IsUserError(const error err) {
     if (err.find(kCannotSyncInTestEnv) != std::string::npos) {
         return true;
     }
+    if (err.find(kCannotContinueDeletedTimeEntry) != std::string::npos) {
+        return true;
+    }
+    if (err.find(kCannotDeleteDeletedTimeEntry) != std::string::npos) {
+        return true;
+    }
 
     return false;
 }

@@ -151,12 +151,17 @@ void User::ensureWID(T *model) const {
 toggl::error User::Continue(
     const std::string GUID) {
 
-    Stop();
     TimeEntry *existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
         return noError;
     }
+
+    if (existing->DeletedAt()) {
+        return error(kCannotContinueDeletedTimeEntry);
+    }
+
+    Stop();
 
     if (existing->DurOnly() && existing->IsToday()) {
         existing->SetDurationInSeconds(

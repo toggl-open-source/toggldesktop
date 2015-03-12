@@ -1974,6 +1974,9 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
         logger().warning("Time entry not found: " + GUID);
         return true;
     }
+    if (te->DeletedAt()) {
+        return displayError(kCannotDeleteDeletedTimeEntry);
+    }
     if (te->IsTracking()) {
         if (!Stop()) {
             return false;
