@@ -917,6 +917,10 @@ extern void *ctx;
 
 	if (![[aNotification object] isKindOfClass:[NSTokenField class]])
 	{
+        // If enter was pressed then close editpopup
+        if ( [[[aNotification userInfo] objectForKey:@"NSTextMovement"] intValue] == NSReturnTextMovement ) {
+            [self closeEdit];
+        }
 		return;
 	}
 	[self applyTags];

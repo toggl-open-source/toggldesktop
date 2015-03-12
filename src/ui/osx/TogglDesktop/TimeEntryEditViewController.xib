@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C81f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -315,6 +315,7 @@
                                                         </textFieldCell>
                                                         <connections>
                                                             <action selector="durationTextFieldChanged:" target="-2" id="bdv-Xt-UY0"/>
+                                                            <outlet property="delegate" destination="-2" id="Fx1-tC-r4o"/>
                                                             <outlet property="nextKeyView" destination="hWW-Ak-Wbd" id="T3f-gg-1Yc"/>
                                                         </connections>
                                                     </textField>
