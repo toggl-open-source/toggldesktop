@@ -353,18 +353,21 @@ static int l_toggl_set_update_channel(lua_State *L) {
 static int l_toggl_get_update_channel(lua_State *L) {
     char_t *str = toggl_get_update_channel(toggl_app_instance_);
     lua_pushstring(L, str);
+    free(str);
     return 1;
 }
 
 static int l_toggl_get_user_fullname(lua_State *L) {
     char_t *str = toggl_get_user_fullname(toggl_app_instance_);
     lua_pushstring(L, str);
+    free(str);
     return 1;
 }
 
 static int l_toggl_get_user_email(lua_State *L) {
     char_t *str = toggl_get_user_email(toggl_app_instance_);
     lua_pushstring(L, str);
+    free(str);
     return 1;
 }
 
