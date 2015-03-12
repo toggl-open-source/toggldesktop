@@ -34,14 +34,14 @@ extern void *ctx;
 
 	self.windowHasLoad = YES;
 
+	char *str = toggl_get_update_channel(ctx);
+	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
+	free(str);
+
 	if ([self updateCheckEnabled])
 	{
 		self.updateChannelComboBox.hidden = NO;
 		self.updateChannelLabel.hidden = NO;
-
-		char *str = toggl_get_update_channel(ctx);
-		self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
-		free(str);
 
 		if (![[SUUpdater sharedUpdater] updateInProgress])
 		{
