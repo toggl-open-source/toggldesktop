@@ -461,6 +461,11 @@ void Context::scheduleSync() {
 void Context::Sync() {
     logger().debug("Sync");
 
+    if ("test" == environment_) {
+        logger().debug(kCannotSyncInTestEnv);
+        return;
+    }
+
     if (im_a_teapot_) {
         displayError(kUnsupportedAppError);
         return;
@@ -543,6 +548,11 @@ void Context::setOnline(const std::string reason) {
 
 void Context::pushChanges() {
     logger().debug("pushChanges");
+
+    if ("test" == environment_) {
+        logger().debug(kCannotSyncInTestEnv);
+        return;
+    }
 
     if (im_a_teapot_) {
         displayError(kUnsupportedAppError);

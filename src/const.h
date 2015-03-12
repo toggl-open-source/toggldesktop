@@ -26,6 +26,7 @@
 #define kUnsupportedAppError "This version of the app is not supported any more. Please visit Toggl website to download a supported app." // NOLINT
 #define kUnauthorizedError "Unauthorized! Please login again."
 #define kCannotConnectError "Cannot connect to Toggl"
+#define kCannotSyncInTestEnv "Cannot sync in test env"
 #define kBackendIsDownError "Backend is down"
 #define kBadRequestError "Data that you are sending is not valid/acceptable"
 #define kRequestIsNotPossible "Request is not possible"
