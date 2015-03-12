@@ -14,7 +14,7 @@
 		],
 		"clients":[
 			{"id":1385144,"wid":123456789,"name":"ABC","at":"2013-08-21T08:07:25+00:00","server_deleted_at":"2013-08-22T09:05:31+00:00"},
-			{"id":878318,"guid":"59b464cd-0f8e-e601-ff44-f135225a6738","wid":123456789,"name":"Big Client","at":"2013-03-27T13:17:18+00:00"}
+			{"id":878318,"guid":"59b464cd-0f8e-e601-ff44-f135225a6738","wid":123456788,"name":"Big Client","at":"2013-03-27T13:17:18+00:00"}
 		],
 		"tasks":[
 			{"id":1894712,"name":"A deleted task","wid":123456789,"pid":2598305,"active":true,"at":"2013-06-05T07:58:41+00:00","estimated_seconds":0,"server_deleted_at":"2013-08-22T09:05:31+00:00"},

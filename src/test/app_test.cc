@@ -621,7 +621,7 @@ TEST(User, ParsesAndSavesData) {
     ASSERT_EQ(uint(1), user.related.Clients.size());
 
     ASSERT_EQ(uint(878318), user.related.Clients[0]->ID());
-    ASSERT_EQ(uint(123456789), user.related.Clients[0]->WID());
+    ASSERT_EQ(uint(123456788), user.related.Clients[0]->WID());
     ASSERT_EQ("Big Client", user.related.Clients[0]->Name());
     ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738",
               user.related.Clients[0]->GUID());
