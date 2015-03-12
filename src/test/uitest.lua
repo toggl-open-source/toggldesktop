@@ -1,13 +1,25 @@
 
 -- set timeouts for testers
 
-local seconds = 2
+local seconds = 1
+
+-- disable update check
+
+print("disable update check")
+
+toggl.disable_update_check()
+
+-- set_cacert_path
+
+print("set_cacert_path")
+
+toggl.set_cacert_path("src/ssl/cacert.pem")
 
 -- set test env
 
-toggl.set_environment("test")
+print("set test env")
 
--- check test env
+toggl.set_environment("test")
 
 local env = toggl.environment()
 
@@ -67,6 +79,100 @@ toggl.sleep(seconds)
 print("continue time entry")
 
 assert(toggl.continue(guid))
+
+toggl.sleep(seconds)
+
+-- show app
+
+print("show app")
+
+toggl.show_app()
+
+-- edit time entry
+
+print("edit time entry")
+
+toggl.edit(guid, false, "")
+
+toggl.sleep(seconds)
+
+-- set time entry duration
+
+print("set time entry duration")
+
+assert(toggl.set_time_entry_duration(guid, "1 hour"))
+
+toggl.sleep(seconds)
+
+-- set time entry project
+
+print("set time entry project")
+
+local tid = 0
+local pid = 0
+local pguid = ""
+
+assert(toggl.set_time_entry_project(guid, tid, pid, pguid))
+
+toggl.sleep(seconds)
+
+-- set time entry date
+
+print("set time entry date")
+
+local unix_timestamp = 1426200477
+
+assert(toggl.set_time_entry_date(guid, unix_timestamp))
+
+toggl.sleep(seconds)
+
+-- set time entry start
+
+print("set time entry start")
+
+local start = "12:34"
+
+assert(toggl.set_time_entry_start(guid, start))
+
+toggl.sleep(seconds)
+
+-- set time entry end
+
+print("set time entry end")
+
+local endtime ="23:45"
+
+assert(toggl.set_time_entry_end(guid, endtime))
+
+toggl.sleep(seconds)
+
+-- set time entry tags
+
+print("set time entry tags")
+
+local tags = "a\tb\tc"
+
+assert(toggl.set_time_entry_tags(guid, tags))
+
+toggl.sleep(seconds)
+
+-- set time entry billable
+
+print("set time entry billable")
+
+local billable = true
+
+assert(toggl.set_time_entry_billable(guid, billable))
+
+toggl.sleep(seconds)
+
+-- set time entry description
+
+print("set time entry description")
+
+local description = "doing things"
+
+assert(toggl.set_time_entry_description(guid, description))
 
 toggl.sleep(seconds)
 
@@ -134,7 +240,13 @@ print("clear cache")
 
 assert(toggl.set_logged_in_user(json))
 
+assert(string.len(toggl.user_fullname()) > 0)
+assert(string.len(toggl.user_email()) > 0)
+
 assert(toggl.clear_cache())
+
+assert(string.len(toggl.user_fullname()) == 0)
+assert(string.len(toggl.user_email()) == 0)
 
 toggl.sleep(seconds)
 
