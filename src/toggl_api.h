@@ -407,6 +407,7 @@ extern "C" {
         const char_t *guid,
         const char_t *value);
 
+    // value is '\t' separated tag list
     TOGGL_EXPORT _Bool toggl_set_time_entry_tags(
         void *context,
         const char_t *guid,
