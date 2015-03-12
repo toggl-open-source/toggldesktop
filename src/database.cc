@@ -2976,12 +2976,26 @@ error Database::migrateSettings() {
         return err;
     }
 
-    err = migrate(
-        "settings.default",
-        "INSERT INTO settings(update_channel) "
-        "SELECT 'stable' WHERE NOT EXISTS (SELECT 1 FROM settings LIMIT 1);");
+    // for 5% users, set the update channel to 'beta' instead of 'stable'
+    Poco::UInt64 has_settings(0);
+    err = UInt("select count(1) from settings", &has_settings);
     if (err != noError) {
         return err;
+    }
+    if (!has_settings) {
+        Poco::Random random;
+        random.seed();
+        std::string channel("stable");
+        Poco::UInt32 r = random.next(100);
+        if (r < kBetaChannelPercentage) {
+            channel = "beta";
+        }
+        err = migrate(
+            "settings.default",
+            "INSERT INTO settings(update_channel) VALUES('" + channel + "')");
+        if (err != noError) {
+            return err;
+        }
     }
 
     err = migrate("settings.menubar_timer",
