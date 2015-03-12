@@ -46,4 +46,3 @@ NSString *const kToggleTimerMode = @"kToggleTimerMode";
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
 const char *kFocusedFieldNameProject = "project";
-const char *kKeyboardShortcut = "keyboardShortcut";
