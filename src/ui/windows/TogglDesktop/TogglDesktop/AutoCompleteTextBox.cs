@@ -37,10 +37,18 @@ namespace TogglDesktop
         protected override void WndProc(ref Message m)
         {
             // Paste occurred
-            if (m.Msg == 0x302)
+            if (m.Msg == 0x302 && Clipboard.GetText().Length > 0)
             {
                 //Paste occurred get text from all lines
-                Text = Clipboard.GetText();
+                if (SelectedText.Length > 0)
+                {
+                    SelectedText = Clipboard.GetText();
+                }
+                else
+                {
+                    Text = Text.Insert(SelectionStart, Clipboard.GetText());
+                }
+                return;
             }
             base.WndProc(ref m);
         }
