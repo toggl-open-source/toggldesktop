@@ -37,13 +37,13 @@ namespace TogglDesktop
             this.linkLabelDuration = new System.Windows.Forms.Label();
             this.labelClearProject = new System.Windows.Forms.Label();
             this.panelLeft = new System.Windows.Forms.Panel();
-            this.durationPanel = new System.Windows.Forms.Panel();
             this.panelDescription = new System.Windows.Forms.Panel();
             this.descriptionTextBox = new TogglDesktop.AutoCompleteTextBox();
+            this.durationPanel = new System.Windows.Forms.Panel();
             this.textBoxDuration = new TogglDesktop.AlphaBlendTextBox();
             this.panelLeft.SuspendLayout();
-            this.durationPanel.SuspendLayout();
             this.panelDescription.SuspendLayout();
+            this.durationPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonStart
@@ -97,6 +97,7 @@ namespace TogglDesktop
             this.linkLabelDescription.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
             this.linkLabelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabelDescription.AutoEllipsis = true;
             this.linkLabelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
             this.linkLabelDescription.ForeColor = System.Drawing.Color.White;
             this.linkLabelDescription.Location = new System.Drawing.Point(17, 0);
@@ -159,18 +160,6 @@ namespace TogglDesktop
             this.panelLeft.Size = new System.Drawing.Size(234, 56);
             this.panelLeft.TabIndex = 11;
             // 
-            // durationPanel
-            // 
-            this.durationPanel.AutoSize = true;
-            this.durationPanel.BackColor = System.Drawing.Color.Transparent;
-            this.durationPanel.Controls.Add(this.textBoxDuration);
-            this.durationPanel.Controls.Add(this.linkLabelDuration);
-            this.durationPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.durationPanel.Location = new System.Drawing.Point(121, 0);
-            this.durationPanel.Name = "durationPanel";
-            this.durationPanel.Size = new System.Drawing.Size(113, 56);
-            this.durationPanel.TabIndex = 2;
-            // 
             // panelDescription
             // 
             this.panelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -200,13 +189,25 @@ namespace TogglDesktop
             this.descriptionTextBox.ForeColor = System.Drawing.Color.White;
             this.descriptionTextBox.Location = new System.Drawing.Point(20, 20);
             this.descriptionTextBox.Name = "descriptionTextBox";
-            this.descriptionTextBox.Size = new System.Drawing.Size(138, 16);
+            this.descriptionTextBox.Size = new System.Drawing.Size(115, 16);
             this.descriptionTextBox.TabIndex = 1;
             this.descriptionTextBox.Text = "What are you doing?";
             this.descriptionTextBox.Enter += new System.EventHandler(this.descriptionTextBox_Enter);
             this.descriptionTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.descriptionTextBox_KeyUp);
             this.descriptionTextBox.Leave += new System.EventHandler(this.descriptionTextBox_Leave);
             this.descriptionTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionTextBox_PreviewKeyDown);
+            // 
+            // durationPanel
+            // 
+            this.durationPanel.AutoSize = true;
+            this.durationPanel.BackColor = System.Drawing.Color.Transparent;
+            this.durationPanel.Controls.Add(this.textBoxDuration);
+            this.durationPanel.Controls.Add(this.linkLabelDuration);
+            this.durationPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.durationPanel.Location = new System.Drawing.Point(121, 0);
+            this.durationPanel.Name = "durationPanel";
+            this.durationPanel.Size = new System.Drawing.Size(113, 56);
+            this.durationPanel.TabIndex = 2;
             // 
             // textBoxDuration
             // 
@@ -239,10 +240,10 @@ namespace TogglDesktop
             this.Size = new System.Drawing.Size(314, 56);
             this.panelLeft.ResumeLayout(false);
             this.panelLeft.PerformLayout();
-            this.durationPanel.ResumeLayout(false);
-            this.durationPanel.PerformLayout();
             this.panelDescription.ResumeLayout(false);
             this.panelDescription.PerformLayout();
+            this.durationPanel.ResumeLayout(false);
+            this.durationPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
