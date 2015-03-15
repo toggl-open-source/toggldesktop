@@ -409,7 +409,8 @@ TEST(TogglApiTest, toggl_set_update_channel) {
 
     // Also check that the API itself thinks the default channel is
     char *str = toggl_get_update_channel(app.ctx());
-    ASSERT_EQ(default_channel, std::string(str));
+    ASSERT_TRUE(default_channel == std::string(str)
+                || std::string("beta") == std::string(str));
     free(str);
 
     ASSERT_FALSE(toggl_set_update_channel(app.ctx(), "invalid"));

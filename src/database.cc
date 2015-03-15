@@ -3422,7 +3422,7 @@ error Database::SelectTimelineBatch(
         if (compressed.find(key) == compressed.end()) {
             TimelineEvent chunk;
             chunk.user_id = user_id;
-            chunk.start_time = chunk_start_time;
+            chunk.start_time = event.start_time;
             chunk.end_time = chunk.start_time + duration;
             chunk.filename = event.filename;
             chunk.title = event.title;

@@ -158,9 +158,7 @@ TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
 
     TimelineEvent ready_for_upload = timeline_events[0];
     ASSERT_EQ(good.user_id, ready_for_upload.user_id);
-    ASSERT_EQ(
-        (good.start_time / kTimelineChunkSeconds) * kTimelineChunkSeconds,
-        ready_for_upload.start_time);
+    ASSERT_EQ(good.start_time, ready_for_upload.start_time);
     ASSERT_EQ(
         (good.end_time - good.start_time) + (good2.end_time - good2.start_time),
         ready_for_upload.end_time - ready_for_upload.start_time);
