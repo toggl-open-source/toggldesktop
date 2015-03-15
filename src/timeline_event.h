@@ -17,7 +17,8 @@ class TimelineEvent {
     filename(""),
     start_time(0),
     end_time(0),
-    idle(false) {}
+    idle(false),
+    chunked(false) {}
 
     Poco::Int64 id;
     Poco::UInt64 user_id;
@@ -26,6 +27,7 @@ class TimelineEvent {
     time_t start_time;
     time_t end_time;
     bool idle;
+    bool chunked;
 };
 
 #endif  // SRC_TIMELINE_EVENT_H_
