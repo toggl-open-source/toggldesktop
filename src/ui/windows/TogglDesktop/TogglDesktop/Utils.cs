@@ -14,7 +14,9 @@ namespace TogglDesktop
         {
             try
             {
-                edit.MinimumSize = Properties.Settings.Default.EditSize;
+                if (edit != null) {
+                    edit.MinimumSize = Properties.Settings.Default.EditSize;
+                }
                 if (Properties.Settings.Default.Maximized)
                 {
                     f.WindowState = FormWindowState.Maximized;
@@ -95,29 +97,35 @@ namespace TogglDesktop
 
         public static void SaveWindowLocation(Form f, Form edit)
         {
-            if (f.WindowState == FormWindowState.Maximized)
+            try
             {
-                Properties.Settings.Default.Location = f.Location;
+                if (f.WindowState == FormWindowState.Maximized)
+                {
+                    Properties.Settings.Default.Location = f.Location;
+                    Properties.Settings.Default.Maximized = true;
+                    Properties.Settings.Default.Minimized = false;
+                }
+                else if (f.WindowState == FormWindowState.Normal)
+                {
+                    Properties.Settings.Default.Location = f.Location;
+                    Properties.Settings.Default.Maximized = false;
+                    Properties.Settings.Default.Minimized = false;
+                }
+                else
+                {
+                    Properties.Settings.Default.Location = f.Location;
+                    Properties.Settings.Default.Maximized = false;
+                    Properties.Settings.Default.Minimized = true;
+                }
                 Properties.Settings.Default.Size = f.Size;
-                Properties.Settings.Default.Maximized = true;
-                Properties.Settings.Default.Minimized = false;
-            }
-            else if (f.WindowState == FormWindowState.Normal)
+                if (edit != null) {
+                    Properties.Settings.Default.EditSize = edit.Size;
+                }
+                Properties.Settings.Default.Save();
+            catch (Exception ex)
             {
-                Properties.Settings.Default.Location = f.Location;
-                Properties.Settings.Default.Size = f.Size;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = false;
+                Console.WriteLine("Could not save window location: ", ex);
             }
-            else
-            {
-                Properties.Settings.Default.Location = f.Location;
-                Properties.Settings.Default.Size = f.Size;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = true;
-            }
-            Properties.Settings.Default.EditSize = edit.Size;
-            Properties.Settings.Default.Save();
         }
     }
 }
