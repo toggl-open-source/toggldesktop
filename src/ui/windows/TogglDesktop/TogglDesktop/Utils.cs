@@ -122,6 +122,7 @@ namespace TogglDesktop
                     Properties.Settings.Default.EditSize = edit.Size;
                 }
                 Properties.Settings.Default.Save();
+            }
             catch (Exception ex)
             {
                 Console.WriteLine("Could not save window location: ", ex);
