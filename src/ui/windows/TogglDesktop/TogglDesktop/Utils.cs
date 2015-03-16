@@ -12,25 +12,32 @@ namespace TogglDesktop
     {
         public static void LoadWindowLocation(Form f, Form edit)
         {
-            Size defaultMinimumSize = f.MinimumSize;
-            Size defaultEditMinimumSize = edit.MinimumSize;
-            edit.MinimumSize = Properties.Settings.Default.EditSize;
-            edit.MinimumSize = defaultEditMinimumSize;
-            if (Properties.Settings.Default.Maximized)
+            try
             {
-                f.WindowState = FormWindowState.Maximized;
+                Size defaultMinimumSize = f.MinimumSize;
+                Size defaultEditMinimumSize = edit.MinimumSize;
+                edit.MinimumSize = Properties.Settings.Default.EditSize;
+                edit.MinimumSize = defaultEditMinimumSize;
+                if (Properties.Settings.Default.Maximized)
+                {
+                    f.WindowState = FormWindowState.Maximized;
+                }
+                else if (Properties.Settings.Default.Minimized)
+                {
+                    f.WindowState = FormWindowState.Minimized;
+                }
+                f.Location = Properties.Settings.Default.Location;
+                f.Size = Properties.Settings.Default.Size;
+                f.MinimumSize = Properties.Settings.Default.Size;
+                f.MinimumSize = defaultMinimumSize;
+                if (!visibleOnAnyScreen(f))
+                {
+                    f.Location = Screen.PrimaryScreen.WorkingArea.Location;
+                }
             }
-            else if (Properties.Settings.Default.Minimized)
+            catch (Exception ex)
             {
-                f.WindowState = FormWindowState.Minimized;
-            }
-            f.Location = Properties.Settings.Default.Location;
-            f.Size = Properties.Settings.Default.Size;
-            f.MinimumSize = Properties.Settings.Default.Size;
-            f.MinimumSize = defaultMinimumSize;
-            if (!visibleOnAnyScreen(f))
-            {
-                f.Location = Screen.PrimaryScreen.WorkingArea.Location;
+                Console.WriteLine("Could not load window location: ", ex);
             }
         }
 
