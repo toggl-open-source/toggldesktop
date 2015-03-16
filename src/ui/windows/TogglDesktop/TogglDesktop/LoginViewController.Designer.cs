@@ -37,6 +37,8 @@
             this.togglLogoBox = new System.Windows.Forms.PictureBox();
             this.linkLabelPreferences = new System.Windows.Forms.LinkLabel();
             this.signupButton = new System.Windows.Forms.Button();
+            this.passwordPlaceholder = new System.Windows.Forms.Label();
+            this.usernamePlaceholder = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,26 +73,25 @@
             // 
             this.password.AccessibleName = "Your password";
             this.password.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.password.ForeColor = System.Drawing.Color.Gray;
+            this.password.ForeColor = System.Drawing.Color.Black;
             this.password.Location = new System.Drawing.Point(15, 171);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(249, 20);
             this.password.TabIndex = 1;
             this.password.UseSystemPasswordChar = true;
-            this.password.Enter += new System.EventHandler(this.password_Enter);
+            this.password.TextChanged += new System.EventHandler(this.password_TextChanged);
             this.password.Leave += new System.EventHandler(this.password_Leave);
             // 
             // email
             // 
             this.email.AccessibleName = "Your e-mail address";
             this.email.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.email.ForeColor = System.Drawing.Color.Gray;
+            this.email.ForeColor = System.Drawing.Color.Black;
             this.email.Location = new System.Drawing.Point(15, 134);
             this.email.Name = "email";
             this.email.Size = new System.Drawing.Size(249, 20);
             this.email.TabIndex = 0;
-            this.email.Text = "Your email address";
-            this.email.Enter += new System.EventHandler(this.email_Enter);
+            this.email.TextChanged += new System.EventHandler(this.email_TextChanged);
             this.email.Leave += new System.EventHandler(this.email_Leave);
             // 
             // passwordForgotTextField
@@ -147,12 +148,42 @@
             this.signupButton.UseVisualStyleBackColor = true;
             this.signupButton.Click += new System.EventHandler(this.signupButton_Click);
             // 
+            // passwordPlaceholder
+            // 
+            this.passwordPlaceholder.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.passwordPlaceholder.BackColor = System.Drawing.Color.White;
+            this.passwordPlaceholder.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.passwordPlaceholder.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.passwordPlaceholder.Location = new System.Drawing.Point(19, 172);
+            this.passwordPlaceholder.Name = "passwordPlaceholder";
+            this.passwordPlaceholder.Size = new System.Drawing.Size(132, 18);
+            this.passwordPlaceholder.TabIndex = 11;
+            this.passwordPlaceholder.Text = "Password";
+            this.passwordPlaceholder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.passwordPlaceholder.Click += new System.EventHandler(this.passwordPlaceholder_Click);
+            // 
+            // usernamePlaceholder
+            // 
+            this.usernamePlaceholder.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.usernamePlaceholder.BackColor = System.Drawing.Color.White;
+            this.usernamePlaceholder.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.usernamePlaceholder.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.usernamePlaceholder.Location = new System.Drawing.Point(19, 135);
+            this.usernamePlaceholder.Name = "usernamePlaceholder";
+            this.usernamePlaceholder.Size = new System.Drawing.Size(130, 18);
+            this.usernamePlaceholder.TabIndex = 12;
+            this.usernamePlaceholder.Text = "Your email address";
+            this.usernamePlaceholder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.usernamePlaceholder.Click += new System.EventHandler(this.usernamePlaceholder_Click);
+            // 
             // LoginViewController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(69)))), ((int)(((byte)(69)))));
+            this.Controls.Add(this.usernamePlaceholder);
+            this.Controls.Add(this.passwordPlaceholder);
             this.Controls.Add(this.signupButton);
             this.Controls.Add(this.linkLabelPreferences);
             this.Controls.Add(this.togglLogoBox);
@@ -181,5 +212,7 @@
         private System.Windows.Forms.PictureBox togglLogoBox;
         private System.Windows.Forms.LinkLabel linkLabelPreferences;
         private System.Windows.Forms.Button signupButton;
+        private System.Windows.Forms.Label passwordPlaceholder;
+        private System.Windows.Forms.Label usernamePlaceholder;
     }
 }

@@ -96,40 +96,14 @@ namespace TogglDesktop
             Dock = DockStyle.Fill;
         }
 
-        private void email_Enter(object sender, EventArgs e)
-        {
-            if (email.Text == "Your email address")
-            {
-                email.Text = "";
-                email.ForeColor = System.Drawing.SystemColors.WindowText;
-            }
-        }
-
         private void email_Leave(object sender, EventArgs e)
         {
-            if (email.Text == "")
-            {
-                email.Text = "Your email address";
-                email.ForeColor = System.Drawing.Color.Gray;
-            }
-        }
-
-        private void password_Enter(object sender, EventArgs e)
-        {
-            if (password.Text == "Password")
-            {
-                password.Text = "";
-                password.ForeColor = System.Drawing.SystemColors.WindowText;
-            }
+            usernamePlaceholder.Visible = (email.Text == "");
         }
 
         private void password_Leave(object sender, EventArgs e)
         {
-            if (password.Text == "")
-            {
-                password.Text = "Password";
-                password.ForeColor = System.Drawing.Color.Gray;
-            }
+            passwordPlaceholder.Visible = (password.Text == "");
         }
 
         private void linkLabelPreferences_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -143,7 +117,7 @@ namespace TogglDesktop
             {
                 return;
             }
-            if (password.Text == "Password")
+            if (password.Text == "")
             {
                 password.Clear();
                 password.Focus();
@@ -151,6 +125,40 @@ namespace TogglDesktop
             }
             Toggl.Signup(email.Text, password.Text);
             password.Clear();
+        }
+
+        private void usernamePlaceholder_Click(object sender, EventArgs e)
+        {
+            email.Focus();
+        }
+
+        private void passwordPlaceholder_Click(object sender, EventArgs e)
+        {
+            password.Focus();
+        }
+
+        private void email_TextChanged(object sender, EventArgs e)
+        {
+            if (email.Text.Length == 0)
+            {
+                usernamePlaceholder.Visible = true;
+            }
+            else if (email.Text.Length == 1)
+            {
+                usernamePlaceholder.Visible = false;
+            }
+        }
+
+        private void password_TextChanged(object sender, EventArgs e)
+        {
+            if (password.Text.Length == 0)
+            {
+                passwordPlaceholder.Visible = true;
+            }
+            else if (password.Text.Length == 1)
+            {
+                passwordPlaceholder.Visible = false;
+            }
         }
     }
 }
