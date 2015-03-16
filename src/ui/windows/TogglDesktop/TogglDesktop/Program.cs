@@ -94,9 +94,16 @@ namespace TogglDesktop
 
                 Toggl.OnError += delegate(string errmsg, bool user_error)
                 {
-                    if (!user_error && Properties.Settings.Default.Environment != "development")
+                    try
                     {
-                        notifyBugsnag(new Exception(errmsg));
+                        if (!user_error && Properties.Settings.Default.Environment != "development")
+                        {
+                            notifyBugsnag(new Exception(errmsg));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Could not check if can notify bugsnag: ", ex);
                     }
                 };
 

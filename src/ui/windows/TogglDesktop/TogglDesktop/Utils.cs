@@ -83,16 +83,30 @@ namespace TogglDesktop
 
         public static void SetShortcutForShow(KeyEventArgs e)
         {
-            Properties.Settings.Default.ShowModifiers = GetModifiers(e);
-            Properties.Settings.Default.ShowKey = GetKeyCode(e);
-            Properties.Settings.Default.Save();
+            try
+            {
+                Properties.Settings.Default.ShowModifiers = GetModifiers(e);
+                Properties.Settings.Default.ShowKey = GetKeyCode(e);
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not set shortcut for show: ", ex);
+            }
         }
 
         public static void SetShortcutForStart(KeyEventArgs e)
         {
-            Properties.Settings.Default.StartModifiers = GetModifiers(e);
-            Properties.Settings.Default.StartKey = GetKeyCode(e);
-            Properties.Settings.Default.Save();
+            try
+            {
+                Properties.Settings.Default.StartModifiers = GetModifiers(e);
+                Properties.Settings.Default.StartKey = GetKeyCode(e);
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not set shortcut for start: ", ex);
+            }
         }
 
         public static void SaveWindowLocation(Form f, Form edit)
