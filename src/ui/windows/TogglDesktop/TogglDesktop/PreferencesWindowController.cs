@@ -71,6 +71,7 @@ namespace TogglDesktop
             textBoxReminderMinutes.Enabled = checkBoxRemindToTrackTime.Checked;
 
             // Load shortcuts
+            try
             {
                 string keyCode = Properties.Settings.Default.ShowKey;
                 if (keyCode != "" && keyCode != null)
@@ -80,7 +81,12 @@ namespace TogglDesktop
                     btnRecordShowHideShortcut.Text = keyEventToString(modifiers, keyCode);
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not load show hotkey: ", e);
+            }
 
+            try
             {
                 string keyCode = Properties.Settings.Default.StartKey;
                 if (keyCode != "" && keyCode != null)
@@ -89,6 +95,10 @@ namespace TogglDesktop
                         Properties.Settings.Default.StartModifiers;
                     btnRecordStartStopShortcut.Text = keyEventToString(modifiers, keyCode);
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not load start hotkey: ", e);
             }
 
             if (open)

@@ -91,36 +91,36 @@ namespace TogglDesktop
 
         void setGlobalShortCutKeys()
         {
-            startHook.Clear();
-            string startKey = Properties.Settings.Default.StartKey;
-            if (startKey != null && startKey != "")
+            try
             {
-                try
+                startHook.Clear();
+                string startKey = Properties.Settings.Default.StartKey;
+                if (startKey != null && startKey != "")
                 {
                     startHook.RegisterHotKey(
                         Properties.Settings.Default.StartModifiers,
                         (Keys)Enum.Parse(typeof(Keys), startKey));
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Could not register start shortcut: ", e);
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not register start shortcut: ", e);
             }
 
-            showHook.Clear();
-            string showKey = Properties.Settings.Default.ShowKey;
-            if (showKey != null && showKey != "")
+            try
             {
-                try
+                showHook.Clear();
+                string showKey = Properties.Settings.Default.ShowKey;
+                if (showKey != null && showKey != "")
                 {
                     showHook.RegisterHotKey(
                         Properties.Settings.Default.ShowModifiers,
                         (Keys)Enum.Parse(typeof(Keys), showKey));
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Could not register show hotkey: ", e);
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not register show hotkey: ", e);
             }
         }
 
