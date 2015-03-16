@@ -14,10 +14,7 @@ namespace TogglDesktop
         {
             try
             {
-                Size defaultMinimumSize = f.MinimumSize;
-                Size defaultEditMinimumSize = edit.MinimumSize;
                 edit.MinimumSize = Properties.Settings.Default.EditSize;
-                edit.MinimumSize = defaultEditMinimumSize;
                 if (Properties.Settings.Default.Maximized)
                 {
                     f.WindowState = FormWindowState.Maximized;
@@ -29,7 +26,6 @@ namespace TogglDesktop
                 f.Location = Properties.Settings.Default.Location;
                 f.Size = Properties.Settings.Default.Size;
                 f.MinimumSize = Properties.Settings.Default.Size;
-                f.MinimumSize = defaultMinimumSize;
                 if (!visibleOnAnyScreen(f))
                 {
                     f.Location = Screen.PrimaryScreen.WorkingArea.Location;
