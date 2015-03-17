@@ -1434,7 +1434,7 @@ error Context::attemptOfflineLogin(const std::string email,
     }
 
     err = user->SetAPITokenFromOfflineData(password);
-    if ("I/O error" == err) {
+    if ("I/O error" == err || err.find("bad decrypt") != std::string::npos) {
         delete user;
         return error(kInvalidPassword);
     }
