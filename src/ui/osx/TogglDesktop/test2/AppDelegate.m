@@ -62,6 +62,8 @@
 // Environment (development, production, etc)
 @property NSString *environment;
 
+@property NSString *version;
+
 // For testing crash reporter
 @property BOOL forceCrash;
 
@@ -108,7 +110,7 @@ BOOL manualMode = NO;
 {
 	NSLog(@"applicationDidFinishLaunching");
 
-	if (![self.environment isEqualToString:@"production"])
+	if (![self.environment isEqualToString:@"production"] && ![self.version isEqualToString:@"7.0.0"])
 	{
 		// Turn on UI constraint debugging, if not in production
 		[[NSUserDefaults standardUserDefaults] setBool:YES
@@ -967,6 +969,7 @@ const NSString *appName = @"osx_native_app";
 
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	self.environment = infoDict[@"KopsikEnvironment"];
+	self.version = infoDict[@"CFBundleShortVersionString"];
 
 	// Disallow duplicate instances in production
 	if ([self.environment isEqualToString:@"production"])
@@ -991,9 +994,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_set_log_path([self.log_path UTF8String]);
 	toggl_set_log_level([self.log_level UTF8String]);
 
-	NSString *version = infoDict[@"CFBundleShortVersionString"];
-
-	ctx = toggl_context_init([appName UTF8String], [version UTF8String]);
+	ctx = toggl_context_init([appName UTF8String], [self.version UTF8String]);
 
 	// Using sparkle instead of self updater:
 	toggl_disable_update_check(ctx);
@@ -1018,7 +1019,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_timer_state(ctx, on_timer_state);
 	toggl_on_idle_notification(ctx, on_idle_notification);
 
-	NSLog(@"Version %@", version);
+	NSLog(@"Version %@", self.version);
 
 	NSString *cacertPath = [[NSBundle mainBundle] pathForResource:@"cacert" ofType:@"pem"];
 	toggl_set_cacert_path(ctx, [cacertPath UTF8String]);
