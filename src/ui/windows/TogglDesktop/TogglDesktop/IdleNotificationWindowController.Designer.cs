@@ -34,6 +34,8 @@
             this.buttonKeepTime = new System.Windows.Forms.Button();
             this.buttonDiscardTime = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.labelDescription = new System.Windows.Forms.Label();
+            this.runningLabel = new System.Windows.Forms.Label();
             this.buttonSplitIdleTimeIntoNewEntry = new System.Windows.Forms.Button();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
@@ -55,7 +57,7 @@
             this.labelIdleDuration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelIdleDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.labelIdleDuration.Location = new System.Drawing.Point(13, 41);
+            this.labelIdleDuration.Location = new System.Drawing.Point(13, 40);
             this.labelIdleDuration.Name = "labelIdleDuration";
             this.labelIdleDuration.Size = new System.Drawing.Size(198, 14);
             this.labelIdleDuration.TabIndex = 1;
@@ -67,7 +69,7 @@
             this.buttonKeepTime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonKeepTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.buttonKeepTime.Location = new System.Drawing.Point(13, 75);
+            this.buttonKeepTime.Location = new System.Drawing.Point(13, 129);
             this.buttonKeepTime.Name = "buttonKeepTime";
             this.buttonKeepTime.Size = new System.Drawing.Size(198, 23);
             this.buttonKeepTime.TabIndex = 2;
@@ -81,7 +83,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDiscardTime.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonDiscardTime.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
-            this.buttonDiscardTime.Location = new System.Drawing.Point(13, 104);
+            this.buttonDiscardTime.Location = new System.Drawing.Point(13, 158);
             this.buttonDiscardTime.Name = "buttonDiscardTime";
             this.buttonDiscardTime.Size = new System.Drawing.Size(198, 23);
             this.buttonDiscardTime.TabIndex = 3;
@@ -91,6 +93,8 @@
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.labelDescription);
+            this.panelMain.Controls.Add(this.runningLabel);
             this.panelMain.Controls.Add(this.buttonSplitIdleTimeIntoNewEntry);
             this.panelMain.Controls.Add(this.labelIdleSince);
             this.panelMain.Controls.Add(this.buttonDiscardTime);
@@ -99,14 +103,38 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(225, 170);
+            this.panelMain.Size = new System.Drawing.Size(225, 220);
             this.panelMain.TabIndex = 4;
+            // 
+            // labelDescription
+            // 
+            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDescription.AutoEllipsis = true;
+            this.labelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.labelDescription.Location = new System.Drawing.Point(13, 95);
+            this.labelDescription.Name = "labelDescription";
+            this.labelDescription.Size = new System.Drawing.Size(198, 17);
+            this.labelDescription.TabIndex = 6;
+            this.labelDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // runningLabel
+            // 
+            this.runningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.runningLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.runningLabel.Location = new System.Drawing.Point(10, 70);
+            this.runningLabel.Name = "runningLabel";
+            this.runningLabel.Size = new System.Drawing.Size(198, 17);
+            this.runningLabel.TabIndex = 5;
+            this.runningLabel.Text = "Running Time entry:";
+            this.runningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonSplitIdleTimeIntoNewEntry
             // 
             this.buttonSplitIdleTimeIntoNewEntry.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSplitIdleTimeIntoNewEntry.Location = new System.Drawing.Point(13, 134);
+            this.buttonSplitIdleTimeIntoNewEntry.Location = new System.Drawing.Point(13, 188);
             this.buttonSplitIdleTimeIntoNewEntry.Name = "buttonSplitIdleTimeIntoNewEntry";
             this.buttonSplitIdleTimeIntoNewEntry.Size = new System.Drawing.Size(198, 23);
             this.buttonSplitIdleTimeIntoNewEntry.TabIndex = 4;
@@ -120,13 +148,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonDiscardTime;
-            this.ClientSize = new System.Drawing.Size(225, 170);
+            this.ClientSize = new System.Drawing.Size(225, 220);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(225, 200);
+            this.MaximumSize = new System.Drawing.Size(225, 260);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(225, 200);
+            this.MinimumSize = new System.Drawing.Size(225, 260);
             this.Name = "IdleNotificationWindowController";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Idle Notification";
@@ -146,5 +174,7 @@
         private System.Windows.Forms.Button buttonDiscardTime;
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.Button buttonSplitIdleTimeIntoNewEntry;
+        private System.Windows.Forms.Label labelDescription;
+        private System.Windows.Forms.Label runningLabel;
     }
 }

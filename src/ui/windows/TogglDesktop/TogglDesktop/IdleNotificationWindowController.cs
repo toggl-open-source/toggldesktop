@@ -63,7 +63,7 @@ namespace TogglDesktop
             labelIdleSince.Text = since;
             labelIdleDuration.Text = duration;
             idle_started_at = started;
-            // FIXME: show description
+            labelDescription.Text = description;
         }
 
         void OnStoppedTimerState()
