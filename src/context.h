@@ -326,6 +326,8 @@ class Context : public TimelineDatasource {
 
     error downloadUpdate();
 
+    void stopActivities();
+
     Poco::Mutex db_m_;
     Database *db_;
 

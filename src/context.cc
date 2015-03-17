@@ -84,6 +84,44 @@ Context::Context(const std::string app_name, const std::string app_version)
 Context::~Context() {
     SetQuit();
 
+    stopActivities();
+
+    {
+        Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
+        if (window_change_recorder_) {
+            delete window_change_recorder_;
+            window_change_recorder_ = 0;
+        }
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
+        if (timeline_uploader_) {
+            delete timeline_uploader_;
+            timeline_uploader_ = 0;
+        }
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(db_m_);
+        if (db_) {
+            delete db_;
+            db_ = 0;
+        }
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (user_) {
+            delete user_;
+            user_ = 0;
+        }
+    }
+
+    Poco::Net::uninitializeSSL();
+}
+
+void Context::stopActivities() {
     {
         Poco::Mutex::ScopedLock lock(ui_updater_m_);
         if (ui_updater_.isRunning()) {
@@ -96,17 +134,6 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
         if (window_change_recorder_) {
             window_change_recorder_->Shutdown();
-            delete window_change_recorder_;
-            window_change_recorder_ = 0;
-        }
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
-        if (timeline_uploader_) {
-            timeline_uploader_->Shutdown();
-            delete timeline_uploader_;
-            timeline_uploader_ = 0;
         }
     }
 
@@ -116,18 +143,24 @@ Context::~Context() {
     }
 
     {
-        Poco::Mutex::ScopedLock lock(db_m_);
-        if (db_) {
-            delete db_;
-            db_ = 0;
+        Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
+        if (timeline_uploader_) {
+            timeline_uploader_->Shutdown();
         }
     }
+}
 
-    logger().debug("setUser from destructor");
+void Context::Shutdown() {
+    stopActivities();
 
-    setUser(0);
+    // cancel tasks but allow them finish
+    {
+        Poco::Mutex::ScopedLock lock(timer_m_);
+        timer_.cancel(true);
+    }
 
-    Poco::Net::uninitializeSSL();
+    // Stops all running threads and waits for their completion.
+    Poco::ThreadPool::defaultPool().stopAll();
 }
 
 _Bool Context::StartEvents() {
@@ -182,43 +215,6 @@ void Context::displayUI() {
     displayTimeEntryAutocomplete();
     displayMinitimerAutocomplete();
     displayProjectAutocomplete();
-}
-
-void Context::Shutdown() {
-    {
-        Poco::Mutex::ScopedLock lock(ui_updater_m_);
-        if (ui_updater_.isRunning()) {
-            ui_updater_.stop();
-            ui_updater_.wait();
-        }
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        if (window_change_recorder_) {
-            window_change_recorder_->Shutdown();
-        }
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(ws_client_m_);
-        ws_client_.Shutdown();
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
-        if (timeline_uploader_) {
-            timeline_uploader_->Shutdown();
-        }
-    }
-
-    // cancel tasks but allow them finish
-    {
-        Poco::Mutex::ScopedLock lock(timer_m_);
-        timer_.cancel(true);
-    }
-
-    Poco::ThreadPool::defaultPool().stopAll();
 }
 
 error Context::save(const bool push_changes) {
