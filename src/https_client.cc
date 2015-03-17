@@ -83,6 +83,9 @@ void ServerStatus::runActivity() {
 
         // Sleep a bit
         for (int i = 0; i < delay_seconds; i++) {
+            if (checker_.isStopped()) {
+                return;
+            }
             Poco::Thread::sleep(1000);
             if (checker_.isStopped()) {
                 return;
