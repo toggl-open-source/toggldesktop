@@ -148,6 +148,8 @@ void Context::stopActivities() {
             timeline_uploader_->Shutdown();
         }
     }
+
+    TogglClient::TogglStatus.DisableStatusCheck();
 }
 
 void Context::Shutdown() {

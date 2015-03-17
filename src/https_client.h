@@ -34,6 +34,9 @@ class ServerStatus {
 
     error Status();
     void UpdateStatus(const Poco::Int64 status_code);
+    void DisableStatusCheck() {
+        stopStatusCheck("DisableStatusCheck");
+    }
 
  protected:
     void runActivity();
