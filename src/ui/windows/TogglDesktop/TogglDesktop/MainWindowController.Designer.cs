@@ -55,6 +55,7 @@
             this.timerIdleDetection = new System.Windows.Forms.Timer(this.components);
             this.contentPanel = new System.Windows.Forms.Panel();
             this.resizeHandle = new System.Windows.Forms.Label();
+            this.errorToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.troubleBox.SuspendLayout();
             this.trayIconMenu.SuspendLayout();
             this.SuspendLayout();
@@ -265,6 +266,10 @@
             this.resizeHandle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseDown);
             this.resizeHandle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseMove);
             // 
+            // errorToolTip
+            // 
+            this.errorToolTip.BackColor = System.Drawing.SystemColors.HighlightText;
+            // 
             // MainWindowController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -318,6 +323,7 @@
         private System.Windows.Forms.Timer timerIdleDetection;
         private System.Windows.Forms.Panel contentPanel;
         private System.Windows.Forms.Label resizeHandle;
+        private System.Windows.Forms.ToolTip errorToolTip;
     }
 }
 

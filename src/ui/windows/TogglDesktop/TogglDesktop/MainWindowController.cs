@@ -460,6 +460,7 @@ namespace TogglDesktop
             }
 
             errorLabel.Text = errmsg;
+            errorToolTip.SetToolTip(errorLabel, errmsg);
             troubleBox.Visible = true;
             contentPanel.Location = errorContentPosition;
         }
