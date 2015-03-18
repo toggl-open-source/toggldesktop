@@ -17,17 +17,17 @@ static void *toggl_app_instance_ = 0;
 
 void pushstring(lua_State *L, char_t *str) {
 #ifdef _WIN32
-	push_utf8_string(L, str);
+    push_utf8_string(L, str);
 #else
-	lua_pushstring(L, str);
+    lua_pushstring(L, str);
 #endif
 }
 
 const char_t *checkstring(lua_State *L, int pos) {
 #ifdef _WIN32
-	return check_utf8_string(L, pos);
+    return check_utf8_string(L, pos);
 #else
-	return luaL_checkstring(L, pos);
+    return luaL_checkstring(L, pos);
 #endif
 }
 
@@ -325,10 +325,10 @@ static int l_toggl_clear_cache(lua_State *L) {
 
 static int l_toggl_start(lua_State *L) {
     char_t *guid = toggl_start(toggl_app_instance_,
-                             checkstring(L, 1),
-                             checkstring(L, 2),
-                             lua_tointeger(L, 3),
-                             lua_tointeger(L, 4));
+                               checkstring(L, 1),
+                               checkstring(L, 2),
+                               lua_tointeger(L, 3),
+                               lua_tointeger(L, 4));
     pushstring(L, guid);
     free(guid);
     return 1;
