@@ -498,7 +498,7 @@ namespace TogglDesktop
                 contentPanel.Controls.Add(loginViewController);
                 MinimumSize = new Size(loginViewController.MinimumSize.Width, loginViewController.MinimumSize.Height + 40);
                 loginViewController.SetAcceptButton(this);
-                resizeHandle.Visible = false;
+                resizeHandle.BackColor = Color.FromArgb(69, 69, 69);
             }
             enableMenuItems();
             updateStatusIcons(true);
@@ -538,7 +538,6 @@ namespace TogglDesktop
                 MinimumSize = new Size(230, 86);
                 contentPanel.Controls.Add(timeEntryListViewController);
                 timeEntryListViewController.SetAcceptButton(this);
-                resizeHandle.Visible = true;
                 if (editForm.Visible)
                 {
                     editForm.Hide();
@@ -931,7 +930,11 @@ namespace TogglDesktop
         }
 
         private void updateResizeHandleBackground() {
-            if (Height <= MinimumSize.Height)
+            if (contentPanel.Controls.Contains(loginViewController))
+            {
+                resizeHandle.BackColor = Color.FromArgb(69, 69, 69);
+            }
+            else if (Height <= MinimumSize.Height)
             {
                 String c = "#47bc00";
                 if(isTracking) {
