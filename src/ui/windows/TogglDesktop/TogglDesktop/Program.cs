@@ -44,12 +44,18 @@ namespace TogglDesktop
             }
         }
 
+        [DllImport("kernel32.dll")]
+        static extern bool AttachConsole(int dwProcessId);
+        private const int ATTACH_PARENT_PROCESS = -1;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            AttachConsole(ATTACH_PARENT_PROCESS);
+
             using (Mutex mutex = new Mutex(false, "Global\\" + Environment.UserName + "_" + appGUID))
             {
                 if (!mutex.WaitOne(0, false))

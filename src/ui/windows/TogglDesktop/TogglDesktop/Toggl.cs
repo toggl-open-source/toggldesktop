@@ -1042,6 +1042,19 @@ namespace TogglDesktop
         }
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.LPWStr)]
+        private static extern string toggl_run_script(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string script,
+            ref Int64 err);
+
+        public static string RunScript(string script, ref Int64 err)
+        {
+            return toggl_run_script(ctx, script, ref err);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern bool toggl_check_view_struct_size(
     		int time_entry_view_item_size,
 		    int autocomplete_view_item_size,

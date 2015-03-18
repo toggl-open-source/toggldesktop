@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace TogglDesktop
 {
@@ -243,6 +244,7 @@ namespace TogglDesktop
                 listing.Scroll += MainWindowControllerEntries_Scroll;
                 listing.MouseWheel += MainWindowControllerEntries_Scroll;
             }
+
             if (!Toggl.Start(TogglDesktop.Program.Version()))
             {
                 try
@@ -256,6 +258,51 @@ namespace TogglDesktop
             }
 
             aboutWindowController.initAndCheck();
+
+            runScript();
+        }
+
+        private string parseScriptPath()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].Contains("script") && args[i].Contains("path"))
+                {
+                    return args[i + 1];
+                }
+            }
+
+            return null;
+        }
+
+        private void runScript()
+        {
+            string scriptPath = parseScriptPath();
+            if (null == scriptPath)
+            {
+                return;
+            }
+
+            if (!File.Exists(scriptPath))
+            {
+                Console.WriteLine("Script file does not exist: " + scriptPath);
+                TogglDesktop.Program.Shutdown(0);
+            }
+
+            string script = File.ReadAllText(scriptPath);
+            Int64 err = 0;
+            string result = Toggl.RunScript(script, ref err);
+            if (0 != err)
+            {
+                Console.WriteLine(string.Format("Failed to run script, err = %d", err));
+            }
+            Console.WriteLine(result);
+
+            if (0 == err)
+            {
+                TogglDesktop.Program.Shutdown(0);
+            }
         }
 
         private void MainWindowControllerEntries_Scroll(object sender, EventArgs e)
