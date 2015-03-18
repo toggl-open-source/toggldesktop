@@ -46,7 +46,7 @@ void TimeEntryListWidget::displayTimeEntryList(
     if (open) {
         setVisible(true);
     }
-
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     render_m_.lock();
 
     for (int i = 0; i < list.size(); i++) {
@@ -82,6 +82,7 @@ void TimeEntryListWidget::displayTimeEntryList(
     ui->blankView->setVisible(list.isEmpty());
 
     render_m_.unlock();
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void TimeEntryListWidget::displayTimeEntryEditor(
