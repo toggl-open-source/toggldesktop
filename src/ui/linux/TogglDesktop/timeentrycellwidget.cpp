@@ -45,9 +45,9 @@ TimeEntryCellWidget::~TimeEntryCellWidget() {
 
 QSize TimeEntryCellWidget::getSizeHint(bool is_header) {
     if (is_header) {
-        return sizeHint();
+        return QSize(minimumWidth(), sizeHint().height());
     }
-    return QSize(width(), ui->dataFrame->height());
+    return QSize(minimumWidth(), ui->dataFrame->height());
 }
 
 void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event) {
