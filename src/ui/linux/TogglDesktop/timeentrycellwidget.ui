@@ -131,6 +131,9 @@
          <number>2</number>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinimumSize</enum>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>

@@ -68,7 +68,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="list"/>
+    <widget class="QListWidget" name="list">
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
