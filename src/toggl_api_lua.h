@@ -8,7 +8,7 @@
 #include <lua.hpp>
 
 #ifdef _WIN32
-#include "ustring.h"
+#include <ustring.h>
 #endif
 
 #include <cstdlib>
