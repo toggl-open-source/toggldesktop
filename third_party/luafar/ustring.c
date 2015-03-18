@@ -1,6 +1,5 @@
 #include <shlobj.h>
 #include "ustring.h"
-#include "compat52.h"
 
 // This function was initially taken from Lua 5.0.2 (loadlib.c)
 void pusherrorcode(lua_State *L, int error)
@@ -454,51 +453,6 @@ int ustring_GetDriveType(lua_State *L)
 	return 1;
 }
 
-int ustring_Uuid(lua_State* L)
-{
-	UUID uuid;
-
-	if(lua_gettop(L) == 0 || !lua_toboolean(L, 1))
-	{
-		// generate new UUID
-		if(UuidCreate(&uuid) == RPC_S_OK)
-		{
-			lua_pushlstring(L, (const char*)&uuid, sizeof(UUID));
-			return 1;
-		}
-	}
-	else
-	{
-		size_t len;
-		const char* arg1 = luaL_checklstring(L, 1, &len);
-
-		if(len == sizeof(UUID))
-		{
-			// convert given UUID to string
-			unsigned char* p;
-
-			if(UuidToStringA((UUID*)arg1, &p) == RPC_S_OK)
-			{
-				lua_pushstring(L, (char*)p);
-				RpcStringFreeA(&p);
-				return 1;
-			}
-		}
-		else
-		{
-			// convert string UUID representation to UUID
-			if(UuidFromStringA((unsigned char*)arg1, &uuid) == RPC_S_OK)
-			{
-				lua_pushlstring(L, (const char*)&uuid, sizeof(UUID));
-				return 1;
-			}
-		}
-	}
-
-	lua_pushnil(L);
-	return 1;
-}
-
 int ustring_SearchPath(lua_State *L)
 {
 	const wchar_t* lpPath = opt_utf8_string(L, 1, NULL);
@@ -752,7 +706,6 @@ const luaL_Reg ustring_funcs[] =
 	{"Utf16ToUtf8",         ustring_Utf16ToUtf8},
 	{"Utf8ToOem",           ustring_Utf8ToOem},
 	{"Utf8ToUtf16",         ustring_Utf8ToUtf16},
-	{"Uuid",                ustring_Uuid},
 	{"WideCharToMultiByte", ustring_WideCharToMultiByte},
 	{"subW",                ustring_sub},
 	{"system",              ustring_system},
@@ -761,9 +714,3 @@ const luaL_Reg ustring_funcs[] =
 	{NULL, NULL}
 };
 
-LUALIB_API int luaopen_ustring(lua_State *L)
-{
-	const char *libname = lua_istable(L,1) ? (lua_settop(L,1), NULL) : luaL_optstring(L, 1, "ustring");
-	luaL_register(L, libname, ustring_funcs);
-	return 1;
-}
