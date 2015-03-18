@@ -202,7 +202,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="Resurces.qrc">:/images/icon-tags.png</pixmap>
+            <pixmap resource="Resources.qrc">:/images/icon-tags.png</pixmap>
            </property>
           </widget>
          </item>
@@ -227,7 +227,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="Resurces.qrc">:/images/icon-billable.png</pixmap>
+            <pixmap resource="Resources.qrc">:/images/icon-billable.png</pixmap>
            </property>
           </widget>
          </item>
@@ -252,7 +252,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="Resurces.qrc">
+            <iconset resource="Resources.qrc">
              <normaloff>:/images/continue.svg</normaloff>:/images/continue.svg</iconset>
            </property>
            <property name="iconSize">
@@ -304,7 +304,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="Resurces.qrc"/>
+  <include location="Resources.qrc"/>
  </resources>
  <connections/>
 </ui>
