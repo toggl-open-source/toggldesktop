@@ -832,6 +832,7 @@ namespace TogglDesktop
         {
             if (te.Tags != null)
             {
+                int count = 0;
                 string[] tags = te.Tags.Split(Toggl.TagSeparator.ToCharArray());
 
                 // Tick selected Tags
@@ -840,7 +841,10 @@ namespace TogglDesktop
                     int index = checkedListBoxTags.Items.IndexOf(tags[i]);
                     if (index != -1)
                     {
-                        checkedListBoxTags.SetItemChecked(index, true);
+                        checkedListBoxTags.Items.RemoveAt(index);
+                        checkedListBoxTags.Items.Insert(count, tags[i]);
+                        checkedListBoxTags.SetItemChecked(count, true);
+                        count++;
                     }
                 }
             }
