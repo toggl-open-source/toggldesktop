@@ -100,6 +100,7 @@ namespace TogglDesktop
 
                 Toggl.OnError += delegate(string errmsg, bool user_error)
                 {
+                    Console.WriteLine(errmsg);
                     try
                     {
                         if (!user_error && Properties.Settings.Default.Environment != "development")

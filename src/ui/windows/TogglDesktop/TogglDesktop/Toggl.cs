@@ -1045,7 +1045,7 @@ namespace TogglDesktop
         [return: MarshalAs(UnmanagedType.LPWStr)]
         private static extern string toggl_run_script(
             IntPtr context,
-            [MarshalAs(UnmanagedType.LPWStr)]
+            [MarshalAs(UnmanagedType.LPStr)]
             string script,
             ref Int64 err);
 
