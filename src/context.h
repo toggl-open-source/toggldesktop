@@ -225,10 +225,6 @@ class Context : public TimelineDatasource {
         quit_ = true;
     }
 
-    void SetPlatform(const std::string value) {
-        platform_ = value;
-    }
-
     std::string UserFullName() const;
 
     std::string UserEmail() const;
@@ -244,7 +240,7 @@ class Context : public TimelineDatasource {
  private:
     error updateURL(std::string *result);
 
-    const std::string installerPlatform();
+    static const std::string installerPlatform();
     static const std::string linuxPlatformName();
 
     Poco::Logger &logger() const;
@@ -387,9 +383,6 @@ class Context : public TimelineDatasource {
     std::string update_path_;
 
     bool im_a_teapot_;
-
-    // Windows app sets its platform name if Enterprise-installed
-    std::string platform_;
 };
 
 void on_websocket_message(

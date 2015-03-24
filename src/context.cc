@@ -63,8 +63,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , update_path_("")
-, im_a_teapot_(false)
-, platform_("") {
+, im_a_teapot_(false) {
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -1011,9 +1010,6 @@ error Context::updateURL(std::string *result) {
 }
 
 const std::string Context::installerPlatform() {
-    if (!platform_.empty()) {
-        return platform_;
-    }
     if (POCO_OS_LINUX == POCO_OS) {
         return linuxPlatformName();
     }
