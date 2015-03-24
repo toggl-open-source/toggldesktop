@@ -13,7 +13,7 @@ namespace TogglDesktop
 {
     public partial class AboutWindowController : TogglForm
     {
-s        public AboutWindowController()
+        public AboutWindowController()
         {
             InitializeComponent();
 
