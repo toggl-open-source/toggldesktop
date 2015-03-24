@@ -13,9 +13,7 @@ namespace TogglDesktop
 {
     public partial class AboutWindowController : TogglForm
     {
-        private bool loaded = false;
-
-        public AboutWindowController()
+s        public AboutWindowController()
         {
             InitializeComponent();
 
@@ -35,7 +33,6 @@ namespace TogglDesktop
         private void comboBoxChannel_SelectedIndexChanged(object sender, EventArgs e)
         {
             Toggl.SetUpdateChannel(comboBoxChannel.Text);
-            loaded = true;
         }
 
         private void linkLabelGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
