@@ -425,13 +425,15 @@ test_objects: build/test/gtest-all.o \
 	build/test/app_test.o \
 	build/test/toggl_api_test.o
 
-uitest:
-	rm -rf test
-	mkdir -p test
+uitest: clean_test
+ifeq ($(osname), windows)
+	$(executable) --script-path src/test/uitest.lua
+else
 	$(executable) \
 		--script-path $(pwd)/src/test/uitest.lua \
 		--log-path $(pwd)/test/uitest.log \
 		--db-path $(pwd)/test/uitest.db
+endif
 
 toggl_test: clean_test objects test_objects
 	mkdir -p test
