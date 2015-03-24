@@ -1,6 +1,27 @@
 
 [![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
+Table of Contents
+=================
+
+  * [Build instructions](#build-instructions)
+    * [Build using Makefile](#build-using-makefile)
+    * [Linux](#linux)
+    * [Debian](#debian)
+    * [Ubuntu](#ubuntu)
+    * [Fedora](#fedora)
+    * [Windows](#windows)
+      * [Install dev tools](#install-dev-tools)
+      * [Build OpenSSL](#build-openssl)
+      * [Install NuGet packages](#install-nuget-packages)
+      * [Build the app](#build-the-app)
+  * [Downloads](#downloads)
+    * [OSX](#osx)
+    * [Windows](#windows-1)
+    * [Linux (64 bit only)](#linux-64-bit-only)
+  * [Contribute](#contribute)
+
+
 # Build instructions
 
 Please check OS specific requirements below.
