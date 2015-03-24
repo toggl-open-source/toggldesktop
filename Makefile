@@ -50,7 +50,7 @@ pocolib=$(pocodir)/lib/Linux/$(architecture)
 osname=linux
 endif
 
-ifneq (, $(findstring Cygwin, $(uname) ))
+ifneq (, $(findstring CYGWIN, $(uname) ))
 executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/release/TogglDesktop.exe
 pocolib=$(pocodir)/lib/Linux/$(architecture)
 osname=windows
@@ -249,7 +249,7 @@ endif
 
 ifeq ($(osname), windows)
 ui:
-	$(MSBUILD) src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /t:TogglDesktop
+	$(MSBUILD) src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release
 endif
 
 clean-bugsnag-qt:
