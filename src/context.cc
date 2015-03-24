@@ -1010,13 +1010,18 @@ error Context::updateURL(std::string *result) {
 }
 
 const std::string Context::installerPlatform() {
+    std::stringstream ss;
     if (POCO_OS_LINUX == POCO_OS) {
-        return linuxPlatformName();
+        ss <<  linuxPlatformName();
+    } else if (POCO_OS_WINDOWS_NT == POCO_OS) {
+        ss << "windows";
+    } else {
+        ss << "darwin";
     }
-    if (POCO_OS_WINDOWS_NT == POCO_OS) {
-        return std::string("windows");
+    if (kEnterpriseInstall) {
+        ss << "_enterprise";
     }
-    return std::string("darwin");
+    return ss.str();
 }
 
 const std::string Context::linuxPlatformName() {
