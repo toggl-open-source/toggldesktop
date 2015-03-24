@@ -50,7 +50,7 @@ pocolib=$(pocodir)/lib/Linux/$(architecture)
 osname=linux
 endif
 
-ifneq (, $(findstring($(uname)), Cygwin))
+ifneq (, $(findstring(Cygwin, $(uname))))
 executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/release/TogglDesktop.exe
 pocolib=$(pocodir)/lib/Linux/$(architecture)
 osname=windows
