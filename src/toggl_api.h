@@ -195,6 +195,12 @@ extern "C" {
         void *context,
         const char_t *environment);
 
+    // Set platform name
+
+    TOGGL_EXPORT void toggl_set_platform(
+        void *context,
+        const char_t *platform);
+
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_environment(
         void *context);

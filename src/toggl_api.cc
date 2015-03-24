@@ -174,6 +174,14 @@ void toggl_set_environment(
     return app(context)->SetEnvironment(to_string(environment));
 }
 
+void toggl_set_platform(
+    void *context,
+    const char_t *platform) {
+    poco_check_ptr(platform);
+
+    return app(context)->SetPlatform(to_string(platform));
+}
+
 char_t *toggl_environment(
     void *context) {
     return copy_string(app(context)->Environment());
