@@ -91,6 +91,24 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-DNDEBUG
 endif
 
+ifeq ($(osname), windows)
+cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
+	-I$(openssldir)/inc32 \
+	-I$(GTEST_ROOT)/include \
+	-I$(GTEST_ROOT) \
+	-I$(pocodir)/Foundation/include \
+	-I$(pocodir)/Util/include \
+	-I$(pocodir)/Data/include \
+	-I$(pocodir)/Data/SQLite/src \
+	-I$(pocodir)/Data/SQLite/include \
+	-I$(pocodir)/Crypto/include \
+	-I$(pocodir)/Net/include \
+	-I$(pocodir)/NetSSL_OpenSSL/include \
+	-I$(jsoncppdir) \
+	-Ithird_party/lua/install/include \
+	-DNDEBUG
+endif
+
 ifeq ($(osname), mac)
 libs=-framework Carbon \
 	-L$(pocolib) \
@@ -175,6 +193,7 @@ endif
 
 clean_test:
 	rm -rf test/*
+	mkdir -p test
 
 lint:
 	./third_party/cpplint/cpplint.py $(source_dirs)
