@@ -1,27 +1,6 @@
 
 [![Build Status](https://travis-ci.org/toggl/toggldesktop.png)](https://travis-ci.org/toggl/toggldesktop)
 
-Table of Contents
-=================
-
-  * [Build instructions](#build-instructions)
-    * [Build using Makefile](#build-using-makefile)
-    * [Linux](#linux)
-    * [Debian](#debian)
-    * [Ubuntu](#ubuntu)
-    * [Fedora](#fedora)
-    * [Windows](#windows)
-      * [Install dev tools](#install-dev-tools)
-      * [Build OpenSSL](#build-openssl)
-      * [Install NuGet packages](#install-nuget-packages)
-      * [Build the app](#build-the-app)
-    * [Downloads](#downloads)
-      * [OSX](#osx)
-      * [Windows](#windows-1)
-      * [Linux (64 bit only)](#linux-64-bit-only)
-    * [Contribute](#contribute)
-
-
 # Build instructions
 
 Please check OS specific requirements below.
@@ -130,23 +109,23 @@ Now, select *Release* from the Solution Configurations combobox in the Visual St
 
 If you have Cygwin installed, you can also build the app from from Cygwin terminal, using make. (See OSX and Linux build instructions on above regarding make).
 
-## Downloads
+# Downloads
 
-### OSX
+## OSX
 
 Toggl built and signed app for OSX is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). You need at least OSX 10.8.
 
-### Windows
+## Windows
 
 Toggl built and signed app for Windows is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=stable). App has been tested on Windows 7, 8 and 8.1
 
-### Linux (64 bit only)
+## Linux (64 bit only)
 
 * [tarball](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable)
 * [deb](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=stable)
 
 
-## Contribute
+# Contribute
 
 Before sending us a pull request, please format the source code:
 
