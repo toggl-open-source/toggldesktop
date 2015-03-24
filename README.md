@@ -24,8 +24,7 @@ Run unit tests with
 ```
 make test
 ```
-
-Run UI tests with
+and UI tests with
 ```
 make uitest
 ```
