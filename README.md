@@ -27,7 +27,7 @@ make test
 
 Run UI tests with
 ```
-make test
+make uitest
 ```
 
 Linux
@@ -98,7 +98,7 @@ Install-Package Google.Apis.Oauth2.v2;
 
 Now, select *Release* from the Solution Configurations combobox in the Visual Studio toolbar, and build the solution.
 
-If you have Cygwin installed, you can also build the app from command line, if you can launch and test the app from Cygwin terminal, using make. See OSX and Linux regarding make.
+If you have Cygwin installed, you can also build the app from from Cygwin terminal, using make. (See OSX and Linux build instructions on above regarding make).
 
 Downloads
 =========
