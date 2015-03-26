@@ -119,19 +119,9 @@ error WebSocketClient::createSession() {
             uri.getHost(),
             uri.getPort(),
             context);
-        if (HTTPSClient::Config.ProxySettings.IsConfigured()) {
-            session_->setProxy(
-                HTTPSClient::Config.ProxySettings.Host(),
-                static_cast<Poco::UInt16>(
-                    HTTPSClient::Config.ProxySettings.Port()));
-            if (HTTPSClient::Config.ProxySettings.HasCredentials()) {
-                session_->setProxyCredentials(
-                    HTTPSClient::Config.ProxySettings.Username(),
-                    HTTPSClient::Config.ProxySettings.Password());
-            }
-        } else if (HTTPSClient::Config.AutodetectProxy) {
-            // FIXME: autodetect proxy
-        }
+
+        HTTPSClient::ConfigureProxy(kWebSocketURL, session_);
+
         req_ = new Poco::Net::HTTPRequest(
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",
             Poco::Net::HTTPMessage::HTTP_1_1);

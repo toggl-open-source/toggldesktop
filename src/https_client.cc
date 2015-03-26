@@ -251,6 +251,57 @@ error HTTPSClient::Get(
                    &status_code);
 }
 
+void HTTPSClient::ConfigureProxy(
+    const std::string encoded_url,
+    Poco::Net::HTTPSClientSession *session) {
+    std::string proxy_url("");
+    if (HTTPSClient::Config.AutodetectProxy) {
+        if (Poco::Environment::has("HTTP_PROXY")) {
+            proxy_url = Poco::Environment::get("HTTP_PROXY");
+        }
+        if (proxy_url.empty()) {
+            char *s = vlc_getProxyUrl(encoded_url.c_str());
+            if (s) {
+                proxy_url = std::string(s);
+            }
+            free(s);
+        }
+        if (proxy_url.find("://") == std::string::npos) {
+            proxy_url = "http://" + proxy_url;
+        }
+        Poco::URI proxy_uri(proxy_url);
+        std::stringstream ss;
+        ss << "proxy URI=" << proxy_uri.toString()
+           << ", host=" << proxy_uri.getHost()
+           << " port=" << proxy_uri.getPort();
+        Poco::Logger::get("Proxy").debug(ss.str());
+        session->setProxy(
+            proxy_uri.getHost(),
+            proxy_uri.getPort());
+        if (!proxy_uri.getUserInfo().empty()) {
+            Poco::Net::HTTPCredentials credentials;
+            credentials.fromUserInfo(proxy_uri.getUserInfo());
+            session->setProxyCredentials(
+                credentials.getUsername(),
+                credentials.getPassword());
+        }
+    }
+
+    // Try to use user-configured proxy
+    if (proxy_url.empty() && HTTPSClient::Config.UseProxy &&
+            HTTPSClient::Config.ProxySettings.IsConfigured()) {
+        session->setProxy(
+            HTTPSClient::Config.ProxySettings.Host(),
+            static_cast<Poco::UInt16>(
+                HTTPSClient::Config.ProxySettings.Port()));
+        if (HTTPSClient::Config.ProxySettings.HasCredentials()) {
+            session->setProxyCredentials(
+                HTTPSClient::Config.ProxySettings.Username(),
+                HTTPSClient::Config.ProxySettings.Password());
+        }
+    }
+}
+
 error HTTPSClient::request(
     const std::string method,
     const std::string host,
@@ -326,52 +377,7 @@ error HTTPSClient::request(
         std::string encoded_url("");
         Poco::URI::encode(relative_url, "", encoded_url);
 
-        std::string proxy_url("");
-        if (HTTPSClient::Config.AutodetectProxy) {
-            if (Poco::Environment::has("HTTP_PROXY")) {
-                proxy_url = Poco::Environment::get("HTTP_PROXY");
-            }
-            if (proxy_url.empty()) {
-                char *s = vlc_getProxyUrl(encoded_url.c_str());
-                if (s) {
-                    proxy_url = std::string(s);
-                }
-                free(s);
-            }
-            if (proxy_url.find("://") == std::string::npos) {
-                proxy_url = "http://" + proxy_url;
-            }
-            Poco::URI proxy_uri(proxy_url);
-            std::stringstream ss;
-            ss << "proxy URI=" << proxy_uri.toString()
-               << ", host=" << proxy_uri.getHost()
-               << " port=" << proxy_uri.getPort();
-            logger().debug(ss.str());
-            session.setProxy(
-                proxy_uri.getHost(),
-                proxy_uri.getPort());
-            if (!proxy_uri.getUserInfo().empty()) {
-                Poco::Net::HTTPCredentials credentials;
-                credentials.fromUserInfo(proxy_uri.getUserInfo());
-                session.setProxyCredentials(
-                    credentials.getUsername(),
-                    credentials.getPassword());
-            }
-        }
-
-        // Try to use user-configured proxy
-        if (proxy_url.empty() && HTTPSClient::Config.UseProxy &&
-                HTTPSClient::Config.ProxySettings.IsConfigured()) {
-            session.setProxy(
-                HTTPSClient::Config.ProxySettings.Host(),
-                static_cast<Poco::UInt16>(
-                    HTTPSClient::Config.ProxySettings.Port()));
-            if (HTTPSClient::Config.ProxySettings.HasCredentials()) {
-                session.setProxyCredentials(
-                    HTTPSClient::Config.ProxySettings.Username(),
-                    HTTPSClient::Config.ProxySettings.Password());
-            }
-        }
+        ConfigureProxy(encoded_url, &session);
 
         Poco::Net::HTTPRequest req(method,
                                    encoded_url,

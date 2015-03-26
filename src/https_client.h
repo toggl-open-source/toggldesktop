@@ -14,10 +14,16 @@
 #include "Poco/Timestamp.h"
 
 namespace Poco {
+
 class Logger;
-namespace Util {
+
+namespace Net {
+
+class HTTPSClientSession;
+
 }
-}
+
+}  // namespace Poco
 
 namespace toggl {
 
@@ -102,6 +108,10 @@ class HTTPSClient {
         std::string *response_body);
 
     static HTTPSClientConfig Config;
+
+    static void ConfigureProxy(
+        const std::string encoded_url,
+        Poco::Net::HTTPSClientSession *session);
 
  protected:
     virtual error request(
