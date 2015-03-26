@@ -196,6 +196,8 @@ extern void *ctx;
 
 	self.reminderMinutesTextField.intValue = settings.reminder_minutes;
 	self.reminderMinutesTextField.enabled = settings.reminder;
+    
+    [self.autodetectProxyCheckbox setState:[Utils boolToState:settings.autodetect_proxy]];
 }
 
 - (IBAction)idleMinutesChange:(id)sender
@@ -224,5 +226,13 @@ extern void *ctx;
 											[self.reminderMinutesTextField.stringValue intValue]);
 	}
 }
+
+- (IBAction)autodetectProxyCheckboxChanged:(id)sender
+{
+    toggl_set_settings_autodetect_proxy(ctx,
+                                          [Utils stateToBool:[self.autodetectProxyCheckbox state]]);
+}
+
+
 
 @end
