@@ -15,6 +15,7 @@
 		7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */; };
 		7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAF18C51CEB00CBE8F1 /* formatter.h */; };
 		7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDB018C51CEB00CBE8F1 /* feedback.cc */; };
+		740FFED61AC3E0F3008B89ED /* netconf_darwin.c in Sources */ = {isa = PBXBuildFile; fileRef = 740FFED51AC3E0F3008B89ED /* netconf_darwin.c */; };
 		74213486195C4D41007EF78B /* libPocoUtil.30.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7421347E195C4D41007EF78B /* libPocoUtil.30.dylib */; };
 		74213487195C4D41007EF78B /* libPocoData.30.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7421347F195C4D41007EF78B /* libPocoData.30.dylib */; };
 		74213488195C4D41007EF78B /* libPocoNetSSL.30.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74213480195C4D41007EF78B /* libPocoNetSSL.30.dylib */; };
@@ -90,6 +91,7 @@
 		7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autocomplete_item.h; path = ../../../autocomplete_item.h; sourceTree = "<group>"; };
 		7408EDAF18C51CEB00CBE8F1 /* formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = formatter.h; path = ../../../formatter.h; sourceTree = "<group>"; };
 		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
+		740FFED51AC3E0F3008B89ED /* netconf_darwin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = netconf_darwin.c; path = ../../../../third_party/vlc/netconf_darwin.c; sourceTree = "<group>"; };
 		7421347E195C4D41007EF78B /* libPocoUtil.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.30.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.30.dylib; sourceTree = "<group>"; };
 		7421347F195C4D41007EF78B /* libPocoData.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.30.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoData.30.dylib; sourceTree = "<group>"; };
 		74213480195C4D41007EF78B /* libPocoNetSSL.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.30.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.30.dylib; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				740FFED51AC3E0F3008B89ED /* netconf_darwin.c */,
 				74699F691A67053600691986 /* analytics.cc */,
 				74699F6A1A67053600691986 /* analytics.h */,
 				74BC59D81A37C6790081104D /* error.cc */,
@@ -434,6 +437,7 @@
 				74B587C818BBC77E00E9F6CE /* task.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
 				745E84F5194953A70065E49A /* gui.cc in Sources */,
+				740FFED61AC3E0F3008B89ED /* netconf_darwin.c in Sources */,
 				7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */,
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
 				74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */,

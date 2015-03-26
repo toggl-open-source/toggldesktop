@@ -25,9 +25,6 @@
 # include "config.h"
 #endif
 
-#include <vlc_common.h>
-#include <vlc_network.h>
-
 #include <CoreFoundation/CoreFoundation.h>
 
 #import <TargetConditionals.h>
@@ -44,7 +41,6 @@
  */
 char *vlc_getProxyUrl(const char *url)
 {
-    VLC_UNUSED(url);
     char *proxy_url = NULL;
     CFDictionaryRef dicRef = CFNetworkCopySystemProxySettings();
     if (NULL != dicRef) {
