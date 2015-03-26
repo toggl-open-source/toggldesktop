@@ -30,8 +30,8 @@
 	self.proxy_port = data->ProxyPort;
 	self.proxy_username = [NSString stringWithUTF8String:data->ProxyUsername];
 	self.proxy_password = [NSString stringWithUTF8String:data->ProxyPassword];
-    
-    self.autodetect_proxy = data->AutodetectProxy;
+
+	self.autodetect_proxy = data->AutodetectProxy;
 }
 
 @end
