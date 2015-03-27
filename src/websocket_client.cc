@@ -24,6 +24,7 @@
 
 #include "./const.h"
 #include "./https_client.h"
+#include "./netconf.h"
 
 namespace toggl {
 
@@ -120,7 +121,7 @@ error WebSocketClient::createSession() {
             uri.getPort(),
             context);
 
-        HTTPSClient::ConfigureProxy(kWebSocketURL, session_);
+        Netconf::ConfigureProxy(kWebSocketURL, session_);
 
         req_ = new Poco::Net::HTTPRequest(
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",

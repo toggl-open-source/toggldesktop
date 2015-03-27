@@ -33,6 +33,14 @@
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
 		7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A618887BEE0025A88B /* toggl_api_private.cc */; };
+		748B7DA51AC5963B00FE01D2 /* custom_error_handler.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7D9D1AC5963B00FE01D2 /* custom_error_handler.cc */; };
+		748B7DA61AC5963B00FE01D2 /* custom_error_handler.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7D9E1AC5963B00FE01D2 /* custom_error_handler.h */; };
+		748B7DA71AC5963B00FE01D2 /* model_change.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7D9F1AC5963B00FE01D2 /* model_change.cc */; };
+		748B7DA81AC5963B00FE01D2 /* model_change.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7DA01AC5963B00FE01D2 /* model_change.h */; };
+		748B7DA91AC5963B00FE01D2 /* netconf.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7DA11AC5963B00FE01D2 /* netconf.cc */; };
+		748B7DAA1AC5963B00FE01D2 /* netconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7DA21AC5963B00FE01D2 /* netconf.h */; };
+		748B7DAB1AC5963B00FE01D2 /* settings.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7DA31AC5963B00FE01D2 /* settings.cc */; };
+		748B7DAC1AC5963B00FE01D2 /* settings.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7DA41AC5963B00FE01D2 /* settings.h */; };
 		74A026E11A884D5A0087570A /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74A026E01A884D5A0087570A /* liblua.a */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
@@ -108,6 +116,14 @@
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
 		7484A2A618887BEE0025A88B /* toggl_api_private.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = toggl_api_private.cc; path = ../../../toggl_api_private.cc; sourceTree = "<group>"; };
+		748B7D9D1AC5963B00FE01D2 /* custom_error_handler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_error_handler.cc; path = ../../../custom_error_handler.cc; sourceTree = "<group>"; };
+		748B7D9E1AC5963B00FE01D2 /* custom_error_handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = custom_error_handler.h; path = ../../../custom_error_handler.h; sourceTree = "<group>"; };
+		748B7D9F1AC5963B00FE01D2 /* model_change.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = model_change.cc; path = ../../../model_change.cc; sourceTree = "<group>"; };
+		748B7DA01AC5963B00FE01D2 /* model_change.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = model_change.h; path = ../../../model_change.h; sourceTree = "<group>"; };
+		748B7DA11AC5963B00FE01D2 /* netconf.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = netconf.cc; path = ../../../netconf.cc; sourceTree = "<group>"; };
+		748B7DA21AC5963B00FE01D2 /* netconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = netconf.h; path = ../../../netconf.h; sourceTree = "<group>"; };
+		748B7DA31AC5963B00FE01D2 /* settings.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = settings.cc; path = ../../../settings.cc; sourceTree = "<group>"; };
+		748B7DA41AC5963B00FE01D2 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = settings.h; path = ../../../settings.h; sourceTree = "<group>"; };
 		74A026E01A884D5A0087570A /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../../third_party/lua/install/lib/liblua.a; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
@@ -238,6 +254,14 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				748B7D9D1AC5963B00FE01D2 /* custom_error_handler.cc */,
+				748B7D9E1AC5963B00FE01D2 /* custom_error_handler.h */,
+				748B7D9F1AC5963B00FE01D2 /* model_change.cc */,
+				748B7DA01AC5963B00FE01D2 /* model_change.h */,
+				748B7DA11AC5963B00FE01D2 /* netconf.cc */,
+				748B7DA21AC5963B00FE01D2 /* netconf.h */,
+				748B7DA31AC5963B00FE01D2 /* settings.cc */,
+				748B7DA41AC5963B00FE01D2 /* settings.h */,
 				74699F691A67053600691986 /* analytics.cc */,
 				74699F6A1A67053600691986 /* analytics.h */,
 				74BC59D81A37C6790081104D /* error.cc */,
@@ -328,11 +352,15 @@
 				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
 				7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
+				748B7DAC1AC5963B00FE01D2 /* settings.h in Headers */,
 				74B587BE18BBC77E00E9F6CE /* task.h in Headers */,
 				74699F6C1A67053600691986 /* analytics.h in Headers */,
+				748B7DAA1AC5963B00FE01D2 /* netconf.h in Headers */,
+				748B7DA81AC5963B00FE01D2 /* model_change.h in Headers */,
 				74B587C218BBC77E00E9F6CE /* workspace.h in Headers */,
 				74CAAD1F181860F7001B77BB /* timeline_notifications.h in Headers */,
 				74B587BF18BBC77E00E9F6CE /* user.h in Headers */,
+				748B7DA61AC5963B00FE01D2 /* custom_error_handler.h in Headers */,
 				74B587C118BBC77E00E9F6CE /* project.h in Headers */,
 				7408EDB318C51CEB00CBE8F1 /* const.h in Headers */,
 				C5DA1FB717F1942A001C4565 /* toggl_api.h in Headers */,
@@ -422,6 +450,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				748B7DA91AC5963B00FE01D2 /* netconf.cc in Sources */,
 				74BC59DA1A37C6790081104D /* error.cc in Sources */,
 				7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
@@ -431,11 +460,13 @@
 				74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */,
 				74B587CE18BBC77E00E9F6CE /* related_data.cc in Sources */,
 				74B587CC18BBC77E00E9F6CE /* workspace.cc in Sources */,
+				748B7DA71AC5963B00FE01D2 /* model_change.cc in Sources */,
 				74B587C818BBC77E00E9F6CE /* task.cc in Sources */,
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
 				745E84F5194953A70065E49A /* gui.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */,
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
+				748B7DAB1AC5963B00FE01D2 /* settings.cc in Sources */,
 				74B587CF18BBC77E00E9F6CE /* batch_update_result.cc in Sources */,
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
 				74699F6B1A67053600691986 /* analytics.cc in Sources */,
@@ -447,6 +478,7 @@
 				74B587CA18BBC77E00E9F6CE /* client.cc in Sources */,
 				7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */,
 				C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */,
+				748B7DA51AC5963B00FE01D2 /* custom_error_handler.cc in Sources */,
 				74B587C618BBC77E00E9F6CE /* tag.cc in Sources */,
 				C5DA1FB617F1942A001C4565 /* toggl_api.cc in Sources */,
 				74CBDA3A19F97740008494FE /* jsoncpp.cpp in Sources */,

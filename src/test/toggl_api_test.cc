@@ -418,7 +418,7 @@ TEST(TogglApiTest, toggl_set_update_channel) {
     // The channel should be the same in the API
     str = toggl_get_update_channel(app.ctx());
     ASSERT_TRUE(default_channel == std::string(str)
-        || "beta" == std::string(str));
+                || "beta" == std::string(str));
     free(str);
 
     ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "beta"));

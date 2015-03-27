@@ -316,6 +316,9 @@ build/jsoncpp.o: $(jsoncppdir)/jsoncpp.cpp
 build/proxy.o: src/proxy.cc
 	$(cxx) $(cflags) -c src/proxy.cc -o build/proxy.o
 
+build/netconf.o: src/netconf.cc
+	$(cxx) $(cflags) -c src/netconf.cc -o build/netconf.o
+
 build/https_client.o: src/https_client.cc
 	$(cxx) $(cflags) -c src/https_client.cc -o build/https_client.o
 
@@ -411,6 +414,7 @@ build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 
 objects: build/jsoncpp.o \
 	build/proxy.o \
+	build/netconf.o \
 	build/https_client.o \
 	build/websocket_client.o \
 	build/base_model.o \
