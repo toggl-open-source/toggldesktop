@@ -13,7 +13,46 @@
 #include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/URI.h"
 
+#include <CoreFoundation/CoreFoundation.h>  // NOLINT
+#include <CoreServices/CoreServices.h>  // NOLINT
+
 namespace toggl {
+
+error Netconf::autodetectProxy(
+    const std::string &encoded_url,
+    std::string *proxy_url) {
+
+    *proxy_url = "";
+
+    CFDictionaryRef dicRef = CFNetworkCopySystemProxySettings();
+    if (NULL != dicRef) {
+        const CFStringRef proxyCFstr = (const CFStringRef)CFDictionaryGetValue(
+            dicRef, (const void*)kCFNetworkProxiesHTTPProxy);
+        const CFNumberRef portCFnum = (const CFNumberRef)CFDictionaryGetValue(
+            dicRef, (const void*)kCFNetworkProxiesHTTPPort);
+        if (NULL != proxyCFstr && NULL != portCFnum) {
+            int port = 0;
+            if (!CFNumberGetValue(portCFnum, kCFNumberIntType, &port)) {
+                CFRelease(dicRef);
+                return noError;
+            }
+
+            const std::size_t kBufsize(4096);
+            char host_buffer[kBufsize];
+            memset(host_buffer, 0, sizeof(host_buffer));
+            if (CFStringGetCString(proxyCFstr, host_buffer, sizeof(host_buffer)
+                                   - 1, kCFStringEncodingUTF8)) {
+                char buffer[kBufsize];
+                snprintf(buffer, kBufsize, "%s:%d", host_buffer, port);
+                *proxy_url = std::string(buffer);
+            }
+        }
+
+        CFRelease(dicRef);
+    }
+
+    return noError;
+}
 
 void Netconf::ConfigureProxy(
     const std::string encoded_url,
@@ -27,7 +66,7 @@ void Netconf::ConfigureProxy(
             proxy_url = Poco::Environment::get("HTTP_PROXY");
         }
         if (proxy_url.empty()) {
-            // FIXME: autodetect proxy
+            error err = autodetectProxy(encoded_url, &proxy_url);
         }
         if (proxy_url.find("://") == std::string::npos) {
             proxy_url = "http://" + proxy_url;
