@@ -10,6 +10,7 @@
 #include "Poco/Environment.h"
 #include "Poco/Logger.h"
 #include "Poco/Net/HTTPCredentials.h"
+#include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/URI.h"
 
 namespace toggl {

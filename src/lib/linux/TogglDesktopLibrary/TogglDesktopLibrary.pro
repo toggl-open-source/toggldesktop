@@ -30,6 +30,7 @@ SOURCES += \
     ../../../get_focused_window_linux.cc \
     ../../../error.cc \
     ../../../gui.cc \
+    ../../../netconf.cc \
     ../../../https_client.cc \
     $$PWD/../../../../third_party/jsoncpp/dist/jsoncpp.cpp \
     ../../../toggl_api.cc \
