@@ -2,9 +2,6 @@
 
 #include "../src/https_client.h"
 
-#include <vlc_common.h>
-#include <vlc_network.h>
-
 #include <json/json.h>
 
 #include <string>
@@ -263,11 +260,7 @@ void HTTPSClient::ConfigureProxy(
             proxy_url = Poco::Environment::get("HTTP_PROXY");
         }
         if (proxy_url.empty()) {
-            char *s = vlc_getProxyUrl(encoded_url.c_str());
-            if (s) {
-                proxy_url = std::string(s);
-            }
-            free(s);
+		// FIXME: autodetect proxy
         }
         if (proxy_url.find("://") == std::string::npos) {
             proxy_url = "http://" + proxy_url;

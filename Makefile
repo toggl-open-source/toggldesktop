@@ -59,7 +59,6 @@ endif
 ifeq ($(osname), mac)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
 	-I$(openssldir)/include \
-	-Ithird_party/vlc/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
 	-I$(pocodir)/Foundation/include \
@@ -77,7 +76,6 @@ endif
 ifeq ($(osname), linux)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/include \
-	-Ithird_party/vlc/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
 	-I$(pocodir)/Foundation/include \
@@ -96,7 +94,6 @@ endif
 ifeq ($(osname), windows)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
 	-I$(openssldir)/inc32 \
-	-Ithird_party/vlc/include \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
 	-I$(pocodir)/Foundation/include \
@@ -409,16 +406,6 @@ build/timeline_uploader.o: src/timeline_uploader.cc
 build/window_change_recorder.o: src/window_change_recorder.cc
 	$(cxx) $(cflags) -c src/window_change_recorder.cc -o build/window_change_recorder.o
 
-ifeq ($(osname), linux)
-build/netconf.o: third_party/vlc/src/posix/netconf.c
-	$(cxx) $(cflags) -c third_party/vlc/src/posix/netconf.c -o build/netconf.o
-endif
-
-ifeq ($(osname), mac)
-build/netconf.o: third_party/vlc/src/darwin/netconf.c
-	$(cxx) $(cflags) -c third_party/vlc/src/darwin/netconf.c -o build/netconf.o
-endif
-
 build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
 
@@ -450,8 +437,7 @@ objects: build/jsoncpp.o \
 	build/toggl_api.o \
 	build/get_focused_window_$(osname).o \
 	build/timeline_uploader.o \
-	build/window_change_recorder.o \
-	build/netconf.o
+	build/window_change_recorder.o
 
 test_objects: build/test/gtest-all.o \
 	build/test/test_data.o \
