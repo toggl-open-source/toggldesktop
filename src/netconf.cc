@@ -26,6 +26,59 @@ error Netconf::autodetectProxy(
 
     *proxy_url = "";
 
+    // Inspired from Stack Overflow
+    // http://stackoverflow.com/questions/202547/how-do-i-find-out-the-browsers-proxy-settings
+#ifdef _WIN32
+    if (WinHttpGetIEProxyConfigForCurrentUser(&ieProxyConfig)) {
+        if (ieProxyConfig.fAutoDetect) {
+            fAutoProxy = TRUE;
+        }
+
+        if (ieProxyConfig.lpszAutoConfigUrl != NULL) {
+            fAutoProxy = TRUE;
+            autoProxyOptions.lpszAutoConfigUrl =
+                ieProxyConfig.lpszAutoConfigUrl;
+        }
+    } else {
+        // use autoproxy
+        fAutoProxy = TRUE;
+    }
+
+    if (fAutoProxy) {
+        if (autoProxyOptions.lpszAutoConfigUrl != NULL) {
+            autoProxyOptions.dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL;
+        } else {
+            autoProxyOptions.dwFlags = WINHTTP_AUTOPROXY_AUTO_DETECT;
+            autoProxyOptions.dwAutoDetectFlags =
+                WINHTTP_AUTO_DETECT_TYPE_DHCP | WINHTTP_AUTO_DETECT_TYPE_DNS_A;
+        }
+
+        // basic flags you almost always want
+        autoProxyOptions.fAutoLogonIfChallenged = TRUE;
+
+        // here we reset fAutoProxy in case an auto-proxy isn't actually
+        // configured for this url
+        fAutoProxy = WinHttpGetProxyForUrl(
+            hiOpen, pwszUrl, &autoProxyOptions, &autoProxyInfo);
+    }
+
+    if (fAutoProxy) {
+        // set proxy options for libcurl based on autoProxyInfo
+    } else {
+        if (ieProxyConfig.lpszProxy != NULL) {
+            // IE has an explicit proxy. set proxy options for libcurl here
+            // based on ieProxyConfig
+            //
+            // note that sometimes IE gives just a single or double colon
+            // for proxy or bypass list, which means "no proxy"
+        } else {
+            // there is no auto proxy and no manually configured proxy
+        }
+    }
+#endif
+
+    // Inspider by VLC source code
+    // https://github.com/videolan/vlc/blob/master/src/darwin/netconf.c
 #ifdef __MACH__
     CFDictionaryRef dicRef = CFNetworkCopySystemProxySettings();
     if (NULL != dicRef) {
