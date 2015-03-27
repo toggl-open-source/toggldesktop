@@ -133,6 +133,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="recordTimeline">
+     <property name="styleSheet">
+      <string notr="true">margin-left:9px</string>
+     </property>
      <property name="text">
       <string>Record timeline</string>
      </property>
