@@ -13,8 +13,10 @@
 #include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/URI.h"
 
+#ifdef __MACH__
 #include <CoreFoundation/CoreFoundation.h>  // NOLINT
 #include <CoreServices/CoreServices.h>  // NOLINT
+#endif
 
 namespace toggl {
 
@@ -24,6 +26,7 @@ error Netconf::autodetectProxy(
 
     *proxy_url = "";
 
+#ifdef __MACH__
     CFDictionaryRef dicRef = CFNetworkCopySystemProxySettings();
     if (NULL != dicRef) {
         const CFStringRef proxyCFstr = (const CFStringRef)CFDictionaryGetValue(
@@ -50,6 +53,7 @@ error Netconf::autodetectProxy(
 
         CFRelease(dicRef);
     }
+#endif
 
     return noError;
 }
