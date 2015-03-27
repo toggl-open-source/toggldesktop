@@ -7,18 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7405E5BE1AC3FF5A0026A318 /* vlc_network.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5BD1AC3FF5A0026A318 /* vlc_network.h */; };
-		7405E5C01AC3FF690026A318 /* netconf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7405E5BF1AC3FF690026A318 /* netconf.c */; };
-		7405E5C21AC3FFA50026A318 /* vlc_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5C11AC3FFA50026A318 /* vlc_common.h */; };
-		7405E5C41AC3FFCC0026A318 /* vlc_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5C31AC3FFCC0026A318 /* vlc_config.h */; };
-		7405E5C61AC3FFEA0026A318 /* vlc_mtime.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5C51AC3FFEA0026A318 /* vlc_mtime.h */; };
-		7405E5C81AC400070026A318 /* vlc_threads.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5C71AC400070026A318 /* vlc_threads.h */; };
-		7405E5CA1AC400230026A318 /* vlc_arrays.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5C91AC400230026A318 /* vlc_arrays.h */; };
-		7405E5CC1AC400450026A318 /* vlc_messages.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5CB1AC400450026A318 /* vlc_messages.h */; };
-		7405E5CE1AC400660026A318 /* vlc_objects.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5CD1AC400660026A318 /* vlc_objects.h */; };
-		7405E5D01AC4007F0026A318 /* vlc_variables.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5CF1AC4007F0026A318 /* vlc_variables.h */; };
-		7405E5D21AC4009C0026A318 /* vlc_main.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5D11AC4009C0026A318 /* vlc_main.h */; };
-		7405E5D41AC400C00026A318 /* vlc_configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 7405E5D31AC400C00026A318 /* vlc_configuration.h */; };
 		7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDA918C51CEB00CBE8F1 /* proxy.cc */; };
 		7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */; };
 		7408EDB318C51CEB00CBE8F1 /* const.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAB18C51CEB00CBE8F1 /* const.h */; };
@@ -94,18 +82,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7405E5BD1AC3FF5A0026A318 /* vlc_network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_network.h; path = ../../../third_party/vlc/include/vlc_network.h; sourceTree = "<group>"; };
-		7405E5BF1AC3FF690026A318 /* netconf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = netconf.c; path = ../../../third_party/vlc/src/darwin/netconf.c; sourceTree = "<group>"; };
-		7405E5C11AC3FFA50026A318 /* vlc_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_common.h; path = ../../../third_party/vlc/include/vlc_common.h; sourceTree = "<group>"; };
-		7405E5C31AC3FFCC0026A318 /* vlc_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_config.h; path = ../../../third_party/vlc/include/vlc_config.h; sourceTree = "<group>"; };
-		7405E5C51AC3FFEA0026A318 /* vlc_mtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_mtime.h; path = ../../../third_party/vlc/include/vlc_mtime.h; sourceTree = "<group>"; };
-		7405E5C71AC400070026A318 /* vlc_threads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_threads.h; path = ../../../third_party/vlc/include/vlc_threads.h; sourceTree = "<group>"; };
-		7405E5C91AC400230026A318 /* vlc_arrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_arrays.h; path = ../../../third_party/vlc/include/vlc_arrays.h; sourceTree = "<group>"; };
-		7405E5CB1AC400450026A318 /* vlc_messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_messages.h; path = ../../../third_party/vlc/include/vlc_messages.h; sourceTree = "<group>"; };
-		7405E5CD1AC400660026A318 /* vlc_objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_objects.h; path = ../../../third_party/vlc/include/vlc_objects.h; sourceTree = "<group>"; };
-		7405E5CF1AC4007F0026A318 /* vlc_variables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_variables.h; path = ../../../third_party/vlc/include/vlc_variables.h; sourceTree = "<group>"; };
-		7405E5D11AC4009C0026A318 /* vlc_main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_main.h; path = ../../../third_party/vlc/include/vlc_main.h; sourceTree = "<group>"; };
-		7405E5D31AC400C00026A318 /* vlc_configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vlc_configuration.h; path = ../../../third_party/vlc/include/vlc_configuration.h; sourceTree = "<group>"; };
 		7408EDA918C51CEB00CBE8F1 /* proxy.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = proxy.cc; path = ../../../proxy.cc; sourceTree = "<group>"; };
 		7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = autocomplete_item.cc; path = ../../../autocomplete_item.cc; sourceTree = "<group>"; };
 		7408EDAB18C51CEB00CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../const.h; sourceTree = "<group>"; };
@@ -219,29 +195,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7405E5BC1AC3FF490026A318 /* vlc */ = {
-			isa = PBXGroup;
-			children = (
-				7405E5D31AC400C00026A318 /* vlc_configuration.h */,
-				7405E5D11AC4009C0026A318 /* vlc_main.h */,
-				7405E5CF1AC4007F0026A318 /* vlc_variables.h */,
-				7405E5CD1AC400660026A318 /* vlc_objects.h */,
-				7405E5CB1AC400450026A318 /* vlc_messages.h */,
-				7405E5C91AC400230026A318 /* vlc_arrays.h */,
-				7405E5C71AC400070026A318 /* vlc_threads.h */,
-				7405E5C51AC3FFEA0026A318 /* vlc_mtime.h */,
-				7405E5C31AC3FFCC0026A318 /* vlc_config.h */,
-				7405E5C11AC3FFA50026A318 /* vlc_common.h */,
-				7405E5BF1AC3FF690026A318 /* netconf.c */,
-				7405E5BD1AC3FF5A0026A318 /* vlc_network.h */,
-			);
-			name = vlc;
-			sourceTree = "<group>";
-		};
 		C55DA59317F06A3B00B42178 = {
 			isa = PBXGroup;
 			children = (
-				7405E5BC1AC3FF490026A318 /* vlc */,
 				7421347E195C4D41007EF78B /* libPocoUtil.30.dylib */,
 				7421347F195C4D41007EF78B /* libPocoData.30.dylib */,
 				74213480195C4D41007EF78B /* libPocoNetSSL.30.dylib */,
@@ -366,43 +322,32 @@
 			files = (
 				745E84F6194953A70065E49A /* gui.h in Headers */,
 				7408EDB418C51CEB00CBE8F1 /* proxy.h in Headers */,
-				7405E5D01AC4007F0026A318 /* vlc_variables.h in Headers */,
 				74B587BC18BBC77E00E9F6CE /* tag.h in Headers */,
-				7405E5CA1AC400230026A318 /* vlc_arrays.h in Headers */,
 				74B587C018BBC77E00E9F6CE /* client.h in Headers */,
 				74BC59DB1A37C6790081104D /* error.h in Headers */,
 				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
 				7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */,
-				7405E5C21AC3FFA50026A318 /* vlc_common.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
 				74B587BE18BBC77E00E9F6CE /* task.h in Headers */,
 				74699F6C1A67053600691986 /* analytics.h in Headers */,
 				74B587C218BBC77E00E9F6CE /* workspace.h in Headers */,
 				74CAAD1F181860F7001B77BB /* timeline_notifications.h in Headers */,
 				74B587BF18BBC77E00E9F6CE /* user.h in Headers */,
-				7405E5C41AC3FFCC0026A318 /* vlc_config.h in Headers */,
 				74B587C118BBC77E00E9F6CE /* project.h in Headers */,
-				7405E5CE1AC400660026A318 /* vlc_objects.h in Headers */,
-				7405E5C61AC3FFEA0026A318 /* vlc_mtime.h in Headers */,
 				7408EDB318C51CEB00CBE8F1 /* const.h in Headers */,
 				C5DA1FB717F1942A001C4565 /* toggl_api.h in Headers */,
 				7484A2AA18887BEE0025A88B /* context.h in Headers */,
-				7405E5BE1AC3FF5A0026A318 /* vlc_network.h in Headers */,
 				74CAAD1E181860F7001B77BB /* timeline_event.h in Headers */,
-				7405E5D21AC4009C0026A318 /* vlc_main.h in Headers */,
 				74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */,
 				7408EDB518C51CEB00CBE8F1 /* feedback.h in Headers */,
 				7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */,
-				7405E5D41AC400C00026A318 /* vlc_configuration.h in Headers */,
 				74CAAD1A181860F7001B77BB /* get_focused_window.h in Headers */,
-				7405E5C81AC400070026A318 /* vlc_threads.h in Headers */,
 				7458ED2A1A355746007B529E /* idle.h in Headers */,
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
 				74E16832180F26D90026261C /* websocket_client.h in Headers */,
 				7484A2A818887BEE0025A88B /* toggl_api_private.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
 				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,
-				7405E5CC1AC400450026A318 /* vlc_messages.h in Headers */,
 				74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */,
 				C5DA1FAC17F18D7B001C4565 /* database.h in Headers */,
 				74CAAD21181860F7001B77BB /* timeline_uploader.h in Headers */,
@@ -495,7 +440,6 @@
 				7484A2AB18887BEE0025A88B /* context.cc in Sources */,
 				74699F6B1A67053600691986 /* analytics.cc in Sources */,
 				7458ED291A355746007B529E /* idle.cc in Sources */,
-				7405E5C01AC3FF690026A318 /* netconf.c in Sources */,
 				74B587CD18BBC77E00E9F6CE /* time_entry.cc in Sources */,
 				74BAD32918BEC4FD002FD4CF /* base_model.cc in Sources */,
 				7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */,
