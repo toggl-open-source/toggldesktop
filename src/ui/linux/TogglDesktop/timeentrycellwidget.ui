@@ -297,15 +297,18 @@
            </property>
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>90</width>
              <height>16777215</height>
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border:none;</string>
+            <string notr="true">border:none;margin:0;</string>
            </property>
            <property name="text">
             <string>00:00:00</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
