@@ -117,7 +117,7 @@ error Netconf::autodetectProxy(
     return noError;
 }
 
-void Netconf::ConfigureProxy(
+error Netconf::ConfigureProxy(
     const std::string encoded_url,
     Poco::Net::HTTPSClientSession *session) {
 
@@ -130,6 +130,9 @@ void Netconf::ConfigureProxy(
         }
         if (proxy_url.empty()) {
             error err = autodetectProxy(encoded_url, &proxy_url);
+            if (err != noError) {
+                return err;
+            }
         }
         if (proxy_url.find("://") == std::string::npos) {
             proxy_url = "http://" + proxy_url;
@@ -181,6 +184,8 @@ void Netconf::ConfigureProxy(
                          + HTTPSClient::Config.ProxySettings.Username());
         }
     }
+
+    return noError;
 }
 
 }   // namespace toggl

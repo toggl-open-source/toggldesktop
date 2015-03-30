@@ -24,7 +24,7 @@ class Netconf {
     Netconf() {}
     virtual ~Netconf() {}
 
-    static void ConfigureProxy(
+    static error ConfigureProxy(
         const std::string encoded_url,
         Poco::Net::HTTPSClientSession *session);
 
