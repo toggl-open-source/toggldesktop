@@ -4,6 +4,7 @@
 
 #include <string>
 #include <sstream>
+#include <winhttp.h>
 
 #include "./https_client.h"
 
