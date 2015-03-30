@@ -12,6 +12,7 @@
 #include "Poco/Net/HTTPCredentials.h"
 #include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/URI.h"
+#include "Poco/UnicodeConverter.h"
 
 #ifdef __MACH__
 #include <CoreFoundation/CoreFoundation.h>  // NOLINT
@@ -19,7 +20,8 @@
 #endif
 
 #ifdef _WIN32
-//#include <winhttp.h>
+#include <winhttp.h>
+#pragma comment(lib, "winhttp")
 #endif
 
 namespace toggl {
@@ -30,57 +32,60 @@ error Netconf::autodetectProxy(
 
     *proxy_url = "";
 
-    // Inspired from Stack Overflow
-    // http://stackoverflow.com/questions/202547/how-do-i-find-out-the-browsers-proxy-settings
 #ifdef _WIN32
-	/*
-	if (WinHttpGetIEProxyConfigForCurrentUser(&ieProxyConfig)) {
-        if (ieProxyConfig.fAutoDetect) {
-            fAutoProxy = TRUE;
-        }
+	HINTERNET session_handle = WinHttpOpen(
+		NULL,
+		WINHTTP_ACCESS_TYPE_NO_PROXY,
+		WINHTTP_NO_PROXY_NAME,
+		WINHTTP_NO_PROXY_BYPASS,
+		0);
+	if (!session_handle) {
+		return error("Failed to start winhttp session");
+	}
 
-        if (ieProxyConfig.lpszAutoConfigUrl != NULL) {
-            fAutoProxy = TRUE;
-            autoProxyOptions.lpszAutoConfigUrl =
-                ieProxyConfig.lpszAutoConfigUrl;
-        }
-    } else {
-        // use autoproxy
-        fAutoProxy = TRUE;
-    }
+	WinHttpSetTimeouts(session_handle, 10000, 10000, 5000, 5000);
 
-    if (fAutoProxy) {
-        if (autoProxyOptions.lpszAutoConfigUrl != NULL) {
-            autoProxyOptions.dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL;
-        } else {
-            autoProxyOptions.dwFlags = WINHTTP_AUTOPROXY_AUTO_DETECT;
-            autoProxyOptions.dwAutoDetectFlags =
-                WINHTTP_AUTO_DETECT_TYPE_DHCP | WINHTTP_AUTO_DETECT_TYPE_DNS_A;
-        }
+	WINHTTP_AUTOPROXY_OPTIONS options = { 0 };
+	options.fAutoLogonIfChallenged = FALSE;
+	options.dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL;
+	// FIXME: set PAC url with options.lpszAutoConfigUrl
 
-        // basic flags you almost always want
-        autoProxyOptions.fAutoLogonIfChallenged = TRUE;
+	WINHTTP_PROXY_INFO info = { 0 };
 
-        // here we reset fAutoProxy in case an auto-proxy isn't actually
-        // configured for this url
-        fAutoProxy = WinHttpGetProxyForUrl(
-            hiOpen, pwszUrl, &autoProxyOptions, &autoProxyInfo);
-    }
+	std::wstring encoded_url_wide;
+	Poco::UnicodeConverter::toUTF16(encoded_url, encoded_url_wide);
+	if (!WinHttpGetProxyForUrl(
+			session_handle,
+			encoded_url_wide.c_str(),
+			&options,
+			&info)) {
 
-    if (fAutoProxy) {
-        // set proxy options for libcurl based on autoProxyInfo
-    } else {
-        if (ieProxyConfig.lpszProxy != NULL) {
-            // IE has an explicit proxy. set proxy options for libcurl here
-            // based on ieProxyConfig
-            //
-            // note that sometimes IE gives just a single or double colon
-            // for proxy or bypass list, which means "no proxy"
-        } else {
-            // there is no auto proxy and no manually configured proxy
-        }
-    }
-	*/
+		DWORD errcode = GetLastError();
+		std::stringstream ss;
+		ss << "WinHttpGetProxyForUrl error " << errcode;
+
+		WinHttpCloseHandle(session_handle);
+		session_handle = 0;
+
+		return ss.str();
+	}
+
+	WinHttpCloseHandle(session_handle);
+	session_handle = 0;
+
+	if (WINHTTP_ACCESS_TYPE_NAMED_PROXY == info.dwAccessType) {
+		std::wstring proxy_url_wide(info.lpszProxy);
+		std::string s;
+		Poco::UnicodeConverter::toUTF8(proxy_url_wide, s);
+		*proxy_url = s;
+	}
+
+	if (info.lpszProxy) {
+		free(info.lpszProxy);
+	}
+	if (info.lpszProxyBypass) {
+		free(info.lpszProxyBypass);
+	}
 #endif
 
     // Inspider by VLC source code
