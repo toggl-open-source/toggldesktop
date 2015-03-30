@@ -37,12 +37,11 @@ error Netconf::autodetectProxy(
     }
 
 #ifdef _WIN32
-    HINTERNET session_handle = WinHttpOpen(
-        NULL,
-        WINHTTP_ACCESS_TYPE_NO_PROXY,
-        WINHTTP_NO_PROXY_NAME,
-        WINHTTP_NO_PROXY_BYPASS,
-        0);
+    HINTERNET session_handle = WinHttpOpen(NULL,
+                                           WINHTTP_ACCESS_TYPE_NO_PROXY,
+                                           WINHTTP_NO_PROXY_NAME,
+                                           WINHTTP_NO_PROXY_BYPASS,
+                                           0);
     if (!session_handle) {
         return error("Failed to start winhttp session");
     }
@@ -58,12 +57,10 @@ error Netconf::autodetectProxy(
 
     std::wstring encoded_url_wide;
     Poco::UnicodeConverter::toUTF16(encoded_url, encoded_url_wide);
-    if (!WinHttpGetProxyForUrl(
-        session_handle,
-        encoded_url_wide.c_str(),
-        &options,
-        &info)) {
-
+    if (!WinHttpGetProxyForUrl(session_handle,
+                               encoded_url_wide.c_str(),
+                               &options,
+                               &info)) {
         DWORD errcode = GetLastError();
         std::stringstream ss;
         ss << "WinHttpGetProxyForUrl error " << errcode;
