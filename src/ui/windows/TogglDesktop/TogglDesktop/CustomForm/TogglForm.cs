@@ -85,7 +85,7 @@ namespace TogglDesktop
 
             Font f = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular);
             style.TitleColor = Color.White;
-            style.TitleFont = GetFont("roboto-light", f);
+            style.TitleFont = f;
             style.ClientAreaPadding = new Padding(0, 40, 0, 0);
             style.IconPadding = new Padding(11, 11, 10, 0);
             style.TitlePadding = new Padding(5, 0, 0, 0);
