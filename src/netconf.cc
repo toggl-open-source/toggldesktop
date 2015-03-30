@@ -4,9 +4,6 @@
 
 #include <string>
 #include <sstream>
-#ifdef _WIN32
-	#include <winhttp.h>
-#endif
 
 #include "./https_client.h"
 
@@ -21,6 +18,10 @@
 #include <CoreServices/CoreServices.h>  // NOLINT
 #endif
 
+#ifdef _WIN32
+#include <winhttp.h>
+#endif
+
 namespace toggl {
 
 error Netconf::autodetectProxy(
@@ -32,7 +33,8 @@ error Netconf::autodetectProxy(
     // Inspired from Stack Overflow
     // http://stackoverflow.com/questions/202547/how-do-i-find-out-the-browsers-proxy-settings
 #ifdef _WIN32
-    if (WinHttpGetIEProxyConfigForCurrentUser(&ieProxyConfig)) {
+	/*
+	if (WinHttpGetIEProxyConfigForCurrentUser(&ieProxyConfig)) {
         if (ieProxyConfig.fAutoDetect) {
             fAutoProxy = TRUE;
         }
@@ -78,6 +80,7 @@ error Netconf::autodetectProxy(
             // there is no auto proxy and no manually configured proxy
         }
     }
+	*/
 #endif
 
     // Inspider by VLC source code
