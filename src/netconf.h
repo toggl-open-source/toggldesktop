@@ -30,7 +30,7 @@ class Netconf {
 
  private:
     static error autodetectProxy(
-        const std::string &encoded_url,
+        const std::string encoded_url,
         std::string *proxy_url);
 };
 

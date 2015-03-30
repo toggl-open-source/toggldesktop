@@ -27,10 +27,14 @@
 namespace toggl {
 
 error Netconf::autodetectProxy(
-    const std::string &encoded_url,
+    const std::string encoded_url,
     std::string *proxy_url) {
 
     *proxy_url = "";
+
+	if (encoded_url.empty()) {
+		return noError;
+	}
 
 #ifdef _WIN32
 	HINTERNET session_handle = WinHttpOpen(
