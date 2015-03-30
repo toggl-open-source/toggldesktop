@@ -175,13 +175,11 @@ font-size: 14px;</string>
         </property>
         <property name="font">
          <font>
-          <pointsize>16</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
+          <pointsize>14</pointsize>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(200, 200, 200);</string>
+         <string notr="true">color: rgb(200, 200, 200);font-size:14pt</string>
         </property>
         <property name="frame">
          <bool>false</bool>
