@@ -104,7 +104,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(250, 250, 250);border-width: 1px; border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none; border-color: #cacaca;</string>
+      <string notr="true">background-color: rgb(250, 250, 250);border-width: 1px; border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none; border-color: #cacaca;margin:0px</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
@@ -115,6 +115,18 @@
       </property>
       <property name="sizeConstraint">
        <enum>QLayout::SetNoConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
       </property>
       <item>
        <widget class="QFrame" name="descProjFrame">
