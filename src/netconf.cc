@@ -32,64 +32,64 @@ error Netconf::autodetectProxy(
 
     *proxy_url = "";
 
-	if (encoded_url.empty()) {
-		return noError;
-	}
+    if (encoded_url.empty()) {
+        return noError;
+    }
 
 #ifdef _WIN32
-	HINTERNET session_handle = WinHttpOpen(
-		NULL,
-		WINHTTP_ACCESS_TYPE_NO_PROXY,
-		WINHTTP_NO_PROXY_NAME,
-		WINHTTP_NO_PROXY_BYPASS,
-		0);
-	if (!session_handle) {
-		return error("Failed to start winhttp session");
-	}
+    HINTERNET session_handle = WinHttpOpen(
+        NULL,
+        WINHTTP_ACCESS_TYPE_NO_PROXY,
+        WINHTTP_NO_PROXY_NAME,
+        WINHTTP_NO_PROXY_BYPASS,
+        0);
+    if (!session_handle) {
+        return error("Failed to start winhttp session");
+    }
 
-	WinHttpSetTimeouts(session_handle, 10000, 10000, 5000, 5000);
+    WinHttpSetTimeouts(session_handle, 10000, 10000, 5000, 5000);
 
-	WINHTTP_AUTOPROXY_OPTIONS options = { 0 };
-	options.fAutoLogonIfChallenged = FALSE;
-	options.dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL;
-	// FIXME: set PAC url with options.lpszAutoConfigUrl
+    WINHTTP_AUTOPROXY_OPTIONS options = { 0 };
+    options.fAutoLogonIfChallenged = FALSE;
+    options.dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL;
+    // FIXME: set PAC url with options.lpszAutoConfigUrl
 
-	WINHTTP_PROXY_INFO info = { 0 };
+    WINHTTP_PROXY_INFO info = { 0 };
 
-	std::wstring encoded_url_wide;
-	Poco::UnicodeConverter::toUTF16(encoded_url, encoded_url_wide);
-	if (!WinHttpGetProxyForUrl(
-			session_handle,
-			encoded_url_wide.c_str(),
-			&options,
-			&info)) {
+    std::wstring encoded_url_wide;
+    Poco::UnicodeConverter::toUTF16(encoded_url, encoded_url_wide);
+    if (!WinHttpGetProxyForUrl(
+        session_handle,
+        encoded_url_wide.c_str(),
+        &options,
+        &info)) {
 
-		DWORD errcode = GetLastError();
-		std::stringstream ss;
-		ss << "WinHttpGetProxyForUrl error " << errcode;
+        DWORD errcode = GetLastError();
+        std::stringstream ss;
+        ss << "WinHttpGetProxyForUrl error " << errcode;
 
-		WinHttpCloseHandle(session_handle);
-		session_handle = 0;
+        WinHttpCloseHandle(session_handle);
+        session_handle = 0;
 
-		return ss.str();
-	}
+        return ss.str();
+    }
 
-	WinHttpCloseHandle(session_handle);
-	session_handle = 0;
+    WinHttpCloseHandle(session_handle);
+    session_handle = 0;
 
-	if (WINHTTP_ACCESS_TYPE_NAMED_PROXY == info.dwAccessType) {
-		std::wstring proxy_url_wide(info.lpszProxy);
-		std::string s;
-		Poco::UnicodeConverter::toUTF8(proxy_url_wide, s);
-		*proxy_url = s;
-	}
+    if (WINHTTP_ACCESS_TYPE_NAMED_PROXY == info.dwAccessType) {
+        std::wstring proxy_url_wide(info.lpszProxy);
+        std::string s;
+        Poco::UnicodeConverter::toUTF8(proxy_url_wide, s);
+        *proxy_url = s;
+    }
 
-	if (info.lpszProxy) {
-		free(info.lpszProxy);
-	}
-	if (info.lpszProxyBypass) {
-		free(info.lpszProxyBypass);
-	}
+    if (info.lpszProxy) {
+        free(info.lpszProxy);
+    }
+    if (info.lpszProxyBypass) {
+        free(info.lpszProxyBypass);
+    }
 #endif
 
     // Inspider by VLC source code
