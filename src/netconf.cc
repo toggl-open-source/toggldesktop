@@ -19,7 +19,7 @@
 #endif
 
 #ifdef _WIN32
-#include <winhttp.h>
+//#include <winhttp.h>
 #endif
 
 namespace toggl {
