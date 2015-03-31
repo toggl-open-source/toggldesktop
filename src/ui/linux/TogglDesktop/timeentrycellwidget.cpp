@@ -32,7 +32,8 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
             view->EndTimeString.length() > 0) {
         ui->duration->setToolTip(
             QString("<p style='color:black;background-color:white;'>" +
-                    view->StartTimeString + " - " + view->EndTimeString+"</p>"));
+                    view->StartTimeString + " - " +
+                    view->EndTimeString+"</p>"));
     }
 
     ui->tags->setToolTip(
