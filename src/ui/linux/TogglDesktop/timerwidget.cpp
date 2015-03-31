@@ -67,7 +67,9 @@ void TimerWidget::displayRunningTimerState(
     ui->start->setStyleSheet(
         "background-color: #e20000; color:'white'; font-weight: bold;");
 
-    ui->description->setEditText(te->Description);
+    QString description = (te->Description.length()>0) ? te->Description : "(no description)";
+
+    ui->description->setEditText(description);
     ui->description->setEnabled(false);
 
     ui->duration->setText(te->Duration);

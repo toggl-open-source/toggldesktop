@@ -13,8 +13,8 @@ guid("") {
 
 void TimeEntryCellWidget::display(TimeEntryView *view) {
     guid = view->GUID;
-
-    ui->description->setText(view->Description);
+    QString description = (view->Description.length()>0) ? view->Description : "(no description)";
+    ui->description->setText(description);
     ui->project->setText(view->ProjectAndTaskLabel);
     ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
     ui->duration->setText(view->Duration);
