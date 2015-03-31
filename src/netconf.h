@@ -4,6 +4,7 @@
 #define SRC_NETCONF_H_
 
 #include <string>
+#include <vector>
 
 #include "./types.h"
 
@@ -31,7 +32,7 @@ class Netconf {
  private:
     static error autodetectProxy(
         const std::string encoded_url,
-        std::string *proxy_url);
+        std::vector<std::string> *proxy_strings);
 };
 
 }  // namespace toggl

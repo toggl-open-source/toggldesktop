@@ -28,9 +28,11 @@ namespace toggl {
 
 error Netconf::autodetectProxy(
     const std::string encoded_url,
-    std::string *proxy_url) {
+    std::vector<std::string> *proxy_strings) {
 
-    *proxy_url = "";
+    poco_assert(proxy_strings);
+
+    proxy_strings->clear();
 
     if (encoded_url.empty()) {
         return noError;
@@ -48,7 +50,7 @@ error Netconf::autodetectProxy(
         std::wstring proxy_url_wide(ie_config.lpszProxy);
         std::string s("");
         Poco::UnicodeConverter::toUTF8(proxy_url_wide, s);
-        *proxy_url = s;
+        proxy_strings->push_back(s);
     }
 #endif
 
@@ -75,7 +77,7 @@ error Netconf::autodetectProxy(
                                    - 1, kCFStringEncodingUTF8)) {
                 char buffer[kBufsize];
                 snprintf(buffer, kBufsize, "%s:%d", host_buffer, port);
-                *proxy_url = std::string(buffer);
+                proxy_strings->push_back(std::string(buffer));
             }
         }
 
@@ -101,9 +103,14 @@ error Netconf::ConfigureProxy(
             proxy_url = Poco::Environment::get("http_proxy");
         }
         if (proxy_url.empty()) {
-            error err = autodetectProxy(encoded_url, &proxy_url);
+            std::vector<std::string> proxy_strings;
+            error err = autodetectProxy(encoded_url, &proxy_strings);
             if (err != noError) {
                 return err;
+            }
+            // FIXME: libproxy will return array of proxy strings
+            if (!proxy_strings.empty()) {
+                proxy_url = proxy_strings[0];
             }
         }
         if (proxy_url.find("://") == std::string::npos) {
