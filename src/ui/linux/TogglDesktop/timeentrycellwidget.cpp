@@ -14,8 +14,8 @@ guid("") {
 void TimeEntryCellWidget::display(TimeEntryView *view) {
     guid = view->GUID;
     QString description =
-            (view->Description.length() > 0) ?
-                view->Description : "(no description)";
+        (view->Description.length() > 0) ?
+        view->Description : "(no description)";
     ui->description->setText(description);
     ui->project->setText(view->ProjectAndTaskLabel);
     ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
@@ -32,7 +32,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
             view->EndTimeString.length() > 0) {
         ui->duration->setToolTip(
             QString("<p style='color:black;background-color:white;'>" +
-                view->StartTimeString + " - " + view->EndTimeString+"</p>"));
+                    view->StartTimeString + " - " + view->EndTimeString+"</p>"));
     }
 
     ui->tags->setToolTip(
