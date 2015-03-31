@@ -82,6 +82,9 @@
    <item>
     <widget class="QFrame" name="idleDetectionSettings">
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QCheckBox" name="idleDetection">
         <property name="text">
@@ -134,7 +137,7 @@
    <item>
     <widget class="QCheckBox" name="recordTimeline">
      <property name="styleSheet">
-      <string notr="true">margin-left:9px</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Record timeline</string>
@@ -144,6 +147,9 @@
    <item>
     <widget class="QFrame" name="horizontalFrame">
      <layout class="QHBoxLayout" name="reminderSettings">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QCheckBox" name="remindToTrackTime">
         <property name="text">
