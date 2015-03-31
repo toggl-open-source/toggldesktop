@@ -1,0 +1,147 @@
+
+Quick Start
+###########
+
+From source directory
+1. mkdir build
+2. cd build
+3. cmake ..
+4. make
+5. make install
+
+More advanced installation options:
+###################################
+
+Example:
+  cmake ..
+    -DCMAKE_INSTALL_PREFIX=/usr 
+    -DLIB_SUFIX=64
+    -DWITH_VALA=yes 
+    -DWITH_DOTNET=yes 
+    -DPERL_VENDORINSTALL=yes 
+    -DCMAKE_BUILD_TYPE=None
+    -DCMAKE_CXX_FLAGS="-O2"
+    -DCMAKE_C_FLAGS="-O2"
+
+This example would configure libproxy to be installed in /usr with all other
+location using defaults relative to it, except that libraries will be install in
+/usr/lib64. It also enable Vala and .NET bindings and tell the build system
+to install the Perl binding in the vendor directory (the one used by
+distribution, in contrast to the one used by users).
+
+Path options:
+=============
+
+CMAKE_INSTALL_PREFIX: Default to "/usr/local". This is the base install
+                      directory. All other path, except SYSCONF_INSTALL_DIR
+                      are by default relative to this one.
+
+BIN_INSTALL_DIR:      Default to "bin". This is where executable are install.
+
+LIB_INSTALL_DIR:      Default to "lib${LIB_SUFFIX}". This is where libraries
+                      are insalled.
+
+LIB_SUFFIX:           Default to "". This is used on multilib 64bit OS where it
+                      would be set to "64".
+
+LIBEXEC_INSTALL_DIR:  Default to "libexec". This is where non-interactive helper
+                      executable are installed (e.g. pxgconf for Gnome support).
+
+INCLUDE_INSTALL_DIR:  Default to "include". This is where libproxy header is
+                      installed (proxy.h).
+
+SYSCONF_INSTALL_DIR:  Default to "/etc". This is the place where system wide
+                      configuration files are placed, currently unused. Note
+                      that this path does not have a relative path has default.
+
+SHARE_INSTALL_DIR:    Default to "share". This base path used for CMake modules
+                      finders and the Vala bindings.
+
+MODULE_INSTALL_DIR:   Default to "${LIB_INSTALL_DIR}/${PROJECT_NAME}/${PROJECT_VERSION}/modules".
+                      This is where libproxy extensions are installed. Note that
+                      extentions API/ABI is not yet stable, so you should be
+                      carefull when changing this path not to mix different
+                      version of extensions together. The module path can also
+                      be altered at runtime using PX_MODULE_PATH environement.
+
+
+Boolean options:
+================
+
+BIPR:                   Default to ON. Build Internal Pac Runner.
+                        If only one pacrunner is to be built, then the default
+                        is to link it internal to libproxy. As soon as two are
+                        to be built, they are always made as a module.
+                        Setting this to OFF allows to build a pacrunner as
+                        module even if only one is to be built.
+
+FORCE_SYSTEM_LIBMODMAN: Default to OFF. Forces the build system to generate an
+                        error if libmodman cannot be found on your system. By
+                        default libmodman will fallback to using internal copy
+                        of that library.
+
+PERL_VENDORINSTALL:     Default to OFF. Tells cmake to install the perl binding
+                        in the vendor directory, which is the one used by most
+                        packagers.
+
+WITH_DOTNET:            Default to OFF. Enable Mono .NET bindings.
+
+WITH_GNOME:             Default to ON. Enable Gnome2/GConf bindings.
+
+WITH_GNOME3:            Default to ON. Build the Gnome3/GSettings bindings.
+                        instead of Gnome2/GConf based one.
+
+WITH_KDE4:              Default to ON. Enables KDE4/Kconf bindings.
+
+WITH_MOZJS:             Default to ON. Enable Mozilla javascript bindings. As
+                        Mozilla Javascript engine is often installed multiple
+                        you can set prefered order using MOZJS_SEARCH_ORDER,
+                        wich defaults to "xulrunner-js;firefox-js;mozilla-js;seamonkey-js".
+
+WITH_NM:                Default to ON. Enable NetworkManager bindings.
+
+WITH_PERL:              Default to ON. Enable Perl bindings.
+
+WITH_PYTHON:            Default to ON. Enable Python bindings.
+
+WITH_VALA:              Default to OFF. Enable Vala bindings.
+
+WITH_WEBKIT:            Default to ON. Enable Webkit Java Script engine.
+
+WITH_WEBKIT3:           Default to OFF: Enable Webkit GTK3 support.
+
+
+Bindings Path:
+==============
+
+Most bindings require to be installed in a system specific directory. Libproxy
+build system tries to find those directory. Sometimes this behaviour can be
+annoying since bindings will not be installed relatively to CMAKE_INSTALL_PREFIX.
+For this reason, all bindings provides path overrides.
+
+GAC_DIR:            For the Mono .NET binding
+VAPI_DIR:           For the Vala bindings
+PX_PERL_ARCH:       For the Perl bindings
+PYTHON_SITEPKG_DIR: For the Python bindings
+
+
+Make options:
+=============
+
+Of course you can use parallel build using "make -j2". It's also nice to see
+the exact compile/link command being executed. This can be done using
+"make VERBOSE=1" command.
+
+To install in a sub-directory, DESTDIR can be used has make parameter.
+  make install [DESTDIR=/any/prefix/to/prepend]
+
+CFLAGS in libproxy:
+===================
+
+We are currently having issue with CMake and CFLAGS. As shown in the example,
+we have found a simple way that prevents CMAKE from choosing for you the
+CFLAGS you want. As being demonstrated, you can disable CMAKE default CFLAGS
+by setting an invalid (but not empty) CMAKE_BUILD_TYPE (e.g. None). You can
+then set your flags using CMAKE_CXX_FLAGS, and CMAKE_C_FLAGS. Both variable
+are required since libproxy contains C++ and C code.
+

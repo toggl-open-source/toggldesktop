@@ -1,0 +1,8 @@
+include(CTest)
+enable_testing()
+
+function(add_testdirectory DIR)
+  if (BUILD_TESTING)
+    add_subdirectory(${DIR})
+  endif (BUILD_TESTING)
+endfunction(add_testdirectory)

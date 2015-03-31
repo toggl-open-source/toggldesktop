@@ -1,0 +1,162 @@
+Wed Sep 1 16:03:00 2010 Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
+	* == Released 0.4.6 ===
+	* Fixed a crash in the URL parser
+	* Fixed build issues with Visual Studio
+	* Updated the INSTALL file
+	* Install Python binding in prefix path if site-packages exists
+	* Fixed compilation with Visual Studio
+	* Complete list of bug fixes:
+		+ 135, 136, 138
+
+Mon Jun 7 11:37:00 2010 Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
+	* === Released 0.4.5 ===
+	* C# bindings are installable (-DWITH_DOTNET=ON)
+	* C# bindings installation path can be changed using -DGAC_DIR=
+	* Internal libmodman build fixed
+	* Installation dirs are now all relative to CMAKE_INSTALL_PREFIX
+	* Fixed test while using --as-needed linker flag
+	* Fixed generation of libproxy-1.0.pc
+	* Basic support for Mingw added (not yet 100% functional)
+	* Ruby binding implemented (not yet in the build system)
+	* Fixed modules not being found caused by relative LIBEXEC_INSTALL_DIR
+	* Fixed bug with builtin plugins (Issue 133)
+	* Vala bindings installation path can be changed using -DVAPI_DIR=
+	* Python bindings installation path can be changed using -DPYTHON_SITEPKG_DIR=
+	* Perl bindings can be installed in vendor directory (-DPERL_VENDORARCH=ON)
+	* Perl bindings installation path can be change using -DPX_PERL_ARCH=
+	* Unit test now builds on OSX
+	* Complete list of bug fixes:
+		+ 125, 126, 130, 132, 133
+
+Sun Jun 13 11:00:00 2010 Nathaniel McCallum <nathaniel@natemccallum.com>
+	* === Released 0.4.4 ===
+	* Add support for optionally building using a system libmodman
+	* Rework build system to be cleaner
+	* Fix two major build system bugs: 127, 128
+
+Mon Jun 7 11:37:00 2010 Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
+	* === Released 0.4.3 ===
+	* Test can now be out-compiled using BUILD_TESTING=OFF
+	* Fixed python binding not handling NULL pointer
+	* Pyhton binding now support Python version 3
+	* Implented URL unit test
+	* Rewrote URL parser to comply with unit test
+	* Username and password are now URL encoded
+	* Scheme comparison is now non-case sensitive
+	* Fixed deadlock using WebKit has PAC runner
+	* Fixed OS X compilation of Perl bindings
+	* Complete list of bug fixes:
+		+ 123, 122, 121, 117, 116, 112, 109
+
+Tue May 18 11:54:00 2010 Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
+	* === Released 0.4.2 ===
+	* Fixed python binding that failed on missing px_free symbole
+	* Workaround cmake bug with dynamic libraries in non-standard folders
+
+Tue May 18 10:30:00 2010 Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
+	* === Released 0.4.1 ===
+	* Improved cross-platform build
+	* Added Perl and Vala bindings
+	* Fix multiple infinite loop bugs
+	* Fix random crash with Gnome backend
+	* Standardized Gnome backend based on Mozilla and Chrome behavior
+	* Removed dependency to X11 in Gnome backend
+	* Allow disabling features at build time using WITH_* cmake options
+	* Module path can now be altered using PX_MODULE_PATH environment
+	* pxgconf helper location can be altered using PX_GCONF environment
+	* Removed proxy scheme filtering, we now trust config modules
+	* socks5:// and socks4:// is now allowed
+	* Fix crash when password is empty string
+	* Complete list of bug fixes:
+	  + 19, 59, 65, 86, 87, 88, 89, 90, 91, 92, 93, 97, 98,
+	    99, 100, 101, 102, 103, 106, 108, 110
+	* Known issues:
+	  + 109 - Scheme comparison is case sensitive
+	  + 112 - Username and password are not URI encoded
+
+Thu Feb 25 20:12:57 2010 Nathaniel McCallum <nathaniel@natemccallum.com>
+	* === Released 0.4.0 ===
+	* C++ rewrite
+	* Small API change (px_proxy_factory_get_proxy() can now return NULL)
+	* SOVERSION bump
+	* libmodman is now a seperate library
+	* Migrate to cmake
+	* Windows support (config_w32reg, ignore_hostname; VC++ support)
+	* MacOSX support (config_macosx, ignore_hostname)
+	* Built-in modules support
+	* Support for chunked encoding
+	* Move to hidden visibility by default
+	* KDE's KConfig symantics are fully supported
+	* Removeal of all PX_* env variables (no longer needed)
+	* Symbol based detection of relevant pacrunner
+	* Reworked config_gnome to not suck (its *much* faster)
+	* Many other things I can't remember
+	
+Thu Oct 08 21:26:00 2009 Dominique Leuenberger <dominique@leuenberger.net>
+	* === Released 0.3.1 ===
+	* Bugfixes
+	  + config file parser reads all sections
+	  + KDE session detection based on environment varibales,
+	    as suggested by KDE upstream.
+	* KDE configuration module is the first module in C++ and
+	  now links to libkdecore4 in order to properly detect the
+	  configuration folder for kde.
+	* At the moment we're not compatible with KDE3. Sorry.
+	* .NET bindings can now properly be installed and it should
+	  be possible for packagers to provide them.
+
+Thu Aug 14 15:38:00 2009  Nathaniel McCallum  <nathaniel@natemccallum.com>
+	* === Released 0.3.0 ===
+	* WARNING!!! Slight API change (still ABI compat)!!!
+	  see docs for px_proxy_factory_get_proxies()
+	* Credentials support (see API change above)
+	* A complete rewrite of the module manager
+	* file:// as valid PAC URLs
+	* Sample Mono application
+	* Automake 1.11 shaved output
+	* gnome backend rewrite (now w/o thread issues)
+	* Test suite base functionality exists
+	* Many solaris build fixes
+	* Seamonkey support as JS pacrunner
+	* Bugfixes
+	* Compiles for MS Windows using Mingw
+
+Thu Jun 05 17:05:12 2008  Nathaniel McCallum  <nathaniel@natemccallum.com>
+	* === Released 0.2.3 ===
+	* New plugin: webkit (JavaScript)
+	* Massive speed improvements in all javascript plugins
+	* Bug fixes
+	* Memory leak fixes
+	* pkgconfig support
+
+Wed Jan 09 04:18:45 2008  Jeff Schroeder  <jeffschroeder@computer.org>
+	* === Released 0.2.2 ===
+	* Python bindings fix
+	* Added pthreads support from r191 in trunk
+	* Removed local copy of strdup() in proxy.c for OS X build issues
+
+Wed Dec 20 19:11:23 2007  Nathaniel McCallum  <nathaniel@natemccallum.com>
+	* === Released 0.2.1 ===
+	* Build fix for mozjs
+	* Python bindings fix for renamed function
+	* Split off x_has_client() into its own file
+
+Wed Dec 12 20:12:56 2007  Nathaniel McCallum  <nathaniel@natemccallum.com>
+	* === Released 0.2 ===
+	* Added Python bindings
+	* Added .NET bindings
+	* NetworkManager plugin
+	* KDE plugin
+	* File plugin
+	* More accurate GNOME session detection
+	* Ignore pattern support
+	* px_proxy_factory_get_proxy() renamed to px_proxy_factory_get_proxies()
+	* Relicense from LGPLv3+ to LGPLv2.1+
+	* Sacrifice re-homeing session support for massive performance gains
+	* Tons of bug fixes, memory leaks, etc
+
+Wed Oct 31 13:09:10 2007  Nathaniel McCallum  <nathaniel@natemccallum.com>
+	* === Released 0.1 ===
+	* AUTHORS: Added authors
+	* README: basic readme info
+	* src/lib/proxy.h: add missing doc line

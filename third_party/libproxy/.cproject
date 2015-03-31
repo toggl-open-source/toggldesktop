@@ -1,0 +1,1307 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject>
+<storageModule moduleId="org.eclipse.cdt.core.settings">
+<cconfiguration id="org.eclipse.cdt.core.default.config.1">
+<storageModule buildSystemId="org.eclipse.cdt.core.defaultConfigDataProvider" id="org.eclipse.cdt.core.default.config.1" moduleId="org.eclipse.cdt.core.settings" name="Configuration">
+<externalSettings/>
+<extensions>
+<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser">
+<attribute key="addr2line" value="addr2line"/>
+<attribute key="c++filt" value="c++filt"/>
+</extension>
+</extensions>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.core.language.mapping">
+<project-mappings/>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+<storageModule moduleId="org.eclipse.cdt.core.pathentry">
+<pathentry excluding="**/CMakeFiles/" kind="out" path=""/>
+<pathentry kind="mac" name="_POSIX_C_SOURCE" path="" value="1"/>
+<pathentry kind="mac" name="_BSD_SOURCE" path="" value=""/>
+<pathentry kind="mac" name="__STDC__" path="" value="1"/>
+<pathentry kind="mac" name="__STDC_HOSTED__" path="" value="1"/>
+<pathentry kind="mac" name="__GNUC__" path="" value="4"/>
+<pathentry kind="mac" name="__GNUC_MINOR__" path="" value="4"/>
+<pathentry kind="mac" name="__GNUC_PATCHLEVEL__" path="" value="2"/>
+<pathentry kind="mac" name="__GNUC_RH_RELEASE__" path="" value="20"/>
+<pathentry kind="mac" name="__SIZE_TYPE__" path="" value="long"/>
+<pathentry kind="mac" name="unsigned" path="" value="int"/>
+<pathentry kind="mac" name="__PTRDIFF_TYPE__" path="" value="long"/>
+<pathentry kind="mac" name="int" path="" value="__WCHAR_TYPE__"/>
+<pathentry kind="mac" name="__INTMAX_TYPE__" path="" value="long"/>
+<pathentry kind="mac" name="long" path="" value="unsigned"/>
+<pathentry kind="mac" name="short" path="" value="unsigned"/>
+<pathentry kind="mac" name="__GXX_ABI_VERSION" path="" value="1002"/>
+<pathentry kind="mac" name="__SCHAR_MAX__" path="" value="127"/>
+<pathentry kind="mac" name="__SHRT_MAX__" path="" value="32767"/>
+<pathentry kind="mac" name="__INT_MAX__" path="" value="2147483647"/>
+<pathentry kind="mac" name="__LONG_MAX__" path="" value="9223372036854775807L"/>
+<pathentry kind="mac" name="__LONG_LONG_MAX__" path="" value="9223372036854775807LL"/>
+<pathentry kind="mac" name="__WCHAR_MAX__" path="" value="2147483647"/>
+<pathentry kind="mac" name="__CHAR_BIT__" path="" value="8"/>
+<pathentry kind="mac" name="__INTMAX_MAX__" path="" value="9223372036854775807L"/>
+<pathentry kind="mac" name="__FLT_EVAL_METHOD__" path="" value="0"/>
+<pathentry kind="mac" name="__DEC_EVAL_METHOD__" path="" value="2"/>
+<pathentry kind="mac" name="__FLT_RADIX__" path="" value="2"/>
+<pathentry kind="mac" name="__FLT_MANT_DIG__" path="" value="24"/>
+<pathentry kind="mac" name="__FLT_DIG__" path="" value="6"/>
+<pathentry kind="mac" name="__FLT_MIN_EXP__" path="" value="(-125)"/>
+<pathentry kind="mac" name="__FLT_MIN_10_EXP__" path="" value="(-37)"/>
+<pathentry kind="mac" name="__FLT_MAX_EXP__" path="" value="128"/>
+<pathentry kind="mac" name="__FLT_MAX_10_EXP__" path="" value="38"/>
+<pathentry kind="mac" name="__FLT_MAX__" path="" value="3.40282347e+38F"/>
+<pathentry kind="mac" name="__FLT_MIN__" path="" value="1.17549435e-38F"/>
+<pathentry kind="mac" name="__FLT_EPSILON__" path="" value="1.19209290e-7F"/>
+<pathentry kind="mac" name="__FLT_DENORM_MIN__" path="" value="1.40129846e-45F"/>
+<pathentry kind="mac" name="__FLT_HAS_DENORM__" path="" value="1"/>
+<pathentry kind="mac" name="__FLT_HAS_INFINITY__" path="" value="1"/>
+<pathentry kind="mac" name="__FLT_HAS_QUIET_NAN__" path="" value="1"/>
+<pathentry kind="mac" name="__DBL_MANT_DIG__" path="" value="53"/>
+<pathentry kind="mac" name="__DBL_DIG__" path="" value="15"/>
+<pathentry kind="mac" name="__DBL_MIN_EXP__" path="" value="(-1021)"/>
+<pathentry kind="mac" name="__DBL_MIN_10_EXP__" path="" value="(-307)"/>
+<pathentry kind="mac" name="__DBL_MAX_EXP__" path="" value="1024"/>
+<pathentry kind="mac" name="__DBL_MAX_10_EXP__" path="" value="308"/>
+<pathentry kind="mac" name="__DBL_MAX__" path="" value="1.7976931348623157e+308"/>
+<pathentry kind="mac" name="__DBL_MIN__" path="" value="2.2250738585072014e-308"/>
+<pathentry kind="mac" name="__DBL_EPSILON__" path="" value="2.2204460492503131e-16"/>
+<pathentry kind="mac" name="__DBL_DENORM_MIN__" path="" value="4.9406564584124654e-324"/>
+<pathentry kind="mac" name="__DBL_HAS_DENORM__" path="" value="1"/>
+<pathentry kind="mac" name="__DBL_HAS_INFINITY__" path="" value="1"/>
+<pathentry kind="mac" name="__DBL_HAS_QUIET_NAN__" path="" value="1"/>
+<pathentry kind="mac" name="__LDBL_MANT_DIG__" path="" value="64"/>
+<pathentry kind="mac" name="__LDBL_DIG__" path="" value="18"/>
+<pathentry kind="mac" name="__LDBL_MIN_EXP__" path="" value="(-16381)"/>
+<pathentry kind="mac" name="__LDBL_MIN_10_EXP__" path="" value="(-4931)"/>
+<pathentry kind="mac" name="__LDBL_MAX_EXP__" path="" value="16384"/>
+<pathentry kind="mac" name="__LDBL_MAX_10_EXP__" path="" value="4932"/>
+<pathentry kind="mac" name="__DECIMAL_DIG__" path="" value="21"/>
+<pathentry kind="mac" name="__LDBL_MAX__" path="" value="1.18973149535723176502e+4932L"/>
+<pathentry kind="mac" name="__LDBL_MIN__" path="" value="3.36210314311209350626e-4932L"/>
+<pathentry kind="mac" name="__LDBL_EPSILON__" path="" value="1.08420217248550443401e-19L"/>
+<pathentry kind="mac" name="__LDBL_DENORM_MIN__" path="" value="3.64519953188247460253e-4951L"/>
+<pathentry kind="mac" name="__LDBL_HAS_DENORM__" path="" value="1"/>
+<pathentry kind="mac" name="__LDBL_HAS_INFINITY__" path="" value="1"/>
+<pathentry kind="mac" name="__LDBL_HAS_QUIET_NAN__" path="" value="1"/>
+<pathentry kind="mac" name="__DEC32_MANT_DIG__" path="" value="7"/>
+<pathentry kind="mac" name="__DEC32_MIN_EXP__" path="" value="(-94)"/>
+<pathentry kind="mac" name="__DEC32_MAX_EXP__" path="" value="97"/>
+<pathentry kind="mac" name="__DEC32_MIN__" path="" value="1E-95DF"/>
+<pathentry kind="mac" name="__DEC32_MAX__" path="" value="9.999999E96DF"/>
+<pathentry kind="mac" name="__DEC32_EPSILON__" path="" value="1E-6DF"/>
+<pathentry kind="mac" name="__DEC32_SUBNORMAL_MIN__" path="" value="0.000001E-95DF"/>
+<pathentry kind="mac" name="__DEC64_MANT_DIG__" path="" value="16"/>
+<pathentry kind="mac" name="__DEC64_MIN_EXP__" path="" value="(-382)"/>
+<pathentry kind="mac" name="__DEC64_MAX_EXP__" path="" value="385"/>
+<pathentry kind="mac" name="__DEC64_MIN__" path="" value="1E-383DD"/>
+<pathentry kind="mac" name="__DEC64_MAX__" path="" value="9.999999999999999E384DD"/>
+<pathentry kind="mac" name="__DEC64_EPSILON__" path="" value="1E-15DD"/>
+<pathentry kind="mac" name="__DEC64_SUBNORMAL_MIN__" path="" value="0.000000000000001E-383DD"/>
+<pathentry kind="mac" name="__DEC128_MANT_DIG__" path="" value="34"/>
+<pathentry kind="mac" name="__DEC128_MIN_EXP__" path="" value="(-6142)"/>
+<pathentry kind="mac" name="__DEC128_MAX_EXP__" path="" value="6145"/>
+<pathentry kind="mac" name="__DEC128_MIN__" path="" value="1E-6143DL"/>
+<pathentry kind="mac" name="__DEC128_MAX__" path="" value="9.999999999999999999999999999999999E6144DL"/>
+<pathentry kind="mac" name="__DEC128_EPSILON__" path="" value="1E-33DL"/>
+<pathentry kind="mac" name="__DEC128_SUBNORMAL_MIN__" path="" value="0.000000000000000000000000000000001E-6143DL"/>
+<pathentry kind="mac" name="__REGISTER_PREFIX__" path="" value=""/>
+<pathentry kind="mac" name="__USER_LABEL_PREFIX__" path="" value=""/>
+<pathentry kind="mac" name="__VERSION__" path="" value="&quot;4.4.2"/>
+<pathentry kind="mac" name="20091222" path="" value="(Red"/>
+<pathentry kind="mac" name="Hat" path="" value="4.4.2-20)&quot;"/>
+<pathentry kind="mac" name="__GNUC_GNU_INLINE__" path="" value="1"/>
+<pathentry kind="mac" name="_LP64" path="" value="1"/>
+<pathentry kind="mac" name="__LP64__" path="" value="1"/>
+<pathentry kind="mac" name="__NO_INLINE__" path="" value="1"/>
+<pathentry kind="mac" name="__FINITE_MATH_ONLY__" path="" value="0"/>
+<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1" path="" value="1"/>
+<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2" path="" value="1"/>
+<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4" path="" value="1"/>
+<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8" path="" value="1"/>
+<pathentry kind="mac" name="__GCC_HAVE_DWARF2_CFI_ASM" path="" value="1"/>
+<pathentry kind="mac" name="__SIZEOF_INT__" path="" value="4"/>
+<pathentry kind="mac" name="__SIZEOF_LONG__" path="" value="8"/>
+<pathentry kind="mac" name="__SIZEOF_LONG_LONG__" path="" value="8"/>
+<pathentry kind="mac" name="__SIZEOF_SHORT__" path="" value="2"/>
+<pathentry kind="mac" name="__SIZEOF_FLOAT__" path="" value="4"/>
+<pathentry kind="mac" name="__SIZEOF_DOUBLE__" path="" value="8"/>
+<pathentry kind="mac" name="__SIZEOF_LONG_DOUBLE__" path="" value="16"/>
+<pathentry kind="mac" name="__SIZEOF_SIZE_T__" path="" value="8"/>
+<pathentry kind="mac" name="__SIZEOF_WCHAR_T__" path="" value="4"/>
+<pathentry kind="mac" name="__SIZEOF_WINT_T__" path="" value="4"/>
+<pathentry kind="mac" name="__SIZEOF_PTRDIFF_T__" path="" value="8"/>
+<pathentry kind="mac" name="__SIZEOF_POINTER__" path="" value="8"/>
+<pathentry kind="mac" name="__amd64" path="" value="1"/>
+<pathentry kind="mac" name="__amd64__" path="" value="1"/>
+<pathentry kind="mac" name="__x86_64" path="" value="1"/>
+<pathentry kind="mac" name="__x86_64__" path="" value="1"/>
+<pathentry kind="mac" name="__k8" path="" value="1"/>
+<pathentry kind="mac" name="__k8__" path="" value="1"/>
+<pathentry kind="mac" name="__MMX__" path="" value="1"/>
+<pathentry kind="mac" name="__SSE__" path="" value="1"/>
+<pathentry kind="mac" name="__SSE2__" path="" value="1"/>
+<pathentry kind="mac" name="__SSE_MATH__" path="" value="1"/>
+<pathentry kind="mac" name="__SSE2_MATH__" path="" value="1"/>
+<pathentry kind="mac" name="__gnu_linux__" path="" value="1"/>
+<pathentry kind="mac" name="__linux" path="" value="1"/>
+<pathentry kind="mac" name="__linux__" path="" value="1"/>
+<pathentry kind="mac" name="linux" path="" value="1"/>
+<pathentry kind="mac" name="__unix" path="" value="1"/>
+<pathentry kind="mac" name="__unix__" path="" value="1"/>
+<pathentry kind="mac" name="unix" path="" value="1"/>
+<pathentry kind="mac" name="__ELF__" path="" value="1"/>
+<pathentry kind="mac" name="__DECIMAL_BID_FORMAT__" path="" value="1"/>
+<pathentry kind="mac" name="__BIGGEST_ALIGNMENT__" path="" value="16"/>
+<pathentry kind="mac" name="__cplusplus" path="" value="1"/>
+<pathentry kind="mac" name="__GNUG__" path="" value="4"/>
+<pathentry kind="mac" name="__GXX_WEAK__" path="" value="1"/>
+<pathentry kind="mac" name="__DEPRECATED" path="" value="1"/>
+<pathentry kind="mac" name="__GXX_RTTI" path="" value="1"/>
+<pathentry kind="mac" name="__EXCEPTIONS" path="" value="1"/>
+<pathentry kind="mac" name="_GNU_SOURCE" path="" value="1"/>
+<pathentry include="/home/nathaniel/Projects/libproxy" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/NetworkManager" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/dbus-1.0" kind="inc" path="" system="true"/>
+<pathentry include="/usr/lib64/dbus-1.0/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/webkit-1.0" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/glib-2.0" kind="inc" path="" system="true"/>
+<pathentry include="/usr/lib64/glib-2.0/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/gtk-2.0" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/libsoup-2.4" kind="inc" path="" system="true"/>
+<pathentry include="/usr/lib64/gtk-2.0/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/atk-1.0" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/cairo" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/pango-1.0" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/pixman-1" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/freetype2" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/libpng12" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/libxml2" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/xulrunner-sdk-1.9.1/stable" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/xulrunner-sdk-1.9.1/js" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/nspr4" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/gconf/2" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/orbit-2.0" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/kde4" kind="inc" path="" system="true"/>
+<pathentry include="/home/nathaniel/Projects/libproxy/libproxy" kind="inc" path="" system="true"/>
+<pathentry include="/usr/local/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/lib/gcc/x86_64-redhat-linux/4.4.2/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/c++/4.4.2" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/c++/4.4.2/x86_64-redhat-linux" kind="inc" path="" system="true"/>
+<pathentry include="/usr/include/c++/4.4.2/backward" kind="inc" path="" system="true"/>
+</storageModule>
+<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+<buildTargets>
+<target name=": install" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>install</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": install/local" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>install/local</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": install/strip" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>install/strip</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": list_install_components" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>list_install_components</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": rebuild_cache" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>rebuild_cache</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": test" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>test</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": all" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>all</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": clean" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>clean</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] libmodman" path="libmodman" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] libmodman/fast" path="libmodman" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": all" path="libmodman" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>all</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": clean" path="libmodman" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>clean</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] module_manager.cpp.o" path="libmodman" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>module_manager.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] module_manager.cpp.i" path="libmodman" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>module_manager.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] module_manager.cpp.s" path="libmodman" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>module_manager.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] condition" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>condition</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] condition/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>condition/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] condition_one" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>condition_one</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] condition_one/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>condition_one/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] condition_two" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>condition_two</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] condition_two/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>condition_two/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] singleton" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>singleton</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] singleton/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>singleton/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] singleton_one" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>singleton_one</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] singleton_one/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>singleton_one/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] singleton_two" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>singleton_two</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] singleton_two/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>singleton_two/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] sorted" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>sorted</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] sorted/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>sorted/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] sorted_one" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>sorted_one</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] sorted_one/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>sorted_one/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] sorted_two" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>sorted_two</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] sorted_two/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>sorted_two/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] symbol" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbol</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] symbol/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbol/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] symbol_one" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbol_one</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] symbol_one/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbol_one/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] symbol_two" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbol_two</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] symbol_two/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbol_two/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] symbollnk" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbollnk</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] symbollnk/fast" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>symbollnk/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": all" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>all</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": clean" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>clean</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/condition_one.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/condition_one.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/condition_one.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/condition_one.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/condition_one.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/condition_one.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/condition_two.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/condition_two.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/condition_two.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/condition_two.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/condition_two.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/condition_two.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/singleton_one.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/singleton_one.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/singleton_one.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/singleton_one.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/singleton_one.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/singleton_one.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/singleton_two.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/singleton_two.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/singleton_two.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/singleton_two.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/singleton_two.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/singleton_two.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/sorted_one.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/sorted_one.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/sorted_one.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/sorted_one.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/sorted_one.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/sorted_one.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/sorted_two.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/sorted_two.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/sorted_two.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/sorted_two.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/sorted_two.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/sorted_two.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/symbol_one.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/symbol_one.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/symbol_one.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/symbol_one.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/symbol_one.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/symbol_one.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] libmodman/test/symbol_two.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/symbol_two.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] libmodman/test/symbol_two.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/symbol_two.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] libmodman/test/symbol_two.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libmodman/test/symbol_two.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] main.cpp.o" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>main.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] main.cpp.i" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>main.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] main.cpp.s" path="libmodman/test" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>main.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] config_envvar" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>config_envvar</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] config_envvar/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>config_envvar/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] config_gnome" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>config_gnome</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] config_gnome/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>config_gnome/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] config_kde4" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>config_kde4</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] config_kde4/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>config_kde4/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] ignore_domain" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>ignore_domain</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] ignore_domain/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>ignore_domain/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] ignore_hostname" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>ignore_hostname</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] ignore_hostname/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>ignore_hostname/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] ignore_ip" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>ignore_ip</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] ignore_ip/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>ignore_ip/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] libproxy" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libproxy</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] libproxy/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>libproxy/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] network_networkmanager" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>network_networkmanager</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] network_networkmanager/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>network_networkmanager/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] pacrunner_mozjs" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>pacrunner_mozjs</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] pacrunner_mozjs/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>pacrunner_mozjs/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] pacrunner_webkit" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>pacrunner_webkit</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] pacrunner_webkit/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>pacrunner_webkit/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] pxgconf" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>pxgconf</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] pxgconf/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>pxgconf/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": uninstall" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>uninstall</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] wpad_dns_alias" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>wpad_dns_alias</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[lib] wpad_dns_alias/fast" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>wpad_dns_alias/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": all" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>all</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": clean" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>clean</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] extension_config.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_config.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] extension_config.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_config.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] extension_config.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_config.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] extension_pacrunner.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_pacrunner.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] extension_pacrunner.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_pacrunner.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] extension_pacrunner.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_pacrunner.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] extension_wpad.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_wpad.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] extension_wpad.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_wpad.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] extension_wpad.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>extension_wpad.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/config_envvar.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_envvar.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/config_envvar.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_envvar.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/config_envvar.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_envvar.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/config_gnome.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_gnome.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/config_gnome.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_gnome.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/config_gnome.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_gnome.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/config_kde4.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_kde4.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/config_kde4.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_kde4.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/config_kde4.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/config_kde4.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/ignore_domain.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_domain.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/ignore_domain.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_domain.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/ignore_domain.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_domain.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/ignore_hostname.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_hostname.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/ignore_hostname.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_hostname.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/ignore_hostname.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_hostname.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/ignore_ip.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_ip.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/ignore_ip.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_ip.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/ignore_ip.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/ignore_ip.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/network_networkmanager.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/network_networkmanager.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/network_networkmanager.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/network_networkmanager.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/network_networkmanager.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/network_networkmanager.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/pacrunner_mozjs.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pacrunner_mozjs.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/pacrunner_mozjs.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pacrunner_mozjs.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/pacrunner_mozjs.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pacrunner_mozjs.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/pacrunner_webkit.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pacrunner_webkit.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/pacrunner_webkit.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pacrunner_webkit.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/pacrunner_webkit.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pacrunner_webkit.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/pxgconf.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pxgconf.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/pxgconf.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pxgconf.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/pxgconf.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/pxgconf.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] modules/wpad_dns_alias.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/wpad_dns_alias.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] modules/wpad_dns_alias.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/wpad_dns_alias.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] modules/wpad_dns_alias.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>modules/wpad_dns_alias.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] proxy.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] proxy.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] proxy.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] url.cpp.o" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>url.cpp.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] url.cpp.i" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>url.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] url.cpp.s" path="libproxy" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>url.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": all" path="bindings" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>all</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": clean" path="bindings" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>clean</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] proxy" path="utils" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[exe] proxy/fast" path="utils" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy/fast</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": all" path="utils" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>all</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name=": clean" path="utils" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>clean</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] proxy.c.o" path="utils" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy.c.o</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] proxy.c.i" path="utils" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy.c.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] proxy.c.s" path="utils" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>/usr/bin/gmake</buildCommand>
+<buildArguments/>
+<buildTarget>proxy.c.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+</buildTargets>
+</storageModule>
+<storageModule moduleId="scannerConfiguration">
+<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
+<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+<buildOutputProvider>
+<openAction enabled="true" filePath=""/>
+<parser enabled="true"/>
+</buildOutputProvider>
+<scannerInfoProvider id="specsFile">
+<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="/usr/lib64/ccache/gcc" useDefault="true"/>
+<parser enabled="true"/>
+</scannerInfoProvider>
+</profile>
+<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
+<buildOutputProvider>
+<openAction enabled="true" filePath=""/>
+<parser enabled="true"/>
+</buildOutputProvider>
+<scannerInfoProvider id="makefileGenerator">
+<runAction arguments="-f ${project_name}_scd.mk" command="/usr/bin/gmake" useDefault="true"/>
+<parser enabled="true"/>
+</scannerInfoProvider>
+</profile>
+</storageModule>
+</cconfiguration>
+</storageModule>
+<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+<project id="libproxy.null.1" name="libproxy"/>
+</storageModule>
+</cproject>

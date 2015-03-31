@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!-- This file was automatically generated from C sources - DO NOT EDIT!
+To affect the contents of this file, edit the original C definitions,
+and/or use gtk-doc annotations.  -->
+<repository version="1.2"
+            xmlns="http://www.gtk.org/introspection/core/1.0"
+            xmlns:c="http://www.gtk.org/introspection/c/1.0"
+            xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
+  <namespace name="Libproxy"
+             version="1.0"
+             shared-library="libproxy.so.1"
+             c:identifier-prefixes="px"
+             c:symbol-prefixes="px">
+    <record name="ProxyFactory" c:type="pxProxyFactory" disguised="1">
+      <method name="free" c:identifier="px_proxy_factory_free">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+      </method>
+      <method name="get_proxies" c:identifier="px_proxy_factory_get_proxies">
+        <doc xml:whitespace="preserve">Get which proxies to use for the specified URL.
+A NULL-terminated array of proxy strings is returned.
+If the first proxy fails, the second should be tried, etc...
+Don't forget to free the strings/array when you are done.
+If an unrecoverable error occurs, this function returns NULL.
+in a separate thread (is thread-safe).  In most cases, the time
+required to complete this function call is simply the time required
+to read the configuration (i.e. from gconf, kconfig, etc).
+In the case of PAC, if no valid PAC is found in the cache (i.e.
+configuration has changed, cache is invalid, etc), the PAC file is
+downloaded and inserted into the cache. This is the most expensive
+operation as the PAC is retrieved over the network. Once a PAC exists
+in the cache, it is merely a javascript invocation to evaluate the PAC.
+One should note that DNS can be called from within a PAC during
+javascript invocation.
+In the case of WPAD, WPAD is used to automatically locate a PAC on the
+network.  Currently, we only use DNS for this, but other methods may
+be implemented in the future.  Once the PAC is located, normal PAC
+performance (described above) applies.
+The format of the returned proxy strings are as follows:
+- http://[username:password@]proxy:port
+- socks://[username:password@]proxy:port
+- socks5://[username:password@]proxy:port
+- socks4://[username:password@]proxy:port
+- &lt;procotol&gt;://[username:password@]proxy:port
+- direct://
+Please note that the username and password in the above URLs are optional
+and should be use to authenticate the connection if present.
+For SOCKS proxies, when the protocol version is specified (socks4:// or
+sock5://), it is expected that only this version is used. When only
+socks:// is set, the client MUST try SOCKS version 5 protocol and, on
+connection failure, fallback to SOCKS version 4.
+Other proxying protocols may exist. It is expected that the returned
+configuration scheme shall match the network service name of the
+proxy protocol or the service name of the protocol being proxied if the
+previous does not exist. As an example, on Mac OS X you can configure a
+RTSP streaming proxy. The expected returned configuration would be:
+- rtsp://[username:password@]proxy:port</doc>
+        <return-value transfer-ownership="full">
+          <doc xml:whitespace="preserve">A NULL-terminated array of proxy strings to use</doc>
+          <array c:type="char**">
+            <type name="utf8"/>
+          </array>
+        </return-value>
+        <parameters>
+          <parameter name="url" transfer-ownership="none">
+            <doc xml:whitespace="preserve">The URL we are trying to reach</doc>
+            <type name="utf8" c:type="char*"/>
+          </parameter>
+        </parameters>
+      </method>
+    </record>
+    <function name="proxy_factory_new" c:identifier="px_proxy_factory_new">
+      <doc xml:whitespace="preserve">Creates a new pxProxyFactory instance. This instance should be kept
+around as long as possible as it contains cached data to increase
+performance.  Memory usage should be minimal (cache is small) and the
+cache lifespan is handled automatically.</doc>
+      <return-value transfer-ownership="none">
+        <doc xml:whitespace="preserve">A new pxProxyFactory instance or NULL on error</doc>
+        <type name="ProxyFactory" c:type="pxProxyFactory*"/>
+      </return-value>
+    </function>
+  </namespace>
+</repository>

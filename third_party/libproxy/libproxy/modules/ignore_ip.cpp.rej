@@ -1,0 +1,31 @@
+--- libproxy/modules/ignore_ip.cpp
++++ libproxy/modules/ignore_ip.cpp
+@@ -90,7 +90,7 @@
+        /* IPv4 */
+        if (af == AF_INET)
+        {
+-               sockaddr_in *mask = new sockaddr_in;
++               sockaddr_in *mask = (sockaddr_in*) new char[sizeof(sockaddr_in)];
+                mask->sin_family = af;
+                mask->sin_addr.s_addr = htonl(~0 << (32 - (cidr > 32 ? 32 : cidr)));
+ 
+@@ -100,7 +100,7 @@
+        /* IPv6 */
+        else if (af == AF_INET6)
+        {
+-               sockaddr_in6 *mask = new sockaddr_in6;
++               sockaddr_in6 *mask = (sockaddr_in6*) new char[sizeof(sockaddr_in6)];
+                mask->sin6_family = af;
+                for (uint8_t i=0 ; i < sizeof(mask->sin6_addr) ; i++)
+                        mask->sin6_addr.s6_addr[i] = ~0 << (8 - (8*i > cidr ? 0 : cidr-8*i < 8 ? cidr-8*i : 8) );
+@@ -154,8 +154,8 @@
+                        if (ign_ip && net_ip && ign_ip->sa_family == net_ip->sa_family)
+                                goto out;
+ 
+-                       delete ign_ip;
+-                       delete net_ip;
++                       delete[] ign_ip;
++                       delete[] net_ip;
+                        ign_ip = NULL;
+                        net_ip = NULL;
+                }

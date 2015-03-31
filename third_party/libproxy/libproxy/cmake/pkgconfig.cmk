@@ -1,0 +1,23 @@
+if(NOT WIN32 AND NOT APPLE)
+  find_package(PkgConfig)
+
+  # Define our magical px_check_modules function
+  function(px_check_modules name)
+    if(PKG_CONFIG_EXECUTABLE)
+      option(WITH_${name} "Search for ${name} package" ON)
+      if (WITH_${name})
+        pkg_check_modules(${name} ${ARGN})
+        if(${${name}_FOUND})
+          include_directories(${${name}_INCLUDE_DIRS})
+          link_directories(${${name}_LIBRARY_DIRS})
+        else()
+          set(${name}_FOUND 0 PARENT_SCOPE)
+        endif()
+      else()
+        set(${name}_FOUND 0 PARENT_SCOPE)
+      endif()
+    endif()
+  endfunction(px_check_modules)
+endif()
+
+
