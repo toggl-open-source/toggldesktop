@@ -716,6 +716,24 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>description</tabstop>
+  <tabstop>project</tabstop>
+  <tabstop>newProjectName</tabstop>
+  <tabstop>publicProject</tabstop>
+  <tabstop>duration</tabstop>
+  <tabstop>start</tabstop>
+  <tabstop>stop</tabstop>
+  <tabstop>dateEdit</tabstop>
+  <tabstop>tags</tabstop>
+  <tabstop>billable</tabstop>
+  <tabstop>doneButton</tabstop>
+  <tabstop>deleteButton</tabstop>
+  <tabstop>newProjectWorkspace</tabstop>
+  <tabstop>newProjectClient</tabstop>
+  <tabstop>newClientName</tabstop>
+  <tabstop>addClientButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
