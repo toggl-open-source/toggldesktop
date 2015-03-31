@@ -37,10 +37,22 @@ error Netconf::autodetectProxy(
     }
 
 #ifdef _WIN32
-
+	WINHTTP_CURRENT_USER_IE_PROXY_CONFIG ie_config = { 0 };
+	if (!WinHttpGetIEProxyConfigForCurrentUser(&ie_config)) {
+		std::stringstream ss;
+		ss << "WinHttpGetIEProxyConfigForCurrentUser error: "
+			<< GetLastError();
+		return ss.str();
+	}
+	if (ie_config.lpszProxy) {
+		std::wstring proxy_url_wide(ie_config.lpszProxy);
+		std::string s("");
+		Poco::UnicodeConverter::toUTF8(proxy_url_wide, s);
+		*proxy_url = s;
+	}
 #endif
 
-    // Inspider by VLC source code
+    // Inspired by VLC source code
     // https://github.com/videolan/vlc/blob/master/src/darwin/netconf.c
 #ifdef __MACH__
     CFDictionaryRef dicRef = CFNetworkCopySystemProxySettings();
