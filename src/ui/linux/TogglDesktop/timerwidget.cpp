@@ -77,6 +77,15 @@ void TimerWidget::displayRunningTimerState(
 
     duration = te->DurationInSeconds;
 
+    if(te->Description.length()>0) {
+        ui->description->setToolTip(
+            QString("<p style='color:white;background-color:black;'>"+te->Description+"</p>"));
+    }
+    if(te->ProjectAndTaskLabel.length()>0) {
+        ui->project->setToolTip(
+            QString("<p style='color:white;background-color:black;'>"+te->ProjectAndTaskLabel+"</p>"));
+    }
+
     disconnect(this, SLOT(start()));
     disconnect(this, SLOT(stop()));
 
