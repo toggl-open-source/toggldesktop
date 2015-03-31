@@ -37,7 +37,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     }
 
     ui->tags->setToolTip(
-        QString("<p style='color:white;background-color:black;'>" +
+        QString("<p style='color:black;background-color:white;'>" +
                 (view->Tags).replace(QString("\t"), QString(", ")) + "</p>"));
     if (view->Description.length() > 0) {
         ui->description->setToolTip(
