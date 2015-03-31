@@ -27,12 +27,16 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     ui->dateDuration->setText(view->DateDuration);
 
     ui->tags->setToolTip(
-        QString("<p style='color:black;'>"+
+        QString("<p style='color:white;background-color:black;'>"+
                 (view->Tags).replace(QString("\t"), QString(", "))+"</p>"));
-    ui->description->setToolTip(
-        QString("<p style='color:black;'>"+view->Description+"</p>"));
-    ui->project->setToolTip(
-        QString("<p style='color:black;'>"+view->ProjectAndTaskLabel+"</p>"));
+    if(view->Description.length()>0) {
+        ui->description->setToolTip(
+            QString("<p style='color:white;background-color:black;'>"+view->Description+"</p>"));
+    }
+    if(view->ProjectAndTaskLabel.length()>0) {
+        ui->project->setToolTip(
+            QString("<p style='color:white;background-color:black;'>"+view->ProjectAndTaskLabel+"</p>"));
+    }
 }
 
 void TimeEntryCellWidget::labelClicked(QString field_name) {
