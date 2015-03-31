@@ -60,6 +60,7 @@ MainWindowController::MainWindowController(
     verticalLayout->addWidget(new TimeEntryListWidget());
     verticalLayout->addWidget(new TimeEntryEditorWidget());
     verticalLayout->setContentsMargins(0, 0, 0, 0);
+    verticalLayout->setSpacing(0);
     centralWidget()->setLayout(verticalLayout);
 
     readSettings();
