@@ -97,6 +97,9 @@ error Netconf::ConfigureProxy(
         if (Poco::Environment::has("HTTP_PROXY")) {
             proxy_url = Poco::Environment::get("HTTP_PROXY");
         }
+        if (Poco::Environment::has("http_proxy")) {
+            proxy_url = Poco::Environment::get("http_proxy");
+        }
         if (proxy_url.empty()) {
             error err = autodetectProxy(encoded_url, &proxy_url);
             if (err != noError) {
