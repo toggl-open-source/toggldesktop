@@ -260,10 +260,26 @@ void RelatedData::workspaceAutocompleteItems(
     std::map<Poco::UInt64, std::string> *ws_names,
     std::vector<AutocompleteItem> *list) {
 
+    // remember workspaces that have projects
+    std::set<Poco::UInt64> ws_ids_with_projects;
+    for (std::vector<Project *>::const_iterator it =
+        Projects.begin();
+            it != Projects.end(); it++) {
+        Project *p = *it;
+
+        if (p->Active()) {
+            ws_ids_with_projects.insert(p->WID());
+        }
+    }
+
     for (std::vector<Workspace *>::const_iterator it =
         Workspaces.begin();
             it != Workspaces.end(); it++) {
         Workspace *ws = *it;
+
+        if (ws_ids_with_projects.find(ws->ID()) == ws_ids_with_projects.end()) {
+            continue;
+        }
 
         std::string ws_name = Poco::UTF8::toUpper(ws->Name());
         (*ws_names)[ws->ID()] = ws_name;
