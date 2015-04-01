@@ -13,8 +13,10 @@ guid("") {
 
 void TimeEntryCellWidget::display(TimeEntryView *view) {
     guid = view->GUID;
-
-    ui->description->setText(view->Description);
+    QString description =
+        (view->Description.length() > 0) ?
+        view->Description : "(no description)";
+    ui->description->setText(description);
     ui->project->setText(view->ProjectAndTaskLabel);
     ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
     ui->duration->setText(view->Duration);
@@ -26,13 +28,27 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     ui->date->setText(view->DateHeader);
     ui->dateDuration->setText(view->DateDuration);
 
+    if (view->StartTimeString.length() > 0 &&
+            view->EndTimeString.length() > 0) {
+        ui->duration->setToolTip(
+            QString("<p style='color:black;background-color:white;'>" +
+                    view->StartTimeString + " - " +
+                    view->EndTimeString+"</p>"));
+    }
+
     ui->tags->setToolTip(
-        QString("<p style='color:black;'>"+
-                (view->Tags).replace(QString("\t"), QString(", "))+"</p>"));
-    ui->description->setToolTip(
-        QString("<p style='color:black;'>"+view->Description+"</p>"));
-    ui->project->setToolTip(
-        QString("<p style='color:black;'>"+view->ProjectAndTaskLabel+"</p>"));
+        QString("<p style='color:black;background-color:white;'>" +
+                (view->Tags).replace(QString("\t"), QString(", ")) + "</p>"));
+    if (view->Description.length() > 0) {
+        ui->description->setToolTip(
+            QString("<p style='color:white;background-color:black;'>" +
+                    view->Description + "</p>"));
+    }
+    if (view->ProjectAndTaskLabel.length() > 0) {
+        ui->project->setToolTip(
+            QString("<p style='color:white;background-color:black;'>" +
+                    view->ProjectAndTaskLabel + "</p>"));
+    }
 }
 
 void TimeEntryCellWidget::labelClicked(QString field_name) {

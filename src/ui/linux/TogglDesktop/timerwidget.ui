@@ -124,17 +124,17 @@ font-size: 14px;</string>
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>30</height>
+             <height>25</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>20</height>
+             <height>25</height>
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">color: rgb(190, 190, 190);</string>
+            <string notr="true">color: rgb(190, 190, 190);line-height:40px;position:absolute;bottom:5px;</string>
            </property>
            <property name="text">
             <string>NEW TOGGL</string>
@@ -146,7 +146,7 @@ font-size: 14px;</string>
             <bool>true</bool>
            </property>
            <property name="margin">
-            <number>3</number>
+            <number>2</number>
            </property>
           </widget>
          </item>

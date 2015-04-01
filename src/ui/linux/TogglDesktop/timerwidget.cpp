@@ -67,7 +67,10 @@ void TimerWidget::displayRunningTimerState(
     ui->start->setStyleSheet(
         "background-color: #e20000; color:'white'; font-weight: bold;");
 
-    ui->description->setEditText(te->Description);
+    QString description = (te->Description.length() > 0) ?
+                          te->Description : "(no description)";
+
+    ui->description->setEditText(description);
     ui->description->setEnabled(false);
 
     ui->duration->setText(te->Duration);
@@ -76,6 +79,17 @@ void TimerWidget::displayRunningTimerState(
     ui->project->setText(te->ProjectAndTaskLabel);
 
     duration = te->DurationInSeconds;
+
+    if (te->Description.length() > 0) {
+        ui->description->setToolTip(
+            QString("<p style='color:white;background-color:black;'>" +
+                    te->Description+"</p>"));
+    }
+    if (te->ProjectAndTaskLabel.length() > 0) {
+        ui->project->setToolTip(
+            QString("<p style='color:white;background-color:black;'>" +
+                    te->ProjectAndTaskLabel+"</p>"));
+    }
 
     disconnect(this, SLOT(start()));
     disconnect(this, SLOT(stop()));

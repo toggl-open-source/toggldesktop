@@ -1,0 +1,10 @@
+set(CMAKE_CSharp_COMPILER "@CMAKE_CSharp_COMPILER@")
+set(CMAKE_CSharp_COMPILER_LOADED @CMAKE_CSharp_COMPILER_LOADED@)
+
+# Don't do that otherwise you can't change the path later
+#set(GAC_DIR @GAC_DIR@)
+
+set(_csc_default_lib_path @_csc_default_lib_path@ CACHE INTERNAL "")
+
+set(CMAKE_CSharp_COMPILER_ENV_VAR "CSC")
+

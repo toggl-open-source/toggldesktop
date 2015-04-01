@@ -324,7 +324,11 @@ error HTTPSClient::request(
         std::string encoded_url("");
         Poco::URI::encode(relative_url, "", encoded_url);
 
-        Netconf::ConfigureProxy(encoded_url, &session);
+        error err = Netconf::ConfigureProxy(host + encoded_url, &session);
+        if (err != noError) {
+            logger().error("Error while configuring proxy: " + err);
+            return err;
+        }
 
         Poco::Net::HTTPRequest req(method,
                                    encoded_url,

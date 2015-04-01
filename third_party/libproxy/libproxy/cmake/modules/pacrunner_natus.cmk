@@ -1,0 +1,7 @@
+if(WIN32)
+  set(NATUS_FOUND 0)
+elseif(APPLE)
+  set(NATUS_FOUND 0)
+else()
+  px_check_modules(NATUS natus)
+endif()

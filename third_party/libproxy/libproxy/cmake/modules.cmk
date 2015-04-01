@@ -1,0 +1,46 @@
+# Setup module path
+if(WIN32)
+  set(MODULE_INSTALL_DIR ${LIB_INSTALL_DIR}/modules CACHE PATH "Module install dir")
+else()
+  set(MODULE_INSTALL_DIR ${LIB_INSTALL_DIR}/${PROJECT_NAME}/${PROJECT_VERSION}/modules CACHE PATH "Module install dir")
+endif()
+
+# Do module determination
+include(cmake/pxmodule.cmk)
+include(cmake/pkgconfig.cmk)
+include(cmake/modules/config_envvar.cmk)
+include(cmake/modules/config_sysconfig.cmk)
+include(cmake/modules/config_gnome.cmk)
+include(cmake/modules/config_kde4.cmk)
+include(cmake/modules/config_macosx.cmk)
+include(cmake/modules/network_networkmanager.cmk)
+include(cmake/modules/pacrunner_mozjs.cmk)
+include(cmake/modules/pacrunner_natus.cmk)
+include(cmake/modules/pacrunner_webkit.cmk)
+
+# Build the pacrunner into libproxy unless we are building for multiple engines
+set(BIPR 1 CACHE BOOL "Build internal pacrunner? (Always false when building more than one PR")
+if((MOZJS_FOUND AND WEBKIT_FOUND) OR (MOZJS_FOUND AND NATUS_FOUND) OR (WEBKIT_FOUND AND NATUS_FOUND))
+  set(BIPR 0)
+endif()
+
+#
+## Module definition
+#
+message("MODULES TO BUILD:")
+px_module(config_envvar            "${ENVVAR_FOUND}" 1)
+px_module(config_sysconfig         "${SYSCONFIG_FOUND}" 1)
+px_module(config_gnome             "${GNOME2_FOUND}" 0)
+px_module(config_gnome3            "${GNOME3_FOUND}" 0)
+px_module(config_kde4              "${KDE4_FOUND}"   0       ${KDE4_LIBRARIES})
+px_module(config_macosx            "${SC_FOUND}"     1       ${SC_LIBRARIES} ${CF_LIBRARIES})
+px_module(config_w32reg            "${WIN32}"        1)
+px_module(ignore_domain            1                 1)
+px_module(ignore_hostname          1                 1)
+px_module(ignore_ip                1                 1)
+px_module(network_networkmanager   "${NM_FOUND}"     0       ${NM_LIBRARIES})
+px_module(pacrunner_mozjs          "${MOZJS_FOUND}"  ${BIPR} ${MOZJS_LIBRARIES})
+px_module(pacrunner_natus          "${NATUS_FOUND}"  ${BIPR} ${NATUS_LIBRARIES})
+px_module(pacrunner_webkit         "${WEBKIT_FOUND}" ${BIPR} ${WEBKIT_LIBRARIES})
+px_module(wpad_dns_alias           1                 1)
+message("")

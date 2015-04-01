@@ -12,6 +12,7 @@
 #include "Poco/Net/HTTPCredentials.h"
 #include "Poco/Net/HTTPSClientSession.h"
 #include "Poco/URI.h"
+#include "Poco/UnicodeConverter.h"
 
 #ifdef __MACH__
 #include <CoreFoundation/CoreFoundation.h>  // NOLINT
@@ -19,71 +20,41 @@
 #endif
 
 #ifdef _WIN32
-//#include <winhttp.h>
+#include <winhttp.h>
+#pragma comment(lib, "winhttp")
 #endif
 
 namespace toggl {
 
 error Netconf::autodetectProxy(
-    const std::string &encoded_url,
-    std::string *proxy_url) {
+    const std::string encoded_url,
+    std::vector<std::string> *proxy_strings) {
 
-    *proxy_url = "";
+    poco_assert(proxy_strings);
 
-    // Inspired from Stack Overflow
-    // http://stackoverflow.com/questions/202547/how-do-i-find-out-the-browsers-proxy-settings
+    proxy_strings->clear();
+
+    if (encoded_url.empty()) {
+        return noError;
+    }
+
 #ifdef _WIN32
-	/*
-	if (WinHttpGetIEProxyConfigForCurrentUser(&ieProxyConfig)) {
-        if (ieProxyConfig.fAutoDetect) {
-            fAutoProxy = TRUE;
-        }
-
-        if (ieProxyConfig.lpszAutoConfigUrl != NULL) {
-            fAutoProxy = TRUE;
-            autoProxyOptions.lpszAutoConfigUrl =
-                ieProxyConfig.lpszAutoConfigUrl;
-        }
-    } else {
-        // use autoproxy
-        fAutoProxy = TRUE;
+    WINHTTP_CURRENT_USER_IE_PROXY_CONFIG ie_config = { 0 };
+    if (!WinHttpGetIEProxyConfigForCurrentUser(&ie_config)) {
+        std::stringstream ss;
+        ss << "WinHttpGetIEProxyConfigForCurrentUser error: "
+           << GetLastError();
+        return ss.str();
     }
-
-    if (fAutoProxy) {
-        if (autoProxyOptions.lpszAutoConfigUrl != NULL) {
-            autoProxyOptions.dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL;
-        } else {
-            autoProxyOptions.dwFlags = WINHTTP_AUTOPROXY_AUTO_DETECT;
-            autoProxyOptions.dwAutoDetectFlags =
-                WINHTTP_AUTO_DETECT_TYPE_DHCP | WINHTTP_AUTO_DETECT_TYPE_DNS_A;
-        }
-
-        // basic flags you almost always want
-        autoProxyOptions.fAutoLogonIfChallenged = TRUE;
-
-        // here we reset fAutoProxy in case an auto-proxy isn't actually
-        // configured for this url
-        fAutoProxy = WinHttpGetProxyForUrl(
-            hiOpen, pwszUrl, &autoProxyOptions, &autoProxyInfo);
+    if (ie_config.lpszProxy) {
+        std::wstring proxy_url_wide(ie_config.lpszProxy);
+        std::string s("");
+        Poco::UnicodeConverter::toUTF8(proxy_url_wide, s);
+        proxy_strings->push_back(s);
     }
-
-    if (fAutoProxy) {
-        // set proxy options for libcurl based on autoProxyInfo
-    } else {
-        if (ieProxyConfig.lpszProxy != NULL) {
-            // IE has an explicit proxy. set proxy options for libcurl here
-            // based on ieProxyConfig
-            //
-            // note that sometimes IE gives just a single or double colon
-            // for proxy or bypass list, which means "no proxy"
-        } else {
-            // there is no auto proxy and no manually configured proxy
-        }
-    }
-	*/
 #endif
 
-    // Inspider by VLC source code
+    // Inspired by VLC source code
     // https://github.com/videolan/vlc/blob/master/src/darwin/netconf.c
 #ifdef __MACH__
     CFDictionaryRef dicRef = CFNetworkCopySystemProxySettings();
@@ -106,7 +77,7 @@ error Netconf::autodetectProxy(
                                    - 1, kCFStringEncodingUTF8)) {
                 char buffer[kBufsize];
                 snprintf(buffer, kBufsize, "%s:%d", host_buffer, port);
-                *proxy_url = std::string(buffer);
+                proxy_strings->push_back(std::string(buffer));
             }
         }
 
@@ -114,10 +85,81 @@ error Netconf::autodetectProxy(
     }
 #endif
 
+    // Inspired by VLC source code
+    // https://github.com/videolan/vlc/blob/master/src/posix/netconf.c
+#ifdef __linux__
+
+    posix_spawn_file_actions_t actions;
+    posix_spawn_file_actions_init(&actions);
+    posix_spawn_file_actions_addopen(&actions, STDIN_FILENO, "/dev/null",
+                                     O_RDONLY, 0644);
+    int fd[2];
+    posix_spawn_file_actions_adddup2(&actions, fd[1], STDOUT_FILENO);
+
+    posix_spawnattr_init(&attr);
+    {
+        sigset_t set;
+        sigemptyset(&set);
+
+        posix_spawnattr_t attr;
+        posix_spawnattr_setsigmask(&attr, &set);
+        sigaddset(&set, SIGPIPE);
+        posix_spawnattr_setsigdefault(&attr, &set);
+        posix_spawnattr_setflags(&attr, POSIX_SPAWN_SETSIGDEF
+                                 | POSIX_SPAWN_SETSIGMASK);
+    }
+
+    pid_t pid;
+    char *argv[3] = { const_cast<char *>("proxy"),
+                      const_cast<char *>(encoded_url.c_str()), NULL
+                    };
+    if (posix_spawnp(&pid, "proxy", &actions, &attr, argv, environ)) {
+        pid = -1;
+    }
+
+    posix_spawnattr_destroy(&attr);
+    posix_spawn_file_actions_destroy(&actions);
+    close(fd[1]);
+
+    if (-1 == pid) {
+        close(fd[0]);
+        return error("Failed to run proxy command")
+    }
+
+           char buf[1024];
+    size_t len = 0;
+    do {
+        ssize_t val = read(fd[0], buf + len, sizeof (buf) - len);
+        if (val <= 0) {
+            break;
+        }
+        len += val;
+    } while (len < sizeof (buf));
+
+    close(fd[0]);
+
+    while (true) {
+        int status = {0};
+        if (-1 != waitpid(pid, &status, 0) == -1) {
+            break;
+        }
+    }
+
+    if (len >= 9 && !strncasecmp(buf, "direct://", 9)) {
+        return noError;
+    }
+
+    char *end = memchr(buf, '\n', len);
+    if (end != NULL) {
+        *end = '\0';
+        proxy_strings->push_back(std::string(buf));
+    }
+#endif
+
     return noError;
 }
 
-void Netconf::ConfigureProxy(
+error Netconf::ConfigureProxy(
     const std::string encoded_url,
     Poco::Net::HTTPSClientSession *session) {
 
@@ -128,8 +170,19 @@ void Netconf::ConfigureProxy(
         if (Poco::Environment::has("HTTP_PROXY")) {
             proxy_url = Poco::Environment::get("HTTP_PROXY");
         }
+        if (Poco::Environment::has("http_proxy")) {
+            proxy_url = Poco::Environment::get("http_proxy");
+        }
         if (proxy_url.empty()) {
-            error err = autodetectProxy(encoded_url, &proxy_url);
+            std::vector<std::string> proxy_strings;
+            error err = autodetectProxy(encoded_url, &proxy_strings);
+            if (err != noError) {
+                return err;
+            }
+            // FIXME: libproxy will return array of proxy strings
+            if (!proxy_strings.empty()) {
+                proxy_url = proxy_strings[0];
+            }
         }
         if (proxy_url.find("://") == std::string::npos) {
             proxy_url = "http://" + proxy_url;
@@ -181,6 +234,8 @@ void Netconf::ConfigureProxy(
                          + HTTPSClient::Config.ProxySettings.Username());
         }
     }
+
+    return noError;
 }
 
 }   // namespace toggl
