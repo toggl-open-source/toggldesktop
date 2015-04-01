@@ -196,33 +196,33 @@ error Netconf::ConfigureProxy(
             }
         }
 
-	if (!proxy_url.empty()) {
-		if (proxy_url.find("://") == std::string::npos) {
-		    proxy_url = "http://" + proxy_url;
-		}
-		Poco::URI proxy_uri(proxy_url);
+        if (!proxy_url.empty()) {
+            if (proxy_url.find("://") == std::string::npos) {
+                proxy_url = "http://" + proxy_url;
+            }
+            Poco::URI proxy_uri(proxy_url);
 
-		std::stringstream ss;
-		ss << "Using proxy URI=" + proxy_uri.toString()
-		   << " host=" << proxy_uri.getHost()
-		   << " port=" << proxy_uri.getPort();
-		logger.debug(ss.str());
+            std::stringstream ss;
+            ss << "Using proxy URI=" + proxy_uri.toString()
+               << " host=" << proxy_uri.getHost()
+               << " port=" << proxy_uri.getPort();
+            logger.debug(ss.str());
 
-		session->setProxy(
-		    proxy_uri.getHost(),
-		    proxy_uri.getPort());
+            session->setProxy(
+                proxy_uri.getHost(),
+                proxy_uri.getPort());
 
-		if (!proxy_uri.getUserInfo().empty()) {
-		    Poco::Net::HTTPCredentials credentials;
-		    credentials.fromUserInfo(proxy_uri.getUserInfo());
-		    session->setProxyCredentials(
-			credentials.getUsername(),
-			credentials.getPassword());
+            if (!proxy_uri.getUserInfo().empty()) {
+                Poco::Net::HTTPCredentials credentials;
+                credentials.fromUserInfo(proxy_uri.getUserInfo());
+                session->setProxyCredentials(
+                    credentials.getUsername(),
+                    credentials.getPassword());
 
-		    logger.debug("Proxy credentials detected username="
-				 + credentials.getUsername());
-		}
-	}
+                logger.debug("Proxy credentials detected username="
+                             + credentials.getUsername());
+            }
+        }
     }
 
     // Try to use user-configured proxy
