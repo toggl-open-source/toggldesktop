@@ -28,9 +28,7 @@ AboutDialog::~AboutDialog() {
 }
 
 void AboutDialog::displayUpdate(const QString update_url) {
-    if (!update_url.isEmpty()) {
-        show();
-    }
+    qDebug() << "displayUpdate update_url=" << update_url;
 
     url = update_url;
 
@@ -48,11 +46,15 @@ void AboutDialog::displayUpdate(const QString update_url) {
 }
 
 void AboutDialog::on_updateButton_clicked() {
+    qDebug() << "on_updateButton_clicked url=" << url;
     QDesktopServices::openUrl(QUrl(url));
     TogglApi::instance->shutdown = true;
     qApp->exit(0);
 }
 
 void AboutDialog::on_releaseChannel_activated(const QString &arg1) {
+    qDebug() << "on_releaseChannel_activated channel=" << arg1;
+    ui->updateButton->setEnabled(false);
+    ui->updateButton->setText("Checking for update");
     TogglApi::instance->setUpdateChannel(arg1);
 }

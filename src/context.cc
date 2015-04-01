@@ -878,7 +878,7 @@ error Context::downloadUpdate() {
             return err;
         }
 
-        // Ask if we have updates from Toggl
+        // Ask Toggl server if we have updates
         std::string url("");
         {
             std::string body("");
@@ -894,6 +894,9 @@ error Context::downloadUpdate() {
 
             if ("null" == body) {
                 logger().debug("The app is up to date");
+		if (UI()->CanDisplayUpdate()) {
+		    UI()->DisplayUpdate("");
+		}
                 return noError;
             }
 
@@ -912,6 +915,7 @@ error Context::downloadUpdate() {
         }
 
         // linux has non-silent updates, just pass on the URL
+	// linux users will download the update themselves
         if (UI()->CanDisplayUpdate()) {
             UI()->DisplayUpdate(url);
             return noError;
@@ -923,7 +927,7 @@ error Context::downloadUpdate() {
         }
 
         // Ignore update if not compatible with this client version
-
+	// only windows .exe installers ar supported atm
         if (url.find(".exe") == std::string::npos) {
             logger().debug("Update is not compatible with this client,"
                            " will ignore");
