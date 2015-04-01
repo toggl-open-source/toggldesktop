@@ -155,7 +155,7 @@ error Netconf::autodetectProxy(
         return noError;
     }
 
-    char *end = <char *>(memchr(buf, '\n', len));
+    char *end = static_cast<char *>(memchr(buf, '\n', len));
     if (end != NULL) {
         *end = '\0';
         proxy_strings->push_back(std::string(buf));
