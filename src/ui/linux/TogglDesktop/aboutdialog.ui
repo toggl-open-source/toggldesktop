@@ -43,8 +43,11 @@
    </item>
    <item>
     <widget class="QPushButton" name="updateButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
-      <string>Checking for update..</string>
+      <string>Toggl Desktop is up to date</string>
      </property>
     </widget>
    </item>
