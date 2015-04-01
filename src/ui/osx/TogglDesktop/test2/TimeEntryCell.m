@@ -27,6 +27,10 @@ extern void *ctx;
 
 	self.GUID = view_item.GUID;
 	self.durationTextField.stringValue = view_item.duration;
+	if (NO == view_item.durOnly)
+	{
+		self.durationTextField.toolTip = [NSString stringWithFormat:@"%@ - %@", view_item.startTimeString, view_item.endTimeString];
+	}
 
 	// Time entry has a description
 	if (view_item.Description && [view_item.Description length] > 0)

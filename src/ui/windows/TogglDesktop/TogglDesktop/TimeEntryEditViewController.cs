@@ -604,7 +604,7 @@ namespace TogglDesktop
 
             bool is_public = checkBoxPublic.Checked;
             ulong workspaceID = timeEntry.WID;
-            if (comboBoxWorkspace.Items.Count > 0)
+            if (comboBoxWorkspace.Items.Count == 1)
             {
                 workspaceID = ((Toggl.Model)comboBoxWorkspace.Items[0]).ID;
             }
@@ -923,7 +923,11 @@ namespace TogglDesktop
                 return;
             }
 
-            ulong workspaceID = ((Toggl.Model)comboBoxWorkspace.Items[0]).ID;
+            ulong workspaceID = timeEntry.WID;
+            if (comboBoxWorkspace.Items.Count == 1)
+            {
+                workspaceID = ((Toggl.Model)comboBoxWorkspace.Items[0]).ID;
+            }
             if (comboBoxWorkspace.Items.Count > 1)
             {
                 workspaceID = selectedItemID(comboBoxWorkspace);
