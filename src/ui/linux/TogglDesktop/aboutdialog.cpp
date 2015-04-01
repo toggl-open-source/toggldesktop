@@ -35,7 +35,7 @@ void AboutDialog::displayUpdate(const QString update_url) {
     QString channel = TogglApi::instance->updateChannel();
     ui->releaseChannel->setCurrentText(channel);
     ui->releaseChannel->setEnabled(true);
-    ui->updateButton->setEnabled(!update_url.isEmpty());
+    ui->updateButton->setEnabled(!url.isEmpty());
 
     if (!url.isEmpty()) {
         ui->updateButton->setText(
