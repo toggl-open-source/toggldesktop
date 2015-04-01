@@ -157,7 +157,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="newProjectWorkspaceLabel">
            <property name="text">
             <string>Workspace:</string>
            </property>

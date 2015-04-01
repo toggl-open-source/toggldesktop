@@ -301,6 +301,11 @@ void TimeEntryEditorWidget::on_deleteButton_clicked() {
 
 void TimeEntryEditorWidget::on_addNewProject_linkActivated(
     const QString &link) {
+
+    bool hasMultipleWorkspaces = ui->newProjectWorkspace->count() > 1;
+    ui->newProjectWorkspace->setVisible(hasMultipleWorkspaces);
+    ui->newProjectWorkspaceLabel->setVisible(hasMultipleWorkspaces);
+
     ui->addNewProject->setVisible(false);
     ui->newProject->setVisible(true);
     ui->newProjectName->setFocus();
