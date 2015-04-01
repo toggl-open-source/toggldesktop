@@ -24,6 +24,12 @@
 #pragma comment(lib, "winhttp")
 #endif
 
+#ifdef __linux__
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <spawn.h>
+#endif
+
 namespace toggl {
 
 error Netconf::autodetectProxy(
@@ -96,12 +102,12 @@ error Netconf::autodetectProxy(
     int fd[2];
     posix_spawn_file_actions_adddup2(&actions, fd[1], STDOUT_FILENO);
 
+    posix_spawnattr_t attr;
     posix_spawnattr_init(&attr);
     {
         sigset_t set;
         sigemptyset(&set);
 
-        posix_spawnattr_t attr;
         posix_spawnattr_setsigmask(&attr, &set);
         sigaddset(&set, SIGPIPE);
         posix_spawnattr_setsigdefault(&attr, &set);
@@ -123,10 +129,10 @@ error Netconf::autodetectProxy(
 
     if (-1 == pid) {
         close(fd[0]);
-        return error("Failed to run proxy command")
+        return error("Failed to run proxy command");
     }
 
-           char buf[1024];
+    char buf[1024];
     size_t len = 0;
     do {
         ssize_t val = read(fd[0], buf + len, sizeof (buf) - len);
@@ -140,7 +146,7 @@ error Netconf::autodetectProxy(
 
     while (true) {
         int status = {0};
-        if (-1 != waitpid(pid, &status, 0) == -1) {
+        if (-1 != waitpid(pid, &status, 0)) {
             break;
         }
     }
@@ -149,7 +155,7 @@ error Netconf::autodetectProxy(
         return noError;
     }
 
-    char *end = memchr(buf, '\n', len);
+    char *end = (char *)memchr(buf, '\n', len);
     if (end != NULL) {
         *end = '\0';
         proxy_strings->push_back(std::string(buf));
@@ -167,6 +173,12 @@ error Netconf::ConfigureProxy(
 
     std::string proxy_url("");
     if (HTTPSClient::Config.AutodetectProxy) {
+        if (Poco::Environment::has("HTTPS_PROXY")) {
+            proxy_url = Poco::Environment::get("HTTPS_PROXY");
+        }
+        if (Poco::Environment::has("https_proxy")) {
+            proxy_url = Poco::Environment::get("https_proxy");
+        }
         if (Poco::Environment::has("HTTP_PROXY")) {
             proxy_url = Poco::Environment::get("HTTP_PROXY");
         }
@@ -179,36 +191,38 @@ error Netconf::ConfigureProxy(
             if (err != noError) {
                 return err;
             }
-            // FIXME: libproxy will return array of proxy strings
             if (!proxy_strings.empty()) {
                 proxy_url = proxy_strings[0];
             }
         }
-        if (proxy_url.find("://") == std::string::npos) {
-            proxy_url = "http://" + proxy_url;
-        }
-        Poco::URI proxy_uri(proxy_url);
 
-        std::stringstream ss;
-        ss << "Proxy detected URI=" + proxy_uri.toString()
-           << " host=" << proxy_uri.getHost()
-           << " port=" << proxy_uri.getPort();
-        logger.debug(ss.str());
+	if (!proxy_url.empty()) {
+		if (proxy_url.find("://") == std::string::npos) {
+		    proxy_url = "http://" + proxy_url;
+		}
+		Poco::URI proxy_uri(proxy_url);
 
-        session->setProxy(
-            proxy_uri.getHost(),
-            proxy_uri.getPort());
+		std::stringstream ss;
+		ss << "Using proxy URI=" + proxy_uri.toString()
+		   << " host=" << proxy_uri.getHost()
+		   << " port=" << proxy_uri.getPort();
+		logger.debug(ss.str());
 
-        if (!proxy_uri.getUserInfo().empty()) {
-            Poco::Net::HTTPCredentials credentials;
-            credentials.fromUserInfo(proxy_uri.getUserInfo());
-            session->setProxyCredentials(
-                credentials.getUsername(),
-                credentials.getPassword());
+		session->setProxy(
+		    proxy_uri.getHost(),
+		    proxy_uri.getPort());
 
-            logger.debug("Proxy credentials detected username="
-                         + credentials.getUsername());
-        }
+		if (!proxy_uri.getUserInfo().empty()) {
+		    Poco::Net::HTTPCredentials credentials;
+		    credentials.fromUserInfo(proxy_uri.getUserInfo());
+		    session->setProxyCredentials(
+			credentials.getUsername(),
+			credentials.getPassword());
+
+		    logger.debug("Proxy credentials detected username="
+				 + credentials.getUsername());
+		}
+	}
     }
 
     // Try to use user-configured proxy
