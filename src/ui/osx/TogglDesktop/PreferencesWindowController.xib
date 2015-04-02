@@ -307,7 +307,7 @@
                     </textField>
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OFa-LD-uWo">
                         <rect key="frame" x="18" y="355" width="286" height="18"/>
-                        <buttonCell key="cell" type="check" title="Autodetect proxy settings" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ajp-uO-ROp">
+                        <buttonCell key="cell" type="check" title="Use system proxy settings" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ajp-uO-ROp">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
