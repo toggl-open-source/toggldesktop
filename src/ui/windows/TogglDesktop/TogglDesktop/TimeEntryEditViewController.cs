@@ -712,8 +712,6 @@ namespace TogglDesktop
 
         private void selectProjectAutoComplete()
         {
-            comboBoxProject.ResetListBox();
-
             object selected = comboBoxProject.autoCompleteListBox.SelectedItem;
             if (null == selected)
             {
@@ -721,6 +719,11 @@ namespace TogglDesktop
             }
 
             Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)selected;
+            if (item.Type != 2)
+            {
+                return;
+            }
+            comboBoxProject.ResetListBox();
             comboBoxProject.Text = item.Text;
 
             comboBoxProject.ResetListBox();
