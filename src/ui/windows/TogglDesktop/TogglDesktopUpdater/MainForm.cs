@@ -18,41 +18,73 @@ namespace TogglDesktopUpdater
             InitializeComponent();
         }
 
+        private string installer;
+        private string pid;
+        private string executable;
+
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string[] args = Environment.GetCommandLineArgs();
-            if (args.Length != 4) {
-                MessageBox.Show(string.Format("Expected 4 arguments, got {0}", args.Length));
-                return;
+            try
+            {
+                upgrade();
+                cleanup();
+                Environment.Exit(0);
             }
-            string pid = args[1];
-            string installer = args[2];
-            string executable = args[3];
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                cleanup();
+                Environment.Exit(1);
+            }
+        }
 
-            // FIXME: wait for pid to stop, then start installer
+        private void upgrade() 
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length != 4)
+            {
+                throw new ArgumentException(string.Format("Expected 4 arguments, got {0}", args.Length));
+            }
+            
+            pid = args[1];
+            installer = args[2];
+            executable = args[3];
+
+            // should we wait for pid to stop, then start installer?
 
             // Run installer
-            if (-1 == installer.IndexOf("TogglDesktopInstaller") ) {
-                MessageBox.Show(string.Format("Unexpected installer name {0}", installer));
-                return;
+            if (-1 == installer.IndexOf("TogglDesktopInstaller"))
+            {
+                throw new Exception(string.Format("Unexpected installer name {0}", installer));
             }
-            if (!installer.EndsWith(".exe")) {
-                MessageBox.Show(string.Format("Unexpected installer extension {0}", installer));
-                return;
+
+            if (!installer.EndsWith(".exe"))
+            {
+                throw new Exception(string.Format("Unexpected installer extension {0}", installer));
             }
 
             Process process = Process.Start(installer, "/S");
             if (!process.WaitForExit(15 * 1000))
             {
-                MessageBox.Show("The Toggl Desktop installer timed out");
-                return;
+                throw new Exception("The Toggl Desktop installer timed out");
             }
 
-            System.IO.File.Delete(installer);
-
             Process.Start(executable);
+        }
 
-            Environment.Exit(0);
+        private void cleanup()
+        {
+            try
+            {
+                if (null != installer && 0 != installer.Length)
+                {
+                    System.IO.File.Delete(installer);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("Error deleting installer: " + ex.Message);
+            }
         }
     }
 }
