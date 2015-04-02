@@ -46,6 +46,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.checkBoxUseSystemProxySettings = new System.Windows.Forms.CheckBox();
             this.textBoxReminderMinutes = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -65,10 +66,10 @@
             // checkBoxUseProxy
             // 
             this.checkBoxUseProxy.AutoSize = true;
-            this.checkBoxUseProxy.Location = new System.Drawing.Point(15, 16);
+            this.checkBoxUseProxy.Location = new System.Drawing.Point(12, 37);
             this.checkBoxUseProxy.Name = "checkBoxUseProxy";
             this.checkBoxUseProxy.Size = new System.Drawing.Size(169, 17);
-            this.checkBoxUseProxy.TabIndex = 0;
+            this.checkBoxUseProxy.TabIndex = 1;
             this.checkBoxUseProxy.Text = "Use proxy to connect to Toggl";
             this.checkBoxUseProxy.UseVisualStyleBackColor = true;
             this.checkBoxUseProxy.CheckedChanged += new System.EventHandler(this.checkBoxUseProxy_CheckedChanged);
@@ -83,10 +84,10 @@
             this.groupBoxProxySettings.Controls.Add(this.label3);
             this.groupBoxProxySettings.Controls.Add(this.label2);
             this.groupBoxProxySettings.Controls.Add(this.label1);
-            this.groupBoxProxySettings.Location = new System.Drawing.Point(15, 39);
+            this.groupBoxProxySettings.Location = new System.Drawing.Point(12, 60);
             this.groupBoxProxySettings.Name = "groupBoxProxySettings";
             this.groupBoxProxySettings.Size = new System.Drawing.Size(252, 143);
-            this.groupBoxProxySettings.TabIndex = 1;
+            this.groupBoxProxySettings.TabIndex = 2;
             this.groupBoxProxySettings.TabStop = false;
             this.groupBoxProxySettings.Text = "Proxy Settings";
             // 
@@ -162,10 +163,10 @@
             // checkBoxIdleDetection
             // 
             this.checkBoxIdleDetection.AutoSize = true;
-            this.checkBoxIdleDetection.Location = new System.Drawing.Point(15, 188);
+            this.checkBoxIdleDetection.Location = new System.Drawing.Point(12, 209);
             this.checkBoxIdleDetection.Name = "checkBoxIdleDetection";
             this.checkBoxIdleDetection.Size = new System.Drawing.Size(90, 17);
-            this.checkBoxIdleDetection.TabIndex = 2;
+            this.checkBoxIdleDetection.TabIndex = 3;
             this.checkBoxIdleDetection.Text = "Idle detection";
             this.checkBoxIdleDetection.UseVisualStyleBackColor = true;
             this.checkBoxIdleDetection.CheckedChanged += new System.EventHandler(this.checkBoxIdleDetection_CheckedChanged);
@@ -173,7 +174,7 @@
             // checkBoxRecordTimeline
             // 
             this.checkBoxRecordTimeline.AutoSize = true;
-            this.checkBoxRecordTimeline.Location = new System.Drawing.Point(15, 211);
+            this.checkBoxRecordTimeline.Location = new System.Drawing.Point(12, 232);
             this.checkBoxRecordTimeline.Name = "checkBoxRecordTimeline";
             this.checkBoxRecordTimeline.Size = new System.Drawing.Size(99, 17);
             this.checkBoxRecordTimeline.TabIndex = 5;
@@ -183,7 +184,7 @@
             // checkBoxRemindToTrackTime
             // 
             this.checkBoxRemindToTrackTime.AutoSize = true;
-            this.checkBoxRemindToTrackTime.Location = new System.Drawing.Point(15, 257);
+            this.checkBoxRemindToTrackTime.Location = new System.Drawing.Point(12, 278);
             this.checkBoxRemindToTrackTime.Name = "checkBoxRemindToTrackTime";
             this.checkBoxRemindToTrackTime.Size = new System.Drawing.Size(123, 17);
             this.checkBoxRemindToTrackTime.TabIndex = 7;
@@ -194,7 +195,7 @@
             // checkBoxOnTop
             // 
             this.checkBoxOnTop.AutoSize = true;
-            this.checkBoxOnTop.Location = new System.Drawing.Point(15, 234);
+            this.checkBoxOnTop.Location = new System.Drawing.Point(12, 255);
             this.checkBoxOnTop.Name = "checkBoxOnTop";
             this.checkBoxOnTop.Size = new System.Drawing.Size(141, 17);
             this.checkBoxOnTop.TabIndex = 6;
@@ -203,7 +204,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(15, 362);
+            this.buttonSave.Location = new System.Drawing.Point(12, 383);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 11;
@@ -213,7 +214,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(96, 362);
+            this.buttonCancel.Location = new System.Drawing.Point(93, 383);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 12;
@@ -223,6 +224,7 @@
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.checkBoxUseSystemProxySettings);
             this.panelMain.Controls.Add(this.textBoxReminderMinutes);
             this.panelMain.Controls.Add(this.label8);
             this.panelMain.Controls.Add(this.groupBox1);
@@ -239,12 +241,23 @@
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(280, 410);
+            this.panelMain.Size = new System.Drawing.Size(280, 420);
             this.panelMain.TabIndex = 6;
+            // 
+            // checkBoxUseSystemProxySettings
+            // 
+            this.checkBoxUseSystemProxySettings.AutoSize = true;
+            this.checkBoxUseSystemProxySettings.Location = new System.Drawing.Point(12, 14);
+            this.checkBoxUseSystemProxySettings.Name = "checkBoxUseSystemProxySettings";
+            this.checkBoxUseSystemProxySettings.Size = new System.Drawing.Size(147, 17);
+            this.checkBoxUseSystemProxySettings.TabIndex = 0;
+            this.checkBoxUseSystemProxySettings.Text = "Use system proxy settings";
+            this.checkBoxUseSystemProxySettings.UseVisualStyleBackColor = true;
+            this.checkBoxUseSystemProxySettings.CheckedChanged += new System.EventHandler(this.checkBoxUseSystemProxySettings_CheckedChanged);
             // 
             // textBoxReminderMinutes
             // 
-            this.textBoxReminderMinutes.Location = new System.Drawing.Point(167, 255);
+            this.textBoxReminderMinutes.Location = new System.Drawing.Point(164, 276);
             this.textBoxReminderMinutes.Name = "textBoxReminderMinutes";
             this.textBoxReminderMinutes.Size = new System.Drawing.Size(31, 20);
             this.textBoxReminderMinutes.TabIndex = 8;
@@ -252,7 +265,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(204, 257);
+            this.label8.Location = new System.Drawing.Point(201, 278);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(43, 13);
             this.label8.TabIndex = 9;
@@ -266,7 +279,7 @@
             this.groupBox1.Controls.Add(this.btnRecordShowHideShortcut);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(15, 280);
+            this.groupBox1.Location = new System.Drawing.Point(12, 301);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(252, 76);
             this.groupBox1.TabIndex = 10;
@@ -335,15 +348,15 @@
             // 
             // textBoxIdleMinutes
             // 
-            this.textBoxIdleMinutes.Location = new System.Drawing.Point(167, 186);
+            this.textBoxIdleMinutes.Location = new System.Drawing.Point(164, 207);
             this.textBoxIdleMinutes.Name = "textBoxIdleMinutes";
             this.textBoxIdleMinutes.Size = new System.Drawing.Size(31, 20);
-            this.textBoxIdleMinutes.TabIndex = 3;
+            this.textBoxIdleMinutes.TabIndex = 4;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(204, 188);
+            this.label5.Location = new System.Drawing.Point(201, 209);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 13);
             this.label5.TabIndex = 4;
@@ -353,12 +366,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 410);
+            this.ClientSize = new System.Drawing.Size(280, 420);
             this.Controls.Add(this.panelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(280, 440);
-            this.MinimumSize = new System.Drawing.Size(280, 440);
+            this.MaximumSize = new System.Drawing.Size(280, 460);
+            this.MinimumSize = new System.Drawing.Size(280, 460);
             this.Name = "PreferencesWindowController";
             this.Text = "Preferences";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesWindowController_FormClosing);
@@ -402,5 +415,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBoxReminderMinutes;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox checkBoxUseSystemProxySettings;
     }
 }

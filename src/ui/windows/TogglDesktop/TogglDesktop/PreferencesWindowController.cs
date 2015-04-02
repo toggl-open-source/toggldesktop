@@ -53,6 +53,9 @@ namespace TogglDesktop
                 Invoke((MethodInvoker)delegate { OnSettings(open, settings); });
                 return;
             }
+
+            checkBoxUseSystemProxySettings.Checked = settings.AutodetectProxy;
+
             groupBoxProxySettings.Enabled = settings.UseProxy;
             checkBoxUseProxy.Checked = settings.UseProxy;
             textBoxProxyHost.Text = settings.ProxyHost;
@@ -133,6 +136,8 @@ namespace TogglDesktop
             ulong.TryParse(textBoxReminderMinutes.Text, out reminderMinutes);
 
             Toggl.Settings settings = new Toggl.Settings();
+
+            settings.AutodetectProxy = checkBoxUseSystemProxySettings.Checked;
 
             settings.UseProxy = checkBoxUseProxy.Checked;
             settings.ProxyPort = port;
@@ -259,6 +264,10 @@ namespace TogglDesktop
         private void checkBoxRemindToTrackTime_CheckedChanged(object sender, EventArgs e)
         {
             textBoxReminderMinutes.Enabled = checkBoxRemindToTrackTime.Checked;
+        }
+
+        private void checkBoxUseSystemProxySettings_CheckedChanged(object sender, EventArgs e)
+        {
         }
     }
 }

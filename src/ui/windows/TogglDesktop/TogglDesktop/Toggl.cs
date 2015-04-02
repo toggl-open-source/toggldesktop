@@ -768,6 +768,13 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_settings_autodetect_proxy(
+            IntPtr context,
+            [MarshalAs(UnmanagedType.I1)]
+            bool autodetect_proxy);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_settings_focus_on_shortcut(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]
@@ -828,6 +835,12 @@ namespace TogglDesktop
 
             if (!toggl_set_settings_focus_on_shortcut(ctx,
                     settings.FocusOnShortcut)) {
+                return false;
+            }
+
+            if (!toggl_set_settings_autodetect_proxy(ctx,
+                settings.AutodetectProxy))
+            {
                 return false;
             }
 
