@@ -85,25 +85,16 @@ namespace TogglDesktop
         {
             e.DrawBackground();
             e.DrawFocusRectangle();
+            Brush myBrush = new SolidBrush(e.ForeColor);
             if (wspaces.Contains(e.Index))
             {
-                e.Graphics.DrawString(
-                    autoCompleteListBox.Items[e.Index].ToString(),
-                    e.Font,
-                    Brushes.Gray,
-                    e.Bounds);
+                myBrush = Brushes.Gray;
             }
-            else
-            {
-                e.Graphics.DrawString(
-                    autoCompleteListBox.Items[e.Index].ToString(),
-                    e.Font,
-                    new SolidBrush(e.ForeColor),
-                    e.Bounds);
-            }
-            
-
-            
+            e.Graphics.DrawString(
+                autoCompleteListBox.Items[e.Index].ToString(),
+                e.Font,
+                myBrush,
+                e.Bounds);
         }
 
         public void InitListBox()
