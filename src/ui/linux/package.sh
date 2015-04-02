@@ -15,6 +15,8 @@ fi
 
 set -e
 
+echo "Creating package"
+
 out=out/linux/toggldesktop
 
 rm -rf toggldesktop*.tar.gz $out
