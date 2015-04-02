@@ -35,6 +35,9 @@ void ErrorViewController::displayError(
     const bool user_error) {
     loginError = !uid;
     ui->errorMessage->setText(errmsg);
+    ui->errorMessage->setToolTip(
+        QString("<p style='color:white;background-color:black;'>" +
+                errmsg + "</p>"));
     setVisible(true);
     if (!user_error) {
         TogglApi::notifyBugsnag("error in shared lib", errmsg,
