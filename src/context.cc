@@ -1029,18 +1029,8 @@ const std::string Context::installerPlatform() {
 }
 
 const std::string Context::linuxPlatformName() {
-    Poco::File f("/opt/toggldesktop/platform");
-    if (f.exists() && f.isFile() && f.canRead()) {
-        Poco::FileInputStream fis(f.path());
-        if (fis.good()) {
-            std::string platform("");
-            fis >> platform;
-            return platform;
-        }
-    }
-    std::string arch = Poco::Environment::osArchitecture();
-    if (arch == "i386" || arch == "i686") {
-        return std::string("linux32");
+    if (kDebianPackage) {
+        return "deb64";
     }
     return std::string("linux");
 }

@@ -17,6 +17,7 @@
 #define kBetaChannelPercentage 5
 #define kTimelineChunkSeconds 900
 #define kEnterpriseInstall false
+#define kDebianPackage false
 
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
