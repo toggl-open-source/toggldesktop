@@ -94,7 +94,7 @@ error Netconf::autodetectProxy(
     // Inspired by VLC source code
     // https://github.com/videolan/vlc/blob/master/src/posix/netconf.c
 #ifdef __linux__
-
+/* FIXME:
     posix_spawn_file_actions_t actions;
     posix_spawn_file_actions_init(&actions);
     posix_spawn_file_actions_addopen(&actions, STDIN_FILENO, "/dev/null",
@@ -160,6 +160,7 @@ error Netconf::autodetectProxy(
         *end = '\0';
         proxy_strings->push_back(std::string(buf));
     }
+*/
 #endif
 
     return noError;
