@@ -864,11 +864,11 @@ error Context::downloadUpdate() {
             return noError;
         }
 
-		// To test updater in development, comment this block out:
-		if ("production" != environment_) {
-			logger().debug("Not in production, will not download updates");
-			return noError;
-		}
+        // To test updater in development, comment this block out:
+        if ("production" != environment_) {
+            logger().debug("Not in production, will not download updates");
+            return noError;
+        }
 
         // Load current update channel
         std::string update_channel("");
