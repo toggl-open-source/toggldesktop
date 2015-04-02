@@ -27,6 +27,8 @@ void PreferencesDialog::displaySettings(const bool open,
         show();
     }
 
+    ui->useSystemProxySettings->setChecked(settings->AutodetectProxy);
+
     ui->useProxy->setChecked(settings->UseProxy);
     ui->proxyHost->setText(settings->ProxyHost);
     ui->proxyPort->setText(QString::number(settings->ProxyPort));
@@ -97,4 +99,8 @@ void PreferencesDialog::on_idleMinutes_editingFinished() {
 void PreferencesDialog::on_reminderMinutes_editingFinished() {
     TogglApi::instance->setSettingsReminderMinutes(
         ui->reminderMinutes->text().toInt());
+}
+
+void PreferencesDialog::on_useSystemProxySettings_clicked(bool checked) {
+    TogglApi::instance->setSettingsAutodetectProxy(checked);
 }

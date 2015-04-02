@@ -15,6 +15,7 @@ class SettingsView : public QObject {
 
     static SettingsView *importOne(TogglSettingsView *view) {
         SettingsView *result = new SettingsView();
+        result->AutodetectProxy = view->AutodetectProxy;
         result->UseProxy = view->UseProxy;
         result->ProxyHost = QString(view->ProxyHost);
         result->ProxyPort = view->ProxyPort;
@@ -46,6 +47,7 @@ class SettingsView : public QObject {
     uint64_t IdleMinutes;
     uint64_t ReminderMinutes;
     bool ManualMode;
+    bool AutodetectProxy;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_

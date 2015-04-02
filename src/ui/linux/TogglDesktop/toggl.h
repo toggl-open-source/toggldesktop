@@ -132,6 +132,9 @@ class TogglApi : public QObject {
         const uint64_t wid,
         const QString name);
 
+    // returns false if error
+    bool setSettingsAutodetectProxy(const bool value);
+
     bool setProxySettings(
         const bool useProxy,
         const QString proxyHost,

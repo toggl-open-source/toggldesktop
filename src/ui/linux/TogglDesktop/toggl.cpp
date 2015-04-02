@@ -366,6 +366,10 @@ bool TogglApi::setSettingsUseIdleDetection(const bool useIdleDetection) {
             useIdleDetection);
 }
 
+bool TogglApi::setSettingsAutodetectProxy(const bool value) {
+    return toggl_set_settings_autodetect_proxy(ctx, value);
+}
+
 bool TogglApi::setSettingsReminder(const bool reminder) {
     return toggl_set_settings_reminder(ctx,
                                        reminder);
