@@ -18,6 +18,7 @@ namespace TogglDesktop
         private String _formerValue = String.Empty;
         public bool fullListOpened = false;
         private bool mouseEntered = false;
+        private List<int> wspaces = new List<int>();
 
         public CustomComboBox()
         {
@@ -84,11 +85,25 @@ namespace TogglDesktop
         {
             e.DrawBackground();
             e.DrawFocusRectangle();
-            e.Graphics.DrawString(
-                 autoCompleteListBox.Items[e.Index].ToString(),
-                 e.Font,
-                 new SolidBrush(e.ForeColor),
-                 e.Bounds);
+            if (wspaces.Contains(e.Index))
+            {
+                e.Graphics.DrawString(
+                    autoCompleteListBox.Items[e.Index].ToString(),
+                    e.Font,
+                    Brushes.Gray,
+                    e.Bounds);
+            }
+            else
+            {
+                e.Graphics.DrawString(
+                    autoCompleteListBox.Items[e.Index].ToString(),
+                    e.Font,
+                    new SolidBrush(e.ForeColor),
+                    e.Bounds);
+            }
+            
+
+            
         }
 
         public void InitListBox()
@@ -135,12 +150,17 @@ namespace TogglDesktop
             }
 
             autoCompleteListBox.Items.Clear();
+            wspaces.Clear();
 
             foreach (Toggl.AutocompleteItem item in autoCompleteList)
             {
                 if (item.ToString().IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     autoCompleteListBox.Items.Add(item);
+                    if (item.Type == 3)
+                    {
+                        wspaces.Add(autoCompleteListBox.Items.Count-1);
+                    }
                 }
             }
 
@@ -214,10 +234,16 @@ namespace TogglDesktop
         {
             ResetListBox();
             autoCompleteListBox.Items.Clear();
+            wspaces.Clear();
             foreach (Toggl.AutocompleteItem item in autoCompleteList)
             {
                 autoCompleteListBox.Items.Add(item);
+                if (item.Type == 3)
+                {
+                    wspaces.Add(autoCompleteListBox.Items.Count - 1);
+                }
             }
+
             if (autoCompleteListBox.Items.Count > 0)
             {
                 initAutocompleteSizes();
