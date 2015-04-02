@@ -1287,8 +1287,8 @@ namespace TogglDesktop
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = updater;
             psi.Arguments = Process.GetCurrentProcess().Id.ToString()
-                + " " + files[0].FullName
-                + " " + System.Reflection.Assembly.GetEntryAssembly().Location;
+                + " " + string.Format("\"{0}\"", files[0].FullName)
+                + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location);
             Process process = Process.Start(psi);
             if (!process.HasExited && process.Id != 0)
             {
