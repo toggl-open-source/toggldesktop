@@ -24,12 +24,6 @@
 #pragma comment(lib, "winhttp")
 #endif
 
-#ifdef __linux__
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <spawn.h>
-#endif
-
 namespace toggl {
 
 error Netconf::autodetectProxy(
@@ -89,78 +83,6 @@ error Netconf::autodetectProxy(
 
         CFRelease(dicRef);
     }
-#endif
-
-    // Inspired by VLC source code
-    // https://github.com/videolan/vlc/blob/master/src/posix/netconf.c
-#ifdef __linux__
-    /* FIXME:
-        posix_spawn_file_actions_t actions;
-        posix_spawn_file_actions_init(&actions);
-        posix_spawn_file_actions_addopen(&actions, STDIN_FILENO, "/dev/null",
-                                         O_RDONLY, 0644);
-        int fd[2];
-        posix_spawn_file_actions_adddup2(&actions, fd[1], STDOUT_FILENO);
-
-        posix_spawnattr_t attr;
-        posix_spawnattr_init(&attr);
-        {
-            sigset_t set;
-            sigemptyset(&set);
-
-            posix_spawnattr_setsigmask(&attr, &set);
-            sigaddset(&set, SIGPIPE);
-            posix_spawnattr_setsigdefault(&attr, &set);
-            posix_spawnattr_setflags(&attr, POSIX_SPAWN_SETSIGDEF
-                                     | POSIX_SPAWN_SETSIGMASK);
-        }
-
-        pid_t pid;
-        char *argv[3] = { const_cast<char *>("proxy"),
-                          const_cast<char *>(encoded_url.c_str()), NULL
-                        };
-        if (posix_spawnp(&pid, "proxy", &actions, &attr, argv, environ)) {
-            pid = -1;
-        }
-
-        posix_spawnattr_destroy(&attr);
-        posix_spawn_file_actions_destroy(&actions);
-        close(fd[1]);
-
-        if (-1 == pid) {
-            close(fd[0]);
-            return error("Failed to run proxy command");
-        }
-
-        char buf[1024];
-        size_t len = 0;
-        do {
-            ssize_t val = read(fd[0], buf + len, sizeof (buf) - len);
-            if (val <= 0) {
-                break;
-            }
-            len += val;
-        } while (len < sizeof (buf));
-
-        close(fd[0]);
-
-        while (true) {
-            int status = {0};
-            if (-1 != waitpid(pid, &status, 0)) {
-                break;
-            }
-        }
-
-        if (len >= 9 && !strncasecmp(buf, "direct://", 9)) {
-            return noError;
-        }
-
-        char *end = static_cast<char *>(memchr(buf, '\n', len));
-        if (end != NULL) {
-            *end = '\0';
-            proxy_strings->push_back(std::string(buf));
-        }
-    */
 #endif
 
     return noError;
