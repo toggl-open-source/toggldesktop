@@ -89,8 +89,20 @@ MainWindowController::MainWindowController(
     icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
     setWindowIcon(icon);
 
+    trayIcon = new QSystemTrayIcon(this);
+    normalTrayIcon = QIcon(":/icons/16x16/toggldesktop.png");
+    disabledTrayIcon = QIcon(":/icons/16x16/toggldesktop_gray.png");
+
     connectMenuActions();
     enableMenuActions();
+
+    trayMenu = new QMenu(this);
+    trayMenu->addAction(actionStop);
+    trayMenu->addAction(actionContinue);
+    trayMenu->addAction(actionLogout);
+
+    trayIcon->setContextMenu(trayMenu);
+    trayIcon->show();
 }
 
 MainWindowController::~MainWindowController() {
@@ -165,6 +177,11 @@ void MainWindowController::enableMenuActions() {
     actionClear_Cache->setEnabled(loggedIn);
     actionSend_Feedback->setEnabled(loggedIn);
     actionReports->setEnabled(loggedIn);
+    if (tracking) {
+        trayIcon->setIcon(normalTrayIcon);
+    } else {
+        trayIcon->setIcon(disabledTrayIcon);
+    }
 }
 
 void MainWindowController::connectMenuActions() {

@@ -92,6 +92,11 @@ class MainWindowController : public QMainWindow {
     QAction *actionSend_Feedback;
     QAction *actionReports;
 
+    QMenu *trayMenu;
+    QIcon normalTrayIcon;
+    QIcon disabledTrayIcon;
+    QSystemTrayIcon *trayIcon;
+
     PreferencesDialog *preferencesDialog;
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
