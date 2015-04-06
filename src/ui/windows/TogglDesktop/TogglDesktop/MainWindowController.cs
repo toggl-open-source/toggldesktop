@@ -945,9 +945,9 @@ namespace TogglDesktop
             }
             else if (Height <= MinimumSize.Height)
             {
-                String c = "#47bc00";
+                String c = "#4dd965";
                 if(isTracking) {
-                    c = "#e20000";
+                    c = "#ff3d32";
                 } 
                 resizeHandle.BackColor = ColorTranslator.FromHtml(c);
             }
