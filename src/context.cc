@@ -31,17 +31,21 @@
 #include "Poco/FileStream.h"
 #include "Poco/FormattingChannel.h"
 #include "Poco/Logger.h"
+#include "Poco/Net/FilePartSource.h"
+#include "Poco/Net/HTMLForm.h"
 #include "Poco/Net/NetSSL.h"
-#include "Poco/PatternFormatter.h"
 #include "Poco/Path.h"
+#include "Poco/PatternFormatter.h"
 #include "Poco/Random.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
+#include "Poco/URI.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
-#include "Poco/URI.h"
 
 namespace toggl {
+
+std::string Context::log_path_ = "";
 
 Context::Context(const std::string app_name, const std::string app_version)
     : db_(0)
@@ -1126,14 +1130,32 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     logger().debug("onSendFeedback");
 
+    Poco::Net::HTMLForm form;
+    form.setEncoding(Poco::Net::HTMLForm::ENCODING_MULTIPART);
+
+    form.set("desktop", "true");
+    form.set("toggl_version", HTTPSClient::Config.AppVersion);
+    form.set("details", Formatter::EscapeJSONString(feedback_.Details()));
+    form.set("subject", Formatter::EscapeJSONString(feedback_.Subject()));
+    form.set("date", Formatter::Format8601(time(0)));
+
+    if (!feedback_.AttachmentPath().empty()) {
+        form.addPart("files",
+                     new Poco::Net::FilePartSource(feedback_.AttachmentPath()));
+    }
+
+    form.addPart("files",
+                 new Poco::Net::FilePartSource(log_path_));
+
     std::string response_body("");
     TogglClient client(UI());
     error err = client.Post(kAPIURL,
-                            "/api/v8/feedback",
-                            feedback_.JSON(),
+                            "/api/v8/feedback/web",
+                            "",
                             user_->APIToken(),
                             "api_token",
-                            &response_body);
+                            &response_body,
+                            &form);
     if (err != noError) {
         displayError(err);
         return;
@@ -2665,6 +2687,8 @@ void Context::SetLogPath(const std::string path) {
     formattingChannel->setChannel(simpleFileChannel);
 
     Poco::Logger::get("").setChannel(formattingChannel);
+
+    log_path_ = path;
 }
 
 Poco::Logger &Context::logger() const {

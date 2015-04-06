@@ -17,6 +17,12 @@ namespace Poco {
 
 class Logger;
 
+namespace Net {
+
+class HTMLForm;
+
+}
+
 }  // namespace Poco
 
 namespace toggl {
@@ -92,7 +98,8 @@ class HTTPSClient {
         const std::string json,
         const std::string basic_auth_username,
         const std::string basic_auth_password,
-        std::string *response_body);
+        std::string *response_body,
+        Poco::Net::HTMLForm *form = 0);
 
     virtual error Get(
         const std::string host,
@@ -112,7 +119,8 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body,
-        Poco::Int64 *response_status);
+        Poco::Int64 *response_status,
+        Poco::Net::HTMLForm *form = 0);
 
     virtual Poco::Logger &logger() const;
 
@@ -145,7 +153,8 @@ class TogglClient : public HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body,
-        Poco::Int64 *response_status);
+        Poco::Int64 *response_status,
+        Poco::Net::HTMLForm *form = 0);
 
     virtual Poco::Logger &logger() const;
 

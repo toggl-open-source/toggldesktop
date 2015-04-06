@@ -25,7 +25,10 @@
 #define kLostPasswordURL "https://www.toggl.com/forgot-password"
 #define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
 
-#define kCheckYourSignupError "Signup failed - please check your details. The e-mail might be already taken."
+#define kContentTypeMultipartFormData "multipart/form-data"
+#define kContentTypeApplicationJSON "application/json"
+
+#define kCheckYourSignupError "Signup failed - please check your details. The e-mail might be already taken."  // NOLINT
 #define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
 #define kForbiddenError "Invalid e-mail or password!"
 #define kUnsupportedAppError "This version of the app is not supported any more. Please visit Toggl website to download a supported app." // NOLINT

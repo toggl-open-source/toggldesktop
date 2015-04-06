@@ -383,6 +383,8 @@ class Context : public TimelineDatasource {
     std::string update_path_;
 
     bool im_a_teapot_;
+
+    static std::string log_path_;
 };
 
 void on_websocket_message(

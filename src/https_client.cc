@@ -18,6 +18,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Net/AcceptCertificateHandler.h"
 #include "Poco/Net/Context.h"
+#include "Poco/Net/HTMLForm.h"
 #include "Poco/Net/HTTPBasicCredentials.h"
 #include "Poco/Net/HTTPCredentials.h"
 #include "Poco/Net/HTTPMessage.h"
@@ -220,7 +221,8 @@ error HTTPSClient::Post(
     const std::string json,
     const std::string basic_auth_username,
     const std::string basic_auth_password,
-    std::string *response_body) {
+    std::string *response_body,
+    Poco::Net::HTMLForm *form) {
     Poco::Int64 status_code(0);
     return request(Poco::Net::HTTPRequest::HTTP_POST,
                    host,
@@ -229,7 +231,8 @@ error HTTPSClient::Post(
                    basic_auth_username,
                    basic_auth_password,
                    response_body,
-                   &status_code);
+                   &status_code,
+                   form);
 }
 
 error HTTPSClient::Get(
@@ -257,7 +260,8 @@ error HTTPSClient::request(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body,
-    Poco::Int64 *status_code) {
+    Poco::Int64 *status_code,
+    Poco::Net::HTMLForm *form) {
 
     std::map<std::string, Poco::Timestamp>::const_iterator cit =
         banned_until_.find(host);
@@ -334,8 +338,10 @@ error HTTPSClient::request(
                                    encoded_url,
                                    Poco::Net::HTTPMessage::HTTP_1_1);
         req.setKeepAlive(false);
+
+        // FIXME: should get content type as parameter instead
         if (payload.size()) {
-            req.setContentType("application/json");
+            req.setContentType(kContentTypeApplicationJSON);
         }
         req.set("User-Agent", HTTPSClient::Config.UserAgent());
         req.setChunkedTransferEncoding(true);
@@ -346,20 +352,30 @@ error HTTPSClient::request(
             cred.authenticate(req);
         }
 
-        std::istringstream requestStream(payload);
-        Poco::DeflatingInputStream gzipRequest(
-            requestStream,
-            Poco::DeflatingStreamBuf::STREAM_GZIP);
-        Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
 
-        Poco::Int64 size = pBuff->pubseekoff(0, std::ios::end, std::ios::in);
-        pBuff->pubseekpos(0, std::ios::in);
+        if (!form) {
+            std::istringstream requestStream(payload);
 
-        req.setContentLength(size);
-        req.set("Content-Encoding", "gzip");
+            Poco::DeflatingInputStream gzipRequest(
+                requestStream,
+                Poco::DeflatingStreamBuf::STREAM_GZIP);
+            Poco::DeflatingStreamBuf *pBuff = gzipRequest.rdbuf();
+
+            Poco::Int64 size =
+                pBuff->pubseekoff(0, std::ios::end, std::ios::in);
+            pBuff->pubseekpos(0, std::ios::in);
+
+            req.setContentLength(size);
+            req.set("Content-Encoding", "gzip");
+
+            session.sendRequest(req) << pBuff << std::flush;
+        } else {
+            form->prepareSubmit(req);
+            std::ostream& send = session.sendRequest(req);
+            form->write(send);
+        }
+
         req.set("Accept-Encoding", "gzip");
-
-        session.sendRequest(req) << pBuff << std::flush;
 
         // Log out request contents
         std::stringstream request_string;
@@ -443,7 +459,8 @@ error TogglClient::request(
     const std::string basic_auth_username,
     const std::string basic_auth_password,
     std::string *response_body,
-    Poco::Int64 *status_code) {
+    Poco::Int64 *status_code,
+    Poco::Net::HTMLForm *form) {
 
     error err = TogglStatus.Status();
     if (err != noError) {
@@ -465,7 +482,8 @@ error TogglClient::request(
         basic_auth_username,
         basic_auth_password,
         response_body,
-        status_code);
+        status_code,
+        form);
 
     if (monitor_) {
         monitor_->DisplaySyncState(kSyncStateIdle);

@@ -21,11 +21,21 @@ class Feedback {
     ~Feedback() {}
 
     toggl::error Validate() const;
-    const std::string JSON() const;
+
+    const std::string &AttachmentPath() {
+        return attachment_path_;
+    }
+
+    const std::string &Details() {
+        return details_;
+    }
+
+    const std::string &Subject() {
+        return subject_;
+    }
 
  private:
     const std::string filename() const;
-    const std::string base64encode_attachment() const;
 
     std::string subject_;
     std::string details_;
