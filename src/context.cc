@@ -1023,6 +1023,13 @@ error Context::updateURL(std::string *result) {
     return noError;
 }
 
+const std::string Context::linuxPlatformName() {
+    if (kDebianPackage) {
+        return "deb64";
+    }
+    return std::string("linux");
+}
+
 const std::string Context::installerPlatform() {
     std::stringstream ss;
     if (POCO_OS_LINUX == POCO_OS) {
@@ -1036,13 +1043,6 @@ const std::string Context::installerPlatform() {
         ss << "_enterprise";
     }
     return ss.str();
-}
-
-const std::string Context::linuxPlatformName() {
-    if (kDebianPackage) {
-        return "deb64";
-    }
-    return std::string("linux");
 }
 
 void Context::TimelineUpdateServerSettings() {
