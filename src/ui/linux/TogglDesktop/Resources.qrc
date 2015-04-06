@@ -31,6 +31,5 @@
         <file>fonts/RobotoTTF/Roboto-Regular.ttf</file>
         <file>fonts/RobotoTTF/Roboto-Thin.ttf</file>
         <file>fonts/RobotoTTF/Roboto-ThinItalic.ttf</file>
-        <file>icons/16x16/toggldesktop_gray.png</file>
     </qresource>
 </RCC>
