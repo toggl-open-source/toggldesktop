@@ -36,6 +36,7 @@
             this.buttonSend = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.topicreminder = new System.Windows.Forms.Label();
             this.fileNameLabel = new System.Windows.Forms.Label();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +70,7 @@
             this.comboBoxTopic.Name = "comboBoxTopic";
             this.comboBoxTopic.Size = new System.Drawing.Size(270, 23);
             this.comboBoxTopic.TabIndex = 1;
+            this.comboBoxTopic.SelectedIndexChanged += new System.EventHandler(this.comboBoxTopic_SelectedIndexChanged);
             // 
             // richTextBoxContents
             // 
@@ -113,6 +115,7 @@
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.topicreminder);
             this.panelMain.Controls.Add(this.fileNameLabel);
             this.panelMain.Controls.Add(this.label1);
             this.panelMain.Controls.Add(this.buttonSend);
@@ -124,6 +127,19 @@
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(300, 286);
             this.panelMain.TabIndex = 5;
+            // 
+            // topicreminder
+            // 
+            this.topicreminder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.topicreminder.AutoSize = true;
+            this.topicreminder.Font = new System.Drawing.Font("Lucida Sans Unicode", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
+            this.topicreminder.Location = new System.Drawing.Point(15, 238);
+            this.topicreminder.Name = "topicreminder";
+            this.topicreminder.Size = new System.Drawing.Size(158, 15);
+            this.topicreminder.TabIndex = 6;
+            this.topicreminder.Text = "Please select feedback topic!";
+            this.topicreminder.Visible = false;
             // 
             // fileNameLabel
             // 
@@ -164,5 +180,6 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.Label fileNameLabel;
+        private System.Windows.Forms.Label topicreminder;
     }
 }

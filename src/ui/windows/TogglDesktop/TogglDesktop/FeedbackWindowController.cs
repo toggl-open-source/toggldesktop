@@ -42,9 +42,11 @@ namespace TogglDesktop
         {
             if (comboBoxTopic.SelectedIndex == 0)
             {
+                topicreminder.Visible = true;
                 comboBoxTopic.Focus();
                 return;
             }
+
             if (richTextBoxContents.TextLength == 0) {
                 richTextBoxContents.Focus();
                 return;
@@ -65,6 +67,14 @@ namespace TogglDesktop
             comboBoxTopic.SelectedIndex = 0;
             richTextBoxContents.Clear();
             Close();
+        }
+
+        private void comboBoxTopic_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxTopic.SelectedIndex != 0)
+            {
+                topicreminder.Visible = false;
+            }
         }
     }
 }
