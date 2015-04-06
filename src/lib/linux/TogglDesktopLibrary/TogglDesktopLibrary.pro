@@ -117,7 +117,6 @@ HEADERS += \
     ../../../websocket_client.h \
     ../../../window_change_recorder.h \
     ../../../workspace.h \
-    ../../include/toggl_api.h \
     ../../../../third_party/lua/src/lapi.h \
     ../../../../third_party/lua/src/lauxlib.h \
     ../../../../third_party/lua/src/lcode.h \
