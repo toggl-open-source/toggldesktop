@@ -267,7 +267,7 @@
             this.labelTask.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelTask.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.labelTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelTask.ForeColor = System.Drawing.Color.Gray;
             this.labelTask.Location = new System.Drawing.Point(3, 0);
             this.labelTask.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.labelTask.Name = "labelTask";
@@ -285,7 +285,7 @@
             this.labelClient.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelClient.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelClient.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.labelClient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.labelClient.ForeColor = System.Drawing.Color.DimGray;
             this.labelClient.Location = new System.Drawing.Point(59, 0);
             this.labelClient.Margin = new System.Windows.Forms.Padding(0);
             this.labelClient.Name = "labelClient";
