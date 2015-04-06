@@ -103,6 +103,9 @@ bool IsUserError(const error err) {
     if (noError == err) {
         return false;
     }
+    if (err.find(kCheckYourSignupError) != std::string::npos) {
+        return true;
+    }
     if (err.find(kEmailNotFoundCannotLogInOffline) != std::string::npos) {
         return true;
     }

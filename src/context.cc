@@ -1515,6 +1515,9 @@ _Bool Context::Signup(
     TogglClient client(UI());
     std::string user_data_json("");
     error err = User::Signup(&client, email, password, &user_data_json);
+    if (kBadRequestError == err) {
+        return displayError(kCheckYourSignupError);
+    }
     if (err != noError) {
         return displayError(err);
     }
