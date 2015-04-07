@@ -18,7 +18,6 @@ namespace TogglDesktop
         public bool opened = false;
         private Color hoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
         private Color defaultColor = Color.White;
-        private int defaultDurationX = 150;
 
         public TimeEntryCell(TimeEntryListViewController listContainer)
         {
