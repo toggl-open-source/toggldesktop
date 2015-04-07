@@ -277,26 +277,29 @@ namespace TogglDesktop
                 return;
             }
 
-            if (!File.Exists(scriptPath))
+            System.Threading.ThreadPool.QueueUserWorkItem(delegate
             {
-                Console.WriteLine("Script file does not exist: " + scriptPath);
-                TogglDesktop.Program.Shutdown(0);
-            }
+                if (!File.Exists(scriptPath))
+                {
+                    Console.WriteLine("Script file does not exist: " + scriptPath);
+                    TogglDesktop.Program.Shutdown(0);
+                }
 
-            string script = File.ReadAllText(scriptPath);
+                string script = File.ReadAllText(scriptPath);
 
-            Int64 err = 0;
-            string result = Toggl.RunScript(script, ref err);
-            if (0 != err)
-            {
-                Console.WriteLine(string.Format("Failed to run script, err = {0}", err));
-            }
-            Console.WriteLine(result);
+                Int64 err = 0;
+                string result = Toggl.RunScript(script, ref err);
+                if (0 != err)
+                {
+                    Console.WriteLine(string.Format("Failed to run script, err = {0}", err));
+                }
+                Console.WriteLine(result);
 
-            if (0 == err)
-            {
-                TogglDesktop.Program.Shutdown(0);
-            }
+                if (0 == err)
+                {
+                    TogglDesktop.Program.Shutdown(0);
+                }
+            }, null);
         }
 
         private string parseScriptPath()
