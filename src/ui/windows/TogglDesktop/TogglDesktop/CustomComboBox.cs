@@ -247,12 +247,6 @@ namespace TogglDesktop
         {
             int maxWidth = 0;
             InitListBox();
-            int defaultSelectedIndex = 0;
-            if (wspaces.Contains(0))
-            {
-                defaultSelectedIndex = 1;
-            }
-            autoCompleteListBox.SelectedIndex = defaultSelectedIndex;
             autoCompleteListBox.Height = 0;
             autoCompleteListBox.Width = 0;
             Focus();
