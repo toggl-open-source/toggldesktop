@@ -719,7 +719,7 @@ namespace TogglDesktop
             }
 
             Toggl.AutocompleteItem item = (Toggl.AutocompleteItem)selected;
-            if (item.Type != 2)
+            if (item.ProjectID == 0)
             {
                 return;
             }
