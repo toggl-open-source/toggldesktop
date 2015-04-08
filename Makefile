@@ -315,15 +315,23 @@ endif
 
 ifeq ($(osname), windows)
 openssl:
-	cd $(openssldir) && ./config -fPIC shared no-dso && make
+	cd $(openssldir) && ./config shared no-dso && ./Configure Cygwin && make
 endif
 
 poco:
+ifeq ($(osname), windows)
+	cd $(pocodir) && \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples \
+	--sqlite-thread-safe=0 \
+	--include-path=$(pwd)/$(openssldir)/inc32 --library-path=$(pwd)/$(openssldir) && \
+	make
+else
 	cd $(pocodir) && \
 	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples --cflags=-fPIC \
 	--sqlite-thread-safe=1 \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make
+endif
 
 third_party/google-astyle/build/google-astyle:
 	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
