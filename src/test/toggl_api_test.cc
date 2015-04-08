@@ -79,9 +79,30 @@ TimeEntry editor_state;
 _Bool editor_open(false);
 std::string editor_focused_field_name("");
 
+bool on_app_open;
+
+int64_t sync_state;
+
+int64_t unsynced_item_count;
+
+std::string update_url;
+
 }  // namespace testresult
 
 void on_app(const _Bool open) {
+    testresult::on_app_open = open;
+}
+
+void on_sync_state(const int64_t sync_state) {
+    testresult::sync_state = sync_state;
+}
+
+void on_update(const char_t *url) {
+    testresult::update_url = std::string(url);
+}
+
+void on_unsynced_items(const int64_t count) {
+    testresult::unsynced_item_count = count;
 }
 
 void on_error(
@@ -178,6 +199,8 @@ void on_display_settings(
 
     testing::testresult::settings.use_idle_detection =
         settings->UseIdleDetection;
+    testing::testresult::settings.menubar_project = settings->MenubarProject;
+    testing::testresult::settings.autodetect_proxy = settings->AutodetectProxy;
     testing::testresult::settings.menubar_timer = settings->MenubarTimer;
     testing::testresult::settings.reminder = settings->Reminder;
     testing::testresult::settings.dock_icon = settings->DockIcon;
@@ -254,6 +277,9 @@ class App {
         toggl_set_cacert_path(ctx_, path.toString().c_str());
 
         toggl_on_show_app(ctx_, on_app);
+        toggl_on_sync_state(ctx_, on_sync_state);
+        toggl_on_unsynced_items(ctx_, on_unsynced_items);
+        toggl_on_update(ctx_, on_update);
         toggl_on_error(ctx_, on_error);
         toggl_on_online_state(ctx_, on_online_state);
         toggl_on_login(ctx_, on_login);
@@ -292,10 +318,43 @@ TEST(TogglApiTest, toggl_context_init) {
     testing::App app;
 }
 
+TEST(TogglApiTest, testing_sleep) {
+    time_t start = time(0);
+    testing_sleep(1);
+    int elapsed_seconds = time(0) - start;
+    ASSERT_EQ(1, elapsed_seconds);
+}
+
+TEST(TogglApiTest, toggl_run_script) {
+    testing::App app;
+    int64_t err(0);
+    char *s = toggl_run_script(app.ctx(), "print 'test'", &err);
+    std::string res(s);
+    free(s);
+    ASSERT_EQ(0, err);
+    ASSERT_EQ("0 value(s) returned\n\n\n", res);
+}
+
+TEST(TogglApiTest, toggl_run_script_with_invalid_script) {
+    testing::App app;
+    int64_t err(0);
+    char *s = toggl_run_script(app.ctx(), "foo bar", &err);
+    std::string res(s);
+    free(s);
+    ASSERT_NE(0, err);
+    ASSERT_EQ("[string \"foo bar\"]:1: syntax error near 'bar'", res);
+}
+
 TEST(TogglApiTest, toggl_set_settings) {
     testing::App app;
 
     // set to false/null
+
+    ASSERT_TRUE(toggl_set_settings_menubar_project(app.ctx(), false));
+    ASSERT_FALSE(testing::testresult::settings.menubar_project);
+
+    ASSERT_TRUE(toggl_set_settings_autodetect_proxy(app.ctx(), false));
+    ASSERT_FALSE(testing::testresult::settings.autodetect_proxy);
 
     ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), false));
     ASSERT_FALSE(testing::testresult::settings.use_idle_detection);
@@ -325,6 +384,12 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_FALSE(testing::testresult::settings.manual_mode);
 
     // set to true / not null
+
+    ASSERT_TRUE(toggl_set_settings_menubar_project(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.menubar_project);
+
+    ASSERT_TRUE(toggl_set_settings_autodetect_proxy(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.autodetect_proxy);
 
     ASSERT_TRUE(toggl_set_settings_use_idle_detection(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.use_idle_detection);
@@ -400,6 +465,16 @@ TEST(TogglApiTest, toggl_get_user_email) {
     str = toggl_get_user_email(app.ctx());
     ASSERT_EQ("johnsmith@toggl.com", std::string(str));
     free(str);
+}
+
+TEST(TogglApiTest, toggl_show_app) {
+    testing::App app;
+
+    testing::testresult::on_app_open = false;
+
+    toggl_show_app(app.ctx());
+
+    ASSERT_TRUE(testing::testresult::on_app_open);
 }
 
 TEST(TogglApiTest, toggl_set_update_channel) {
@@ -515,6 +590,18 @@ TEST(TogglApiTest, toggl_set_environment) {
     std::string res(env);
     free(env);
     ASSERT_EQ("test", res);
+}
+
+TEST(TogglApiTest, toggl_set_update_path) {
+    testing::App app;
+
+    toggl_set_update_path(app.ctx(), "/tmp/");
+
+    char *s = toggl_update_path(app.ctx());
+    std::string path(s);
+    free(s);
+
+    ASSERT_EQ("/tmp/", path);
 }
 
 TEST(TogglApiTest, testing_set_logged_in_user) {
@@ -1013,6 +1100,28 @@ TEST(TogglApiTest, toggl_set_time_entry_tags) {
 
     ASSERT_TRUE(toggl_set_time_entry_tags(app.ctx(), guid.c_str(), ""));
     ASSERT_EQ("", testing::testresult::timer_state.Tags());
+}
+
+TEST(TogglApiTest, toggl_parse_duration_string_into_seconds) {
+    int64_t seconds = toggl_parse_duration_string_into_seconds("15 seconds");
+    ASSERT_EQ(15, seconds);
+}
+
+TEST(TogglApiTest, toggl_parse_duration_string_into_seconds_with_no_duration_string) {
+    int64_t seconds = toggl_parse_duration_string_into_seconds(0);
+    ASSERT_EQ(0, seconds);
+}
+
+TEST(TogglApiTest, toggl_discard_time_at_with_no_guid) {
+    testing::App app;
+
+    ASSERT_FALSE(toggl_discard_time_at(app.ctx(), 0, time(0), false));
+}
+
+TEST(TogglApiTest, toggl_discard_time_at_with_no_stop_time) {
+    testing::App app;
+
+    ASSERT_FALSE(toggl_discard_time_at(app.ctx(), "some fake guid", 0, false));
 }
 
 TEST(TogglApiTest, toggl_discard_time_at) {

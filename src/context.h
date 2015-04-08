@@ -62,6 +62,9 @@ class Context : public TimelineDatasource {
     void SetUpdatePath(const std::string path) {
         update_path_ = path;
     }
+    const std::string &UpdatePath() {
+        return update_path_;
+    }
 
     void SetEnvironment(const std::string environment);
     std::string Environment() const {

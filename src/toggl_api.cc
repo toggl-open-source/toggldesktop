@@ -166,6 +166,12 @@ void toggl_set_update_path(
     return app(context)->SetUpdatePath(to_string(path));
 }
 
+char_t *toggl_update_path(
+    void *context) {
+    return copy_string(app(context)->UpdatePath());
+}
+
+
 void toggl_set_environment(
     void *context,
     const char_t *environment) {

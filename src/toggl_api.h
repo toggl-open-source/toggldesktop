@@ -224,6 +224,10 @@ extern "C" {
         void *context,
         const char_t *path);
 
+    // you must free the result
+    TOGGL_EXPORT char_t *toggl_update_path(
+        void *context);
+
     // Log path must be configured from UI
 
     TOGGL_EXPORT void toggl_set_log_path(
