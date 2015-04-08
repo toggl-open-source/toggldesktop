@@ -303,12 +303,18 @@ lua:
 	cd third_party/lua && make generic && make local
 endif
 
-openssl:
 ifeq ($(osname), mac)
+openssl:
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make
 endif
 
 ifeq ($(osname), linux)
+openssl:
+	cd $(openssldir) && ./config -fPIC shared no-dso && make
+endif
+
+ifeq ($(osname), windows)
+openssl:
 	cd $(openssldir) && ./config -fPIC shared no-dso && make
 endif
 
