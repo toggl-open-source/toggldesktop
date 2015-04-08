@@ -52,7 +52,7 @@ endif
 
 ifneq (, $(findstring CYGWIN, $(uname) ))
 executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/release/TogglDesktop.exe
-pocolib=$(pocodir)/lib/Linux/$(architecture)
+pocolib=$(pocodir)/lib
 osname=windows
 endif
 
@@ -150,6 +150,24 @@ libs=-lX11 \
         -Lthird_party/lua/install/lib \
 	-llua \
 	-ldl
+endif
+
+ifeq ($(osname), windows)
+libs= -L$(pocolib) \
+	-lPocoDataSQLite \
+	-lPocoData \
+	-lPocoNet \
+	-lPocoNetSSL \
+	-lPocoCrypto \
+	-lPocoUtil \
+	-lPocoXML \
+	-lPocoJSON \
+	-lPocoFoundation \
+	-lpthread \
+	-L$(openssldir) \
+	-lrt \
+        -Lthird_party/lua/install/lib \
+	-llua
 endif
 
 cxx=g++ -fprofile-arcs -ftest-coverage
