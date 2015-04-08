@@ -236,6 +236,37 @@ TEST(User, DeletesZombies) {
     ASSERT_TRUE(te->IsMarkedAsDeletedOnServer());
 }
 
+TEST(Database, LoadUserByEmail) {
+    testing::Database db;
+
+    User user;
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+
+    std::vector<ModelChange> changes;
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+
+    User user2;
+    ASSERT_EQ(noError,
+        db.instance()->LoadUserByEmail("johnsmith@toggl.com", &user2));
+
+    ASSERT_EQ(user.ID(), user2.ID());
+}
+
+TEST(Database, LoadUserByEmailWithoutEmail) {
+    testing::Database db;
+
+    User user;
+    ASSERT_NE(noError, db.instance()->LoadUserByEmail("", &user));
+}
+
+TEST(Database, LoadUserByEmailWithNonexistantEmail) {
+    testing::Database db;
+
+    User user;
+    ASSERT_EQ(noError, db.instance()->LoadUserByEmail("foo@bar.com", &user));
+}
+
 TEST(Database, AllowsSameEmail) {
     testing::Database db;
 
