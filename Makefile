@@ -514,6 +514,7 @@ lcov: test
 	genhtml -q -o coverage app.info
 
 coverage: lcov
+	@echo "open coverage/index.html to view coverage report"
 
 loco:
 ifeq ($(osname), mac)
