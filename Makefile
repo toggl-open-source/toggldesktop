@@ -498,12 +498,12 @@ toggl_test: clean_test objects test_objects
 test_lib: lua toggl_test
 ifeq ($(osname), linux)
 	cp src/ssl/cacert.pem test/.
-	cp -r $(pocodir)/lib/Linux/$(architecture)/*.so* test/.
+	cp -r $(pocodir)/lib/Linux/$(architecture)/* test/.
 	cp -r $(openssldir)/*so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
 else
 	cp src/ssl/cacert.pem test/.
-	cp -r $(pocolib)/*.dll test/.
+	cp -r $(pocolib)/* test/.
 	cd test && ./toggl_test --gtest_shuffle
 endif
 
