@@ -52,7 +52,7 @@ endif
 
 ifneq (, $(findstring CYGWIN, $(uname) ))
 executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/release/TogglDesktop.exe
-pocolib=$(pocodir)/lib
+pocolib=$(pocodir)/lib/CYGWIN/i686
 osname=windows
 endif
 
@@ -166,6 +166,7 @@ libs= -L$(pocolib) \
 	-lpthread \
 	-L$(openssldir) \
 	-lrt \
+	-lpsapi \
         -Lthird_party/lua/install/lib \
 	-llua
 endif
@@ -501,7 +502,9 @@ ifeq ($(osname), linux)
 	cp -r $(openssldir)/*so* test/.
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
 else
-	cd test && ./toggl_test
+	cp src/ssl/cacert.pem test/.
+	cp -r $(pocolib)/*.dll test/.
+	cd test && ./toggl_test --gtest_shuffle
 endif
 
 test: test_lib
