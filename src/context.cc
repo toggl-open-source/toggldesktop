@@ -2072,46 +2072,53 @@ _Bool Context::SetTimeEntryProject(
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
     const std::string project_guid) {
-    if (GUID.empty()) {
-        return displayError("Missing GUID");
-    }
-    if (!user_) {
-        logger().warning("Cannot set project, user logged out");
-        return true;
-    }
-
-    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return true;
-    }
-
-    Project *p = 0;
-    if (project_id) {
-        p = user_->related.ProjectByID(project_id);
-    }
-    if (!project_guid.empty()) {
-        p = user_->related.ProjectByGUID(project_guid);
-    }
-
-    if (p) {
-        // If user re-assigns project, don't mess with the billable
-        // flag any more. (User selected billable project, unchecked billable,
-        // then selected the same project again).
-        if (p->ID() != te->PID()) {
-            te->SetBillable(p->Billable());
+    try {
+        if (GUID.empty()) {
+            return displayError("Missing GUID");
         }
-        te->SetWID(p->WID());
-    }
-    te->SetTID(task_id);
-    te->SetPID(project_id);
-    te->SetProjectGUID(project_guid);
+        if (!user_) {
+            logger().warning("Cannot set project, user logged out");
+            return true;
+        }
 
-    if (te->Dirty()) {
-        te->ClearValidationError();
-        te->SetUIModified();
-    }
+        TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return true;
+        }
 
+        Project *p = 0;
+        if (project_id) {
+            p = user_->related.ProjectByID(project_id);
+        }
+        if (!project_guid.empty()) {
+            p = user_->related.ProjectByGUID(project_guid);
+        }
+
+        if (p) {
+            // If user re-assigns project, don't mess with the billable
+            // flag any more. (User selected billable project, unchecked
+            // billable, // then selected the same project again).
+            if (p->ID() != te->PID()) {
+                te->SetBillable(p->Billable());
+            }
+            te->SetWID(p->WID());
+        }
+        te->SetTID(task_id);
+        te->SetPID(project_id);
+        te->SetProjectGUID(project_guid);
+
+        if (te->Dirty()) {
+            te->ClearValidationError();
+            te->SetUIModified();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
     return displayError(save());
 }
 
