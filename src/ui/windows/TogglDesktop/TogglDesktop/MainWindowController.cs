@@ -236,8 +236,8 @@ namespace TogglDesktop
             preferencesWindowController = new PreferencesWindowController();
             feedbackWindowController = new FeedbackWindowController();
             idleNotificationWindowController = new IdleNotificationWindowController();
+
             initEditForm();
-            Utils.LoadWindowLocation(this, editForm);
             timeEntryListViewController.setEditPopup(editForm);
 
             FlowLayoutPanel listing = timeEntryListViewController.getListing();
@@ -258,6 +258,8 @@ namespace TogglDesktop
                 }
                 TogglDesktop.Program.Shutdown(1);
             }
+
+            Utils.LoadWindowLocation(this, editForm);
 
             aboutWindowController.initAndCheck();
 

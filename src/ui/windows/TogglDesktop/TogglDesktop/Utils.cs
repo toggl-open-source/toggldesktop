@@ -25,9 +25,22 @@ namespace TogglDesktop
                 {
                     f.WindowState = FormWindowState.Minimized;
                 }
-                f.Location = Properties.Settings.Default.Location;
-                f.Size = Properties.Settings.Default.Size;
-                f.MinimumSize = Properties.Settings.Default.Size;
+
+                Int64 x = 0, y = 0, h = 0, w = 0;
+                if (Toggl.WindowSettings(ref x, ref y, ref h, ref w))
+                {
+                    if (x >= 0 && y >= 0)
+                    {
+                        f.Location = new Point((int)x, (int)y);
+                    }
+
+                    if (h >= 0 && w >= 0)
+                    {
+                        f.Size = new Size((int)w, (int)h);
+                        f.MinimumSize = new Size((int)w, (int)h);
+                    }
+                }
+
                 if (!visibleOnAnyScreen(f))
                 {
                     f.Location = Screen.PrimaryScreen.WorkingArea.Location;
@@ -113,28 +126,32 @@ namespace TogglDesktop
         {
             try
             {
+                Toggl.SetWindowSettings(
+                    f.Location.X,
+                    f.Location.Y,
+                    f.Size.Height,
+                    f.Size.Width);
+
                 if (f.WindowState == FormWindowState.Maximized)
                 {
-                    Properties.Settings.Default.Location = f.Location;
                     Properties.Settings.Default.Maximized = true;
                     Properties.Settings.Default.Minimized = false;
                 }
                 else if (f.WindowState == FormWindowState.Normal)
                 {
-                    Properties.Settings.Default.Location = f.Location;
                     Properties.Settings.Default.Maximized = false;
                     Properties.Settings.Default.Minimized = false;
                 }
                 else
                 {
-                    Properties.Settings.Default.Location = f.Location;
                     Properties.Settings.Default.Maximized = false;
                     Properties.Settings.Default.Minimized = true;
                 }
-                Properties.Settings.Default.Size = f.Size;
+
                 if (edit != null) {
                     Properties.Settings.Default.EditSize = edit.Size;
                 }
+
                 Properties.Settings.Default.Save();
             }
             catch (Exception ex)

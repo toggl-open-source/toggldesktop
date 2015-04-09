@@ -761,6 +761,42 @@ namespace TogglDesktop
 
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_set_window_settings(
+            IntPtr context,
+            Int64 window_x,
+            Int64 window_y,
+            Int64 window_h,
+            Int64 window_w);
+
+        public static bool SetWindowSettings(
+            Int64 x,
+            Int64 y,
+            Int64 h,
+            Int64 w)
+        {
+            return toggl_set_window_settings(ctx, x, y, h, w);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool toggl_window_settings(
+            IntPtr context,
+            ref Int64 window_x,
+            ref Int64 window_y,
+            ref Int64 window_h,
+            ref Int64 window_w);
+
+        public static bool WindowSettings(
+            ref Int64 x,
+            ref Int64 y,
+            ref Int64 h,
+            ref Int64 w)
+        {
+            return toggl_window_settings(ctx, ref x, ref y, ref h, ref w);
+        }
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+        [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool toggl_set_settings_use_idle_detection(
             IntPtr context,
             [MarshalAs(UnmanagedType.I1)]

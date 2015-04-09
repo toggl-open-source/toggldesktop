@@ -144,6 +144,8 @@ _Bool toggl_window_settings(
     int64_t *window_height,
     int64_t *window_width) {
 
+	poco_check_ptr(context);
+
     poco_check_ptr(window_x);
     poco_check_ptr(window_y);
     poco_check_ptr(window_height);
