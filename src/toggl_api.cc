@@ -123,6 +123,39 @@ _Bool toggl_set_settings_reminder_minutes(
     return app(context)->SetSettingsReminderMinutes(reminder_minutes);
 }
 
+_Bool toggl_set_window_settings(
+    void *context,
+    const int64_t window_x,
+    const int64_t window_y,
+    const int64_t window_height,
+    const int64_t window_width) {
+
+    return app(context)->SaveWindowSettings(
+        window_x,
+        window_y,
+        window_height,
+        window_width);
+}
+
+_Bool toggl_window_settings(
+    void *context,
+    int64_t *window_x,
+    int64_t *window_y,
+    int64_t *window_height,
+    int64_t *window_width) {
+
+    poco_check_ptr(window_x);
+    poco_check_ptr(window_y);
+    poco_check_ptr(window_height);
+    poco_check_ptr(window_width);
+
+    return app(context)->LoadWindowSettings(
+        window_x,
+        window_y,
+        window_height,
+        window_width);
+}
+
 _Bool toggl_set_proxy_settings(void *context,
                                const _Bool use_proxy,
                                const char_t *proxy_host,

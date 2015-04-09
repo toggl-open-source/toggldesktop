@@ -488,6 +488,20 @@ extern "C" {
         const char_t *proxy_username,
         const char_t *proxy_password);
 
+    TOGGL_EXPORT _Bool toggl_set_window_settings(
+        void *context,
+        const int64_t window_x,
+        const int64_t window_y,
+        const int64_t window_height,
+        const int64_t window_width);
+
+    TOGGL_EXPORT _Bool toggl_window_settings(
+        void *context,
+        int64_t *window_x,
+        int64_t *window_y,
+        int64_t *window_height,
+        int64_t *window_width);
+
     TOGGL_EXPORT _Bool toggl_logout(
         void *context);
 

@@ -248,7 +248,7 @@ TEST(Database, LoadUserByEmail) {
 
     User user2;
     ASSERT_EQ(noError,
-        db.instance()->LoadUserByEmail("johnsmith@toggl.com", &user2));
+              db.instance()->LoadUserByEmail("johnsmith@toggl.com", &user2));
 
     ASSERT_EQ(user.ID(), user2.ID());
 }

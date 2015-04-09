@@ -105,6 +105,18 @@ class Context : public TimelineDatasource {
         const bool use_proxy,
         const Proxy proxy);
 
+    _Bool LoadWindowSettings(
+        int64_t *window_x,
+        int64_t *window_y,
+        int64_t *window_height,
+        int64_t *window_width);
+
+    _Bool SaveWindowSettings(
+        const int64_t window_x,
+        const int64_t window_y,
+        const int64_t window_height,
+        const int64_t window_width);
+
     _Bool Login(
         const std::string email,
         const std::string password);

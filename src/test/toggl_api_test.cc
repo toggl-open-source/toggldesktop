@@ -437,6 +437,27 @@ TEST(TogglApiTest, toggl_set_proxy_settings) {
               std::string(testing::testresult::proxy.Password()));
 }
 
+TEST(TogglApiTest, toggl_set_window_settings) {
+    testing::App app;
+
+    int64_t x(1), y(2), h(3), w(4);
+    testing::testresult::error = "";
+    if (!toggl_set_window_settings(app.ctx(), x, y, h, w)) {
+        ASSERT_EQ(noError, testing::testresult::error);
+    }
+
+    int64_t x1(1), y1(2), h1(3), w1(4);
+    testing::testresult::error = "";
+    if (!toggl_window_settings(app.ctx(), &x1, &y1, &h1, &w1)) {
+        ASSERT_EQ(noError, testing::testresult::error);
+    }
+
+    ASSERT_EQ(x, x1);
+    ASSERT_EQ(y, y1);
+    ASSERT_EQ(h, h1);
+    ASSERT_EQ(w, w1);
+}
+
 TEST(TogglApiTest, toggl_get_user_fullname) {
     testing::App app;
 
@@ -1107,7 +1128,8 @@ TEST(TogglApiTest, toggl_parse_duration_string_into_seconds) {
     ASSERT_EQ(15, seconds);
 }
 
-TEST(TogglApiTest, toggl_parse_duration_string_into_seconds_with_no_duration_string) {
+TEST(TogglApiTest,
+     toggl_parse_duration_string_into_seconds_with_no_duration_string) {
     int64_t seconds = toggl_parse_duration_string_into_seconds(0);
     ASSERT_EQ(0, seconds);
 }

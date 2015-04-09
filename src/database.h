@@ -59,6 +59,18 @@ class Database {
 
     error LoadSettings(Settings *settings);
 
+    error LoadWindowSettings(
+        Poco::Int64 *window_x,
+        Poco::Int64 *window_y,
+        Poco::Int64 *window_height,
+        Poco::Int64 *window_width);
+
+    error SaveWindowSettings(
+        const Poco::Int64 window_x,
+        const Poco::Int64 window_y,
+        const Poco::Int64 window_height,
+        const Poco::Int64 window_width);
+
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
     error SetSettingsMenubarTimer(const bool &menubar_timer);

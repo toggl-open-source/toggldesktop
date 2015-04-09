@@ -1262,6 +1262,38 @@ _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     return DisplaySettings(false);
 }
 
+_Bool Context::LoadWindowSettings(
+    int64_t *window_x,
+    int64_t *window_y,
+    int64_t *window_height,
+    int64_t *window_width) {
+
+    Poco::Int64 x(0), y(0), h(0), w(0);
+
+    error err = db()->LoadWindowSettings(&x, &y, &h, &w);
+    if (noError == err) {
+        *window_x = x;
+        *window_y = y;
+        *window_height = h;
+        *window_width = w;
+    }
+    return displayError(err);
+}
+
+_Bool Context::SaveWindowSettings(
+    const int64_t window_x,
+    const int64_t window_y,
+    const int64_t window_height,
+    const int64_t window_width) {
+
+    error err = db()->SaveWindowSettings(
+        window_x,
+        window_y,
+        window_height,
+        window_width);
+    return displayError(err);
+}
+
 _Bool Context::SetProxySettings(
     const _Bool use_proxy,
     const Proxy proxy) {

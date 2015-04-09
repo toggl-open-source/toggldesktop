@@ -337,6 +337,73 @@ error Database::LoadSettings(Settings *settings) {
     return last_error("LoadSettings");
 }
 
+error Database::SaveWindowSettings(
+    const Poco::Int64 window_x,
+    const Poco::Int64 window_y,
+    const Poco::Int64 window_height,
+    const Poco::Int64 window_width) {
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "window_x = :window_x, "
+                  "window_y = :window_y, "
+                  "window_height = :window_height, "
+                  "window_width = :window_width ",
+                  useRef(window_x),
+                  useRef(window_y),
+                  useRef(window_height),
+                  useRef(window_width),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+
+    return last_error("SaveWindowSettings");
+}
+
+error Database::LoadWindowSettings(
+    Poco::Int64 *window_x,
+    Poco::Int64 *window_y,
+    Poco::Int64 *window_height,
+    Poco::Int64 *window_width) {
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    Poco::Int64 x(0), y(0), height(0), width(0);
+
+    try {
+        *session_ << "select window_x, window_y, window_height, window_width "
+                  "from settings limit 1",
+                  into(x),
+                  into(y),
+                  into(height),
+                  into(width),
+                  limit(1),
+                  now;
+
+        *window_x = x;
+        *window_y = y;
+        *window_height = height;
+        *window_width = width;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("LoadWindowSettings");
+}
+
 error Database::LoadProxySettings(
     bool *use_proxy,
     Proxy *proxy) {
@@ -3132,6 +3199,38 @@ error Database::migrateSettings() {
         "settings.autodetect_proxy",
         "ALTER TABLE settings "
         "ADD COLUMN autodetect_proxy INTEGER NOT NULL DEFAULT 1;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.window_x",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_x integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.window_y",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_y integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.window_height",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_height integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.window_width",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_width integer not null default 0;");
     if (err != noError) {
         return err;
     }
