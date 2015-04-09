@@ -84,6 +84,12 @@ Database::Database(const std::string db_path)
         return;
     }
 
+    err = vacuum();
+    if (err != noError) {
+        logger().error("failed to vacuum: " + err);
+        // but will continue, its not vital
+    }
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
@@ -223,6 +229,22 @@ error Database::setJournalMode(const std::string mode) {
         return ex;
     }
     return last_error("setJournalMode");
+}
+
+error Database::vacuum() {
+    Poco::Mutex::ScopedLock lock(session_m_);
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "VACUUM;" << now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("vacuum");
 }
 
 Poco::Logger &Database::logger() const {

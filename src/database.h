@@ -147,6 +147,8 @@ class Database {
         const std::vector<TimelineEvent> &timeline_events);
 
  private:
+    error vacuum();
+
     error initialize_tables();
 
     error ensureMigrationTable();
