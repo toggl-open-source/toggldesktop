@@ -1203,8 +1203,8 @@ TEST(TogglApiTest, toggl_discard_time_at) {
         }
     }
     ASSERT_EQ(guid, te.GUID());
-    ASSERT_EQ(started, te.Start());
-    ASSERT_EQ(stopped, te.Stop());
+    ASSERT_TRUE(started == te.Start() || started + 1 == te.Start());
+    ASSERT_TRUE(stopped == te.Stop() || stopped + 1 == te.Stop());
 
     // Check that a new time entry was created
 
