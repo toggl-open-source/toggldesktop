@@ -1643,6 +1643,105 @@ TEST(User, DurationFormat) {
     ASSERT_EQ("decimal", Formatter::DurationFormat);
 }
 
+TEST(BaseModel, LoadFromDataStringWithInvalidJSON) {
+    User u;
+    error err = u.LoadFromDataString("foobar");
+    ASSERT_NE(noError, err);
+}
+
+TEST(BaseModel, LoadFromDataString) {
+    User u;
+    error err = u.LoadFromDataString(loadTestData());
+    ASSERT_EQ(noError, err);
+}
+
+TEST(BaseModel, LoadFromJSONStringWithEmptyString) {
+    User u;
+    error err = u.LoadFromJSONString("");
+    ASSERT_EQ(noError, err);
+}
+
+TEST(BaseModel, LoadFromJSONStringWithInvalidString) {
+    User u;
+    error err = u.LoadFromJSONString("foobar");
+    ASSERT_NE(noError, err);
+}
+
+TEST(BaseModel, BatchUpdateJSONWithoutGUID) {
+    TimeEntry t;
+    Json::Value v;
+    error err = t.BatchUpdateJSON(&v);
+    ASSERT_NE(noError, err);
+}
+
+TEST(BaseModel, BatchUpdateJSON) {
+    TimeEntry t;
+    t.EnsureGUID();
+    Json::Value v;
+    error err = t.BatchUpdateJSON(&v);
+    ASSERT_EQ(noError, err);
+}
+
+TEST(BaseModel, BatchUpdateJSONForDelete) {
+    TimeEntry t;
+    t.EnsureGUID();
+    t.SetID(123);
+    t.SetDeletedAt(time(0));
+    Json::Value v;
+    error err = t.BatchUpdateJSON(&v);
+    ASSERT_EQ(noError, err);
+}
+
+TEST(BaseModel, BatchUpdateJSONForPut) {
+    TimeEntry t;
+    t.EnsureGUID();
+    t.SetID(123);
+    t.SetDescription("test");
+    Json::Value v;
+    error err = t.BatchUpdateJSON(&v);
+    ASSERT_EQ(noError, err);
+}
+
+TEST(BatchUpdateResult, Error) {
+    BatchUpdateResult b;
+    ASSERT_EQ(noError, b.Error());
+}
+
+TEST(BatchUpdateResult, ErrorWithStatusCode200) {
+    BatchUpdateResult b;
+    b.StatusCode = 200;
+    ASSERT_EQ(noError, b.Error());
+}
+
+TEST(BatchUpdateResult, ErrorWithStatusCode400) {
+    BatchUpdateResult b;
+    b.StatusCode = 400;
+    b.Body = "null";
+    ASSERT_NE(noError, b.Error());
+}
+
+TEST(BatchUpdateResult, String) {
+    BatchUpdateResult b;
+    ASSERT_NE("", b.String());
+}
+
+TEST(BatchUpdateResult, ResourceIsGone) {
+    BatchUpdateResult b;
+    ASSERT_FALSE(b.ResourceIsGone());
+}
+
+TEST(BatchUpdateResult, ResourceIsGoneBecauseOfDeleteMethod) {
+    BatchUpdateResult b;
+    b.Method = "DELETE";
+    ASSERT_TRUE(b.ResourceIsGone());
+}
+
+TEST(BatchUpdateResult, ResourceIsGoneBecauseOf404) {
+    BatchUpdateResult b;
+    b.StatusCode = 404;
+    ASSERT_TRUE(b.ResourceIsGone());
+}
+
 }  // namespace toggl
 
 int main(int argc, char **argv) {
