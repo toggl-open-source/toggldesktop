@@ -454,7 +454,7 @@ static int l_toggl_debug(lua_State *L) {
 
 static int l_testing_sleep(lua_State *L) {
     testing_sleep(
-        lua_tointeger(L, -1));
+        static_cast<int>(lua_tointeger(L, -1)));
     return 0;
 }
 
