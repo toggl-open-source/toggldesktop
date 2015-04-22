@@ -98,6 +98,8 @@ class MainWindowController : public QMainWindow {
     IdleNotificationDialog *idleNotificationDialog;
 
     QIcon icon;
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayMenu;
 
     bool reminder;
 
