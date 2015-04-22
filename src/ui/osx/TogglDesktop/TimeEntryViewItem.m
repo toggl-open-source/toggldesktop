@@ -59,11 +59,11 @@
 	}
 	if (te->Billable)
 	{
-		self.Billable = YES;
+		self.billable = YES;
 	}
 	else
 	{
-		self.Billable = NO;
+		self.billable = NO;
 	}
 	self.started = [NSDate dateWithTimeIntervalSince1970:te->Started];
 	self.ended = [NSDate dateWithTimeIntervalSince1970:te->Ended];
