@@ -378,7 +378,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	// resign current firstResponder
 	[self.durationTextField.window makeFirstResponder:[self.durationTextField superview]];
-	self.time_entry.Duration = self.durationTextField.stringValue;
+	self.time_entry.duration = self.durationTextField.stringValue;
 	self.time_entry.Description = self.descriptionComboBox.stringValue;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNew
 														object:self.time_entry];
