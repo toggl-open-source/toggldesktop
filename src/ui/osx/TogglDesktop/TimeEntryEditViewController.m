@@ -688,9 +688,7 @@ extern void *ctx;
 	}
 
 	NSAssert(self.timeEntry != nil, @"Expected time entry");
-
-	[self.projectSelect.cell setCalculatedMaxWidth:0];
-
+    
 	NSString *key = self.projectSelect.stringValue;
 	AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
 	uint64_t task_id = 0;
@@ -790,8 +788,6 @@ extern void *ctx;
 	NSString *key = self.descriptionCombobox.stringValue;
 
 	NSLog(@"descriptionComboboxChanged, stringValue = %@", key);
-
-	[self.descriptionCombobox.cell setCalculatedMaxWidth:0];
 
 	AutocompleteItem *autocomplete =
 		[self.descriptionComboboxDataSource get:key];
