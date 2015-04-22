@@ -99,7 +99,6 @@ class MainWindowController : public QMainWindow {
 
     QIcon icon;
     QSystemTrayIcon *trayIcon;
-    QMenu *trayMenu;
 
     bool reminder;
 
@@ -111,6 +110,8 @@ class MainWindowController : public QMainWindow {
     void connectMenuActions();
     void connectMenuAction(QAction *action);
     void enableMenuActions();
+
+    bool hasTrayIcon() const;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_

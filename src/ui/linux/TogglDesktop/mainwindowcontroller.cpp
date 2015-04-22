@@ -46,6 +46,7 @@ MainWindowController::MainWindowController(
   aboutDialog(new AboutDialog(this)),
   feedbackDialog(new FeedbackDialog(this)),
   idleNotificationDialog(new IdleNotificationDialog(this)),
+  trayIcon(0),
   reminder(false),
   script(scriptPath) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
@@ -86,17 +87,13 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(displayOnlineState(int64_t)),  // NOLINT
             this, SLOT(displayOnlineState(int64_t)));  // NOLINT
 
-    icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
 
-    trayMenu = new QMenu();
-    trayMenu->addAction("Test");
+    if (hasTrayIcon()) {
+        icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
 
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon(icon);
-
-    trayIcon->show();
-    if (!hasTrayIcon()) {
-        trayIcon->hide();
+        trayIcon = new QSystemTrayIcon(this);
+        trayIcon->setIcon(icon);
+        trayIcon->show();
     }
 
     connectMenuActions();
@@ -181,7 +178,9 @@ void MainWindowController::enableMenuActions() {
 
 void MainWindowController::connectMenuActions() {
     foreach(QMenu *menu, ui->menuBar->findChildren<QMenu *>()) {
-        trayIcon->setContextMenu(menu);
+        if (trayIcon) {
+            trayIcon->setContextMenu(menu);
+        }
         foreach(QAction *action, menu->actions()) {
             connectMenuAction(action);
         }
@@ -322,14 +321,14 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
     } else {
         event->ignore();
     }
-    
+
     QMainWindow::closeEvent(event);
 }
 
 bool MainWindowController::hasTrayIcon() const {
-    return trayIcon
-           && trayIcon->isVisible()
-           && (trayIcon->geometry().width() > 1);
+    QString currentDesktop = QProcessEnvironment::systemEnvironment().value(
+        "XDG_CURRENT_DESKTOP", "");
+    return "Unity" != currentDesktop;
 }
 
 void MainWindowController::showEvent(QShowEvent *event) {
