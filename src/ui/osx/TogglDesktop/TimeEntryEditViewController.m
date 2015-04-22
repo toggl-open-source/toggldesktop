@@ -688,7 +688,7 @@ extern void *ctx;
 	}
 
 	NSAssert(self.timeEntry != nil, @"Expected time entry");
-    
+
 	NSString *key = self.projectSelect.stringValue;
 	AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
 	uint64_t task_id = 0;
