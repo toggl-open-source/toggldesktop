@@ -369,8 +369,9 @@ extern void *ctx;
 - (void)resizing:(NSSize)n
 {
 	[self.timeEntrypopover setContentSize:n];
-	NSRect r = NSMakeRect(self.timeEntryEditViewController.view.frame.origin.x,
-						  self.timeEntryEditViewController.view.frame.origin.y,
+	NSRect f = [self.timeEntryEditViewController.view frame];
+	NSRect r = NSMakeRect(f.origin.x,
+						  f.origin.y,
 						  n.width,
 						  n.height);
 
