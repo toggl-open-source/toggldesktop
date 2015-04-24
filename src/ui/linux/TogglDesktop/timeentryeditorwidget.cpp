@@ -309,6 +309,10 @@ void TimeEntryEditorWidget::on_addNewProject_linkActivated(
     ui->addNewProject->setVisible(false);
     ui->newProject->setVisible(true);
     ui->newProjectName->setFocus();
+
+    if (!hasMultipleWorkspaces) {
+        ui->newProjectWorkspace->setCurrentIndex(0);
+    }
 }
 
 void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(
