@@ -88,18 +88,25 @@ MainWindowController::MainWindowController(
             this, SLOT(displayOnlineState(int64_t)));  // NOLINT
 
 
-    if (hasTrayIcon()) {
+    hasTrayIconCached = hasTrayIcon();
+    if (hasTrayIconCached) {
         icon.addFile(QString::fromUtf8(":/icons/1024x1024/toggldesktop.png"));
 
+        iconDisabled.addFile(QString::fromUtf8(
+            ":/icons/1024x1024/toggldesktop_gray.png"));
+
         trayIcon = new QSystemTrayIcon(this);
-        trayIcon->setIcon(icon);
-        trayIcon->show();
     }
 
     connectMenuActions();
     enableMenuActions();
 
-    setWindowIcon(icon);
+    if (hasTrayIconCached) {
+        // icon is set in enableMenuActions based on if tracking is in progress
+        trayIcon->show();
+    } else {
+        setWindowIcon(icon);
+    }
 }
 
 MainWindowController::~MainWindowController() {
@@ -174,6 +181,15 @@ void MainWindowController::enableMenuActions() {
     actionClear_Cache->setEnabled(loggedIn);
     actionSend_Feedback->setEnabled(loggedIn);
     actionReports->setEnabled(loggedIn);
+    if (hasTrayIconCached) {
+        if (tracking) {
+            trayIcon->setIcon(icon);
+            setWindowIcon(icon);
+        } else {
+            trayIcon->setIcon(iconDisabled);
+            setWindowIcon(iconDisabled);
+        }
+    }
 }
 
 void MainWindowController::connectMenuActions() {
