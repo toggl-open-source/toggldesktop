@@ -62,26 +62,26 @@ class Project : public BaseModel {
     }
     void SetPrivate(const bool value);
 
+    std::string String() const;
+
     const bool &Billable() const {
         return billable_;
     }
     void SetBillable(const bool value);
 
-    std::string String() const override;
-
-    std::string ModelName() const override {
+    std::string ModelName() const {
         return "project";
     }
-    std::string ModelURL() const override {
+    std::string ModelURL() const {
         return "/api/v8/projects";
     }
 
-    void LoadFromJSON(Json::Value value) override;
-    Json::Value SaveToJSON() const override;
+    void LoadFromJSON(Json::Value value);
+    Json::Value SaveToJSON() const;
 
-    bool DuplicateResource(const toggl::error) const override;
-    bool ResourceCannotBeCreated(const toggl::error) const override;
-    bool ResolveError(const toggl::error) override;
+    bool DuplicateResource(const toggl::error) const;
+    bool ResourceCannotBeCreated(const toggl::error) const;
+    bool ResolveError(const toggl::error);
 
  private:
     bool clientIsInAnotherWorkspace(const toggl::error) const;

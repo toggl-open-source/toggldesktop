@@ -28,16 +28,16 @@ class Tag : public BaseModel {
     }
     void SetName(const std::string value);
 
-    std::string String() const override;
+    std::string String() const;
 
-    std::string ModelName() const override {
+    std::string ModelName() const {
         return "tag";
     }
-    std::string ModelURL() const override {
+    std::string ModelURL() const {
         return "/api/v8/tags";
     }
 
-    void LoadFromJSON(Json::Value data) override;
+    void LoadFromJSON(Json::Value data);
 
  private:
     Poco::UInt64 wid_;

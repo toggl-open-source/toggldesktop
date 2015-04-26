@@ -32,20 +32,19 @@ class Client : public BaseModel {
     }
     void SetName(const std::string value);
 
-    std::string String() const override;
+    std::string String() const;
 
-    std::string ModelName() const override {
+    std::string ModelName() const {
         return "client";
     }
-
-    std::string ModelURL() const override {
+    std::string ModelURL() const {
         return "/api/v8/clients";
     }
 
-    void LoadFromJSON(Json::Value value) override;
-    Json::Value SaveToJSON() const override;
+    void LoadFromJSON(Json::Value value);
+    Json::Value SaveToJSON() const;
 
-    bool ResolveError(const toggl::error) override;
+    bool ResolveError(const toggl::error);
 
  private:
     Poco::UInt64 wid_;

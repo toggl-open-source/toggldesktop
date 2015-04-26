@@ -51,7 +51,7 @@ class GUI : public SyncStateMonitor {
 
     _Bool DisplayError(const error);
 
-    void DisplaySyncState(const Poco::Int64 state) override;
+    void DisplaySyncState(const Poco::Int64 state);
 
     void DisplayOnlineState(const Poco::Int64 state);
 

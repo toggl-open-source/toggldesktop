@@ -42,17 +42,16 @@ class Task : public BaseModel {
     }
     void SetActive(const bool value);
 
-    std::string String() const override;
+    std::string String() const;
 
-    std::string ModelName() const override {
+    std::string ModelName() const {
         return "task";
     }
-
-    std::string ModelURL() const override {
+    std::string ModelURL() const {
         return "/api/v8/tasks";
     }
 
-    void LoadFromJSON(Json::Value value) override;
+    void LoadFromJSON(Json::Value value);
 
  private:
     std::string name_;

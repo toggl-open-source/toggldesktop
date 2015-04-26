@@ -245,10 +245,9 @@ class Context : public TimelineDatasource {
     std::string UserEmail() const;
 
     // Timeline datasource
-    error CreateTimelineBatch(TimelineBatch *batch) override;
-    error SaveTimelineEvent(TimelineEvent *event) override;
-    error DeleteTimelineBatch(
-        const std::vector<TimelineEvent> &events) override;
+    error CreateTimelineBatch(TimelineBatch *batch);
+    error SaveTimelineEvent(TimelineEvent *event);
+    error DeleteTimelineBatch(const std::vector<TimelineEvent> &events);
 
  protected:
     void uiUpdaterActivity();

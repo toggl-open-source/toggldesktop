@@ -45,6 +45,8 @@ class User : public BaseModel {
         TogglClient *https_client,
         bool *had_something_to_push);
 
+    std::string String() const;
+
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
 
@@ -144,12 +146,10 @@ class User : public BaseModel {
 
     RelatedData related;
 
-    std::string String() const override;
-
-    std::string ModelName() const override {
+    std::string ModelName() const {
         return "user";
     }
-    std::string ModelURL() const override {
+    std::string ModelURL() const {
         return "/api/v8/me";
     }
 

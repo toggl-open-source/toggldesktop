@@ -105,16 +105,15 @@ class TimeEntry : public BaseModel {
     }
     void SetProjectGUID(const std::string);
 
-    std::string ModelName() const override {
+    std::string ModelName() const {
         return "time_entry";
     }
-
-    std::string ModelURL() const override {
+    std::string ModelURL() const {
         return "/api/v8/time_entries";
     }
 
-    void LoadFromJSON(Json::Value value) override;
-    Json::Value SaveToJSON() const override;
+    void LoadFromJSON(Json::Value value);
+    Json::Value SaveToJSON() const;
 
     // User-triggered changes to timer:
     void SetDurationUserInput(const std::string);
@@ -127,7 +126,7 @@ class TimeEntry : public BaseModel {
 
     void StopTracking();
 
-    bool ResolveError(const error err) override;
+    virtual bool ResolveError(const error err);
 
     static Poco::UInt64 AbsDuration(const Poco::Int64 value);
 
