@@ -82,7 +82,7 @@ class HTTPSClientConfig {
     std::string CACertPath;
     bool AutodetectProxy;
 
-    std::string UserAgent() {
+    std::string UserAgent() const {
         return AppName + "/" + AppVersion;
     }
 };
@@ -92,7 +92,7 @@ class HTTPSClient {
     HTTPSClient() {}
     virtual ~HTTPSClient() {}
 
-    virtual error Post(
+    error Post(
         const std::string host,
         const std::string relative_url,
         const std::string json,
@@ -101,7 +101,7 @@ class HTTPSClient {
         std::string *response_body,
         Poco::Net::HTMLForm *form = 0);
 
-    virtual error Get(
+    error Get(
         const std::string host,
         const std::string relative_url,
         const std::string basic_auth_username,
@@ -145,7 +145,7 @@ class TogglClient : public HTTPSClient {
     static ServerStatus TogglStatus;
 
  protected:
-    virtual error request(
+    error request(
         const std::string method,
         const std::string host,
         const std::string relative_url,
@@ -154,9 +154,9 @@ class TogglClient : public HTTPSClient {
         const std::string basic_auth_password,
         std::string *response_body,
         Poco::Int64 *response_status,
-        Poco::Net::HTMLForm *form = 0);
+        Poco::Net::HTMLForm *form = 0) override;
 
-    virtual Poco::Logger &logger() const;
+    Poco::Logger &logger() const override;
 
  private:
     SyncStateMonitor *monitor_;

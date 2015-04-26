@@ -102,7 +102,7 @@ class BaseModel {
     }
 
     bool NeedsPush() const;
-    virtual bool NeedsPOST() const;
+    bool NeedsPOST() const;
     bool NeedsPUT() const;
     bool NeedsDELETE() const;
 

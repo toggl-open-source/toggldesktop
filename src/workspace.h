@@ -42,15 +42,15 @@ class Workspace : public BaseModel {
     }
     void SetAdmin(const bool);
 
-    std::string ModelName() const {
+    std::string ModelName() const override {
         return "workspace";
     }
 
-    std::string ModelURL() const {
+    std::string ModelURL() const override {
         return "/api/v8/workspaces";
     }
 
-    void LoadFromJSON(Json::Value value);
+    void LoadFromJSON(Json::Value value) override;
 
  private:
     std::string name_;

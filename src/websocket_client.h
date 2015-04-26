@@ -42,11 +42,11 @@ class WebSocketClient {
     api_token_("") {}
     virtual ~WebSocketClient();
 
-    virtual void Start(
+    void Start(
         void *ctx,
         const std::string api_token,
         WebSocketMessageCallback on_websocket_message);
-    virtual void Shutdown();
+    void Shutdown();
 
     bool Up() const;
 
