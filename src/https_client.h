@@ -82,7 +82,7 @@ class HTTPSClientConfig {
     std::string CACertPath;
     bool AutodetectProxy;
 
-    std::string UserAgent() {
+    std::string UserAgent() const {
         return AppName + "/" + AppVersion;
     }
 };
@@ -92,7 +92,7 @@ class HTTPSClient {
     HTTPSClient() {}
     virtual ~HTTPSClient() {}
 
-    virtual error Post(
+    error Post(
         const std::string host,
         const std::string relative_url,
         const std::string json,
@@ -101,7 +101,7 @@ class HTTPSClient {
         std::string *response_body,
         Poco::Net::HTMLForm *form = 0);
 
-    virtual error Get(
+    error Get(
         const std::string host,
         const std::string relative_url,
         const std::string basic_auth_username,
