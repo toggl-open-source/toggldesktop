@@ -4,6 +4,7 @@
 #include "./ui_timerwidget.h"
 
 #include <QApplication>  // NOLINT
+#include <QCompleter>  // NOLINT
 
 #include "./autocompleteview.h"
 #include "./timeentryview.h"
@@ -32,6 +33,11 @@ timeEntryAutocompleteNeedsUpdate(false) {
 
     connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
+
+    ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->description->completer()->setCompletionMode(
+        QCompleter::PopupCompletion);
+    ui->description->completer()->setMaxVisibleItems(20);
 
     descriptionPlaceholder = "What are you doing?";
 }
