@@ -45,6 +45,18 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     if (!hasIdlenessChanged(idle) && !hasWindowChanged(title, filename)) {
         return;
     }
+
+    {
+        // Notify that the timeline event has started
+        // we'll use this in auto tracking
+        TimelineEvent event;
+        event.start_time = now;
+        event.filename = filename;
+        event.title = title;
+        event.idle = false;
+        timeline_datasource_->StartTimelineEvent(event);
+    }
+
     // We actually record the *previous* event. Meaning, when
     // you have "terminal" open and then switch to "skype",
     // then "terminal" gets recorded here:

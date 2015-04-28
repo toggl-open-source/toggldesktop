@@ -2646,6 +2646,18 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
     UI()->DisplayReminder();
 }
 
+error Context::StartTimelineEvent(const TimelineEvent event) {
+    if (!user_ || user_->RunningTimeEntry()) {
+        return noError;
+    }
+    Poco::UInt64 pid = autotracker_.FindPID(event);
+    if (!pid) {
+        return noError;
+    }
+    Start("", "", 0, pid);
+    return noError;
+}
+
 error Context::CreateTimelineBatch(TimelineBatch *batch) {
     poco_check_ptr(batch);
 
@@ -2674,17 +2686,7 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
         return noError;
     }
     event->user_id = static_cast<unsigned int>(user_->ID());
-    error err = db()->InsertTimelineEvent(event);
-    if (err != noError) {
-        return err;
-    }
-    if (!user_->RunningTimeEntry()) {
-        Poco::UInt64 pid = autotracker_.FindPID(*event);
-        if (pid) {
-            Start("", "", 0, pid);
-        }
-    }
-    return noError;
+    return db()->InsertTimelineEvent(event);
 }
 
 error Context::DeleteTimelineBatch(const std::vector<TimelineEvent> &events) {
