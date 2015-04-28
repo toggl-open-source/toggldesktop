@@ -9,8 +9,8 @@ namespace toggl {
 
 AutotrackerRule::AutotrackerRule(const std::string term, const Poco::UInt64 pid)
     : local_id_(0)
-    , term_(Poco::UTF8::toLower(term))
-    , pid_(pid) {
+, term_(Poco::UTF8::toLower(term))
+, pid_(pid) {
 }
 
 Poco::UInt64 Autotracker::FindPID(const TimelineEvent event) const {
