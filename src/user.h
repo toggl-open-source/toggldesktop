@@ -272,9 +272,6 @@ void deleteZombies(
     const std::vector<T> &list,
     const std::set<Poco::UInt64> &alive);
 
-template<typename T>
-void clearList(std::vector<T *> *list);
-
 template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
                                       std::vector<T *> *list);

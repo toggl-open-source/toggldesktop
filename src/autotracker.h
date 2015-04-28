@@ -4,43 +4,36 @@
 #define SRC_AUTOTRACKER_H_
 
 #include <string>
+#include <sstream>
 #include <vector>
 
 #include "Poco/Types.h"
 
 #include "./timeline_event.h"
+#include "./base_model.h"
 
 namespace toggl {
 
-class AutotrackerRule {
+class AutotrackerRule : public BaseModel {
  public:
-    AutotrackerRule(const std::string term, const Poco::UInt64 pid);
+    AutotrackerRule()
+        : BaseModel()
+    , term_("")
+    , pid_(0) {}
 
     virtual ~AutotrackerRule() {}
 
-    const Poco::Int64 &LocalID() const {
-        return local_id_;
-    }
-    void SetLocalID(const Poco::Int64 value) {
-        local_id_ = value;
-    }
+    const std::string &Term() const;
+    void SetTerm(const std::string value);
 
-    const std::string &Term() const {
-        return term_;
-    }
-    void SetTerm(const std::string value) {
-        term_ = value;
-    }
+    const Poco::UInt64 &PID() const;
+    void SetPID(const Poco::UInt64 value);
 
-    const Poco::UInt64 &PID() const {
-        return pid_;
-    }
-    void SetPID(const Poco::UInt64 value) {
-        pid_ = value;
-    }
+    std::string String() const;
+    std::string ModelName() const;
+    std::string ModelURL() const;
 
  private:
-    Poco::Int64 local_id_;
     std::string term_;
     Poco::UInt64 pid_;
 };
@@ -49,8 +42,15 @@ class Autotracker {
  public:
     Autotracker() {
         // FIXME: add some fake rules
-        rules_.push_back(AutotrackerRule("Skype", 4583100));
-        rules_.push_back(AutotrackerRule("delfi", 8490176));
+        AutotrackerRule r1;
+        r1.SetTerm("Skype");
+        r1.SetPID(4583100);
+        rules_.push_back(r1);
+
+        AutotrackerRule r2;
+        r2.SetTerm("delfi");
+        r2.SetPID(8490176);
+        rules_.push_back(r2);
     }
     virtual ~Autotracker() {}
 

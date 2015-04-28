@@ -7,6 +7,7 @@
 
 #include "Poco/UTF8String.h"
 
+#include "./autotracker.h"
 #include "./formatter.h"
 #include "./client.h"
 #include "./project.h"
@@ -16,6 +17,25 @@
 #include "./workspace.h"
 
 namespace toggl {
+
+template<typename T>
+void clearList(std::vector<T *> *list) {
+    for (size_t i = 0; i < list->size(); i++) {
+        T *value = (*list)[i];
+        delete value;
+    }
+    list->clear();
+}
+
+void RelatedData::Clear() {
+    clearList(&Workspaces);
+    clearList(&Clients);
+    clearList(&Projects);
+    clearList(&Tasks);
+    clearList(&Tags);
+    clearList(&TimeEntries);
+    clearList(&AutotrackerRules);
+}
 
 // Add time entries, in format:
 // Description - Task. Project. Client

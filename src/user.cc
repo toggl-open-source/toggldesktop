@@ -33,12 +33,7 @@
 namespace toggl {
 
 User::~User() {
-    clearList(&related.Workspaces);
-    clearList(&related.Clients);
-    clearList(&related.Projects);
-    clearList(&related.Tasks);
-    clearList(&related.Tags);
-    clearList(&related.TimeEntries);
+    related.Clear();
 }
 
 Project *User::CreateProject(
@@ -1251,15 +1246,6 @@ void deleteZombies(
             model->MarkAsDeletedOnServer();
         }
     }
-}
-
-template<typename T>
-void clearList(std::vector<T *> *list) {
-    for (size_t i = 0; i < list->size(); i++) {
-        T *value = (*list)[i];
-        delete value;
-    }
-    list->clear();
 }
 
 template <typename T>

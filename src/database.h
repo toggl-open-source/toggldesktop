@@ -28,6 +28,7 @@ class Statement;
 }
 namespace toggl {
 
+class AutotrackerRule;
 class Client;
 class Project;
 class Proxy;
@@ -205,6 +206,10 @@ class Database {
     error loadTags(
         const Poco::UInt64 &UID,
         std::vector<Tag *> *list);
+
+    error loadAutotrackerRules(
+        const Poco::UInt64 &UID,
+        std::vector<AutotrackerRule *> *list);
 
     error loadTimeEntries(
         const Poco::UInt64 &UID,

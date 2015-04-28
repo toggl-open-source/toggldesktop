@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "./autotracker.h"
 #include "./client.h"
 #include "./const.h"
 #include "./project.h"
@@ -681,8 +682,15 @@ error Database::loadUsersRelatedData(User *user) {
         return err;
     }
 
+    err = loadAutotrackerRules(user->ID(), &user->related.AutotrackerRules);
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
+
+
 
 error Database::LoadUserByID(
     const Poco::UInt64 &UID,
@@ -1088,6 +1096,56 @@ error Database::loadTags(
         return ex;
     }
     return last_error("loadTags");
+}
+
+error Database::loadAutotrackerRules(
+    const Poco::UInt64 &UID,
+    std::vector<AutotrackerRule *> *list) {
+
+    if (!UID) {
+        return error("Cannot load autotracker rules without an user ID");
+    }
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(list);
+
+    list->clear();
+
+    try {
+        Poco::Data::Statement select(*session_);
+        select << "SELECT local_id, uid, term, pid "
+               "FROM autotracker_settings "
+               "WHERE uid = :uid "
+               "ORDER BY term",
+               useRef(UID);
+        error err = last_error("loadAutotrackerRules");
+        if (err != noError) {
+            return err;
+        }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                AutotrackerRule *model = new AutotrackerRule();
+                model->SetLocalID(rs[0].convert<Poco::Int64>());
+                model->SetUID(rs[1].convert<Poco::UInt64>());
+                model->SetTerm(rs[2].convert<std::string>());
+                model->SetPID(rs[3].convert<Poco::UInt64>());
+                model->ClearDirty();
+                list->push_back(model);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("loadAutotrackerRules");
 }
 
 error Database::loadTimeEntries(

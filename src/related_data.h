@@ -13,6 +13,7 @@
 
 namespace toggl {
 
+class AutotrackerRule;
 class Client;
 class Project;
 class Tag;
@@ -34,6 +35,9 @@ class RelatedData {
     std::vector<Task *> Tasks;
     std::vector<Tag *> Tags;
     std::vector<TimeEntry *> TimeEntries;
+    std::vector<AutotrackerRule *> AutotrackerRules;
+
+    void Clear();
 
     Task *TaskByID(const Poco::UInt64 id) const;
     Client *ClientByID(const Poco::UInt64 id) const;
@@ -86,6 +90,9 @@ class RelatedData {
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<AutocompleteItem> *list);
 };
+
+template<typename T>
+void clearList(std::vector<T *> *list);
 
 }  // namespace toggl
 

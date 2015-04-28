@@ -7,10 +7,44 @@
 
 namespace toggl {
 
-AutotrackerRule::AutotrackerRule(const std::string term, const Poco::UInt64 pid)
-    : local_id_(0)
-, term_(Poco::UTF8::toLower(term))
-, pid_(pid) {
+const std::string &AutotrackerRule::Term() const {
+    return term_;
+}
+
+void AutotrackerRule::SetTerm(const std::string value) {
+    std::string lowercase = Poco::UTF8::toLower(value);
+    if (term_ != lowercase) {
+        term_ = lowercase;
+        SetDirty();
+    }
+}
+
+const Poco::UInt64 &AutotrackerRule::PID() const {
+    return pid_;
+}
+
+void AutotrackerRule::SetPID(const Poco::UInt64 value) {
+    if (value != pid_) {
+        pid_ = value;
+        SetDirty();
+    }
+}
+
+std::string AutotrackerRule::String() const {
+    std::stringstream ss;
+    ss << " local_id=" << LocalID()
+       << " term=" << term_
+       << " uid=" << UID()
+       << " pid=" << pid_;
+    return ss.str();
+}
+
+std::string AutotrackerRule::ModelName() const {
+    return "autotracker_rule";
+}
+
+std::string AutotrackerRule::ModelURL() const {
+    return "";
 }
 
 Poco::UInt64 Autotracker::FindPID(const TimelineEvent event) const {
