@@ -115,6 +115,8 @@ class MainWindowController : public QMainWindow {
     bool hasTrayIconCached;
 
     bool hasTrayIcon() const;
+
+    bool ui_started;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_

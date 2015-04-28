@@ -48,7 +48,8 @@ MainWindowController::MainWindowController(
   idleNotificationDialog(new IdleNotificationDialog(this)),
   trayIcon(0),
   reminder(false),
-  script(scriptPath) {
+  script(scriptPath),
+  ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
     ui->setupUi(this);
@@ -349,6 +350,13 @@ bool MainWindowController::hasTrayIcon() const {
 
 void MainWindowController::showEvent(QShowEvent *event) {
     QMainWindow::showEvent(event);
+
+    // Avoid 'user already logged in' error from double UI start
+    if (ui_started) {
+        return;
+    }
+    ui_started = true;
+
     if (!TogglApi::instance->startEvents()) {
         QMessageBox(
             QMessageBox::Warning,
