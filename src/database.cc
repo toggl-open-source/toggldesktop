@@ -690,8 +690,6 @@ error Database::loadUsersRelatedData(User *user) {
     return noError;
 }
 
-
-
 error Database::LoadUserByID(
     const Poco::UInt64 &UID,
     User *user) {
