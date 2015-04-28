@@ -2450,7 +2450,27 @@ error Database::initialize_tables() {
         return err;
     }
 
+    err = migrateAutotracker();
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
+}
+
+error Database::migrateAutotracker() {
+    return migrate(
+        "autotracker_settings",
+        "create table autotracker_settings("
+        "local_id integer primary key,"
+        "uid integer not null, "
+        "term varchar not null, "
+        "pid integer not null, "
+        "constraint fk_autotracker_settings_pid foreign key (pid) "
+        "   references projects(id) on delete no action on update no action,"
+        "constraint fk_autotracker_settings_uid foreign key (uid) "
+        "   references users(id) on delete no action on update no action"
+        "); ");
 }
 
 error Database::migrateClients() {

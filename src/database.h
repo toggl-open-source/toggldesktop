@@ -168,6 +168,7 @@ class Database {
     error migrateTags();
     error migrateTasks();
     error migrateClients();
+    error migrateAutotracker();
 
     template<typename T>
     error setSettingsValue(
