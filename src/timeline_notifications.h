@@ -62,11 +62,11 @@ class TimelineDatasource {
  public:
     virtual ~TimelineDatasource() {}
 
-    // Find timeline events for upload,
-    virtual error SaveTimelineEvent(TimelineEvent *event) = 0;
-
     // A timeline event is detected, window has changes
     // or there's an idle event.
+    virtual error SaveTimelineEvent(TimelineEvent *event) = 0;
+
+    // Find timeline events for upload,
     virtual error CreateTimelineBatch(TimelineBatch *batch) = 0;
 
     // A batch of timeline events has been upladed and may be deleted.
