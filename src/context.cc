@@ -2679,7 +2679,7 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
         return err;
     }
     if (!user_->RunningTimeEntry()) {
-        Poco::UInt64 pid = autotracker_.FindPID(event);
+        Poco::UInt64 pid = autotracker_.FindPID(*event);
         if (pid) {
             Start("", "", 0, pid);
         }

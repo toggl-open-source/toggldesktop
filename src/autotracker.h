@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "Poco/Types.h"
-#include "Poco/UTF8String.h"
 
 #include "./timeline_event.h"
 
@@ -15,10 +14,8 @@ namespace toggl {
 
 class AutotrackerRule {
  public:
-    AutotrackerRule(const std::string term, const Poco::UInt64 pid)
-        : local_id_(0)
-    , term_(Poco::UTF8::toLower(term))
-    , pid_(pid) {}
+    AutotrackerRule(const std::string term, const Poco::UInt64 pid);
+
     virtual ~AutotrackerRule() {}
 
     const Poco::Int64 &LocalID() const {
@@ -57,7 +54,7 @@ class Autotracker {
     }
     virtual ~Autotracker() {}
 
-    const Poco::UInt64 FindPID(TimelineEvent *event) const;
+    Poco::UInt64 FindPID(const TimelineEvent event) const;
 
  private:
     std::vector<AutotrackerRule> rules_;
