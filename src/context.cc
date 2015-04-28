@@ -2674,7 +2674,17 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
         return noError;
     }
     event->user_id = static_cast<unsigned int>(user_->ID());
-    return db()->InsertTimelineEvent(event);
+    error err = db()->InsertTimelineEvent(event);
+    if (err != noError) {
+        return err;
+    }
+    if (!user_->RunningTimeEntry()) {
+        Poco::UInt64 pid = autotracker_.FindPID(event);
+        if (pid) {
+            Start("", "", 0, pid);
+        }
+    }
+    return noError;
 }
 
 error Context::DeleteTimelineBatch(const std::vector<TimelineEvent> &events) {

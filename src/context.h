@@ -10,6 +10,7 @@
 #include <iostream> // NOLINT
 
 #include "./analytics.h"
+#include "./autotracker.h"
 #include "./custom_error_handler.h"
 #include "./feedback.h"
 #include "./gui.h"
@@ -398,6 +399,8 @@ class Context : public TimelineDatasource {
     std::string update_path_;
 
     bool im_a_teapot_;
+
+    Autotracker autotracker_;
 
     static std::string log_path_;
 };
