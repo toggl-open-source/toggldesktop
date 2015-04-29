@@ -929,6 +929,16 @@ char_t *toggl_run_script(
     return copy_string(ss.str());
 }
 
+_Bool toggl_autotracker_add_rule(
+    void *context,
+    const char_t *term,
+    const uint64_t project_id) {
+
+    poco_check_ptr(term);
+
+    return app(context)->AddAutotrackerRule(term, project_id);
+}
+
 void testing_sleep(
     const int seconds) {
     Poco::Thread::sleep(seconds*1000);

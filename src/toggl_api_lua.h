@@ -345,6 +345,14 @@ static int l_toggl_add_project(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_autotracker_add_rule(lua_State *L) {
+    _Bool res = toggl_autotracker_add_rule(toggl_app_instance_,
+                                           checkstring(L, 1),
+                                           lua_tointeger(L, 2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
 static int l_toggl_create_project(lua_State *L) {
     _Bool res = toggl_create_project(toggl_app_instance_,
                                      lua_tointeger(L, 1),
@@ -534,6 +542,7 @@ static const struct luaL_Reg toggl_f[] = {
     {"debug", l_toggl_debug},
     {"sleep", l_testing_sleep},
     {"set_logged_in_user", l_testing_set_logged_in_user},
+    {"autotracker_add_rule", l_toggl_autotracker_add_rule},
     {NULL, NULL}
 };
 

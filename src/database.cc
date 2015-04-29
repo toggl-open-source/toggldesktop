@@ -1559,6 +1559,77 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
+    AutotrackerRule *model,
+    std::vector<ModelChange> *changes) {
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(model);
+    poco_check_ptr(session_);
+
+    if (model->LocalID() && !model->Dirty()) {
+        return noError;
+    }
+
+    try {
+        if (model->LocalID()) {
+            std::stringstream ss;
+            ss << "Updating autotracker rule " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger().trace(ss.str());
+
+            *session_ << "update autotracker_settings set "
+                      "uid = :uid, term = :term, pid = :pid "
+                      "where local_id = :local_id",
+                      useRef(model->UID()),
+                      useRef(model->Term()),
+                      useRef(model->PID()),
+                      useRef(model->LocalID()),
+                      now;
+            error err = last_error("saveAutotrackerRule");
+            if (err != noError) {
+                return err;
+            }
+
+        } else {
+            std::stringstream ss;
+            ss << "Inserting autotracker rule " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger().trace(ss.str());
+            *session_ <<
+                      "insert into autotracker_settings(uid, term, pid) "
+                      "values(:uid, :term, :pid)",
+                      useRef(model->UID()),
+                      useRef(model->Term()),
+                      useRef(model->PID()),
+                      now;
+            error err = last_error("saveAutotrackerRule");
+            if (err != noError) {
+                return err;
+            }
+            Poco::Int64 local_id(0);
+            *session_ << "select last_insert_rowid()",
+                      into(local_id),
+                      now;
+            err = last_error("saveAutotrackerRule");
+            if (err != noError) {
+                return err;
+            }
+            model->SetLocalID(local_id);
+        }
+
+        model->ClearDirty();
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Database::saveModel(
     Workspace *model,
     std::vector<ModelChange> *changes) {
 
@@ -2371,6 +2442,7 @@ error Database::SaveUser(
             changes->push_back(change);
         }
 
+        // Tags
         err = saveRelatedModels(user->ID(),
                                 "tags",
                                 &user->related.Tags,
@@ -2380,9 +2452,20 @@ error Database::SaveUser(
             return err;
         }
 
+        // Time entries
         err = saveRelatedModels(user->ID(),
                                 "time_entries",
                                 &user->related.TimeEntries,
+                                changes);
+        if (err != noError) {
+            session_->rollback();
+            return err;
+        }
+
+        // autotracker rules
+        err = saveRelatedModels(user->ID(),
+                                "autotracker_settings",
+                                &user->related.AutotrackerRules,
                                 changes);
         if (err != noError) {
             session_->rollback();

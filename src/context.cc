@@ -10,6 +10,7 @@
 
 #include <iostream>  // NOLINT
 
+#include "./autotracker.h"
 #include "./const.h"
 #include "./database.h"
 #include "./error.h"
@@ -2448,6 +2449,38 @@ _Bool Context::SaveUpdateChannel(const std::string channel) {
     return true;
 }
 
+_Bool Context::AddAutotrackerRule(
+    const std::string term,
+    const Poco::UInt64 pid) {
+
+    if (!user_ || term.empty() || !pid) {
+        return false;
+    }
+
+    AutotrackerRule *rule = new AutotrackerRule();
+    rule->SetTerm(term);
+    rule->SetPID(pid);
+    rule->SetUID(user_->ID());
+    user_->related.AutotrackerRules.push_back(rule);
+
+    return displayError(save());
+}
+
+AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
+    if (!user_) {
+        return 0;
+    }
+    for (std::vector<AutotrackerRule *>::const_iterator it =
+        user_->related.AutotrackerRules.begin();
+            it != user_->related.AutotrackerRules.end(); it++) {
+        AutotrackerRule *rule = *it;
+        if (rule->Matches(event)) {
+            return rule;
+        }
+    }
+    return 0;
+}
+
 _Bool Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
@@ -2650,11 +2683,10 @@ error Context::StartTimelineEvent(const TimelineEvent event) {
     if (!user_ || user_->RunningTimeEntry()) {
         return noError;
     }
-    Poco::UInt64 pid = autotracker_.FindPID(event);
-    if (!pid) {
-        return noError;
+    AutotrackerRule *rule = findAutotrackerRule(event);
+    if (rule) {
+        Start("", "", 0, rule->PID());
     }
-    Start("", "", 0, pid);
     return noError;
 }
 

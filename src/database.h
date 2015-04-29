@@ -235,6 +235,10 @@ class Database {
         const Poco::Int64 &UID);
 
     error saveModel(
+        AutotrackerRule *model,
+        std::vector<ModelChange> *changes);
+
+    error saveModel(
         Workspace *model,
         std::vector<ModelChange> *changes);
 

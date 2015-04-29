@@ -23,6 +23,8 @@ class AutotrackerRule : public BaseModel {
 
     virtual ~AutotrackerRule() {}
 
+    bool Matches(const TimelineEvent event) const;
+
     const std::string &Term() const;
     void SetTerm(const std::string value);
 
@@ -36,28 +38,6 @@ class AutotrackerRule : public BaseModel {
  private:
     std::string term_;
     Poco::UInt64 pid_;
-};
-
-class Autotracker {
- public:
-    Autotracker() {
-        // FIXME: add some fake rules
-        AutotrackerRule r1;
-        r1.SetTerm("Skype");
-        r1.SetPID(4583100);
-        rules_.push_back(r1);
-
-        AutotrackerRule r2;
-        r2.SetTerm("delfi");
-        r2.SetPID(8490176);
-        rules_.push_back(r2);
-    }
-    virtual ~Autotracker() {}
-
-    Poco::UInt64 FindPID(const TimelineEvent event) const;
-
- private:
-    std::vector<AutotrackerRule> rules_;
 };
 
 };  // namespace toggl

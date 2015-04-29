@@ -10,7 +10,6 @@
 #include <iostream> // NOLINT
 
 #include "./analytics.h"
-#include "./autotracker.h"
 #include "./custom_error_handler.h"
 #include "./feedback.h"
 #include "./gui.h"
@@ -29,6 +28,7 @@
 
 namespace toggl {
 
+class AutotrackerRule;
 class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
@@ -242,6 +242,10 @@ class Context : public TimelineDatasource {
         quit_ = true;
     }
 
+    _Bool AddAutotrackerRule(
+        const std::string term,
+        const Poco::UInt64 pid);
+
     std::string UserFullName() const;
 
     std::string UserEmail() const;
@@ -344,6 +348,8 @@ class Context : public TimelineDatasource {
 
     error downloadUpdate();
 
+    AutotrackerRule *findAutotrackerRule(const TimelineEvent event) const;
+
     void stopActivities();
 
     Poco::Mutex db_m_;
@@ -401,8 +407,6 @@ class Context : public TimelineDatasource {
     std::string update_path_;
 
     bool im_a_teapot_;
-
-    Autotracker autotracker_;
 
     static std::string log_path_;
 };

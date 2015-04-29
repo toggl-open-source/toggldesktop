@@ -1341,6 +1341,17 @@ TEST(TogglApiTest, toggl_set_time_entry_end_prefers_same_day) {
     ASSERT_EQ(start.day(), end.day());
 }
 
+TEST(TogglApiTest, toggl_autotracker_add_rule) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing::testresult::error = noError;
+    _Bool res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(res);
+}
+
 TEST(ProxyTest, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());

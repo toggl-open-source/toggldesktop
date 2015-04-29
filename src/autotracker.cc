@@ -7,6 +7,18 @@
 
 namespace toggl {
 
+bool AutotrackerRule::Matches(const TimelineEvent event) const {
+    if (Poco::UTF8::toLower(event.filename).find(term_)
+            != std::string::npos) {
+        return true;
+    }
+    if (Poco::UTF8::toLower(event.title).find(term_)
+            != std::string::npos) {
+        return true;
+    }
+    return false;
+}
+
 const std::string &AutotrackerRule::Term() const {
     return term_;
 }
@@ -45,25 +57,6 @@ std::string AutotrackerRule::ModelName() const {
 
 std::string AutotrackerRule::ModelURL() const {
     return "";
-}
-
-Poco::UInt64 Autotracker::FindPID(const TimelineEvent event) const {
-    if (rules_.empty()) {
-        return 0;
-    }
-    for (std::vector<AutotrackerRule>::const_iterator it = rules_.begin();
-            it != rules_.end(); it++) {
-        const AutotrackerRule &rule = *it;
-        if (Poco::UTF8::toLower(event.filename).find(rule.Term())
-                != std::string::npos) {
-            return rule.PID();
-        }
-        if (Poco::UTF8::toLower(event.title).find(rule.Term())
-                != std::string::npos) {
-            return rule.PID();
-        }
-    }
-    return 0;
 }
 
 }  // namespace toggl

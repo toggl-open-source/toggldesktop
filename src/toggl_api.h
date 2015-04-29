@@ -608,6 +608,11 @@ extern "C" {
         const char* script,
         int64_t *err);
 
+    TOGGL_EXPORT _Bool toggl_autotracker_add_rule(
+        void *context,
+        const char_t *term,
+        const uint64_t project_id);
+
     // Testing helpers. May change any time
     void testing_sleep(
         const int seconds);
