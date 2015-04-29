@@ -104,9 +104,9 @@ NSString *kInactiveTimerColor = @"#999999";
 		[[NSAttributedString alloc] initWithString:@"00:00:00"
 										attributes:durationDictionary];
 
-	[self.durationTextField setPlaceholderAttributedString:durationLightString];
-	[self.descriptionLabel setPlaceholderAttributedString:descriptionLightString];
-	[self.descriptionComboBox setPlaceholderAttributedString:descriptionLightString];
+	[[self.durationTextField cell] setPlaceholderAttributedString:durationLightString];
+	[[self.descriptionLabel cell] setPlaceholderAttributedString:descriptionLightString];
+	[[self.descriptionComboBox cell] setPlaceholderAttributedString:descriptionLightString];
 
 	[self.startButton setHoverAlpha:0.75];
 }
