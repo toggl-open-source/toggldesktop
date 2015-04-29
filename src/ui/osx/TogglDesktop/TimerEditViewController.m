@@ -84,6 +84,29 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autocompleteDataSource.combobox = self.descriptionComboBox;
 
 	[self.autocompleteDataSource setFilter:@""];
+	NSFont *descriptionFont = [NSFont fontWithName:@"Lucida Grande" size:13.0];
+	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:16.0];
+	NSColor *color = [ConvertHexColor hexCodeToNSColor:kTrackingColor];
+	NSDictionary *descriptionDictionary = @{
+		NSFontAttributeName : descriptionFont,
+		NSForegroundColorAttributeName : color
+	};
+	NSDictionary *durationDictionary = @{
+		NSFontAttributeName : durationFont,
+		NSForegroundColorAttributeName : color
+	};
+
+	NSAttributedString *descriptionLightString =
+		[[NSAttributedString alloc] initWithString:NSLocalizedString(@"What are you doing?", nil)
+										attributes:descriptionDictionary];
+
+	NSAttributedString *durationLightString =
+		[[NSAttributedString alloc] initWithString:@"00:00:00"
+										attributes:durationDictionary];
+
+	[self.durationTextField setPlaceholderAttributedString:durationLightString];
+	[self.descriptionLabel setPlaceholderAttributedString:descriptionLightString];
+	[self.descriptionComboBox setPlaceholderAttributedString:descriptionLightString];
 
 	[self.startButton setHoverAlpha:0.75];
 }
