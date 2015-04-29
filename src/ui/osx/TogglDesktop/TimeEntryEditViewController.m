@@ -134,7 +134,7 @@ extern void *ctx;
 										range:clientTitleRangeCancel];
 
 	NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
-	[paragraphStyle setAlignment:kCTTextAlignmentRight];
+	[paragraphStyle setAlignment:NSRightTextAlignment];
 
 	[self.clientColorTitleCancel addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:clientTitleRangeCancel];
 
