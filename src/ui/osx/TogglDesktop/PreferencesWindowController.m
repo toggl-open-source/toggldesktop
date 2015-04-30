@@ -19,12 +19,23 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 
 extern void *ctx;
 
+- (id)initWithWindowNibName:(NSString *)nibNameOrNil
+{
+	self = [super initWithWindowNibName:nibNameOrNil];
+	if (self)
+	{
+		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+	}
+	return self;
+}
+
 - (void)windowDidLoad
 {
 	[super windowDidLoad];
 
-	self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 	self.projectAutocompleteDataSource.combobox = self.autotrackerProject;
+	self.projectAutocompleteDataSource.combobox.dataSource = self.projectAutocompleteDataSource;
+	[self.projectAutocompleteDataSource setFilter:@""];
 
 	self.showHideShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutShowHide;
 	self.startStopShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutStartStop;
@@ -201,11 +212,6 @@ extern void *ctx;
 	self.reminderMinutesTextField.enabled = settings.reminder;
 
 	[self.autodetectProxyCheckbox setState:[Utils boolToState:settings.autodetect_proxy]];
-
-	if (cmd.open)
-	{
-		[self.projectAutocompleteDataSource setFilter:@""];
-	}
 }
 
 - (IBAction)idleMinutesChange:(id)sender
@@ -251,7 +257,7 @@ extern void *ctx;
 		return;
 	}
 
-	long pid = 4583100; // FIXME: get project ID from combo box
+	long pid = 4583100;         // FIXME: get project ID from combo box
 	if (0 == pid)
 	{
 		[self.autotrackerProject becomeFirstResponder];

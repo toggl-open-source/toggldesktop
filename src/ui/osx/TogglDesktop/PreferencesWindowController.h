@@ -9,6 +9,7 @@
 #import "DisplayCommand.h"
 #import "AutocompleteItem.h"
 #import "AutocompleteDataSource.h"
+#import "NSCustomComboBox.h"
 
 extern NSString *const kPreferenceGlobalShortcutShowHide;
 extern NSString *const kPreferenceGlobalShortcutStartStop;
@@ -33,7 +34,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSTextField *reminderMinutesTextField;
 @property IBOutlet NSButton *autodetectProxyCheckbox;
 @property IBOutlet NSTextField *autotrackerTerm;
-@property IBOutlet NSComboBox *autotrackerProject;
+@property IBOutlet NSCustomComboBox *autotrackerProject;
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
