@@ -2598,7 +2598,7 @@ error Database::initialize_tables() {
 }
 
 error Database::migrateAutotracker() {
-    return migrate(
+    error err = migrate(
         "autotracker_settings",
         "create table autotracker_settings("
         "local_id integer primary key,"
@@ -2610,6 +2610,19 @@ error Database::migrateAutotracker() {
         "constraint fk_autotracker_settings_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
         "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "autotracker_settings.term",
+        "CREATE UNIQUE INDEX autotracker_settings_term "
+        "   ON autotracker_settings (uid, term);");
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
 }
 
 error Database::migrateClients() {
