@@ -1350,6 +1350,11 @@ TEST(TogglApiTest, toggl_autotracker_add_rule) {
     _Bool res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
+
+    testing::testresult::error = noError;
+    res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    ASSERT_NE(noError, testing::testresult::error);
+    ASSERT_FALSE(res);
 }
 
 TEST(ProxyTest, IsConfigured) {
