@@ -7,6 +7,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
             <connections>
+                <outlet property="autotrackerProject" destination="TN9-Mx-4gf" id="94P-Mq-SHg"/>
+                <outlet property="autotrackerTerm" destination="XqC-LL-a53" id="UWX-A8-4X0"/>
                 <outlet property="dockIconCheckbox" destination="kR2-Ee-viZ" id="Nm7-te-1KH"/>
                 <outlet property="focusOnShortcutCheckbox" destination="yWA-BY-OMt" id="Dfo-JK-2a2"/>
                 <outlet property="hostTextField" destination="eSt-Rf-LI2" id="Gfl-WB-VWr"/>
@@ -441,7 +443,7 @@
                                         </textField>
                                         <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN9-Mx-4gf">
                                             <rect key="frame" x="135" y="208" width="121" height="26"/>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="wm4-2s-Yxd">
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="wm4-2s-Yxd">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -458,6 +460,9 @@
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="addAutotrackerRule:" target="-2" id="OnO-iJ-NQB"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                 </view>

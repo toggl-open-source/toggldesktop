@@ -233,4 +233,21 @@ extern void *ctx;
 										[Utils stateToBool:[self.autodetectProxyCheckbox state]]);
 }
 
+- (IBAction)addAutotrackerRule:(id)sender
+{
+    NSString *term = [self.autotrackerTerm stringValue];
+    if (nil == term || 0 == term.length) {
+        [self.autotrackerTerm becomeFirstResponder];
+        return;
+    }
+
+    long pid = 4583100; // FIXME: get project ID from combo box
+    if (0 == pid) {
+        [self.autotrackerProject becomeFirstResponder];
+        return;
+    }
+
+    toggl_autotracker_add_rule(ctx, [term UTF8String], pid);
+}
+
 @end
