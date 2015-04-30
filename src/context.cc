@@ -41,6 +41,7 @@
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/URI.h"
+#include "Poco/UTF8String.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 
@@ -2457,8 +2458,20 @@ _Bool Context::AddAutotrackerRule(
         return false;
     }
 
+    std::string lowercase = Poco::UTF8::toLower(term);
+
+    for (std::vector<AutotrackerRule *>::const_iterator it =
+        user_->related.AutotrackerRules.begin();
+            it != user_->related.AutotrackerRules.end(); it++) {
+        AutotrackerRule *rule = *it;
+        if (rule->Term() == lowercase) {
+            // avoid duplicates
+            return false;
+        }
+    }
+
     AutotrackerRule *rule = new AutotrackerRule();
-    rule->SetTerm(term);
+    rule->SetTerm(lowercase);
     rule->SetPID(pid);
     rule->SetUID(user_->ID());
     user_->related.AutotrackerRules.push_back(rule);
@@ -2470,6 +2483,7 @@ AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
     if (!user_) {
         return 0;
     }
+
     for (std::vector<AutotrackerRule *>::const_iterator it =
         user_->related.AutotrackerRules.begin();
             it != user_->related.AutotrackerRules.end(); it++) {
@@ -2478,6 +2492,7 @@ AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
             return rule;
         }
     }
+
     return 0;
 }
 

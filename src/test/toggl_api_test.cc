@@ -1353,7 +1353,6 @@ TEST(TogglApiTest, toggl_autotracker_add_rule) {
 
     testing::testresult::error = noError;
     res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
-    ASSERT_NE(noError, testing::testresult::error);
     ASSERT_FALSE(res);
 }
 

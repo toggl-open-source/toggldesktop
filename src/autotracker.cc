@@ -24,9 +24,8 @@ const std::string &AutotrackerRule::Term() const {
 }
 
 void AutotrackerRule::SetTerm(const std::string value) {
-    std::string lowercase = Poco::UTF8::toLower(value);
-    if (term_ != lowercase) {
-        term_ = lowercase;
+    if (term_ != value) {
+        term_ = value;
         SetDirty();
     }
 }
