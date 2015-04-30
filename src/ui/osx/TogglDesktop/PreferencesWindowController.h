@@ -7,6 +7,8 @@
 #import <Cocoa/Cocoa.h>
 #import "MASShortcutView+UserDefaults.h"
 #import "DisplayCommand.h"
+#import "AutocompleteItem.h"
+#import "AutocompleteDataSource.h"
 
 extern NSString *const kPreferenceGlobalShortcutShowHide;
 extern NSString *const kPreferenceGlobalShortcutStartStop;
@@ -49,6 +51,9 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)reminderMinutesChanged:(id)sender;
 - (IBAction)autodetectProxyCheckboxChanged:(id)sender;
 - (IBAction)addAutotrackerRule:(id)sender;
+
 @property uint64_t user_id;
 @property DisplayCommand *originalCmd;
+@property AutocompleteDataSource *projectAutocompleteDataSource;
+
 @end

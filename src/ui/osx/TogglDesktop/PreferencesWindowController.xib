@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
             <connections>
+                <outlet property="autodetectProxyCheckbox" destination="VYH-HQ-PE4" id="b5m-c5-cVN"/>
                 <outlet property="autotrackerProject" destination="TN9-Mx-4gf" id="94P-Mq-SHg"/>
                 <outlet property="autotrackerTerm" destination="XqC-LL-a53" id="UWX-A8-4X0"/>
                 <outlet property="dockIconCheckbox" destination="kR2-Ee-viZ" id="Nm7-te-1KH"/>
@@ -24,6 +25,7 @@
                 <outlet property="showHideShortcutView" destination="DLB-Fw-7tX" id="T2o-mF-KXG"/>
                 <outlet property="startStopShortcutView" destination="Ft4-tk-xRA" id="5tb-G5-s2R"/>
                 <outlet property="useIdleDetectionButton" destination="Lgk-gZ-8Ha" id="Erp-FO-vcw"/>
+                <outlet property="useProxyButton" destination="B6k-US-RON" id="T6O-Pt-HEa"/>
                 <outlet property="usernameTextField" destination="hml-tw-LUI" id="1nT-Y3-g6A"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>

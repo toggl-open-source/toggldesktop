@@ -23,6 +23,9 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
+	self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+	self.projectAutocompleteDataSource.combobox = self.autotrackerProject;
+
 	self.showHideShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutShowHide;
 	self.startStopShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutStartStop;
 
@@ -198,6 +201,11 @@ extern void *ctx;
 	self.reminderMinutesTextField.enabled = settings.reminder;
 
 	[self.autodetectProxyCheckbox setState:[Utils boolToState:settings.autodetect_proxy]];
+
+	if (cmd.open)
+	{
+		[self.projectAutocompleteDataSource setFilter:@""];
+	}
 }
 
 - (IBAction)idleMinutesChange:(id)sender
@@ -235,19 +243,22 @@ extern void *ctx;
 
 - (IBAction)addAutotrackerRule:(id)sender
 {
-    NSString *term = [self.autotrackerTerm stringValue];
-    if (nil == term || 0 == term.length) {
-        [self.autotrackerTerm becomeFirstResponder];
-        return;
-    }
+	NSString *term = [self.autotrackerTerm stringValue];
 
-    long pid = 4583100; // FIXME: get project ID from combo box
-    if (0 == pid) {
-        [self.autotrackerProject becomeFirstResponder];
-        return;
-    }
+	if (nil == term || 0 == term.length)
+	{
+		[self.autotrackerTerm becomeFirstResponder];
+		return;
+	}
 
-    toggl_autotracker_add_rule(ctx, [term UTF8String], pid);
+	long pid = 4583100; // FIXME: get project ID from combo box
+	if (0 == pid)
+	{
+		[self.autotrackerProject becomeFirstResponder];
+		return;
+	}
+
+	toggl_autotracker_add_rule(ctx, [term UTF8String], pid);
 }
 
 @end
