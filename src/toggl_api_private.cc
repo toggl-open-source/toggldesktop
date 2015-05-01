@@ -108,7 +108,6 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
     }
 
     delete view;
-    view = 0;
 }
 
 void view_item_clear(TogglGenericView *item) {
@@ -129,7 +128,6 @@ void view_item_clear(TogglGenericView *item) {
     }
 
     delete item;
-    item = 0;
 }
 
 void autocomplete_item_clear(TogglAutocompleteView *item) {
