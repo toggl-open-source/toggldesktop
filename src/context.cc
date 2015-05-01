@@ -2483,7 +2483,14 @@ _Bool Context::AddAutotrackerRule(
     rule->SetUID(user_->ID());
     user_->related.AutotrackerRules.push_back(rule);
 
-    return displayError(save());
+    error err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    displayAutotrackerRules();
+
+    return true;
 }
 
 AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
