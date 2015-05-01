@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "./autocomplete_item.h"
-#include "./autotracker.h"
 #include "./https_client.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -20,6 +19,7 @@ class Logger;
 
 namespace toggl {
 
+class AutotrackerRule;
 class Client;
 class Workspace;
 
