@@ -30,9 +30,9 @@ class User : public BaseModel {
     fullname_(""),
     email_(""),
     record_timeline_(false),
+    store_start_and_stop_time_(true),
     timeofday_format_(""),
     duration_format_(""),
-    store_start_and_stop_time_(true),
     offline_data_("") {}
 
     ~User();
