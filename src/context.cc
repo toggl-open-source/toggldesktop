@@ -395,9 +395,32 @@ void Context::displayTags() {
 }
 
 void Context::displayAutotrackerRules() {
-    if (user_) {
-        UI()->DisplayAutotrackerRules(&user_->related.AutotrackerRules);
+    if (!user_) {
+        return;
     }
+
+    if (!UI()->CanDisplayAutotrackerRules()) {
+        return;
+    }
+
+    TogglAutotrackerRuleView *first = 0;
+    for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
+        user_->related.AutotrackerRules.begin();
+            it != user_->related.AutotrackerRules.end();
+            it++) {
+        AutotrackerRule *rule = *it;
+        Project *p = user_->related.ProjectByID(rule->PID());
+        std::string project_name("");
+        if (p) {
+            project_name = p->Name();
+        }
+        TogglAutotrackerRuleView *item =
+            autotracker_rule_to_view_item(*it, project_name);
+        item->Next = first;
+        first = item;
+    }
+    UI()->DisplayAutotrackerRules(first);
+    autotracker_view_item_clear(first);
 }
 
 Poco::Timestamp Context::postpone(

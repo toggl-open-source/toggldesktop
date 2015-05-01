@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "./autotracker.h"
 #include "./toggl_api.h"
 #include "./autocomplete_item.h"
 #include "./settings.h"
@@ -17,6 +16,7 @@ class Logger;
 }
 
 namespace toggl {
+class AutotrackerRule;
 class Client;
 class Context;
 class Project;
@@ -43,7 +43,8 @@ TogglGenericView *client_to_view_item(
     toggl::Client * const);
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-    toggl::AutotrackerRule * const model);
+    toggl::AutotrackerRule * const model,
+    const std::string project_name);
 
 void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 

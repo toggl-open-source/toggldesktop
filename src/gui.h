@@ -19,7 +19,6 @@ class Logger;
 
 namespace toggl {
 
-class AutotrackerRule;
 class Client;
 class Workspace;
 
@@ -77,7 +76,7 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTags(std::vector<std::string> *tags);
 
-    void DisplayAutotrackerRules(std::vector<toggl::AutotrackerRule *> *list);
+    void DisplayAutotrackerRules(TogglAutotrackerRuleView *first);
 
     void DisplayTimeEntryEditor(
         const _Bool open,
@@ -193,6 +192,10 @@ class GUI : public SyncStateMonitor {
 
     bool CanDisplayUpdate() const {
         return !!on_display_update_;
+    }
+
+    bool CanDisplayAutotrackerRules() const {
+        return !!on_display_autotracker_rules_;
     }
 
  private:

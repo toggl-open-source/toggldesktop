@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 
+#include "./autotracker.h"
 #include "./client.h"
 #include "./context.h"
 #include "./formatter.h"
@@ -76,13 +77,13 @@ TogglGenericView *client_to_view_item(toggl::Client * const c) {
 }
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-    toggl::AutotrackerRule * const model) {
+        toggl::AutotrackerRule * const model,
+        const std::string project_name) {
     TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
     view->ID = static_cast<unsigned int>(model->ID());
     view->PID = static_cast<unsigned int>(model->PID());
     view->Term = copy_string(model->Term());
-    // FIXME: project name
-    view->ProjectName = copy_string("foobar");
+    view->ProjectName = copy_string(project_name);
     return view;
 }
 
