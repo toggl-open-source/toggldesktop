@@ -248,17 +248,6 @@ void on_display_idle_notification(
     testing::testresult::idle_description = std::string(description);
 }
 
-void on_apply_settings(
-    TogglSettingsView *settings) {
-    testing::testresult::use_proxy = settings->UseProxy;
-    testing::testresult::settings.use_idle_detection =
-        settings->UseIdleDetection;
-    testing::testresult::settings.menubar_timer =
-        settings->MenubarTimer;
-    testing::testresult::settings.dock_icon = settings->DockIcon;
-    testing::testresult::settings.on_top = settings->OnTop;
-}
-
 class App {
  public:
     App() {
