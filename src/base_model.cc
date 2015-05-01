@@ -120,11 +120,6 @@ error BaseModel::LoadFromDataString(const std::string data_string) {
     return noError;
 }
 
-std::string BaseModel::SaveToJSONString() const {
-    Json::StyledWriter writer;
-    return writer.write(SaveToJSON());
-}
-
 error BaseModel::LoadFromJSONString(const std::string json_string) {
     if (json_string.empty()) {
         return noError;

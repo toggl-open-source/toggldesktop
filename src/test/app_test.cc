@@ -1528,7 +1528,7 @@ TEST(JSON, Project) {
     ASSERT_EQ("2f0b8f11-f898-d992-3e1a-6bc261fc41ef", p.GUID());
 
     Project p2;
-    p2.LoadFromJSONString(p.SaveToJSONString());
+    p2.LoadFromJSON(p.SaveToJSON());
     ASSERT_EQ(p.ID(), p2.ID());
     ASSERT_EQ(p.Name(), p2.Name());
     ASSERT_EQ(p.WID(), p2.WID());
@@ -1550,7 +1550,7 @@ TEST(JSON, Client) {
     ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
 
     Client c2;
-    c2.LoadFromJSONString(c.SaveToJSONString());
+    c2.LoadFromJSON(c.SaveToJSON());
     ASSERT_EQ(c.ID(), c2.ID());
     ASSERT_EQ(c.Name(), c2.Name());
     ASSERT_EQ(c.WID(), c2.WID());
@@ -1575,7 +1575,7 @@ TEST(JSON, TimeEntry) {
     ASSERT_FALSE(t.DurOnly());
 
     TimeEntry t2;
-    t2.LoadFromJSONString(t.SaveToJSONString());
+    t2.LoadFromJSON(t.SaveToJSON());
     ASSERT_EQ(t.ID(), t2.ID());
     ASSERT_EQ(t.PID(), t2.PID());
     ASSERT_EQ(t.WID(), t2.WID());
