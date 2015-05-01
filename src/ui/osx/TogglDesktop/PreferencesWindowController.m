@@ -257,7 +257,7 @@ extern void *ctx;
 		return;
 	}
 
-	long pid = 4583100;         // FIXME: get project ID from combo box
+	long pid = 4583100;             // FIXME: get project ID from combo box
 	if (0 == pid)
 	{
 		[self.autotrackerProject becomeFirstResponder];
