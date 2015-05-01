@@ -5,15 +5,22 @@
 //
 
 #import "PreferencesWindowController.h"
-#import "toggl_api.h"
-#import "UIEvents.h"
-#import "Settings.h"
-#import "MASShortcutView+UserDefaults.h"
+
+#import "AutotrackerRuleItem.h"
 #import "DisplayCommand.h"
+#import "MASShortcutView+UserDefaults.h"
+#import "Settings.h"
+#import "UIEvents.h"
 #import "Utils.h"
+#import "toggl_api.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
 NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
+
+@interface PreferencesWindowController ()
+@property NSMutableArray *rules;
+@property AutocompleteDataSource *projectAutocompleteDataSource;
+@end
 
 @implementation PreferencesWindowController
 
@@ -25,6 +32,11 @@ extern void *ctx;
 	if (self)
 	{
 		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayAutotrackerRules:)
+													 name:kDisplayAutotrackerRules
+												   object:nil];
 	}
 	return self;
 }
@@ -57,6 +69,7 @@ extern void *ctx;
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 
 	[self displaySettings:self.originalCmd];
+	[self displayAutotrackerRules:self.rules];
 
 	[self.idleMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
@@ -169,6 +182,23 @@ extern void *ctx;
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 }
 
+- (void)startDisplayAutotrackerRules:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayAutotrackerRules:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayAutotrackerRules:(NSMutableArray *)value
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	@synchronized(self)
+	{
+		self.rules = value;
+	}
+	[self.autotrackerRulesTableView reloadData];
+}
+
 - (void)startDisplaySettings:(NSNotification *)notification
 {
 	[self performSelectorOnMainThread:@selector(displaySettings:)
@@ -257,7 +287,7 @@ extern void *ctx;
 		return;
 	}
 
-	long pid = 4583100;             // FIXME: get project ID from combo box
+	long pid = 4583100;                             // FIXME: get project ID from combo box
 	if (0 == pid)
 	{
 		[self.autotrackerProject becomeFirstResponder];
@@ -265,6 +295,39 @@ extern void *ctx;
 	}
 
 	toggl_autotracker_add_rule(ctx, [term UTF8String], pid);
+}
+
+// Autotracker rules table
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
+{
+	if (!self.rules)
+	{
+		return 0;
+	}
+	return self.rules.count;
+}
+
+- (id)              tableView:(NSTableView *)aTableView
+	objectValueForTableColumn:(NSTableColumn *)aTableColumn
+						  row:(NSInteger)rowIndex
+{
+	if (rowIndex < 0 || !self.rules || rowIndex > self.rules.count)
+	{
+		return nil;
+	}
+	AutotrackerRuleItem *view = self.rules[rowIndex];
+
+	NSString *columnIdentifer = [aTableColumn identifier];
+	if ([columnIdentifer isEqualTo:@"project"])
+	{
+		return view.ProjectName;
+	}
+	if ([columnIdentifer isEqualTo:@"term"])
+	{
+		return view.Term;
+	}
+	return nil;
 }
 
 @end

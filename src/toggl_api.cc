@@ -845,6 +845,12 @@ void toggl_on_idle_notification(
     app(context)->UI()->OnDisplayIdleNotification(cb);
 }
 
+void toggl_on_autotracker_rules(
+    void *context,
+    TogglDisplayAutotrackerRules cb) {
+    app(context)->UI()->OnDisplayAutotrackerRules(cb);
+}
+
 void toggl_debug(const char_t *text) {
     logger().debug(to_string(text));
 }

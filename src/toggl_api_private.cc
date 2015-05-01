@@ -75,6 +75,41 @@ TogglGenericView *client_to_view_item(toggl::Client * const c) {
     return result;
 }
 
+TogglAutotrackerRuleView *autotracker_rule_to_view_item(
+    toggl::AutotrackerRule * const model) {
+    TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
+    view->ID = static_cast<unsigned int>(model->ID());
+    view->PID = static_cast<unsigned int>(model->PID());
+    view->Term = copy_string(model->Term());
+    // FIXME: project name
+    view->ProjectName = copy_string("foobar");
+    return view;
+}
+
+void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
+    if (!view) {
+        return;
+    }
+
+    view->ID = 0;
+    view->PID = 0;
+
+    free(view->Term);
+    view->Term = 0;
+
+    free(view->ProjectName);
+    view->ProjectName = 0;
+
+    if (view->Next) {
+        TogglAutotrackerRuleView *next =
+            reinterpret_cast<TogglAutotrackerRuleView *>(view->Next);
+        autotracker_view_item_clear(next);
+    }
+
+    delete view;
+    view = 0;
+}
+
 void view_item_clear(TogglGenericView *item) {
     if (!item) {
         return;

@@ -319,6 +319,7 @@ class Context : public TimelineDatasource {
     void displayWorkspaceSelect();
     void displayClientSelect();
     void displayTags();
+    void displayAutotrackerRules();
 
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 

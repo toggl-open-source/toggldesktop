@@ -7,27 +7,29 @@
 //
 
 #import "AppDelegate.h"
-#import "toggl_api.h"
-#import "MainWindowController.h"
-#import "PreferencesWindowController.h"
-#import "Bugsnag.h"
-#import "UIEvents.h"
-#import "TimeEntryViewItem.h"
+
 #import "AboutWindowController.h"
-#import "MenuItemTags.h"
-#import "idler.h"
+#import "AutocompleteItem.h"
+#import "AutotrackerRuleItem.h"
+#import "Bugsnag.h"
+#import "ConsoleViewController.h"
+#import "CrashReporter.h"
+#import "DisplayCommand.h"
+#import "FeedbackWindowController.h"
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
-#import "CrashReporter.h"
-#import "FeedbackWindowController.h"
-#import "ConsoleViewController.h"
-#import "AutocompleteItem.h"
 #import "MASShortcut+UserDefaults.h"
-#import "ViewItem.h"
-#import "Utils.h"
+#import "MainWindowController.h"
+#import "MenuItemTags.h"
+#import "PreferencesWindowController.h"
 #import "Settings.h"
-#import "DisplayCommand.h"
 #import "Sparkle.h"
+#import "TimeEntryViewItem.h"
+#import "UIEvents.h"
+#import "Utils.h"
+#import "ViewItem.h"
+#import "idler.h"
+#import "toggl_api.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -1018,6 +1020,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_settings(ctx, on_settings);
 	toggl_on_timer_state(ctx, on_timer_state);
 	toggl_on_idle_notification(ctx, on_idle_notification);
+	toggl_on_autotracker_rules(ctx, on_autotracker_rules);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1311,6 +1314,12 @@ void on_tags(TogglGenericView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTags
 														object:[ViewItem loadAll:first]];
+}
+
+void on_autotracker_rules(TogglAutotrackerRuleView *first)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayAutotrackerRules
+														object:[AutotrackerRuleItem loadAll:first]];
 }
 
 void on_client_select(TogglGenericView *first)

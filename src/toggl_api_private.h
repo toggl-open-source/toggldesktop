@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "./autotracker.h"
 #include "./toggl_api.h"
 #include "./autocomplete_item.h"
 #include "./settings.h"
@@ -40,6 +41,11 @@ TogglGenericView *workspace_to_view_item(
 
 TogglGenericView *client_to_view_item(
     toggl::Client * const);
+
+TogglAutotrackerRuleView *autotracker_rule_to_view_item(
+    toggl::AutotrackerRule * const model);
+
+void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 
 TogglAutocompleteView *autocomplete_item_init(
     const toggl::AutocompleteItem item);

@@ -241,6 +241,23 @@ void GUI::DisplayTags(std::vector<std::string> *tags) {
     view_item_clear(first);
 }
 
+void GUI::DisplayAutotrackerRules(std::vector<toggl::AutotrackerRule *> *list) {
+    if (!on_display_autotracker_rules_) {
+        return;
+    }
+    TogglAutotrackerRuleView *first = 0;
+    for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
+        list->begin();
+            it != list->end();
+            it++) {
+        TogglAutotrackerRuleView *item = autotracker_rule_to_view_item(*it);
+        item->Next = first;
+        first = item;
+    }
+    on_display_autotracker_rules_(first);
+    autotracker_view_item_clear(first);
+}
+
 void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
     logger().debug("DisplayClientSelect");
 

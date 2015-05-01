@@ -188,6 +188,9 @@ extern "C" {
     typedef void (*TogglDisplayUpdate)(
         const char_t *url);
 
+    typedef void (*TogglDisplayAutotrackerRules)(
+        TogglAutotrackerRuleView *first);
+
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(
@@ -332,6 +335,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_idle_notification(
         void *context,
         TogglDisplayIdleNotification);
+
+    TOGGL_EXPORT void toggl_on_autotracker_rules(
+        void *context,
+        TogglDisplayAutotrackerRules);
 
     // After UI callbacks are configured, start pumping UI events
 

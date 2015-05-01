@@ -14,7 +14,7 @@
 extern NSString *const kPreferenceGlobalShortcutShowHide;
 extern NSString *const kPreferenceGlobalShortcutStartStop;
 
-@interface PreferencesWindowController : NSWindowController <NSTextFieldDelegate>
+@interface PreferencesWindowController : NSWindowController <NSTextFieldDelegate, NSTableViewDataSource>
 @property IBOutlet NSTextField *hostTextField;
 @property IBOutlet NSTextField *portTextField;
 @property IBOutlet NSTextField *usernameTextField;
@@ -35,6 +35,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *autodetectProxyCheckbox;
 @property IBOutlet NSTextField *autotrackerTerm;
 @property IBOutlet NSCustomComboBox *autotrackerProject;
+@property IBOutlet NSTableView *autotrackerRulesTableView;
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
@@ -53,8 +54,6 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)autodetectProxyCheckboxChanged:(id)sender;
 - (IBAction)addAutotrackerRule:(id)sender;
 
-@property uint64_t user_id;
 @property DisplayCommand *originalCmd;
-@property AutocompleteDataSource *projectAutocompleteDataSource;
-
+@property uint64_t user_id;
 @end

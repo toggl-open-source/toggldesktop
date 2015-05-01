@@ -223,6 +223,7 @@ void Context::displayUI() {
     displayTimeEntryAutocomplete();
     displayMinitimerAutocomplete();
     displayProjectAutocomplete();
+    displayAutotrackerRules();
 }
 
 error Context::save(const bool push_changes) {
@@ -390,6 +391,12 @@ void Context::displayTags() {
     if (user_) {
         std::vector<std::string> list = user_->related.TagList();
         UI()->DisplayTags(&list);
+    }
+}
+
+void Context::displayAutotrackerRules() {
+    if (user_) {
+        UI()->DisplayAutotrackerRules(&user_->related.AutotrackerRules);
     }
 }
 

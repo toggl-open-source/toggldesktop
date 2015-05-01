@@ -6,12 +6,13 @@
 #include <string>
 #include <vector>
 
+#include "./autocomplete_item.h"
+#include "./autotracker.h"
+#include "./https_client.h"
+#include "./proxy.h"
+#include "./settings.h"
 #include "./toggl_api.h"
 #include "./types.h"
-#include "./autocomplete_item.h"
-#include "./settings.h"
-#include "./proxy.h"
-#include "./https_client.h"
 
 namespace Poco {
 class Logger;
@@ -43,7 +44,8 @@ class GUI : public SyncStateMonitor {
     , on_display_mini_timer_autocomplete_(0)
     , on_display_sync_state_(0)
     , on_display_unsynced_items_(0)
-    , on_display_update_(0) {}
+    , on_display_update_(0)
+    , on_display_autotracker_rules_(0) {}
 
     ~GUI() {}
 
@@ -74,6 +76,8 @@ class GUI : public SyncStateMonitor {
     void DisplayClientSelect(std::vector<toggl::Client *> *clients);
 
     void DisplayTags(std::vector<std::string> *tags);
+
+    void DisplayAutotrackerRules(std::vector<toggl::AutotrackerRule *> *list);
 
     void DisplayTimeEntryEditor(
         const _Bool open,
@@ -183,6 +187,10 @@ class GUI : public SyncStateMonitor {
         on_display_unsynced_items_ = cb;
     }
 
+    void OnDisplayAutotrackerRules(TogglDisplayAutotrackerRules cb) {
+        on_display_autotracker_rules_ = cb;
+    }
+
     bool CanDisplayUpdate() const {
         return !!on_display_update_;
     }
@@ -210,6 +218,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplaySyncState on_display_sync_state_;
     TogglDisplayUnsyncedItems on_display_unsynced_items_;
     TogglDisplayUpdate on_display_update_;
+    TogglDisplayAutotrackerRules on_display_autotracker_rules_;
 
     Poco::Logger &logger() const;
 };

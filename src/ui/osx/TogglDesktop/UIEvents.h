@@ -33,6 +33,7 @@ extern NSString *const kDisplaySettings;
 extern NSString *const kDisplayProxySettings;
 extern NSString *const kDisplayTimerState;
 extern NSString *const kDisplayUnsyncedItems;
+extern NSString *const kDisplayAutotrackerRules;
 
 extern NSString *const kHideDisplayError;
 extern NSString *const kForceCloseEditPopover;
