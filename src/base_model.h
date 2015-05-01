@@ -136,7 +136,6 @@ class BaseModel {
     }
 
     error LoadFromDataString(const std::string);
-    error LoadFromJSONString(const std::string);
 
     void Delete();
 

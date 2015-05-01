@@ -19,7 +19,6 @@ namespace toggl {
 class AutotrackerRule;
 class Client;
 class Context;
-class Project;
 class TimeEntry;
 class Workspace;
 }

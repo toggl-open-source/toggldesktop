@@ -120,19 +120,6 @@ error BaseModel::LoadFromDataString(const std::string data_string) {
     return noError;
 }
 
-error BaseModel::LoadFromJSONString(const std::string json_string) {
-    if (json_string.empty()) {
-        return noError;
-    }
-    Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json_string, root)) {
-        return error("Failed to parse JSON string");
-    }
-    LoadFromJSON(root);
-    return noError;
-}
-
 void BaseModel::Delete() {
     SetDeletedAt(time(0));
     SetUIModified();

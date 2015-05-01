@@ -203,6 +203,13 @@ TEST(Database, SaveAndLoadCurrentAPIToken) {
     ASSERT_EQ(Poco::UInt64(0), uid_from_db);
 }
 
+Json::Value jsonStringToValue(const std::string json_string) {
+    Json::Value root;
+    Json::Reader reader;
+    reader.parse(json_string, root);
+    return root;
+}
+
 TEST(User, UpdatesTimeEntryFromJSON) {
     User user;
     ASSERT_EQ(noError,
@@ -212,7 +219,7 @@ TEST(User, UpdatesTimeEntryFromJSON) {
     ASSERT_TRUE(te);
 
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
-    te->LoadFromJSONString(json);
+    te->LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ("Changed", te->Description());
 }
 
@@ -1487,7 +1494,7 @@ TEST(JSON, Tag) {
     std::string json("{\"id\":36253522,\"wid\":123456788,\"name\":\"create new\",\"at\":\"2013-10-15T08:51:46+00:00\",\"guid\":\"041390ba-ed9c-b477-b949-1a4ebb60a9ce\"}");  // NOLINT
 
     Tag t;
-    t.LoadFromJSONString(json);
+    t.LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ(Poco::UInt64(36253522), t.ID());
     ASSERT_EQ(Poco::UInt64(123456788), t.WID());
     ASSERT_EQ("create new", t.Name());
@@ -1498,7 +1505,7 @@ TEST(JSON, Workspace) {
     std::string json("{\"id\":123456722,\"name\":\"A deleted workspace\",\"premium\":false,\"admin\":true,\"default_hourly_rate\":0,\"default_currency\":\"USD\",\"only_admins_may_create_projects\":false,\"only_admins_see_billable_rates\":false,\"rounding\":1,\"rounding_minutes\":0,\"at\":\"2013-07-02T13:45:36+00:00\",\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
     Workspace w;
-    w.LoadFromJSONString(json);
+    w.LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ(Poco::UInt64(123456722), w.ID());
     ASSERT_EQ("A deleted workspace", w.Name());
     ASSERT_FALSE(w.Premium());
@@ -1510,7 +1517,7 @@ TEST(JSON, Task) {
     std::string json("{\"id\":1894712,\"name\":\"A deleted task\",\"wid\":123456789,\"pid\":2598305,\"active\":true,\"at\":\"2013-06-05T07:58:41+00:00\",\"estimated_seconds\":0,\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
     Task t;
-    t.LoadFromJSONString(json);
+    t.LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ(Poco::UInt64(1894712), t.ID());
     ASSERT_EQ("A deleted task", t.Name());
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
@@ -1521,7 +1528,7 @@ TEST(JSON, Project) {
     std::string json("{\"id\":2598323,\"guid\":\"2f0b8f11-f898-d992-3e1a-6bc261fc41ef\",\"wid\":123456789,\"name\":\"A deleted project\",\"billable\":true,\"is_private\":false,\"active\":false,\"template\":false,\"at\":\"2013-05-13T10:19:24+00:00\",\"color\":\"21\",\"auto_estimates\":true,\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
     Project p;
-    p.LoadFromJSONString(json);
+    p.LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ(Poco::UInt64(2598323), p.ID());
     ASSERT_EQ("A deleted project", p.Name());
     ASSERT_EQ(Poco::UInt64(123456789), p.WID());
@@ -1543,7 +1550,7 @@ TEST(JSON, Client) {
     std::string json("{\"id\":878318,\"guid\":\"59b464cd-0f8e-e601-ff44-f135225a6738\",\"wid\":123456789,\"name\":\"Big Client\",\"at\":\"2013-03-27T13:17:18+00:00\"}");  // NOLINT
 
     Client c;
-    c.LoadFromJSONString(json);
+    c.LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ(Poco::UInt64(878318), c.ID());
     ASSERT_EQ("Big Client", c.Name());
     ASSERT_EQ(Poco::UInt64(123456789), c.WID());
@@ -1561,7 +1568,7 @@ TEST(JSON, TimeEntry) {
     std::string json("{\"id\":89818612,\"guid\":\"07fba193-91c4-0ec8-2345-820df0548123\",\"wid\":123456789,\"pid\":2567324,\"billable\":true,\"start\":\"2013-09-05T06:33:50+00:00\",\"stop\":\"2013-09-05T08:19:46+00:00\",\"duration\":6356,\"description\":\"A deleted time entry\",\"tags\":[\"ahaa\"],\"duronly\":false,\"at\":\"2013-09-05T08:19:45+00:00\",\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
     TimeEntry t;
-    t.LoadFromJSONString(json);
+    t.LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ(Poco::UInt64(89818612), t.ID());
     ASSERT_EQ(Poco::UInt64(2567324), t.PID());
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
@@ -1625,14 +1632,14 @@ TEST(BaseModel, LoadFromDataString) {
 
 TEST(BaseModel, LoadFromJSONStringWithEmptyString) {
     User u;
-    error err = u.LoadFromJSONString("");
-    ASSERT_EQ(noError, err);
+    u.LoadFromJSON(jsonStringToValue(""));
+    ASSERT_TRUE(true);
 }
 
 TEST(BaseModel, LoadFromJSONStringWithInvalidString) {
     User u;
-    error err = u.LoadFromJSONString("foobar");
-    ASSERT_NE(noError, err);
+    u.LoadFromJSON(jsonStringToValue("foobar"));
+    ASSERT_TRUE(true);
 }
 
 TEST(BaseModel, BatchUpdateJSONWithoutGUID) {
