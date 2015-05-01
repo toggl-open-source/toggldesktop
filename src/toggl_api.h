@@ -119,6 +119,14 @@ extern "C" {
         _Bool AutodetectProxy;
     } TogglSettingsView;
 
+    typedef struct {
+        uint64_t ID;
+        char_t *Term;
+        uint64_t PID;
+        char_t *ProjectName;
+        void *Next;
+    } TogglAutotrackerRuleView;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
