@@ -287,8 +287,14 @@ extern void *ctx;
 		return;
 	}
 
-	long pid = 4583100;                             // FIXME: get project ID from combo box
-	if (0 == pid)
+	NSString *key = self.autotrackerProject.stringValue;
+	AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
+	uint64_t pid = 0;
+	if (autocomplete != nil)
+	{
+		pid = autocomplete.ProjectID;
+	}
+	if (!pid)
 	{
 		[self.autotrackerProject becomeFirstResponder];
 		return;
