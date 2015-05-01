@@ -32,6 +32,7 @@ class User : public BaseModel {
     record_timeline_(false),
     timeofday_format_(""),
     duration_format_(""),
+    store_start_and_stop_time_(true),
     offline_data_("") {}
 
     ~User();
