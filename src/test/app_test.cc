@@ -1397,38 +1397,6 @@ TEST(Formatter, JoinTaskName) {
     ASSERT_EQ("Task name. Project name. Customer name", res);
 }
 
-TEST(Formatter, JoinTaskNameReverse) {
-    std::string res = Formatter::JoinTaskName(0, 0, 0);
-    ASSERT_EQ("", res);
-
-    Task t;
-    t.SetName("Task name");
-    res = Formatter::JoinTaskNameReverse(&t, 0, 0);
-    ASSERT_EQ("Task name", res);
-
-    Project p;
-    p.SetName("Project name");
-    res = Formatter::JoinTaskNameReverse(0, &p, 0);
-    ASSERT_EQ(p.Name(), res);
-
-    res = Formatter::JoinTaskNameReverse(&t, &p, 0);
-    ASSERT_EQ("Project name. Task name", res);
-
-    Client c;
-    c.SetName("Customer name");
-    res = Formatter::JoinTaskNameReverse(0, 0, &c);
-    ASSERT_EQ(c.Name(), res);
-
-    res = Formatter::JoinTaskNameReverse(&t, 0, &c);
-    ASSERT_EQ("Customer name. Task name", res);
-
-    res = Formatter::JoinTaskNameReverse(0, &p, &c);
-    ASSERT_EQ("Customer name. Project name", res);
-
-    res = Formatter::JoinTaskNameReverse(&t, &p, &c);
-    ASSERT_EQ("Customer name. Project name. Task name", res);
-}
-
 TEST(JSON, EscapeJSONString) {
     std::string text("https://github.com/bartschuller");
     ASSERT_EQ(text, Formatter::EscapeJSONString(text));

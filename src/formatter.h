@@ -38,11 +38,6 @@ class Formatter {
         Project * const,
         Client * const);
 
-    static std::string JoinTaskNameReverse(
-        Task * const,
-        Project * const,
-        Client * const);
-
     static std::string FormatDuration(
         const Poco::Int64 value,
         const std::string format_name,
