@@ -30,9 +30,6 @@ std::string to_string(const char_t *s);
 
 TogglGenericView *view_item_init();
 
-TogglGenericView *project_to_view_item(
-    toggl::Project * const);
-
 TogglGenericView *tag_to_view_item(
     const std::string tag_name);
 

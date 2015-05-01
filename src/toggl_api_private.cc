@@ -41,19 +41,6 @@ TogglGenericView *view_item_init() {
     return result;
 }
 
-TogglGenericView *project_to_view_item(toggl::Project * const p) {
-    if (!p) {
-        logger().error("Cannot render 0 project");
-        return 0;
-    }
-
-    TogglGenericView *result = view_item_init();
-    result->ID = static_cast<unsigned int>(p->ID());
-    result->GUID = copy_string(p->GUID());
-    result->Name = copy_string(p->Name());
-    return result;
-}
-
 TogglGenericView *tag_to_view_item(const std::string tag_name) {
     TogglGenericView *result = view_item_init();
     result->Name = copy_string(tag_name);
