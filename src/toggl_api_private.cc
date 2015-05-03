@@ -64,8 +64,8 @@ TogglGenericView *client_to_view_item(toggl::Client * const c) {
 }
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-        toggl::AutotrackerRule * const model,
-        const std::string project_name) {
+    toggl::AutotrackerRule * const model,
+    const std::string project_name) {
     TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
     view->ID = static_cast<unsigned int>(model->ID());
     view->PID = static_cast<unsigned int>(model->PID());
