@@ -65,4 +65,8 @@
 #define kSyncStateIdle 0
 #define kSyncStateWork 1
 
+#define kRemindOncePerDay
+#define kRemindEveryHalfHour
+#define kRemindEveryHour
+
 #endif  // SRC_CONST_H_
