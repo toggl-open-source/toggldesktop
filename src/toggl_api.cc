@@ -942,7 +942,7 @@ _Bool toggl_autotracker_add_rule(
 
     poco_check_ptr(term);
 
-    return app(context)->AddAutotrackerRule(term, project_id);
+    return app(context)->AddAutotrackerRule(to_string(term), project_id);
 }
 
 void testing_sleep(
