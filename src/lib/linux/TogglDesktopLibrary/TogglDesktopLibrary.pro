@@ -22,6 +22,7 @@ SOURCES += \
     ../../../client.cc \
     ../../../idle.cc \
     ../../../analytics.cc \
+    ../../../autotracker.cc \
     ../../../context.cc \
     ../../../custom_error_handler.cc \
     ../../../database.cc \
@@ -91,6 +92,7 @@ HEADERS += \
     ../../../const.h \
     ../../../idle.h \
     ../../../analytics.h \
+    ../../../autotracker.h \
     ../../../context.h \
     ../../../custom_error_handler.h \
     ../../../database.h \
