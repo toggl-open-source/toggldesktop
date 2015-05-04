@@ -2663,8 +2663,6 @@ void Context::SetWake() {
     logger().debug("SetWake");
 
     try {
-        remindToTrackTime();
-
         scheduleSync();
 
         if (user_) {
@@ -2732,11 +2730,13 @@ void Context::remindToTrackTime() {
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    if (!user_) {
-        logger().warning("cannot remind, user is logged out");
-        return;
-    }
+    displayReminder();
 
+    // start next reminder
+    remindToTrackTime();
+}
+
+void Context::displayReminder() {
     Settings settings;
     if (!LoadSettings(&settings)) {
         logger().error("Could not load settings");
@@ -2753,7 +2753,6 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
         logger().debug("onRemind postponed");
         return;
     }
-    logger().debug("onRemind executing");
 
     if (!user_) {
         logger().warning("User logged out, cannot remind");
@@ -2765,10 +2764,22 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    UI()->DisplayReminder();
+    Poco::LocalDateTime now;
+    int wday = now.dayOfWeek();
 
-    // start next reminder
-    remindToTrackTime();
+    if (
+        (Poco::DateTime::MONDAY == wday && !settings.remind_mon) ||
+        (Poco::DateTime::TUESDAY == wday && !settings.remind_tue) ||
+        (Poco::DateTime::WEDNESDAY == wday && !settings.remind_wed) ||
+        (Poco::DateTime::THURSDAY == wday && !settings.remind_thu) ||
+        (Poco::DateTime::FRIDAY == wday && !settings.remind_fri) ||
+        (Poco::DateTime::SATURDAY == wday && !settings.remind_sat) ||
+        (Poco::DateTime::SUNDAY == wday && !settings.remind_sun)) {
+        logger().debug("reminder is not enabled on this weekday");
+        return;
+    }
+
+    UI()->DisplayReminder();
 }
 
 error Context::StartTimelineEvent(const TimelineEvent event) {

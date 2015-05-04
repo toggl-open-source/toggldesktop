@@ -334,6 +334,8 @@ class Context : public TimelineDatasource {
     void displayTags();
     void displayAutotrackerRules();
 
+    void displayReminder();
+
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
     void updateUI(std::vector<ModelChange> *changes);
