@@ -18,6 +18,8 @@
 #define kTimelineChunkSeconds 900
 #define kEnterpriseInstall false
 #define kDebianPackage false
+#define kTimelineUploadIntervalSeconds 60
+#define kTimelineUploadMaxBackoffSeconds (kTimelineUploadIntervalSeconds * 10)  // NOLINT
 
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "./const.h"
 #include "./timeline_event.h"
 #include "./timeline_notifications.h"
 #include "./types.h"
@@ -21,10 +22,6 @@ namespace toggl {
 std::string convertTimelineToJSON(
     const std::vector<TimelineEvent> &timeline_events,
     const std::string &desktop_id);
-
-const unsigned int kTimelineUploadIntervalSeconds = 60;
-const unsigned int kTimelineUploadMaxBackoffSeconds =
-    kTimelineUploadIntervalSeconds * 10;
 
 class TimelineUploader {
  public:
