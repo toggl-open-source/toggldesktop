@@ -1206,6 +1206,9 @@ _Bool Context::SetSettingsRemindTimes(
     if (err != noError) {
         return displayError(err);
     }
+
+    remindToTrackTime();
+
     return DisplaySettings();
 }
 
@@ -1228,6 +1231,9 @@ _Bool Context::SetSettingsRemindDays(
     if (err != noError) {
         return displayError(err);
     }
+
+    remindToTrackTime();
+
     return DisplaySettings();
 }
 
@@ -2730,27 +2736,31 @@ void Context::remindToTrackTime() {
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    displayReminder();
-
-    // start next reminder
-    remindToTrackTime();
-}
-
-void Context::displayReminder() {
     Settings settings;
     if (!LoadSettings(&settings)) {
         logger().error("Could not load settings");
         return;
     }
 
-    if (!settings.reminder) {
-        logger().debug("Reminder is not enabled by user");
-        return;
-    }
+    Poco::Mutex::ScopedLock lock(timer_m_);
 
+    // if some code scheduled a reminder for a later time,
+    // meanwhile, then let the later reminder be executed
+    // not this one.
     if (isPostponed(next_reminder_at_,
                     (settings.reminder_minutes * 60) * kOneSecondInMicros)) {
         logger().debug("onRemind postponed");
+        return;
+    }
+
+    displayReminder(settings);
+
+    remindToTrackTime();
+}
+
+void Context::displayReminder(const Settings &settings) {
+    if (!settings.reminder) {
+        logger().debug("Reminder is not enabled by user");
         return;
     }
 
@@ -2764,9 +2774,9 @@ void Context::displayReminder() {
         return;
     }
 
+    // Check if allowed to display reminder on this weekday
     Poco::LocalDateTime now;
     int wday = now.dayOfWeek();
-
     if (
         (Poco::DateTime::MONDAY == wday && !settings.remind_mon) ||
         (Poco::DateTime::TUESDAY == wday && !settings.remind_tue) ||
@@ -2777,6 +2787,30 @@ void Context::displayReminder() {
         (Poco::DateTime::SUNDAY == wday && !settings.remind_sun)) {
         logger().debug("reminder is not enabled on this weekday");
         return;
+    }
+
+    // Check if allowed to display reminder at this time
+    if (!settings.remind_starts.empty()) {
+        int h(0), m(0);
+        if (toggl::Formatter::ParseTimeInput(settings.remind_starts, &h, &m)) {
+            Poco::LocalDateTime start(
+                now.year(), now.month(), now.day(), h, m, now.second());
+            if (now < start) {
+                logger().debug("its too early for reminders");
+                return;
+            }
+        }
+    }
+    if (!settings.remind_ends.empty()) {
+        int h(0), m(0);
+        if (toggl::Formatter::ParseTimeInput(settings.remind_ends, &h, &m)) {
+            Poco::LocalDateTime end(
+                now.year(), now.month(), now.day(), h, m, now.second());
+            if (now > end) {
+                logger().debug("its too late for reminders");
+                return;
+            }
+        }
     }
 
     UI()->DisplayReminder();

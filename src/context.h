@@ -334,7 +334,7 @@ class Context : public TimelineDatasource {
     void displayTags();
     void displayAutotrackerRules();
 
-    void displayReminder();
+    void displayReminder(const Settings &settings);
 
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
