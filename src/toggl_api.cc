@@ -86,8 +86,8 @@ _Bool toggl_set_settings_remind_times(
     poco_check_ptr(remind_ends);
 
     return app(context)->SetSettingsRemindTimes(
-        copy_string(remind_starts),
-        copy_string(remind_ends));
+        to_string(remind_starts),
+        to_string(remind_ends));
 }
 
 _Bool toggl_set_settings_use_idle_detection(
