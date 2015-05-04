@@ -9,6 +9,7 @@
 #include "./../database.h"
 #include "./../formatter.h"
 #include "./../project.h"
+#include "./../proxy.h"
 #include "./../tag.h"
 #include "./../task.h"
 #include "./../time_entry.h"
@@ -1715,6 +1716,29 @@ TEST(BatchUpdateResult, ResourceIsGoneBecauseOf404) {
     BatchUpdateResult b;
     b.StatusCode = 404;
     ASSERT_TRUE(b.ResourceIsGone());
+}
+
+TEST(ProxyTest, IsConfigured) {
+    Proxy p;
+    ASSERT_FALSE(p.IsConfigured());
+
+    p.SetHost("localhost");
+    p.SetPort(123);
+    ASSERT_TRUE(p.IsConfigured());
+}
+
+TEST(ProxyTest, HasCredentials) {
+    Proxy p;
+    ASSERT_FALSE(p.HasCredentials());
+
+    p.SetUsername("foo");
+    p.SetPassword("bar");
+    ASSERT_TRUE(p.HasCredentials());
+}
+
+TEST(ProxyTest, String) {
+    Proxy p;
+    ASSERT_NE("", p.String());
 }
 
 }  // namespace toggl

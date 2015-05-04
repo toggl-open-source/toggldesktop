@@ -347,6 +347,17 @@ TogglSettingsView *settings_view_item_init(
     view->ProxyUsername = copy_string(proxy.Username());
     view->ProxyPassword = copy_string(proxy.Password());
 
+    view->RemindMon = settings.remind_mon;
+    view->RemindTue = settings.remind_tue;
+    view->RemindWed = settings.remind_wed;
+    view->RemindThu = settings.remind_thu;
+    view->RemindFri = settings.remind_fri;
+    view->RemindSat = settings.remind_sat;
+    view->RemindSun = settings.remind_sun;
+
+    view->RemindStarts = copy_string(settings.remind_starts);
+    view->RemindEnds = copy_string(settings.remind_ends);
+
     return view;
 }
 
@@ -356,6 +367,9 @@ void settings_view_item_clear(TogglSettingsView *view) {
     free(view->ProxyHost);
     free(view->ProxyUsername);
     free(view->ProxyPassword);
+
+    free(view->RemindStarts);
+    free(view->RemindEnds);
 
     delete view;
 }

@@ -335,7 +335,10 @@ error Database::LoadSettings(Settings *settings) {
         *session_ << "select use_idle_detection, menubar_timer, "
                   "menubar_project, dock_icon, on_top, reminder,  "
                   "idle_minutes, focus_on_shortcut, reminder_minutes, "
-                  "manual_mode, autodetect_proxy "
+                  "manual_mode, autodetect_proxy, "
+                  "remind_starts, remind_ends, "
+                  "remind_mon, remind_tue, remind_wed, remind_thu, "
+                  "remind_fri, remind_sat, remind_sun "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
@@ -348,6 +351,15 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->reminder_minutes),
                   into(settings->manual_mode),
                   into(settings->autodetect_proxy),
+                  into(settings->remind_starts),
+                  into(settings->remind_ends),
+                  into(settings->remind_mon),
+                  into(settings->remind_tue),
+                  into(settings->remind_wed),
+                  into(settings->remind_thu),
+                  into(settings->remind_fri),
+                  into(settings->remind_sat),
+                  into(settings->remind_sun),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -464,6 +476,73 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
+error Database::SetSettingsRemindTimes(
+    const std::string &remind_starts,
+    const std::string &remind_ends) {
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "remind_starts = :remind_starts, "
+                  "remind_ends = :remind_ends ",
+                  useRef(remind_starts),
+                  useRef(remind_ends),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+
+    return last_error("SetSettingsRemindTimes");
+}
+
+error Database::SetSettingsRemindDays(
+    const bool &remind_mon,
+    const bool &remind_tue,
+    const bool &remind_wed,
+    const bool &remind_thu,
+    const bool &remind_fri,
+    const bool &remind_sat,
+    const bool &remind_sun) {
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    try {
+        *session_ << "update settings set "
+                  "remind_mon = :remind_mon, "
+                  "remind_tue = :remind_tue, "
+                  "remind_wed = :remind_wed, "
+                  "remind_thu = :remind_thu, "
+                  "remind_fri = :remind_fri, "
+                  "remind_sat = :remind_sat, "
+                  "remind_sun = :remind_sun ",
+                  useRef(remind_mon),
+                  useRef(remind_tue),
+                  useRef(remind_wed),
+                  useRef(remind_thu),
+                  useRef(remind_fri),
+                  useRef(remind_sat),
+                  useRef(remind_sun),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+
+    return last_error("SetSettingsRemindDays");
+}
+
 error Database::SetSettingsUseIdleDetection(
     const bool &use_idle_detection) {
     return setSettingsValue("use_idle_detection", use_idle_detection);
@@ -473,7 +552,6 @@ error Database::SetSettingsMenubarTimer(
     const bool &menubar_timer) {
     return setSettingsValue("menubar_timer", menubar_timer);
 }
-
 
 error Database::SetSettingsMenubarProject(
     const bool &menubar_project) {
@@ -3425,6 +3503,78 @@ error Database::migrateSettings() {
         "settings.window_width",
         "ALTER TABLE settings "
         "ADD COLUMN window_width integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_mon",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_mon integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_tue",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_tue integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_wed",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_wed integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_thu",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_thu integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_fri",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_fri integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_sat",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_sat integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_sun",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_sun integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_starts",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_starts varchar not null default '';");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.remind_ends",
+        "ALTER TABLE settings "
+        "ADD COLUMN remind_ends varchar not null default '';");
     if (err != noError) {
         return err;
     }

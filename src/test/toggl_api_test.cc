@@ -218,6 +218,16 @@ void on_display_settings(
         std::string(settings->ProxyUsername));
     testing::testresult::proxy.SetPassword(
         std::string(settings->ProxyPassword));
+
+    testing::testresult::settings.remind_starts = settings->RemindStarts;
+    testing::testresult::settings.remind_ends = settings->RemindEnds;
+    testing::testresult::settings.remind_mon = settings->RemindMon;
+    testing::testresult::settings.remind_tue = settings->RemindTue;
+    testing::testresult::settings.remind_wed = settings->RemindWed;
+    testing::testresult::settings.remind_thu = settings->RemindThu;
+    testing::testresult::settings.remind_fri = settings->RemindFri;
+    testing::testresult::settings.remind_sat = settings->RemindSat;
+    testing::testresult::settings.remind_sun = settings->RemindSun;
 }
 
 void on_display_timer_state(TogglTimeEntryView *te) {
@@ -424,6 +434,51 @@ TEST(TogglApiTest, toggl_set_proxy_settings) {
               std::string(testing::testresult::proxy.Username()));
     ASSERT_EQ(std::string("secret"),
               std::string(testing::testresult::proxy.Password()));
+}
+
+TEST(TogglApiTest, toggl_set_settings_remind_days) {
+    testing::App app;
+
+    testing::testresult::error = noError;
+    _Bool res = toggl_set_settings_remind_days(
+        app.ctx(), true, true, true, true, true, true, true);
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(res);
+
+    ASSERT_TRUE(testing::testresult::settings.remind_mon);
+    ASSERT_TRUE(testing::testresult::settings.remind_tue);
+    ASSERT_TRUE(testing::testresult::settings.remind_wed);
+    ASSERT_TRUE(testing::testresult::settings.remind_thu);
+    ASSERT_TRUE(testing::testresult::settings.remind_fri);
+    ASSERT_TRUE(testing::testresult::settings.remind_sat);
+    ASSERT_TRUE(testing::testresult::settings.remind_sun);
+
+    ASSERT_TRUE(toggl_set_settings_remind_days(
+        app.ctx(), false, false, false, false, false, false, false));
+
+    ASSERT_FALSE(testing::testresult::settings.remind_mon);
+    ASSERT_FALSE(testing::testresult::settings.remind_tue);
+    ASSERT_FALSE(testing::testresult::settings.remind_wed);
+    ASSERT_FALSE(testing::testresult::settings.remind_thu);
+    ASSERT_FALSE(testing::testresult::settings.remind_fri);
+    ASSERT_FALSE(testing::testresult::settings.remind_sat);
+    ASSERT_FALSE(testing::testresult::settings.remind_sun);
+}
+
+TEST(TogglApiTest, toggl_set_settings_remind_times) {
+    testing::App app;
+
+    ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), "", ""));
+
+    ASSERT_EQ(std::string(""), testing::testresult::settings.remind_starts);
+    ASSERT_EQ(std::string(""), testing::testresult::settings.remind_ends);
+
+    ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), "09:30", "17:30"));
+
+    ASSERT_EQ(std::string("09:30"),
+              testing::testresult::settings.remind_starts);
+    ASSERT_EQ(std::string("17:30"),
+              testing::testresult::settings.remind_ends);
 }
 
 TEST(TogglApiTest, toggl_set_window_settings) {
@@ -1343,29 +1398,6 @@ TEST(TogglApiTest, toggl_autotracker_add_rule) {
     testing::testresult::error = noError;
     res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
     ASSERT_FALSE(res);
-}
-
-TEST(ProxyTest, IsConfigured) {
-    Proxy p;
-    ASSERT_FALSE(p.IsConfigured());
-
-    p.SetHost("localhost");
-    p.SetPort(123);
-    ASSERT_TRUE(p.IsConfigured());
-}
-
-TEST(ProxyTest, HasCredentials) {
-    Proxy p;
-    ASSERT_FALSE(p.HasCredentials());
-
-    p.SetUsername("foo");
-    p.SetPassword("bar");
-    ASSERT_TRUE(p.HasCredentials());
-}
-
-TEST(ProxyTest, String) {
-    Proxy p;
-    ASSERT_NE("", p.String());
 }
 
 }  // namespace toggl

@@ -117,6 +117,15 @@ extern "C" {
         uint64_t ReminderMinutes;
         _Bool ManualMode;
         _Bool AutodetectProxy;
+        _Bool RemindMon;
+        _Bool RemindTue;
+        _Bool RemindWed;
+        _Bool RemindThu;
+        _Bool RemindFri;
+        _Bool RemindSat;
+        _Bool RemindSun;
+        char_t *RemindStarts;
+        char_t *RemindEnds;
     } TogglSettingsView;
 
     typedef struct {
@@ -450,6 +459,21 @@ extern "C" {
         const char_t *guid,
         const uint64_t at,
         const _Bool split_into_new_entry);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_remind_days(
+        void *context,
+        const _Bool remind_mon,
+        const _Bool remind_tue,
+        const _Bool remind_wed,
+        const _Bool remind_thu,
+        const _Bool remind_fri,
+        const _Bool remind_sat,
+        const _Bool remind_sun);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_remind_times(
+        void *context,
+        const char_t *remind_starts,
+        const char_t *remind_ends);
 
     TOGGL_EXPORT _Bool toggl_set_settings_use_idle_detection(
         void *context,

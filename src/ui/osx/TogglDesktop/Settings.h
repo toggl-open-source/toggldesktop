@@ -27,4 +27,13 @@
 @property BOOL focus_on_shortcut;
 @property int reminder_minutes;
 @property BOOL manual_mode;
+@property NSString *remind_starts;
+@property NSString *remind_ends;
+@property BOOL remind_mon;
+@property BOOL remind_tue;
+@property BOOL remind_wed;
+@property BOOL remind_thu;
+@property BOOL remind_fri;
+@property BOOL remind_sat;
+@property BOOL remind_sun;
 @end

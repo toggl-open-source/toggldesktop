@@ -3,6 +3,8 @@
 #ifndef SRC_SETTINGS_H_
 #define SRC_SETTINGS_H_
 
+#include <string>
+
 #include "Poco/Types.h"
 
 namespace toggl {
@@ -20,7 +22,16 @@ class Settings {
     , focus_on_shortcut(true)
     , reminder_minutes(0)
     , manual_mode(false)
-    , autodetect_proxy(true) {}
+    , autodetect_proxy(true)
+    , remind_mon(true)
+    , remind_tue(true)
+    , remind_wed(true)
+    , remind_thu(true)
+    , remind_fri(true)
+    , remind_sat(true)
+    , remind_sun(true)
+    , remind_starts("")
+    , remind_ends("") {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -34,6 +45,15 @@ class Settings {
     Poco::UInt64 reminder_minutes;
     bool manual_mode;
     bool autodetect_proxy;
+    bool remind_mon;
+    bool remind_tue;
+    bool remind_wed;
+    bool remind_thu;
+    bool remind_fri;
+    bool remind_sat;
+    bool remind_sun;
+    std::string remind_starts;
+    std::string remind_ends;
 };
 
 }  // namespace toggl

@@ -32,6 +32,17 @@
 	self.proxy_password = [NSString stringWithUTF8String:data->ProxyPassword];
 
 	self.autodetect_proxy = data->AutodetectProxy;
+
+	self.remind_starts = [NSString stringWithUTF8String:data->RemindStarts];
+	self.remind_ends = [NSString stringWithUTF8String:data->RemindEnds];
+
+	self.remind_mon = data->RemindMon;
+	self.remind_tue = data->RemindTue;
+	self.remind_wed = data->RemindWed;
+	self.remind_thu = data->RemindThu;
+	self.remind_fri = data->RemindFri;
+	self.remind_sat = data->RemindSat;
+	self.remind_sun = data->RemindSun;
 }
 
 @end

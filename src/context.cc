@@ -191,7 +191,7 @@ _Bool Context::StartEvents() {
         return displayError("UI is not properly wired up!");
     }
 
-    if (!DisplaySettings(false)) {
+    if (!DisplaySettings()) {
         return false;
     }
 
@@ -1199,12 +1199,44 @@ _Bool Context::LoadSettings(Settings *settings) {
     return displayError(db()->LoadSettings(settings));
 }
 
+_Bool Context::SetSettingsRemindTimes(
+    const std::string remind_starts,
+    const std::string remind_ends) {
+    error err = db()->SetSettingsRemindTimes(remind_starts, remind_ends);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings();
+}
+
+_Bool Context::SetSettingsRemindDays(
+    const _Bool remind_mon,
+    const _Bool remind_tue,
+    const _Bool remind_wed,
+    const _Bool remind_thu,
+    const _Bool remind_fri,
+    const _Bool remind_sat,
+    const _Bool remind_sun) {
+    error err = db()->SetSettingsRemindDays(
+        remind_mon,
+        remind_tue,
+        remind_wed,
+        remind_thu,
+        remind_fri,
+        remind_sat,
+        remind_sun);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings();
+}
+
 _Bool Context::SetSettingsAutodetectProxy(const _Bool autodetect_proxy) {
     error err = db()->SetSettingsAutodetectProxy(autodetect_proxy);
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
@@ -1212,7 +1244,7 @@ _Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
@@ -1220,7 +1252,7 @@ _Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsMenubarProject(const _Bool
@@ -1229,7 +1261,7 @@ _Bool Context::SetSettingsMenubarProject(const _Bool
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsDockIcon(const _Bool dock_icon) {
@@ -1237,7 +1269,7 @@ _Bool Context::SetSettingsDockIcon(const _Bool dock_icon) {
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsOnTop(const _Bool on_top) {
@@ -1245,7 +1277,7 @@ _Bool Context::SetSettingsOnTop(const _Bool on_top) {
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsReminder(const _Bool reminder) {
@@ -1256,7 +1288,7 @@ _Bool Context::SetSettingsReminder(const _Bool reminder) {
 
     remindToTrackTime();
 
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
@@ -1264,7 +1296,7 @@ _Bool Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut) {
@@ -1272,7 +1304,7 @@ _Bool Context::SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut) {
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsManualMode(const _Bool manual_mode) {
@@ -1280,7 +1312,7 @@ _Bool Context::SetSettingsManualMode(const _Bool manual_mode) {
     if (err != noError) {
         return displayError(err);
     }
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
@@ -1291,7 +1323,7 @@ _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
 
     remindToTrackTime();
 
-    return DisplaySettings(false);
+    return DisplaySettings();
 }
 
 _Bool Context::LoadWindowSettings(
@@ -1343,7 +1375,7 @@ _Bool Context::SetProxySettings(
         return displayError(err);
     }
 
-    if (!DisplaySettings(false)) {
+    if (!DisplaySettings()) {
         return false;
     }
 
@@ -2429,7 +2461,7 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
         } else {
             switchTimelineOff();
         }
-        return DisplaySettings(false);
+        return DisplaySettings();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {

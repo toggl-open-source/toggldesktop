@@ -84,8 +84,6 @@ extern void *ctx;
 {
 	toggl_set_settings_use_idle_detection(ctx,
 										  [Utils stateToBool:[self.useIdleDetectionButton state]]);
-
-	self.idleMinutesTextField.enabled = [Utils stateToBool:self.useIdleDetectionButton.state];
 }
 
 - (IBAction)ontopCheckboxChanged:(id)sender
@@ -141,6 +139,25 @@ extern void *ctx;
 							 (unsigned int)port,
 							 [username UTF8String],
 							 [password UTF8String]);
+}
+
+- (void)remindWeekChanged:(id)sender
+{
+	toggl_set_settings_remind_days(ctx,
+								   [Utils stateToBool:self.remindMon.state],
+								   [Utils stateToBool:self.remindTue.state],
+								   [Utils stateToBool:self.remindWed.state],
+								   [Utils stateToBool:self.remindThu.state],
+								   [Utils stateToBool:self.remindFri.state],
+								   [Utils stateToBool:self.remindSat.state],
+								   [Utils stateToBool:self.remindSun.state]);
+}
+
+- (void)remindTimesChanged:(id)sender
+{
+	toggl_set_settings_remind_times(ctx,
+									[self.remindStarts.stringValue UTF8String],
+									[self.remindEnds.stringValue UTF8String]);
 }
 
 - (IBAction)recordTimelineCheckboxChanged:(id)sender
@@ -242,6 +259,17 @@ extern void *ctx;
 	self.reminderMinutesTextField.enabled = settings.reminder;
 
 	[self.autodetectProxyCheckbox setState:[Utils boolToState:settings.autodetect_proxy]];
+
+	[self.remindMon setState:[Utils boolToState:settings.remind_mon]];
+	[self.remindTue setState:[Utils boolToState:settings.remind_tue]];
+	[self.remindWed setState:[Utils boolToState:settings.remind_wed]];
+	[self.remindThu setState:[Utils boolToState:settings.remind_thu]];
+	[self.remindFri setState:[Utils boolToState:settings.remind_fri]];
+	[self.remindSat setState:[Utils boolToState:settings.remind_sat]];
+	[self.remindSun setState:[Utils boolToState:settings.remind_sun]];
+
+	self.remindStarts.stringValue = settings.remind_starts;
+	self.remindEnds.stringValue = settings.remind_ends;
 }
 
 - (IBAction)idleMinutesChange:(id)sender
@@ -254,21 +282,6 @@ extern void *ctx;
 {
 	toggl_set_settings_reminder_minutes(ctx,
 										[self.reminderMinutesTextField.stringValue intValue]);
-}
-
-- (void)controlTextDidChange:(NSNotification *)aNotification
-{
-	if ([aNotification object] == self.idleMinutesTextField)
-	{
-		toggl_set_settings_idle_minutes(ctx,
-										[self.idleMinutesTextField.stringValue intValue]);
-	}
-
-	if ([aNotification object] == self.reminderMinutesTextField)
-	{
-		toggl_set_settings_reminder_minutes(ctx,
-											[self.reminderMinutesTextField.stringValue intValue]);
-	}
 }
 
 - (IBAction)autodetectProxyCheckboxChanged:(id)sender
@@ -303,7 +316,7 @@ extern void *ctx;
 	toggl_autotracker_add_rule(ctx, [term UTF8String], pid);
 }
 
-// Autotracker rules table
+// NSTableViewDataSource - autotracker rules table
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
@@ -334,6 +347,23 @@ extern void *ctx;
 		return view.Term;
 	}
 	return nil;
+}
+
+// NSTextFieldDelegate
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+	if ([aNotification object] == self.idleMinutesTextField)
+	{
+		toggl_set_settings_idle_minutes(ctx,
+										[self.idleMinutesTextField.stringValue intValue]);
+	}
+
+	if ([aNotification object] == self.reminderMinutesTextField)
+	{
+		toggl_set_settings_reminder_minutes(ctx,
+											[self.reminderMinutesTextField.stringValue intValue]);
+	}
 }
 
 @end

@@ -101,6 +101,19 @@ class Context : public TimelineDatasource {
 
     _Bool SetSettingsAutodetectProxy(const _Bool autodetect_proxy);
 
+    _Bool SetSettingsRemindTimes(
+        const std::string remind_starts,
+        const std::string remind_ends);
+
+    _Bool SetSettingsRemindDays(
+        const _Bool remind_mon,
+        const _Bool remind_tue,
+        const _Bool remind_wed,
+        const _Bool remind_thu,
+        const _Bool remind_fri,
+        const _Bool remind_sat,
+        const _Bool remind_sun);
+
     _Bool ProxySettings(bool *use_proxy, Proxy *proxy);
 
     _Bool SetProxySettings(
@@ -148,7 +161,7 @@ class Context : public TimelineDatasource {
 
     void DisplayTimeEntryList(const _Bool open);
 
-    _Bool DisplaySettings(const _Bool open);
+    _Bool DisplaySettings(const _Bool open = false);
 
     void Edit(const std::string GUID,
               const _Bool edit_running_entry,

@@ -57,6 +57,39 @@ void toggl_context_clear(void *context) {
     delete app(context);
 }
 
+_Bool toggl_set_settings_remind_days(
+    void *context,
+    const _Bool remind_mon,
+    const _Bool remind_tue,
+    const _Bool remind_wed,
+    const _Bool remind_thu,
+    const _Bool remind_fri,
+    const _Bool remind_sat,
+    const _Bool remind_sun) {
+
+    return app(context)->SetSettingsRemindDays(
+        remind_mon,
+        remind_tue,
+        remind_wed,
+        remind_thu,
+        remind_fri,
+        remind_sat,
+        remind_sun);
+}
+
+_Bool toggl_set_settings_remind_times(
+    void *context,
+    const char_t *remind_starts,
+    const char_t *remind_ends) {
+
+    poco_check_ptr(remind_starts);
+    poco_check_ptr(remind_ends);
+
+    return app(context)->SetSettingsRemindTimes(
+        copy_string(remind_starts),
+        copy_string(remind_ends));
+}
+
 _Bool toggl_set_settings_use_idle_detection(
     void *context,
     const _Bool use_idle_detection) {

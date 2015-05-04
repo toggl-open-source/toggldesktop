@@ -94,6 +94,19 @@ class Database {
 
     error SetSettingsAutodetectProxy(const bool &autodetect_proxy);
 
+    error SetSettingsRemindTimes(
+        const std::string &remind_starts,
+        const std::string &remind_ends);
+
+    error SetSettingsRemindDays(
+        const bool &remind_mon,
+        const bool &remind_tue,
+        const bool &remind_wed,
+        const bool &remind_thu,
+        const bool &remind_fri,
+        const bool &remind_sat,
+        const bool &remind_sun);
+
     error LoadProxySettings(
         bool *use_proxy,
         Proxy *proxy);
