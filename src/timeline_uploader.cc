@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 
-#include "./const.h"
 #include "./formatter.h"
 #include "./https_client.h"
 

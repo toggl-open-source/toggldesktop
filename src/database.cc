@@ -3923,7 +3923,11 @@ error Database::selectUnompressedTimelineEvents(
         return noError;
     }
 
-    time_t chunk_up_to = time(0) - kTimelineChunkSeconds;
+    // then find the chunk start time of current time.
+    // now process only events that are older that this chunk start time.
+    // else we will have no full chunks to compress.
+    time_t chunk_up_to =
+        (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
     {
         std::stringstream s;

@@ -2742,8 +2742,6 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    Poco::Mutex::ScopedLock lock(timer_m_);
-
     // if some code scheduled a reminder for a later time,
     // meanwhile, then let the later reminder be executed
     // not this one.
