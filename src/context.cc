@@ -2732,6 +2732,11 @@ void Context::remindToTrackTime() {
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
+    if (!user_) {
+        logger().warning("cannot remind, user is logged out");
+        return;
+    }
+
     Settings settings;
     if (!LoadSettings(&settings)) {
         logger().error("Could not load settings");
@@ -2761,6 +2766,9 @@ void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
     }
 
     UI()->DisplayReminder();
+
+    // start next reminder
+    remindToTrackTime();
 }
 
 error Context::StartTimelineEvent(const TimelineEvent event) {
