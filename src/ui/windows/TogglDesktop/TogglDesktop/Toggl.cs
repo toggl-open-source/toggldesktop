@@ -159,6 +159,26 @@ namespace TogglDesktop
             public bool ManualMode;
             [MarshalAs(UnmanagedType.I1)]
             public bool AutodetectProxy;
+            // Reminder days
+            [MarshalAs(UnmanagedType.I1)]
+            public bool RemindMon;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool RemindTue;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool RemindWed;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool RemindThu;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool RemindFri;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool RemindSat;
+            [MarshalAs(UnmanagedType.I1)]
+            public bool RemindSun;
+            // Reminder times
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string RemindStarts;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string RemindEnds;
         }
 
         // Callbacks
