@@ -115,7 +115,8 @@ namespace TogglDesktop
 
             while (entries.Controls.Count > list.Count)
             {
-                entries.Controls.RemoveAt(list.Count);
+                entries.Controls[list.Count].Dispose();
+                // Dispose() will remove the control from collection
             }
 
             entries.ResumeLayout();
