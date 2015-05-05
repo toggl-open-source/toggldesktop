@@ -24,6 +24,11 @@ namespace TogglDesktop
         private const CharSet charset = CharSet.Unicode;
         private const CallingConvention convention = CallingConvention.Cdecl;
 
+        // User can override some parameters when running the app
+        public static string ScriptPath;
+        public static string DatabasePath;
+        public static string LogPath;
+
         // Models
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1044,7 +1049,6 @@ namespace TogglDesktop
             return toggl_get_update_channel(ctx);
         }
 
-
         [DllImport(dll, CharSet = charset, CallingConvention = convention)]
         private static extern void toggl_sync(
             IntPtr context);
@@ -1151,29 +1155,31 @@ namespace TogglDesktop
         public static event DisplayURL OnURL = delegate { };
         public static event DisplayIdleNotification OnIdleNotification = delegate { };
 
-        // Start
-
-        public static bool Start(string version)
+        private static void parseCommandlineParams()
         {
-            ctx = toggl_context_init("windows_native_app", version);
-
-			toggl_set_environment(ctx, "production");
-
-            string cacert_path = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "cacert.pem");
-            toggl_set_cacert_path(ctx, cacert_path);
-
-            bool valid = toggl_check_view_struct_size(
-                Marshal.SizeOf(new TimeEntry()),
-                Marshal.SizeOf(new AutocompleteItem()),
-                Marshal.SizeOf(new Model()),
-                Marshal.SizeOf(new Settings()));
-            if (!valid) {
-                throw new System.InvalidOperationException("Invalid struct size, please check log file(s)");
+            string[] args = Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].Contains("script") && args[i].Contains("path"))
+                {
+                    ScriptPath = args[i + 1];
+                    Console.WriteLine("ScriptPath = {0}", ScriptPath);
+                }
+                else if (args[i].Contains("log") && args[i].Contains("path"))
+                {
+                    LogPath = args[i + 1];
+                    Console.WriteLine("LogPath = {0}", LogPath);
+                }
+                else if (args[i].Contains("db") && args[i].Contains("path"))
+                {
+                    DatabasePath = args[i + 1];
+                    Console.WriteLine("DatabasePath = {0}", DatabasePath);
+                }
             }
+        }
 
-            // Wire up events
+        private static void listenToLibEvents()
+        {
             toggl_on_show_app(ctx, delegate(bool open)
             {
                 OnApp(open);
@@ -1274,6 +1280,33 @@ namespace TogglDesktop
             {
                 OnIdleNotification(guid, since, duration, started, description);
             });
+        }
+
+        // Start UI
+
+        public static bool StartUI(string version)
+        {
+            parseCommandlineParams();
+
+            ctx = toggl_context_init("windows_native_app", version);
+
+			toggl_set_environment(ctx, "production");
+
+            string cacert_path = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "cacert.pem");
+            toggl_set_cacert_path(ctx, cacert_path);
+
+            bool valid = toggl_check_view_struct_size(
+                Marshal.SizeOf(new TimeEntry()),
+                Marshal.SizeOf(new AutocompleteItem()),
+                Marshal.SizeOf(new Model()),
+                Marshal.SizeOf(new Settings()));
+            if (!valid) {
+                throw new System.InvalidOperationException("Invalid struct size, please check log file(s)");
+            }
+
+            listenToLibEvents();
 
             if (IsUpdateCheckDisabled())
             {
@@ -1296,21 +1329,28 @@ namespace TogglDesktop
             // Configure log, db path
             Directory.CreateDirectory(path);
 
-            string logPath = Path.Combine(path, "toggldesktop.log");
-            toggl_set_log_path(logPath);
+            if (null == LogPath)
+            {
+                LogPath = Path.Combine(path, "toggldesktop.log");
+            }
+            toggl_set_log_path(LogPath);
             toggl_set_log_level("debug");
+
+            if (null == DatabasePath)
+            {
+                DatabasePath = Path.Combine(path, "toggldesktop.db");
+            }
 
             // Rename database file, if not done yet
             string olddatabasepath = Path.Combine(path, "kopsik.db");
-            string databasePath = Path.Combine(path, "toggldesktop.db");
-            if (File.Exists(olddatabasepath) && !File.Exists(databasePath))
+            if (File.Exists(olddatabasepath) && !File.Exists(DatabasePath))
             {
-                File.Move(olddatabasepath, databasePath);
+                File.Move(olddatabasepath, DatabasePath);
             }
 
-            if (!toggl_set_db_path(ctx, databasePath))
+            if (!toggl_set_db_path(ctx, DatabasePath))
             {
-                throw new System.Exception("Failed to initialize database at " + databasePath);
+                throw new System.Exception("Failed to initialize database at " + DatabasePath);
             }
 
             toggl_set_update_path(ctx, updatePath);

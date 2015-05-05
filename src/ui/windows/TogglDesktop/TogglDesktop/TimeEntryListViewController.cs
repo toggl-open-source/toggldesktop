@@ -66,7 +66,7 @@ namespace TogglDesktop
 
             lock (rendering)
             {
-                renderTimeEntryList(list);
+                //renderTimeEntryList(list);
             }
 
             Console.WriteLine(String.Format(

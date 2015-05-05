@@ -247,7 +247,7 @@ namespace TogglDesktop
                 listing.MouseWheel += MainWindowControllerEntries_Scroll;
             }
 
-            if (!Toggl.Start(TogglDesktop.Program.Version()))
+            if (!Toggl.StartUI(TogglDesktop.Program.Version()))
             {
                 try
                 {
@@ -273,21 +273,20 @@ namespace TogglDesktop
         {
             runScriptTimer.Stop();
 
-            string scriptPath = parseScriptPath();
-            if (null == scriptPath)
+            if (null == Toggl.ScriptPath)
             {
                 return;
             }
 
             System.Threading.ThreadPool.QueueUserWorkItem(delegate
             {
-                if (!File.Exists(scriptPath))
+                if (!File.Exists(Toggl.ScriptPath))
                 {
-                    Console.WriteLine("Script file does not exist: " + scriptPath);
+                    Console.WriteLine("Script file does not exist: " + Toggl.ScriptPath);
                     TogglDesktop.Program.Shutdown(0);
                 }
 
-                string script = File.ReadAllText(scriptPath);
+                string script = File.ReadAllText(Toggl.ScriptPath);
 
                 Int64 err = 0;
                 string result = Toggl.RunScript(script, ref err);
@@ -302,20 +301,6 @@ namespace TogglDesktop
                     TogglDesktop.Program.Shutdown(0);
                 }
             }, null);
-        }
-
-        private string parseScriptPath()
-        {
-            string[] args = Environment.GetCommandLineArgs();
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i].Contains("script") && args[i].Contains("path"))
-                {
-                    return args[i + 1];
-                }
-            }
-
-            return null;
         }
 
         private void MainWindowControllerEntries_Scroll(object sender, EventArgs e)

@@ -487,7 +487,9 @@ test_objects: build/test/gtest-all.o \
 
 uitest: clean_test
 ifeq ($(osname), windows)
-	$(executable) --script-path src/test/uitest.lua
+	$(executable) --script-path src/test/uitest.lua \
+		--log-path test/uitest.log \
+		--db-path test/uitest.db
 else
 	$(executable) \
 		--script-path $(pwd)/src/test/uitest.lua \
