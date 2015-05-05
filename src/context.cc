@@ -691,6 +691,11 @@ void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
+    if ("test" == environment_) {
+        logger().debug(kCannotSyncInTestEnv);
+        return;
+    }
+
     Poco::Mutex::ScopedLock lock(ws_client_m_);
     ws_client_.Start(this, user_->APIToken(), on_websocket_message);
 }
@@ -763,7 +768,11 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
             delete timeline_uploader_;
             timeline_uploader_ = 0;
         }
-        timeline_uploader_ = new TimelineUploader(this);
+        if ("test" != environment_) {
+            timeline_uploader_ = new TimelineUploader(this);
+        } else {
+            logger().debug(kCannotSyncInTestEnv);
+        }
     }
 
     {
