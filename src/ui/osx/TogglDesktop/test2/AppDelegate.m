@@ -280,6 +280,11 @@ BOOL manualMode = NO;
 
 - (BOOL)updateCheckEnabled
 {
+	if (self.scriptPath)
+	{
+		return NO;
+	}
+
 	if (![self.environment isEqualToString:@"production"])
 	{
 		return NO;
