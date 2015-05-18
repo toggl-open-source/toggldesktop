@@ -85,7 +85,12 @@ namespace TogglDesktop
                 entries.Visible = false;
             }
 
-            for (int i = 0; i < list.Count; i++)
+            // We cannot render more than N time entries using winforms,
+            // because we run out of window handles. As a temporary fix,
+            // dont even attempt to render more than N time entries.
+            int maxCount = Math.Min(200, list.Count);
+
+            for (int i = 0; i < maxCount; i++)
             {
                 Toggl.TimeEntry te = list.ElementAt(i);
 
