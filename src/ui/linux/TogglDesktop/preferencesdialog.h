@@ -42,6 +42,7 @@ class PreferencesDialog : public QDialog {
     void on_idleMinutes_editingFinished();
     void on_reminderMinutes_editingFinished();
     void on_useSystemProxySettings_clicked(bool checked);
+    void on_focusAppOnShortcut_clicked(bool checked);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_PREFERENCESDIALOG_H_
