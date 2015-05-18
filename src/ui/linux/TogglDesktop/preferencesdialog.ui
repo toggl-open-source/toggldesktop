@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>310</height>
+    <height>338</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -204,6 +204,13 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="focusAppOnShortcut">
+     <property name="text">
+      <string>Focus app on shortcut</string>
+     </property>
     </widget>
    </item>
   </layout>

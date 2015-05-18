@@ -135,6 +135,9 @@ class TogglApi : public QObject {
     // returns false if error
     bool setSettingsAutodetectProxy(const bool value);
 
+    // returns false on error
+    bool setSettingsFocusOnShortcut(const bool value);
+
     bool setProxySettings(
         const bool useProxy,
         const QString proxyHost,

@@ -44,6 +44,8 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->remindToTrackTime->setChecked(settings->Reminder);
     ui->reminderMinutes->setText(QString::number(settings->ReminderMinutes));
     ui->reminderMinutes->setEnabled(ui->remindToTrackTime->isChecked());
+
+    ui->focusAppOnShortcut->setChecked((settings->FocusOnShortcut));
 }
 
 void PreferencesDialog::displayLogin(const bool open,
@@ -103,4 +105,8 @@ void PreferencesDialog::on_reminderMinutes_editingFinished() {
 
 void PreferencesDialog::on_useSystemProxySettings_clicked(bool checked) {
     TogglApi::instance->setSettingsAutodetectProxy(checked);
+}
+
+void PreferencesDialog::on_focusAppOnShortcut_clicked(bool checked) {
+    TogglApi::instance->setSettingsFocusOnShortcut(checked);
 }

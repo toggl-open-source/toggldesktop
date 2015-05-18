@@ -30,6 +30,7 @@ class SettingsView : public QObject {
         result->IdleMinutes = view->IdleMinutes;
         result->ReminderMinutes = view->ReminderMinutes;
         result->ManualMode = view->ManualMode;
+        result->FocusOnShortcut = view->FocusOnShortcut;
         return result;
     }
 
@@ -48,6 +49,7 @@ class SettingsView : public QObject {
     uint64_t ReminderMinutes;
     bool ManualMode;
     bool AutodetectProxy;
+    bool FocusOnShortcut;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_
