@@ -107,7 +107,6 @@ void PreferencesDialog::on_useSystemProxySettings_clicked(bool checked) {
     TogglApi::instance->setSettingsAutodetectProxy(checked);
 }
 
-void PreferencesDialog::on_focusAppOnShortcut_clicked(bool checked)
-{
+void PreferencesDialog::on_focusAppOnShortcut_clicked(bool checked) {
     TogglApi::instance->setSettingsFocusOnShortcut(checked);
 }
