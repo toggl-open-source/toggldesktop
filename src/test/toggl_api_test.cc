@@ -642,7 +642,7 @@ TEST(TogglApiTest, toggl_format_tracked_time_duration) {
 TEST(TogglApiTest, toggl_password_forgot) {
     testing::App app;
     toggl_password_forgot(app.ctx());
-    ASSERT_EQ("https://www.toggl.com/forgot-password",
+    ASSERT_EQ("https://toggl.com/forgot-password?desktop=true",
               testing::testresult::url);
 }
 
