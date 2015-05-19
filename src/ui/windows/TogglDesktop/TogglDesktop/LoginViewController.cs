@@ -139,26 +139,12 @@ namespace TogglDesktop
 
         private void email_TextChanged(object sender, EventArgs e)
         {
-            if (email.Text.Length == 0)
-            {
-                usernamePlaceholder.Visible = true;
-            }
-            else if (email.Text.Length == 1)
-            {
-                usernamePlaceholder.Visible = false;
-            }
+            usernamePlaceholder.Visible = (email.Text.Length == 0);
         }
 
         private void password_TextChanged(object sender, EventArgs e)
         {
-            if (password.Text.Length == 0)
-            {
-                passwordPlaceholder.Visible = true;
-            }
-            else if (password.Text.Length == 1)
-            {
-                passwordPlaceholder.Visible = false;
-            }
+            passwordPlaceholder.Visible = (password.Text.Length == 0);
         }
     }
 }
