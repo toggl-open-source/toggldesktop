@@ -745,6 +745,13 @@ namespace TogglDesktop
                     return true;
                 }
             }
+
+            if (comboBoxProject.autoCompleteListBox.Focused && (keyData == Keys.Tab || keyData == Keys.Escape))
+            {
+                comboBoxProject.Focus();
+                comboBoxProject.ResetListBox();
+                return true;
+            }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
