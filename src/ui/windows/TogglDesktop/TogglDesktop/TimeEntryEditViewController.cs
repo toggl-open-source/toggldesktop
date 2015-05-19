@@ -873,33 +873,44 @@ namespace TogglDesktop
         private void addTagButton_Click(object sender, EventArgs e)
         {
             String word = tagTextBox.Text;
-            if (word.Length == 0)
+            if (0 == word.Length)
             {
                 return;
             }
+
             resetTagFilter();
+
             int index = checkedListBoxTags.Items.IndexOf(word);
             if (index != -1)
             {
+                // tag is already in the checkedListBoxTags
                 checkedListBoxTags.SetItemChecked(index, true);
             }
             else
             {
-                checkedListBoxTags.Items.Insert(0,word);
+                // tag was not yet in the checkedListBoxTags
+                checkedListBoxTags.Items.Insert(0, word);
                 checkedListBoxTags.SetItemChecked(0, true);
-                saveTimeEntryTags();
             }
+
+            // in any case, save it
+            saveTimeEntryTags();
         }
 
-        private void saveTimeEntryTags()
+        private List<String> checkedTags()
         {
             List<String> tags = new List<String>();
             foreach (object item in checkedListBoxTags.CheckedItems)
             {
                 tags.Add(item.ToString());
-            }      
-            Toggl.SetTimeEntryTags(timeEntry.GUID,
-                String.Join(Toggl.TagSeparator, tags));
+            }
+            return tags;
+        }
+
+        private void saveTimeEntryTags()
+        {
+            string tags = String.Join(Toggl.TagSeparator, checkedTags());
+            Toggl.SetTimeEntryTags(timeEntry.GUID, tags);
         }
 
         private void tagTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
