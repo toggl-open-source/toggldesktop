@@ -39,15 +39,19 @@ namespace TogglDesktop
             // Paste occurred
             if (m.Msg == 0x302 && Clipboard.GetText().Length > 0)
             {
-                //Paste occurred get text from all lines
+                int cursorPos = SelectionStart + Clipboard.GetText().Length;
+                //Paste occurred
+                // There is selected text in textbox that is goiong to be replaced
                 if (SelectedText.Length > 0)
                 {
                     SelectedText = Clipboard.GetText();
                 }
+                // No selected text just add new text
                 else
                 {
                     Text = Text.Insert(SelectionStart, Clipboard.GetText());
                 }
+                Select(cursorPos, 0);
                 return;
             }
             base.WndProc(ref m);
