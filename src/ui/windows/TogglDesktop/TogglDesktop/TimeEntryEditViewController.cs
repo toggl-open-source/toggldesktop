@@ -723,10 +723,9 @@ namespace TogglDesktop
             {
                 return;
             }
+            comboBoxProject.Focus();
             comboBoxProject.ResetListBox();
             comboBoxProject.Text = item.Text;
-
-            comboBoxProject.ResetListBox();
 
             Toggl.SetTimeEntryProject(
                 timeEntry.GUID,
