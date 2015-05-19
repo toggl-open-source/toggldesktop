@@ -24,7 +24,7 @@
 #define kAPIURL "https://www.toggl.com"
 #define kTimelineUploadURL "https://timeline.toggl.com"
 #define kWebSocketURL "https://stream.toggl.com"
-#define kLostPasswordURL "https://www.toggl.com/forgot-password"
+#define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
 #define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
 
 #define kContentTypeMultipartFormData "multipart/form-data"
