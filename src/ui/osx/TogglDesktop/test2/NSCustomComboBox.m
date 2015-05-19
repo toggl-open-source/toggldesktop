@@ -20,7 +20,7 @@
 {
 	[super reloadData];
 	int n = [length intValue];
-	[_cell setCalculatedMaxWidth:fmax(8 * n, _frame.size.width)];
+	[self.cell setCalculatedMaxWidth:fmax(8 * n, self.frame.size.width)];
 }
 
 - (BOOL)becomeFirstResponder
