@@ -839,23 +839,28 @@ namespace TogglDesktop
 
         private void setCheckedTags(Toggl.TimeEntry te)
         {
-            if (te.Tags != null)
+            if (null == te.Tags)
             {
-                int count = 0;
-                string[] tags = te.Tags.Split(Toggl.TagSeparator.ToCharArray());
+                return;
+            }
 
-                // Tick selected Tags
-                for (int i = 0; i < tags.Length; i++)
+            string[] tags = te.Tags.Split(Toggl.TagSeparator.ToCharArray());
+
+            // Tick selected Tags
+            int count = 0;
+            for (int i = 0; i < tags.Length; i++)
+            {
+                int index = checkedListBoxTags.Items.IndexOf(tags[i]);
+                if (index == -1)
                 {
-                    int index = checkedListBoxTags.Items.IndexOf(tags[i]);
-                    if (index != -1)
-                    {
-                        checkedListBoxTags.Items.RemoveAt(index);
-                        checkedListBoxTags.Items.Insert(count, tags[i]);
-                        checkedListBoxTags.SetItemChecked(count, true);
-                        count++;
-                    }
+                    continue;
                 }
+
+                checkedListBoxTags.Items.RemoveAt(index);
+                checkedListBoxTags.Items.Insert(count, tags[i]);
+                checkedListBoxTags.SetItemChecked(count, true);
+
+                count++;
             }
         }
 
