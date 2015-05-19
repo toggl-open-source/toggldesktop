@@ -16,8 +16,9 @@ namespace TogglDesktop
         public bool header = false;
         private TimeEntryListViewController list;
         public bool opened = false;
-        private Color hoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
         private Color defaultColor = Color.White;
+
+        static Color hoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
 
         public TimeEntryCell(TimeEntryListViewController listContainer)
         {
