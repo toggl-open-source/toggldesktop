@@ -657,7 +657,7 @@ namespace TogglDesktop
         private void comboBoxDescription_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             comboBoxDescription.parseKeyDown(e, autoCompleteEntryList);
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && comboBoxDescription.autoCompleteListBox.Visible)
             {
                 selectEntryAutoComplete();
             }
@@ -675,7 +675,7 @@ namespace TogglDesktop
         private void comboBoxProject_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             comboBoxProject.parseKeyDown(e, autoCompleteProjectList);
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && comboBoxProject.autoCompleteListBox.Visible)
             {
                 selectProjectAutoComplete();
             }
