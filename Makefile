@@ -342,6 +342,7 @@ fmt_lib: third_party/google-astyle/build/google-astyle
 
 fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
+	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/*.cs
 
 build/jsoncpp.o: $(jsoncppdir)/jsoncpp.cpp
 	$(cxx) $(cflags) -c $(jsoncppdir)/jsoncpp.cpp -o build/jsoncpp.o

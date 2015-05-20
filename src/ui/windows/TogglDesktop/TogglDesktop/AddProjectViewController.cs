@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace TogglDesktop
 {
-    public partial class AddProjectViewController : UserControl
+public partial class AddProjectViewController : UserControl
+{
+    public AddProjectViewController()
     {
-        public AddProjectViewController()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
+}
 }
