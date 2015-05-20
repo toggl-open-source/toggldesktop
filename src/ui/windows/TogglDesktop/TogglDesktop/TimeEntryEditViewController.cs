@@ -13,13 +13,24 @@ namespace TogglDesktop
     public partial class TimeEntryEditViewController : UserControl
     {
         private Toggl.TimeEntry timeEntry;
+        
         private Boolean firstLoad = true;
+        
+        // FIXME: whats this
         private int bottomPanelTop;
+        
         private List<Toggl.AutocompleteItem> autoCompleteEntryList;
         private List<Toggl.AutocompleteItem> autoCompleteProjectList;
+        
+        // FIXME: whats this
         private Boolean overTags = false;
+        
         private List<Toggl.Model> tagsList;
+
+        // FIXME: whats this
         private string newestClient = "";
+        
+        List<Toggl.Model> clients;
 
         public TimeEntryEditViewController()
         {
@@ -32,6 +43,7 @@ namespace TogglDesktop
             Toggl.OnTimeEntryAutocomplete += OnTimeEntryAutocomplete;
             Toggl.OnProjectAutocomplete += OnProjectAutocomplete;
 
+            // FIXME: why not set in designer
             checkedListBoxTags.DisplayMember = "Name";
             checkedListBoxTags.ValueMember = "Name";
 
@@ -59,6 +71,7 @@ namespace TogglDesktop
             comboBoxProject.autoCompleteListBox.KeyDown += autoCompleteProjectListBox_KeyDown;
             comboBoxProject.autoCompleteListBox.Click += autoCompleteProjectListBox_Click;
             comboBoxProject.autoCompleteListBox.Leave += autoCompleteProjectListBox_Leave;
+
             updateTimeBoxes();
         }
 
@@ -153,7 +166,8 @@ namespace TogglDesktop
             checkFirstLoad();
         }
 
-        public void checkFirstLoad() {
+        public void checkFirstLoad()
+        {
             if (firstLoad)
             {
                 comboBoxDescription.SelectionLength = 0;
@@ -330,17 +344,30 @@ namespace TogglDesktop
 
         void OnClientSelect(List<Toggl.Model> list)
         {
+            clients = list;
+
+            filterClientsPerSelectedWorkspace();
+        }
+
+        void filterClientsPerSelectedWorkspace()
+        {
             if (InvokeRequired)
             {
-                Invoke((MethodInvoker)delegate { OnClientSelect(list); });
+                Invoke((MethodInvoker)delegate { filterClientsPerSelectedWorkspace(); });
                 return;
             }
 
+            ulong workspaceID = ComboBoxHelper.SelectedItemID(comboBoxWorkspace);
+
             comboBoxClient.Items.Clear();
-            foreach (Toggl.Model o in list)
+            foreach (Toggl.Model o in clients)
             {
-                comboBoxClient.Items.Add(o);
+                if (0 == workspaceID || o.WID == workspaceID)
+                {
+                    comboBoxClient.Items.Add(o);
+                }
             }
+
             if (newestClient.Length > 0)
             {
                 comboBoxClient.Text = newestClient;
@@ -494,7 +521,7 @@ namespace TogglDesktop
 
         private void checkedListBoxTags_Leave(object sender, EventArgs e)
         {
-            saveTimeEntryTags();
+            Toggl.SetTimeEntryTags(timeEntry.GUID, CheckedListBoxHelper.CheckedStrings(checkedListBoxTags));
         }
 
         private void timerRunningDuration_Tick(object sender, EventArgs e)
@@ -603,6 +630,7 @@ namespace TogglDesktop
             }
 
             bool is_public = checkBoxPublic.Checked;
+
             ulong workspaceID = timeEntry.WID;
             if (comboBoxWorkspace.Items.Count == 1)
             {
@@ -610,39 +638,31 @@ namespace TogglDesktop
             }
             if (comboBoxWorkspace.Items.Count > 1)
             {
-                workspaceID = selectedItemID(comboBoxWorkspace);
+                workspaceID = ComboBoxHelper.SelectedItemID(comboBoxWorkspace);
             }
             if (workspaceID == 0)
             {
                 comboBoxWorkspace.Focus();
                 return false;
             }
-            ulong clientID = selectedItemID(comboBoxClient);
+
+            ulong clientID = ComboBoxHelper.SelectedItemID(comboBoxClient);
+
             bool isBillable = timeEntry.Billable;
+
             bool projectAdded = Toggl.AddProject(
                 timeEntry.GUID,
                 workspaceID,
                 clientID,
                 textBoxProjectName.Text,
                 !is_public);
+
             if (projectAdded && isBillable)
             {
                 Toggl.SetTimeEntryBillable(timeEntry.GUID, isBillable);
             }
-            return projectAdded;
-        }
 
-        private ulong selectedItemID(ComboBox combobox)
-        {
-            for (int i = 0; i < combobox.Items.Count; i++)
-            {
-                Toggl.Model item = (Toggl.Model)combobox.Items[i];
-                if (item.Name == combobox.Text)
-                {
-                    return item.ID;
-                }
-            }
-            return 0;
+            return projectAdded;
         }
 
         private void comboBoxDescription_KeyUp(object sender, KeyEventArgs e)
@@ -777,7 +797,7 @@ namespace TogglDesktop
 
         private void checkedListBoxTags_MouseEnter(object sender, EventArgs e)
         {
-            if (noFieldFocused(this))
+            if (ControlHelper.NoFieldFocused(this))
             {
                 checkedListBoxTags.Focus();
             }
@@ -785,25 +805,6 @@ namespace TogglDesktop
             {
                 overTags = true;
             }
-        }
-
-        private bool noFieldFocused(Control parent)
-        {
-            foreach (Control c in parent.Controls){
-                if (c.Focused)
-                {
-                    return false;
-                }
-                if (c.Controls.Count > 0)
-                {
-                    if (!noFieldFocused(c))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         private void TimeEntryEditViewController_SizeChanged(object sender, EventArgs e)
@@ -894,23 +895,7 @@ namespace TogglDesktop
             }
 
             // in any case, save it
-            saveTimeEntryTags();
-        }
-
-        private List<String> checkedTags()
-        {
-            List<String> tags = new List<String>();
-            foreach (object item in checkedListBoxTags.CheckedItems)
-            {
-                tags.Add(item.ToString());
-            }
-            return tags;
-        }
-
-        private void saveTimeEntryTags()
-        {
-            string tags = String.Join(Toggl.TagSeparator, checkedTags());
-            Toggl.SetTimeEntryTags(timeEntry.GUID, tags);
+            Toggl.SetTimeEntryTags(timeEntry.GUID, CheckedListBoxHelper.CheckedStrings(checkedListBoxTags));
         }
 
         private void tagTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -955,9 +940,9 @@ namespace TogglDesktop
             }
             if (comboBoxWorkspace.Items.Count > 1)
             {
-                workspaceID = selectedItemID(comboBoxWorkspace);
+                workspaceID = ComboBoxHelper.SelectedItemID(comboBoxWorkspace);
             }
-            if (workspaceID == 0)
+            if (0 == workspaceID)
             {
                 comboBoxWorkspace.Focus();
                 return;
@@ -983,6 +968,11 @@ namespace TogglDesktop
         private void TimeEntryEditViewController_Paint(object sender, PaintEventArgs e)
         {
             comboBoxWorkspace.Select(0, 0);
+        }
+
+        private void comboBoxWorkspace_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            filterClientsPerSelectedWorkspace();
         }
     }
 }

@@ -153,6 +153,8 @@
     <Compile Include="AutoCompleteTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ComboBoxHelper.cs" />
+    <Compile Include="ControlHelper.cs" />
     <Compile Include="CustomComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -182,6 +184,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="CheckedListBoxHelper.cs" />
     <Compile Include="Toggl.cs" />
     <Compile Include="LoginViewController.cs">
       <SubType>UserControl</SubType>

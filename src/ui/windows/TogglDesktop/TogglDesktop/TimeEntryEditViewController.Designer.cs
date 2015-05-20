@@ -488,6 +488,7 @@
             this.comboBoxWorkspace.TabIndex = 4;
             this.comboBoxWorkspace.TabStop = false;
             this.comboBoxWorkspace.Visible = false;
+            this.comboBoxWorkspace.SelectedIndexChanged += new System.EventHandler(this.comboBoxWorkspace_SelectedIndexChanged);
             // 
             // comboBoxClient
             // 

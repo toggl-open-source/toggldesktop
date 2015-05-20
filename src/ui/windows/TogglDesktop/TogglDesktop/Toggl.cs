@@ -726,8 +726,9 @@ namespace TogglDesktop
             [MarshalAs(UnmanagedType.LPWStr)]
             string value);
 
-        public static bool SetTimeEntryTags(string guid, string value)
+        public static bool SetTimeEntryTags(string guid, List<string> tags)
         {
+            string value = String.Join(Toggl.TagSeparator, tags);
             return toggl_set_time_entry_tags(ctx, guid, value);
         }
 
