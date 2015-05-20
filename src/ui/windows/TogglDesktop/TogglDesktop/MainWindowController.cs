@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Drawing.Drawing2D;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace TogglDesktop
 {
@@ -667,6 +665,11 @@ public partial class MainWindowController : TogglForm
     private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
     {
         Utils.SaveWindowLocation(this, editForm);
+
+        if (CloseReason.WindowsShutDown == e.CloseReason)
+        {
+            return;
+        }
 
         if (!TogglDesktop.Program.ShuttingDown)
         {
