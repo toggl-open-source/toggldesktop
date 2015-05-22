@@ -683,6 +683,10 @@ public partial class TimeEntryEditViewController : UserControl
         {
             comboBoxDescription.ResetListBox();
         }
+        if (e.KeyCode == Keys.Down)
+        {
+            descriptionButton_Click(sender, e);
+        }
         comboBoxDescription.UpdateListBox(autoCompleteEntryList, e);
     }
 
@@ -700,6 +704,10 @@ public partial class TimeEntryEditViewController : UserControl
         if (comboBoxProject.Text.Length == 0)
         {
             comboBoxProject.ResetListBox();
+        }
+        if (e.KeyCode == Keys.Down)
+        {
+            projectButton_Click(sender, e);
         }
         comboBoxProject.UpdateListBox(autoCompleteProjectList, e);
     }
