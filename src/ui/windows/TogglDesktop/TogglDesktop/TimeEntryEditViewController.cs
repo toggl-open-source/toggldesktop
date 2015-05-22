@@ -777,11 +777,27 @@ public partial class TimeEntryEditViewController : UserControl
             }
         }
 
-        if (comboBoxProject.autoCompleteListBox.Focused && (keyData == Keys.Tab || keyData == Keys.Escape))
-        {
-            comboBoxProject.Focus();
-            comboBoxProject.ResetListBox();
-            return true;
+        if (keyData == Keys.Tab || keyData == Keys.Escape) {
+            if (comboBoxProject.autoCompleteListBox.Focused) {
+                if (keyData == Keys.Tab)
+                {
+                    selectProjectAutoComplete();
+                }
+                linkAddProject.Focus();
+                comboBoxProject.ResetListBox();
+                return true;
+            }
+
+            if (comboBoxDescription.autoCompleteListBox.Focused)
+            {
+                if (keyData == Keys.Tab)
+                {
+                    selectEntryAutoComplete();
+                }
+                comboBoxProject.Focus();
+                comboBoxDescription.ResetListBox();
+                return true;
+            }
         }
         return base.ProcessCmdKey(ref msg, keyData);
     }
