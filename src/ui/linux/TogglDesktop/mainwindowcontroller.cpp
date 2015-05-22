@@ -337,6 +337,7 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
         close();
     } else {
         event->ignore();
+        return;
     }
 
     QMainWindow::closeEvent(event);
