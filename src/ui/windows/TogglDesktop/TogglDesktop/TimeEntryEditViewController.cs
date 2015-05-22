@@ -782,8 +782,13 @@ public partial class TimeEntryEditViewController : UserControl
                 if (keyData == Keys.Tab)
                 {
                     selectProjectAutoComplete();
+                    linkAddProject.Focus();
                 }
-                linkAddProject.Focus();
+                else
+                {
+                    comboBoxProject.Focus();
+                }
+
                 comboBoxProject.ResetListBox();
                 return true;
             }
@@ -793,8 +798,13 @@ public partial class TimeEntryEditViewController : UserControl
                 if (keyData == Keys.Tab)
                 {
                     selectEntryAutoComplete();
+                    comboBoxProject.Focus();
                 }
-                comboBoxProject.Focus();
+                else
+                {
+                    comboBoxDescription.Focus();
+                }
+                
                 comboBoxDescription.ResetListBox();
                 return true;
             }
