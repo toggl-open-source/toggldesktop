@@ -889,41 +889,19 @@ public partial class MainWindowController : TogglForm
 
     private void calculateEditFormPosition(bool running, Screen s)
     {
-        Point ctrlpt = PointToScreen(editableEntry.Location);
-        int arrowTop = 0;
-        bool left = false;
-
-        if (Location.X < editForm.Width && (s.Bounds.Width - (Location.X + Width)) < editForm.Width)
+        Point editPopupLocation = new Point(Left, Top);
+        bool left = ((s.Bounds.Width - (Location.X + Width)) < editForm.Width);
+        if (!left)
         {
-            ctrlpt.X += (Width/2);
+            editPopupLocation.X += Width;
         }
-        else
+        
+        if (!running && editableEntry.GetType() == typeof(TimeEntryCell))
         {
-            if ((editForm.Width + ctrlpt.X + Width) > (s.WorkingArea.Location.X + s.Bounds.Width))
-            {
-                ctrlpt.X -= editForm.Width;
-                left = true;
-            }
-            else
-            {
-                ctrlpt.X += Width;
-            }
-        }
-
-        if (running)
-        {
-            arrowTop = timeEntryListViewController.EntriesTop / 2;
-        }
-        else
-        {
-            if (editableEntry.GetType() == typeof(TimeEntryCell))
-            {
-                ctrlpt.Y += timeEntryListViewController.EntriesTop + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
                 ((TimeEntryCell)editableEntry).opened = true;
-            }
         }
-        editForm.setPlacement(left, arrowTop, ctrlpt, s, this);
 
+        editForm.setPlacement(left, editPopupLocation, Height);
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

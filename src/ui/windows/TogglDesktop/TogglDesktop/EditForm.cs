@@ -22,6 +22,7 @@ public partial class EditForm : Form
     private const int HtBottom = 15;
 
     private bool isResizing = false;
+    private bool isLeft = false;
 
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -37,10 +38,7 @@ public partial class EditForm : Form
     public EditForm()
     {
         InitializeComponent();
-        Padding = new System.Windows.Forms.Padding(11, 0, 11, 4);
-        labelArrowLeft.Width = labelArrowRight.Width = 13;
-        labelArrowLeft.Height = labelArrowRight.Height = 24;
-        labelArrowRight.Location = new Point(Width-13, labelArrowRight.Location.Y);
+        Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
         CancelButton = CloseButton;
     }
     public string GUID = null;
@@ -91,7 +89,7 @@ public partial class EditForm : Form
             {
                 if (hitBox.Value.Contains(clientPoint))
                 {
-                    if (labelArrowLeft.Visible)
+                    if (isLeft)
                     {
                         if (hitBox.Key == HTBOTTOMLEFT || hitBox.Key == HTTOPLEFT || hitBox.Key == HTLEFT)
                         {
@@ -118,45 +116,21 @@ public partial class EditForm : Form
         }
     }
 
-    internal void setPlacement(bool left, int arrowTop, Point p, Screen s, MainWindowController main)
+    internal void setPlacement(bool left, Point p, int height)
     {
         TopMost = true;
-        labelArrowLeft.Visible = !left;
-        labelArrowRight.Visible = left;
+        isLeft = !left;
+        Height = height;
 
         if (left)
         {
+            p.X -= Width;
             resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNS;
         }
         else
         {
             resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
         }
-
-        int posY = ((arrowTop != 0) ? arrowTop: (Height / 2)) - (labelArrowRight.Height / 2);
-
-        if (p.Y < s.WorkingArea.Location.Y)
-        {
-            posY -= Math.Abs(s.WorkingArea.Location.Y - p.Y) - 10;
-            p.Y = s.WorkingArea.Location.Y + 10;
-        }
-        if (p.Y + Height >= s.WorkingArea.Height)
-        {
-            int newPosY = s.WorkingArea.Height - Height;
-            posY += Math.Abs(p.Y) - newPosY;
-            p.Y = newPosY;
-        }
-        if ((posY > Height - labelArrowLeft.Height - 5) ||
-                (p.Y + posY) < main.Location.Y ||
-                main.Location.Y + main.Height < p.Y + posY
-           )
-        {
-            ClosePopup();
-        }
-
-        labelArrowRight.Location = new Point(labelArrowRight.Location.X, posY);
-        labelArrowLeft.Location = new Point(labelArrowLeft.Location.X, posY);
-
         Location = p;
     }
 
@@ -188,7 +162,7 @@ public partial class EditForm : Form
         }
         isResizing = (e.Button == MouseButtons.Left);
         ReleaseCapture();
-        int location = (labelArrowRight.Visible) ? HtBottom : HtBottomRight;
+        int location = (!isLeft) ? HtBottom : HtBottomRight;
         if (isResizing)
         {
             SendMessage(Handle, wmNcLButtonDown, location, 0);
