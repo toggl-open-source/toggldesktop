@@ -165,6 +165,9 @@ extern "C" {
         const char_t *title,
         const char_t *informative_text);
 
+    typedef void (*TogglDisplayAutotrackerNotification)(
+        const char_t *title);
+
     typedef void (*TogglDisplayTimeEntryList)(
         const _Bool open,
         TogglTimeEntryView *first);
@@ -300,6 +303,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_reminder(
         void *context,
         TogglDisplayReminder);
+
+    TOGGL_EXPORT void toggl_on_autotracker_notification(
+        void *context,
+        TogglDisplayAutotrackerNotification);
 
     TOGGL_EXPORT void toggl_on_time_entry_list(
         void *context,

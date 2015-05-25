@@ -44,7 +44,8 @@ class GUI : public SyncStateMonitor {
     , on_display_sync_state_(0)
     , on_display_unsynced_items_(0)
     , on_display_update_(0)
-    , on_display_autotracker_rules_(0) {}
+    , on_display_autotracker_rules_(0)
+    , on_display_autotracker_notification_(0) {}
 
     ~GUI() {}
 
@@ -132,6 +133,11 @@ class GUI : public SyncStateMonitor {
 
     void OnDisplayReminder(TogglDisplayReminder cb) {
         on_display_reminder_ = cb;
+    }
+
+    void OnDisplayAutotrackerNotification(
+        TogglDisplayAutotrackerNotification cb) {
+        on_display_autotracker_notification_ = cb;
     }
 
     void OnDisplayTimeEntryList(TogglDisplayTimeEntryList cb) {
@@ -222,6 +228,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayUnsyncedItems on_display_unsynced_items_;
     TogglDisplayUpdate on_display_update_;
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
+    TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
 
     Poco::Logger &logger() const;
 };
