@@ -812,7 +812,7 @@ public partial class TimeEntryEditViewController : UserControl
                 {
                     comboBoxDescription.Focus();
                 }
-                
+
                 comboBoxDescription.ResetListBox();
                 return true;
             }
