@@ -2834,7 +2834,7 @@ error Context::StartTimelineEvent(const TimelineEvent event) {
     return noError;
 }
 
-error Context::CreateTimelineBatch(TimelineBatch *batch) {
+error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
     poco_check_ptr(batch);
 
     if (quit_) {
@@ -2844,7 +2844,9 @@ error Context::CreateTimelineBatch(TimelineBatch *batch) {
         return noError;
     }
     std::vector<TimelineEvent> events;
-    error err = db()->SelectTimelineBatch(user_->ID(), &events);
+    error err = db()->CreateCompressedTimelineBatchForUpload(
+        user_->ID(),
+        &events);
     if (err != noError) {
         return err;
     }
@@ -2865,8 +2867,9 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
     return db()->InsertTimelineEvent(event);
 }
 
-error Context::DeleteTimelineBatch(const std::vector<TimelineEvent> &events) {
-    return db()->DeleteTimelineBatch(events);
+error Context::MarkTimelineBatchAsUploaded(
+    const std::vector<TimelineEvent> &events) {
+    return db()->MarkTimelineBatchAsUploaded(events);
 }
 
 void Context::uiUpdaterActivity() {

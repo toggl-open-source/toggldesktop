@@ -106,7 +106,7 @@ TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     ASSERT_TRUE(p.IsPrivate());
 }
 
-TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
+TEST(Database, CreateCompressedTimelineBatchForUpload) {
     testing::Database db;
 
     const Poco::UInt64 user_id = 123;
@@ -131,6 +131,17 @@ TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
     good2.title = "untitled";
     ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&good2));
 
+    // Another event that happened at least 15 minutes ago,
+    // but has already been uploaded to Toggl backend.
+    TimelineEvent uploaded;
+    uploaded.user_id = user_id;
+    uploaded.start_time = good2.end_time + 1;  // started after second event
+    uploaded.end_time = uploaded.start_time + 10;
+    uploaded.filename = "Notepad.exe";
+    uploaded.title = "untitled";
+    uploaded.uploaded = true;
+    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&uploaded));
+
     // This event happened less than 15 minutes ago,
     // so it must not be uploaded
     TimelineEvent too_fresh;
@@ -152,12 +163,13 @@ TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
     ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&too_old));
 
     std::vector<TimelineEvent> timeline_events;
-    ASSERT_EQ(noError, db.instance()->SelectTimelineBatch(
+    ASSERT_EQ(noError, db.instance()->CreateCompressedTimelineBatchForUpload(
         user_id, &timeline_events));
 
     ASSERT_EQ(size_t(1), timeline_events.size());
 
     TimelineEvent ready_for_upload = timeline_events[0];
+    ASSERT_TRUE(ready_for_upload.chunked);
     ASSERT_EQ(good.user_id, ready_for_upload.user_id);
     ASSERT_EQ(good.start_time, ready_for_upload.start_time);
     ASSERT_EQ(
@@ -166,6 +178,17 @@ TEST(Database, SelectTimelineBatchIgnoresTooOldEntries) {
     ASSERT_EQ(good.filename, ready_for_upload.filename);
     ASSERT_EQ(good.title, ready_for_upload.title);
     ASSERT_EQ(good.idle, ready_for_upload.idle);
+    ASSERT_FALSE(ready_for_upload.uploaded);
+
+    // Fake that we have uploaded the chunked timeline event now
+    ASSERT_EQ(noError,
+              db.instance()->MarkTimelineBatchAsUploaded(timeline_events));
+
+    // Now, no more events should exist for upload
+    std::vector<TimelineEvent> left_for_upload;
+    ASSERT_EQ(noError, db.instance()->CreateCompressedTimelineBatchForUpload(
+        user_id, &left_for_upload));
+    ASSERT_EQ(0, left_for_upload.size());
 }
 
 TEST(Database, SaveAndLoadCurrentAPIToken) {

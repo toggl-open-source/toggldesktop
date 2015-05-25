@@ -70,10 +70,11 @@ class TimelineDatasource {
     virtual error SaveTimelineEvent(TimelineEvent *event) = 0;
 
     // Find timeline events for upload,
-    virtual error CreateTimelineBatch(TimelineBatch *batch) = 0;
+    virtual error CreateCompressedTimelineBatchForUpload(
+        TimelineBatch *batch) = 0;
 
-    // A batch of timeline events has been upladed and may be deleted.
-    virtual error DeleteTimelineBatch(
+    // A batch of timeline events has been upladed and is marked assuch.
+    virtual error MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events) = 0;
 };
 

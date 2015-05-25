@@ -3033,6 +3033,14 @@ error Database::migrateTimeline() {
         return err;
     }
 
+    err = migrate(
+        "timeline_events.uploaded",
+        "alter table timeline_events"
+        "   add column uploaded integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -3820,7 +3828,7 @@ error Database::deleteTooOldTimeline(
     return last_error("deleteTooOldTimeline");
 }
 
-error Database::SelectTimelineBatch(
+error Database::CreateCompressedTimelineBatchForUpload(
     const Poco::UInt64 &user_id,
     std::vector<TimelineEvent> *timeline_events) {
 
@@ -3871,6 +3879,7 @@ error Database::SelectTimelineBatch(
             chunk.title = event.title;
             chunk.idle = event.idle;
             chunk.chunked = true;
+            chunk.uploaded = false;
             compressed[key] = chunk;
         } else {
             TimelineEvent chunk = compressed[key];
@@ -3897,7 +3906,7 @@ error Database::SelectTimelineBatch(
         return err;
     }
 
-    err = selectCompressedTimelineBatch(
+    err = selectCompressedTimelineBatchForUpload(
         user_id, timeline_events);
     if (err != noError) {
         return err;
@@ -3943,10 +3952,11 @@ error Database::selectUnompressedTimelineEvents(
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked "
+               "chunked, uploaded "
                "FROM timeline_events "
                "WHERE user_id = :user_id "
                "AND start_time < :seconds_ago "
+               "AND NOT uploaded "
                "AND NOT chunked ",
                useRef(user_id),
                useRef(chunk_up_to);
@@ -3969,7 +3979,7 @@ error Database::selectUnompressedTimelineEvents(
     return last_error("selectUnompressedTimelineEvents");
 }
 
-error Database::selectCompressedTimelineBatch(
+error Database::selectCompressedTimelineBatchForUpload(
     const Poco::UInt64 &user_id,
     std::vector<TimelineEvent> *timeline_events) {
 
@@ -3987,7 +3997,7 @@ error Database::selectCompressedTimelineBatch(
     }
 
     std::stringstream out;
-    out << "selectCompressedTimelineBatch user_id = " << user_id;
+    out << "selectCompressedTimelineBatchForUpload user_id = " << user_id;
     logger().debug(out.str());
 
     Poco::Mutex::ScopedLock lock(session_m_);
@@ -3996,16 +4006,17 @@ error Database::selectCompressedTimelineBatch(
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked "
+               "chunked, uploaded "
                "FROM timeline_events "
                "WHERE user_id = :user_id "
+               "AND NOT uploaded "
                "AND chunked "
                "LIMIT 100",
                useRef(user_id);
         loadTimelineEvents(user_id, &select, timeline_events);
 
         std::stringstream event_count;
-        event_count << "selectCompressedTimelineBatch found "
+        event_count << "selectCompressedTimelineBatchForUpload found "
                     << timeline_events->size()
                     << " events.";
         logger().debug(event_count.str());
@@ -4016,7 +4027,7 @@ error Database::selectCompressedTimelineBatch(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("selectCompressedTimelineBatch");
+    return last_error("selectCompressedTimelineBatchForUpload");
 }
 
 void loadTimelineEvents(
@@ -4045,6 +4056,7 @@ void loadTimelineEvents(
             event.idle = rs[5].convert<bool>();
             event.user_id = static_cast<unsigned int>(user_id);
             event.chunked = rs[6].convert<bool>();
+            event.uploaded = rs[7].convert<bool>();
             timeline_events->push_back(event);
             more = rs.moveNext();
         }
@@ -4093,10 +4105,10 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
 
     *session_ << "INSERT INTO timeline_events("
               "user_id, title, filename, start_time, end_time, idle, "
-              "chunked"
+              "chunked, uploaded"
               ") VALUES ("
               ":user_id, :title, :filename, :start_time, :end_time, :idle, "
-              ":chunked"
+              ":chunked, :uploaded"
               ")",
               useRef(event->user_id),
               useRef(event->title),
@@ -4105,8 +4117,41 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
               useRef(end_time),
               useRef(event->idle),
               useRef(event->chunked),
+              useRef(event->uploaded),
               now;
     return last_error("InsertTimelineEvent");
+}
+
+error Database::MarkTimelineBatchAsUploaded(
+    const std::vector<TimelineEvent> &timeline_events) {
+
+    if (timeline_events.empty()) {
+        return noError;
+    }
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    std::stringstream out;
+    out << "MarkTimelineBatchAsUploaded "
+        << timeline_events.size() << " events.";
+    logger().debug(out.str());
+
+    if (!session_) {
+        logger().warning("MarkTimelineBatchAsUploaded db closed, ignoring");
+        return noError;
+    }
+    std::vector<Poco::Int64> ids;
+    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
+            i != timeline_events.end();
+            ++i) {
+        const TimelineEvent &event = *i;
+        ids.push_back(event.id);
+    }
+
+    *session_ << "UPDATE timeline_events SET uploaded = 1 WHERE id = :id",
+              useRef(ids),
+              now;
+    return last_error("MarkTimelineBatchAsUploaded");
 }
 
 error Database::DeleteTimelineBatch(
@@ -4119,11 +4164,12 @@ error Database::DeleteTimelineBatch(
     Poco::Mutex::ScopedLock lock(session_m_);
 
     std::stringstream out;
-    out << "DeleteTimelineBatch " << timeline_events.size() << " events.";
+    out << "DeleteTimelineBatch "
+        << timeline_events.size() << " events.";
     logger().debug(out.str());
 
     if (!session_) {
-        logger().warning("DeleteTimelineBatch db closed, ignoring request");
+        logger().warning("DeleteTimelineBatch db closed, ignoring");
         return noError;
     }
     std::vector<Poco::Int64> ids;

@@ -53,7 +53,8 @@ error TimelineUploader::process() {
     }
 
     TimelineBatch batch;
-    error err = timeline_datasource_->CreateTimelineBatch(&batch);
+    error err = timeline_datasource_->CreateCompressedTimelineBatchForUpload(
+        &batch);
     if (err != noError) {
         return err;
     }
@@ -81,7 +82,7 @@ error TimelineUploader::process() {
 
     reset_backoff();
 
-    return timeline_datasource_->DeleteTimelineBatch(batch.Events());
+    return timeline_datasource_->MarkTimelineBatchAsUploaded(batch.Events());
 }
 
 error TimelineUploader::upload(TimelineBatch *batch) {

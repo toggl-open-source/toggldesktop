@@ -265,9 +265,10 @@ class Context : public TimelineDatasource {
 
     // Timeline datasource
     error StartTimelineEvent(const TimelineEvent event);
-    error CreateTimelineBatch(TimelineBatch *batch);
+    error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch);
     error SaveTimelineEvent(TimelineEvent *event);
-    error DeleteTimelineBatch(const std::vector<TimelineEvent> &events);
+    error MarkTimelineBatchAsUploaded(
+        const std::vector<TimelineEvent> &events);
 
  protected:
     void uiUpdaterActivity();

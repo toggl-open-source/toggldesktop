@@ -142,8 +142,9 @@ class Database {
         const Poco::UInt64 &uid);
     error ClearCurrentAPIToken();
 
-    error SelectTimelineBatch(const Poco::UInt64 &user_id,
-                              std::vector<TimelineEvent> *timeline_events);
+    error CreateCompressedTimelineBatchForUpload(
+        const Poco::UInt64 &user_id,
+        std::vector<TimelineEvent> *timeline_events);
 
     static std::string GenerateGUID();
 
@@ -156,6 +157,9 @@ class Database {
     }
 
     error InsertTimelineEvent(TimelineEvent *info);
+
+    error MarkTimelineBatchAsUploaded(
+        const std::vector<TimelineEvent> &timeline_events);
 
     error DeleteTimelineBatch(
         const std::vector<TimelineEvent> &timeline_events);
@@ -281,7 +285,7 @@ class Database {
     error deleteTooOldTimeline(
         const Poco::UInt64 &UID);
 
-    error selectCompressedTimelineBatch(
+    error selectCompressedTimelineBatchForUpload(
         const Poco::UInt64 &user_id,
         std::vector<TimelineEvent> *timeline_events);
 
