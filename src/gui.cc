@@ -8,6 +8,7 @@
 
 #include "./const.h"
 #include "./error.h"
+#include "./project.h"
 #include "./toggl_api_private.h"
 
 #include "Poco/Logger.h"
@@ -148,6 +149,27 @@ void GUI::DisplayReminder() {
     free(s1);
     free(s2);
 }
+
+void GUI::DisplayAutotrackerNotification(Project *p) {
+    poco_check_ptr(p);
+
+    std::stringstream ss;
+    ss << "DisplayAutotrackerNotification "
+       << p->Name() << ", " << p->ID() << ", " << p->GUID();
+
+    logger().debug(ss.str());
+
+    if (!on_display_autotracker_notification_) {
+        return;
+    }
+
+    char_t *project_name_s = copy_string(p->Name());
+
+    on_display_autotracker_notification_(project_name_s, p->ID());
+
+    free(project_name_s);
+}
+
 
 void GUI::DisplayOnlineState(const Poco::Int64 state) {
     if (!(kOnlineStateOnline == state

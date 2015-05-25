@@ -305,6 +305,19 @@ BOOL manualMode = NO;
 	   didActivateNotification:(NSUserNotification *)notification
 {
 	NSLog(@"didActivateNotification %@", notification);
+
+	// handle autotracker notification
+	if (notification && notification.userInfo && notification.userInfo[@"autotracker"] != nil)
+	{
+		if (NSUserNotificationActivationTypeActionButtonClicked == notification.activationType)
+		{
+			NSNumber *project_id = notification.userInfo[@"project_id"];
+			toggl_start(ctx, "", "", 0, project_id.longValue);
+		}
+		return;
+	}
+
+	// handle other notifications; we only have reminder at the moment
 	[self onShowMenuItem:self];
 }
 
@@ -1026,6 +1039,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_timer_state(ctx, on_timer_state);
 	toggl_on_idle_notification(ctx, on_idle_notification);
 	toggl_on_autotracker_rules(ctx, on_autotracker_rules);
+	toggl_on_autotracker_notification(ctx, on_autotracker_notification);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1325,6 +1339,27 @@ void on_autotracker_rules(TogglAutotrackerRuleView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayAutotrackerRules
 														object:[AutotrackerRuleItem loadAll:first]];
+}
+
+void on_autotracker_notification(const char_t *project_name,
+								 const uint64_t project_id)
+{
+	NSUserNotification *notification = [[NSUserNotification alloc] init];
+
+	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
+	[notification setValue:@YES forKey:@"_showsButtons"];
+
+	notification.title = @"Toggl Desktop Autotracker";
+	notification.informativeText = [NSString stringWithFormat:@"Track %@?",
+									[NSString stringWithUTF8String:project_name]];
+	notification.hasActionButton = YES;
+	notification.actionButtonTitle = @"Start";
+	notification.userInfo = @{ @"autotracker": @"YES", @"project_id": [NSNumber numberWithLong:project_id] };
+	notification.deliveryDate = [NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]];
+	notification.soundName = NSUserNotificationDefaultSoundName;
+
+	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
+	[center scheduleNotification:notification];
 }
 
 void on_client_select(TogglGenericView *first)

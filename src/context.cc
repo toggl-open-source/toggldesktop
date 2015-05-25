@@ -2828,9 +2828,16 @@ error Context::StartTimelineEvent(const TimelineEvent event) {
         return noError;
     }
     AutotrackerRule *rule = findAutotrackerRule(event);
-    if (rule) {
-        Start("", "", 0, rule->PID());
+    if (!rule) {
+        return noError;
     }
+    Project *p = user_->related.ProjectByID(rule->PID());
+    if (!p) {
+        return noError;
+    }
+
+    UI()->DisplayAutotrackerNotification(p);
+
     return noError;
 }
 

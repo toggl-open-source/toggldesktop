@@ -20,6 +20,7 @@ class Logger;
 namespace toggl {
 
 class Client;
+class Project;
 class Workspace;
 
 class GUI : public SyncStateMonitor {
@@ -60,6 +61,8 @@ class GUI : public SyncStateMonitor {
     void DisplayUnsyncedItems(const Poco::Int64 count);
 
     void DisplayReminder();
+
+    void DisplayAutotrackerNotification(toggl::Project *p);
 
     void DisplayMinitimerAutocomplete(std::vector<toggl::AutocompleteItem> *);
 

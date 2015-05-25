@@ -188,7 +188,7 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     std::vector<TimelineEvent> left_for_upload;
     ASSERT_EQ(noError, db.instance()->CreateCompressedTimelineBatchForUpload(
         user_id, &left_for_upload));
-    ASSERT_EQ(0, left_for_upload.size());
+    ASSERT_EQ(std::size_t(0), left_for_upload.size());
 }
 
 TEST(Database, SaveAndLoadCurrentAPIToken) {

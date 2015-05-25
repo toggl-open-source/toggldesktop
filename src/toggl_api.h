@@ -166,7 +166,8 @@ extern "C" {
         const char_t *informative_text);
 
     typedef void (*TogglDisplayAutotrackerNotification)(
-        const char_t *title);
+        const char_t *project_name,
+        const uint64_t project_id);
 
     typedef void (*TogglDisplayTimeEntryList)(
         const _Bool open,
