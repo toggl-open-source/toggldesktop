@@ -158,6 +158,14 @@ error Database::DeleteUser(
         if (err != noError) {
             return err;
         }
+        err = deleteAllFromTableByUID("autotracker_settings", model->ID());
+        if (err != noError) {
+            return err;
+        }
+        err = deleteUserTimeline(model->ID());
+        if (err != noError) {
+            return err;
+        }
     }
     return noError;
 }
