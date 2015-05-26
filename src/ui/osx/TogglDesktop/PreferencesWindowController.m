@@ -6,12 +6,15 @@
 
 #import "PreferencesWindowController.h"
 
+#include <Carbon/Carbon.h>
+
 #import "AutotrackerRuleItem.h"
 #import "DisplayCommand.h"
 #import "MASShortcutView+UserDefaults.h"
 #import "Settings.h"
 #import "UIEvents.h"
 #import "Utils.h"
+
 #import "toggl_api.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
@@ -423,6 +426,20 @@ extern void *ctx;
 - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)string
 {
 	return [self.termAutocompleteItems indexOfObject:string];
+}
+
+// Handle autotracker rule delete using backspace key
+
+- (void)keyDown:(NSEvent *)event
+{
+	if ((event.keyCode == kVK_Delete) && ([self.window firstResponder] == self.autotrackerRulesTableView))
+	{
+		[self deleteAutotrackerRule:self];
+	}
+	else
+	{
+		[super keyDown:event];
+	}
 }
 
 @end

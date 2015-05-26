@@ -7,10 +7,12 @@
 //
 
 #import "NSUnstripedTableView.h"
+
 #include <Carbon/Carbon.h>
-#import "UIEvents.h"
+
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
+#import "UIEvents.h"
 
 @implementation NSUnstripedTableView
 
