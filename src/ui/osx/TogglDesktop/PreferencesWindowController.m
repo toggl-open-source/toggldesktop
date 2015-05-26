@@ -20,6 +20,7 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 @interface PreferencesWindowController ()
 @property NSMutableArray *rules;
 @property AutocompleteDataSource *projectAutocompleteDataSource;
+@property NSMutableArray *termAutocompleteItems;
 @end
 
 @implementation PreferencesWindowController
@@ -32,6 +33,8 @@ extern void *ctx;
 	if (self)
 	{
 		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+
+		self.termAutocompleteItems = [[NSMutableArray alloc] init];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayAutotrackerRules:)
@@ -382,6 +385,38 @@ extern void *ctx;
 		toggl_set_settings_reminder_minutes(ctx,
 											[self.reminderMinutesTextField.stringValue intValue]);
 	}
+}
+
+// Term autocomplete datasource
+
+- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
+{
+	for (int i = 0; i < self.termAutocompleteItems.count; i++)
+	{
+		NSString *s = self.termAutocompleteItems[i];
+		if ([[s commonPrefixWithString:partialString options:NSCaseInsensitiveSearch] length] == [partialString length])
+		{
+			return s;
+		}
+	}
+	return @"";
+}
+
+// Term combobox delegate
+
+- (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox
+{
+	return self.termAutocompleteItems.count;
+}
+
+- (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)index
+{
+	return self.termAutocompleteItems[index];
+}
+
+- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)string
+{
+	return [self.termAutocompleteItems indexOfObject:string];
 }
 
 @end
