@@ -421,6 +421,10 @@
   <ItemGroup>
     <None Include="Resources\shadow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-google.png" />
+    <None Include="Resources\toggl-logo-white.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -23,7 +23,22 @@ public partial class LoginViewController : UserControl
     public LoginViewController()
     {
         InitializeComponent();
+
         setConfirmAction(ConfirmAction.LogIn);
+
+        TogglForm.ApplyFont("roboto", email);
+        TogglForm.ApplyFont("roboto", password);
+        TogglForm.ApplyFont("roboto", usernamePlaceholder);
+        TogglForm.ApplyFont("roboto", passwordPlaceholder);
+        TogglForm.ApplyFont("roboto", confirmButton);
+        TogglForm.ApplyFont("roboto", googleLoginTextField);
+        TogglForm.ApplyFont("roboto", passwordForgotTextField);
+        TogglForm.ApplyFont("roboto", loginSignupToggleLabel);
+        TogglForm.ApplyFont("roboto", loginSignupToggle);
+
+        centerControl(googleLoginTextField);
+        centerControl(loginSignupToggleLabel);
+        centerControl(loginSignupToggle);
     }
 
     public void SetAcceptButton(Form frm)
@@ -181,6 +196,14 @@ public partial class LoginViewController : UserControl
                 throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
         }
         confirmAction = action;
+        centerControl(loginSignupToggle);
+    }
+
+    private void centerControl(Control control)
+    {
+        var horizontalSpace = Width;
+
+        control.Left = (horizontalSpace - control.Width) / 2;
     }
 
     private void login()

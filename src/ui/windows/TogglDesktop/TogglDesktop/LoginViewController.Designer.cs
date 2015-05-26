@@ -29,7 +29,7 @@ partial class LoginViewController
     private void InitializeComponent()
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginViewController));
-        System.Windows.Forms.Label loginSignupToggleLabel;
+        this.loginSignupToggleLabel = new System.Windows.Forms.Label();
         this.googleLoginTextField = new System.Windows.Forms.LinkLabel();
         this.password = new System.Windows.Forms.MaskedTextBox();
         this.email = new System.Windows.Forms.TextBox();
@@ -39,9 +39,21 @@ partial class LoginViewController
         this.usernamePlaceholder = new System.Windows.Forms.Label();
         this.loginSignupToggle = new System.Windows.Forms.LinkLabel();
         this.confirmButton = new System.Windows.Forms.Button();
-        loginSignupToggleLabel = new System.Windows.Forms.Label();
         ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).BeginInit();
         this.SuspendLayout();
+        // 
+        // loginSignupToggleLabel
+        // 
+        this.loginSignupToggleLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+        this.loginSignupToggleLabel.AutoSize = true;
+        this.loginSignupToggleLabel.BackColor = System.Drawing.Color.Transparent;
+        this.loginSignupToggleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.loginSignupToggleLabel.ForeColor = System.Drawing.Color.Gray;
+        this.loginSignupToggleLabel.Location = new System.Drawing.Point(113, 396);
+        this.loginSignupToggleLabel.Name = "loginSignupToggleLabel";
+        this.loginSignupToggleLabel.Size = new System.Drawing.Size(75, 17);
+        this.loginSignupToggleLabel.TabIndex = 15;
+        this.loginSignupToggleLabel.Text = "or you can";
         // 
         // googleLoginTextField
         // 
@@ -49,13 +61,19 @@ partial class LoginViewController
         this.googleLoginTextField.ActiveLinkColor = System.Drawing.Color.White;
         this.googleLoginTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.googleLoginTextField.AutoSize = true;
-        this.googleLoginTextField.LinkColor = System.Drawing.Color.Gray;
-        this.googleLoginTextField.Location = new System.Drawing.Point(68, 268);
+        this.googleLoginTextField.BackColor = System.Drawing.Color.Transparent;
+        this.googleLoginTextField.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.googleLoginTextField.Image = ((System.Drawing.Image)(resources.GetObject("googleLoginTextField.Image")));
+        this.googleLoginTextField.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        this.googleLoginTextField.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+        this.googleLoginTextField.LinkColor = System.Drawing.Color.Silver;
+        this.googleLoginTextField.Location = new System.Drawing.Point(60, 318);
         this.googleLoginTextField.Name = "googleLoginTextField";
-        this.googleLoginTextField.Size = new System.Drawing.Size(134, 13);
+        this.googleLoginTextField.Padding = new System.Windows.Forms.Padding(21, 5, 0, 5);
+        this.googleLoginTextField.Size = new System.Drawing.Size(180, 27);
         this.googleLoginTextField.TabIndex = 3;
         this.googleLoginTextField.TabStop = true;
-        this.googleLoginTextField.Text = "Login with Google account";
+        this.googleLoginTextField.Text = "LOG IN WITH GOOGLE";
         this.googleLoginTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
         this.googleLoginTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.googleLoginTextField_LinkClicked);
         // 
@@ -63,10 +81,11 @@ partial class LoginViewController
         // 
         this.password.AccessibleName = "Your password";
         this.password.Anchor = System.Windows.Forms.AnchorStyles.Top;
+        this.password.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.password.ForeColor = System.Drawing.Color.Black;
-        this.password.Location = new System.Drawing.Point(15, 171);
+        this.password.Location = new System.Drawing.Point(26, 191);
         this.password.Name = "password";
-        this.password.Size = new System.Drawing.Size(249, 20);
+        this.password.Size = new System.Drawing.Size(249, 26);
         this.password.TabIndex = 1;
         this.password.UseSystemPasswordChar = true;
         this.password.TextChanged += new System.EventHandler(this.password_TextChanged);
@@ -76,10 +95,11 @@ partial class LoginViewController
         // 
         this.email.AccessibleName = "Your e-mail address";
         this.email.Anchor = System.Windows.Forms.AnchorStyles.Top;
+        this.email.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.email.ForeColor = System.Drawing.Color.Black;
-        this.email.Location = new System.Drawing.Point(15, 134);
+        this.email.Location = new System.Drawing.Point(26, 134);
         this.email.Name = "email";
-        this.email.Size = new System.Drawing.Size(249, 20);
+        this.email.Size = new System.Drawing.Size(249, 26);
         this.email.TabIndex = 0;
         this.email.TextChanged += new System.EventHandler(this.email_TextChanged);
         this.email.Leave += new System.EventHandler(this.email_Leave);
@@ -90,11 +110,14 @@ partial class LoginViewController
         this.passwordForgotTextField.ActiveLinkColor = System.Drawing.Color.White;
         this.passwordForgotTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.passwordForgotTextField.AutoSize = true;
-        this.passwordForgotTextField.LinkColor = System.Drawing.Color.Gray;
-        this.passwordForgotTextField.Location = new System.Drawing.Point(88, 290);
+        this.passwordForgotTextField.BackColor = System.Drawing.Color.Transparent;
+        this.passwordForgotTextField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.passwordForgotTextField.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+        this.passwordForgotTextField.LinkColor = System.Drawing.Color.Silver;
+        this.passwordForgotTextField.Location = new System.Drawing.Point(170, 220);
         this.passwordForgotTextField.Name = "passwordForgotTextField";
-        this.passwordForgotTextField.Size = new System.Drawing.Size(91, 13);
-        this.passwordForgotTextField.TabIndex = 7;
+        this.passwordForgotTextField.Size = new System.Drawing.Size(105, 15);
+        this.passwordForgotTextField.TabIndex = 5;
         this.passwordForgotTextField.TabStop = true;
         this.passwordForgotTextField.Text = "Forgot password?";
         this.passwordForgotTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
@@ -103,8 +126,9 @@ partial class LoginViewController
         // togglLogoBox
         // 
         this.togglLogoBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+        this.togglLogoBox.BackColor = System.Drawing.Color.Transparent;
         this.togglLogoBox.Image = ((System.Drawing.Image)(resources.GetObject("togglLogoBox.Image")));
-        this.togglLogoBox.Location = new System.Drawing.Point(71, 72);
+        this.togglLogoBox.Location = new System.Drawing.Point(90, 72);
         this.togglLogoBox.Name = "togglLogoBox";
         this.togglLogoBox.Size = new System.Drawing.Size(120, 36);
         this.togglLogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -116,8 +140,9 @@ partial class LoginViewController
         this.passwordPlaceholder.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.passwordPlaceholder.BackColor = System.Drawing.Color.White;
         this.passwordPlaceholder.Cursor = System.Windows.Forms.Cursors.IBeam;
+        this.passwordPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.passwordPlaceholder.ForeColor = System.Drawing.SystemColors.ControlDark;
-        this.passwordPlaceholder.Location = new System.Drawing.Point(19, 172);
+        this.passwordPlaceholder.Location = new System.Drawing.Point(30, 194);
         this.passwordPlaceholder.Name = "passwordPlaceholder";
         this.passwordPlaceholder.Size = new System.Drawing.Size(132, 18);
         this.passwordPlaceholder.TabIndex = 11;
@@ -130,10 +155,11 @@ partial class LoginViewController
         this.usernamePlaceholder.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.usernamePlaceholder.BackColor = System.Drawing.Color.White;
         this.usernamePlaceholder.Cursor = System.Windows.Forms.Cursors.IBeam;
+        this.usernamePlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.usernamePlaceholder.ForeColor = System.Drawing.SystemColors.ControlDark;
-        this.usernamePlaceholder.Location = new System.Drawing.Point(19, 135);
+        this.usernamePlaceholder.Location = new System.Drawing.Point(30, 137);
         this.usernamePlaceholder.Name = "usernamePlaceholder";
-        this.usernamePlaceholder.Size = new System.Drawing.Size(130, 18);
+        this.usernamePlaceholder.Size = new System.Drawing.Size(202, 18);
         this.usernamePlaceholder.TabIndex = 12;
         this.usernamePlaceholder.Text = "Your email address";
         this.usernamePlaceholder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -145,11 +171,14 @@ partial class LoginViewController
         this.loginSignupToggle.ActiveLinkColor = System.Drawing.Color.White;
         this.loginSignupToggle.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.loginSignupToggle.AutoSize = true;
-        this.loginSignupToggle.LinkColor = System.Drawing.Color.Gray;
-        this.loginSignupToggle.Location = new System.Drawing.Point(100, 340);
+        this.loginSignupToggle.BackColor = System.Drawing.Color.Transparent;
+        this.loginSignupToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.loginSignupToggle.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+        this.loginSignupToggle.LinkColor = System.Drawing.Color.Silver;
+        this.loginSignupToggle.Location = new System.Drawing.Point(89, 416);
         this.loginSignupToggle.Name = "loginSignupToggle";
-        this.loginSignupToggle.Size = new System.Drawing.Size(79, 13);
-        this.loginSignupToggle.TabIndex = 13;
+        this.loginSignupToggle.Size = new System.Drawing.Size(122, 17);
+        this.loginSignupToggle.TabIndex = 4;
         this.loginSignupToggle.TabStop = true;
         this.loginSignupToggle.Text = "Sign up for free";
         this.loginSignupToggle.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
@@ -158,24 +187,16 @@ partial class LoginViewController
         // confirmButton
         // 
         this.confirmButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-        this.confirmButton.Location = new System.Drawing.Point(81, 208);
+        this.confirmButton.FlatAppearance.BorderSize = 0;
+        this.confirmButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.confirmButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+        this.confirmButton.Location = new System.Drawing.Point(62, 265);
         this.confirmButton.Name = "confirmButton";
-        this.confirmButton.Size = new System.Drawing.Size(110, 35);
-        this.confirmButton.TabIndex = 14;
+        this.confirmButton.Size = new System.Drawing.Size(177, 38);
+        this.confirmButton.TabIndex = 2;
         this.confirmButton.Text = "Log in";
         this.confirmButton.UseVisualStyleBackColor = true;
         this.confirmButton.Click += new System.EventHandler(this.confirmButton_Click);
-        // 
-        // loginSignupToggleLabel
-        // 
-        loginSignupToggleLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-        loginSignupToggleLabel.AutoSize = true;
-        loginSignupToggleLabel.ForeColor = System.Drawing.Color.Gray;
-        loginSignupToggleLabel.Location = new System.Drawing.Point(110, 318);
-        loginSignupToggleLabel.Name = "loginSignupToggleLabel";
-        loginSignupToggleLabel.Size = new System.Drawing.Size(57, 13);
-        loginSignupToggleLabel.TabIndex = 15;
-        loginSignupToggleLabel.Text = "or you can";
         // 
         // LoginViewController
         // 
@@ -183,7 +204,8 @@ partial class LoginViewController
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.AutoSize = true;
         this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(69)))), ((int)(((byte)(69)))));
-        this.Controls.Add(loginSignupToggleLabel);
+        this.BackgroundImage = global::TogglDesktop.Properties.Resources.timerDarkBg;
+        this.Controls.Add(this.loginSignupToggleLabel);
         this.Controls.Add(this.confirmButton);
         this.Controls.Add(this.loginSignupToggle);
         this.Controls.Add(this.usernamePlaceholder);
@@ -195,7 +217,7 @@ partial class LoginViewController
         this.Controls.Add(this.googleLoginTextField);
         this.MinimumSize = new System.Drawing.Size(279, 367);
         this.Name = "LoginViewController";
-        this.Size = new System.Drawing.Size(279, 367);
+        this.Size = new System.Drawing.Size(300, 484);
         this.Load += new System.EventHandler(this.LoginViewController_Load);
         ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).EndInit();
         this.ResumeLayout(false);
@@ -214,5 +236,6 @@ partial class LoginViewController
     private System.Windows.Forms.Label usernamePlaceholder;
     private System.Windows.Forms.LinkLabel loginSignupToggle;
     private System.Windows.Forms.Button confirmButton;
+    private System.Windows.Forms.Label loginSignupToggleLabel;
 }
 }
