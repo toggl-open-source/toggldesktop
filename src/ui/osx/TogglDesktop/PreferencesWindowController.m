@@ -325,7 +325,13 @@ extern void *ctx;
 		return;
 	}
 
-	toggl_autotracker_add_rule(ctx, [term UTF8String], pid);
+	if (!toggl_autotracker_add_rule(ctx, [term UTF8String], pid))
+	{
+		return;
+	}
+
+	self.autotrackerTerm.stringValue = @"";
+	self.autotrackerProject.stringValue = @"";
 }
 
 // NSTableViewDataSource - autotracker rules table
