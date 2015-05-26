@@ -985,6 +985,14 @@ _Bool toggl_autotracker_add_rule(
     return app(context)->AddAutotrackerRule(to_string(term), project_id);
 }
 
+_Bool toggl_autotracker_delete_rule(
+    void *context,
+    const int64_t id) {
+
+    return app(context)->DeleteAutotrackerRule(id);
+}
+
+
 void testing_sleep(
     const int seconds) {
     Poco::Thread::sleep(seconds*1000);

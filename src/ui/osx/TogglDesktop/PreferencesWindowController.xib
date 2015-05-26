@@ -360,6 +360,7 @@
                                                         </tableColumns>
                                                         <connections>
                                                             <outlet property="dataSource" destination="-2" id="Rzc-ip-frs"/>
+                                                            <outlet property="menu" destination="ign-Gc-Z0N" id="GR9-Tq-T1t"/>
                                                         </connections>
                                                     </tableView>
                                                 </subviews>
@@ -589,5 +590,19 @@
             </connections>
             <point key="canvasLocation" x="305" y="167"/>
         </window>
+        <menu id="ign-Gc-Z0N">
+            <items>
+                <menuItem title="Delete" id="LGQ-hK-4ul">
+                    <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="deleteAutotrackerRule:" target="-2" id="Fbz-5B-PlY"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="175" y="414.5"/>
+        </menu>
     </objects>
 </document>

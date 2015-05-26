@@ -129,7 +129,7 @@ extern "C" {
     } TogglSettingsView;
 
     typedef struct {
-        uint64_t ID;
+        int64_t ID;
         char_t *Term;
         uint64_t PID;
         char_t *ProjectName;
@@ -659,6 +659,10 @@ extern "C" {
         void *context,
         const char_t *term,
         const uint64_t project_id);
+
+    TOGGL_EXPORT _Bool toggl_autotracker_delete_rule(
+        void *context,
+        const int64_t id);
 
     // Testing helpers. May change any time
     void testing_sleep(

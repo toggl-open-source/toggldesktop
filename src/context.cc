@@ -270,6 +270,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     bool display_timer_state(false);
     bool display_time_entry_editor(false);
     bool open_time_entry_list(false);
+    bool display_autotracker_rules(false);
 
     // Check what needs to be updated in UI
     for (std::vector<ModelChange>::const_iterator it =
@@ -282,12 +283,14 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
             display_tags = true;
         }
 
+        // FIXME: should match the affected model names instead
         if (ch.ModelType() != "tag" && ch.ModelType() != "user") {
             display_time_entry_autocomplete = true;
             display_time_entries = true;
             display_mini_timer_autocomplete = true;
         }
 
+        // FIXME: should match the affected model names instead
         if (ch.ModelType() != "tag" && ch.ModelType() != "user"
                 && ch.ModelType() != "time_entry") {
             display_project_autocomplete = true;
@@ -310,6 +313,10 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
                     display_time_entry_editor = true;
                 }
             }
+        }
+
+        if (ch.ModelType() == "autotracker_rule") {
+            display_autotracker_rules = true;
         }
     }
 
@@ -346,6 +353,9 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     }
     if (display_timer_state) {
         displayTimerState();
+    }
+    if (display_autotracker_rules) {
+        displayAutotrackerRules();
     }
 }
 
@@ -2553,14 +2563,30 @@ _Bool Context::AddAutotrackerRule(
     rule->SetUID(user_->ID());
     user_->related.AutotrackerRules.push_back(rule);
 
-    error err = save();
-    if (err != noError) {
-        return displayError(err);
+    return displayError(save());
+}
+
+_Bool Context::DeleteAutotrackerRule(
+    const Poco::Int64 id) {
+
+    if (!user_ || !id) {
+        return false;
     }
 
-    displayAutotrackerRules();
+    for (std::vector<AutotrackerRule *>::iterator it =
+        user_->related.AutotrackerRules.begin();
+            it != user_->related.AutotrackerRules.end(); it++) {
+        AutotrackerRule *rule = *it;
+        // Autotracker settings are not saved to DB,
+        // so the ID will be 0 always. But will have local ID
+        if (rule->LocalID() == id) {
+            rule->MarkAsDeletedOnServer();
+            rule->Delete();
+            break;
+        }
+    }
 
-    return true;
+    return displayError(save());
 }
 
 AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {

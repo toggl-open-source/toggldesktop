@@ -259,6 +259,9 @@ class Context : public TimelineDatasource {
         const std::string term,
         const Poco::UInt64 pid);
 
+    _Bool DeleteAutotrackerRule(
+        const Poco::Int64 id);
+
     std::string UserFullName() const;
 
     std::string UserEmail() const;

@@ -153,6 +153,18 @@ extern void *ctx;
 								   [Utils stateToBool:self.remindSun.state]);
 }
 
+- (IBAction)deleteAutotrackerRule:(id)sender
+{
+	NSLog(@"deleteAutotrackerRule");
+
+	NSInteger i = self.autotrackerRulesTableView.selectedRow;
+	if (self.rules && i >= 0 && i < self.rules.count)
+	{
+		AutotrackerRuleItem *view = self.rules[i];
+		toggl_autotracker_delete_rule(ctx, view.ID);
+	}
+}
+
 - (void)remindTimesChanged:(id)sender
 {
 	toggl_set_settings_remind_times(ctx,

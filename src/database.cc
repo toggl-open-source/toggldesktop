@@ -1676,6 +1676,13 @@ error Database::saveModel(
             if (err != noError) {
                 return err;
             }
+            if (model->DeletedAt()) {
+                changes->push_back(ModelChange(
+                    model->ModelName(), "delete", model->ID(), model->GUID()));
+            } else {
+                changes->push_back(ModelChange(
+                    model->ModelName(), "update", model->ID(), model->GUID()));
+            }
 
         } else {
             std::stringstream ss;
@@ -1702,6 +1709,8 @@ error Database::saveModel(
                 return err;
             }
             model->SetLocalID(local_id);
+            changes->push_back(ModelChange(
+                model->ModelName(), "insert", model->ID(), model->GUID()));
         }
 
         model->ClearDirty();
@@ -3834,6 +3843,32 @@ error Database::deleteTooOldTimeline(
         return ex;
     }
     return last_error("deleteTooOldTimeline");
+}
+
+error Database::deleteUserTimeline(
+    const Poco::UInt64 &UID) {
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(session_);
+
+    if (!UID) {
+        return error("Cannot delete timeline without UID");
+    }
+
+    try {
+        *session_ << "delete from timeline_events "
+                  "where user_id = :uid",
+                  useRef(UID),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("deleteUserTimeline");
 }
 
 error Database::CreateCompressedTimelineBatchForUpload(

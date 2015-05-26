@@ -285,6 +285,9 @@ class Database {
     error deleteTooOldTimeline(
         const Poco::UInt64 &UID);
 
+    error deleteUserTimeline(
+        const Poco::UInt64 &UID);
+
     error selectCompressedTimelineBatchForUpload(
         const Poco::UInt64 &user_id,
         std::vector<TimelineEvent> *timeline_events);

@@ -63,6 +63,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)autodetectProxyCheckboxChanged:(id)sender;
 - (IBAction)addAutotrackerRule:(id)sender;
 - (IBAction)remindWeekChanged:(id)sender;
+- (IBAction)deleteAutotrackerRule:(id)sender;
 - (IBAction)remindTimesChanged:(id)sender;
 
 @property DisplayCommand *originalCmd;
