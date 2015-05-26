@@ -10,7 +10,7 @@
                 <outlet property="autodetectProxyCheckbox" destination="VYH-HQ-PE4" id="b5m-c5-cVN"/>
                 <outlet property="autotrackerProject" destination="TN9-Mx-4gf" id="94P-Mq-SHg"/>
                 <outlet property="autotrackerRulesTableView" destination="aw6-zQ-ZW8" id="3SU-TC-YlQ"/>
-                <outlet property="autotrackerTerm" destination="XqC-LL-a53" id="UWX-A8-4X0"/>
+                <outlet property="autotrackerTerm" destination="afg-Ty-RcE" id="KZ5-IU-C0e"/>
                 <outlet property="dockIconCheckbox" destination="kR2-Ee-viZ" id="Nm7-te-1KH"/>
                 <outlet property="focusOnShortcutCheckbox" destination="yWA-BY-OMt" id="Dfo-JK-2a2"/>
                 <outlet property="hostTextField" destination="eSt-Rf-LI2" id="Gfl-WB-VWr"/>
@@ -97,7 +97,7 @@
                                             <rect key="frame" x="161" y="-47" width="140" height="19"/>
                                         </customView>
                                         <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="LUN-WN-NDq">
-                                            <rect key="frame" x="18" y="-56" width="282" height="4"/>
+                                            <rect key="frame" x="18" y="-56" width="282" height="5"/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
@@ -379,17 +379,6 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </tableHeaderView>
                                         </scrollView>
-                                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XqC-LL-a53">
-                                            <rect key="frame" x="4" y="211" width="122" height="22"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Term" drawsBackground="YES" id="Mdk-Yw-fle">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <outlet property="nextKeyView" destination="TN9-Mx-4gf" id="VS8-f1-NX1"/>
-                                            </connections>
-                                        </textField>
                                         <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN9-Mx-4gf" customClass="NSCustomComboBox">
                                             <rect key="frame" x="135" y="208" width="121" height="26"/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="wm4-2s-Yxd">
@@ -410,9 +399,21 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="addAutotrackerRule:" target="-2" id="OnO-iJ-NQB"/>
-                                                <outlet property="nextKeyView" destination="XqC-LL-a53" id="7uQ-Cu-lbz"/>
                                             </connections>
                                         </button>
+                                        <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="afg-Ty-RcE">
+                                            <rect key="frame" x="5" y="208" width="125" height="26"/>
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="Dep-yZ-GW4">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <objectValues>
+                                                    <string>Item 1</string>
+                                                    <string>Item 2</string>
+                                                    <string>Item 3</string>
+                                                </objectValues>
+                                            </comboBoxCell>
+                                        </comboBox>
                                     </subviews>
                                 </view>
                             </tabViewItem>

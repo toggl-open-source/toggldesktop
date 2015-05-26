@@ -33,7 +33,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *focusOnShortcutCheckbox;
 @property IBOutlet NSTextField *reminderMinutesTextField;
 @property IBOutlet NSButton *autodetectProxyCheckbox;
-@property IBOutlet NSTextField *autotrackerTerm;
+@property IBOutlet NSComboBox *autotrackerTerm;
 @property IBOutlet NSCustomComboBox *autotrackerProject;
 @property IBOutlet NSTableView *autotrackerRulesTableView;
 @property IBOutlet NSButton *remindMon;
