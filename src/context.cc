@@ -2905,7 +2905,14 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
         return noError;
     }
     event->user_id = static_cast<unsigned int>(user_->ID());
-    return db()->InsertTimelineEvent(event);
+    error err = db()->InsertTimelineEvent(event);
+    if (err != noError) {
+        return err;
+    }
+
+    displayAutotrackerRules();
+
+    return noError;
 }
 
 error Context::MarkTimelineBatchAsUploaded(

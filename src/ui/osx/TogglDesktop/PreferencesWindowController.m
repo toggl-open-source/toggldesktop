@@ -234,6 +234,7 @@ extern void *ctx;
 		self.termAutocompleteItems = data[@"titles"];
 	}
 	[self.autotrackerRulesTableView reloadData];
+	[self.autotrackerTerm reloadData];
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
