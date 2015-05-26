@@ -922,6 +922,53 @@ error Database::loadWorkspaces(
     return last_error("loadWorkspaces");
 }
 
+error Database::LoadAutotrackerTitles(
+    const Poco::Int64 &UID,
+    std::vector<std::string> *list) {
+
+    if (!UID) {
+        return error("Cannot load timeline titles without an user ID");
+    }
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    poco_check_ptr(list);
+
+    list->clear();
+
+    try {
+        Poco::Data::Statement select(*session_);
+        select <<
+               "SELECT DISTINCT title  "
+               "FROM timeline_events "
+               "WHERE user_id = :user_id "
+               "AND title IS NOT NULL "
+               "AND title <> '' "
+               "ORDER BY title ASC",
+               useRef(UID);
+        error err = last_error("LoadAutotrackerTitles");
+        if (err != noError) {
+            return err;
+        }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                list->push_back(rs[0].convert<std::string>());
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("LoadAutotrackerTitles");
+}
+
 error Database::loadClients(
     const Poco::UInt64 &UID,
     std::vector<Client *> *list) {

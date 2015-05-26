@@ -202,7 +202,9 @@ extern "C" {
         const char_t *url);
 
     typedef void (*TogglDisplayAutotrackerRules)(
-        TogglAutotrackerRuleView *first);
+        TogglAutotrackerRuleView *first,
+        const uint64_t title_count,
+        char_t *title_list[]);
 
     // Initialize/destroy an instance of the app
 

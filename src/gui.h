@@ -80,7 +80,9 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTags(std::vector<std::string> *tags);
 
-    void DisplayAutotrackerRules(TogglAutotrackerRuleView *first);
+    void DisplayAutotrackerRules(
+        TogglAutotrackerRuleView *first,
+        const std::vector<std::string> &titles);
 
     void DisplayTimeEntryEditor(
         const _Bool open,

@@ -72,7 +72,11 @@ extern void *ctx;
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 
 	[self displaySettings:self.originalCmd];
-	[self displayAutotrackerRules:self.rules];
+
+	[self displayAutotrackerRules:@{
+		 @"rules": self.rules,
+		 @"titles": self.termAutocompleteItems,
+	 }];
 
 	[self.idleMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
@@ -221,12 +225,13 @@ extern void *ctx;
 						waitUntilDone:NO];
 }
 
-- (void)displayAutotrackerRules:(NSMutableArray *)value
+- (void)displayAutotrackerRules:(NSDictionary *)data
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	@synchronized(self)
 	{
-		self.rules = value;
+		self.rules = data[@"rules"];
+		self.termAutocompleteItems = data[@"titles"];
 	}
 	[self.autotrackerRulesTableView reloadData];
 }

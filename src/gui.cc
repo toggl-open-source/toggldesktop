@@ -263,9 +263,19 @@ void GUI::DisplayTags(std::vector<std::string> *tags) {
     view_item_clear(first);
 }
 
-void GUI::DisplayAutotrackerRules(TogglAutotrackerRuleView *first) {
+void GUI::DisplayAutotrackerRules(TogglAutotrackerRuleView *first,
+                                  const std::vector<std::string> &titles) {
     if (on_display_autotracker_rules_) {
-        on_display_autotracker_rules_(first);
+        uint64_t title_count = titles.size();
+        char_t **title_list = new char_t *[title_count];
+        for (uint64_t i = 0; i < title_count; i++) {
+            title_list[i] = copy_string(titles[i]);
+        }
+        on_display_autotracker_rules_(first, title_count, title_list);
+        for (uint64_t i = 0; i < title_count; i++) {
+            free(title_list[i]);
+        }
+        delete[] title_list;
     }
 }
 

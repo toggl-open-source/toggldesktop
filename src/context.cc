@@ -430,7 +430,14 @@ void Context::displayAutotrackerRules() {
         item->Next = first;
         first = item;
     }
-    UI()->DisplayAutotrackerRules(first);
+
+    std::vector<std::string> titles;
+    error err = db()->LoadAutotrackerTitles(user_->ID(), &titles);
+    if (err != noError) {
+        displayError(err);
+    }
+
+    UI()->DisplayAutotrackerRules(first, titles);
     autotracker_view_item_clear(first);
 }
 
