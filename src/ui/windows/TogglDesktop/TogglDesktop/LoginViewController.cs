@@ -11,14 +11,24 @@ namespace TogglDesktop
 {
 public partial class LoginViewController : UserControl
 {
+    private enum ConfirmAction
+    {
+        Unknown = 0,
+        LogIn,
+        SignUp
+    }
+
+    private ConfirmAction confirmAction = ConfirmAction.Unknown;
+
     public LoginViewController()
     {
         InitializeComponent();
+        setConfirmAction(ConfirmAction.LogIn);
     }
 
     public void SetAcceptButton(Form frm)
     {
-        frm.AcceptButton = loginButton;
+        frm.AcceptButton = confirmButton;
     }
 
     private bool validateFields()
@@ -34,16 +44,6 @@ public partial class LoginViewController : UserControl
             return false;
         }
         return true;
-    }
-
-    private void loginButton_Click(object sender, EventArgs e)
-    {
-        if (!validateFields())
-        {
-            return;
-        }
-        Toggl.Login(email.Text, password.Text);
-        password.Clear();
     }
 
     private void passwordForgotTextField_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
@@ -111,22 +111,6 @@ public partial class LoginViewController : UserControl
         Toggl.EditPreferences();
     }
 
-    private void signupButton_Click(object sender, EventArgs e)
-    {
-        if (!validateFields())
-        {
-            return;
-        }
-        if (password.Text == "")
-        {
-            password.Clear();
-            password.Focus();
-            return;
-        }
-        Toggl.Signup(email.Text, password.Text);
-        password.Clear();
-    }
-
     private void usernamePlaceholder_Click(object sender, EventArgs e)
     {
         email.Focus();
@@ -146,5 +130,84 @@ public partial class LoginViewController : UserControl
     {
         passwordPlaceholder.Visible = (password.Text.Length == 0);
     }
+
+    private void loginSignupToggle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        switch (confirmAction)
+        {
+            case ConfirmAction.LogIn:
+                setConfirmAction(ConfirmAction.SignUp);
+                break;
+            case ConfirmAction.SignUp:
+                setConfirmAction(ConfirmAction.LogIn);
+                break;
+            default:
+                throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", confirmAction));
+        }
+    }
+
+    private void confirmButton_Click(object sender, EventArgs e)
+    {
+        switch (confirmAction)
+        {
+            case ConfirmAction.LogIn:
+                login();
+                break;
+            case ConfirmAction.SignUp:
+                signup();
+                break;
+            default:
+                throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", confirmAction));
+        }
+    }
+
+    private void setConfirmAction(ConfirmAction action)
+    {
+        switch (action)
+        {
+            case ConfirmAction.LogIn:
+                confirmButton.Text = "Log in";
+                passwordForgotTextField.Show();
+                googleLoginTextField.Show();
+                loginSignupToggle.Text = "Sign up for free";
+                break;
+            case ConfirmAction.SignUp:
+                confirmButton.Text = "Sign up";
+                passwordForgotTextField.Hide();
+                googleLoginTextField.Hide();
+                loginSignupToggle.Text = "Log in";
+                break;
+            default:
+                throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
+        }
+        confirmAction = action;
+    }
+
+    private void login()
+    {
+        if (!validateFields())
+        {
+            return;
+        }
+        Toggl.Login(email.Text, password.Text);
+        password.Clear();
+    }
+
+    private void signup()
+    {
+        if (!validateFields())
+        {
+            return;
+        }
+        if (password.Text == "")
+        {
+            password.Clear();
+            password.Focus();
+            return;
+        }
+        Toggl.Signup(email.Text, password.Text);
+        password.Clear();
+    }
+
 }
 }
