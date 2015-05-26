@@ -1201,7 +1201,7 @@ error Database::loadAutotrackerRules(
         select << "SELECT local_id, uid, term, pid "
                "FROM autotracker_settings "
                "WHERE uid = :uid "
-               "ORDER BY term",
+               "ORDER BY term DESC",
                useRef(UID);
         error err = last_error("loadAutotrackerRules");
         if (err != noError) {

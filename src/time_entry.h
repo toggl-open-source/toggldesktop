@@ -6,8 +6,9 @@
 #include <string>
 #include <vector>
 
-#include "./types.h"
 #include "./base_model.h"
+#include "./const.h"
+#include "./types.h"
 
 #include "Poco/Types.h"
 
@@ -106,7 +107,7 @@ class TimeEntry : public BaseModel {
     void SetProjectGUID(const std::string);
 
     std::string ModelName() const {
-        return "time_entry";
+        return kModelTimeEntry;
     }
     std::string ModelURL() const {
         return "/api/v8/time_entries";

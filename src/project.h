@@ -3,11 +3,12 @@
 #ifndef SRC_PROJECT_H_
 #define SRC_PROJECT_H_
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "./types.h"
 #include "./base_model.h"
+#include "./const.h"
+#include "./types.h"
 
 #include "Poco/Types.h"
 
@@ -70,7 +71,7 @@ class Project : public BaseModel {
     void SetBillable(const bool value);
 
     std::string ModelName() const {
-        return "project";
+        return kModelProject;
     }
     std::string ModelURL() const {
         return "/api/v8/projects";
