@@ -1133,7 +1133,8 @@ public static class Toggl
         int time_entry_view_item_size,
         int autocomplete_view_item_size,
         int view_item_size,
-        int settings_size);
+        int settings_size,
+        int autotracker_view_item_size);
 
     // Events for C#
 
@@ -1302,7 +1303,8 @@ public static class Toggl
             Marshal.SizeOf(new TimeEntry()),
             Marshal.SizeOf(new AutocompleteItem()),
             Marshal.SizeOf(new Model()),
-            Marshal.SizeOf(new Settings()));
+            Marshal.SizeOf(new Settings()),
+            Marshal.Sizeof(new AutocompleteItem()));
         if (!valid) {
             throw new System.InvalidOperationException("Invalid struct size, please check log file(s)");
         }

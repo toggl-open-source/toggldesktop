@@ -647,7 +647,8 @@ extern "C" {
         const int time_entry_view_item_size,
         const int autocomplete_view_item_size,
         const int view_item_size,
-        const int settings_size);
+        const int settings_size,
+        const int autotracker_view_item_size);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_run_script(
