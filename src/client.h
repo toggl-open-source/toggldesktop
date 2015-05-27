@@ -47,6 +47,8 @@ class Client : public BaseModel {
 
     bool ResolveError(const toggl::error);
 
+    bool ResourceCannotBeCreated(const toggl::error) const;
+
  private:
     Poco::UInt64 wid_;
     std::string name_;
