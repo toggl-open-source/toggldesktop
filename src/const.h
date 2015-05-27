@@ -71,4 +71,13 @@
 #define kRemindEveryHalfHour
 #define kRemindEveryHour
 
+#define kModelUser "user"
+#define kModelTag "tag"
+#define kModelTask "task"
+#define kModelProject "project"
+#define kModelClient "client"
+#define kModelWorkspace "workspace"
+#define kModelTimeEntry "time_entry"
+#define kModelAutotrackerRule "autotracker_rule"
+
 #endif  // SRC_CONST_H_

@@ -1335,10 +1335,21 @@ void on_tags(TogglGenericView *first)
 														object:[ViewItem loadAll:first]];
 }
 
-void on_autotracker_rules(TogglAutotrackerRuleView *first)
+void on_autotracker_rules(TogglAutotrackerRuleView *first, const uint64_t title_count, char_t *title_list[])
 {
+	NSMutableArray *titles = [[NSMutableArray alloc] init];
+
+	for (int i = 0; i < title_count; i++)
+	{
+		NSString *title = [NSString stringWithUTF8String:title_list[i]];
+		[titles addObject:title];
+	}
+	NSDictionary *data = @{
+		@"rules": [AutotrackerRuleItem loadAll:first],
+		@"titles": titles
+	};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayAutotrackerRules
-														object:[AutotrackerRuleItem loadAll:first]];
+														object:data];
 }
 
 void on_autotracker_notification(const char_t *project_name,

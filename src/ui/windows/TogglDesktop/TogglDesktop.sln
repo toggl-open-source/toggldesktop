@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktop", "TogglDesktop\TogglDesktop.csproj", "{27AC6261-3916-4683-B692-DC57E2FE0ABD}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -41,6 +41,13 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SQLite", "..\..\..\..\third_party\poco\Data\SQLite\SQLite_vs120.vcxproj", "{5B889CE7-AD42-4CFE-BBC3-532B61F8329E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktopUpdater", "TogglDesktopUpdater\TogglDesktopUpdater.csproj", "{013C6551-E2AA-4960-96DA-214CC8895E17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BE9EBB1E-726F-4CA7-AF3C-60258A24418F}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

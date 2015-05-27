@@ -8,6 +8,7 @@
 #include <json/json.h>  // NOLINT
 
 #include "./base_model.h"
+#include "./const.h"
 
 namespace toggl {
 
@@ -43,7 +44,7 @@ class Workspace : public BaseModel {
     void SetAdmin(const bool);
 
     std::string ModelName() const {
-        return "workspace";
+        return kModelWorkspace;
     }
 
     std::string ModelURL() const {

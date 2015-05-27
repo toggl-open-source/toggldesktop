@@ -6,12 +6,15 @@
 
 #import "PreferencesWindowController.h"
 
+#include <Carbon/Carbon.h>
+
 #import "AutotrackerRuleItem.h"
 #import "DisplayCommand.h"
 #import "MASShortcutView+UserDefaults.h"
 #import "Settings.h"
 #import "UIEvents.h"
 #import "Utils.h"
+
 #import "toggl_api.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
@@ -20,6 +23,7 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 @interface PreferencesWindowController ()
 @property NSMutableArray *rules;
 @property AutocompleteDataSource *projectAutocompleteDataSource;
+@property NSMutableArray *termAutocompleteItems;
 @end
 
 @implementation PreferencesWindowController
@@ -32,6 +36,8 @@ extern void *ctx;
 	if (self)
 	{
 		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+
+		self.termAutocompleteItems = [[NSMutableArray alloc] init];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayAutotrackerRules:)
@@ -69,7 +75,11 @@ extern void *ctx;
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 
 	[self displaySettings:self.originalCmd];
-	[self displayAutotrackerRules:self.rules];
+
+	[self displayAutotrackerRules:@{
+		 @"rules": self.rules,
+		 @"titles": self.termAutocompleteItems,
+	 }];
 
 	[self.idleMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
@@ -218,14 +228,16 @@ extern void *ctx;
 						waitUntilDone:NO];
 }
 
-- (void)displayAutotrackerRules:(NSMutableArray *)value
+- (void)displayAutotrackerRules:(NSDictionary *)data
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	@synchronized(self)
 	{
-		self.rules = value;
+		self.rules = data[@"rules"];
+		self.termAutocompleteItems = data[@"titles"];
 	}
 	[self.autotrackerRulesTableView reloadData];
+	[self.autotrackerTerm reloadData];
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
@@ -381,6 +393,52 @@ extern void *ctx;
 	{
 		toggl_set_settings_reminder_minutes(ctx,
 											[self.reminderMinutesTextField.stringValue intValue]);
+	}
+}
+
+// Term autocomplete datasource
+
+- (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
+{
+	for (int i = 0; i < self.termAutocompleteItems.count; i++)
+	{
+		NSString *s = self.termAutocompleteItems[i];
+		if ([[s commonPrefixWithString:partialString options:NSCaseInsensitiveSearch] length] == [partialString length])
+		{
+			return s;
+		}
+	}
+	return @"";
+}
+
+// Term combobox delegate
+
+- (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox
+{
+	return self.termAutocompleteItems.count;
+}
+
+- (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)index
+{
+	return self.termAutocompleteItems[index];
+}
+
+- (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)string
+{
+	return [self.termAutocompleteItems indexOfObject:string];
+}
+
+// Handle autotracker rule delete using backspace key
+
+- (void)keyDown:(NSEvent *)event
+{
+	if ((event.keyCode == kVK_Delete) && ([self.window firstResponder] == self.autotrackerRulesTableView))
+	{
+		[self deleteAutotrackerRule:self];
+	}
+	else
+	{
+		[super keyDown:event];
 	}
 }
 

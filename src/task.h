@@ -10,6 +10,7 @@
 #include "Poco/Types.h"
 
 #include "./base_model.h"
+#include "./const.h"
 
 namespace toggl {
 
@@ -45,7 +46,7 @@ class Task : public BaseModel {
     std::string String() const;
 
     std::string ModelName() const {
-        return "task";
+        return kModelTask;
     }
     std::string ModelURL() const {
         return "/api/v8/tasks";

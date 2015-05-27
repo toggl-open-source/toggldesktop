@@ -202,7 +202,9 @@ extern "C" {
         const char_t *url);
 
     typedef void (*TogglDisplayAutotrackerRules)(
-        TogglAutotrackerRuleView *first);
+        TogglAutotrackerRuleView *first,
+        const uint64_t title_count,
+        char_t *title_list[]);
 
     // Initialize/destroy an instance of the app
 
@@ -647,7 +649,8 @@ extern "C" {
         const int time_entry_view_item_size,
         const int autocomplete_view_item_size,
         const int view_item_size,
-        const int settings_size);
+        const int settings_size,
+        const int autotracker_view_item_size);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_run_script(

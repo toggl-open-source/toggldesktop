@@ -279,29 +279,30 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
             it++) {
         ModelChange ch = *it;
 
-        if (ch.ModelType() == "tag") {
+        if (ch.ModelType() == kModelTag) {
             display_tags = true;
         }
 
         // FIXME: should match the affected model names instead
-        if (ch.ModelType() != "tag" && ch.ModelType() != "user") {
+        if (ch.ModelType() != kModelTag && ch.ModelType() != kModelUser) {
             display_time_entry_autocomplete = true;
             display_time_entries = true;
             display_mini_timer_autocomplete = true;
         }
 
         // FIXME: should match the affected model names instead
-        if (ch.ModelType() != "tag" && ch.ModelType() != "user"
-                && ch.ModelType() != "time_entry") {
+        if (ch.ModelType() != kModelTag && ch.ModelType() != kModelUser
+                && ch.ModelType() != kModelTimeEntry) {
             display_project_autocomplete = true;
         }
 
-        if (ch.ModelType() == "client" || ch.ModelType() == "workspace") {
+        if (ch.ModelType() == kModelClient
+                || ch.ModelType() == kModelWorkspace) {
             display_client_select = true;
         }
 
         // Check if time entry editor needs to be updated
-        if (ch.ModelType() == "time_entry") {
+        if (ch.ModelType() == kModelTimeEntry) {
             display_timer_state = true;
             // If time entry was edited, check further
             if (time_entry_editor_guid_ == ch.GUID()) {
@@ -315,7 +316,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
             }
         }
 
-        if (ch.ModelType() == "autotracker_rule") {
+        if (ch.ModelType() == kModelAutotrackerRule) {
             display_autotracker_rules = true;
         }
     }
@@ -429,7 +430,14 @@ void Context::displayAutotrackerRules() {
         item->Next = first;
         first = item;
     }
-    UI()->DisplayAutotrackerRules(first);
+
+    std::vector<std::string> titles;
+    error err = db()->LoadAutotrackerTitles(user_->ID(), &titles);
+    if (err != noError) {
+        displayError(err);
+    }
+
+    UI()->DisplayAutotrackerRules(first, titles);
     autotracker_view_item_clear(first);
 }
 
@@ -2897,7 +2905,14 @@ error Context::SaveTimelineEvent(TimelineEvent *event) {
         return noError;
     }
     event->user_id = static_cast<unsigned int>(user_->ID());
-    return db()->InsertTimelineEvent(event);
+    error err = db()->InsertTimelineEvent(event);
+    if (err != noError) {
+        return err;
+    }
+
+    displayAutotrackerRules();
+
+    return noError;
 }
 
 error Context::MarkTimelineBatchAsUploaded(

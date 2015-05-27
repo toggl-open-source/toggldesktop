@@ -14,7 +14,7 @@
 extern NSString *const kPreferenceGlobalShortcutShowHide;
 extern NSString *const kPreferenceGlobalShortcutStartStop;
 
-@interface PreferencesWindowController : NSWindowController <NSTextFieldDelegate, NSTableViewDataSource>
+@interface PreferencesWindowController : NSWindowController <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
 @property IBOutlet NSTextField *hostTextField;
 @property IBOutlet NSTextField *portTextField;
 @property IBOutlet NSTextField *usernameTextField;

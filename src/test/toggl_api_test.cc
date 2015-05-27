@@ -955,7 +955,8 @@ TEST(TogglApiTest, toggl_check_view_struct_size) {
         sizeof(TogglTimeEntryView),
         sizeof(TogglAutocompleteView),
         sizeof(TogglGenericView),
-        sizeof(TogglSettingsView));
+        sizeof(TogglSettingsView),
+        sizeof(TogglAutocompleteView));
 }
 
 TEST(TogglApiTest, toggl_view_time_entry_list) {
