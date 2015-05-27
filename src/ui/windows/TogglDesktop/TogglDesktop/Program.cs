@@ -15,7 +15,7 @@ static class Program
 {
     public static bool ShuttingDown = false;
     private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
-    public static Bugsnag.Library.BugSnag bugsnag = null;
+    public static Bugsnag.Clients.BaseClient bugsnag = null;
     private static UInt64 uid = 0;
     private static MainWindowController mainWindowController;
 
@@ -86,12 +86,12 @@ static class Program
                 return;
             }
 
-            bugsnag = new Bugsnag.Library.BugSnag()
+            bugsnag = new Bugsnag.Clients.BaseClient("2a46aa1157256f759053289f2d687c2f");
+
+            if (Properties.Settings.Default != null)
             {
-                apiKey = "2a46aa1157256f759053289f2d687c2f",
-                    OSVersion = Environment.OSVersion.ToString(),
-                        applicationVersion = Version()
-            };
+                bugsnag.Config.ReleaseStage = Properties.Settings.Default.Environment;
+            }
 
             Toggl.OnLogin += delegate(bool open, UInt64 user_id)
             {
@@ -157,11 +157,12 @@ static class Program
     {
         try
         {
-            bugsnag.Notify(e, new
-            {
-                UserID = uid.ToString(),
-                channel = Toggl.UpdateChannel()
-            });
+            var metadata = new Bugsnag.Metadata();
+            metadata.AddToTab("Details", "UserID", uid.ToString());
+            metadata.AddToTab("Details", "OSVersion", Environment.OSVersion.ToString());
+            metadata.AddToTab("Details", "Version", Version());
+            metadata.AddToTab("Details", "Channel", Toggl.UpdateChannel());
+            bugsnag.Notify(e, metadata);
         }
         catch (Exception ex)
         {

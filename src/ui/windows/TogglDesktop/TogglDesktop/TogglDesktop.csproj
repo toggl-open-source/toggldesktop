@@ -58,9 +58,8 @@
     <ApplicationIcon>Resources\toggl.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bugsnag.Library, Version=1.0.18.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Bugsnag.Library.1.0.18.0\lib\net40\Bugsnag.Library.dll</HintPath>
+    <Reference Include="Bugsnag">
+      <HintPath>..\packages\Bugsnag.1.2.0.0\lib\Net45\Bugsnag.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis, Version=1.9.1.12395, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
