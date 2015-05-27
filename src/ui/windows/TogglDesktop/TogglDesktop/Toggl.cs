@@ -1304,7 +1304,7 @@ public static class Toggl
             Marshal.SizeOf(new AutocompleteItem()),
             Marshal.SizeOf(new Model()),
             Marshal.SizeOf(new Settings()),
-            Marshal.Sizeof(new AutocompleteItem()));
+            Marshal.SizeOf(new AutocompleteItem()));
         if (!valid) {
             throw new System.InvalidOperationException("Invalid struct size, please check log file(s)");
         }
