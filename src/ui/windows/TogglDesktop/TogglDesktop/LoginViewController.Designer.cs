@@ -48,7 +48,7 @@ partial class LoginViewController
         this.loginSignupToggleLabel.AutoSize = true;
         this.loginSignupToggleLabel.BackColor = System.Drawing.Color.Transparent;
         this.loginSignupToggleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.loginSignupToggleLabel.ForeColor = System.Drawing.Color.Gray;
+        this.loginSignupToggleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(227)))), ((int)(((byte)(227)))));
         this.loginSignupToggleLabel.Location = new System.Drawing.Point(113, 396);
         this.loginSignupToggleLabel.Name = "loginSignupToggleLabel";
         this.loginSignupToggleLabel.Size = new System.Drawing.Size(75, 17);
@@ -66,7 +66,7 @@ partial class LoginViewController
         this.googleLoginTextField.Image = ((System.Drawing.Image)(resources.GetObject("googleLoginTextField.Image")));
         this.googleLoginTextField.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
         this.googleLoginTextField.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-        this.googleLoginTextField.LinkColor = System.Drawing.Color.Silver;
+        this.googleLoginTextField.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(227)))), ((int)(((byte)(227)))));
         this.googleLoginTextField.Location = new System.Drawing.Point(60, 318);
         this.googleLoginTextField.Name = "googleLoginTextField";
         this.googleLoginTextField.Padding = new System.Windows.Forms.Padding(21, 5, 0, 5);
@@ -113,7 +113,7 @@ partial class LoginViewController
         this.passwordForgotTextField.BackColor = System.Drawing.Color.Transparent;
         this.passwordForgotTextField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.passwordForgotTextField.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-        this.passwordForgotTextField.LinkColor = System.Drawing.Color.Silver;
+        this.passwordForgotTextField.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(227)))), ((int)(((byte)(227)))));
         this.passwordForgotTextField.Location = new System.Drawing.Point(170, 220);
         this.passwordForgotTextField.Name = "passwordForgotTextField";
         this.passwordForgotTextField.Size = new System.Drawing.Size(105, 15);
@@ -174,7 +174,7 @@ partial class LoginViewController
         this.loginSignupToggle.BackColor = System.Drawing.Color.Transparent;
         this.loginSignupToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.loginSignupToggle.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-        this.loginSignupToggle.LinkColor = System.Drawing.Color.Silver;
+        this.loginSignupToggle.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(227)))), ((int)(((byte)(227)))));
         this.loginSignupToggle.Location = new System.Drawing.Point(89, 416);
         this.loginSignupToggle.Name = "loginSignupToggle";
         this.loginSignupToggle.Size = new System.Drawing.Size(122, 17);
