@@ -14,6 +14,7 @@
 #define kTimerStartInterval 10
 #define kTimelineSecondsToKeep 604800
 #define kWindowFocusThresholdSeconds 10
+#define kAutotrackerThresholdSeconds 10
 #define kBetaChannelPercentage 25
 #define kTimelineChunkSeconds 900
 #define kEnterpriseInstall false
