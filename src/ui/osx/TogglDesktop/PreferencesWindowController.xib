@@ -378,6 +378,9 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="238" height="17"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </tableHeaderView>
+                                            <connections>
+                                                <outlet property="nextKeyView" destination="afg-Ty-RcE" id="kh1-FN-t7F"/>
+                                            </connections>
                                         </scrollView>
                                         <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN9-Mx-4gf" customClass="NSCustomComboBox">
                                             <rect key="frame" x="135" y="208" width="121" height="26"/>
@@ -388,7 +391,7 @@
                                             </comboBoxCell>
                                             <connections>
                                                 <outlet property="delegate" destination="-2" id="a76-nr-Imr"/>
-                                                <outlet property="nextKeyView" destination="hCm-WD-AX4" id="saC-nM-fbo"/>
+                                                <outlet property="nextKeyView" destination="hCm-WD-AX4" id="iWi-LF-AHR"/>
                                             </connections>
                                         </comboBox>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hCm-WD-AX4">
@@ -399,6 +402,7 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="addAutotrackerRule:" target="-2" id="OnO-iJ-NQB"/>
+                                                <outlet property="nextKeyView" destination="PL2-PA-tEh" id="Pfi-3u-yvN"/>
                                             </connections>
                                         </button>
                                         <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="afg-Ty-RcE">
@@ -411,6 +415,7 @@
                                             <connections>
                                                 <outlet property="dataSource" destination="-2" id="wdG-21-x1c"/>
                                                 <outlet property="delegate" destination="-2" id="vkf-zo-Yhs"/>
+                                                <outlet property="nextKeyView" destination="TN9-Mx-4gf" id="ljC-Ln-vGE"/>
                                             </connections>
                                         </comboBox>
                                     </subviews>
