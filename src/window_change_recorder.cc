@@ -42,16 +42,9 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     time_t now;
     time(&now);
 
-    if (!hasIdlenessChanged(idle) && !hasWindowChanged(title, filename)) {
-        return;
-    }
+    time_t time_delta = now - last_event_started_at_;
 
-    // We actually record the *previous* event. Meaning, when
-    // you have "terminal" open and then switch to "skype",
-    // then "terminal" gets recorded here:
     if (last_event_started_at_ > 0) {
-        time_t time_delta = now - last_event_started_at_;
-
         if (time_delta >= kAutotrackerThresholdSeconds && !last_idle_
                 && last_autotracker_title_ != title) {
             // Notify that the timeline event has started
@@ -61,12 +54,23 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             TimelineEvent event;
             event.start_time = last_event_started_at_;
             event.end_time = now;
-            event.filename = last_filename_;
-            event.title = last_title_;
+            event.title = title;
             event.idle = false;
             timeline_datasource_->StartAutotrackerEvent(event);
         }
+    }
 
+    if (!hasIdlenessChanged(idle) && !hasWindowChanged(title, filename)) {
+        return;
+    }
+
+    // Since idle state or window has changed, reset autotracker state, too
+    last_autotracker_title_ = "";
+
+    // We actually record the *previous* event. Meaning, when
+    // you have "terminal" open and then switch to "skype",
+    // then "terminal" gets recorded here:
+    if (last_event_started_at_ > 0) {
         // if window was focussed at least X seconds, save it to timeline
         if (time_delta >= kWindowFocusThresholdSeconds && !last_idle_) {
             TimelineEvent event;
