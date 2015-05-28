@@ -54,7 +54,7 @@ public partial class EditForm : Form
         const int RESIZE_HANDLE_SIZE = 10;
 
         bool handled = false;
-        
+
         if (m.Msg == WM_NCHITTEST || m.Msg == WM_MOUSEMOVE)
         {
             Size formSize = Size;

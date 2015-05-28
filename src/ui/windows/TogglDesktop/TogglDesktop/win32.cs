@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TogglDesktop
 {
-    public class Win32
+public class Win32
 {
     public const int WM_MOUSEMOVE = 0x0200;
     public const int WM_LBUTTONDOWN = 0x0201;
@@ -150,7 +150,7 @@ namespace TogglDesktop
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool SetWindowPos(IntPtr hWnd,
-                                            int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
+                                           int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
 
     public const int HWND_TOPMOST = -1;
     public const int HWND_NOTOPMOST = -2;
