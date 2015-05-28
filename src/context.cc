@@ -380,6 +380,9 @@ void Context::displayProjectAutocomplete() {
         std::vector<AutocompleteItem> list =
             user_->related.ProjectAutocompleteItems();
         UI()->DisplayProjectAutocomplete(&list);
+    } else {
+        std::vector<AutocompleteItem> list;
+        UI()->DisplayProjectAutocomplete(&list);
     }
 }
 
@@ -1701,11 +1704,13 @@ void Context::setUser(User *value, const bool user_logged_in) {
 
         switchWebSocketOff();
 
+        autotracker_titles_.clear();
+        displayAutotrackerRules();
+
+        displayProjectAutocomplete();
+
         return;
     }
-
-    autotracker_titles_.clear();
-    displayAutotrackerRules();
 
     UI()->DisplayLogin(false, user_->ID());
 
