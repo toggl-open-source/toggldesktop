@@ -1,4 +1,3 @@
-
 // Copyright 2014 Toggl Desktop developers
 
 // No exceptions should be thrown from this class.
@@ -1221,11 +1220,6 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     }
 }
 
-_Bool Context::LoadSettings(Settings *settings) {
-    poco_check_ptr(settings);
-    return displayError(db()->LoadSettings(settings));
-}
-
 _Bool Context::SetSettingsRemindTimes(
     const std::string remind_starts,
     const std::string remind_ends) {
@@ -1234,9 +1228,11 @@ _Bool Context::SetSettingsRemindTimes(
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::SetSettingsRemindDays(
@@ -1259,9 +1255,11 @@ _Bool Context::SetSettingsRemindDays(
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::SetSettingsAutodetectProxy(const _Bool autodetect_proxy) {
@@ -1327,9 +1325,11 @@ _Bool Context::SetSettingsReminder(const _Bool reminder) {
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
@@ -1362,9 +1362,11 @@ _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::LoadWindowSettings(
@@ -1483,9 +1485,7 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
 }
 
 _Bool Context::DisplaySettings(const _Bool open) {
-    Settings settings;
-
-    error err = db()->LoadSettings(&settings);
+    error err = db()->LoadSettings(&settings_);
     if (err != noError) {
         setUser(0);
         return displayError(err);
@@ -1504,16 +1504,16 @@ _Bool Context::DisplaySettings(const _Bool open) {
         record_timeline = user_->RecordTimeline();
     }
 
-    idle_.SetSettings(settings);
+    idle_.SetSettings(settings_);
 
     HTTPSClient::Config.UseProxy = use_proxy;
     HTTPSClient::Config.IgnoreCert = false;
     HTTPSClient::Config.ProxySettings = proxy;
-    HTTPSClient::Config.AutodetectProxy = settings.autodetect_proxy;
+    HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
 
     UI()->DisplaySettings(open,
                           record_timeline,
-                          settings,
+                          settings_,
                           use_proxy,
                           proxy);
 
@@ -2075,11 +2075,8 @@ _Bool Context::ContinueLatest() {
         return displayError(err);
     }
 
-    Settings settings;
-    if (LoadSettings(&settings)) {
-        if (settings.focus_on_shortcut) {
-            UI()->DisplayApp();
-        }
+    if (settings_.focus_on_shortcut) {
+        UI()->DisplayApp();
     }
 
     return displayError(save());
@@ -2106,11 +2103,8 @@ _Bool Context::Continue(
         return displayError(err);
     }
 
-    Settings settings;
-    if (LoadSettings(&settings)) {
-        if (settings.focus_on_shortcut) {
-            UI()->DisplayApp();
-        }
+    if (settings_.focus_on_shortcut) {
+        UI()->DisplayApp();
     }
 
     err = save();
@@ -2440,11 +2434,8 @@ _Bool Context::Stop() {
         return true;
     }
 
-    Settings settings;
-    if (LoadSettings(&settings)) {
-        if (settings.focus_on_shortcut) {
-            UI()->DisplayApp();
-        }
+    if (settings_.focus_on_shortcut) {
+        UI()->DisplayApp();
     }
 
     return displayError(save());
@@ -2496,13 +2487,14 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
             return displayError(err);
         }
 
+        DisplaySettings();
+
         TimelineUpdateServerSettings();
         if (user_->RecordTimeline()) {
             switchTimelineOn();
         } else {
             switchTimelineOff();
         }
-        return DisplaySettings();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2761,19 +2753,13 @@ void Context::SetOnline() {
 }
 
 void Context::remindToTrackTime() {
-    Settings settings;
-    if (!LoadSettings(&settings)) {
-        logger().error("Could not load settings");
-        return;
-    }
-
-    if (!settings.reminder) {
+    if (!settings_.reminder) {
         logger().debug("Reminder is not enabled by user");
         return;
     }
 
     next_reminder_at_ =
-        postpone((settings.reminder_minutes * 60) * kOneSecondInMicros);
+        postpone((settings_.reminder_minutes * 60) * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);
 
@@ -2787,28 +2773,22 @@ void Context::remindToTrackTime() {
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    Settings settings;
-    if (!LoadSettings(&settings)) {
-        logger().error("Could not load settings");
-        return;
-    }
-
     // if some code scheduled a reminder for a later time,
     // meanwhile, then let the later reminder be executed
     // not this one.
     if (isPostponed(next_reminder_at_,
-                    (settings.reminder_minutes * 60) * kOneSecondInMicros)) {
+                    (settings_.reminder_minutes * 60) * kOneSecondInMicros)) {
         logger().debug("onRemind postponed");
         return;
     }
 
-    displayReminder(settings);
+    displayReminder();
 
     remindToTrackTime();
 }
 
-void Context::displayReminder(const Settings &settings) {
-    if (!settings.reminder) {
+void Context::displayReminder() {
+    if (!settings_.reminder) {
         logger().debug("Reminder is not enabled by user");
         return;
     }
@@ -2827,21 +2807,21 @@ void Context::displayReminder(const Settings &settings) {
     Poco::LocalDateTime now;
     int wday = now.dayOfWeek();
     if (
-        (Poco::DateTime::MONDAY == wday && !settings.remind_mon) ||
-        (Poco::DateTime::TUESDAY == wday && !settings.remind_tue) ||
-        (Poco::DateTime::WEDNESDAY == wday && !settings.remind_wed) ||
-        (Poco::DateTime::THURSDAY == wday && !settings.remind_thu) ||
-        (Poco::DateTime::FRIDAY == wday && !settings.remind_fri) ||
-        (Poco::DateTime::SATURDAY == wday && !settings.remind_sat) ||
-        (Poco::DateTime::SUNDAY == wday && !settings.remind_sun)) {
+        (Poco::DateTime::MONDAY == wday && !settings_.remind_mon) ||
+        (Poco::DateTime::TUESDAY == wday && !settings_.remind_tue) ||
+        (Poco::DateTime::WEDNESDAY == wday && !settings_.remind_wed) ||
+        (Poco::DateTime::THURSDAY == wday && !settings_.remind_thu) ||
+        (Poco::DateTime::FRIDAY == wday && !settings_.remind_fri) ||
+        (Poco::DateTime::SATURDAY == wday && !settings_.remind_sat) ||
+        (Poco::DateTime::SUNDAY == wday && !settings_.remind_sun)) {
         logger().debug("reminder is not enabled on this weekday");
         return;
     }
 
     // Check if allowed to display reminder at this time
-    if (!settings.remind_starts.empty()) {
+    if (!settings_.remind_starts.empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(settings.remind_starts, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(settings_.remind_starts, &h, &m)) {
             Poco::LocalDateTime start(
                 now.year(), now.month(), now.day(), h, m, now.second());
             if (now < start) {
@@ -2850,9 +2830,9 @@ void Context::displayReminder(const Settings &settings) {
             }
         }
     }
-    if (!settings.remind_ends.empty()) {
+    if (!settings_.remind_ends.empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(settings.remind_ends, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(settings_.remind_ends, &h, &m)) {
             Poco::LocalDateTime end(
                 now.year(), now.month(), now.day(), h, m, now.second());
             if (now > end) {

@@ -77,8 +77,6 @@ class Context : public TimelineDatasource {
         update_check_disabled_ = true;
     }
 
-    _Bool LoadSettings(Settings *settings);
-
     _Bool SetSettingsUseIdleDetection(const _Bool use_idle_detection);
 
     _Bool SetSettingsAutotrack(const _Bool value);
@@ -340,7 +338,7 @@ class Context : public TimelineDatasource {
     void displayTags();
     void displayAutotrackerRules();
 
-    void displayReminder(const Settings &settings);
+    void displayReminder();
 
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
@@ -431,6 +429,8 @@ class Context : public TimelineDatasource {
     bool im_a_teapot_;
 
     static std::string log_path_;
+
+    Settings settings_;
 };
 
 void on_websocket_message(
