@@ -149,7 +149,7 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
 
 
         myTimer1 = new System.Windows.Forms.Timer(this.components);
-        myTimer1.Interval = (int)win32.GetCaretBlinkTime(); //  usually around 500;
+        myTimer1.Interval = (int)Win32.GetCaretBlinkTime(); //  usually around 500;
 
         myTimer1.Tick += new EventHandler(myTimer1_Tick);
         myTimer1.Enabled = true;
@@ -201,7 +201,7 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
 
         // need to rewrite as a big switch
 
-        if (m.Msg == win32.WM_PAINT)
+        if (m.Msg == Win32.WM_PAINT)
         {
             myPaintedFirstTime = true;
 
@@ -215,15 +215,15 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
 
         }
 
-        else if (m.Msg == win32.WM_HSCROLL || m.Msg == win32.WM_VSCROLL)
+        else if (m.Msg == Win32.WM_HSCROLL || m.Msg == Win32.WM_VSCROLL)
         {
             myUpToDate = false;
             this.Invalidate();
         }
 
-        else if (m.Msg == win32.WM_LBUTTONDOWN
-                 || m.Msg == win32.WM_RBUTTONDOWN
-                 || m.Msg == win32.WM_LBUTTONDBLCLK
+        else if (m.Msg == Win32.WM_LBUTTONDOWN
+                 || m.Msg == Win32.WM_RBUTTONDOWN
+                 || m.Msg == Win32.WM_LBUTTONDBLCLK
                  //  || m.Msg == win32.WM_MOUSELEAVE  ///****
                 )
         {
@@ -231,7 +231,7 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
             this.Invalidate();
         }
 
-        else if (m.Msg == win32.WM_MOUSEMOVE)
+        else if (m.Msg == Win32.WM_MOUSEMOVE)
         {
             if (m.WParam.ToInt32() != 0)  //shift key or other buttons
             {
@@ -369,7 +369,7 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
 
             this.SetStyle(ControlStyles.UserPaint, false);
 
-            win32.CaptureWindow(this, ref myBitmap);
+            Win32.CaptureWindow(this, ref myBitmap);
 
             this.SetStyle(ControlStyles.UserPaint, true);
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
@@ -445,7 +445,7 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
         int i_char_loc = this.SelectionStart;
         IntPtr pi_char_loc = new IntPtr(i_char_loc);
 
-        int i_point = win32.SendMessage(this.Handle, win32.EM_POSFROMCHAR, pi_char_loc, IntPtr.Zero);
+        int i_point = Win32.SendMessage(this.Handle, Win32.EM_POSFROMCHAR, pi_char_loc, IntPtr.Zero);
         pointCaret = new Point(i_point);
 
         if (i_char_loc == 0)
@@ -455,7 +455,7 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
         else if (i_char_loc >= this.Text.Length)
         {
             pi_char_loc = new IntPtr(i_char_loc - 1);
-            i_point = win32.SendMessage(this.Handle, win32.EM_POSFROMCHAR, pi_char_loc, IntPtr.Zero);
+            i_point = Win32.SendMessage(this.Handle, Win32.EM_POSFROMCHAR, pi_char_loc, IntPtr.Zero);
             pointCaret = new Point(i_point);
 
             Graphics g = this.CreateGraphics();
@@ -515,17 +515,17 @@ public class AlphaBlendTextBox : System.Windows.Forms.TextBox
         //uPictureBox
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == win32.WM_LBUTTONDOWN
-                    || m.Msg == win32.WM_RBUTTONDOWN
-                    || m.Msg == win32.WM_LBUTTONDBLCLK
-                    || m.Msg == win32.WM_MOUSELEAVE
-                    || m.Msg == win32.WM_MOUSEMOVE)
+            if (m.Msg == Win32.WM_LBUTTONDOWN
+                    || m.Msg == Win32.WM_RBUTTONDOWN
+                    || m.Msg == Win32.WM_LBUTTONDBLCLK
+                    || m.Msg == Win32.WM_MOUSELEAVE
+                    || m.Msg == Win32.WM_MOUSEMOVE)
             {
                 //Send the above messages back to the parent control
-                win32.PostMessage(this.Parent.Handle, (uint)m.Msg, m.WParam, m.LParam);
+                Win32.PostMessage(this.Parent.Handle, (uint)m.Msg, m.WParam, m.LParam);
             }
 
-            else if (m.Msg == win32.WM_LBUTTONUP)
+            else if (m.Msg == Win32.WM_LBUTTONUP)
             {
                 //??  for selects and such
                 this.Parent.Invalidate();

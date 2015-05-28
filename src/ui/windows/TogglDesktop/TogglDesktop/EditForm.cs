@@ -13,26 +13,11 @@ namespace TogglDesktop
 {
 public partial class EditForm : Form
 {
-    private const int SWP_NOMOVE = 0x0002;
-    private const int SWP_NOSIZE = 0x0001;
-
-    private const int wmNcLButtonDown = 0xA1;
-    private const int wmNcLButtonUp = 0xA2;
-    private const int HtBottomRight = 17;
-    private const int HtBottom = 15;
-
     private bool isResizing = false;
 
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool SetWindowPos(IntPtr hWnd,
-                                            int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
+    public string GUID = null;
 
-    [DllImport("user32.dll")]
-    private static extern int ReleaseCapture();
-
-    [DllImport("user32.dll")]
-    private static extern int SendMessage(IntPtr hwnd, int msg, int wparam, int lparam);
+    public TimeEntryEditViewController editView;
 
     public EditForm()
     {
@@ -43,8 +28,6 @@ public partial class EditForm : Form
         labelArrowRight.Location = new Point(Width-13, labelArrowRight.Location.Y);
         CancelButton = CloseButton;
     }
-    public string GUID = null;
-    public TimeEntryEditViewController editView;
 
     public void CloseButton_Click(object sender, EventArgs e)
     {
@@ -69,7 +52,9 @@ public partial class EditForm : Form
         const UInt32 HTTOPRIGHT = 14;
 
         const int RESIZE_HANDLE_SIZE = 10;
+
         bool handled = false;
+        
         if (m.Msg == WM_NCHITTEST || m.Msg == WM_MOUSEMOVE)
         {
             Size formSize = Size;
@@ -167,7 +152,7 @@ public partial class EditForm : Form
 
     internal void setWindowPos(int HWND_TOPMOST)
     {
-        SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        Win32.SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
     }
 
     internal void ClosePopup()
@@ -187,15 +172,15 @@ public partial class EditForm : Form
             return;
         }
         isResizing = (e.Button == MouseButtons.Left);
-        ReleaseCapture();
-        int location = (labelArrowRight.Visible) ? HtBottom : HtBottomRight;
+        Win32.ReleaseCapture();
+        int location = (labelArrowRight.Visible) ? Win32.HtBottom : Win32.HtBottomRight;
         if (isResizing)
         {
-            SendMessage(Handle, wmNcLButtonDown, location, 0);
+            Win32.SendMessage(Handle, Win32.wmNcLButtonDown, location, 0);
         }
         else
         {
-            SendMessage(Handle, wmNcLButtonUp, location, 0);
+            Win32.SendMessage(Handle, Win32.wmNcLButtonUp, location, 0);
         }
     }
 }

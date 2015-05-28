@@ -10,15 +10,6 @@ namespace TogglDesktop
 {
 public partial class MainWindowController : TogglForm
 {
-    [DllImport("user32.dll")]
-    private static extern int ReleaseCapture();
-
-    [DllImport("user32.dll")]
-    private static extern int SendMessage(IntPtr hwnd, int msg, int wparam, int lparam);
-
-    private const int wmNcLButtonDown = 0xA1;
-    private const int wmNcLButtonUp = 0xA2;
-    private const int HtBottomRight = 17;
     private bool isResizing = false;
 
     private List<Icon> statusIcons = new List<Icon>();
@@ -30,6 +21,7 @@ public partial class MainWindowController : TogglForm
     private PreferencesWindowController preferencesWindowController;
     private FeedbackWindowController feedbackWindowController;
     private IdleNotificationWindowController idleNotificationWindowController;
+
     private EditForm editForm;
     private Control editableEntry;
 
@@ -45,37 +37,6 @@ public partial class MainWindowController : TogglForm
     KeyboardHook showHook = new KeyboardHook();
 
     private Timer runScriptTimer;
-
-    [StructLayout(LayoutKind.Sequential)]
-    struct LASTINPUTINFO
-    {
-        public static readonly int SizeOf =
-            Marshal.SizeOf(typeof(LASTINPUTINFO));
-
-        [MarshalAs(UnmanagedType.U4)]
-        public int cbSize;
-
-        [MarshalAs(UnmanagedType.U4)]
-        public int dwTime;
-    }
-
-    [DllImport("user32.dll")]
-    static extern bool GetLastInputInfo(out LASTINPUTINFO plii);
-
-    [DllImport("user32", CallingConvention = CallingConvention.Winapi)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool ShowScrollBar(IntPtr hwnd, int wBar, [MarshalAs(UnmanagedType.Bool)] bool bShow);
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool SetWindowPos(IntPtr hWnd,
-                                            int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
-
-    private const int HWND_TOPMOST = -1;
-    private const int HWND_NOTOPMOST = -2;
-    private const int SWP_NOMOVE = 0x0002;
-    private const int SWP_NOSIZE = 0x0001;
-    private const int SB_HORZ = 0;
 
     public MainWindowController()
     {
@@ -782,17 +743,17 @@ public partial class MainWindowController : TogglForm
     {
         if (remainOnTop && !topDisabled)
         {
-            SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+            Win32.SetWindowPos(Handle, Win32.HWND_TOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
             if (editForm != null)
             {
-                editForm.setWindowPos(HWND_TOPMOST);
+                editForm.setWindowPos(Win32.HWND_TOPMOST);
             }
             return;
         }
-        SetWindowPos(Handle, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        Win32.SetWindowPos(Handle, Win32.HWND_NOTOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
         if (editForm != null)
         {
-            editForm.setWindowPos(HWND_NOTOPMOST);
+            editForm.setWindowPos(Win32.HWND_NOTOPMOST);
         }
     }
 
@@ -838,10 +799,10 @@ public partial class MainWindowController : TogglForm
 
     private void timerIdleDetection_Tick(object sender, EventArgs e)
     {
-        LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
+        Win32.LASTINPUTINFO lastInputInfo = new Win32.LASTINPUTINFO();
         lastInputInfo.cbSize = Marshal.SizeOf(lastInputInfo);
         lastInputInfo.dwTime = 0;
-        if (!GetLastInputInfo(out lastInputInfo)) {
+        if (!Win32.GetLastInputInfo(out lastInputInfo)) {
             return;
         }
         int idle_seconds = unchecked(Environment.TickCount - (int)lastInputInfo.dwTime) / 1000;
@@ -982,7 +943,7 @@ public partial class MainWindowController : TogglForm
 
     private void hideHorizontalScrollBar()
     {
-        ShowScrollBar(timeEntryListViewController.getListing().Handle, SB_HORZ, false);
+        Win32.ShowScrollBar(timeEntryListViewController.getListing().Handle, Win32.SB_HORZ, false);
     }
 
     private void resizeHandle_MouseDown(object sender, MouseEventArgs e)
@@ -995,9 +956,9 @@ public partial class MainWindowController : TogglForm
         if (isResizing)
         {
             isResizing = (e.Button == MouseButtons.Left);
-            ReleaseCapture();
-            int buttonEvent = (isResizing) ? wmNcLButtonDown : wmNcLButtonUp;
-            SendMessage(Handle, buttonEvent, HtBottomRight, 0);
+            Win32.ReleaseCapture();
+            int buttonEvent = (isResizing) ? Win32.wmNcLButtonDown : Win32.wmNcLButtonUp;
+            Win32.SendMessage(Handle, buttonEvent, Win32.HtBottomRight, 0);
         }
     }
 }

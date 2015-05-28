@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace TogglDesktop
 {
 public class CustomComboBox : TextBox
 {
-    [DllImport("user32", CharSet = CharSet.Auto)]
-    private static extern int GetWindowLong(IntPtr hwnd, int nIndex);
-    private const int GWL_STYLE = (-16);
-    private const int WS_VSCROLL = 0x200000;
-
     public ListBox autoCompleteListBox;
     private bool _isAdded;
     private String _formerValue = String.Empty;
@@ -45,8 +39,8 @@ public class CustomComboBox : TextBox
     {
         if (!c.IsHandleCreated)
             return false;
-        int style = GetWindowLong(c.Handle, GWL_STYLE);
-        return (style & WS_VSCROLL) != 0;
+        int style = Win32.GetWindowLong(c.Handle, Win32.GWL_STYLE);
+        return (style & Win32.WS_VSCROLL) != 0;
     }
 
     private void CustomComboBox_SizeChanged(object sender, EventArgs e)
