@@ -71,7 +71,7 @@ partial class LoginViewController
         this.googleLoginTextField.Name = "googleLoginTextField";
         this.googleLoginTextField.Padding = new System.Windows.Forms.Padding(21, 5, 0, 5);
         this.googleLoginTextField.Size = new System.Drawing.Size(180, 27);
-        this.googleLoginTextField.TabIndex = 3;
+        this.googleLoginTextField.TabIndex = 4;
         this.googleLoginTextField.TabStop = true;
         this.googleLoginTextField.Text = "LOG IN WITH GOOGLE";
         this.googleLoginTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
@@ -117,7 +117,7 @@ partial class LoginViewController
         this.passwordForgotTextField.Location = new System.Drawing.Point(170, 220);
         this.passwordForgotTextField.Name = "passwordForgotTextField";
         this.passwordForgotTextField.Size = new System.Drawing.Size(105, 15);
-        this.passwordForgotTextField.TabIndex = 5;
+        this.passwordForgotTextField.TabIndex = 2;
         this.passwordForgotTextField.TabStop = true;
         this.passwordForgotTextField.Text = "Forgot password?";
         this.passwordForgotTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
@@ -178,7 +178,7 @@ partial class LoginViewController
         this.loginSignupToggle.Location = new System.Drawing.Point(89, 416);
         this.loginSignupToggle.Name = "loginSignupToggle";
         this.loginSignupToggle.Size = new System.Drawing.Size(122, 17);
-        this.loginSignupToggle.TabIndex = 4;
+        this.loginSignupToggle.TabIndex = 5;
         this.loginSignupToggle.TabStop = true;
         this.loginSignupToggle.Text = "Sign up for free";
         this.loginSignupToggle.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
@@ -193,7 +193,7 @@ partial class LoginViewController
         this.confirmButton.Location = new System.Drawing.Point(62, 265);
         this.confirmButton.Name = "confirmButton";
         this.confirmButton.Size = new System.Drawing.Size(177, 38);
-        this.confirmButton.TabIndex = 2;
+        this.confirmButton.TabIndex = 3;
         this.confirmButton.Text = "Log in";
         this.confirmButton.UseVisualStyleBackColor = true;
         this.confirmButton.Click += new System.EventHandler(this.confirmButton_Click);
