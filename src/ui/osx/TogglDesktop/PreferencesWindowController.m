@@ -294,6 +294,8 @@ extern void *ctx;
 
 	self.remindStarts.stringValue = settings.remind_starts;
 	self.remindEnds.stringValue = settings.remind_ends;
+
+	[self.autotrack setState:[Utils boolToState:settings.autotrack]];
 }
 
 - (IBAction)idleMinutesChange:(id)sender
@@ -306,6 +308,11 @@ extern void *ctx;
 {
 	toggl_set_settings_reminder_minutes(ctx,
 										[self.reminderMinutesTextField.stringValue intValue]);
+}
+
+- (IBAction)autotrackChanged:(id)sender
+{
+	toggl_set_settings_autotrack(ctx, [Utils stateToBool:self.autotrack.state]);
 }
 
 - (IBAction)autodetectProxyCheckboxChanged:(id)sender
