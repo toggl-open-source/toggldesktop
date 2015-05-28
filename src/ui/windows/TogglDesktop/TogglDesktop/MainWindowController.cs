@@ -237,6 +237,7 @@ public partial class MainWindowController : TogglForm
 
         initEditForm();
         timeEntryListViewController.setEditPopup(editForm);
+        editForm.Owner = aboutWindowController.Owner = preferencesWindowController.Owner = feedbackWindowController.Owner = this;
 
         FlowLayoutPanel listing = timeEntryListViewController.getListing();
         if (listing != null)
