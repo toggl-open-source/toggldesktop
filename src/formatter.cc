@@ -11,6 +11,7 @@
 #include "./project.h"
 #include "./task.h"
 #include "./time_entry.h"
+#include "./workspace.h"
 
 #include "Poco/DateTimeFormat.h"
 #include "Poco/DateTimeFormatter.h"
@@ -574,6 +575,14 @@ bool CompareClientByName(Client *a, Client *b) {
 
 bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
     return a->Start() < b->Start();
+}
+
+bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
+    return (Poco::UTF8::icompare(a->Name(), b->Name()) < 0);
+}
+
+bool CompareAutotrackerTitles(const std::string &a, const std::string &b) {
+    return (Poco::UTF8::icompare(a, b) < 0);
 }
 
 bool CompareAutocompleteItems(

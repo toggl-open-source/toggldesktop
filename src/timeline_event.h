@@ -4,6 +4,8 @@
 #define SRC_TIMELINE_EVENT_H_
 
 #include <time.h>
+
+#include <sstream>
 #include <string>
 
 #include "Poco/Types.h"
@@ -30,6 +32,18 @@ class TimelineEvent {
     bool idle;
     bool chunked;
     bool uploaded;
+
+    std::string String() const {
+        std::stringstream ss;
+        ss << start_time
+           << ";"
+           << end_time
+           << ";"
+           << filename
+           << ";"
+           << title;
+        return ss.str();
+    }
 };
 
 #endif  // SRC_TIMELINE_EVENT_H_

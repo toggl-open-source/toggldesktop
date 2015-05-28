@@ -405,38 +405,40 @@ void Context::displayTags() {
 }
 
 void Context::displayAutotrackerRules() {
-    if (!user_) {
-        return;
-    }
-
     if (!UI()->CanDisplayAutotrackerRules()) {
         return;
     }
 
     TogglAutotrackerRuleView *first = 0;
-    for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
-        user_->related.AutotrackerRules.begin();
-            it != user_->related.AutotrackerRules.end();
-            it++) {
-        AutotrackerRule *rule = *it;
-        Project *p = user_->related.ProjectByID(rule->PID());
-        std::string project_name("");
-        if (p) {
-            project_name = p->Name();
+    if (user_) {
+        for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
+            user_->related.AutotrackerRules.begin();
+                it != user_->related.AutotrackerRules.end();
+                it++) {
+            AutotrackerRule *rule = *it;
+            Project *p = user_->related.ProjectByID(rule->PID());
+            std::string project_name("");
+            if (p) {
+                project_name = p->Name();
+            }
+            TogglAutotrackerRuleView *item =
+                autotracker_rule_to_view_item(*it, project_name);
+            item->Next = first;
+            first = item;
         }
-        TogglAutotrackerRuleView *item =
-            autotracker_rule_to_view_item(*it, project_name);
-        item->Next = first;
-        first = item;
     }
 
     std::vector<std::string> titles;
-    error err = db()->LoadAutotrackerTitles(user_->ID(), &titles);
-    if (err != noError) {
-        displayError(err);
+    for (std::set<std::string>::const_iterator
+            it = autotracker_titles_.begin();
+            it != autotracker_titles_.end();
+            ++it) {
+        titles.push_back(*it);
     }
+    std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
 
     UI()->DisplayAutotrackerRules(first, titles);
+
     autotracker_view_item_clear(first);
 }
 
@@ -1702,6 +1704,9 @@ void Context::setUser(User *value, const bool user_logged_in) {
         return;
     }
 
+    autotracker_titles_.clear();
+    displayAutotrackerRules();
+
     UI()->DisplayLogin(false, user_->ID());
 
     DisplayTimeEntryList(true);
@@ -2848,9 +2853,20 @@ void Context::displayReminder() {
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent event) {
-    logger().debug("StartAutotrackerEvent");
+    logger().debug("StartAutotrackerEvent " + event.String());
 
-    if (!user_ || user_->RunningTimeEntry()) {
+    if (!user_) {
+        return noError;
+    }
+
+    // Update the autotracker titles
+    if (event.title.size()) {
+        autotracker_titles_.insert(event.title);
+        displayAutotrackerRules();
+    }
+
+    // Notify user to track using autotracker rules:
+    if (user_ && user_->RunningTimeEntry()) {
         return noError;
     }
     if (!settings_.autotrack) {
@@ -2864,7 +2880,6 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
     if (!p) {
         return noError;
     }
-
     UI()->DisplayAutotrackerNotification(p);
 
     return noError;
@@ -2894,7 +2909,7 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
 }
 
 error Context::StartTimelineEvent(TimelineEvent *event) {
-    logger().debug("StartTimelineEvent");
+    logger().debug("StartTimelineEvent " + event->String());
 
     poco_check_ptr(event);
 

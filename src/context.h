@@ -431,6 +431,8 @@ class Context : public TimelineDatasource {
     static std::string log_path_;
 
     Settings settings_;
+
+    std::set<std::string> autotracker_titles_;
 };
 
 void on_websocket_message(

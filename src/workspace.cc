@@ -43,10 +43,6 @@ void Workspace::SetAdmin(const bool value) {
     }
 }
 
-bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
-    return (strcmp(a->Name().c_str(), b->Name().c_str()) < 0);
-}
-
 void Workspace::LoadFromJSON(Json::Value n) {
     SetID(n["id"].asUInt64());
     SetName(n["name"].asString());
