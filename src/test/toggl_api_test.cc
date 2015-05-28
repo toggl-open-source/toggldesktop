@@ -321,7 +321,8 @@ TEST(TogglApiTest, testing_sleep) {
     time_t start = time(0);
     testing_sleep(1);
     int elapsed_seconds = time(0) - start;
-    ASSERT_EQ(1, elapsed_seconds);
+    ASSERT_GE(elapsed_seconds, 1);
+    ASSERT_LT(elapsed_seconds, 2);
 }
 
 TEST(TogglApiTest, toggl_run_script) {
