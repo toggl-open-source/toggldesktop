@@ -733,14 +733,6 @@ void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchTimelineOff");
 
     {
-        Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        if (window_change_recorder_) {
-            delete window_change_recorder_;
-            window_change_recorder_ = 0;
-        }
-    }
-
-    {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             delete timeline_uploader_;
@@ -790,15 +782,6 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
         } else {
             logger().debug(kCannotSyncInTestEnv);
         }
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        if (window_change_recorder_) {
-            delete window_change_recorder_;
-            window_change_recorder_ = 0;
-        }
-        window_change_recorder_ = new WindowChangeRecorder(this);
     }
 }
 
@@ -1704,7 +1687,16 @@ void Context::setUser(User *value, const bool user_logged_in) {
     if (!user_) {
         UI()->DisplayLogin(true, 0);
 
+        {
+            Poco::Mutex::ScopedLock l(window_change_recorder_m_);
+            if (window_change_recorder_) {
+                delete window_change_recorder_;
+                window_change_recorder_ = 0;
+            }
+        }
+
         switchTimelineOff();
+
         switchWebSocketOff();
 
         return;
@@ -1714,7 +1706,17 @@ void Context::setUser(User *value, const bool user_logged_in) {
 
     DisplayTimeEntryList(true);
 
+    {
+        Poco::Mutex::ScopedLock l(window_change_recorder_m_);
+        if (window_change_recorder_) {
+            delete window_change_recorder_;
+            window_change_recorder_ = 0;
+        }
+        window_change_recorder_ = new WindowChangeRecorder(this);
+    }
+
     switchTimelineOn();
+
     switchWebSocketOn();
 
     if (!user_logged_in) {
@@ -2845,8 +2847,13 @@ void Context::displayReminder() {
     UI()->DisplayReminder();
 }
 
-error Context::StartTimelineEvent(const TimelineEvent event) {
+error Context::StartAutotrackerEvent(const TimelineEvent event) {
+    logger().debug("StartAutotrackerEvent");
+
     if (!user_ || user_->RunningTimeEntry()) {
+        return noError;
+    }
+    if (!settings_.autotrack) {
         return noError;
     }
     AutotrackerRule *rule = findAutotrackerRule(event);
@@ -2886,16 +2893,21 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
     return noError;
 }
 
-error Context::SaveTimelineEvent(TimelineEvent *event) {
+error Context::StartTimelineEvent(TimelineEvent *event) {
+    logger().debug("StartTimelineEvent");
+
     poco_check_ptr(event);
 
     if (!user_) {
         return noError;
     }
-    event->user_id = static_cast<unsigned int>(user_->ID());
-    error err = db()->InsertTimelineEvent(event);
-    if (err != noError) {
-        return err;
+
+    if (user_ && user_->RecordTimeline()) {
+        event->user_id = static_cast<unsigned int>(user_->ID());
+        error err = db()->InsertTimelineEvent(event);
+        if (err != noError) {
+            return err;
+        }
     }
 
     displayAutotrackerRules();

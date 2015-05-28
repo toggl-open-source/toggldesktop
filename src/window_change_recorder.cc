@@ -54,7 +54,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         event.filename = filename;
         event.title = title;
         event.idle = false;
-        timeline_datasource_->StartTimelineEvent(event);
+        timeline_datasource_->StartAutotrackerEvent(event);
     }
 
     // We actually record the *previous* event. Meaning, when
@@ -72,7 +72,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             event.title = last_title_;
             event.idle = false;
 
-            error err = timeline_datasource_->SaveTimelineEvent(&event);
+            error err = timeline_datasource_->StartTimelineEvent(&event);
             if (err != noError) {
                 logger().error(err);
             }

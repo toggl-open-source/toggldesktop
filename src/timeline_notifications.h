@@ -62,12 +62,12 @@ class TimelineDatasource {
  public:
     virtual ~TimelineDatasource() {}
 
-    // A timeline event has started
-    virtual error StartTimelineEvent(const TimelineEvent event) = 0;
+    // A autotracker event has started
+    virtual error StartAutotrackerEvent(const TimelineEvent event) = 0;
 
     // A timeline event is detected, window has changes
     // or there's an idle event.
-    virtual error SaveTimelineEvent(TimelineEvent *event) = 0;
+    virtual error StartTimelineEvent(TimelineEvent *event) = 0;
 
     // Find timeline events for upload,
     virtual error CreateCompressedTimelineBatchForUpload(

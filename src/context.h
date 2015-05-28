@@ -267,9 +267,9 @@ class Context : public TimelineDatasource {
     std::string UserEmail() const;
 
     // Timeline datasource
-    error StartTimelineEvent(const TimelineEvent event);
+    error StartAutotrackerEvent(const TimelineEvent event);
     error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch);
-    error SaveTimelineEvent(TimelineEvent *event);
+    error StartTimelineEvent(TimelineEvent *event);
     error MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
 
