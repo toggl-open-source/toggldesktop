@@ -4,7 +4,6 @@
 
 #include <cstdlib>
 
-#include "./autotracker.h"
 #include "./client.h"
 #include "./context.h"
 #include "./formatter.h"

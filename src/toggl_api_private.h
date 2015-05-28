@@ -6,17 +6,17 @@
 #include <string>
 #include <vector>
 
-#include "./toggl_api.h"
 #include "./autocomplete_item.h"
-#include "./settings.h"
+#include "./autotracker.h"
 #include "./proxy.h"
+#include "./settings.h"
+#include "./toggl_api.h"
 
 namespace Poco {
 class Logger;
 }
 
 namespace toggl {
-class AutotrackerRule;
 class Client;
 class Context;
 class TimeEntry;
