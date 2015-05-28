@@ -1280,6 +1280,14 @@ _Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     return DisplaySettings();
 }
 
+_Bool Context::SetSettingsAutotrack(const _Bool value) {
+    error err = db()->SetSettingsAutotrack(value);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings();
+}
+
 _Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
     error err = db()->SetSettingsMenubarTimer(menubar_timer);
     if (err != noError) {

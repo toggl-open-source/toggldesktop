@@ -126,6 +126,7 @@ extern "C" {
         _Bool RemindSun;
         char_t *RemindStarts;
         char_t *RemindEnds;
+        _Bool Autotrack;
     } TogglSettingsView;
 
     typedef struct {
@@ -488,6 +489,10 @@ extern "C" {
     TOGGL_EXPORT _Bool toggl_set_settings_use_idle_detection(
         void *context,
         const _Bool use_idle_detection);
+
+    TOGGL_EXPORT _Bool toggl_set_settings_autotrack(
+        void *context,
+        const _Bool value);
 
     TOGGL_EXPORT _Bool toggl_set_settings_autodetect_proxy(
         void *context,

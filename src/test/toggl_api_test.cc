@@ -209,6 +209,7 @@ void on_display_settings(
     testing::testresult::settings.reminder_minutes = settings->ReminderMinutes;
     testing::testresult::settings.focus_on_shortcut = settings->FocusOnShortcut;
     testing::testresult::settings.manual_mode = settings->ManualMode;
+    testing::testresult::settings.autotrack = settings->Autotrack;
 
     testing::testresult::use_proxy = settings->UseProxy;
 
@@ -418,6 +419,11 @@ TEST(TogglApiTest, toggl_set_settings) {
 
     ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.manual_mode);
+
+    testing::testresult::error = noError;
+    ASSERT_TRUE(toggl_set_settings_autotrack(app.ctx(), true));
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(testing::testresult::settings.autotrack);
 }
 
 TEST(TogglApiTest, toggl_set_proxy_settings) {

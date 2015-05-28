@@ -96,6 +96,12 @@ _Bool toggl_set_settings_use_idle_detection(
     return app(context)->SetSettingsUseIdleDetection(use_idle_detection);
 }
 
+_Bool toggl_set_settings_autotrack(
+    void *context,
+    const _Bool value) {
+    return app(context)->SetSettingsAutotrack(value);
+}
+
 _Bool toggl_set_settings_autodetect_proxy(
     void *context,
     const _Bool autodetect_proxy) {

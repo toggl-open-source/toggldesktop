@@ -81,6 +81,8 @@ class Context : public TimelineDatasource {
 
     _Bool SetSettingsUseIdleDetection(const _Bool use_idle_detection);
 
+    _Bool SetSettingsAutotrack(const _Bool value);
+
     _Bool SetSettingsMenubarTimer(const _Bool menubar_timer);
 
     _Bool SetSettingsMenubarProject(const _Bool menubar_project);

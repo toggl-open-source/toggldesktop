@@ -346,7 +346,7 @@ error Database::LoadSettings(Settings *settings) {
                   "manual_mode, autodetect_proxy, "
                   "remind_starts, remind_ends, "
                   "remind_mon, remind_tue, remind_wed, remind_thu, "
-                  "remind_fri, remind_sat, remind_sun "
+                  "remind_fri, remind_sat, remind_sun, autotrack "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
@@ -368,6 +368,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->remind_fri),
                   into(settings->remind_sat),
                   into(settings->remind_sun),
+                  into(settings->autotrack),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -554,6 +555,10 @@ error Database::SetSettingsRemindDays(
 error Database::SetSettingsUseIdleDetection(
     const bool &use_idle_detection) {
     return setSettingsValue("use_idle_detection", use_idle_detection);
+}
+
+error Database::SetSettingsAutotrack(const bool &value) {
+    return setSettingsValue("autotrack", value);
 }
 
 error Database::SetSettingsMenubarTimer(
@@ -3647,6 +3652,14 @@ error Database::migrateSettings() {
         "settings.remind_ends",
         "ALTER TABLE settings "
         "ADD COLUMN remind_ends varchar not null default '';");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.autotrack",
+        "ALTER TABLE settings "
+        "ADD COLUMN autotrack INTEGER NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }

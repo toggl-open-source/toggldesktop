@@ -78,6 +78,8 @@ class Database {
 
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
+    error SetSettingsAutotrack(const bool &value);
+
     error SetSettingsMenubarTimer(const bool &menubar_timer);
 
     error SetSettingsMenubarProject(const bool &menubar_project);

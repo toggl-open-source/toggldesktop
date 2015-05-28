@@ -341,6 +341,7 @@ TogglSettingsView *settings_view_item_init(
     view->ReminderMinutes = settings.reminder_minutes;
     view->ManualMode = settings.manual_mode;
     view->AutodetectProxy = settings.autodetect_proxy;
+    view->Autotrack = settings.autotrack;
 
     view->UseProxy = use_proxy;
 

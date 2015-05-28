@@ -184,6 +184,9 @@ public static class Toggl
         public string RemindStarts;
         [MarshalAs(UnmanagedType.LPWStr)]
         public string RemindEnds;
+
+        [MarshalAs(UnmanagedType.I1)]
+        public bool Autotrack;
     }
 
     // Callbacks
