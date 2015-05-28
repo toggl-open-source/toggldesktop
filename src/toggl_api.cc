@@ -899,7 +899,8 @@ _Bool toggl_check_view_struct_size(
     const int time_entry_view_item_size,
     const int autocomplete_view_item_size,
     const int view_item_size,
-    const int settings_size) {
+    const int settings_size,
+    const int autotracker_view_item_size) {
     int size = sizeof(TogglTimeEntryView);
     if (time_entry_view_item_size != size) {
         logger().error("Invalid time entry view item struct size");
@@ -918,6 +919,11 @@ _Bool toggl_check_view_struct_size(
     size = sizeof(TogglSettingsView);
     if (settings_size != size) {
         logger().error("Invalid settings view item struct size");
+        return false;
+    }
+    size = sizeof(TogglAutocompleteView);
+    if (autocomplete_view_item_size != size) {
+        logger().error("Invalid autocomplete view item struct size");
         return false;
     }
     return true;

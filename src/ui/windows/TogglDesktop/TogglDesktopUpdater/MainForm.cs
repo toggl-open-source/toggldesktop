@@ -32,10 +32,20 @@ namespace TogglDesktopUpdater
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Toggl Desktop update failed");
+                notifyBugsnag(ex);
                 cleanup();
                 Environment.Exit(1);
             }
+        }
+
+        private void notifyBugsnag(Exception ex)
+        {
+            var metadata = new Bugsnag.Metadata();
+            metadata.AddToTab("Installer", "installer", installer);
+            metadata.AddToTab("Installer", "pid", pid);
+            metadata.AddToTab("Installer", "executable", executable);
+            Program.NotifyBugsnag(ex, metadata);
         }
 
         private void upgrade() 
@@ -84,6 +94,7 @@ namespace TogglDesktopUpdater
             catch (Exception ex)
             {
                 Console.Error.WriteLine("Error deleting installer: " + ex.Message);
+                notifyBugsnag(ex);
             }
         }
     }

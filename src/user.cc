@@ -728,19 +728,19 @@ void User::loadUserUpdateFromJSON(
     Poco::Logger &logger = Poco::Logger::get("json");
     logger.debug(ss.str());
 
-    if ("workspace" == model) {
+    if (kModelWorkspace == model) {
         loadUserWorkspaceFromJSON(data);
-    } else if ("client" == model) {
+    } else if (kModelClient == model) {
         loadUserClientFromJSON(data);
-    } else if ("project" == model) {
+    } else if (kModelProject == model) {
         loadUserProjectFromJSON(data);
-    } else if ("task" == model) {
+    } else if (kModelTask == model) {
         loadUserTaskFromJSON(data);
-    } else if ("time_entry" == model) {
+    } else if (kModelTimeEntry == model) {
         loadUserTimeEntryFromJSON(data);
-    } else if ("tag" == model) {
+    } else if (kModelTag == model) {
         loadUserTagFromJSON(data);
-    } else if ("user" == model) {
+    } else if (kModelUser == model) {
         loadUserAndRelatedDataFromJSON(data, false);
     }
 }

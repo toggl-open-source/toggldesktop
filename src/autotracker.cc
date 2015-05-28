@@ -5,6 +5,8 @@
 
 #include "Poco/UTF8String.h"
 
+#include "./const.h"
+
 namespace toggl {
 
 bool AutotrackerRule::Matches(const TimelineEvent event) const {
@@ -51,7 +53,7 @@ std::string AutotrackerRule::String() const {
 }
 
 std::string AutotrackerRule::ModelName() const {
-    return "autotracker_rule";
+    return kModelAutotrackerRule;
 }
 
 std::string AutotrackerRule::ModelURL() const {
