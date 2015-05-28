@@ -300,19 +300,19 @@ void WebSocketClient::deleteSession() {
 
     if (ws_) {
         delete ws_;
-        ws_ = 0;
+        ws_ = nullptr;
     }
     if (res_) {
         delete res_;
-        res_ = 0;
+        res_ = nullptr;
     }
     if (req_) {
         delete req_;
-        req_ = 0;
+        req_ = nullptr;
     }
     if (session_) {
         delete session_;
-        session_ = 0;
+        session_ = nullptr;
     }
 
     logger().debug("session deleted");

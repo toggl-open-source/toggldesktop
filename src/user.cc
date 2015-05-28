@@ -1157,7 +1157,7 @@ error User::SetAPITokenFromOfflineData(const std::string password) {
             Poco::Crypto::Cipher::ENC_BASE64);
 
         delete pCipher;
-        pCipher = 0;
+        pCipher = nullptr;
 
         SetAPIToken(decrypted);
     } catch(const Poco::Exception& exc) {
@@ -1208,7 +1208,7 @@ error User::EnableOfflineLogin(
         std::string json = Json::FastWriter().write(data);
 
         delete pCipher;
-        pCipher = 0;
+        pCipher = nullptr;
 
         SetOfflineData(json);
 

@@ -113,7 +113,7 @@ Database::Database(const std::string db_path)
 Database::~Database() {
     if (session_) {
         delete session_;
-        session_ = 0;
+        session_ = nullptr;
     }
     Poco::Data::SQLite::Connector::unregisterConnector();
 }

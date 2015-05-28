@@ -251,7 +251,7 @@ void GUI::DisplayTimeEntryList(const _Bool open,
 void GUI::DisplayTags(std::vector<std::string> *tags) {
     logger().debug("DisplayTags");
 
-    TogglGenericView *first = 0;
+    TogglGenericView *first = nullptr;
     for (std::vector<std::string>::const_iterator it = tags->begin();
             it != tags->end(); it++) {
         std::string name = *it;
@@ -282,7 +282,7 @@ void GUI::DisplayAutotrackerRules(TogglAutotrackerRuleView *first,
 void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
     logger().debug("DisplayClientSelect");
 
-    TogglGenericView *first = 0;
+    TogglGenericView *first = nullptr;
     for (std::vector<toggl::Client *>::const_iterator it = clients->begin();
             it != clients->end(); it++) {
         TogglGenericView *item = client_to_view_item(*it);
@@ -296,7 +296,7 @@ void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
 void GUI::DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list) {
     logger().debug("DisplayWorkspaceSelect");
 
-    TogglGenericView *first = 0;
+    TogglGenericView *first = nullptr;
     for (std::vector<toggl::Workspace *>::const_iterator it =
         list->begin(); it != list->end(); it++) {
         TogglGenericView *item = workspace_to_view_item(*it);

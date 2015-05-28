@@ -95,7 +95,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
         if (window_change_recorder_) {
             delete window_change_recorder_;
-            window_change_recorder_ = 0;
+            window_change_recorder_ = nullptr;
         }
     }
 
@@ -103,7 +103,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             delete timeline_uploader_;
-            timeline_uploader_ = 0;
+            timeline_uploader_ = nullptr;
         }
     }
 
@@ -111,7 +111,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(db_m_);
         if (db_) {
             delete db_;
-            db_ = 0;
+            db_ = nullptr;
         }
     }
 
@@ -119,7 +119,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (user_) {
             delete user_;
-            user_ = 0;
+            user_ = nullptr;
         }
     }
 
@@ -322,7 +322,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
 
     // Apply updates to UI
     if (display_time_entry_editor) {
-        TimeEntry *te = 0;
+        TimeEntry *te = nullptr;
         if (user_) {
             te = user_->related.TimeEntryByGUID(time_entry_editor_guid_);
         }
@@ -412,7 +412,7 @@ void Context::displayAutotrackerRules() {
         return;
     }
 
-    TogglAutotrackerRuleView *first = 0;
+    TogglAutotrackerRuleView *first = nullptr;
     if (user_) {
         for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
             user_->related.AutotrackerRules.begin();
@@ -741,7 +741,7 @@ void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             delete timeline_uploader_;
-            timeline_uploader_ = 0;
+            timeline_uploader_ = nullptr;
         }
     }
 }
@@ -780,7 +780,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             delete timeline_uploader_;
-            timeline_uploader_ = 0;
+            timeline_uploader_ = nullptr;
         }
         if ("test" != environment_) {
             timeline_uploader_ = new TimelineUploader(this);
@@ -1519,7 +1519,7 @@ _Bool Context::SetDBPath(
         if (db_) {
             logger().debug("delete db_ from SetDBPath()");
             delete db_;
-            db_ = 0;
+            db_ = nullptr;
         }
         db_ = new Database(path);
     } catch(const Poco::Exception& exc) {
@@ -1696,7 +1696,7 @@ void Context::setUser(User *value, const bool user_logged_in) {
             Poco::Mutex::ScopedLock l(window_change_recorder_m_);
             if (window_change_recorder_) {
                 delete window_change_recorder_;
-                window_change_recorder_ = 0;
+                window_change_recorder_ = nullptr;
             }
         }
 
@@ -1720,7 +1720,7 @@ void Context::setUser(User *value, const bool user_logged_in) {
         Poco::Mutex::ScopedLock l(window_change_recorder_m_);
         if (window_change_recorder_) {
             delete window_change_recorder_;
-            window_change_recorder_ = 0;
+            window_change_recorder_ = nullptr;
         }
         window_change_recorder_ = new WindowChangeRecorder(this);
     }
@@ -1916,7 +1916,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         date_durations[date_header] = duration;
     }
 
-    TogglTimeEntryView *first = 0;
+    TogglTimeEntryView *first = nullptr;
     for (unsigned int i = 0; i < list.size(); i++) {
         TimeEntry *te = list.at(i);
 
@@ -1993,7 +1993,7 @@ void Context::Edit(const std::string GUID,
         return;
     }
 
-    TimeEntry *te = 0;
+    TimeEntry *te = nullptr;
     if (edit_running_entry) {
         te = user_->RunningTimeEntry();
     } else {
@@ -2027,7 +2027,7 @@ void Context::displayTimeEntryEditor(const _Bool open,
     time_entry_editor_guid_ = te->GUID();
     TogglTimeEntryView *view = timeEntryViewItem(te);
 
-    Workspace *ws = 0;
+    Workspace *ws = nullptr;
     if (te->WID()) {
         ws = user_->related.WorkspaceByID(te->WID());
     }
@@ -2055,7 +2055,7 @@ _Bool Context::ContinueLatest() {
         return true;
     }
 
-    TimeEntry *latest = 0;
+    TimeEntry *latest = nullptr;
 
     // Find the time entry that was stopped most recently
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -2198,7 +2198,7 @@ _Bool Context::SetTimeEntryProject(
             return true;
         }
 
-        Project *p = 0;
+        Project *p = nullptr;
         if (project_id) {
             p = user_->related.ProjectByID(project_id);
         }

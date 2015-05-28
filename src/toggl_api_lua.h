@@ -13,7 +13,7 @@
 
 #include <cstdlib>
 
-static void *toggl_app_instance_ = 0;
+static void *toggl_app_instance_ = nullptr;
 
 void pushstring(lua_State *L, char_t *str) {
 #ifdef _WIN32

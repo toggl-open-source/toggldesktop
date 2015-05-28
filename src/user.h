@@ -57,11 +57,11 @@ class User : public BaseModel {
     void CollectPushableModels(
         const std::vector<T *> list,
         std::vector<T *> *result,
-        std::map<std::string, BaseModel *> *models = 0) const;
+        std::map<std::string, BaseModel *> *models = nullptr) const;
 
     TimeEntry *RunningTimeEntry() const;
     bool IsTracking() const {
-        return RunningTimeEntry() != 0;
+        return RunningTimeEntry() != nullptr;
     }
 
     TimeEntry *Start(
@@ -203,7 +203,7 @@ class User : public BaseModel {
 
     void loadUserTagFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = 0);
+        std::set<Poco::UInt64> *alive = nullptr);
 
     void loadUserAndRelatedDataFromJSON(
         Json::Value node,
@@ -214,23 +214,23 @@ class User : public BaseModel {
 
     void loadUserProjectFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = 0);
+        std::set<Poco::UInt64> *alive = nullptr);
 
     void loadUserWorkspaceFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = 0);
+        std::set<Poco::UInt64> *alive = nullptr);
 
     void loadUserClientFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = 0);
+        std::set<Poco::UInt64> *alive = nullptr);
 
     void loadUserTaskFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = 0);
+        std::set<Poco::UInt64> *alive = nullptr);
 
     void loadUserTimeEntryFromJSON(
         Json::Value data,
-        std::set<Poco::UInt64> *alive = 0);
+        std::set<Poco::UInt64> *alive = nullptr);
 
     std::string dirtyObjectsJSON(std::vector<TimeEntry *> * const) const;
 

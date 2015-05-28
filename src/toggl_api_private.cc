@@ -28,7 +28,7 @@ TogglAutocompleteView *autocomplete_item_init(
     result->ProjectID = static_cast<unsigned int>(item.ProjectID);
     result->TaskID = static_cast<unsigned int>(item.TaskID);
     result->Type = static_cast<unsigned int>(item.Type);
-    result->Next = 0;
+    result->Next = nullptr;
     return result;
 }
 
@@ -36,8 +36,8 @@ TogglGenericView *view_item_init() {
     TogglGenericView *result = new TogglGenericView();
     result->ID = 0;
     result->WID = 0;
-    result->GUID = 0;
-    result->Name = 0;
+    result->GUID = nullptr;
+    result->Name = nullptr;
     return result;
 }
 
@@ -85,10 +85,10 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
     view->PID = 0;
 
     free(view->Term);
-    view->Term = 0;
+    view->Term = nullptr;
 
     free(view->ProjectName);
-    view->ProjectName = 0;
+    view->ProjectName = nullptr;
 
     if (view->Next) {
         TogglAutotrackerRuleView *next =
@@ -105,10 +105,10 @@ void view_item_clear(TogglGenericView *item) {
     }
 
     free(item->Name);
-    item->Name = 0;
+    item->Name = nullptr;
 
     free(item->GUID);
-    item->GUID = 0;
+    item->GUID = nullptr;
 
     if (item->Next) {
         TogglGenericView *next =
@@ -125,31 +125,31 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     }
 
     free(item->Text);
-    item->Text = 0;
+    item->Text = nullptr;
 
     free(item->ProjectAndTaskLabel);
-    item->ProjectAndTaskLabel = 0;
+    item->ProjectAndTaskLabel = nullptr;
 
     free(item->TaskLabel);
-    item->TaskLabel = 0;
+    item->TaskLabel = nullptr;
 
     free(item->ProjectLabel);
-    item->ProjectLabel = 0;
+    item->ProjectLabel = nullptr;
 
     free(item->ClientLabel);
-    item->ClientLabel = 0;
+    item->ClientLabel = nullptr;
 
     free(item->Description);
-    item->Description = 0;
+    item->Description = nullptr;
 
     free(item->ProjectColor);
-    item->ProjectColor = 0;
+    item->ProjectColor = nullptr;
 
     if (item->Next) {
         TogglAutocompleteView *next =
             reinterpret_cast<TogglAutocompleteView *>(item->Next);
         autocomplete_item_clear(next);
-        item->Next = 0;
+        item->Next = nullptr;
     }
 
     delete item;
@@ -235,7 +235,7 @@ TogglTimeEntryView *time_entry_view_item_init(
 
     view_item->Billable = te->Billable();
     if (te->Tags().empty()) {
-        view_item->Tags = 0;
+        view_item->Tags = nullptr;
     } else {
         view_item->Tags = copy_string(te->Tags().c_str());
     }
@@ -251,10 +251,10 @@ TogglTimeEntryView *time_entry_view_item_init(
     if (te->ValidationError() != toggl::noError) {
         view_item->Error = copy_string(te->ValidationError());
     } else {
-        view_item->Error = 0;
+        view_item->Error = nullptr;
     }
 
-    view_item->Next = 0;
+    view_item->Next = nullptr;
 
     return view_item;
 }
@@ -265,57 +265,57 @@ void time_entry_view_item_clear(
         return;
     }
     free(item->Description);
-    item->Description = 0;
+    item->Description = nullptr;
 
     free(item->WorkspaceName);
-    item->WorkspaceName = 0;
+    item->WorkspaceName = nullptr;
 
     free(item->ProjectAndTaskLabel);
-    item->ProjectAndTaskLabel = 0;
+    item->ProjectAndTaskLabel = nullptr;
 
     free(item->TaskLabel);
-    item->TaskLabel = 0;
+    item->TaskLabel = nullptr;
 
     free(item->ProjectLabel);
-    item->ProjectLabel = 0;
+    item->ProjectLabel = nullptr;
 
     free(item->ClientLabel);
-    item->ClientLabel = 0;
+    item->ClientLabel = nullptr;
 
     free(item->Duration);
-    item->Duration = 0;
+    item->Duration = nullptr;
 
     free(item->Color);
-    item->Color = 0;
+    item->Color = nullptr;
 
     free(item->GUID);
-    item->GUID = 0;
+    item->GUID = nullptr;
 
     free(item->Tags);
-    item->Tags = 0;
+    item->Tags = nullptr;
 
     free(item->DateHeader);
-    item->DateHeader = 0;
+    item->DateHeader = nullptr;
 
     free(item->DateDuration);
-    item->DateDuration = 0;
+    item->DateDuration = nullptr;
 
     free(item->StartTimeString);
-    item->StartTimeString = 0;
+    item->StartTimeString = nullptr;
 
     free(item->EndTimeString);
-    item->EndTimeString = 0;
+    item->EndTimeString = nullptr;
 
     if (item->Error) {
         free(item->Error);
-        item->Error = 0;
+        item->Error = nullptr;
     }
 
     if (item->Next) {
         TogglTimeEntryView *next =
             reinterpret_cast<TogglTimeEntryView *>(item->Next);
         time_entry_view_item_clear(next);
-        item->Next = 0;
+        item->Next = nullptr;
     }
 
     delete item;
@@ -379,7 +379,7 @@ void settings_view_item_clear(TogglSettingsView *view) {
 
 TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::AutocompleteItem> *items) {
-    TogglAutocompleteView *first = 0;
+    TogglAutocompleteView *first = nullptr;
     for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
         items->rbegin(); it != items->rend(); it++) {
         TogglAutocompleteView *item = autocomplete_item_init(*it);
