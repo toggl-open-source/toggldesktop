@@ -68,7 +68,8 @@ class User : public BaseModel {
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
-        const Poco::UInt64 project_id);
+        const Poco::UInt64 project_id,
+        const std::string project_guid);
 
     toggl::error Continue(
         const std::string GUID);

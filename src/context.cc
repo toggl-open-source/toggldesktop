@@ -1852,7 +1852,8 @@ TimeEntry *Context::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
-    const Poco::UInt64 project_id) {
+    const Poco::UInt64 project_id,
+    const std::string project_guid) {
 
     if (im_a_teapot_) {
         displayError(kUnsupportedAppError);
@@ -1864,7 +1865,9 @@ TimeEntry *Context::Start(
         return 0;
     }
 
-    TimeEntry *te = user_->Start(description, duration, task_id, project_id);
+    TimeEntry *te = user_->Start(description, duration,
+                                 task_id,
+                                 project_id, project_guid);
 
     UI()->DisplayApp();
 

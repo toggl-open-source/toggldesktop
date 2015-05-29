@@ -742,7 +742,9 @@ TEST(TogglApiTest, toggl_set_idle_seconds) {
     ASSERT_EQ("", testing::testresult::idle_duration);
     ASSERT_EQ("", testing::testresult::idle_guid);
 
-    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
 
     toggl_set_idle_seconds(app.ctx(), 5*60);
     ASSERT_EQ("", testing::testresult::idle_since);
@@ -862,34 +864,35 @@ TEST(TogglApiTest, toggl_create_project) {
     _Bool is_private = false;
 
     testing::testresult::error = "";
-    _Bool res = toggl_create_project(app.ctx(),
-                                     wid,
-                                     cid,
-                                     project_name.c_str(),
-                                     is_private);
+    char_t *project_guid = toggl_create_project(app.ctx(),
+                           wid,
+                           cid,
+                           project_name.c_str(),
+                           is_private);
     ASSERT_EQ("Please select a workspace",
               testing::testresult::error);
-    ASSERT_FALSE(res);
+    ASSERT_FALSE(project_guid);
 
     wid = 123456789;
-    res = toggl_create_project(app.ctx(),
-                               wid,
-                               cid,
-                               project_name.c_str(),
-                               is_private);
+    project_guid = toggl_create_project(app.ctx(),
+                                        wid,
+                                        cid,
+                                        project_name.c_str(),
+                                        is_private);
     ASSERT_EQ("Project name must not be empty",
               testing::testresult::error);
-    ASSERT_FALSE(res);
+    ASSERT_FALSE(project_guid);
 
     project_name = "A new project";
     testing::testresult::error = "";
-    res = toggl_create_project(app.ctx(),
-                               wid,
-                               cid,
-                               project_name.c_str(),
-                               is_private);
+    project_guid = toggl_create_project(app.ctx(),
+                                        wid,
+                                        cid,
+                                        project_name.c_str(),
+                                        is_private);
     ASSERT_EQ("", testing::testresult::error);
-    ASSERT_TRUE(res);
+    ASSERT_TRUE(project_guid);
+    free(project_guid);
 
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
@@ -1116,7 +1119,10 @@ TEST(TogglApiTest, toggl_stop) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
 
     ASSERT_TRUE(toggl_stop(app.ctx()));
@@ -1130,7 +1136,10 @@ TEST(TogglApiTest, toggl_start) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
 }
 
@@ -1141,7 +1150,9 @@ TEST(TogglApiTest, toggl_set_time_entry_billable) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(res);
+    free(res);
 
     std::string guid = testing::testresult::timer_state.GUID();
     ASSERT_FALSE(guid.empty());
@@ -1160,7 +1171,9 @@ TEST(TogglApiTest, toggl_set_time_entry_tags) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(res);
+    free(res);
 
     std::string guid = testing::testresult::timer_state.GUID();
     ASSERT_FALSE(guid.empty());
@@ -1207,7 +1220,9 @@ TEST(TogglApiTest, toggl_discard_time_at) {
 
     // Start a time entry
 
-    ASSERT_TRUE(toggl_start(app.ctx(), "test", "", 0, 0));
+    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(res);
+    free(res);
 
     Poco::UInt64 started = time(0);
     std::string guid = testing::testresult::timer_state.GUID();
@@ -1234,7 +1249,9 @@ TEST(TogglApiTest, toggl_discard_time_at) {
 
     // Start another time entry
 
-    ASSERT_TRUE(toggl_start(app.ctx(), "test 2", "", 0, 0));
+    res = toggl_start(app.ctx(), "test 2", "", 0, 0, 0);
+    ASSERT_TRUE(res);
+    free(res);
 
     started = time(0);
     guid = testing::testresult::timer_state.GUID();

@@ -336,7 +336,7 @@ void toggl_sync(void *context) {
     app(context)->Sync();
 }
 
-_Bool toggl_create_project(
+char_t *toggl_create_project(
     void *context,
     const uint64_t workspace_id,
     const uint64_t client_id,
@@ -344,12 +344,18 @@ _Bool toggl_create_project(
     const _Bool is_private) {
 
     toggl::Project *p = nullptr;
-    return app(context)->CreateProject(
+
+    app(context)->CreateProject(
         workspace_id,
         client_id,
         to_string(project_name),
         is_private,
         &p);
+
+    if (p) {
+        return copy_string(p->GUID());
+    }
+    return 0;
 }
 
 _Bool toggl_create_client(
@@ -418,7 +424,8 @@ char_t *toggl_start(
     const char_t *description,
     const char_t *duration,
     const uint64_t task_id,
-    const uint64_t project_id) {
+    const uint64_t project_id,
+    const char_t *project_guid) {
 
     logger().debug("toggl_start");
 
@@ -432,11 +439,17 @@ char_t *toggl_start(
         dur = to_string(duration);
     }
 
-    toggl::TimeEntry *te = app(context)->Start(desc, dur, task_id, project_id);
+    std::string p_guid("");
+    if (project_guid) {
+        p_guid = to_string(project_guid);
+    }
+
+    toggl::TimeEntry *te = app(context)->Start(desc, dur,
+                           task_id,
+                           project_id, p_guid);
     if (te) {
         return copy_string(te->GUID());
     }
-
     return 0;
 }
 

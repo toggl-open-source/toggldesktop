@@ -328,7 +328,8 @@ static int l_toggl_start(lua_State *L) {
                                checkstring(L, 1),
                                checkstring(L, 2),
                                lua_tointeger(L, 3),
-                               lua_tointeger(L, 4));
+                               lua_tointeger(L, 4),
+                               checkstring(L, 5));
     pushstring(L, guid);
     free(guid);
     return 1;
@@ -354,12 +355,13 @@ static int l_toggl_autotracker_add_rule(lua_State *L) {
 }
 
 static int l_toggl_create_project(lua_State *L) {
-    _Bool res = toggl_create_project(toggl_app_instance_,
-                                     lua_tointeger(L, 1),
-                                     lua_tointeger(L, 2),
-                                     checkstring(L, 3),
-                                     lua_toboolean(L, 4));
-    lua_pushboolean(L, res);
+    char_t *guid = toggl_create_project(toggl_app_instance_,
+                                        lua_tointeger(L, 1),
+                                        lua_tointeger(L, 2),
+                                        checkstring(L, 3),
+                                        lua_toboolean(L, 4));
+    pushstring(L, guid);
+    free(guid);
     return 1;
 }
 

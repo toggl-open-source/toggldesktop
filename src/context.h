@@ -152,7 +152,8 @@ class Context : public TimelineDatasource {
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
-        const Poco::UInt64 project_id);
+        const Poco::UInt64 project_id,
+        const std::string project_guid);
 
     _Bool ContinueLatest();
 

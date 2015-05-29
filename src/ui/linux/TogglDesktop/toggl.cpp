@@ -416,7 +416,8 @@ QString TogglApi::start(
                              description.toStdString().c_str(),
                              duration.toStdString().c_str(),
                              task_id,
-                             project_id);
+                             project_id,
+                             0);
     QString res("");
     if (guid) {
         res = QString(guid);

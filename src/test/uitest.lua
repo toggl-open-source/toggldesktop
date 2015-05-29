@@ -60,7 +60,7 @@ local duration = ""
 local task_id = 0
 local project_id = 0
 
-local guid = toggl.start(description, duration, task_id, project_id)
+local guid = toggl.start(description, duration, task_id, project_id, "")
 
 assert(guid)
 
@@ -227,14 +227,15 @@ toggl.sleep(seconds)
 
 print("create large number of time entries")
 
-description = "tracking time like a boss"
-duration = ""
-task_id = 0
-project_id = 0
-
 for i=1,500 do
-	local guid = toggl.start(description, duration, task_id, project_id)
+	local project_guid = toggl.create_project(wid, cid, "startup project", false)
+	assert(project_guid)
+	
+	local guid = toggl.start("tracking timelike a boss", "10 minutes", 0, 0, project_guid)
 	assert(guid)
+
+	local res = toggl.set_time_entry_tags(guid, "a|b|c|foo|bar|and|one|more|tag")
+	assert(res)
 end
 
 -- log user out
