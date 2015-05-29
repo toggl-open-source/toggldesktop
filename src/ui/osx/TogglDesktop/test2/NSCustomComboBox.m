@@ -38,4 +38,12 @@
 	return success;
 }
 
+- (BOOL)isExpanded
+{
+	id ax = NSAccessibilityUnignoredDescendant(self);
+
+	return [[ax accessibilityAttributeValue:
+			 NSAccessibilityExpandedAttribute] boolValue];
+}
+
 @end

@@ -36,4 +36,5 @@
 @property BOOL remind_fri;
 @property BOOL remind_sat;
 @property BOOL remind_sun;
+@property BOOL autotrack;
 @end

@@ -42,27 +42,35 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     time_t now;
     time(&now);
 
+    time_t time_delta = now - last_event_started_at_;
+
+    if (last_event_started_at_ > 0) {
+        if (time_delta >= kAutotrackerThresholdSeconds && !last_idle_
+                && last_autotracker_title_ != title) {
+            // Notify that the timeline event has started
+            // we'll use this in auto tracking
+            last_autotracker_title_ = title;
+
+            TimelineEvent event;
+            event.start_time = last_event_started_at_;
+            event.end_time = now;
+            event.title = title;
+            event.idle = false;
+            timeline_datasource_->StartAutotrackerEvent(event);
+        }
+    }
+
     if (!hasIdlenessChanged(idle) && !hasWindowChanged(title, filename)) {
         return;
     }
 
-    {
-        // Notify that the timeline event has started
-        // we'll use this in auto tracking
-        TimelineEvent event;
-        event.start_time = now;
-        event.filename = filename;
-        event.title = title;
-        event.idle = false;
-        timeline_datasource_->StartTimelineEvent(event);
-    }
+    // Since idle state or window has changed, reset autotracker state, too
+    last_autotracker_title_ = "";
 
     // We actually record the *previous* event. Meaning, when
     // you have "terminal" open and then switch to "skype",
     // then "terminal" gets recorded here:
     if (last_event_started_at_ > 0) {
-        time_t time_delta = now - last_event_started_at_;
-
         // if window was focussed at least X seconds, save it to timeline
         if (time_delta >= kWindowFocusThresholdSeconds && !last_idle_) {
             TimelineEvent event;
@@ -72,7 +80,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             event.title = last_title_;
             event.idle = false;
 
-            error err = timeline_datasource_->SaveTimelineEvent(&event);
+            error err = timeline_datasource_->StartTimelineEvent(&event);
             if (err != noError) {
                 logger().error(err);
             }

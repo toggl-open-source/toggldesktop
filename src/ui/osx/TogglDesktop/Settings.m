@@ -43,6 +43,8 @@
 	self.remind_fri = data->RemindFri;
 	self.remind_sat = data->RemindSat;
 	self.remind_sun = data->RemindSun;
+
+	self.autotrack = data->Autotrack;
 }
 
 @end

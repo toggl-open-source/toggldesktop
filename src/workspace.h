@@ -60,8 +60,6 @@ class Workspace : public BaseModel {
     bool admin_;
 };
 
-bool CompareWorkspaceByName(Workspace *a, Workspace *b);
-
 }  // namespace toggl
 
 #endif  // SRC_WORKSPACE_H_

@@ -45,6 +45,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *remindSun;
 @property IBOutlet NSTextField *remindStarts;
 @property IBOutlet NSTextField *remindEnds;
+@property IBOutlet NSButton *autotrack;
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
@@ -65,6 +66,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)remindWeekChanged:(id)sender;
 - (IBAction)deleteAutotrackerRule:(id)sender;
 - (IBAction)remindTimesChanged:(id)sender;
+- (IBAction)autotrackChanged:(id)sender;
 
 @property DisplayCommand *originalCmd;
 @property uint64_t user_id;

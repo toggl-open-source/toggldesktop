@@ -69,4 +69,9 @@ bool Client::nameHasAlreadyBeenTaken(const error err) {
         "Name has already been taken"));
 }
 
+bool Client::ResourceCannotBeCreated(const toggl::error err) const {
+    return (std::string::npos != std::string(err).find(
+        "cannot add or edit clients in workspace"));
+}
+
 }   // namespace toggl

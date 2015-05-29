@@ -96,6 +96,12 @@ _Bool toggl_set_settings_use_idle_detection(
     return app(context)->SetSettingsUseIdleDetection(use_idle_detection);
 }
 
+_Bool toggl_set_settings_autotrack(
+    void *context,
+    const _Bool value) {
+    return app(context)->SetSettingsAutotrack(value);
+}
+
 _Bool toggl_set_settings_autodetect_proxy(
     void *context,
     const _Bool autodetect_proxy) {
@@ -337,7 +343,7 @@ _Bool toggl_create_project(
     const char_t *project_name,
     const _Bool is_private) {
 
-    toggl::Project *p = 0;
+    toggl::Project *p = nullptr;
     return app(context)->CreateProject(
         workspace_id,
         client_id,
@@ -366,7 +372,7 @@ _Bool toggl_add_project(
 
     poco_check_ptr(time_entry_guid);
 
-    toggl::Project *p = 0;
+    toggl::Project *p = nullptr;
     if (!app(context)->CreateProject(
         workspace_id,
         client_id,

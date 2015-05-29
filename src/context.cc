@@ -1,4 +1,3 @@
-
 // Copyright 2014 Toggl Desktop developers
 
 // No exceptions should be thrown from this class.
@@ -96,7 +95,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
         if (window_change_recorder_) {
             delete window_change_recorder_;
-            window_change_recorder_ = 0;
+            window_change_recorder_ = nullptr;
         }
     }
 
@@ -104,7 +103,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             delete timeline_uploader_;
-            timeline_uploader_ = 0;
+            timeline_uploader_ = nullptr;
         }
     }
 
@@ -112,7 +111,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(db_m_);
         if (db_) {
             delete db_;
-            db_ = 0;
+            db_ = nullptr;
         }
     }
 
@@ -120,7 +119,7 @@ Context::~Context() {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (user_) {
             delete user_;
-            user_ = 0;
+            user_ = nullptr;
         }
     }
 
@@ -323,7 +322,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
 
     // Apply updates to UI
     if (display_time_entry_editor) {
-        TimeEntry *te = 0;
+        TimeEntry *te = nullptr;
         if (user_) {
             te = user_->related.TimeEntryByGUID(time_entry_editor_guid_);
         }
@@ -381,6 +380,9 @@ void Context::displayProjectAutocomplete() {
         std::vector<AutocompleteItem> list =
             user_->related.ProjectAutocompleteItems();
         UI()->DisplayProjectAutocomplete(&list);
+    } else {
+        std::vector<AutocompleteItem> list;
+        UI()->DisplayProjectAutocomplete(&list);
     }
 }
 
@@ -406,38 +408,40 @@ void Context::displayTags() {
 }
 
 void Context::displayAutotrackerRules() {
-    if (!user_) {
-        return;
-    }
-
     if (!UI()->CanDisplayAutotrackerRules()) {
         return;
     }
 
-    TogglAutotrackerRuleView *first = 0;
-    for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
-        user_->related.AutotrackerRules.begin();
-            it != user_->related.AutotrackerRules.end();
-            it++) {
-        AutotrackerRule *rule = *it;
-        Project *p = user_->related.ProjectByID(rule->PID());
-        std::string project_name("");
-        if (p) {
-            project_name = p->Name();
+    TogglAutotrackerRuleView *first = nullptr;
+    if (user_) {
+        for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
+            user_->related.AutotrackerRules.begin();
+                it != user_->related.AutotrackerRules.end();
+                it++) {
+            AutotrackerRule *rule = *it;
+            Project *p = user_->related.ProjectByID(rule->PID());
+            std::string project_name("");
+            if (p) {
+                project_name = p->Name();
+            }
+            TogglAutotrackerRuleView *item =
+                autotracker_rule_to_view_item(*it, project_name);
+            item->Next = first;
+            first = item;
         }
-        TogglAutotrackerRuleView *item =
-            autotracker_rule_to_view_item(*it, project_name);
-        item->Next = first;
-        first = item;
     }
 
     std::vector<std::string> titles;
-    error err = db()->LoadAutotrackerTitles(user_->ID(), &titles);
-    if (err != noError) {
-        displayError(err);
+    for (std::set<std::string>::const_iterator
+            it = autotracker_titles_.begin();
+            it != autotracker_titles_.end();
+            ++it) {
+        titles.push_back(*it);
     }
+    std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
 
     UI()->DisplayAutotrackerRules(first, titles);
+
     autotracker_view_item_clear(first);
 }
 
@@ -734,18 +738,10 @@ void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSwitchTimelineOff");
 
     {
-        Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        if (window_change_recorder_) {
-            delete window_change_recorder_;
-            window_change_recorder_ = 0;
-        }
-    }
-
-    {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             delete timeline_uploader_;
-            timeline_uploader_ = 0;
+            timeline_uploader_ = nullptr;
         }
     }
 }
@@ -784,22 +780,13 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             delete timeline_uploader_;
-            timeline_uploader_ = 0;
+            timeline_uploader_ = nullptr;
         }
         if ("test" != environment_) {
             timeline_uploader_ = new TimelineUploader(this);
         } else {
             logger().debug(kCannotSyncInTestEnv);
         }
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(window_change_recorder_m_);
-        if (window_change_recorder_) {
-            delete window_change_recorder_;
-            window_change_recorder_ = 0;
-        }
-        window_change_recorder_ = new WindowChangeRecorder(this);
     }
 }
 
@@ -1221,11 +1208,6 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     }
 }
 
-_Bool Context::LoadSettings(Settings *settings) {
-    poco_check_ptr(settings);
-    return displayError(db()->LoadSettings(settings));
-}
-
 _Bool Context::SetSettingsRemindTimes(
     const std::string remind_starts,
     const std::string remind_ends) {
@@ -1234,9 +1216,11 @@ _Bool Context::SetSettingsRemindTimes(
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::SetSettingsRemindDays(
@@ -1259,9 +1243,11 @@ _Bool Context::SetSettingsRemindDays(
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::SetSettingsAutodetectProxy(const _Bool autodetect_proxy) {
@@ -1274,6 +1260,14 @@ _Bool Context::SetSettingsAutodetectProxy(const _Bool autodetect_proxy) {
 
 _Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings();
+}
+
+_Bool Context::SetSettingsAutotrack(const _Bool value) {
+    error err = db()->SetSettingsAutotrack(value);
     if (err != noError) {
         return displayError(err);
     }
@@ -1319,9 +1313,11 @@ _Bool Context::SetSettingsReminder(const _Bool reminder) {
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
@@ -1354,9 +1350,11 @@ _Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
         return displayError(err);
     }
 
+    DisplaySettings();
+
     remindToTrackTime();
 
-    return DisplaySettings();
+    return true;
 }
 
 _Bool Context::LoadWindowSettings(
@@ -1475,9 +1473,7 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
 }
 
 _Bool Context::DisplaySettings(const _Bool open) {
-    Settings settings;
-
-    error err = db()->LoadSettings(&settings);
+    error err = db()->LoadSettings(&settings_);
     if (err != noError) {
         setUser(0);
         return displayError(err);
@@ -1496,16 +1492,16 @@ _Bool Context::DisplaySettings(const _Bool open) {
         record_timeline = user_->RecordTimeline();
     }
 
-    idle_.SetSettings(settings);
+    idle_.SetSettings(settings_);
 
     HTTPSClient::Config.UseProxy = use_proxy;
     HTTPSClient::Config.IgnoreCert = false;
     HTTPSClient::Config.ProxySettings = proxy;
-    HTTPSClient::Config.AutodetectProxy = settings.autodetect_proxy;
+    HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
 
     UI()->DisplaySettings(open,
                           record_timeline,
-                          settings,
+                          settings_,
                           use_proxy,
                           proxy);
 
@@ -1523,7 +1519,7 @@ _Bool Context::SetDBPath(
         if (db_) {
             logger().debug("delete db_ from SetDBPath()");
             delete db_;
-            db_ = 0;
+            db_ = nullptr;
         }
         db_ = new Database(path);
     } catch(const Poco::Exception& exc) {
@@ -1696,8 +1692,22 @@ void Context::setUser(User *value, const bool user_logged_in) {
     if (!user_) {
         UI()->DisplayLogin(true, 0);
 
+        {
+            Poco::Mutex::ScopedLock l(window_change_recorder_m_);
+            if (window_change_recorder_) {
+                delete window_change_recorder_;
+                window_change_recorder_ = nullptr;
+            }
+        }
+
         switchTimelineOff();
+
         switchWebSocketOff();
+
+        autotracker_titles_.clear();
+        displayAutotrackerRules();
+
+        displayProjectAutocomplete();
 
         return;
     }
@@ -1706,7 +1716,17 @@ void Context::setUser(User *value, const bool user_logged_in) {
 
     DisplayTimeEntryList(true);
 
+    {
+        Poco::Mutex::ScopedLock l(window_change_recorder_m_);
+        if (window_change_recorder_) {
+            delete window_change_recorder_;
+            window_change_recorder_ = nullptr;
+        }
+        window_change_recorder_ = new WindowChangeRecorder(this);
+    }
+
     switchTimelineOn();
+
     switchWebSocketOn();
 
     if (!user_logged_in) {
@@ -1896,7 +1916,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
         date_durations[date_header] = duration;
     }
 
-    TogglTimeEntryView *first = 0;
+    TogglTimeEntryView *first = nullptr;
     for (unsigned int i = 0; i < list.size(); i++) {
         TimeEntry *te = list.at(i);
 
@@ -1973,7 +1993,7 @@ void Context::Edit(const std::string GUID,
         return;
     }
 
-    TimeEntry *te = 0;
+    TimeEntry *te = nullptr;
     if (edit_running_entry) {
         te = user_->RunningTimeEntry();
     } else {
@@ -2007,7 +2027,7 @@ void Context::displayTimeEntryEditor(const _Bool open,
     time_entry_editor_guid_ = te->GUID();
     TogglTimeEntryView *view = timeEntryViewItem(te);
 
-    Workspace *ws = 0;
+    Workspace *ws = nullptr;
     if (te->WID()) {
         ws = user_->related.WorkspaceByID(te->WID());
     }
@@ -2035,7 +2055,7 @@ _Bool Context::ContinueLatest() {
         return true;
     }
 
-    TimeEntry *latest = 0;
+    TimeEntry *latest = nullptr;
 
     // Find the time entry that was stopped most recently
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -2067,11 +2087,8 @@ _Bool Context::ContinueLatest() {
         return displayError(err);
     }
 
-    Settings settings;
-    if (LoadSettings(&settings)) {
-        if (settings.focus_on_shortcut) {
-            UI()->DisplayApp();
-        }
+    if (settings_.focus_on_shortcut) {
+        UI()->DisplayApp();
     }
 
     return displayError(save());
@@ -2098,11 +2115,8 @@ _Bool Context::Continue(
         return displayError(err);
     }
 
-    Settings settings;
-    if (LoadSettings(&settings)) {
-        if (settings.focus_on_shortcut) {
-            UI()->DisplayApp();
-        }
+    if (settings_.focus_on_shortcut) {
+        UI()->DisplayApp();
     }
 
     err = save();
@@ -2184,7 +2198,7 @@ _Bool Context::SetTimeEntryProject(
             return true;
         }
 
-        Project *p = 0;
+        Project *p = nullptr;
         if (project_id) {
             p = user_->related.ProjectByID(project_id);
         }
@@ -2432,11 +2446,8 @@ _Bool Context::Stop() {
         return true;
     }
 
-    Settings settings;
-    if (LoadSettings(&settings)) {
-        if (settings.focus_on_shortcut) {
-            UI()->DisplayApp();
-        }
+    if (settings_.focus_on_shortcut) {
+        UI()->DisplayApp();
     }
 
     return displayError(save());
@@ -2488,13 +2499,14 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
             return displayError(err);
         }
 
+        DisplaySettings();
+
         TimelineUpdateServerSettings();
         if (user_->RecordTimeline()) {
             switchTimelineOn();
         } else {
             switchTimelineOff();
         }
-        return DisplaySettings();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2753,19 +2765,13 @@ void Context::SetOnline() {
 }
 
 void Context::remindToTrackTime() {
-    Settings settings;
-    if (!LoadSettings(&settings)) {
-        logger().error("Could not load settings");
-        return;
-    }
-
-    if (!settings.reminder) {
+    if (!settings_.reminder) {
         logger().debug("Reminder is not enabled by user");
         return;
     }
 
     next_reminder_at_ =
-        postpone((settings.reminder_minutes * 60) * kOneSecondInMicros);
+        postpone((settings_.reminder_minutes * 60) * kOneSecondInMicros);
     Poco::Util::TimerTask::Ptr ptask =
         new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);
 
@@ -2779,28 +2785,22 @@ void Context::remindToTrackTime() {
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    Settings settings;
-    if (!LoadSettings(&settings)) {
-        logger().error("Could not load settings");
-        return;
-    }
-
     // if some code scheduled a reminder for a later time,
     // meanwhile, then let the later reminder be executed
     // not this one.
     if (isPostponed(next_reminder_at_,
-                    (settings.reminder_minutes * 60) * kOneSecondInMicros)) {
+                    (settings_.reminder_minutes * 60) * kOneSecondInMicros)) {
         logger().debug("onRemind postponed");
         return;
     }
 
-    displayReminder(settings);
+    displayReminder();
 
     remindToTrackTime();
 }
 
-void Context::displayReminder(const Settings &settings) {
-    if (!settings.reminder) {
+void Context::displayReminder() {
+    if (!settings_.reminder) {
         logger().debug("Reminder is not enabled by user");
         return;
     }
@@ -2819,21 +2819,21 @@ void Context::displayReminder(const Settings &settings) {
     Poco::LocalDateTime now;
     int wday = now.dayOfWeek();
     if (
-        (Poco::DateTime::MONDAY == wday && !settings.remind_mon) ||
-        (Poco::DateTime::TUESDAY == wday && !settings.remind_tue) ||
-        (Poco::DateTime::WEDNESDAY == wday && !settings.remind_wed) ||
-        (Poco::DateTime::THURSDAY == wday && !settings.remind_thu) ||
-        (Poco::DateTime::FRIDAY == wday && !settings.remind_fri) ||
-        (Poco::DateTime::SATURDAY == wday && !settings.remind_sat) ||
-        (Poco::DateTime::SUNDAY == wday && !settings.remind_sun)) {
+        (Poco::DateTime::MONDAY == wday && !settings_.remind_mon) ||
+        (Poco::DateTime::TUESDAY == wday && !settings_.remind_tue) ||
+        (Poco::DateTime::WEDNESDAY == wday && !settings_.remind_wed) ||
+        (Poco::DateTime::THURSDAY == wday && !settings_.remind_thu) ||
+        (Poco::DateTime::FRIDAY == wday && !settings_.remind_fri) ||
+        (Poco::DateTime::SATURDAY == wday && !settings_.remind_sat) ||
+        (Poco::DateTime::SUNDAY == wday && !settings_.remind_sun)) {
         logger().debug("reminder is not enabled on this weekday");
         return;
     }
 
     // Check if allowed to display reminder at this time
-    if (!settings.remind_starts.empty()) {
+    if (!settings_.remind_starts.empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(settings.remind_starts, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(settings_.remind_starts, &h, &m)) {
             Poco::LocalDateTime start(
                 now.year(), now.month(), now.day(), h, m, now.second());
             if (now < start) {
@@ -2842,9 +2842,9 @@ void Context::displayReminder(const Settings &settings) {
             }
         }
     }
-    if (!settings.remind_ends.empty()) {
+    if (!settings_.remind_ends.empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(settings.remind_ends, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(settings_.remind_ends, &h, &m)) {
             Poco::LocalDateTime end(
                 now.year(), now.month(), now.day(), h, m, now.second());
             if (now > end) {
@@ -2857,8 +2857,24 @@ void Context::displayReminder(const Settings &settings) {
     UI()->DisplayReminder();
 }
 
-error Context::StartTimelineEvent(const TimelineEvent event) {
-    if (!user_ || user_->RunningTimeEntry()) {
+error Context::StartAutotrackerEvent(const TimelineEvent event) {
+    logger().debug("StartAutotrackerEvent " + event.String());
+
+    if (!user_) {
+        return noError;
+    }
+
+    // Update the autotracker titles
+    if (event.title.size()) {
+        autotracker_titles_.insert(event.title);
+        displayAutotrackerRules();
+    }
+
+    // Notify user to track using autotracker rules:
+    if (user_ && user_->RunningTimeEntry()) {
+        return noError;
+    }
+    if (!settings_.autotrack) {
         return noError;
     }
     AutotrackerRule *rule = findAutotrackerRule(event);
@@ -2869,7 +2885,6 @@ error Context::StartTimelineEvent(const TimelineEvent event) {
     if (!p) {
         return noError;
     }
-
     UI()->DisplayAutotrackerNotification(p);
 
     return noError;
@@ -2898,16 +2913,21 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
     return noError;
 }
 
-error Context::SaveTimelineEvent(TimelineEvent *event) {
+error Context::StartTimelineEvent(TimelineEvent *event) {
+    logger().debug("StartTimelineEvent " + event->String());
+
     poco_check_ptr(event);
 
     if (!user_) {
         return noError;
     }
-    event->user_id = static_cast<unsigned int>(user_->ID());
-    error err = db()->InsertTimelineEvent(event);
-    if (err != noError) {
-        return err;
+
+    if (user_ && user_->RecordTimeline()) {
+        event->user_id = static_cast<unsigned int>(user_->ID());
+        error err = db()->InsertTimelineEvent(event);
+        if (err != noError) {
+            return err;
+        }
     }
 
     displayAutotrackerRules();

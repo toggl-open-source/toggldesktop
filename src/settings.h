@@ -31,7 +31,8 @@ class Settings {
     , remind_sat(true)
     , remind_sun(true)
     , remind_starts("")
-    , remind_ends("") {}
+    , remind_ends("")
+    , autotrack(false) {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -54,6 +55,7 @@ class Settings {
     bool remind_sun;
     std::string remind_starts;
     std::string remind_ends;
+    bool autotrack;
 };
 
 }  // namespace toggl

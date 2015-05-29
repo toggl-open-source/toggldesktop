@@ -77,9 +77,9 @@ class Context : public TimelineDatasource {
         update_check_disabled_ = true;
     }
 
-    _Bool LoadSettings(Settings *settings);
-
     _Bool SetSettingsUseIdleDetection(const _Bool use_idle_detection);
+
+    _Bool SetSettingsAutotrack(const _Bool value);
 
     _Bool SetSettingsMenubarTimer(const _Bool menubar_timer);
 
@@ -267,9 +267,9 @@ class Context : public TimelineDatasource {
     std::string UserEmail() const;
 
     // Timeline datasource
-    error StartTimelineEvent(const TimelineEvent event);
+    error StartAutotrackerEvent(const TimelineEvent event);
     error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch);
-    error SaveTimelineEvent(TimelineEvent *event);
+    error StartTimelineEvent(TimelineEvent *event);
     error MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
 
@@ -338,7 +338,7 @@ class Context : public TimelineDatasource {
     void displayTags();
     void displayAutotrackerRules();
 
-    void displayReminder(const Settings &settings);
+    void displayReminder();
 
     Poco::Int64 totalDurationForDate(TimeEntry *te) const;
 
@@ -429,6 +429,10 @@ class Context : public TimelineDatasource {
     bool im_a_teapot_;
 
     static std::string log_path_;
+
+    Settings settings_;
+
+    std::set<std::string> autotracker_titles_;
 };
 
 void on_websocket_message(

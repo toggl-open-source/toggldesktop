@@ -55,12 +55,12 @@ void RelatedData::timeEntryAutocompleteItems(
             continue;
         }
 
-        Task *t = 0;
+        Task *t = nullptr;
         if (te->TID()) {
             t = TaskByID(te->TID());
         }
 
-        Project *p = 0;
+        Project *p = nullptr;
         if (t && t->PID()) {
             p = ProjectByID(t->PID());
         } else if (te->PID()) {
@@ -71,7 +71,7 @@ void RelatedData::timeEntryAutocompleteItems(
             continue;
         }
 
-        Client *c = 0;
+        Client *c = nullptr;
         if (p && p->CID()) {
             c = ClientByID(p->CID());
         }
@@ -140,7 +140,7 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
-        Project *p = 0;
+        Project *p = nullptr;
         if (t->PID()) {
             p = ProjectByID(t->PID());
         }
@@ -149,7 +149,7 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
-        Client *c = 0;
+        Client *c = nullptr;
         if (p && p->CID()) {
             c = ClientByID(p->CID());
         }
@@ -211,7 +211,7 @@ void RelatedData::projectAutocompleteItems(
             continue;
         }
 
-        Client *c = 0;
+        Client *c = nullptr;
         if (p->CID()) {
             c = ClientByID(p->CID());
         }
@@ -359,7 +359,7 @@ void RelatedData::ProjectLabelAndColorCode(
     poco_check_ptr(client_label);
     poco_check_ptr(color_code);
 
-    Workspace *ws = 0;
+    Workspace *ws = nullptr;
     if (te->WID()) {
         ws = WorkspaceByID(te->WID());
     }
@@ -367,7 +367,7 @@ void RelatedData::ProjectLabelAndColorCode(
         *workspace_name = ws->Name();
     }
 
-    Task *t = 0;
+    Task *t = nullptr;
     if (te->TID()) {
         t = TaskByID(te->TID());
     }
@@ -375,7 +375,7 @@ void RelatedData::ProjectLabelAndColorCode(
         *task_label = t->Name();
     }
 
-    Project *p = 0;
+    Project *p = nullptr;
     if (t && t->PID()) {
         p = ProjectByID(t->PID());
     }
@@ -386,7 +386,7 @@ void RelatedData::ProjectLabelAndColorCode(
         p = ProjectByGUID(te->ProjectGUID());
     }
 
-    Client *c = 0;
+    Client *c = nullptr;
     if (p && p->CID()) {
         c = ClientByID(p->CID());
     }

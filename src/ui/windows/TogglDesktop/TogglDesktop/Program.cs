@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.Reflection;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
-using System.Text;
+using System.Windows.Forms;
 
 namespace TogglDesktop
 {
@@ -19,23 +14,6 @@ static class Program
     private static UInt64 uid = 0;
     private static MainWindowController mainWindowController;
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, ref SearchData data);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-    [DllImport("User32")]
-    private static extern int SetForegroundWindow(IntPtr hwnd);
-
-    [DllImport("User32")]
-    private static extern bool ShowWindow(IntPtr hwnd, int cmdshow);
-    private const int SW_RESTORE = 9;
-
     public static bool IsLoggedIn
     {
         get
@@ -44,17 +22,13 @@ static class Program
         }
     }
 
-    [DllImport("kernel32.dll")]
-    static extern bool AttachConsole(int dwProcessId);
-    private const int ATTACH_PARENT_PROCESS = -1;
-
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
     static void Main()
     {
-        AttachConsole(ATTACH_PARENT_PROCESS);
+        Win32.AttachConsole(Win32.ATTACH_PARENT_PROCESS);
 
         using (Mutex mutex = new Mutex(false, "Global\\" + Environment.UserName + "_" + appGUID))
         {
@@ -72,10 +46,10 @@ static class Program
                         IntPtr hWnd = p.MainWindowHandle;
                         if (hWnd == IntPtr.Zero)
                         {
-                            hWnd = SearchForWindow(current.ProcessName, "Toggl Desktop");
+                            hWnd = Win32.SearchForWindow(current.ProcessName, "Toggl Desktop");
                         }
-                        ShowWindow(hWnd, SW_RESTORE);
-                        SetForegroundWindow(hWnd);
+                        Win32.ShowWindow(hWnd, Win32.SW_RESTORE);
+                        Win32.SetForegroundWindow(hWnd);
                         return;
                     }
                 }
@@ -123,34 +97,6 @@ static class Program
             mainWindowController = new MainWindowController();
             Application.Run(mainWindowController);
         }
-    }
-
-    public static IntPtr SearchForWindow(string wndclass, string title)
-    {
-        SearchData sd = new SearchData { Wndclass = wndclass, Title = title };
-        EnumWindows(new EnumWindowsProc(EnumProc), ref sd);
-        return sd.hWnd;
-    }
-
-    public class SearchData
-    {
-        public string Wndclass;
-        public string Title;
-        public IntPtr hWnd;
-    }
-
-    private delegate bool EnumWindowsProc(IntPtr hWnd, ref SearchData data);
-
-    public static bool EnumProc(IntPtr hWnd, ref SearchData data)
-    {
-        StringBuilder sb = new StringBuilder(1024);
-        GetWindowText(hWnd, sb, sb.Capacity);
-        if (sb.ToString().Contains(data.Title))
-        {
-            data.hWnd = hWnd;
-            return false;    // Found the window
-        }
-        return true;
     }
 
     static void notifyBugsnag(Exception e)

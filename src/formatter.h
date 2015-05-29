@@ -25,6 +25,7 @@ class Client;
 class Project;
 class Task;
 class TimeEntry;
+class Workspace;
 
 class Formatter {
  public:
@@ -122,6 +123,8 @@ bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
 bool CompareStructuredAutocompleteItems(
     AutocompleteItem a, AutocompleteItem b);
+bool CompareWorkspaceByName(Workspace *a, Workspace *b);
+bool CompareAutotrackerTitles(const std::string &a, const std::string &b);
 
 bool timeIsWithinLimits(int *hours, int *minutes);
 

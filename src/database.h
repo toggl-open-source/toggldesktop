@@ -60,10 +60,6 @@ class Database {
 
     error LoadSettings(Settings *settings);
 
-    error LoadAutotrackerTitles(
-        const Poco::Int64 &UID,
-        std::vector<std::string> *list);
-
     error LoadWindowSettings(
         Poco::Int64 *window_x,
         Poco::Int64 *window_y,
@@ -77,6 +73,8 @@ class Database {
         const Poco::Int64 window_width);
 
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
+
+    error SetSettingsAutotrack(const bool &value);
 
     error SetSettingsMenubarTimer(const bool &menubar_timer);
 

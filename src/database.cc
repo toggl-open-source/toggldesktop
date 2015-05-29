@@ -113,7 +113,7 @@ Database::Database(const std::string db_path)
 Database::~Database() {
     if (session_) {
         delete session_;
-        session_ = 0;
+        session_ = nullptr;
     }
     Poco::Data::SQLite::Connector::unregisterConnector();
 }
@@ -346,7 +346,7 @@ error Database::LoadSettings(Settings *settings) {
                   "manual_mode, autodetect_proxy, "
                   "remind_starts, remind_ends, "
                   "remind_mon, remind_tue, remind_wed, remind_thu, "
-                  "remind_fri, remind_sat, remind_sun "
+                  "remind_fri, remind_sat, remind_sun, autotrack "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
@@ -368,6 +368,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->remind_fri),
                   into(settings->remind_sat),
                   into(settings->remind_sun),
+                  into(settings->autotrack),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -554,6 +555,10 @@ error Database::SetSettingsRemindDays(
 error Database::SetSettingsUseIdleDetection(
     const bool &use_idle_detection) {
     return setSettingsValue("use_idle_detection", use_idle_detection);
+}
+
+error Database::SetSettingsAutotrack(const bool &value) {
+    return setSettingsValue("autotrack", value);
 }
 
 error Database::SetSettingsMenubarTimer(
@@ -920,53 +925,6 @@ error Database::loadWorkspaces(
         return ex;
     }
     return last_error("loadWorkspaces");
-}
-
-error Database::LoadAutotrackerTitles(
-    const Poco::Int64 &UID,
-    std::vector<std::string> *list) {
-
-    if (!UID) {
-        return error("Cannot load timeline titles without an user ID");
-    }
-
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
-    try {
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT DISTINCT title  "
-               "FROM timeline_events "
-               "WHERE user_id = :user_id "
-               "AND title IS NOT NULL "
-               "AND title <> '' "
-               "ORDER BY title ASC",
-               useRef(UID);
-        error err = last_error("LoadAutotrackerTitles");
-        if (err != noError) {
-            return err;
-        }
-        Poco::Data::RecordSet rs(select);
-        while (!select.done()) {
-            select.execute();
-            bool more = rs.moveFirst();
-            while (more) {
-                list->push_back(rs[0].convert<std::string>());
-                more = rs.moveNext();
-            }
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("LoadAutotrackerTitles");
 }
 
 error Database::loadClients(
@@ -3651,6 +3609,14 @@ error Database::migrateSettings() {
         return err;
     }
 
+    err = migrate(
+        "settings.autotrack",
+        "ALTER TABLE settings "
+        "ADD COLUMN autotrack INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -4165,15 +4131,7 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
         event->title = event->title.substr(0, kMaxTimelineStringSize);
     }
 
-    std::stringstream out;
-    out << "InsertTimelineEvent " << event->start_time
-        << ";"
-        << event->end_time
-        << ";"
-        << event->filename
-        << ";"
-        << event->title;
-    logger().debug(out.str());
+    logger().debug(event->String());
 
     if (!event->user_id) {
         return error("Cannot save timeline event without an user ID");

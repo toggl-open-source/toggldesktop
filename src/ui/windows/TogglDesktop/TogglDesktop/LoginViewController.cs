@@ -125,14 +125,14 @@ public partial class LoginViewController : UserControl
     {
         switch (confirmAction)
         {
-            case ConfirmAction.LogIn:
-                setConfirmAction(ConfirmAction.SignUp);
-                break;
-            case ConfirmAction.SignUp:
-                setConfirmAction(ConfirmAction.LogIn);
-                break;
-            default:
-                throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", confirmAction));
+        case ConfirmAction.LogIn:
+            setConfirmAction(ConfirmAction.SignUp);
+            break;
+        case ConfirmAction.SignUp:
+            setConfirmAction(ConfirmAction.LogIn);
+            break;
+        default:
+            throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", confirmAction));
         }
     }
 
@@ -140,14 +140,14 @@ public partial class LoginViewController : UserControl
     {
         switch (confirmAction)
         {
-            case ConfirmAction.LogIn:
-                login();
-                break;
-            case ConfirmAction.SignUp:
-                signup();
-                break;
-            default:
-                throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", confirmAction));
+        case ConfirmAction.LogIn:
+            login();
+            break;
+        case ConfirmAction.SignUp:
+            signup();
+            break;
+        default:
+            throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", confirmAction));
         }
     }
 
@@ -155,20 +155,20 @@ public partial class LoginViewController : UserControl
     {
         switch (action)
         {
-            case ConfirmAction.LogIn:
-                confirmButton.Text = "Log in";
-                passwordForgotTextField.Show();
-                googleLoginTextField.Show();
-                loginSignupToggle.Text = "Sign up for free";
-                break;
-            case ConfirmAction.SignUp:
-                confirmButton.Text = "Sign up";
-                passwordForgotTextField.Hide();
-                googleLoginTextField.Hide();
-                loginSignupToggle.Text = "Log in";
-                break;
-            default:
-                throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
+        case ConfirmAction.LogIn:
+            confirmButton.Text = "Log in";
+            passwordForgotTextField.Show();
+            googleLoginTextField.Show();
+            loginSignupToggle.Text = "Sign up for free";
+            break;
+        case ConfirmAction.SignUp:
+            confirmButton.Text = "Sign up";
+            passwordForgotTextField.Hide();
+            googleLoginTextField.Hide();
+            loginSignupToggle.Text = "Log in";
+            break;
+        default:
+            throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
         }
         confirmAction = action;
         centerControl(loginSignupToggle);

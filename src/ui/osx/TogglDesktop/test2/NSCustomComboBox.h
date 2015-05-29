@@ -10,4 +10,5 @@
 
 @interface NSCustomComboBox : NSComboBox
 - (void)reloadingData:(NSNumber *)length;
+- (BOOL)isExpanded;
 @end

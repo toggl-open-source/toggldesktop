@@ -99,7 +99,7 @@ class HTTPSClient {
         const std::string basic_auth_username,
         const std::string basic_auth_password,
         std::string *response_body,
-        Poco::Net::HTMLForm *form = 0);
+        Poco::Net::HTMLForm *form = nullptr);
 
     error Get(
         const std::string host,
@@ -120,7 +120,7 @@ class HTTPSClient {
         const std::string basic_auth_password,
         std::string *response_body,
         Poco::Int64 *response_status,
-        Poco::Net::HTMLForm *form = 0);
+        Poco::Net::HTMLForm *form = nullptr);
 
     virtual Poco::Logger &logger() const;
 
@@ -140,7 +140,8 @@ class SyncStateMonitor {
 
 class TogglClient : public HTTPSClient {
  public:
-    explicit TogglClient(SyncStateMonitor *monitor = 0) : monitor_(monitor) {}
+    explicit TogglClient(SyncStateMonitor *monitor = nullptr)
+        : monitor_(monitor) {}
 
     static ServerStatus TogglStatus;
 
@@ -154,7 +155,7 @@ class TogglClient : public HTTPSClient {
         const std::string basic_auth_password,
         std::string *response_body,
         Poco::Int64 *response_status,
-        Poco::Net::HTMLForm *form = 0);
+        Poco::Net::HTMLForm *form = nullptr);
 
     virtual Poco::Logger &logger() const;
 

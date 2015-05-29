@@ -181,7 +181,6 @@ partial class LoginViewController
             ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
     }
 
     #endregion
