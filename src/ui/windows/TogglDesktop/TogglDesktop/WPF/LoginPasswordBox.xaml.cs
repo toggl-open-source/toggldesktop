@@ -13,22 +13,22 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TogglDesktop
+namespace TogglDesktop.WPF
 {
     /// <summary>
     /// Interaction logic for LoginTextBox.xaml
     /// </summary>
-    public partial class LoginTextBox : UserControl
+    public partial class LoginPasswordBox : UserControl
     {
         public string Text
         {
             get
             {
-                return textBox.Text;
+                return passwordBox.Password;
             }
             set
             {
-                textBox.Text = value;
+                passwordBox.Password = value;
             }
         }
 
@@ -44,21 +44,27 @@ namespace TogglDesktop
             }
         }
 
-        public LoginTextBox()
+        public LoginPasswordBox()
         {
             InitializeComponent();
 
-            textBox.TextChanged += (o, e) => setEmptyLabelVisibility();
+            passwordBox.PasswordChanged += (o, e) => setEmptyLabelVisibility();
         }
 
         private void setEmptyLabelVisibility()
         {
-            emptyLabel.Visibility = textBox.Text == "" ? Visibility.Visible : Visibility.Hidden;
+            emptyLabel.Visibility = passwordBox.Password == "" ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        internal void Clear()
+        {
+            this.passwordBox.Clear();
         }
 
         new public void Focus()
         {
-            textBox.Focus();
+            passwordBox.Focus();
         }
+
     }
 }
