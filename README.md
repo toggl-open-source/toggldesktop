@@ -109,21 +109,6 @@ nmake -f ms\ntdll.mak
 Instead of do_nasm (use NASM) you can also use do_ms (no asm at all), or do_masm (use MASM). 
 NASM can be downloaded here: http://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D
 
-### Install NuGet packages
-
-Open the solution in Visual Studio. Next, you'll need to install the net-bugsnag package: from the Tools menu select NuGet Package Manager, then Package Manager Console. Into the console, type:
-
-```
-Install-Package Bugsnag.Library
-```
-
-From the same console, install Oauth2 related packages:
-
-```
-Install-Package Google.Apis.Auth;
-Install-Package Google.Apis.Oauth2.v2;
-```
-
 ### Build the app
 
 Now, select *Release* from the Solution Configurations combobox in the Visual Studio toolbar, and build the solution.
