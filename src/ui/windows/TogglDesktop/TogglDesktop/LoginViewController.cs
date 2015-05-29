@@ -6,6 +6,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Services;
+using TogglDesktop.WPF;
 
 namespace TogglDesktop
 {
@@ -19,17 +20,21 @@ public partial class LoginViewController : UserControl
     }
 
     private ConfirmAction confirmAction = ConfirmAction.Unknown;
+    private LoginTextBox email;
+    private LoginPasswordBox password;
 
     public LoginViewController()
     {
         InitializeComponent();
 
+        email = (LoginTextBox)emailBoxHost.Child;
+        email.EmptyText = "Your email address";
+
+        password = (LoginPasswordBox)passwordBoxHost.Child;
+        password.EmptyText = "Password";
+
         setConfirmAction(ConfirmAction.LogIn);
 
-        TogglForm.ApplyFont("roboto", email);
-        TogglForm.ApplyFont("roboto", password);
-        TogglForm.ApplyFont("roboto", usernamePlaceholder);
-        TogglForm.ApplyFont("roboto", passwordPlaceholder);
         TogglForm.ApplyFont("roboto", confirmButton);
         TogglForm.ApplyFont("roboto", googleLoginTextField);
         TogglForm.ApplyFont("roboto", passwordForgotTextField);
@@ -111,39 +116,9 @@ public partial class LoginViewController : UserControl
         Dock = DockStyle.Fill;
     }
 
-    private void email_Leave(object sender, EventArgs e)
-    {
-        usernamePlaceholder.Visible = (email.Text == "");
-    }
-
-    private void password_Leave(object sender, EventArgs e)
-    {
-        passwordPlaceholder.Visible = (password.Text == "");
-    }
-
     private void linkLabelPreferences_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
         Toggl.EditPreferences();
-    }
-
-    private void usernamePlaceholder_Click(object sender, EventArgs e)
-    {
-        email.Focus();
-    }
-
-    private void passwordPlaceholder_Click(object sender, EventArgs e)
-    {
-        password.Focus();
-    }
-
-    private void email_TextChanged(object sender, EventArgs e)
-    {
-        usernamePlaceholder.Visible = (email.Text.Length == 0);
-    }
-
-    private void password_TextChanged(object sender, EventArgs e)
-    {
-        passwordPlaceholder.Visible = (password.Text.Length == 0);
     }
 
     private void loginSignupToggle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
