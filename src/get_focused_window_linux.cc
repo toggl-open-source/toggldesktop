@@ -11,11 +11,12 @@
 
 #include <cstring>
 #include <string>
+#include <typeinfo>
 
 #include "./get_focused_window.h"
 
 #define HANDLE_EINTR(x) ({ \
-  typeof(x) __eintr_result__; \
+  __typeof__(x) __eintr_result__; \
   do { \
     __eintr_result__ = x; \
   } while (__eintr_result__ == -1 && errno == EINTR); \
