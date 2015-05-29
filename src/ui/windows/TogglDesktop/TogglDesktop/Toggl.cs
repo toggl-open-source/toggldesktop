@@ -1330,7 +1330,10 @@ public static class Toggl
         }
 
         string updatePath = Path.Combine(path, "updates");
+
+#if !INVS
         installPendingUpdates(updatePath);
+#endif
 
         // Configure log, db path
         Directory.CreateDirectory(path);
@@ -1367,6 +1370,7 @@ public static class Toggl
 
     private static void installPendingUpdates(string updatePath)
     {
+
         if (!Directory.Exists(updatePath))
         {
             return;
