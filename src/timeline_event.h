@@ -23,6 +23,10 @@ class TimelineEvent {
     chunked(false),
     uploaded(false) {}
 
+    void SetTitle(const std::string value) {
+        title = value;
+    }
+
     Poco::Int64 id;
     Poco::UInt64 user_id;
     std::string title;

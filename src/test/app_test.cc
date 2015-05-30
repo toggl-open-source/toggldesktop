@@ -4,6 +4,7 @@
 
 #include <iostream>  // NOLINT
 
+#include "./../autotracker.h"
 #include "./../client.h"
 #include "./../const.h"
 #include "./../database.h"
@@ -1741,7 +1742,7 @@ TEST(BatchUpdateResult, ResourceIsGoneBecauseOf404) {
     ASSERT_TRUE(b.ResourceIsGone());
 }
 
-TEST(ProxyTest, IsConfigured) {
+TEST(Proxy, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());
 
@@ -1750,7 +1751,7 @@ TEST(ProxyTest, IsConfigured) {
     ASSERT_TRUE(p.IsConfigured());
 }
 
-TEST(ProxyTest, HasCredentials) {
+TEST(Proxy, HasCredentials) {
     Proxy p;
     ASSERT_FALSE(p.HasCredentials());
 
@@ -1759,9 +1760,27 @@ TEST(ProxyTest, HasCredentials) {
     ASSERT_TRUE(p.HasCredentials());
 }
 
-TEST(ProxyTest, String) {
+TEST(Proxy, String) {
     Proxy p;
     ASSERT_NE("", p.String());
+}
+
+TEST(AutotrackerRule, Matches) {
+    AutotrackerRule a;
+    a.SetTerm("work");
+    a.SetPID(123);
+
+    TimelineEvent ev;
+    ASSERT_FALSE(a.Matches(ev));
+
+    ev.SetTitle("WORKING");
+    ASSERT_TRUE(a.Matches(ev));
+
+    ev.SetTitle("I was working late");
+    ASSERT_TRUE(a.Matches(ev));
+
+    ev.SetTitle("dork");
+    ASSERT_FALSE(a.Matches(ev));
 }
 
 }  // namespace toggl
