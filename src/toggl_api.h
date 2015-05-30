@@ -18,12 +18,6 @@ extern "C" {
 #include <stdint.h>
 
 #ifdef _WIN32
-    typedef bool _Bool;
-#else
-#include <stdbool.h>
-#endif
-
-#ifdef _WIN32
 #define TOGGL_EXPORT __declspec(dllexport)
 #else
 #define TOGGL_EXPORT
@@ -34,6 +28,8 @@ extern "C" {
 #else
 #define char_t char
 #endif
+
+#define bool_t int
 
     // Models
 
@@ -50,21 +46,21 @@ extern "C" {
         char_t *Duration;
         char_t *Color;
         char_t *GUID;
-        _Bool Billable;
+        bool_t Billable;
         char_t *Tags;
         uint64_t Started;
         uint64_t Ended;
         char_t *StartTimeString;
         char_t *EndTimeString;
         uint64_t UpdatedAt;
-        _Bool DurOnly;
+        bool_t DurOnly;
         // In case it's a header
         char_t *DateHeader;
         char_t *DateDuration;
-        _Bool IsHeader;
+        bool_t IsHeader;
         // Additional fields; only when in time entry editor
-        _Bool CanAddProjects;
-        _Bool CanSeeBillable;
+        bool_t CanAddProjects;
+        bool_t CanSeeBillable;
         uint64_t DefaultWID;
         char_t *WorkspaceName;
         // If syncing a time entry ended with an error,
@@ -100,33 +96,33 @@ extern "C" {
     } TogglGenericView;
 
     typedef struct {
-        _Bool UseProxy;
+        bool_t UseProxy;
         char_t *ProxyHost;;
         uint64_t ProxyPort;
         char_t *ProxyUsername;
         char_t *ProxyPassword;
-        _Bool UseIdleDetection;
-        _Bool MenubarTimer;
-        _Bool MenubarProject;
-        _Bool DockIcon;
-        _Bool OnTop;
-        _Bool Reminder;
-        _Bool RecordTimeline;
+        bool_t UseIdleDetection;
+        bool_t MenubarTimer;
+        bool_t MenubarProject;
+        bool_t DockIcon;
+        bool_t OnTop;
+        bool_t Reminder;
+        bool_t RecordTimeline;
         uint64_t IdleMinutes;
-        _Bool FocusOnShortcut;
+        bool_t FocusOnShortcut;
         uint64_t ReminderMinutes;
-        _Bool ManualMode;
-        _Bool AutodetectProxy;
-        _Bool RemindMon;
-        _Bool RemindTue;
-        _Bool RemindWed;
-        _Bool RemindThu;
-        _Bool RemindFri;
-        _Bool RemindSat;
-        _Bool RemindSun;
+        bool_t ManualMode;
+        bool_t AutodetectProxy;
+        bool_t RemindMon;
+        bool_t RemindTue;
+        bool_t RemindWed;
+        bool_t RemindThu;
+        bool_t RemindFri;
+        bool_t RemindSat;
+        bool_t RemindSun;
         char_t *RemindStarts;
         char_t *RemindEnds;
-        _Bool Autotrack;
+        bool_t Autotrack;
     } TogglSettingsView;
 
     typedef struct {
@@ -140,7 +136,7 @@ extern "C" {
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
-        const _Bool open);
+        const bool_t open);
 
     typedef void (*TogglDisplaySyncState)(
         const int64_t state);
@@ -150,7 +146,7 @@ extern "C" {
 
     typedef void (*TogglDisplayError)(
         const char_t *errmsg,
-        const _Bool user_error);
+        const bool_t user_error);
 
     typedef void (*TogglDisplayOnlineState)(
         const int64_t state);
@@ -159,7 +155,7 @@ extern "C" {
         const char_t *url);
 
     typedef void (*TogglDisplayLogin)(
-        const _Bool open,
+        const bool_t open,
         const uint64_t user_id);
 
     typedef void (*TogglDisplayReminder)(
@@ -171,7 +167,7 @@ extern "C" {
         const uint64_t project_id);
 
     typedef void (*TogglDisplayTimeEntryList)(
-        const _Bool open,
+        const bool_t open,
         TogglTimeEntryView *first);
 
     typedef void (*TogglDisplayAutocomplete)(
@@ -181,12 +177,12 @@ extern "C" {
         TogglGenericView *first);
 
     typedef void (*TogglDisplayTimeEntryEditor)(
-        const _Bool open,
+        const bool_t open,
         TogglTimeEntryView *te,
         const char_t *focused_field_name);
 
     typedef void (*TogglDisplaySettings)(
-        const _Bool open,
+        const bool_t open,
         TogglSettingsView *settings);
 
     typedef void (*TogglDisplayTimerState)(
@@ -239,7 +235,7 @@ extern "C" {
 
     // DB path must be configured from UI
 
-    TOGGL_EXPORT _Bool toggl_set_db_path(
+    TOGGL_EXPORT bool_t toggl_set_db_path(
         void *context,
         const char_t *path);
 
@@ -362,22 +358,22 @@ extern "C" {
 
     // After UI callbacks are configured, start pumping UI events
 
-    TOGGL_EXPORT _Bool toggl_ui_start(
+    TOGGL_EXPORT bool_t toggl_ui_start(
         void *context);
 
     // User interaction with the app
 
-    TOGGL_EXPORT _Bool toggl_login(
+    TOGGL_EXPORT bool_t toggl_login(
         void *context,
         const char_t *email,
         const char_t *password);
 
-    TOGGL_EXPORT _Bool toggl_signup(
+    TOGGL_EXPORT bool_t toggl_signup(
         void *context,
         const char_t *email,
         const char_t *password);
 
-    TOGGL_EXPORT _Bool toggl_google_login(
+    TOGGL_EXPORT bool_t toggl_google_login(
         void *context,
         const char_t *access_token);
 
@@ -390,7 +386,7 @@ extern "C" {
     TOGGL_EXPORT void toggl_get_support(
         void *context);
 
-    TOGGL_EXPORT _Bool toggl_feedback_send(
+    TOGGL_EXPORT bool_t toggl_feedback_send(
         void *context,
         const char_t *topic,
         const char_t *details,
@@ -402,164 +398,164 @@ extern "C" {
     TOGGL_EXPORT void toggl_edit(
         void *context,
         const char_t *guid,
-        const _Bool edit_running_time_entry,
+        const bool_t edit_running_time_entry,
         const char_t *focused_field_name);
 
     TOGGL_EXPORT void toggl_edit_preferences(
         void *context);
 
-    TOGGL_EXPORT _Bool toggl_continue(
+    TOGGL_EXPORT bool_t toggl_continue(
         void *context,
         const char_t *guid);
 
-    TOGGL_EXPORT _Bool toggl_continue_latest(
+    TOGGL_EXPORT bool_t toggl_continue_latest(
         void *context);
 
-    TOGGL_EXPORT _Bool toggl_delete_time_entry(
+    TOGGL_EXPORT bool_t toggl_delete_time_entry(
         void *context,
         const char_t *guid);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_duration(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_duration(
         void *context,
         const char_t *guid,
         const char_t *value);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_project(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_project(
         void *context,
         const char_t *guid,
         const uint64_t task_id,
         const uint64_t project_id,
         const char_t *project_guid);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_date(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_date(
         void *context,
         const char_t *guid,
         const int64_t unix_timestamp);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_start(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_start(
         void *context,
         const char_t *guid,
         const char_t *value);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_end(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_end(
         void *context,
         const char_t *guid,
         const char_t *value);
 
     // value is '\t' separated tag list
-    TOGGL_EXPORT _Bool toggl_set_time_entry_tags(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_tags(
         void *context,
         const char_t *guid,
         const char_t *value);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_billable(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_billable(
         void *context,
         const char_t *guid,
-        _Bool);
+        bool_t);
 
-    TOGGL_EXPORT _Bool toggl_set_time_entry_description(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_description(
         void *context,
         const char_t *guid,
         const char_t *value);
 
-    TOGGL_EXPORT _Bool toggl_stop(
+    TOGGL_EXPORT bool_t toggl_stop(
         void *context);
 
-    TOGGL_EXPORT _Bool toggl_discard_time_at(
+    TOGGL_EXPORT bool_t toggl_discard_time_at(
         void *context,
         const char_t *guid,
         const uint64_t at,
-        const _Bool split_into_new_entry);
+        const bool_t split_into_new_entry);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_remind_days(
+    TOGGL_EXPORT bool_t toggl_set_settings_remind_days(
         void *context,
-        const _Bool remind_mon,
-        const _Bool remind_tue,
-        const _Bool remind_wed,
-        const _Bool remind_thu,
-        const _Bool remind_fri,
-        const _Bool remind_sat,
-        const _Bool remind_sun);
+        const bool_t remind_mon,
+        const bool_t remind_tue,
+        const bool_t remind_wed,
+        const bool_t remind_thu,
+        const bool_t remind_fri,
+        const bool_t remind_sat,
+        const bool_t remind_sun);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_remind_times(
+    TOGGL_EXPORT bool_t toggl_set_settings_remind_times(
         void *context,
         const char_t *remind_starts,
         const char_t *remind_ends);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_use_idle_detection(
+    TOGGL_EXPORT bool_t toggl_set_settings_use_idle_detection(
         void *context,
-        const _Bool use_idle_detection);
+        const bool_t use_idle_detection);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_autotrack(
+    TOGGL_EXPORT bool_t toggl_set_settings_autotrack(
         void *context,
-        const _Bool value);
+        const bool_t value);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_autodetect_proxy(
+    TOGGL_EXPORT bool_t toggl_set_settings_autodetect_proxy(
         void *context,
-        const _Bool autodetect_proxy);
+        const bool_t autodetect_proxy);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_menubar_timer(
+    TOGGL_EXPORT bool_t toggl_set_settings_menubar_timer(
         void *context,
-        const _Bool menubar_timer);
+        const bool_t menubar_timer);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_menubar_project(
+    TOGGL_EXPORT bool_t toggl_set_settings_menubar_project(
         void *context,
-        const _Bool menubar_project);
+        const bool_t menubar_project);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_dock_icon(
+    TOGGL_EXPORT bool_t toggl_set_settings_dock_icon(
         void *context,
-        const _Bool dock_icon);
+        const bool_t dock_icon);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_on_top(
+    TOGGL_EXPORT bool_t toggl_set_settings_on_top(
         void *context,
-        const _Bool on_top);
+        const bool_t on_top);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_reminder(
+    TOGGL_EXPORT bool_t toggl_set_settings_reminder(
         void *context,
-        const _Bool reminder);
+        const bool_t reminder);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_idle_minutes(
+    TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,
         const uint64_t idle_minutes);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_focus_on_shortcut(
+    TOGGL_EXPORT bool_t toggl_set_settings_focus_on_shortcut(
         void *context,
-        const _Bool focus_on_shortcut);
+        const bool_t focus_on_shortcut);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_reminder_minutes(
+    TOGGL_EXPORT bool_t toggl_set_settings_reminder_minutes(
         void *context,
         const uint64_t reminder_minutes);
 
-    TOGGL_EXPORT _Bool toggl_set_settings_manual_mode(
+    TOGGL_EXPORT bool_t toggl_set_settings_manual_mode(
         void *context,
-        const _Bool manual_mode);
+        const bool_t manual_mode);
 
-    TOGGL_EXPORT _Bool toggl_set_proxy_settings(
+    TOGGL_EXPORT bool_t toggl_set_proxy_settings(
         void *context,
-        const _Bool use_proxy,
+        const bool_t use_proxy,
         const char_t *proxy_host,
         const uint64_t proxy_port,
         const char_t *proxy_username,
         const char_t *proxy_password);
 
-    TOGGL_EXPORT _Bool toggl_set_window_settings(
+    TOGGL_EXPORT bool_t toggl_set_window_settings(
         void *context,
         const int64_t window_x,
         const int64_t window_y,
         const int64_t window_height,
         const int64_t window_width);
 
-    TOGGL_EXPORT _Bool toggl_window_settings(
+    TOGGL_EXPORT bool_t toggl_window_settings(
         void *context,
         int64_t *window_x,
         int64_t *window_y,
         int64_t *window_height,
         int64_t *window_width);
 
-    TOGGL_EXPORT _Bool toggl_logout(
+    TOGGL_EXPORT bool_t toggl_logout(
         void *context);
 
-    TOGGL_EXPORT _Bool toggl_clear_cache(
+    TOGGL_EXPORT bool_t toggl_clear_cache(
         void *context);
 
     // you must free() the result
@@ -571,15 +567,15 @@ extern "C" {
         const uint64_t project_id,
         const char_t *project_guid);
 
-    TOGGL_EXPORT _Bool toggl_add_project(
+    TOGGL_EXPORT bool_t toggl_add_project(
         void *context,
         const char_t *time_entry_guid,
         const uint64_t workspace_id,
         const uint64_t client_id,
         const char_t *project_name,
-        const _Bool is_private);
+        const bool_t is_private);
 
-    TOGGL_EXPORT _Bool toggl_create_client(
+    TOGGL_EXPORT bool_t toggl_create_client(
         void *context,
         const uint64_t workspace_id,
         const char_t *client_name);
@@ -590,9 +586,9 @@ extern "C" {
         const uint64_t workspace_id,
         const uint64_t client_id,
         const char_t *project_name,
-        const _Bool is_private);
+        const bool_t is_private);
 
-    TOGGL_EXPORT _Bool toggl_set_update_channel(
+    TOGGL_EXPORT bool_t toggl_set_update_channel(
         void *context,
         const char_t *update_channel);
 
@@ -611,11 +607,11 @@ extern "C" {
     TOGGL_EXPORT void toggl_sync(
         void *context);
 
-    TOGGL_EXPORT _Bool toggl_timeline_toggle_recording(
+    TOGGL_EXPORT bool_t toggl_timeline_toggle_recording(
         void *context,
-        const _Bool record_timeline);
+        const bool_t record_timeline);
 
-    TOGGL_EXPORT _Bool toggl_timeline_is_recording_enabled(
+    TOGGL_EXPORT bool_t toggl_timeline_is_recording_enabled(
         void *context);
 
     TOGGL_EXPORT void toggl_set_sleep(
@@ -652,7 +648,7 @@ extern "C" {
     // Check if sizeof view struct matches those in UI
     // Else stuff blows up when Marshalling in C#
     // Will return false if size is invalid.
-    TOGGL_EXPORT _Bool toggl_check_view_struct_size(
+    TOGGL_EXPORT bool_t toggl_check_view_struct_size(
         const int time_entry_view_item_size,
         const int autocomplete_view_item_size,
         const int view_item_size,
@@ -665,12 +661,12 @@ extern "C" {
         const char* script,
         int64_t *err);
 
-    TOGGL_EXPORT _Bool toggl_autotracker_add_rule(
+    TOGGL_EXPORT bool_t toggl_autotracker_add_rule(
         void *context,
         const char_t *term,
         const uint64_t project_id);
 
-    TOGGL_EXPORT _Bool toggl_autotracker_delete_rule(
+    TOGGL_EXPORT bool_t toggl_autotracker_delete_rule(
         void *context,
         const int64_t id);
 
@@ -679,7 +675,7 @@ extern "C" {
         const int seconds);
 
     // For testing only
-    _Bool testing_set_logged_in_user(
+    bool_t testing_set_logged_in_user(
         void *context,
         const char *json);
 

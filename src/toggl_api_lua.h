@@ -79,24 +79,24 @@ static int l_toggl_show_app(lua_State *L) {
 }
 
 static int l_toggl_login(lua_State *L) {
-    _Bool res = toggl_login(toggl_app_instance_,
-                            checkstring(L, 1),
-                            checkstring(L, 2));
-    lua_pushboolean(L, res);
-    return 1;
-}
-
-static int l_toggl_signup(lua_State *L) {
-    _Bool res = toggl_signup(toggl_app_instance_,
+    bool_t res = toggl_login(toggl_app_instance_,
                              checkstring(L, 1),
                              checkstring(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
+static int l_toggl_signup(lua_State *L) {
+    bool_t res = toggl_signup(toggl_app_instance_,
+                              checkstring(L, 1),
+                              checkstring(L, 2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
 static int l_toggl_google_login(lua_State *L) {
-    _Bool res = toggl_google_login(toggl_app_instance_,
-                                   checkstring(L, -1));
+    bool_t res = toggl_google_login(toggl_app_instance_,
+                                    checkstring(L, -1));
     lua_pushboolean(L, res);
     return 1;
 }
@@ -117,10 +117,10 @@ static int l_toggl_get_support(lua_State *L) {
 }
 
 static int l_toggl_feedback_send(lua_State *L) {
-    _Bool res = toggl_feedback_send(toggl_app_instance_,
-                                    checkstring(L, 1),
-                                    checkstring(L, 2),
-                                    checkstring(L, 3));
+    bool_t res = toggl_feedback_send(toggl_app_instance_,
+                                     checkstring(L, 1),
+                                     checkstring(L, 2),
+                                     checkstring(L, 3));
     lua_pushboolean(L, res);
     return 1;
 }
@@ -144,181 +144,181 @@ static int l_toggl_edit_preferences(lua_State *L) {
 }
 
 static int l_toggl_continue(lua_State *L) {
-    _Bool res = toggl_continue(toggl_app_instance_,
-                               checkstring(L, -1));
+    bool_t res = toggl_continue(toggl_app_instance_,
+                                checkstring(L, -1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_continue_latest(lua_State *L) {
-    _Bool res = toggl_continue_latest(toggl_app_instance_);
+    bool_t res = toggl_continue_latest(toggl_app_instance_);
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_delete_time_entry(lua_State *L) {
-    _Bool res = toggl_delete_time_entry(toggl_app_instance_,
-                                        checkstring(L, -1));
+    bool_t res = toggl_delete_time_entry(toggl_app_instance_,
+                                         checkstring(L, -1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_duration(lua_State *L) {
-    _Bool res = toggl_set_time_entry_duration(toggl_app_instance_,
-                checkstring(L, 1),
-                checkstring(L, 2));
+    bool_t res = toggl_set_time_entry_duration(toggl_app_instance_,
+                 checkstring(L, 1),
+                 checkstring(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_project(lua_State *L) {
-    _Bool res = toggl_set_time_entry_project(toggl_app_instance_,
-                checkstring(L, 1),
-                lua_tointeger(L, 2),
-                lua_tointeger(L, 3),
-                checkstring(L, 4));
+    bool_t res = toggl_set_time_entry_project(toggl_app_instance_,
+                 checkstring(L, 1),
+                 lua_tointeger(L, 2),
+                 lua_tointeger(L, 3),
+                 checkstring(L, 4));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_date(lua_State *L) {
-    _Bool res = toggl_set_time_entry_date(toggl_app_instance_,
-                                          checkstring(L, 1),
-                                          lua_tointeger(L, 2));
+    bool_t res = toggl_set_time_entry_date(toggl_app_instance_,
+                                           checkstring(L, 1),
+                                           lua_tointeger(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_start(lua_State *L) {
-    _Bool res = toggl_set_time_entry_start(toggl_app_instance_,
-                                           checkstring(L, 1),
-                                           checkstring(L, 2));
+    bool_t res = toggl_set_time_entry_start(toggl_app_instance_,
+                                            checkstring(L, 1),
+                                            checkstring(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_end(lua_State *L) {
-    _Bool res = toggl_set_time_entry_end(toggl_app_instance_,
-                                         checkstring(L, 1),
-                                         checkstring(L, 2));
-    lua_pushboolean(L, res);
-    return 1;
-}
-
-static int l_toggl_set_time_entry_tags(lua_State *L) {
-    _Bool res = toggl_set_time_entry_tags(toggl_app_instance_,
+    bool_t res = toggl_set_time_entry_end(toggl_app_instance_,
                                           checkstring(L, 1),
                                           checkstring(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
+static int l_toggl_set_time_entry_tags(lua_State *L) {
+    bool_t res = toggl_set_time_entry_tags(toggl_app_instance_,
+                                           checkstring(L, 1),
+                                           checkstring(L, 2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
 static int l_toggl_set_time_entry_billable(lua_State *L) {
-    _Bool res = toggl_set_time_entry_billable(toggl_app_instance_,
-                checkstring(L, 1),
-                lua_toboolean(L, 2));
+    bool_t res = toggl_set_time_entry_billable(toggl_app_instance_,
+                 checkstring(L, 1),
+                 lua_toboolean(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_time_entry_description(lua_State *L) {
-    _Bool res = toggl_set_time_entry_description(toggl_app_instance_,
-                checkstring(L, 1),
-                checkstring(L, 2));
+    bool_t res = toggl_set_time_entry_description(toggl_app_instance_,
+                 checkstring(L, 1),
+                 checkstring(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_stop(lua_State *L) {
-    _Bool res = toggl_stop(toggl_app_instance_);
+    bool_t res = toggl_stop(toggl_app_instance_);
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_discard_time_at(lua_State *L) {
-    _Bool res = toggl_discard_time_at(toggl_app_instance_,
-                                      checkstring(L, 1),
-                                      lua_tointeger(L, 2),
-                                      lua_toboolean(L, 3));
+    bool_t res = toggl_discard_time_at(toggl_app_instance_,
+                                       checkstring(L, 1),
+                                       lua_tointeger(L, 2),
+                                       lua_toboolean(L, 3));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_use_idle_detection(lua_State *L) {
-    _Bool res = toggl_set_settings_use_idle_detection(toggl_app_instance_,
-                lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_use_idle_detection(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_menubar_timer(lua_State *L) {
-    _Bool res = toggl_set_settings_menubar_timer(toggl_app_instance_,
-                lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_menubar_timer(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_dock_icon(lua_State *L) {
-    _Bool res = toggl_set_settings_dock_icon(toggl_app_instance_,
-                lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_dock_icon(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_on_top(lua_State *L) {
-    _Bool res = toggl_set_settings_on_top(toggl_app_instance_,
-                                          lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_on_top(toggl_app_instance_,
+                                           lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_reminder(lua_State *L) {
-    _Bool res = toggl_set_settings_reminder(toggl_app_instance_,
-                                            lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_reminder(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_idle_minutes(lua_State *L) {
-    _Bool res = toggl_set_settings_idle_minutes(toggl_app_instance_,
-                lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_idle_minutes(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_focus_on_shortcut(lua_State *L) {
-    _Bool res = toggl_set_settings_focus_on_shortcut(toggl_app_instance_,
-                lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_focus_on_shortcut(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_settings_reminder_minutes(lua_State *L) {
-    _Bool res = toggl_set_settings_reminder_minutes(toggl_app_instance_,
-                lua_toboolean(L, 1));
+    bool_t res = toggl_set_settings_reminder_minutes(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_proxy_settings(lua_State *L) {
-    _Bool res = toggl_set_proxy_settings(toggl_app_instance_,
-                                         lua_toboolean(L, 1),
-                                         checkstring(L, 2),
-                                         lua_tointeger(L, 3),
-                                         checkstring(L, 4),
-                                         checkstring(L, 5));
+    bool_t res = toggl_set_proxy_settings(toggl_app_instance_,
+                                          lua_toboolean(L, 1),
+                                          checkstring(L, 2),
+                                          lua_tointeger(L, 3),
+                                          checkstring(L, 4),
+                                          checkstring(L, 5));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_logout(lua_State *L) {
-    _Bool res = toggl_logout(toggl_app_instance_);
+    bool_t res = toggl_logout(toggl_app_instance_);
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_clear_cache(lua_State *L) {
-    _Bool res = toggl_clear_cache(toggl_app_instance_);
+    bool_t res = toggl_clear_cache(toggl_app_instance_);
     lua_pushboolean(L, res);
     return 1;
 }
@@ -336,20 +336,20 @@ static int l_toggl_start(lua_State *L) {
 }
 
 static int l_toggl_add_project(lua_State *L) {
-    _Bool res = toggl_add_project(toggl_app_instance_,
-                                  checkstring(L, 1),
-                                  lua_tointeger(L, 2),
-                                  lua_tointeger(L, 3),
-                                  checkstring(L, 4),
-                                  lua_toboolean(L, 5));
+    bool_t res = toggl_add_project(toggl_app_instance_,
+                                   checkstring(L, 1),
+                                   lua_tointeger(L, 2),
+                                   lua_tointeger(L, 3),
+                                   checkstring(L, 4),
+                                   lua_toboolean(L, 5));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_autotracker_add_rule(lua_State *L) {
-    _Bool res = toggl_autotracker_add_rule(toggl_app_instance_,
-                                           checkstring(L, 1),
-                                           lua_tointeger(L, 2));
+    bool_t res = toggl_autotracker_add_rule(toggl_app_instance_,
+                                            checkstring(L, 1),
+                                            lua_tointeger(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
@@ -366,16 +366,16 @@ static int l_toggl_create_project(lua_State *L) {
 }
 
 static int l_toggl_create_client(lua_State *L) {
-    _Bool res = toggl_create_client(toggl_app_instance_,
-                                    lua_tointeger(L, 1),
-                                    checkstring(L, 2));
+    bool_t res = toggl_create_client(toggl_app_instance_,
+                                     lua_tointeger(L, 1),
+                                     checkstring(L, 2));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_set_update_channel(lua_State *L) {
-    _Bool res = toggl_set_update_channel(toggl_app_instance_,
-                                         checkstring(L, -1));
+    bool_t res = toggl_set_update_channel(toggl_app_instance_,
+                                          checkstring(L, -1));
     lua_pushboolean(L, res);
     return 1;
 }
@@ -407,14 +407,14 @@ static int l_toggl_sync(lua_State *L) {
 }
 
 static int l_toggl_timeline_toggle_recording(lua_State *L) {
-    _Bool res = toggl_timeline_toggle_recording(toggl_app_instance_,
-                lua_toboolean(L, 1));
+    bool_t res = toggl_timeline_toggle_recording(toggl_app_instance_,
+                 lua_toboolean(L, 1));
     lua_pushboolean(L, res);
     return 1;
 }
 
 static int l_toggl_timeline_is_recording_enabled(lua_State *L) {
-    _Bool res = toggl_timeline_is_recording_enabled(toggl_app_instance_);
+    bool_t res = toggl_timeline_is_recording_enabled(toggl_app_instance_);
     lua_pushboolean(L, res);
     return 1;
 }
@@ -469,8 +469,8 @@ static int l_testing_sleep(lua_State *L) {
 }
 
 static int l_testing_set_logged_in_user(lua_State *L) {
-    _Bool res = testing_set_logged_in_user(toggl_app_instance_,
-                                           luaL_checkstring(L, -1));
+    bool_t res = testing_set_logged_in_user(toggl_app_instance_,
+                                            luaL_checkstring(L, -1));
     lua_pushboolean(L, res);
     return 1;
 }

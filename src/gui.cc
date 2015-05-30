@@ -32,7 +32,7 @@ void GUI::DisplayUnsyncedItems(const Poco::Int64 count) {
     }
 }
 
-void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
+void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
     std::stringstream ss;
     ss << "DisplayLogin open=" << open << ", user_id=" << user_id;
     logger().debug(ss.str());
@@ -40,9 +40,9 @@ void GUI::DisplayLogin(const _Bool open, const uint64_t user_id) {
     on_display_login_(open, user_id);
 }
 
-_Bool GUI::DisplayError(const error err) {
+error GUI::DisplayError(const error err) {
     if (noError == err) {
-        return true;
+        return noError;
     }
 
     logger().error(err);
@@ -55,7 +55,7 @@ _Bool GUI::DisplayError(const error err) {
         } else {
             DisplayOnlineState(kOnlineStateNoNetwork);
         }
-        return false;
+        return err;
     }
 
     std::string actionable = MakeErrorActionable(err);
@@ -73,7 +73,7 @@ _Bool GUI::DisplayError(const error err) {
     on_display_error_(err_s, is_user_error);
     free(err_s);
 
-    return false;
+    return err;
 }
 
 error GUI::VerifyCallbacks() {
@@ -227,7 +227,7 @@ void GUI::DisplayProjectAutocomplete(
     autocomplete_item_clear(first);
 }
 
-void GUI::DisplayTimeEntryList(const _Bool open,
+void GUI::DisplayTimeEntryList(const bool open,
                                TogglTimeEntryView* first) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
@@ -307,7 +307,7 @@ void GUI::DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list) {
     view_item_clear(first);
 }
 
-void GUI::DisplayTimeEntryEditor(const _Bool open,
+void GUI::DisplayTimeEntryEditor(const bool open,
                                  TogglTimeEntryView *te,
                                  const std::string focused_field_name) {
     logger().debug("DisplayTimeEntryEditor");
@@ -332,10 +332,10 @@ void GUI::DisplayUpdate(const std::string URL) {
     free(url);
 }
 
-void GUI::DisplaySettings(const _Bool open,
-                          const _Bool record_timeline,
+void GUI::DisplaySettings(const bool open,
+                          const bool record_timeline,
                           const Settings settings,
-                          const _Bool use_proxy,
+                          const bool use_proxy,
                           const Proxy proxy) {
     logger().debug("DisplaySettings");
 

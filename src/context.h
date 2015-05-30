@@ -45,21 +45,21 @@ class Context : public TimelineDatasource {
     }
 
     // Check for logged in user etc, start up the app
-    _Bool StartEvents();
+    error StartEvents();
 
     // Close connections and wait for tasks to finish
     void Shutdown();
 
     void Sync();
     void TimelineUpdateServerSettings();
-    _Bool SendFeedback(Feedback);
+    error SendFeedback(Feedback);
 
     // Load model update from JSON string (from WebSocket)
-    _Bool LoadUpdateFromJSONString(const std::string json);
+    error LoadUpdateFromJSONString(const std::string json);
 
     void SetWebSocketClientURL(const std::string value);
 
-    _Bool SetDBPath(const std::string path);
+    error SetDBPath(const std::string path);
 
     void SetUpdatePath(const std::string path) {
         update_path_ = path;
@@ -77,76 +77,76 @@ class Context : public TimelineDatasource {
         update_check_disabled_ = true;
     }
 
-    _Bool SetSettingsUseIdleDetection(const _Bool use_idle_detection);
+    error SetSettingsUseIdleDetection(const bool use_idle_detection);
 
-    _Bool SetSettingsAutotrack(const _Bool value);
+    error SetSettingsAutotrack(const bool value);
 
-    _Bool SetSettingsMenubarTimer(const _Bool menubar_timer);
+    error SetSettingsMenubarTimer(const bool menubar_timer);
 
-    _Bool SetSettingsMenubarProject(const _Bool menubar_project);
+    error SetSettingsMenubarProject(const bool menubar_project);
 
-    _Bool SetSettingsDockIcon(const _Bool dock_icon);
+    error SetSettingsDockIcon(const bool dock_icon);
 
-    _Bool SetSettingsOnTop(const _Bool on_top);
+    error SetSettingsOnTop(const bool on_top);
 
-    _Bool SetSettingsReminder(const _Bool reminder);
+    error SetSettingsReminder(const bool reminder);
 
-    _Bool SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
+    error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
-    _Bool SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut);
+    error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
 
-    _Bool SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
+    error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
-    _Bool SetSettingsManualMode(const _Bool manual_mode);
+    error SetSettingsManualMode(const bool manual_mode);
 
-    _Bool SetSettingsAutodetectProxy(const _Bool autodetect_proxy);
+    error SetSettingsAutodetectProxy(const bool autodetect_proxy);
 
-    _Bool SetSettingsRemindTimes(
+    error SetSettingsRemindTimes(
         const std::string remind_starts,
         const std::string remind_ends);
 
-    _Bool SetSettingsRemindDays(
-        const _Bool remind_mon,
-        const _Bool remind_tue,
-        const _Bool remind_wed,
-        const _Bool remind_thu,
-        const _Bool remind_fri,
-        const _Bool remind_sat,
-        const _Bool remind_sun);
+    error SetSettingsRemindDays(
+        const bool remind_mon,
+        const bool remind_tue,
+        const bool remind_wed,
+        const bool remind_thu,
+        const bool remind_fri,
+        const bool remind_sat,
+        const bool remind_sun);
 
-    _Bool ProxySettings(bool *use_proxy, Proxy *proxy);
+    error ProxySettings(bool *use_proxy, Proxy *proxy);
 
-    _Bool SetProxySettings(
+    error SetProxySettings(
         const bool use_proxy,
         const Proxy proxy);
 
-    _Bool LoadWindowSettings(
+    error LoadWindowSettings(
         int64_t *window_x,
         int64_t *window_y,
         int64_t *window_height,
         int64_t *window_width);
 
-    _Bool SaveWindowSettings(
+    error SaveWindowSettings(
         const int64_t window_x,
         const int64_t window_y,
         const int64_t window_height,
         const int64_t window_width);
 
-    _Bool Login(
+    error Login(
         const std::string email,
         const std::string password);
 
-    _Bool Signup(
+    error Signup(
         const std::string email,
         const std::string password);
 
-    _Bool GoogleLogin(const std::string access_token);
+    error GoogleLogin(const std::string access_token);
 
-    _Bool Logout();
+    error Logout();
 
-    _Bool SetLoggedInUserFromJSON(const std::string user_data_json);
+    error SetLoggedInUserFromJSON(const std::string user_data_json);
 
-    _Bool ClearCache();
+    error ClearCache();
 
     TimeEntry *Start(
         const std::string description,
@@ -155,86 +155,84 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 project_id,
         const std::string project_guid);
 
-    _Bool ContinueLatest();
+    error ContinueLatest();
 
-    _Bool Continue(
+    error Continue(
         const std::string GUID);
 
-    void DisplayTimeEntryList(const _Bool open);
+    void DisplayTimeEntryList(const bool open);
 
-    _Bool DisplaySettings(const _Bool open = false);
+    error DisplaySettings(const bool open = false);
 
     void Edit(const std::string GUID,
-              const _Bool edit_running_entry,
+              const bool edit_running_entry,
               const std::string focused_field_name);
 
-    _Bool SetTimeEntryDuration(
+    error SetTimeEntryDuration(
         const std::string GUID,
         const std::string duration);
 
-    _Bool DeleteTimeEntryByGUID(const std::string GUID);
+    error DeleteTimeEntryByGUID(const std::string GUID);
 
-    _Bool SetTimeEntryProject(
+    error SetTimeEntryProject(
         const std::string GUID,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
         const std::string project_guid);
 
-    _Bool SetTimeEntryDate(
+    error SetTimeEntryDate(
         const std::string GUID,
         const Poco::Int64 unix_timestamp);
 
-    _Bool SetTimeEntryStart(
+    error SetTimeEntryStart(
         const std::string GUID,
         const std::string value);
 
-    _Bool SetTimeEntryStop(
+    error SetTimeEntryStop(
         const std::string GUID,
         const std::string value);
 
-    _Bool SetTimeEntryTags(
+    error SetTimeEntryTags(
         const std::string GUID,
         const std::string value);
 
-    _Bool SetTimeEntryBillable(
+    error SetTimeEntryBillable(
         const std::string GUID,
         const bool value);
 
-    _Bool SetTimeEntryDescription(
+    error SetTimeEntryDescription(
         const std::string GUID,
         const std::string value);
 
-    _Bool Stop();
+    error Stop();
 
-    _Bool DiscardTimeAt(
+    error DiscardTimeAt(
         const std::string GUID,
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    _Bool RunningTimeEntry(
-        TimeEntry **running) const;
+    TimeEntry * RunningTimeEntry() const;
 
-    _Bool ToggleTimelineRecording(
-        const _Bool record_timeline);
+    error ToggleTimelineRecording(
+        const bool record_timeline);
 
-    _Bool IsTimelineRecordingEnabled() {
+    bool IsTimelineRecordingEnabled() {
         return user_ && user_->RecordTimeline();
     }
 
-    _Bool SaveUpdateChannel(
+    error SaveUpdateChannel(
         const std::string channel);
 
-    _Bool UpdateChannel(
+    error UpdateChannel(
         std::string *update_channel);
 
-    _Bool CreateProject(
+    Project *CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string project_name,
-        const _Bool is_private,
-        Project **result);
+        const bool is_private);
 
-    _Bool CreateClient(
+    error CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 
@@ -244,7 +242,7 @@ class Context : public TimelineDatasource {
 
     void SetOnline();
 
-    _Bool OpenReportsInBrowser();
+    error OpenReportsInBrowser();
 
     void SetIdleSeconds(const Poco::UInt64 idle_seconds) {
         idle_.SetIdleSeconds(idle_seconds, user_);
@@ -256,11 +254,11 @@ class Context : public TimelineDatasource {
         quit_ = true;
     }
 
-    _Bool AddAutotrackerRule(
+    error AddAutotrackerRule(
         const std::string term,
         const Poco::UInt64 pid);
 
-    _Bool DeleteAutotrackerRule(
+    error DeleteAutotrackerRule(
         const Poco::Int64 id);
 
     std::string UserFullName() const;
@@ -328,7 +326,7 @@ class Context : public TimelineDatasource {
     TogglTimeEntryView *timeEntryViewItem(TimeEntry *te);
 
     void displayTimerState();
-    void displayTimeEntryEditor(const _Bool open,
+    void displayTimeEntryEditor(const bool open,
                                 TimeEntry *te,
                                 const std::string focused_field_name);
     void displayTimeEntryAutocomplete();
@@ -345,7 +343,7 @@ class Context : public TimelineDatasource {
 
     void updateUI(std::vector<ModelChange> *changes);
 
-    _Bool displayError(const error err);
+    error displayError(const error err);
 
     bool canSeeBillable(Workspace *workspace) const;
 

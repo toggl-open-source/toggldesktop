@@ -52,7 +52,7 @@ class GUI : public SyncStateMonitor {
 
     void DisplayApp();
 
-    _Bool DisplayError(const error);
+    error DisplayError(const error);
 
     void DisplaySyncState(const Poco::Int64 state);
 
@@ -71,7 +71,7 @@ class GUI : public SyncStateMonitor {
     void DisplayProjectAutocomplete(std::vector<toggl::AutocompleteItem> *);
 
     void DisplayTimeEntryList(
-        const _Bool open,
+        const bool open,
         TogglTimeEntryView *first);
 
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
@@ -85,19 +85,19 @@ class GUI : public SyncStateMonitor {
         const std::vector<std::string> &titles);
 
     void DisplayTimeEntryEditor(
-        const _Bool open,
+        const bool open,
         TogglTimeEntryView *te,
         const std::string focused_field_name);
 
     void DisplayURL(const std::string);
 
-    void DisplayLogin(const _Bool open, const uint64_t user_id);
+    void DisplayLogin(const bool open, const uint64_t user_id);
 
     void DisplaySettings(
-        const _Bool open,
-        const _Bool record_timeline,
+        const bool open,
+        const bool record_timeline,
         const Settings settings,
-        const _Bool use_proxy,
+        const bool use_proxy,
         const Proxy proxy);
 
     void DisplayTimerState(TogglTimeEntryView *te);

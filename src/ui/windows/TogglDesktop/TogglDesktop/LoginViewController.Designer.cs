@@ -41,9 +41,9 @@ partial class LoginViewController
         this.loginTextBox1 = new TogglDesktop.WPF.LoginTextBox();
         ((System.ComponentModel.ISupportInitialize)(this.togglLogoBox)).BeginInit();
         this.SuspendLayout();
-        // 
+        //
         // loginSignupToggleLabel
-        // 
+        //
         this.loginSignupToggleLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.loginSignupToggleLabel.AutoSize = true;
         this.loginSignupToggleLabel.BackColor = System.Drawing.Color.Transparent;
@@ -54,9 +54,9 @@ partial class LoginViewController
         this.loginSignupToggleLabel.Size = new System.Drawing.Size(75, 17);
         this.loginSignupToggleLabel.TabIndex = 15;
         this.loginSignupToggleLabel.Text = "or you can";
-        // 
+        //
         // googleLoginTextField
-        // 
+        //
         this.googleLoginTextField.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
         this.googleLoginTextField.ActiveLinkColor = System.Drawing.Color.White;
         this.googleLoginTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -76,9 +76,9 @@ partial class LoginViewController
         this.googleLoginTextField.Text = "LOG IN WITH GOOGLE";
         this.googleLoginTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
         this.googleLoginTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.googleLoginTextField_LinkClicked);
-        // 
+        //
         // passwordForgotTextField
-        // 
+        //
         this.passwordForgotTextField.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
         this.passwordForgotTextField.ActiveLinkColor = System.Drawing.Color.White;
         this.passwordForgotTextField.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -95,9 +95,9 @@ partial class LoginViewController
         this.passwordForgotTextField.Text = "Forgot password?";
         this.passwordForgotTextField.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
         this.passwordForgotTextField.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.passwordForgotTextField_LinkClicked_1);
-        // 
+        //
         // togglLogoBox
-        // 
+        //
         this.togglLogoBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.togglLogoBox.BackColor = System.Drawing.Color.Transparent;
         this.togglLogoBox.Image = ((System.Drawing.Image)(resources.GetObject("togglLogoBox.Image")));
@@ -107,9 +107,9 @@ partial class LoginViewController
         this.togglLogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
         this.togglLogoBox.TabIndex = 8;
         this.togglLogoBox.TabStop = false;
-        // 
+        //
         // loginSignupToggle
-        // 
+        //
         this.loginSignupToggle.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
         this.loginSignupToggle.ActiveLinkColor = System.Drawing.Color.White;
         this.loginSignupToggle.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -126,9 +126,9 @@ partial class LoginViewController
         this.loginSignupToggle.Text = "Sign up for free";
         this.loginSignupToggle.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(99)))), ((int)(((byte)(99)))));
         this.loginSignupToggle.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.loginSignupToggle_LinkClicked);
-        // 
+        //
         // confirmButton
-        // 
+        //
         this.confirmButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.confirmButton.FlatAppearance.BorderSize = 0;
         this.confirmButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -140,27 +140,27 @@ partial class LoginViewController
         this.confirmButton.Text = "Log in";
         this.confirmButton.UseVisualStyleBackColor = true;
         this.confirmButton.Click += new System.EventHandler(this.confirmButton_Click);
-        // 
+        //
         // passwordBoxHost
-        // 
+        //
         this.passwordBoxHost.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.passwordBoxHost.Location = new System.Drawing.Point(26, 174);
         this.passwordBoxHost.Name = "passwordBoxHost";
         this.passwordBoxHost.Size = new System.Drawing.Size(249, 43);
         this.passwordBoxHost.TabIndex = 1;
         this.passwordBoxHost.Child = this.loginPasswordBox1;
-        // 
+        //
         // emailBoxHost
-        // 
+        //
         this.emailBoxHost.Anchor = System.Windows.Forms.AnchorStyles.Top;
         this.emailBoxHost.Location = new System.Drawing.Point(26, 114);
         this.emailBoxHost.Name = "emailBoxHost";
         this.emailBoxHost.Size = new System.Drawing.Size(249, 43);
         this.emailBoxHost.TabIndex = 0;
         this.emailBoxHost.Child = this.loginTextBox1;
-        // 
+        //
         // LoginViewController
-        // 
+        //
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.AutoSize = true;

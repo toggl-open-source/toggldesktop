@@ -245,10 +245,10 @@ class TogglApi : public QObject {
 };
 
 // callbacks used internally by the app instance
-void on_display_app(const _Bool open);
+void on_display_app(const bool_t open);
 void on_display_error(
     const char *errmsg,
-    const _Bool user_error);
+    const bool_t user_error);
 void on_display_update(
     const char *url);
 void on_display_online_state(
@@ -257,13 +257,13 @@ void on_display_online_state(
 void on_display_url(
     const char *url);
 void on_display_login(
-    const _Bool open,
+    const bool_t open,
     const uint64_t user_id);
 void on_display_reminder(
     const char *title,
     const char *informative_text);
 void on_display_time_entry_list(
-    const _Bool open,
+    const bool_t open,
     TogglTimeEntryView *first);
 void on_display_time_entry_autocomplete(
     TogglAutocompleteView *first);
@@ -278,11 +278,11 @@ void on_display_client_select(
 void on_display_tags(
     TogglGenericView *first);
 void on_display_time_entry_editor(
-    const _Bool open,
+    const bool_t open,
     TogglTimeEntryView *te,
     const char *focused_field_name);
 void on_display_settings(
-    const _Bool open,
+    const bool_t open,
     TogglSettingsView *settings);
 void on_display_timer_state(
     TogglTimeEntryView *te);

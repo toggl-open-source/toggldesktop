@@ -170,7 +170,7 @@ void Context::Shutdown() {
     Poco::ThreadPool::defaultPool().stopAll();
 }
 
-_Bool Context::StartEvents() {
+error Context::StartEvents() {
     logger().debug("StartEvents");
 
     if (user_) {
@@ -190,8 +190,9 @@ _Bool Context::StartEvents() {
         return displayError("UI is not properly wired up!");
     }
 
-    if (!DisplaySettings()) {
-        return false;
+    err = DisplaySettings();
+    if (err != noError) {
+        return displayError(err);
     }
 
     // See if user was logged in into app previously
@@ -205,13 +206,13 @@ _Bool Context::StartEvents() {
     if (!user->ID()) {
         delete user;
         setUser(0);
-        return true;
+        return noError;
     }
     setUser(user);
 
     displayUI();
 
-    return true;
+    return noError;
 }
 
 void Context::displayUI() {
@@ -466,7 +467,7 @@ bool Context::isPostponed(
     return true;
 }
 
-_Bool Context::displayError(const error err) {
+error Context::displayError(const error err) {
     if ((err.find(kForbiddenError) != std::string::npos)
             || (err.find(kUnauthorizedError) != std::string::npos)) {
         if (user_) {
@@ -677,13 +678,14 @@ void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
     ws_client_.Shutdown();
 }
 
-_Bool Context::LoadUpdateFromJSONString(const std::string json) {
+error Context::LoadUpdateFromJSONString(const std::string json) {
     std::stringstream ss;
     ss << "LoadUpdateFromJSONString json=" << json;
     logger().debug(ss.str());
 
     if (!user_) {
-        return false;
+        logger().warning("User is logged out, cannot update");
+        return noError;
     }
 
     error err = user_->LoadUserUpdateFromJSONString(json);
@@ -877,15 +879,12 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
     startPeriodicUpdateCheck();
 }
 
-_Bool Context::UpdateChannel(
+error Context::UpdateChannel(
     std::string *update_channel) {
     poco_check_ptr(update_channel);
 
     error err = db()->LoadUpdateChannel(update_channel);
-    if (err != noError) {
-        return displayError(err);
-    }
-    return true;
+    return displayError(err);
 }
 
 std::string Context::UserFullName() const {
@@ -1145,10 +1144,10 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     }
 }
 
-_Bool Context::SendFeedback(Feedback fb) {
+error Context::SendFeedback(Feedback fb) {
     if (!user_) {
         logger().warning("Cannot send feedback, user logged out");
-        return true;
+        return noError;
     }
 
     error err = fb.Validate();
@@ -1165,7 +1164,7 @@ _Bool Context::SendFeedback(Feedback fb) {
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, Poco::Timestamp());
 
-    return true;
+    return noError;
 }
 
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
@@ -1208,7 +1207,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     }
 }
 
-_Bool Context::SetSettingsRemindTimes(
+error Context::SetSettingsRemindTimes(
     const std::string remind_starts,
     const std::string remind_ends) {
     error err = db()->SetSettingsRemindTimes(remind_starts, remind_ends);
@@ -1216,21 +1215,24 @@ _Bool Context::SetSettingsRemindTimes(
         return displayError(err);
     }
 
-    DisplaySettings();
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
 
     remindToTrackTime();
 
-    return true;
+    return noError;
 }
 
-_Bool Context::SetSettingsRemindDays(
-    const _Bool remind_mon,
-    const _Bool remind_tue,
-    const _Bool remind_wed,
-    const _Bool remind_thu,
-    const _Bool remind_fri,
-    const _Bool remind_sat,
-    const _Bool remind_sun) {
+error Context::SetSettingsRemindDays(
+    const bool remind_mon,
+    const bool remind_tue,
+    const bool remind_wed,
+    const bool remind_thu,
+    const bool remind_fri,
+    const bool remind_sat,
+    const bool remind_sun) {
     error err = db()->SetSettingsRemindDays(
         remind_mon,
         remind_tue,
@@ -1243,14 +1245,17 @@ _Bool Context::SetSettingsRemindDays(
         return displayError(err);
     }
 
-    DisplaySettings();
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
 
     remindToTrackTime();
 
-    return true;
+    return noError;
 }
 
-_Bool Context::SetSettingsAutodetectProxy(const _Bool autodetect_proxy) {
+error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
     error err = db()->SetSettingsAutodetectProxy(autodetect_proxy);
     if (err != noError) {
         return displayError(err);
@@ -1258,7 +1263,7 @@ _Bool Context::SetSettingsAutodetectProxy(const _Bool autodetect_proxy) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
+error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
     if (err != noError) {
         return displayError(err);
@@ -1266,7 +1271,7 @@ _Bool Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsAutotrack(const _Bool value) {
+error Context::SetSettingsAutotrack(const bool value) {
     error err = db()->SetSettingsAutotrack(value);
     if (err != noError) {
         return displayError(err);
@@ -1274,7 +1279,7 @@ _Bool Context::SetSettingsAutotrack(const _Bool value) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
+error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
     error err = db()->SetSettingsMenubarTimer(menubar_timer);
     if (err != noError) {
         return displayError(err);
@@ -1282,8 +1287,7 @@ _Bool Context::SetSettingsMenubarTimer(const _Bool menubar_timer) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsMenubarProject(const _Bool
-        menubar_project) {
+error Context::SetSettingsMenubarProject(const bool menubar_project) {
     error err = db()->SetSettingsMenubarProject(menubar_project);
     if (err != noError) {
         return displayError(err);
@@ -1291,7 +1295,7 @@ _Bool Context::SetSettingsMenubarProject(const _Bool
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsDockIcon(const _Bool dock_icon) {
+error Context::SetSettingsDockIcon(const bool dock_icon) {
     error err = db()->SetSettingsDockIcon(dock_icon);
     if (err != noError) {
         return displayError(err);
@@ -1299,7 +1303,7 @@ _Bool Context::SetSettingsDockIcon(const _Bool dock_icon) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsOnTop(const _Bool on_top) {
+error Context::SetSettingsOnTop(const bool on_top) {
     error err = db()->SetSettingsOnTop(on_top);
     if (err != noError) {
         return displayError(err);
@@ -1307,20 +1311,23 @@ _Bool Context::SetSettingsOnTop(const _Bool on_top) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsReminder(const _Bool reminder) {
+error Context::SetSettingsReminder(const bool reminder) {
     error err = db()->SetSettingsReminder(reminder);
     if (err != noError) {
         return displayError(err);
     }
 
-    DisplaySettings();
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
 
     remindToTrackTime();
 
-    return true;
+    return noError;
 }
 
-_Bool Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
+error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     error err = db()->SetSettingsIdleMinutes(idle_minutes);
     if (err != noError) {
         return displayError(err);
@@ -1328,7 +1335,7 @@ _Bool Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut) {
+error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
     error err = db()->SetSettingsFocusOnShortcut(focus_on_shortcut);
     if (err != noError) {
         return displayError(err);
@@ -1336,7 +1343,7 @@ _Bool Context::SetSettingsFocusOnShortcut(const _Bool focus_on_shortcut) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsManualMode(const _Bool manual_mode) {
+error Context::SetSettingsManualMode(const bool manual_mode) {
     error err = db()->SetSettingsManualMode(manual_mode);
     if (err != noError) {
         return displayError(err);
@@ -1344,20 +1351,23 @@ _Bool Context::SetSettingsManualMode(const _Bool manual_mode) {
     return DisplaySettings();
 }
 
-_Bool Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
+error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     error err = db()->SetSettingsReminderMinutes(reminder_minutes);
     if (err != noError) {
         return displayError(err);
     }
 
-    DisplaySettings();
+    err = DisplaySettings();
+    if (err != noError) {
+        return displayError(err);
+    }
 
     remindToTrackTime();
 
-    return true;
+    return noError;
 }
 
-_Bool Context::LoadWindowSettings(
+error Context::LoadWindowSettings(
     int64_t *window_x,
     int64_t *window_y,
     int64_t *window_height,
@@ -1375,7 +1385,7 @@ _Bool Context::LoadWindowSettings(
     return displayError(err);
 }
 
-_Bool Context::SaveWindowSettings(
+error Context::SaveWindowSettings(
     const int64_t window_x,
     const int64_t window_y,
     const int64_t window_height,
@@ -1389,11 +1399,11 @@ _Bool Context::SaveWindowSettings(
     return displayError(err);
 }
 
-_Bool Context::SetProxySettings(
-    const _Bool use_proxy,
+error Context::SetProxySettings(
+    const bool use_proxy,
     const Proxy proxy) {
 
-    _Bool was_using_proxy(false);
+    bool was_using_proxy(false);
     Proxy previous_proxy_settings;
     error err = db()->LoadProxySettings(&was_using_proxy,
                                         &previous_proxy_settings);
@@ -1406,12 +1416,14 @@ _Bool Context::SetProxySettings(
         return displayError(err);
     }
 
-    if (!DisplaySettings()) {
-        return false;
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
     }
 
     if (!user_) {
-        return true;
+        logger().warning("Cannot set proxy settings, user logged out");
+        return noError;
     }
 
     if (use_proxy != was_using_proxy
@@ -1423,7 +1435,7 @@ _Bool Context::SetProxySettings(
         switchWebSocketOn();
     }
 
-    return true;
+    return noError;
 }
 
 void Context::displayTimerState() {
@@ -1440,7 +1452,7 @@ void Context::displayTimerState() {
 
 TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
     if (!te) {
-        return 0;
+        return nullptr;
     }
 
     std::string workspace_name("");
@@ -1472,7 +1484,7 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
                                      true);
 }
 
-_Bool Context::DisplaySettings(const _Bool open) {
+error Context::DisplaySettings(const bool open) {
     error err = db()->LoadSettings(&settings_);
     if (err != noError) {
         setUser(0);
@@ -1505,10 +1517,10 @@ _Bool Context::DisplaySettings(const _Bool open) {
                           use_proxy,
                           proxy);
 
-    return true;
+    return noError;
 }
 
-_Bool Context::SetDBPath(
+error Context::SetDBPath(
     const std::string path) {
     try {
         std::stringstream ss;
@@ -1529,7 +1541,7 @@ _Bool Context::SetDBPath(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return true;
+    return noError;
 }
 
 void Context::SetEnvironment(const std::string value) {
@@ -1550,7 +1562,7 @@ Database *Context::db() const {
     return db_;
 }
 
-_Bool Context::GoogleLogin(const std::string access_token) {
+error Context::GoogleLogin(const std::string access_token) {
     return Login(access_token, "google_access_token");
 }
 
@@ -1608,7 +1620,7 @@ error Context::attemptOfflineLogin(const std::string email,
     return save();
 }
 
-_Bool Context::Login(
+error Context::Login(
     const std::string email,
     const std::string password) {
 
@@ -1634,13 +1646,14 @@ _Bool Context::Login(
         return displayError(attemptOfflineLogin(email, password));
     }
 
-    if (!SetLoggedInUserFromJSON(user_data_json)) {
-        return false;
+    err = SetLoggedInUserFromJSON(user_data_json);
+    if (err != noError) {
+        return displayError(err);
     }
 
     if (!user_) {
         logger().error("cannot enable offline login, no user");
-        return true;
+        return noError;
     }
 
     err = user_->EnableOfflineLogin(password);
@@ -1651,7 +1664,7 @@ _Bool Context::Login(
     return displayError(save());
 }
 
-_Bool Context::Signup(
+error Context::Signup(
     const std::string email,
     const std::string password) {
 
@@ -1742,11 +1755,11 @@ void Context::setUser(User *value, const bool user_logged_in) {
     remindToTrackTime();
 }
 
-_Bool Context::SetLoggedInUserFromJSON(
+error Context::SetLoggedInUserFromJSON(
     const std::string user_data_json) {
 
     if (user_data_json.empty()) {
-        return false;
+        return displayError("empty JSON");
     }
 
     Poco::UInt64 userID(0);
@@ -1756,7 +1769,7 @@ _Bool Context::SetLoggedInUserFromJSON(
     }
 
     if (!userID) {
-        return false;
+        return displayError("missing user ID in JSON");
     }
 
     User *user = new User();
@@ -1786,11 +1799,11 @@ _Bool Context::SetLoggedInUserFromJSON(
     return displayError(save());
 }
 
-_Bool Context::Logout() {
+error Context::Logout() {
     try {
         if (!user_) {
             logger().warning("User is logged out, cannot logout again");
-            return true;
+            return noError;
         }
 
         error err = db()->ClearCurrentAPIToken();
@@ -1812,14 +1825,14 @@ _Bool Context::Logout() {
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return true;
+    return noError;
 }
 
-_Bool Context::ClearCache() {
+error Context::ClearCache() {
     try {
         if (!user_) {
             logger().warning("User is logged out, cannot clear cache");
-            return true;
+            return noError;
         }
         error err = db()->DeleteUser(user_, true);
         if (err != noError) {
@@ -1834,7 +1847,7 @@ _Bool Context::ClearCache() {
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return true;
+    return noError;
 }
 
 bool Context::canSeeBillable(
@@ -1857,12 +1870,12 @@ TimeEntry *Context::Start(
 
     if (im_a_teapot_) {
         displayError(kUnsupportedAppError);
-        return 0;
+        return nullptr;
     }
 
     if (!user_) {
         logger().warning("Cannot start tracking, user logged out");
-        return 0;
+        return nullptr;
     }
 
     TimeEntry *te = user_->Start(description, duration,
@@ -1874,7 +1887,7 @@ TimeEntry *Context::Start(
     error err = save();
     if (err != noError) {
         displayError(err);
-        return 0;
+        return nullptr;
     }
 
     if ("production" == environment_) {
@@ -1898,7 +1911,7 @@ Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
     return duration;
 }
 
-void Context::DisplayTimeEntryList(const _Bool open) {
+void Context::DisplayTimeEntryList(const bool open) {
     if (!user_) {
         logger().warning("Cannot view time entries, user logged out");
         return;
@@ -1984,7 +1997,7 @@ void Context::DisplayTimeEntryList(const _Bool open) {
 }
 
 void Context::Edit(const std::string GUID,
-                   const _Bool edit_running_entry,
+                   const bool edit_running_entry,
                    const std::string focused_field_name) {
     if (!edit_running_entry && GUID.empty()) {
         logger().error("Cannot edit time entry without a GUID");
@@ -2011,7 +2024,7 @@ void Context::Edit(const std::string GUID,
     displayTimeEntryEditor(true, te, focused_field_name);
 }
 
-void Context::displayTimeEntryEditor(const _Bool open,
+void Context::displayTimeEntryEditor(const bool open,
                                      TimeEntry *te,
                                      const std::string focused_field_name) {
     poco_check_ptr(te);
@@ -2048,14 +2061,14 @@ void Context::displayTimeEntryEditor(const _Bool open,
     time_entry_view_item_clear(view);
 }
 
-_Bool Context::ContinueLatest() {
+error Context::ContinueLatest() {
     if (im_a_teapot_) {
         return displayError(kUnsupportedAppError);
     }
 
     if (!user_) {
         logger().warning("Cannot continue tracking, user logged out");
-        return true;
+        return noError;
     }
 
     TimeEntry *latest = nullptr;
@@ -2082,7 +2095,7 @@ _Bool Context::ContinueLatest() {
     }
 
     if (!latest) {
-        return true;
+        return noError;
     }
 
     error err = user_->Continue(latest->GUID());
@@ -2097,7 +2110,7 @@ _Bool Context::ContinueLatest() {
     return displayError(save());
 }
 
-_Bool Context::Continue(
+error Context::Continue(
     const std::string GUID) {
 
     if (im_a_teapot_) {
@@ -2106,7 +2119,7 @@ _Bool Context::Continue(
 
     if (!user_) {
         logger().warning("Cannot continue time entry, user logged out");
-        return true;
+        return noError;
     }
 
     if (GUID.empty()) {
@@ -2129,16 +2142,16 @@ _Bool Context::Continue(
 
     DisplayTimeEntryList(true);
 
-    return true;
+    return noError;
 }
 
-_Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
+error Context::DeleteTimeEntryByGUID(const std::string GUID) {
     if (im_a_teapot_) {
         return displayError(kUnsupportedAppError);
     }
     if (!user_) {
         logger().warning("Cannot delete time entry, user logged out");
-        return true;
+        return noError;
     }
     if (GUID.empty()) {
         return displayError("Missing GUID");
@@ -2146,14 +2159,15 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
     if (te->DeletedAt()) {
         return displayError(kCannotDeleteDeletedTimeEntry);
     }
     if (te->IsTracking()) {
-        if (!Stop()) {
-            return false;
+        error err = Stop();
+        if (err != noError) {
+            return displayError(err);
         }
     }
     te->ClearValidationError();
@@ -2161,7 +2175,7 @@ _Bool Context::DeleteTimeEntryByGUID(const std::string GUID) {
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryDuration(
+error Context::SetTimeEntryDuration(
     const std::string GUID,
     const std::string duration) {
     if (GUID.empty()) {
@@ -2169,19 +2183,19 @@ _Bool Context::SetTimeEntryDuration(
     }
     if (!user_) {
         logger().warning("Cannot set duration, user logged out");
-        return true;
+        return noError;
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
     te->SetDurationUserInput(duration);
 
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryProject(
+error Context::SetTimeEntryProject(
     const std::string GUID,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
@@ -2192,13 +2206,13 @@ _Bool Context::SetTimeEntryProject(
         }
         if (!user_) {
             logger().warning("Cannot set project, user logged out");
-            return true;
+            return noError;
         }
 
         TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
-            return true;
+            return noError;
         }
 
         Project *p = nullptr;
@@ -2236,7 +2250,7 @@ _Bool Context::SetTimeEntryProject(
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryDate(
+error Context::SetTimeEntryDate(
     const std::string GUID,
     const Poco::Int64 unix_timestamp) {
 
@@ -2245,12 +2259,12 @@ _Bool Context::SetTimeEntryDate(
     }
     if (!user_) {
         logger().warning("Cannot change date, user logged out");
-        return true;
+        return noError;
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
 
     Poco::LocalDateTime loco(
@@ -2275,7 +2289,7 @@ _Bool Context::SetTimeEntryDate(
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryStart(
+error Context::SetTimeEntryStart(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
@@ -2283,19 +2297,19 @@ _Bool Context::SetTimeEntryStart(
     }
     if (!user_) {
         logger().warning("Cannot change start time, user logged out");
-        return true;
+        return noError;
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
 
     Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Start()));
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
-        return false;
+        return error("invalid time format");
     }
 
     Poco::LocalDateTime dt(
@@ -2310,7 +2324,7 @@ _Bool Context::SetTimeEntryStart(
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryStop(
+error Context::SetTimeEntryStop(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
@@ -2318,12 +2332,12 @@ _Bool Context::SetTimeEntryStop(
     }
     if (!user_) {
         logger().warning("Cannot change stop time, user logged out");
-        return true;
+        return noError;
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
 
     Poco::LocalDateTime stop(
@@ -2331,18 +2345,18 @@ _Bool Context::SetTimeEntryStop(
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
-        return false;
+        return error("invalid time format");
     }
 
-    // By default, keep end date, only change hour && minute
+// By default, keep end date, only change hour && minute
     Poco::LocalDateTime new_stop(
         stop.tzd(),
         stop.year(), stop.month(), stop.day(),
         hours, minutes, stop.second(), 0, 0);
 
-    // If end time is on same date as start,
-    // but is not less than start by hour & minute, then
-    // assume that the end must be on same date as start.
+// If end time is on same date as start,
+// but is not less than start by hour & minute, then
+// assume that the end must be on same date as start.
     Poco::LocalDateTime start(
         Poco::Timestamp::fromEpochTime(te->Start()));
     if (new_stop.day() != start.day()) {
@@ -2362,7 +2376,7 @@ _Bool Context::SetTimeEntryStop(
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryTags(
+error Context::SetTimeEntryTags(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
@@ -2370,12 +2384,12 @@ _Bool Context::SetTimeEntryTags(
     }
     if (!user_) {
         logger().warning("Cannot set tags, user logged out");
-        return true;
+        return noError;
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
     te->SetTags(value);
 
@@ -2387,7 +2401,7 @@ _Bool Context::SetTimeEntryTags(
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryBillable(
+error Context::SetTimeEntryBillable(
     const std::string GUID,
     const bool value) {
     if (GUID.empty()) {
@@ -2395,12 +2409,12 @@ _Bool Context::SetTimeEntryBillable(
     }
     if (!user_) {
         logger().warning("Cannot set billable, user logged out");
-        return true;
+        return noError;
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
     te->SetBillable(value);
 
@@ -2412,7 +2426,7 @@ _Bool Context::SetTimeEntryBillable(
     return displayError(save());
 }
 
-_Bool Context::SetTimeEntryDescription(
+error Context::SetTimeEntryDescription(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
@@ -2420,12 +2434,12 @@ _Bool Context::SetTimeEntryDescription(
     }
     if (!user_) {
         logger().warning("Cannot set description, user logged out");
-        return true;
+        return noError;
     }
     TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
-        return true;
+        return noError;
     }
     te->SetDescription(value);
 
@@ -2437,16 +2451,16 @@ _Bool Context::SetTimeEntryDescription(
     return displayError(save());
 }
 
-_Bool Context::Stop() {
+error Context::Stop() {
     if (!user_) {
         logger().warning("Cannot stop tracking, user logged out");
-        return true;
+        return noError;
     }
 
     std::vector<TimeEntry *> stopped = user_->Stop();
     if (stopped.empty()) {
         logger().warning("No time entry was found to stop");
-        return true;
+        return noError;
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2456,14 +2470,14 @@ _Bool Context::Stop() {
     return displayError(save());
 }
 
-_Bool Context::DiscardTimeAt(
+error Context::DiscardTimeAt(
     const std::string guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
 
     if (!user_) {
         logger().warning("Cannot stop time entry, user logged out");
-        return true;
+        return noError;
     }
 
     TimeEntry *split = user_->DiscardTimeAt(guid, at, split_into_new_entry);
@@ -2476,23 +2490,21 @@ _Bool Context::DiscardTimeAt(
         displayTimeEntryEditor(true, split, "");
     }
 
-    return true;
+    return noError;
 }
 
-_Bool Context::RunningTimeEntry(
-    TimeEntry **running) const {
+TimeEntry *Context::RunningTimeEntry() const {
     if (!user_) {
         logger().warning("Cannot fetch time entry, user logged out");
-        return true;
+        return nullptr;
     }
-    *running = user_->RunningTimeEntry();
-    return true;
+    return user_->RunningTimeEntry();
 }
 
-_Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
+error Context::ToggleTimelineRecording(const bool record_timeline) {
     if (!user_) {
         logger().warning("Cannot toggle timeline, user logged out");
-        return true;
+        return noError;
     }
     try {
         user_->SetRecordTimeline(record_timeline);
@@ -2502,7 +2514,10 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
             return displayError(err);
         }
 
-        DisplaySettings();
+        err = DisplaySettings();
+        if (err != noError) {
+            return err;
+        }
 
         TimelineUpdateServerSettings();
         if (user_->RecordTimeline()) {
@@ -2517,7 +2532,7 @@ _Bool Context::ToggleTimelineRecording(const _Bool record_timeline) {
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return true;
+    return noError;
 }
 
 std::vector<TimeEntry *> Context::timeEntries(
@@ -2551,21 +2566,28 @@ std::vector<TimeEntry *> Context::timeEntries(
     return result;
 }
 
-_Bool Context::SaveUpdateChannel(const std::string channel) {
+error Context::SaveUpdateChannel(const std::string channel) {
     error err = db()->SaveUpdateChannel(channel);
     if (err != noError) {
         return displayError(err);
     }
     fetchUpdates();
-    return true;
+    return noError;
 }
 
-_Bool Context::AddAutotrackerRule(
+error Context::AddAutotrackerRule(
     const std::string term,
     const Poco::UInt64 pid) {
 
-    if (!user_ || term.empty() || !pid) {
-        return false;
+    if (!user_) {
+        logger().warning("cannot add autotracker rule, user logged out");
+        return noError;
+    }
+    if (term.empty()) {
+        return displayError("missing term");
+    }
+    if (!pid) {
+        return displayError("missing project");
     }
 
     std::string lowercase = Poco::UTF8::toLower(term);
@@ -2576,7 +2598,7 @@ _Bool Context::AddAutotrackerRule(
         AutotrackerRule *rule = *it;
         if (rule->Term() == lowercase) {
             // avoid duplicates
-            return false;
+            return displayError("rule already exists");
         }
     }
 
@@ -2589,11 +2611,15 @@ _Bool Context::AddAutotrackerRule(
     return displayError(save());
 }
 
-_Bool Context::DeleteAutotrackerRule(
+error Context::DeleteAutotrackerRule(
     const Poco::Int64 id) {
 
-    if (!user_ || !id) {
-        return false;
+    if (!user_) {
+        logger().warning("cannot delete rule, user is logged out");
+        return noError;
+    }
+    if (!id) {
+        return displayError("cannot delete rule without an ID");
     }
 
     for (std::vector<AutotrackerRule *>::iterator it =
@@ -2614,7 +2640,7 @@ _Bool Context::DeleteAutotrackerRule(
 
 AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
     if (!user_) {
-        return 0;
+        return nullptr;
     }
 
     for (std::vector<AutotrackerRule *>::const_iterator it =
@@ -2626,42 +2652,47 @@ AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
-_Bool Context::CreateProject(
+Project *Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string project_name,
-    const _Bool is_private,
-    Project **result) {
-
-    poco_check_ptr(result);
+    const bool is_private) {
 
     if (!user_) {
         logger().warning("Cannot add project, user logged out");
-        return true;
+        return nullptr;
     }
     if (!workspace_id) {
-        return displayError("Please select a workspace");
+        displayError("Please select a workspace");
+        return nullptr;
     }
     if (project_name.empty()) {
-        return displayError("Project name must not be empty");
+        displayError("Project name must not be empty");
+        return nullptr;
     }
 
-    *result = user_->CreateProject(
+    Project *result = user_->CreateProject(
         workspace_id, client_id, project_name, is_private);
 
-    return displayError(save());
+    error err = save();
+    if (err != noError) {
+        displayError(err);
+        return nullptr;
+    }
+
+    return result;
 }
 
-_Bool Context::CreateClient(
+error Context::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
 
     if (!user_) {
         logger().warning("Cannot create a client, user logged out");
-        return true;
+        return noError;
     }
     if (!workspace_id) {
         return displayError("Please select a workspace");
@@ -2680,7 +2711,7 @@ void Context::SetSleep() {
     idle_.SetSleep();
 }
 
-_Bool Context::OpenReportsInBrowser() {
+error Context::OpenReportsInBrowser() {
     if (im_a_teapot_) {
         return displayError(kUnsupportedAppError);
     }
@@ -2720,7 +2751,7 @@ _Bool Context::OpenReportsInBrowser() {
         << "&goto=reports";
     UI()->DisplayURL(ss.str());
 
-    return true;
+    return noError;
 }
 
 void Context::SetWake() {

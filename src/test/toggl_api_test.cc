@@ -38,7 +38,7 @@ int64_t online_state(0);
 uint64_t user_id(0);
 
 // on_display_settings
-_Bool open_settings(false);
+bool_t open_settings(false);
 Settings settings;
 bool use_proxy(false);
 Proxy proxy;
@@ -76,7 +76,7 @@ TimeEntry time_entry_by_guid(const std::string guid) {
 
 // on_time_entry_editor
 TimeEntry editor_state;
-_Bool editor_open(false);
+bool_t editor_open(false);
 std::string editor_focused_field_name("");
 
 bool on_app_open;
@@ -89,7 +89,7 @@ std::string update_url;
 
 }  // namespace testresult
 
-void on_app(const _Bool open) {
+void on_app(const bool_t open) {
     testresult::on_app_open = open;
 }
 
@@ -107,7 +107,7 @@ void on_unsynced_items(const int64_t count) {
 
 void on_error(
     const char *errmsg,
-    const _Bool user_error) {
+    const bool_t user_error) {
     if (errmsg) {
         testresult::error = std::string(errmsg);
         return;
@@ -123,7 +123,7 @@ void on_url(const char *url) {
     testresult::url = std::string(url);
 }
 
-void on_login(const _Bool open, const uint64_t user_id) {
+void on_login(const bool_t open, const uint64_t user_id) {
     testresult::user_id = user_id;
 }
 
@@ -133,7 +133,7 @@ void on_reminder(const char *title, const char *informative_text) {
 }
 
 void on_time_entry_list(
-    const _Bool open,
+    const bool_t open,
     TogglTimeEntryView *first) {
     testing::testresult::time_entries.clear();
     TogglTimeEntryView *it = first;
@@ -181,7 +181,7 @@ void on_tags(TogglGenericView *first) {
 }
 
 void on_time_entry_editor(
-    const _Bool open,
+    const bool_t open,
     TogglTimeEntryView *te,
     const char *focused_field_name) {
     testing::testresult::editor_state = TimeEntry();
@@ -192,7 +192,7 @@ void on_time_entry_editor(
 }
 
 void on_display_settings(
-    const _Bool open,
+    const bool_t open,
     TogglSettingsView *settings) {
 
     testing::testresult::open_settings = open;
@@ -447,7 +447,7 @@ TEST(TogglApiTest, toggl_set_settings_remind_days) {
     testing::App app;
 
     testing::testresult::error = noError;
-    _Bool res = toggl_set_settings_remind_days(
+    bool_t res = toggl_set_settings_remind_days(
         app.ctx(), true, true, true, true, true, true, true);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
@@ -680,7 +680,7 @@ TEST(TogglApiTest, testing_set_logged_in_user) {
     std::string json = loadTestData();
     testing::App app;
     testing::testresult::error = "";
-    _Bool res = testing_set_logged_in_user(app.ctx(), json.c_str());
+    bool_t res = testing_set_logged_in_user(app.ctx(), json.c_str());
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
@@ -807,15 +807,15 @@ TEST(TogglApiTest, toggl_add_project) {
     uint64_t wid = 0;
     uint64_t cid = 0;
     std::string project_name("");
-    _Bool is_private = false;
+    bool_t is_private = false;
 
     testing::testresult::error = "";
-    _Bool res = toggl_add_project(app.ctx(),
-                                  guid.c_str(),
-                                  wid,
-                                  cid,
-                                  project_name.c_str(),
-                                  is_private);
+    bool_t res = toggl_add_project(app.ctx(),
+                                   guid.c_str(),
+                                   wid,
+                                   cid,
+                                   project_name.c_str(),
+                                   is_private);
     ASSERT_EQ("Please select a workspace",
               testing::testresult::error);
     ASSERT_FALSE(res);
@@ -861,7 +861,7 @@ TEST(TogglApiTest, toggl_create_project) {
     uint64_t wid = 0;
     uint64_t cid = 0;
     std::string project_name("");
-    _Bool is_private = false;
+    bool_t is_private = false;
 
     testing::testresult::error = "";
     char_t *project_guid = toggl_create_project(app.ctx(),
@@ -914,9 +914,9 @@ TEST(TogglApiTest, toggl_create_client) {
     std::string client_name("");
 
     testing::testresult::error = "";
-    _Bool res = toggl_create_client(app.ctx(),
-                                    wid,
-                                    client_name.c_str());
+    bool_t res = toggl_create_client(app.ctx(),
+                                     wid,
+                                     client_name.c_str());
     ASSERT_EQ("Please select a workspace", testing::testresult::error);
     ASSERT_FALSE(res);
 
@@ -982,7 +982,7 @@ TEST(TogglApiTest, toggl_edit) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
     std::string guid("6a958efd-0e9a-d777-7e19-001b2d7ced92");
-    _Bool edit_running_time_entry = false;
+    bool_t edit_running_time_entry = false;
     std::string focused_field("description");
     toggl_edit(app.ctx(), guid.c_str(), edit_running_time_entry,
                focused_field.c_str());
@@ -1416,7 +1416,7 @@ TEST(TogglApiTest, toggl_autotracker_add_rule) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     testing::testresult::error = noError;
-    _Bool res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    bool_t res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
 

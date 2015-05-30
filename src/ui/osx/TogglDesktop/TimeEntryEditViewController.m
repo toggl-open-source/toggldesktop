@@ -267,7 +267,7 @@ extern void *ctx;
 	{
 		return YES;
 	}
-	_Bool is_public = [Utils stateToBool:[self.projectPublicCheckbox state]];
+	bool_t is_public = [Utils stateToBool:[self.projectPublicCheckbox state]];
 	uint64_t workspaceID = [self selectedWorkspaceID];
 	if (!workspaceID)
 	{
@@ -275,14 +275,14 @@ extern void *ctx;
 		return NO;
 	}
 	uint64_t clientID = [self selectedClientID];
-	_Bool isBillable = self.timeEntry.billable;
+	bool_t isBillable = self.timeEntry.billable;
 	// A new project is being added!
-	_Bool projectAdded = toggl_add_project(ctx,
-										   [self.timeEntry.GUID UTF8String],
-										   workspaceID,
-										   clientID,
-										   [projectName UTF8String],
-										   !is_public);
+	bool_t projectAdded = toggl_add_project(ctx,
+											[self.timeEntry.GUID UTF8String],
+											workspaceID,
+											clientID,
+											[projectName UTF8String],
+											!is_public);
 
 	if (projectAdded && isBillable)
 	{
@@ -766,7 +766,7 @@ extern void *ctx;
 {
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
-	_Bool value = [Utils stateToBool:[self.billableCheckbox state]];
+	bool_t value = [Utils stateToBool:[self.billableCheckbox state]];
 	toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
@@ -1036,9 +1036,9 @@ extern void *ctx;
 		return;
 	}
 
-	_Bool clientAdded = toggl_create_client(ctx,
-											workspaceID,
-											[clientName UTF8String]);
+	bool_t clientAdded = toggl_create_client(ctx,
+											 workspaceID,
+											 [clientName UTF8String]);
 	if (clientAdded)
 	{
 		[self toggleAddClient:YES];

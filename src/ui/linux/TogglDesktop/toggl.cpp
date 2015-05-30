@@ -27,7 +27,7 @@ QString TogglApi::Project = QString("project");
 QString TogglApi::Duration = QString("duration");
 QString TogglApi::Description = QString("description");
 
-void on_display_app(const _Bool open) {
+void on_display_app(const bool_t open) {
     TogglApi::instance->displayApp(open);
 }
 
@@ -37,7 +37,7 @@ void on_display_update(const char *url) {
 
 void on_display_error(
     const char *errmsg,
-    const _Bool user_error) {
+    const bool_t user_error) {
     TogglApi::instance->displayError(QString(errmsg), user_error);
 }
 
@@ -52,7 +52,7 @@ void on_display_url(
 }
 
 void on_display_login(
-    const _Bool open,
+    const bool_t open,
     const uint64_t user_id) {
     TogglApi::instance->displayLogin(open, user_id);
     Bugsnag::user.id = user_id;
@@ -67,7 +67,7 @@ void on_display_reminder(
 }
 
 void on_display_time_entry_list(
-    const _Bool open,
+    const bool_t open,
     TogglTimeEntryView *first) {
     TogglApi::instance->displayTimeEntryList(
         open,
@@ -111,7 +111,7 @@ void on_display_tags(
 }
 
 void on_display_time_entry_editor(
-    const _Bool open,
+    const bool_t open,
     TogglTimeEntryView *te,
     const char *focused_field_name) {
     TogglApi::instance->displayTimeEntryEditor(
@@ -121,7 +121,7 @@ void on_display_time_entry_editor(
 }
 
 void on_display_settings(
-    const _Bool open,
+    const bool_t open,
     TogglSettingsView *settings) {
     TogglApi::instance->displaySettings(
         open,

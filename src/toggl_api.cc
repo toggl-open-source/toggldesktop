@@ -41,8 +41,8 @@ void *toggl_context_init(
     return ctx;
 }
 
-_Bool toggl_ui_start(void *context) {
-    return app(context)->StartEvents();
+bool_t toggl_ui_start(void *context) {
+    return toggl::noError == app(context)->StartEvents();
 }
 
 void toggl_password_forgot(void *context) {
@@ -57,17 +57,17 @@ void toggl_context_clear(void *context) {
     delete app(context);
 }
 
-_Bool toggl_set_settings_remind_days(
+bool_t toggl_set_settings_remind_days(
     void *context,
-    const _Bool remind_mon,
-    const _Bool remind_tue,
-    const _Bool remind_wed,
-    const _Bool remind_thu,
-    const _Bool remind_fri,
-    const _Bool remind_sat,
-    const _Bool remind_sun) {
+    const bool_t remind_mon,
+    const bool_t remind_tue,
+    const bool_t remind_wed,
+    const bool_t remind_thu,
+    const bool_t remind_fri,
+    const bool_t remind_sat,
+    const bool_t remind_sun) {
 
-    return app(context)->SetSettingsRemindDays(
+    return toggl::noError == app(context)->SetSettingsRemindDays(
         remind_mon,
         remind_tue,
         remind_wed,
@@ -77,7 +77,7 @@ _Bool toggl_set_settings_remind_days(
         remind_sun);
 }
 
-_Bool toggl_set_settings_remind_times(
+bool_t toggl_set_settings_remind_times(
     void *context,
     const char_t *remind_starts,
     const char_t *remind_ends) {
@@ -85,98 +85,104 @@ _Bool toggl_set_settings_remind_times(
     poco_check_ptr(remind_starts);
     poco_check_ptr(remind_ends);
 
-    return app(context)->SetSettingsRemindTimes(
+    return toggl::noError == app(context)->SetSettingsRemindTimes(
         to_string(remind_starts),
         to_string(remind_ends));
 }
 
-_Bool toggl_set_settings_use_idle_detection(
+bool_t toggl_set_settings_use_idle_detection(
     void *context,
-    const _Bool use_idle_detection) {
-    return app(context)->SetSettingsUseIdleDetection(use_idle_detection);
+    const bool_t use_idle_detection) {
+    return toggl::noError == app(context)->
+           SetSettingsUseIdleDetection(use_idle_detection);
 }
 
-_Bool toggl_set_settings_autotrack(
+bool_t toggl_set_settings_autotrack(
     void *context,
-    const _Bool value) {
-    return app(context)->SetSettingsAutotrack(value);
+    const bool_t value) {
+    return toggl::noError == app(context)->SetSettingsAutotrack(value);
 }
 
-_Bool toggl_set_settings_autodetect_proxy(
+bool_t toggl_set_settings_autodetect_proxy(
     void *context,
-    const _Bool autodetect_proxy) {
-    return app(context)->SetSettingsAutodetectProxy(autodetect_proxy);
+    const bool_t autodetect_proxy) {
+    return toggl::noError == app(context)->
+           SetSettingsAutodetectProxy(autodetect_proxy);
 }
 
-_Bool toggl_set_settings_menubar_timer(
+bool_t toggl_set_settings_menubar_timer(
     void *context,
-    const _Bool menubar_timer) {
-    return app(context)->SetSettingsMenubarTimer(menubar_timer);
+    const bool_t menubar_timer) {
+    return toggl::noError == app(context)->
+           SetSettingsMenubarTimer(menubar_timer);
 }
 
-_Bool toggl_set_settings_menubar_project(
+bool_t toggl_set_settings_menubar_project(
     void *context,
-    const _Bool menubar_project) {
-    return app(context)->SetSettingsMenubarProject(menubar_project);
+    const bool_t menubar_project) {
+    return toggl::noError == app(context)->
+           SetSettingsMenubarProject(menubar_project);
 }
 
-_Bool toggl_set_settings_dock_icon(
+bool_t toggl_set_settings_dock_icon(
     void *context,
-    const _Bool dock_icon) {
-    return app(context)->SetSettingsDockIcon(dock_icon);
+    const bool_t dock_icon) {
+    return toggl::noError == app(context)->SetSettingsDockIcon(dock_icon);
 }
 
-_Bool toggl_set_settings_on_top(
+bool_t toggl_set_settings_on_top(
     void *context,
-    const _Bool on_top) {
-    return app(context)->SetSettingsOnTop(on_top);
+    const bool_t on_top) {
+    return toggl::noError == app(context)->SetSettingsOnTop(on_top);
 }
 
-_Bool toggl_set_settings_reminder(
+bool_t toggl_set_settings_reminder(
     void *context,
-    const _Bool reminder) {
-    return app(context)->SetSettingsReminder(reminder);
+    const bool_t reminder) {
+    return toggl::noError == app(context)->SetSettingsReminder(reminder);
 }
 
-_Bool toggl_set_settings_idle_minutes(
+bool_t toggl_set_settings_idle_minutes(
     void *context,
     const uint64_t idle_minutes) {
-    return app(context)->SetSettingsIdleMinutes(idle_minutes);
+    return toggl::noError == app(context)->SetSettingsIdleMinutes(idle_minutes);
 }
 
-_Bool toggl_set_settings_focus_on_shortcut(
+bool_t toggl_set_settings_focus_on_shortcut(
     void *context,
-    const _Bool focus_on_shortcut) {
-    return app(context)->SetSettingsFocusOnShortcut(focus_on_shortcut);
+    const bool_t focus_on_shortcut) {
+    return toggl::noError == app(context)->
+           SetSettingsFocusOnShortcut(focus_on_shortcut);
 }
 
-_Bool toggl_set_settings_manual_mode(
+bool_t toggl_set_settings_manual_mode(
     void *context,
-    const _Bool manual_mode) {
-    return app(context)->SetSettingsManualMode(manual_mode);
+    const bool_t manual_mode) {
+    return toggl::noError == app(context)->SetSettingsManualMode(manual_mode);
 }
 
-_Bool toggl_set_settings_reminder_minutes(
+bool_t toggl_set_settings_reminder_minutes(
     void *context,
     const uint64_t reminder_minutes) {
-    return app(context)->SetSettingsReminderMinutes(reminder_minutes);
+    return toggl::noError == app(context)->
+           SetSettingsReminderMinutes(reminder_minutes);
 }
 
-_Bool toggl_set_window_settings(
+bool_t toggl_set_window_settings(
     void *context,
     const int64_t window_x,
     const int64_t window_y,
     const int64_t window_height,
     const int64_t window_width) {
 
-    return app(context)->SaveWindowSettings(
+    return toggl::noError == app(context)->SaveWindowSettings(
         window_x,
         window_y,
         window_height,
         window_width);
 }
 
-_Bool toggl_window_settings(
+bool_t toggl_window_settings(
     void *context,
     int64_t *window_x,
     int64_t *window_y,
@@ -190,19 +196,19 @@ _Bool toggl_window_settings(
     poco_check_ptr(window_height);
     poco_check_ptr(window_width);
 
-    return app(context)->LoadWindowSettings(
+    return toggl::noError == app(context)->LoadWindowSettings(
         window_x,
         window_y,
         window_height,
         window_width);
 }
 
-_Bool toggl_set_proxy_settings(void *context,
-                               const _Bool use_proxy,
-                               const char_t *proxy_host,
-                               const uint64_t proxy_port,
-                               const char_t *proxy_username,
-                               const char_t *proxy_password) {
+bool_t toggl_set_proxy_settings(void *context,
+                                const bool_t use_proxy,
+                                const char_t *proxy_host,
+                                const uint64_t proxy_port,
+                                const char_t *proxy_username,
+                                const char_t *proxy_password) {
     poco_check_ptr(proxy_host);
     poco_check_ptr(proxy_username);
     poco_check_ptr(proxy_password);
@@ -213,7 +219,7 @@ _Bool toggl_set_proxy_settings(void *context,
     proxy.SetUsername(to_string(proxy_username));
     proxy.SetPassword(to_string(proxy_password));
 
-    return app(context)->SetProxySettings(use_proxy, proxy);
+    return toggl::noError == app(context)->SetProxySettings(use_proxy, proxy);
 }
 
 void toggl_set_cacert_path(
@@ -224,12 +230,12 @@ void toggl_set_cacert_path(
     toggl::HTTPSClient::Config.CACertPath = to_string(path);
 }
 
-_Bool toggl_set_db_path(
+bool_t toggl_set_db_path(
     void *context,
     const char_t *path) {
     poco_check_ptr(path);
 
-    return app(context)->SetDBPath(to_string(path));
+    return toggl::noError == app(context)->SetDBPath(to_string(path));
 }
 
 void toggl_set_update_path(
@@ -282,7 +288,7 @@ void toggl_show_app(
     app(context)->UI()->DisplayApp();
 }
 
-_Bool toggl_login(
+bool_t toggl_login(
     void *context,
     const char_t *email,
     const char_t *password) {
@@ -290,11 +296,11 @@ _Bool toggl_login(
     poco_check_ptr(email);
     poco_check_ptr(password);
 
-    return app(context)->Login(to_string(email),
-                               to_string(password));
+    return toggl::noError == app(context)->Login(to_string(email),
+            to_string(password));
 }
 
-_Bool toggl_signup(
+bool_t toggl_signup(
     void *context,
     const char_t *email,
     const char_t *password) {
@@ -302,33 +308,33 @@ _Bool toggl_signup(
     poco_check_ptr(email);
     poco_check_ptr(password);
 
-    return app(context)->Signup(to_string(email),
-                                to_string(password));
+    return toggl::noError == app(context)->Signup(to_string(email),
+            to_string(password));
 }
 
-_Bool toggl_google_login(
+bool_t toggl_google_login(
     void *context,
     const char_t *access_token) {
 
     poco_check_ptr(access_token);
 
-    return app(context)->GoogleLogin(to_string(access_token));
+    return toggl::noError == app(context)->GoogleLogin(to_string(access_token));
 }
 
-_Bool toggl_logout(
+bool_t toggl_logout(
     void *context) {
 
     logger().debug("toggl_logout");
 
-    return app(context)->Logout();
+    return toggl::noError == app(context)->Logout();
 }
 
-_Bool toggl_clear_cache(
+bool_t toggl_clear_cache(
     void *context) {
 
     logger().debug("toggl_clear_cache");
 
-    return app(context)->ClearCache();
+    return toggl::noError == app(context)->ClearCache();
 }
 
 void toggl_sync(void *context) {
@@ -341,57 +347,53 @@ char_t *toggl_create_project(
     const uint64_t workspace_id,
     const uint64_t client_id,
     const char_t *project_name,
-    const _Bool is_private) {
+    const bool_t is_private) {
 
-    toggl::Project *p = nullptr;
-
-    app(context)->CreateProject(
+    toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
         to_string(project_name),
-        is_private,
-        &p);
+        is_private);
 
     if (p) {
         return copy_string(p->GUID());
     }
-    return 0;
+    return nullptr;
 }
 
-_Bool toggl_create_client(
+bool_t toggl_create_client(
     void *context,
     const uint64_t workspace_id,
     const char_t *client_name) {
 
-    return app(context)->CreateClient(
+    return toggl::noError == app(context)->CreateClient(
         workspace_id,
         to_string(client_name));
 }
 
-_Bool toggl_add_project(
+bool_t toggl_add_project(
     void *context,
     const char_t *time_entry_guid,
     const uint64_t workspace_id,
     const uint64_t client_id,
     const char_t *project_name,
-    const _Bool is_private) {
+    const bool_t is_private) {
 
     poco_check_ptr(time_entry_guid);
 
-    toggl::Project *p = nullptr;
-    if (!app(context)->CreateProject(
+    toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
         to_string(project_name),
-        is_private,
-        &p)) {
+        is_private);
+    if (!p) {
         return false;
     }
 
     poco_check_ptr(p);
 
     char_t *guid = copy_string(p->GUID());
-    _Bool res = toggl_set_time_entry_project(
+    bool_t res = toggl_set_time_entry_project(
         context,
         time_entry_guid,
         0, /* no task ID */
@@ -450,10 +452,10 @@ char_t *toggl_start(
     if (te) {
         return copy_string(te->GUID());
     }
-    return 0;
+    return nullptr;
 }
 
-_Bool toggl_continue(
+bool_t toggl_continue(
     void *context,
     const char_t *guid) {
 
@@ -463,7 +465,7 @@ _Bool toggl_continue(
     ss << "toggl_continue guid=" << guid;
     logger().debug(ss.str());
 
-    return app(context)->Continue(to_string(guid));
+    return toggl::noError == app(context)->Continue(to_string(guid));
 }
 
 void toggl_view_time_entry_list(void *context) {
@@ -473,7 +475,7 @@ void toggl_view_time_entry_list(void *context) {
 void toggl_edit(
     void *context,
     const char_t *guid,
-    const _Bool edit_running_entry,
+    const bool_t edit_running_entry,
     const char_t *focused_field_name) {
 
     poco_check_ptr(guid);
@@ -494,15 +496,15 @@ void toggl_edit_preferences(void *context) {
     app(context)->DisplaySettings(true);
 }
 
-_Bool toggl_continue_latest(
+bool_t toggl_continue_latest(
     void *context) {
 
     logger().debug("toggl_continue_latest");
 
-    return app(context)->ContinueLatest();
+    return toggl::noError == app(context)->ContinueLatest();
 }
 
-_Bool toggl_delete_time_entry(
+bool_t toggl_delete_time_entry(
     void *context,
     const char_t *guid) {
 
@@ -512,10 +514,11 @@ _Bool toggl_delete_time_entry(
     ss << "toggl_delete_time_entry guid=" << guid;
     logger().debug(ss.str());
 
-    return app(context)->DeleteTimeEntryByGUID(to_string(guid));
+    return toggl::noError == app(context)->
+           DeleteTimeEntryByGUID(to_string(guid));
 }
 
-_Bool toggl_set_time_entry_duration(
+bool_t toggl_set_time_entry_duration(
     void *context,
     const char_t *guid,
     const char_t *value) {
@@ -528,12 +531,12 @@ _Bool toggl_set_time_entry_duration(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryDuration(
+    return toggl::noError == app(context)->SetTimeEntryDuration(
         to_string(guid),
         to_string(value));
 }
 
-_Bool toggl_set_time_entry_project(
+bool_t toggl_set_time_entry_project(
     void *context,
     const char_t *guid,
     const uint64_t task_id,
@@ -545,13 +548,13 @@ _Bool toggl_set_time_entry_project(
     if (project_guid) {
         pguid = to_string(project_guid);
     }
-    return app(context)->SetTimeEntryProject(to_string(guid),
+    return toggl::noError == app(context)->SetTimeEntryProject(to_string(guid),
             task_id,
             project_id,
             pguid);
 }
 
-_Bool toggl_set_time_entry_date(
+bool_t toggl_set_time_entry_date(
     void *context,
     const char_t *guid,
     const int64_t unix_timestamp) {
@@ -563,10 +566,11 @@ _Bool toggl_set_time_entry_date(
         << ", unix_timestamp=" << unix_timestamp;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryDate(to_string(guid), unix_timestamp);
+    return toggl::noError == app(context)->
+           SetTimeEntryDate(to_string(guid), unix_timestamp);
 }
 
-_Bool toggl_set_time_entry_start(
+bool_t toggl_set_time_entry_start(
     void *context,
     const char_t *guid,
     const char_t *value) {
@@ -578,10 +582,11 @@ _Bool toggl_set_time_entry_start(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryStart(to_string(guid), to_string(value));
+    return toggl::noError == app(context)->
+           SetTimeEntryStart(to_string(guid), to_string(value));
 }
 
-_Bool toggl_set_time_entry_end(
+bool_t toggl_set_time_entry_end(
     void *context,
     const char_t *guid,
     const char_t *value) {
@@ -593,10 +598,11 @@ _Bool toggl_set_time_entry_end(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryStop(to_string(guid), to_string(value));
+    return toggl::noError == app(context)->
+           SetTimeEntryStop(to_string(guid), to_string(value));
 }
 
-_Bool toggl_set_time_entry_tags(
+bool_t toggl_set_time_entry_tags(
     void *context,
     const char_t *guid,
     const char_t *value) {
@@ -609,14 +615,14 @@ _Bool toggl_set_time_entry_tags(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryTags(to_string(guid),
-                                          to_string(value));
+    return toggl::noError == app(context)->SetTimeEntryTags(to_string(guid),
+            to_string(value));
 }
 
-_Bool toggl_set_time_entry_billable(
+bool_t toggl_set_time_entry_billable(
     void *context,
     const char_t *guid,
-    const _Bool value) {
+    const bool_t value) {
 
     poco_check_ptr(guid);
 
@@ -625,10 +631,11 @@ _Bool toggl_set_time_entry_billable(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryBillable(to_string(guid), value);
+    return toggl::noError == app(context)->
+           SetTimeEntryBillable(to_string(guid), value);
 }
 
-_Bool toggl_set_time_entry_description(
+bool_t toggl_set_time_entry_description(
     void *context,
     const char_t *guid,
     const char_t *value) {
@@ -640,22 +647,22 @@ _Bool toggl_set_time_entry_description(
         << ", value=" << value;
     logger().debug(ss.str());
 
-    return app(context)->SetTimeEntryDescription(to_string(guid),
-            to_string(value));
+    return toggl::noError == app(context)->
+           SetTimeEntryDescription(to_string(guid), to_string(value));
 }
 
-_Bool toggl_stop(
+bool_t toggl_stop(
     void *context) {
     logger().debug("toggl_stop");
 
-    return app(context)->Stop();
+    return toggl::noError == app(context)->Stop();
 }
 
-_Bool toggl_discard_time_at(
+bool_t toggl_discard_time_at(
     void *context,
     const char_t *guid,
     const uint64_t at,
-    const _Bool split_into_new_entry) {
+    const bool_t split_into_new_entry) {
 
     if (!guid) {
         logger().error("Cannot discard time without GUID");
@@ -669,25 +676,26 @@ _Bool toggl_discard_time_at(
 
     logger().debug("toggl_discard_time_at");
 
-    return app(context)->DiscardTimeAt(
+    return toggl::noError == app(context)->DiscardTimeAt(
         to_string(guid),
         at,
         split_into_new_entry);
 }
 
-_Bool toggl_timeline_toggle_recording(
+bool_t toggl_timeline_toggle_recording(
     void *context,
-    const _Bool record_timeline) {
+    const bool_t record_timeline) {
     logger().debug("toggl_timeline_toggle_recording");
-    return app(context)->ToggleTimelineRecording(record_timeline);
+    return toggl::noError == app(context)->
+           ToggleTimelineRecording(record_timeline);
 }
 
-_Bool toggl_timeline_is_recording_enabled(
+bool_t toggl_timeline_is_recording_enabled(
     void *context) {
     return app(context)->IsTimelineRecordingEnabled();
 }
 
-_Bool toggl_feedback_send(
+bool_t toggl_feedback_send(
     void *context,
     const char_t *topic,
     const char_t *details,
@@ -700,16 +708,17 @@ _Bool toggl_feedback_send(
                              to_string(details),
                              to_string(filename));
 
-    return app(context)->SendFeedback(feedback);
+    return toggl::noError == app(context)->SendFeedback(feedback);
 }
 
-_Bool toggl_set_update_channel(
+bool_t toggl_set_update_channel(
     void *context,
     const char_t *update_channel) {
 
     poco_check_ptr(update_channel);
 
-    return app(context)->SaveUpdateChannel(to_string(update_channel));
+    return toggl::noError == app(context)->
+           SaveUpdateChannel(to_string(update_channel));
 }
 
 char_t *toggl_get_update_channel(
@@ -914,7 +923,7 @@ void toggl_debug(const char_t *text) {
     logger().debug(to_string(text));
 }
 
-_Bool toggl_check_view_struct_size(
+bool_t toggl_check_view_struct_size(
     const int time_entry_view_item_size,
     const int autocomplete_view_item_size,
     const int view_item_size,
@@ -1000,21 +1009,22 @@ char_t *toggl_run_script(
     return copy_string(ss.str());
 }
 
-_Bool toggl_autotracker_add_rule(
+bool_t toggl_autotracker_add_rule(
     void *context,
     const char_t *term,
     const uint64_t project_id) {
 
     poco_check_ptr(term);
 
-    return app(context)->AddAutotrackerRule(to_string(term), project_id);
+    return toggl::noError == app(context)->
+           AddAutotrackerRule(to_string(term), project_id);
 }
 
-_Bool toggl_autotracker_delete_rule(
+bool_t toggl_autotracker_delete_rule(
     void *context,
     const int64_t id) {
 
-    return app(context)->DeleteAutotrackerRule(id);
+    return toggl::noError == app(context)->DeleteAutotrackerRule(id);
 }
 
 
@@ -1023,11 +1033,11 @@ void testing_sleep(
     Poco::Thread::sleep(seconds*1000);
 }
 
-_Bool testing_set_logged_in_user(
+bool_t testing_set_logged_in_user(
     void *context,
     const char *json) {
     poco_check_ptr(json);
 
     toggl::Context *ctx = reinterpret_cast<toggl::Context *>(context);
-    return ctx->SetLoggedInUserFromJSON(std::string(json));
+    return toggl::noError == ctx->SetLoggedInUserFromJSON(std::string(json));
 }
