@@ -56,7 +56,7 @@ public partial class LoginViewController : UserControl
     public void SetAcceptButton(Form frm)
     {   
         // WPF buttons do not support this
-        // see LoginViewController_KeyUp for manual implementation
+        // see textFieldKeyUp for manual implementation
         frm.AcceptButton = null;
     }
 
