@@ -503,7 +503,8 @@ NSString *kInactiveTimerColor = @"#999999";
 							 [self.descriptionComboBox.stringValue UTF8String],
 							 "0",
 							 self.time_entry.TaskID,
-							 self.time_entry.ProjectID);
+							 self.time_entry.ProjectID,
+							 0);
 
 	[self clear];
 	self.time_entry = [[TimeEntryViewItem alloc] init];

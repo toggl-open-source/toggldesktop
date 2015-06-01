@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) try {
 
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<int64_t>("int64_t");
-    qRegisterMetaType<_Bool>("_Bool");
+    qRegisterMetaType<bool_t>("bool_t");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*");
     qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*");

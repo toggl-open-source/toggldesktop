@@ -68,7 +68,8 @@ TimeEntry *User::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
-    const Poco::UInt64 project_id) {
+    const Poco::UInt64 project_id,
+    const std::string project_guid) {
     Stop();
 
     time_t now = time(0);
@@ -81,6 +82,7 @@ TimeEntry *User::Start(
     te->SetDescription(description);
     te->SetUID(ID());
     te->SetPID(project_id);
+    te->SetProjectGUID(project_guid);
     te->SetTID(task_id);
 
     if (!duration.empty()) {
@@ -95,12 +97,15 @@ TimeEntry *User::Start(
     }
 
     // Try to set workspace ID from project
+    Project *p = nullptr;
     if (te->PID()) {
-        Project *p = related.ProjectByID(te->PID());
-        if (p) {
-            te->SetWID(p->WID());
-            te->SetBillable(p->Billable());
-        }
+        p = related.ProjectByID(te->PID());
+    } else if (!te->ProjectGUID().empty()) {
+        p = related.ProjectByGUID(te->ProjectGUID());
+    }
+    if (p) {
+        te->SetWID(p->WID());
+        te->SetBillable(p->Billable());
     }
 
     // Try to set workspace ID from task

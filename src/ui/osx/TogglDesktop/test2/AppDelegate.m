@@ -211,7 +211,7 @@ BOOL manualMode = NO;
 
 	toggl_set_environment(ctx, [self.environment UTF8String]);
 
-	_Bool started = toggl_ui_start(ctx);
+	bool_t started = toggl_ui_start(ctx);
 	NSAssert(started, @"Failed to start UI");
 
 	[MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
@@ -312,7 +312,8 @@ BOOL manualMode = NO;
 		if (NSUserNotificationActivationTypeActionButtonClicked == notification.activationType)
 		{
 			NSNumber *project_id = notification.userInfo[@"project_id"];
-			toggl_start(ctx, "", "", 0, project_id.longValue);
+			char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
+			free(guid);
 		}
 		return;
 	}
@@ -355,7 +356,8 @@ BOOL manualMode = NO;
 							 [new_time_entry.Description UTF8String],
 							 [new_time_entry.duration UTF8String],
 							 new_time_entry.TaskID,
-							 new_time_entry.ProjectID);
+							 new_time_entry.ProjectID,
+							 0);
 	free(guid);
 }
 
@@ -1046,7 +1048,7 @@ const NSString *appName = @"osx_native_app";
 	NSString *cacertPath = [[NSBundle mainBundle] pathForResource:@"cacert" ofType:@"pem"];
 	toggl_set_cacert_path(ctx, [cacertPath UTF8String]);
 
-	_Bool res = toggl_set_db_path(ctx, [self.db_path UTF8String]);
+	bool_t res = toggl_set_db_path(ctx, [self.db_path UTF8String]);
 	if (!res)
 	{
 		NSLog(@"Failed to initialize database at %@", self.db_path);
@@ -1262,7 +1264,7 @@ void on_unsynced_items(const int64_t count)
 														object:[NSNumber numberWithLong:count]];
 }
 
-void on_login(const _Bool open, const uint64_t user_id)
+void on_login(const bool_t open, const uint64_t user_id)
 {
 	[Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%lld", user_id]];
 
@@ -1291,7 +1293,7 @@ void on_url(const char *url)
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
 }
 
-void on_time_entry_list(const _Bool open,
+void on_time_entry_list(const bool_t open,
 						TogglTimeEntryView *first)
 {
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
@@ -1385,7 +1387,7 @@ void on_workspace_select(TogglGenericView *first)
 														object:[ViewItem loadAll:first]];
 }
 
-void on_time_entry_editor(const _Bool open,
+void on_time_entry_editor(const bool_t open,
 						  TogglTimeEntryView *te,
 						  const char *focused_field_name)
 {
@@ -1400,7 +1402,7 @@ void on_time_entry_editor(const _Bool open,
 														object:cmd];
 }
 
-void on_app(const _Bool open)
+void on_app(const bool_t open)
 {
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 
@@ -1409,7 +1411,7 @@ void on_app(const _Bool open)
 														object:cmd];
 }
 
-void on_error(const char *errmsg, const _Bool is_user_error)
+void on_error(const char *errmsg, const bool_t is_user_error)
 {
 	NSString *msg = [NSString stringWithUTF8String:errmsg];
 
@@ -1425,7 +1427,7 @@ void on_error(const char *errmsg, const _Bool is_user_error)
 	}
 }
 
-void on_settings(const _Bool open,
+void on_settings(const bool_t open,
 				 TogglSettingsView *settings)
 {
 	Settings *s = [[Settings alloc] init];

@@ -4,6 +4,7 @@
 
 #include <iostream>  // NOLINT
 
+#include "./../autotracker.h"
 #include "./../client.h"
 #include "./../const.h"
 #include "./../database.h"
@@ -245,6 +246,24 @@ TEST(User, UpdatesTimeEntryFromJSON) {
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
     te->LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ("Changed", te->Description());
+}
+
+TEST(User, UpdatesTimeEntryIDFromJSONEvenIfUpdatedByUserMeanwhile) {
+    User user;
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+
+    TimeEntry *te = user.related.TimeEntryByID(89818605);
+    ASSERT_TRUE(te);
+
+    time_t older_change = time(0) - 10;
+    te->SetUIModifiedAt(time(0));
+
+    std::stringstream ss;
+    ss << "{\"id\":123,\"description\":\"Changed\",\"ui_modified_at\":" <<
+       older_change << "}";
+    te->LoadFromJSON(jsonStringToValue(ss.str()));
+    ASSERT_EQ(123, te->ID());
 }
 
 TEST(User, DeletesZombies) {
@@ -522,7 +541,7 @@ TEST(User, TestStartTimeEntryWithDuration) {
 
     size_t count = user.related.TimeEntries.size();
 
-    user.Start("Old work", "1 hour", 0, 0);
+    user.Start("Old work", "1 hour", 0, 0, "");
 
     ASSERT_EQ(count + 1, user.related.TimeEntries.size());
 
@@ -538,7 +557,7 @@ TEST(User, TestStartTimeEntryWithoutDuration) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    user.Start("Old work", "", 0, 0);
+    user.Start("Old work", "", 0, 0, "");
 
     TimeEntry *te = user.RunningTimeEntry();
     ASSERT_TRUE(te);
@@ -553,7 +572,7 @@ TEST(User, TestDeletionSteps) {
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     // first, mark time entry as deleted
-    user.Start("My new time entry", "", 0, 0);
+    user.Start("My new time entry", "", 0, 0, "");
     TimeEntry *te = user.RunningTimeEntry();
     ASSERT_TRUE(te);
     std::vector<ModelChange> changes;
@@ -1741,7 +1760,7 @@ TEST(BatchUpdateResult, ResourceIsGoneBecauseOf404) {
     ASSERT_TRUE(b.ResourceIsGone());
 }
 
-TEST(ProxyTest, IsConfigured) {
+TEST(Proxy, IsConfigured) {
     Proxy p;
     ASSERT_FALSE(p.IsConfigured());
 
@@ -1750,7 +1769,7 @@ TEST(ProxyTest, IsConfigured) {
     ASSERT_TRUE(p.IsConfigured());
 }
 
-TEST(ProxyTest, HasCredentials) {
+TEST(Proxy, HasCredentials) {
     Proxy p;
     ASSERT_FALSE(p.HasCredentials());
 
@@ -1759,9 +1778,27 @@ TEST(ProxyTest, HasCredentials) {
     ASSERT_TRUE(p.HasCredentials());
 }
 
-TEST(ProxyTest, String) {
+TEST(Proxy, String) {
     Proxy p;
     ASSERT_NE("", p.String());
+}
+
+TEST(AutotrackerRule, Matches) {
+    AutotrackerRule a;
+    a.SetTerm("work");
+    a.SetPID(123);
+
+    TimelineEvent ev;
+    ASSERT_FALSE(a.Matches(ev));
+
+    ev.SetTitle("WORKING");
+    ASSERT_TRUE(a.Matches(ev));
+
+    ev.SetTitle("I was working late");
+    ASSERT_TRUE(a.Matches(ev));
+
+    ev.SetTitle("dork");
+    ASSERT_FALSE(a.Matches(ev));
 }
 
 }  // namespace toggl

@@ -133,7 +133,8 @@ public partial class TimerEditViewController : UserControl
             description,
             duration,
             task_id,
-            project_id) == null)
+            project_id,
+            "") == null)
         {
             task_id = 0;
             project_id = 0;
@@ -411,7 +412,8 @@ public partial class TimerEditViewController : UserControl
             descriptionText,
             defaultDuration,
             task_id,
-            project_id);
+            project_id,
+            "");
 
         if (GUID != null)
         {

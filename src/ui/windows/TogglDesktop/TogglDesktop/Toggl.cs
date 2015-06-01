@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.Win32;
 
 namespace TogglDesktop
 {
@@ -187,6 +184,23 @@ public static class Toggl
 
         [MarshalAs(UnmanagedType.I1)]
         public bool Autotrack;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct AutotrackerRuleView
+    {
+        public Int64 ID;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string Term;
+        public UInt64 PID;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string ProjectName;
+        public IntPtr Next;
+
+        public override string ToString()
+        {
+            return Term;
+        }
     }
 
     // Callbacks
@@ -971,19 +985,23 @@ public static class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string duration,
         UInt64 task_id,
-        UInt64 project_id);
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_guid);
 
     public static string Start(
         string description,
         string duration,
         UInt64 task_id,
-        UInt64 project_id)
+        UInt64 project_id,
+        string project_guid)
     {
         return toggl_start(ctx,
                            description,
                            duration,
                            task_id,
-                           project_id);
+                           project_id,
+                           project_guid);
     }
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1307,7 +1325,7 @@ public static class Toggl
             Marshal.SizeOf(new AutocompleteItem()),
             Marshal.SizeOf(new Model()),
             Marshal.SizeOf(new Settings()),
-            Marshal.SizeOf(new AutocompleteItem()));
+            Marshal.SizeOf(new AutotrackerRuleView()));
         if (!valid) {
             throw new System.InvalidOperationException("Invalid struct size, please check log file(s)");
         }
