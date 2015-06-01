@@ -486,6 +486,10 @@ extern void *ctx;
 
 	[[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
 	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
+	if ([self.timeEntriesTableView numberOfRows] >= self.lastSelectedRowIndex)
+	{
+		return;
+	}
 	TimeEntryCell *cell = [self getSelectedEntryCell:self.lastSelectedRowIndex];
 	if (cell != nil)
 	{
