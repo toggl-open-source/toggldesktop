@@ -140,14 +140,14 @@ bool IsUserError(const error err) {
         return true;
     }
     if (err.find(kRequestToServerFailedWithStatusCode403)
-                != std::string::npos) {
+            != std::string::npos) {
         return true;
     }
     if (err.find(kUnsupportedAppError) != std::string::npos) {
         return true;
     }
     if (err.find("Stop time must be after start time")
-                != std::string::npos) {
+            != std::string::npos) {
         return true;
     }
     if (err.find("Invalid e-mail or password") != std::string::npos) {
@@ -157,7 +157,7 @@ bool IsUserError(const error err) {
         return true;
     }
     if (err.find("Start time year must be between 2010 and 2100")
-                != std::string::npos) {
+            != std::string::npos) {
         return true;
     }
     if (err.find(kMissingWorkspaceID) != std::string::npos) {
@@ -170,7 +170,7 @@ bool IsUserError(const error err) {
         return true;
     }
     if (err.find("User with this email already exists") !=
-                std::string::npos) {
+            std::string::npos) {
         return true;
     }
     if (err.find("Invalid e-mail") != std::string::npos) {

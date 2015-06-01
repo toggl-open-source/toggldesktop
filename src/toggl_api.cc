@@ -1027,7 +1027,6 @@ bool_t toggl_autotracker_delete_rule(
     return toggl::noError == app(context)->DeleteAutotrackerRule(id);
 }
 
-
 void testing_sleep(
     const int seconds) {
     Poco::Thread::sleep(seconds*1000);
