@@ -221,12 +221,32 @@ public partial class MainWindowController : TogglForm
 
         Utils.LoadWindowLocation(this, editForm);
 
+        setCorrectMinimumSize();
+
         aboutWindowController.initAndCheck();
 
         runScriptTimer = new Timer();
         runScriptTimer.Interval = 1000;
         runScriptTimer.Tick += runScriptTimer_Tick;
         runScriptTimer.Start();
+    }
+
+    private void setCorrectMinimumSize()
+    {
+        Size minSize;
+        if (contentPanel.Controls.Contains(loginViewController))
+        {
+            minSize = new Size(loginViewController.MinimumSize.Width, loginViewController.MinimumSize.Height + 40);
+        }
+        else
+        {
+            minSize = new Size(230, 86);
+        }
+        if(minSize != MinimumSize)
+        {
+            MinimumSize = minSize;
+            updateResizeHandleBackground();
+        }
     }
 
     void runScriptTimer_Tick(object sender, EventArgs e)
@@ -471,7 +491,7 @@ public partial class MainWindowController : TogglForm
             contentPanel.Controls.Remove(timeEntryListViewController);
             contentPanel.Controls.Remove(timeEntryEditViewController);
             contentPanel.Controls.Add(loginViewController);
-            MinimumSize = new Size(loginViewController.MinimumSize.Width, loginViewController.MinimumSize.Height + 40);
+            setCorrectMinimumSize();
             loginViewController.SetAcceptButton(this);
             resizeHandle.BackColor = Color.FromArgb(69, 69, 69);
         }
@@ -512,7 +532,7 @@ public partial class MainWindowController : TogglForm
             troubleBox.Visible = false;
             contentPanel.Location = defaultContentPosition;
             contentPanel.Controls.Remove(loginViewController);
-            MinimumSize = new Size(230, 86);
+            setCorrectMinimumSize();
             contentPanel.Controls.Add(timeEntryListViewController);
             timeEntryListViewController.SetAcceptButton(this);
             if (editForm.Visible)
@@ -959,6 +979,23 @@ public partial class MainWindowController : TogglForm
             Win32.ReleaseCapture();
             int buttonEvent = (isResizing) ? Win32.wmNcLButtonDown : Win32.wmNcLButtonUp;
             Win32.SendMessage(Handle, buttonEvent, Win32.HtBottomRight, 0);
+        }
+    }
+
+    private void MainWindowController_KeyDown(object sender, KeyEventArgs e)
+    {
+        foreach (var item in trayIconMenu.Items)
+        {
+            var asMenuItem = item as ToolStripMenuItem;
+            if (asMenuItem != null)
+            {
+                if (e.KeyData == asMenuItem.ShortcutKeys)
+                {
+                    asMenuItem.PerformClick();
+                    e.Handled = true;
+                    return;
+                }
+            }
         }
     }
 }
