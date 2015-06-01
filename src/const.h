@@ -60,6 +60,7 @@
 #define kMissingWorkspaceID "Missing workspace ID"
 #define kCannotContinueDeletedTimeEntry "Cannot continue deleted time entry"
 #define kCannotDeleteDeletedTimeEntry "Cannot delete deleted time entry"
+#define kErrorRuleAlreadyExists "rule already exists"
 
 #define kOnlineStateOnline 0
 #define kOnlineStateNoNetwork 1

@@ -263,7 +263,7 @@ TEST(User, UpdatesTimeEntryIDFromJSONEvenIfUpdatedByUserMeanwhile) {
     ss << "{\"id\":123,\"description\":\"Changed\",\"ui_modified_at\":" <<
        older_change << "}";
     te->LoadFromJSON(jsonStringToValue(ss.str()));
-    ASSERT_EQ(123, te->ID());
+    ASSERT_EQ(static_cast<Poco::UInt64>(123), te->ID());
 }
 
 TEST(User, DeletesZombies) {

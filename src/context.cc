@@ -2598,7 +2598,7 @@ error Context::AddAutotrackerRule(
         AutotrackerRule *rule = *it;
         if (rule->Term() == lowercase) {
             // avoid duplicates
-            return displayError("rule already exists");
+            return displayError(kErrorRuleAlreadyExists);
         }
     }
 
