@@ -196,6 +196,9 @@
     <Compile Include="IdleNotificationWindowController.Designer.cs">
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\LoginConfirmButton.xaml.cs">
+      <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\LoginPasswordBox.xaml.cs">
       <DependentUpon>LoginPasswordBox.xaml</DependentUpon>
     </Compile>
@@ -450,6 +453,10 @@
     <None Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\LoginConfirmButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\LoginPasswordBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

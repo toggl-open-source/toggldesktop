@@ -20,22 +20,18 @@ public partial class LoginViewController : UserControl
     }
 
     private ConfirmAction confirmAction = ConfirmAction.Unknown;
-    private LoginTextBox email;
-    private LoginPasswordBox password;
 
     public LoginViewController()
     {
         InitializeComponent();
 
-        email = (LoginTextBox)emailBoxHost.Child;
         email.EmptyText = "Your email address";
-
-        password = (LoginPasswordBox)passwordBoxHost.Child;
         password.EmptyText = "Password";
+
+        confirmButton.Click += (o, e) => confirm();
 
         setConfirmAction(ConfirmAction.LogIn);
 
-        TogglForm.ApplyFont("roboto", confirmButton);
         TogglForm.ApplyFont("roboto", googleLoginTextField);
         TogglForm.ApplyFont("roboto", passwordForgotTextField);
         TogglForm.ApplyFont("roboto", loginSignupToggleLabel);
@@ -47,8 +43,19 @@ public partial class LoginViewController : UserControl
     }
 
     public void SetAcceptButton(Form frm)
+    {   
+        // WPF buttons do not support this
+        // see LoginViewController_KeyUp for manual implementation
+        frm.AcceptButton = null;
+    }
+
+    private void LoginViewController_KeyUp(object sender, KeyEventArgs e)
     {
-        frm.AcceptButton = confirmButton;
+        if (e.KeyCode == Keys.Enter)
+        {
+            confirm();
+            e.Handled = true;
+        }
     }
 
     private bool validateFields()
@@ -136,7 +143,7 @@ public partial class LoginViewController : UserControl
         }
     }
 
-    private void confirmButton_Click(object sender, EventArgs e)
+    private void confirm()
     {
         switch (confirmAction)
         {
@@ -206,6 +213,7 @@ public partial class LoginViewController : UserControl
         Toggl.Signup(email.Text, password.Text);
         password.Clear();
     }
+
 
 }
 }
