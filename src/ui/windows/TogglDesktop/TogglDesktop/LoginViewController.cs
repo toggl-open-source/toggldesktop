@@ -29,6 +29,8 @@ public partial class LoginViewController : UserControl
         password.EmptyText = "Password";
 
         confirmButton.Click += (o, e) => confirm();
+        email.KeyUp += textFieldKeyUp;
+        password.KeyUp += textFieldKeyUp;
 
         setConfirmAction(ConfirmAction.LogIn);
 
@@ -42,6 +44,15 @@ public partial class LoginViewController : UserControl
         centerControl(loginSignupToggle);
     }
 
+    private void textFieldKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Enter)
+        {
+            confirm();
+            e.Handled = true;
+        }
+    }
+
     public void SetAcceptButton(Form frm)
     {   
         // WPF buttons do not support this
@@ -49,14 +60,6 @@ public partial class LoginViewController : UserControl
         frm.AcceptButton = null;
     }
 
-    private void LoginViewController_KeyUp(object sender, KeyEventArgs e)
-    {
-        if (e.KeyCode == Keys.Enter)
-        {
-            confirm();
-            e.Handled = true;
-        }
-    }
 
     private bool validateFields()
     {
