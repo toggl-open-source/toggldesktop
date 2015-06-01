@@ -349,6 +349,11 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     } else {
         ui_modified_at = modified.asUInt64();
     }
+
+    if (data.isMember("id")) {
+        SetID(data["id"].asUInt64());
+    }
+
     if (UIModifiedAt() > ui_modified_at) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "
@@ -368,10 +373,6 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
 
     if (data.isMember("created_with")) {
         SetCreatedWith(data["created_with"].asString());
-    }
-
-    if (data.isMember("id")) {
-        SetID(data["id"].asUInt64());
     }
 
     SetDescription(data["description"].asString());
