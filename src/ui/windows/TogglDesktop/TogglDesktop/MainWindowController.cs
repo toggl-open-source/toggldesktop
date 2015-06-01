@@ -981,5 +981,22 @@ public partial class MainWindowController : TogglForm
             Win32.SendMessage(Handle, buttonEvent, Win32.HtBottomRight, 0);
         }
     }
+
+    private void MainWindowController_KeyDown(object sender, KeyEventArgs e)
+    {
+        foreach (var item in trayIconMenu.Items)
+        {
+            var asMenuItem = item as ToolStripMenuItem;
+            if (asMenuItem != null)
+            {
+                if (e.KeyData == asMenuItem.ShortcutKeys)
+                {
+                    asMenuItem.PerformClick();
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
+    }
 }
 }
