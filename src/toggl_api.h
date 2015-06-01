@@ -25,11 +25,11 @@ extern "C" {
 
 #ifdef _WIN32
 #define char_t wchar_t
+#define bool_t bool
 #else
 #define char_t char
-#endif
-
 #define bool_t int
+#endif
 
     // Models
 
