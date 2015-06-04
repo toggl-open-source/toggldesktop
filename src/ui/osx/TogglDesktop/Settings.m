@@ -45,6 +45,8 @@
 	self.remind_sun = data->RemindSun;
 
 	self.autotrack = data->Autotrack;
+
+	self.open_editor_on_shortcut = data->OpenEditorOnShortcut;
 }
 
 @end

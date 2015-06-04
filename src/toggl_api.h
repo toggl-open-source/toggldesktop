@@ -123,6 +123,7 @@ extern "C" {
         char_t *RemindStarts;
         char_t *RemindEnds;
         bool_t Autotrack;
+        bool_t OpenEditorOnShortcut;
     } TogglSettingsView;
 
     typedef struct {
@@ -492,6 +493,10 @@ extern "C" {
         const bool_t use_idle_detection);
 
     TOGGL_EXPORT bool_t toggl_set_settings_autotrack(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_open_editor_on_shortcut(
         void *context,
         const bool_t value);
 

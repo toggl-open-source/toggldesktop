@@ -346,7 +346,8 @@ error Database::LoadSettings(Settings *settings) {
                   "manual_mode, autodetect_proxy, "
                   "remind_starts, remind_ends, "
                   "remind_mon, remind_tue, remind_wed, remind_thu, "
-                  "remind_fri, remind_sat, remind_sun, autotrack "
+                  "remind_fri, remind_sat, remind_sun, autotrack, "
+                  "open_editor_on_shortcut "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
@@ -369,6 +370,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->remind_sat),
                   into(settings->remind_sun),
                   into(settings->autotrack),
+                  into(settings->open_editor_on_shortcut),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -559,6 +561,10 @@ error Database::SetSettingsUseIdleDetection(
 
 error Database::SetSettingsAutotrack(const bool &value) {
     return setSettingsValue("autotrack", value);
+}
+
+error Database::SetSettingsOpenEditorOnShortcut(const bool &value) {
+    return setSettingsValue("open_editor_on_shortcut", value);
 }
 
 error Database::SetSettingsMenubarTimer(
@@ -3613,6 +3619,14 @@ error Database::migrateSettings() {
         "settings.autotrack",
         "ALTER TABLE settings "
         "ADD COLUMN autotrack INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.open_editor_on_shortcut",
+        "ALTER TABLE settings "
+        "ADD COLUMN open_editor_on_shortcut INTEGER NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }

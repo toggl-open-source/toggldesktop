@@ -314,11 +314,11 @@ class App {
 
 }  // namespace testing
 
-TEST(TogglApiTest, toggl_context_init) {
+TEST(toggl_api, toggl_context_init) {
     testing::App app;
 }
 
-TEST(TogglApiTest, testing_sleep) {
+TEST(toggl_api, testing_sleep) {
     time_t start = time(0);
     testing_sleep(1);
     int elapsed_seconds = time(0) - start;
@@ -326,7 +326,7 @@ TEST(TogglApiTest, testing_sleep) {
     ASSERT_LT(elapsed_seconds, 2);
 }
 
-TEST(TogglApiTest, toggl_run_script) {
+TEST(toggl_api, toggl_run_script) {
     testing::App app;
     int64_t err(0);
     char *s = toggl_run_script(app.ctx(), "print 'test'", &err);
@@ -336,7 +336,7 @@ TEST(TogglApiTest, toggl_run_script) {
     ASSERT_EQ("0 value(s) returned\n\n\n", res);
 }
 
-TEST(TogglApiTest, toggl_run_script_with_invalid_script) {
+TEST(toggl_api, toggl_run_script_with_invalid_script) {
     testing::App app;
     int64_t err(0);
     char *s = toggl_run_script(app.ctx(), "foo bar", &err);
@@ -346,7 +346,7 @@ TEST(TogglApiTest, toggl_run_script_with_invalid_script) {
     ASSERT_EQ("[string \"foo bar\"]:1: syntax error near 'bar'", res);
 }
 
-TEST(TogglApiTest, toggl_set_settings) {
+TEST(toggl_api, toggl_set_settings) {
     testing::App app;
 
     // set to false/null
@@ -426,7 +426,7 @@ TEST(TogglApiTest, toggl_set_settings) {
     ASSERT_TRUE(testing::testresult::settings.autotrack);
 }
 
-TEST(TogglApiTest, toggl_set_proxy_settings) {
+TEST(toggl_api, toggl_set_proxy_settings) {
     testing::App app;
 
     ASSERT_TRUE(toggl_set_proxy_settings(
@@ -443,7 +443,7 @@ TEST(TogglApiTest, toggl_set_proxy_settings) {
               std::string(testing::testresult::proxy.Password()));
 }
 
-TEST(TogglApiTest, toggl_set_settings_remind_days) {
+TEST(toggl_api, toggl_set_settings_remind_days) {
     testing::App app;
 
     testing::testresult::error = noError;
@@ -472,7 +472,7 @@ TEST(TogglApiTest, toggl_set_settings_remind_days) {
     ASSERT_FALSE(testing::testresult::settings.remind_sun);
 }
 
-TEST(TogglApiTest, toggl_set_settings_remind_times) {
+TEST(toggl_api, toggl_set_settings_remind_times) {
     testing::App app;
 
     ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), "", ""));
@@ -488,7 +488,7 @@ TEST(TogglApiTest, toggl_set_settings_remind_times) {
               testing::testresult::settings.remind_ends);
 }
 
-TEST(TogglApiTest, toggl_set_window_settings) {
+TEST(toggl_api, toggl_set_window_settings) {
     testing::App app;
 
     int64_t x(1), y(2), h(3), w(4);
@@ -509,7 +509,7 @@ TEST(TogglApiTest, toggl_set_window_settings) {
     ASSERT_EQ(w, w1);
 }
 
-TEST(TogglApiTest, toggl_get_user_fullname) {
+TEST(toggl_api, toggl_get_user_fullname) {
     testing::App app;
 
     char *str = toggl_get_user_fullname(app.ctx());
@@ -524,7 +524,7 @@ TEST(TogglApiTest, toggl_get_user_fullname) {
     free(str);
 }
 
-TEST(TogglApiTest, toggl_get_user_email) {
+TEST(toggl_api, toggl_get_user_email) {
     testing::App app;
 
     char *str = toggl_get_user_email(app.ctx());
@@ -539,7 +539,7 @@ TEST(TogglApiTest, toggl_get_user_email) {
     free(str);
 }
 
-TEST(TogglApiTest, toggl_show_app) {
+TEST(toggl_api, toggl_show_app) {
     testing::App app;
 
     testing::testresult::on_app_open = false;
@@ -549,7 +549,7 @@ TEST(TogglApiTest, toggl_show_app) {
     ASSERT_TRUE(testing::testresult::on_app_open);
 }
 
-TEST(TogglApiTest, toggl_set_update_channel) {
+TEST(toggl_api, toggl_set_update_channel) {
     testing::App app;
 
     std::string default_channel("stable");
@@ -590,11 +590,11 @@ TEST(TogglApiTest, toggl_set_update_channel) {
     free(str);
 }
 
-TEST(TogglApiTest, toggl_set_log_level) {
+TEST(toggl_api, toggl_set_log_level) {
     toggl_set_log_level("trace");
 }
 
-TEST(TogglApiTest, toggl_format_tracking_time_duration) {
+TEST(toggl_api, toggl_format_tracking_time_duration) {
     char *str = toggl_format_tracking_time_duration(10);
     ASSERT_EQ("10 sec", std::string(str));
     free(str);
@@ -620,7 +620,7 @@ TEST(TogglApiTest, toggl_format_tracking_time_duration) {
     free(str);
 }
 
-TEST(TogglApiTest, toggl_format_tracked_time_duration) {
+TEST(toggl_api, toggl_format_tracked_time_duration) {
     char *str  = toggl_format_tracked_time_duration(10);
     ASSERT_EQ("0:00", std::string(str));
     free(str);
@@ -646,14 +646,14 @@ TEST(TogglApiTest, toggl_format_tracked_time_duration) {
     free(str);
 }
 
-TEST(TogglApiTest, toggl_password_forgot) {
+TEST(toggl_api, toggl_password_forgot) {
     testing::App app;
     toggl_password_forgot(app.ctx());
     ASSERT_EQ("https://toggl.com/forgot-password?desktop=true",
               testing::testresult::url);
 }
 
-TEST(TogglApiTest, toggl_set_environment) {
+TEST(toggl_api, toggl_set_environment) {
     testing::App app;
 
     toggl_set_environment(app.ctx(), "test");
@@ -664,7 +664,7 @@ TEST(TogglApiTest, toggl_set_environment) {
     ASSERT_EQ("test", res);
 }
 
-TEST(TogglApiTest, toggl_set_update_path) {
+TEST(toggl_api, toggl_set_update_path) {
     testing::App app;
 
     toggl_set_update_path(app.ctx(), "/tmp/");
@@ -676,7 +676,7 @@ TEST(TogglApiTest, toggl_set_update_path) {
     ASSERT_EQ("/tmp/", path);
 }
 
-TEST(TogglApiTest, testing_set_logged_in_user) {
+TEST(toggl_api, testing_set_logged_in_user) {
     std::string json = loadTestData();
     testing::App app;
     testing::testresult::error = "";
@@ -686,12 +686,12 @@ TEST(TogglApiTest, testing_set_logged_in_user) {
     ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
 }
 
-TEST(TogglApiTest, toggl_disable_update_check) {
+TEST(toggl_api, toggl_disable_update_check) {
     testing::App app;
     toggl_disable_update_check(app.ctx());
 }
 
-TEST(TogglApiTest, toggl_logout) {
+TEST(toggl_api, toggl_logout) {
     std::string json = loadTestData();
     testing::App app;
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -700,7 +700,7 @@ TEST(TogglApiTest, toggl_logout) {
     ASSERT_EQ(uint64_t(0), testing::testresult::user_id);
 }
 
-TEST(TogglApiTest, toggl_clear_cache) {
+TEST(toggl_api, toggl_clear_cache) {
     std::string json = loadTestData();
     testing::App app;
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -709,11 +709,11 @@ TEST(TogglApiTest, toggl_clear_cache) {
     ASSERT_EQ(uint64_t(0), testing::testresult::user_id);
 }
 
-TEST(TogglApiTest, toggl_debug) {
+TEST(toggl_api, toggl_debug) {
     toggl_debug("Test 123");
 }
 
-TEST(TogglApiTest, toggl_set_idle_seconds) {
+TEST(toggl_api, toggl_set_idle_seconds) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -770,34 +770,34 @@ TEST(TogglApiTest, toggl_set_idle_seconds) {
     ASSERT_NE("", testing::testresult::idle_guid);
 }
 
-TEST(TogglApiTest, toggl_open_in_browser) {
+TEST(toggl_api, toggl_open_in_browser) {
     testing::App app;
     toggl_open_in_browser(app.ctx());
 }
 
-TEST(TogglApiTest, toggl_get_support) {
+TEST(toggl_api, toggl_get_support) {
     testing::App app;
     toggl_get_support(app.ctx());
     ASSERT_EQ("http://support.toggl.com/toggl-on-my-desktop/",
               testing::testresult::url);
 }
 
-TEST(TogglApiTest, toggl_login) {
+TEST(toggl_api, toggl_login) {
     testing::App app;
     toggl_login(app.ctx(), "username", "password");
 }
 
-TEST(TogglApiTest, toggl_google_login) {
+TEST(toggl_api, toggl_google_login) {
     testing::App app;
     toggl_google_login(app.ctx(), "token");
 }
 
-TEST(TogglApiTest, toggl_sync) {
+TEST(toggl_api, toggl_sync) {
     testing::App app;
     toggl_sync(app.ctx());
 }
 
-TEST(TogglApiTest, toggl_add_project) {
+TEST(toggl_api, toggl_add_project) {
     testing::App app;
 
     std::string json = loadTestData();
@@ -852,7 +852,7 @@ TEST(TogglApiTest, toggl_add_project) {
     ASSERT_TRUE(found);
 }
 
-TEST(TogglApiTest, toggl_create_project) {
+TEST(toggl_api, toggl_create_project) {
     testing::App app;
 
     std::string json = loadTestData();
@@ -904,7 +904,7 @@ TEST(TogglApiTest, toggl_create_project) {
     ASSERT_TRUE(found);
 }
 
-TEST(TogglApiTest, toggl_create_client) {
+TEST(toggl_api, toggl_create_client) {
     testing::App app;
 
     std::string json = loadTestData();
@@ -946,7 +946,7 @@ TEST(TogglApiTest, toggl_create_client) {
     ASSERT_TRUE(found);
 }
 
-TEST(TogglApiTest, toggl_continue) {
+TEST(toggl_api, toggl_continue) {
     testing::App app;
 
     std::string json = loadTestData();
@@ -960,7 +960,7 @@ TEST(TogglApiTest, toggl_continue) {
     ASSERT_EQ("More work", testing::testresult::timer_state.Description());
 }
 
-TEST(TogglApiTest, toggl_check_view_struct_size) {
+TEST(toggl_api, toggl_check_view_struct_size) {
     toggl_check_view_struct_size(
         sizeof(TogglTimeEntryView),
         sizeof(TogglAutocompleteView),
@@ -969,7 +969,7 @@ TEST(TogglApiTest, toggl_check_view_struct_size) {
         sizeof(TogglAutocompleteView));
 }
 
-TEST(TogglApiTest, toggl_view_time_entry_list) {
+TEST(toggl_api, toggl_view_time_entry_list) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -977,7 +977,7 @@ TEST(TogglApiTest, toggl_view_time_entry_list) {
     ASSERT_EQ(std::size_t(5), testing::testresult::time_entries.size());
 }
 
-TEST(TogglApiTest, toggl_edit) {
+TEST(toggl_api, toggl_edit) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -989,7 +989,7 @@ TEST(TogglApiTest, toggl_edit) {
     ASSERT_EQ(guid, testing::testresult::editor_state.GUID());
 }
 
-TEST(TogglApiTest, toggl_set_online) {
+TEST(toggl_api, toggl_set_online) {
     // App can trigger online state before lib is initialized
     toggl_set_online(0);
 
@@ -999,14 +999,14 @@ TEST(TogglApiTest, toggl_set_online) {
     toggl_set_online(app.ctx());
 }
 
-TEST(TogglApiTest, toggl_set_sleep) {
+TEST(toggl_api, toggl_set_sleep) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
     toggl_set_sleep(app.ctx());
 }
 
-TEST(TogglApiTest, toggl_set_wake) {
+TEST(toggl_api, toggl_set_wake) {
     // App can trigger awake state from computer before lib is initialized
     toggl_set_wake(0);
 
@@ -1016,7 +1016,7 @@ TEST(TogglApiTest, toggl_set_wake) {
     toggl_set_wake(app.ctx());
 }
 
-TEST(TogglApiTest, toggl_timeline_toggle_recording) {
+TEST(toggl_api, toggl_timeline_toggle_recording) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1029,7 +1029,7 @@ TEST(TogglApiTest, toggl_timeline_toggle_recording) {
     ASSERT_FALSE(toggl_timeline_is_recording_enabled(app.ctx()));
 }
 
-TEST(TogglApiTest, toggl_edit_preferences) {
+TEST(toggl_api, toggl_edit_preferences) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1039,7 +1039,7 @@ TEST(TogglApiTest, toggl_edit_preferences) {
     ASSERT_TRUE(testing::testresult::open_settings);
 }
 
-TEST(TogglApiTest, toggl_continue_latest) {
+TEST(toggl_api, toggl_continue_latest) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1051,7 +1051,7 @@ TEST(TogglApiTest, toggl_continue_latest) {
     ASSERT_EQ("arendus käib", testing::testresult::timer_state.Description());
 }
 
-TEST(TogglApiTest, toggl_delete_time_entry) {
+TEST(toggl_api, toggl_delete_time_entry) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1066,7 +1066,7 @@ TEST(TogglApiTest, toggl_delete_time_entry) {
     ASSERT_EQ(std::size_t(4), testing::testresult::time_entries.size());
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_duration) {
+TEST(toggl_api, toggl_set_time_entry_duration) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1089,7 +1089,7 @@ TEST(TogglApiTest, toggl_set_time_entry_duration) {
     ASSERT_EQ(7200, te.DurationInSeconds());
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_description) {
+TEST(toggl_api, toggl_set_time_entry_description) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1112,7 +1112,7 @@ TEST(TogglApiTest, toggl_set_time_entry_description) {
     ASSERT_EQ("this is a nuclear test", te.Description());
 }
 
-TEST(TogglApiTest, toggl_stop) {
+TEST(toggl_api, toggl_stop) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1129,7 +1129,7 @@ TEST(TogglApiTest, toggl_stop) {
     ASSERT_TRUE(testing::testresult::timer_state.GUID().empty());
 }
 
-TEST(TogglApiTest, toggl_start) {
+TEST(toggl_api, toggl_start) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1143,7 +1143,33 @@ TEST(TogglApiTest, toggl_start) {
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_billable) {
+TEST(toggl_api, toggl_start_with_open_editor_on_shortcut_setting) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    ASSERT_TRUE(toggl_set_settings_open_editor_on_shortcut(app.ctx(), false));
+
+    testing::testresult::editor_state = TimeEntry();
+
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
+    ASSERT_TRUE(testing::testresult::editor_state.GUID().empty());
+
+    ASSERT_TRUE(toggl_set_settings_open_editor_on_shortcut(app.ctx(), true));
+
+    testing::testresult::editor_state = TimeEntry();
+
+    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0);
+    ASSERT_TRUE(guid);
+    ASSERT_EQ(std::string(guid), testing::testresult::editor_state.GUID());
+    free(guid);
+}
+
+
+TEST(toggl_api, toggl_set_time_entry_billable) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1164,7 +1190,7 @@ TEST(TogglApiTest, toggl_set_time_entry_billable) {
     ASSERT_FALSE(testing::testresult::timer_state.Billable());
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_tags) {
+TEST(toggl_api, toggl_set_time_entry_tags) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1188,30 +1214,30 @@ TEST(TogglApiTest, toggl_set_time_entry_tags) {
     ASSERT_EQ("", testing::testresult::timer_state.Tags());
 }
 
-TEST(TogglApiTest, toggl_parse_duration_string_into_seconds) {
+TEST(toggl_api, toggl_parse_duration_string_into_seconds) {
     int64_t seconds = toggl_parse_duration_string_into_seconds("15 seconds");
     ASSERT_EQ(15, seconds);
 }
 
-TEST(TogglApiTest,
+TEST(toggl_api,
      toggl_parse_duration_string_into_seconds_with_no_duration_string) {
     int64_t seconds = toggl_parse_duration_string_into_seconds(0);
     ASSERT_EQ(0, seconds);
 }
 
-TEST(TogglApiTest, toggl_discard_time_at_with_no_guid) {
+TEST(toggl_api, toggl_discard_time_at_with_no_guid) {
     testing::App app;
 
     ASSERT_FALSE(toggl_discard_time_at(app.ctx(), 0, time(0), false));
 }
 
-TEST(TogglApiTest, toggl_discard_time_at_with_no_stop_time) {
+TEST(toggl_api, toggl_discard_time_at_with_no_stop_time) {
     testing::App app;
 
     ASSERT_FALSE(toggl_discard_time_at(app.ctx(), "some fake guid", 0, false));
 }
 
-TEST(TogglApiTest, toggl_discard_time_at) {
+TEST(toggl_api, toggl_discard_time_at) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1283,7 +1309,7 @@ TEST(TogglApiTest, toggl_discard_time_at) {
     ASSERT_EQ("", testing::testresult::timer_state.Description());
 }
 
-TEST(TogglApiTest, toggl_feedback_send) {
+TEST(toggl_api, toggl_feedback_send) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1292,7 +1318,7 @@ TEST(TogglApiTest, toggl_feedback_send) {
                                     "Help", "I need help", ""));
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_date) {
+TEST(toggl_api, toggl_set_time_entry_date) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1323,7 +1349,7 @@ TEST(TogglApiTest, toggl_set_time_entry_date) {
     ASSERT_EQ(50, datetime.second());
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_start) {
+TEST(toggl_api, toggl_set_time_entry_start) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1355,7 +1381,7 @@ TEST(TogglApiTest, toggl_set_time_entry_start) {
     ASSERT_FALSE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "12:558"));
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_end) {
+TEST(toggl_api, toggl_set_time_entry_end) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
@@ -1387,7 +1413,7 @@ TEST(TogglApiTest, toggl_set_time_entry_end) {
     ASSERT_FALSE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "12:558"));
 }
 
-TEST(TogglApiTest, toggl_set_time_entry_end_prefers_same_day) {
+TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
     testing::App app;
     std::string json =
         loadTestDataFile("../testdata/time_entry_ending_tomorrow.json");
@@ -1410,7 +1436,7 @@ TEST(TogglApiTest, toggl_set_time_entry_end_prefers_same_day) {
     ASSERT_EQ(start.day(), end.day());
 }
 
-TEST(TogglApiTest, toggl_autotracker_add_rule) {
+TEST(toggl_api, toggl_autotracker_add_rule) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));

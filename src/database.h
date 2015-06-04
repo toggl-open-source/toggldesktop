@@ -76,6 +76,8 @@ class Database {
 
     error SetSettingsAutotrack(const bool &value);
 
+    error SetSettingsOpenEditorOnShortcut(const bool &value);
+
     error SetSettingsMenubarTimer(const bool &menubar_timer);
 
     error SetSettingsMenubarProject(const bool &menubar_project);

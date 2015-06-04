@@ -32,7 +32,8 @@ class Settings {
     , remind_sun(true)
     , remind_starts("")
     , remind_ends("")
-    , autotrack(false) {}
+    , autotrack(false)
+    , open_editor_on_shortcut(false) {}
     ~Settings() {}
 
     bool use_idle_detection;
@@ -56,6 +57,7 @@ class Settings {
     std::string remind_starts;
     std::string remind_ends;
     bool autotrack;
+    bool open_editor_on_shortcut;
 };
 
 }  // namespace toggl

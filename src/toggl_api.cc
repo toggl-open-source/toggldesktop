@@ -103,6 +103,13 @@ bool_t toggl_set_settings_autotrack(
     return toggl::noError == app(context)->SetSettingsAutotrack(value);
 }
 
+bool_t toggl_set_settings_open_editor_on_shortcut(
+    void *context,
+    const bool_t value) {
+    return toggl::noError ==
+           app(context)->SetSettingsOpenEditorOnShortcut(value);
+}
+
 bool_t toggl_set_settings_autodetect_proxy(
     void *context,
     const bool_t autodetect_proxy) {
