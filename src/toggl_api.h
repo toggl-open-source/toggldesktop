@@ -467,6 +467,11 @@ extern "C" {
         const uint64_t at,
         const bool_t split_into_new_entry);
 
+    TOGGL_EXPORT bool_t toggl_discard_time_and_continue(
+        void *context,
+        const char_t *guid,
+        const uint64_t at);
+
     TOGGL_EXPORT bool_t toggl_set_settings_remind_days(
         void *context,
         const bool_t remind_mon,

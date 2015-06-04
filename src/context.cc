@@ -2493,6 +2493,24 @@ error Context::DiscardTimeAt(
     return noError;
 }
 
+error Context::DiscardTimeAndContinue(
+    const std::string guid,
+    const Poco::Int64 at) {
+
+    if (!user_) {
+        logger().warning("Cannot stop time entry, user logged out");
+        return noError;
+    }
+
+    user_->DiscardTimeAt(guid, at, false);
+    error err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    return Continue(guid);
+}
+
 TimeEntry *Context::RunningTimeEntry() const {
     if (!user_) {
         logger().warning("Cannot fetch time entry, user logged out");

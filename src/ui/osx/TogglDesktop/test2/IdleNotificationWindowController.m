@@ -51,4 +51,12 @@ extern void *ctx;
 	[self.window orderOut:nil];
 }
 
+- (IBAction)discardIdleAndContinue:(id)sender
+{
+	toggl_discard_time_and_continue(ctx,
+									[self.idleEvent.guid UTF8String],
+									self.idleEvent.started);
+	[self.window orderOut:nil];
+}
+
 @end

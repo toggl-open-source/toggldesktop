@@ -211,6 +211,10 @@ class Context : public TimelineDatasource {
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
+    error DiscardTimeAndContinue(
+        const std::string GUID,
+        const Poco::Int64 at);
+
     TimeEntry * RunningTimeEntry() const;
 
     error ToggleTimelineRecording(
