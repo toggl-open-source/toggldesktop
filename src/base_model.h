@@ -122,7 +122,7 @@ class BaseModel {
 
     virtual void LoadFromJSON(Json::Value value) {}
     virtual Json::Value SaveToJSON() const {
-        return 0;
+        return nullptr;
     }
 
     virtual bool DuplicateResource(const toggl::error) const {
