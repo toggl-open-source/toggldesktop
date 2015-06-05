@@ -3,18 +3,20 @@
 
 // Collect Toggl Desktop usage using Google Analytics Measurement Protocol
 // https://developers.google.com/analytics/devguides/collection/protocol/v1/
+// or using Toggl's own backend when appropriate.
 
 #include "../src/analytics.h"
 
 #include <sstream>
 
+#include <json/json.h>  // NOLINT
+
+#include "./const.h"
 #include "./https_client.h"
+#include "./settings.h"
+#include "./user.h"
 
 #include "Poco/Logger.h"
-#include "Poco/Net/HTTPClientSession.h"
-#include "Poco/Net/HTMLForm.h"
-#include "Poco/Net/HTTPRequest.h"
-#include "Poco/Net/HTTPResponse.h"
 
 namespace toggl {
 
@@ -24,11 +26,11 @@ void Analytics::TrackAutocompleteUsage(const std::string client_id,
     if (was_using_autocomplete) {
         value = 1;
     }
-    start(new TrackEvent(
+    start(new GoogleAnalyticsEvent(
         client_id, "timer", "start", "was_using_autocomplete", value));
 }
 
-const std::string TrackEvent::relativeURL() {
+const std::string GoogleAnalyticsEvent::relativeURL() {
     std::stringstream ss;
     ss << "/collect"
        << "?v=" << "1"
@@ -42,7 +44,7 @@ const std::string TrackEvent::relativeURL() {
     return ss.str();
 }
 
-void TrackEvent::runTask() {
+void GoogleAnalyticsEvent::runTask() {
     std::string response_body("");
     HTTPSClient client;
     error err = client.Get(
@@ -56,6 +58,39 @@ void TrackEvent::runTask() {
         Poco::Logger::get("Analytics").error(err);
         return;
     }
+}
+
+void Analytics::TrackSettingsUsage(
+    const std::string user_api_token,
+    const Settings &settings) {
+
+    Json::Value json;
+    json["toggl_desktop_settings"] = settings.SaveToJSON();
+
+    start(new TogglAnalyticsEvent(
+        user_api_token,
+        Json::StyledWriter().write(json)));
+}
+
+void TogglAnalyticsEvent::runTask() {
+    Poco::Logger &logger = Poco::Logger::get("Analytics");
+
+    logger.debug(json_);
+
+    TogglClient toggl_client;
+    std::string response_body("");
+    error err = toggl_client.Post(kAPIURL,
+                                  "/api/v9/analytics",
+                                  json_,
+                                  api_token_,
+                                  "api_token",
+                                  &response_body);
+    if (err != noError) {
+        logger.error(err);
+        return;
+    }
+
+    logger.debug(response_body);
 }
 
 }  // namespace toggl

@@ -284,6 +284,8 @@ class Context : public TimelineDatasource {
  private:
     error updateURL(std::string *result);
 
+    void trackSettingsUsage();
+
     static const std::string installerPlatform();
     static const std::string linuxPlatformName();
 
@@ -310,6 +312,7 @@ class Context : public TimelineDatasource {
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
     void onRemind(Poco::Util::TimerTask&);  // NOLINT
     void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
+    void onTrackSettingsUsage(Poco::Util::TimerTask& task);  // NOLINT
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
@@ -402,6 +405,7 @@ class Context : public TimelineDatasource {
     Poco::Timestamp next_fetch_updates_at_;
     Poco::Timestamp next_update_timeline_settings_at_;
     Poco::Timestamp next_reminder_at_;
+    Poco::Timestamp next_analytics_at_;
 
     // Schedule tasks using a timer:
     Poco::Mutex timer_m_;

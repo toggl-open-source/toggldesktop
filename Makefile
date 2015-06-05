@@ -419,6 +419,9 @@ build/analytics.o: src/analytics.cc
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
+build/settings.o: src/settings.cc
+	$(cxx) $(cflags) -c src/settings.cc -o build/settings.o
+
 build/autotracker.o: src/autotracker.cc
 	$(cxx) $(cflags) -c src/autotracker.cc -o build/autotracker.o
 
@@ -474,6 +477,7 @@ objects: build/jsoncpp.o \
 	build/idle.o \
 	build/analytics.o \
 	build/autotracker.o \
+	build/settings.o \
 	build/context.o \
 	build/toggl_api_private.o \
 	build/toggl_api.o \
