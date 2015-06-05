@@ -255,6 +255,12 @@
     <Compile Include="Utils.cs" />
     <Compile Include="Win32.cs" />
     <Compile Include="WPF\Resources.cs" />
+    <Compile Include="WPF\TimeEntryCell.xaml.cs">
+      <DependentUpon>TimeEntryCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\TimeEntryList.xaml.cs">
+      <DependentUpon>TimeEntryList.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
@@ -337,13 +343,13 @@
     <None Include="Resources\logo64.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-billable.png" />
+    <Resource Include="Resources\icon-billable.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-tags.png" />
+    <Resource Include="Resources\icon-tags.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\continue.png" />
+    <Resource Include="Resources\continue.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Fonts\Roboto-Bold.ttf" />
@@ -431,7 +437,7 @@
     <None Include="Resources\cogPressed.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\continue_hover.png" />
+    <Resource Include="Resources\continue_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\resize.png" />
@@ -465,11 +471,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WPF\Resources\TimeEntryCellStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\Resources\LoginViewStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\TimeEntryCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\TimeEntryList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

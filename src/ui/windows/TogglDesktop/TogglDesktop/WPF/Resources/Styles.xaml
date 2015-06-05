@@ -4,6 +4,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="LoginViewStyles.xaml" />
+        <ResourceDictionary Source="TimeEntryCellStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>

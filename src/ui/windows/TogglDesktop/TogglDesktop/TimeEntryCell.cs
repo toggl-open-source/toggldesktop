@@ -144,19 +144,19 @@ public partial class TimeEntryCell : UserControl
 
     private void item_MouseMove(object sender, MouseEventArgs e)
     {
-        if (list.currentEntry != this)
-        {
-            if (list.currentEntry != null)
-            {
-                if (list.currentEntry.opened)
-                {
-                    return;
-                }
-                list.currentEntry.toggleBackground(defaultColor);
-            }
-            toggleBackground(hoverColor);
-            list.currentEntry = this;
-        }
+        //if (list.CurrentEntry != this)
+        //{
+        //    if (list.CurrentEntry != null)
+        //    {
+        //        if (list.CurrentEntry.opened)
+        //        {
+        //            return;
+        //        }
+        //        list.currentEntry.toggleBackground(defaultColor);
+        //    }
+        //    toggleBackground(hoverColor);
+        //    list.CurrentEntry = this;
+        //}
     }
 
     private void toggleBackground(Color color)
