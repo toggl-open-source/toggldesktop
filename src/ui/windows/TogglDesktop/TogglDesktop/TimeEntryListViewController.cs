@@ -15,15 +15,14 @@ public partial class TimeEntryListViewController : UserControl
 
         Dock = DockStyle.Fill;
 
-        //entriesHost.AutoScroll = false;
-        //entriesHost.HorizontalScroll.Enabled = false;
-        //entriesHost.AutoScroll = true;
-
         Toggl.OnTimeEntryList += OnTimeEntryList;
         Toggl.OnLogin += OnLogin;
 
         timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
         timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
+
+        entries.SetFocusCondition(() => timerEditViewController.CanFocusList());
+
     }
 
     void TimeEntryListViewController_MouseWheel(object sender, MouseEventArgs e)
@@ -31,13 +30,6 @@ public partial class TimeEntryListViewController : UserControl
         if (!timerEditViewController.isAutocompleteOpened())
         {
             entriesHost.Focus();
-        }
-    }
-
-    public int EntriesTop
-    {
-        get {
-            return entriesHost.Location.Y;
         }
     }
 
@@ -55,10 +47,6 @@ public partial class TimeEntryListViewController : UserControl
             });
             return;
         }
-        //if (open && this.CurrentEntry != null)
-        //{
-        //    this.CurrentEntry.opened = false;
-        //}
         DateTime start = DateTime.Now;
 
         lock (rendering)
@@ -66,72 +54,41 @@ public partial class TimeEntryListViewController : UserControl
             renderTimeEntryList(list);
         }
 
-        Console.WriteLine(String.Format(
+        Console.WriteLine(
             "Time entries list view rendered in {0} ms",
-            DateTime.Now.Subtract(start).TotalMilliseconds));
+            DateTime.Now.Subtract(start).TotalMilliseconds);
     }
 
     private void renderTimeEntryList(List<Toggl.TimeEntry> list)
     {
         emptyLabel.Visible = (list.Count == 0);
-        entriesHost.SuspendLayout();
 
-        // Hide entry list for initial loading to avoid crazy flicker
-        //if (entries.Controls.Count == 0)
-        //{
-        //    entries.Visible = false;
-        //}
+        int maxCount = list.Count;
 
-        // We cannot render more than N time entries using winforms,
-        // because we run out of window handles. As a temporary fix,
-        // dont even attempt to render more than N time entries.
-        int maxCount = Math.Min(200, list.Count);
-
-        int k = 0;
-        for (int j = 0; j < 1; j++)
+        for (int i = 0; i < maxCount; i++)
         {
-            for (int i = 0; i < maxCount; i++)
+            Toggl.TimeEntry te = list[i];
+
+            WPF.TimeEntryCell cell = null;
+            if (entries.Children.Count > i)
             {
-                Toggl.TimeEntry te = list.ElementAt(i);
-
-                WPF.TimeEntryCell cell = null;
-                if (entries.Children.Count > i)
-                {
-                    //cell = entries.Children[i] as TogglDesktop.WPF.TimeEntryCell;
-                }
-
-                if (cell == null)
-                {
-                    cell = new WPF.TimeEntryCell(this);
-                    entries.Children.Add(cell);
-                    //cell.Width = entriesHost.Width;
-                }
-
-                cell.Display(te);
-                //entries.Controls.SetChildIndex(cell, i);
-                k++;
+                cell = (TogglDesktop.WPF.TimeEntryCell)entries.Children[i];
             }
+
+            if (cell == null)
+            {
+                cell = new WPF.TimeEntryCell();
+                entries.Children.Add(cell);
+            }
+
+            cell.Display(te);
         }
 
-        Console.WriteLine("entries: " + k);
-
-        //while (entries.Children.Count > list.Count)
-        //{
-        //    entries.Children[list.Count].Dispose();
-        //    // Dispose() will remove the control from collection
-        //}
-
-        entriesHost.ResumeLayout();
-        entriesHost.PerformLayout();
-
-        if (!entriesHost.Visible)
+        if (entries.Children.Count > list.Count)
         {
-            entriesHost.Visible = true;
+            entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
         }
-    }
 
-    private void TimeEntryListViewController_Load(object sender, EventArgs e)
-    {
     }
 
     void OnLogin(bool open, UInt64 user_id)
@@ -145,39 +102,13 @@ public partial class TimeEntryListViewController : UserControl
         }
         if (open || user_id == 0)
         {
-            entriesHost.SuspendLayout();
-            entriesHost.Controls.Clear();
-            entriesHost.ResumeLayout();
-            entriesHost.PerformLayout();
-        }
-    }
-
-    private void entries_ClientSizeChanged(object sender, EventArgs e)
-    {
-        if (entriesHost.Controls.Count > 0)
-        {
-            entriesHost.SuspendLayout();
-            entriesHost.Controls[0].Width = entriesHost.ClientSize.Width;
-            entriesHost.ResumeLayout();
-        }
-    }
-
-    private void entries_MouseEnter(object sender, EventArgs e)
-    {
-        if (!timerEditViewController.focusList()) {
-            entriesHost.Focus();
+            entries.Children.Clear();
         }
     }
 
     private void emptyLabel_Click(object sender, EventArgs e)
     {
         Toggl.OpenInBrowser();
-    }
-
-    internal FlowLayoutPanel getListing()
-    {
-        return null;
-        //return entriesHost;
     }
 
     internal WPF.TimeEntryCell findControlByGUID(string GUID)

@@ -64,14 +64,9 @@ public partial class TimerEditViewController : UserControl
         }
     }
 
-    public bool areFieldsFocused()
+    public bool CanFocusList()
     {
-        return descriptionTextBox.Focused || textBoxDuration.Focused;
-    }
-
-    public bool focusList()
-    {
-        return !(!isAutocompleteOpened() && !descriptionTextBox.Focused && !textBoxDuration.Focused);
+        return !isAutocompleteOpened() && !descriptionTextBox.Focused && !textBoxDuration.Focused;
     }
 
     public bool isAutocompleteOpened()

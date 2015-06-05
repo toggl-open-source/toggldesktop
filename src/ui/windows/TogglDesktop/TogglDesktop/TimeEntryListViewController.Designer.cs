@@ -101,7 +101,6 @@ partial class TimeEntryListViewController
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "TimeEntryListViewController";
             this.Size = new System.Drawing.Size(314, 351);
-            this.Load += new System.EventHandler(this.TimeEntryListViewController_Load);
             this.panelHeader.ResumeLayout(false);
             this.ResumeLayout(false);
 

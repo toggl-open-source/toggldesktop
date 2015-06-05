@@ -7,18 +7,13 @@ namespace TogglDesktop.WPF
     /// <summary>
     /// Interaction logic for TimeEntryCell.xaml
     /// </summary>
-    public partial class TimeEntryCell : UserControl
+    public partial class TimeEntryCell
     {
-        public string GUID;
-        public bool header = false;
-        private TimeEntryListViewController list;
+        public string GUID { get; set; }
 
-        public TimeEntryCell(TimeEntryListViewController listContainer)
+        public TimeEntryCell()
         {
-            list = listContainer;
             InitializeComponent();
-
-            //this.defaultColor = this.panel.BackColor;
         }
 
         public void Display(Toggl.TimeEntry item)
@@ -38,10 +33,9 @@ namespace TogglDesktop.WPF
             showOnlyIf(billabeIcon, item.Billable);
             showOnlyIf(tagsIcon, !string.IsNullOrEmpty(item.Tags));
 
-            header = item.IsHeader;
-            showOnlyIf(dayHeader, header);
+            showOnlyIf(dayHeader, item.IsHeader);
 
-            if (header)
+            if (item.IsHeader)
             {
                 labelFormattedDate.Text = item.DateHeader;
                 labelDateDuration.Text = item.DateDuration;
@@ -88,21 +82,25 @@ namespace TogglDesktop.WPF
         private void labelDuration_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Toggl.Edit(GUID, false, Toggl.Duration);
+            e.Handled = true;
         }
 
         private void labelDescription_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Toggl.Edit(GUID, false, Toggl.Description);
+            e.Handled = true;
         }
 
         private void labelProject_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Toggl.Edit(GUID, false, Toggl.Project);
+            e.Handled = true;
         }
 
         private void entry_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Toggl.Edit(GUID, false, "");
+            e.Handled = true;
         }
 
         #endregion
