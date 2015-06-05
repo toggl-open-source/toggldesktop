@@ -872,41 +872,19 @@ public partial class MainWindowController : TogglForm
 
     private void calculateEditFormPosition(bool running, Screen s)
     {
-        Point ctrlpt = new Point(0, 0);//PointToScreen(editableEntry.Location);
-        int arrowTop = 0;
-        bool left = false;
+        Point editPopupLocation = new Point(Left, Top);
+        bool left = ((s.Bounds.Width - (Location.X + Width)) < editForm.Width);
+        if (!left)
+        {
+            editPopupLocation.X += Width;
+        }
+        
+        //if (!running && editableEntry.GetType() == typeof(TimeEntryCell))
+        //{
+        //    ((TimeEntryCell)editableEntry).opened = true;
+        //}
 
-        if (Location.X < editForm.Width && (s.Bounds.Width - (Location.X + Width)) < editForm.Width)
-        {
-            ctrlpt.X += (Width/2);
-        }
-        else
-        {
-            if ((editForm.Width + ctrlpt.X + Width) > (s.WorkingArea.Location.X + s.Bounds.Width))
-            {
-                ctrlpt.X -= editForm.Width;
-                left = true;
-            }
-            else
-            {
-                ctrlpt.X += Width;
-            }
-        }
-
-        if (running)
-        {
-            arrowTop = timeEntryListViewController.EntriesTop / 2;
-        }
-        else
-        {
-            if (editableEntry.GetType() == typeof(TimeEntryCell))
-            {
-                //ctrlpt.Y += timeEntryListViewController.EntriesTop + (((TimeEntryCell)editableEntry).getTopLocation()) - (editForm.Height / 2);
-                //((TimeEntryCell)editableEntry).opened = true;
-            }
-        }
-        editForm.setPlacement(left, arrowTop, ctrlpt, s, this);
-
+        editForm.setPlacement(left, editPopupLocation, Height);
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
