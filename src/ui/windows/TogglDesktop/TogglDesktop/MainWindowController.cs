@@ -550,14 +550,6 @@ public partial class MainWindowController : TogglForm
         return null;
     }
 
-    public static Control FindControlAtCursor(Form form)
-    {
-        Point pos = Cursor.Position;
-        if (form.Bounds.Contains(pos))
-            return FindControlAtPoint(form, form.PointToClient(Cursor.Position));
-        return null;
-    }
-
     private void initEditForm()
     {
         editForm = new EditForm
@@ -619,10 +611,6 @@ public partial class MainWindowController : TogglForm
 
         if (editForm.Visible)
         {
-            //if (editableEntry.GetType() == typeof(TimeEntryCell))
-            //{
-            //    ((TimeEntryCell)editableEntry).opened = false;
-            //}
             editForm.ClosePopup();
         }
     }

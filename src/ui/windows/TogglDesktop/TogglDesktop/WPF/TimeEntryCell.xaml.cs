@@ -14,6 +14,7 @@ namespace TogglDesktop.WPF
         public TimeEntryCell()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
         public void Display(Toggl.TimeEntry item)
@@ -53,6 +54,15 @@ namespace TogglDesktop.WPF
             //    toolTip.SetToolTip(labelTag, item.Tags.Replace(Toggl.TagSeparator, ", "));
             //}
         }
+
+        public Color EntryBackColor
+        {
+            get { return (Color)this.GetValue(EntryBackColorProperty); }
+            set { this.SetValue(EntryBackColorProperty, value); } 
+        }
+        public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
+            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(Color.FromArgb(255, 0, 0, 0)));
+        
 
         #region display helpers
 

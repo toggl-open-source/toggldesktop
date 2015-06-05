@@ -89,6 +89,8 @@ public partial class TimeEntryListViewController : UserControl
             entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
         }
 
+        entriesHost.Invalidate();
+
     }
 
     void OnLogin(bool open, UInt64 user_id)
