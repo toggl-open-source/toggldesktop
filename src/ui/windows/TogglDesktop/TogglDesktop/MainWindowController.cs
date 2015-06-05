@@ -114,6 +114,14 @@ public partial class MainWindowController : TogglForm
         }
     }
 
+    public void toggleMenu()
+    {
+        // this method is called from external code (magic?) to open the cogwheel-menu
+        Point pt = new Point(Width - 80, 0);
+        pt = PointToScreen(pt);
+        trayIconMenu.Show(pt);
+    }
+
     public static void DisableTop()
     {
         instance.topDisabled = true;
