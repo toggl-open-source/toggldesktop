@@ -41,18 +41,19 @@ namespace TogglDesktop.WPF
                 labelFormattedDate.Text = item.DateHeader;
                 labelDateDuration.Text = item.DateDuration;
             }
-            //toolTip.SetToolTip(labelDescription, item.Description);
-            //toolTip.SetToolTip(labelTask, item.ProjectAndTaskLabel);
-            //toolTip.SetToolTip(labelProject, item.ProjectAndTaskLabel);
-            //toolTip.SetToolTip(labelClient, item.ProjectAndTaskLabel);
-            //if (!item.DurOnly)
-            //{
-            //    toolTip.SetToolTip(labelDuration, item.StartTimeString + " - " + item.EndTimeString);
-            //}
-            //if (labelTag.Visible)
-            //{
-            //    toolTip.SetToolTip(labelTag, item.Tags.Replace(Toggl.TagSeparator, ", "));
-            //}
+
+            labelDescription.ToolTip = new ToolTip { Content = item.Description };
+            labelTask.ToolTip = labelProject.ToolTip = labelClient.ToolTip
+                = new ToolTip { Content = item.ProjectAndTaskLabel };
+
+            if (!item.DurOnly)
+            {
+                labelDuration.ToolTip = new ToolTip { Content = item.StartTimeString + " - " + item.EndTimeString };
+            }
+            if (tagsIcon.Visibility == Visibility.Visible)
+            {
+                tagsIcon.ToolTip = new ToolTip { Content = item.Tags.Replace(Toggl.TagSeparator, ", ") };
+            }
         }
 
         public Color EntryBackColor
