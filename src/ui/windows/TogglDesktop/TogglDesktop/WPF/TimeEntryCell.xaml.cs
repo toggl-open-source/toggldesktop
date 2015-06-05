@@ -11,10 +11,28 @@ namespace TogglDesktop.WPF
     {
         public string GUID { get; set; }
 
+        public Color EntryBackColor
+        {
+            get { return (Color)this.GetValue(EntryBackColorProperty); }
+            set { this.SetValue(EntryBackColorProperty, value); }
+        }
+        public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
+            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(Color.FromArgb(255, 0, 0, 0)));
+
+        private readonly ToolTip descriptionToolTip = new ToolTip();
+        private readonly ToolTip taskProjectClientToolTip = new ToolTip();
+        private readonly ToolTip durationToolTip = new ToolTip();
+        private readonly ToolTip tagsToolTip = new ToolTip();
+
         public TimeEntryCell()
         {
             InitializeComponent();
             DataContext = this;
+
+            this.labelDescription.ToolTip = this.descriptionToolTip;
+            this.labelTask.ToolTip = this.labelProject.ToolTip = this.labelClient.ToolTip = this.taskProjectClientToolTip;
+            this.labelDuration.ToolTip = this.durationToolTip;
+            this.tagsIcon.ToolTip = this.tagsToolTip;
         }
 
         public void Display(Toggl.TimeEntry item)
@@ -42,28 +60,30 @@ namespace TogglDesktop.WPF
                 labelDateDuration.Text = item.DateDuration;
             }
 
-            labelDescription.ToolTip = new ToolTip { Content = item.Description };
-            labelTask.ToolTip = labelProject.ToolTip = labelClient.ToolTip
-                = new ToolTip { Content = item.ProjectAndTaskLabel };
+            updateToolTips(item);
 
-            if (!item.DurOnly)
+        }
+
+        private void updateToolTips(Toggl.TimeEntry item)
+        {
+            this.descriptionToolTip.Content = item.Description;
+            this.taskProjectClientToolTip.Content = item.ProjectAndTaskLabel;
+
+            if (item.DurOnly)
             {
-                labelDuration.ToolTip = new ToolTip { Content = item.StartTimeString + " - " + item.EndTimeString };
+                this.labelDuration.ToolTip = null;
             }
+            else
+            {
+                this.labelDuration.ToolTip = this.durationToolTip;
+                durationToolTip.Content = item.StartTimeString + " - " + item.EndTimeString;
+            }
+
             if (tagsIcon.Visibility == Visibility.Visible)
             {
-                tagsIcon.ToolTip = new ToolTip { Content = item.Tags.Replace(Toggl.TagSeparator, ", ") };
+                tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
             }
         }
-
-        public Color EntryBackColor
-        {
-            get { return (Color)this.GetValue(EntryBackColorProperty); }
-            set { this.SetValue(EntryBackColorProperty, value); } 
-        }
-        public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
-            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(Color.FromArgb(255, 0, 0, 0)));
-        
 
         #region display helpers
 
