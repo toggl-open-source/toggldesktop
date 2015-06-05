@@ -1279,6 +1279,14 @@ error Context::SetSettingsAutotrack(const bool value) {
     return DisplaySettings();
 }
 
+error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
+    error err = db()->SetSettingsOpenEditorOnShortcut(value);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return DisplaySettings();
+}
+
 error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
     error err = db()->SetSettingsMenubarTimer(menubar_timer);
     if (err != noError) {
@@ -1882,12 +1890,18 @@ TimeEntry *Context::Start(
                                  task_id,
                                  project_id, project_guid);
 
-    UI()->DisplayApp();
-
     error err = save();
     if (err != noError) {
         displayError(err);
         return nullptr;
+    }
+
+    if (te && settings_.open_editor_on_shortcut) {
+        // Open time entry in editor
+        Edit(te->GUID());
+    } else {
+        // just show the app
+        UI()->DisplayApp();
     }
 
     if ("production" == environment_) {
@@ -2491,6 +2505,24 @@ error Context::DiscardTimeAt(
     }
 
     return noError;
+}
+
+error Context::DiscardTimeAndContinue(
+    const std::string guid,
+    const Poco::Int64 at) {
+
+    if (!user_) {
+        logger().warning("Cannot stop time entry, user logged out");
+        return noError;
+    }
+
+    user_->DiscardTimeAt(guid, at, false);
+    error err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    return Continue(guid);
 }
 
 TimeEntry *Context::RunningTimeEntry() const {

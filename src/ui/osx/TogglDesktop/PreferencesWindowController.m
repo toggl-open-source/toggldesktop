@@ -296,6 +296,8 @@ extern void *ctx;
 	self.remindEnds.stringValue = settings.remind_ends;
 
 	[self.autotrack setState:[Utils boolToState:settings.autotrack]];
+
+	[self.openEditorOnShortcut setState:[Utils boolToState:settings.open_editor_on_shortcut]];
 }
 
 - (IBAction)idleMinutesChange:(id)sender
@@ -313,6 +315,11 @@ extern void *ctx;
 - (IBAction)autotrackChanged:(id)sender
 {
 	toggl_set_settings_autotrack(ctx, [Utils stateToBool:self.autotrack.state]);
+}
+
+- (IBAction)openEditorOnShortcut:(id)sender
+{
+	toggl_set_settings_open_editor_on_shortcut(ctx, [Utils stateToBool:self.openEditorOnShortcut.state]);
 }
 
 - (IBAction)autodetectProxyCheckboxChanged:(id)sender

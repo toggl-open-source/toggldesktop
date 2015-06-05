@@ -81,6 +81,8 @@ class Context : public TimelineDatasource {
 
     error SetSettingsAutotrack(const bool value);
 
+    error SetSettingsOpenEditorOnShortcut(const bool value);
+
     error SetSettingsMenubarTimer(const bool menubar_timer);
 
     error SetSettingsMenubarProject(const bool menubar_project);
@@ -165,8 +167,8 @@ class Context : public TimelineDatasource {
     error DisplaySettings(const bool open = false);
 
     void Edit(const std::string GUID,
-              const bool edit_running_entry,
-              const std::string focused_field_name);
+              const bool edit_running_entry = false,
+              const std::string focused_field_name = "");
 
     error SetTimeEntryDuration(
         const std::string GUID,
@@ -210,6 +212,10 @@ class Context : public TimelineDatasource {
         const std::string GUID,
         const Poco::Int64 at,
         const bool split_into_new_entry);
+
+    error DiscardTimeAndContinue(
+        const std::string GUID,
+        const Poco::Int64 at);
 
     TimeEntry * RunningTimeEntry() const;
 

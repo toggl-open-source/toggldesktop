@@ -325,7 +325,7 @@ TimeEntry *User::DiscardTimeAt(
 
     if (!(at > 0)) {
         logger().error("Cannot discard without valid timestamp");
-        return 0;
+        return nullptr;
     }
 
     std::stringstream ss;
@@ -349,7 +349,7 @@ TimeEntry *User::DiscardTimeAt(
         return split;
     }
 
-    return 0;
+    return nullptr;
 }
 
 TimeEntry *User::RunningTimeEntry() const {
@@ -361,7 +361,7 @@ TimeEntry *User::RunningTimeEntry() const {
             return *it;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 template<typename T>

@@ -10,14 +10,17 @@
 #import "IdleEvent.h"
 
 @interface IdleNotificationWindowController : NSWindowController
+
 @property IBOutlet NSTextField *idleSinceTextField;
 @property IBOutlet NSTextField *idleAmountTextField;
 
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
 - (IBAction)addIdleTimeAsNewTimeEntry:(id)sender;
+- (IBAction)discardIdleAndContinue:(id)sender;
 
 - (void)displayIdleEvent:(IdleEvent *)idleEvent;
 
 @property IdleEvent *idleEvent;
+
 @end

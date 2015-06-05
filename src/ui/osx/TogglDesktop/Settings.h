@@ -37,4 +37,5 @@
 @property BOOL remind_sat;
 @property BOOL remind_sun;
 @property BOOL autotrack;
+@property BOOL open_editor_on_shortcut;
 @end

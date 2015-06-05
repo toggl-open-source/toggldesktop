@@ -446,7 +446,7 @@ Client *RelatedData::ClientByGUID(const guid GUID) const {
 template <typename T>
 T *modelByGUID(const guid GUID, std::vector<T *> const *list) {
     if (GUID.empty()) {
-        return 0;
+        return nullptr;
     }
     typedef typename std::vector<T *>::const_iterator iterator;
     for (iterator it = list->begin(); it != list->end(); it++) {
@@ -455,13 +455,13 @@ T *modelByGUID(const guid GUID, std::vector<T *> const *list) {
             return model;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 template<typename T>
 T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) {
     if (!id) {
-        return 0;
+        return nullptr;
     }
     typedef typename std::vector<T *>::const_iterator iterator;
     for (iterator it = list->begin(); it != list->end(); it++) {
@@ -470,7 +470,7 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) {
             return model;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 }   // namespace toggl

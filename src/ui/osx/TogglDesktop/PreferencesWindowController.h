@@ -46,6 +46,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSTextField *remindStarts;
 @property IBOutlet NSTextField *remindEnds;
 @property IBOutlet NSButton *autotrack;
+@property IBOutlet NSButton *openEditorOnShortcut;
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)useProxyButtonChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
@@ -67,6 +68,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)deleteAutotrackerRule:(id)sender;
 - (IBAction)remindTimesChanged:(id)sender;
 - (IBAction)autotrackChanged:(id)sender;
+- (IBAction)openEditorOnShortcut:(id)sender;
 
 @property DisplayCommand *originalCmd;
 @property uint64_t user_id;

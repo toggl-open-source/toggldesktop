@@ -403,6 +403,12 @@ error HTTPSClient::request(
             logger().debug(ss.str());
         }
 
+        // Log out X-Toggl-Request-Id, so failed requests can be traced
+        if (response.has("X-Toggl-Request-Id")) {
+            logger().debug("X-Toggl-Request-Id "
+                           + response.get("X-Toggl-Request-Id"));
+        }
+
         // Inflate, if gzip was sent
         if (response.has("Content-Encoding") &&
                 "gzip" == response.get("Content-Encoding")) {

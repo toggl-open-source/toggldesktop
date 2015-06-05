@@ -103,6 +103,13 @@ bool_t toggl_set_settings_autotrack(
     return toggl::noError == app(context)->SetSettingsAutotrack(value);
 }
 
+bool_t toggl_set_settings_open_editor_on_shortcut(
+    void *context,
+    const bool_t value) {
+    return toggl::noError ==
+           app(context)->SetSettingsOpenEditorOnShortcut(value);
+}
+
 bool_t toggl_set_settings_autodetect_proxy(
     void *context,
     const bool_t autodetect_proxy) {
@@ -680,6 +687,28 @@ bool_t toggl_discard_time_at(
         to_string(guid),
         at,
         split_into_new_entry);
+}
+
+bool_t toggl_discard_time_and_continue(
+    void *context,
+    const char_t *guid,
+    const uint64_t at) {
+
+    if (!guid) {
+        logger().error("Cannot discard time without GUID");
+        return false;
+    }
+
+    if (!at) {
+        logger().error("Cannot discard time without a timestamp");
+        return false;
+    }
+
+    logger().debug("toggl_discard_time_and_continue");
+
+    return toggl::noError == app(context)->DiscardTimeAndContinue(
+        to_string(guid),
+        at);
 }
 
 bool_t toggl_timeline_toggle_recording(
