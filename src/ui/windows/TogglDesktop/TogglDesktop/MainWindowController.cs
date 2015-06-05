@@ -43,11 +43,9 @@ public partial class MainWindowController : TogglForm
 
         instance = this;
 
-        startHook.KeyPressed +=
-            new EventHandler<KeyPressedEventArgs>(hookStartKeyPressed);
+        startHook.KeyPressed += this.hookStartKeyPressed;
 
-        showHook.KeyPressed +=
-            new EventHandler<KeyPressedEventArgs>(hookShowKeyPressed);
+        showHook.KeyPressed += this.hookShowKeyPressed;
     }
 
     void setGlobalShortCutKeys()
@@ -56,7 +54,7 @@ public partial class MainWindowController : TogglForm
         {
             startHook.Clear();
             string startKey = Properties.Settings.Default.StartKey;
-            if (startKey != null && startKey != "")
+            if (!string.IsNullOrEmpty(startKey))
             {
                 startHook.RegisterHotKey(
                     Properties.Settings.Default.StartModifiers,
@@ -72,7 +70,7 @@ public partial class MainWindowController : TogglForm
         {
             showHook.Clear();
             string showKey = Properties.Settings.Default.ShowKey;
-            if (showKey != null && showKey != "")
+            if (!string.IsNullOrEmpty(showKey))
             {
                 showHook.RegisterHotKey(
                     Properties.Settings.Default.ShowModifiers,
