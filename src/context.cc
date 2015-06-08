@@ -53,7 +53,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , user_(0)
 , timeline_uploader_(0)
 , window_change_recorder_(0)
-, feedback_("", "", "")
 , next_sync_at_(0)
 , next_push_changes_at_(0)
 , next_fetch_updates_at_(0)
@@ -1176,7 +1175,11 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     logger().debug("onSendFeedback");
 
+    std::string update_channel("");
+    UpdateChannel(&update_channel);
+
     Poco::Net::HTMLForm form;
+
     form.setEncoding(Poco::Net::HTMLForm::ENCODING_MULTIPART);
 
     form.set("desktop", "true");
@@ -1184,6 +1187,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     form.set("details", Formatter::EscapeJSONString(feedback_.Details()));
     form.set("subject", Formatter::EscapeJSONString(feedback_.Subject()));
     form.set("date", Formatter::Format8601(time(0)));
+    form.set("update_channel", Formatter::EscapeJSONString(update_channel));
 
     if (!feedback_.AttachmentPath().empty()) {
         form.addPart("files",

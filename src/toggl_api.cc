@@ -733,9 +733,10 @@ bool_t toggl_feedback_send(
     ss << "toggl_feedback_send topic=" << topic << " details=" << details;
     logger().debug(ss.str());
 
-    toggl::Feedback feedback(to_string(topic),
-                             to_string(details),
-                             to_string(filename));
+    toggl::Feedback feedback;
+    feedback.SetSubject(to_string(topic));
+    feedback.SetDetails(to_string(details));
+    feedback.SetAttachmentPath(to_string(filename));
 
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
