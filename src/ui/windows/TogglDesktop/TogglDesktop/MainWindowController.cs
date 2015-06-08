@@ -523,33 +523,6 @@ public partial class MainWindowController : TogglForm
         }
     }
 
-    public static Control FindControlAtPoint(Control container, Point pos)
-    {
-        if (null == container)
-        {
-            return null;
-        }
-
-        if (container.GetType() == typeof(TimeEntryCell) || container.GetType() == typeof(TimerEditViewController))
-        {
-            return container;
-        }
-
-        foreach (Control c in container.Controls)
-        {
-            if (c.Visible && c.Bounds.Contains(pos))
-            {
-                Control child = FindControlAtPoint(c, new Point(pos.X - c.Left, pos.Y - c.Top));
-                if (child != null && (child.GetType() == typeof(TimeEntryCell) || child.GetType() == typeof(TimerEditViewController)))
-                {
-                    return child;
-                }
-            }
-        }
-
-        return null;
-    }
-
     private void initEditForm()
     {
         editForm = new EditForm
@@ -833,10 +806,6 @@ public partial class MainWindowController : TogglForm
         {
             if (editForm.Visible)
             {
-                //if (editableEntry.GetType() == typeof(TimeEntryCell))
-                //{
-                //    ((TimeEntryCell)editableEntry).opened = false;
-                //}
                 editForm.ClosePopup();
             }
         }
