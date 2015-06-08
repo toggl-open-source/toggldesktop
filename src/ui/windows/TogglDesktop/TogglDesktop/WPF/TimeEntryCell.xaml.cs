@@ -28,11 +28,6 @@ namespace TogglDesktop.WPF
         {
             InitializeComponent();
             DataContext = this;
-
-            this.labelDescription.ToolTip = this.descriptionToolTip;
-            this.labelTask.ToolTip = this.labelProject.ToolTip = this.labelClient.ToolTip = this.taskProjectClientToolTip;
-            this.labelDuration.ToolTip = this.durationToolTip;
-            this.tagsIcon.ToolTip = this.tagsToolTip;
         }
 
         public void Display(Toggl.TimeEntry item)
@@ -66,8 +61,10 @@ namespace TogglDesktop.WPF
 
         private void updateToolTips(Toggl.TimeEntry item)
         {
-            this.descriptionToolTip.Content = item.Description;
-            this.taskProjectClientToolTip.Content = item.ProjectAndTaskLabel;
+            setToolTipIfNotEmpty(labelDescription, descriptionToolTip, item.Description);
+            setToolTipIfNotEmpty(labelTask, taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(labelProject, taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(labelClient, taskProjectClientToolTip, item.ProjectAndTaskLabel);
 
             if (item.DurOnly)
             {
@@ -82,6 +79,19 @@ namespace TogglDesktop.WPF
             if (tagsIcon.Visibility == Visibility.Visible)
             {
                 tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
+            }
+        }
+
+        private static void setToolTipIfNotEmpty(FrameworkElement element, ToolTip tooltip, string content)
+        {
+            if (string.IsNullOrEmpty(content))
+            {
+                element.ToolTip = null;
+            }
+            else
+            {
+                tooltip.Content = content;
+                element.ToolTip = tooltip;
             }
         }
 
