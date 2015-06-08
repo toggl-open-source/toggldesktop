@@ -2896,7 +2896,7 @@ error Context::offerBetaChannel() {
 
     UI()->DisplayPromotion(kPromotionJoinBetaChannel);
 
-    error err = db()->SetSettingsHasSeenBetaOffering(true);
+    err = db()->SetSettingsHasSeenBetaOffering(true);
     if (err != noError) {
         return err;
     }
