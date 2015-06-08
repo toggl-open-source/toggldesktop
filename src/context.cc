@@ -1844,6 +1844,8 @@ void Context::setUser(User *value, const bool user_logged_in) {
     }
 
     remindToTrackTime();
+
+    displayError(offerBetaChannel());
 }
 
 error Context::SetLoggedInUserFromJSON(
@@ -2867,6 +2869,34 @@ error Context::OpenReportsInBrowser() {
     UI()->DisplayURL(ss.str());
 
     return noError;
+}
+
+error Context::offerBetaChannel() {
+    if (!user_) {
+        return noError;
+    }
+
+    if (settings_.has_seen_beta_offering) {
+        return noError;
+    }
+
+    if (!UI()->CanDisplayPromotion()) {
+        return noError;
+    }
+
+    std::string update_channel("");
+    error err = db()->LoadUpdateChannel(&update_channel);
+    if (err != noError) {
+        return err;
+    }
+
+    if ("beta" == update_channel) {
+        return noError;
+    }
+
+    UI()->DisplayPromotion(kPromotionJoinBetaChannel);
+
+    return db()->SetSettingsHasSeenBetaOffering(true);
 }
 
 void Context::SetWake() {

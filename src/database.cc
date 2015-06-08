@@ -555,6 +555,10 @@ error Database::SetSettingsRemindDays(
     return last_error("SetSettingsRemindDays");
 }
 
+error Database::SetSettingsHasSeenBetaOffering(const bool &value) {
+    return setSettingsValue("has_seen_beta_offering", value);
+}
+
 error Database::SetSettingsUseIdleDetection(
     const bool &use_idle_detection) {
     return setSettingsValue("use_idle_detection", use_idle_detection);

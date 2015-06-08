@@ -219,6 +219,12 @@ class GUI : public SyncStateMonitor {
         return !!on_display_promotion_;
     }
 
+    void DisplayPromotion(const int64_t promotion_type) {
+        if (on_display_promotion_) {
+            on_display_promotion_(promotion_type);
+        }
+    }
+
  private:
     error findMissingCallbacks();
 
