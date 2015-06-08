@@ -184,15 +184,15 @@ public partial class TimeEntryEditViewController : UserControl
     {
         if (Toggl.Project == focusedFieldName)
         {
-            comboBoxProject.Focus();
+            comboBoxProject.Select();
         }
         else if (Toggl.Duration == focusedFieldName)
         {
-            textBoxDuration.Focus();
+            textBoxDuration.Select();
         }
         else if (Toggl.Description == focusedFieldName)
         {
-            comboBoxDescription.Focus();
+            comboBoxDescription.Select();
         }
     }
 
