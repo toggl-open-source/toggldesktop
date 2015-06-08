@@ -35,7 +35,8 @@ class Settings {
     , remind_starts("")
     , remind_ends("")
     , autotrack(false)
-    , open_editor_on_shortcut(false) {}
+    , open_editor_on_shortcut(false)
+    , has_seen_beta_offering(false) {}
     ~Settings() {}
 
     Json::Value SaveToJSON() const;
@@ -62,6 +63,7 @@ class Settings {
     std::string remind_ends;
     bool autotrack;
     bool open_editor_on_shortcut;
+    bool has_seen_beta_offering;
 };
 
 }  // namespace toggl

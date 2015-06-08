@@ -82,6 +82,8 @@
 #define kModelTimeEntry "time_entry"
 #define kModelAutotrackerRule "autotracker_rule"
 
+#define kPromotionJoinBetaChannel 1
+
 // Optional features
 
 #define kTrackSettingsUsage false

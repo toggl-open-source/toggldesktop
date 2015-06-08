@@ -167,6 +167,9 @@ extern "C" {
         const char_t *project_name,
         const uint64_t project_id);
 
+    typedef void (*TogglDisplayPromotion)(
+        const uint64_t promotion_type);
+
     typedef void (*TogglDisplayTimeEntryList)(
         const bool_t open,
         TogglTimeEntryView *first);
@@ -356,6 +359,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_autotracker_rules(
         void *context,
         TogglDisplayAutotrackerRules);
+
+    TOGGL_EXPORT void toggl_on_promotion(
+        void *context,
+        TogglDisplayPromotion);
 
     // After UI callbacks are configured, start pumping UI events
 

@@ -347,7 +347,7 @@ error Database::LoadSettings(Settings *settings) {
                   "remind_starts, remind_ends, "
                   "remind_mon, remind_tue, remind_wed, remind_thu, "
                   "remind_fri, remind_sat, remind_sun, autotrack, "
-                  "open_editor_on_shortcut "
+                  "open_editor_on_shortcut, has_seen_beta_offering "
                   "from settings limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
@@ -371,6 +371,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->remind_sun),
                   into(settings->autotrack),
                   into(settings->open_editor_on_shortcut),
+                  into(settings->has_seen_beta_offering),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -3627,6 +3628,14 @@ error Database::migrateSettings() {
         "settings.open_editor_on_shortcut",
         "ALTER TABLE settings "
         "ADD COLUMN open_editor_on_shortcut INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "settings.has_seen_beta_offering",
+        "ALTER TABLE settings "
+        "ADD COLUMN has_seen_beta_offering INTEGER NOT NULL DEFAULT 0;");
     if (err != noError) {
         return err;
     }
