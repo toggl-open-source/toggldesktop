@@ -16,16 +16,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="Grid" x:Key="TimeEntryCellEntry">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <SolidColorBrush Color="{Binding EntryBackColor}"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
     
-    <StackPanel Style="{toggl:Resources ResourceKey=TimeEntryCell}"
+    <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
                 Background="#F7F7F7">
         
         <!-- Day Header -->
@@ -49,8 +42,12 @@
         
         <!-- Entry -->
         <Grid Name="entry" x:FieldModifier="private"
-              Style="{StaticResource TimeEntryCellEntry}"
               Height="53" Margin="0, 2, 0, 0" MouseDown="entry_MouseDown">
+            
+            <Grid.Background>
+                <SolidColorBrush Color="{Binding EntryBackColor}"/>
+            </Grid.Background>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="*"/>
