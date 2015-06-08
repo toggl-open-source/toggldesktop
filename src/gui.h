@@ -25,28 +25,30 @@ class Workspace;
 
 class GUI : public SyncStateMonitor {
  public:
-    GUI() : on_display_app_(0)
-    , on_display_error_(0)
-    , on_display_online_state_(0)
-    , on_display_login_(0)
-    , on_display_url_(0)
-    , on_display_reminder_(0)
-    , on_display_time_entry_list_(0)
-    , on_display_time_entry_autocomplete_(0)
-    , on_display_project_autocomplete_(0)
-    , on_display_workspace_select_(0)
-    , on_display_client_select_(0)
-    , on_display_tags_(0)
-    , on_display_time_entry_editor_(0)
-    , on_display_settings_(0)
-    , on_display_timer_state_(0)
-    , on_display_idle_notification_(0)
-    , on_display_mini_timer_autocomplete_(0)
-    , on_display_sync_state_(0)
-    , on_display_unsynced_items_(0)
-    , on_display_update_(0)
-    , on_display_autotracker_rules_(0)
-    , on_display_autotracker_notification_(0) {}
+    GUI()
+        : on_display_app_(nullptr)
+    , on_display_error_(nullptr)
+    , on_display_online_state_(nullptr)
+    , on_display_login_(nullptr)
+    , on_display_url_(nullptr)
+    , on_display_reminder_(nullptr)
+    , on_display_time_entry_list_(nullptr)
+    , on_display_time_entry_autocomplete_(nullptr)
+    , on_display_project_autocomplete_(nullptr)
+    , on_display_workspace_select_(nullptr)
+    , on_display_client_select_(nullptr)
+    , on_display_tags_(nullptr)
+    , on_display_time_entry_editor_(nullptr)
+    , on_display_settings_(nullptr)
+    , on_display_timer_state_(nullptr)
+    , on_display_idle_notification_(nullptr)
+    , on_display_mini_timer_autocomplete_(nullptr)
+    , on_display_sync_state_(nullptr)
+    , on_display_unsynced_items_(nullptr)
+    , on_display_update_(nullptr)
+    , on_display_autotracker_rules_(nullptr)
+    , on_display_autotracker_notification_(nullptr)
+    , on_display_promotion_(nullptr) {}
 
     ~GUI() {}
 
@@ -201,12 +203,20 @@ class GUI : public SyncStateMonitor {
         on_display_autotracker_rules_ = cb;
     }
 
+    void OnDisplayPromotion(TogglDisplayPromotion cb) {
+        on_display_promotion_ = cb;
+    }
+
     bool CanDisplayUpdate() const {
         return !!on_display_update_;
     }
 
     bool CanDisplayAutotrackerRules() const {
         return !!on_display_autotracker_rules_;
+    }
+
+    bool CanDisplayPromotion() const {
+        return !!on_display_promotion_;
     }
 
  private:
@@ -234,6 +244,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayUpdate on_display_update_;
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
+    TogglDisplayPromotion on_display_promotion_;
 
     Poco::Logger &logger() const;
 };

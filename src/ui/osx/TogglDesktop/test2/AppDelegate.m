@@ -1042,6 +1042,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_idle_notification(ctx, on_idle_notification);
 	toggl_on_autotracker_rules(ctx, on_autotracker_rules);
 	toggl_on_autotracker_notification(ctx, on_autotracker_notification);
+	toggl_on_promotion(ctx, on_promotion);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1373,6 +1374,12 @@ void on_autotracker_notification(const char_t *project_name,
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
+}
+
+void on_promotion(const int64_t promotion_type)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayPromotion
+														object:[NSNumber numberWithLong:promotion_type]];
 }
 
 void on_client_select(TogglGenericView *first)

@@ -49,10 +49,10 @@ namespace toggl {
 std::string Context::log_path_ = "";
 
 Context::Context(const std::string app_name, const std::string app_version)
-    : db_(0)
-, user_(0)
-, timeline_uploader_(0)
-, window_change_recorder_(0)
+    : db_(nullptr)
+, user_(nullptr)
+, timeline_uploader_(nullptr)
+, window_change_recorder_(nullptr)
 , next_sync_at_(0)
 , next_push_changes_at_(0)
 , next_fetch_updates_at_(0)

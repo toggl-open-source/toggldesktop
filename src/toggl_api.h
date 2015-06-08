@@ -168,7 +168,7 @@ extern "C" {
         const uint64_t project_id);
 
     typedef void (*TogglDisplayPromotion)(
-        const uint64_t promotion_type);
+        const int64_t promotion_type);
 
     typedef void (*TogglDisplayTimeEntryList)(
         const bool_t open,
