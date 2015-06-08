@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include <json/json.h>  // NOLINT
+
 #include "Poco/Types.h"
 
 namespace toggl {
@@ -35,6 +37,8 @@ class Settings {
     , autotrack(false)
     , open_editor_on_shortcut(false) {}
     ~Settings() {}
+
+    Json::Value SaveToJSON() const;
 
     bool use_idle_detection;
     bool menubar_timer;

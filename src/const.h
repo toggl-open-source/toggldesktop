@@ -82,4 +82,8 @@
 #define kModelTimeEntry "time_entry"
 #define kModelAutotrackerRule "autotracker_rule"
 
+// Optional features
+
+#define kTrackSettingsUsage false
+
 #endif  // SRC_CONST_H_

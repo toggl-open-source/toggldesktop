@@ -390,7 +390,7 @@ void User::CollectPushableModels(
 }
 
 error User::PullAllUserData(
-    TogglClient *https_client) {
+    TogglClient *toggl_client) {
 
     if (APIToken().empty()) {
         return error("cannot pull user data without API token");
@@ -402,7 +402,7 @@ error User::PullAllUserData(
 
         std::string user_data_json("");
         error err = Me(
-            https_client,
+            toggl_client,
             APIToken(),
             "api_token",
             &user_data_json,
@@ -429,7 +429,7 @@ error User::PullAllUserData(
 }
 
 error User::PushChanges(
-    TogglClient *https_client,
+    TogglClient *toggl_client,
     bool *had_something_to_push) {
 
     if (APIToken().empty()) {
@@ -467,7 +467,7 @@ error User::PushChanges(
         logger().debug(json);
 
         std::string response_body("");
-        err = https_client->Post(kAPIURL,
+        err = toggl_client->Post(kAPIURL,
                                  "/api/v8/batch_updates",
                                  json,
                                  APIToken(),
@@ -518,7 +518,7 @@ std::string User::String() const {
 }
 
 error User::Me(
-    TogglClient *https_client,
+    TogglClient *toggl_client,
     const std::string email,
     const std::string password,
     std::string *user_data_json,
@@ -534,7 +534,7 @@ error User::Me(
 
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(https_client);
+        poco_check_ptr(toggl_client);
 
         std::stringstream relative_url;
         relative_url << "/api/v8/me"
@@ -542,7 +542,7 @@ error User::Me(
                      << "&with_related_data=true"
                      << "&since=" << since;
 
-        return https_client->Get(kAPIURL,
+        return toggl_client->Get(kAPIURL,
                                  relative_url.str(),
                                  email,
                                  password,
@@ -557,7 +557,7 @@ error User::Me(
 }
 
 error User::Signup(
-    TogglClient *https_client,
+    TogglClient *toggl_client,
     const std::string email,
     const std::string password,
     std::string *user_data_json) {
@@ -572,7 +572,7 @@ error User::Signup(
 
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(https_client);
+        poco_check_ptr(toggl_client);
 
         Json::Value user;
         user["email"] = email;
@@ -581,7 +581,7 @@ error User::Signup(
         Json::Value root;
         root["user"] = user;
 
-        return https_client->Post(kAPIURL,
+        return toggl_client->Post(kAPIURL,
                                   "/api/v8/signups",
                                   Json::StyledWriter().write(root),
                                   "",

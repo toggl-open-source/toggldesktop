@@ -59,6 +59,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
 , next_reminder_at_(0)
+, next_analytics_at_(0)
 , time_entry_editor_guid_("")
 , environment_("production")
 , idle_(&ui_)
@@ -1211,6 +1212,7 @@ error Context::SetSettingsRemindTimes(
     const std::string remind_starts,
     const std::string remind_ends) {
     error err = db()->SetSettingsRemindTimes(remind_starts, remind_ends);
+
     if (err != noError) {
         return displayError(err);
     }
@@ -1221,6 +1223,8 @@ error Context::SetSettingsRemindTimes(
     }
 
     remindToTrackTime();
+
+    trackSettingsUsage();
 
     return noError;
 }
@@ -1252,6 +1256,8 @@ error Context::SetSettingsRemindDays(
 
     remindToTrackTime();
 
+    trackSettingsUsage();
+
     return noError;
 }
 
@@ -1260,6 +1266,9 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1268,6 +1277,9 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1276,6 +1288,9 @@ error Context::SetSettingsAutotrack(const bool value) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1284,6 +1299,9 @@ error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1292,6 +1310,9 @@ error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1300,6 +1321,9 @@ error Context::SetSettingsMenubarProject(const bool menubar_project) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1308,6 +1332,9 @@ error Context::SetSettingsDockIcon(const bool dock_icon) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1316,6 +1343,9 @@ error Context::SetSettingsOnTop(const bool on_top) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1332,6 +1362,8 @@ error Context::SetSettingsReminder(const bool reminder) {
 
     remindToTrackTime();
 
+    trackSettingsUsage();
+
     return noError;
 }
 
@@ -1340,6 +1372,9 @@ error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1348,6 +1383,9 @@ error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1356,6 +1394,9 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
     if (err != noError) {
         return displayError(err);
     }
+
+    trackSettingsUsage();
+
     return DisplaySettings();
 }
 
@@ -1371,6 +1412,8 @@ error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     }
 
     remindToTrackTime();
+
+    trackSettingsUsage();
 
     return noError;
 }
@@ -1669,7 +1712,43 @@ error Context::Login(
         return displayError(err);
     }
 
-    return displayError(save());
+    err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    trackSettingsUsage();
+
+    return noError;
+}
+
+void Context::trackSettingsUsage() {
+    if (!kTrackSettingsUsage) {
+        return;
+    }
+
+    next_analytics_at_ =
+        postpone(kRequestThrottleSeconds * kOneSecondInMicros);
+
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>(
+            *this, &Context::onTrackSettingsUsage);
+
+    Poco::Mutex::ScopedLock lock(timer_m_);
+
+    timer_.schedule(ptask, next_analytics_at_);
+}
+
+void Context::onTrackSettingsUsage(Poco::Util::TimerTask& task) {  // NOLINT
+    if (isPostponed(next_analytics_at_,
+                    (kRequestThrottleSeconds * kOneSecondInMicros))) {
+        return;
+    }
+
+    if (!user_) {
+        return;
+    }
+    analytics_.TrackSettingsUsage(user_->APIToken(), settings_);
 }
 
 error Context::Signup(
