@@ -210,6 +210,7 @@
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\idle.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
+    <ClCompile Include="..\..\..\settings.cc" />
     <ClCompile Include="..\..\..\toggl_api.cc" />
     <ClCompile Include="..\..\..\toggl_api_private.cc" />
     <ClCompile Include="..\..\..\project.cc" />
