@@ -252,6 +252,9 @@
     <Compile Include="WPF\TimeEntryCell.xaml.cs">
       <DependentUpon>TimeEntryCell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\TimeEntryEditViewController.xaml.cs">
+      <DependentUpon>TimeEntryEditViewController.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\TimeEntryList.xaml.cs">
       <DependentUpon>TimeEntryList.xaml</DependentUpon>
     </Compile>
@@ -478,10 +481,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WPF\TimeEntryEditViewController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\TimeEntryList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\timerLightBg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
