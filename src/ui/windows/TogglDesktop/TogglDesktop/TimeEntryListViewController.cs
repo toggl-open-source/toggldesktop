@@ -116,13 +116,13 @@ public partial class TimeEntryListViewController : UserControl
     internal WPF.TimeEntryCell findControlByGUID(string GUID)
     {
         return this.entries.Children
-            .Cast<WPF.TimeEntryCell>()
-            .FirstOrDefault(child => child.GUID == GUID);
+               .Cast<WPF.TimeEntryCell>()
+               .FirstOrDefault(child => child.GUID == GUID);
         if (timerEditViewController.durationFocused)
         {
             return this.entries.Children
-                .Cast<WPF.TimeEntryCell>()
-                .FirstOrDefault(child => child.GUID == GUID);
+                   .Cast<WPF.TimeEntryCell>()
+                   .FirstOrDefault(child => child.GUID == GUID);
         }
         return null;
     }
