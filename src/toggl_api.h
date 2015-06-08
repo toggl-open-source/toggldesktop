@@ -17,13 +17,13 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
 #define TOGGL_EXPORT __declspec(dllexport)
 #else
 #define TOGGL_EXPORT
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
 #define char_t wchar_t
 #define bool_t bool
 #else

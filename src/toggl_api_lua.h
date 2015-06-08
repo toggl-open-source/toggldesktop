@@ -7,7 +7,7 @@
 
 #include <lua.hpp>
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
 #include <ustring.h>
 #endif
 
@@ -16,7 +16,7 @@
 static void *toggl_app_instance_ = nullptr;
 
 void pushstring(lua_State *L, char_t *str) {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
     push_utf8_string(L, str);
 #else
     lua_pushstring(L, str);
@@ -24,7 +24,7 @@ void pushstring(lua_State *L, char_t *str) {
 }
 
 const char_t *checkstring(lua_State *L, int pos) {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
     return check_utf8_string(L, pos);
 #else
     return luaL_checkstring(L, pos);
