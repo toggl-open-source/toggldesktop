@@ -2896,7 +2896,12 @@ error Context::offerBetaChannel() {
 
     UI()->DisplayPromotion(kPromotionJoinBetaChannel);
 
-    return db()->SetSettingsHasSeenBetaOffering(true);
+    error err = db()->SetSettingsHasSeenBetaOffering(true);
+    if (err != noError) {
+        return err;
+    }
+
+    return DisplaySettings();
 }
 
 void Context::SetWake() {
