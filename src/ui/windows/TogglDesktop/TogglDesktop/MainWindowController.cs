@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 namespace TogglDesktop
 {
@@ -16,7 +17,7 @@ public partial class MainWindowController : TogglForm
 
     private LoginViewController loginViewController;
     private TimeEntryListViewController timeEntryListViewController;
-    private TimeEntryEditViewController timeEntryEditViewController;
+    private WPF.TimeEntryEditViewController timeEntryEditViewController;
     private AboutWindowController aboutWindowController;
     private PreferencesWindowController preferencesWindowController;
     private FeedbackWindowController feedbackWindowController;
@@ -182,7 +183,7 @@ public partial class MainWindowController : TogglForm
 
         loginViewController = new LoginViewController();
         timeEntryListViewController = new TimeEntryListViewController();
-        timeEntryEditViewController = new TimeEntryEditViewController();
+        timeEntryEditViewController = new WPF.TimeEntryEditViewController();
         aboutWindowController = new AboutWindowController();
         preferencesWindowController = new PreferencesWindowController();
         feedbackWindowController = new FeedbackWindowController();
@@ -469,7 +470,7 @@ public partial class MainWindowController : TogglForm
                 editForm.GUID = null;
             }
             contentPanel.Controls.Remove(timeEntryListViewController);
-            contentPanel.Controls.Remove(timeEntryEditViewController);
+            //contentPanel.Controls.Remove(timeEntryEditViewController);
             contentPanel.Controls.Add(loginViewController);
             setCorrectMinimumSize();
             loginViewController.SetAcceptButton(this);
@@ -530,7 +531,14 @@ public partial class MainWindowController : TogglForm
             ControlBox = false,
             StartPosition = FormStartPosition.Manual
         };
-        editForm.Controls.Add(timeEntryEditViewController);
+
+        var editViewHost = new ElementHost
+        {
+            Dock = DockStyle.Fill,
+            Child = this.timeEntryEditViewController
+        };
+
+        editForm.Controls.Add(editViewHost);
         editForm.editView = timeEntryEditViewController;
     }
 
@@ -562,7 +570,7 @@ public partial class MainWindowController : TogglForm
         {
             contentPanel.Controls.Remove(loginViewController);
             MinimumSize = new Size(230, 86);
-            timeEntryEditViewController.setupView(this, focused_field_name);
+            //timeEntryEditViewController.setupView(this, focused_field_name);
             PopupInput(te);
         }
     }

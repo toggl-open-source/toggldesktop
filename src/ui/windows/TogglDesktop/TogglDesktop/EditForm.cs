@@ -18,7 +18,7 @@ public partial class EditForm : Form
 
     public string GUID = null;
 
-    public TimeEntryEditViewController editView;
+    public WPF.TimeEntryEditViewController editView;
 
     public EditForm()
     {
@@ -29,10 +29,10 @@ public partial class EditForm : Form
 
     public void CloseButton_Click(object sender, EventArgs e)
     {
-        if (editView.dropDownsClosed())
-        {
+        //if (editView.dropDownsClosed())
+        //{
             ClosePopup();
-        }
+        //}
     }
 
     const UInt32 HTLEFT = 10;
@@ -122,7 +122,7 @@ public partial class EditForm : Form
 
     internal void reset()
     {
-        editView.resetForms();
+        //editView.resetForms();
     }
 
     internal void setWindowPos(int HWND_TOPMOST)
@@ -132,7 +132,7 @@ public partial class EditForm : Form
 
     internal void ClosePopup()
     {
-        editView.buttonDone_Click(null, null);
+        //editView.buttonDone_Click(null, null);
     }
 
     private void resizeHandle_MouseDown(object sender, MouseEventArgs e)
