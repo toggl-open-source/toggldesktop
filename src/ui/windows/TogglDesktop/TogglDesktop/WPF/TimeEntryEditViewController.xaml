@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              >
     <UserControl.Resources>
-        <Style TargetType="Grid" x:Key="MainGridStyle">
+        <Style TargetType="Grid" x:Key="MainGrid">
             <Setter Property="Background">
                 <Setter.Value>
                     <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerLightBg.png"
@@ -14,52 +14,60 @@
                                 Viewport="0, 0, 634, 782" ViewportUnits="Absolute"/>
                 </Setter.Value>
             </Setter>
-
-            <Style.Resources>
-                <Style TargetType="Control" x:Key="ControlBaseStyle">
-                    <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-                    <Setter Property="FontSize" Value="13.3" />
-                    <Setter Property="Foreground" Value="#252525"/>
-                    <Setter Property="Margin" Value="8"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-                <Style TargetType="TextBox" BasedOn="{StaticResource ControlBaseStyle}">
-                    <Setter Property="Padding" Value="5, 0, 0, 0"/>
-                </Style>
-                <Style TargetType="DatePicker" BasedOn="{StaticResource ControlBaseStyle}">
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="FontSize" Value="10" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-                <Style TargetType="Button" BasedOn="{StaticResource ControlBaseStyle}">
-                    <Setter Property="ContentTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <BulletDecorator>
-                                    <BulletDecorator.Bullet>
-                                        <TextBlock Foreground="#57da6d" FontSize="16">+</TextBlock>
-                                    </BulletDecorator.Bullet>
-                                    <TextBlock Margin="4, 0, 0, 0"
+        </Style>
+        <Style TargetType="Control">
+            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+            <Setter Property="FontSize" Value="13.3" />
+            <Setter Property="Foreground" Value="#252525"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="Padding" Value="8, 0, 0, 0"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="TimeBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="#fafafa"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="DurationBox" BasedOn="{StaticResource TimeBox}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="Padding" Value="5, 0, 0, 0"/>
+        </Style>
+        <Style TargetType="DatePicker" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="8, 0, 8, 0"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <TextBlock Foreground="#57da6d" FontSize="16">+</TextBlock>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="4, 0, 0, 0"
                                                TextDecorations="Underline"
                                                VerticalAlignment="Center"
                                                Text="{TemplateBinding Content}"/>
-                                </BulletDecorator>
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                    <Setter Property="HorizontalAlignment" Value="Right"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="Foreground" Value="DarkGray"/>
-                </Style>
-            </Style.Resources>
-
+                        </BulletDecorator>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="DarkGray"/>
         </Style>
     </UserControl.Resources>
 
-    <Grid Style="{StaticResource MainGridStyle}">
+    <Grid Style="{StaticResource MainGrid}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
             <ColumnDefinition Width="*" MinWidth="320"/>
@@ -84,12 +92,15 @@
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Grid.Row="0">Test</TextBox>
-                <TextBox Grid.Column="1" Grid.Row="0">Test</TextBox>
-                <TextBox Grid.Column="2" Grid.Row="0">Test</TextBox>
+                <TextBox Grid.Column="0" Grid.Row="0"
+                         Style="{StaticResource TimeBox}">12:45</TextBox>
+                <TextBox Grid.Column="1" Grid.Row="0"
+                         Style="{StaticResource DurationBox}">10:12 min</TextBox>
+                <TextBox Grid.Column="2" Grid.Row="0"
+                         Style="{StaticResource TimeBox}">12:55</TextBox>
                 
                 <DatePicker Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                         Height="20" VerticalAlignment="Bottom"></DatePicker>
+                         Height="20" VerticalAlignment="Bottom" SelectedDate="05.01.2015"/>
             </Grid>
             
             <!-- description -->
@@ -109,21 +120,17 @@
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <TextBox Grid.Column="0" Grid.Row="0">No project</TextBox>
-                <TextBox Grid.Column="0" Grid.Row="1">No client</TextBox>
-                <TextBox Grid.Column="0" Grid.Row="2">No task</TextBox>
+                <ComboBox Grid.Column="0" Grid.Row="0" IsEditable="True" />
                 <Button  Grid.Column="1" Grid.Row="0">Add new project</Button>
+                
+                <ComboBox Grid.Column="0" Grid.Row="1" IsEditable="True" />
                 <Button  Grid.Column="1" Grid.Row="1">Add new client</Button>
+                
+                <ComboBox Grid.Column="0" Grid.Row="2" IsEditable="True" />
             </Grid>
             
             <!-- tags -->
-            <Grid>
-                <WrapPanel Orientation="Horizontal">
-                    <TextBlock>mobile</TextBlock>
-                    <TextBlock>free</TextBlock>
-                    <TextBox>Enter tag here</TextBox>
-                </WrapPanel>
-            </Grid>
+            
             
             <!-- billable? -->
             <CheckBox>Billable</CheckBox>
