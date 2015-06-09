@@ -2872,6 +2872,13 @@ error Context::OpenReportsInBrowser() {
 }
 
 error Context::offerBetaChannel() {
+    if (update_check_disabled_) {
+        // if update check is disabled, then
+        // the channel selection won't be ever
+        // used anyway
+        return noError;
+    }
+
     if (!user_) {
         return noError;
     }
