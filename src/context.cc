@@ -49,10 +49,10 @@ namespace toggl {
 std::string Context::log_path_ = "";
 
 Context::Context(const std::string app_name, const std::string app_version)
-    : db_(0)
-, user_(0)
-, timeline_uploader_(0)
-, window_change_recorder_(0)
+    : db_(nullptr)
+, user_(nullptr)
+, timeline_uploader_(nullptr)
+, window_change_recorder_(nullptr)
 , next_sync_at_(0)
 , next_push_changes_at_(0)
 , next_fetch_updates_at_(0)
@@ -1844,6 +1844,8 @@ void Context::setUser(User *value, const bool user_logged_in) {
     }
 
     remindToTrackTime();
+
+    displayError(offerBetaChannel());
 }
 
 error Context::SetLoggedInUserFromJSON(
@@ -2867,6 +2869,46 @@ error Context::OpenReportsInBrowser() {
     UI()->DisplayURL(ss.str());
 
     return noError;
+}
+
+error Context::offerBetaChannel() {
+    if (update_check_disabled_) {
+        // if update check is disabled, then
+        // the channel selection won't be ever
+        // used anyway
+        return noError;
+    }
+
+    if (!user_) {
+        return noError;
+    }
+
+    if (settings_.has_seen_beta_offering) {
+        return noError;
+    }
+
+    if (!UI()->CanDisplayPromotion()) {
+        return noError;
+    }
+
+    std::string update_channel("");
+    error err = db()->LoadUpdateChannel(&update_channel);
+    if (err != noError) {
+        return err;
+    }
+
+    if ("beta" == update_channel) {
+        return noError;
+    }
+
+    UI()->DisplayPromotion(kPromotionJoinBetaChannel);
+
+    err = db()->SetSettingsHasSeenBetaOffering(true);
+    if (err != noError) {
+        return err;
+    }
+
+    return DisplaySettings();
 }
 
 void Context::SetWake() {

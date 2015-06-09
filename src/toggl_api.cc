@@ -851,6 +851,12 @@ void toggl_on_autotracker_notification(
     app(context)->UI()->OnDisplayAutotrackerNotification(cb);
 }
 
+void toggl_on_promotion(
+    void *context,
+    TogglDisplayPromotion cb) {
+    app(context)->UI()->OnDisplayPromotion(cb);
+}
+
 void toggl_set_sleep(void *context) {
     app(context)->SetSleep();
 }

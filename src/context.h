@@ -380,6 +380,8 @@ class Context : public TimelineDatasource {
 
     void stopActivities();
 
+    error offerBetaChannel();
+
     Poco::Mutex db_m_;
     Database *db_;
 

@@ -32,12 +32,12 @@ class WebSocketClient {
  public:
     WebSocketClient() :
     activity_(this, &WebSocketClient::runActivity),
-    session_(0),
-    req_(0),
-    res_(0),
-    ws_(0),
-    on_websocket_message_(0),
-    ctx_(0),
+    session_(nullptr),
+    req_(nullptr),
+    res_(nullptr),
+    ws_(nullptr),
+    on_websocket_message_(nullptr),
+    ctx_(nullptr),
     last_connection_at_(0),
     api_token_("") {}
     virtual ~WebSocketClient();

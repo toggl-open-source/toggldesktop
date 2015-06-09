@@ -41,7 +41,7 @@ using Poco::Data::Keywords::into;
 using Poco::Data::Keywords::now;
 
 Database::Database(const std::string db_path)
-    : session_(0)
+    : session_(nullptr)
 , desktop_id_("")
 , analytics_client_id_("") {
     Poco::Data::SQLite::Connector::registerConnector();
@@ -553,6 +553,10 @@ error Database::SetSettingsRemindDays(
     }
 
     return last_error("SetSettingsRemindDays");
+}
+
+error Database::SetSettingsHasSeenBetaOffering(const bool &value) {
+    return setSettingsValue("has_seen_beta_offering", value);
 }
 
 error Database::SetSettingsUseIdleDetection(
