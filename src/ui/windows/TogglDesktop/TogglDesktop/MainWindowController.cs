@@ -482,6 +482,8 @@ public partial class MainWindowController : TogglForm
         {
             runningToolStripMenuItem.Text = "Timer is not tracking";
         }
+
+        currentUserEmailMenuItem.Text = Toggl.UserEmail();
     }
 
     private void enableMenuItems()
