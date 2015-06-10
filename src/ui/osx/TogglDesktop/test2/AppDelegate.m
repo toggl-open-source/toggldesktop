@@ -544,6 +544,11 @@ BOOL manualMode = NO;
 		// maybe its running, but we dont know any more
 		[self indicateStoppedTimer];
 	}
+	// Set email address
+	char *str = toggl_get_user_email(ctx);
+	NSString *email = [NSString stringWithUTF8String:str];
+	free(str);
+	[self.currentUserEmailMenuItem setTitle:email];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
@@ -673,12 +678,6 @@ BOOL manualMode = NO;
 - (void)displayTimerState:(TimeEntryViewItem *)timeEntry
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	// Set email address
-	char *str = toggl_get_user_email(ctx);
-	NSString *email = [NSString stringWithUTF8String:str];
-	free(str);
-	[self.currentUserEmailMenuItem setTitle:email];
 
 	self.lastKnownRunningTimeEntry = timeEntry;
 
