@@ -54,6 +54,9 @@
 // We'll be updating running TE as a menu item, too
 @property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
 
+// We'll add user email once userdata has been loaded
+@property (strong) IBOutlet NSMenuItem *currentUserEmailMenuItem;
+
 // Where logs are written and db is kept
 @property NSString *app_path;
 @property NSString *db_path;
@@ -671,6 +674,12 @@ BOOL manualMode = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
+	// Set email address
+	char *str = toggl_get_user_email(ctx);
+	NSString *email = [NSString stringWithUTF8String:str];
+	free(str);
+	[self.currentUserEmailMenuItem setTitle:email];
+
 	self.lastKnownRunningTimeEntry = timeEntry;
 
 	if (!timeEntry)
@@ -726,8 +735,10 @@ BOOL manualMode = NO;
 - (void)createStatusItem
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
 	NSMenu *menu = [[NSMenu alloc] init];
+	self.currentUserEmailMenuItem = [menu addItemWithTitle:@""
+													action:nil
+											 keyEquivalent:@""];
 	self.runningTimeEntryMenuItem = [menu addItemWithTitle:@"Timer status"
 													action:nil
 											 keyEquivalent:@""];
