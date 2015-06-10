@@ -1,6 +1,8 @@
 ﻿
 using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace TogglDesktop.WPF
@@ -19,12 +21,7 @@ namespace TogglDesktop.WPF
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
 
-            this.durationUpdateTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1),
-                IsEnabled = true,
-            };
-            durationUpdateTimer.Tick += durationUpdateTimerTick;
+            this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
 
         #region helper methods
@@ -37,20 +34,12 @@ namespace TogglDesktop.WPF
             return true;
         }
 
-        private static void setTextIfUnfocused(TextBox textBox, string text)
-        {
-            if (textBox.IsFocused)
-                return;
-            textBox.Text = text;
-        }
-
         private bool hasTimeEntry()
         {
             return this.timeEntry.GUID != null;
         }
 
         #endregion
-
 
         #region fill with data
 
@@ -60,13 +49,14 @@ namespace TogglDesktop.WPF
                 return;
 
             this.timeEntry = timeEntry;
+            this.durationUpdateTimer.IsEnabled = this.timeEntry.DurationInSeconds < 0;
 
             if (open)
             {
                 this.descriptionTextBox.Text = timeEntry.Description;
                 this.durationTextBox.Text = timeEntry.Duration;
-                this.startTimeTextBox.Text = timeEntry.StartTimeString;
-                this.endTimeTextBox.Text = timeEntry.EndTimeString;
+                setTime(this.startTimeTextBox, timeEntry.StartTimeString);
+                setTime(this.endTimeTextBox, timeEntry.EndTimeString);
                 this.projectComboBox.SelectedItem = timeEntry.ProjectLabel;
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
             }
@@ -74,8 +64,8 @@ namespace TogglDesktop.WPF
             {
                 setTextIfUnfocused(this.descriptionTextBox, timeEntry.Description);
                 setTextIfUnfocused(this.durationTextBox, timeEntry.Duration);
-                setTextIfUnfocused(this.startTimeTextBox, timeEntry.StartTimeString);
-                setTextIfUnfocused(this.endTimeTextBox, timeEntry.EndTimeString);
+                setTimeIfUnfocused(this.startTimeTextBox, timeEntry.StartTimeString);
+                setTimeIfUnfocused(this.endTimeTextBox, timeEntry.EndTimeString);
 
                 if (!this.projectComboBox.IsFocused)
                     this.projectComboBox.SelectedItem = timeEntry.ProjectLabel;
@@ -83,6 +73,36 @@ namespace TogglDesktop.WPF
                 if (!this.startDatePicker.IsFocused)
                     this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
             }
+        }
+
+        private static void setTime(TextBox textBox, string time)
+        {
+            textBox.Text = time;
+            textBox.Tag = time;
+        }
+
+        private static void setTimeIfUnfocused(TextBox textBox, string time)
+        {
+            if (textBox.IsFocused)
+                return;
+            textBox.Text = time;
+            textBox.Tag = time;
+        }
+        private static void setTextIfUnfocused(TextBox textBox, string text)
+        {
+            if (textBox.IsFocused)
+                return;
+            textBox.Text = text;
+        }
+
+        private DispatcherTimer startDurationUpdateTimer()
+        {
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1),
+            };
+            timer.Tick += this.durationUpdateTimerTick;
+            return timer;
         }
 
         private void durationUpdateTimerTick(object sender, EventArgs eventArgs)
@@ -101,5 +121,60 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
+        #region change data
+
+        #region time and date
+
+        private void startTimeTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
+        {
+            this.setTimeEntryTimeIfChanged(this.startTimeTextBox, Toggl.SetTimeEntryStart, "start time");
+        }
+
+        private void endTimeTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
+        {
+            this.setTimeEntryTimeIfChanged(this.endTimeTextBox, Toggl.SetTimeEntryEnd, "end time");
+        }
+
+        private void durationTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
+        {
+            this.setTimeEntryTimeIfChanged(this.durationTextBox, Toggl.SetTimeEntryDuration, "duration");
+        }
+
+        private void setTimeEntryTimeIfChanged(TextBox textBox, Func<string, string, bool> apiCall, string timeType)
+        {
+            if (!this.hasTimeEntry())
+            {
+                Console.WriteLine("Cannot apply " + timeType + " change: No time entry.");
+                return;
+            }
+
+            var before = textBox.Tag as string;
+            var now = textBox.Text;
+            if (before == now)
+                return;
+
+            apiCall(this.timeEntry.GUID, now);
+        }
+
+        private void startDatePicker_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!this.hasTimeEntry())
+            {
+                Console.WriteLine("Cannot apply date change: No time entry.");
+                return;
+            }
+            if (!this.startDatePicker.SelectedDate.HasValue)
+            {
+                this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(this.timeEntry.Started);
+                return;
+            }
+            Toggl.SetTimeEntryDate(this.timeEntry.GUID, this.startDatePicker.SelectedDate.Value);
+        }
+
+        #endregion
+
+        #endregion
+
     }
 }
