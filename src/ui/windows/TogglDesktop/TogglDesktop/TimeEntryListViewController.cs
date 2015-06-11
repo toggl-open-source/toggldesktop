@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace TogglDesktop
 {
@@ -80,7 +81,6 @@ public partial class TimeEntryListViewController : UserControl
                 cell = new WPF.TimeEntryCell();
                 entries.Children.Add(cell);
             }
-
             cell.Display(te);
         }
 
@@ -89,6 +89,7 @@ public partial class TimeEntryListViewController : UserControl
             entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
         }
 
+        entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         entriesHost.Invalidate();
 
     }
