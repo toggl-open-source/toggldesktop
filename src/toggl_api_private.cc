@@ -155,7 +155,7 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
 }
 
 std::string to_string(const char_t *s) {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
     std::wstring ws(s);
     std::string res("");
     Poco::UnicodeConverter::toUTF8(ws, res);
@@ -166,7 +166,7 @@ std::string to_string(const char_t *s) {
 }
 
 char_t *copy_string(const std::string s) {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
     std::wstring ws;
     Poco::UnicodeConverter::toUTF16(s, ws);
     return wcsdup(ws.c_str());
@@ -176,7 +176,7 @@ char_t *copy_string(const std::string s) {
 }
 
 int compare_string(const char_t *s1, const char_t *s2) {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
     return wcscmp(s1, s2);
 #else
     return strcmp(s1, s2);

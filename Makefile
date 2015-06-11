@@ -171,7 +171,7 @@ libs= -L$(pocolib) \
 	-llua
 endif
 
-cxx=g++ -fprofile-arcs -ftest-coverage -std=c++11
+cxx=g++ -fprofile-arcs -ftest-coverage -std=gnu++0x
 
 default: app
 

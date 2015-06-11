@@ -468,6 +468,7 @@ public partial class MainWindowController : TogglForm
             {
                 editForm.Hide();
                 editForm.GUID = null;
+                timeEntryListViewController.DisableHighlight();
             }
             contentPanel.Controls.Remove(timeEntryListViewController);
             contentPanel.Controls.Add(loginViewController);
@@ -482,6 +483,8 @@ public partial class MainWindowController : TogglForm
         {
             runningToolStripMenuItem.Text = "Timer is not tracking";
         }
+
+        currentUserEmailMenuItem.Text = Toggl.UserEmail();
     }
 
     private void enableMenuItems()
@@ -519,6 +522,7 @@ public partial class MainWindowController : TogglForm
             {
                 editForm.Hide();
                 editForm.GUID = null;
+                timeEntryListViewController.DisableHighlight();
             }
         }
     }
@@ -551,6 +555,7 @@ public partial class MainWindowController : TogglForm
         setEditFormLocation();
         editForm.GUID = te.GUID;
         editForm.Show();
+        timeEntryListViewController.HighlightEntry(te.GUID);
     }
 
     void OnTimeEntryEditor(
@@ -572,6 +577,7 @@ public partial class MainWindowController : TogglForm
             //timeEntryEditViewController.setupView(this, focused_field_name);
             PopupInput(te);
         }
+        timeEntryListViewController.HighlightEntry(te.GUID);
     }
 
     private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)

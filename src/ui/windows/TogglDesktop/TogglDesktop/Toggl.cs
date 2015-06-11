@@ -1072,6 +1072,16 @@ public static class Toggl
     }
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return: MarshalAs(UnmanagedType.LPWStr)]
+    private static extern string toggl_get_user_email(
+        IntPtr context);
+
+    public static string UserEmail()
+    {
+        return toggl_get_user_email(ctx);
+    }
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_sync(
         IntPtr context);
 

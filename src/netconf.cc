@@ -19,7 +19,7 @@
 #include <CoreServices/CoreServices.h>  // NOLINT
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
 #include <winhttp.h>
 #pragma comment(lib, "winhttp")
 #endif
@@ -38,7 +38,7 @@ error Netconf::autodetectProxy(
         return noError;
     }
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
     WINHTTP_CURRENT_USER_IE_PROXY_CONFIG ie_config = { 0 };
     if (!WinHttpGetIEProxyConfigForCurrentUser(&ie_config)) {
         std::stringstream ss;

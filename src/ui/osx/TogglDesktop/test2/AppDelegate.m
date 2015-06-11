@@ -54,6 +54,9 @@
 // We'll be updating running TE as a menu item, too
 @property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
 
+// We'll add user email once userdata has been loaded
+@property (strong) IBOutlet NSMenuItem *currentUserEmailMenuItem;
+
 // Where logs are written and db is kept
 @property NSString *app_path;
 @property NSString *db_path;
@@ -541,6 +544,11 @@ BOOL manualMode = NO;
 		// maybe its running, but we dont know any more
 		[self indicateStoppedTimer];
 	}
+	// Set email address
+	char *str = toggl_get_user_email(ctx);
+	NSString *email = [NSString stringWithUTF8String:str];
+	free(str);
+	[self.currentUserEmailMenuItem setTitle:email];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
@@ -726,8 +734,10 @@ BOOL manualMode = NO;
 - (void)createStatusItem
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
 	NSMenu *menu = [[NSMenu alloc] init];
+	self.currentUserEmailMenuItem = [menu addItemWithTitle:@""
+													action:nil
+											 keyEquivalent:@""];
 	self.runningTimeEntryMenuItem = [menu addItemWithTitle:@"Timer status"
 													action:nil
 											 keyEquivalent:@""];
@@ -1042,6 +1052,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_idle_notification(ctx, on_idle_notification);
 	toggl_on_autotracker_rules(ctx, on_autotracker_rules);
 	toggl_on_autotracker_notification(ctx, on_autotracker_notification);
+	toggl_on_promotion(ctx, on_promotion);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1373,6 +1384,12 @@ void on_autotracker_notification(const char_t *project_name,
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
+}
+
+void on_promotion(const int64_t promotion_type)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayPromotion
+														object:[NSNumber numberWithLong:promotion_type]];
 }
 
 void on_client_select(TogglGenericView *first)
