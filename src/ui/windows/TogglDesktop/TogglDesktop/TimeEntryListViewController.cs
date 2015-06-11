@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using TogglDesktop.WPF;
 
 namespace TogglDesktop
 {
 public partial class TimeEntryListViewController : UserControl
 {
     private Object rendering = new Object();
+
+    private readonly Dictionary<string, WPF.TimeEntryCell> cellsByGUID =
+        new Dictionary<string, TimeEntryCell>();
 
     public TimeEntryListViewController()
     {
@@ -64,6 +68,8 @@ public partial class TimeEntryListViewController : UserControl
     {
         emptyLabel.Visible = (list.Count == 0);
 
+        this.cellsByGUID.Clear();
+
         int maxCount = list.Count;
 
         for (int i = 0; i < maxCount; i++)
@@ -82,6 +88,7 @@ public partial class TimeEntryListViewController : UserControl
                 entries.Children.Add(cell);
             }
             cell.Display(te);
+            this.cellsByGUID.Add(te.GUID, cell);
         }
 
         if (entries.Children.Count > list.Count)
@@ -118,5 +125,20 @@ public partial class TimeEntryListViewController : UserControl
     {
         timerEditViewController.editForm = editForm;
     }
+
+    public void HighlightEntry(string GUID)
+    {
+        WPF.TimeEntryCell cell = null;
+        if(GUID != null)
+            this.cellsByGUID.TryGetValue(GUID, out cell);
+
+        this.entries.HighlightCell(cell);
+    }
+
+    public void DisableHighlight()
+    {
+        this.entries.DisableHighlight();
+    }
+
 }
 }

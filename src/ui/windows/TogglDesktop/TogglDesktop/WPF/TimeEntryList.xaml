@@ -10,8 +10,16 @@
                   HorizontalScrollBarVisibility="Disabled"
                   HorizontalAlignment="Stretch"
                   MouseEnter="onMouseEnter">
-        <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch">
+        <Grid>
+            <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch">
 
-        </VirtualizingStackPanel>
+            </VirtualizingStackPanel>
+            <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private"
+                       Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0"
+                       IsHitTestVisible="False"/>
+            <Rectangle x:Name="highlightRectangleBottom" x:FieldModifier="private"
+                       Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
+                       IsHitTestVisible="False"/>
+        </Grid>
     </ScrollViewer>
 </UserControl>
