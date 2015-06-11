@@ -99,6 +99,8 @@ public partial class TimeEntryListViewController : UserControl
         entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         entriesHost.Invalidate();
 
+        entries.RefreshHighLight();
+
     }
 
     void OnLogin(bool open, UInt64 user_id)
