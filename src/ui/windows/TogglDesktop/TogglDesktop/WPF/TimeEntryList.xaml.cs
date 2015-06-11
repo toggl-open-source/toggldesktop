@@ -59,7 +59,16 @@ namespace TogglDesktop.WPF
                 this.highlightRectangleTop.Visibility = Visibility.Collapsed;
                 this.highlightRectangleBottom.Visibility = Visibility.Collapsed;
             }
+
+            if (this.highlightedCell != null)
+            {
+                this.highlightedCell.Selected = false;
+            }
             this.highlightedCell = cell;
+            if (this.highlightedCell != null)
+            {
+                this.highlightedCell.Selected = true;
+            }
         }
 
         public void DisableHighlight()

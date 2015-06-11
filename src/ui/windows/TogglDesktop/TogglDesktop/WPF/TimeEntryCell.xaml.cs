@@ -9,7 +9,30 @@ namespace TogglDesktop.WPF
     /// </summary>
     public partial class TimeEntryCell
     {
+        private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
+        private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
+
         public string GUID { get; set; }
+
+        public Color EntryHoverColor
+        {
+            get { return (Color)this.GetValue(EntryHoverColorProperty); }
+            set { this.SetValue(EntryHoverColorProperty, value); }
+        }
+        public static readonly DependencyProperty EntryHoverColorProperty = DependencyProperty
+            .Register("EntryHoverColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(hoverColor));
+
+        public bool Selected
+        {
+            get { return this.selected; }
+            set
+            {
+                if (value == this.selected)
+                    return;
+                this.EntryHoverColor = value ? hoverColorSelected : hoverColor;
+                this.selected = value;
+            }
+        }
 
         public Color EntryBackColor
         {
@@ -23,6 +46,7 @@ namespace TogglDesktop.WPF
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
         private readonly ToolTip durationToolTip = new ToolTip();
         private readonly ToolTip tagsToolTip = new ToolTip();
+        private bool selected;
 
         public TimeEntryCell()
         {
