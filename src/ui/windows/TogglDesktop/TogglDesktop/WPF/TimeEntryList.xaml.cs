@@ -12,7 +12,6 @@ namespace TogglDesktop.WPF
     {
         private Func<bool> canFocus;
         private TimeEntryCell highlightedCell;
-        private bool highlight;
 
         public TimeEntryList()
         {
@@ -40,10 +39,7 @@ namespace TogglDesktop.WPF
 
         public void RefreshHighLight()
         {
-            if(this.highlight)
-                this.HighlightCell(this.highlightedCell);
-            else
-                this.DisableHighlight();
+            this.HighlightCell(this.highlightedCell);
         }
 
         public void HighlightCell(TimeEntryCell cell)
@@ -58,22 +54,17 @@ namespace TogglDesktop.WPF
             }
             else
             {
-                this.highlightRectangleTop.Height = this.panel.ActualHeight;
+                this.highlightRectangleTop.Height = 0;
                 this.highlightRectangleBottom.Height = 0;
-                this.highlightRectangleTop.Visibility = Visibility.Visible;
+                this.highlightRectangleTop.Visibility = Visibility.Collapsed;
                 this.highlightRectangleBottom.Visibility = Visibility.Collapsed;
             }
             this.highlightedCell = cell;
-            this.highlight = true;
         }
 
         public void DisableHighlight()
         {
-            this.highlightRectangleTop.Visibility = Visibility.Collapsed;
-            this.highlightRectangleBottom.Visibility = Visibility.Collapsed;
-            this.highlightRectangleTop.Height = 0;
-            this.highlightRectangleBottom.Height = 0;
-            this.highlight = false;
+            this.HighlightCell(null);
         }
     }
 }
