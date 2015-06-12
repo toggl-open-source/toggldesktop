@@ -83,6 +83,7 @@ class MainWindowController : public QMainWindow {
     bool tracking;
     bool loggedIn;
 
+    QAction *actionEmail;
     QAction *actionNew;
     QAction *actionContinue;
     QAction *actionStop;

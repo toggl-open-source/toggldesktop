@@ -407,6 +407,16 @@ QString TogglApi::updateChannel() {
     return res;
 }
 
+QString TogglApi::userEmail() {
+    char *email = toggl_get_user_email(ctx);
+    QString res;
+    if (email) {
+        res = QString(email);
+        free(email);
+    }
+    return res;
+}
+
 QString TogglApi::start(
     const QString description,
     const QString duration,

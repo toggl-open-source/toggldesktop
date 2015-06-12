@@ -42,6 +42,8 @@
     <property name="title">
      <string>Toggl Desktop</string>
     </property>
+    <addaction name="actionEmail"/>
+    <addaction name="separator"/>
     <addaction name="actionNew"/>
     <addaction name="actionContinue"/>
     <addaction name="actionStop"/>
@@ -137,6 +139,14 @@
   <action name="actionHelp">
    <property name="text">
     <string>Help</string>
+   </property>
+  </action>
+  <action name="actionEmail">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>email</string>
    </property>
   </action>
  </widget>
