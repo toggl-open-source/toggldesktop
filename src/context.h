@@ -226,7 +226,7 @@ class Context : public TimelineDatasource {
         return user_ && user_->RecordTimeline();
     }
 
-    error SaveUpdateChannel(
+    error SetUpdateChannel(
         const std::string channel);
 
     error UpdateChannel(
@@ -277,6 +277,10 @@ class Context : public TimelineDatasource {
     error StartTimelineEvent(TimelineEvent *event);
     error MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
+
+    error SetPromotionResponse(
+        const int64_t promotion_type,
+        const int64_t promotion_response);
 
  protected:
     void uiUpdaterActivity();

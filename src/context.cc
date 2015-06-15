@@ -2683,7 +2683,7 @@ std::vector<TimeEntry *> Context::timeEntries(
     return result;
 }
 
-error Context::SaveUpdateChannel(const std::string channel) {
+error Context::SetUpdateChannel(const std::string channel) {
     error err = db()->SaveUpdateChannel(channel);
     if (err != noError) {
         return displayError(err);
@@ -3129,6 +3129,21 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
 error Context::MarkTimelineBatchAsUploaded(
     const std::vector<TimelineEvent> &events) {
     return db()->MarkTimelineBatchAsUploaded(events);
+}
+
+error Context::SetPromotionResponse(
+    const int64_t promotion_type,
+    const int64_t promotion_response) {
+
+    if (kPromotionJoinBetaChannel != promotion_type) {
+        return error("bad promotion type");
+    }
+
+    if (kPromotionJoinBetaChannel == promotion_type && promotion_response) {
+        return SetUpdateChannel("beta");
+    }
+
+    return noError;
 }
 
 void Context::uiUpdaterActivity() {

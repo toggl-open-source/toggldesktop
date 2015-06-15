@@ -748,7 +748,7 @@ bool_t toggl_set_update_channel(
     poco_check_ptr(update_channel);
 
     return toggl::noError == app(context)->
-           SaveUpdateChannel(to_string(update_channel));
+           SetUpdateChannel(to_string(update_channel));
 }
 
 char_t *toggl_get_update_channel(
@@ -999,6 +999,14 @@ void toggl_set_idle_seconds(
     if (context) {
         app(context)->SetIdleSeconds(idle_seconds);
     }
+}
+
+bool_t toggl_set_promotion_response(
+    void *context,
+    const int64_t promotion_type,
+    const int64_t promotion_response) {
+    return toggl::noError == app(context)->SetPromotionResponse(
+        promotion_type, promotion_response);
 }
 
 char_t *toggl_run_script(

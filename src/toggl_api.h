@@ -645,6 +645,11 @@ extern "C" {
         void *context,
         const uint64_t idle_seconds);
 
+    TOGGL_EXPORT bool_t toggl_set_promotion_response(
+        void *context,
+        const int64_t promotion_type,
+        const int64_t promotion_response);
+
     // Shared helpers
 
     // You must free() the result
