@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
                 <outlet property="addEntryLabel" destination="Pm5-UM-PRp" id="jNk-Yh-0Wy"/>
+                <outlet property="billableFlag" destination="9mO-OH-ebm" id="Ybg-W4-Maf"/>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="descriptionLabel" destination="Fiv-ao-qiA" id="00j-67-MmI"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
@@ -17,17 +18,18 @@
                 <outlet property="projectTextField" destination="tVc-ms-0hr" id="1ee-Q9-eCA"/>
                 <outlet property="startButton" destination="2Fx-4L-YGZ" id="NkN-re-hJo"/>
                 <outlet property="startButtonBox" destination="nFI-HH-zd7" id="06Y-Px-SXz"/>
+                <outlet property="tagFlag" destination="VGm-xf-5d1" id="u20-lQ-XaK"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="M2u-7B-WCs">
-            <rect key="frame" x="0.0" y="0.0" width="258" height="48"/>
+            <rect key="frame" x="0.0" y="0.0" width="258" height="45"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-8" width="256" height="56"/>
+                    <rect key="frame" x="1" y="-11" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -104,13 +106,63 @@ DQ
                                     <outlet property="delegate" destination="-2" id="oWZ-rz-Xcn"/>
                                 </connections>
                             </textField>
+                            <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" borderWidth="0.0" title="TagBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="aty-o7-z5X">
+                                <rect key="frame" x="121" y="31" width="13" height="11"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="13" height="11"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <imageView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VGm-xf-5d1">
+                                            <rect key="frame" x="0.0" y="0.0" width="13" height="11"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="13" id="Wlr-yr-aQc"/>
+                                                <constraint firstAttribute="height" constant="11" id="l4d-z5-e2j"/>
+                                            </constraints>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-tags" id="P9N-4a-4fL"/>
+                                        </imageView>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="11" id="3hM-O6-ZBw"/>
+                                    <constraint firstItem="VGm-xf-5d1" firstAttribute="centerX" secondItem="aty-o7-z5X" secondAttribute="centerX" id="D16-ob-tX2"/>
+                                    <constraint firstItem="VGm-xf-5d1" firstAttribute="centerY" secondItem="aty-o7-z5X" secondAttribute="centerY" id="XlW-f2-bZS"/>
+                                    <constraint firstAttribute="width" constant="13" id="afd-py-wnR"/>
+                                </constraints>
+                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
+                            <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" borderWidth="0.0" title="BillableBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="H0e-5U-BSu">
+                                <rect key="frame" x="145" y="31" width="7" height="13"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="7" height="13"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <imageView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9mO-OH-ebm">
+                                            <rect key="frame" x="0.0" y="0.0" width="7" height="13"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="7" id="Jk1-pz-gSa"/>
+                                                <constraint firstAttribute="height" constant="13" id="sT0-9z-H0t"/>
+                                            </constraints>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-billable" id="pYF-hS-QNr"/>
+                                        </imageView>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="9mO-OH-ebm" firstAttribute="centerY" secondItem="H0e-5U-BSu" secondAttribute="centerY" id="Asq-qB-YGf"/>
+                                    <constraint firstItem="9mO-OH-ebm" firstAttribute="centerX" secondItem="H0e-5U-BSu" secondAttribute="centerX" id="kYO-xk-rZL"/>
+                                    <constraint firstAttribute="height" constant="13" id="oXE-jM-dNf"/>
+                                    <constraint firstAttribute="width" constant="7" id="yy1-kj-eQf"/>
+                                </constraints>
+                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
                             <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
                                 <rect key="frame" x="132" y="24" width="75" height="18"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="76" id="x2K-5w-zfF"/>
+                                    <constraint firstAttribute="width" constant="65" id="x2K-5w-zfF"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" placeholderString="00:00:00" drawsBackground="YES" id="FoD-qd-An1">
-                                    <font key="font" metaFont="system" size="16"/>
+                                    <font key="font" metaFont="system" size="14"/>
                                     <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
@@ -139,27 +191,31 @@ DQ
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="40" id="1Qf-HH-85e"/>
                         <constraint firstItem="Fiv-ao-qiA" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" priority="750" constant="16" id="7lz-aM-ViJ"/>
+                        <constraint firstItem="aty-o7-z5X" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="21" id="9y2-si-w6D"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="-13" id="ABe-hl-Ilz"/>
                         <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="14" id="CGd-ds-Uhq"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="DHT-6f-0yu"/>
                         <constraint firstItem="ow2-8J-rMh" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="12" id="KVr-pZ-9LR"/>
-                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="Fiv-ao-qiA" secondAttribute="trailing" id="X05-fF-dAP"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="Fiv-ao-qiA" secondAttribute="trailing" constant="27" id="X05-fF-dAP"/>
                         <constraint firstItem="Fiv-ao-qiA" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="15" id="YNr-mM-VlW"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bC9-Fi-38J"/>
                         <constraint firstAttribute="trailing" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="50" id="bzC-nz-PQq"/>
+                        <constraint firstItem="H0e-5U-BSu" firstAttribute="leading" secondItem="aty-o7-z5X" secondAttribute="trailing" constant="2" id="hJx-e6-OCe"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" priority="750" constant="18" id="hqe-k2-I1S"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="lMD-AL-Jog"/>
                         <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="lNg-Zn-u1m"/>
-                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="70" id="naG-qG-gq3"/>
+                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="87" id="naG-qG-gq3"/>
+                        <constraint firstItem="H0e-5U-BSu" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="20" id="nd5-XL-pQK"/>
                         <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="6" id="q1b-AH-TNO"/>
-                        <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="18" id="sKm-6j-h1k"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="16" id="sKm-6j-h1k"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="13" id="tbX-SU-uAB"/>
+                        <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="H0e-5U-BSu" secondAttribute="trailing" constant="60" id="y5u-SN-KgL"/>
                     </constraints>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-4" width="256" height="56"/>
+                    <rect key="frame" x="1" y="-7" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -201,6 +257,8 @@ DQ
         </customView>
     </objects>
     <resources>
+        <image name="icon-billable" width="6.5" height="12.5"/>
+        <image name="icon-tags" width="13" height="10.5"/>
         <image name="start_button" width="24" height="24"/>
     </resources>
 </document>

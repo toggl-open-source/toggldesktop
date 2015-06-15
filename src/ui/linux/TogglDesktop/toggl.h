@@ -156,6 +156,8 @@ class TogglApi : public QObject {
     bool setUpdateChannel(const QString channel);
     QString updateChannel();
 
+    QString userEmail();
+
     bool sendFeedback(const QString topic,
                       const QString details,
                       const QString filename);

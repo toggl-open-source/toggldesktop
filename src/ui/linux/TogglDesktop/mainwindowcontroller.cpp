@@ -34,6 +34,7 @@ MainWindowController::MainWindowController(
   togglApi(new TogglApi(0, logPathOverride, dbPathOverride)),
   tracking(false),
   loggedIn(false),
+  actionEmail(0),
   actionNew(0),
   actionContinue(0),
   actionStop(0),
@@ -182,6 +183,7 @@ void MainWindowController::enableMenuActions() {
     actionClear_Cache->setEnabled(loggedIn);
     actionSend_Feedback->setEnabled(loggedIn);
     actionReports->setEnabled(loggedIn);
+    actionEmail->setText(TogglApi::instance->userEmail());
     if (hasTrayIconCached) {
         if (tracking) {
             trayIcon->setIcon(icon);
@@ -206,7 +208,9 @@ void MainWindowController::connectMenuActions() {
 
 void MainWindowController::connectMenuAction(
     QAction *action) {
-    if ("actionNew" == action->objectName()) {
+    if ("actionEmail" == action->objectName()) {
+        actionEmail = action;
+    } else if ("actionNew" == action->objectName()) {
         actionNew = action;
         connect(action, SIGNAL(triggered()), this, SLOT(onActionNew()));
     } else if ("actionContinue" == action->objectName()) {
