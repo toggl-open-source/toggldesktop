@@ -85,7 +85,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	[self.autocompleteDataSource setFilter:@""];
 	NSFont *descriptionFont = [NSFont fontWithName:@"Lucida Grande" size:13.0];
-	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:16.0];
+	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:14.0];
 	NSColor *color = [ConvertHexColor hexCodeToNSColor:kTrackingColor];
 	NSDictionary *descriptionDictionary = @{
 		NSFontAttributeName : descriptionFont,
