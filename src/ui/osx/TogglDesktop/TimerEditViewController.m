@@ -197,6 +197,19 @@ NSString *kInactiveTimerColor = @"#999999";
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
+		[self.billableFlag setHidden:!self.time_entry.billable];
+
+		// Time entry tags icon
+		if ([self.time_entry.tags count])
+		{
+			[self.tagFlag setHidden:NO];
+			self.tagFlag.toolTip = [self.time_entry.tags componentsJoinedByString:@", "];
+		}
+		else
+		{
+			[self.tagFlag setHidden:YES];
+			self.tagFlag.toolTip = nil;
+		}
 	}
 	else
 	{
@@ -208,6 +221,8 @@ NSString *kInactiveTimerColor = @"#999999";
 		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
 
 		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
+		[self.tagFlag setHidden:YES];
+		[self.billableFlag setHidden:YES];
 	}
 
 	[self checkProjectConstraints];

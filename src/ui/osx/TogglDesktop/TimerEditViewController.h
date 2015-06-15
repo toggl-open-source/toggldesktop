@@ -24,6 +24,8 @@
 @property IBOutlet NSTextField *projectTextField;
 @property IBOutlet NSTextFieldClickable *descriptionLabel;
 @property IBOutlet NSBox *startButtonBox;
+@property (nonatomic, strong) IBOutlet NSImageView *billableFlag;
+@property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
 @property NSArray *projectComboConstraint;
 @property NSArray *projectLabelConstraint;
 - (IBAction)startButtonClicked:(id)sender;
