@@ -8,8 +8,6 @@ namespace TogglDesktop.AutoCompletion
 {
     class AutoCompleteController
     {
-        private readonly Dictionary<string, AutoCompleteItem> elementByText;
-        private readonly Dictionary<AutoCompleteItem, string> textByElement;
         private readonly List<IAutoCompleteListItem> list;
 
         private readonly List<AutoCompleteItem> currentlyVisible = new List<AutoCompleteItem>();
@@ -18,19 +16,9 @@ namespace TogglDesktop.AutoCompletion
         private int selectedIndex;
         private AutoCompleteItem selectedItem;
 
-        public AutoCompleteController(List<IAutoCompleteListItem> list, IReadOnlyCollection<AutoCompleteItem> items)
+        public AutoCompleteController(List<IAutoCompleteListItem> list)
         {
             this.list = list;
-
-            this.elementByText = new Dictionary<string, AutoCompleteItem>(items.Count);
-            this.textByElement = new Dictionary<AutoCompleteItem, string>(items.Count);
-
-            foreach (var item in items)
-            {
-                var text = item.Text;
-                this.elementByText.Add(text, item);
-                this.textByElement.Add(item, text);
-            }
 
             this.currentlyVisibleAsReadonly = this.currentlyVisible.AsReadOnly();
         }

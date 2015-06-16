@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop.WPF
@@ -185,6 +186,54 @@ namespace TogglDesktop.WPF
                 return;
             }
             Toggl.SetTimeEntryDate(this.timeEntry.GUID, this.startDatePicker.SelectedDate.Value);
+        }
+
+        #endregion
+
+        #region description
+
+        private void descriptionAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        {
+            var asDescriptionItem = e as DescriptionAutoCompleteItem;
+            if (asDescriptionItem == null)
+                return;
+
+            if (!this.hasTimeEntry())
+            {
+                Console.WriteLine("Cannot apply description change: No time entry.");
+                return;
+            }
+
+            var item = asDescriptionItem.Item;
+
+            // TODO: fill in project already if possible (instead of waiting for dll)?
+
+            Toggl.SetTimeEntryDescription(this.timeEntry.GUID, item.Description);
+            Toggl.SetTimeEntryProject(this.timeEntry.GUID, item.TaskID, item.ProjectID, "");
+        }
+
+        private void descriptionAutoComplete_OnConfirmWithoutCompletion(object sender, string text)
+        {
+            this.setDescriptionIfChanged(text);
+        }
+
+        private void descriptionTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            this.setDescriptionIfChanged(this.descriptionTextBox.Text);
+        }
+
+        private void setDescriptionIfChanged(string text)
+        {
+            if (text == null || text == this.timeEntry.Description)
+                return;
+
+            if (!this.hasTimeEntry())
+            {
+                Console.WriteLine("Cannot apply description change: No time entry.");
+                return;
+            }
+
+            Toggl.SetTimeEntryDescription(this.timeEntry.GUID, text);
         }
 
         #endregion

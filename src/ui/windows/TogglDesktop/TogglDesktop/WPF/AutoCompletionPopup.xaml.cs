@@ -15,6 +15,9 @@ namespace TogglDesktop.WPF
 
     partial class AutoCompletionPopup
     {
+        public event EventHandler<AutoCompleteItem> ConfirmCompletion;
+        public event EventHandler<string> ConfirmWithoutCompletion;
+
         private ExtendedTextBox textbox;
 
         private bool needsToRefreshList;
@@ -122,13 +125,15 @@ namespace TogglDesktop.WPF
 
             if (item == null)
             {
-                // TODO: what to do on enter/tab without item selected in list?
+                if (this.ConfirmWithoutCompletion != null)
+                    this.ConfirmWithoutCompletion(this, this.textbox.Text);
                 return;
             }
 
             this.textbox.SetText(item.Text);
             this.textbox.CaretIndex = this.textbox.Text.Length;
-            // TODO: fill in other details of previous item
+            if (this.ConfirmCompletion != null)
+                this.ConfirmCompletion(this, item);
         }
 
         private void targetOnTextChanged(object sender, TextChangedEventArgs e)

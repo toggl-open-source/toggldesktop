@@ -15,6 +15,11 @@ namespace TogglDesktop.AutoCompletion.Implementation
             this.item = item;
         }
 
+        public Toggl.AutocompleteItem Item
+        {
+            get { return this.item; }
+        }
+
         public override void CreateFrameworkElement(Panel parent)
         {
             this.element = new DescriptionAutoCompleteEntry(this.item);

@@ -113,9 +113,13 @@
             
             <!-- description -->
             <Grid Height="50">
-                <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private">Test</toggl:ExtendedTextBox>
+                <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
+                    LostKeyboardFocus="descriptionTextBox_OnLostKeyboardFocus"
+                    >Test</toggl:ExtendedTextBox>
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
-                    Target="{Binding ElementName=descriptionTextBox}" EmptyText="No previous entries found."/>
+                    Target="{Binding ElementName=descriptionTextBox}" EmptyText="No previous entries found."
+                    ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"
+                    ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
             </Grid>
 
             <!-- project, client, task -->
