@@ -119,6 +119,7 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="ServiceStack.Text, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.Text.4.0.40\lib\net40\ServiceStack.Text.dll</HintPath>
@@ -154,9 +155,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AboutWindowController.cs" />
     <Compile Include="AboutWindowController.Designer.cs">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </Compile>
@@ -172,6 +171,13 @@
     <Compile Include="AutoCompleteTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AutoCompletion\AutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\DescriptionAutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\Implementation\DescriptionAutoCompleteItem.cs" />
     <Compile Include="ComboBoxHelper.cs" />
     <Compile Include="ControlHelper.cs" />
     <Compile Include="CustomComboBox.cs">
@@ -189,19 +195,22 @@
     <Compile Include="EditForm.Designer.cs">
       <DependentUpon>EditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FeedbackWindowController.cs" >
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FeedbackWindowController.cs" />
     <Compile Include="FeedbackWindowController.Designer.cs">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalShortcuts.cs" />
-    <Compile Include="IdleNotificationWindowController.cs" >
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="IdleNotificationWindowController.cs" />
     <Compile Include="IdleNotificationWindowController.Designer.cs">
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="WPF\AutoCompletionPopup.xaml.cs">
+      <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\DescriptionAutoCompleteEntry.xaml.cs">
+      <DependentUpon>DescriptionAutoCompleteEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\ExtendedTextBox.cs" />
     <Compile Include="WPF\LoginConfirmButton.xaml.cs">
       <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
     </Compile>
@@ -224,9 +233,7 @@
     <Compile Include="LoginViewController.Designer.cs">
       <DependentUpon>LoginViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowController.cs" >
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MainWindowController.cs" />
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </Compile>
@@ -461,6 +468,14 @@
     <None Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\AutoCompletionPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\DescriptionAutoCompleteEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\LoginConfirmButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -472,6 +487,10 @@
     <Page Include="WPF\LoginTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Resources\EditViewStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Resources\TimeEntryCellStyles.xaml">
       <Generator>MSBuild:Compile</Generator>

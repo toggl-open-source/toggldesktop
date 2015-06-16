@@ -1,9 +1,11 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop.WPF
 {
@@ -17,9 +19,11 @@ namespace TogglDesktop.WPF
 
         public TimeEntryEditViewController()
         {
+            this.DataContext = this;
             InitializeComponent();
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
+            Toggl.OnTimeEntryAutocomplete += this.onTimeEntryAutocomplete;
 
             this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
@@ -53,7 +57,7 @@ namespace TogglDesktop.WPF
 
             if (open)
             {
-                this.descriptionTextBox.Text = timeEntry.Description;
+                this.descriptionTextBox.SetText(timeEntry.Description);
                 this.durationTextBox.Text = timeEntry.Duration;
                 setTime(this.startTimeTextBox, timeEntry.StartTimeString);
                 setTime(this.endTimeTextBox, timeEntry.EndTimeString);
@@ -94,6 +98,12 @@ namespace TogglDesktop.WPF
                 return;
             textBox.Text = text;
         }
+        private static void setTextIfUnfocused(ExtendedTextBox textBox, string text)
+        {
+            if (textBox.IsFocused)
+                return;
+            textBox.SetText(text);
+        }
 
         private DispatcherTimer startDurationUpdateTimer()
         {
@@ -118,6 +128,11 @@ namespace TogglDesktop.WPF
             {
                 this.durationTextBox.Text = s;
             }
+        }
+
+        private void onTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
+        {
+            this.descriptionAutoComplete.SetController(DescriptionAutoCompleteController.From(list));
         }
 
         #endregion

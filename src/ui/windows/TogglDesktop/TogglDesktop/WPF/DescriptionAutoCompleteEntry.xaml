@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="TogglDesktop.WPF.DescriptionAutoCompleteEntry"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop.WPF"
+             mc:Ignorable="d"
+             d:DesignWidth="300"
+             d:DataContext ="{d:DesignInstance {x:Type toggl:DescriptionAutoCompleteEntrySample}, IsDesignTimeCreatable=True}">
+
+    <StackPanel Style="{toggl:Resources ResourceKey=DescriptionAutoCompleteItem}"
+                Height="30" Orientation="Horizontal">
+        <StackPanel.Background>
+            <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
+        </StackPanel.Background>
+        
+        <Border CornerRadius="100" Width="10" Height="10" BorderThickness="0"
+                Margin="10, 0, 10, 0">
+            <Border.Background><SolidColorBrush Color="{Binding ProjectColor}"/></Border.Background>
+        </Border>
+        <TextBlock VerticalAlignment="Center" Text="{Binding Description}"/>
+        
+    </StackPanel>
+    
+</UserControl>
