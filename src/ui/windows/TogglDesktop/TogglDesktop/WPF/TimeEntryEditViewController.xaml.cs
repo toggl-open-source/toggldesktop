@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
+using MessageBox = System.Windows.MessageBox;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace TogglDesktop.WPF
 {
@@ -321,6 +323,32 @@ namespace TogglDesktop.WPF
                 case Toggl.Description:
                     this.descriptionTextBox.Focus();
                     break;
+            }
+        }
+
+        private void backButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            //TODO: make sure unsaved changes are discarded/saved (what if user is in add-project mode?)
+            Toggl.ViewTimeEntryList();
+            //TODO: reset form (specifically add-project controls)?
+        }
+        private void deleteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            DialogResult result;
+            try
+            {
+                MainWindowController.DisableTop();
+                result = System.Windows.Forms.MessageBox.Show("Delete time entry?", "Please confirm",
+                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
+            finally
+            {
+                MainWindowController.EnableTop();
+            }
+            if (DialogResult.Yes == result)
+            {
+                Toggl.DeleteTimeEntry(timeEntry.GUID);
+                //TODO: reset form (specifically add-project controls)?
             }
         }
     }

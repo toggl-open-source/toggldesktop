@@ -92,11 +92,11 @@
             <Setter Property="FontSize" Value="10"/>
             <Setter Property="Padding" Value="8, 0, 8, 0"/>
         </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
-            <Setter Property="ContentTemplate">
+        <Style x:Key="NewButton" TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="Template">
                 <Setter.Value>
-                    <DataTemplate>
-                        <BulletDecorator>
+                    <ControlTemplate TargetType="Button">
+                        <BulletDecorator Background="{TemplateBinding Background}">
                             <BulletDecorator.Bullet>
                                 <TextBlock Foreground="#57da6d" FontSize="16">+</TextBlock>
                             </BulletDecorator.Bullet>
@@ -105,7 +105,7 @@
                                                VerticalAlignment="Center"
                                                Text="{TemplateBinding Content}"/>
                         </BulletDecorator>
-                    </DataTemplate>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Setter Property="HorizontalContentAlignment" Value="Right"/>
@@ -113,6 +113,21 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="DarkGray"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="ImageButton" TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Stretch="Fill" Margin="6"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </UserControl.Resources>
 
@@ -196,12 +211,8 @@
                         ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
                         IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
 
-                <Button  Grid.Column="1" Grid.Row="0">Add new project</Button>
+                <Button  Grid.Column="1" Grid.Row="0" Style="{StaticResource NewButton}">Add new project</Button>
                 
-                <ComboBox Grid.Column="0" Grid.Row="1" IsEditable="True" />
-                <Button  Grid.Column="1" Grid.Row="1">Add new client</Button>
-                
-                <ComboBox Grid.Column="0" Grid.Row="2" IsEditable="True" />
             </Grid>
             
             <!-- tags -->
@@ -214,6 +225,18 @@
         
         <TextBlock Name="lastUpdatedText" x:FieldModifier="private" Grid.Column="1" Grid.Row="3"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">Last update N/A</TextBlock>
+
+        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ImageButton}"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0"
+                Width="32" Height="32"
+                Content="/TogglDesktop;component/Resources/ic_arrow_back_grey600_36dp.png"
+                Click="backButton_OnClick"/>
+        
+        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ImageButton}"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0"
+                Width="32" Height="32"
+                Content="/TogglDesktop;component/Resources/ic_delete_grey600_36dp.png"
+                Click="deleteButton_OnClick"/>
         
     </Grid>
 </UserControl>
