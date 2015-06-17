@@ -103,7 +103,7 @@ public partial class MainWindowController : TogglForm
             Hide();
             if (editForm.Visible)
             {
-                editForm.CloseButton_Click(null, null);
+                editForm.ClosePopup();
             }
             feedbackWindowController.Close();
             aboutWindowController.Close();
@@ -542,13 +542,12 @@ public partial class MainWindowController : TogglForm
         };
 
         editForm.Controls.Add(editViewHost);
-        editForm.editView = timeEntryEditViewController;
     }
 
     public void PopupInput(Toggl.TimeEntry te)
     {
         if (te.GUID == editForm.GUID) {
-            editForm.CloseButton_Click(null, null);
+            editForm.ClosePopup();
             return;
         }
         editForm.reset();

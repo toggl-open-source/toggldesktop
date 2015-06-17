@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TogglDesktop
@@ -18,21 +12,10 @@ public partial class EditForm : Form
 
     public string GUID = null;
 
-    public WPF.TimeEntryEditViewController editView;
-
     public EditForm()
     {
         InitializeComponent();
-        Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
-        CancelButton = CloseButton;
-    }
-
-    public void CloseButton_Click(object sender, EventArgs e)
-    {
-        //if (editView.dropDownsClosed())
-        //{
-            ClosePopup();
-        //}
+        Padding = new Padding(0, 0, 0, 0);
     }
 
     const UInt32 HTLEFT = 10;
@@ -111,28 +94,23 @@ public partial class EditForm : Form
         if (left)
         {
             p.X -= Width;
-            resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            resizeHandle.Cursor = Cursors.SizeNS;
         }
         else
         {
-            resizeHandle.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
+            resizeHandle.Cursor = Cursors.SizeNWSE;
         }
         Location = p;
     }
 
     internal void reset()
     {
-        //editView.resetForms();
+        // TODO: what was this doing before?
     }
 
     internal void setWindowPos(int HWND_TOPMOST)
     {
         Win32.SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
-    }
-
-    internal void ClosePopup()
-    {
-        //editView.buttonDone_Click(null, null);
     }
 
     private void resizeHandle_MouseDown(object sender, MouseEventArgs e)
@@ -157,6 +135,11 @@ public partial class EditForm : Form
         {
             Win32.SendMessage(Handle, Win32.wmNcLButtonUp, location, 0);
         }
+    }
+
+    public void ClosePopup()
+    {
+        // TODO: what was this doing before?
     }
 }
 }

@@ -260,12 +260,18 @@
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_arrow_back_grey600_36dp.png"
                 Click="backButton_OnClick"/>
-        
+
         <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ImageButton}"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0"
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_delete_grey600_36dp.png"
                 Click="deleteButton_OnClick"/>
-        
+
+        <Button Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource ImageButton}"
+                HorizontalAlignment="right" VerticalAlignment="top" Margin="0"
+                Width="32" Height="32"
+                Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"
+                Click="backButton_OnClick"/>
+
     </Grid>
 </UserControl>
