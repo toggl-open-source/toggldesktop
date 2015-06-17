@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
-using MessageBox = System.Windows.MessageBox;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace TogglDesktop.WPF
@@ -19,6 +20,7 @@ namespace TogglDesktop.WPF
     {
         private readonly DispatcherTimer durationUpdateTimer;
         private Toggl.TimeEntry timeEntry;
+        private bool newProjectModeEnabled;
 
         public TimeEntryEditViewController()
         {
@@ -90,6 +92,9 @@ namespace TogglDesktop.WPF
             {
                 this.lastUpdatedText.Visibility = Visibility.Collapsed;
             }
+
+            if (this.newProjectModeEnabled)
+                this.disableNewProjectMode();
         }
 
         private static void setTime(TextBox textBox, string time)
@@ -304,6 +309,68 @@ namespace TogglDesktop.WPF
         private void projectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
+        }
+
+        private void newProjectButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.enableNewProjectMode();
+        }
+        private void newProjectCancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.disableNewProjectMode();
+        }
+
+        private void enableNewProjectMode()
+        {
+            this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 2);
+            this.projectAutoComplete.IsEnabled = false;
+            this.projectDropDownButton.Visibility = Visibility.Hidden;
+            this.newProjectButton.Visibility = Visibility.Hidden;
+            this.newProjectCancelButton.Visibility = Visibility.Visible;
+            this.projectTextBox.Focus();
+            this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
+
+            this.newProjectModeEnabled = true;
+        }
+
+        private void disableNewProjectMode()
+        {
+            this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 1);
+            this.projectAutoComplete.IsEnabled = true;
+            this.projectDropDownButton.Visibility = Visibility.Visible;
+            this.newProjectButton.Visibility = Visibility.Visible;
+            this.newProjectCancelButton.Visibility = Visibility.Hidden;
+            this.projectTextBox.Focus();
+            this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
+
+            this.newProjectModeEnabled = false;
+        }
+
+        private void projectTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!this.newProjectModeEnabled)
+                return;
+
+            switch (e.Key)
+            {
+                case Key.Escape:
+                {
+                    this.disableNewProjectMode();
+                    break;
+                }
+                case Key.Enter:
+                {
+                    if(this.tryCreatingNewProject(this.projectTextBox.Text))
+                        this.disableNewProjectMode();
+                    break;
+                }
+            }
+        }
+
+        private bool tryCreatingNewProject(string text)
+        {
+            // TODO: make other parameters do things!
+            return Toggl.AddProject(this.timeEntry.GUID, this.timeEntry.WID, 0, text, false);
         }
 
         #endregion

@@ -30,7 +30,28 @@
             <Setter Property="FontSize" Value="9.75" />
             <Setter Property="Foreground" Value="#9f9f9f"/>
         </Style>
-        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type Control}}">
+        <Style TargetType="ButtonBase" x:Key="TextFieldImageButtonBase" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ButtonBase">
+                        <Border Background="{TemplateBinding Background}">
+                            <Image Name="ButtonImage" Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Stretch="Fill" Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F4F4F4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ToggleButton" x:Key="AutoCompleteTextFieldButton"  BasedOn="{StaticResource TextFieldImageButtonBase}">
             <Setter Property="Content">
                 <Setter.Value>
                     <Image Source="/TogglDesktop;component/Resources/ic_expand_more_grey600_36dp.png" Stretch="Fill"
@@ -62,7 +83,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="White"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#F4F4F4"/>
@@ -196,14 +216,25 @@
                 </Grid.RowDefinitions>
 
                 <!-- project -->
+
+                <Button Name="newProjectButton" x:FieldModifier="private" Grid.Column="1" Grid.Row="0"
+                        Style="{StaticResource NewButton}"
+                        Click="newProjectButton_OnClick">Add new project</Button>
+
                 <toggl:ExtendedTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
                                        LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
-                                       Padding="8, 0, 34, 0" />
+                                       Padding="8, 0, 34, 0"
+                                       PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
                 
                 <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
-                                  Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                                  HorizontalAlignment="Right" IsTabStop="False"
+                                  Style="{StaticResource AutoCompleteTextFieldButton}"
                                   Click="projectDropDownButton_OnClick"/>
+
+                <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1" Grid.Row="0"
+                        Style="{StaticResource TextFieldImageButtonBase}"
+                        Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
+                        Padding="9" Visibility="Hidden"
+                        Click="newProjectCancelButton_OnClick"/>
 
                 <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
                         Target="{Binding ElementName=projectTextBox}" EmptyText="No projects found."
@@ -211,8 +242,6 @@
                         ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
                         IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
 
-                <Button  Grid.Column="1" Grid.Row="0" Style="{StaticResource NewButton}">Add new project</Button>
-                
             </Grid>
             
             <!-- tags -->

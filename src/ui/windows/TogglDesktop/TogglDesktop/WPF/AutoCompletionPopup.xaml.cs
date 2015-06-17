@@ -34,6 +34,16 @@ namespace TogglDesktop.WPF
 
             this.popup.Opened += (s, e) => this.tryInvoke(this.IsOpenChanged);
             this.popup.Closed += (s, e) => this.tryInvoke(this.IsOpenChanged);
+
+            this.IsEnabledChanged += onIsEnabledChanged;
+        }
+
+        private void onIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs args)
+        {
+            if (this.IsEnabled)
+                return;
+
+            this.close();
         }
 
         public bool IsOpen
@@ -102,6 +112,9 @@ namespace TogglDesktop.WPF
 
         private void targetOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (!this.IsEnabled)
+                return;
+
             switch (e.Key)
             {
                 case Key.Down:
@@ -159,6 +172,9 @@ namespace TogglDesktop.WPF
 
         private void targetOnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!this.IsEnabled)
+                return;
+
             if (this.Target.IsTextChangingProgrammatically)
                 return;
 
@@ -198,6 +214,5 @@ namespace TogglDesktop.WPF
             if (e != null)
                 e(this, EventArgs.Empty);
         }
-
     }
 }

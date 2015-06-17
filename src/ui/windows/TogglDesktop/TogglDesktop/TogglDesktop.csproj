@@ -540,6 +540,9 @@
     <Resource Include="Resources\ic_close_grey600_36dp.png" />
     <Resource Include="Resources\ic_delete_grey600_36dp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_cancel_grey600_24dp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
