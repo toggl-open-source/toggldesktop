@@ -25,6 +25,11 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
         </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+            <Setter Property="FontSize" Value="9.75" />
+            <Setter Property="Foreground" Value="#9f9f9f"/>
+        </Style>
         <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type Control}}">
             <Setter Property="Content">
                 <Setter.Value>
@@ -120,6 +125,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
@@ -205,7 +211,9 @@
             <CheckBox Name="billableCheckBox" x:FieldModifier="private">Billable</CheckBox>
             
         </StackPanel>
-
+        
+        <TextBlock Name="lastUpdatedText" x:FieldModifier="private" Grid.Column="1" Grid.Row="3"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">Last update N/A</TextBlock>
         
     </Grid>
 </UserControl>

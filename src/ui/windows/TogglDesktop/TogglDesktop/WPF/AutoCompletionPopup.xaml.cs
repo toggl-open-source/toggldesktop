@@ -31,6 +31,9 @@ namespace TogglDesktop.WPF
         {
             this.DataContext = this;
             this.InitializeComponent();
+
+            this.popup.Opened += (s, e) => this.tryInvoke(this.IsOpenChanged);
+            this.popup.Closed += (s, e) => this.tryInvoke(this.IsOpenChanged);
         }
 
         public bool IsOpen
@@ -140,7 +143,6 @@ namespace TogglDesktop.WPF
             var item = this.controller.SelectedItem;
 
             this.popup.IsOpen = false;
-            this.tryInvoke(this.IsOpenChanged);
 
             if (item == null)
             {
@@ -165,22 +167,14 @@ namespace TogglDesktop.WPF
 
         private void close()
         {
-            if (!this.popup.IsOpen)
-                return;
-
             this.popup.IsOpen = false;
-            this.tryInvoke(this.IsOpenChanged);
         }
         private void open()
         {
             this.ensureList();
             this.controller.Complete(this.textbox.Text);
 
-            if (this.popup.IsOpen)
-                return;
-
             this.popup.IsOpen = true;
-            this.tryInvoke(this.IsOpenChanged);
         }
 
         private void ensureList()

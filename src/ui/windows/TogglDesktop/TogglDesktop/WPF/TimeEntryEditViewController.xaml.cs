@@ -77,6 +77,17 @@ namespace TogglDesktop.WPF
                 if (!this.startDatePicker.IsFocused)
                     this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
             }
+
+            if (timeEntry.UpdatedAt > 0)
+            {
+                var updatedAt = Toggl.DateTimeFromUnix(timeEntry.UpdatedAt);
+                this.lastUpdatedText.Text = "Last update " + updatedAt.ToShortDateString() + " at " + updatedAt.ToLongTimeString();
+                this.lastUpdatedText.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.lastUpdatedText.Visibility = Visibility.Collapsed;
+            }
         }
 
         private static void setTime(TextBox textBox, string time)
@@ -250,7 +261,15 @@ namespace TogglDesktop.WPF
         {
             this.projectAutoComplete.IsOpen = this.projectDropDownButton.IsChecked ?? false;
 
-            this.projectTextBox.Focus();
+            if (!this.projectTextBox.IsKeyboardFocused)
+            {
+                this.projectTextBox.Focus();
+                this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
+                if (this.projectAutoComplete.IsOpen)
+                {
+                    this.projectTextBox.SelectAll();
+                }
+            }
         }
 
         private void projectAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
