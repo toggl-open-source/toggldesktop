@@ -6,20 +6,16 @@
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             d:DataContext ="{d:DesignInstance {x:Type toggl:DescriptionAutoCompleteEntrySample}, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance {x:Type toggl:DescriptionAutoCompleteEntrySample}, IsDesignTimeCreatable=True}"
+             Height="30"
+             Style="{toggl:Resources ResourceKey=DescriptionAutoCompleteItem}">
 
-    <StackPanel Style="{toggl:Resources ResourceKey=DescriptionAutoCompleteItem}"
-                Height="30" Orientation="Horizontal">
-        <StackPanel.Background>
-            <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
-        </StackPanel.Background>
-        
-        <Border CornerRadius="100" Width="10" Height="10" BorderThickness="0"
-                Margin="10, 0, 10, 0">
-            <Border.Background><SolidColorBrush Color="{Binding ProjectColor}"/></Border.Background>
-        </Border>
-        <TextBlock VerticalAlignment="Center" Text="{Binding Description}"/>
-        
-    </StackPanel>
+    <UserControl.Background>
+        <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
+    </UserControl.Background>
     
+    <TextBlock VerticalAlignment="Center" Text="{Binding Description}"
+                Margin="10"
+                />
+        
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,8 @@ namespace TogglDesktop.WPF
         public event EventHandler<AutoCompleteItem> ConfirmCompletion;
         public event EventHandler<string> ConfirmWithoutCompletion;
 
+        public event EventHandler IsOpenChanged;
+
         private ExtendedTextBox textbox;
 
         private bool needsToRefreshList;
@@ -28,6 +31,18 @@ namespace TogglDesktop.WPF
         {
             this.DataContext = this;
             this.InitializeComponent();
+        }
+
+        public bool IsOpen
+        {
+            get { return this.popup.IsOpen; }
+            set
+            {
+                if(value)
+                    this.open();
+                else
+                    this.close();
+            }
         }
 
         #region dependency properties
@@ -59,6 +74,9 @@ namespace TogglDesktop.WPF
 
         private void initialise()
         {
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
             if(this.textbox != null)
                 throw new Exception("Auto completion popup cannot be initialised more than once.");
 
@@ -122,6 +140,7 @@ namespace TogglDesktop.WPF
             var item = this.controller.SelectedItem;
 
             this.popup.IsOpen = false;
+            this.tryInvoke(this.IsOpenChanged);
 
             if (item == null)
             {
@@ -146,14 +165,22 @@ namespace TogglDesktop.WPF
 
         private void close()
         {
-            this.popup.IsOpen = false;
-        }
+            if (!this.popup.IsOpen)
+                return;
 
+            this.popup.IsOpen = false;
+            this.tryInvoke(this.IsOpenChanged);
+        }
         private void open()
         {
             this.ensureList();
             this.controller.Complete(this.textbox.Text);
+
+            if (this.popup.IsOpen)
+                return;
+
             this.popup.IsOpen = true;
+            this.tryInvoke(this.IsOpenChanged);
         }
 
         private void ensureList()
@@ -171,5 +198,12 @@ namespace TogglDesktop.WPF
 
             this.needsToRefreshList = false;
         }
+
+        private void tryInvoke(EventHandler e)
+        {
+            if (e != null)
+                e(this, EventArgs.Empty);
+        }
+
     }
 }

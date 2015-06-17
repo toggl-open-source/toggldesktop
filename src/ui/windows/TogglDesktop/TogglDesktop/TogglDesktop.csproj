@@ -176,8 +176,12 @@
     <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
+    <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteController.cs" />
     <Compile Include="AutoCompletion\Implementation\DescriptionAutoCompleteController.cs" />
     <Compile Include="AutoCompletion\Implementation\DescriptionAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleAutoCompleteItem.cs" />
     <Compile Include="ComboBoxHelper.cs" />
     <Compile Include="ControlHelper.cs" />
     <Compile Include="CustomComboBox.cs">
@@ -206,6 +210,9 @@
     </Compile>
     <Compile Include="WPF\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\ProjectAutoCompleteEntry.xaml.cs">
+      <DependentUpon>ProjectAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\DescriptionAutoCompleteEntry.xaml.cs">
       <DependentUpon>DescriptionAutoCompleteEntry.xaml</DependentUpon>
@@ -263,6 +270,7 @@
     </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="Win32.cs" />
+    <Compile Include="WPF\PropertyHelpers.cs" />
     <Compile Include="WPF\Resources.cs" />
     <Compile Include="WPF\TimeEntryCell.xaml.cs">
       <DependentUpon>TimeEntryCell.xaml</DependentUpon>
@@ -472,6 +480,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="WPF\ProjectAutoCompleteEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\DescriptionAutoCompleteEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -519,6 +531,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\timerLightBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_expand_more_grey600_36dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

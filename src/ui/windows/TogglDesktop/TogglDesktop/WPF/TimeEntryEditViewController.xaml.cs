@@ -25,6 +25,7 @@ namespace TogglDesktop.WPF
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryAutocomplete += this.onTimeEntryAutocomplete;
+            Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
 
             this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
@@ -62,7 +63,7 @@ namespace TogglDesktop.WPF
                 this.durationTextBox.Text = timeEntry.Duration;
                 setTime(this.startTimeTextBox, timeEntry.StartTimeString);
                 setTime(this.endTimeTextBox, timeEntry.EndTimeString);
-                this.projectComboBox.SelectedItem = timeEntry.ProjectLabel;
+                this.projectTextBox.SetText(timeEntry.ProjectLabel);
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
             }
             else
@@ -71,9 +72,7 @@ namespace TogglDesktop.WPF
                 setTextIfUnfocused(this.durationTextBox, timeEntry.Duration);
                 setTimeIfUnfocused(this.startTimeTextBox, timeEntry.StartTimeString);
                 setTimeIfUnfocused(this.endTimeTextBox, timeEntry.EndTimeString);
-
-                if (!this.projectComboBox.IsFocused)
-                    this.projectComboBox.SelectedItem = timeEntry.ProjectLabel;
+                setTextIfUnfocused(this.projectTextBox, timeEntry.ProjectLabel);
 
                 if (!this.startDatePicker.IsFocused)
                     this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
@@ -93,12 +92,14 @@ namespace TogglDesktop.WPF
             textBox.Text = time;
             textBox.Tag = time;
         }
+
         private static void setTextIfUnfocused(TextBox textBox, string text)
         {
             if (textBox.IsFocused)
                 return;
             textBox.Text = text;
         }
+
         private static void setTextIfUnfocused(ExtendedTextBox textBox, string text)
         {
             if (textBox.IsFocused)
@@ -134,6 +135,11 @@ namespace TogglDesktop.WPF
         private void onTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
         {
             this.descriptionAutoComplete.SetController(DescriptionAutoCompleteController.From(list));
+        }
+
+        private void onProjectAutocomplete(List<Toggl.AutocompleteItem> list)
+        {
+            this.projectAutoComplete.SetController(ProjectAutoCompleteController.From(list));
         }
 
         #endregion
@@ -238,7 +244,48 @@ namespace TogglDesktop.WPF
 
         #endregion
 
+        #region project
+
+        private void projectDropDownButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.projectAutoComplete.IsOpen = this.projectDropDownButton.IsChecked ?? false;
+
+            this.projectTextBox.Focus();
+        }
+
+        private void projectAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
+        {
+            this.projectDropDownButton.IsChecked = this.projectAutoComplete.IsOpen;
+        }
+
+        private void projectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        {
+            var asProjectItem = e as ProjectAutoCompleteItem;
+            if (asProjectItem == null)
+                return;
+
+            var item = asProjectItem.Item;
+
+            if (item.ProjectID == this.timeEntry.PID && item.TaskID == this.timeEntry.TID)
+                return;
+
+            this.projectTextBox.SetText(item.ProjectLabel);
+
+            Toggl.SetTimeEntryProject(this.timeEntry.GUID, item.TaskID, item.ProjectID, "");
+        }
+
+        private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
+        {
+            // TODO: reset project? add new? switch to 'add project mode'?
+        }
+
+        private void projectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
+        }
+
         #endregion
 
+        #endregion
     }
 }

@@ -23,6 +23,46 @@
             <Setter Property="Margin" Value="8"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
+        </Style>
+        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type Control}}">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="/TogglDesktop;component/Resources/ic_expand_more_grey600_36dp.png" Stretch="Fill"
+                           Margin="6"
+                           RenderTransformOrigin="0.5, 0.5">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType=ToggleButton}}"
+                                         Value="True">
+                                        <Setter Property="RenderTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="180"></RotateTransform>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F4F4F4"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
             <Setter Property="Padding" Value="8, 0, 0, 0"/>
@@ -134,7 +174,22 @@
                     <RowDefinition Height="0"/>
                 </Grid.RowDefinitions>
 
-                <ComboBox Name="projectComboBox" x:FieldModifier="private" Grid.Column="0" Grid.Row="0" IsEditable="True" />
+                <!-- project -->
+                <toggl:ExtendedTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
+                                       LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
+                                       Padding="8, 0, 34, 0" />
+                
+                <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
+                                  Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                                  HorizontalAlignment="Right" IsTabStop="False"
+                                  Click="projectDropDownButton_OnClick"/>
+
+                <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
+                        Target="{Binding ElementName=projectTextBox}" EmptyText="No projects found."
+                        ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
+                        ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
+                        IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
+
                 <Button  Grid.Column="1" Grid.Row="0">Add new project</Button>
                 
                 <ComboBox Grid.Column="0" Grid.Row="1" IsEditable="True" />
