@@ -259,6 +259,7 @@ namespace TogglDesktop.WPF
 
         private void projectDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
+            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
             this.projectAutoComplete.IsOpen = this.projectDropDownButton.IsChecked ?? false;
 
             if (!this.projectTextBox.IsKeyboardFocused)
@@ -306,5 +307,21 @@ namespace TogglDesktop.WPF
         #endregion
 
         #endregion
+
+        public void FocusField(string focusedFieldName)
+        {
+            switch (focusedFieldName)
+            {
+                case Toggl.Project:
+                    this.projectTextBox.Focus();
+                    break;
+                case Toggl.Duration:
+                    this.durationTextBox.Focus();
+                    break;
+                case Toggl.Description:
+                    this.descriptionTextBox.Focus();
+                    break;
+            }
+        }
     }
 }

@@ -574,7 +574,7 @@ public partial class MainWindowController : TogglForm
         {
             contentPanel.Controls.Remove(loginViewController);
             MinimumSize = new Size(230, 86);
-            //timeEntryEditViewController.setupView(this, focused_field_name);
+            timeEntryEditViewController.FocusField(focused_field_name);
             PopupInput(te);
         }
         timeEntryListViewController.HighlightEntry(te.GUID);
