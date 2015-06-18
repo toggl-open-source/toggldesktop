@@ -101,6 +101,10 @@ namespace TogglDesktop.WPF
                 this.lastUpdatedText.Visibility = Visibility.Collapsed;
             }
 
+            this.tagList.Clear(open);
+            if(timeEntry.Tags != null)
+                this.tagList.AddTags(timeEntry.Tags.Split(new []{Toggl.TagSeparator}, StringSplitOptions.RemoveEmptyEntries));
+
             if (this.newProjectModeEnabled)
                 this.disableNewProjectMode();
         }
@@ -176,7 +180,6 @@ namespace TogglDesktop.WPF
 
         private void onClientSelect(List<Toggl.Model> list)
         {
-            Console.WriteLine("getting client list");
             this.clients = list;
             this.clientAutoComplete.SetController(ClientAutoCompleteController.From(list));
         }
@@ -403,12 +406,15 @@ namespace TogglDesktop.WPF
 
         private bool tryCreatingNewProject(string text)
         {
-            // TODO: make other parameters do things!
+            if (!this.hasTimeEntry())
+            {
+                Console.WriteLine("Cannot add new project: No time entry.");
+                return false;
+            }
 
-            Console.WriteLine("creating project");
+            // TODO: fix client not always known yet if just created
+
             var client = this.clients.FirstOrDefault(c => c.Name == this.selectedClient);
-
-            Console.WriteLine(this.selectedClient + " | " + client.Name + " | " + client.ID);
 
             return Toggl.AddProject(this.timeEntry.GUID, this.timeEntry.WID, client.ID, text, false);
         }
@@ -547,12 +553,26 @@ namespace TogglDesktop.WPF
         {
             if (Toggl.AddClient(this.timeEntry.WID, text))
             {
-                Console.WriteLine("created client");
                 this.selectedClient = text;
                 return true;
             }
 
             return false;
+        }
+
+        #endregion
+
+        #region tag list
+
+        private void tagList_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!this.hasTimeEntry())
+            {
+                Console.WriteLine("Cannot change tags: No time entry.");
+                return;
+            }
+
+            Toggl.SetTimeEntryTags(this.timeEntry.GUID, this.tagList.Tags.ToList());
         }
 
         #endregion

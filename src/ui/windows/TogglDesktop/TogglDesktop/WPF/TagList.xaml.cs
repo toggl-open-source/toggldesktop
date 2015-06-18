@@ -12,6 +12,9 @@ namespace TogglDesktop.WPF
 
         private readonly Dictionary<string, Tag> tags = new Dictionary<string, Tag>();
 
+        public int TagCount { get { return this.tags.Count; } }
+        public IEnumerable<string> Tags { get { return this.tags.Keys; } }
+
         public TagList()
         {
             this.DataContext = this;
@@ -20,7 +23,6 @@ namespace TogglDesktop.WPF
 
         private void onMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine("bloop");
             this.focusTextBox();
         }
 
@@ -33,9 +35,13 @@ namespace TogglDesktop.WPF
                 {
                     if (this.AddTag(tag) && this.TagAdded != null)
                         this.TagAdded(this, tag);
+                    e.Handled = true;
+                }
+                else if(e.Key == Key.Enter)
+                {
+                    e.Handled = true;
                 }
                 this.textBox.Text = "";
-                e.Handled = true;
             }
         }
 
@@ -91,11 +97,12 @@ namespace TogglDesktop.WPF
             return true;
         }
 
-        public void Clear()
+        public void Clear(bool clearTextBox = true)
         {
             this.panel.Children.RemoveRange(0, this.panel.Children.Count - 1);
             this.tags.Clear();
-            this.textBox.Text = "";
+            if (clearTextBox)
+                this.textBox.Text = "";
         }
 
     }
