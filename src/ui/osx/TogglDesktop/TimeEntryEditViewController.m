@@ -283,6 +283,7 @@ extern void *ctx;
 											 [self.timeEntry.GUID UTF8String],
 											 workspaceID,
 											 clientID,
+											 0,
 											 [projectName UTF8String],
 											 !is_public);
 

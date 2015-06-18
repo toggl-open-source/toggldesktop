@@ -814,6 +814,7 @@ TEST(toggl_api, toggl_add_project) {
                                     guid.c_str(),
                                     wid,
                                     cid,
+                                    "",
                                     project_name.c_str(),
                                     is_private);
     ASSERT_EQ("Please select a workspace",
@@ -825,6 +826,7 @@ TEST(toggl_api, toggl_add_project) {
                             guid.c_str(),
                             wid,
                             cid,
+                            "",
                             project_name.c_str(),
                             is_private);
     ASSERT_EQ("Project name must not be empty",
@@ -838,6 +840,7 @@ TEST(toggl_api, toggl_add_project) {
                             guid.c_str(),
                             wid,
                             cid,
+                            "",
                             project_name.c_str(),
                             is_private);
     ASSERT_EQ("", testing::testresult::error);

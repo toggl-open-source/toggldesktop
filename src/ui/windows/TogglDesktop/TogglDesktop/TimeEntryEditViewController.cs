@@ -666,6 +666,7 @@ public partial class TimeEntryEditViewController : UserControl
             timeEntry.GUID,
             workspaceID,
             clientID,
+            "",
             textBoxProjectName.Text,
             !is_public);
         bool projectAdded = projectGUID.Length > 0;

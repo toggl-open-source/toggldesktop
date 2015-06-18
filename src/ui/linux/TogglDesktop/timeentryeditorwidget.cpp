@@ -275,6 +275,7 @@ bool TimeEntryEditorWidget::applyNewProject() {
     QString projectGUID = TogglApi::instance->addProject(guid,
                           workspaceID,
                           clientID,
+                          "",
                           ui->newProjectName->text(),
                           !ui->publicProject->isChecked());
     return !projectGUID.isEmpty();

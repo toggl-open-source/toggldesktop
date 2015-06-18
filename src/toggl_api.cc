@@ -393,6 +393,7 @@ char_t *toggl_add_project(
     const char_t *time_entry_guid,
     const uint64_t workspace_id,
     const uint64_t client_id,
+    const char_t *client_guid,
     const char_t *project_name,
     const bool_t is_private) {
 
@@ -401,7 +402,7 @@ char_t *toggl_add_project(
     toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
-        "",
+        to_string(client_guid),
         to_string(project_name),
         is_private);
     if (!p) {

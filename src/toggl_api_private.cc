@@ -155,6 +155,9 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
 }
 
 std::string to_string(const char_t *s) {
+    if (!s) {
+        return std::string("");
+    }
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws(s);
     std::string res("");

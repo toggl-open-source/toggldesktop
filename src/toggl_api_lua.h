@@ -341,7 +341,8 @@ static int l_toggl_add_project(lua_State *L) {
                                      lua_tointeger(L, 2),
                                      lua_tointeger(L, 3),
                                      checkstring(L, 4),
-                                     lua_toboolean(L, 5));
+                                     checkstring(L, 5),
+                                     lua_toboolean(L, 6));
     pushstring(L, guid);
     free(guid);
     return 1;

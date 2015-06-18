@@ -1013,6 +1013,8 @@ public static class Toggl
         UInt64 workspace_id,
         UInt64 client_id,
         [MarshalAs(UnmanagedType.LPWStr)]
+        string client_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string project_name,
         [MarshalAs(UnmanagedType.I1)]
         bool is_private);
@@ -1021,6 +1023,7 @@ public static class Toggl
         string time_entry_guid,
         UInt64 workspace_id,
         UInt64 client_id,
+        string client_guid,
         string project_name,
         bool is_private)
     {
@@ -1028,6 +1031,7 @@ public static class Toggl
                                  time_entry_guid,
                                  workspace_id,
                                  client_id,
+                                 client_guid,
                                  project_name,
                                  is_private);
     }

@@ -590,6 +590,7 @@ extern "C" {
         const char_t *time_entry_guid,
         const uint64_t workspace_id,
         const uint64_t client_id,
+        const char_t *client_guid,
         const char_t *project_name,
         const bool_t is_private);
 
