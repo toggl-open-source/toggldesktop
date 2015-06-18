@@ -9,6 +9,7 @@
 
 #include "./toggl_api_lua.h"
 
+#include "./client.h"
 #include "./const.h"
 #include "./context.h"
 #include "./custom_error_handler.h"
@@ -368,14 +369,22 @@ char_t *toggl_create_project(
     return nullptr;
 }
 
-bool_t toggl_create_client(
+char_t *toggl_create_client(
     void *context,
     const uint64_t workspace_id,
     const char_t *client_name) {
 
-    return toggl::noError == app(context)->CreateClient(
+    toggl::Client *c = app(context)->CreateClient(
         workspace_id,
         to_string(client_name));
+
+    if (!c) {
+        return nullptr;
+    }
+
+    poco_check_ptr(c);
+
+    return copy_string(c->GUID());
 }
 
 bool_t toggl_add_project(
@@ -407,6 +416,7 @@ bool_t toggl_add_project(
         p->ID(),
         guid);
     free(guid);
+
     return res;
 }
 

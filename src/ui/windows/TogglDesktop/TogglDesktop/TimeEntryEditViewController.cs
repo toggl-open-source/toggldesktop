@@ -1002,8 +1002,8 @@ public partial class TimeEntryEditViewController : UserControl
             return;
         }
 
-        bool clientCreated = Toggl.AddClient(workspaceID, addClientTextBox.Text);
-        if (clientCreated)
+        string clientGUID = Toggl.CreateClient(workspaceID, addClientTextBox.Text);
+        if (clientGUID.Length > 0)
         {
             comboBoxClient.Text = addClientTextBox.Text;
             newestClient = addClientTextBox.Text;

@@ -1033,14 +1033,14 @@ public static class Toggl
     }
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_create_client(
+    [return: MarshalAs(UnmanagedType.LPWStr)]
+    private static extern string toggl_create_client(
         IntPtr context,
         UInt64 workspace_id,
         [MarshalAs(UnmanagedType.LPWStr)]
         string client_name);
 
-    public static bool AddClient(
+    public static string CreateClient(
         UInt64 workspace_id,
         string client_name)
     {

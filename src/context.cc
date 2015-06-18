@@ -2803,24 +2803,32 @@ Project *Context::CreateProject(
     return result;
 }
 
-error Context::CreateClient(
+Client *Context::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
 
     if (!user_) {
         logger().warning("Cannot create a client, user logged out");
-        return noError;
+        return nullptr;
     }
     if (!workspace_id) {
-        return displayError("Please select a workspace");
+        displayError("Please select a workspace");
+        return nullptr;
     }
     if (client_name.empty()) {
-        return displayError("Client name must not be empty");
+        displayError("Client name must not be empty");
+        return nullptr;
     }
 
-    user_->CreateClient(workspace_id, client_name);
+    Client *result = user_->CreateClient(workspace_id, client_name);
 
-    return displayError(save());
+    error err = save();
+    if (err != noError) {
+        displayError(err);
+        return nullptr;
+    }
+
+    return result;
 }
 
 void Context::SetSleep() {

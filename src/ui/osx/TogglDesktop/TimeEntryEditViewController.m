@@ -1036,14 +1036,15 @@ extern void *ctx;
 		return;
 	}
 
-	bool_t clientAdded = toggl_create_client(ctx,
-											 workspaceID,
-											 [clientName UTF8String]);
-	if (clientAdded)
+	char *clientGUID = toggl_create_client(ctx,
+										   workspaceID,
+										   [clientName UTF8String]);
+	if (clientGUID)
 	{
 		[self toggleAddClient:YES];
 		self.clientSelect.stringValue = clientName;
 	}
+	free(clientGUID);
 }
 
 - (void)toggleAddClient:(BOOL)showAddClient

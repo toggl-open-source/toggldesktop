@@ -238,7 +238,7 @@ class Context : public TimelineDatasource {
         const std::string project_name,
         const bool is_private);
 
-    error CreateClient(
+    Client *CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 

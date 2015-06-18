@@ -366,10 +366,11 @@ static int l_toggl_create_project(lua_State *L) {
 }
 
 static int l_toggl_create_client(lua_State *L) {
-    bool_t res = toggl_create_client(toggl_app_instance_,
-                                     lua_tointeger(L, 1),
-                                     checkstring(L, 2));
-    lua_pushboolean(L, res);
+    char_t *guid = toggl_create_client(toggl_app_instance_,
+                                       lua_tointeger(L, 1),
+                                       checkstring(L, 2));
+    pushstring(L, guid);
+    free(guid);
     return 1;
 }
 
