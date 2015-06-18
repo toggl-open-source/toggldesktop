@@ -6,7 +6,7 @@ namespace TogglDesktop.WPF
 {
     sealed class ClientAutoCompleteEntrySample
     {
-        public string Description { get { return "Big money company"; } }
+        public string ClientName { get { return "Big money company"; } }
 
         public Color BackgroundColor { get { return Color.FromRgb(255, 255, 255); } }
     }

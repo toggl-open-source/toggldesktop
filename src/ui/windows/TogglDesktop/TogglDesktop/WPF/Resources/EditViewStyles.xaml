@@ -33,7 +33,7 @@
         </Style.Resources>
 
     </Style>
-    
+
     <Style x:Key="ClientAutoCompleteItem" TargetType="UserControl">
 
         <Style.Resources>

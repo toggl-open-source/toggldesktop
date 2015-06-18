@@ -15,7 +15,7 @@
     </UserControl.Background>
     
     <TextBlock VerticalAlignment="Center" Text="{Binding Description}"
-                Margin="10"
+                Margin="10, 0, 10, 0"
                 />
         
 </UserControl>

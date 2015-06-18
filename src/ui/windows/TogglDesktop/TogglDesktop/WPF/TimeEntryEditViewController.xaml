@@ -35,7 +35,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ButtonBase">
                         <Border Background="{TemplateBinding Background}">
-                            <Image Name="ButtonImage" Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+                            <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
                                    Stretch="Fill" Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Border>
                     </ControlTemplate>
@@ -280,6 +280,10 @@
                 </Grid>
             </Grid>
             <!-- tags -->
+            <Grid MinHeight="50">
+                <toggl:TagList Margin="8"></toggl:TagList>
+            </Grid>
+            
             
             
             <!-- billable? -->

@@ -277,6 +277,12 @@
     <Compile Include="Win32.cs" />
     <Compile Include="WPF\PropertyHelpers.cs" />
     <Compile Include="WPF\Resources.cs" />
+    <Compile Include="WPF\Tag.xaml.cs">
+      <DependentUpon>Tag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\TagList.xaml.cs">
+      <DependentUpon>TagList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\TimeEntryCell.xaml.cs">
       <DependentUpon>TimeEntryCell.xaml</DependentUpon>
     </Compile>
@@ -402,7 +408,7 @@
     <None Include="Resources\Close.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CloseDisabled.png" />
+    <Resource Include="Resources\CloseDisabled.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CloseHot.png" />
@@ -522,6 +528,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Tag.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\TagList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
