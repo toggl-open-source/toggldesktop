@@ -21,7 +21,7 @@
         </Style.Resources>
 
     </Style>
-    
+
     <Style x:Key="ProjectAutoCompleteItem" TargetType="UserControl">
 
         <Style.Resources>
@@ -34,5 +34,17 @@
 
     </Style>
     
-    
+    <Style x:Key="ClientAutoCompleteItem" TargetType="UserControl">
+
+        <Style.Resources>
+
+            <!-- common text settings -->
+            <Style TargetType="TextBlock" BasedOn="{StaticResource EditViewTextBlockBase}">
+            </Style>
+
+        </Style.Resources>
+
+    </Style>
+
+
 </ResourceDictionary>

@@ -203,47 +203,82 @@
                     ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
             </Grid>
 
-            <!-- project, client, task -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <Grid Grid.IsSharedSizeScope="True">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="0"/>
-                    <RowDefinition Height="0"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
+                
                 <!-- project -->
+                <Grid Grid.Row="0" Height="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
+                    </Grid.ColumnDefinitions>
 
-                <Button Name="newProjectButton" x:FieldModifier="private" Grid.Column="1" Grid.Row="0"
+                    <Button Name="newProjectButton" x:FieldModifier="private" Grid.Column="1"
                         Style="{StaticResource NewButton}"
                         Click="newProjectButton_OnClick">Add new project</Button>
 
-                <toggl:ExtendedTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
-                                       LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
-                                       Padding="8, 0, 34, 0"
-                                       PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
+                    <toggl:ExtendedTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
+                                            LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
+                                            Padding="8, 0, 34, 0"
+                                            PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
                 
-                <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
-                                  Style="{StaticResource AutoCompleteTextFieldButton}"
-                                  Click="projectDropDownButton_OnClick"/>
+                    <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0"
+                                        Style="{StaticResource AutoCompleteTextFieldButton}"
+                                        Click="projectDropDownButton_OnClick"/>
 
-                <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1" Grid.Row="0"
-                        Style="{StaticResource TextFieldImageButtonBase}"
-                        Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
-                        Padding="9" Visibility="Hidden"
-                        Click="newProjectCancelButton_OnClick"/>
+                    <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1"
+                            Style="{StaticResource TextFieldImageButtonBase}"
+                            Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
+                            Padding="9" Visibility="Hidden"
+                            Click="newProjectCancelButton_OnClick"/>
 
-                <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
-                        Target="{Binding ElementName=projectTextBox}" EmptyText="No projects found."
-                        ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
-                        ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
-                        IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
+                    <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
+                            Target="{Binding ElementName=projectTextBox}" EmptyText="No projects found."
+                            ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
+                            ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
+                            IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
 
-            </Grid>
+                </Grid>
             
+                <!-- client -->
+                <Grid  Grid.Row="1"  Height="50" Visibility="Collapsed"
+                       Name="clientArea" x:FieldModifier="private">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Name="newClientButton" x:FieldModifier="private" Grid.Column="1"
+                            Style="{StaticResource NewButton}"
+                            Click="newClientButton_OnClick">Add new client</Button>
+
+                    <toggl:ExtendedTextBox x:Name="clientTextBox" x:FieldModifier="private" Grid.Column="0"
+                                           LostKeyboardFocus="clientTextBox_OnLostKeyboardFocus"
+                                           Padding="8, 0, 34, 0"
+                                           PreviewKeyDown="clientTextBox_OnPreviewKeyDown"/>
+
+                    <ToggleButton x:Name="clientDropDownButton" x:FieldModifier="private" Grid.Column="0"
+                                  Style="{StaticResource AutoCompleteTextFieldButton}"
+                                  Click="clientDropDownButton_OnClick"/>
+
+                    <Button x:Name ="newClientCancelButton" x:FieldModifier="private" Grid.Column="1"
+                            Style="{StaticResource TextFieldImageButtonBase}"
+                            Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
+                            Padding="9" Visibility="Hidden"
+                            Click="newClientCancelButton_OnClick"/>
+
+
+                    <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="clientAutoComplete" x:FieldModifier="private"
+                            Target="{Binding ElementName=clientTextBox}" EmptyText="No clients found."
+                            ConfirmCompletion="clientAutoComplete_OnConfirmCompletion"
+                            ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"
+                            IsOpenChanged="clientAutoComplete_OnIsOpenChanged"/>
+
+                </Grid>
+            </Grid>
             <!-- tags -->
             
             

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -21,6 +22,9 @@ namespace TogglDesktop.WPF
         private readonly DispatcherTimer durationUpdateTimer;
         private Toggl.TimeEntry timeEntry;
         private bool newProjectModeEnabled;
+        private bool newClientModeEnabled;
+        private List<Toggl.Model> clients;
+        private string selectedClient;
 
         public TimeEntryEditViewController()
         {
@@ -30,6 +34,7 @@ namespace TogglDesktop.WPF
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryAutocomplete += this.onTimeEntryAutocomplete;
             Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
+            Toggl.OnClientSelect += this.onClientSelect;
 
             this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
@@ -53,6 +58,8 @@ namespace TogglDesktop.WPF
 
         #region fill with data
 
+        #region from time entry
+
         private void onTimeEntryEditor(bool open, Toggl.TimeEntry timeEntry, string focusedFieldName)
         {
             if (this.invoke(() => this.onTimeEntryEditor(open, timeEntry, focusedFieldName)))
@@ -68,6 +75,7 @@ namespace TogglDesktop.WPF
                 setTime(this.startTimeTextBox, timeEntry.StartTimeString);
                 setTime(this.endTimeTextBox, timeEntry.EndTimeString);
                 this.projectTextBox.SetText(timeEntry.ProjectLabel);
+                this.clientTextBox.SetText(timeEntry.ClientLabel);
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
             }
             else
@@ -125,6 +133,10 @@ namespace TogglDesktop.WPF
             textBox.SetText(text);
         }
 
+        #endregion
+
+        #region duration auto update
+
         private DispatcherTimer startDurationUpdateTimer()
         {
             var timer = new DispatcherTimer
@@ -150,6 +162,8 @@ namespace TogglDesktop.WPF
             }
         }
 
+        #endregion
+
         private void onTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
         {
             this.descriptionAutoComplete.SetController(DescriptionAutoCompleteController.From(list));
@@ -159,6 +173,14 @@ namespace TogglDesktop.WPF
         {
             this.projectAutoComplete.SetController(ProjectAutoCompleteController.From(list));
         }
+
+        private void onClientSelect(List<Toggl.Model> list)
+        {
+            Console.WriteLine("getting client list");
+            this.clients = list;
+            this.clientAutoComplete.SetController(ClientAutoCompleteController.From(list));
+        }
+
 
         #endregion
 
@@ -308,6 +330,9 @@ namespace TogglDesktop.WPF
 
         private void projectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            if(this.newProjectModeEnabled)
+                return;
+
             this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
         }
 
@@ -320,8 +345,14 @@ namespace TogglDesktop.WPF
             this.disableNewProjectMode();
         }
 
+        #endregion
+
+        #region new project mode
+
         private void enableNewProjectMode()
         {
+            this.showClientArea();
+
             this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 2);
             this.projectAutoComplete.IsEnabled = false;
             this.projectDropDownButton.Visibility = Visibility.Hidden;
@@ -335,6 +366,9 @@ namespace TogglDesktop.WPF
 
         private void disableNewProjectMode()
         {
+            this.disableNewClientMode();
+            this.hideClientArea();
+
             this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 1);
             this.projectAutoComplete.IsEnabled = true;
             this.projectDropDownButton.Visibility = Visibility.Visible;
@@ -354,28 +388,178 @@ namespace TogglDesktop.WPF
             switch (e.Key)
             {
                 case Key.Escape:
-                {
-                    this.disableNewProjectMode();
-                    break;
-                }
-                case Key.Enter:
-                {
-                    if(this.tryCreatingNewProject(this.projectTextBox.Text))
+                    {
                         this.disableNewProjectMode();
-                    break;
-                }
+                        break;
+                    }
+                case Key.Enter:
+                    {
+                        if (this.tryCreatingNewProject(this.projectTextBox.Text))
+                            this.disableNewProjectMode();
+                        break;
+                    }
             }
         }
 
         private bool tryCreatingNewProject(string text)
         {
             // TODO: make other parameters do things!
-            return Toggl.AddProject(this.timeEntry.GUID, this.timeEntry.WID, 0, text, false);
+
+            Console.WriteLine("creating project");
+            var client = this.clients.FirstOrDefault(c => c.Name == this.selectedClient);
+
+            Console.WriteLine(this.selectedClient + " | " + client.Name + " | " + client.ID);
+
+            return Toggl.AddProject(this.timeEntry.GUID, this.timeEntry.WID, client.ID, text, false);
+        }
+
+        #endregion
+
+        #region client
+
+        private void showClientArea()
+        {
+            this.clientTextBox.Text = "";
+            this.selectedClient = "";
+            this.clientAutoComplete.IsOpen = false;
+            this.clientArea.Visibility = Visibility.Visible;
+        }
+
+        private void hideClientArea()
+        {
+            this.clientArea.Visibility = Visibility.Collapsed;
+            this.clientAutoComplete.IsOpen = false;
+        }
+
+        private void clientDropDownButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
+            this.clientAutoComplete.IsOpen = this.clientDropDownButton.IsChecked ?? false;
+
+            if (!this.clientTextBox.IsKeyboardFocused)
+            {
+                this.clientTextBox.Focus();
+                this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
+                if (this.clientAutoComplete.IsOpen)
+                {
+                    this.clientTextBox.SelectAll();
+                }
+            }
+        }
+
+        private void clientAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
+        {
+            this.clientDropDownButton.IsChecked = this.clientAutoComplete.IsOpen;
+        }
+
+        private void clientAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        {
+            var asClientItem = e as ClientAutoCompleteItem;
+            if (asClientItem == null)
+                return;
+
+            var item = asClientItem.Item;
+
+            this.selectClient(item);
+        }
+
+        private void selectClient(Toggl.Model item)
+        {
+            this.selectedClient = item.Name;
+            this.clientTextBox.SetText(item.Name);
+        }
+
+        private void clientAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
+        {
+            // TODO: reset client? add new? switch to 'add new client mode'?
+        }
+
+        private void clientTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (this.newClientModeEnabled)
+                return;
+
+            this.clientTextBox.SetText(this.selectedClient);
+        }
+
+        private void newClientButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.enableNewClientMode();
+        }
+
+        private void newClientCancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.disableNewClientMode();
+        }
+        #endregion
+
+        #region new client mode
+
+
+        private void enableNewClientMode()
+        {
+            this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 2);
+            this.clientAutoComplete.IsEnabled = false;
+            this.clientDropDownButton.Visibility = Visibility.Hidden;
+            this.newClientButton.Visibility = Visibility.Hidden;
+            this.newClientCancelButton.Visibility = Visibility.Visible;
+            this.clientTextBox.Focus();
+            this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
+
+            this.newClientModeEnabled = true;
+        }
+
+        private void disableNewClientMode()
+        {
+            this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 1);
+            this.clientAutoComplete.IsEnabled = true;
+            this.clientDropDownButton.Visibility = Visibility.Visible;
+            this.newClientButton.Visibility = Visibility.Visible;
+            this.newClientCancelButton.Visibility = Visibility.Hidden;
+            this.clientTextBox.Focus();
+            this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
+
+            this.newClientModeEnabled = false;
+        }
+
+        private void clientTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!this.newClientModeEnabled)
+                return;
+
+            switch (e.Key)
+            {
+                case Key.Escape:
+                    {
+                        this.disableNewClientMode();
+                        break;
+                    }
+                case Key.Enter:
+                    {
+                        if (this.tryCreatingNewClient(this.clientTextBox.Text))
+                            this.disableNewClientMode();
+                        break;
+                    }
+            }
+        }
+
+        private bool tryCreatingNewClient(string text)
+        {
+            if (Toggl.AddClient(this.timeEntry.WID, text))
+            {
+                Console.WriteLine("created client");
+                this.selectedClient = text;
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
 
         #endregion
+
+        #region variuos
 
         public void FocusField(string focusedFieldName)
         {
@@ -418,5 +602,8 @@ namespace TogglDesktop.WPF
                 //TODO: reset form (specifically add-project controls)?
             }
         }
+
+        #endregion
+
     }
 }

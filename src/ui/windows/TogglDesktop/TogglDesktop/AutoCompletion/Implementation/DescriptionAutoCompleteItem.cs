@@ -2,7 +2,7 @@ using TogglDesktop.WPF;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class DescriptionAutoCompleteItem : SimpleAutoCompleteItem<DescriptionAutoCompleteEntry>
+    class DescriptionAutoCompleteItem : SimpleAutoCompleteItem<DescriptionAutoCompleteEntry, Toggl.AutocompleteItem>
     {
         public DescriptionAutoCompleteItem(Toggl.AutocompleteItem item) : base(item, item.Description)
         {

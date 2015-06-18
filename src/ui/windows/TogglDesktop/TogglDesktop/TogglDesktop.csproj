@@ -176,6 +176,8 @@
     <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\ClientAutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\Implementation\ClientAutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
     <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteController.cs" />
@@ -210,6 +212,9 @@
     </Compile>
     <Compile Include="WPF\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\ClientAutoCompleteEntry.xaml.cs">
+      <DependentUpon>ClientAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ProjectAutoCompleteEntry.xaml.cs">
       <DependentUpon>ProjectAutoCompleteEntry.xaml</DependentUpon>
@@ -479,6 +484,10 @@
     <Page Include="WPF\AutoCompletionPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\ClientAutoCompleteEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\ProjectAutoCompleteEntry.xaml">
       <Generator>MSBuild:Compile</Generator>

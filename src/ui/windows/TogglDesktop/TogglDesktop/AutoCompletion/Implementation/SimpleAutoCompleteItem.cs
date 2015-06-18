@@ -3,19 +3,19 @@ using System.Windows.Controls;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    abstract class SimpleAutoCompleteItem<TFrameworkElement> : AutoCompleteItem
+    abstract class SimpleAutoCompleteItem<TFrameworkElement, TAutoCompleteItem> : AutoCompleteItem
         where TFrameworkElement : FrameworkElement, ISelectable
     {
-        private readonly Toggl.AutocompleteItem item;
+        private readonly TAutoCompleteItem item;
         private TFrameworkElement element;
 
-        protected SimpleAutoCompleteItem(Toggl.AutocompleteItem item, string text)
+        protected SimpleAutoCompleteItem(TAutoCompleteItem item, string text)
             : base(text)
         {
             this.item = item;
         }
 
-        public Toggl.AutocompleteItem Item
+        public TAutoCompleteItem Item
         {
             get { return this.item; }
         }
