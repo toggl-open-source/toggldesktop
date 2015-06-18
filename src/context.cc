@@ -2775,6 +2775,7 @@ AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
 Project *Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
+    const std::string client_guid,
     const std::string project_name,
     const bool is_private) {
 
@@ -2792,7 +2793,7 @@ Project *Context::CreateProject(
     }
 
     Project *result = user_->CreateProject(
-        workspace_id, client_id, project_name, is_private);
+        workspace_id, client_id, client_guid, project_name, is_private);
 
     error err = save();
     if (err != noError) {

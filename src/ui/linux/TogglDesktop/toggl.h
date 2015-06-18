@@ -121,7 +121,7 @@ class TogglApi : public QObject {
         const QString guid,
         const QString value);
 
-    bool addProject(
+    QString addProject(
         const QString time_entry_guid,
         const uint64_t workspace_id,
         const uint64_t client_id,

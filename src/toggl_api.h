@@ -575,7 +575,7 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_clear_cache(
         void *context);
 
-    // you must free() the result
+    // returns GUID of the started time entry. you must free() the result
     TOGGL_EXPORT char_t *toggl_start(
         void *context,
         const char_t *description,
@@ -584,7 +584,8 @@ extern "C" {
         const uint64_t project_id,
         const char_t *project_guid);
 
-    TOGGL_EXPORT bool_t toggl_add_project(
+    // returns GUID of the new project. you must free() the result
+    TOGGL_EXPORT char_t *toggl_add_project(
         void *context,
         const char_t *time_entry_guid,
         const uint64_t workspace_id,

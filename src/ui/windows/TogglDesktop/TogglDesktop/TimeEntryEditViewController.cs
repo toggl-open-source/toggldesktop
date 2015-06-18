@@ -662,12 +662,13 @@ public partial class TimeEntryEditViewController : UserControl
 
         bool isBillable = timeEntry.Billable;
 
-        bool projectAdded = Toggl.AddProject(
+        string projectGUID = Toggl.AddProject(
             timeEntry.GUID,
             workspaceID,
             clientID,
             textBoxProjectName.Text,
             !is_public);
+        bool projectAdded = projectGUID.Length > 0;
 
         if (projectAdded && isBillable)
         {

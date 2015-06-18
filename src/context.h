@@ -235,6 +235,7 @@ class Context : public TimelineDatasource {
     Project *CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
+        const std::string client_guid,
         const std::string project_name,
         const bool is_private);
 

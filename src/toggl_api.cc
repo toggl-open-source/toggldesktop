@@ -360,6 +360,7 @@ char_t *toggl_create_project(
     toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
+        "",
         to_string(project_name),
         is_private);
 
@@ -387,7 +388,7 @@ char_t *toggl_create_client(
     return copy_string(c->GUID());
 }
 
-bool_t toggl_add_project(
+char_t *toggl_add_project(
     void *context,
     const char_t *time_entry_guid,
     const uint64_t workspace_id,
@@ -400,24 +401,24 @@ bool_t toggl_add_project(
     toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
+        "",
         to_string(project_name),
         is_private);
     if (!p) {
-        return false;
+        return nullptr;
     }
 
     poco_check_ptr(p);
 
     char_t *guid = copy_string(p->GUID());
-    bool_t res = toggl_set_time_entry_project(
+    toggl_set_time_entry_project(
         context,
         time_entry_guid,
         0, /* no task ID */
         p->ID(),
         guid);
-    free(guid);
 
-    return res;
+    return guid;
 }
 
 char_t *toggl_format_tracking_time_duration(

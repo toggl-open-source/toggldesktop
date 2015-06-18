@@ -810,12 +810,12 @@ TEST(toggl_api, toggl_add_project) {
     bool_t is_private = false;
 
     testing::testresult::error = "";
-    bool_t res = toggl_add_project(app.ctx(),
-                                   guid.c_str(),
-                                   wid,
-                                   cid,
-                                   project_name.c_str(),
-                                   is_private);
+    char_t *res = toggl_add_project(app.ctx(),
+                                    guid.c_str(),
+                                    wid,
+                                    cid,
+                                    project_name.c_str(),
+                                    is_private);
     ASSERT_EQ("Please select a workspace",
               testing::testresult::error);
     ASSERT_FALSE(res);
@@ -830,6 +830,7 @@ TEST(toggl_api, toggl_add_project) {
     ASSERT_EQ("Project name must not be empty",
               testing::testresult::error);
     ASSERT_FALSE(res);
+    free(res);
 
     project_name = "A new project";
     testing::testresult::error = "";
@@ -841,6 +842,7 @@ TEST(toggl_api, toggl_add_project) {
                             is_private);
     ASSERT_EQ("", testing::testresult::error);
     ASSERT_TRUE(res);
+    free(res);
 
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
