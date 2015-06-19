@@ -10,7 +10,8 @@ namespace TogglDesktop.WPF
 {
     sealed class AutoCompletionPopupSample
     {
-        public ExtendedTextBox Target { get { return null; } }
+        public FrameworkElement Target { get { return null; } }
+        public ExtendedTextBox TextBox { get { return null; } }
         public string EmptyText { get { return "Hello. Yes, this is list."; } }
     }
 
@@ -51,7 +52,7 @@ namespace TogglDesktop.WPF
             get { return this.popup.IsOpen; }
             set
             {
-                if(value)
+                if (value)
                     this.open();
                 else
                     this.close();
@@ -61,15 +62,23 @@ namespace TogglDesktop.WPF
         #region dependency properties
 
         public static readonly DependencyProperty TargetProperty = DependencyProperty
-            .Register("Target", typeof(ExtendedTextBox), typeof(AutoCompletionPopup),
+            .Register("Target", typeof(FrameworkElement), typeof(AutoCompletionPopup));
+        public FrameworkElement Target
+        {
+            get { return (FrameworkElement)this.GetValue(TargetProperty); }
+            set { this.SetValue(TargetProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextBoxProperty = DependencyProperty
+            .Register("TextBox", typeof(ExtendedTextBox), typeof(AutoCompletionPopup),
             new FrameworkPropertyMetadata
             {
                 PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initialise()
             });
-        public ExtendedTextBox Target
+        public ExtendedTextBox TextBox
         {
-            get { return (ExtendedTextBox)this.GetValue(TargetProperty); }
-            set { this.SetValue(TargetProperty, value); }
+            get { return (ExtendedTextBox)this.GetValue(TextBoxProperty); }
+            set { this.SetValue(TextBoxProperty, value); }
         }
 
         public static readonly DependencyProperty EmptyTextProperty = DependencyProperty
@@ -90,13 +99,13 @@ namespace TogglDesktop.WPF
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            if(this.textbox != null)
+            if (this.textbox != null)
                 throw new Exception("Auto completion popup cannot be initialised more than once.");
 
-            this.textbox = this.Target;
+            this.textbox = this.TextBox;
 
             if (this.textbox == null)
-                throw new Exception("Auto completion popup must have a valid target text box.");
+                throw new Exception("Auto completion popup must have a valid text box.");
 
             this.textbox.PreviewKeyDown += this.targetOnPreviewKeyDown;
             this.textbox.TextChanged += this.targetOnTextChanged;
@@ -112,42 +121,42 @@ namespace TogglDesktop.WPF
 
         private void targetOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!this.IsEnabled)
+            if (!this.IsEnabled || e.Handled)
                 return;
 
             switch (e.Key)
             {
                 case Key.Down:
-                {
-                    if(!this.popup.IsOpen)
-                        this.open();
-                    this.controller.SelectNext();
-                    e.Handled = true;
-                    return;
-                }
+                    {
+                        if (!this.popup.IsOpen)
+                            this.open();
+                        this.controller.SelectNext();
+                        e.Handled = true;
+                        return;
+                    }
                 case Key.Up:
-                {
-                    if(this.popup.IsOpen)
-                        this.controller.SelectPrevious();
-                    e.Handled = true;
-                    return;
-                }
+                    {
+                        if (this.popup.IsOpen)
+                            this.controller.SelectPrevious();
+                        e.Handled = true;
+                        return;
+                    }
                 case Key.Escape:
-                {
-                    this.close();
-                    e.Handled = true;
-                    return;
-                }
+                    {
+                        this.close();
+                        e.Handled = true;
+                        return;
+                    }
                 case Key.Enter:
                 case Key.Tab:
-                {
-                    if (this.popup.IsOpen)
                     {
-                        this.confirmCompletion();
-                        e.Handled = true;
+                        if (this.popup.IsOpen)
+                        {
+                            this.confirmCompletion();
+                            e.Handled = true;
+                        }
+                        return;
                     }
-                    return;
-                }
             }
         }
 
@@ -175,7 +184,7 @@ namespace TogglDesktop.WPF
             if (!this.IsEnabled)
                 return;
 
-            if (this.Target.IsTextChangingProgrammatically)
+            if (this.textbox.IsTextChangingProgrammatically)
                 return;
 
             this.open();
@@ -199,7 +208,7 @@ namespace TogglDesktop.WPF
                 return;
 
             var timer = Stopwatch.StartNew();
-            
+
             this.dropDownList.Children.Clear();
             this.controller.FillList(this.dropDownList);
             this.emptyLabel.Visibility = this.dropDownList.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;

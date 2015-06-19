@@ -35,6 +35,7 @@ namespace TogglDesktop.WPF
             Toggl.OnTimeEntryAutocomplete += this.onTimeEntryAutocomplete;
             Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
             Toggl.OnClientSelect += this.onClientSelect;
+            Toggl.OnTags += this.onTags;
 
             this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
@@ -182,6 +183,11 @@ namespace TogglDesktop.WPF
         {
             this.clients = list;
             this.clientAutoComplete.SetController(ClientAutoCompleteController.From(list));
+        }
+
+        private void onTags(List<Toggl.Model> list)
+        {
+            this.tagList.SetKnownTags(list.Select(m => m.Name));
         }
 
 

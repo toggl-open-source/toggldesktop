@@ -198,7 +198,8 @@
                     LostKeyboardFocus="descriptionTextBox_OnLostKeyboardFocus"
                     >Test</toggl:ExtendedTextBox>
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
-                    Target="{Binding ElementName=descriptionTextBox}" EmptyText="No previous entries found."
+                    Target="{Binding ElementName=descriptionTextBox}" TextBox="{Binding ElementName=descriptionTextBox}"
+                    EmptyText="No previous entries found."
                     ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"
                     ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
             </Grid>
@@ -236,7 +237,8 @@
                             Click="newProjectCancelButton_OnClick"/>
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
-                            Target="{Binding ElementName=projectTextBox}" EmptyText="No projects found."
+                            Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
+                            EmptyText="No projects found."
                             ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
                             ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
                             IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
@@ -272,7 +274,8 @@
 
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="clientAutoComplete" x:FieldModifier="private"
-                            Target="{Binding ElementName=clientTextBox}" EmptyText="No clients found."
+                            Target="{Binding ElementName=clientTextBox}" TextBox="{Binding ElementName=clientTextBox}"
+                            EmptyText="No clients found."
                             ConfirmCompletion="clientAutoComplete_OnConfirmCompletion"
                             ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"
                             IsOpenChanged="clientAutoComplete_OnIsOpenChanged"/>

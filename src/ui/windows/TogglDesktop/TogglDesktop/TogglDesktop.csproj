@@ -178,6 +178,8 @@
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ClientAutoCompleteController.cs" />
     <Compile Include="AutoCompletion\Implementation\ClientAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\StringAutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\Implementation\StringAutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
     <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteController.cs" />
@@ -277,6 +279,9 @@
     <Compile Include="Win32.cs" />
     <Compile Include="WPF\PropertyHelpers.cs" />
     <Compile Include="WPF\Resources.cs" />
+    <Compile Include="WPF\StringAutoCompleteEntry.xaml.cs">
+      <DependentUpon>StringAutoCompleteEntry.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\Tag.xaml.cs">
       <DependentUpon>Tag.xaml</DependentUpon>
     </Compile>
@@ -528,6 +533,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\StringAutoCompleteEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

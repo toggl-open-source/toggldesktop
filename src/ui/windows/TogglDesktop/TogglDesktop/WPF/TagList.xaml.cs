@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using TogglDesktop.AutoCompletion;
+using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop.WPF
 {
@@ -21,6 +23,8 @@ namespace TogglDesktop.WPF
             this.InitializeComponent();
         }
 
+        #region controlling
+
         private void onMouseDown(object sender, MouseButtonEventArgs e)
         {
             this.focusTextBox();
@@ -28,20 +32,19 @@ namespace TogglDesktop.WPF
 
         private void textBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Handled)
+                return;
+
+            if (this.autoComplete.IsOpen)
+                return;
+
+            // handle input if autoComplete is closed
             if (e.Key == Key.Enter || e.Key == Key.Tab)
             {
-                var tag = this.textBox.Text.Trim();
-                if (!string.IsNullOrWhiteSpace(tag))
-                {
-                    if (this.AddTag(tag) && this.TagAdded != null)
-                        this.TagAdded(this, tag);
-                    e.Handled = true;
-                }
-                else if(e.Key == Key.Enter)
+                if(this.tryAddTagFromTextBox() || e.Key == Key.Enter)
                 {
                     e.Handled = true;
                 }
-                this.textBox.Text = "";
             }
         }
 
@@ -49,6 +52,27 @@ namespace TogglDesktop.WPF
         {
             this.textBox.Focus();
             this.textBox.CaretIndex = this.textBox.Text.Length;
+        }
+
+        #endregion
+
+        #region adding
+
+        private bool tryAddTagFromTextBox()
+        {
+            var tag = this.textBox.Text.Trim();
+            this.textBox.SetText("");
+            if (string.IsNullOrWhiteSpace(tag))
+                return false;
+            return this.tryAddTag(tag);
+        }
+
+        private bool tryAddTag(string tag)
+        {
+            var success = this.AddTag(tag);
+            if (success && this.TagAdded != null)
+                this.TagAdded(this, tag);
+            return success;
         }
 
         public void AddTags(IEnumerable<string> tags)
@@ -86,6 +110,10 @@ namespace TogglDesktop.WPF
             };
         }
 
+        #endregion
+
+        #region removing
+
         public bool RemoveTag(string tag)
         {
             Tag element;
@@ -102,7 +130,35 @@ namespace TogglDesktop.WPF
             this.panel.Children.RemoveRange(0, this.panel.Children.Count - 1);
             this.tags.Clear();
             if (clearTextBox)
-                this.textBox.Text = "";
+                this.textBox.SetText("");
+        }
+
+        #endregion
+
+        public void SetKnownTags(IEnumerable<string> tags)
+        {
+            this.autoComplete.SetController(StringAutoCompleteController.From(tags));
+        }
+
+        public bool Contains(string tag)
+        {
+            return this.tags.ContainsKey(tag);
+        }
+
+        private void cautoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        {
+            var asStringItem = e as StringAutoCompleteItem;
+            if (asStringItem == null)
+                return;
+
+            var tag = asStringItem.Text;
+            this.tryAddTag(tag);
+            this.textBox.SetText("");
+        }
+
+        private void autoComplete_OnConfirmWithoutCompletion(object sender, string e)
+        {
+            this.tryAddTagFromTextBox();
         }
 
     }
