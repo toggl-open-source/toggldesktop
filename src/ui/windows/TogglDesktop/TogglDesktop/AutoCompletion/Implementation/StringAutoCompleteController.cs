@@ -11,9 +11,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        public static AutoCompleteController From(IEnumerable<string> items)
+        public static AutoCompleteController From(IEnumerable<string> items, Func<string, bool> ignoreTag)
         {
-            var list = items.Select(i => new StringAutoCompleteItem(i)).Cast<IAutoCompleteListItem>().ToList();
+            var list = items.Select(i => new StringAutoCompleteItem(i, ignoreTag)).Cast<IAutoCompleteListItem>().ToList();
 
             return new StringAutoCompleteController(list);
         }
