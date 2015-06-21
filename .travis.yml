@@ -1,5 +1,6 @@
 language: cpp
 compiler:
+  - gcc
   - clang
 install: make deps > /dev/null
 script:
