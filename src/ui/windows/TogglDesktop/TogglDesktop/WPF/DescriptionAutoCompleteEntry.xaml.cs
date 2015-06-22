@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
-using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop.WPF
@@ -13,35 +13,25 @@ namespace TogglDesktop.WPF
         public Color BackgroundColor { get { return Color.FromRgb(244, 244, 244); } }
     }
 
-    partial class DescriptionAutoCompleteEntry : ISelectable
+    public class AutoCompleteEntryBase : UserControl, ISelectable
     {
         private static readonly Color backgroundColorSelected = Color.FromRgb(244, 244, 244);
+        private static readonly Color backgroundColorHover = Color.FromRgb(244, 244, 244);
         private static readonly Color backgroundColor = Color.FromRgb(255, 255, 255);
-
         private bool selected;
 
-        public DescriptionAutoCompleteEntry(Toggl.AutocompleteItem item, Action selectWithClick)
+        public AutoCompleteEntryBase(Action selectWithClick)
         {
             this.DataContext = this;
-            this.Description = item.Description;
-            InitializeComponent();
+            this.MouseEnter += (sender, args) => this.updateBackgroundColor();
+            this.MouseLeave += (sender, args) => this.updateBackgroundColor();
             this.MouseDown += (sender, args) => selectWithClick();
         }
 
         #region dependency properties
 
-        public static readonly DependencyProperty DescriptionProperty = DependencyProperty
-            .Register("Description", typeof(string), typeof(DescriptionAutoCompleteEntry));
-
-        public string Description
-        {
-            get { return (string)this.GetValue(DescriptionProperty); }
-            set { this.SetValue(DescriptionProperty, value); }
-        }
-        
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty
-            .Register("BackgroundColor", typeof(Color), typeof(DescriptionAutoCompleteEntry));
-
+            .Register("BackgroundColor", typeof(Color), typeof(AutoCompleteEntryBase));
 
         public Color BackgroundColor
         {
@@ -58,10 +48,39 @@ namespace TogglDesktop.WPF
             {
                 if (this.selected == value)
                     return;
-                this.BackgroundColor = value ? backgroundColorSelected : backgroundColor;
                 this.selected = value;
+                this.updateBackgroundColor();
             }
         }
 
+        private void updateBackgroundColor()
+        {
+            this.BackgroundColor = this.IsMouseOver
+                ? backgroundColorHover
+                : this.selected ? backgroundColorSelected : backgroundColor;
+        }
+    }
+
+    partial class DescriptionAutoCompleteEntry
+    {
+        public DescriptionAutoCompleteEntry(Toggl.AutocompleteItem item, Action selectWithClick)
+            : base(selectWithClick)
+        {
+            this.Description = item.Description;
+            this.InitializeComponent();
+        }
+
+        #region dependency properties
+
+        public static readonly DependencyProperty DescriptionProperty = DependencyProperty
+            .Register("Description", typeof(string), typeof(DescriptionAutoCompleteEntry));
+
+        public string Description
+        {
+            get { return (string)this.GetValue(DescriptionProperty); }
+            set { this.SetValue(DescriptionProperty, value); }
+        }
+
+        #endregion
     }
 }

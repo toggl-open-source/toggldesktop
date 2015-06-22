@@ -14,20 +14,14 @@ namespace TogglDesktop.WPF
         public Color BackgroundColor { get { return Color.FromRgb(244, 244, 244); } }
     }
 
-    partial class ProjectAutoCompleteEntry : ISelectable
+    partial class ProjectAutoCompleteEntry
     {
-        private static readonly Color backgroundColorSelected = Color.FromRgb(244, 244, 244);
-        private static readonly Color backgroundColor = Color.FromRgb(255, 255, 255);
-
-        private bool selected;
-
         public ProjectAutoCompleteEntry(Toggl.AutocompleteItem item, Action selectWithClick)
+            : base(selectWithClick)
         {
-            this.DataContext = this;
             this.ProjectColor = getProjectColor(ref item);
             this.ProjectName = item.ProjectLabel;
             this.InitializeComponent();
-            this.MouseDown += (sender, args) => selectWithClick();
         }
 
         private static Color getProjectColor(ref Toggl.AutocompleteItem item)
@@ -57,29 +51,7 @@ namespace TogglDesktop.WPF
             set { this.SetValue(ProjectNameProperty, value); }
         }
         
-        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty
-            .Register("BackgroundColor", typeof(Color), typeof(ProjectAutoCompleteEntry));
-
-
-        public Color BackgroundColor
-        {
-            get { return (Color)this.GetValue(BackgroundColorProperty); }
-            set { this.SetValue(BackgroundColorProperty, value); }
-        }
-
         #endregion
-
-        public bool Selected
-        {
-            get { return this.selected; }
-            set
-            {
-                if (this.selected == value)
-                    return;
-                this.BackgroundColor = value ? backgroundColorSelected : backgroundColor;
-                this.selected = value;
-            }
-        }
 
     }
 }

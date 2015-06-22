@@ -13,19 +13,13 @@ namespace TogglDesktop.WPF
         public Color BackgroundColor { get { return Color.FromRgb(255, 255, 255); } }
     }
 
-    partial class StringAutoCompleteEntry : ISelectable
+    partial class StringAutoCompleteEntry
     {
-        private static readonly Color backgroundColorSelected = Color.FromRgb(244, 244, 244);
-        private static readonly Color backgroundColor = Color.FromRgb(255, 255, 255);
-
-        private bool selected;
-
         public StringAutoCompleteEntry(string item, Action selectWithClick)
+            : base(selectWithClick)
         {
-            this.DataContext = this;
             this.Description = item;
             InitializeComponent();
-            this.MouseDown += (sender, args) => selectWithClick();
         }
 
         #region dependency properties
@@ -39,29 +33,7 @@ namespace TogglDesktop.WPF
             set { this.SetValue(TextProperty, value); }
         }
 
-        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty
-            .Register("BackgroundColor", typeof(Color), typeof(StringAutoCompleteEntry));
-
-
-        public Color BackgroundColor
-        {
-            get { return (Color)this.GetValue(BackgroundColorProperty); }
-            set { this.SetValue(BackgroundColorProperty, value); }
-        }
-
         #endregion
-
-        public bool Selected
-        {
-            get { return this.selected; }
-            set
-            {
-                if (this.selected == value)
-                    return;
-                this.BackgroundColor = value ? backgroundColorSelected : backgroundColor;
-                this.selected = value;
-            }
-        }
 
     }
 }
