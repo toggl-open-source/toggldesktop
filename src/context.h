@@ -222,7 +222,7 @@ class Context : public TimelineDatasource {
     error ToggleTimelineRecording(
         const bool record_timeline);
 
-    bool IsTimelineRecordingEnabled() {
+    bool IsTimelineRecordingEnabled() const {
         return user_ && user_->RecordTimeline();
     }
 
