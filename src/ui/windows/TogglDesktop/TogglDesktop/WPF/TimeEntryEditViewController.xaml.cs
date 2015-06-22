@@ -91,6 +91,9 @@ namespace TogglDesktop.WPF
                     this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
             }
 
+            this.billableCheckBox.Visibility = timeEntry.CanSeeBillable ? Visibility.Visible : Visibility.Collapsed;
+            this.billableCheckBox.IsChecked = timeEntry.Billable;
+
             if (timeEntry.UpdatedAt > 0)
             {
                 var updatedAt = Toggl.DateTimeFromUnix(timeEntry.UpdatedAt);
@@ -631,5 +634,9 @@ namespace TogglDesktop.WPF
 
         #endregion
 
+        private void billableCheckBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            Toggl.SetTimeEntryBillable(this.timeEntry.GUID, this.billableCheckBox.IsChecked ?? false);
+        }
     }
 }
