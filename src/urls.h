@@ -15,6 +15,8 @@ std::string API();
 std::string TimelineUpload();
 std::string WebSocket();
 
+void SetUseStagingAsBackend(const bool value);
+
 }  // namespace urls
 
 }  // namespace toggl
