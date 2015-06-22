@@ -204,12 +204,12 @@ error Context::StartEvents() {
     err = db()->LoadCurrentUser(user);
     if (err != noError) {
         delete user;
-        setUser(0);
+        setUser(nullptr);
         return displayError(err);
     }
     if (!user->ID()) {
         delete user;
-        setUser(0);
+        setUser(nullptr);
         return noError;
     }
     setUser(user);
@@ -475,7 +475,7 @@ error Context::displayError(const error err) {
     if ((err.find(kForbiddenError) != std::string::npos)
             || (err.find(kUnauthorizedError) != std::string::npos)) {
         if (user_) {
-            setUser(0);
+            setUser(nullptr);
         }
     }
     if (err.find(kUnsupportedAppError) != std::string::npos) {
@@ -1546,7 +1546,7 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
 error Context::DisplaySettings(const bool open) {
     error err = db()->LoadSettings(&settings_);
     if (err != noError) {
-        setUser(0);
+        setUser(nullptr);
         return displayError(err);
     }
 
@@ -1554,7 +1554,7 @@ error Context::DisplaySettings(const bool open) {
     Proxy proxy;
     err = db()->LoadProxySettings(&use_proxy, &proxy);
     if (err != noError) {
-        setUser(0);
+        setUser(nullptr);
         return displayError(err);
     }
 
@@ -1910,7 +1910,7 @@ error Context::Logout() {
 
         logger().debug("setUser from Logout");
 
-        setUser(0);
+        setUser(nullptr);
 
         UI()->DisplayApp();
 
