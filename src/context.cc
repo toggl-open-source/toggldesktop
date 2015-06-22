@@ -3100,9 +3100,12 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
     if (quit_) {
         return noError;
     }
+
+    Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
         return noError;
     }
+
     std::vector<TimelineEvent> events;
     error err = db()->CreateCompressedTimelineBatchForUpload(
         user_->ID(),
