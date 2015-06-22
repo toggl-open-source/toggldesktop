@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using TogglDesktop.AutoCompletion.Implementation;
 
@@ -13,19 +14,20 @@ namespace TogglDesktop.WPF
         public Color BackgroundColor { get { return Color.FromRgb(244, 244, 244); } }
     }
 
-    public partial class ProjectAutoCompleteEntry : ISelectable
+    partial class ProjectAutoCompleteEntry : ISelectable
     {
         private static readonly Color backgroundColorSelected = Color.FromRgb(244, 244, 244);
         private static readonly Color backgroundColor = Color.FromRgb(255, 255, 255);
 
         private bool selected;
 
-        public ProjectAutoCompleteEntry(Toggl.AutocompleteItem item)
+        public ProjectAutoCompleteEntry(Toggl.AutocompleteItem item, Action selectWithClick)
         {
             this.DataContext = this;
             this.ProjectColor = getProjectColor(ref item);
             this.ProjectName = item.ProjectLabel;
             this.InitializeComponent();
+            this.MouseDown += (sender, args) => selectWithClick();
         }
 
         private static Color getProjectColor(ref Toggl.AutocompleteItem item)

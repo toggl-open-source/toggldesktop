@@ -164,6 +164,11 @@ namespace TogglDesktop.WPF
         {
             var item = this.controller.SelectedItem;
 
+            this.select(item);
+        }
+
+        private void select(AutoCompleteItem item)
+        {
             this.popup.IsOpen = false;
 
             if (item == null)
@@ -210,7 +215,7 @@ namespace TogglDesktop.WPF
             var timer = Stopwatch.StartNew();
 
             this.dropDownList.Children.Clear();
-            this.controller.FillList(this.dropDownList);
+            this.controller.FillList(this.dropDownList, this.select);
             this.emptyLabel.Visibility = this.dropDownList.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
             Console.WriteLine("Filled autocomplete list with {0} items. Took {1} ms.", this.dropDownList.Children.Count, timer.ElapsedMilliseconds);

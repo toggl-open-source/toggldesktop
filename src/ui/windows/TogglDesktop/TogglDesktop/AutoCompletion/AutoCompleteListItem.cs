@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
@@ -36,7 +37,7 @@ namespace TogglDesktop.AutoCompletion
 
         public abstract IEnumerable<AutoCompleteItem> Complete(string input);
         public abstract IEnumerable<AutoCompleteItem> CompleteAll();
-        public abstract void CreateFrameworkElement(Panel parent);
+        public abstract void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick);
 
         protected abstract void hide();
         protected abstract void show();

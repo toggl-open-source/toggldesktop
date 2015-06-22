@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -20,13 +21,13 @@ namespace TogglDesktop.AutoCompletion.Implementation
             get { return this.item; }
         }
 
-        public override void CreateFrameworkElement(Panel parent)
+        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick)
         {
-            this.element = this.createElement();
+            this.element = this.createElement(() => selectWithClick(this));
             parent.Children.Add(this.element);
         }
 
-        protected abstract TFrameworkElement createElement();
+        protected abstract TFrameworkElement createElement(Action selectWithClick);
 
         protected override void hide()
         {

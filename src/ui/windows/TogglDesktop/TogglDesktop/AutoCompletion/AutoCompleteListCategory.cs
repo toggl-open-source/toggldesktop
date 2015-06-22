@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -42,12 +43,12 @@ namespace TogglDesktop.AutoCompletion
             return this.children.SelectMany(c => c.CompleteAll());
         }
 
-        public override void CreateFrameworkElement(Panel parent)
+        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick)
         {
             var newParent = this.createFrameworkElement(parent);
             foreach (var child in this.children)
             {
-                child.CreateFrameworkElement(newParent);
+                child.CreateFrameworkElement(newParent, selectWithClick);
             }
         }
 

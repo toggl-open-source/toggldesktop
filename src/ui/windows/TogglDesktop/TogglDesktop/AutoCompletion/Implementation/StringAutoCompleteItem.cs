@@ -24,9 +24,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
             }
         }
 
-        protected override StringAutoCompleteEntry createElement()
+        protected override StringAutoCompleteEntry createElement(Action selectWithClick)
         {
-            return new StringAutoCompleteEntry(this.Item);
+            return new StringAutoCompleteEntry(this.Item, selectWithClick);
         }
     }
 }

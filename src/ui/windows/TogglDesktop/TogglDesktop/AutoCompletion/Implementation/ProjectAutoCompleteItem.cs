@@ -1,3 +1,4 @@
+using System;
 using TogglDesktop.WPF;
 
 namespace TogglDesktop.AutoCompletion.Implementation
@@ -8,9 +9,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        protected override ProjectAutoCompleteEntry createElement()
+        protected override ProjectAutoCompleteEntry createElement(Action selectWithClick)
         {
-            return new ProjectAutoCompleteEntry(this.Item);
+            return new ProjectAutoCompleteEntry(this.Item, selectWithClick);
         }
     }
 }

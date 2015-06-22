@@ -33,11 +33,11 @@ namespace TogglDesktop.AutoCompletion
             get { return this.currentlyVisibleAsReadonly; }
         }
 
-        public void FillList(Panel list)
+        public void FillList(Panel list, Action<AutoCompleteItem> selectWithClick)
         {
             foreach (var item in this.list)
             {
-                item.CreateFrameworkElement(list);
+                item.CreateFrameworkElement(list, selectWithClick);
             }
         }
 
