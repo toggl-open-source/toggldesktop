@@ -35,6 +35,8 @@
 		7484A2AA18887BEE0025A88B /* context.h in Headers */ = {isa = PBXBuildFile; fileRef = 7484A2A418887BEE0025A88B /* context.h */; };
 		7484A2AB18887BEE0025A88B /* context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A518887BEE0025A88B /* context.cc */; };
 		7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7484A2A618887BEE0025A88B /* toggl_api_private.cc */; };
+		748A0F401B388CCA0001A41E /* urls.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748A0F3E1B388CCA0001A41E /* urls.cc */; };
+		748A0F411B388CCA0001A41E /* urls.h in Headers */ = {isa = PBXBuildFile; fileRef = 748A0F3F1B388CCA0001A41E /* urls.h */; };
 		748B7DA51AC5963B00FE01D2 /* custom_error_handler.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7D9D1AC5963B00FE01D2 /* custom_error_handler.cc */; };
 		748B7DA61AC5963B00FE01D2 /* custom_error_handler.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7D9E1AC5963B00FE01D2 /* custom_error_handler.h */; };
 		748B7DA71AC5963B00FE01D2 /* model_change.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7D9F1AC5963B00FE01D2 /* model_change.cc */; };
@@ -120,6 +122,8 @@
 		7484A2A418887BEE0025A88B /* context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = context.h; path = ../../../context.h; sourceTree = "<group>"; };
 		7484A2A518887BEE0025A88B /* context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = context.cc; path = ../../../context.cc; sourceTree = "<group>"; };
 		7484A2A618887BEE0025A88B /* toggl_api_private.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = toggl_api_private.cc; path = ../../../toggl_api_private.cc; sourceTree = "<group>"; };
+		748A0F3E1B388CCA0001A41E /* urls.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = urls.cc; path = ../../../urls.cc; sourceTree = "<group>"; };
+		748A0F3F1B388CCA0001A41E /* urls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = urls.h; path = ../../../urls.h; sourceTree = "<group>"; };
 		748B7D9D1AC5963B00FE01D2 /* custom_error_handler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_error_handler.cc; path = ../../../custom_error_handler.cc; sourceTree = "<group>"; };
 		748B7D9E1AC5963B00FE01D2 /* custom_error_handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = custom_error_handler.h; path = ../../../custom_error_handler.h; sourceTree = "<group>"; };
 		748B7D9F1AC5963B00FE01D2 /* model_change.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = model_change.cc; path = ../../../model_change.cc; sourceTree = "<group>"; };
@@ -258,6 +262,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				748A0F3E1B388CCA0001A41E /* urls.cc */,
+				748A0F3F1B388CCA0001A41E /* urls.h */,
 				743024121AEFA819006DC911 /* autotracker.cc */,
 				743024131AEFA819006DC911 /* autotracker.h */,
 				748B7D9D1AC5963B00FE01D2 /* custom_error_handler.cc */,
@@ -381,6 +387,7 @@
 				C5DA1FB117F18D7B001C4565 /* types.h in Headers */,
 				74E16832180F26D90026261C /* websocket_client.h in Headers */,
 				7484A2A818887BEE0025A88B /* toggl_api_private.h in Headers */,
+				748A0F411B388CCA0001A41E /* urls.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
 				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,
 				74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */,
@@ -462,6 +469,7 @@
 				7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
+				748A0F401B388CCA0001A41E /* urls.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
 				74B587C918BBC77E00E9F6CE /* user.cc in Sources */,
 				74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */,

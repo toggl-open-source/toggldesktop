@@ -14,6 +14,7 @@
 #include "./tag.h"
 #include "./task.h"
 #include "./time_entry.h"
+#include "./urls.h"
 #include "./workspace.h"
 
 #include "Poco/Base64Decoder.h"
@@ -472,7 +473,7 @@ error User::PushChanges(
         logger().debug(json);
 
         std::string response_body("");
-        err = toggl_client->Post(kAPIURL,
+        err = toggl_client->Post(urls::API(),
                                  "/api/v8/batch_updates",
                                  json,
                                  APIToken(),
@@ -547,7 +548,7 @@ error User::Me(
                      << "&with_related_data=true"
                      << "&since=" << since;
 
-        return toggl_client->Get(kAPIURL,
+        return toggl_client->Get(urls::API(),
                                  relative_url.str(),
                                  email,
                                  password,
@@ -586,7 +587,7 @@ error User::Signup(
         Json::Value root;
         root["user"] = user;
 
-        return toggl_client->Post(kAPIURL,
+        return toggl_client->Post(urls::API(),
                                   "/api/v8/signups",
                                   Json::StyledWriter().write(root),
                                   "",

@@ -7,6 +7,7 @@
 
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./urls.h"
 
 #include "Poco/Foundation.h"
 #include "Poco/Thread.h"
@@ -98,7 +99,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     logger().debug(json);
 
     std::string response_body("");
-    return client.Post(kTimelineUploadURL,
+    return client.Post(urls::TimelineUpload(),
                        "/api/v8/timeline",
                        json,
                        batch->APIToken(),

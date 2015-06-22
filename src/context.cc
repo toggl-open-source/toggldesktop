@@ -20,6 +20,7 @@
 #include "./time_entry.h"
 #include "./timeline_uploader.h"
 #include "./toggl_api_private.h"
+#include "./urls.h"
 #include "./window_change_recorder.h"
 #include "./workspace.h"
 
@@ -938,7 +939,7 @@ error Context::downloadUpdate() {
         {
             std::string body("");
             TogglClient client;
-            err = client.Get(kAPIURL,
+            err = client.Get(urls::API(),
                              update_url,
                              std::string(""),
                              std::string(""),
@@ -1132,7 +1133,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(kTimelineUploadURL,
+    error err = client.Post(urls::TimelineUpload(),
                             "/api/v8/timeline_settings",
                             json,
                             user_->APIToken(),
@@ -1199,7 +1200,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(kAPIURL,
+    error err = client.Post(urls::API(),
                             "/api/v8/feedback/web",
                             "",
                             user_->APIToken(),
@@ -2848,7 +2849,7 @@ error Context::OpenReportsInBrowser() {
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(kAPIURL,
+    error err = client.Post(urls::API(),
                             "/api/v8/desktop_login_tokens",
                             "{}",
                             user_->APIToken(),
@@ -2872,7 +2873,7 @@ error Context::OpenReportsInBrowser() {
     }
 
     std::stringstream ss;
-    ss  << kAPIURL << "/api/v8/desktop_login"
+    ss  << urls::API() << "/api/v8/desktop_login"
         << "?login_token=" << login_token
         << "&goto=reports";
     UI()->DisplayURL(ss.str());
