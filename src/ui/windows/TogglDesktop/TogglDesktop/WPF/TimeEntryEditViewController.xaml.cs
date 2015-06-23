@@ -182,18 +182,18 @@ namespace TogglDesktop.WPF
 
         private void onTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
         {
-            this.descriptionAutoComplete.SetController(DescriptionAutoCompleteController.From(list));
+            this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForDescriptions(list));
         }
 
         private void onProjectAutocomplete(List<Toggl.AutocompleteItem> list)
         {
-            this.projectAutoComplete.SetController(ProjectAutoCompleteController.From(list));
+            this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
         }
 
         private void onClientSelect(List<Toggl.Model> list)
         {
             this.clients = list;
-            this.clientAutoComplete.SetController(ClientAutoCompleteController.From(list));
+            this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list, this.workspaces));
         }
 
         private void onTags(List<Toggl.Model> list)
@@ -204,7 +204,7 @@ namespace TogglDesktop.WPF
         private void onWorkspaceSelect(List<Toggl.Model> list)
         {
             this.workspaces = list;
-            this.workspaceAutoComplete.SetController(WorkspaceAutoCompleteController.From(list));
+            this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
         }
 
         #endregion
@@ -265,7 +265,7 @@ namespace TogglDesktop.WPF
 
         private void descriptionAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asDescriptionItem = e as DescriptionAutoCompleteItem;
+            var asDescriptionItem = e as DescriptionItem;
             if (asDescriptionItem == null)
                 return;
 
@@ -334,7 +334,7 @@ namespace TogglDesktop.WPF
 
         private void projectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asProjectItem = e as ProjectAutoCompleteItem;
+            var asProjectItem = e as ProjectItem;
             if (asProjectItem == null)
                 return;
 
@@ -482,7 +482,7 @@ namespace TogglDesktop.WPF
 
         private void clientAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asClientItem = e as ModelAutoCompleteItem;
+            var asClientItem = e as ModelItem;
             if (asClientItem == null)
                 return;
 
@@ -624,7 +624,7 @@ namespace TogglDesktop.WPF
 
         private void workspaceAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asWorkspaceItem = e as ModelAutoCompleteItem;
+            var asWorkspaceItem = e as ModelItem;
             if (asWorkspaceItem == null)
                 return;
 

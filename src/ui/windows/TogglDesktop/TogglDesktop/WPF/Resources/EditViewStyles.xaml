@@ -10,7 +10,7 @@
         <Setter Property="Foreground" Value="#252525"/>
     </Style>
     
-    <Style x:Key="DescriptionAutoCompleteItem" TargetType="UserControl">
+    <Style x:Key="AutoCompleteItemBase">
 
         <Style.Resources>
 
@@ -19,32 +19,7 @@
             </Style>
 
         </Style.Resources>
-
+        
     </Style>
-
-    <Style x:Key="ProjectAutoCompleteItem" TargetType="UserControl">
-
-        <Style.Resources>
-
-            <!-- common text settings -->
-            <Style TargetType="TextBlock" BasedOn="{StaticResource EditViewTextBlockBase}">
-            </Style>
-
-        </Style.Resources>
-
-    </Style>
-
-    <Style x:Key="ClientAutoCompleteItem" TargetType="UserControl">
-
-        <Style.Resources>
-
-            <!-- common text settings -->
-            <Style TargetType="TextBlock" BasedOn="{StaticResource EditViewTextBlockBase}">
-            </Style>
-
-        </Style.Resources>
-
-    </Style>
-
 
 </ResourceDictionary>

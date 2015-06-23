@@ -4,11 +4,11 @@ using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class StringAutoCompleteItem : SimpleAutoCompleteItem<StringEntry, string>
+    class StringItem : SimpleItem<StringEntry, string>
     {
         private readonly Func<string, bool> hideString;
 
-        public StringAutoCompleteItem(string item, Func<string, bool> hideString)
+        public StringItem(string item, Func<string, bool> hideString)
             : base(item, item)
         {
             this.hideString = hideString;

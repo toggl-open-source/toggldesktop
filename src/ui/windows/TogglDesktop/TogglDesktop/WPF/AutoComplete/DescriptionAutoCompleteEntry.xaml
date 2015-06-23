@@ -9,7 +9,7 @@
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance {x:Type autoComplete:DescriptionEntrySample}, IsDesignTimeCreatable=True}"
              Height="30"
-             Style="{toggl:Resources ResourceKey=DescriptionAutoCompleteItem}">
+             Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
 
     <UserControl.Background>
         <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>

@@ -4,9 +4,9 @@ using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class ProjectAutoCompleteItem : SimpleAutoCompleteItem<ProjectEntry, Toggl.AutocompleteItem>
+    class ProjectItem : SimpleItem<ProjectEntry, Toggl.AutocompleteItem>
     {
-        public ProjectAutoCompleteItem(Toggl.AutocompleteItem item) : base(item, item.ProjectLabel)
+        public ProjectItem(Toggl.AutocompleteItem item) : base(item, item.ProjectLabel)
         {
         }
 

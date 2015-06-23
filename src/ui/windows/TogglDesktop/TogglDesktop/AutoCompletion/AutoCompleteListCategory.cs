@@ -7,9 +7,9 @@ namespace TogglDesktop.AutoCompletion
 {
     abstract class AutoCompleteListCategory : AutoCompleteListItem
     {
-        private readonly IEnumerable<IAutoCompleteListItem> children;
+        private readonly List<IAutoCompleteListItem> children;
 
-        protected AutoCompleteListCategory(string text, IEnumerable<IAutoCompleteListItem> children)
+        protected AutoCompleteListCategory(string text, List<IAutoCompleteListItem> children)
             : base(text)
         {
             this.children = children;

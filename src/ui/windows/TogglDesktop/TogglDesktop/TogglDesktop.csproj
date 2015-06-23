@@ -176,17 +176,14 @@
     <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\WorkspaceAutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\Implementation\ClientAutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\Implementation\ModelAutoCompleteItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\StringAutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\Implementation\StringAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
+    <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
-    <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\ProjectAutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\Implementation\DescriptionAutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\Implementation\DescriptionAutoCompleteItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\ProjectItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\DescriptionItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
     <Compile Include="ComboBoxHelper.cs" />
     <Compile Include="ControlHelper.cs" />
     <Compile Include="CustomComboBox.cs">
@@ -214,6 +211,9 @@
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
     <Compile Include="WPF\AutoComplete\EntryBase.cs" />
+    <Compile Include="WPF\AutoComplete\WorkspaceCategory.xaml.cs">
+      <DependentUpon>WorkspaceCategory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
     </Compile>
@@ -494,6 +494,10 @@
     <None Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\AutoComplete\WorkspaceCategory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\AutoCompletionPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

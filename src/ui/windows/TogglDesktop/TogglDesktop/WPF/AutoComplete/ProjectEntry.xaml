@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DataContext ="{d:DesignInstance {x:Type autoComplete:ProjectEntrySample}, IsDesignTimeCreatable=True}"
-             Style="{toggl:Resources ResourceKey=ProjectAutoCompleteItem}">
+             Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
 
     <UserControl.Background>
         <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>

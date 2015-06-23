@@ -137,7 +137,7 @@ namespace TogglDesktop.WPF
 
         public void SetKnownTags(IEnumerable<string> tags)
         {
-            this.autoComplete.SetController(StringAutoCompleteController.From(tags, this.Contains));
+            this.autoComplete.SetController(AutoCompleteControllers.ForStrings(tags, this.Contains));
         }
 
         public bool Contains(string tag)
@@ -147,7 +147,7 @@ namespace TogglDesktop.WPF
 
         private void cautoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asStringItem = e as StringAutoCompleteItem;
+            var asStringItem = e as StringItem;
             if (asStringItem == null)
                 return;
 
