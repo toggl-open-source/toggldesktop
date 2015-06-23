@@ -216,13 +216,13 @@
     <Compile Include="WPF\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\ClientAutoCompleteEntry.xaml.cs">
+    <Compile Include="WPF\autoCompleteEntries\ClientAutoCompleteEntry.xaml.cs">
       <DependentUpon>ClientAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\ProjectAutoCompleteEntry.xaml.cs">
+    <Compile Include="WPF\autoCompleteEntries\ProjectAutoCompleteEntry.xaml.cs">
       <DependentUpon>ProjectAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\DescriptionAutoCompleteEntry.xaml.cs">
+    <Compile Include="WPF\autoCompleteEntries\DescriptionAutoCompleteEntry.xaml.cs">
       <DependentUpon>DescriptionAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ExtendedTextBox.cs" />
@@ -280,7 +280,7 @@
     <Compile Include="Win32.cs" />
     <Compile Include="WPF\PropertyHelpers.cs" />
     <Compile Include="WPF\Resources.cs" />
-    <Compile Include="WPF\StringAutoCompleteEntry.xaml.cs">
+    <Compile Include="WPF\autoCompleteEntries\StringAutoCompleteEntry.xaml.cs">
       <DependentUpon>StringAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\Tag.xaml.cs">
@@ -497,15 +497,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPF\ClientAutoCompleteEntry.xaml">
+    <Page Include="WPF\autoCompleteEntries\ClientAutoCompleteEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\ProjectAutoCompleteEntry.xaml">
+    <Page Include="WPF\autoCompleteEntries\ProjectAutoCompleteEntry.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPF\DescriptionAutoCompleteEntry.xaml">
+    <Page Include="WPF\autoCompleteEntries\DescriptionAutoCompleteEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -537,7 +537,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\StringAutoCompleteEntry.xaml">
+    <Page Include="WPF\autoCompleteEntries\StringAutoCompleteEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
