@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using TogglDesktop.AutoCompletion.Implementation;
 
-namespace TogglDesktop.WPF
+namespace TogglDesktop.WPF.AutoComplete
 {
-    sealed class ProjectAutoCompleteEntrySample
+    sealed class ProjectEntrySample
     {
         public Color ProjectColor { get { return Color.FromRgb(153, 153, 153); } }
 
@@ -14,9 +13,9 @@ namespace TogglDesktop.WPF
         public Color BackgroundColor { get { return Color.FromRgb(244, 244, 244); } }
     }
 
-    partial class ProjectAutoCompleteEntry
+    partial class ProjectEntry
     {
-        public ProjectAutoCompleteEntry(Toggl.AutocompleteItem item, Action selectWithClick)
+        public ProjectEntry(Toggl.AutocompleteItem item, Action selectWithClick)
             : base(selectWithClick)
         {
             this.ProjectColor = getProjectColor(ref item);
@@ -34,7 +33,7 @@ namespace TogglDesktop.WPF
         #region dependency properties
 
         public static readonly DependencyProperty ProjectColorProperty = DependencyProperty
-            .Register("ProjectColor", typeof(Color), typeof(ProjectAutoCompleteEntry));
+            .Register("ProjectColor", typeof(Color), typeof(ProjectEntry));
 
         public Color ProjectColor
         {
@@ -43,7 +42,7 @@ namespace TogglDesktop.WPF
         }
 
         public static readonly DependencyProperty ProjectNameProperty = DependencyProperty
-            .Register("ProjectName", typeof(string), typeof(ProjectAutoCompleteEntry));
+            .Register("ProjectName", typeof(string), typeof(ProjectEntry));
 
         public string ProjectName
         {

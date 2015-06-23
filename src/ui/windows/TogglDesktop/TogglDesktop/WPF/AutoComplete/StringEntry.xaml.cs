@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using TogglDesktop.AutoCompletion;
-using TogglDesktop.AutoCompletion.Implementation;
 
-namespace TogglDesktop.WPF
+namespace TogglDesktop.WPF.AutoComplete
 {
-    sealed class StringAutoCompleteEntrySample
+    sealed class StringEntrySample
     {
         public string Text { get { return "This is text"; } }
 
         public Color BackgroundColor { get { return Color.FromRgb(255, 255, 255); } }
     }
 
-    partial class StringAutoCompleteEntry
+    partial class StringEntry
     {
-        public StringAutoCompleteEntry(string item, Action selectWithClick)
+        public StringEntry(string item, Action selectWithClick)
             : base(selectWithClick)
         {
             this.Description = item;
@@ -25,7 +23,7 @@ namespace TogglDesktop.WPF
         #region dependency properties
 
         public static readonly DependencyProperty TextProperty = DependencyProperty
-            .Register("Text", typeof(string), typeof(StringAutoCompleteEntry));
+            .Register("Text", typeof(string), typeof(StringEntry));
 
         public string Description
         {

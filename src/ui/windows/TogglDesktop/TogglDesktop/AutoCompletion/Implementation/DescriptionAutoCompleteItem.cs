@@ -1,5 +1,5 @@
 using System;
-using TogglDesktop.WPF;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {

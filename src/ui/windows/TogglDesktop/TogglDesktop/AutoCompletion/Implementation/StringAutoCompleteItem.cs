@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using TogglDesktop.WPF;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class StringAutoCompleteItem : SimpleAutoCompleteItem<StringAutoCompleteEntry, string>
+    class StringAutoCompleteItem : SimpleAutoCompleteItem<StringEntry, string>
     {
         private readonly Func<string, bool> hideString;
 
@@ -24,9 +24,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
             }
         }
 
-        protected override StringAutoCompleteEntry createElement(Action selectWithClick)
+        protected override StringEntry createElement(Action selectWithClick)
         {
-            return new StringAutoCompleteEntry(this.Item, selectWithClick);
+            return new StringEntry(this.Item, selectWithClick);
         }
     }
 }

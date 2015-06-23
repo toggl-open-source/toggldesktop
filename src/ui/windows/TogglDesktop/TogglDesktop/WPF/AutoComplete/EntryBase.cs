@@ -1,26 +1,19 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TogglDesktop.AutoCompletion.Implementation;
 
-namespace TogglDesktop.WPF
+namespace TogglDesktop.WPF.AutoComplete
 {
-    sealed class DescriptionAutoCompleteEntrySample
-    {
-        public string Description { get { return "Description? Hello. Yes, this is test"; } }
-
-        public Color BackgroundColor { get { return Color.FromRgb(244, 244, 244); } }
-    }
-
-    public class AutoCompleteEntryBase : UserControl, ISelectable
+    public class EntryBase : UserControl, ISelectable
     {
         private static readonly Color backgroundColorSelected = Color.FromRgb(244, 244, 244);
         private static readonly Color backgroundColorHover = Color.FromRgb(244, 244, 244);
         private static readonly Color backgroundColor = Color.FromRgb(255, 255, 255);
         private bool selected;
 
-        public AutoCompleteEntryBase(Action selectWithClick)
+        public EntryBase(Action selectWithClick)
         {
             this.DataContext = this;
             this.MouseEnter += (sender, args) => this.updateBackgroundColor();
@@ -31,7 +24,7 @@ namespace TogglDesktop.WPF
         #region dependency properties
 
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty
-            .Register("BackgroundColor", typeof(Color), typeof(AutoCompleteEntryBase));
+            .Register("BackgroundColor", typeof(Color), typeof(EntryBase));
 
         public Color BackgroundColor
         {
@@ -59,28 +52,5 @@ namespace TogglDesktop.WPF
                 ? backgroundColorHover
                 : this.selected ? backgroundColorSelected : backgroundColor;
         }
-    }
-
-    partial class DescriptionAutoCompleteEntry
-    {
-        public DescriptionAutoCompleteEntry(Toggl.AutocompleteItem item, Action selectWithClick)
-            : base(selectWithClick)
-        {
-            this.Description = item.Description;
-            this.InitializeComponent();
-        }
-
-        #region dependency properties
-
-        public static readonly DependencyProperty DescriptionProperty = DependencyProperty
-            .Register("Description", typeof(string), typeof(DescriptionAutoCompleteEntry));
-
-        public string Description
-        {
-            get { return (string)this.GetValue(DescriptionProperty); }
-            set { this.SetValue(DescriptionProperty, value); }
-        }
-
-        #endregion
     }
 }

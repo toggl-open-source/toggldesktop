@@ -1,17 +1,18 @@
 using System;
 using TogglDesktop.WPF;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class ProjectAutoCompleteItem : SimpleAutoCompleteItem<ProjectAutoCompleteEntry, Toggl.AutocompleteItem>
+    class ProjectAutoCompleteItem : SimpleAutoCompleteItem<ProjectEntry, Toggl.AutocompleteItem>
     {
         public ProjectAutoCompleteItem(Toggl.AutocompleteItem item) : base(item, item.ProjectLabel)
         {
         }
 
-        protected override ProjectAutoCompleteEntry createElement(Action selectWithClick)
+        protected override ProjectEntry createElement(Action selectWithClick)
         {
-            return new ProjectAutoCompleteEntry(this.Item, selectWithClick);
+            return new ProjectEntry(this.Item, selectWithClick);
         }
     }
 }

@@ -1,21 +1,21 @@
-﻿<toggl:AutoCompleteEntryBase x:Class="TogglDesktop.WPF.ClientAutoCompleteEntry"
+﻿<autoComplete:EntryBase x:Class="TogglDesktop.WPF.AutoComplete.StringEntry"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
+             xmlns:autoComplete="clr-namespace:TogglDesktop.WPF.AutoComplete"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance {x:Type toggl:ClientAutoCompleteEntrySample}, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance {x:Type autoComplete:StringEntrySample}, IsDesignTimeCreatable=True}"
              Height="30"
-             Style="{toggl:Resources ResourceKey=ClientAutoCompleteItem}">
+             Style="{toggl:Resources ResourceKey=DescriptionAutoCompleteItem}">
 
     <UserControl.Background>
         <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
     </UserControl.Background>
-
-    <TextBlock VerticalAlignment="Center" Text="{Binding ClientName}"
-                Margin="10, 0, 10, 0"
-                />
-
-</toggl:AutoCompleteEntryBase>
+    
+    <TextBlock VerticalAlignment="Center" Text="{Binding Text}"
+               Margin="10, 0, 10, 0"
+               />
+</autoComplete:EntryBase>
