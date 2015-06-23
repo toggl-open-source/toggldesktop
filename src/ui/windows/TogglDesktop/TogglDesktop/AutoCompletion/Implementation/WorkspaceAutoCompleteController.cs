@@ -4,9 +4,9 @@ using TogglDesktop.WPF;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class ClientAutoCompleteController : AutoCompleteController
+    class WorkspaceAutoCompleteController : AutoCompleteController
     {
-        private ClientAutoCompleteController(List<IAutoCompleteListItem> items)
+        private WorkspaceAutoCompleteController(List<IAutoCompleteListItem> items)
             : base(items)
         {
         }
@@ -16,7 +16,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             var items = list.Select(m => new ModelAutoCompleteItem(m))
                 .Cast<IAutoCompleteListItem>().ToList();
 
-            return new ClientAutoCompleteController(items);
+            return new WorkspaceAutoCompleteController(items);
         }
     }
 }

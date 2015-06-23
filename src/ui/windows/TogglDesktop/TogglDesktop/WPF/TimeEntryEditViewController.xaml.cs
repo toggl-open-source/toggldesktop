@@ -24,7 +24,10 @@ namespace TogglDesktop.WPF
         private bool newProjectModeEnabled;
         private bool newClientModeEnabled;
         private List<Toggl.Model> clients;
+        private List<Toggl.Model> workspaces;
         private string selectedClient;
+        private ulong selectedWorkspaceId;
+        private string selectedWorkspaceName;
 
         public TimeEntryEditViewController()
         {
@@ -36,9 +39,11 @@ namespace TogglDesktop.WPF
             Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
             Toggl.OnClientSelect += this.onClientSelect;
             Toggl.OnTags += this.onTags;
+            Toggl.OnWorkspaceSelect += this.onWorkspaceSelect;
 
             this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
+
 
         #region helper methods
 
@@ -111,6 +116,9 @@ namespace TogglDesktop.WPF
 
             if (this.newProjectModeEnabled)
                 this.disableNewProjectMode();
+
+            this.selectedWorkspaceId = timeEntry.WID;
+            this.selectedWorkspaceName = timeEntry.WorkspaceName;
         }
 
         private static void setTime(TextBox textBox, string time)
@@ -193,6 +201,11 @@ namespace TogglDesktop.WPF
             this.tagList.SetKnownTags(list.Select(m => m.Name));
         }
 
+        private void onWorkspaceSelect(List<Toggl.Model> list)
+        {
+            this.workspaces = list;
+            this.workspaceAutoComplete.SetController(WorkspaceAutoCompleteController.From(list));
+        }
 
         #endregion
 
@@ -425,7 +438,7 @@ namespace TogglDesktop.WPF
 
             var client = this.clients.FirstOrDefault(c => c.Name == this.selectedClient);
 
-            return Toggl.AddProject(this.timeEntry.GUID, this.timeEntry.WID, client.ID, text, false);
+            return Toggl.AddProject(this.timeEntry.GUID, this.selectedWorkspaceId, client.ID, text, false);
         }
 
         #endregion
@@ -469,7 +482,7 @@ namespace TogglDesktop.WPF
 
         private void clientAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asClientItem = e as ClientAutoCompleteItem;
+            var asClientItem = e as ModelAutoCompleteItem;
             if (asClientItem == null)
                 return;
 
@@ -520,6 +533,7 @@ namespace TogglDesktop.WPF
             this.newClientCancelButton.Visibility = Visibility.Visible;
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
+            this.showWorkspaceArea();
 
             this.newClientModeEnabled = true;
         }
@@ -533,6 +547,7 @@ namespace TogglDesktop.WPF
             this.newClientCancelButton.Visibility = Visibility.Hidden;
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
+            this.hideWorkspaceArea();
 
             this.newClientModeEnabled = false;
         }
@@ -560,7 +575,7 @@ namespace TogglDesktop.WPF
 
         private bool tryCreatingNewClient(string text)
         {
-            if (Toggl.AddClient(this.timeEntry.WID, text))
+            if (Toggl.AddClient(this.selectedWorkspaceId, text))
             {
                 this.selectedClient = text;
                 return true;
@@ -570,6 +585,72 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
+        #region workspace
+
+        private void showWorkspaceArea()
+        {
+            this.workspaceTextBox.Text = this.selectedWorkspaceName;
+            this.workspaceAutoComplete.IsOpen = false;
+            this.workspaceArea.Visibility = Visibility.Visible;
+        }
+
+        private void hideWorkspaceArea()
+        {
+            this.workspaceArea.Visibility = Visibility.Collapsed;
+            this.workspaceAutoComplete.IsOpen = false;
+        }
+
+        private void workspaceDropDownButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
+            this.workspaceAutoComplete.IsOpen = this.workspaceDropDownButton.IsChecked ?? false;
+
+            if (!this.workspaceTextBox.IsKeyboardFocused)
+            {
+                this.workspaceTextBox.Focus();
+                this.workspaceTextBox.CaretIndex = this.workspaceTextBox.Text.Length;
+                if (this.workspaceAutoComplete.IsOpen)
+                {
+                    this.workspaceTextBox.SelectAll();
+                }
+            }
+        }
+
+        private void workspaceAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
+        {
+            this.workspaceDropDownButton.IsChecked = this.workspaceAutoComplete.IsOpen;
+        }
+
+        private void workspaceAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        {
+            var asWorkspaceItem = e as ModelAutoCompleteItem;
+            if (asWorkspaceItem == null)
+                return;
+
+            var item = asWorkspaceItem.Item;
+
+            this.selectWorkspace(item);
+        }
+
+        private void selectWorkspace(Toggl.Model item)
+        {
+            this.selectedWorkspaceId = item.ID;
+            this.selectedWorkspaceName = item.Name;
+            this.workspaceTextBox.SetText(item.Name);
+        }
+
+        private void workspaceAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
+        {
+            // TODO: reset client? add new? switch to 'add new client mode'?
+        }
+
+        private void workspaceTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+        }
+        #endregion
+
 
         #region tag list
 
@@ -585,6 +666,11 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
+        private void billableCheckBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            Toggl.SetTimeEntryBillable(this.timeEntry.GUID, this.billableCheckBox.IsChecked ?? false);
+        }
 
         #endregion
 
@@ -612,6 +698,7 @@ namespace TogglDesktop.WPF
             Toggl.ViewTimeEntryList();
             //TODO: reset form (specifically add-project controls)?
         }
+
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult result;
@@ -633,10 +720,5 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
-
-        private void billableCheckBox_OnClick(object sender, RoutedEventArgs e)
-        {
-            Toggl.SetTimeEntryBillable(this.timeEntry.GUID, this.billableCheckBox.IsChecked ?? false);
-        }
     }
 }

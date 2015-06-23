@@ -176,8 +176,9 @@
     <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\WorkspaceAutoCompleteController.cs" />
     <Compile Include="AutoCompletion\Implementation\ClientAutoCompleteController.cs" />
-    <Compile Include="AutoCompletion\Implementation\ClientAutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\ModelAutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\Implementation\StringAutoCompleteController.cs" />
     <Compile Include="AutoCompletion\Implementation\StringAutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />

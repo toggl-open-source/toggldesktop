@@ -242,6 +242,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
                 <!-- project -->
@@ -314,6 +315,29 @@
                             ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"
                             IsOpenChanged="clientAutoComplete_OnIsOpenChanged"/>
 
+                </Grid>
+
+                <Grid Grid.Row="2" Height="50" Visibility="Collapsed"
+                       Name="workspaceArea" x:FieldModifier="private">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
+                    </Grid.ColumnDefinitions>
+
+                    <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private" Grid.Column="0"
+                                           LostKeyboardFocus="workspaceTextBox_OnLostKeyboardFocus"
+                                           Padding="8, 0, 34, 0"/>
+
+                    <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private" Grid.Column="0"
+                                  Style="{StaticResource AutoCompleteTextFieldButton}"
+                                  Click="workspaceDropDownButton_OnClick"/>
+
+                    <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="workspaceAutoComplete" x:FieldModifier="private"
+                            Target="{Binding ElementName=workspaceTextBox}" TextBox="{Binding ElementName=workspaceTextBox}"
+                            EmptyText="No workspaces found."
+                            ConfirmCompletion="workspaceAutoComplete_OnConfirmCompletion"
+                            ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"
+                            IsOpenChanged="workspaceAutoComplete_OnIsOpenChanged"/>
                 </Grid>
             </Grid>
             <!-- tags -->
