@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
@@ -117,8 +118,17 @@ namespace TogglDesktop.WPF
             if (this.newProjectModeEnabled)
                 this.disableNewProjectMode();
 
+            this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
+
             this.selectedWorkspaceId = timeEntry.WID;
             this.selectedWorkspaceName = timeEntry.WorkspaceName;
+        }
+
+        private static Color getProjectColor(string colorString)
+        {
+            var projectColourString = string.IsNullOrEmpty(colorString) ? "#999999" : colorString;
+            var projectColor = (Color)ColorConverter.ConvertFromString(projectColourString);
+            return projectColor;
         }
 
         private static void setTime(TextBox textBox, string time)
