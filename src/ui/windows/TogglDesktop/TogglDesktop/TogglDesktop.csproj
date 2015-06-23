@@ -177,7 +177,10 @@
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
+    <Compile Include="AutoCompletion\Implementation\ClientCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\NestedCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
     <Compile Include="AutoCompletion\Implementation\ProjectItem.cs" />
@@ -211,6 +214,9 @@
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
     <Compile Include="WPF\AutoComplete\EntryBase.cs" />
+    <Compile Include="WPF\AutoComplete\ClientCategory.xaml.cs">
+      <DependentUpon>ClientCategory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\AutoComplete\WorkspaceCategory.xaml.cs">
       <DependentUpon>WorkspaceCategory.xaml</DependentUpon>
     </Compile>
@@ -494,6 +500,10 @@
     <None Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\AutoComplete\ClientCategory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\AutoComplete\WorkspaceCategory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -187,7 +187,7 @@ namespace TogglDesktop.WPF
 
         private void onProjectAutocomplete(List<Toggl.AutocompleteItem> list)
         {
-            this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list, this.clients, this.workspaces));
         }
 
         private void onClientSelect(List<Toggl.Model> list)
