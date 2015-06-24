@@ -76,12 +76,15 @@ namespace TogglDesktop.AutoCompletion.Implementation
             var workspaceLookup = workspaces.ToDictionary(w => w.ID);
 
             // categorise by workspace
-            var list = clients.GroupBy(c => c.WID).Select(
-                cs =>
-                    new WorkspaceCategory(workspaceLookup[cs.Key].Name, cs.Select(
-                        c => new ModelItem(c)).Cast<IAutoCompleteListItem>().ToList()
-                        )
-                ).Cast<IAutoCompleteListItem>().ToList();
+            var list =
+                ((IAutoCompleteListItem)new NoClientItem()).Prepend(
+                    clients.GroupBy(c => c.WID).Select(
+                        cs =>
+                            new WorkspaceCategory(workspaceLookup[cs.Key].Name, cs.Select(
+                                c => new ModelItem(c)).Cast<IAutoCompleteListItem>().ToList()
+                                )
+                    )
+                ).ToList();
 
             return new AutoCompleteController(list);
         }

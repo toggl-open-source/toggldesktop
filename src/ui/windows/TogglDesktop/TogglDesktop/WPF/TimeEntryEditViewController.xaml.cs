@@ -567,7 +567,14 @@ namespace TogglDesktop.WPF
 
         private void clientAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
         {
-            // TODO: reset client? add new? switch to 'add new client mode'?
+            if (this.clientTextBox.Text == "")
+            {
+                this.selectClient(new Toggl.Model());
+            }
+            else
+            {
+                // TODO: reset client? add new? switch to 'add new client mode'?
+            }
         }
 
         private void clientTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -575,7 +582,17 @@ namespace TogglDesktop.WPF
             if (this.newClientModeEnabled)
                 return;
 
-            this.clientTextBox.SetText(this.selectedClient);
+            if (this.clientTextBox.Text == "")
+            {
+                this.selectClient(new Toggl.Model());
+            }
+            else
+            {
+                // TODO: if only one entry is left in auto complete box, should it be selected?
+
+                this.clientTextBox.SetText(this.selectedClient);
+            }
+
         }
 
         private void newClientButton_OnClick(object sender, RoutedEventArgs e)
