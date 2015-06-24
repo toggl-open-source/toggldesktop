@@ -86,33 +86,29 @@
             </Setter>
         </Style>
         <Style TargetType="ToggleButton" x:Key="AutoCompleteTextFieldButton"  BasedOn="{StaticResource TextFieldImageButtonBase}">
-            <Setter Property="Content">
-                <Setter.Value>
-                    <Image Source="/TogglDesktop;component/Resources/ic_expand_more_grey600_36dp.png" Stretch="Fill"
-                           Margin="6"
-                           RenderTransformOrigin="0.5, 0.5">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType=ToggleButton}}"
-                                         Value="True">
-                                        <Setter Property="RenderTransform">
-                                            <Setter.Value>
-                                                <RotateTransform Angle="180"></RotateTransform>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                </Setter.Value>
-            </Setter>
+            
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Image Source="/TogglDesktop;component/Resources/ic_expand_more_grey600_36dp.png" Stretch="Fill"
+                                   Margin="6"
+                                   RenderTransformOrigin="0.5, 0.5">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType=ToggleButton}}"
+                                                         Value="True">
+                                                <Setter Property="RenderTransform">
+                                                    <Setter.Value>
+                                                        <RotateTransform Angle="180"></RotateTransform>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -322,7 +318,8 @@
                             IsOpenChanged="clientAutoComplete_OnIsOpenChanged"/>
 
                 </Grid>
-
+                
+                <!-- workspace -->
                 <Grid Grid.Row="2" Height="50" Visibility="Collapsed"
                        Name="workspaceArea" x:FieldModifier="private">
                     <Grid.ColumnDefinitions>
