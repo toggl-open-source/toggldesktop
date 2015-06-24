@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
@@ -17,16 +16,19 @@ namespace TogglDesktop.AutoCompletion.Implementation
         public static AutoCompleteController ForProjects(
             List<Toggl.AutocompleteItem> projects, List<Toggl.Model> clients, List<Toggl.Model> workspaces)
         {
-            //var list = items.Select(i => new ProjectItem(i)).Cast<IAutoCompleteListItem>().ToList();
-            
             var workspaceLookup = workspaces.ToDictionary(w => w.ID);
             var clientLookup = clients.ToDictionary(w => w.Name);
 
             // TODO: make sure this really is the default workspace
             var defaultWorkspaceID = workspaces[0].ID;
 
+
             // categorise by workspace and client
-            var list = projects.Select(p =>
+            var list =
+                ((IAutoCompleteListItem)new NoProjectItem()).Prepend(
+            projects
+                .Where(p => p.ProjectID != 0) // TODO: get rid of these at an earlier stage (they are workspace entries which are not needed anymore)
+                .Select(p =>
             {
                 Toggl.Model client = default(Toggl.Model);
                 ulong workspaceID = defaultWorkspaceID;
@@ -50,20 +52,14 @@ namespace TogglDesktop.AutoCompletion.Implementation
                             if (c.Key == 0)
                                 return projectItems;
                             var clientName = c.First().Client.Name;
-                            return new ClientCategory(clientName, projectItems.Cast<IAutoCompleteListItem>().ToList()).yield<IAutoCompleteListItem>();
+                            return new ClientCategory(clientName, projectItems.Cast<IAutoCompleteListItem>().ToList()).Yield<IAutoCompleteListItem>();
                         })
                         .SelectMany(i => i).ToList()
                     ))
-                .Cast<IAutoCompleteListItem>().ToList();
+                ).ToList();
 
             return new AutoCompleteController(list);
         }
-
-        private static IEnumerable<T> yield<T>(this T subject)
-        {
-            yield return subject;
-        }
- 
 
         public static AutoCompleteController ForDescriptions(List<Toggl.AutocompleteItem> items)
         {

@@ -15,11 +15,11 @@ namespace TogglDesktop.WPF.AutoComplete
 
     partial class ProjectEntry
     {
-        public ProjectEntry(Toggl.AutocompleteItem item, Action selectWithClick)
+        public ProjectEntry(Toggl.AutocompleteItem item, Action selectWithClick, string overideText = null)
             : base(selectWithClick)
         {
             this.ProjectColor = getProjectColor(ref item);
-            this.ProjectName = item.ProjectLabel;
+            this.ProjectName = overideText ?? item.ProjectLabel;
             this.InitializeComponent();
         }
 

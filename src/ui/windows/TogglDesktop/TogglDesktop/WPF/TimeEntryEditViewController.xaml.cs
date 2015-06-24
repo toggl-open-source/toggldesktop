@@ -24,6 +24,7 @@ namespace TogglDesktop.WPF
         private Toggl.TimeEntry timeEntry;
         private bool newProjectModeEnabled;
         private bool newClientModeEnabled;
+        private List<Toggl.AutocompleteItem> projects;
         private List<Toggl.Model> clients;
         private List<Toggl.Model> workspaces;
         private string selectedClient;
@@ -198,13 +199,36 @@ namespace TogglDesktop.WPF
 
         private void onProjectAutocomplete(List<Toggl.AutocompleteItem> list)
         {
-            this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list, this.clients, this.workspaces));
+            this.projects = list;
+
+            this.tryUpdatingProjectAutoComplete();
         }
 
         private void onClientSelect(List<Toggl.Model> list)
         {
             this.clients = list;
-            this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list, this.workspaces));
+
+            this.tryUpdatingClientAutoComplete();
+            this.tryUpdatingProjectAutoComplete();
+        }
+
+        private void tryUpdatingProjectAutoComplete()
+        {
+            if (this.projects == null || this.clients == null || this.workspaces == null)
+                return;
+
+            this.projectAutoComplete.SetController(
+                AutoCompleteControllers.ForProjects(this.projects, this.clients, this.workspaces)
+                );
+        }
+        private void tryUpdatingClientAutoComplete()
+        {
+            if (this.clients == null || this.workspaces == null)
+                return;
+
+            this.clientAutoComplete.SetController(
+                AutoCompleteControllers.ForClients(this.clients, this.workspaces)
+                );
         }
 
         private void onTags(List<Toggl.Model> list)
@@ -216,6 +240,9 @@ namespace TogglDesktop.WPF
         {
             this.workspaces = list;
             this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
+
+            this.tryUpdatingClientAutoComplete();
+            this.tryUpdatingProjectAutoComplete();
         }
 
         #endregion
@@ -351,25 +378,45 @@ namespace TogglDesktop.WPF
 
             var item = asProjectItem.Item;
 
-            if (item.ProjectID == this.timeEntry.PID && item.TaskID == this.timeEntry.TID)
-                return;
-
-            this.projectTextBox.SetText(item.ProjectLabel);
-
-            Toggl.SetTimeEntryProject(this.timeEntry.GUID, item.TaskID, item.ProjectID, "");
+            this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel);
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
         {
-            // TODO: reset project? add new? switch to 'add project mode'?
+            if (this.projectTextBox.Text == "")
+            {
+                this.setProjectIfDifferent(0, 0, "");
+            }
+            else
+            {
+                // TODO: reset project? add new? switch to 'add project mode'?   
+            }
         }
 
         private void projectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if(this.newProjectModeEnabled)
                 return;
+            
+            if (this.projectTextBox.Text == "")
+            {
+                this.setProjectIfDifferent(0, 0, "");
+            }
+            else
+            {
+                // TODO: if only one entry is left in auto complete box, should it be selected?
 
-            this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
+                this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
+            }
+
+        }
+
+        private void setProjectIfDifferent(ulong taskId, ulong projectId, string projectName)
+        {
+            if (projectId == this.timeEntry.PID && taskId == this.timeEntry.TID)
+                return;
+            this.projectTextBox.Text = projectName;
+            Toggl.SetTimeEntryProject(this.timeEntry.GUID, taskId, projectId, "");
         }
 
         private void newProjectButton_OnClick(object sender, RoutedEventArgs e)
