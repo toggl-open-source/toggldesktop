@@ -107,8 +107,8 @@ namespace TogglDesktop.WPF
             if (this.textbox == null)
                 throw new Exception("Auto completion popup must have a valid text box.");
 
-            this.textbox.PreviewKeyDown += this.targetOnPreviewKeyDown;
-            this.textbox.TextChanged += this.targetOnTextChanged;
+            this.textbox.PreviewKeyDown += this.textboxOnPreviewKeyDown;
+            this.textbox.TextChanged += this.textboxOnTextChanged;
         }
 
         #endregion
@@ -119,7 +119,7 @@ namespace TogglDesktop.WPF
             this.needsToRefreshList = true;
         }
 
-        private void targetOnPreviewKeyDown(object sender, KeyEventArgs e)
+        private void textboxOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (!this.IsEnabled || e.Handled)
                 return;
@@ -184,7 +184,7 @@ namespace TogglDesktop.WPF
                 this.ConfirmCompletion(this, item);
         }
 
-        private void targetOnTextChanged(object sender, TextChangedEventArgs e)
+        private void textboxOnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (!this.IsEnabled)
                 return;
@@ -203,6 +203,9 @@ namespace TogglDesktop.WPF
         {
             this.ensureList();
             this.controller.Complete(this.textbox.Text);
+            this.emptyLabel.Visibility = this.controller.VisibleItems.Count == 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
 
             this.popup.IsOpen = true;
         }
@@ -216,7 +219,6 @@ namespace TogglDesktop.WPF
 
             this.dropDownList.Children.Clear();
             this.controller.FillList(this.dropDownList, this.select);
-            this.emptyLabel.Visibility = this.dropDownList.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
             Console.WriteLine("Filled autocomplete list with {0} items. Took {1} ms.", this.dropDownList.Children.Count, timer.ElapsedMilliseconds);
 
