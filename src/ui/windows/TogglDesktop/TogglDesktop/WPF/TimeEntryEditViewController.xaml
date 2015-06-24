@@ -30,6 +30,15 @@
             <Setter Property="FontSize" Value="9.75" />
             <Setter Property="Foreground" Value="#9f9f9f"/>
         </Style>
+        <Style TargetType="TextBlock" x:Key="TextboxEmptyText">
+            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+            <Setter Property="FontSize" Value="13.3" />
+            <Setter Property="Foreground" Value="#b6b6b6"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="16, 0"/>
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
         <Style TargetType="ButtonBase" x:Key="TextFieldImageButtonBase" BasedOn="{StaticResource {x:Type Control}}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -225,8 +234,22 @@
             <!-- description -->
             <Grid Height="50">
                 <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
-                    LostKeyboardFocus="descriptionTextBox_OnLostKeyboardFocus"
-                    >Test</toggl:ExtendedTextBox>
+                    LostKeyboardFocus="descriptionTextBox_OnLostKeyboardFocus"/>
+                <TextBlock>No description
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ElementName=descriptionTextBox, Path=(Text)}" Value=""/>
+                                        <Condition Binding="{Binding ElementName=descriptionTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
                     Target="{Binding ElementName=descriptionTextBox}" TextBox="{Binding ElementName=descriptionTextBox}"
                     EmptyText="No previous entries found."
@@ -257,6 +280,23 @@
                                             Padding="28, 0, 34, 0"
                                             PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
 
+                    <TextBlock x:Name="emptyProjectText" x:FieldModifier="private" Grid.Column="0"
+                               Margin="36, 0, 16, 0">No project
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=projectTextBox, Path=(Text)}" Value=""/>
+                                            <Condition Binding="{Binding ElementName=projectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    
                     <Border Name="projectColorCircle" x:FieldModifier="private" Grid.Column="0"
                             CornerRadius="100" Width="10" Height="10" BorderThickness="0"
                             Margin="18, 0, 0, 0"
@@ -299,6 +339,22 @@
                                            Padding="8, 0, 34, 0"
                                            PreviewKeyDown="clientTextBox_OnPreviewKeyDown"/>
 
+                    <TextBlock x:Name="emptyClientText" x:FieldModifier="private" Grid.Column="0">No client
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=clientTextBox, Path=(Text)}" Value=""/>
+                                            <Condition Binding="{Binding ElementName=clientTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
                     <ToggleButton x:Name="clientDropDownButton" x:FieldModifier="private" Grid.Column="0"
                                   Style="{StaticResource AutoCompleteTextFieldButton}"
                                   Click="clientDropDownButton_OnClick"/>
@@ -330,7 +386,7 @@
                     <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private" Grid.Column="0"
                                            LostKeyboardFocus="workspaceTextBox_OnLostKeyboardFocus"
                                            Padding="8, 0, 34, 0"/>
-
+                    
                     <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private" Grid.Column="0"
                                   Style="{StaticResource AutoCompleteTextFieldButton}"
                                   Click="workspaceDropDownButton_OnClick"/>

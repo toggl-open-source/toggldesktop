@@ -396,6 +396,11 @@ namespace TogglDesktop.WPF
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
 
+            this.projectColorCircle.Visibility = Visibility.Collapsed;
+            this.projectTextBox.Padding = new Thickness(8, 0, 34, 0);
+            this.emptyProjectText.Text = "Add project";
+            this.emptyProjectText.Margin = new Thickness(16, 0, 16, 0);
+
             this.newProjectModeEnabled = true;
         }
 
@@ -411,6 +416,11 @@ namespace TogglDesktop.WPF
             this.newProjectCancelButton.Visibility = Visibility.Hidden;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
+
+            this.projectColorCircle.Visibility = Visibility.Visible;
+            this.projectTextBox.Padding = new Thickness(28, 0, 34, 0);
+            this.emptyProjectText.Text = "No project";
+            this.emptyProjectText.Margin = new Thickness(36, 0, 16, 0);
 
             this.newProjectModeEnabled = false;
         }
@@ -545,6 +555,8 @@ namespace TogglDesktop.WPF
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
             this.showWorkspaceArea();
 
+            this.emptyClientText.Text = "Add client";
+
             this.newClientModeEnabled = true;
         }
 
@@ -558,6 +570,8 @@ namespace TogglDesktop.WPF
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
             this.hideWorkspaceArea();
+
+            this.emptyClientText.Text = "No client";
 
             this.newClientModeEnabled = false;
         }
