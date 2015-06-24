@@ -224,8 +224,8 @@
     <Compile Include="WPF\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\AutoComplete\ClientEntry.xaml.cs">
-      <DependentUpon>ClientEntry.xaml</DependentUpon>
+    <Compile Include="WPF\AutoComplete\ModelEntry.xaml.cs">
+      <DependentUpon>ModelEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\AutoComplete\ProjectEntry.xaml.cs">
       <DependentUpon>ProjectEntry.xaml</DependentUpon>
@@ -513,7 +513,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPF\AutoComplete\ClientEntry.xaml">
+    <Page Include="WPF\AutoComplete\ModelEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
