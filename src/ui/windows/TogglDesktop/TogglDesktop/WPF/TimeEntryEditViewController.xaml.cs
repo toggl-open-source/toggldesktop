@@ -113,7 +113,8 @@ namespace TogglDesktop.WPF
 
             this.tagList.Clear(open);
             if(timeEntry.Tags != null)
-                this.tagList.AddTags(timeEntry.Tags.Split(new []{Toggl.TagSeparator}, StringSplitOptions.RemoveEmptyEntries));
+                this.tagList.AddTags(timeEntry.Tags.Split(new[] { Toggl.TagSeparator }, StringSplitOptions.RemoveEmptyEntries));
+            this.updateTagListEmptyText();
 
             if (this.newProjectModeEnabled)
                 this.disableNewProjectMode();
@@ -686,7 +687,20 @@ namespace TogglDesktop.WPF
                 return;
             }
 
+            this.updateTagListEmptyText();
+
             Toggl.SetTimeEntryTags(this.timeEntry.GUID, this.tagList.Tags.ToList());
+        }
+
+        private void tagList_OnGotKeybardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            this.updateTagListEmptyText();
+        }
+
+        private void updateTagListEmptyText()
+        {
+            this.emptyTagListText.Visibility = this.tagList.TagCount == 0 && !this.tagList.IsKeyboardFocusWithin
+                ? Visibility.Visible : Visibility.Collapsed;
         }
 
         #endregion
@@ -744,5 +758,6 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
     }
 }
