@@ -129,7 +129,7 @@ namespace TogglDesktop.WPF
         private static Color getProjectColor(string colorString)
         {
             var projectColourString = string.IsNullOrEmpty(colorString) ? "#999999" : colorString;
-            var projectColor = (Color)ColorConverter.ConvertFromString(projectColourString);
+            var projectColor = (Color)(ColorConverter.ConvertFromString(projectColourString) ?? Color.FromRgb(153, 153, 153));
             return projectColor;
         }
 

@@ -26,7 +26,7 @@ namespace TogglDesktop.WPF.AutoComplete
         private static Color getProjectColor(ref Toggl.AutocompleteItem item)
         {
             var projectColourString = string.IsNullOrEmpty(item.Project) ? "#999999" : item.Project;
-            var projectColor = (Color)ColorConverter.ConvertFromString(projectColourString);
+            var projectColor = (Color)(ColorConverter.ConvertFromString(projectColourString) ?? Color.FromRgb(153, 153, 153));
             return projectColor;
         }
 
