@@ -286,6 +286,7 @@
     </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="Win32.cs" />
+    <Compile Include="WPF\OpacityExtension.cs" />
     <Compile Include="WPF\PropertyHelpers.cs" />
     <Compile Include="WPF\Resources.cs" />
     <Compile Include="WPF\AutoComplete\StringEntry.xaml.cs">

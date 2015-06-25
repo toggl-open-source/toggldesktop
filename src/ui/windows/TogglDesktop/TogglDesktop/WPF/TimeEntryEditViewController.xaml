@@ -203,6 +203,7 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
+        <!-- content -->
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
 
             <!-- times, duration -->
@@ -257,6 +258,7 @@
                     ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
             </Grid>
 
+            <!-- project, client, workspace -->
             <Grid Grid.IsSharedSizeScope="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -399,6 +401,7 @@
                             IsOpenChanged="workspaceAutoComplete_OnIsOpenChanged"/>
                 </Grid>
             </Grid>
+            
             <!-- tags -->
             <Grid MinHeight="50">
                 <toggl:TagList x:Name="tagList" x:FieldModifier="private" Margin="8"
@@ -437,6 +440,18 @@
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"
                 Click="backButton_OnClick"/>
-
+        
+        <Rectangle Grid.Column="0" Grid.Row="0" Grid.RowSpan="4"
+                   HorizontalAlignment="Left" Width="13">
+            <Rectangle.Fill>
+                <RadialGradientBrush RadiusX="1" RadiusY="0.8"
+                                     GradientOrigin="-0.4, 0.35"
+                                     Center="-0.1, 0.35">
+                    <GradientStop Color="{toggl:Opacity Black, 0.15}" Offset="0.0" />
+                    <GradientStop Color="{toggl:Opacity Black, 0}" Offset="1" />
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        
     </Grid>
 </UserControl>
