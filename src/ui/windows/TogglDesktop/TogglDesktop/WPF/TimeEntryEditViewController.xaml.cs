@@ -27,9 +27,10 @@ namespace TogglDesktop.WPF
         private List<Toggl.AutocompleteItem> projects;
         private List<Toggl.Model> clients;
         private List<Toggl.Model> workspaces;
-        private string selectedClient;
         private ulong selectedWorkspaceId;
         private string selectedWorkspaceName;
+        private string selectedClientGUID;
+        private string selectedClientName;
 
         public TimeEntryEditViewController()
         {
@@ -502,11 +503,9 @@ namespace TogglDesktop.WPF
                 return false;
             }
 
-            // TODO: fix client not always known yet if just created
+            var projectGUID = Toggl.AddProject(this.timeEntry.GUID, this.selectedWorkspaceId, 0, this.selectedClientGUID, text, false);
 
-            var client = this.clients.FirstOrDefault(c => c.Name == this.selectedClient);
-
-            return Toggl.AddProject(this.timeEntry.GUID, this.selectedWorkspaceId, client.ID, text, false);
+            return !string.IsNullOrEmpty(projectGUID);
         }
 
         #endregion
@@ -516,7 +515,8 @@ namespace TogglDesktop.WPF
         private void showClientArea()
         {
             this.clientTextBox.Text = "";
-            this.selectedClient = "";
+            this.selectedClientName = "";
+            this.selectedClientGUID = "";
             this.clientAutoComplete.IsOpen = false;
             this.clientArea.Visibility = Visibility.Visible;
         }
@@ -561,7 +561,8 @@ namespace TogglDesktop.WPF
 
         private void selectClient(Toggl.Model item)
         {
-            this.selectedClient = item.Name;
+            this.selectedClientGUID = item.GUID;
+            this.selectedClientName = item.Name;
             this.clientTextBox.SetText(item.Name);
         }
 
@@ -590,7 +591,7 @@ namespace TogglDesktop.WPF
             {
                 // TODO: if only one entry is left in auto complete box, should it be selected?
 
-                this.clientTextBox.SetText(this.selectedClient);
+                this.clientTextBox.SetText(this.selectedClientName);
             }
 
         }
@@ -664,13 +665,14 @@ namespace TogglDesktop.WPF
 
         private bool tryCreatingNewClient(string text)
         {
-            if (Toggl.AddClient(this.selectedWorkspaceId, text))
-            {
-                this.selectedClient = text;
-                return true;
-            }
+            var clientGUID = Toggl.CreateClient(this.selectedWorkspaceId, text);
 
-            return false;
+            if (string.IsNullOrEmpty(clientGUID))
+                return false;
+
+            this.selectedClientName = text;
+            this.selectedClientGUID = clientGUID;
+            return true;
         }
 
         #endregion
