@@ -211,6 +211,10 @@ BOOL manualMode = NO;
 											 selector:@selector(startDisplaySettings:)
 												 name:kDisplaySettings
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayPromotion:)
+												 name:kDisplayPromotion
+											   object:nil];
 
 	toggl_set_environment(ctx, [self.environment UTF8String]);
 
@@ -524,6 +528,28 @@ BOOL manualMode = NO;
 	{
 		[self onShowMenuItem:self];
 	}
+}
+
+- (void)startDisplayPromotion:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayPromotion:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayPromotion:(NSNumber *)promotion_type
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert addButtonWithTitle:@"Let's do it!"];
+	[alert addButtonWithTitle:@"No thanks"];
+	[alert setMessageText:@"Join Team Beta?"];
+	[alert setInformativeText:@"Hi there! Would you like to join Toggl Desktop Beta program to get cool gear and check out the hot new features as they come out of the oven?"];
+	[alert setAlertStyle:NSInformationalAlertStyle];
+	NSInteger result = [alert runModal];
+
+	toggl_set_promotion_response(ctx, promotion_type.intValue, NSAlertFirstButtonReturn == result);
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification

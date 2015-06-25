@@ -336,13 +336,15 @@ static int l_toggl_start(lua_State *L) {
 }
 
 static int l_toggl_add_project(lua_State *L) {
-    bool_t res = toggl_add_project(toggl_app_instance_,
-                                   checkstring(L, 1),
-                                   lua_tointeger(L, 2),
-                                   lua_tointeger(L, 3),
-                                   checkstring(L, 4),
-                                   lua_toboolean(L, 5));
-    lua_pushboolean(L, res);
+    char_t *guid = toggl_add_project(toggl_app_instance_,
+                                     checkstring(L, 1),
+                                     lua_tointeger(L, 2),
+                                     lua_tointeger(L, 3),
+                                     checkstring(L, 4),
+                                     checkstring(L, 5),
+                                     lua_toboolean(L, 6));
+    pushstring(L, guid);
+    free(guid);
     return 1;
 }
 
@@ -366,10 +368,11 @@ static int l_toggl_create_project(lua_State *L) {
 }
 
 static int l_toggl_create_client(lua_State *L) {
-    bool_t res = toggl_create_client(toggl_app_instance_,
-                                     lua_tointeger(L, 1),
-                                     checkstring(L, 2));
-    lua_pushboolean(L, res);
+    char_t *guid = toggl_create_client(toggl_app_instance_,
+                                       lua_tointeger(L, 1),
+                                       checkstring(L, 2));
+    pushstring(L, guid);
+    free(guid);
     return 1;
 }
 

@@ -416,6 +416,9 @@ build/idle.o: src/idle.cc
 build/analytics.o: src/analytics.cc
 	$(cxx) $(cflags) -c src/analytics.cc -o build/analytics.o
 
+build/urls.o: src/urls.cc
+	$(cxx) $(cflags) -c src/urls.cc -o build/urls.o
+
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
@@ -478,6 +481,7 @@ objects: build/jsoncpp.o \
 	build/analytics.o \
 	build/autotracker.o \
 	build/settings.o \
+	build/urls.o \
 	build/context.o \
 	build/toggl_api_private.o \
 	build/toggl_api.o \

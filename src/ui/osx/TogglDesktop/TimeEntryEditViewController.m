@@ -276,13 +276,22 @@ extern void *ctx;
 	}
 	uint64_t clientID = [self selectedClientID];
 	bool_t isBillable = self.timeEntry.billable;
+
 	// A new project is being added!
-	bool_t projectAdded = toggl_add_project(ctx,
-											[self.timeEntry.GUID UTF8String],
-											workspaceID,
-											clientID,
-											[projectName UTF8String],
-											!is_public);
+	BOOL projectAdded = NO;
+	char_t *project_guid = toggl_add_project(ctx,
+											 [self.timeEntry.GUID UTF8String],
+											 workspaceID,
+											 clientID,
+											 0,
+											 [projectName UTF8String],
+											 !is_public);
+
+	if (project_guid)
+	{
+		projectAdded = YES;
+	}
+	free(project_guid);
 
 	if (projectAdded && isBillable)
 	{
@@ -1036,14 +1045,15 @@ extern void *ctx;
 		return;
 	}
 
-	bool_t clientAdded = toggl_create_client(ctx,
-											 workspaceID,
-											 [clientName UTF8String]);
-	if (clientAdded)
+	char *clientGUID = toggl_create_client(ctx,
+										   workspaceID,
+										   [clientName UTF8String]);
+	if (clientGUID)
 	{
 		[self toggleAddClient:YES];
 		self.clientSelect.stringValue = clientName;
 	}
+	free(clientGUID);
 }
 
 - (void)toggleAddClient:(BOOL)showAddClient

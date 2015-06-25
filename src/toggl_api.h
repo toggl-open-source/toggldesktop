@@ -575,7 +575,7 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_clear_cache(
         void *context);
 
-    // you must free() the result
+    // returns GUID of the started time entry. you must free() the result
     TOGGL_EXPORT char_t *toggl_start(
         void *context,
         const char_t *description,
@@ -584,20 +584,23 @@ extern "C" {
         const uint64_t project_id,
         const char_t *project_guid);
 
-    TOGGL_EXPORT bool_t toggl_add_project(
+    // returns GUID of the new project. you must free() the result
+    TOGGL_EXPORT char_t *toggl_add_project(
         void *context,
         const char_t *time_entry_guid,
         const uint64_t workspace_id,
         const uint64_t client_id,
+        const char_t *client_guid,
         const char_t *project_name,
         const bool_t is_private);
 
-    TOGGL_EXPORT bool_t toggl_create_client(
+    // returns GUID of the new client. you must free() the result
+    TOGGL_EXPORT char_t *toggl_create_client(
         void *context,
         const uint64_t workspace_id,
         const char_t *client_name);
 
-    // you must free() the result
+    // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_create_project(
         void *context,
         const uint64_t workspace_id,
@@ -644,6 +647,11 @@ extern "C" {
     TOGGL_EXPORT void toggl_set_idle_seconds(
         void *context,
         const uint64_t idle_seconds);
+
+    TOGGL_EXPORT bool_t toggl_set_promotion_response(
+        void *context,
+        const int64_t promotion_type,
+        const int64_t promotion_response);
 
     // Shared helpers
 

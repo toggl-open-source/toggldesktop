@@ -14,6 +14,7 @@
 #include "./const.h"
 #include "./https_client.h"
 #include "./settings.h"
+#include "./urls.h"
 #include "./user.h"
 
 #include "Poco/Logger.h"
@@ -79,7 +80,7 @@ void TogglAnalyticsEvent::runTask() {
 
     TogglClient toggl_client;
     std::string response_body("");
-    error err = toggl_client.Post(kAPIURL,
+    error err = toggl_client.Post(urls::API(),
                                   "/api/v9/analytics",
                                   json_,
                                   api_token_,

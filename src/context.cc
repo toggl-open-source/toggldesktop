@@ -20,6 +20,7 @@
 #include "./time_entry.h"
 #include "./timeline_uploader.h"
 #include "./toggl_api_private.h"
+#include "./urls.h"
 #include "./window_change_recorder.h"
 #include "./workspace.h"
 
@@ -69,6 +70,9 @@ Context::Context(const std::string app_name, const std::string app_version)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , update_path_("")
 , im_a_teapot_(false) {
+    urls::SetUseStagingAsBackend(
+        app_version.find("7.0.0") != std::string::npos);
+
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
 
@@ -200,12 +204,12 @@ error Context::StartEvents() {
     err = db()->LoadCurrentUser(user);
     if (err != noError) {
         delete user;
-        setUser(0);
+        setUser(nullptr);
         return displayError(err);
     }
     if (!user->ID()) {
         delete user;
-        setUser(0);
+        setUser(nullptr);
         return noError;
     }
     setUser(user);
@@ -471,7 +475,7 @@ error Context::displayError(const error err) {
     if ((err.find(kForbiddenError) != std::string::npos)
             || (err.find(kUnauthorizedError) != std::string::npos)) {
         if (user_) {
-            setUser(0);
+            setUser(nullptr);
         }
     }
     if (err.find(kUnsupportedAppError) != std::string::npos) {
@@ -938,7 +942,7 @@ error Context::downloadUpdate() {
         {
             std::string body("");
             TogglClient client;
-            err = client.Get(kAPIURL,
+            err = client.Get(urls::API(),
                              update_url,
                              std::string(""),
                              std::string(""),
@@ -1132,7 +1136,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(kTimelineUploadURL,
+    error err = client.Post(urls::TimelineUpload(),
                             "/api/v8/timeline_settings",
                             json,
                             user_->APIToken(),
@@ -1199,7 +1203,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(kAPIURL,
+    error err = client.Post(urls::API(),
                             "/api/v8/feedback/web",
                             "",
                             user_->APIToken(),
@@ -1542,7 +1546,7 @@ TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
 error Context::DisplaySettings(const bool open) {
     error err = db()->LoadSettings(&settings_);
     if (err != noError) {
-        setUser(0);
+        setUser(nullptr);
         return displayError(err);
     }
 
@@ -1550,7 +1554,7 @@ error Context::DisplaySettings(const bool open) {
     Proxy proxy;
     err = db()->LoadProxySettings(&use_proxy, &proxy);
     if (err != noError) {
-        setUser(0);
+        setUser(nullptr);
         return displayError(err);
     }
 
@@ -1906,7 +1910,7 @@ error Context::Logout() {
 
         logger().debug("setUser from Logout");
 
-        setUser(0);
+        setUser(nullptr);
 
         UI()->DisplayApp();
 
@@ -2683,7 +2687,7 @@ std::vector<TimeEntry *> Context::timeEntries(
     return result;
 }
 
-error Context::SaveUpdateChannel(const std::string channel) {
+error Context::SetUpdateChannel(const std::string channel) {
     error err = db()->SaveUpdateChannel(channel);
     if (err != noError) {
         return displayError(err);
@@ -2775,6 +2779,7 @@ AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) const {
 Project *Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
+    const std::string client_guid,
     const std::string project_name,
     const bool is_private) {
 
@@ -2792,7 +2797,7 @@ Project *Context::CreateProject(
     }
 
     Project *result = user_->CreateProject(
-        workspace_id, client_id, project_name, is_private);
+        workspace_id, client_id, client_guid, project_name, is_private);
 
     error err = save();
     if (err != noError) {
@@ -2803,24 +2808,32 @@ Project *Context::CreateProject(
     return result;
 }
 
-error Context::CreateClient(
+Client *Context::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
 
     if (!user_) {
         logger().warning("Cannot create a client, user logged out");
-        return noError;
+        return nullptr;
     }
     if (!workspace_id) {
-        return displayError("Please select a workspace");
+        displayError("Please select a workspace");
+        return nullptr;
     }
     if (client_name.empty()) {
-        return displayError("Client name must not be empty");
+        displayError("Client name must not be empty");
+        return nullptr;
     }
 
-    user_->CreateClient(workspace_id, client_name);
+    Client *result = user_->CreateClient(workspace_id, client_name);
 
-    return displayError(save());
+    error err = save();
+    if (err != noError) {
+        displayError(err);
+        return nullptr;
+    }
+
+    return result;
 }
 
 void Context::SetSleep() {
@@ -2839,7 +2852,7 @@ error Context::OpenReportsInBrowser() {
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(kAPIURL,
+    error err = client.Post(urls::API(),
                             "/api/v8/desktop_login_tokens",
                             "{}",
                             user_->APIToken(),
@@ -2863,7 +2876,7 @@ error Context::OpenReportsInBrowser() {
     }
 
     std::stringstream ss;
-    ss  << kAPIURL << "/api/v8/desktop_login"
+    ss  << urls::API() << "/api/v8/desktop_login"
         << "?login_token=" << login_token
         << "&goto=reports";
     UI()->DisplayURL(ss.str());
@@ -3087,9 +3100,12 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
     if (quit_) {
         return noError;
     }
+
+    Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
         return noError;
     }
+
     std::vector<TimelineEvent> events;
     error err = db()->CreateCompressedTimelineBatchForUpload(
         user_->ID(),
@@ -3129,6 +3145,21 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
 error Context::MarkTimelineBatchAsUploaded(
     const std::vector<TimelineEvent> &events) {
     return db()->MarkTimelineBatchAsUploaded(events);
+}
+
+error Context::SetPromotionResponse(
+    const int64_t promotion_type,
+    const int64_t promotion_response) {
+
+    if (kPromotionJoinBetaChannel != promotion_type) {
+        return error("bad promotion type");
+    }
+
+    if (kPromotionJoinBetaChannel == promotion_type && promotion_response) {
+        return SetUpdateChannel("beta");
+    }
+
+    return noError;
 }
 
 void Context::uiUpdaterActivity() {

@@ -810,12 +810,13 @@ TEST(toggl_api, toggl_add_project) {
     bool_t is_private = false;
 
     testing::testresult::error = "";
-    bool_t res = toggl_add_project(app.ctx(),
-                                   guid.c_str(),
-                                   wid,
-                                   cid,
-                                   project_name.c_str(),
-                                   is_private);
+    char_t *res = toggl_add_project(app.ctx(),
+                                    guid.c_str(),
+                                    wid,
+                                    cid,
+                                    "",
+                                    project_name.c_str(),
+                                    is_private);
     ASSERT_EQ("Please select a workspace",
               testing::testresult::error);
     ASSERT_FALSE(res);
@@ -825,11 +826,13 @@ TEST(toggl_api, toggl_add_project) {
                             guid.c_str(),
                             wid,
                             cid,
+                            "",
                             project_name.c_str(),
                             is_private);
     ASSERT_EQ("Project name must not be empty",
               testing::testresult::error);
     ASSERT_FALSE(res);
+    free(res);
 
     project_name = "A new project";
     testing::testresult::error = "";
@@ -837,10 +840,12 @@ TEST(toggl_api, toggl_add_project) {
                             guid.c_str(),
                             wid,
                             cid,
+                            "",
                             project_name.c_str(),
                             is_private);
     ASSERT_EQ("", testing::testresult::error);
     ASSERT_TRUE(res);
+    free(res);
 
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
@@ -914,11 +919,12 @@ TEST(toggl_api, toggl_create_client) {
     std::string client_name("");
 
     testing::testresult::error = "";
-    bool_t res = toggl_create_client(app.ctx(),
-                                     wid,
-                                     client_name.c_str());
+    char_t *res = toggl_create_client(app.ctx(),
+                                      wid,
+                                      client_name.c_str());
     ASSERT_EQ("Please select a workspace", testing::testresult::error);
     ASSERT_FALSE(res);
+    free(res);
 
     wid = 123456789;
     res = toggl_create_client(app.ctx(),
@@ -927,6 +933,7 @@ TEST(toggl_api, toggl_create_client) {
     ASSERT_EQ("Client name must not be empty",
               testing::testresult::error);
     ASSERT_FALSE(res);
+    free(res);
 
     client_name = "A new client";
     testing::testresult::error = "";
@@ -935,6 +942,7 @@ TEST(toggl_api, toggl_create_client) {
                               client_name.c_str());
     ASSERT_EQ("", testing::testresult::error);
     ASSERT_TRUE(res);
+    free(res);
 
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::clients.size(); i++) {

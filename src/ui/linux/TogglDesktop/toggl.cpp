@@ -532,26 +532,41 @@ bool TogglApi::setTimeEntryBillable(
                                          billable);
 }
 
-bool TogglApi::addProject(
+QString TogglApi::addProject(
     const QString time_entry_guid,
     const uint64_t workspace_id,
     const uint64_t client_id,
+    const QString client_guid,
     const QString project_name,
     const bool is_private) {
-    return toggl_add_project(ctx,
-                             time_entry_guid.toStdString().c_str(),
-                             workspace_id,
-                             client_id,
-                             project_name.toStdString().c_str(),
-                             is_private);
+
+    char *guid = toggl_add_project(ctx,
+                                   time_entry_guid.toStdString().c_str(),
+                                   workspace_id,
+                                   client_id,
+                                   client_guid.toStdString().c_str(),
+                                   project_name.toStdString().c_str(),
+                                   is_private);
+    QString res("");
+    if (guid) {
+        res = QString(guid);
+        free(guid);
+    }
+    return res;
 }
 
-bool TogglApi::createClient(
+QString TogglApi::createClient(
     const uint64_t wid,
     const QString name) {
-    return toggl_create_client(ctx,
-                               wid,
-                               name.toStdString().c_str());
+    char *guid = toggl_create_client(ctx,
+                                     wid,
+                                     name.toStdString().c_str());
+    QString res("");
+    if (guid) {
+        res = QString(guid);
+        free(guid);
+    }
+    return res;
 }
 
 void TogglApi::viewTimeEntryList() {

@@ -1,9 +1,10 @@
 language: cpp
 compiler:
+  - gcc
   - clang
 install: make deps > /dev/null
 script:
-  - source /opt/qt53/bin/qt53-env.sh && make clean && make qa && make
+  - source /opt/qt53/bin/qt53-env.sh && make clean && make qa
 branches:
   only:
     - master

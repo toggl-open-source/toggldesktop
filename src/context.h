@@ -222,11 +222,11 @@ class Context : public TimelineDatasource {
     error ToggleTimelineRecording(
         const bool record_timeline);
 
-    bool IsTimelineRecordingEnabled() {
+    bool IsTimelineRecordingEnabled() const {
         return user_ && user_->RecordTimeline();
     }
 
-    error SaveUpdateChannel(
+    error SetUpdateChannel(
         const std::string channel);
 
     error UpdateChannel(
@@ -235,10 +235,11 @@ class Context : public TimelineDatasource {
     Project *CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
+        const std::string client_guid,
         const std::string project_name,
         const bool is_private);
 
-    error CreateClient(
+    Client *CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 
@@ -277,6 +278,10 @@ class Context : public TimelineDatasource {
     error StartTimelineEvent(TimelineEvent *event);
     error MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
+
+    error SetPromotionResponse(
+        const int64_t promotion_type,
+        const int64_t promotion_response);
 
  protected:
     void uiUpdaterActivity();

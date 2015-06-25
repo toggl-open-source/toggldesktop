@@ -38,6 +38,8 @@ timeEntryAutocompleteNeedsUpdate(false) {
     ui->description->completer()->setCompletionMode(
         QCompleter::PopupCompletion);
     ui->description->completer()->setMaxVisibleItems(20);
+    ui->billable->setVisible(false);
+    ui->tags->setVisible(false);
 
     descriptionPlaceholder = "What are you doing?";
 }
@@ -84,6 +86,9 @@ void TimerWidget::displayRunningTimerState(
 
     ui->project->setText(te->ProjectAndTaskLabel);
 
+    ui->billable->setVisible(te->Billable);
+    ui->tags->setVisible(!te->Tags.isEmpty());
+
     duration = te->DurationInSeconds;
 
     if (te->Description.length() > 0) {
@@ -121,6 +126,9 @@ void TimerWidget::displayStoppedTimerState() {
     ui->duration->setEnabled(true);
 
     ui->project->setText("");
+
+    ui->billable->setVisible(false);
+    ui->tags->setVisible(false);
 
     duration = 0;
 

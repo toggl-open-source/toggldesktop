@@ -23,6 +23,7 @@ SOURCES += \
     ../../../idle.cc \
     ../../../analytics.cc \
     ../../../autotracker.cc \
+    ../../../urls.cc \
     ../../../context.cc \
     ../../../custom_error_handler.cc \
     ../../../database.cc \
@@ -93,6 +94,7 @@ HEADERS += \
     ../../../idle.h \
     ../../../analytics.h \
     ../../../autotracker.h \
+    ../../../urls.h \
     ../../../context.h \
     ../../../custom_error_handler.h \
     ../../../database.h \

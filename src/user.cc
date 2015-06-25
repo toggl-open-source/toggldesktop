@@ -14,6 +14,7 @@
 #include "./tag.h"
 #include "./task.h"
 #include "./time_entry.h"
+#include "./urls.h"
 #include "./workspace.h"
 
 #include "Poco/Base64Decoder.h"
@@ -39,16 +40,21 @@ User::~User() {
 Project *User::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
+    const std::string client_guid,
     const std::string project_name,
     const bool is_private) {
+
     Project *p = new Project();
     p->SetWID(workspace_id);
     p->SetName(project_name);
     p->SetCID(client_id);
+    p->SetClientGUID(client_guid);
     p->SetUID(ID());
     p->SetActive(true);
     p->SetPrivate(is_private);
+
     related.Projects.push_back(p);
+
     return p;
 }
 
@@ -467,7 +473,7 @@ error User::PushChanges(
         logger().debug(json);
 
         std::string response_body("");
-        err = toggl_client->Post(kAPIURL,
+        err = toggl_client->Post(urls::API(),
                                  "/api/v8/batch_updates",
                                  json,
                                  APIToken(),
@@ -542,7 +548,7 @@ error User::Me(
                      << "&with_related_data=true"
                      << "&since=" << since;
 
-        return toggl_client->Get(kAPIURL,
+        return toggl_client->Get(urls::API(),
                                  relative_url.str(),
                                  email,
                                  password,
@@ -581,7 +587,7 @@ error User::Signup(
         Json::Value root;
         root["user"] = user;
 
-        return toggl_client->Post(kAPIURL,
+        return toggl_client->Post(urls::API(),
                                   "/api/v8/signups",
                                   Json::StyledWriter().write(root),
                                   "",

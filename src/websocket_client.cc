@@ -25,6 +25,7 @@
 #include "./const.h"
 #include "./https_client.h"
 #include "./netconf.h"
+#include "./urls.h"
 
 namespace toggl {
 
@@ -97,7 +98,7 @@ error WebSocketClient::createSession() {
     }
 
     try {
-        Poco::URI uri(kWebSocketURL);
+        Poco::URI uri(urls::WebSocket());
 
         Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
         acceptCertHandler =
@@ -121,7 +122,7 @@ error WebSocketClient::createSession() {
             uri.getPort(),
             context);
 
-        Netconf::ConfigureProxy(kWebSocketURL, session_);
+        Netconf::ConfigureProxy(urls::WebSocket(), session_);
 
         req_ = new Poco::Net::HTTPRequest(
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",

@@ -10,6 +10,7 @@
 #include "./const.h"
 #include "./formatter.h"
 #include "./netconf.h"
+#include "./urls.h"
 
 #include "Poco/DeflatingStream.h"
 #include "Poco/Environment.h"
@@ -100,7 +101,7 @@ void ServerStatus::runActivity() {
         HTTPSClient client;
         std::string response;
         error err = client.Get(
-            kAPIURL, "/api/v8/status", "", "", &response);
+            urls::API(), "/api/v8/status", "", "", &response);
         if (noError != err) {
             logger().error(err);
 

@@ -662,12 +662,14 @@ public partial class TimeEntryEditViewController : UserControl
 
         bool isBillable = timeEntry.Billable;
 
-        bool projectAdded = Toggl.AddProject(
+        string projectGUID = Toggl.AddProject(
             timeEntry.GUID,
             workspaceID,
             clientID,
+            "",
             textBoxProjectName.Text,
             !is_public);
+        bool projectAdded = projectGUID.Length > 0;
 
         if (projectAdded && isBillable)
         {
@@ -1002,8 +1004,8 @@ public partial class TimeEntryEditViewController : UserControl
             return;
         }
 
-        bool clientCreated = Toggl.AddClient(workspaceID, addClientTextBox.Text);
-        if (clientCreated)
+        string clientGUID = Toggl.CreateClient(workspaceID, addClientTextBox.Text);
+        if (clientGUID.Length > 0)
         {
             comboBoxClient.Text = addClientTextBox.Text;
             newestClient = addClientTextBox.Text;

@@ -1005,22 +1005,25 @@ public static class Toggl
     }
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_add_project(
+    [return: MarshalAs(UnmanagedType.LPWStr)]
+    private static extern string toggl_add_project(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string time_entry_guid,
         UInt64 workspace_id,
         UInt64 client_id,
         [MarshalAs(UnmanagedType.LPWStr)]
+        string client_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string project_name,
         [MarshalAs(UnmanagedType.I1)]
         bool is_private);
 
-    public static bool AddProject(
+    public static string AddProject(
         string time_entry_guid,
         UInt64 workspace_id,
         UInt64 client_id,
+        string client_guid,
         string project_name,
         bool is_private)
     {
@@ -1028,19 +1031,20 @@ public static class Toggl
                                  time_entry_guid,
                                  workspace_id,
                                  client_id,
+                                 client_guid,
                                  project_name,
                                  is_private);
     }
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    [return: MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_create_client(
+    [return: MarshalAs(UnmanagedType.LPWStr)]
+    private static extern string toggl_create_client(
         IntPtr context,
         UInt64 workspace_id,
         [MarshalAs(UnmanagedType.LPWStr)]
         string client_name);
 
-    public static bool AddClient(
+    public static string CreateClient(
         UInt64 workspace_id,
         string client_name)
     {

@@ -9,6 +9,7 @@
 
 #include "./toggl_api_lua.h"
 
+#include "./client.h"
 #include "./const.h"
 #include "./context.h"
 #include "./custom_error_handler.h"
@@ -359,6 +360,7 @@ char_t *toggl_create_project(
     toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
+        "",
         to_string(project_name),
         is_private);
 
@@ -368,21 +370,30 @@ char_t *toggl_create_project(
     return nullptr;
 }
 
-bool_t toggl_create_client(
+char_t *toggl_create_client(
     void *context,
     const uint64_t workspace_id,
     const char_t *client_name) {
 
-    return toggl::noError == app(context)->CreateClient(
+    toggl::Client *c = app(context)->CreateClient(
         workspace_id,
         to_string(client_name));
+
+    if (!c) {
+        return nullptr;
+    }
+
+    poco_check_ptr(c);
+
+    return copy_string(c->GUID());
 }
 
-bool_t toggl_add_project(
+char_t *toggl_add_project(
     void *context,
     const char_t *time_entry_guid,
     const uint64_t workspace_id,
     const uint64_t client_id,
+    const char_t *client_guid,
     const char_t *project_name,
     const bool_t is_private) {
 
@@ -391,23 +402,24 @@ bool_t toggl_add_project(
     toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
+        to_string(client_guid),
         to_string(project_name),
         is_private);
     if (!p) {
-        return false;
+        return nullptr;
     }
 
     poco_check_ptr(p);
 
     char_t *guid = copy_string(p->GUID());
-    bool_t res = toggl_set_time_entry_project(
+    toggl_set_time_entry_project(
         context,
         time_entry_guid,
         0, /* no task ID */
         p->ID(),
         guid);
-    free(guid);
-    return res;
+
+    return guid;
 }
 
 char_t *toggl_format_tracking_time_duration(
@@ -748,7 +760,7 @@ bool_t toggl_set_update_channel(
     poco_check_ptr(update_channel);
 
     return toggl::noError == app(context)->
-           SaveUpdateChannel(to_string(update_channel));
+           SetUpdateChannel(to_string(update_channel));
 }
 
 char_t *toggl_get_update_channel(
@@ -999,6 +1011,14 @@ void toggl_set_idle_seconds(
     if (context) {
         app(context)->SetIdleSeconds(idle_seconds);
     }
+}
+
+bool_t toggl_set_promotion_response(
+    void *context,
+    const int64_t promotion_type,
+    const int64_t promotion_response) {
+    return toggl::noError == app(context)->SetPromotionResponse(
+        promotion_type, promotion_response);
 }
 
 char_t *toggl_run_script(

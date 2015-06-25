@@ -115,7 +115,7 @@ error WindowChangeRecorder::Shutdown() {
     try {
         if (recording_.isRunning()) {
             recording_.stop();
-            recording_.wait();
+            recording_.wait(5);
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();

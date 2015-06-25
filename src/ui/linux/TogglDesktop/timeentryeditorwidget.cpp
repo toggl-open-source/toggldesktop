@@ -272,11 +272,13 @@ bool TimeEntryEditorWidget::applyNewProject() {
         clientID = client.value<GenericView *>()->ID;
     }
 
-    return TogglApi::instance->addProject(guid,
-                                          workspaceID,
-                                          clientID,
-                                          ui->newProjectName->text(),
-                                          !ui->publicProject->isChecked());
+    QString projectGUID = TogglApi::instance->addProject(guid,
+                          workspaceID,
+                          clientID,
+                          "",
+                          ui->newProjectName->text(),
+                          !ui->publicProject->isChecked());
+    return !projectGUID.isEmpty();
 }
 
 bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
@@ -446,7 +448,8 @@ void TimeEntryEditorWidget::on_addClientButton_clicked() {
         ui->newProjectWorkspace->setFocus();
         return;
     }
-    if (!TogglApi::instance->createClient(wid, name)) {
+    QString clientGUID = TogglApi::instance->createClient(wid, name);
+    if (clientGUID.isEmpty()) {
         return;
     }
     toggleNewClientMode(false);
