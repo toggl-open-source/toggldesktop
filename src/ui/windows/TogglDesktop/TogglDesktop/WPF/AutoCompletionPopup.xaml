@@ -4,7 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:aero="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300"
@@ -14,19 +13,17 @@
            PlacementTarget="{Binding Target}"
            MaxHeight="300" MinWidth="{Binding Path=Target.ActualWidth}"
            StaysOpen="False">
-        <aero:SystemDropShadowChrome>
-            <ScrollViewer Background="White">
-                <Grid>
-                    <TextBlock Name="emptyLabel" x:FieldModifier="private"
+        <ScrollViewer Background="White">
+            <Grid>
+                <TextBlock Name="emptyLabel" x:FieldModifier="private"
                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                Margin="4"
                                Text="{Binding EmptyText}"/>
-                    <StackPanel Name="dropDownList" x:FieldModifier="private">
-                        <!-- filled programatically -->
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
-        </aero:SystemDropShadowChrome>
+                <StackPanel Name="dropDownList" x:FieldModifier="private">
+                    <!-- filled programatically -->
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Popup>
     
 </UserControl>
