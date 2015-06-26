@@ -45,7 +45,8 @@
                     <ControlTemplate TargetType="ButtonBase">
                         <Border Background="{TemplateBinding Background}">
                             <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Stretch="Fill" Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                   Stretch="Fill" Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"
+                                   RenderOptions.BitmapScalingMode="Fant"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -175,7 +176,7 @@
                                     </Style>
                                 </DatePickerTextBox.Style>
                             </DatePickerTextBox>
-                            <Button x:Name="PART_Button" Content="/TogglDesktop;component/Resources/calender-icon-20.png">
+                            <Button x:Name="PART_Button" Content="/TogglDesktop;component/Resources/ic_calendar_2x.png">
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource TextFieldImageButtonBase}">
                                         <Setter Property="Margin" Value="0"/>
