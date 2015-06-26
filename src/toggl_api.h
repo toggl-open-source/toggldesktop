@@ -135,6 +135,16 @@ extern "C" {
         void *Next;
     } TogglAutotrackerRuleView;
 
+    typedef struct {
+        int64_t ID;
+        char_t *Title;
+        char_t *Filename;
+        uint64_t StartTime;
+        uint64_t EndTime;
+        bool_t Idle;
+        void *Next;
+    } TogglTimelineEventView;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
