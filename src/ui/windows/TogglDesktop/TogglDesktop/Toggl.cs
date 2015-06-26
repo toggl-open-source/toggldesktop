@@ -99,9 +99,10 @@ public static class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         public string ClientLabel;
         [MarshalAs(UnmanagedType.LPWStr)]
-        public string Project;
+        public string ProjectColor;
         public UInt64 TaskID;
         public UInt64 ProjectID;
+        public UInt64 WorkspaceID;
         public UInt64 Type;
         public IntPtr Next;
 

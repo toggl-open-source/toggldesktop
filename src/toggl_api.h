@@ -83,6 +83,7 @@ extern "C" {
         char_t *ProjectColor;
         uint64_t TaskID;
         uint64_t ProjectID;
+        uint64_t WorkspaceID;
         uint64_t Type;
         void *Next;
     } TogglAutocompleteView;

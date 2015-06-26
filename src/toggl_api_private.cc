@@ -24,8 +24,9 @@ TogglAutocompleteView *autocomplete_item_init(
     result->ProjectLabel = copy_string(item.ProjectLabel);
     result->ClientLabel = copy_string(item.ClientLabel);
     result->ProjectColor = copy_string(item.ProjectColor);
-    result->ProjectID = static_cast<unsigned int>(item.ProjectID);
     result->TaskID = static_cast<unsigned int>(item.TaskID);
+    result->ProjectID = static_cast<unsigned int>(item.ProjectID);
+    result->WorkspaceID = static_cast<unsigned int>(item.WorkspaceID);
     result->Type = static_cast<unsigned int>(item.Type);
     result->Next = nullptr;
     return result;

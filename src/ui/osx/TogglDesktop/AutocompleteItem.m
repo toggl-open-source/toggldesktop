@@ -59,6 +59,7 @@
 		self.ProjectColor = @"";
 	}
 	self.Type = data->Type;
+	self.WorkspaceID = data->WorkspaceID;
 	self.ProjectID = data->ProjectID;
 	self.TaskID = data->TaskID;
 }
@@ -68,14 +69,15 @@
 	NSAssert(!data->Text, @"data already has text");
 	data->Text = strdup([self.Text UTF8String]);
 	data->Type = (unsigned int)self.Type;
+	data->WorkspaceID = (unsigned int)self.WorkspaceID;
 	data->ProjectID = (unsigned int)self.ProjectID;
 	data->TaskID = (unsigned int)self.TaskID;
 }
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"Text: %@, PID: %llu, TID: %llu, type: %llu",
-			self.Text, self.ProjectID, self.TaskID, self.Type];
+	return [NSString stringWithFormat:@"Text: %@, WID: %llu, PID: %llu, TID: %llu, type: %llu",
+			self.Text, self.WorkspaceID, self.ProjectID, self.TaskID, self.Type];
 }
 
 + (NSMutableArray *)loadAll:(TogglAutocompleteView *)first

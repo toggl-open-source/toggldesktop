@@ -28,6 +28,7 @@ class AutocompleteView : public QObject {
             view->ProjectColor = QString(it->ProjectColor);
             view->TaskID = it->TaskID;
             view->ProjectID = it->ProjectID;
+            view->WorkspaceID = it->WorkspaceID;
             view->Type = it->Type;
             result.push_back(view);
             it = static_cast<TogglAutocompleteView *>(it->Next);
@@ -43,6 +44,7 @@ class AutocompleteView : public QObject {
     QString ProjectColor;
     uint64_t TaskID;
     uint64_t ProjectID;
+    uint64_t WorkspaceID;
     uint64_t Type;
 };
 
