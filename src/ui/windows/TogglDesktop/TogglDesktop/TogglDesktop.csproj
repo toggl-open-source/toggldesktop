@@ -593,6 +593,9 @@
   <ItemGroup>
     <Resource Include="Resources\ic_cancel_grey600_24dp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\calender-icon-20.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

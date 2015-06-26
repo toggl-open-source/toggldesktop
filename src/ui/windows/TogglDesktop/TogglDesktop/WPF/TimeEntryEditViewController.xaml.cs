@@ -287,6 +287,16 @@ namespace TogglDesktop.WPF
 
         private void startDatePicker_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            this.applyDateChangeOrReset();
+        }
+
+        private void startDatePicker_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.applyDateChangeOrReset();
+        }
+
+        private void applyDateChangeOrReset()
+        {
             if (!this.hasTimeEntry())
             {
                 Console.WriteLine("Cannot apply date change: No time entry.");
