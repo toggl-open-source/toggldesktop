@@ -125,6 +125,8 @@ namespace TogglDesktop.WPF
 
             this.selectedWorkspaceId = timeEntry.WID;
             this.selectedWorkspaceName = timeEntry.WorkspaceName;
+
+            this.newProjectButton.Visibility = timeEntry.CanAddProjects ? Visibility.Visible : Visibility.Hidden;
         }
 
         private static Color getProjectColor(string colorString)
