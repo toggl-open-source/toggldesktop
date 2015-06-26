@@ -5,6 +5,9 @@
 // class, the ownership does not change and you
 // must not delete the pointers you got.
 
+// All public methods should start with an uppercase name.
+// All public methods should catch their exceptions.
+
 #include "../src/context.h"
 
 #include <iostream>  // NOLINT
@@ -62,7 +65,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_analytics_at_(0)
 , time_entry_editor_guid_("")
 , environment_("production")
-, idle_(&ui_)
+, idle_(&ui_)	
 , last_sync_started_(0)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
@@ -233,33 +236,43 @@ void Context::displayUI() {
 error Context::save(const bool push_changes) {
     logger().debug("save");
 
-    std::vector<ModelChange> changes;
-    error err = db()->SaveUser(user_, true, &changes);
-    if (err != noError) {
-        return err;
-    }
+	try {
+		std::vector<ModelChange> changes;
+		error err = db()->SaveUser(user_, true, &changes);
+		if (err != noError) {
+			return err;
+		}
 
-    updateUI(&changes);
+		updateUI(&changes);
 
-    if (push_changes) {
-        pushChanges();
-    }
+		if (push_changes) {
+			pushChanges();
+		}
 
-    // Display number of unsynced time entries
-    Poco::Int64 count(0);
-    if (user_) {
-        for (std::vector<TimeEntry *>::const_iterator it =
-            user_->related.TimeEntries.begin();
-                it != user_->related.TimeEntries.end(); it++) {
-            TimeEntry *te = *it;
-            if (te->NeedsPush()) {
-                count++;
-            }
-        }
-    }
-    UI()->DisplayUnsyncedItems(count);
-
-    return noError;
+		// Display number of unsynced time entries
+		Poco::Int64 count(0);
+		if (user_) {
+			for (std::vector<TimeEntry *>::const_iterator it =
+				user_->related.TimeEntries.begin();
+					it != user_->related.TimeEntries.end(); it++) {
+				TimeEntry *te = *it;
+				if (te->NeedsPush()) {
+					count++;
+				}
+			}
+		}
+		UI()->DisplayUnsyncedItems(count);
+	}
+	catch (const Poco::Exception& exc) {
+		return exc.displayText();
+	}
+	catch (const std::exception& ex) {
+		return ex.what();
+	}
+	catch (const std::string& ex) {
+		return ex;
+	}
+	return noError;
 }
 
 void Context::updateUI(std::vector<ModelChange> *changes) {
