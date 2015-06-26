@@ -137,7 +137,11 @@
         <Style TargetType="TextBox" x:Key="TimeBox" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="#fafafa"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush Color="{toggl:Opacity White, 0.6}"/>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style TargetType="TextBox" x:Key="DurationBox" BasedOn="{StaticResource TimeBox}">
             <Setter Property="FontWeight" Value="Bold"/>
