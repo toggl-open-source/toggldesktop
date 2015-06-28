@@ -11,6 +11,9 @@
 #include "./formatter.h"
 #include "./project.h"
 #include "./related_data.h"
+#include "./time_entry.h"
+#include "./user.h"
+#include "./workspace.h"
 
 #include "./toggl_api_private.h"
 
@@ -346,13 +349,37 @@ void GUI::DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list) {
     view_item_clear(first);
 }
 
-void GUI::DisplayTimeEntryEditor(const bool open,
-                                 TogglTimeEntryView *te,
-                                 const std::string focused_field_name) {
+void GUI::DisplayTimeEntryEditor(
+    const bool open,
+    const RelatedData &related,
+    const TimeEntry *te,
+    const std::string focused_field_name,
+    const Poco::Int64 total_duration_for_date,
+    const User *user) {
+
     logger().debug("DisplayTimeEntryEditor");
+
+    TogglTimeEntryView *view =
+        timeEntryViewItem(related, te, total_duration_for_date);
+
+    Workspace *ws = nullptr;
+    if (te->WID()) {
+        ws = related.WorkspaceByID(te->WID());
+    }
+    view->CanSeeBillable = canSeeBillable(user, ws);
+    view->DefaultWID = user->DefaultWID();
+    if (ws) {
+        view->CanAddProjects = ws->Admin() ||
+                               !ws->OnlyAdminsMayCreateProjects();
+    } else {
+        view->CanAddProjects = user->CanAddProjects();
+    }
+
     char_t *field_s = copy_string(focused_field_name);
-    on_display_time_entry_editor_(open, te, field_s);
+    on_display_time_entry_editor_(open, view, field_s);
     free(field_s);
+
+    time_entry_view_item_clear(view);
 }
 
 void GUI::DisplayURL(const std::string URL) {
@@ -389,9 +416,17 @@ void GUI::DisplaySettings(const bool open,
     settings_view_item_clear(view);
 }
 
-void GUI::DisplayTimerState(TogglTimeEntryView *te) {
+void GUI::DisplayTimerState(
+    const RelatedData &related,
+    const TimeEntry *te,
+    const Poco::Int64 total_duration_for_date) {
+
+    TogglTimeEntryView *view =
+        timeEntryViewItem(related, te, total_duration_for_date);
+    on_display_timer_state_(view);
+    time_entry_view_item_clear(view);
+
     logger().debug("DisplayTimerState");
-    on_display_timer_state_(te);
 }
 
 void GUI::DisplayIdleNotification(const std::string guid,
@@ -416,6 +451,56 @@ void GUI::DisplayIdleNotification(const std::string guid,
 
 Poco::Logger &GUI::logger() const {
     return Poco::Logger::get("ui");
+}
+
+TogglTimeEntryView *GUI::timeEntryViewItem(
+    const RelatedData &related,
+    const TimeEntry *te,
+    const Poco::Int64 total_duration_for_date) {
+
+    if (!te) {
+        return nullptr;
+    }
+
+    std::string workspace_name("");
+    std::string project_and_task_label("");
+    std::string task_label("");
+    std::string project_label("");
+    std::string client_label("");
+    std::string color("");
+    related.ProjectLabelAndColorCode(te,
+                                     &workspace_name,
+                                     &project_and_task_label,
+                                     &task_label,
+                                     &project_label,
+                                     &client_label,
+                                     &color);
+
+    std::string date_duration =
+        Formatter::FormatDurationForDateHeader(
+            total_duration_for_date);
+
+    return time_entry_view_item_init(te,
+                                     workspace_name,
+                                     project_and_task_label,
+                                     task_label,
+                                     project_label,
+                                     client_label,
+                                     color,
+                                     date_duration,
+                                     true);
+}
+
+bool GUI::canSeeBillable(
+    const User *user,
+    const Workspace *ws) const {
+    if (!user->HasPremiumWorkspaces()) {
+        return false;
+    }
+    if (ws && !ws->Premium()) {
+        return false;
+    }
+    return true;
 }
 
 }  // namespace toggl

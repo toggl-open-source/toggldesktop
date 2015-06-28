@@ -337,8 +337,6 @@ class Context : public TimelineDatasource {
 
     std::vector<TimeEntry *> timeEntries(const bool including_running) const;
 
-    TogglTimeEntryView *timeEntryViewItem(TimeEntry *te);
-
     void displayTimerState();
     void displayTimeEntryEditor(const bool open,
                                 TimeEntry *te,
@@ -353,13 +351,11 @@ class Context : public TimelineDatasource {
 
     void displayReminder();
 
-    Poco::Int64 totalDurationForDate(TimeEntry *te) const;
+    Poco::Int64 totalDurationForDate(const TimeEntry *te) const;
 
     void updateUI(std::vector<ModelChange> *changes);
 
     error displayError(const error err);
-
-    bool canSeeBillable(Workspace *workspace) const;
 
     void scheduleSync();
 

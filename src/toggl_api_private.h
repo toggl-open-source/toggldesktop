@@ -57,7 +57,7 @@ void view_item_clear(TogglGenericView *item);
 void autocomplete_item_clear(TogglAutocompleteView *item);
 
 TogglTimeEntryView *time_entry_view_item_init(
-    toggl::TimeEntry *te,
+    const toggl::TimeEntry *te,
     const std::string workspace_name,
     const std::string project_and_task_label,
     const std::string task_label,

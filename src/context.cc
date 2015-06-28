@@ -1487,49 +1487,19 @@ error Context::SetProxySettings(
 }
 
 void Context::displayTimerState() {
-    if (!user_) {
-        UI()->DisplayTimerState(0);
-        return;
+    TimeEntry *te = nullptr;
+
+    Poco::Mutex::ScopedLock lock(user_m_);
+    if (user_) {
+        te = user_->RunningTimeEntry();
     }
 
-    TimeEntry *te = user_->RunningTimeEntry();
-    TogglTimeEntryView *view = timeEntryViewItem(te);
-    UI()->DisplayTimerState(view);
-    time_entry_view_item_clear(view);
-}
-
-TogglTimeEntryView *Context::timeEntryViewItem(TimeEntry *te) {
-    if (!te) {
-        return nullptr;
+    Poco::Int64 total_duration_for_date(0);
+    if (te) {
+        total_duration_for_date = totalDurationForDate(te);
     }
 
-    std::string workspace_name("");
-    std::string project_and_task_label("");
-    std::string task_label("");
-    std::string project_label("");
-    std::string client_label("");
-    std::string color("");
-    user_->related.ProjectLabelAndColorCode(te,
-                                            &workspace_name,
-                                            &project_and_task_label,
-                                            &task_label,
-                                            &project_label,
-                                            &client_label,
-                                            &color);
-
-    Poco::Int64 duration = totalDurationForDate(te);
-    std::string date_duration =
-        Formatter::FormatDurationForDateHeader(duration);
-
-    return time_entry_view_item_init(te,
-                                     workspace_name,
-                                     project_and_task_label,
-                                     task_label,
-                                     project_label,
-                                     client_label,
-                                     color,
-                                     date_duration,
-                                     true);
+    UI()->DisplayTimerState(user_->related, te, total_duration_for_date);
 }
 
 error Context::DisplaySettings(const bool open) {
@@ -1932,17 +1902,6 @@ error Context::ClearCache() {
     return noError;
 }
 
-bool Context::canSeeBillable(
-    Workspace *ws) const {
-    if (!user_->HasPremiumWorkspaces()) {
-        return false;
-    }
-    if (ws && !ws->Premium()) {
-        return false;
-    }
-    return true;
-}
-
 TimeEntry *Context::Start(
     const std::string description,
     const std::string duration,
@@ -1986,7 +1945,7 @@ TimeEntry *Context::Start(
     return te;
 }
 
-Poco::Int64 Context::totalDurationForDate(TimeEntry *match) const {
+Poco::Int64 Context::totalDurationForDate(const TimeEntry *match) const {
     Poco::Int64 duration(0);
     std::string date_header = match->DateHeaderString();
     std::vector<TimeEntry *> list = timeEntries(true);
@@ -2130,24 +2089,18 @@ void Context::displayTimeEntryEditor(const bool open,
     }
 
     time_entry_editor_guid_ = te->GUID();
-    TogglTimeEntryView *view = timeEntryViewItem(te);
 
-    Workspace *ws = nullptr;
-    if (te->WID()) {
-        ws = user_->related.WorkspaceByID(te->WID());
-    }
-    view->CanSeeBillable = canSeeBillable(ws);
-    view->DefaultWID = user_->DefaultWID();
-    if (ws) {
-        view->CanAddProjects = ws->Admin() ||
-                               !ws->OnlyAdminsMayCreateProjects();
-    } else {
-        view->CanAddProjects = user_->CanAddProjects();
-    }
+    Poco::Mutex::ScopedLock lock(user_m_);
 
-    UI()->DisplayTimeEntryEditor(open, view, focused_field_name);
+    Poco::Int64 total_duration_for_date = totalDurationForDate(te);
 
-    time_entry_view_item_clear(view);
+    UI()->DisplayTimeEntryEditor(
+        open,
+        user_->related,
+        te,
+        focused_field_name,
+        total_duration_for_date,
+        user_);
 }
 
 error Context::ContinueLatest() {

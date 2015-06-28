@@ -222,7 +222,7 @@ int compare_string(const char_t *s1, const char_t *s2) {
 }
 
 TogglTimeEntryView *time_entry_view_item_init(
-    toggl::TimeEntry *te,
+    const toggl::TimeEntry *te,
     const std::string workspace_name,
     const std::string project_and_task_label,
     const std::string task_label,

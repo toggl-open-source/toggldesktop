@@ -12,7 +12,6 @@
 
 namespace toggl {
 
-class User;
 class Settings;
 
 class Analytics : public Poco::TaskManager {

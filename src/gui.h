@@ -23,6 +23,8 @@ namespace toggl {
 class Client;
 class Project;
 class RelatedData;
+class User;
+class TimeEntry;
 class Workspace;
 
 class GUI : public SyncStateMonitor {
@@ -90,8 +92,11 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTimeEntryEditor(
         const bool open,
-        TogglTimeEntryView *te,
-        const std::string focused_field_name);
+        const RelatedData &related,
+        const TimeEntry *te,
+        const std::string focused_field_name,
+        const Poco::Int64 total_duration_for_date,
+        const User *user);
 
     void DisplayURL(const std::string);
 
@@ -104,7 +109,10 @@ class GUI : public SyncStateMonitor {
         const bool use_proxy,
         const Proxy proxy);
 
-    void DisplayTimerState(TogglTimeEntryView *te);
+    void DisplayTimerState(
+        const RelatedData &related,
+        const TimeEntry *te,
+        const Poco::Int64 total_duration_for_date);
 
     void DisplayIdleNotification(const std::string guid,
                                  const std::string since,
@@ -233,6 +241,15 @@ class GUI : public SyncStateMonitor {
     void displayAutotrackerRules(
         TogglAutotrackerRuleView *first,
         const std::vector<std::string> &titles);
+
+    TogglTimeEntryView *timeEntryViewItem(
+        const RelatedData &related,
+        const TimeEntry *te,
+        const Poco::Int64 total_duration_for_date);
+
+    bool canSeeBillable(
+        const User *user,
+        const Workspace *ws) const;
 
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;

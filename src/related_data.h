@@ -62,7 +62,7 @@ class RelatedData {
     std::vector<AutocompleteItem> ProjectAutocompleteItems();
 
     void ProjectLabelAndColorCode(
-        TimeEntry *te,
+        const TimeEntry *te,
         std::string *workspace_name,
         std::string *project_and_task_label,
         std::string *task_label,
