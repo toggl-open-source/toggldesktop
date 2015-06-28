@@ -170,6 +170,10 @@ class Database {
     error DeleteTimelineBatch(
         const std::vector<TimelineEvent> &timeline_events);
 
+    error LoadCompressedTimeline(
+        const Poco::UInt64 &user_id,
+        std::vector<TimelineEvent> *timeline_events);
+
  private:
     error vacuum();
 

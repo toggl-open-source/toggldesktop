@@ -2037,6 +2037,7 @@ void Context::DisplayTimeEntryList(const bool open) {
 
     std::vector<TimeEntry *> list = timeEntries(true);
 
+    // Calculate total duration for each date: will be displayed in date header
     std::map<std::string, Poco::Int64> date_durations;
     for (unsigned int i = 0; i < list.size(); i++) {
         TimeEntry *te = list.at(i);

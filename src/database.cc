@@ -4029,7 +4029,7 @@ error Database::selectUnompressedTimelineEvents(
     }
 
     if (!session_) {
-        logger().warning("select_batch database is not open, ignoring request");
+        logger().warning("database is not open, ignoring request");
         return noError;
     }
 
@@ -4093,7 +4093,7 @@ error Database::selectCompressedTimelineBatchForUpload(
     }
 
     if (!session_) {
-        logger().warning("select_batch database is not open, ignoring request");
+        logger().warning("database is not open, ignoring request");
         return noError;
     }
 
@@ -4129,6 +4129,45 @@ error Database::selectCompressedTimelineBatchForUpload(
         return ex;
     }
     return last_error("selectCompressedTimelineBatchForUpload");
+}
+
+error Database::LoadCompressedTimeline(
+    const Poco::UInt64 &user_id,
+    std::vector<TimelineEvent> *timeline_events) {
+
+    if (!user_id) {
+        return error("Cannot load timeline without a user ID");
+    }
+
+    if (!timeline_events->empty()) {
+        return error("Timeline events already loaded");
+    }
+
+    if (!session_) {
+        logger().warning("database is not open, ignoring request");
+        return noError;
+    }
+
+    Poco::Mutex::ScopedLock lock(session_m_);
+
+    try {
+        Poco::Data::Statement select(*session_);
+        select <<
+               "SELECT id, title, filename, start_time, end_time, idle, "
+               "chunked, uploaded "
+               "FROM timeline_events "
+               "WHERE user_id = :user_id "
+               "AND chunked ",
+               useRef(user_id);
+        loadTimelineEvents(user_id, &select, timeline_events);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("LoadCompressedTimeline");
 }
 
 void loadTimelineEvents(
