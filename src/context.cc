@@ -433,37 +433,10 @@ void Context::displayAutotrackerRules() {
         return;
     }
 
-    TogglAutotrackerRuleView *first = nullptr;
+    Poco::Mutex::ScopedLock lock(user_m_);
     if (user_) {
-        for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
-            user_->related.AutotrackerRules.begin();
-                it != user_->related.AutotrackerRules.end();
-                it++) {
-            AutotrackerRule *rule = *it;
-            Project *p = user_->related.ProjectByID(rule->PID());
-            std::string project_name("");
-            if (p) {
-                project_name = p->Name();
-            }
-            TogglAutotrackerRuleView *item =
-                autotracker_rule_to_view_item(*it, project_name);
-            item->Next = first;
-            first = item;
-        }
+        UI()->DisplayAutotrackerRules(user_->related, autotracker_titles_);
     }
-
-    std::vector<std::string> titles;
-    for (std::set<std::string>::const_iterator
-            it = autotracker_titles_.begin();
-            it != autotracker_titles_.end();
-            ++it) {
-        titles.push_back(*it);
-    }
-    std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
-
-    UI()->DisplayAutotrackerRules(first, titles);
-
-    autotracker_view_item_clear(first);
 }
 
 Poco::Timestamp Context::postpone(

@@ -8,7 +8,10 @@
 
 #include "./const.h"
 #include "./error.h"
+#include "./formatter.h"
 #include "./project.h"
+#include "./related_data.h"
+
 #include "./toggl_api_private.h"
 
 #include "Poco/Logger.h"
@@ -263,7 +266,43 @@ void GUI::DisplayTags(std::vector<std::string> *tags) {
     view_item_clear(first);
 }
 
-void GUI::DisplayAutotrackerRules(TogglAutotrackerRuleView *first,
+void GUI::DisplayAutotrackerRules(
+    const RelatedData &related,
+    const std::set<std::string> &autotracker_titles) {
+
+    // FIXME: dont re-render if cached items (models or view) are the same
+    TogglAutotrackerRuleView *first = nullptr;
+    for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
+        related.AutotrackerRules.begin();
+            it != related.AutotrackerRules.end();
+            it++) {
+        AutotrackerRule *rule = *it;
+        Project *p = related.ProjectByID(rule->PID());
+        std::string project_name("");
+        if (p) {
+            project_name = p->Name();
+        }
+        TogglAutotrackerRuleView *item =
+            autotracker_rule_to_view_item(*it, project_name);
+        item->Next = first;
+        first = item;
+    }
+
+    std::vector<std::string> titles;
+    for (std::set<std::string>::const_iterator
+            it = autotracker_titles.begin();
+            it != autotracker_titles.end();
+            ++it) {
+        titles.push_back(*it);
+    }
+    std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
+
+    displayAutotrackerRules(first, titles);
+
+    autotracker_view_item_clear(first);
+}
+
+void GUI::displayAutotrackerRules(TogglAutotrackerRuleView *first,
                                   const std::vector<std::string> &titles) {
     if (on_display_autotracker_rules_) {
         uint64_t title_count = titles.size();

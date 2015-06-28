@@ -3,6 +3,7 @@
 #ifndef SRC_GUI_H_
 #define SRC_GUI_H_
 
+#include <set>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,7 @@ namespace toggl {
 
 class Client;
 class Project;
+class RelatedData;
 class Workspace;
 
 class GUI : public SyncStateMonitor {
@@ -83,8 +85,8 @@ class GUI : public SyncStateMonitor {
     void DisplayTags(std::vector<std::string> *tags);
 
     void DisplayAutotrackerRules(
-        TogglAutotrackerRuleView *first,
-        const std::vector<std::string> &titles);
+        const RelatedData &related,
+        const std::set<std::string> &autotracker_titles);
 
     void DisplayTimeEntryEditor(
         const bool open,
@@ -227,6 +229,10 @@ class GUI : public SyncStateMonitor {
 
  private:
     error findMissingCallbacks();
+
+    void displayAutotrackerRules(
+        TogglAutotrackerRuleView *first,
+        const std::vector<std::string> &titles);
 
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;
