@@ -17,10 +17,6 @@ namespace TogglDesktop.AutoCompletion.Implementation
             List<Toggl.AutocompleteItem> projects, List<Toggl.Model> clients, List<Toggl.Model> workspaces)
         {
             var workspaceLookup = workspaces.ToDictionary(w => w.ID);
-            foreach (var client in clients)
-            {
-                Console.WriteLine(client.WID + " " + client.Name + " " + client.ID + " " + client.GUID);
-            }
             var clientLookup = clients.GroupBy(c => c.WID).ToDictionary(
                 c => c.Key, cs => cs.ToDictionary(c => c.Name)
                 );

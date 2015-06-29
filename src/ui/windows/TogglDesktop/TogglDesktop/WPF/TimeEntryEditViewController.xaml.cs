@@ -679,11 +679,16 @@ namespace TogglDesktop.WPF
         {
             var clientGUID = Toggl.CreateClient(this.selectedWorkspaceId, text);
 
+            Console.WriteLine("client guid: " + (clientGUID == null));
+
             if (string.IsNullOrEmpty(clientGUID))
                 return false;
 
             this.selectedClientName = text;
             this.selectedClientGUID = clientGUID;
+
+            this.disableNewClientMode();
+
             return true;
         }
 
