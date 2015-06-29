@@ -17,46 +17,47 @@ namespace TogglDesktop.AutoCompletion.Implementation
             List<Toggl.AutocompleteItem> projects, List<Toggl.Model> clients, List<Toggl.Model> workspaces)
         {
             var workspaceLookup = workspaces.ToDictionary(w => w.ID);
-            var clientLookup = clients.ToDictionary(w => w.Name);
+            foreach (var client in clients)
+            {
+                Console.WriteLine(client.WID + " " + client.Name + " " + client.ID + " " + client.GUID);
+            }
+            var clientLookup = clients.GroupBy(c => c.WID).ToDictionary(
+                c => c.Key, cs => cs.ToDictionary(c => c.Name)
+                );
+
+            Func<Toggl.AutocompleteItem, Toggl.Model> getClientOfProject =
+                p =>
+                {
+                    Toggl.Model client = default(Toggl.Model);
+                    if (p.ClientLabel != null)
+                    {
+                        clientLookup[p.WorkspaceID].TryGetValue(p.ClientLabel, out client);
+                    }
+                    return client;
+                };
 
             // TODO: make sure this really is the default workspace
             var defaultWorkspaceID = workspaces[0].ID;
 
-
             // categorise by workspace and client
-            var list =
-                ((IAutoCompleteListItem)new NoProjectItem()).Prepend(
-            projects
-                .Where(p => p.ProjectID != 0) // TODO: get rid of these at an earlier stage (they are workspace entries which are not needed anymore)
-                .Select(p =>
-            {
-                Toggl.Model client = default(Toggl.Model);
-                ulong workspaceID = defaultWorkspaceID;
-                if (p.ClientLabel != null && clientLookup.TryGetValue(p.ClientLabel, out client))
-                {
-                    workspaceID = client.WID;
-                }
-                return new
-                {
-                    Project = p,
-                    Client = client,
-                    WorkspaceID = workspaceID
-                };
-            }).GroupBy(p => p.WorkspaceID)
-                .Select(ps => new WorkspaceCategory(
-                    workspaceLookup[ps.Key].Name,
-                    ps.GroupBy(p => p.Client.ID)
-                        .Select(c =>
-                        {
-                            var projectItems = c.Select(p2 => new ProjectItem(p2.Project));
-                            if (c.Key == 0)
-                                return projectItems;
-                            var clientName = c.First().Client.Name;
-                            return new ClientCategory(clientName, projectItems.Cast<IAutoCompleteListItem>().ToList()).Yield<IAutoCompleteListItem>();
-                        })
-                        .SelectMany(i => i).ToList()
-                    ))
-                ).ToList();
+            var list = ((IAutoCompleteListItem)new NoProjectItem())
+                .Prepend(projects
+                    .Where(p => p.ProjectID != 0) // TODO: get rid of these at an earlier stage (they are workspace entries which are not needed anymore)
+                    .GroupBy(p => p.WorkspaceID)
+                    .Select(ps => new WorkspaceCategory(
+                        workspaceLookup[ps.Key].Name,
+                        ps.GroupBy(p => getClientOfProject(p).ID)
+                            .Select(c =>
+                            {
+                                var projectItems = c.Select(p2 => new ProjectItem(p2));
+                                if (c.Key == 0)
+                                    return projectItems;
+                                var clientName = c.First().ClientLabel;
+                                return new ClientCategory(clientName, projectItems.Cast<IAutoCompleteListItem>().ToList()).Yield<IAutoCompleteListItem>();
+                            })
+                            .SelectMany(i => i).ToList()
+                        ))
+                    ).ToList();
 
             return new AutoCompleteController(list);
         }
