@@ -2808,8 +2808,7 @@ Project *Context::CreateProject(
         return nullptr;
     }
 
-    std::string trimmed_project_name = Poco::trim(project_name);
-    if (trimmed_project_name.empty()) {
+    if (project_name.empty()) {
         displayError("Project name must not be empty");
         return nullptr;
     }
@@ -2818,7 +2817,7 @@ Project *Context::CreateProject(
         workspace_id,
         client_id,
         client_guid,
-        trimmed_project_name,
+        project_name,
         is_private);
 
     error err = save();
@@ -2843,13 +2842,12 @@ Client *Context::CreateClient(
         return nullptr;
     }
 
-    std::string trimmed_client_name = Poco::trim(client_name);
-    if (trimmed_client_name.empty()) {
+	if (client_name.empty()) {
         displayError("Client name must not be empty");
         return nullptr;
     }
 
-    Client *result = user_->CreateClient(workspace_id, trimmed_client_name);
+    Client *result = user_->CreateClient(workspace_id, client_name);
 
     error err = save();
     if (err != noError) {
