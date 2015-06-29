@@ -46,20 +46,18 @@ class RelatedData {
     Workspace *WorkspaceByID(const Poco::UInt64 id) const;
     TimeEntry *TimeEntryByID(const Poco::UInt64 id) const;
 
-    std::vector<std::string> TagList() const;
-    std::vector<Workspace *> WorkspaceList() const;
-    std::vector<Client *> ClientList() const;
+    void TagList(std::vector<std::string> *) const;
+    void WorkspaceList(std::vector<Workspace *> *) const;
+    void ClientList(std::vector<Client *> *) const;
 
     TimeEntry *TimeEntryByGUID(const guid GUID) const;
     Tag *TagByGUID(const guid GUID) const;
     Project *ProjectByGUID(const guid GUID) const;
     Client *ClientByGUID(const guid GUID) const;
 
-    std::vector<AutocompleteItem> TimeEntryAutocompleteItems();
-
-    std::vector<AutocompleteItem> MinitimerAutocompleteItems();
-
-    std::vector<AutocompleteItem> ProjectAutocompleteItems();
+    void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
+    void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;
+    void ProjectAutocompleteItems(std::vector<AutocompleteItem> *) const;
 
     void ProjectLabelAndColorCode(
         const TimeEntry *te,
@@ -73,22 +71,22 @@ class RelatedData {
  private:
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list);
+        std::vector<AutocompleteItem> *list) const;
 
     void taskAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<AutocompleteItem> *list);
+        std::vector<AutocompleteItem> *list) const;
 
     void projectAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<AutocompleteItem> *list);
+        std::vector<AutocompleteItem> *list) const;
 
     void workspaceAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<AutocompleteItem> *list);
+        std::vector<AutocompleteItem> *list) const;
 };
 
 template<typename T>

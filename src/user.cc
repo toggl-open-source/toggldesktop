@@ -79,6 +79,7 @@ TimeEntry *User::Start(
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
     const std::string project_guid) {
+
     Stop();
 
     time_t now = time(0);
@@ -316,15 +317,15 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
-std::vector<TimeEntry *> User::Stop() {
-    std::vector<TimeEntry *> result;
+void User::Stop(std::vector<TimeEntry *> *stopped) {
     TimeEntry *te = RunningTimeEntry();
     while (te) {
-        result.push_back(te);
+        if (stopped) {
+            stopped->push_back(te);
+        }
         te->StopTracking();
         te = RunningTimeEntry();
     }
-    return result;
 }
 
 TimeEntry *User::DiscardTimeAt(
@@ -1272,6 +1273,17 @@ error User::EnableOfflineLogin(
         return ex;
     }
     return noError;
+}
+
+bool User::CanSeeBillable(
+    const Workspace *ws) const {
+    if (!HasPremiumWorkspaces()) {
+        return false;
+    }
+    if (ws && !ws->Premium()) {
+        return false;
+    }
+    return true;
 }
 
 template<class T>

@@ -146,7 +146,7 @@ class Context : public TimelineDatasource {
 
     error Logout();
 
-    error SetLoggedInUserFromJSON(const std::string user_data_json);
+    error SetLoggedInUserFromJSON(const std::string json);
 
     error ClearCache();
 
@@ -217,7 +217,7 @@ class Context : public TimelineDatasource {
         const std::string GUID,
         const Poco::Int64 at);
 
-    TimeEntry * RunningTimeEntry() const;
+    TimeEntry *RunningTimeEntry();
 
     error ToggleTimelineRecording(
         const bool record_timeline);
@@ -268,9 +268,9 @@ class Context : public TimelineDatasource {
     error DeleteAutotrackerRule(
         const Poco::Int64 id);
 
-    std::string UserFullName() const;
+    std::string UserFullName();
 
-    std::string UserEmail() const;
+    std::string UserEmail();
 
     // Timeline datasource
     error StartAutotrackerEvent(const TimelineEvent event);
@@ -335,7 +335,7 @@ class Context : public TimelineDatasource {
 
     Database *db() const;
 
-    std::vector<TimeEntry *> timeEntries(const bool including_running) const;
+    std::vector<TimeEntry *> timeEntries(const bool including_running);
 
     void displayTimerState();
     void displayTimeEntryEditor(const bool open,
@@ -351,7 +351,7 @@ class Context : public TimelineDatasource {
 
     void displayReminder();
 
-    Poco::Int64 totalDurationForDate(const TimeEntry *te) const;
+    Poco::Int64 totalDurationForDate(const TimeEntry *te);
 
     void updateUI(std::vector<ModelChange> *changes);
 
@@ -377,7 +377,7 @@ class Context : public TimelineDatasource {
 
     error downloadUpdate();
 
-    AutotrackerRule *findAutotrackerRule(const TimelineEvent event) const;
+    AutotrackerRule *findAutotrackerRule(const TimelineEvent event);
 
     void stopActivities();
 

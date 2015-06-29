@@ -337,6 +337,10 @@ void GUI::DisplayAutotrackerRules(
     const RelatedData &related,
     const std::set<std::string> &autotracker_titles) {
 
+    if (!on_display_autotracker_rules_) {
+        return;
+    }
+
     // FIXME: dont re-render if cached items (models or view) are the same
     TogglAutotrackerRuleView *first = nullptr;
     for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
@@ -364,25 +368,18 @@ void GUI::DisplayAutotrackerRules(
     }
     std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
 
-    displayAutotrackerRules(first, titles);
+    uint64_t title_count = titles.size();
+    char_t **title_list = new char_t *[title_count];
+    for (uint64_t i = 0; i < title_count; i++) {
+        title_list[i] = copy_string(titles[i]);
+    }
+    on_display_autotracker_rules_(first, title_count, title_list);
+    for (uint64_t i = 0; i < title_count; i++) {
+        free(title_list[i]);
+    }
+    delete[] title_list;
 
     autotracker_view_item_clear(first);
-}
-
-void GUI::displayAutotrackerRules(TogglAutotrackerRuleView *first,
-                                  const std::vector<std::string> &titles) {
-    if (on_display_autotracker_rules_) {
-        uint64_t title_count = titles.size();
-        char_t **title_list = new char_t *[title_count];
-        for (uint64_t i = 0; i < title_count; i++) {
-            title_list[i] = copy_string(titles[i]);
-        }
-        on_display_autotracker_rules_(first, title_count, title_list);
-        for (uint64_t i = 0; i < title_count; i++) {
-            free(title_list[i]);
-        }
-        delete[] title_list;
-    }
 }
 
 void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
@@ -430,7 +427,7 @@ void GUI::DisplayTimeEntryEditor(
     if (te->WID()) {
         ws = related.WorkspaceByID(te->WID());
     }
-    view->CanSeeBillable = canSeeBillable(user, ws);
+    view->CanSeeBillable = user->CanSeeBillable(ws);
     view->DefaultWID = user->DefaultWID();
     if (ws) {
         view->CanAddProjects = ws->Admin() ||
@@ -517,7 +514,7 @@ Poco::Logger &GUI::logger() const {
     return Poco::Logger::get("ui");
 }
 
-TogglTimeEntryView *GUI::timeEntryViewItem(
+TogglTimeEntryView *timeEntryViewItem(
     const RelatedData &related,
     const TimeEntry *te,
     const Poco::Int64 total_duration_for_date) {
@@ -553,18 +550,6 @@ TogglTimeEntryView *GUI::timeEntryViewItem(
                                      color,
                                      date_duration,
                                      true);
-}
-
-bool GUI::canSeeBillable(
-    const User *user,
-    const Workspace *ws) const {
-    if (!user->HasPremiumWorkspaces()) {
-        return false;
-    }
-    if (ws && !ws->Premium()) {
-        return false;
-    }
-    return true;
 }
 
 }  // namespace toggl

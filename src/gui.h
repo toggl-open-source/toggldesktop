@@ -239,19 +239,6 @@ class GUI : public SyncStateMonitor {
  private:
     error findMissingCallbacks();
 
-    void displayAutotrackerRules(
-        TogglAutotrackerRuleView *first,
-        const std::vector<std::string> &titles);
-
-    TogglTimeEntryView *timeEntryViewItem(
-        const RelatedData &related,
-        const TimeEntry *te,
-        const Poco::Int64 total_duration_for_date);
-
-    bool canSeeBillable(
-        const User *user,
-        const Workspace *ws) const;
-
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;
     TogglDisplayOnlineState on_display_online_state_;
@@ -278,6 +265,11 @@ class GUI : public SyncStateMonitor {
 
     Poco::Logger &logger() const;
 };
+
+TogglTimeEntryView *timeEntryViewItem(
+    const RelatedData &related,
+    const TimeEntry *te,
+    const Poco::Int64 total_duration_for_date);
 
 }  // namespace toggl
 

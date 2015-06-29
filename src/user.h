@@ -51,6 +51,9 @@ class User : public BaseModel {
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
 
+    bool CanSeeBillable(
+        const Workspace *ws) const;
+
     void SetLastTEDate(const std::string value);
 
     template<typename T>
@@ -74,7 +77,7 @@ class User : public BaseModel {
     toggl::error Continue(
         const std::string GUID);
 
-    std::vector<TimeEntry *> Stop();
+    void Stop(std::vector<TimeEntry *> *stopped = nullptr);
 
     // Discard time. Return a new time entry if
     // the discarded time was split into a new time entry

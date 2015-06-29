@@ -41,7 +41,7 @@ void RelatedData::Clear() {
 // Description - Task. Project. Client
 void RelatedData::timeEntryAutocompleteItems(
     std::set<std::string> *unique_names,
-    std::vector<AutocompleteItem> *list) {
+    std::vector<AutocompleteItem> *list) const {
 
     poco_check_ptr(list);
 
@@ -124,7 +124,7 @@ void RelatedData::timeEntryAutocompleteItems(
 void RelatedData::taskAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<AutocompleteItem> *list) {
+    std::vector<AutocompleteItem> *list) const {
 
     poco_check_ptr(list);
 
@@ -200,7 +200,7 @@ void RelatedData::taskAutocompleteItems(
 void RelatedData::projectAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<AutocompleteItem> *list) {
+    std::vector<AutocompleteItem> *list) const {
 
     poco_check_ptr(list);
 
@@ -249,39 +249,42 @@ void RelatedData::projectAutocompleteItems(
     }
 }
 
-std::vector<AutocompleteItem> RelatedData::TimeEntryAutocompleteItems() {
-    std::vector<AutocompleteItem> result;
+void RelatedData::TimeEntryAutocompleteItems(
+    std::vector<AutocompleteItem> *result) const {
     std::set<std::string> unique_names;
-    timeEntryAutocompleteItems(&unique_names, &result);
-    std::sort(result.begin(), result.end(), CompareAutocompleteItems);
-    return result;
+
+    timeEntryAutocompleteItems(&unique_names, result);
+    std::sort(result->begin(), result->end(), CompareAutocompleteItems);
 }
 
-std::vector<AutocompleteItem> RelatedData::MinitimerAutocompleteItems() {
-    std::vector<AutocompleteItem> result;
+void RelatedData::MinitimerAutocompleteItems(
+    std::vector<AutocompleteItem> *result) const {
     std::set<std::string> unique_names;
-    timeEntryAutocompleteItems(&unique_names, &result);
-    taskAutocompleteItems(&unique_names, 0, &result);
-    projectAutocompleteItems(&unique_names, 0, &result);
-    std::sort(result.begin(), result.end(), CompareAutocompleteItems);
-    return result;
+
+    timeEntryAutocompleteItems(&unique_names, result);
+    taskAutocompleteItems(&unique_names, nullptr, result);
+    projectAutocompleteItems(&unique_names, nullptr, result);
+
+    std::sort(result->begin(), result->end(), CompareAutocompleteItems);
 }
 
-std::vector<AutocompleteItem> RelatedData::ProjectAutocompleteItems() {
-    std::vector<AutocompleteItem> result;
+void RelatedData::ProjectAutocompleteItems(
+    std::vector<AutocompleteItem> *result) const {
     std::set<std::string> unique_names;
+
     std::map<Poco::UInt64, std::string> ws_names;
-    workspaceAutocompleteItems(&unique_names, &ws_names, &result);
-    projectAutocompleteItems(&unique_names, &ws_names, &result);
-    taskAutocompleteItems(&unique_names, &ws_names, &result);
-    std::sort(result.begin(), result.end(), CompareStructuredAutocompleteItems);
-    return result;
+    workspaceAutocompleteItems(&unique_names, &ws_names, result);
+    projectAutocompleteItems(&unique_names, &ws_names, result);
+    taskAutocompleteItems(&unique_names, &ws_names, result);
+
+    std::sort(result->begin(), result->end(),
+              CompareStructuredAutocompleteItems);
 }
 
 void RelatedData::workspaceAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<AutocompleteItem> *list) {
+    std::vector<AutocompleteItem> *list) const {
 
     // remember workspaces that have projects
     std::set<Poco::UInt64> ws_ids_with_projects;
@@ -316,9 +319,9 @@ void RelatedData::workspaceAutocompleteItems(
     }
 }
 
-std::vector<std::string> RelatedData::TagList() const {
-    std::vector<std::string> tags;
+void RelatedData::TagList(std::vector<std::string> *tags) const {
     std::set<std::string> unique_names;
+
     for (std::vector<Tag *>::const_iterator it =
         Tags.begin();
             it != Tags.end();
@@ -328,22 +331,22 @@ std::vector<std::string> RelatedData::TagList() const {
             continue;
         }
         unique_names.insert(tag->Name());
-        tags.push_back(tag->Name());
+        tags->push_back(tag->Name());
     }
-    std::sort(tags.rbegin(), tags.rend());
-    return tags;
+
+    std::sort(tags->rbegin(), tags->rend());
 }
 
-std::vector<Workspace *> RelatedData::WorkspaceList() const {
-    std::vector<Workspace *> result = Workspaces;
-    std::sort(result.rbegin(), result.rend(), CompareWorkspaceByName);
-    return result;
+void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
+    *result = Workspaces;
+
+    std::sort(result->rbegin(), result->rend(), CompareWorkspaceByName);
 }
 
-std::vector<Client *> RelatedData::ClientList() const {
-    std::vector<Client *> result = Clients;
-    std::sort(result.rbegin(), result.rend(), CompareClientByName);
-    return result;
+void RelatedData::ClientList(std::vector<Client *> *result) const {
+    *result = Clients;
+
+    std::sort(result->rbegin(), result->rend(), CompareClientByName);
 }
 
 void RelatedData::ProjectLabelAndColorCode(
