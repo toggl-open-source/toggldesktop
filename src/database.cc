@@ -162,7 +162,7 @@ error Database::DeleteUser(
         if (err != noError) {
             return err;
         }
-        err = deleteUserTimeline(model->ID());
+        err = deleteAllFromTableByUID("timeline_events", model->ID());
         if (err != noError) {
             return err;
         }
@@ -426,9 +426,10 @@ error Database::LoadWindowSettings(
     Poco::Int64 *window_y,
     Poco::Int64 *window_height,
     Poco::Int64 *window_width) {
-    Poco::Mutex::ScopedLock lock(session_m_);
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         poco_check_ptr(session_);
 
         Poco::Int64 x(0), y(0), height(0), width(0);
@@ -499,11 +500,11 @@ error Database::SetSettingsRemindTimes(
     const std::string &remind_starts,
     const std::string &remind_ends) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         *session_ << "update settings set "
                   "remind_starts = :remind_starts, "
                   "remind_ends = :remind_ends ",
@@ -1516,24 +1517,24 @@ error Database::saveModel(
     TimeEntry *model,
     std::vector<ModelChange> *changes) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(model);
-    poco_check_ptr(session_);
-    poco_check_ptr(changes);
-
-    // Time entries need to have a GUID,
-    // we expect it everywhere in the UI
-    model->EnsureGUID();
-    if (model->GUID().empty()) {
-        return error("Cannot save time entry without a GUID");
-    }
-
-    if (!model->NeedsToBeSaved()) {
-        return noError;
-    }
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+        poco_check_ptr(changes);
+
+        // Time entries need to have a GUID,
+        // we expect it everywhere in the UI
+        model->EnsureGUID();
+        if (model->GUID().empty()) {
+            return error("Cannot save time entry without a GUID");
+        }
+
+        if (!model->NeedsToBeSaved()) {
+            return noError;
+        }
+
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating time entry " + model->String()
@@ -1627,7 +1628,8 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().debug(ss.str());
             if (model->ID()) {
-                *session_ << "insert into time_entries(id, uid, description, "
+                *session_ <<
+                          "insert into time_entries(id, uid, description, "
                           "wid, guid, pid, tid, billable, "
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
@@ -1660,7 +1662,8 @@ error Database::saveModel(
                           useRef(model->ValidationError()),
                           now;
             } else {
-                *session_ << "insert into time_entries(uid, description, wid, "
+                *session_ <<
+                          "insert into time_entries(uid, description, wid, "
                           "guid, pid, tid, billable, "
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
@@ -1722,26 +1725,129 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
+    TimelineEvent *model,
+    std::vector<ModelChange> *changes) {
+
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+        poco_check_ptr(changes);
+
+        if (!model->NeedsToBeSaved()) {
+            return noError;
+        }
+
+        if (model->LocalID()) {
+            std::stringstream ss;
+            ss << "Updating timeline event " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger().debug(ss.str());
+
+            *session_ << "update timeline_events set "
+                      "uid = :uid, description = :description, wid = :wid, "
+                      "start_time = :start_time, end_time = :end_time "
+                      "deleted_at = :deleted_at, "
+                      "updated_at = :updated_at, "
+                      "where local_id = :local_id",
+                      useRef(model->UID()),
+                      useRef(model->Filename()),
+                      useRef(model->Title()),
+                      useRef(model->GUID()),
+                      useRef(model->UIModifiedAt()),
+                      useRef(model->DeletedAt()),
+                      useRef(model->UpdatedAt()),
+                      useRef(model->ValidationError()),
+                      useRef(model->LocalID()),
+                      now;
+
+            error err = last_error("update timeline event");
+            if (err != noError) {
+                return err;
+            }
+            if (model->DeletedAt()) {
+                changes->push_back(ModelChange(
+                    model->ModelName(), "delete", model->ID(), model->GUID()));
+            } else {
+                changes->push_back(ModelChange(
+                    model->ModelName(), "update", model->ID(), model->GUID()));
+            }
+        } else {
+            std::stringstream ss;
+            ss << "Inserting time entry " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger().debug(ss.str());
+
+            *session_ <<
+                      "insert into timeline_events(uid, filename, "
+                      "title, ui_modified_at, "
+                      "start_time, end_time, deleted_at, updated_at "
+                      ") values ("
+                      ":uid, :filename, "
+                      ":title, ::ui_modified_at, "
+                      ":start_time, :end_time, :deleted_at, :updated_at, "
+                      ")",
+                      useRef(model->UID()),
+                      useRef(model->Filename()),
+                      useRef(model->Title()),
+                      useRef(model->GUID()),
+                      useRef(model->UIModifiedAt()),
+                      useRef(model->DeletedAt()),
+                      useRef(model->UpdatedAt()),
+                      useRef(model->ValidationError()),
+                      now;
+        }
+        error err = last_error("insert timeline event");
+        if (err != noError) {
+            return err;
+        }
+        Poco::Int64 local_id(0);
+        *session_ <<
+                  "select last_insert_rowid()",
+                  into(local_id),
+                  now;
+        err = last_error("select last inserted timeline event ID");
+        if (err != noError) {
+            return err;
+        }
+        model->SetLocalID(local_id);
+        changes->push_back(ModelChange(
+            model->ModelName(), "insert", model->ID(), model->GUID()));
+
+        model->ClearDirty();
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Database::saveModel(
     AutotrackerRule *model,
     std::vector<ModelChange> *changes) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(model);
-    poco_check_ptr(session_);
-
-    if (model->LocalID() && !model->Dirty()) {
-        return noError;
-    }
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+
+        if (model->LocalID() && !model->Dirty()) {
+            return noError;
+        }
+
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating autotracker rule " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
 
-            *session_ << "update autotracker_settings set "
+            *session_ <<
+                      "update autotracker_settings set "
                       "uid = :uid, term = :term, pid = :pid "
                       "where local_id = :local_id",
                       useRef(model->UID()),
@@ -1806,16 +1912,17 @@ error Database::saveModel(
     Workspace *model,
     std::vector<ModelChange> *changes) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(model);
-    poco_check_ptr(session_);
-
-    if (model->LocalID() && !model->Dirty()) {
-        return noError;
-    }
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+
+        if (model->LocalID() && !model->Dirty()) {
+            return noError;
+        }
+
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating workspace " + model->String()
@@ -1891,26 +1998,26 @@ error Database::saveModel(
     Client *model,
     std::vector<ModelChange> *changes) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(model);
-    poco_check_ptr(session_);
-
-    // Generate GUID only for locally-created
-    // clients. User cannot update existing
-    // clients, so don't mess with their GUIDs
-    if (!model->ID()) {
-        model->EnsureGUID();
-        if (model->GUID().empty()) {
-            return error("Cannot save new cient without a GUID");
-        }
-    }
-
-    if (!model->NeedsToBeSaved()) {
-        return noError;
-    }
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+
+      // Generate GUID only for locally-created
+      // clients. User cannot update existing
+      // clients, so don't mess with their GUIDs
+      if (!model->ID()) {
+          model->EnsureGUID();
+          if (model->GUID().empty()) {
+              return error("Cannot save new cient without a GUID");
+          }
+      }
+
+      if (!model->NeedsToBeSaved()) {
+          return noError;
+      }
+
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating client " + model->String()
@@ -1953,7 +2060,8 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
             if (model->GUID().empty()) {
-                *session_ << "insert into clients(id, uid, name, wid) "
+                *session_ <<
+                          "insert into clients(id, uid, name, wid) "
                           "values(:id, :uid, :name, :wid)",
                           useRef(model->ID()),
                           useRef(model->UID()),
@@ -1961,14 +2069,15 @@ error Database::saveModel(
                           useRef(model->WID()),
                           now;
             } else {
-                *session_ << "insert into clients(id, uid, name, guid, wid) "
-                          "values(:id, :uid, :name, :guid, :wid)",
-                          useRef(model->ID()),
-                          useRef(model->UID()),
-                          useRef(model->Name()),
-                          useRef(model->GUID()),
-                          useRef(model->WID()),
-                          now;
+                *session_
+                        << "insert into clients(id, uid, name, guid, wid) "
+                        "values(:id, :uid, :name, :guid, :wid)",
+                        useRef(model->ID()),
+                        useRef(model->UID()),
+                        useRef(model->Name()),
+                        useRef(model->GUID()),
+                        useRef(model->WID()),
+                        now;
             }
             error err = last_error("saveClient");
             if (err != noError) {
@@ -2002,26 +2111,26 @@ error Database::saveModel(
     Project *model,
     std::vector<ModelChange> *changes) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(model);
-    poco_check_ptr(session_);
-
-    // Generate GUID only for locally-created
-    // projects. User cannot update existing
-    // projects, so don't mess with their GUIDs
-    if (!model->ID()) {
-        model->EnsureGUID();
-        if (model->GUID().empty()) {
-            return error("Cannot save project without a GUID");
-        }
-    }
-
-    if (!model->NeedsToBeSaved()) {
-        return noError;
-    }
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+
+        // Generate GUID only for locally-created
+        // projects. User cannot update existing
+        // projects, so don't mess with their GUIDs
+        if (!model->ID()) {
+            model->EnsureGUID();
+            if (model->GUID().empty()) {
+                return error("Cannot save project without a GUID");
+            }
+        }
+
+        if (!model->NeedsToBeSaved()) {
+            return noError;
+        }
+
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating project " + model->String()
@@ -2239,16 +2348,16 @@ error Database::saveModel(
     Task *model,
     std::vector<ModelChange> *changes) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(model);
-    poco_check_ptr(session_);
-
-    if (model->LocalID() && !model->Dirty()) {
-        return noError;
-    }
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+
+        if (model->LocalID() && !model->Dirty()) {
+            return noError;
+        }
+
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating task " + model->String()
@@ -2279,7 +2388,8 @@ error Database::saveModel(
             ss << "Inserting task " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
-            *session_ << "insert into tasks(id, uid, name, wid, pid, active) "
+            *session_ <<
+                      "insert into tasks(id, uid, name, wid, pid, active) "
                       "values(:id, :uid, :name, :wid, :pid, :active)",
                       useRef(model->ID()),
                       useRef(model->UID()),
@@ -2320,16 +2430,16 @@ error Database::saveModel(
     Tag *model,
     std::vector<ModelChange> *changes    ) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(model);
-    poco_check_ptr(session_);
-
-    if (model->LocalID() && !model->Dirty()) {
-        return noError;
-    }
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(model);
+        poco_check_ptr(session_);
+
+        if (model->LocalID() && !model->Dirty()) {
+            return noError;
+        }
+
         if (model->LocalID()) {
             std::stringstream ss;
             ss << "Updating tag " + model->String()
@@ -2372,7 +2482,8 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
             if (model->GUID().empty()) {
-                *session_ << "insert into tags(id, uid, name, wid) "
+                *session_ <<
+                          "insert into tags(id, uid, name, wid) "
                           "values(:id, :uid, :name, :wid)",
                           useRef(model->ID()),
                           useRef(model->UID()),
@@ -2380,7 +2491,8 @@ error Database::saveModel(
                           useRef(model->WID()),
                           now;
             } else {
-                *session_ << "insert into tags(id, uid, name, wid, guid) "
+                *session_ <<
+                          "insert into tags(id, uid, name, wid, guid) "
                           "values(:id, :uid, :name, :wid, :guid)",
                           useRef(model->ID()),
                           useRef(model->UID()),
@@ -2493,7 +2605,8 @@ error Database::SaveUser(
                 ss << "Inserting user " + user->String()
                    << " in thread " << Poco::Thread::currentTid();
                 logger().trace(ss.str());
-                *session_ << "insert into users("
+                *session_ <<
+                          "insert into users("
                           "id, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
                           "timeofday_format, duration_format, offline_data "
@@ -2651,10 +2764,20 @@ error Database::SaveUser(
             return err;
         }
 
-        // autotracker rules
+        // Autotracker rules
         err = saveRelatedModels(user->ID(),
                                 "autotracker_settings",
                                 &user->related.AutotrackerRules,
+                                changes);
+        if (err != noError) {
+            session_->rollback();
+            return err;
+        }
+
+        // Timeline events
+        err = saveRelatedModels(user->ID(),
+                                "timeline_events",
+                                &user->related.TimelineEvents,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3156,6 +3279,48 @@ error Database::migrateTimeline() {
         "timeline_events.uploaded",
         "alter table timeline_events"
         "   add column uploaded integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "timeline_events.local_id step #1",
+        "ALTER TABLE timeline_events RENAME TO tmp_timeline_events");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "timeline_events.local_id step #2",
+        "create table timeline_events("
+        "   local_id integer primary key, "
+        "   title varchar, "
+        "   filename varchar, "
+        "   uid integer not null, "
+        "   start_time INTEGER NOT NULL, "
+        "   end_time INTEGER, "
+        "   idle INTEGER NOT NULL, "
+        "   uploaded integer not null default 0, "
+        "   chunked integer not null default 0, "
+        "   constraint fk_timeline_events_uid foreign key (uid) "
+        "     references users(id) on delete no action on update no action"
+        ")");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "timeline_events.local_id step #3",
+        "insert into timeline_events"
+        " select id, title, filename"
+        " from tmp_timeline_events");
+    if (err != noError) {
+        return err;
+    }
+
+    err = migrate(
+        "timeline_events.local_id step #4",
+        "drop table tmp_timeline_events");
     if (err != noError) {
         return err;
     }
@@ -3737,16 +3902,16 @@ error Database::CurrentAPIToken(
     std::string *token,
     Poco::UInt64 *uid) {
 
-    poco_check_ptr(token);
-    poco_check_ptr(uid);
-
-    poco_check_ptr(session_);
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    *token = "";
-    *uid = 0;
-
     try {
+        poco_check_ptr(token);
+        poco_check_ptr(uid);
+
+        poco_check_ptr(session_);
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        *token = "";
+        *uid = 0;
+
         *session_ <<
                   "select api_token, uid "
                   " from sessions limit 1",
@@ -3765,11 +3930,11 @@ error Database::CurrentAPIToken(
 }
 
 error Database::ClearCurrentAPIToken() {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         *session_ << "delete from sessions", now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -3784,22 +3949,23 @@ error Database::ClearCurrentAPIToken() {
 error Database::SetCurrentAPIToken(
     const std::string &token,
     const Poco::UInt64 &uid) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    if (token.empty()) {
-        return error("cannot start session without API token");
-    }
-    if (!uid) {
-        return error("cannot start session without user ID");
-    }
-
-    poco_check_ptr(session_);
-
-    error err = ClearCurrentAPIToken();
-    if (err != noError) {
-        return err;
-    }
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        if (token.empty()) {
+            return error("cannot start session without API token");
+        }
+        if (!uid) {
+            return error("cannot start session without user ID");
+        }
+
+        poco_check_ptr(session_);
+
+        error err = ClearCurrentAPIToken();
+        if (err != noError) {
+            return err;
+        }
+
         *session_ <<
                   "insert into sessions(api_token, uid) "
                   " values(:api_token, :uid)",
@@ -3817,12 +3983,13 @@ error Database::SetCurrentAPIToken(
 }
 
 error Database::saveDesktopID() {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
-        *session_ << "INSERT INTO timeline_installation(desktop_id) "
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "INSERT INTO timeline_installation(desktop_id) "
                   "VALUES(:desktop_id)",
                   useRef(desktop_id_),
                   now;
@@ -3837,12 +4004,14 @@ error Database::saveDesktopID() {
 }
 
 error Database::saveAnalyticsClientID() {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
-        *session_ << "INSERT INTO analytics_settings(analytics_client_id) "
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+
+        *session_ <<
+                  "INSERT INTO analytics_settings(analytics_client_id) "
                   "VALUES(:analytics_client_id)",
                   useRef(analytics_client_id_),
                   now;
@@ -3860,9 +4029,6 @@ error Database::migrate(
     const std::string &name,
     const std::string sql) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
 
     if (name.empty()) {
         return error("Cannot run a migration without name");
@@ -3872,6 +4038,10 @@ error Database::migrate(
     }
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         int count = 0;
         *session_
                 << "select count(*) from kopsik_migrations where name=:name",
@@ -3898,7 +4068,8 @@ error Database::migrate(
             return err;
         }
 
-        *session_ << "insert into kopsik_migrations(name) values(:name)",
+        *session_ <<
+                  "insert into kopsik_migrations(name) values(:name)",
                   useRef(name),
                   now;
         err = last_error("migrate");
@@ -3918,15 +4089,16 @@ error Database::migrate(
 error Database::execute(
     const std::string sql) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
 
     if (sql.empty()) {
         return error("Cannot execute empty SQL");
     }
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         *session_ << sql, now;
         error err = last_error("execute");
         if (err != noError) {
@@ -3945,10 +4117,6 @@ error Database::execute(
 error Database::deleteTooOldTimeline(
     const Poco::UInt64 &UID) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     if (!UID) {
         return error("Cannot delete old timeline without UID");
     }
@@ -3956,6 +4124,11 @@ error Database::deleteTooOldTimeline(
     time_t minimum_time = time(0) - kTimelineSecondsToKeep;
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+
         *session_ << "delete from timeline_events "
                   "where user_id = :uid "
                   "and start_time < :minimum_time",
@@ -3970,32 +4143,6 @@ error Database::deleteTooOldTimeline(
         return ex;
     }
     return last_error("deleteTooOldTimeline");
-}
-
-error Database::deleteUserTimeline(
-    const Poco::UInt64 &UID) {
-
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
-    if (!UID) {
-        return error("Cannot delete timeline without UID");
-    }
-
-    try {
-        *session_ << "delete from timeline_events "
-                  "where user_id = :uid",
-                  useRef(UID),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("deleteUserTimeline");
 }
 
 error Database::CreateCompressedTimelineBatchForUpload(
@@ -4116,9 +4263,10 @@ error Database::selectUnompressedTimelineEvents(
         logger().debug(s.str());
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT id, title, filename, start_time, end_time, idle, "
@@ -4170,9 +4318,8 @@ error Database::selectCompressedTimelineBatchForUpload(
     out << "selectCompressedTimelineBatchForUpload user_id = " << user_id;
     logger().debug(out.str());
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT id, title, filename, start_time, end_time, idle, "
@@ -4217,9 +4364,9 @@ error Database::LoadCompressedTimeline(
         return noError;
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT id, title, filename, start_time, end_time, idle, "
@@ -4304,7 +4451,8 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
     Poco::Int64 start_time(event->StartTime());
     Poco::Int64 end_time(event->EndTime());
 
-    *session_ << "INSERT INTO timeline_events("
+    *session_ <<
+              "INSERT INTO timeline_events("
               "user_id, title, filename, start_time, end_time, idle, "
               "chunked, uploaded"
               ") VALUES ("
@@ -4391,16 +4539,16 @@ error Database::String(
     const std::string sql,
     std::string *result) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-    poco_check_ptr(result);
-
     if (sql.empty()) {
         return error("Cannot select from database with empty SQL");
     }
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+        poco_check_ptr(result);
+
         std::string value("");
         *session_ << sql,
         into(value),
@@ -4420,16 +4568,17 @@ error Database::UInt(
     const std::string sql,
     Poco::UInt64 *result) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-    poco_check_ptr(result);
 
     if (sql.empty()) {
         return error("Cannot select a numeric from database with empty SQL");
     }
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+        poco_check_ptr(result);
+
         Poco::UInt64 value(0);
         *session_ << sql,
         into(value),

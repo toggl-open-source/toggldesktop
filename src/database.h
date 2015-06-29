@@ -293,6 +293,10 @@ class Database {
         TimeEntry *model,
         std::vector<ModelChange> *changes);
 
+    error saveModel(
+        TimelineEvent *model,
+        std::vector<ModelChange> *changes);
+
     error saveDesktopID();
     error saveAnalyticsClientID();
 
