@@ -4020,40 +4020,40 @@ error Database::CreateCompressedTimelineBatchForUpload(
             i != uncompressed.end();
             ++i) {
         TimelineEvent &event = *i;
-        poco_assert(!event.chunked);
+        poco_assert(!event.Chunked());
 
         time_t chunk_start_time =
-            (event.start_time / kTimelineChunkSeconds) * kTimelineChunkSeconds;
+            (event.StartTime() / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
         std::stringstream ss;
-        ss << event.filename;
+        ss << event.Filename();
         ss << "::";
-        ss << event.title;
+        ss << event.Title();
         ss << "::";
-        ss << event.idle;
+        ss << event.Idle();
         ss << "::";
         ss << chunk_start_time;
         std::string key = ss.str();
 
-        time_t duration = event.end_time - event.start_time;
+        time_t duration = event.EndTime() - event.StartTime();
         if (duration < 0) {
             duration = 0;
         }
 
         if (compressed.find(key) == compressed.end()) {
             TimelineEvent chunk;
-            chunk.user_id = user_id;
-            chunk.start_time = event.start_time;
-            chunk.end_time = chunk.start_time + duration;
-            chunk.filename = event.filename;
-            chunk.title = event.title;
-            chunk.idle = event.idle;
-            chunk.chunked = true;
-            chunk.uploaded = false;
+            chunk.SetUID(user_id);
+            chunk.SetStartTime(event.StartTime());
+            chunk.SetEndTime(chunk.StartTime() + duration);
+            chunk.SetFilename(event.Filename());
+            chunk.SetTitle(event.Title());
+            chunk.SetIdle(event.Idle());
+            chunk.SetChunked(true);
+            chunk.SetUploaded(false);
             compressed[key] = chunk;
         } else {
             TimelineEvent chunk = compressed[key];
-            chunk.end_time = chunk.end_time + duration;
+            chunk.SetEndTime(chunk.EndTime() + duration);
             compressed[key] = chunk;
         }
     }
@@ -4063,7 +4063,7 @@ error Database::CreateCompressedTimelineBatchForUpload(
             i != compressed.end();
             ++i) {
         TimelineEvent &event = i->second;
-        poco_assert(event.chunked);
+        poco_assert(event.Chunked());
         err = InsertTimelineEvent(&event);
         if (err != noError) {
             return err;
@@ -4251,21 +4251,21 @@ void populateTimelineEvents(
         bool more = rs.moveFirst();
         while (more) {
             TimelineEvent event;
-            event.id = rs[0].convert<unsigned int>();
+            event.SetID(rs[0].convert<unsigned int>());
             if (!rs[1].isEmpty()) {
-                event.title = rs[1].convert<std::string>();
+                event.SetTitle(rs[1].convert<std::string>());
             }
             if (!rs[2].isEmpty()) {
-                event.filename = rs[2].convert<std::string>();
+                event.SetFilename(rs[2].convert<std::string>());
             }
-            event.start_time = rs[3].convert<int>();
+            event.SetStartTime(rs[3].convert<int>());
             if (!rs[4].isEmpty()) {
-                event.end_time = rs[4].convert<int>();
+                event.SetEndTime(rs[4].convert<int>());
             }
-            event.idle = rs[5].convert<bool>();
-            event.user_id = static_cast<unsigned int>(user_id);
-            event.chunked = rs[6].convert<bool>();
-            event.uploaded = rs[7].convert<bool>();
+            event.SetIdle(rs[5].convert<bool>());
+            event.SetUID(static_cast<unsigned int>(user_id));
+            event.SetChunked(rs[6].convert<bool>());
+            event.SetUploaded(rs[7].convert<bool>());
             timeline_events->push_back(event);
             more = rs.moveNext();
         }
@@ -4277,22 +4277,22 @@ const int kMaxTimelineStringSize = 300;
 error Database::InsertTimelineEvent(TimelineEvent *event) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
-    if (event->filename.length() > kMaxTimelineStringSize) {
-        event->filename = event->filename.substr(0, kMaxTimelineStringSize);
+    if (event->Filename().length() > kMaxTimelineStringSize) {
+        event->SetFilename(event->Filename().substr(0, kMaxTimelineStringSize));
     }
-    if (event->title.length() > kMaxTimelineStringSize) {
-        event->title = event->title.substr(0, kMaxTimelineStringSize);
+    if (event->Title().length() > kMaxTimelineStringSize) {
+        event->SetTitle(event->Title().substr(0, kMaxTimelineStringSize));
     }
 
     logger().debug(event->String());
 
-    if (!event->user_id) {
+    if (!event->UID()) {
         return error("Cannot save timeline event without an user ID");
     }
-    if (!event->start_time) {
+    if (!event->StartTime()) {
         return error("Cannot save timeline event without start time");
     }
-    if (!event->end_time) {
+    if (!event->EndTime()) {
         return error("Cannot save timeline event without end time");
     }
 
@@ -4301,8 +4301,8 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
         return noError;
     }
 
-    Poco::Int64 start_time(event->start_time);
-    Poco::Int64 end_time(event->end_time);
+    Poco::Int64 start_time(event->StartTime());
+    Poco::Int64 end_time(event->EndTime());
 
     *session_ << "INSERT INTO timeline_events("
               "user_id, title, filename, start_time, end_time, idle, "
@@ -4311,14 +4311,14 @@ error Database::InsertTimelineEvent(TimelineEvent *event) {
               ":user_id, :title, :filename, :start_time, :end_time, :idle, "
               ":chunked, :uploaded"
               ")",
-              useRef(event->user_id),
-              useRef(event->title),
-              useRef(event->filename),
+              useRef(event->UID()),
+              useRef(event->Title()),
+              useRef(event->Filename()),
               useRef(start_time),
               useRef(end_time),
-              useRef(event->idle),
-              useRef(event->chunked),
-              useRef(event->uploaded),
+              useRef(event->Idle()),
+              useRef(event->Chunked()),
+              useRef(event->Uploaded()),
               now;
     return last_error("InsertTimelineEvent");
 }
@@ -4346,7 +4346,7 @@ error Database::MarkTimelineBatchAsUploaded(
             i != timeline_events.end();
             ++i) {
         const TimelineEvent &event = *i;
-        ids.push_back(event.id);
+        ids.push_back(event.ID());
     }
 
     *session_ << "UPDATE timeline_events SET uploaded = 1 WHERE id = :id",
@@ -4378,7 +4378,7 @@ error Database::DeleteTimelineBatch(
             i != timeline_events.end();
             ++i) {
         const TimelineEvent &event = *i;
-        ids.push_back(event.id);
+        ids.push_back(event.ID());
     }
 
     *session_ << "DELETE FROM timeline_events WHERE id = :id",

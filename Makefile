@@ -419,6 +419,9 @@ build/analytics.o: src/analytics.cc
 build/urls.o: src/urls.cc
 	$(cxx) $(cflags) -c src/urls.cc -o build/urls.o
 
+build/timeline_event.o: src/timeline_event.cc
+	$(cxx) $(cflags) -c src/timeline_event.cc -o build/timeline_event.o
+
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
@@ -482,6 +485,7 @@ objects: build/jsoncpp.o \
 	build/autotracker.o \
 	build/settings.o \
 	build/urls.o \
+	build/timeline_event.o \
 	build/context.o \
 	build/toggl_api_private.o \
 	build/toggl_api.o \

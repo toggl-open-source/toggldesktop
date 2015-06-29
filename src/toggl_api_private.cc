@@ -18,12 +18,12 @@
 TogglTimelineEventView *timeline_event_init(
     const toggl::TimelineEvent ev) {
     TogglTimelineEventView *result = new TogglTimelineEventView();
-    result->ID = static_cast<unsigned int>(ev.id);
-    result->Title = copy_string(ev.title);
-    result->Filename = copy_string(ev.filename);
-    result->StartTime = static_cast<unsigned int>(ev.start_time);
-    result->EndTime = static_cast<unsigned int>(ev.start_time);
-    result->Idle = ev.idle;
+    result->ID = static_cast<unsigned int>(ev.ID());
+    result->Title = copy_string(ev.Title());
+    result->Filename = copy_string(ev.Filename());
+    result->StartTime = static_cast<unsigned int>(ev.StartTime());
+    result->EndTime = static_cast<unsigned int>(ev.EndTime());
+    result->Idle = ev.Idle();
     result->Next = nullptr;
     return result;
 }
