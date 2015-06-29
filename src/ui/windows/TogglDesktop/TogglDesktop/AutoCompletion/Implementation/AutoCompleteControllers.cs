@@ -36,9 +36,6 @@ namespace TogglDesktop.AutoCompletion.Implementation
                     return client;
                 };
 
-            // TODO: make sure this really is the default workspace
-            var defaultWorkspaceID = workspaces[0].ID;
-
             // categorise by workspace and client
             var list = ((IAutoCompleteListItem)new NoProjectItem())
                 .Prepend(projects
