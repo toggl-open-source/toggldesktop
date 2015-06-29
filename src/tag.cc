@@ -4,6 +4,8 @@
 
 #include <sstream>
 
+#include "./const.h"
+
 namespace toggl {
 
 std::string Tag::String() const {
@@ -37,6 +39,14 @@ void Tag::LoadFromJSON(Json::Value data) {
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
     SetWID(data["wid"].asUInt64());
+}
+
+std::string Tag::ModelName() const {
+    return kModelTag;
+}
+
+std::string Tag::ModelURL() const {
+    return "/api/v8/tags";
 }
 
 }   // namespace toggl

@@ -11,7 +11,6 @@
 #include "Poco/Types.h"
 
 #include "./base_model.h"
-#include "./const.h"
 
 namespace toggl {
 
@@ -31,9 +30,8 @@ class TimelineEvent  : public BaseModel {
 
     virtual ~TimelineEvent() {}
 
-    void SetTitle(const std::string value) {
-        title = value;
-    }
+    void SetTitle(const std::string value);
+
 
     Poco::Int64 id;
     Poco::UInt64 user_id;
@@ -47,25 +45,9 @@ class TimelineEvent  : public BaseModel {
 
     // Override BaseModel
 
-    std::string String() const {
-        std::stringstream ss;
-        ss << start_time
-           << ";"
-           << end_time
-           << ";"
-           << filename
-           << ";"
-           << title;
-        return ss.str();
-    }
-
-    std::string ModelName() const {
-        return kModelTimelineEvent;
-    }
-
-    std::string ModelURL() const {
-        return "";
-    }
+    std::string String() const;
+    std::string ModelName() const;
+    std::string ModelURL() const;
 };
 
 }  // namespace toggl

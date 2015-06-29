@@ -52,4 +52,13 @@ void Workspace::LoadFromJSON(Json::Value n) {
     SetAdmin(n["admin"].asBool());
 }
 
+std::string Workspace::ModelName() const {
+    return kModelWorkspace;
+}
+
+std::string Workspace::ModelURL() const {
+    return "/api/v8/workspaces";
+}
+
+
 }   // namespace toggl

@@ -1286,6 +1286,15 @@ bool User::CanSeeBillable(
     return true;
 }
 
+std::string User::ModelName() const {
+    return kModelUser;
+}
+
+std::string User::ModelURL() const {
+    return "/api/v8/me";
+}
+
+
 template<class T>
 void deleteZombies(
     const std::vector<T> &list,

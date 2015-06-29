@@ -472,4 +472,12 @@ void TimeEntry::loadTagsFromJSON(Json::Value list) {
     }
 }
 
+std::string TimeEntry::ModelName() const {
+    return kModelTimeEntry;
+}
+
+std::string TimeEntry::ModelURL() const {
+    return "/api/v8/time_entries";
+}
+
 }   // namespace toggl

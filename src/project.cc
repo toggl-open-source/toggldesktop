@@ -172,4 +172,12 @@ bool Project::ResolveError(const toggl::error err) {
     return false;
 }
 
+std::string Project::ModelName() const {
+    return kModelProject;
+}
+
+std::string Project::ModelURL() const {
+    return "/api/v8/projects";
+}
+
 }   // namespace toggl

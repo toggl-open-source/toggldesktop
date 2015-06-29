@@ -21,8 +21,6 @@ class Workspace : public BaseModel {
     , only_admins_may_create_projects_(false)
     , admin_(false) {}
 
-    std::string String() const;
-
     const std::string &Name() const {
         return name_;
     }
@@ -43,14 +41,10 @@ class Workspace : public BaseModel {
     }
     void SetAdmin(const bool);
 
-    std::string ModelName() const {
-        return kModelWorkspace;
-    }
-
-    std::string ModelURL() const {
-        return "/api/v8/workspaces";
-    }
-
+    // Override BaseModel
+    std::string String() const;
+    std::string ModelName() const;
+    std::string ModelURL() const;
     void LoadFromJSON(Json::Value value);
 
  private:

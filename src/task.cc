@@ -52,4 +52,12 @@ void Task::LoadFromJSON(Json::Value data) {
     SetActive(data["active"].asBool());
 }
 
+std::string Task::ModelName() const {
+    return kModelTask;
+}
+
+std::string Task::ModelURL() const {
+    return "/api/v8/tasks";
+}
+
 }   // namespace toggl

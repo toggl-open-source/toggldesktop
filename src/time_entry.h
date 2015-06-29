@@ -97,24 +97,12 @@ class TimeEntry : public BaseModel {
 
     void DiscardAt(const Poco::UInt64);
 
-    std::string String() const;
-
     bool IsToday() const;
 
     const std::string &ProjectGUID() const {
         return project_guid_;
     }
     void SetProjectGUID(const std::string);
-
-    std::string ModelName() const {
-        return kModelTimeEntry;
-    }
-    std::string ModelURL() const {
-        return "/api/v8/time_entries";
-    }
-
-    void LoadFromJSON(Json::Value value);
-    Json::Value SaveToJSON() const;
 
     // User-triggered changes to timer:
     void SetDurationUserInput(const std::string);
@@ -127,8 +115,15 @@ class TimeEntry : public BaseModel {
 
     void StopTracking();
 
+    // Override BaseModel
+    std::string ModelName() const;
+    std::string ModelURL() const;
+    std::string String() const;
     virtual bool ResolveError(const error err);
+    void LoadFromJSON(Json::Value value);
+    Json::Value SaveToJSON() const;
 
+ public:
     static Poco::UInt64 AbsDuration(const Poco::Int64 value);
 
  private:

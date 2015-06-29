@@ -28,15 +28,10 @@ class Tag : public BaseModel {
     }
     void SetName(const std::string value);
 
+    // Override BaseModel
     std::string String() const;
-
-    std::string ModelName() const {
-        return "tag";
-    }
-    std::string ModelURL() const {
-        return "/api/v8/tags";
-    }
-
+    std::string ModelName() const;
+    std::string ModelURL() const;
     void LoadFromJSON(Json::Value data);
 
  private:
