@@ -10,20 +10,26 @@
 
 #include "Poco/Types.h"
 
+#include "./base_model.h"
+#include "./const.h"
+
 namespace toggl {
 
-class TimelineEvent {
+class TimelineEvent  : public BaseModel {
  public:
-    TimelineEvent() :
-    id(0),
-    user_id(0),
-    title(""),
-    filename(""),
-    start_time(0),
-    end_time(0),
-    idle(false),
-    chunked(false),
-    uploaded(false) {}
+    TimelineEvent()
+        : BaseModel()
+    , id(0)
+    , user_id(0)
+    , title("")
+    , filename("")
+    , start_time(0)
+    , end_time(0)
+    , idle(false)
+    , chunked(false)
+    , uploaded(false) {}
+
+    virtual ~TimelineEvent() {}
 
     void SetTitle(const std::string value) {
         title = value;
@@ -39,6 +45,8 @@ class TimelineEvent {
     bool chunked;
     bool uploaded;
 
+    // Override BaseModel
+
     std::string String() const {
         std::stringstream ss;
         ss << start_time
@@ -49,6 +57,14 @@ class TimelineEvent {
            << ";"
            << title;
         return ss.str();
+    }
+
+    std::string ModelName() const {
+        return kModelTimelineEvent;
+    }
+
+    std::string ModelURL() const {
+        return "";
     }
 };
 

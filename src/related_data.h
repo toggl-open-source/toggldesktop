@@ -19,6 +19,7 @@ class Project;
 class Tag;
 class Task;
 class TimeEntry;
+class TimelineEvent;
 class Workspace;
 
 template<typename T>
@@ -36,6 +37,7 @@ class RelatedData {
     std::vector<Tag *> Tags;
     std::vector<TimeEntry *> TimeEntries;
     std::vector<AutotrackerRule *> AutotrackerRules;
+    std::vector<TimelineEvent *> TimelineEvents;
 
     void Clear();
 

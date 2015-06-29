@@ -78,6 +78,7 @@
 #define kModelWorkspace "workspace"
 #define kModelTimeEntry "time_entry"
 #define kModelAutotrackerRule "autotracker_rule"
+#define kModelTimelineEvent "timeline_event"
 
 #define kPromotionJoinBetaChannel 1
 

@@ -9,8 +9,8 @@
 
 #include "Poco/Types.h"
 
-#include "./timeline_event.h"
 #include "./base_model.h"
+#include "./timeline_event.h"
 
 namespace toggl {
 
@@ -31,6 +31,7 @@ class AutotrackerRule : public BaseModel {
     const Poco::UInt64 &PID() const;
     void SetPID(const Poco::UInt64 value);
 
+    // Override BaseModel
     std::string String() const;
     std::string ModelName() const;
     std::string ModelURL() const;

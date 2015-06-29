@@ -35,6 +35,7 @@ void RelatedData::Clear() {
     clearList(&Tags);
     clearList(&TimeEntries);
     clearList(&AutotrackerRules);
+    clearList(&TimelineEvents);
 }
 
 // Add time entries, in format:

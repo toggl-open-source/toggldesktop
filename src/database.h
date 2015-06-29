@@ -242,6 +242,10 @@ class Database {
         const Poco::UInt64 &UID,
         std::vector<TimeEntry *> *list);
 
+    error loadTimelineEvents(
+        const Poco::UInt64 &UID,
+        std::vector<TimelineEvent *> *list);
+
     error loadTimeEntriesFromSQLStatement(
         Poco::Data::Statement *select,
         std::vector<TimeEntry *> *list);
@@ -315,7 +319,7 @@ class Database {
     std::string analytics_client_id_;
 };
 
-void loadTimelineEvents(
+void populateTimelineEvents(
     const Poco::UInt64 &user_id,
     Poco::Data::Statement *select,
     std::vector<TimelineEvent> *timeline_events);

@@ -174,9 +174,6 @@ error Database::deleteAllFromTableByUID(
     const std::string table_name,
     const Poco::Int64 &UID) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
 
     if (!UID) {
         return error("Cannot delete user data without user ID");
@@ -186,6 +183,10 @@ error Database::deleteAllFromTableByUID(
     }
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         *session_ << "delete from " + table_name + " where uid = :uid",
                   useRef(UID),
                   now;
@@ -200,12 +201,12 @@ error Database::deleteAllFromTableByUID(
 }
 
 error Database::journalMode(std::string *mode) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-    poco_check_ptr(mode);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+        poco_check_ptr(mode);
+
         *session_ << "PRAGMA journal_mode",
                   into(*mode),
                   now;
@@ -224,10 +225,11 @@ error Database::setJournalMode(const std::string mode) {
         return error("Cannot set journal mode without a mode");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-    poco_check_ptr(session_);
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
+
         *session_ << "PRAGMA journal_mode=" << mode,
                   now;
     } catch(const Poco::Exception& exc) {
@@ -241,10 +243,10 @@ error Database::setJournalMode(const std::string mode) {
 }
 
 error Database::vacuum() {
-    Poco::Mutex::ScopedLock lock(session_m_);
-    poco_check_ptr(session_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
+
         *session_ << "VACUUM;" << now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -268,12 +270,10 @@ error Database::deleteFromTable(
         return error("Cannot delete from table without table name");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-    poco_check_ptr(session_);
-
     if (!local_id) {
         return noError;
     }
+
 
     std::stringstream ss;
     ss << "Deleting from table " << table_name
@@ -281,6 +281,10 @@ error Database::deleteFromTable(
     logger().debug(ss.str());
 
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
+
+
         *session_ << "delete from " + table_name +
                   " where local_id = :local_id",
                   useRef(local_id),
@@ -335,12 +339,13 @@ error Database::LoadCurrentUser(User *user) {
 }
 
 error Database::LoadSettings(Settings *settings) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
-        *session_ << "select use_idle_detection, menubar_timer, "
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "select use_idle_detection, menubar_timer, "
                   "menubar_project, dock_icon, on_top, reminder,  "
                   "idle_minutes, focus_on_shortcut, reminder_minutes, "
                   "manual_mode, autodetect_proxy, "
@@ -390,11 +395,11 @@ error Database::SaveWindowSettings(
     const Poco::Int64 window_height,
     const Poco::Int64 window_width) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         *session_ << "update settings set "
                   "window_x = :window_x, "
                   "window_y = :window_y, "
@@ -423,12 +428,13 @@ error Database::LoadWindowSettings(
     Poco::Int64 *window_width) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
-    poco_check_ptr(session_);
-
-    Poco::Int64 x(0), y(0), height(0), width(0);
-
     try {
-        *session_ << "select window_x, window_y, window_height, window_width "
+        poco_check_ptr(session_);
+
+        Poco::Int64 x(0), y(0), height(0), width(0);
+
+        *session_ <<
+                  "select window_x, window_y, window_height, window_width "
                   "from settings limit 1",
                   into(x),
                   into(y),
@@ -455,16 +461,17 @@ error Database::LoadProxySettings(
     bool *use_proxy,
     Proxy *proxy) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-    poco_check_ptr(use_proxy);
-    poco_check_ptr(proxy);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+        poco_check_ptr(use_proxy);
+        poco_check_ptr(proxy);
+
         std::string host(""), username(""), password("");
         Poco::UInt64 port(0);
-        *session_ << "select use_proxy, proxy_host, proxy_port, "
+        *session_ <<
+                  "select use_proxy, proxy_host, proxy_port, "
                   "proxy_username, proxy_password "
                   "from settings limit 1",
                   into(*use_proxy),
@@ -523,11 +530,11 @@ error Database::SetSettingsRemindDays(
     const bool &remind_sat,
     const bool &remind_sun) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         *session_ << "update settings set "
                   "remind_mon = :remind_mon, "
                   "remind_tue = :remind_tue, "
@@ -618,11 +625,13 @@ template<typename T>
 error Database::setSettingsValue(
     const std::string field_name,
     const T &value) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
 
     try {
+        poco_check_ptr(session_);
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+
         *session_ << "update settings set " + field_name + " = :" + field_name,
                   useRef(value),
                   now;
@@ -649,11 +658,11 @@ error Database::SaveProxySettings(
     const bool &use_proxy,
     const Proxy &proxy) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         *session_ << "update settings set "
                   "use_proxy = :use_proxy, "
                   "proxy_host = :proxy_host, "
@@ -679,13 +688,14 @@ error Database::SaveProxySettings(
 error Database::LoadUpdateChannel(
     std::string *update_channel) {
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-    poco_check_ptr(update_channel);
-
     try {
-        *session_ << "select update_channel from settings limit 1",
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+        poco_check_ptr(update_channel);
+
+        *session_ <<
+                  "select update_channel from settings limit 1",
                   into(*update_channel),
                   limit(1),
                   now;
@@ -719,17 +729,19 @@ error Database::LoadUserByEmail(
         return error("Cannot load user by email token without an email");
     }
 
-    poco_check_ptr(model);
-
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     Poco::UInt64 uid(0);
-    model->SetEmail(email);
 
     try {
-        *session_ << "select id from users"
+        poco_check_ptr(model);
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        model->SetEmail(email);
+
+        *session_ <<
+                  "select id from users"
                   " where email = :email"
                   " limit 1",
                   into(uid),
@@ -789,6 +801,11 @@ error Database::loadUsersRelatedData(User *user) {
         return err;
     }
 
+    err = loadTimelineEvents(user->ID(), &user->related.TimelineEvents);
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -800,16 +817,16 @@ error Database::LoadUserByID(
         return error("Cannot load user by ID without an ID");
     }
 
-    poco_check_ptr(user);
-
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(session_);
-
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
     try {
+        poco_check_ptr(user);
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
         Poco::Int64 local_id(0);
         Poco::UInt64 id(0);
         Poco::UInt64 default_wid(0);
@@ -891,13 +908,13 @@ error Database::loadWorkspaces(
         return error("Cannot load user workspaces without an user ID");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
     try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT local_id, id, uid, name, premium, "
@@ -946,15 +963,16 @@ error Database::loadClients(
         return error("Cannot load user clients without an user ID");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
     try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, id, uid, name, guid, wid "
+        select <<
+               "SELECT local_id, id, uid, name, guid, wid "
                "FROM clients "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -1007,15 +1025,16 @@ error Database::loadProjects(
         return error("Cannot load user projects without an user ID");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
     try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, id, uid, name, guid, wid, color, cid, "
+        select <<
+               "SELECT local_id, id, uid, name, guid, wid, color, cid, "
                "active, billable, client_guid "
                "FROM projects "
                "WHERE uid = :uid "
@@ -1085,15 +1104,16 @@ error Database::loadTasks(
         return error("Cannot load user tasks without an user ID");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
     try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, id, uid, name, wid, pid, active "
+        select <<
+               "SELECT local_id, id, uid, name, wid, pid, active "
                "FROM tasks "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -1146,15 +1166,16 @@ error Database::loadTags(
         return error("Cannot load user tags without an user ID");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
     try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, id, uid, name, wid, guid "
+        select <<
+               "SELECT local_id, id, uid, name, wid, guid "
                "FROM tags "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -1206,15 +1227,16 @@ error Database::loadAutotrackerRules(
         return error("Cannot load autotracker rules without an user ID");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
     try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, uid, term, pid "
+        select <<
+               "SELECT local_id, uid, term, pid "
                "FROM autotracker_settings "
                "WHERE uid = :uid "
                "ORDER BY term DESC",
@@ -1248,6 +1270,43 @@ error Database::loadAutotrackerRules(
     return last_error("loadAutotrackerRules");
 }
 
+error Database::loadTimelineEvents(
+    const Poco::UInt64 &UID,
+    std::vector<TimelineEvent *> *list) {
+
+    if (!UID) {
+        return error("Cannot load user timeline without an user ID");
+    }
+
+    try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        Poco::Data::Statement select(*session_);
+        select <<
+               "SELECT id, title, filename, start_time, end_time, idle, "
+               "chunked, uploaded "
+               "FROM timeline_events "
+               "WHERE user_id = :user_id",
+               useRef(UID);
+        error err = last_error("loadTimelineEvents");
+        if (err != noError) {
+            return err;
+        }
+        // FIXME: populateTimelineEvents(UID, &select, list);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
 error Database::loadTimeEntries(
     const Poco::UInt64 &UID,
     std::vector<TimeEntry *> *list) {
@@ -1256,15 +1315,16 @@ error Database::loadTimeEntries(
         return error("Cannot load user time entries without an user ID");
     }
 
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    poco_check_ptr(list);
-
-    list->clear();
-
     try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
         Poco::Data::Statement select(*session_);
-        select << "SELECT local_id, id, uid, description, wid, guid, pid, "
+        select <<
+               "SELECT local_id, id, uid, description, wid, guid, pid, "
                "tid, billable, duronly, ui_modified_at, start, stop, "
                "duration, tags, created_with, deleted_at, updated_at, "
                "project_guid, validation_error "
@@ -1638,7 +1698,8 @@ error Database::saveModel(
                 return err;
             }
             Poco::Int64 local_id(0);
-            *session_ << "select last_insert_rowid()",
+            *session_ <<
+                      "select last_insert_rowid()",
                       into(local_id),
                       now;
             err = last_error("saveTimeEntry");
@@ -1717,7 +1778,8 @@ error Database::saveModel(
                 return err;
             }
             Poco::Int64 local_id(0);
-            *session_ << "select last_insert_rowid()",
+            *session_ <<
+                      "select last_insert_rowid()",
                       into(local_id),
                       now;
             err = last_error("saveAutotrackerRule");
@@ -1802,7 +1864,8 @@ error Database::saveModel(
                 return err;
             }
             Poco::Int64 local_id(0);
-            *session_ << "select last_insert_rowid()",
+            *session_ <<
+                      "select last_insert_rowid()",
                       into(local_id),
                       now;
             err = last_error("saveWorkspace");
@@ -1912,7 +1975,8 @@ error Database::saveModel(
                 return err;
             }
             Poco::Int64 local_id(0);
-            *session_ << "select last_insert_rowid()",
+            *session_ <<
+                      "select last_insert_rowid()",
                       into(local_id),
                       now;
             err = last_error("saveClient");
@@ -2148,7 +2212,8 @@ error Database::saveModel(
                 return err;
             }
             Poco::Int64 local_id(0);
-            *session_ << "select last_insert_rowid()",
+            *session_ <<
+                      "select last_insert_rowid()",
                       into(local_id),
                       now;
             err = last_error("saveProject");
@@ -2228,7 +2293,8 @@ error Database::saveModel(
                 return err;
             }
             Poco::Int64 local_id(0);
-            *session_ << "select last_insert_rowid()",
+            *session_ <<
+                      "select last_insert_rowid()",
                       into(local_id),
                       now;
             err = last_error("saveTask");
@@ -2328,7 +2394,8 @@ error Database::saveModel(
                 return err;
             }
             Poco::Int64 local_id(0);
-            *session_ << "select last_insert_rowid()",
+            *session_ <<
+                      "select last_insert_rowid()",
                       into(local_id),
                       now;
             err = last_error("saveTag");
@@ -2453,7 +2520,8 @@ error Database::SaveUser(
                     return err;
                 }
                 Poco::Int64 local_id(0);
-                *session_ << "select last_insert_rowid()",
+                *session_ <<
+                          "select last_insert_rowid()",
                           into(local_id),
                           now;
                 err = last_error("SaveUser");
@@ -3805,10 +3873,11 @@ error Database::migrate(
 
     try {
         int count = 0;
-        *session_ << "select count(*) from kopsik_migrations where name=:name",
-                  into(count),
-                  useRef(name),
-                  now;
+        *session_
+                << "select count(*) from kopsik_migrations where name=:name",
+                into(count),
+                useRef(name),
+                now;
         error err = last_error("migrate");
         if (err != noError) {
             return err;
@@ -4061,7 +4130,7 @@ error Database::selectUnompressedTimelineEvents(
                "AND NOT chunked ",
                useRef(user_id),
                useRef(chunk_up_to);
-        loadTimelineEvents(user_id, &select, timeline_events);
+        populateTimelineEvents(user_id, &select, timeline_events);
 
         {
             std::stringstream s;
@@ -4114,7 +4183,7 @@ error Database::selectCompressedTimelineBatchForUpload(
                "AND chunked "
                "LIMIT 100",
                useRef(user_id);
-        loadTimelineEvents(user_id, &select, timeline_events);
+        populateTimelineEvents(user_id, &select, timeline_events);
 
         std::stringstream event_count;
         event_count << "selectCompressedTimelineBatchForUpload found "
@@ -4159,7 +4228,7 @@ error Database::LoadCompressedTimeline(
                "WHERE user_id = :user_id "
                "AND chunked ",
                useRef(user_id);
-        loadTimelineEvents(user_id, &select, timeline_events);
+        populateTimelineEvents(user_id, &select, timeline_events);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -4170,7 +4239,7 @@ error Database::LoadCompressedTimeline(
     return last_error("LoadCompressedTimeline");
 }
 
-void loadTimelineEvents(
+void populateTimelineEvents(
     const Poco::UInt64 &user_id,
     Poco::Data::Statement *select,
     std::vector<TimelineEvent> *timeline_events) {
