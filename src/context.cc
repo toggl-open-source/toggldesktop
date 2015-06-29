@@ -23,7 +23,6 @@
 #include "./settings.h"
 #include "./time_entry.h"
 #include "./timeline_uploader.h"
-#include "./toggl_api_private.h"
 #include "./urls.h"
 #include "./window_change_recorder.h"
 #include "./workspace.h"
@@ -1959,6 +1958,7 @@ Poco::Int64 Context::totalDurationForDate(const TimeEntry *match) const {
 }
 
 void Context::DisplayTimeEntryList(const bool open) {
+    Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
         logger().warning("Cannot view time entries, user logged out");
         return;
@@ -1969,71 +1969,11 @@ void Context::DisplayTimeEntryList(const bool open) {
 
     std::vector<TimeEntry *> list = timeEntries(true);
 
-    // Calculate total duration for each date: will be displayed in date header
-    std::map<std::string, Poco::Int64> date_durations;
-    for (unsigned int i = 0; i < list.size(); i++) {
-        TimeEntry *te = list.at(i);
-
-        std::string date_header = te->DateHeaderString();
-        Poco::Int64 duration = date_durations[date_header];
-        duration += TimeEntry::AbsDuration(te->DurationInSeconds());
-        date_durations[date_header] = duration;
-    }
-
-    TogglTimeEntryView *first = nullptr;
-    for (unsigned int i = 0; i < list.size(); i++) {
-        TimeEntry *te = list.at(i);
-
-        if (te->DurationInSeconds() < 0) {
-            // Don't display running entries
-            continue;
-        }
-
-        std::string workspace_name("");
-        std::string project_and_task_label("");
-        std::string task_label("");
-        std::string project_label("");
-        std::string client_label("");
-        std::string color("");
-        user_->related.ProjectLabelAndColorCode(te,
-                                                &workspace_name,
-                                                &project_and_task_label,
-                                                &task_label,
-                                                &project_label,
-                                                &client_label,
-                                                &color);
-
-        Poco::Int64 duration = date_durations[te->DateHeaderString()];
-        std::string date_duration =
-            Formatter::FormatDurationForDateHeader(duration);
-
-        TogglTimeEntryView *item =
-            time_entry_view_item_init(te,
-                                      workspace_name,
-                                      project_and_task_label,
-                                      task_label,
-                                      project_label,
-                                      client_label,
-                                      color,
-                                      date_duration,
-                                      false);
-        item->Next = first;
-        if (first && compare_string(item->DateHeader, first->DateHeader) != 0) {
-            first->IsHeader = true;
-        }
-        first = item;
-    }
-
-    if (first) {
-        first->IsHeader = true;
-    }
-
     if (open) {
         time_entry_editor_guid_ = "";
     }
 
-    UI()->DisplayTimeEntryList(open, first);
-    time_entry_view_item_clear(first);
+    UI()->DisplayTimeEntryList(open, user_->related, list);
 
     last_time_entry_list_render_at_ = Poco::LocalDateTime();
 
