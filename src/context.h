@@ -335,7 +335,8 @@ class Context : public TimelineDatasource {
 
     Database *db() const;
 
-    std::vector<TimeEntry *> timeEntries(const bool including_running);
+    void timeEntries(
+        std::vector<TimeEntry *> *result);
 
     void displayTimerState();
     void displayTimeEntryEditor(const bool open,
