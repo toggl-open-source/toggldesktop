@@ -1,3 +1,4 @@
+
 // Copyright 2014 Toggl Desktop developers
 
 // No exceptions should be thrown from this class.
@@ -178,47 +179,54 @@ void Context::Shutdown() {
 }
 
 error Context::StartEvents() {
-    logger().debug("StartEvents");
+    try {
+        logger().debug("StartEvents");
 
-    if (user_) {
-        return displayError("Cannot start UI, user already logged in!");
+        if (user_) {
+            return displayError("Cannot start UI, user already logged in!");
+        }
+
+        if (HTTPSClient::Config.CACertPath.empty()) {
+            return displayError("Missing CA cert bundle path!");
+        }
+
+        // Check that UI is wired up
+        error err = UI()->VerifyCallbacks();
+        if (err != noError) {
+            logger().error(err);
+            std::cerr << err << std::endl;
+            std::cout << err << std::endl;
+            return displayError("UI is not properly wired up!");
+        }
+
+        err = DisplaySettings();
+        if (err != noError) {
+            return displayError(err);
+        }
+
+        // See if user was logged in into app previously
+        User *user = new User();
+        err = db()->LoadCurrentUser(user);
+        if (err != noError) {
+            delete user;
+            setUser(nullptr);
+            return displayError(err);
+        }
+        if (!user->ID()) {
+            delete user;
+            setUser(nullptr);
+            return noError;
+        }
+        setUser(user);
+
+        displayUI();
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
     }
-
-    if (HTTPSClient::Config.CACertPath.empty()) {
-        return displayError("Missing CA cert bundle path!");
-    }
-
-    // Check that UI is wired up
-    error err = UI()->VerifyCallbacks();
-    if (err != noError) {
-        logger().error(err);
-        std::cerr << err << std::endl;
-        std::cout << err << std::endl;
-        return displayError("UI is not properly wired up!");
-    }
-
-    err = DisplaySettings();
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    // See if user was logged in into app previously
-    User *user = new User();
-    err = db()->LoadCurrentUser(user);
-    if (err != noError) {
-        delete user;
-        setUser(nullptr);
-        return displayError(err);
-    }
-    if (!user->ID()) {
-        delete user;
-        setUser(nullptr);
-        return noError;
-    }
-    setUser(user);
-
-    displayUI();
-
     return noError;
 }
 
@@ -235,44 +243,39 @@ void Context::displayUI() {
 
 error Context::save(const bool push_changes) {
     logger().debug("save");
+    try {
+        std::vector<ModelChange> changes;
+        error err = db()->SaveUser(user_, true, &changes);
+        if (err != noError) {
+            return err;
+        }
+        updateUI(&changes);
 
-	try {
-		std::vector<ModelChange> changes;
-		error err = db()->SaveUser(user_, true, &changes);
-		if (err != noError) {
-			return err;
-		}
+        if (push_changes) {
+            pushChanges();
+        }
 
-		updateUI(&changes);
-
-		if (push_changes) {
-			pushChanges();
-		}
-
-		// Display number of unsynced time entries
-		Poco::Int64 count(0);
-		if (user_) {
-			for (std::vector<TimeEntry *>::const_iterator it =
-				user_->related.TimeEntries.begin();
-					it != user_->related.TimeEntries.end(); it++) {
-				TimeEntry *te = *it;
-				if (te->NeedsPush()) {
-					count++;
-				}
-			}
-		}
-		UI()->DisplayUnsyncedItems(count);
-	}
-	catch (const Poco::Exception& exc) {
-		return exc.displayText();
-	}
-	catch (const std::exception& ex) {
-		return ex.what();
-	}
-	catch (const std::string& ex) {
-		return ex;
-	}
-	return noError;
+        // Display number of unsynced time entries
+        Poco::Int64 count(0);
+        if (user_) {
+            for (std::vector<TimeEntry *>::const_iterator it =
+                user_->related.TimeEntries.begin();
+                    it != user_->related.TimeEntries.end(); it++) {
+                TimeEntry *te = *it;
+                if (te->NeedsPush()) {
+                    count++;
+                }
+            }
+        }
+        UI()->DisplayUnsyncedItems(count);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
 }
 
 void Context::updateUI(std::vector<ModelChange> *changes) {
@@ -2804,13 +2807,19 @@ Project *Context::CreateProject(
         displayError("Please select a workspace");
         return nullptr;
     }
-    if (project_name.empty()) {
+
+    std::string trimmed_project_name = Poco::trim(project_name);
+    if (trimmed_project_name.empty()) {
         displayError("Project name must not be empty");
         return nullptr;
     }
 
     Project *result = user_->CreateProject(
-        workspace_id, client_id, client_guid, project_name, is_private);
+        workspace_id,
+        client_id,
+        client_guid,
+        trimmed_project_name,
+        is_private);
 
     error err = save();
     if (err != noError) {
@@ -2833,12 +2842,14 @@ Client *Context::CreateClient(
         displayError("Please select a workspace");
         return nullptr;
     }
-    if (client_name.empty()) {
+
+    std::string trimmed_client_name = Poco::trim(client_name);
+    if (trimmed_client_name.empty()) {
         displayError("Client name must not be empty");
         return nullptr;
     }
 
-    Client *result = user_->CreateClient(workspace_id, client_name);
+    Client *result = user_->CreateClient(workspace_id, trimmed_client_name);
 
     error err = save();
     if (err != noError) {

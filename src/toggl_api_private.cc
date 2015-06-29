@@ -9,10 +9,44 @@
 #include "./formatter.h"
 #include "./project.h"
 #include "./time_entry.h"
+#include "./timeline_event.h"
 #include "./workspace.h"
 
 #include "Poco/Logger.h"
 #include "Poco/UnicodeConverter.h"
+
+TogglTimelineEventView *timeline_event_init(
+    const toggl::TimelineEvent ev) {
+    TogglTimelineEventView *result = new TogglTimelineEventView();
+    result->ID = static_cast<unsigned int>(ev.id);
+    result->Title = copy_string(ev.title);
+    result->Filename = copy_string(ev.filename);
+    result->StartTime = static_cast<unsigned int>(ev.start_time);
+    result->EndTime = static_cast<unsigned int>(ev.start_time);
+    result->Idle = ev.idle;
+    result->Next = nullptr;
+    return result;
+}
+
+void timeline_event_clear(TogglTimelineEventView *view) {
+    if (!view) {
+        return;
+    }
+
+    free(view->Title);
+    view->Title = nullptr;
+
+    free(view->Filename);
+    view->Filename = nullptr;
+
+    if (view->Next) {
+        TogglTimelineEventView *next =
+            reinterpret_cast<TogglTimelineEventView *>(view->Next);
+        timeline_event_clear(next);
+    }
+
+    delete view;
+}
 
 TogglAutocompleteView *autocomplete_item_init(
     const toggl::AutocompleteItem item) {
@@ -24,8 +58,9 @@ TogglAutocompleteView *autocomplete_item_init(
     result->ProjectLabel = copy_string(item.ProjectLabel);
     result->ClientLabel = copy_string(item.ClientLabel);
     result->ProjectColor = copy_string(item.ProjectColor);
-    result->ProjectID = static_cast<unsigned int>(item.ProjectID);
     result->TaskID = static_cast<unsigned int>(item.TaskID);
+    result->ProjectID = static_cast<unsigned int>(item.ProjectID);
+    result->WorkspaceID = static_cast<unsigned int>(item.WorkspaceID);
     result->Type = static_cast<unsigned int>(item.Type);
     result->Next = nullptr;
     return result;

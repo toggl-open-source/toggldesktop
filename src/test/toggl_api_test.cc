@@ -865,7 +865,7 @@ TEST(toggl_api, toggl_create_project) {
 
     uint64_t wid = 0;
     uint64_t cid = 0;
-    std::string project_name("");
+    std::string project_name("    ");
     bool_t is_private = false;
 
     testing::testresult::error = "";
@@ -916,7 +916,7 @@ TEST(toggl_api, toggl_create_client) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     uint64_t wid = 0;
-    std::string client_name("");
+    std::string client_name("        ");
 
     testing::testresult::error = "";
     char_t *res = toggl_create_client(app.ctx(),

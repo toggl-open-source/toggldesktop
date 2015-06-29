@@ -83,6 +83,7 @@ extern "C" {
         char_t *ProjectColor;
         uint64_t TaskID;
         uint64_t ProjectID;
+        uint64_t WorkspaceID;
         uint64_t Type;
         void *Next;
     } TogglAutocompleteView;
@@ -133,6 +134,16 @@ extern "C" {
         char_t *ProjectName;
         void *Next;
     } TogglAutotrackerRuleView;
+
+    typedef struct {
+        int64_t ID;
+        char_t *Title;
+        char_t *Filename;
+        uint64_t StartTime;
+        uint64_t EndTime;
+        bool_t Idle;
+        void *Next;
+    } TogglTimelineEventView;
 
     // Callbacks that need to be implemented in UI
 

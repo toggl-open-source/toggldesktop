@@ -113,6 +113,7 @@ void RelatedData::timeEntryAutocompleteItems(
             autocomplete_item.TaskID = t->ID();
             autocomplete_item.TaskLabel = t->Name();
         }
+        autocomplete_item.WorkspaceID = te->WID();
         autocomplete_item.Type = kAutocompleteItemTE;
         list->push_back(autocomplete_item);
     }
@@ -188,6 +189,7 @@ void RelatedData::taskAutocompleteItems(
         if (ws_names) {
             autocomplete_item.WorkspaceName = (*ws_names)[t->WID()];
         }
+        autocomplete_item.WorkspaceID = t->WID();
         autocomplete_item.Type = kAutocompleteItemTask;
         list->push_back(autocomplete_item);
     }
@@ -241,6 +243,7 @@ void RelatedData::projectAutocompleteItems(
         if (ws_names) {
             autocomplete_item.WorkspaceName = (*ws_names)[p->WID()];
         }
+        autocomplete_item.WorkspaceID = p->WID();
         autocomplete_item.Type = kAutocompleteItemProject;
         list->push_back(autocomplete_item);
     }
@@ -307,6 +310,7 @@ void RelatedData::workspaceAutocompleteItems(
         AutocompleteItem autocomplete_item;
         autocomplete_item.Text = ws_name;
         autocomplete_item.WorkspaceName = ws_name;
+        autocomplete_item.WorkspaceID = ws->ID();
         autocomplete_item.Type = kAutocompleteItemWorkspace;
         list->push_back(autocomplete_item);
     }

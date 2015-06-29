@@ -10,6 +10,8 @@
 
 #include "Poco/Types.h"
 
+namespace toggl {
+
 class TimelineEvent {
  public:
     TimelineEvent() :
@@ -49,5 +51,7 @@ class TimelineEvent {
         return ss.str();
     }
 };
+
+}  // namespace toggl
 
 #endif  // SRC_TIMELINE_EVENT_H_

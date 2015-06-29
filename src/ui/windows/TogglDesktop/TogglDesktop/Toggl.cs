@@ -25,6 +25,7 @@ public static class Toggl
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
+    public static string Env = "production";
 
     // Models
 
@@ -98,9 +99,10 @@ public static class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         public string ClientLabel;
         [MarshalAs(UnmanagedType.LPWStr)]
-        public string Project;
+        public string ProjectColor;
         public UInt64 TaskID;
         public UInt64 ProjectID;
+        public UInt64 WorkspaceID;
         public UInt64 Type;
         public IntPtr Next;
 
@@ -1212,6 +1214,11 @@ public static class Toggl
                 DatabasePath = args[i + 1];
                 Console.WriteLine("DatabasePath = {0}", DatabasePath);
             }
+            else if (args[i].Contains("environment"))
+            {
+                Env = args[i + 1];
+                Console.WriteLine("Environment = {0}", Env);
+            }
         }
     }
 
@@ -1327,7 +1334,7 @@ public static class Toggl
 
         ctx = toggl_context_init("windows_native_app", version);
 
-        toggl_set_environment(ctx, "production");
+        toggl_set_environment(ctx, Env);
 
         string cacert_path = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory,

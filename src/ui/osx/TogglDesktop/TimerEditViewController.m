@@ -440,6 +440,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	// User has selected a autocomplete item.
 	// It could be a time entry, a task or a project.
+	self.time_entry.WorkspaceID = item.WorkspaceID;
 	self.time_entry.ProjectID = item.ProjectID;
 	self.time_entry.TaskID = item.TaskID;
 	self.time_entry.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
