@@ -39,7 +39,14 @@ namespace TogglDesktop.AutoCompletion.Implementation
                     .GroupBy(p => p.WorkspaceID)
                     .Select(ps => new WorkspaceCategory(
                         workspaceLookup[ps.Key].Name,
-                        ps.GroupBy(p => getClientOfProject(p).ID)
+                        ps.Where(p =>
+                            {
+                                var knownWorkspace = workspaceLookup.ContainsKey(p.WorkspaceID);
+                                if(!knownWorkspace)
+                                    Console.WriteLine("Autocomplete contains project({0}) with unknown workspace({1}).", p.ProjectID, p.WorkspaceID);
+                                return knownWorkspace;
+                            })
+                            .GroupBy(p => getClientOfProject(p).ID)
                             .Select(c =>
                             {
                                 var projectItems = c.Select(p2 => new ProjectItem(p2));
