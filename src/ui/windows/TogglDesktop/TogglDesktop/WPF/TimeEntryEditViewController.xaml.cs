@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -679,7 +680,7 @@ namespace TogglDesktop.WPF
         {
             var clientGUID = Toggl.CreateClient(this.selectedWorkspaceId, text);
 
-            Console.WriteLine("client guid: " + (clientGUID == null));
+            Console.WriteLine("client guid: " + (clientGUID ?? "null"));
 
             if (string.IsNullOrEmpty(clientGUID))
                 return false;

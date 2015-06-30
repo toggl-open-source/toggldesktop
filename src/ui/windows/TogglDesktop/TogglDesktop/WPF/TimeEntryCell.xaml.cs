@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -80,7 +82,6 @@ namespace TogglDesktop.WPF
             }
 
             updateToolTips(item);
-
         }
 
         private void updateToolTips(Toggl.TimeEntry item)

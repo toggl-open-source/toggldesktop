@@ -1,6 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
@@ -95,7 +98,7 @@ namespace TogglDesktop.WPF
 
         private void addTag(string tag)
         {
-            var element = new Tag(tag);
+            var element = TogglDesktop.WPF.Tag.Make(tag);
 
             this.tags.Add(tag, element);
 
@@ -122,12 +125,17 @@ namespace TogglDesktop.WPF
 
             this.panel.Children.Remove(element);
             this.tags.Remove(tag);
+            element.Dispose();
             return true;
         }
 
         public void Clear(bool clearTextBox = true)
         {
             this.panel.Children.RemoveRange(0, this.panel.Children.Count - 1);
+            foreach (var tag in this.tags.Values)
+            {
+                tag.Dispose();
+            }
             this.tags.Clear();
             if (clearTextBox)
                 this.textBox.SetText("");

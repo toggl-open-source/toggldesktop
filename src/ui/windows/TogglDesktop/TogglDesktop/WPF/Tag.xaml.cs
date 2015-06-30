@@ -25,6 +25,23 @@ namespace TogglDesktop.WPF
             InitializeComponent();
         }
 
+        # region cached creation
+
+        public static Tag Make(string text)
+        {
+            var tag = StaticObjectPool<Tag>.PopOrDefault() ?? new Tag();
+            tag.Text = text;
+            return tag;
+        }
+
+        public void Dispose()
+        {
+            this.RemoveClicked = null;
+            StaticObjectPool<Tag>.Push(this);
+        }
+
+        #endregion
+
         #region dependency properties
 
         public static readonly DependencyProperty TextProperty = DependencyProperty

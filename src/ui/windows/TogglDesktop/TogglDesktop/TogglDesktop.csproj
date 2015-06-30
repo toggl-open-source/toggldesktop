@@ -213,6 +213,7 @@
       <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
     </Compile>
     <Compile Include="LinqExtensions.cs" />
+    <Compile Include="StaticObjectPool.cs" />
     <Compile Include="WPF\AutoComplete\EntryBase.cs" />
     <Compile Include="WPF\AutoComplete\ClientCategory.xaml.cs">
       <DependentUpon>ClientCategory.xaml</DependentUpon>

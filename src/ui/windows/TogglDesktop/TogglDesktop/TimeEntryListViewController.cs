@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Threading;
@@ -100,7 +101,6 @@ public partial class TimeEntryListViewController : UserControl
         entriesHost.Invalidate();
 
         entries.RefreshHighLight();
-
     }
 
     void OnLogin(bool open, UInt64 user_id)
