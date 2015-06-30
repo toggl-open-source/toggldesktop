@@ -24,11 +24,14 @@ namespace TogglDesktop.AutoCompletion.Implementation
             Func<Toggl.AutocompleteItem, Toggl.Model> getClientOfProject =
                 p =>
                 {
-                    Toggl.Model client = default(Toggl.Model);
-                    if (p.ClientLabel != null)
-                    {
-                        clientLookup[p.WorkspaceID].TryGetValue(p.ClientLabel, out client);
-                    }
+                    var client = default(Toggl.Model);
+                    if (p.ClientLabel == null)
+                        return client;
+
+                    Dictionary<string, Toggl.Model> clientDictionary;
+                    if (clientLookup.TryGetValue(p.WorkspaceID, out clientDictionary))
+                        clientDictionary.TryGetValue(p.ClientLabel, out client);
+
                     return client;
                 };
 
