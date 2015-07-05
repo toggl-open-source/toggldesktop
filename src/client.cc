@@ -9,6 +9,14 @@
 
 namespace toggl {
 
+std::string Client::ModelName() const {
+    return kModelClient;
+}
+
+std::string Client::ModelURL() const {
+    return "/api/v8/clients";
+}
+
 std::string Client::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()

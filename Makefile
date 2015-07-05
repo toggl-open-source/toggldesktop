@@ -395,6 +395,9 @@ build/formatter.o: src/formatter.cc
 build/model_change.o: src/model_change.cc
 	$(cxx) $(cflags) -c src/model_change.cc -o build/model_change.o
 
+build/migrations.o: src/migrations.cc
+	$(cxx) $(cflags) -c src/migrations.cc -o build/migrations.o
+
 build/database.o: src/database.cc
 	$(cxx) $(cflags) -c src/database.cc -o build/database.o
 
@@ -459,6 +462,7 @@ build/test/gtest-all.o: $(GTEST_ROOT)/src/gtest-all.cc
 	$(cxx) $(cflags) -c $(GTEST_ROOT)/src/gtest-all.cc -o build/test/gtest-all.o
 
 objects: build/jsoncpp.o \
+	build/related_data.o \
 	build/proxy.o \
 	build/netconf.o \
 	build/https_client.o \
@@ -471,7 +475,6 @@ objects: build/jsoncpp.o \
 	build/task.o \
 	build/time_entry.o \
 	build/tag.o \
-	build/related_data.o \
 	build/batch_update_result.o \
 	build/formatter.o \
 	build/model_change.o \
@@ -486,6 +489,7 @@ objects: build/jsoncpp.o \
 	build/settings.o \
 	build/urls.o \
 	build/timeline_event.o \
+	build/migrations.o \
 	build/context.o \
 	build/toggl_api_private.o \
 	build/toggl_api.o \

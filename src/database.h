@@ -26,6 +26,7 @@ class Session;
 class Statement;
 }
 }
+
 namespace toggl {
 
 class AutotrackerRule;
@@ -148,31 +149,21 @@ class Database {
         const Poco::UInt64 &uid);
     error ClearCurrentAPIToken();
 
-    error CreateCompressedTimelineBatchForUpload(
-        const Poco::UInt64 &user_id,
-        std::vector<TimelineEvent> *timeline_events);
-
     static std::string GenerateGUID();
 
     std::string DesktopID() const {
         return desktop_id_;
     }
+    error EnsureDesktopID();
 
     std::string AnalyticsClientID() const {
         return analytics_client_id_;
     }
+    error EnsureAnalyticsClientID();
 
-    error InsertTimelineEvent(TimelineEvent *info);
-
-    error MarkTimelineBatchAsUploaded(
-        const std::vector<TimelineEvent> &timeline_events);
-
-    error DeleteTimelineBatch(
-        const std::vector<TimelineEvent> &timeline_events);
-
-    error LoadCompressedTimeline(
-        const Poco::UInt64 &user_id,
-        std::vector<TimelineEvent> *timeline_events);
+    error Migrate(
+        const std::string &name,
+        const std::string sql);
 
  private:
     error vacuum();
@@ -180,23 +171,6 @@ class Database {
     error initialize_tables();
 
     error ensureMigrationTable();
-
-    error migrate(
-        const std::string &name,
-        const std::string sql);
-
-    error migrateSettings();
-    error migrateTimeEntries();
-    error migrateUsers();
-    error migrateTimeline();
-    error migrateAnalytics();
-    error migrateProjects();
-    error migrateWorkspaces();
-    error migrateSessions();
-    error migrateTags();
-    error migrateTasks();
-    error migrateClients();
-    error migrateAutotracker();
 
     template<typename T>
     error setSettingsValue(
@@ -310,10 +284,6 @@ class Database {
         const Poco::UInt64 &user_id,
         std::vector<TimelineEvent> *timeline_events);
 
-    error selectUnompressedTimelineEvents(
-        const Poco::UInt64 &user_id,
-        std::vector<TimelineEvent> *timeline_events);
-
     Poco::Logger &logger() const;
 
     Poco::Mutex session_m_;
@@ -322,11 +292,6 @@ class Database {
     std::string desktop_id_;
     std::string analytics_client_id_;
 };
-
-void populateTimelineEvents(
-    const Poco::UInt64 &user_id,
-    Poco::Data::Statement *select,
-    std::vector<TimelineEvent> *timeline_events);
 
 }  // namespace toggl
 

@@ -171,6 +171,11 @@ class User : public BaseModel {
 
     error SetAPITokenFromOfflineData(const std::string password);
 
+    void MarkTimelineBatchAsUploaded(
+        const std::vector<TimelineEvent> &events);
+    void CompressTimeline();
+    std::vector<TimelineEvent> CompressedTimeline() const;
+
     static error UserID(
         const std::string json_data_string,
         Poco::UInt64 *result);

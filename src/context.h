@@ -384,6 +384,8 @@ class Context : public TimelineDatasource {
 
     error offerBetaChannel();
 
+    error compressTimeline();
+
     Poco::Mutex db_m_;
     Database *db_;
 
@@ -438,8 +440,6 @@ class Context : public TimelineDatasource {
     Analytics analytics_;
 
     std::string update_path_;
-
-    bool im_a_teapot_;
 
     static std::string log_path_;
 

@@ -33,20 +33,13 @@ class Client : public BaseModel {
     }
     void SetName(const std::string value);
 
+    // Override BaseModel
     std::string String() const;
-
-    std::string ModelName() const {
-        return kModelClient;
-    }
-    std::string ModelURL() const {
-        return "/api/v8/clients";
-    }
-
+    std::string ModelName() const;
+    std::string ModelURL() const;
     void LoadFromJSON(Json::Value value);
     Json::Value SaveToJSON() const;
-
     bool ResolveError(const toggl::error);
-
     bool ResourceCannotBeCreated(const toggl::error) const;
 
  private:

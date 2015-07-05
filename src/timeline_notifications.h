@@ -40,8 +40,8 @@ class TimelineBatch {
     std::vector<TimelineEvent> &Events() {
         return events_;
     }
-    void SetEvents(std::vector<TimelineEvent> *value) {
-        events_ = *value;
+    void SetEvents(const std::vector<TimelineEvent> value) {
+        events_ = value;
     }
 
     std::string &DesktopID() {

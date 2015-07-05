@@ -8,8 +8,6 @@
 #include <sstream>
 #include <string>
 
-#include "Poco/Types.h"
-
 #include "./base_model.h"
 
 namespace toggl {

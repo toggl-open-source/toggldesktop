@@ -94,8 +94,9 @@ error TimelineUploader::upload(TimelineBatch *batch) {
        << " event(s) of user " << batch->UserID();
     logger().debug(ss.str());
 
-    std::string json = convertTimelineToJSON(batch->Events(),
-                       batch->DesktopID());
+    std::string json = convertTimelineToJSON(
+        batch->Events(),
+        batch->DesktopID());
     logger().debug(json);
 
     std::string response_body("");
@@ -116,7 +117,7 @@ std::string convertTimelineToJSON(
     for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
             i != timeline_events.end();
             ++i) {
-        const TimelineEvent &event = *i;
+        TimelineEvent event = *i;
         Json::Value n;
         n["filename"] = event.Filename();
         n["title"] = event.Title();

@@ -11,6 +11,7 @@
 #include "./autotracker.h"
 #include "./client.h"
 #include "./const.h"
+#include "./migrations.h"
 #include "./project.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -97,6 +98,7 @@ Database::Database(const std::string db_path)
     err = initialize_tables();
     if (err != noError) {
         logger().error(err);
+        // We're doomed now; cannot continue without a DB
         return;
     }
 
@@ -187,7 +189,8 @@ error Database::deleteAllFromTableByUID(
 
         poco_check_ptr(session_);
 
-        *session_ << "delete from " + table_name + " where uid = :uid",
+        *session_ <<
+                  "delete from " + table_name + " where uid = :uid",
                   useRef(UID),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -207,7 +210,8 @@ error Database::journalMode(std::string *mode) {
         poco_check_ptr(session_);
         poco_check_ptr(mode);
 
-        *session_ << "PRAGMA journal_mode",
+        *session_ <<
+                  "PRAGMA journal_mode",
                   into(*mode),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -230,7 +234,8 @@ error Database::setJournalMode(const std::string mode) {
         Poco::Mutex::ScopedLock lock(session_m_);
         poco_check_ptr(session_);
 
-        *session_ << "PRAGMA journal_mode=" << mode,
+        *session_ <<
+                  "PRAGMA journal_mode=" << mode,
                   now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -247,7 +252,8 @@ error Database::vacuum() {
         Poco::Mutex::ScopedLock lock(session_m_);
         poco_check_ptr(session_);
 
-        *session_ << "VACUUM;" << now;
+        *session_ <<
+                  "VACUUM;" << now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -285,7 +291,8 @@ error Database::deleteFromTable(
         poco_check_ptr(session_);
 
 
-        *session_ << "delete from " + table_name +
+        *session_ <<
+                  "delete from " + table_name +
                   " where local_id = :local_id",
                   useRef(local_id),
                   now;
@@ -400,7 +407,8 @@ error Database::SaveWindowSettings(
 
         poco_check_ptr(session_);
 
-        *session_ << "update settings set "
+        *session_ <<
+                  "update settings set "
                   "window_x = :window_x, "
                   "window_y = :window_y, "
                   "window_height = :window_height, "
@@ -505,7 +513,8 @@ error Database::SetSettingsRemindTimes(
 
         poco_check_ptr(session_);
 
-        *session_ << "update settings set "
+        *session_ <<
+                  "update settings set "
                   "remind_starts = :remind_starts, "
                   "remind_ends = :remind_ends ",
                   useRef(remind_starts),
@@ -536,7 +545,8 @@ error Database::SetSettingsRemindDays(
 
         poco_check_ptr(session_);
 
-        *session_ << "update settings set "
+        *session_ <<
+                  "update settings set "
                   "remind_mon = :remind_mon, "
                   "remind_tue = :remind_tue, "
                   "remind_wed = :remind_wed, "
@@ -633,7 +643,8 @@ error Database::setSettingsValue(
         Poco::Mutex::ScopedLock lock(session_m_);
 
 
-        *session_ << "update settings set " + field_name + " = :" + field_name,
+        *session_ <<
+                  "update settings set " + field_name + " = :" + field_name,
                   useRef(value),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -664,7 +675,8 @@ error Database::SaveProxySettings(
 
         poco_check_ptr(session_);
 
-        *session_ << "update settings set "
+        *session_ <<
+                  "update settings set "
                   "use_proxy = :use_proxy, "
                   "proxy_host = :proxy_host, "
                   "proxy_port = :proxy_port, "
@@ -1288,16 +1300,55 @@ error Database::loadTimelineEvents(
 
         Poco::Data::Statement select(*session_);
         select <<
-               "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked, uploaded "
+               "SELECT local_id, title, filename, "
+               "start_time, end_time, idle, "
+               "uploaded, chunked, guid "
                "FROM timeline_events "
-               "WHERE user_id = :user_id",
+               "WHERE uid = :uid",
                useRef(UID);
         error err = last_error("loadTimelineEvents");
         if (err != noError) {
             return err;
         }
-        // FIXME: populateTimelineEvents(UID, &select, list);
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                TimelineEvent *model = new TimelineEvent();
+                model->SetLocalID(rs[0].convert<unsigned int>());
+                if (!rs[1].isEmpty()) {
+                    model->SetTitle(rs[1].convert<std::string>());
+                }
+                if (!rs[2].isEmpty()) {
+                    model->SetFilename(rs[2].convert<std::string>());
+                }
+                model->SetStartTime(rs[3].convert<int>());
+                if (!rs[4].isEmpty()) {
+                    model->SetEndTime(rs[4].convert<int>());
+                }
+                model->SetIdle(rs[5].convert<bool>());
+                model->SetUploaded(rs[6].convert<bool>());
+                model->SetChunked(rs[7].convert<bool>());
+                model->SetGUID(rs[8].convert<std::string>());
+
+                model->SetUID(UID);
+
+                model->ClearDirty();
+
+                list->push_back(model);
+
+                more = rs.moveNext();
+            }
+        }
+
+        // Ensure all timeline events have a GUID.
+        for (std::vector<TimelineEvent *>::iterator it = list->begin();
+                it != list->end();
+                ++it) {
+            TimelineEvent *model = *it;
+            model->EnsureGUID();
+        }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1542,7 +1593,8 @@ error Database::saveModel(
             logger().debug(ss.str());
 
             if (model->ID()) {
-                *session_ << "update time_entries set "
+                *session_ <<
+                          "update time_entries set "
                           "id = :id, uid = :uid, description = :description, "
                           "wid = :wid, guid = :guid, pid = :pid, tid = :tid, "
                           "billable = :billable, "
@@ -1577,7 +1629,8 @@ error Database::saveModel(
                           useRef(model->LocalID()),
                           now;
             } else {
-                *session_ << "update time_entries set "
+                *session_ <<
+                          "update time_entries set "
                           "uid = :uid, description = :description, wid = :wid, "
                           "guid = :guid, pid = :pid, tid = :tid, "
                           "billable = :billable, "
@@ -1735,9 +1788,34 @@ error Database::saveModel(
         poco_check_ptr(session_);
         poco_check_ptr(changes);
 
+        model->EnsureGUID();
+
         if (!model->NeedsToBeSaved()) {
             return noError;
         }
+
+        const int kMaxTimelineStringSize = 300;
+
+        if (model->Filename().length() > kMaxTimelineStringSize) {
+            model->SetFilename(
+                model->Filename().substr(0, kMaxTimelineStringSize));
+        }
+        if (model->Title().length() > kMaxTimelineStringSize) {
+            model->SetTitle(model->Title().substr(0, kMaxTimelineStringSize));
+        }
+
+        if (!model->UID()) {
+            return error("Cannot save timeline event without an user ID");
+        }
+        if (!model->StartTime()) {
+            return error("Cannot save timeline event without start time");
+        }
+        if (!model->EndTime()) {
+            return error("Cannot save timeline event without end time");
+        }
+
+        Poco::Int64 start_time(model->StartTime());
+        Poco::Int64 end_time(model->EndTime());
 
         if (model->LocalID()) {
             std::stringstream ss;
@@ -1745,20 +1823,27 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().debug(ss.str());
 
-            *session_ << "update timeline_events set "
-                      "uid = :uid, description = :description, wid = :wid, "
-                      "start_time = :start_time, end_time = :end_time "
-                      "deleted_at = :deleted_at, "
-                      "updated_at = :updated_at, "
+            *session_ <<
+                      "update timeline_events set "
+                      " guid = :guid, "
+                      " title = :title, "
+                      " filename = :filename, "
+                      " uid = :uid, "
+                      " start_time = :start_time, "
+                      " end_time = :end_time, "
+                      " idle = :idle, "
+                      " uploaded = :uploaded, "
+                      " chunked = :chunked "
                       "where local_id = :local_id",
-                      useRef(model->UID()),
-                      useRef(model->Filename()),
-                      useRef(model->Title()),
                       useRef(model->GUID()),
-                      useRef(model->UIModifiedAt()),
-                      useRef(model->DeletedAt()),
-                      useRef(model->UpdatedAt()),
-                      useRef(model->ValidationError()),
+                      useRef(model->Title()),
+                      useRef(model->Filename()),
+                      useRef(model->UID()),
+                      useRef(start_time),
+                      useRef(end_time),
+                      useRef(model->Idle()),
+                      useRef(model->Uploaded()),
+                      useRef(model->Chunked()),
                       useRef(model->LocalID()),
                       now;
 
@@ -1775,27 +1860,41 @@ error Database::saveModel(
             }
         } else {
             std::stringstream ss;
-            ss << "Inserting time entry " + model->String()
+            ss << "Inserting timeline event " + model->String()
                << " in thread " << Poco::Thread::currentTid();
             logger().debug(ss.str());
 
             *session_ <<
-                      "insert into timeline_events(uid, filename, "
-                      "title, ui_modified_at, "
-                      "start_time, end_time, deleted_at, updated_at "
+                      "insert into timeline_events("
+                      " guid, "
+                      " title, "
+                      " filename, "
+                      " uid, "
+                      " start_time, "
+                      " end_time, "
+                      " idle, "
+                      " uploaded, "
+                      " chunked "
                       ") values ("
-                      ":uid, :filename, "
-                      ":title, ::ui_modified_at, "
-                      ":start_time, :end_time, :deleted_at, :updated_at, "
+                      " :guid, "
+                      " :title, "
+                      " :filename, "
+                      " :uid, "
+                      " :start_time, "
+                      " :end_time, "
+                      " :idle, "
+                      " :uploaded, "
+                      " :chunked "
                       ")",
-                      useRef(model->UID()),
-                      useRef(model->Filename()),
-                      useRef(model->Title()),
                       useRef(model->GUID()),
-                      useRef(model->UIModifiedAt()),
-                      useRef(model->DeletedAt()),
-                      useRef(model->UpdatedAt()),
-                      useRef(model->ValidationError()),
+                      useRef(model->Title()),
+                      useRef(model->Filename()),
+                      useRef(model->UID()),
+                      useRef(start_time),
+                      useRef(end_time),
+                      useRef(model->Idle()),
+                      useRef(model->Uploaded()),
+                      useRef(model->Chunked()),
                       now;
         }
         error err = last_error("insert timeline event");
@@ -1929,7 +2028,8 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
 
-            *session_ << "update workspaces set "
+            *session_ <<
+                      "update workspaces set "
                       "id = :id, uid = :uid, name = :name, premium = :premium, "
                       "only_admins_may_create_projects = "
                       ":only_admins_may_create_projects, admin = :admin "
@@ -2025,7 +2125,8 @@ error Database::saveModel(
             logger().trace(ss.str());
 
             if (model->GUID().empty()) {
-                *session_ << "update clients set "
+                *session_ <<
+                          "update clients set "
                           "id = :id, uid = :uid, name = :name, wid = :wid "
                           "where local_id = :local_id",
                           useRef(model->ID()),
@@ -2035,7 +2136,8 @@ error Database::saveModel(
                           useRef(model->LocalID()),
                           now;
             } else {
-                *session_ << "update clients set "
+                *session_ <<
+                          "update clients set "
                           "id = :id, uid = :uid, name = :name, guid = :guid, "
                           "wid = :wid "
                           "where local_id = :local_id",
@@ -2069,15 +2171,15 @@ error Database::saveModel(
                           useRef(model->WID()),
                           now;
             } else {
-                *session_
-                        << "insert into clients(id, uid, name, guid, wid) "
-                        "values(:id, :uid, :name, :guid, :wid)",
-                        useRef(model->ID()),
-                        useRef(model->UID()),
-                        useRef(model->Name()),
-                        useRef(model->GUID()),
-                        useRef(model->WID()),
-                        now;
+                *session_ <<
+                          "insert into clients(id, uid, name, guid, wid) "
+                          "values(:id, :uid, :name, :guid, :wid)",
+                          useRef(model->ID()),
+                          useRef(model->UID()),
+                          useRef(model->Name()),
+                          useRef(model->GUID()),
+                          useRef(model->WID()),
+                          now;
             }
             error err = last_error("saveClient");
             if (err != noError) {
@@ -2139,7 +2241,8 @@ error Database::saveModel(
 
             if (model->ID()) {
                 if (model->GUID().empty()) {
-                    *session_ << "update projects set "
+                    *session_ <<
+                              "update projects set "
                               "id = :id, uid = :uid, name = :name, "
                               "wid = :wid, color = :color, cid = :cid, "
                               "active = :active, billable = :billable, "
@@ -2157,7 +2260,8 @@ error Database::saveModel(
                               useRef(model->LocalID()),
                               now;
                 } else {
-                    *session_ << "update projects set "
+                    *session_ <<
+                              "update projects set "
                               "id = :id, uid = :uid, name = :name, "
                               "guid = :guid,"
                               "wid = :wid, color = :color, cid = :cid, "
@@ -2179,7 +2283,8 @@ error Database::saveModel(
                 }
             } else {
                 if (model->GUID().empty()) {
-                    *session_ << "update projects set "
+                    *session_ <<
+                              "update projects set "
                               "uid = :uid, name = :name, "
                               "wid = :wid, color = :color, cid = :cid, "
                               "active = :active, billable = :billable, "
@@ -2196,7 +2301,8 @@ error Database::saveModel(
                               useRef(model->LocalID()),
                               now;
                 } else {
-                    *session_ << "update projects set "
+                    *session_ <<
+                              "update projects set "
                               "uid = :uid, name = :name, guid = :guid,"
                               "wid = :wid, color = :color, cid = :cid, "
                               "active = :active, billable = :billable, "
@@ -2364,7 +2470,8 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
 
-            *session_ << "update tasks set "
+            *session_ <<
+                      "update tasks set "
                       "id = :id, uid = :uid, name = :name, wid = :wid, "
                       "pid = :pid, active = :active "
                       "where local_id = :local_id",
@@ -2447,7 +2554,8 @@ error Database::saveModel(
             logger().trace(ss.str());
 
             if (model->GUID().empty()) {
-                *session_ << "update tags set "
+                *session_ <<
+                          "update tags set "
                           "id = :id, uid = :uid, name = :name, wid = :wid "
                           "where local_id = :local_id",
                           useRef(model->ID()),
@@ -2457,7 +2565,8 @@ error Database::saveModel(
                           useRef(model->LocalID()),
                           now;
             } else {
-                *session_ << "update tags set "
+                *session_ <<
+                          "update tags set "
                           "id = :id, uid = :uid, name = :name, wid = :wid, "
                           "guid = :guid "
                           "where local_id = :local_id",
@@ -2571,7 +2680,8 @@ error Database::SaveUser(
                    << " in thread " << Poco::Thread::currentTid();
                 logger().trace(ss.str());
 
-                *session_ << "update users set "
+                *session_ <<
+                          "update users set "
                           "default_wid = :default_wid, "
                           "since = :since, id = :id, fullname = :fullname, "
                           "email = :email, record_timeline = :record_timeline, "
@@ -2846,1051 +2956,7 @@ error Database::initialize_tables() {
         return err;
     }
 
-    err = migrateUsers();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateWorkspaces();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateClients();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateProjects();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateTasks();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateTags();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateTimeEntries();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateSessions();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateSettings();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateTimeline();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateAnalytics();
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrateAutotracker();
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::migrateAutotracker() {
-    error err = migrate(
-        "autotracker_settings",
-        "create table autotracker_settings("
-        "local_id integer primary key,"
-        "uid integer not null, "
-        "term varchar not null, "
-        "pid integer not null, "
-        "constraint fk_autotracker_settings_pid foreign key (pid) "
-        "   references projects(id) on delete no action on update no action,"
-        "constraint fk_autotracker_settings_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "autotracker_settings.term",
-        "CREATE UNIQUE INDEX autotracker_settings_term "
-        "   ON autotracker_settings (uid, term);");
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::migrateClients() {
-    error err = migrate(
-        "clients",
-        "create table clients("
-        "local_id integer primary key,"
-        "id integer, "  // ID can be null when its not pushed to server yet
-        "uid integer not null, "
-        "name varchar not null, "
-        "guid varchar, "
-        "wid integer not null, "
-        "constraint fk_clients_wid foreign key (wid) "
-        "   references workpaces(id) on delete no action on update no action,"
-        "constraint fk_clients_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("clients.id",
-                  "CREATE UNIQUE INDEX id_clients_id ON clients (uid, id); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "clients.guid",
-        "CREATE UNIQUE INDEX id_clients_guid ON clients (uid, guid);");
-    if (err != noError) {
-        return err;
-    }
-
-    // Its perfectly fine to have multiple NULL client ID's in the db,
-    // when user creates clients offline.
-    err = migrate("drop clients.id_clients_id",
-                  "drop index if exists id_clients_id");
-    if (err != noError) {
-        return err;
-    }
-
-    return err;
-}
-
-error Database::migrateTasks() {
-    error err = migrate(
-        "tasks",
-        "create table tasks("
-        "local_id integer primary key, "
-        "id integer not null, "
-        "uid integer not null, "
-        "name varchar not null, "
-        "wid integer not null, "
-        "pid integer, "
-        "constraint fk_tasks_wid foreign key (wid) "
-        "   references workpaces(id) on delete no action on update no action, "
-        "constraint fk_tasks_pid foreign key (pid) "
-        "   references projects(id) on delete no action on update no action, "
-        "constraint fk_tasks_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action "
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "tasks.id",
-        "CREATE UNIQUE INDEX id_tasks_id ON tasks (uid, id);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "tasks.active",
-        "alter table tasks add column active integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::migrateTags() {
-    error err = migrate(
-        "tags",
-        "create table tags("
-        "local_id integer primary key, "
-        "id integer not null, "
-        "uid integer not null, "
-        "name varchar not null, "
-        "wid integer not null, "
-        "guid varchar, "
-        "constraint fk_tags_wid foreign key (wid) "
-        "   references workspaces(id) on delete no action on update no action,"
-        "constraint fk_tags_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "tags.id",
-        "CREATE UNIQUE INDEX id_tags_id ON tags (uid, id); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "tags.guid",
-        "CREATE UNIQUE INDEX id_tags_guid ON tags (uid, guid); ");
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::migrateSessions() {
-    error err = migrate("sessions",
-                        "create table sessions("
-                        "local_id integer primary key, "
-                        "api_token varchar not null, "
-                        "active integer not null default 1 "
-                        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "sessions.active",
-        "CREATE UNIQUE INDEX id_sessions_active ON sessions (active); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "sessions.uid",
-        "alter table sessions add column uid integer references users (id);");
-    if (err != noError) {
-        return err;
-    }
-
-    return err;
-}
-
-error Database::migrateWorkspaces() {
-    error err = migrate(
-        "workspaces",
-        "create table workspaces("
-        "local_id integer primary key,"
-        "id integer not null, "
-        "uid integer not null, "
-        "name varchar not null, "
-        "constraint fk_workspaces_uid foreign key (uid) "
-        "   references users(id) "
-        "     on delete no action on update no action"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "workspaces.id",
-        "CREATE UNIQUE INDEX id_workspaces_id ON workspaces (uid, id);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "workspaces.premium",
-        "alter table workspaces add column premium int default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "workspaces.only_admins_may_create_projects",
-        "alter table workspaces add column "
-        "   only_admins_may_create_projects integer not null default 0; ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "workspaces.admin",
-        "alter table workspaces add column "
-        "   admin integer not null default 0; ");
-    if (err != noError) {
-        return err;
-    }
-
-    return err;
-}
-
-error Database::migrateProjects() {
-    error err = migrate(
-        "projects",
-        "create table projects("
-        "local_id integer primary key, "
-        "id integer, "  // project ID can be null, when its created client side
-        "uid integer not null, "
-        "name varchar not null, "
-        "guid varchar, "
-        "color varchar, "
-        "wid integer not null, "
-        "cid integer, "
-        "active integer not null default 1,"
-        "constraint fk_projects_wid foreign key (wid) "
-        "   references workpaces(id) on delete no action on update no action,"
-        "constraint fk_projects_cid foreign key (cid) "
-        "   references clients(id) on delete no action on update no action,"
-        "constraint fk_projects_uid foreign key (uid) "
-        "   references users(id) ON DELETE NO ACTION ON UPDATE NO ACTION"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("projects.billable",
-                  "ALTER TABLE projects ADD billable INT NOT NULL DEFAULT 0");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("projects.is_private",
-                  "ALTER TABLE projects ADD is_private INT NOT NULL DEFAULT 0");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("projects.client_guid",
-                  "ALTER TABLE projects "
-                  "ADD COLUMN client_guid VARCHAR;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("projects.id",
-                  "CREATE UNIQUE INDEX id_projects_id ON projects (uid, id);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "projects.guid",
-        "CREATE UNIQUE INDEX id_projects_guid ON projects (uid, guid);");
-    if (err != noError) {
-        return err;
-    }
-
-    return err;
-}
-
-error Database::migrateAnalytics() {
-    error err = migrate("analytics_settings",
-                        "CREATE TABLE analytics_settings("
-                        "id INTEGER PRIMARY KEY, "
-                        "analytics_client_id VARCHAR NOT NULL"
-                        ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("analytics_settings.analytics_client_id",
-                  "CREATE UNIQUE INDEX id_analytics_settings_client_id "
-                  "ON analytics_settings(analytics_client_id);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = String("SELECT analytics_client_id FROM analytics_settings LIMIT 1",
-                 &analytics_client_id_);
-    if (err != noError) {
-        return err;
-    }
-    if (analytics_client_id_.empty()) {
-        analytics_client_id_ = GenerateGUID();
-        err = saveAnalyticsClientID();
-        if (err != noError) {
-            return err;
-        }
-    }
-
-    return noError;
-}
-
-error Database::migrateTimeline() {
-    error err = migrate("timeline_installation",
-                        "CREATE TABLE timeline_installation("
-                        "id INTEGER PRIMARY KEY, "
-                        "desktop_id VARCHAR NOT NULL"
-                        ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("timeline_installation.desktop_id",
-                  "CREATE UNIQUE INDEX id_timeline_installation_desktop_id "
-                  "ON timeline_installation(desktop_id);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("timeline_events",
-                  "CREATE TABLE timeline_events("
-                  "id INTEGER PRIMARY KEY, "
-                  "user_id INTEGER NOT NULL, "
-                  "title VARCHAR, "
-                  "filename VARCHAR, "
-                  "start_time INTEGER NOT NULL, "
-                  "end_time INTEGER, "
-                  "idle INTEGER NOT NULL"
-                  ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = String("SELECT desktop_id FROM timeline_installation LIMIT 1",
-                 &desktop_id_);
-    if (err != noError) {
-        return err;
-    }
-    if (desktop_id_.empty()) {
-        desktop_id_ = GenerateGUID();
-        err = saveDesktopID();
-        if (err != noError) {
-            return err;
-        }
-    }
-
-    err = migrate(
-        "timeline_events.chunked",
-        "alter table timeline_events"
-        "   add column chunked integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "timeline_events.uploaded",
-        "alter table timeline_events"
-        "   add column uploaded integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "timeline_events.local_id step #1",
-        "ALTER TABLE timeline_events RENAME TO tmp_timeline_events");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "timeline_events.local_id step #2",
-        "create table timeline_events("
-        "   local_id integer primary key, "
-        "   title varchar, "
-        "   filename varchar, "
-        "   uid integer not null, "
-        "   start_time INTEGER NOT NULL, "
-        "   end_time INTEGER, "
-        "   idle INTEGER NOT NULL, "
-        "   uploaded integer not null default 0, "
-        "   chunked integer not null default 0, "
-        "   constraint fk_timeline_events_uid foreign key (uid) "
-        "     references users(id) on delete no action on update no action"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "timeline_events.local_id step #3",
-        "insert into timeline_events"
-        " select id, title, filename"
-        " from tmp_timeline_events");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "timeline_events.local_id step #4",
-        "drop table tmp_timeline_events");
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::migrateUsers() {
-    error err = migrate("users",
-                        "create table users("
-                        "local_id integer primary key, "
-                        "id integer not null, "
-                        "api_token varchar not null, "
-                        "default_wid integer, "
-                        "since integer, "
-                        "fullname varchar, "
-                        "email varchar not null, "
-                        "record_timeline integer not null default 0"
-                        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "users.store_start_and_stop_time",
-        "ALTER TABLE users "
-        "ADD COLUMN store_start_and_stop_time INT NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "users.timeofday_format",
-        "ALTER TABLE users "
-        "ADD COLUMN timeofday_format varchar NOT NULL DEFAULT 'HH:mm';");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("users.id",
-                  "CREATE UNIQUE INDEX id_users_id ON users (id);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("users.duration_format",
-                  "alter table users "
-                  "add column duration_format varchar "
-                  "not null default 'classic';");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("drop users.email index",
-                  "DROP INDEX IF EXISTS id_users_email;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "users.api_token",
-        "CREATE UNIQUE INDEX id_users_api_token ON users (api_token);");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "users.offline_data",
-        "alter table users"
-        " add column offline_data varchar");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "no api token step #1",
-        "ALTER TABLE users RENAME TO tmp_users");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "no api token step #2",
-        "create table users("
-        "   local_id integer primary key, "
-        "   id integer not null unique, "
-        "   default_wid integer, "
-        "   since integer, "
-        "   fullname varchar, "
-        "   email varchar not null, "
-        "   record_timeline integer not null default 0, "
-        "   store_start_and_stop_time INT NOT NULL DEFAULT 0, "
-        "   timeofday_format varchar NOT NULL DEFAULT 'HH:mm', "
-        "   duration_format varchar not null default 'classic', "
-        "   offline_data varchar"
-        ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "no api token step #3",
-        "insert into users"
-        " select local_id, id, default_wid, since, fullname, email,"
-        " record_timeline, store_start_and_stop_time, timeofday_format,"
-        " duration_format, offline_data"
-        " from tmp_users");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "no api token step #4",
-        "drop table tmp_users");
-    if (err != noError) {
-        return err;
-    }
-
-    return err;
-}
-
-error Database::migrateTimeEntries() {
-    error err = migrate(
-        "time_entries",
-        "create table time_entries("
-        "local_id integer primary key, "
-        "id integer, "  // ID can be null when its not pushed to server yet
-        "uid integer not null, "
-        "description varchar, "
-        "wid integer not null, "
-        "guid varchar, "
-        "pid integer, "
-        "tid integer, "
-        "billable integer not null default 0,"
-        "duronly integer not null default 0, "
-        "ui_modified_at integer, "
-        "start integer not null, "
-        "stop integer, "
-        "duration integer not null,"
-        "tags text,"
-        "created_with varchar,"
-        "deleted_at integer,"
-        "updated_at integer,"
-        "constraint fk_time_entries_wid foreign key (wid) "
-        "   references workspaces(id) on delete no action on update no action, "
-        "constraint fk_time_entries_pid foreign key (pid) "
-        "   references projects(id) on delete no action on update no action, "
-        "constraint fk_time_entries_tid foreign key (tid) "
-        "   references tasks(id) on delete no action on update no action, "
-        "constraint fk_time_entries_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.id",
-                  "CREATE UNIQUE INDEX id_time_entries_id "
-                  "ON time_entries (uid, id); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.guid",
-                  "CREATE UNIQUE INDEX id_time_entries_guid "
-                  "ON time_entries (uid, guid); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.project_guid",
-                  "ALTER TABLE time_entries "
-                  "ADD COLUMN project_guid VARCHAR;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.guid not null, step 1",
-                  "ALTER TABLE time_entries RENAME TO tmp_time_entries; ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "time_entries.guid not null, step 2",
-        "create table time_entries("
-        "local_id integer primary key, "
-        "id integer, "
-        "uid integer not null, "
-        "description varchar, "
-        "wid integer not null, "
-        "guid varchar NOT NULL, "
-        "pid integer, "
-        "tid integer, "
-        "billable integer not null default 0,"
-        "duronly integer not null default 0, "
-        "ui_modified_at integer, "
-        "start integer not null, "
-        "stop integer, "
-        "duration integer not null,"
-        "tags text,"
-        "created_with varchar,"
-        "deleted_at integer,"
-        "updated_at integer,"
-        "project_guid VARCHAR,"
-        "constraint fk_time_entries_wid foreign key (wid) "
-        "   references workspaces(id) on delete no action on update no action, "
-        "constraint fk_time_entries_pid foreign key (pid) "
-        "   references projects(id) on delete no action on update no action, "
-        "constraint fk_time_entries_tid foreign key (tid) "
-        "   references tasks(id) on delete no action on update no action, "
-        "constraint fk_time_entries_uid foreign key (uid) "
-        "   references users(id) on delete no action on update no action"
-        "); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "time_entries.guid not null, step 3",
-        "insert into time_entries("
-        "   local_id, id, uid, description, wid, guid, pid, tid, billable, "
-        "   duronly, ui_modified_at, start, stop, duration, tags, "
-        "   created_with, deleted_at, updated_at, project_guid) "
-        "select "
-        "   local_id, id, uid, description, wid, guid, pid, tid, billable, "
-        "   duronly, ui_modified_at, start, stop, duration, tags, "
-        "   created_with, deleted_at, updated_at, project_guid "
-        "from tmp_time_entries;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.guid not null, step 4",
-                  "drop table tmp_time_entries;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.guid not null, step 5",
-                  "CREATE UNIQUE INDEX id_time_entries_id "
-                  "   ON time_entries (uid, id); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.guid not null, step 6",
-                  "CREATE UNIQUE INDEX id_time_entries_guid "
-                  "   ON time_entries (uid, guid); ");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("time_entries.validation_error",
-                  "ALTER TABLE time_entries "
-                  "ADD COLUMN validation_error VARCHAR;");
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::migrateSettings() {
-    error err = migrate(
-        "settings",
-        "create table settings("
-        "local_id integer primary key, "
-        "use_proxy integer not null default 0, "
-        "proxy_host varchar, "
-        "proxy_port integer, "
-        "proxy_username varchar, "
-        "proxy_password varchar, "
-        "use_idle_detection integer not null default 1)");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.update_channel",
-        "ALTER TABLE settings "
-        "ADD COLUMN update_channel varchar not null default 'stable';");
-    if (err != noError) {
-        return err;
-    }
-
-    // for 5% users, set the update channel to 'beta' instead of 'stable'
-    Poco::UInt64 has_settings(0);
-    err = UInt("select count(1) from settings", &has_settings);
-    if (err != noError) {
-        return err;
-    }
-    if (!has_settings) {
-        Poco::Random random;
-        random.seed();
-        std::string channel("stable");
-        Poco::UInt32 r = random.next(100);
-        if (r < kBetaChannelPercentage) {
-            channel = "beta";
-        }
-        err = migrate(
-            "settings.default",
-            "INSERT INTO settings(update_channel) VALUES('" + channel + "')");
-        if (err != noError) {
-            return err;
-        }
-    }
-
-    err = migrate("settings.menubar_timer",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN menubar_timer integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.menubar_project",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN menubar_project integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.dock_icon",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN dock_icon INTEGER NOT NULL DEFAULT 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.on_top",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN on_top INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.reminder",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN reminder INTEGER NOT NULL DEFAULT 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.ignore_cert",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN ignore_cert INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.idle_minutes",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN idle_minutes INTEGER NOT NULL DEFAULT 5;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.focus_on_shortcut",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN focus_on_shortcut INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.reminder_minutes",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN reminder_minutes INTEGER NOT NULL DEFAULT 10;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate("settings.manual_mode",
-                  "ALTER TABLE settings "
-                  "ADD COLUMN manual_mode INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "focus on shortcut by default #1",
-        "ALTER TABLE settings RENAME TO tmp_settings");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "focus on shortcut by default #2",
-        "create table settings("
-        "   local_id integer primary key, "
-        "   use_proxy integer not null default 0, "
-        "   proxy_host varchar, "
-        "   proxy_port integer, "
-        "   proxy_username varchar, "
-        "   proxy_password varchar, "
-        "   use_idle_detection integer not null default 1, "
-        "   update_channel varchar not null default 'stable', "
-        "   menubar_timer integer not null default 0, "
-        "   menubar_project integer not null default 0, "
-        "   dock_icon INTEGER NOT NULL DEFAULT 1, "
-        "   on_top INTEGER NOT NULL DEFAULT 0, "
-        "   reminder INTEGER NOT NULL DEFAULT 1, "
-        "   ignore_cert INTEGER NOT NULL DEFAULT 0, "
-        "   idle_minutes INTEGER NOT NULL DEFAULT 5, "
-        "   focus_on_shortcut INTEGER NOT NULL DEFAULT 1, "
-        "   reminder_minutes INTEGER NOT NULL DEFAULT 10, "
-        "   manual_mode INTEGER NOT NULL DEFAULT 0 "
-        ")");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "focus on shortcut by default #3",
-        "insert into settings"
-        " select local_id, use_proxy, "
-        " proxy_host, proxy_port, proxy_username, proxy_password, "
-        " use_idle_detection, update_channel, menubar_timer, menubar_project, "
-        " dock_icon, on_top, reminder, ignore_cert, idle_minutes, "
-        " focus_on_shortcut, reminder_minutes, manual_mode "
-        " from tmp_settings");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "focus on shortcut by default #4",
-        "drop table tmp_settings");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "focus on shortcut by default #5",
-        "update settings set focus_on_shortcut = 1");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.autodetect_proxy",
-        "ALTER TABLE settings "
-        "ADD COLUMN autodetect_proxy INTEGER NOT NULL DEFAULT 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.window_x",
-        "ALTER TABLE settings "
-        "ADD COLUMN window_x integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.window_y",
-        "ALTER TABLE settings "
-        "ADD COLUMN window_y integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.window_height",
-        "ALTER TABLE settings "
-        "ADD COLUMN window_height integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.window_width",
-        "ALTER TABLE settings "
-        "ADD COLUMN window_width integer not null default 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_mon",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_mon integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_tue",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_tue integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_wed",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_wed integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_thu",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_thu integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_fri",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_fri integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_sat",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_sat integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_sun",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_sun integer not null default 1;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_starts",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_starts varchar not null default '';");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.remind_ends",
-        "ALTER TABLE settings "
-        "ADD COLUMN remind_ends varchar not null default '';");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.autotrack",
-        "ALTER TABLE settings "
-        "ADD COLUMN autotrack INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.open_editor_on_shortcut",
-        "ALTER TABLE settings "
-        "ADD COLUMN open_editor_on_shortcut INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = migrate(
-        "settings.has_seen_beta_offering",
-        "ALTER TABLE settings "
-        "ADD COLUMN has_seen_beta_offering INTEGER NOT NULL DEFAULT 0;");
+    err = Migrations(this).Run();
     if (err != noError) {
         return err;
     }
@@ -3935,7 +3001,8 @@ error Database::ClearCurrentAPIToken() {
 
         poco_check_ptr(session_);
 
-        *session_ << "delete from sessions", now;
+        *session_ <<
+                  "delete from sessions", now;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -3982,25 +3049,43 @@ error Database::SetCurrentAPIToken(
     return last_error("SetCurrentAPIToken");
 }
 
-error Database::saveDesktopID() {
-    try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        poco_check_ptr(session_);
-
-        *session_ <<
-                  "INSERT INTO timeline_installation(desktop_id) "
-                  "VALUES(:desktop_id)",
-                  useRef(desktop_id_),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
+error Database::EnsureAnalyticsClientID() {
+    error err = String(
+        "SELECT analytics_client_id "
+        "FROM analytics_settings "
+        "LIMIT 1",
+        &analytics_client_id_);
+    if (err != noError) {
+        return err;
     }
-    return last_error("saveDesktopID");
+    if (analytics_client_id_.empty()) {
+        analytics_client_id_ = GenerateGUID();
+        err = saveAnalyticsClientID();
+        if (err != noError) {
+            return err;
+        }
+    }
+
+    return noError;
+}
+
+error Database::EnsureDesktopID() {
+    error err = String(
+        "SELECT desktop_id "
+        "FROM timeline_installation "
+        "LIMIT 1",
+        &desktop_id_);
+    if (err != noError) {
+        return err;
+    }
+    if (desktop_id_.empty()) {
+        desktop_id_ = GenerateGUID();
+        err = saveDesktopID();
+        if (err != noError) {
+            return err;
+        }
+    }
+    return noError;
 }
 
 error Database::saveAnalyticsClientID() {
@@ -4025,10 +3110,9 @@ error Database::saveAnalyticsClientID() {
     return last_error("saveAnalyticsClientID");
 }
 
-error Database::migrate(
+error Database::Migrate(
     const std::string &name,
     const std::string sql) {
-
 
     if (name.empty()) {
         return error("Cannot run a migration without name");
@@ -4043,11 +3127,11 @@ error Database::migrate(
         poco_check_ptr(session_);
 
         int count = 0;
-        *session_
-                << "select count(*) from kopsik_migrations where name=:name",
-                into(count),
-                useRef(name),
-                now;
+        *session_ <<
+                  "select count(*) from kopsik_migrations where name=:name",
+                  into(count),
+                  useRef(name),
+                  now;
         error err = last_error("migrate");
         if (err != noError) {
             return err;
@@ -4114,427 +3198,6 @@ error Database::execute(
     return noError;
 }
 
-error Database::deleteTooOldTimeline(
-    const Poco::UInt64 &UID) {
-
-    if (!UID) {
-        return error("Cannot delete old timeline without UID");
-    }
-
-    time_t minimum_time = time(0) - kTimelineSecondsToKeep;
-
-    try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        poco_check_ptr(session_);
-
-
-        *session_ << "delete from timeline_events "
-                  "where user_id = :uid "
-                  "and start_time < :minimum_time",
-                  useRef(UID),
-                  useRef(minimum_time),
-                  now;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("deleteTooOldTimeline");
-}
-
-error Database::CreateCompressedTimelineBatchForUpload(
-    const Poco::UInt64 &user_id,
-    std::vector<TimelineEvent> *timeline_events) {
-
-    error err = deleteTooOldTimeline(user_id);
-    if (err != noError) {
-        return err;
-    }
-
-    // Load all uncompressed timeline events into memory
-    std::vector<TimelineEvent> uncompressed;
-    err = selectUnompressedTimelineEvents(user_id, &uncompressed);
-    if (err != noError) {
-        return err;
-    }
-
-    // Group events by app name into chunks
-    std::map<std::string, TimelineEvent> compressed;
-    for (std::vector<TimelineEvent>::iterator i = uncompressed.begin();
-            i != uncompressed.end();
-            ++i) {
-        TimelineEvent &event = *i;
-        poco_assert(!event.Chunked());
-
-        time_t chunk_start_time =
-            (event.StartTime() / kTimelineChunkSeconds) * kTimelineChunkSeconds;
-
-        std::stringstream ss;
-        ss << event.Filename();
-        ss << "::";
-        ss << event.Title();
-        ss << "::";
-        ss << event.Idle();
-        ss << "::";
-        ss << chunk_start_time;
-        std::string key = ss.str();
-
-        time_t duration = event.EndTime() - event.StartTime();
-        if (duration < 0) {
-            duration = 0;
-        }
-
-        if (compressed.find(key) == compressed.end()) {
-            TimelineEvent chunk;
-            chunk.SetUID(user_id);
-            chunk.SetStartTime(event.StartTime());
-            chunk.SetEndTime(chunk.StartTime() + duration);
-            chunk.SetFilename(event.Filename());
-            chunk.SetTitle(event.Title());
-            chunk.SetIdle(event.Idle());
-            chunk.SetChunked(true);
-            chunk.SetUploaded(false);
-            compressed[key] = chunk;
-        } else {
-            TimelineEvent chunk = compressed[key];
-            chunk.SetEndTime(chunk.EndTime() + duration);
-            compressed[key] = chunk;
-        }
-    }
-
-    // Save the new, chunked events
-    for (std::map<std::string, TimelineEvent>::iterator i = compressed.begin();
-            i != compressed.end();
-            ++i) {
-        TimelineEvent &event = i->second;
-        poco_assert(event.Chunked());
-        err = InsertTimelineEvent(&event);
-        if (err != noError) {
-            return err;
-        }
-    }
-
-    // Delete the uncompressed events now
-    err = DeleteTimelineBatch(uncompressed);
-    if (err != noError) {
-        return err;
-    }
-
-    err = selectCompressedTimelineBatchForUpload(
-        user_id, timeline_events);
-    if (err != noError) {
-        return err;
-    }
-
-    return noError;
-}
-
-error Database::selectUnompressedTimelineEvents(
-    const Poco::UInt64 &user_id,
-    std::vector<TimelineEvent> *timeline_events) {
-
-    if (!user_id) {
-        return error("Cannot load timeline without a user ID");
-    }
-
-    if (!timeline_events->empty()) {
-        return error("Timeline events already loaded");
-    }
-
-    if (!session_) {
-        logger().warning("database is not open, ignoring request");
-        return noError;
-    }
-
-    // then find the chunk start time of current time.
-    // now process only events that are older that this chunk start time.
-    // else we will have no full chunks to compress.
-    time_t chunk_up_to =
-        (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
-
-    {
-        std::stringstream s;
-        s << "selectUnompressedTimelineEvents user_id = "
-          << user_id
-          << ", chunk_up_to = " << chunk_up_to;
-        logger().debug(s.str());
-    }
-
-
-    try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked, uploaded "
-               "FROM timeline_events "
-               "WHERE user_id = :user_id "
-               "AND start_time < :seconds_ago "
-               "AND NOT uploaded "
-               "AND NOT chunked ",
-               useRef(user_id),
-               useRef(chunk_up_to);
-        populateTimelineEvents(user_id, &select, timeline_events);
-
-        {
-            std::stringstream s;
-            s << "selectUnompressedTimelineEvents found "
-              << timeline_events->size()
-              << " events.";
-            logger().debug(s.str());
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("selectUnompressedTimelineEvents");
-}
-
-error Database::selectCompressedTimelineBatchForUpload(
-    const Poco::UInt64 &user_id,
-    std::vector<TimelineEvent> *timeline_events) {
-
-    if (!user_id) {
-        return error("Cannot load timeline without a user ID");
-    }
-
-    if (!timeline_events->empty()) {
-        return error("Timeline events already loaded");
-    }
-
-    if (!session_) {
-        logger().warning("database is not open, ignoring request");
-        return noError;
-    }
-
-    std::stringstream out;
-    out << "selectCompressedTimelineBatchForUpload user_id = " << user_id;
-    logger().debug(out.str());
-
-    try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked, uploaded "
-               "FROM timeline_events "
-               "WHERE user_id = :user_id "
-               "AND NOT uploaded "
-               "AND chunked "
-               "LIMIT 100",
-               useRef(user_id);
-        populateTimelineEvents(user_id, &select, timeline_events);
-
-        std::stringstream event_count;
-        event_count << "selectCompressedTimelineBatchForUpload found "
-                    << timeline_events->size()
-                    << " events.";
-        logger().debug(event_count.str());
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("selectCompressedTimelineBatchForUpload");
-}
-
-error Database::LoadCompressedTimeline(
-    const Poco::UInt64 &user_id,
-    std::vector<TimelineEvent> *timeline_events) {
-
-    if (!user_id) {
-        return error("Cannot load timeline without a user ID");
-    }
-
-    if (!timeline_events->empty()) {
-        return error("Timeline events already loaded");
-    }
-
-    if (!session_) {
-        logger().warning("database is not open, ignoring request");
-        return noError;
-    }
-
-    try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
-        Poco::Data::Statement select(*session_);
-        select <<
-               "SELECT id, title, filename, start_time, end_time, idle, "
-               "chunked, uploaded "
-               "FROM timeline_events "
-               "WHERE user_id = :user_id "
-               "AND chunked ",
-               useRef(user_id);
-        populateTimelineEvents(user_id, &select, timeline_events);
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return last_error("LoadCompressedTimeline");
-}
-
-void populateTimelineEvents(
-    const Poco::UInt64 &user_id,
-    Poco::Data::Statement *select,
-    std::vector<TimelineEvent> *timeline_events) {
-
-    Poco::Data::RecordSet rs(*select);
-
-    while (!select->done()) {
-        select->execute();
-        bool more = rs.moveFirst();
-        while (more) {
-            TimelineEvent event;
-            event.SetID(rs[0].convert<unsigned int>());
-            if (!rs[1].isEmpty()) {
-                event.SetTitle(rs[1].convert<std::string>());
-            }
-            if (!rs[2].isEmpty()) {
-                event.SetFilename(rs[2].convert<std::string>());
-            }
-            event.SetStartTime(rs[3].convert<int>());
-            if (!rs[4].isEmpty()) {
-                event.SetEndTime(rs[4].convert<int>());
-            }
-            event.SetIdle(rs[5].convert<bool>());
-            event.SetUID(static_cast<unsigned int>(user_id));
-            event.SetChunked(rs[6].convert<bool>());
-            event.SetUploaded(rs[7].convert<bool>());
-            timeline_events->push_back(event);
-            more = rs.moveNext();
-        }
-    }
-}
-
-const int kMaxTimelineStringSize = 300;
-
-error Database::InsertTimelineEvent(TimelineEvent *event) {
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    if (event->Filename().length() > kMaxTimelineStringSize) {
-        event->SetFilename(event->Filename().substr(0, kMaxTimelineStringSize));
-    }
-    if (event->Title().length() > kMaxTimelineStringSize) {
-        event->SetTitle(event->Title().substr(0, kMaxTimelineStringSize));
-    }
-
-    logger().debug(event->String());
-
-    if (!event->UID()) {
-        return error("Cannot save timeline event without an user ID");
-    }
-    if (!event->StartTime()) {
-        return error("Cannot save timeline event without start time");
-    }
-    if (!event->EndTime()) {
-        return error("Cannot save timeline event without end time");
-    }
-
-    if (!session_) {
-        logger().warning("InsertTimelineEvent db closed, ignoring request");
-        return noError;
-    }
-
-    Poco::Int64 start_time(event->StartTime());
-    Poco::Int64 end_time(event->EndTime());
-
-    *session_ <<
-              "INSERT INTO timeline_events("
-              "user_id, title, filename, start_time, end_time, idle, "
-              "chunked, uploaded"
-              ") VALUES ("
-              ":user_id, :title, :filename, :start_time, :end_time, :idle, "
-              ":chunked, :uploaded"
-              ")",
-              useRef(event->UID()),
-              useRef(event->Title()),
-              useRef(event->Filename()),
-              useRef(start_time),
-              useRef(end_time),
-              useRef(event->Idle()),
-              useRef(event->Chunked()),
-              useRef(event->Uploaded()),
-              now;
-    return last_error("InsertTimelineEvent");
-}
-
-error Database::MarkTimelineBatchAsUploaded(
-    const std::vector<TimelineEvent> &timeline_events) {
-
-    if (timeline_events.empty()) {
-        return noError;
-    }
-
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    std::stringstream out;
-    out << "MarkTimelineBatchAsUploaded "
-        << timeline_events.size() << " events.";
-    logger().debug(out.str());
-
-    if (!session_) {
-        logger().warning("MarkTimelineBatchAsUploaded db closed, ignoring");
-        return noError;
-    }
-    std::vector<Poco::Int64> ids;
-    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
-            i != timeline_events.end();
-            ++i) {
-        const TimelineEvent &event = *i;
-        ids.push_back(event.ID());
-    }
-
-    *session_ << "UPDATE timeline_events SET uploaded = 1 WHERE id = :id",
-              useRef(ids),
-              now;
-    return last_error("MarkTimelineBatchAsUploaded");
-}
-
-error Database::DeleteTimelineBatch(
-    const std::vector<TimelineEvent> &timeline_events) {
-
-    if (timeline_events.empty()) {
-        return noError;
-    }
-
-    Poco::Mutex::ScopedLock lock(session_m_);
-
-    std::stringstream out;
-    out << "DeleteTimelineBatch "
-        << timeline_events.size() << " events.";
-    logger().debug(out.str());
-
-    if (!session_) {
-        logger().warning("DeleteTimelineBatch db closed, ignoring");
-        return noError;
-    }
-    std::vector<Poco::Int64> ids;
-    for (std::vector<TimelineEvent>::const_iterator i = timeline_events.begin();
-            i != timeline_events.end();
-            ++i) {
-        const TimelineEvent &event = *i;
-        ids.push_back(event.ID());
-    }
-
-    *session_ << "DELETE FROM timeline_events WHERE id = :id",
-              useRef(ids),
-              now;
-    return last_error("DeleteTimelineBatch");
-}
-
 error Database::String(
     const std::string sql,
     std::string *result) {
@@ -4568,7 +3231,6 @@ error Database::UInt(
     const std::string sql,
     Poco::UInt64 *result) {
 
-
     if (sql.empty()) {
         return error("Cannot select a numeric from database with empty SQL");
     }
@@ -4592,6 +3254,27 @@ error Database::UInt(
         return ex;
     }
     return last_error("UInt");
+}
+
+error Database::saveDesktopID() {
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "INSERT INTO timeline_installation(desktop_id) "
+                  "VALUES(:desktop_id)",
+                  useRef(desktop_id_),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("saveDesktopID");
 }
 
 }   // namespace toggl

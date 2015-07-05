@@ -264,6 +264,14 @@ error HTTPSClient::request(
     Poco::Int64 *status_code,
     Poco::Net::HTMLForm *form) {
 
+    if (!urls::RequestsAllowed()) {
+        return error(kCannotSyncInTestEnv);
+    }
+
+    if (urls::ImATeapot()) {
+        return error(kUnsupportedAppError);
+    }
+
     std::map<std::string, Poco::Timestamp>::const_iterator cit =
         banned_until_.find(host);
     if (cit != banned_until_.end()) {

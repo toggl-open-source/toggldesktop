@@ -17,6 +17,14 @@ std::string WebSocket();
 
 void SetUseStagingAsBackend(const bool value);
 
+bool RequestsAllowed();
+
+void SetRequestsAllowed(const bool value);
+
+bool ImATeapot();
+
+void SetImATeapot(const bool value);
+
 }  // namespace urls
 
 }  // namespace toggl

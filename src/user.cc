@@ -14,8 +14,10 @@
 #include "./tag.h"
 #include "./task.h"
 #include "./time_entry.h"
+#include "./timeline_event.h"
 #include "./urls.h"
 #include "./workspace.h"
+#include "./related_data.h"
 
 #include "Poco/Base64Decoder.h"
 #include "Poco/Base64Encoder.h"
@@ -1286,6 +1288,135 @@ bool User::CanSeeBillable(
     return true;
 }
 
+void User::MarkTimelineBatchAsUploaded(
+    const std::vector<TimelineEvent> &events) {
+
+    for (std::vector<TimelineEvent>::const_iterator i = events.begin();
+            i != events.end();
+            ++i) {
+        TimelineEvent event = *i;
+        TimelineEvent *uploaded =
+            ModelByGUID<TimelineEvent>(event.GUID(), &related.TimelineEvents);
+        if (!uploaded) {
+            logger().error(
+                "Could not find timeline event to mark it as uploaded: "
+                + event.String());
+            continue;
+        }
+        uploaded->SetUploaded(true);
+    }
+}
+
+void User::CompressTimeline() {
+    // Group events by app name into chunks
+    std::map<std::string, TimelineEvent *> compressed;
+
+    // Older events will be deleted
+    time_t minimum_time = time(0) - kTimelineSecondsToKeep;
+
+    // Find the chunk start time of current time.
+    // then process only events that are older that this chunk start time.
+    // Else we will have no full chunks to compress.
+    time_t chunk_up_to =
+        (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
+
+    {
+        std::stringstream s;
+        s << "chunking events user_id = "
+          << ID()
+          << ", chunk_up_to = " << chunk_up_to;
+        logger().debug(s.str());
+    }
+
+    for (std::vector<TimelineEvent *>::iterator i =
+        related.TimelineEvents.begin();
+            i != related.TimelineEvents.end();
+            ++i) {
+        TimelineEvent *event = *i;
+
+        poco_check_ptr(event);
+
+        // Delete too old timeline events
+        if (event->StartTime() > minimum_time) {
+            event->Delete();
+        }
+
+        // Events that do not fit into chunk yet, ignore
+        if (event->StartTime() >= chunk_up_to) {
+            continue;
+        }
+
+        // Ignore deleted events
+        if (event->DeletedAt()) {
+            continue;
+        }
+
+        // Ignore chunked and already uploaded stuff
+        if (event->Chunked() || event->Uploaded()) {
+            continue;
+        }
+
+        // Calculate the start time of the chunk
+        // that fits this timeline event
+        time_t chunk_start_time =
+            (event->StartTime() / kTimelineChunkSeconds)
+            * kTimelineChunkSeconds;
+
+        // Build dictionary key so that the chunk can be accessed later
+        std::stringstream ss;
+        ss << event->Filename();
+        ss << "::";
+        ss << event->Title();
+        ss << "::";
+        ss << event->Idle();
+        ss << "::";
+        ss << chunk_start_time;
+        std::string key = ss.str();
+
+        // Calculate positive value of timeline event duration
+        time_t duration = event->EndTime() - event->StartTime();
+        if (duration < 0) {
+            duration = 0;
+        }
+
+        poco_assert(!event->Uploaded());
+        poco_assert(!event->Chunked());
+
+        TimelineEvent *chunk = nullptr;
+        if (compressed.find(key) == compressed.end()) {
+            // If chunk is not created yet,
+            // turn the timeline event into chunk
+            chunk = event;
+            chunk->SetEndTime(chunk->StartTime() + duration);
+            chunk->SetChunked(true);
+        } else {
+            // If chunk already exists, add duration
+            // to that junk and delete the original event
+            chunk = compressed[key];
+            chunk->SetEndTime(chunk->EndTime() + duration);
+            event->Delete();
+        }
+        compressed[key] = chunk;
+    }
+}
+
+std::vector<TimelineEvent> User::CompressedTimeline() const {
+    std::vector<TimelineEvent> list;
+    for (std::vector<TimelineEvent *>::const_iterator i =
+        related.TimelineEvents.begin();
+            i != related.TimelineEvents.end();
+            ++i) {
+        TimelineEvent *event = *i;
+        poco_check_ptr(event);
+        if (event->Uploaded() || event->DeletedAt() || !event->Chunked()) {
+            continue;
+        }
+        // Make a copy of the timeline event
+        list.push_back(*event);
+    }
+    return list;
+}
+
 std::string User::ModelName() const {
     return kModelUser;
 }
@@ -1293,7 +1424,6 @@ std::string User::ModelName() const {
 std::string User::ModelURL() const {
     return "/api/v8/me";
 }
-
 
 template<class T>
 void deleteZombies(
