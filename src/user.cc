@@ -1295,8 +1295,7 @@ void User::MarkTimelineBatchAsUploaded(
             i != events.end();
             ++i) {
         TimelineEvent event = *i;
-        TimelineEvent *uploaded =
-            ModelByGUID<TimelineEvent>(event.GUID(), &related.TimelineEvents);
+        TimelineEvent *uploaded = related.TimelineEventByGUID(event.GUID());
         if (!uploaded) {
             logger().error(
                 "Could not find timeline event to mark it as uploaded: "
@@ -1337,7 +1336,7 @@ void User::CompressTimeline() {
         poco_check_ptr(event);
 
         // Delete too old timeline events
-        if (event->StartTime() > minimum_time) {
+        if (event->StartTime() < minimum_time) {
             event->Delete();
         }
 
@@ -1374,7 +1373,7 @@ void User::CompressTimeline() {
         std::string key = ss.str();
 
         // Calculate positive value of timeline event duration
-        time_t duration = event->EndTime() - event->StartTime();
+        time_t duration = event->Duration();
         if (duration < 0) {
             duration = 0;
         }

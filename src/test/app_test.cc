@@ -110,87 +110,99 @@ TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
 TEST(Database, CreateCompressedTimelineBatchForUpload) {
     testing::Database db;
 
-    const Poco::UInt64 user_id = 123;
+    User user;
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+    const Poco::UInt64 user_id = user.ID();
+
+    std::vector<ModelChange> changes;
+
+    time_t good_duration_seconds(30);
 
     // Event that happened at least 15 minutes ago,
     // can be uploaded to Toggl backend.
-    TimelineEvent good;
-    good.SetUID(user_id);
-    // started 16 minutes ago, yesterday
-    good.SetStartTime(time(0) - 86400 - 60*16);  
-    good.SetEndTime(good.StartTime() + 30);  // lasted 30 seconds
-    good.SetFilename("Notepad.exe");
-    good.SetTitle("untitled");
-    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&good));
+    TimelineEvent *good = new TimelineEvent();
+    good->SetUID(user_id);
+    // started "16 minutes ago", yesterday
+    good->SetStartTime(time(0) - 86400 - 60*16);
+    // lasted 30 seconds
+    good->SetEndTime(good->StartTime() + good_duration_seconds);
+    good->SetFilename("Notepad.exe");
+    good->SetTitle("untitled");
+    user.related.TimelineEvents.push_back(good);
+
+    time_t good2_duration_seconds(20);
 
     // Another event that happened at least 15 minutes ago,
     // can be uploaded to Toggl backend.
-    TimelineEvent good2;
-    good2.SetUID(user_id);
-    good2.SetStartTime(good.EndTime() + 1);  // started after first event
-    good2.SetEndTime(good2.StartTime() + 20);
-    good2.SetFilename("Notepad.exe");
-    good2.SetTitle("untitled");
-    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&good2));
+    TimelineEvent *good2 = new TimelineEvent();
+    good2->SetUID(user_id);
+    good2->SetStartTime(good->EndTime() + 1);  // started after first event
+    good2->SetEndTime(good2->StartTime() + good2_duration_seconds);
+    good2->SetFilename("Notepad.exe");
+    good2->SetTitle("untitled");
+    user.related.TimelineEvents.push_back(good2);
 
     // Another event that happened at least 15 minutes ago,
     // but has already been uploaded to Toggl backend.
-    TimelineEvent uploaded;
-    uploaded.SetUID(user_id);
-    uploaded.SetStartTime(good2.EndTime() + 1);  // started after second event
-    uploaded.SetEndTime(uploaded.StartTime() + 10);
-    uploaded.SetFilename("Notepad.exe");
-    uploaded.SetTitle("untitled");
-    uploaded.SetUploaded(true);
-    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&uploaded));
+    TimelineEvent *uploaded = new TimelineEvent();;
+    uploaded->SetUID(user_id);
+    uploaded->SetStartTime(good2->EndTime() + 1);  // started after second event
+    uploaded->SetEndTime(uploaded->StartTime() + 10);
+    uploaded->SetFilename("Notepad.exe");
+    uploaded->SetTitle("untitled");
+    uploaded->SetUploaded(true);
+    user.related.TimelineEvents.push_back(uploaded);
 
     // This event happened less than 15 minutes ago,
     // so it must not be uploaded
-    TimelineEvent too_fresh;
-    too_fresh.SetUID(user_id);
-    too_fresh.SetStartTime(time(0) - 60);  // started 1 minute ago
-    too_fresh.SetEndTime(time(0));  // lasted until now
-    too_fresh.SetFilename("Notepad.exe");
-    too_fresh.SetTitle("notes");
-    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&too_fresh));
+    TimelineEvent *too_fresh = new TimelineEvent();
+    too_fresh->SetUID(user_id);
+    too_fresh->SetStartTime(time(0) - 60);  // started 1 minute ago
+    too_fresh->SetEndTime(time(0));  // lasted until now
+    too_fresh->SetFilename("Notepad.exe");
+    too_fresh->SetTitle("notes");
+    user.related.TimelineEvents.push_back(too_fresh);
 
     // This event happened more than 7 days ago,
     // so it must not be uploaded, just deleted
-    TimelineEvent too_old;
-    too_old.SetUID(user_id);
-    too_old.SetStartTime(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
-    too_old.SetEndTime(too_old.EndTime() + 120);  // lasted 2 minutes
-    too_old.SetFilename("Notepad.exe");
-    too_old.SetTitle("diary");
-    ASSERT_EQ(noError, db.instance()->InsertTimelineEvent(&too_old));
+    TimelineEvent *too_old = new TimelineEvent();
+    too_old->SetUID(user_id);
+    too_old->SetStartTime(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
+    too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
+    too_old->SetFilename("Notepad.exe");
+    too_old->SetTitle("diary");
+    user.related.TimelineEvents.push_back(too_old);
 
-    std::vector<TimelineEvent> timeline_events;
-    ASSERT_EQ(noError, db.instance()->CreateCompressedTimelineBatchForUpload(
-        user_id, &timeline_events));
+    db.instance()->SaveUser(&user, true, &changes);
+
+    user.CompressTimeline();
+    std::vector<TimelineEvent> timeline_events = user.CompressedTimeline();
 
     ASSERT_EQ(size_t(1), timeline_events.size());
 
     TimelineEvent ready_for_upload = timeline_events[0];
     ASSERT_TRUE(ready_for_upload.Chunked());
-    ASSERT_EQ(good.UID(), ready_for_upload.UID());
-    ASSERT_EQ(good.StartTime(), ready_for_upload.StartTime());
-    ASSERT_EQ(
-        (good.EndTime() - good.StartTime())
-        + (good2.EndTime() - good2.StartTime()),
-        ready_for_upload.EndTime() - ready_for_upload.StartTime());
-    ASSERT_EQ(good.Filename(), ready_for_upload.Filename());
-    ASSERT_EQ(good.Title(), ready_for_upload.Title());
-    ASSERT_EQ(good.Idle(), ready_for_upload.Idle());
+    ASSERT_EQ(good->UID(), ready_for_upload.UID());
+
+    ASSERT_NE(good2->StartTime(), ready_for_upload.StartTime());
+    ASSERT_NE(uploaded->StartTime(), ready_for_upload.StartTime());
+    ASSERT_NE(too_old->StartTime(), ready_for_upload.StartTime());
+    ASSERT_NE(too_fresh->StartTime(), ready_for_upload.StartTime());
+    ASSERT_EQ(good->StartTime(), ready_for_upload.StartTime());
+
+    ASSERT_EQ(good_duration_seconds + good2_duration_seconds,
+              ready_for_upload.Duration());
+    ASSERT_EQ(good->Filename(), ready_for_upload.Filename());
+    ASSERT_EQ(good->Title(), ready_for_upload.Title());
+    ASSERT_EQ(good->Idle(), ready_for_upload.Idle());
     ASSERT_FALSE(ready_for_upload.Uploaded());
 
     // Fake that we have uploaded the chunked timeline event now
-    ASSERT_EQ(noError,
-              db.instance()->MarkTimelineBatchAsUploaded(timeline_events));
+    user.MarkTimelineBatchAsUploaded(timeline_events);
 
     // Now, no more events should exist for upload
-    std::vector<TimelineEvent> left_for_upload;
-    ASSERT_EQ(noError, db.instance()->CreateCompressedTimelineBatchForUpload(
-        user_id, &left_for_upload));
+    std::vector<TimelineEvent> left_for_upload = user.CompressedTimeline();
     ASSERT_EQ(std::size_t(0), left_for_upload.size());
 }
 

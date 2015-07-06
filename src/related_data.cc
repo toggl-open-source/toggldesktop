@@ -442,6 +442,10 @@ TimeEntry *RelatedData::TimeEntryByGUID(const guid GUID) const {
     return modelByGUID(GUID, &TimeEntries);
 }
 
+TimelineEvent *RelatedData::TimelineEventByGUID(const guid GUID) const {
+    return modelByGUID(GUID, &TimelineEvents);
+}
+
 Tag *RelatedData::TagByGUID(const guid GUID) const {
     return modelByGUID(GUID, &Tags);
 }

@@ -17,7 +17,9 @@ std::string TimelineEvent::String() const {
        << ";"
        << filename_
        << ";"
-       << title_;
+       << title_
+       << ";"
+       << Duration();
     return ss.str();
 }
 

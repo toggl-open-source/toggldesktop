@@ -56,6 +56,7 @@ class RelatedData {
     Tag *TagByGUID(const guid GUID) const;
     Project *ProjectByGUID(const guid GUID) const;
     Client *ClientByGUID(const guid GUID) const;
+    TimelineEvent *TimelineEventByGUID(const guid GUID) const;
 
     void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;

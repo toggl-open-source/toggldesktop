@@ -61,6 +61,10 @@ class TimelineEvent  : public BaseModel {
     }
     void SetUploaded(const bool value);
 
+    time_t Duration() const {
+        return EndTime() - StartTime();
+    }
+
     // Override BaseModel
 
     std::string String() const;
