@@ -9,10 +9,11 @@
 #include <string>
 
 #include "./base_model.h"
+#include "./formatter.h"
 
 namespace toggl {
 
-class TimelineEvent  : public BaseModel {
+class TimelineEvent  : public BaseModel, public HasStart {
  public:
     TimelineEvent()
         : BaseModel()
@@ -31,15 +32,15 @@ class TimelineEvent  : public BaseModel {
     }
     void SetTitle(const std::string value);
 
-    const time_t &StartTime() const {
+    const Poco::UInt64 &Start() const {
         return start_time_;
     }
-    void SetStartTime(const time_t value);
+    void SetStart(const Poco::UInt64 value);
 
-    const time_t &EndTime() const {
+    const Poco::UInt64 &EndTime() const {
         return end_time_;
     }
-    void SetEndTime(const time_t value);
+    void SetEndTime(const Poco::UInt64 value);
 
     const bool &Idle() const {
         return idle_;
@@ -61,8 +62,8 @@ class TimelineEvent  : public BaseModel {
     }
     void SetUploaded(const bool value);
 
-    time_t Duration() const {
-        return EndTime() - StartTime();
+    Poco::UInt64 Duration() const {
+        return EndTime() - Start();
     }
 
     // Override BaseModel
@@ -74,8 +75,8 @@ class TimelineEvent  : public BaseModel {
  private:
     std::string title_;
     std::string filename_;
-    time_t start_time_;
-    time_t end_time_;
+    Poco::UInt64 start_time_;
+    Poco::UInt64 end_time_;
     bool idle_;
     bool chunked_;
     bool uploaded_;

@@ -1323,7 +1323,7 @@ error Database::loadTimelineEvents(
                 if (!rs[2].isEmpty()) {
                     model->SetFilename(rs[2].convert<std::string>());
                 }
-                model->SetStartTime(rs[3].convert<int>());
+                model->SetStart(rs[3].convert<int>());
                 if (!rs[4].isEmpty()) {
                     model->SetEndTime(rs[4].convert<int>());
                 }
@@ -1807,14 +1807,14 @@ error Database::saveModel(
         if (!model->UID()) {
             return error("Cannot save timeline event without an user ID");
         }
-        if (!model->StartTime()) {
+        if (!model->Start()) {
             return error("Cannot save timeline event without start time");
         }
         if (!model->EndTime()) {
             return error("Cannot save timeline event without end time");
         }
 
-        Poco::Int64 start_time(model->StartTime());
+        Poco::Int64 start_time(model->Start());
         Poco::Int64 end_time(model->EndTime());
 
         if (model->LocalID()) {

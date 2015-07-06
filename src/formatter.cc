@@ -573,7 +573,7 @@ bool CompareClientByName(Client *a, Client *b) {
     return (Poco::UTF8::icompare(a->Name(), b->Name()) < 0);
 }
 
-bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b) {
+bool CompareByStart(HasStart *a, HasStart *b) {
     return a->Start() < b->Start();
 }
 

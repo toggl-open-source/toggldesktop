@@ -8,13 +8,14 @@
 
 #include "./base_model.h"
 #include "./const.h"
+#include "./formatter.h"
 #include "./types.h"
 
 #include "Poco/Types.h"
 
 namespace toggl {
 
-class TimeEntry : public BaseModel {
+class TimeEntry : public BaseModel, public HasStart {
  public:
     TimeEntry()
         : BaseModel()

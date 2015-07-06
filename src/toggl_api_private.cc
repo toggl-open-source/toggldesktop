@@ -21,7 +21,7 @@ TogglTimelineEventView *timeline_event_init(
     result->ID = static_cast<unsigned int>(ev.ID());
     result->Title = copy_string(ev.Title());
     result->Filename = copy_string(ev.Filename());
-    result->StartTime = static_cast<unsigned int>(ev.StartTime());
+    result->StartTime = static_cast<unsigned int>(ev.Start());
     result->EndTime = static_cast<unsigned int>(ev.EndTime());
     result->Idle = ev.Idle();
     result->Next = nullptr;

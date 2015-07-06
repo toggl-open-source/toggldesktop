@@ -1311,12 +1311,12 @@ void User::CompressTimeline() {
     std::map<std::string, TimelineEvent *> compressed;
 
     // Older events will be deleted
-    time_t minimum_time = time(0) - kTimelineSecondsToKeep;
+    Poco::UInt64 minimum_time = time(0) - kTimelineSecondsToKeep;
 
     // Find the chunk start time of current time.
     // then process only events that are older that this chunk start time.
     // Else we will have no full chunks to compress.
-    time_t chunk_up_to =
+    Poco::UInt64 chunk_up_to =
         (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
     {
@@ -1336,12 +1336,12 @@ void User::CompressTimeline() {
         poco_check_ptr(event);
 
         // Delete too old timeline events
-        if (event->StartTime() < minimum_time) {
+        if (event->Start() < minimum_time) {
             event->Delete();
         }
 
         // Events that do not fit into chunk yet, ignore
-        if (event->StartTime() >= chunk_up_to) {
+        if (event->Start() >= chunk_up_to) {
             continue;
         }
 
@@ -1358,7 +1358,7 @@ void User::CompressTimeline() {
         // Calculate the start time of the chunk
         // that fits this timeline event
         time_t chunk_start_time =
-            (event->StartTime() / kTimelineChunkSeconds)
+            (event->Start() / kTimelineChunkSeconds)
             * kTimelineChunkSeconds;
 
         // Build dictionary key so that the chunk can be accessed later
@@ -1386,7 +1386,7 @@ void User::CompressTimeline() {
             // If chunk is not created yet,
             // turn the timeline event into chunk
             chunk = event;
-            chunk->SetEndTime(chunk->StartTime() + duration);
+            chunk->SetEndTime(chunk->Start() + duration);
             chunk->SetChunked(true);
         } else {
             // If chunk already exists, add duration

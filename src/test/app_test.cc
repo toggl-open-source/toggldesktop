@@ -113,11 +113,11 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     User user;
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
-    const Poco::UInt64 user_id = user.ID();
+    Poco::UInt64 user_id = user.ID();
 
     std::vector<ModelChange> changes;
 
-    time_t good_duration_seconds(30);
+    Poco::UInt64 good_duration_seconds(30);
 
     // Event that happened at least 15 minutes ago,
     // can be uploaded to Toggl backend.
@@ -131,14 +131,14 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     good->SetTitle("untitled");
     user.related.TimelineEvents.push_back(good);
 
-    time_t good2_duration_seconds(20);
+    Poco::UInt64 good2_duration_seconds(20);
 
     // Another event that happened at least 15 minutes ago,
     // can be uploaded to Toggl backend.
     TimelineEvent *good2 = new TimelineEvent();
     good2->SetUID(user_id);
-    good2->SetStartTime(good->EndTime() + 1);  // started after first event
-    good2->SetEndTime(good2->StartTime() + good2_duration_seconds);
+    good2->SetStart(good->EndTime() + 1);  // started after first event
+    good2->SetEndTime(good2->Start() + good2_duration_seconds);
     good2->SetFilename("Notepad.exe");
     good2->SetTitle("untitled");
     user.related.TimelineEvents.push_back(good2);
@@ -147,8 +147,8 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     // but has already been uploaded to Toggl backend.
     TimelineEvent *uploaded = new TimelineEvent();;
     uploaded->SetUID(user_id);
-    uploaded->SetStartTime(good2->EndTime() + 1);  // started after second event
-    uploaded->SetEndTime(uploaded->StartTime() + 10);
+    uploaded->SetStart(good2->EndTime() + 1);  // started after second event
+    uploaded->SetEndTime(uploaded->Start() + 10);
     uploaded->SetFilename("Notepad.exe");
     uploaded->SetTitle("untitled");
     uploaded->SetUploaded(true);
@@ -158,7 +158,7 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded
     TimelineEvent *too_fresh = new TimelineEvent();
     too_fresh->SetUID(user_id);
-    too_fresh->SetStartTime(time(0) - 60);  // started 1 minute ago
+    too_fresh->SetStart(time(0) - 60);  // started 1 minute ago
     too_fresh->SetEndTime(time(0));  // lasted until now
     too_fresh->SetFilename("Notepad.exe");
     too_fresh->SetTitle("notes");
@@ -168,7 +168,7 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     // so it must not be uploaded, just deleted
     TimelineEvent *too_old = new TimelineEvent();
     too_old->SetUID(user_id);
-    too_old->SetStartTime(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
+    too_old->SetStart(time(0) - kTimelineSecondsToKeep - 1);  // 7 days ago
     too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
     too_old->SetFilename("Notepad.exe");
     too_old->SetTitle("diary");
@@ -185,11 +185,11 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     ASSERT_TRUE(ready_for_upload.Chunked());
     ASSERT_EQ(good->UID(), ready_for_upload.UID());
 
-    ASSERT_NE(good2->StartTime(), ready_for_upload.StartTime());
-    ASSERT_NE(uploaded->StartTime(), ready_for_upload.StartTime());
-    ASSERT_NE(too_old->StartTime(), ready_for_upload.StartTime());
-    ASSERT_NE(too_fresh->StartTime(), ready_for_upload.StartTime());
-    ASSERT_EQ(good->StartTime(), ready_for_upload.StartTime());
+    ASSERT_NE(good2->Start(), ready_for_upload.Start());
+    ASSERT_NE(uploaded->Start(), ready_for_upload.Start());
+    ASSERT_NE(too_old->Start(), ready_for_upload.Start());
+    ASSERT_NE(too_fresh->Start(), ready_for_upload.Start());
+    ASSERT_EQ(good->Start(), ready_for_upload.Start());
 
     ASSERT_EQ(good_duration_seconds + good2_duration_seconds,
               ready_for_upload.Duration());
@@ -1509,7 +1509,7 @@ TEST(JSON, ConvertTimelineToJSON) {
     const std::string desktop_id("12345");
 
     TimelineEvent event;
-    event.SetStartTime(time(0) - 10);
+    event.SetStart(time(0) - 10);
     event.SetEndTime(time(0));
     event.SetFilename("Is this the real life?");
     event.SetTitle("Is this just fantasy?");
@@ -1528,8 +1528,8 @@ TEST(JSON, ConvertTimelineToJSON) {
         const Json::Value v = root[0];
         ASSERT_EQ("timeline", v["created_with"].asString());
         ASSERT_EQ(desktop_id, v["desktop_id"].asString());
-        ASSERT_EQ(event.StartTime(), v["start_time"].asInt());
-        ASSERT_EQ(event.EndTime(), v["end_time"].asInt());
+        ASSERT_EQ(event.Start(), v["start_time"].asUInt());
+        ASSERT_EQ(event.EndTime(), v["end_time"].asUInt());
     }
 
     event.SetIdle(false);
@@ -1547,8 +1547,8 @@ TEST(JSON, ConvertTimelineToJSON) {
         const Json::Value v = root[0];
         ASSERT_EQ("timeline", v["created_with"].asString());
         ASSERT_EQ(desktop_id, v["desktop_id"].asString());
-        ASSERT_EQ(event.StartTime(), v["start_time"].asInt());
-        ASSERT_EQ(event.EndTime(), v["end_time"].asInt());
+        ASSERT_EQ(event.Start(), v["start_time"].asUInt());
+        ASSERT_EQ(event.EndTime(), v["end_time"].asUInt());
         ASSERT_EQ(event.Filename(), v["filename"].asString());
         ASSERT_EQ(event.Title(), v["title"].asString());
     }

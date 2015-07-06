@@ -27,6 +27,11 @@ class Task;
 class TimeEntry;
 class Workspace;
 
+class HasStart {
+ public:
+    virtual const Poco::UInt64 &Start() const = 0;
+};
+
 class Formatter {
  public:
     // Format
@@ -119,7 +124,7 @@ class Formatter {
 };
 
 bool CompareClientByName(Client *a, Client *b);
-bool CompareTimeEntriesByStart(TimeEntry *a, TimeEntry *b);
+bool CompareByStart(HasStart *a, HasStart *b);
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
 bool CompareStructuredAutocompleteItems(
     AutocompleteItem a, AutocompleteItem b);
