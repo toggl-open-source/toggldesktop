@@ -203,13 +203,13 @@ toggl::error User::Continue(
 
 std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
-    std::string date_header = te->DateHeaderString();
+    std::string date_header = Formatter::FormatDateHeader(te->Start());
     for (std::vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
             it++) {
         TimeEntry *n = *it;
-        if (n->DateHeaderString() == date_header) {
+        if (Formatter::FormatDateHeader(n->Start()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
             if (duration > 0) {
                 date_duration += duration;

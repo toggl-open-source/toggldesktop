@@ -9,11 +9,12 @@
 #include <string>
 
 #include "./base_model.h"
+#include "./const.h"
 #include "./formatter.h"
 
 namespace toggl {
 
-class TimelineEvent  : public BaseModel, public HasStart {
+class TimelineEvent  : public BaseModel, public TimedEvent {
  public:
     TimelineEvent()
         : BaseModel()
@@ -62,15 +63,21 @@ class TimelineEvent  : public BaseModel, public HasStart {
     }
     void SetUploaded(const bool value);
 
-    Poco::UInt64 Duration() const {
-        return EndTime() - Start();
-    }
-
     // Override BaseModel
 
     std::string String() const;
     std::string ModelName() const;
     std::string ModelURL() const;
+
+    // Implement TimedEvent
+
+    virtual Poco::UInt64 Type() const {
+        return kTimedEventTypeTimelineEvent;
+    }
+
+    virtual Poco::Int64 Duration() const {
+        return EndTime() - Start();
+    }
 
  private:
     std::string title_;

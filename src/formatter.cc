@@ -384,9 +384,27 @@ int Formatter::ParseDurationString(const std::string value) {
     return seconds;
 }
 
+Poco::UInt64 Formatter::AbsDuration(const Poco::Int64 value) {
+    Poco::Int64 duration = value;
+
+    // Duration is negative when time is tracking
+    if (duration < 0) {
+        duration += time(0);
+    }
+    // If after calculation time is still negative,
+    // either computer clock is wrong or user
+    // has set start time to the future. Render positive
+    // duration only:
+    if (duration < 0) {
+        duration *= -1;
+    }
+
+    return static_cast<Poco::UInt64>(duration);
+}
+
 std::string Formatter::FormatDurationForDateHeader(
     const Poco::Int64 value) {
-    Poco::Int64 duration = TimeEntry::AbsDuration(value);
+    Poco::Int64 duration = AbsDuration(value);
 
     std::stringstream ss;
 
@@ -406,7 +424,7 @@ std::string Formatter::FormatDuration(
     const Poco::Int64 value,
     const std::string format_name,
     const bool with_seconds) {
-    Poco::Int64 duration = TimeEntry::AbsDuration(value);
+    Poco::Int64 duration = AbsDuration(value);
 
     if (Format::Decimal == format_name) {
         double hours = duration / 3600.0;
@@ -573,7 +591,7 @@ bool CompareClientByName(Client *a, Client *b) {
     return (Poco::UTF8::icompare(a->Name(), b->Name()) < 0);
 }
 
-bool CompareByStart(HasStart *a, HasStart *b) {
+bool CompareByStart(TimedEvent *a, TimedEvent *b) {
     return a->Start() < b->Start();
 }
 

@@ -27,9 +27,11 @@ class Task;
 class TimeEntry;
 class Workspace;
 
-class HasStart {
+class TimedEvent {
  public:
     virtual const Poco::UInt64 &Start() const = 0;
+    virtual Poco::UInt64 Type() const = 0;
+    virtual Poco::Int64 Duration() const = 0;
 };
 
 class Formatter {
@@ -66,6 +68,10 @@ class Formatter {
 
     static error CollectErrors(
         std::vector<error> * const errors);
+
+    // Time
+
+    static Poco::UInt64 AbsDuration(const Poco::Int64 value);
 
     // Parse
 
@@ -124,7 +130,7 @@ class Formatter {
 };
 
 bool CompareClientByName(Client *a, Client *b);
-bool CompareByStart(HasStart *a, HasStart *b);
+bool CompareByStart(TimedEvent *a, TimedEvent *b);
 bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
 bool CompareStructuredAutocompleteItems(
     AutocompleteItem a, AutocompleteItem b);

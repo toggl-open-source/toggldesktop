@@ -24,6 +24,7 @@ class Client;
 class Project;
 class RelatedData;
 class User;
+class TimedEvent;
 class TimeEntry;
 class Workspace;
 
@@ -79,7 +80,7 @@ class GUI : public SyncStateMonitor {
     void DisplayTimeEntryList(
         const bool open,
         const RelatedData &related,
-        const std::vector<TimeEntry *> list);
+        const std::vector<TimedEvent *> list);
 
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
 

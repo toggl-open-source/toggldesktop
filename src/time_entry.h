@@ -15,7 +15,7 @@
 
 namespace toggl {
 
-class TimeEntry : public BaseModel, public HasStart {
+class TimeEntry : public BaseModel, public TimedEvent {
  public:
     TimeEntry()
         : BaseModel()
@@ -81,8 +81,6 @@ class TimeEntry : public BaseModel, public HasStart {
     }
     void SetStart(const Poco::UInt64 value);
 
-    std::string DateHeaderString() const;
-
     std::string StopString() const;
     void SetStopString(const std::string value);
 
@@ -117,6 +115,7 @@ class TimeEntry : public BaseModel, public HasStart {
     void StopTracking();
 
     // Override BaseModel
+
     std::string ModelName() const;
     std::string ModelURL() const;
     std::string String() const;
@@ -124,8 +123,15 @@ class TimeEntry : public BaseModel, public HasStart {
     void LoadFromJSON(Json::Value value);
     Json::Value SaveToJSON() const;
 
- public:
-    static Poco::UInt64 AbsDuration(const Poco::Int64 value);
+    // Implement TimedEvent
+
+    virtual Poco::UInt64 Type() const {
+        return kTimedEventTypeTimeEntry;
+    }
+
+    virtual Poco::Int64 Duration() const {
+        return DurationInSeconds();
+    }
 
  private:
     Poco::UInt64 wid_;

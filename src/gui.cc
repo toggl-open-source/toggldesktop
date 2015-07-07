@@ -235,7 +235,7 @@ void GUI::DisplayProjectAutocomplete(
 
 void GUI::DisplayTimeEntryList(const bool open,
                                const RelatedData &related,
-                               const std::vector<TimeEntry *> list) {
+                               const std::vector<TimedEvent *> list) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
     {
@@ -248,52 +248,66 @@ void GUI::DisplayTimeEntryList(const bool open,
     // Calculate total duration for each date: will be displayed in date header
     std::map<std::string, Poco::Int64> date_durations;
     for (unsigned int i = 0; i < list.size(); i++) {
-        TimeEntry *te = list.at(i);
-
-        std::string date_header = te->DateHeaderString();
+        TimedEvent *te = list.at(i);
+        if (te->Type() != kTimedEventTypeTimeEntry) {
+            continue;
+        }
+        std::string date_header = Formatter::FormatDateHeader(te->Start());
         Poco::Int64 duration = date_durations[date_header];
-        duration += TimeEntry::AbsDuration(te->DurationInSeconds());
+        duration += Formatter::AbsDuration(te->Duration());
         date_durations[date_header] = duration;
     }
 
     // Render
     TogglTimeEntryView *first = nullptr;
     for (unsigned int i = 0; i < list.size(); i++) {
-        TimeEntry *te = list.at(i);
+        TimedEvent *te = list.at(i);
 
-        if (te->DurationInSeconds() < 0) {
+        if (te->Duration() < 0) {
             // Don't display running entries
             continue;
         }
 
-        std::string workspace_name("");
-        std::string project_and_task_label("");
-        std::string task_label("");
-        std::string project_label("");
-        std::string client_label("");
-        std::string color("");
-        related.ProjectLabelAndColorCode(te,
-                                         &workspace_name,
-                                         &project_and_task_label,
-                                         &task_label,
-                                         &project_label,
-                                         &client_label,
-                                         &color);
-
-        Poco::Int64 duration = date_durations[te->DateHeaderString()];
+        Poco::Int64 duration =
+            date_durations[Formatter::FormatDateHeader(te->Start())];
         std::string date_duration =
             Formatter::FormatDurationForDateHeader(duration);
 
-        TogglTimeEntryView *item =
-            time_entry_view_item_init(te,
-                                      workspace_name,
-                                      project_and_task_label,
-                                      task_label,
-                                      project_label,
-                                      client_label,
-                                      color,
-                                      date_duration,
-                                      false);
+        TogglTimeEntryView *item = nullptr;
+
+        if (te->Type() == kTimedEventTypeTimeEntry) {
+            TimeEntry *time_entry = static_cast<TimeEntry *>(te);
+            std::string workspace_name("");
+            std::string project_and_task_label("");
+            std::string task_label("");
+            std::string project_label("");
+            std::string client_label("");
+            std::string color("");
+            related.ProjectLabelAndColorCode(time_entry,
+                                             &workspace_name,
+                                             &project_and_task_label,
+                                             &task_label,
+                                             &project_label,
+                                             &client_label,
+                                             &color);
+
+            item = time_entry_view_item_init(time_entry,
+                                             workspace_name,
+                                             project_and_task_label,
+                                             task_label,
+                                             project_label,
+                                             client_label,
+                                             color,
+                                             date_duration,
+                                             false);
+        } else if (te->Type() == kTimedEventTypeTimelineEvent) {
+            TimelineEvent *timeline_event = static_cast<TimelineEvent *>(te);
+            item = time_entry_view_item_init(timeline_event,
+                                             date_duration,
+                                             false);
+        } else {
+            poco_assert(false);
+        }
         item->Next = first;
         if (first && compare_string(item->DateHeader, first->DateHeader) != 0) {
             first->IsHeader = true;

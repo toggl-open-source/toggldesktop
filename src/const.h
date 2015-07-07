@@ -82,4 +82,7 @@
 
 #define kPromotionJoinBetaChannel 1
 
+#define kTimedEventTypeTimelineEvent 1
+#define kTimedEventTypeTimeEntry 2
+
 #endif  // SRC_CONST_H_

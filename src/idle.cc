@@ -72,7 +72,7 @@ void Idle::computeIdleState(
         TimeEntry *te = current_user->RunningTimeEntry();
         if (!te) {
             logger().warning("Time entry is not tracking, ignoring idleness");
-        } else if (TimeEntry::AbsDuration(te->DurationInSeconds())
+        } else if (Formatter::AbsDuration(te->DurationInSeconds())
                    < last_idle_seconds_reading_) {
             logger().warning("Time entry duration is less than idle, ignoring");
         } else if (settings_.use_idle_detection) {
