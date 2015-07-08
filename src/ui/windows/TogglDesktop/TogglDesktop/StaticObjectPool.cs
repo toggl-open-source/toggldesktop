@@ -10,7 +10,7 @@ namespace TogglDesktop
         {
             lock (pool)
             {
-                //pool.Push(obj);
+                pool.Push(obj);
             }
         }
 
