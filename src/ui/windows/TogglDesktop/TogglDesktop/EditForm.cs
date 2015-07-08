@@ -11,6 +11,7 @@ public partial class EditForm : Form
     private bool isLeft = false;
 
     public string GUID = null;
+    private WPF.TimeEntryEditViewController controller;
 
     public EditForm()
     {
@@ -87,9 +88,14 @@ public partial class EditForm : Form
 
     internal void setPlacement(bool left, Point p, int height)
     {
+        this.controller.SetShadow(left, height);
+
+        height = Math.Max(400, height);
+
         TopMost = true;
         isLeft = !left;
         Height = height;
+
 
         if (left)
         {
@@ -101,6 +107,8 @@ public partial class EditForm : Form
             resizeHandle.Cursor = Cursors.SizeNWSE;
         }
         Location = p;
+        this.MinimumSize = new Size(400, height);
+        this.MaximumSize = new Size(1200, height);
     }
 
     internal void reset()
@@ -140,6 +148,11 @@ public partial class EditForm : Form
     public void ClosePopup()
     {
         // TODO: what was this doing before?
+    }
+
+    public void SetViewController(WPF.TimeEntryEditViewController timeEntryEditViewController)
+    {
+        this.controller = timeEntryEditViewController;
     }
 }
 }

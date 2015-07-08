@@ -542,6 +542,8 @@ public partial class MainWindowController : TogglForm
         };
 
         editForm.Controls.Add(editViewHost);
+
+        editForm.SetViewController(this.timeEntryEditViewController);
     }
 
     public void PopupInput(Toggl.TimeEntry te)

@@ -481,7 +481,8 @@
                 Click="backButton_OnClick"/>
         
         <Rectangle Grid.Column="0" Grid.Row="0" Grid.RowSpan="4"
-                   HorizontalAlignment="Left" Width="13">
+                   Name="shadowLeft" x:FieldModifier="private"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Width="13">
             <Rectangle.Fill>
                 <RadialGradientBrush RadiusX="1" RadiusY="0.8"
                                      GradientOrigin="-0.4, 0.35"
@@ -491,6 +492,18 @@
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        
+
+        <Rectangle Grid.Column="2" Grid.Row="0" Grid.RowSpan="4"
+                   Name="shadowRight" x:FieldModifier="private"
+                   HorizontalAlignment="Right" VerticalAlignment="Top" Width="13">
+            <Rectangle.Fill>
+                <RadialGradientBrush RadiusX="1" RadiusY="0.8"
+                                     GradientOrigin="1.4, 0.35"
+                                     Center="1.1, 0.35">
+                    <GradientStop Color="{toggl:Opacity Black, 0.15}" Offset="0.0" />
+                    <GradientStop Color="{toggl:Opacity Black, 0}" Offset="1" />
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
     </Grid>
 </UserControl>

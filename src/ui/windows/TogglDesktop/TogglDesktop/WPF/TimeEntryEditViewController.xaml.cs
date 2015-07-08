@@ -48,7 +48,6 @@ namespace TogglDesktop.WPF
             this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
 
-
         #region helper methods
 
         private bool invoke(Action action)
@@ -841,6 +840,14 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public void SetShadow(bool left, int height)
+        {
+            this.shadowLeft.Visibility = left ? Visibility.Collapsed : Visibility.Visible;
+            this.shadowRight.Visibility = left ? Visibility.Visible : Visibility.Collapsed;
+
+            this.shadowLeft.MinHeight = height;
+            this.shadowRight.MinHeight = height;
+        }
         #endregion
 
     }
