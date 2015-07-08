@@ -335,6 +335,9 @@ class Context : public TimelineDatasource {
 
     Database *db() const;
 
+    void timelineEvents(
+        std::vector<TimedEvent *> *result);
+
     void timeEntries(
         std::vector<TimedEvent *> *result);
 

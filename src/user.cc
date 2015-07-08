@@ -1407,11 +1407,10 @@ std::vector<TimelineEvent> User::CompressedTimeline() const {
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
-        if (event->Uploaded() || event->DeletedAt() || !event->Chunked()) {
-            continue;
+        if (event->VisibleToUser()) {
+            // Make a copy of the timeline event
+            list.push_back(*event);
         }
-        // Make a copy of the timeline event
-        list.push_back(*event);
     }
     return list;
 }

@@ -63,6 +63,10 @@ class TimelineEvent  : public BaseModel, public TimedEvent {
     }
     void SetUploaded(const bool value);
 
+    bool VisibleToUser() const {
+        return !Uploaded() && !DeletedAt() && Chunked();
+    }
+
     // Override BaseModel
 
     std::string String() const;
