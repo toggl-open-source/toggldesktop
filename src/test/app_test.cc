@@ -191,7 +191,8 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     ASSERT_NE(too_fresh->Start(), ready_for_upload.Start());
     ASSERT_EQ(good->Start(), ready_for_upload.Start());
 
-    ASSERT_EQ(good_duration_seconds + good2_duration_seconds,
+    ASSERT_EQ(static_cast<Poco::Int64>(
+        good_duration_seconds + good2_duration_seconds),
               ready_for_upload.Duration());
     ASSERT_EQ(good->Filename(), ready_for_upload.Filename());
     ASSERT_EQ(good->Title(), ready_for_upload.Title());

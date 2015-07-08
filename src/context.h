@@ -388,6 +388,29 @@ class Context : public TimelineDatasource {
 
     error compressTimeline();
 
+    error pullAllUserData(TogglClient *https_client);
+    error pullChanges(TogglClient *https_client);
+    error pushChanges(
+        TogglClient *https_client,
+        bool *had_something_to_push);
+    static error signup(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data_json);
+    static error me(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data,
+        const Poco::UInt64 since);
+
+    template<typename T>
+    void collectPushableModels(
+        const std::vector<T *> list,
+        std::vector<T *> *result,
+        std::map<std::string, BaseModel *> *models = nullptr) const;
+
     Poco::Mutex db_m_;
     Database *db_;
 

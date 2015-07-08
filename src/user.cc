@@ -127,7 +127,7 @@ TimeEntry *User::Start(
         }
     }
 
-    ensureWID(te);
+    EnsureWID(te);
 
     te->SetDurOnly(!StoreStartAndStopTime());
     te->SetUIModified();
@@ -135,28 +135,6 @@ TimeEntry *User::Start(
     related.TimeEntries.push_back(te);
 
     return te;
-}
-
-template<typename T>
-void User::ensureWID(T *model) const {
-    // Do nothing if TE already has WID assigned
-    if (model->WID()) {
-        return;
-    }
-
-    // Try to set default user WID
-    if (DefaultWID()) {
-        model->SetWID(DefaultWID());
-        return;
-    }
-
-    // Try to set first WID available
-    std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-    if (it != related.Workspaces.end()) {
-        Workspace *ws = *it;
-        model->SetWID(ws->ID());
-    }
 }
 
 toggl::error User::Continue(
@@ -1104,7 +1082,7 @@ error User::LoginToken(
     return noError;
 }
 
-error User::updateJSON(
+error User::UpdateJSON(
     std::vector<Client *> * const clients,
     std::vector<Project *> * const projects,
     std::vector<TimeEntry *> * const time_entries,
