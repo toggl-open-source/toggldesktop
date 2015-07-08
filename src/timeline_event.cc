@@ -5,8 +5,6 @@
 #include <sstream>
 #include <cstring>
 
-#include "./const.h"
-
 namespace toggl {
 
 std::string TimelineEvent::String() const {

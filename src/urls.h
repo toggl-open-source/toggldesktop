@@ -5,8 +5,6 @@
 
 #include <string>
 
-#include "./const.h"
-
 namespace toggl {
 
 namespace urls {

@@ -9,7 +9,6 @@
 #include <string>
 
 #include "./base_model.h"
-#include "./const.h"
 #include "./formatter.h"
 
 namespace toggl {

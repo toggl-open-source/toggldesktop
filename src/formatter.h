@@ -24,11 +24,13 @@ class Format {
 class Client;
 class Project;
 class Task;
-class TimeEntry;
 class Workspace;
 
 class TimedEvent {
  public:
+    TimedEvent() {}
+    virtual ~TimedEvent() {}
+
     virtual const Poco::UInt64 &Start() const = 0;
     virtual Poco::UInt64 Type() const = 0;
     virtual Poco::Int64 Duration() const = 0;

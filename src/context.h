@@ -17,7 +17,6 @@
 #include "./model_change.h"
 #include "./timeline_event.h"
 #include "./timeline_notifications.h"
-#include "./toggl_api.h"
 #include "./types.h"
 #include "./websocket_client.h"
 

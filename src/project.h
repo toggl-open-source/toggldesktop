@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "./base_model.h"
-#include "./const.h"
 #include "./types.h"
 
 #include "Poco/Types.h"

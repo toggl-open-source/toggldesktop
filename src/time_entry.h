@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "./base_model.h"
-#include "./const.h"
 #include "./formatter.h"
 #include "./types.h"
 

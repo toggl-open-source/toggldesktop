@@ -5,7 +5,6 @@
 #include <sstream>
 
 #include "./batch_update_result.h"
-#include "./const.h"
 #include "./database.h"
 #include "./formatter.h"
 #include "./model_change.h"

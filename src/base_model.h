@@ -10,6 +10,7 @@
 
 #include <json/json.h>  // NOLINT
 
+#include "./const.h"
 #include "./types.h"
 
 #include "Poco/Types.h"
