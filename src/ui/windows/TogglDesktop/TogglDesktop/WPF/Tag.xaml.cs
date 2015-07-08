@@ -3,21 +3,9 @@ using System.Windows;
 
 namespace TogglDesktop.WPF
 {
-    sealed class TagSample
-    {
-        public string Text { get { return "This is tag"; } }
-        public bool UserHover { get { return false; } }
-    }
-
     public partial class Tag
     {
         public event EventHandler RemoveClicked;
-
-        public Tag(string text)
-            : this()
-        {
-            this.Text = text;
-        }
 
         public Tag()
         {
@@ -29,37 +17,19 @@ namespace TogglDesktop.WPF
 
         public static Tag Make(string text)
         {
-            var tag = StaticObjectPool<Tag>.PopOrDefault() ?? new Tag();
-            tag.Text = text;
-            return tag;
+            return StaticObjectPool.PopOrNew<Tag>().withText(text);
+        }
+
+        private Tag withText(string text)
+        {
+            this.textBlock.Text = text;
+            return this;
         }
 
         public void Dispose()
         {
             this.RemoveClicked = null;
-            StaticObjectPool<Tag>.Push(this);
-        }
-
-        #endregion
-
-        #region dependency properties
-
-        public static readonly DependencyProperty TextProperty = DependencyProperty
-            .Register("Text", typeof(string), typeof(Tag));
-
-        public string Text
-        {
-            get { return (string)this.GetValue(TextProperty); }
-            set { this.SetValue(TextProperty, value); }
-        }
-
-        public static readonly DependencyProperty UserHoverProperty = DependencyProperty
-            .Register("UserHover", typeof(string), typeof(Tag));
-
-        public string UserHover
-        {
-            get { return (string)this.GetValue(UserHoverProperty); }
-            set { this.SetValue(UserHoverProperty, value); }
+            StaticObjectPool.Push(this);
         }
 
         #endregion

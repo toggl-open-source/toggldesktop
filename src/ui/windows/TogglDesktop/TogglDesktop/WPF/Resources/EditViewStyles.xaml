@@ -23,21 +23,19 @@
 
     </Style>
 
-    <Style x:Key="Tag"  TargetType="{x:Type toggl:Tag}">
-
-        <Setter Property="UserHover" Value="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"/>
-
+    <Style x:Key="Tag"  TargetType="{x:Type UserControl}">
+        
         <Style.Resources>
 
             <Style TargetType="Border">
-                <Setter Property="Background" Value="#F1F1F1"/>
+                <Setter Property="Background" Value="#DCDCDC"/>
                 <Setter Property="CornerRadius" Value="2"/>
                 <Setter Property="Padding" Value="10, 1, 0, 1"/>
                 <Setter Property="Height" Value="20"/>
                 <Setter Property="Cursor" Value="Arrow"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding UserHover}" Value="True">
-                        <Setter Property="Background" Value="#DCDCDC"/>
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
+                        <Setter Property="Background" Value="#F1F1F1"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -45,9 +43,8 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}">
-                                <Image Source="/TogglDesktop;component/Resources/icon-x.png"
-                                   Stretch="Fill" Margin="4"/>
+                            <Border Background="Transparent">
+                                <Border Background="{TemplateBinding Background}" Margin="4"/>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
@@ -55,12 +52,17 @@
                 <Setter Property="Height" Value="16"/>
                 <Setter Property="Width" Value="16"/>
                 <Setter Property="IsTabStop" Value="False"/>
-                <Setter Property="Background" Value="Transparent"/>
+
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="/TogglDesktop;component/Resources/icon-x.png" Stretch="Fill"/>
+                    </Setter.Value>
+                </Setter>
+                
                 <Setter Property="HorizontalAlignment" Value="Right"/>
-                <!--<Setter Property="Visibility" Value="Hidden"/>-->
                 <Setter Property="Cursor" Value="Hand"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding UserHover}" Value="False">
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
                         <Setter Property="Visibility" Value="Hidden"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -69,11 +71,11 @@
                 <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
                 <Setter Property="FontSize" Value="9.75" />
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="0, 0, 10, 0"/>
+                <Setter Property="Margin" Value="-6, 0, 16, 0"/>
                 <Setter Property="Foreground" Value="#252525"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding UserHover}" Value="True">
-                        <Setter Property="Margin" Value="-6, 0, 16, 0"/>
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
+                        <Setter Property="Margin" Value="0, 0, 10, 0"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>

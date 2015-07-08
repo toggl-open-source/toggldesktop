@@ -456,7 +456,7 @@
     <None Include="Resources\MinimizePressed.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-x.png" />
+    <Resource Include="Resources\icon-x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\popup_arrow.png" />

@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance {x:Type toggl:TagSample}, IsDesignTimeCreatable=True}" Margin="0, 3, 6, 3"
-             Style="{toggl:Resources ResourceKey=Tag}">
+             Style="{toggl:Resources ResourceKey=Tag}"
+             Margin="0, 3, 6, 3">
 
     <Border>
         <Grid>
-            <TextBlock Text="{Binding Text}"/>
+            <TextBlock Name="textBlock" x:FieldModifier="private" Text="This is tag"/>
             <Button Click="remove_OnClick" />
         </Grid>
     </Border>
