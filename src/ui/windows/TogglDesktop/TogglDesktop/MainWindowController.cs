@@ -694,19 +694,14 @@ public partial class MainWindowController : TogglForm
 
     private void setWindowPos()
     {
-        if (remainOnTop && !topDisabled)
+        var onTop = this.remainOnTop && !this.topDisabled;
+
+        var hwndInsertAfter = onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST;
+
+        Win32.SetWindowPos(this.Handle, hwndInsertAfter, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
+        if (this.editForm != null)
         {
-            Win32.SetWindowPos(Handle, Win32.HWND_TOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
-            if (editForm != null)
-            {
-                editForm.setWindowPos(Win32.HWND_TOPMOST);
-            }
-            return;
-        }
-        Win32.SetWindowPos(Handle, Win32.HWND_NOTOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
-        if (editForm != null)
-        {
-            editForm.setWindowPos(Win32.HWND_NOTOPMOST);
+            this.editForm.setWindowPos(hwndInsertAfter);
         }
     }
 
