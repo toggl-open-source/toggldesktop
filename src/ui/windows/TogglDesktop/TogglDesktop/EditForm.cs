@@ -19,6 +19,7 @@ public partial class EditForm : Form
     public string GUID = null;
 
     public TimeEntryEditViewController editView;
+    private bool remainOnTop;
 
     public EditForm()
     {
@@ -125,9 +126,16 @@ public partial class EditForm : Form
         editView.resetForms();
     }
 
-    internal void setWindowPos(int HWND_TOPMOST)
+    protected override void OnDeactivate(EventArgs e)
     {
-        Win32.SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
+        base.OnDeactivate(e);
+        this.SetWindowPos(remainOnTop);
+    }
+
+    public void SetWindowPos(bool onTop)
+    {
+        this.remainOnTop = onTop;
+        Win32.SetWindowPos(Handle, onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
     }
 
     internal void ClosePopup()
