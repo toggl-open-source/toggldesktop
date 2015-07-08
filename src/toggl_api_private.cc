@@ -15,39 +15,6 @@
 #include "Poco/Logger.h"
 #include "Poco/UnicodeConverter.h"
 
-TogglTimelineEventView *timeline_event_init(
-    const toggl::TimelineEvent ev) {
-    TogglTimelineEventView *result = new TogglTimelineEventView();
-    result->ID = static_cast<unsigned int>(ev.ID());
-    result->Title = copy_string(ev.Title());
-    result->Filename = copy_string(ev.Filename());
-    result->StartTime = static_cast<unsigned int>(ev.Start());
-    result->EndTime = static_cast<unsigned int>(ev.EndTime());
-    result->Idle = ev.Idle();
-    result->Next = nullptr;
-    return result;
-}
-
-void timeline_event_clear(TogglTimelineEventView *view) {
-    if (!view) {
-        return;
-    }
-
-    free(view->Title);
-    view->Title = nullptr;
-
-    free(view->Filename);
-    view->Filename = nullptr;
-
-    if (view->Next) {
-        TogglTimelineEventView *next =
-            reinterpret_cast<TogglTimelineEventView *>(view->Next);
-        timeline_event_clear(next);
-    }
-
-    delete view;
-}
-
 TogglAutocompleteView *autocomplete_item_init(
     const toggl::AutocompleteItem item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();
@@ -291,6 +258,8 @@ TogglTimeEntryView *time_entry_view_item_init(
     } else {
         view_item->Error = nullptr;
     }
+
+    view_item->ViewType = te->Type();
 
     view_item->Next = nullptr;
 

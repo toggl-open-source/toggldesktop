@@ -27,11 +27,6 @@ int compare_string(const char_t *s1, const char_t *s2);
 char_t *copy_string(const std::string s);
 std::string to_string(const char_t *s);
 
-TogglTimelineEventView *timeline_event_init(
-    const toggl::TimelineEvent ev);
-
-void timeline_event_clear(TogglTimelineEventView *view);
-
 TogglGenericView *view_item_init();
 
 TogglGenericView *tag_to_view_item(

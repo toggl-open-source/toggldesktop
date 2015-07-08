@@ -66,6 +66,9 @@ extern "C" {
         // If syncing a time entry ended with an error,
         // the error is attached to the time entry
         char_t *Error;
+        // kTimedEventTypeTimelineEvent 1
+        // kTimedEventTypeTimeEntry 2
+        uint64_t ViewType;
         // Next in list
         void *Next;
     } TogglTimeEntryView;
