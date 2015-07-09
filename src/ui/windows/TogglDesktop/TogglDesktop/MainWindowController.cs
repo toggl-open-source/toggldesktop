@@ -796,14 +796,16 @@ public partial class MainWindowController : TogglForm
 
     private void calculateEditFormPosition(Screen s)
     {
-        Point editPopupLocation = new Point(Left, Top);
-        bool left = ((s.Bounds.Width - (Location.X + Width)) < editForm.Width);
+        var editPopupLocation = new Point(this.Left, this.Top);
+
+        var left = s.WorkingArea.Right - this.Right < this.editForm.Width;
+
         if (!left)
         {
-            editPopupLocation.X += Width;
+            editPopupLocation.X += this.Width;
         }
 
-        editForm.setPlacement(left, editPopupLocation, Height);
+        editForm.setPlacement(left, editPopupLocation, this.Height);
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
