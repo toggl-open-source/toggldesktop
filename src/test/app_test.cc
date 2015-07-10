@@ -181,6 +181,14 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
 
     ASSERT_EQ(size_t(1), timeline_events.size());
 
+    // Compress some more, for fun and profit
+    for (int i = 0; i < 100; i++) {
+        user.CompressTimeline();
+        timeline_events = user.CompressedTimeline();
+    }
+
+    ASSERT_EQ(size_t(1), timeline_events.size());
+
     TimelineEvent ready_for_upload = timeline_events[0];
     ASSERT_TRUE(ready_for_upload.Chunked());
     ASSERT_EQ(good->UID(), ready_for_upload.UID());
