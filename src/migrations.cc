@@ -389,7 +389,7 @@ error Migrations::migrateTimeline() {
         "timeline_events.local_id step #2",
         "create table timeline_events("
         "   local_id integer primary key, "
-        "   guid varchar not null, "
+        "   guid varchar, "
         "   title varchar, "
         "   filename varchar, "
         "   uid integer not null, "
@@ -408,7 +408,7 @@ error Migrations::migrateTimeline() {
     err = db_->Migrate(
         "timeline_events.local_id step #3",
         "insert into timeline_events"
-        "   select id, title, filename, user_id, "
+        "   select id, null, title, filename, user_id, "
         "       start_time, end_time, idle, uploaded, chunked "
         "   from tmp_timeline_events");
     if (err != noError) {
@@ -418,6 +418,19 @@ error Migrations::migrateTimeline() {
     err = db_->Migrate(
         "timeline_events.local_id step #4",
         "drop table tmp_timeline_events");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->EnsureTimelineGUIDS();
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "timeline_events.guid",
+        "CREATE UNIQUE INDEX idx_timeline_events_guid "
+        "   ON timeline_events (guid);");
     if (err != noError) {
         return err;
     }
@@ -1057,7 +1070,7 @@ error Migrations::Run() {
         err = migrateTimeline();
     }
 
-    return noError;
+    return err;
 }
 
 }   // namespace toggl

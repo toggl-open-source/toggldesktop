@@ -99,7 +99,7 @@ Database::Database(const std::string db_path)
     if (err != noError) {
         logger().error(err);
         // We're doomed now; cannot continue without a DB
-        return;
+        throw(err);
     }
 
     stopwatch.stop();
@@ -3047,6 +3047,49 @@ error Database::SetCurrentAPIToken(
         return ex;
     }
     return last_error("SetCurrentAPIToken");
+}
+
+error Database::EnsureTimelineGUIDS() {
+    try {
+        while (true) {
+            Poco::UInt64 local_id_without_guid(0);
+            error err = UInt(
+                "select local_id "
+                "from timeline_events "
+                "where guid is null or guid = '' "
+                "limit 1", &local_id_without_guid);
+            if (err != noError) {
+                return err;
+            }
+            if (!local_id_without_guid) {
+                return noError;
+            }
+            std::string guid = GenerateGUID();
+
+            Poco::Mutex::ScopedLock lock(session_m_);
+
+            poco_check_ptr(session_);
+
+            *session_ <<
+                      "update timeline_events "
+                      "set guid = :guid "
+                      "where local_id = :local_id",
+                      useRef(guid),
+                      useRef(local_id_without_guid),
+                      now;
+            err = last_error("EnsureTimelineGUIDS");
+            if (err != noError) {
+                return err;
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
 }
 
 error Database::EnsureAnalyticsClientID() {

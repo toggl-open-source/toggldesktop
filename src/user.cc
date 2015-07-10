@@ -1284,8 +1284,6 @@ void User::MarkTimelineBatchAsUploaded(
 }
 
 void User::CompressTimeline() {
-    logger().debug("CompressTimeline");
-
     // Group events by app name into chunks
     std::map<std::string, TimelineEvent *> compressed;
 
@@ -1298,12 +1296,17 @@ void User::CompressTimeline() {
     Poco::UInt64 chunk_up_to =
         (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
+
+    time_t start = time(0);
+
     {
-        std::stringstream s;
-        s << "chunking events user_id = "
-          << ID()
-          << ", chunk_up_to = " << chunk_up_to;
-        logger().debug(s.str());
+        std::stringstream ss;
+        ss << "CompressTimeline "
+           << " user_id=" << ID()
+           << " chunk_up_to=" << chunk_up_to
+           << " number of events=" << related.TimelineEvents.size();
+
+        logger().debug(ss.str());
     }
 
     for (std::vector<TimelineEvent *>::iterator i =
@@ -1375,6 +1378,17 @@ void User::CompressTimeline() {
             event->Delete();
         }
         compressed[key] = chunk;
+    }
+
+    {
+        std::stringstream ss;
+        ss << "CompressTimeline done in " << (time(0) - start)
+           << " seconds, "
+           << related.TimelineEvents.size()
+           << " compressed into "
+           << compressed.size()
+           << " chunks";
+        logger().debug(ss.str());
     }
 }
 

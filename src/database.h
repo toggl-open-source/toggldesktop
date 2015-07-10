@@ -165,6 +165,8 @@ class Database {
         const std::string &name,
         const std::string sql);
 
+    error EnsureTimelineGUIDS();
+
  private:
     error vacuum();
 
