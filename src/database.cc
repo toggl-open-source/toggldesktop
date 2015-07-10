@@ -1569,10 +1569,7 @@ error Database::saveModel(
     std::vector<ModelChange> *changes) {
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
         poco_check_ptr(changes);
 
         // Time entries need to have a GUID,
@@ -1585,6 +1582,9 @@ error Database::saveModel(
         if (!model->NeedsToBeSaved()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         if (model->LocalID()) {
             std::stringstream ss;
@@ -1782,10 +1782,7 @@ error Database::saveModel(
     std::vector<ModelChange> *changes) {
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
         poco_check_ptr(changes);
 
         model->EnsureGUID();
@@ -1795,6 +1792,9 @@ error Database::saveModel(
         if (!model->NeedsToBeSaved()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         const int kMaxTimelineStringSize = 300;
 
@@ -1932,14 +1932,14 @@ error Database::saveModel(
     std::vector<ModelChange> *changes) {
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
 
         if (model->LocalID() && !model->Dirty()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         if (model->LocalID()) {
             std::stringstream ss;
@@ -2015,14 +2015,14 @@ error Database::saveModel(
 
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
 
         if (model->LocalID() && !model->Dirty()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         if (model->LocalID()) {
             std::stringstream ss;
@@ -2101,10 +2101,7 @@ error Database::saveModel(
     std::vector<ModelChange> *changes) {
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
 
         // Generate GUID only for locally-created
         // clients. User cannot update existing
@@ -2119,6 +2116,9 @@ error Database::saveModel(
         if (!model->NeedsToBeSaved()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         if (model->LocalID()) {
             std::stringstream ss;
@@ -2216,10 +2216,7 @@ error Database::saveModel(
     std::vector<ModelChange> *changes) {
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
 
         // Generate GUID only for locally-created
         // projects. User cannot update existing
@@ -2234,6 +2231,9 @@ error Database::saveModel(
         if (!model->NeedsToBeSaved()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         if (model->LocalID()) {
             std::stringstream ss;
@@ -2457,14 +2457,14 @@ error Database::saveModel(
     std::vector<ModelChange> *changes) {
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
 
         if (model->LocalID() && !model->Dirty()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         if (model->LocalID()) {
             std::stringstream ss;
@@ -2540,14 +2540,14 @@ error Database::saveModel(
     std::vector<ModelChange> *changes    ) {
 
     try {
-        Poco::Mutex::ScopedLock lock(session_m_);
-
         poco_check_ptr(model);
-        poco_check_ptr(session_);
 
         if (model->LocalID() && !model->Dirty()) {
             return noError;
         }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
 
         if (model->LocalID()) {
             std::stringstream ss;
