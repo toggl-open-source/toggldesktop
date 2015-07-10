@@ -1790,6 +1790,8 @@ error Database::saveModel(
 
         model->EnsureGUID();
 
+        poco_assert(!model->GUID().empty());
+
         if (!model->NeedsToBeSaved()) {
             return noError;
         }
