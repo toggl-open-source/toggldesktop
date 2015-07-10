@@ -1284,6 +1284,8 @@ void User::MarkTimelineBatchAsUploaded(
 }
 
 void User::CompressTimeline() {
+    logger().debug("CompressTimeline");
+
     // Group events by app name into chunks
     std::map<std::string, TimelineEvent *> compressed;
 
