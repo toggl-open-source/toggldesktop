@@ -155,7 +155,7 @@ public partial class EditForm : Form
 
     public void ClosePopup()
     {
-        // TODO: what was this doing before?
+        this.controller.Close();
     }
 
     public void SetViewController(WPF.TimeEntryEditViewController timeEntryEditViewController)

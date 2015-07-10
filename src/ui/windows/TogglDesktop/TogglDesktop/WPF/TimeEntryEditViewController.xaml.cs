@@ -815,6 +815,11 @@ namespace TogglDesktop.WPF
 
         private void backButton_OnClick(object sender, RoutedEventArgs e)
         {
+            this.Close();
+        }
+
+        public void Close()
+        {
             //TODO: make sure unsaved changes are discarded/saved (what if user is in add-project mode?)
             Toggl.ViewTimeEntryList();
             //TODO: reset form (specifically add-project controls)?
