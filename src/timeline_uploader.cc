@@ -118,13 +118,8 @@ std::string convertTimelineToJSON(
             i != timeline_events.end();
             ++i) {
         TimelineEvent event = *i;
-        Json::Value n;
-        n["filename"] = event.Filename();
-        n["title"] = event.Title();
-        n["start_time"] = Json::Int64(event.Start());
-        n["end_time"] = Json::Int64(event.EndTime());
+        Json::Value n = event.SaveToJSON();
         n["desktop_id"] = desktop_id;
-        n["created_with"] = "timeline";
         root.append(n);
     }
 

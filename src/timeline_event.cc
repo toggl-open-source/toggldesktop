@@ -78,4 +78,15 @@ void TimelineEvent::SetUploaded(const bool value) {
     }
 }
 
+Json::Value TimelineEvent::SaveToJSON() const {
+    Json::Value n;
+    n["guid"] = GUID();
+    n["filename"] = Filename();
+    n["title"] = Title();
+    n["start_time"] = Json::Int64(Start());
+    n["end_time"] = Json::Int64(EndTime());
+    n["created_with"] = "timeline";
+    return n;
+}
+
 }   // namespace toggl

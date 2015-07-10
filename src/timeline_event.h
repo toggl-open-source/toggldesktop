@@ -71,6 +71,7 @@ class TimelineEvent  : public BaseModel, public TimedEvent {
     std::string String() const;
     std::string ModelName() const;
     std::string ModelURL() const;
+    Json::Value SaveToJSON() const;
 
     // Implement TimedEvent
 
