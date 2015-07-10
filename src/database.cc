@@ -1833,7 +1833,17 @@ error Database::saveModel(
     poco_check_ptr(model);
     poco_check_ptr(session_);
 
-    if (model->LocalID() && !model->Dirty()) {
+    // Generate GUID only for locally-created
+    // clients. User cannot update existing
+    // clients, so don't mess with their GUIDs
+    if (!model->ID()) {
+        model->EnsureGUID();
+        if (model->GUID().empty()) {
+            return error("Cannot save new cient without a GUID");
+        }
+    }
+
+    if (!model->NeedsToBeSaved()) {
         return noError;
     }
 
