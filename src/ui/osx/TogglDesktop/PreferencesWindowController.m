@@ -90,6 +90,12 @@ extern void *ctx;
 	[self saveProxySettings];
 }
 
+- (IBAction)renderTimelineChanged:(id)sender
+{
+	toggl_set_settings_render_timeline(ctx,
+									   [Utils stateToBool:[self.renderTimeline state]]);
+}
+
 - (IBAction)useIdleDetectionButtonChanged:(id)sender
 {
 	toggl_set_settings_use_idle_detection(ctx,
@@ -260,6 +266,7 @@ extern void *ctx;
 	[self.ontopCheckbox setState:[Utils boolToState:settings.on_top]];
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
 	[self.focusOnShortcutCheckbox setState:[Utils boolToState:settings.focus_on_shortcut]];
+	[self.renderTimeline setState:[Utils boolToState:settings.render_timeline]];
 
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 	[self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];
