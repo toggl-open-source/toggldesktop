@@ -23,6 +23,7 @@
 	self.focus_on_shortcut = data->FocusOnShortcut;
 	self.reminder_minutes = (int)data->ReminderMinutes;
 	self.manual_mode = data->ManualMode;
+	self.render_timeline = data->RenderTimeline;
 
 	self.use_proxy = data->UseProxy;
 

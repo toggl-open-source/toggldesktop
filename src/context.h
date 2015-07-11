@@ -76,6 +76,8 @@ class Context : public TimelineDatasource {
         update_check_disabled_ = true;
     }
 
+    error SetSettingsRenderTimeline(const bool &value);
+
     error SetSettingsUseIdleDetection(const bool use_idle_detection);
 
     error SetSettingsAutotrack(const bool value);

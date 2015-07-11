@@ -406,6 +406,7 @@ TogglSettingsView *settings_view_item_init(
     view->AutodetectProxy = settings.autodetect_proxy;
     view->Autotrack = settings.autotrack;
     view->OpenEditorOnShortcut = settings.open_editor_on_shortcut;
+    view->RenderTimeline = settings.render_timeline;
 
     view->UseProxy = use_proxy;
 

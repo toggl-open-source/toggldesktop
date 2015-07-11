@@ -128,6 +128,7 @@ extern "C" {
         char_t *RemindEnds;
         bool_t Autotrack;
         bool_t OpenEditorOnShortcut;
+        bool_t RenderTimeline;
     } TogglSettingsView;
 
     typedef struct {
@@ -508,6 +509,10 @@ extern "C" {
         void *context,
         const char_t *remind_starts,
         const char_t *remind_ends);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_render_timeline(
+        void *context,
+        const bool_t value);
 
     TOGGL_EXPORT bool_t toggl_set_settings_use_idle_detection(
         void *context,

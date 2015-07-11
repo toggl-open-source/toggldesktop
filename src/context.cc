@@ -1307,6 +1307,15 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
     return DisplaySettings();
 }
 
+error Context::SetSettingsRenderTimeline(const bool &value) {
+    error err = db()->SetSettingsRenderTimeline(value);
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    return DisplaySettings();
+}
+
 error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
     if (err != noError) {

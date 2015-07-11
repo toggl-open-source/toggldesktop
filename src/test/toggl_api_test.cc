@@ -210,6 +210,7 @@ void on_display_settings(
     testing::testresult::settings.focus_on_shortcut = settings->FocusOnShortcut;
     testing::testresult::settings.manual_mode = settings->ManualMode;
     testing::testresult::settings.autotrack = settings->Autotrack;
+    testing::testresult::settings.render_timeline = settings->RenderTimeline;
 
     testing::testresult::use_proxy = settings->UseProxy;
 
@@ -384,6 +385,9 @@ TEST(toggl_api, toggl_set_settings) {
     ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), false));
     ASSERT_FALSE(testing::testresult::settings.manual_mode);
 
+    ASSERT_TRUE(toggl_set_settings_render_timeline(app.ctx(), false));
+    ASSERT_FALSE(testing::testresult::settings.render_timeline);
+
     // set to true / not null
 
     ASSERT_TRUE(toggl_set_settings_menubar_project(app.ctx(), true));
@@ -424,6 +428,11 @@ TEST(toggl_api, toggl_set_settings) {
     ASSERT_TRUE(toggl_set_settings_autotrack(app.ctx(), true));
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(testing::testresult::settings.autotrack);
+
+    testing::testresult::error = noError;
+    ASSERT_TRUE(toggl_set_settings_render_timeline(app.ctx(), true));
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(testing::testresult::settings.render_timeline);
 }
 
 TEST(toggl_api, toggl_set_proxy_settings) {

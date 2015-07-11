@@ -359,8 +359,10 @@ error Database::LoadSettings(Settings *settings) {
                   "remind_starts, remind_ends, "
                   "remind_mon, remind_tue, remind_wed, remind_thu, "
                   "remind_fri, remind_sat, remind_sun, autotrack, "
-                  "open_editor_on_shortcut, has_seen_beta_offering "
-                  "from settings limit 1",
+                  "open_editor_on_shortcut, has_seen_beta_offering, "
+                  "render_timeline "
+                  "from settings "
+                  "limit 1",
                   into(settings->use_idle_detection),
                   into(settings->menubar_timer),
                   into(settings->menubar_project),
@@ -384,6 +386,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->autotrack),
                   into(settings->open_editor_on_shortcut),
                   into(settings->has_seen_beta_offering),
+                  into(settings->render_timeline),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -571,6 +574,10 @@ error Database::SetSettingsRemindDays(
     }
 
     return last_error("SetSettingsRemindDays");
+}
+
+error Database::SetSettingsRenderTimeline(const bool &value) {
+    return setSettingsValue("render_timeline", value);
 }
 
 error Database::SetSettingsHasSeenBetaOffering(const bool &value) {

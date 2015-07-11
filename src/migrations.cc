@@ -1027,6 +1027,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.render_timeline",
+        "ALTER TABLE settings "
+        "ADD COLUMN render_timeline INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
