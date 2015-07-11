@@ -107,7 +107,7 @@ TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     ASSERT_TRUE(p.IsPrivate());
 }
 
-TEST(Database, CreateCompressedTimelineBatchForUpload) {
+TEST(User, CreateCompressedTimelineBatchForUpload) {
     testing::Database db;
 
     User user;
