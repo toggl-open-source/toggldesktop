@@ -1313,6 +1313,8 @@ error Context::SetSettingsRenderTimeline(const bool &value) {
         return displayError(err);
     }
 
+    DisplayTimeEntryList();
+
     return DisplaySettings();
 }
 
@@ -2115,7 +2117,10 @@ void Context::DisplayTimeEntryList(const bool open) {
 
     std::vector<TimedEvent *> list;
     timeEntries(&list);
-    timelineEvents(&list);
+
+    if (settings_.render_timeline) {
+        timelineEvents(&list);
+    }
 
     std::sort(list.begin(), list.end(), CompareByStart);
 
@@ -3109,7 +3114,7 @@ void Context::SetWake() {
             if (now.year() != last_time_entry_list_render_at_.year()
                     || now.month() != last_time_entry_list_render_at_.month()
                     || now.day() != last_time_entry_list_render_at_.day()) {
-                DisplayTimeEntryList(false);
+                DisplayTimeEntryList();
             }
         }
 
@@ -3396,7 +3401,7 @@ void Context::uiUpdaterActivity() {
             Formatter::FormatDurationForDateHeader(duration);
 
         if (running_time != date_duration) {
-            DisplayTimeEntryList(false);
+            DisplayTimeEntryList();
         }
 
         running_time = date_duration;
