@@ -10,6 +10,8 @@
 #import "UIEvents.h"
 #import "ConvertHexColor.h"
 
+#import "toggl_api.h"
+
 @implementation TimeEntryCell
 
 extern void *ctx;
@@ -26,6 +28,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	self.GUID = view_item.GUID;
+	self.isTimeline = kTimedEventTypeTimelineEvent == view_item.ViewType;
 	self.durationTextField.stringValue = view_item.duration;
 	if (NO == view_item.durOnly)
 	{
