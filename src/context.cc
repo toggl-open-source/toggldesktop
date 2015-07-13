@@ -3440,7 +3440,9 @@ error Context::pullAllUserData(
             return error("cannot pull user data when logged out");
         }
         api_token = user_->APIToken();
-        since = user_->Since();
+        if (user_->HasValidSinceDate()) {
+            since = user_->Since();
+        }
     }
 
     if (api_token.empty()) {
@@ -3609,14 +3611,16 @@ error Context::me(
         poco_check_ptr(user_data_json);
         poco_check_ptr(toggl_client);
 
-        std::stringstream relative_url;
-        relative_url << "/api/v8/me"
-                     << "?app_name=" << TogglClient::Config.AppName
-                     << "&with_related_data=true"
-                     << "&since=" << since;
+        std::stringstream ss;
+        ss << "/api/v8/me"
+           << "?app_name=" << TogglClient::Config.AppName
+           << "&with_related_data=true";
+        if (since) {
+            ss << "&since=" << since;
+        }
 
         return toggl_client->Get(urls::API(),
-                                 relative_url.str(),
+                                 ss.str(),
                                  email,
                                  password,
                                  user_data_json);
