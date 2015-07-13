@@ -7,8 +7,8 @@
         <Setter Property="Background">
             <Setter.Value>
                 <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerLightBg.png"
-                                AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="None"
-                                Viewport="0, 0, 634, 782" ViewportUnits="Absolute"/>
+                                AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Uniform"
+                                Viewport="0, 0, 634, 822" ViewportUnits="Absolute"/>
             </Setter.Value>
         </Setter>
     </Style>
