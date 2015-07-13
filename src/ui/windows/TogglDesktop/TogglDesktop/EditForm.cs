@@ -91,7 +91,7 @@ public partial class EditForm : Form
     {
         this.controller.SetShadow(left, height);
 
-        height = Math.Max(400, height);
+        height = Math.Min(700, Math.Max(450, height));
 
         TopMost = true;
         isLeft = !left;
