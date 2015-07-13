@@ -59,17 +59,6 @@
 #define kCannotDeleteDeletedTimeEntry "Cannot delete deleted time entry"
 #define kErrorRuleAlreadyExists "rule already exists"
 
-#define kOnlineStateOnline 0
-#define kOnlineStateNoNetwork 1
-#define kOnlineStateBackendDown 2
-
-#define kSyncStateIdle 0
-#define kSyncStateWork 1
-
-#define kRemindOncePerDay
-#define kRemindEveryHalfHour
-#define kRemindEveryHour
-
 #define kModelUser "user"
 #define kModelTag "tag"
 #define kModelTask "task"
@@ -81,8 +70,5 @@
 #define kModelTimelineEvent "timeline_event"
 
 #define kPromotionJoinBetaChannel 1
-
-#define kTimedEventTypeTimelineEvent 1
-#define kTimedEventTypeTimeEntry 2
 
 #endif  // SRC_CONST_H_

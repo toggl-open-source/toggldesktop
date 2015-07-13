@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 
+#include "./toggl_api.h"
 #include "./base_model.h"
 #include "./formatter.h"
 

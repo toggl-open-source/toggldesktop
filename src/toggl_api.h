@@ -31,6 +31,18 @@ extern "C" {
 #define bool_t int
 #endif
 
+    // Constants
+
+#define kOnlineStateOnline 0
+#define kOnlineStateNoNetwork 1
+#define kOnlineStateBackendDown 2
+
+#define kSyncStateIdle 0
+#define kSyncStateWork 1
+
+#define kTimedEventTypeTimelineEvent 1
+#define kTimedEventTypeTimeEntry 2
+
     // Models
 
     typedef struct {
