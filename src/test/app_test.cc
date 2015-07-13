@@ -123,10 +123,9 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // can be uploaded to Toggl backend.
     TimelineEvent *good = new TimelineEvent();
     good->SetUID(user_id);
-    // started "16 minutes ago", yesterday
-    good->SetStartTime(time(0) - 86400 - 60*16);
-    // lasted 30 seconds
-    good->SetEndTime(good->StartTime() + good_duration_seconds);
+    // started yesterday, "16 minutes ago"
+    good->SetStart(time(0) - 86400 - 60*16);
+    good->SetEndTime(good->Start() + good_duration_seconds);
     good->SetFilename("Notepad.exe");
     good->SetTitle("untitled");
     user.related.TimelineEvents.push_back(good);
@@ -178,6 +177,24 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
 
     user.CompressTimeline();
     std::vector<TimelineEvent> timeline_events = user.CompressedTimeline();
+
+    if (timeline_events.size() != 1) {
+        std::cerr << "user.related.TimelineEvents:" << std::endl;
+        for (std::vector<TimelineEvent *>::const_iterator it =
+            user.related.TimelineEvents.begin();
+                it != user.related.TimelineEvents.end(); it++) {
+            TimelineEvent *ev = *it;
+            std::cerr << ev->String() << std::endl;
+        }
+
+        std::cerr << "user.CompressedTimeline:" << std::endl;
+        for (std::vector<TimelineEvent>::const_iterator it =
+            timeline_events.begin();
+                it != timeline_events.end(); it++) {
+            TimelineEvent ev = *it;
+            std::cerr << ev.String() << std::endl;
+        }
+    }
 
     ASSERT_EQ(size_t(1), timeline_events.size());
 
