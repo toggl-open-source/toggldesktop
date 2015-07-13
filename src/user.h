@@ -20,8 +20,6 @@
 
 namespace toggl {
 
-class TogglClient;
-
 class User : public BaseModel {
  public:
     User() :

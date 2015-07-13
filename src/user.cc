@@ -16,7 +16,6 @@
 #include "./time_entry.h"
 #include "./timeline_event.h"
 #include "./urls.h"
-#include "./workspace.h"
 
 #include "Poco/Base64Decoder.h"
 #include "Poco/Base64Encoder.h"
