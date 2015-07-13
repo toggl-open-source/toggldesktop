@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace TogglDesktop
 {
@@ -29,6 +31,8 @@ static class Program
     static void Main()
     {
         Win32.AttachConsole(Win32.ATTACH_PARENT_PROCESS);
+
+        RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
         using (Mutex mutex = new Mutex(false, "Global\\" + Environment.UserName + "_" + appGUID))
         {
