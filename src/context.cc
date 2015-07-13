@@ -2840,7 +2840,7 @@ Client *Context::CreateClient(
         return nullptr;
     }
 
-	if (client_name.empty()) {
+    if (client_name.empty()) {
         displayError("Client name must not be empty");
         return nullptr;
     }
