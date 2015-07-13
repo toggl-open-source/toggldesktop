@@ -29,6 +29,8 @@
 #include "Poco/RandomStream.h"
 #include "Poco/SHA1Engine.h"
 #include "Poco/Stopwatch.h"
+#include "Poco/Timestamp.h"
+#include "Poco/Timespan.h"
 #include "Poco/UTF8String.h"
 
 namespace toggl {
@@ -395,6 +397,29 @@ void User::CollectPushableModels(
     }
 }
 
+bool User::HasValidSinceDate() const {
+    // has no value
+    if (!Since()) {
+        return false;
+    }
+
+    // too old
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(time(0))
+                         - (60 * Poco::Timespan::DAYS);
+    Poco::UInt64 min_allowed = ts.epochTime();
+    if (Since() < min_allowed) {
+        return false;
+    }
+
+    // too new
+    Poco::UInt64 now = time(0);
+    if (Since() > now) {
+        return false;
+    }
+
+    return true;
+}
+
 error User::PullAllUserData(
     TogglClient *toggl_client) {
 
@@ -406,18 +431,23 @@ error User::PullAllUserData(
         Poco::Stopwatch stopwatch;
         stopwatch.start();
 
+        Poco::UInt64 last_pull(0);
+        if (HasValidSinceDate()) {
+            last_pull = Since();
+        }
+
         std::string user_data_json("");
         error err = Me(
             toggl_client,
             APIToken(),
             "api_token",
             &user_data_json,
-            Since());
+            last_pull);
         if (err != noError) {
             return err;
         }
 
-        LoadUserAndRelatedDataFromJSONString(user_data_json, !Since());
+        LoadUserAndRelatedDataFromJSONString(user_data_json, !last_pull);
 
         stopwatch.stop();
         std::stringstream ss;
@@ -551,7 +581,7 @@ error User::Me(
         }
 
         return toggl_client->Get(urls::API(),
-                                 relative_url.str(),
+                                 ss.str(),
                                  email,
                                  password,
                                  user_data_json);

@@ -235,6 +235,29 @@ Json::Value jsonStringToValue(const std::string json_string) {
     return root;
 }
 
+TEST(User, Since) {
+    User u;
+
+    // no timestamp should be wrong
+    ASSERT_FALSE(u.HasValidSinceDate());
+
+    // 0 timestamp should be wrong
+    u.SetSince(0);
+    ASSERT_FALSE(u.HasValidSinceDate());
+
+    // current time should be ok
+    u.SetSince(time(0));
+    ASSERT_TRUE(u.HasValidSinceDate());
+
+    // future date should be wrong
+    u.SetSince(time(0) + 10);
+    ASSERT_FALSE(u.HasValidSinceDate());
+
+    // 1 month ago should be fine
+    u.SetSince(time(0) - 2.62974e6);
+    ASSERT_TRUE(u.HasValidSinceDate());
+}
+
 TEST(User, UpdatesTimeEntryFromJSON) {
     User user;
     ASSERT_EQ(noError,
