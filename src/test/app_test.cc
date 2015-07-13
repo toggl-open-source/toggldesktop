@@ -116,7 +116,7 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     // can be uploaded to Toggl backend.
     TimelineEvent good;
     good.user_id = user_id;
-    good.start_time = time(0) - 60*16;  // started 16 minutes ago
+    good.start_time = time(0) - 86400 - 60*16;  // started 16 minutes ago, yesterday
     good.end_time = good.start_time + 30;  // lasted 30 seconds
     good.filename = "Notepad.exe";
     good.title = "untitled";
