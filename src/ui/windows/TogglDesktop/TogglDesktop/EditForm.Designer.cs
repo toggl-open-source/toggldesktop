@@ -29,23 +29,7 @@ partial class EditForm
     private void InitializeComponent()
     {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditForm));
-            this.resizeHandle = new System.Windows.Forms.StatusStrip();
             this.SuspendLayout();
-            // 
-            // resizeHandle
-            // 
-            this.resizeHandle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.resizeHandle.AutoSize = false;
-            this.resizeHandle.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.resizeHandle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.resizeHandle.Dock = System.Windows.Forms.DockStyle.None;
-            this.resizeHandle.ImageScalingSize = new System.Drawing.Size(15, 15);
-            this.resizeHandle.Location = new System.Drawing.Point(302, 399);
-            this.resizeHandle.Name = "resizeHandle";
-            this.resizeHandle.Size = new System.Drawing.Size(20, 20);
-            this.resizeHandle.TabIndex = 3;
-            this.resizeHandle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseDown);
-            this.resizeHandle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.resizeHandle_MouseMove);
             // 
             // EditForm
             // 
@@ -55,7 +39,6 @@ partial class EditForm
             this.BackgroundImage = global::TogglDesktop.Properties.Resources.popup_back_right;
             this.ClientSize = new System.Drawing.Size(325, 420);
             this.ControlBox = false;
-            this.Controls.Add(this.resizeHandle);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -70,6 +53,5 @@ partial class EditForm
 
     #endregion
 
-    private System.Windows.Forms.StatusStrip resizeHandle;
 }
 }

@@ -808,7 +808,7 @@ public partial class MainWindowController : TogglForm
             editPopupLocation.X += this.Width;
         }
 
-        editForm.setPlacement(left, editPopupLocation, this.Height);
+        editForm.SetPlacement(left, editPopupLocation, this.Height);
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
