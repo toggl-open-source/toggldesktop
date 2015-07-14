@@ -1745,10 +1745,6 @@ error Context::Login(
 }
 
 void Context::trackSettingsUsage() {
-    if (!kTrackSettingsUsage) {
-        return;
-    }
-
     next_analytics_at_ =
         postpone(kRequestThrottleSeconds * kOneSecondInMicros);
 
