@@ -91,9 +91,9 @@ public partial class EditForm : Form
         const int htright = 11;
 
         Win32.SendMessage(this.Handle,
-            this.isResizing ? Win32.wmNcLButtonDown : Win32.wmNcLButtonUp,
-            this.isLeft ? htright : htleft,
-            0);
+                          this.isResizing ? Win32.wmNcLButtonDown : Win32.wmNcLButtonUp,
+                          this.isLeft ? htright : htleft,
+                          0);
     }
 
     private bool isMouseOverResizeArea(MouseEventArgs e)
@@ -103,8 +103,8 @@ public partial class EditForm : Form
         const int resizeAreaWidth = 10;
 
         return this.isLeft
-            ? mousePosition.X > this.controller.ActualWidth - resizeAreaWidth
-            : mousePosition.X < resizeAreaWidth;
+               ? mousePosition.X > this.controller.ActualWidth - resizeAreaWidth
+               : mousePosition.X < resizeAreaWidth;
     }
 
     private bool isMouseOverEmptyArea()

@@ -28,12 +28,12 @@ std::string Project::String() const {
     std::stringstream ss;
     ss  << "ID=" << ID()
         << " local_id=" << LocalID()
-		<< " guid=" << GUID()
-		<< " name=" << name_
+        << " guid=" << GUID()
+        << " name=" << name_
         << " wid=" << wid_
         << " cid=" << cid_
-		<< " client_guid=" << client_guid_
-		<< " active=" << active_
+        << " client_guid=" << client_guid_
+        << " active=" << active_
         << " public=" << private_
         << " color=" << color_
         << " billable=" << billable_

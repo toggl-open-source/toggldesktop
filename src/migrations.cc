@@ -73,7 +73,7 @@ error Migrations::migrateClients() {
     // Its perfectly fine to have multiple NULL client ID's in the db,
     // when user creates clients offline.
     err = db_->Migrate("drop clients.id_clients_id",
-                  "drop index if exists id_clients_id");
+                       "drop index if exists id_clients_id");
     if (err != noError) {
         return err;
     }

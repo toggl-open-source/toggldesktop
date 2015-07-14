@@ -28,26 +28,26 @@ partial class EditForm
     /// </summary>
     private void InitializeComponent()
     {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditForm));
-            this.SuspendLayout();
-            // 
-            // EditForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.BackgroundImage = global::TogglDesktop.Properties.Resources.popup_back_right;
-            this.ClientSize = new System.Drawing.Size(325, 420);
-            this.ControlBox = false;
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(287, 280);
-            this.Name = "EditForm";
-            this.ShowInTaskbar = false;
-            this.Text = "EditForm";
-            this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ResumeLayout(false);
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditForm));
+        this.SuspendLayout();
+        //
+        // EditForm
+        //
+        this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        this.BackColor = System.Drawing.Color.WhiteSmoke;
+        this.BackgroundImage = global::TogglDesktop.Properties.Resources.popup_back_right;
+        this.ClientSize = new System.Drawing.Size(325, 420);
+        this.ControlBox = false;
+        this.DoubleBuffered = true;
+        this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+        this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+        this.MinimumSize = new System.Drawing.Size(287, 280);
+        this.Name = "EditForm";
+        this.ShowInTaskbar = false;
+        this.Text = "EditForm";
+        this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+        this.ResumeLayout(false);
 
     }
 

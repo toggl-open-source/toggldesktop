@@ -66,7 +66,7 @@ Client *User::CreateClient(
     Client *c = new Client();
     c->SetWID(workspace_id);
     c->SetName(client_name);
-	c->SetUID(ID());
+    c->SetUID(ID());
     related.Clients.push_back(c);
     return c;
 }
