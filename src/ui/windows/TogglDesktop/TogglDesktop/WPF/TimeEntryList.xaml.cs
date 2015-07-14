@@ -32,6 +32,13 @@ namespace TogglDesktop.WPF
             }
         }
 
+
+        private void onSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(this.highlightedCell != null)
+                this.RefreshHighLight();
+        }
+
         public void SetFocusCondition(Func<bool> canFocus)
         {
             this.canFocus = canFocus;

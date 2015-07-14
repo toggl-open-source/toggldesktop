@@ -9,7 +9,8 @@
                   VerticalScrollBarVisibility="Visible"
                   HorizontalScrollBarVisibility="Disabled"
                   HorizontalAlignment="Stretch"
-                  MouseEnter="onMouseEnter">
+                  MouseEnter="onMouseEnter"
+                  SizeChanged="onSizeChanged">
         <Grid>
             <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch">
 
