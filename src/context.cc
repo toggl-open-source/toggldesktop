@@ -1304,9 +1304,14 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsRenderTimeline(const bool &value) {
@@ -1315,9 +1320,14 @@ error Context::SetSettingsRenderTimeline(const bool &value) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     DisplayTimeEntryList();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
@@ -1326,9 +1336,14 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsAutotrack(const bool value) {
@@ -1337,9 +1352,14 @@ error Context::SetSettingsAutotrack(const bool value) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
@@ -1348,9 +1368,14 @@ error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
@@ -1359,9 +1384,14 @@ error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsMenubarProject(const bool menubar_project) {
@@ -1370,9 +1400,14 @@ error Context::SetSettingsMenubarProject(const bool menubar_project) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsDockIcon(const bool dock_icon) {
@@ -1381,9 +1416,14 @@ error Context::SetSettingsDockIcon(const bool dock_icon) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsOnTop(const bool on_top) {
@@ -1392,10 +1432,16 @@ error Context::SetSettingsOnTop(const bool on_top) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
+
 
 error Context::SetSettingsReminder(const bool reminder) {
     error err = db()->SetSettingsReminder(reminder);
@@ -1421,9 +1467,14 @@ error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
@@ -1432,9 +1483,14 @@ error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsManualMode(const bool manual_mode) {
@@ -1443,9 +1499,14 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
