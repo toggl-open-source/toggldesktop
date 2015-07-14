@@ -8,22 +8,26 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300"
              d:DataContext ="{d:DesignInstance {x:Type toggl:AutoCompletionPopupSample}, IsDesignTimeCreatable=True}">
-    
+
     <Popup Name="popup" x:FieldModifier="private"
            PlacementTarget="{Binding Target}"
-           MaxHeight="300" MinWidth="{Binding Path=Target.ActualWidth}"
-           StaysOpen="True">
-        <ScrollViewer Background="White">
+           MaxHeight="300" MinWidth="{Binding Path=Target.ActualWidth, Converter={toggl:Resources ResourceKey=AddValueConverter}, ConverterParameter=20}"
+           StaysOpen="True" AllowsTransparency="True">
+        <ScrollViewer Background="White"  Margin="10">
+
+            <ScrollViewer.Effect>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
+            </ScrollViewer.Effect>
             <Grid>
+
                 <TextBlock Name="emptyLabel" x:FieldModifier="private"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Margin="4"
-                               Text="{Binding EmptyText}"/>
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Margin="4"
+                                   Text="{Binding EmptyText}"/>
                 <StackPanel Name="dropDownList" x:FieldModifier="private">
                     <!-- filled programatically -->
                 </StackPanel>
             </Grid>
         </ScrollViewer>
     </Popup>
-    
 </UserControl>
