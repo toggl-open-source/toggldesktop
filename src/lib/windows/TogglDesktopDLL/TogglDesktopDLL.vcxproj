@@ -137,6 +137,7 @@
     <ClInclude Include="..\..\..\gui.h" />
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\idle.h" />
+    <ClInclude Include="..\..\..\migrations.h" />
     <ClInclude Include="..\..\..\netconf.h" />
     <ClInclude Include="..\..\..\toggl_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
@@ -210,8 +211,10 @@
     <ClCompile Include="..\..\..\gui.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\idle.cc" />
+    <ClCompile Include="..\..\..\migrations.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
     <ClCompile Include="..\..\..\settings.cc" />
+    <ClCompile Include="..\..\..\timeline_event.cc" />
     <ClCompile Include="..\..\..\toggl_api.cc" />
     <ClCompile Include="..\..\..\toggl_api_private.cc" />
     <ClCompile Include="..\..\..\project.cc" />
