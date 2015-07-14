@@ -25,7 +25,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
                 p =>
                 {
                     var client = default(Toggl.Model);
-                    if (p.ClientLabel == null)
+                    if (string.IsNullOrEmpty(p.ClientLabel))
                         return client;
 
                     Dictionary<string, Toggl.Model> clientDictionary;
