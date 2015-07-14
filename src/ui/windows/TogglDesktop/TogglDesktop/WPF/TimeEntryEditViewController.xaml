@@ -98,14 +98,14 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Name="newProjectButton" x:FieldModifier="private" Grid.Column="1"
-                        Style="{StaticResource NewButton}"
-                        Click="newProjectButton_OnClick">Add new project</Button>
-
                     <toggl:ExtendedTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
                                             LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
                                             Padding="28, 0, 34, 0"
                                             PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
+
+                    <Button Name="newProjectButton" x:FieldModifier="private" Grid.Column="1"
+                        Style="{StaticResource NewButton}"
+                        Click="newProjectButton_OnClick">Add new project</Button>
 
                     <TextBlock x:Name="emptyProjectText" x:FieldModifier="private" Grid.Column="0"
                                Margin="36, 0, 16, 0">No project
@@ -157,14 +157,14 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Name="newClientButton" x:FieldModifier="private" Grid.Column="1"
-                            Style="{StaticResource NewButton}"
-                            Click="newClientButton_OnClick">Add new client</Button>
-
                     <toggl:ExtendedTextBox x:Name="clientTextBox" x:FieldModifier="private" Grid.Column="0"
                                            LostKeyboardFocus="clientTextBox_OnLostKeyboardFocus"
                                            Padding="8, 0, 34, 0"
                                            PreviewKeyDown="clientTextBox_OnPreviewKeyDown"/>
+
+                    <Button Name="newClientButton" x:FieldModifier="private" Grid.Column="1"
+                            Style="{StaticResource NewButton}"
+                            Click="newClientButton_OnClick">Add new client</Button>
 
                     <TextBlock x:Name="emptyClientText" x:FieldModifier="private" Grid.Column="0">No client
                         <TextBlock.Style>
