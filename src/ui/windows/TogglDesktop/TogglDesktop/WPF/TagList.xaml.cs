@@ -51,6 +51,11 @@ namespace TogglDesktop.WPF
             }
         }
 
+        private void textBoxOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            this.textBox.SetText("");
+        }
+
         private void focusTextBox()
         {
             this.textBox.Focus();

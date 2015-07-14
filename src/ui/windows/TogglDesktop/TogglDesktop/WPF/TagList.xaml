@@ -10,7 +10,7 @@
         <WrapPanel Name="panel" x:FieldModifier="private" Orientation="Horizontal" Margin="8, 4, 0, 4">
             <toggl:ExtendedTextBox x:Name="textBox" x:FieldModifier="private" MinWidth="50" Margin="0, -3, 3, -3" BorderThickness="0" Padding="0"
                          Height="32" VerticalContentAlignment="Center"
-                         PreviewKeyDown="textBoxOnPreviewKeyDown"/>
+                         PreviewKeyDown="textBoxOnPreviewKeyDown" LostKeyboardFocus="textBoxOnLostKeyboardFocus"/>
         </WrapPanel>
         
         <toggl:AutoCompletionPopup x:Name="autoComplete" x:FieldModifier="private"
