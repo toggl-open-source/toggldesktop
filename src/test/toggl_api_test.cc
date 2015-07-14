@@ -908,6 +908,21 @@ TEST(toggl_api, toggl_create_project) {
         }
     }
     ASSERT_TRUE(found);
+
+    // User should be able to add as many projects as it likes
+    for (int i = 0; i < 10; i++) {
+        std::stringstream ss;
+        ss << "another project " << i;
+        testing::testresult::error = "";
+        project_guid = toggl_create_project(app.ctx(),
+                                            wid,
+                                            cid,
+                                            ss.str().c_str(),
+                                            is_private);
+        ASSERT_EQ("", testing::testresult::error);
+        ASSERT_TRUE(project_guid);
+        free(project_guid);
+    }
 }
 
 TEST(toggl_api, toggl_create_client) {
