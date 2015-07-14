@@ -954,6 +954,19 @@ TEST(toggl_api, toggl_create_client) {
         }
     }
     ASSERT_TRUE(found);
+
+    // We should be able to add as many clients as we like!
+    for (int i = 0; i < 10; i++) {
+        std::stringstream ss;
+        ss << "extra client " << i;
+        testing::testresult::error = "";
+        res = toggl_create_client(app.ctx(),
+                                  wid,
+                                  ss.str().c_str());
+        ASSERT_EQ("", testing::testresult::error);
+        ASSERT_TRUE(res);
+        free(res);
+    }
 }
 
 TEST(toggl_api, toggl_continue) {
