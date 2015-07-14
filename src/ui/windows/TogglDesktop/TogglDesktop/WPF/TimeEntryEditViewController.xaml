@@ -95,7 +95,8 @@
                 <Grid Grid.Row="0" Height="50">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"
+                                          x:Name="projectAddButtonColumn" x:FieldModifier="private"/>
                     </Grid.ColumnDefinitions>
 
                     <toggl:ExtendedTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
@@ -205,20 +206,16 @@
                 <!-- workspace -->
                 <Grid Grid.Row="2" Height="50" Visibility="Visible"
                        Name="workspaceArea" x:FieldModifier="private">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
-                    </Grid.ColumnDefinitions>
 
-                    <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private" Grid.Column="0"
+                    <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private"
                                            LostKeyboardFocus="workspaceTextBox_OnLostKeyboardFocus"
                                            Padding="8, 0, 34, 0"/>
                     
-                    <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private" Grid.Column="0"
+                    <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private"
                                   Style="{StaticResource AutoCompleteTextFieldButton}"
                                   Click="workspaceDropDownButton_OnClick"/>
 
-                    <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="workspaceAutoComplete" x:FieldModifier="private"
+                    <toggl:AutoCompletionPopup x:Name="workspaceAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=workspaceTextBox}" TextBox="{Binding ElementName=workspaceTextBox}"
                             EmptyText="No workspaces found."
                             ConfirmCompletion="workspaceAutoComplete_OnConfirmCompletion"
