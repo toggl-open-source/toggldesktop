@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Cursors = System.Windows.Forms.Cursors;
@@ -70,7 +71,14 @@ public partial class EditForm : Form
 
     private void mouseMove(MouseEventArgs e)
     {
-        this.Cursor = this.isResizing || this.isMouseOverResizeArea(e) ? Cursors.SizeWE : Cursors.Arrow;
+        if (this.isResizing || this.isMouseOverResizeArea(e))
+        {
+            this.Cursor = Cursors.SizeWE;
+        }
+        else if(this.isMouseOverEmptyArea())
+        {
+            this.Cursor = Cursors.Arrow;
+        }
 
         if (!this.isResizing)
         {
@@ -95,8 +103,17 @@ public partial class EditForm : Form
         const int resizeAreaWidth = 10;
 
         return this.isLeft
-            ? mousePosition.X > this.controller.ActualWidth - resizeAreaWidth   
+            ? mousePosition.X > this.controller.ActualWidth - resizeAreaWidth
             : mousePosition.X < resizeAreaWidth;
+    }
+
+    private bool isMouseOverEmptyArea()
+    {
+        var grid = Mouse.DirectlyOver as Grid;
+        if (grid == null)
+            return false;
+
+        return grid.Parent == this.controller;
     }
 
 
