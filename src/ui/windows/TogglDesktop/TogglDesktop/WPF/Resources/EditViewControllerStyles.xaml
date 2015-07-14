@@ -92,7 +92,6 @@
         </Setter>
     </Style>
     <Style TargetType="ToggleButton" x:Key="AutoCompleteTextFieldButton"  BasedOn="{StaticResource TextFieldImageButtonBase}">
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
@@ -119,6 +118,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Focusable" Value="False"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#F4F4F4"/>

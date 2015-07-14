@@ -12,7 +12,7 @@
     <Popup Name="popup" x:FieldModifier="private"
            PlacementTarget="{Binding Target}"
            MaxHeight="300" MinWidth="{Binding Path=Target.ActualWidth}"
-           StaysOpen="False">
+           StaysOpen="True">
         <ScrollViewer Background="White">
             <Grid>
                 <TextBlock Name="emptyLabel" x:FieldModifier="private"

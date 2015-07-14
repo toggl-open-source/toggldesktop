@@ -23,8 +23,8 @@ namespace TogglDesktop.WPF
     {
         private readonly DispatcherTimer durationUpdateTimer;
         private Toggl.TimeEntry timeEntry;
-        private bool newProjectModeEnabled;
-        private bool newClientModeEnabled;
+        private bool newProjectModeEnabled = true;
+        private bool newClientModeEnabled = true;
         private List<Toggl.AutocompleteItem> projects;
         private List<Toggl.Model> clients;
         private List<Toggl.Model> workspaces;
@@ -75,7 +75,11 @@ namespace TogglDesktop.WPF
                 return;
 
             this.timeEntry = timeEntry;
-            this.durationUpdateTimer.IsEnabled = this.timeEntry.DurationInSeconds < 0;
+
+            var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
+
+            this.durationUpdateTimer.IsEnabled = isCurrentlyRunning;
+            this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
 
             if (open)
             {
@@ -97,6 +101,11 @@ namespace TogglDesktop.WPF
 
                 if (!this.startDatePicker.IsFocused)
                     this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
+            }
+
+            if (isCurrentlyRunning)
+            {
+                this.endTimeTextBox.Text = "";
             }
 
             this.billableCheckBox.Visibility = timeEntry.CanSeeBillable ? Visibility.Visible : Visibility.Collapsed;

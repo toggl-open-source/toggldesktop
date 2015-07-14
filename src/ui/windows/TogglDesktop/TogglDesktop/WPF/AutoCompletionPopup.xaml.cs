@@ -109,6 +109,7 @@ namespace TogglDesktop.WPF
 
             this.textbox.PreviewKeyDown += this.textboxOnPreviewKeyDown;
             this.textbox.TextChanged += this.textboxOnTextChanged;
+            this.textbox.LostKeyboardFocus += (sender, args) => this.close();
         }
 
         #endregion

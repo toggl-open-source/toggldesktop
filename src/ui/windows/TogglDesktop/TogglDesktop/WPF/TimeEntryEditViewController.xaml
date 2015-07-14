@@ -126,7 +126,7 @@
                     
                     <Border Name="projectColorCircle" x:FieldModifier="private" Grid.Column="0"
                             CornerRadius="100" Width="10" Height="10" BorderThickness="0"
-                            Margin="18, 0, 0, 0"
+                            Margin="18, 0, 0, 0" Background="#999999"
                             HorizontalAlignment="Left">
                     </Border>
 
@@ -150,7 +150,7 @@
                 </Grid>
             
                 <!-- client -->
-                <Grid  Grid.Row="1"  Height="50" Visibility="Collapsed"
+                <Grid  Grid.Row="1"  Height="50" Visibility="Visible"
                        Name="clientArea" x:FieldModifier="private">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -203,7 +203,7 @@
                 </Grid>
                 
                 <!-- workspace -->
-                <Grid Grid.Row="2" Height="50" Visibility="Collapsed"
+                <Grid Grid.Row="2" Height="50" Visibility="Visible"
                        Name="workspaceArea" x:FieldModifier="private">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
