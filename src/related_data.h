@@ -90,6 +90,8 @@ class RelatedData {
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<AutocompleteItem> *list) const;
+
+    Client *clientByProject(Project *p) const;
 };
 
 template<typename T>

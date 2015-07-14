@@ -72,10 +72,7 @@ void RelatedData::timeEntryAutocompleteItems(
             continue;
         }
 
-        Client *c = nullptr;
-        if (p && p->CID()) {
-            c = ClientByID(p->CID());
-        }
+        Client *c = clientByProject(p);
 
         std::string project_task_label =
             Formatter::JoinTaskName(t, p, c);
@@ -151,10 +148,7 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
-        Client *c = nullptr;
-        if (p && p->CID()) {
-            c = ClientByID(p->CID());
-        }
+        Client *c = clientByProject(p);
 
         std::string text = Formatter::JoinTaskName(t, p, c);
         if (text.empty()) {
@@ -214,10 +208,7 @@ void RelatedData::projectAutocompleteItems(
             continue;
         }
 
-        Client *c = nullptr;
-        if (p->CID()) {
-            c = ClientByID(p->CID());
-        }
+        Client *c = clientByProject(p);
 
         std::string text = Formatter::JoinTaskName(0, p, c);
         if (text.empty()) {
@@ -394,13 +385,7 @@ void RelatedData::ProjectLabelAndColorCode(
         p = ProjectByGUID(te->ProjectGUID());
     }
 
-    Client *c = nullptr;
-    if (p && p->CID()) {
-        c = ClientByID(p->CID());
-    }
-    if (p && !p->ClientGUID().empty()) {
-        c = ClientByGUID(p->ClientGUID());
-    }
+    Client *c = clientByProject(p);
 
     *project_and_task_label = Formatter::JoinTaskName(t, p, c);
 
@@ -412,6 +397,17 @@ void RelatedData::ProjectLabelAndColorCode(
     if (c) {
         *client_label = c->Name();
     }
+}
+
+Client *RelatedData::clientByProject(Project *p) const {
+    Client *c = nullptr;
+    if (p && p->CID()) {
+        c = ClientByID(p->CID());
+    }
+    if (!c && p && !p->ClientGUID().empty()) {
+        c = ClientByGUID(p->ClientGUID());
+    }
+    return c;
 }
 
 Task *RelatedData::TaskByID(const Poco::UInt64 id) const {
