@@ -578,6 +578,8 @@ namespace TogglDesktop.WPF
             var item = asClientItem.Item;
 
             this.selectClient(item);
+
+            this.projectTextBox.Focus();
         }
 
         private void selectClient(Toggl.Model item)
@@ -625,6 +627,8 @@ namespace TogglDesktop.WPF
         private void newClientCancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             this.disableNewClientMode();
+
+            this.projectTextBox.Focus();
         }
         #endregion
 
@@ -678,7 +682,11 @@ namespace TogglDesktop.WPF
                 case Key.Enter:
                     {
                         if (this.tryCreatingNewClient(this.clientTextBox.Text))
+                        {
                             this.disableNewClientMode();
+
+                            this.projectTextBox.Focus();
+                        }
                         break;
                     }
             }
@@ -697,6 +705,8 @@ namespace TogglDesktop.WPF
             this.selectedClientGUID = clientGUID;
 
             this.disableNewClientMode();
+
+            this.projectTextBox.Focus();
 
             return true;
         }
@@ -748,6 +758,8 @@ namespace TogglDesktop.WPF
             var item = asWorkspaceItem.Item;
 
             this.selectWorkspace(item);
+
+            this.clientTextBox.Focus();
         }
 
         private void selectWorkspace(Toggl.Model item)
