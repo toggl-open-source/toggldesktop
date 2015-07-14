@@ -394,9 +394,9 @@ void RelatedData::ProjectLabelAndColorCode(
     if (p && p->CID()) {
         c = ClientByID(p->CID());
     }
-	if (p && !p->ClientGUID().empty()) {
-		c = ClientByGUID(p->ClientGUID());
-	}
+    if (p && !p->ClientGUID().empty()) {
+        c = ClientByGUID(p->ClientGUID());
+    }
 
     *project_and_task_label = Formatter::JoinTaskName(t, p, c);
 
