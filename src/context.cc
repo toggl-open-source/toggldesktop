@@ -1747,10 +1747,6 @@ error Context::Login(
 }
 
 void Context::trackSettingsUsage() {
-    if (!kTrackSettingsUsage) {
-        return;
-    }
-
     next_analytics_at_ =
         postpone(kRequestThrottleSeconds * kOneSecondInMicros);
 
@@ -2842,7 +2838,7 @@ Client *Context::CreateClient(
         return nullptr;
     }
 
-	if (client_name.empty()) {
+    if (client_name.empty()) {
         displayError("Client name must not be empty");
         return nullptr;
     }

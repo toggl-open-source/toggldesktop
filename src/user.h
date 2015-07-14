@@ -112,6 +112,8 @@ class User : public BaseModel {
     }
     void SetSince(const Poco::UInt64 value);
 
+    bool HasValidSinceDate() const;
+
     const std::string &Fullname() const {
         return fullname_;
     }

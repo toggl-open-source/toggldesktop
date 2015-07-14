@@ -385,9 +385,9 @@ char_t *toggl_create_client(
 
     poco_check_ptr(c);
 
-	logger().debug("Created client " + c->String());
+    logger().debug("Created client " + c->String());
 
-	poco_assert(!c->GUID().empty());
+    poco_assert(!c->GUID().empty());
 
     return copy_string(c->GUID());
 }

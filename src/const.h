@@ -81,8 +81,4 @@
 
 #define kPromotionJoinBetaChannel 1
 
-// Optional features
-
-#define kTrackSettingsUsage false
-
 #endif  // SRC_CONST_H_

@@ -116,7 +116,8 @@ TEST(Database, CreateCompressedTimelineBatchForUpload) {
     // can be uploaded to Toggl backend.
     TimelineEvent good;
     good.user_id = user_id;
-    good.start_time = time(0) - 60*16;  // started 16 minutes ago
+    // started 16 minutes ago, yesterday
+    good.start_time = time(0) - 86400 - 60*16;
     good.end_time = good.start_time + 30;  // lasted 30 seconds
     good.filename = "Notepad.exe";
     good.title = "untitled";
@@ -233,6 +234,29 @@ Json::Value jsonStringToValue(const std::string json_string) {
     Json::Reader reader;
     reader.parse(json_string, root);
     return root;
+}
+
+TEST(User, Since) {
+    User u;
+
+    // no timestamp should be wrong
+    ASSERT_FALSE(u.HasValidSinceDate());
+
+    // 0 timestamp should be wrong
+    u.SetSince(0);
+    ASSERT_FALSE(u.HasValidSinceDate());
+
+    // current time should be ok
+    u.SetSince(time(0));
+    ASSERT_TRUE(u.HasValidSinceDate());
+
+    // future date should be wrong
+    u.SetSince(time(0) + 10);
+    ASSERT_FALSE(u.HasValidSinceDate());
+
+    // 1 month ago should be fine
+    u.SetSince(time(0) - 2.62974e6);
+    ASSERT_TRUE(u.HasValidSinceDate());
 }
 
 TEST(User, UpdatesTimeEntryFromJSON) {

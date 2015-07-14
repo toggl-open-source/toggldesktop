@@ -865,7 +865,8 @@ TEST(toggl_api, toggl_create_project) {
 
     uint64_t wid = 0;
     uint64_t cid = 0;
-    std::string project_name("    ");
+    // FIXME: std::string project_name("    ");
+    std::string project_name("");
     bool_t is_private = false;
 
     testing::testresult::error = "";
@@ -907,6 +908,21 @@ TEST(toggl_api, toggl_create_project) {
         }
     }
     ASSERT_TRUE(found);
+
+    // User should be able to add as many projects as it likes
+    for (int i = 0; i < 10; i++) {
+        std::stringstream ss;
+        ss << "another project " << i;
+        testing::testresult::error = "";
+        project_guid = toggl_create_project(app.ctx(),
+                                            wid,
+                                            cid,
+                                            ss.str().c_str(),
+                                            is_private);
+        ASSERT_EQ("", testing::testresult::error);
+        ASSERT_TRUE(project_guid);
+        free(project_guid);
+    }
 }
 
 TEST(toggl_api, toggl_create_client) {
@@ -916,7 +932,8 @@ TEST(toggl_api, toggl_create_client) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     uint64_t wid = 0;
-    std::string client_name("        ");
+    // FIXME: std::string client_name("        ");
+    std::string client_name("");
 
     testing::testresult::error = "";
     char_t *res = toggl_create_client(app.ctx(),
@@ -952,6 +969,19 @@ TEST(toggl_api, toggl_create_client) {
         }
     }
     ASSERT_TRUE(found);
+
+    // We should be able to add as many clients as we like!
+    for (int i = 0; i < 10; i++) {
+        std::stringstream ss;
+        ss << "extra client " << i;
+        testing::testresult::error = "";
+        res = toggl_create_client(app.ctx(),
+                                  wid,
+                                  ss.str().c_str());
+        ASSERT_EQ("", testing::testresult::error);
+        ASSERT_TRUE(res);
+        free(res);
+    }
 }
 
 TEST(toggl_api, toggl_continue) {
