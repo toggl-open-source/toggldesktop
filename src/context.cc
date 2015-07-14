@@ -356,9 +356,11 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
         }
 
         if (ch.ModelType() == kModelTimelineEvent) {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (user_ && user_->RecordTimeline()) {
-                display_time_entries = true;
+            if (kExperimentalFeatureRenderTimeline) {
+                Poco::Mutex::ScopedLock lock(user_m_);
+                if (user_ && user_->RecordTimeline()) {
+                    display_time_entries = true;
+                }
             }
         }
     }
@@ -2118,7 +2120,7 @@ void Context::DisplayTimeEntryList(const bool open) {
     std::vector<TimedEvent *> list;
     timeEntries(&list);
 
-    if (settings_.render_timeline) {
+    if (kExperimentalFeatureRenderTimeline && settings_.render_timeline) {
         timelineEvents(&list);
     }
 
