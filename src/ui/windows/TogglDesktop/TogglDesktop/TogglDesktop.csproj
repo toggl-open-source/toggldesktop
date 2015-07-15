@@ -308,6 +308,9 @@
     <Compile Include="WPF\TimeEntryList.xaml.cs">
       <DependentUpon>TimeEntryList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\TimerEditViewController.xaml.cs">
+      <DependentUpon>TimerEditViewController.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
@@ -490,7 +493,7 @@
     <None Include="Resources\darkBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\timerDarkBg.png" />
+    <Resource Include="Resources\timerDarkBg.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ic_arrow_back_grey600_24dp.png" />
@@ -580,6 +583,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\TimeEntryList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\TimerEditViewController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

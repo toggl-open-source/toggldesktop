@@ -24,24 +24,31 @@ public partial class TimeEntryListViewController : UserControl
         Toggl.OnTimeEntryList += OnTimeEntryList;
         Toggl.OnLogin += OnLogin;
 
-        timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
-        timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
+        this.initialiseTimer();
 
-        entries.SetFocusCondition(() => timerEditViewController.CanFocusList());
+        //timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
+        //timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
 
+        //entries.SetFocusCondition(() => timerEditViewController.CanFocusList());
+        entries.SetFocusCondition(() => true);
+    }
+
+    private void initialiseTimer()
+    {
+        this.miniTimerHost.Child = new WPF.TimerEditViewController();
     }
 
     void TimeEntryListViewController_MouseWheel(object sender, MouseEventArgs e)
     {
-        if (!timerEditViewController.isAutocompleteOpened())
-        {
-            entriesHost.Focus();
-        }
+        //if (!timerEditViewController.isAutocompleteOpened())
+        //{
+        //    entriesHost.Focus();
+        //}
     }
 
     public void SetAcceptButton(Form frm)
     {
-        timerEditViewController.SetAcceptButton(frm);
+        //timerEditViewController.SetAcceptButton(frm);
     }
 
     void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
@@ -125,7 +132,7 @@ public partial class TimeEntryListViewController : UserControl
 
     internal void setEditPopup(EditForm editForm)
     {
-        timerEditViewController.editForm = editForm;
+        //timerEditViewController.editForm = editForm;
     }
 
     public void HighlightEntry(string GUID)

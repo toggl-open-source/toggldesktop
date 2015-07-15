@@ -69,9 +69,9 @@
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal" HorizontalAlignment="Right">
 
-                <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
+                <Image Name="tagsIcon" x:FieldModifier="private" Source="/TogglDesktop;component/Resources/icon-tags.png"
                        Stretch="None" Margin="3, 0, 3, 0"/>
-                <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
+                <Image Name="billabeIcon" x:FieldModifier="private" Source="/TogglDesktop;component/Resources/icon-billable.png"
                        Stretch="None" Margin="3, 0, 3, 0"/>
 
             </StackPanel>
