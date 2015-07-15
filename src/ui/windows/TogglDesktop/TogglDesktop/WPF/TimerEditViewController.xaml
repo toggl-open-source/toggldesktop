@@ -31,6 +31,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="CaretBrush" Value="#dddddd"></Setter>
         </Style>
         
         <Style TargetType="ToggleButton">
@@ -79,7 +80,8 @@
             <ColumnDefinition Width="84"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="1" Name="descriptionPlaceholderLabel" x:FieldModifier="private">
+        <!-- description placeholder -->
+        <TextBlock Grid.Column="1">
             <TextBlock.Style>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -120,7 +122,7 @@
         
 
 
-        <StackPanel Grid.Column="2"
+        <StackPanel Grid.Column="2" Name="iconPanel" x:FieldModifier="private"
                         Orientation="Horizontal" HorizontalAlignment="Right">
 
             <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"

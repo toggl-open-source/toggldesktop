@@ -135,10 +135,9 @@ namespace TogglDesktop.WPF
 
         private static SolidColorBrush getProjectColorBrush(ref Toggl.TimeEntry item)
         {
-            var projectColourString = item.Color != "" ? item.Color : "#999999";
-            var projectColor = (Color)ColorConverter.ConvertFromString(projectColourString);
-            var projectColorBrush = new SolidColorBrush(projectColor);
-            return projectColorBrush;
+            var colourString = string.IsNullOrEmpty(item.Color) ? "#999999" : item.Color;
+            var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));
+            return new SolidColorBrush(color);
         }
 
         #endregion
