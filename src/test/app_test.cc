@@ -11,6 +11,7 @@
 #include "./../formatter.h"
 #include "./../project.h"
 #include "./../proxy.h"
+#include "./../settings.h"
 #include "./../tag.h"
 #include "./../task.h"
 #include "./../time_entry.h"
@@ -1862,6 +1863,24 @@ TEST(AutotrackerRule, Matches) {
 
     ev.SetTitle("dork");
     ASSERT_FALSE(a.Matches(ev));
+}
+
+TEST(Settings, IsSame) {
+    Settings s1;
+    Settings s2;
+
+    ASSERT_TRUE(s1.IsSame(s2));
+    ASSERT_TRUE(s2.IsSame(s1));
+
+    s1.use_idle_detection = true;
+    ASSERT_FALSE(s1.IsSame(s2));
+    ASSERT_FALSE(s2.IsSame(s1));
+
+    Settings s3 = s1;
+    ASSERT_TRUE(s3.IsSame(s1));
+    ASSERT_TRUE(s1.IsSame(s3));
+    ASSERT_FALSE(s3.IsSame(s2));
+    ASSERT_FALSE(s2.IsSame(s3));
 }
 
 }  // namespace toggl

@@ -9,15 +9,12 @@ namespace toggl {
 
 std::string TimelineEvent::String() const {
     std::stringstream ss;
-    ss << start_time_
-       << ";"
-       << end_time_
-       << ";"
-       << filename_
-       << ";"
-       << title_
-       << ";"
-       << Duration();
+    ss << "TimelineEvent"
+       << " start_time=" << start_time_
+       << " end_time=" << end_time_
+       << " filename=" << filename_
+       << " title=" << title_
+       << " duration=" << Duration();
     return ss.str();
 }
 

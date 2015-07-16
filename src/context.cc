@@ -1612,6 +1612,11 @@ error Context::DisplaySettings(const bool open) {
         return displayError(err);
     }
 
+    std::stringstream ss;
+    ss << "DisplaySettings open=" << open
+       << " " << settings_.String();
+    logger().debug(ss.str());
+
     bool use_proxy(false);
     Proxy proxy;
     err = db()->LoadProxySettings(&use_proxy, &proxy);
@@ -1804,6 +1809,13 @@ error Context::Login(
 }
 
 void Context::trackSettingsUsage() {
+    if (tracked_settings_.IsSame(settings_)) {
+        // settings have not changed, will not track
+        return;
+    }
+
+    tracked_settings_ = settings_;
+
     next_analytics_at_ =
         postpone(kRequestThrottleSeconds * kOneSecondInMicros);
 
@@ -1832,7 +1844,7 @@ void Context::onTrackSettingsUsage(Poco::Util::TimerTask& task) {  // NOLINT
         apitoken = user_->APIToken();
     }
 
-    analytics_.TrackSettingsUsage(apitoken, settings_);
+    analytics_.TrackSettingsUsage(apitoken, tracked_settings_);
 }
 
 error Context::Signup(
