@@ -830,6 +830,19 @@ namespace TogglDesktop.WPF
 
         #region variuos
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Escape:
+                {
+                    this.Close();
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
+
         public void FocusField(string focusedFieldName)
         {
             switch (focusedFieldName)

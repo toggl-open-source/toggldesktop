@@ -144,8 +144,11 @@ namespace TogglDesktop.WPF
                     }
                 case Key.Escape:
                     {
-                        this.close();
-                        e.Handled = true;
+                        if (this.IsOpen)
+                        {
+                            this.close();
+                            e.Handled = true;
+                        }
                         return;
                     }
                 case Key.Enter:
