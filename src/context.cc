@@ -302,6 +302,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     bool display_time_entry_editor(false);
     bool open_time_entry_list(false);
     bool display_autotracker_rules(false);
+    bool display_settings(false);
 
     // Check what needs to be updated in UI
     for (std::vector<ModelChange>::const_iterator it =
@@ -363,6 +364,10 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
                 }
             }
         }
+
+        if (ch.ModelType() == kModelSettings) {
+            display_settings = true;
+        }
     }
 
     // Apply updates to UI
@@ -404,6 +409,12 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     }
     if (display_autotracker_rules) {
         displayAutotrackerRules();
+    }
+    if (display_settings) {
+        error err = DisplaySettings();
+        if (err != noError) {
+            displayError(err);
+        }
     }
 }
 
