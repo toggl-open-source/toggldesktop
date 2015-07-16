@@ -23,8 +23,8 @@ namespace TogglDesktop.WPF
     {
         private readonly DispatcherTimer durationUpdateTimer;
         private Toggl.TimeEntry timeEntry;
-        private bool newProjectModeEnabled = true;
-        private bool newClientModeEnabled = true;
+        private bool isInNewProjectMode = true;
+        private bool isInNewClientMode = true;
         private List<Toggl.AutocompleteItem> projects;
         private List<Toggl.Model> clients;
         private List<Toggl.Model> workspaces;
@@ -127,7 +127,7 @@ namespace TogglDesktop.WPF
                 this.tagList.AddTags(timeEntry.Tags.Split(new[] { Toggl.TagSeparator }, StringSplitOptions.RemoveEmptyEntries));
             this.updateTagListEmptyText();
 
-            if (this.newProjectModeEnabled)
+            if (this.isInNewProjectMode)
                 this.disableNewProjectMode();
 
             this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
@@ -429,7 +429,7 @@ namespace TogglDesktop.WPF
 
         private void projectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if(this.newProjectModeEnabled)
+            if(this.isInNewProjectMode)
                 return;
             
             if (this.projectTextBox.Text == "")
@@ -483,7 +483,7 @@ namespace TogglDesktop.WPF
             this.emptyProjectText.Text = "Add project";
             this.emptyProjectText.Margin = new Thickness(16, 0, 16, 0);
 
-            this.newProjectModeEnabled = true;
+            this.isInNewProjectMode = true;
         }
 
         private void disableNewProjectMode()
@@ -504,12 +504,12 @@ namespace TogglDesktop.WPF
             this.emptyProjectText.Text = "No project";
             this.emptyProjectText.Margin = new Thickness(36, 0, 16, 0);
 
-            this.newProjectModeEnabled = false;
+            this.isInNewProjectMode = false;
         }
 
         private void projectTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!this.newProjectModeEnabled)
+            if (!this.isInNewProjectMode)
                 return;
 
             switch (e.Key)
@@ -522,13 +522,23 @@ namespace TogglDesktop.WPF
                     }
                 case Key.Enter:
                     {
-                        if (this.tryCreatingNewProject(this.projectTextBox.Text))
-                        {
-                            this.disableNewProjectMode();
-                            e.Handled = true;
-                        }
+                        this.confirmNewProject();
+                        e.Handled = true;
                         break;
                     }
+            }
+        }
+
+        private void confirmNewProject()
+        {
+            if (this.isInNewClientMode)
+            {
+                this.tryCreatingNewClient(this.clientTextBox.Text);
+            }
+
+            if (this.tryCreatingNewProject(this.projectTextBox.Text))
+            {
+                this.disableNewProjectMode();
             }
         }
 
@@ -619,7 +629,7 @@ namespace TogglDesktop.WPF
 
         private void clientTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (this.newClientModeEnabled)
+            if (this.isInNewClientMode)
                 return;
 
             if (this.clientTextBox.Text == "")
@@ -664,7 +674,7 @@ namespace TogglDesktop.WPF
 
             this.emptyClientText.Text = "Add client";
 
-            this.newClientModeEnabled = true;
+            this.isInNewClientMode = true;
         }
 
         private void disableNewClientMode()
@@ -680,12 +690,12 @@ namespace TogglDesktop.WPF
 
             this.emptyClientText.Text = "No client";
 
-            this.newClientModeEnabled = false;
+            this.isInNewClientMode = false;
         }
 
         private void clientTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!this.newClientModeEnabled)
+            if (!this.isInNewClientMode)
                 return;
 
             switch (e.Key)
@@ -872,6 +882,10 @@ namespace TogglDesktop.WPF
         public void Close()
         {
             //TODO: make sure unsaved changes are discarded/saved (what if user is in add-project mode?)
+            if (this.isInNewProjectMode)
+            {
+                this.confirmNewProject();
+            }
             Toggl.ViewTimeEntryList();
             //TODO: reset form (specifically add-project controls)?
         }
