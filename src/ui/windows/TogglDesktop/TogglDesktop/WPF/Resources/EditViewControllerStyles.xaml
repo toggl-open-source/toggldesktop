@@ -40,8 +40,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
                     <Border Background="{TemplateBinding Background}">
-                        <TextBlock Foreground="#57da6d" FontSize="22" FontWeight="Bold"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center">+</TextBlock>
+                        <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#9f9f9f"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center">SAVE</TextBlock>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
