@@ -3495,7 +3495,8 @@ error Context::pullAllUserData(
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
-            return error("cannot pull user data when logged out");
+            logger().warning("cannot pull user data when logged out");
+            return noError;
         }
         api_token = user_->APIToken();
         if (user_->HasValidSinceDate()) {
@@ -3570,7 +3571,8 @@ error Context::pushChanges(
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
-                return error("cannot push changes when logged out");
+                logger().warning("cannot push changes when logged out");
+                return noError;
             }
 
             api_token = user_->APIToken();
