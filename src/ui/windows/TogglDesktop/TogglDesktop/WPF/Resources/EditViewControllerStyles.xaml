@@ -35,6 +35,28 @@
         <Setter Property="Visibility" Value="Hidden"/>
         <Setter Property="IsHitTestVisible" Value="False"/>
     </Style>
+    <Style TargetType="ButtonBase" x:Key="TextFieldButtonBase" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}">
+                        <TextBlock Foreground="#57da6d" FontSize="22" FontWeight="Bold"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center">+</TextBlock>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Margin" Value="8, 8, 42, 8" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F4F4F4"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style TargetType="ButtonBase" x:Key="TextFieldImageButtonBase" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Template">
             <Setter.Value>

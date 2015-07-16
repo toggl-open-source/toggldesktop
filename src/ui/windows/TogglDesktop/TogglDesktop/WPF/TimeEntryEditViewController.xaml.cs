@@ -475,11 +475,12 @@ namespace TogglDesktop.WPF
             this.projectDropDownButton.Visibility = Visibility.Hidden;
             this.newProjectButton.Visibility = Visibility.Hidden;
             this.newProjectCancelButton.Visibility = Visibility.Visible;
+            this.newProjectConfirmButton.Visibility = Visibility.Visible;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
 
             this.projectColorCircle.Visibility = Visibility.Collapsed;
-            this.projectTextBox.Padding = new Thickness(8, 0, 34, 0);
+            this.projectTextBox.Padding = new Thickness(8, 0, 34 + 34, 0);
             this.emptyProjectText.Text = "Add project";
             this.emptyProjectText.Margin = new Thickness(16, 0, 16, 0);
 
@@ -496,6 +497,7 @@ namespace TogglDesktop.WPF
             this.projectDropDownButton.Visibility = Visibility.Visible;
             this.newProjectButton.Visibility = Visibility.Visible;
             this.newProjectCancelButton.Visibility = Visibility.Hidden;
+            this.newProjectConfirmButton.Visibility = Visibility.Hidden;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
 
@@ -505,6 +507,11 @@ namespace TogglDesktop.WPF
             this.emptyProjectText.Margin = new Thickness(36, 0, 16, 0);
 
             this.isInNewProjectMode = false;
+        }
+
+        private void newProjectConfirmButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.confirmNewProject();
         }
 
         private void projectTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -668,6 +675,10 @@ namespace TogglDesktop.WPF
             this.clientDropDownButton.Visibility = Visibility.Hidden;
             this.newClientButton.Visibility = Visibility.Hidden;
             this.newClientCancelButton.Visibility = Visibility.Visible;
+            this.newClientConfirmButton.Visibility = Visibility.Visible;
+
+            this.clientTextBox.Padding = new Thickness(8, 0, 34 + 34, 0);
+
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
             this.showWorkspaceArea();
@@ -684,6 +695,10 @@ namespace TogglDesktop.WPF
             this.clientDropDownButton.Visibility = Visibility.Visible;
             this.newClientButton.Visibility = Visibility.Visible;
             this.newClientCancelButton.Visibility = Visibility.Hidden;
+            this.newClientConfirmButton.Visibility = Visibility.Hidden;
+
+            this.clientTextBox.Padding = new Thickness(8, 0, 34, 0);
+
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
             this.hideWorkspaceArea();
@@ -691,6 +706,11 @@ namespace TogglDesktop.WPF
             this.emptyClientText.Text = "No client";
 
             this.isInNewClientMode = false;
+        }
+
+        private void newClientConfirmButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.confirmNewClient();
         }
 
         private void clientTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -708,14 +728,19 @@ namespace TogglDesktop.WPF
                     }
                 case Key.Enter:
                     {
-                        if (this.tryCreatingNewClient(this.clientTextBox.Text))
-                        {
-                            this.disableNewClientMode();
-                            this.projectTextBox.Focus();
-                            e.Handled = true;
-                        }
+                        this.confirmNewClient();
+                        e.Handled = true;
                         break;
                     }
+            }
+        }
+
+        private void confirmNewClient()
+        {
+            if (this.tryCreatingNewClient(this.clientTextBox.Text))
+            {
+                this.disableNewClientMode();
+                this.projectTextBox.Focus();
             }
         }
 
