@@ -14,7 +14,7 @@
 
 namespace toggl {
 
-class TimelineEvent  : public BaseModel, public TimedEvent {
+class TimelineEvent : public BaseModel, public TimedEvent {
  public:
     TimelineEvent()
         : BaseModel()
