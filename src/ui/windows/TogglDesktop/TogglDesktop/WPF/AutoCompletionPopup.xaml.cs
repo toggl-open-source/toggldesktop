@@ -193,14 +193,14 @@ namespace TogglDesktop.WPF
             if (this.textbox.IsTextChangingProgrammatically)
                 return;
 
-            this.open();
+            this.open(true);
         }
 
         private void close()
         {
             this.popup.IsOpen = false;
         }
-        private void open()
+        private void open(bool closeIfEmpty = false)
         {
             this.ensureList();
             this.controller.Complete(this.textbox.Text);
@@ -208,7 +208,14 @@ namespace TogglDesktop.WPF
                 ? Visibility.Visible
                 : Visibility.Collapsed;
 
-            this.popup.IsOpen = true;
+            if (closeIfEmpty)
+            {
+                this.popup.IsOpen = this.controller.VisibleItems.Count > 0;   
+            }
+            else
+            {
+                this.popup.IsOpen = true;
+            }
         }
 
         private void ensureList()
