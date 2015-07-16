@@ -180,6 +180,10 @@ BOOL manualMode = NO;
 												 name:kCommandNew
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startNewShortcut:)
+												 name:kCommandNewShortcut
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startContinueTimeEntry:)
 												 name:kCommandContinue
 											   object:nil];
@@ -365,6 +369,28 @@ BOOL manualMode = NO;
 							 new_time_entry.TaskID,
 							 new_time_entry.ProjectID,
 							 0);
+	free(guid);
+}
+
+- (void)startNewShortcut:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(newShortcut:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)newShortcut:(TimeEntryViewItem *)new_time_entry
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
+
+	char *guid = toggl_start(ctx,
+							 [new_time_entry.Description UTF8String],
+							 [new_time_entry.duration UTF8String],
+							 new_time_entry.TaskID,
+							 new_time_entry.ProjectID,
+							 0);
+	toggl_edit(ctx, guid, true, "");
 	free(guid);
 }
 
@@ -846,7 +872,7 @@ BOOL manualMode = NO;
 
 - (void)onNewMenuItem:(id)sender
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNew
+	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNewShortcut
 														object:[[TimeEntryViewItem alloc] init]];
 }
 

@@ -2135,13 +2135,8 @@ TimeEntry *Context::Start(
         return nullptr;
     }
 
-    if (te && settings_.open_editor_on_shortcut) {
-        // Open time entry in editor
-        Edit(te->GUID());
-    } else {
-        // just show the app
-        UI()->DisplayApp();
-    }
+    // just show the app
+    UI()->DisplayApp();
 
     if ("production" == environment_) {
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
