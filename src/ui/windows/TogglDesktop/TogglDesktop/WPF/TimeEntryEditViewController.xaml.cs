@@ -517,12 +517,16 @@ namespace TogglDesktop.WPF
                 case Key.Escape:
                     {
                         this.disableNewProjectMode();
+                        e.Handled = true;
                         break;
                     }
                 case Key.Enter:
                     {
                         if (this.tryCreatingNewProject(this.projectTextBox.Text))
+                        {
                             this.disableNewProjectMode();
+                            e.Handled = true;
+                        }
                         break;
                     }
             }
@@ -689,6 +693,7 @@ namespace TogglDesktop.WPF
                 case Key.Escape:
                     {
                         this.disableNewClientMode();
+                        e.Handled = true;
                         break;
                     }
                 case Key.Enter:
@@ -696,8 +701,8 @@ namespace TogglDesktop.WPF
                         if (this.tryCreatingNewClient(this.clientTextBox.Text))
                         {
                             this.disableNewClientMode();
-
                             this.projectTextBox.Focus();
+                            e.Handled = true;
                         }
                         break;
                     }
