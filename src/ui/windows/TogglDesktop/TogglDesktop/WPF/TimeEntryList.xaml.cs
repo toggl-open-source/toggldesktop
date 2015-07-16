@@ -51,7 +51,7 @@ namespace TogglDesktop.WPF
 
         public void HighlightCell(TimeEntryCell cell)
         {
-            if (cell != null)
+            if (cell != null && this.panel.IsAncestorOf(cell))
             {
                 var y = cell.TransformToAncestor(this.panel).Transform(new Point(0, 0)).Y + cell.ActualHeight;
                 this.highlightRectangleTop.Height = y - 53;
@@ -65,6 +65,7 @@ namespace TogglDesktop.WPF
                 this.highlightRectangleBottom.Height = 0;
                 this.highlightRectangleTop.Visibility = Visibility.Collapsed;
                 this.highlightRectangleBottom.Visibility = Visibility.Collapsed;
+                cell = null;
             }
 
             if (this.highlightedCell != null)
