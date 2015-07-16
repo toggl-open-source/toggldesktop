@@ -1211,10 +1211,11 @@ TEST(toggl_api, toggl_start_with_open_editor_on_shortcut_setting) {
 
     guid = toggl_start(app.ctx(), "test", "", 0, 0, 0);
     ASSERT_TRUE(guid);
-    ASSERT_EQ(std::string(guid), testing::testresult::editor_state.GUID());
+    // It should *not* open the editor, unless a shortcut was used
+    // in the app, but this logic is driven from the UI instead of the lib.
+    ASSERT_EQ(std::string(""), testing::testresult::editor_state.GUID());
     free(guid);
 }
-
 
 TEST(toggl_api, toggl_set_time_entry_billable) {
     testing::App app;
