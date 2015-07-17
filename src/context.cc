@@ -343,7 +343,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
             // If time entry was edited, check further
             if (time_entry_editor_guid_ == ch.GUID()) {
                 // If time entry was deleted, close editor and open list view
-                if (ch.ChangeType() == "delete") {
+                if (ch.ChangeType() == kChangeTypeDelete) {
                     open_time_entry_list = true;
                     display_time_entries = true;
                 } else {

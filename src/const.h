@@ -70,6 +70,10 @@
 #define kModelUser "user"
 #define kModelWorkspace "workspace"
 
+#define kChangeTypeInsert "insert"
+#define kChangeTypeUpdate "update"
+#define kChangeTypeDelete "delete"
+
 #define kPromotionJoinBetaChannel 1
 
 #endif  // SRC_CONST_H_

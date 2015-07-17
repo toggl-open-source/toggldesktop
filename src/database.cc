@@ -1542,7 +1542,7 @@ error Database::saveRelatedModels(
             }
             changes->push_back(ModelChange(
                 model->ModelName(),
-                "delete",
+                kChangeTypeDelete,
                 model->ID(),
                 model->GUID()));
             continue;
@@ -1677,10 +1677,16 @@ error Database::saveModel(
             }
             if (model->DeletedAt()) {
                 changes->push_back(ModelChange(
-                    model->ModelName(), "delete", model->ID(), model->GUID()));
+                    model->ModelName(),
+                    kChangeTypeDelete,
+                    model->ID(),
+                    model->GUID()));
             } else {
                 changes->push_back(ModelChange(
-                    model->ModelName(), "update", model->ID(), model->GUID()));
+                    model->ModelName(),
+                    kChangeTypeUpdate,
+                    model->ID(),
+                    model->GUID()));
             }
         } else {
             std::stringstream ss;
@@ -1771,7 +1777,10 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeInsert,
+                model->ID(),
+                model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -1862,10 +1871,16 @@ error Database::saveModel(
             }
             if (model->DeletedAt()) {
                 changes->push_back(ModelChange(
-                    model->ModelName(), "delete", model->ID(), model->GUID()));
+                    model->ModelName(),
+                    kChangeTypeDelete,
+                    model->ID(),
+                    model->GUID()));
             } else {
                 changes->push_back(ModelChange(
-                    model->ModelName(), "update", model->ID(), model->GUID()));
+                    model->ModelName(),
+                    kChangeTypeUpdate,
+                    model->ID(),
+                    model->GUID()));
             }
         } else {
             std::stringstream ss;
@@ -1920,7 +1935,10 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeInsert,
+                model->ID(),
+                model->GUID()));
         }
 
         model->ClearDirty();
@@ -1969,10 +1987,16 @@ error Database::saveModel(
             }
             if (model->DeletedAt()) {
                 changes->push_back(ModelChange(
-                    model->ModelName(), "delete", model->ID(), model->GUID()));
+                    model->ModelName(),
+                    kChangeTypeDelete,
+                    model->ID(),
+                    model->GUID()));
             } else {
                 changes->push_back(ModelChange(
-                    model->ModelName(), "update", model->ID(), model->GUID()));
+                    model->ModelName(),
+                    kChangeTypeUpdate,
+                    model->ID(),
+                    model->GUID()));
             }
 
         } else {
@@ -2002,7 +2026,10 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeInsert,
+                model->ID(),
+                model->GUID()));
         }
 
         model->ClearDirty();
@@ -2056,7 +2083,7 @@ error Database::saveModel(
                 return err;
             }
             changes->push_back(ModelChange(
-                model->ModelName(), "update", model->ID(), ""));
+                model->ModelName(), kChangeTypeUpdate, model->ID(), ""));
 
         } else {
             std::stringstream ss;
@@ -2090,7 +2117,7 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), ""));
+                model->ModelName(), kChangeTypeInsert, model->ID(), ""));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -2163,7 +2190,10 @@ error Database::saveModel(
                 return err;
             }
             changes->push_back(ModelChange(
-                model->ModelName(), "update", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeUpdate,
+                model->ID(),
+                model->GUID()));
 
         } else {
             std::stringstream ss;
@@ -2205,7 +2235,10 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeInsert,
+                model->ID(),
+                model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -2335,7 +2368,10 @@ error Database::saveModel(
                 return err;
             }
             changes->push_back(ModelChange(
-                model->ModelName(), "update", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeUpdate,
+                model->ID(),
+                model->GUID()));
 
         } else {
             std::stringstream ss;
@@ -2446,7 +2482,10 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeInsert,
+                model->ID(),
+                model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -2497,7 +2536,7 @@ error Database::saveModel(
                 return err;
             }
             changes->push_back(ModelChange(
-                model->ModelName(), "update", model->ID(), ""));
+                model->ModelName(), kChangeTypeUpdate, model->ID(), ""));
 
         } else {
             std::stringstream ss;
@@ -2529,7 +2568,7 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), ""));
+                model->ModelName(), kChangeTypeInsert, model->ID(), ""));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -2592,7 +2631,10 @@ error Database::saveModel(
                 return err;
             }
             changes->push_back(ModelChange(
-                model->ModelName(), "update", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeUpdate,
+                model->ID(),
+                model->GUID()));
 
         } else {
             std::stringstream ss;
@@ -2634,7 +2676,10 @@ error Database::saveModel(
             }
             model->SetLocalID(local_id);
             changes->push_back(ModelChange(
-                model->ModelName(), "insert", model->ID(), model->GUID()));
+                model->ModelName(),
+                kChangeTypeInsert,
+                model->ID(),
+                model->GUID()));
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
@@ -2718,7 +2763,7 @@ error Database::SaveUser(
                     return err;
                 }
                 changes->push_back(ModelChange(
-                    user->ModelName(), "update", user->ID(), ""));
+                    user->ModelName(), kChangeTypeUpdate, user->ID(), ""));
             } else {
                 std::stringstream ss;
                 ss << "Inserting user " + user->String()
@@ -2763,7 +2808,10 @@ error Database::SaveUser(
                 }
                 user->SetLocalID(local_id);
                 changes->push_back(ModelChange(
-                    user->ModelName(), "insert", user->ID(), ""));
+                    user->ModelName(),
+                    kChangeTypeInsert,
+                    user->ID(),
+                    ""));
             }
             user->ClearDirty();
         } catch(const Poco::Exception& exc) {
