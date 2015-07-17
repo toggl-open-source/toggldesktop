@@ -275,10 +275,6 @@ class Database {
         TimelineEvent *model,
         std::vector<ModelChange> *changes);
 
-    error setTimelineEventLocalID(
-        TimelineEvent *model,
-        std::vector<ModelChange> *changes);
-
     error saveDesktopID();
     error saveAnalyticsClientID();
 
