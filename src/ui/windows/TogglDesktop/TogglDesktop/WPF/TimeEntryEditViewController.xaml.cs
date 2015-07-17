@@ -38,6 +38,7 @@ namespace TogglDesktop.WPF
             this.DataContext = this;
             InitializeComponent();
 
+            Toggl.OnLogin += this.onLogin;
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryAutocomplete += this.onTimeEntryAutocomplete;
             Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
@@ -46,6 +47,14 @@ namespace TogglDesktop.WPF
             Toggl.OnWorkspaceSelect += this.onWorkspaceSelect;
 
             this.durationUpdateTimer = this.startDurationUpdateTimer();
+        }
+
+        private void onLogin(bool open, ulong userId)
+        {
+            this.timeEntry = new Toggl.TimeEntry();
+            this.projects = null;
+            this.clients = null;
+            this.workspaces = null;
         }
 
         #region helper methods
