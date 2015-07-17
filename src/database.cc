@@ -1910,27 +1910,47 @@ error Database::saveModel(
         if (err != noError) {
             return err;
         }
-        Poco::Int64 local_id(0);
-        *session_ <<
-                  "select last_insert_rowid()",
-                  into(local_id),
-                  now;
-        err = last_error("select last inserted timeline event ID");
+        err = setTimelineEventLocalID(model, changes);
         if (err != noError) {
             return err;
         }
-        model->SetLocalID(local_id);
-        changes->push_back(ModelChange(
-            model->ModelName(), "insert", model->ID(), model->GUID()));
-
-        model->ClearDirty();
     } catch(const Poco::Exception& exc) {
+        if (exc.displayText()
+                .find("Abort due to constraint violation") != std::string::npos) {
+            error err = setTimelineEventLocalID(model, changes);
+            if (err != noError) {
+                return err;
+            }
+        }
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
     } catch(const std::string& ex) {
         return ex;
     }
+    return noError;
+}
+
+error Database::setTimelineEventLocalID(
+    TimelineEvent *model,
+    std::vector<ModelChange> *changes) {
+
+    Poco::Int64 local_id(0);
+    *session_ <<
+              "Select local_id from timeline_events where guid = :guid",
+              useRef(model->GUID()),
+              into(local_id),
+              now;
+
+    error err = last_error("select local_id by guid");
+    if (err != noError) {
+        return err;
+    }
+    model->SetLocalID(local_id);
+    changes->push_back(ModelChange(
+        model->ModelName(), "insert", model->ID(), model->GUID()));
+
+    model->ClearDirty();
     return noError;
 }
 
