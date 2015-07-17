@@ -1905,23 +1905,23 @@ error Database::saveModel(
                       useRef(model->Uploaded()),
                       useRef(model->Chunked()),
                       now;
+            error err = last_error("insert timeline event");
+            if (err != noError) {
+                return err;
+            }
+            Poco::Int64 local_id(0);
+            *session_ <<
+                      "select last_insert_rowid()",
+                      into(local_id),
+                      now;
+            err = last_error("select last inserted timeline event ID");
+            if (err != noError) {
+                return err;
+            }
+            model->SetLocalID(local_id);
+            changes->push_back(ModelChange(
+                model->ModelName(), "insert", model->ID(), model->GUID()));
         }
-        error err = last_error("insert timeline event");
-        if (err != noError) {
-            return err;
-        }
-        Poco::Int64 local_id(0);
-        *session_ <<
-                  "select last_insert_rowid()",
-                  into(local_id),
-                  now;
-        err = last_error("select last inserted timeline event ID");
-        if (err != noError) {
-            return err;
-        }
-        model->SetLocalID(local_id);
-        changes->push_back(ModelChange(
-            model->ModelName(), "insert", model->ID(), model->GUID()));
 
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
