@@ -1173,6 +1173,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
                             &response_body);
     if (err != noError) {
         displayError(err);
+        logger().error(response_body);
         logger().error(err);
     }
 }
