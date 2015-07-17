@@ -3194,7 +3194,6 @@ error Database::saveAnalyticsClientID() {
 
         poco_check_ptr(session_);
 
-
         *session_ <<
                   "INSERT INTO analytics_settings(analytics_client_id) "
                   "VALUES(:analytics_client_id)",
