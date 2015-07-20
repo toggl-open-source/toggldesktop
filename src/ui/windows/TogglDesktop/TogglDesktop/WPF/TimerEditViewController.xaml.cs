@@ -4,23 +4,40 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Newtonsoft.Json.Bson;
+using System.Windows.Threading;
 
 namespace TogglDesktop.WPF
 {
     public partial class TimerEditViewController
     {
-        private string runningGUID;
+        private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
+        private Toggl.TimeEntry runningTimeEntry;
+
+        public event EventHandler RunningTimeEntrySecondPulse;
 
         public TimerEditViewController()
         {
             this.InitializeComponent();
 
+            this.setupSecondsTimer();
+
             Toggl.OnMinitimerAutocomplete += this.onMiniTimerAutocomplete;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
 
+            this.RunningTimeEntrySecondPulse += this.timerTick;
+
             this.setUIToStoppedState();
+        }
+
+        private void setupSecondsTimer()
+        {
+            this.secondsTimer.Interval = TimeSpan.FromSeconds(1);
+            this.secondsTimer.Tick += (sender, args) =>
+            {
+                if (this.RunningTimeEntrySecondPulse != null)
+                    this.RunningTimeEntrySecondPulse(this, EventArgs.Empty);
+            };
         }
 
         private bool isRunning { get { return this.startStopButton.IsChecked ?? false; } }
@@ -44,8 +61,9 @@ namespace TogglDesktop.WPF
             if (this.invoke(this.onStoppedTimerState))
                 return;
 
-            this.runningGUID = null;
+            this.secondsTimer.IsEnabled = false;
             this.setUIToStoppedState();
+            this.runningTimeEntry = default(Toggl.TimeEntry);
         }
 
         private void onRunningTimerState(Toggl.TimeEntry te)
@@ -53,8 +71,9 @@ namespace TogglDesktop.WPF
             if (this.invoke(() => this.onRunningTimerState(te)))
                 return;
 
-            this.runningGUID = te.GUID;
+            this.runningTimeEntry = te;
             this.setUIToRunningState(te);
+            this.secondsTimer.IsEnabled = true;
         }
 
         private void onMiniTimerAutocomplete(List<Toggl.AutocompleteItem> list)
@@ -62,6 +81,18 @@ namespace TogglDesktop.WPF
             if (this.invoke(() => this.onMiniTimerAutocomplete(list)))
                 return;
 
+        }
+
+        private void timerTick(object sender, EventArgs e)
+        {
+            if (!this.isRunning)
+                return;
+
+            var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
+            if (this.durationLabel.Text != s)
+            {
+                this.durationLabel.Text = s;
+            }
         }
 
         #endregion
@@ -82,39 +113,34 @@ namespace TogglDesktop.WPF
 
         private void onProjectLabelMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.isRunning)
-            {
-                Toggl.Edit(this.runningGUID, false, Toggl.Project);
-                e.Handled = true;
-            }
+            this.tryOpenEditViewIfRunning(e, Toggl.Project);
         }
 
         private void onDescriptionLabelMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.isRunning)
-            {
-                Toggl.Edit(this.runningGUID, false, Toggl.Description);
-                e.Handled = true;
-            }
+            this.tryOpenEditViewIfRunning(e, Toggl.Description);
         }
 
         private void onTimeLabelMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.isRunning)
-            {
-                Toggl.Edit(this.runningGUID, false, Toggl.Duration);
-                e.Handled = true;
-            }
+            this.tryOpenEditViewIfRunning(e, Toggl.Duration);
         }
 
         private void onGridMouseDown(object sender, MouseButtonEventArgs e)
         {
+            this.tryOpenEditViewIfRunning(e, "");
+        }
+
+        private void tryOpenEditViewIfRunning(MouseButtonEventArgs e, string focusedField)
+        {
             if (this.isRunning)
             {
-                Toggl.Edit(this.runningGUID, false, "");
+                Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
                 e.Handled = true;
             }
         }
+
+
         #endregion
 
         #region controlling
