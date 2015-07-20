@@ -25,7 +25,8 @@ class WindowChangeRecorder {
     , last_idle_(false)
     , timeline_datasource_(datasource)
     , recording_(this, &WindowChangeRecorder::recordLoop)
-    , last_autotracker_title_("") {
+    , last_autotracker_title_("")
+    , shutdown_(false) {
         recording_.start();
     }
 
@@ -60,6 +61,9 @@ class WindowChangeRecorder {
     Poco::Activity<WindowChangeRecorder> recording_;
 
     std::string last_autotracker_title_;
+
+    Poco::Mutex shutdown_m_;
+    bool shutdown_;
 };
 
 }  // namespace toggl
