@@ -129,5 +129,6 @@ public partial class EditForm : Form
         timeEntryEditViewController.MouseDown += (sender, args) => this.mouseDown(args);
         timeEntryEditViewController.MouseMove += (sender, args) => this.mouseMove(args);
     }
+
 }
 }

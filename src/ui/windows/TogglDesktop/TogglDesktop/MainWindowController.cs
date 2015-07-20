@@ -545,6 +545,8 @@ public partial class MainWindowController : TogglForm
         editForm.Controls.Add(editViewHost);
 
         editForm.SetViewController(this.timeEntryEditViewController);
+
+        editForm.VisibleChanged += (sender, args) => this.updateMaxmimumSize();
     }
 
     public void PopupInput(Toggl.TimeEntry te)
@@ -778,6 +780,12 @@ public partial class MainWindowController : TogglForm
     {
         recalculatePopupPosition();
         this.updateMaxmimumSize();
+
+        if (this.WindowState != FormWindowState.Maximized)
+        {
+            if (this.FormBorderStyle != FormBorderStyle.Sizable)
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+        }
     }
 
     private void setEditFormLocation()
@@ -813,15 +821,13 @@ public partial class MainWindowController : TogglForm
         else
         {
             var s = this.getCurrentScreen();
-
             left = s.WorkingArea.Right - this.Right < this.editForm.Width;
-
-            if (!left)
-            {
-                editPopupLocation.X += this.Width;
-            }
         }
 
+        if (!left)
+        {
+            editPopupLocation.X += this.Width;
+        }
         this.editForm.SetPlacement(left, editPopupLocation, this.Height);
     }
 
@@ -847,20 +853,23 @@ public partial class MainWindowController : TogglForm
 
     private void updateMaxmimumSize()
     {
-        var workingArea = this.getCurrentScreen().WorkingArea;
-        this.MaximumSize = workingArea.Size;
+        var screenSize = this.getCurrentScreen().WorkingArea.Size;
 
-        if (this.WindowState == FormWindowState.Maximized)
-        {
+        var maxSize = screenSize;
 
-        }
-        else
+        if (this.WindowState == FormWindowState.Maximized && this.editForm != null && this.editForm.Visible)
         {
-            if(this.FormBorderStyle != FormBorderStyle.Sizable)
-                this.FormBorderStyle = FormBorderStyle.Sizable;
+            maxSize = new Size(screenSize.Width - this.editForm.Width, screenSize.Height);
         }
 
-        //TODO: leave space for edit view
+        this.MaximumSize = maxSize;
+
+        if (this.WindowState == FormWindowState.Maximized && this.Size != maxSize)
+        {
+            this.UpdateBounds(this.MaximizedBounds.Left, this.MaximizedBounds.Right, maxSize.Width, maxSize.Height);
+            this.Update();
+            this.UpdateWindowState();
+        }
     }
 
     protected override void WndProc(ref Message message)
