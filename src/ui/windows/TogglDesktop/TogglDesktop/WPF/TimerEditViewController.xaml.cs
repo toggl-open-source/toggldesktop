@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Newtonsoft.Json.Bson;
 
@@ -9,6 +10,8 @@ namespace TogglDesktop.WPF
 {
     public partial class TimerEditViewController
     {
+        private string runningGUID;
+
         public TimerEditViewController()
         {
             this.InitializeComponent();
@@ -19,6 +22,8 @@ namespace TogglDesktop.WPF
 
             this.setUIToStoppedState();
         }
+
+        private bool isRunning { get { return this.startStopButton.IsChecked ?? false; } }
 
         #region helper methods
 
@@ -39,6 +44,7 @@ namespace TogglDesktop.WPF
             if (this.invoke(this.onStoppedTimerState))
                 return;
 
+            this.runningGUID = null;
             this.setUIToStoppedState();
         }
 
@@ -47,6 +53,7 @@ namespace TogglDesktop.WPF
             if (this.invoke(() => this.onRunningTimerState(te)))
                 return;
 
+            this.runningGUID = te.GUID;
             this.setUIToRunningState(te);
         }
 
@@ -63,7 +70,7 @@ namespace TogglDesktop.WPF
 
         private void startStopButtonOnClick(object sender, RoutedEventArgs e)
         {
-            if (this.startStopButton.IsChecked ?? false)
+            if (this.isRunning)
             {
                 this.start();
             }
@@ -73,6 +80,29 @@ namespace TogglDesktop.WPF
             }
         }
 
+        private void onProjectLabelMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.isRunning)
+            {
+                Toggl.Edit(this.runningGUID, false, Toggl.Project);
+            }
+        }
+
+        private void onDescriptionLabelMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.isRunning)
+            {
+                Toggl.Edit(this.runningGUID, false, Toggl.Description);
+            }
+        }
+
+        private void onTimeLabelMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.isRunning)
+            {
+                Toggl.Edit(this.runningGUID, false, Toggl.Duration);
+            }
+        }
         #endregion
 
         #region controlling
@@ -169,5 +199,6 @@ namespace TogglDesktop.WPF
         #endregion
 
         #endregion
+
     }
 }
