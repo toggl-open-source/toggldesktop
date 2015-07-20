@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
@@ -47,6 +48,8 @@ public partial class MainWindowController : TogglForm
         startHook.KeyPressed += this.hookStartKeyPressed;
 
         showHook.KeyPressed += this.hookShowKeyPressed;
+
+        this.FormBorderStyle = FormBorderStyle.None;
     }
 
     void setGlobalShortCutKeys()
@@ -776,25 +779,28 @@ public partial class MainWindowController : TogglForm
     private void MainWindowController_LocationChanged(object sender, EventArgs e)
     {
         recalculatePopupPosition();
+        this.updateMaxmimumSize();
     }
 
     private void setEditFormLocation()
     {
+        this.calculateEditFormPosition(this.getCurrentScreen());
+    }
+
+    private Screen getCurrentScreen()
+    {
         if (Screen.AllScreens.Length > 1)
         {
-            foreach (Screen s in Screen.AllScreens)
+            foreach (var s in Screen.AllScreens)
             {
-                if (s.WorkingArea.IntersectsWith(DesktopBounds))
+                if (s.WorkingArea.IntersectsWith(this.DesktopBounds))
                 {
-                    calculateEditFormPosition(s);
-                    break;
+                    return s;
                 }
             }
         }
-        else
-        {
-            calculateEditFormPosition(Screen.PrimaryScreen);
-        }
+
+        return Screen.PrimaryScreen;
     }
 
     private void calculateEditFormPosition(Screen s)
@@ -828,6 +834,14 @@ public partial class MainWindowController : TogglForm
         recalculatePopupPosition();
         resizeHandle.Location = new Point(Width-16, Height-56);
         updateResizeHandleBackground();
+    }
+
+
+    private void updateMaxmimumSize()
+    {
+        this.MaximumSize = this.getCurrentScreen().WorkingArea.Size;
+
+        //TODO: leave space for edit view
     }
 
     private void updateResizeHandleBackground() {
