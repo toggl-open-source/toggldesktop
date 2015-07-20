@@ -94,6 +94,13 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 
 void WindowChangeRecorder::recordLoop() {
     while (!recording_.isStopped()) {
+        {
+            Poco::Mutex::ScopedLock lock(shutdown_m_);
+            if (shutdown_) {
+                break;
+            }
+        }
+
         inspectFocusedWindow();
 
         if (recording_.isStopped()) {
@@ -112,6 +119,10 @@ void WindowChangeRecorder::recordLoop() {
 
 error WindowChangeRecorder::Shutdown() {
     try {
+        {
+            Poco::Mutex::ScopedLock lock(shutdown_m_);
+            shutdown_ = true;
+        }
         if (recording_.isRunning()) {
             recording_.stop();
             recording_.wait(5);
