@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -82,6 +81,7 @@ namespace TogglDesktop.WPF
             if (this.invoke(() => this.onMiniTimerAutocomplete(list)))
                 return;
 
+            // TODO: populate auto complete
         }
 
         private void timerTick(object sender, EventArgs e)
@@ -200,8 +200,6 @@ namespace TogglDesktop.WPF
             this.projectGridRow.Height = string.IsNullOrEmpty(item.ProjectLabel)
                 ? new GridLength(0)
                 : new GridLength(1, GridUnitType.Star);
-
-            this.invalidate();
         }
 
         private void setUIToStoppedState()
@@ -209,8 +207,6 @@ namespace TogglDesktop.WPF
             this.resetUIState(false);
 
             this.durationLabel.Text = "00:00:00";
-
-            this.invalidate();
         }
 
         private void resetUIState(bool running)
@@ -225,11 +221,6 @@ namespace TogglDesktop.WPF
         }
 
         #region display helpers
-
-        private void invalidate()
-        {
-            //TODO: is this needed?
-        }
 
 
         private static void setOptionalTextBlockText(TextBlock textBlock, string text)
@@ -254,5 +245,9 @@ namespace TogglDesktop.WPF
 
         #endregion
 
+        public bool CanFocusList()
+        {
+            return !this.descriptionTextBox.IsKeyboardFocused && !this.durationTextBox.IsKeyboardFocused;
+        }
     }
 }

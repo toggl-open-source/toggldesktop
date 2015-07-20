@@ -24,18 +24,10 @@ public partial class TimeEntryListViewController : UserControl
         Toggl.OnTimeEntryList += OnTimeEntryList;
         Toggl.OnLogin += OnLogin;
 
-        this.initialiseTimer();
-
         //timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
         //timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
 
-        //entries.SetFocusCondition(() => timerEditViewController.CanFocusList());
-        entries.SetFocusCondition(() => true);
-    }
-
-    private void initialiseTimer()
-    {
-        this.miniTimerHost.Child = new WPF.TimerEditViewController();
+        entries.SetFocusCondition(() => timerEditViewController.CanFocusList());
     }
 
     void TimeEntryListViewController_MouseWheel(object sender, MouseEventArgs e)
@@ -48,7 +40,7 @@ public partial class TimeEntryListViewController : UserControl
 
     public void SetAcceptButton(Form frm)
     {
-        //timerEditViewController.SetAcceptButton(frm);
+        // TODO: replace concept of accept buttons (wpf does not have this)
     }
 
     void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
