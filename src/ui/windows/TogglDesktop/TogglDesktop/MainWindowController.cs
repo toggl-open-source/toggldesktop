@@ -48,8 +48,6 @@ public partial class MainWindowController : TogglForm
         startHook.KeyPressed += this.hookStartKeyPressed;
 
         showHook.KeyPressed += this.hookShowKeyPressed;
-
-        this.FormBorderStyle = FormBorderStyle.None;
     }
 
     void setGlobalShortCutKeys()
@@ -784,7 +782,7 @@ public partial class MainWindowController : TogglForm
 
     private void setEditFormLocation()
     {
-        this.calculateEditFormPosition(this.getCurrentScreen());
+        this.calculateEditFormPosition();
     }
 
     private Screen getCurrentScreen()
@@ -803,18 +801,28 @@ public partial class MainWindowController : TogglForm
         return Screen.PrimaryScreen;
     }
 
-    private void calculateEditFormPosition(Screen s)
+    private void calculateEditFormPosition()
     {
         var editPopupLocation = new Point(this.Left, this.Top);
+        bool left;
 
-        var left = s.WorkingArea.Right - this.Right < this.editForm.Width;
-
-        if (!left)
+        if (this.WindowState == FormWindowState.Maximized)
         {
-            editPopupLocation.X += this.Width;
+            left = false;
+        }
+        else
+        {
+            var s = this.getCurrentScreen();
+
+            left = s.WorkingArea.Right - this.Right < this.editForm.Width;
+
+            if (!left)
+            {
+                editPopupLocation.X += this.Width;
+            }
         }
 
-        editForm.SetPlacement(left, editPopupLocation, this.Height);
+        this.editForm.SetPlacement(left, editPopupLocation, this.Height);
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -839,9 +847,39 @@ public partial class MainWindowController : TogglForm
 
     private void updateMaxmimumSize()
     {
-        this.MaximumSize = this.getCurrentScreen().WorkingArea.Size;
+        var workingArea = this.getCurrentScreen().WorkingArea;
+        this.MaximumSize = workingArea.Size;
+
+        if (this.WindowState == FormWindowState.Maximized)
+        {
+
+        }
+        else
+        {
+            this.FormBorderStyle = FormBorderStyle.Sizable;
+        }
 
         //TODO: leave space for edit view
+    }
+
+    protected override void WndProc(ref Message message)
+    {
+        const int WM_SYSCOMMAND = 0x0112;
+        const int SC_MAXIMIZE = 0xF030;
+
+        switch (message.Msg)
+        {
+            case WM_SYSCOMMAND:
+            {
+                var command = message.WParam.ToInt32() & 0xfff0;
+                if (command == SC_MAXIMIZE)
+                {
+                    this.FormBorderStyle = FormBorderStyle.None;
+                }
+            }
+            break;
+        }
+        base.WndProc(ref message);
     }
 
     private void updateResizeHandleBackground() {
