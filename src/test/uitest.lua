@@ -43,7 +43,7 @@ toggl.sleep(seconds)
 
 print("login/logout in loop to check if it hangs")
 
-for i=1,500 do
+for i=1,10 do
 	print(i)
 
 	assert(toggl.logout())
