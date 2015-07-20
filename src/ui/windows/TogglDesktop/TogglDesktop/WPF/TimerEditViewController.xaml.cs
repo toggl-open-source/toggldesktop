@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -100,6 +101,21 @@ namespace TogglDesktop.WPF
         #region ui events
 
         private void startStopButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            this.startStop();
+        }
+
+        private void onGridKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.startStopButton.IsChecked = !this.startStopButton.IsChecked;
+                this.startStop();
+                e.Handled = true;
+            }
+        }
+
+        private void startStop()
         {
             if (this.isRunning)
             {

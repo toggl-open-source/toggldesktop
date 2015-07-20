@@ -71,7 +71,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" Background="Transparent">
+    <Grid MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" Background="Transparent" KeyDown="onGridKeyDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition />
