@@ -85,6 +85,7 @@ namespace TogglDesktop.WPF
             if (this.isRunning)
             {
                 Toggl.Edit(this.runningGUID, false, Toggl.Project);
+                e.Handled = true;
             }
         }
 
@@ -93,6 +94,7 @@ namespace TogglDesktop.WPF
             if (this.isRunning)
             {
                 Toggl.Edit(this.runningGUID, false, Toggl.Description);
+                e.Handled = true;
             }
         }
 
@@ -101,6 +103,16 @@ namespace TogglDesktop.WPF
             if (this.isRunning)
             {
                 Toggl.Edit(this.runningGUID, false, Toggl.Duration);
+                e.Handled = true;
+            }
+        }
+
+        private void onGridMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.isRunning)
+            {
+                Toggl.Edit(this.runningGUID, false, "");
+                e.Handled = true;
             }
         }
         #endregion

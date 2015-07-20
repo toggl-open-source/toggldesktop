@@ -70,8 +70,8 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    
-    <Grid>
+
+    <Grid MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition />
