@@ -856,7 +856,8 @@ public partial class MainWindowController : TogglForm
         }
         else
         {
-            this.FormBorderStyle = FormBorderStyle.Sizable;
+            if(this.FormBorderStyle != FormBorderStyle.Sizable)
+                this.FormBorderStyle = FormBorderStyle.Sizable;
         }
 
         //TODO: leave space for edit view
