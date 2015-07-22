@@ -317,15 +317,18 @@ BOOL manualMode = NO;
 {
 	NSLog(@"didActivateNotification %@", notification);
 
+	// ignore close button
+	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+	{
+		return;
+	}
+
 	// handle autotracker notification
 	if (notification && notification.userInfo && notification.userInfo[@"autotracker"] != nil)
 	{
-		if (NSUserNotificationActivationTypeActionButtonClicked == notification.activationType)
-		{
-			NSNumber *project_id = notification.userInfo[@"project_id"];
-			char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
-			free(guid);
-		}
+		NSNumber *project_id = notification.userInfo[@"project_id"];
+		char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
+		free(guid);
 		return;
 	}
 
@@ -1431,7 +1434,6 @@ void on_autotracker_notification(const char_t *project_name,
 	notification.actionButtonTitle = @"Start";
 	notification.userInfo = @{ @"autotracker": @"YES", @"project_id": [NSNumber numberWithLong:project_id] };
 	notification.deliveryDate = [NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]];
-	notification.soundName = NSUserNotificationDefaultSoundName;
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
