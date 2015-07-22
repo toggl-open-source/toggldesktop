@@ -317,15 +317,18 @@ BOOL manualMode = NO;
 {
 	NSLog(@"didActivateNotification %@", notification);
 
+	// ignore close button
+	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+	{
+		return;
+	}
+
 	// handle autotracker notification
 	if (notification && notification.userInfo && notification.userInfo[@"autotracker"] != nil)
 	{
-		if (NSUserNotificationActivationTypeActionButtonClicked == notification.activationType)
-		{
-			NSNumber *project_id = notification.userInfo[@"project_id"];
-			char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
-			free(guid);
-		}
+		NSNumber *project_id = notification.userInfo[@"project_id"];
+		char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
+		free(guid);
 		return;
 	}
 
@@ -1343,10 +1346,19 @@ void on_reminder(const char *title, const char *informative_text)
 {
 	NSUserNotification *notification = [[NSUserNotification alloc] init];
 
+	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
+	[notification setValue:@YES forKey:@"_showsButtons"];
+
 	[notification setTitle:[NSString stringWithUTF8String:title]];
 	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
 	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-	[notification setSoundName:NSUserNotificationDefaultSoundName];
+
+	notification.userInfo = @{ @"reminder": @"YES" };
+
+	notification.hasActionButton = YES;
+	notification.actionButtonTitle = @"Track";
+	notification.otherButtonTitle = @"Close";
+
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
 }
@@ -1430,9 +1442,12 @@ void on_autotracker_notification(const char_t *project_name,
 									[NSString stringWithUTF8String:project_name]];
 	notification.hasActionButton = YES;
 	notification.actionButtonTitle = @"Start";
-	notification.userInfo = @{ @"autotracker": @"YES", @"project_id": [NSNumber numberWithLong:project_id] };
+	notification.otherButtonTitle = @"Close";
+	notification.userInfo = @{
+		@"autotracker": @"YES",
+		@"project_id": [NSNumber numberWithLong:project_id]
+	};
 	notification.deliveryDate = [NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]];
-	notification.soundName = NSUserNotificationDefaultSoundName;
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];

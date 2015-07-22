@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace TogglDesktop
 {
@@ -93,6 +95,8 @@ static class Program
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
             mainWindowController = new MainWindowController();
             Application.Run(mainWindowController);

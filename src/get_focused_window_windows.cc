@@ -28,8 +28,43 @@ int getFocusedWindowInfo(
         return 0;
     }
 
+    // get process by window handle
+    DWORD process_id;
+    GetWindowThreadProcessId(window_handle, &process_id);
+    if (!process_id) {
+        return 0;
+    }
+
+    DWORD current_pid = GetCurrentProcessId();
+    if (!current_pid) {
+        return 0;
+    }
+
+    // We are not interested in our own app windows
+    if (current_pid == process_id) {
+        return 0;
+    }
+
+    // get the filename of another process
+    HANDLE ps = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE,
+                            process_id);
+    if (!ps) {
+        return 0;
+    }
+
+    CHAR filename_buffer[kFilenameBufferSize];
+    if (GetModuleFileNameExA(ps, 0, filename_buffer, kFilenameBufferSize) > 0) {
+        *filename = std::string(filename_buffer);
+    }
+
+    CloseHandle(ps);
+
     // get window title
     int length = GetWindowTextLengthW(window_handle);
+    DWORD err = GetLastError();
+    if (err) {
+        return 0;
+    }
     if (length) {
         wchar_t buf[kTitleBufSize];
         GetWindowTextW(window_handle, buf, kTitleBufSize);
@@ -43,21 +78,6 @@ int getFocusedWindowInfo(
 
         *title = utf8;
     }
-
-    // get process by window handle
-    DWORD process_id;
-    GetWindowThreadProcessId(window_handle, &process_id);
-
-    // get the filename of another process
-    HANDLE ps = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE,
-                            process_id);
-
-    CHAR filename_buffer[kFilenameBufferSize];
-    if (GetModuleFileNameExA(ps, 0, filename_buffer, kFilenameBufferSize) > 0) {
-        *filename = std::string(filename_buffer);
-    }
-
-    CloseHandle(ps);
 
     return 0;
 }

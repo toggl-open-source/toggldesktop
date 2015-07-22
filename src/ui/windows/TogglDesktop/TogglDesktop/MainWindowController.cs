@@ -879,15 +879,15 @@ public partial class MainWindowController : TogglForm
 
         switch (message.Msg)
         {
-            case WM_SYSCOMMAND:
+        case WM_SYSCOMMAND:
+        {
+            var command = message.WParam.ToInt32() & 0xfff0;
+            if (command == SC_MAXIMIZE)
             {
-                var command = message.WParam.ToInt32() & 0xfff0;
-                if (command == SC_MAXIMIZE)
-                {
-                    this.FormBorderStyle = FormBorderStyle.None;
-                }
+                this.FormBorderStyle = FormBorderStyle.None;
             }
-            break;
+        }
+        break;
         }
         base.WndProc(ref message);
     }

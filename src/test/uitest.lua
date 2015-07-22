@@ -39,6 +39,19 @@ assert(toggl.set_logged_in_user(json))
 
 toggl.sleep(seconds)
 
+-- login/logout in loop to check if it hangs
+
+print("login/logout in loop to check if it hangs")
+
+for i=1,10 do
+	print(i)
+
+	assert(toggl.logout())
+	assert(toggl.set_logged_in_user(json))
+
+	toggl.sleep(seconds)
+end
+
 -- get username and email
 
 print("get username and email")
