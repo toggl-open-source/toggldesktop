@@ -34,20 +34,32 @@
             <Setter Property="CaretBrush" Value="#dddddd"></Setter>
         </Style>
         
-        <Style TargetType="ToggleButton">
+        <Style TargetType="ButtonBase">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Border Background="{TemplateBinding Background}">
+                    <ControlTemplate TargetType="ButtonBase">
+                        <Border Background="{TemplateBinding Background}" Margin="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Background" Value="#4dd965"/>
             <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+        </Style>
+
+        <Style  TargetType="Button" BasedOn="{StaticResource {x:Type ButtonBase}}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png" Stretch="Uniform"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ButtonBase}}">
+            <Setter Property="Background" Value="#4dd965"/>
             <Setter Property="FontSize" Value="26.6" />
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="UltraLight"/>
@@ -100,26 +112,43 @@
             What are you doing?
         </TextBlock>
 
-        <!-- description textbox -->
-        <toggl:ExtendedTextBox Grid.Column="1" x:Name="descriptionTextBox" x:FieldModifier="private" />
 
-        <!-- description and project running display -->
-        <Grid Grid.Column="1" Name="descriptionProjectGrid" x:FieldModifier="private"
-              Margin="0, 4, 0, 4">
+        <!-- description and project-->
+        <Grid Grid.Column="1"
+              Margin="-20, 4, 0, 4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Name="projectGridRow" x:FieldModifier="private"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
+
+            <Button Name="cancelProjectSelectionButton" x:FieldModifier="private"
+                    Grid.Row="0" Grid.Column="0"
+                    Width="16" Height="16" Padding="2"
+                    IsTabStop="False" Click="cancelProjectSelectionButtonClick"/>
+            
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
 
                 <TextBlock Name="taskLabel" x:FieldModifier="private"
                                Foreground="#bbbbbb">Task</TextBlock>
-                <TextBlock Name="clientLabel" x:FieldModifier="private"
-                               Foreground="#dddddd">Client</TextBlock>
                 <TextBlock Name="projectLabel" x:FieldModifier="private"
                            >Project</TextBlock>
+                <TextBlock Name="clientLabel" x:FieldModifier="private"
+                               Foreground="#dddddd">Client</TextBlock>
             </StackPanel>
-            <TextBlock Grid.Row="1" Name="descriptionLabel" x:FieldModifier="private" MouseLeftButtonDown="onDescriptionLabelMouseDown">Description</TextBlock>
+
+            <TextBlock Grid.Row="1" Grid.Column="1"  Name="descriptionLabel" x:FieldModifier="private" MouseLeftButtonDown="onDescriptionLabelMouseDown">Description</TextBlock>
+
+            <toggl:ExtendedTextBox Grid.Row="1" Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
+                                   Margin="-2, 0, 6, 0"/>
+
+            <toggl:AutoCompletionPopup Grid.Row="1" Grid.Column="1"  x:Name="descriptionAutoComplete" x:FieldModifier="private"
+                                   TextBox="{Binding ElementName=descriptionTextBox}"
+                                   EmptyText="No previous entries found." StaysOpen="False"
+                                   ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
         </Grid>
 
         <!-- billable, tags -->

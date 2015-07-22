@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using TogglDesktop.AutoCompletion;
+using TogglDesktop.AutoCompletion.Implementation;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace TogglDesktop.WPF
 {
@@ -12,6 +16,7 @@ namespace TogglDesktop.WPF
     {
         private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
         private Toggl.TimeEntry runningTimeEntry;
+        private ProjectInfo completedProject;
 
         public event EventHandler RunningTimeEntrySecondPulse;
 
@@ -81,8 +86,12 @@ namespace TogglDesktop.WPF
             if (this.invoke(() => this.onMiniTimerAutocomplete(list)))
                 return;
 
-            // TODO: populate auto complete
+            this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
         }
+
+        #endregion
+
+        #region ui events
 
         private void timerTick(object sender, EventArgs e)
         {
@@ -96,10 +105,6 @@ namespace TogglDesktop.WPF
             }
         }
 
-        #endregion
-
-        #region ui events
-
         private void startStopButtonOnClick(object sender, RoutedEventArgs e)
         {
             this.startStop();
@@ -107,23 +112,24 @@ namespace TogglDesktop.WPF
 
         private void onGridKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            switch (e.Key)
             {
-                this.startStopButton.IsChecked = !this.startStopButton.IsChecked;
-                this.startStop();
-                e.Handled = true;
-            }
-        }
-
-        private void startStop()
-        {
-            if (this.isRunning)
-            {
-                this.start();
-            }
-            else
-            {
-                this.stop();
+                case Key.Enter:
+                {
+                    this.startStopButton.IsChecked = !this.startStopButton.IsChecked;
+                    this.startStop();
+                    e.Handled = true;
+                    return;
+                }
+                case Key.Escape:
+                {
+                    if (!this.isRunning)
+                    {
+                        this.setUIToStoppedState();
+                        e.Handled = true;
+                    }
+                    return;
+                }
             }
         }
 
@@ -147,6 +153,58 @@ namespace TogglDesktop.WPF
             this.tryOpenEditViewIfRunning(e, "");
         }
 
+        private void descriptionAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        {
+            var asItem = e as TimerItem;
+            if (asItem == null)
+                return;
+
+            var item = asItem.Item;
+
+            this.descriptionTextBox.SetText(item.Description);
+
+            this.completedProject = new ProjectInfo(item);
+
+            if (item.ProjectID != 0)
+            {
+                this.projectLabel.Text = "• " + item.ProjectLabel;
+                this.projectLabel.Foreground = getProjectColorBrush(ref item);
+
+                setOptionalTextBlockText(this.taskLabel, item.TaskLabel);
+                setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
+
+                this.projectGridRow.Height = GridLength.Auto;
+                this.cancelProjectSelectionButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.projectGridRow.Height = new GridLength(0);
+                this.cancelProjectSelectionButton.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.projectGridRow.Height = new GridLength(0);
+            this.completedProject = new ProjectInfo();
+        }
+
+        #endregion
+
+        #region controlling
+
+        private void startStop()
+        {
+            if (this.isRunning)
+            {
+                this.start();
+            }
+            else
+            {
+                this.stop();
+            }
+        }
+
         private void tryOpenEditViewIfRunning(MouseButtonEventArgs e, string focusedField)
         {
             if (this.isRunning)
@@ -156,22 +214,15 @@ namespace TogglDesktop.WPF
             }
         }
 
-
-        #endregion
-
-        #region controlling
-
         private void start()
         {
-            var description = this.descriptionTextBox.Text;
-            var duration = this.durationTextBox.Text;
-
-            var success = Toggl.Start(description, duration, 0, 0, "") != null;
-
-            if (success)
-            {
-                //TODO: reset any stored data from auto completion if needed
-            }
+            Toggl.Start(
+                this.descriptionTextBox.Text,
+                this.durationTextBox.Text,
+                this.completedProject.TaskId,
+                this.completedProject.ProjectId,
+                ""
+                );
         }
 
         private void stop()
@@ -188,7 +239,7 @@ namespace TogglDesktop.WPF
             this.resetUIState(true);
 
             this.descriptionLabel.Text = item.Description == "" ? "(no description)" : item.Description;
-            this.projectLabel.Text = item.ClientLabel != "" ? "• " + item.ProjectLabel : item.ProjectLabel;
+            this.projectLabel.Text = string.IsNullOrEmpty(item.ProjectLabel) ? "" : "• " + item.ProjectLabel;
             setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
             setOptionalTextBlockText(this.taskLabel, item.TaskLabel);
 
@@ -197,27 +248,29 @@ namespace TogglDesktop.WPF
             showOnlyIf(this.billabeIcon, item.Billable);
             showOnlyIf(this.tagsIcon, !string.IsNullOrEmpty(item.Tags));
 
-            this.projectGridRow.Height = string.IsNullOrEmpty(item.ProjectLabel)
-                ? new GridLength(0)
-                : new GridLength(1, GridUnitType.Star);
+            if (!string.IsNullOrEmpty(item.ProjectLabel))
+                this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
         }
 
         private void setUIToStoppedState()
         {
             this.resetUIState(false);
 
+            this.descriptionLabel.Text = "";
             this.durationLabel.Text = "00:00:00";
         }
 
         private void resetUIState(bool running)
         {
             this.startStopButton.IsChecked = running;
-            this.descriptionTextBox.Text = "";
+            this.descriptionTextBox.SetText("");
             this.durationTextBox.Text = "";
             showOnlyIf(this.descriptionTextBox, !running);
             showOnlyIf(this.durationTextBox, !running);
-            showOnlyIf(this.descriptionProjectGrid, running);
             showOnlyIf(this.iconPanel, running);
+            this.projectGridRow.Height = new GridLength(0);
+            this.completedProject = new ProjectInfo();
+            this.cancelProjectSelectionButton.Visibility = Visibility.Collapsed;
         }
 
         #region display helpers
@@ -236,7 +289,17 @@ namespace TogglDesktop.WPF
 
         private static SolidColorBrush getProjectColorBrush(ref Toggl.TimeEntry item)
         {
-            var colourString = string.IsNullOrEmpty(item.Color) ? "#999999" : item.Color;
+            return getProjectColorBrush(item.Color);
+        }
+
+        private static SolidColorBrush getProjectColorBrush(ref Toggl.AutocompleteItem item)
+        {
+            return getProjectColorBrush(item.ProjectColor);
+        }
+
+        private static SolidColorBrush getProjectColorBrush(string coplourString)
+        {
+            var colourString = string.IsNullOrEmpty(coplourString) ? "#999999" : coplourString;
             var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));
             return new SolidColorBrush(color);
         }
@@ -249,5 +312,21 @@ namespace TogglDesktop.WPF
         {
             return !this.descriptionTextBox.IsKeyboardFocused && !this.durationTextBox.IsKeyboardFocused;
         }
+
+        private struct ProjectInfo
+        {
+            private readonly ulong projectId;
+            private readonly ulong taskId;
+
+            public ulong ProjectId { get { return this.projectId; } }
+            public ulong TaskId { get { return this.taskId; } }
+
+            public ProjectInfo(Toggl.AutocompleteItem item)
+            {
+                this.projectId = item.ProjectID;
+                this.taskId = item.TaskID;
+            }
+        }
+
     }
 }

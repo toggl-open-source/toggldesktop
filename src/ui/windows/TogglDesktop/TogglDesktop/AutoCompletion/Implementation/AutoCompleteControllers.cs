@@ -6,6 +6,26 @@ namespace TogglDesktop.AutoCompletion.Implementation
 {
     static class AutoCompleteControllers
     {
+        public static AutoCompleteController ForTimer(IEnumerable<Toggl.AutocompleteItem> items)
+        {
+            var splitList = items.ToLookup(i => string.IsNullOrEmpty(i.Description));
+            
+            var entries = splitList[false];
+            var projects = splitList[true];
+
+            var list = new List<IAutoCompleteListItem>
+            {
+                new SimpleNoncompletingCategory("Time Entries",
+                    entries.Select(i => new TimerItem(i, false)).ToList<IAutoCompleteListItem>()
+                    ),
+                new SimpleNoncompletingCategory("Projects",
+                    projects.Select(i => new TimerItem(i, true)).ToList<IAutoCompleteListItem>()
+                    )
+            };
+
+            return new AutoCompleteController(list);
+        }
+
         public static AutoCompleteController ForStrings(IEnumerable<string> items, Func<string, bool> ignoreTag)
         {
             var list = items.Select(i => new StringItem(i, ignoreTag)).Cast<IAutoCompleteListItem>().ToList();

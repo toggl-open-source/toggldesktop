@@ -1,0 +1,28 @@
+﻿<autoComplete:EntryBase x:Class="TogglDesktop.WPF.AutoComplete.TimerEntry"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop.WPF"
+             xmlns:autoComplete="clr-namespace:TogglDesktop.WPF.AutoComplete"
+             mc:Ignorable="d"
+             d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance {x:Type autoComplete:StringEntrySample}, IsDesignTimeCreatable=True}"
+             Height="30"
+             Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
+
+    <UserControl.Background>
+        <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
+    </UserControl.Background>
+
+    <StackPanel Margin="10, 0, 0, 0" Orientation="Horizontal">
+
+        <TextBlock Name="description" x:FieldModifier="private">Description</TextBlock>
+        <TextBlock Name="task" x:FieldModifier="private"
+                               Foreground="Gray">Task</TextBlock>
+        <TextBlock Name="project" x:FieldModifier="private">Project</TextBlock>
+        <TextBlock Name="client" x:FieldModifier="private"
+                               Foreground="DimGray">Client</TextBlock>
+
+    </StackPanel>
+</autoComplete:EntryBase>
