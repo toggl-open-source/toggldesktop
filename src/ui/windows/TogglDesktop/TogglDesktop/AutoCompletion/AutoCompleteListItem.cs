@@ -35,6 +35,11 @@ namespace TogglDesktop.AutoCompletion
             }
         }
 
+        protected bool completes(string input)
+        {
+            return this.Text.IndexOf(input, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
         public abstract IEnumerable<AutoCompleteItem> Complete(string input);
         public abstract IEnumerable<AutoCompleteItem> CompleteAll();
         public abstract void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick);

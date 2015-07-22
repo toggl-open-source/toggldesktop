@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TogglDesktop.AutoCompletion
 {
@@ -31,7 +32,7 @@ namespace TogglDesktop.AutoCompletion
 
         public override IEnumerable<AutoCompleteItem> Complete(string input)
         {
-            this.Visible = this.Text.Contains(input);
+            this.Visible = this.completes(input);
 
             if (this.Visible)
             {
