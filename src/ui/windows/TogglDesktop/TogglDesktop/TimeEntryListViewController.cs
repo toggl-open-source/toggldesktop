@@ -15,6 +15,8 @@ public partial class TimeEntryListViewController : UserControl
     private readonly Dictionary<string, WPF.TimeEntryCell> cellsByGUID =
         new Dictionary<string, TimeEntryCell>();
 
+    public int TimerHeight { get { return this.entriesHost.Top; } }
+
     public TimeEntryListViewController()
     {
         InitializeComponent();
@@ -140,6 +142,18 @@ public partial class TimeEntryListViewController : UserControl
     public void DisableHighlight()
     {
         this.entries.DisableHighlight();
+    }
+
+    public void SetListWidth(int width)
+    {
+        this.entriesHost.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Top;
+        this.entriesHost.Width = width;
+    }
+
+    public void DisableListWidth()
+    {
+        this.entriesHost.Width = this.Width;
+        this.entriesHost.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
     }
 
 }
