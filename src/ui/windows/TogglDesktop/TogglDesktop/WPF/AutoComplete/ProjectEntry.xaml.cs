@@ -9,6 +9,7 @@ namespace TogglDesktop.WPF.AutoComplete
         public Color ProjectColor { get { return Color.FromRgb(153, 153, 153); } }
 
         public string ProjectName { get { return "Hello. Yes, this is project"; } }
+        public string TaskName { get { return "Some Task"; } }
 
         public Color BackgroundColor { get { return Color.FromRgb(244, 244, 244); } }
     }
@@ -20,6 +21,7 @@ namespace TogglDesktop.WPF.AutoComplete
         {
             this.ProjectColor = getProjectColor(ref item);
             this.ProjectName = overideText ?? item.ProjectLabel;
+            this.TaskName = string.IsNullOrEmpty(item.TaskLabel) ? "" : "- " + item.TaskLabel;
             this.InitializeComponent();
         }
 
@@ -48,6 +50,15 @@ namespace TogglDesktop.WPF.AutoComplete
         {
             get { return (string)this.GetValue(ProjectNameProperty); }
             set { this.SetValue(ProjectNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty TaskNameProperty = DependencyProperty
+            .Register("TaskName", typeof(string), typeof(ProjectEntry));
+
+        public string TaskName
+        {
+            get { return (string)this.GetValue(TaskNameProperty); }
+            set { this.SetValue(TaskNameProperty, value); }
         }
         
         #endregion
