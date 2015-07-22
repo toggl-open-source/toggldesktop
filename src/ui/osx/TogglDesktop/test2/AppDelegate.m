@@ -1346,7 +1346,6 @@ void on_reminder(const char *title, const char *informative_text)
 	[notification setTitle:[NSString stringWithUTF8String:title]];
 	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
 	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-	[notification setSoundName:NSUserNotificationDefaultSoundName];
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
 }
