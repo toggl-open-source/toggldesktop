@@ -302,6 +302,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     bool display_time_entry_editor(false);
     bool open_time_entry_list(false);
     bool display_autotracker_rules(false);
+    bool display_settings(false);
 
     // Check what needs to be updated in UI
     for (std::vector<ModelChange>::const_iterator it =
@@ -342,7 +343,7 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
             // If time entry was edited, check further
             if (time_entry_editor_guid_ == ch.GUID()) {
                 // If time entry was deleted, close editor and open list view
-                if (ch.ChangeType() == "delete") {
+                if (ch.ChangeType() == kChangeTypeDelete) {
                     open_time_entry_list = true;
                     display_time_entries = true;
                 } else {
@@ -356,10 +357,16 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
         }
 
         if (ch.ModelType() == kModelTimelineEvent) {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (user_ && user_->RecordTimeline()) {
-                display_time_entries = true;
+            if (kExperimentalFeatureRenderTimeline) {
+                Poco::Mutex::ScopedLock lock(user_m_);
+                if (user_ && user_->RecordTimeline()) {
+                    display_time_entries = true;
+                }
             }
+        }
+
+        if (ch.ModelType() == kModelSettings) {
+            display_settings = true;
         }
     }
 
@@ -402,6 +409,12 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     }
     if (display_autotracker_rules) {
         displayAutotrackerRules();
+    }
+    if (display_settings) {
+        error err = DisplaySettings();
+        if (err != noError) {
+            displayError(err);
+        }
     }
 }
 
@@ -861,11 +874,7 @@ void Context::startPeriodicSync() {
 void Context::onPeriodicSync(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onPeriodicSync");
 
-    if (ws_client_.Up()) {
-        logger().debug("Skipping periodic sync, because Websocket is up");
-    } else {
-        scheduleSync();
-    }
+    scheduleSync();
 
     startPeriodicSync();
 }
@@ -1164,6 +1173,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
                             &response_body);
     if (err != noError) {
         displayError(err);
+        logger().error(response_body);
         logger().error(err);
     }
 }
@@ -1302,9 +1312,14 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsRenderTimeline(const bool &value) {
@@ -1313,9 +1328,14 @@ error Context::SetSettingsRenderTimeline(const bool &value) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     DisplayTimeEntryList();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
@@ -1324,9 +1344,14 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsAutotrack(const bool value) {
@@ -1335,9 +1360,14 @@ error Context::SetSettingsAutotrack(const bool value) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
@@ -1346,9 +1376,14 @@ error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
@@ -1357,9 +1392,14 @@ error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsMenubarProject(const bool menubar_project) {
@@ -1368,9 +1408,14 @@ error Context::SetSettingsMenubarProject(const bool menubar_project) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsDockIcon(const bool dock_icon) {
@@ -1379,9 +1424,14 @@ error Context::SetSettingsDockIcon(const bool dock_icon) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsOnTop(const bool on_top) {
@@ -1390,10 +1440,16 @@ error Context::SetSettingsOnTop(const bool on_top) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
+
 
 error Context::SetSettingsReminder(const bool reminder) {
     error err = db()->SetSettingsReminder(reminder);
@@ -1419,9 +1475,14 @@ error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
@@ -1430,9 +1491,14 @@ error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsManualMode(const bool manual_mode) {
@@ -1441,9 +1507,14 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
         return displayError(err);
     }
 
+    err = DisplaySettings();
+    if (err != noError) {
+        return err;
+    }
+
     trackSettingsUsage();
 
-    return DisplaySettings();
+    return noError;
 }
 
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
@@ -1552,6 +1623,11 @@ error Context::DisplaySettings(const bool open) {
         setUser(nullptr);
         return displayError(err);
     }
+
+    std::stringstream ss;
+    ss << "DisplaySettings open=" << open
+       << " " << settings_.String();
+    logger().debug(ss.str());
 
     bool use_proxy(false);
     Proxy proxy;
@@ -1745,6 +1821,13 @@ error Context::Login(
 }
 
 void Context::trackSettingsUsage() {
+    if (tracked_settings_.IsSame(settings_)) {
+        // settings have not changed, will not track
+        return;
+    }
+
+    tracked_settings_ = settings_;
+
     next_analytics_at_ =
         postpone(kRequestThrottleSeconds * kOneSecondInMicros);
 
@@ -1773,7 +1856,7 @@ void Context::onTrackSettingsUsage(Poco::Util::TimerTask& task) {  // NOLINT
         apitoken = user_->APIToken();
     }
 
-    analytics_.TrackSettingsUsage(apitoken, settings_);
+    analytics_.TrackSettingsUsage(apitoken, tracked_settings_);
 }
 
 error Context::Signup(
@@ -2072,13 +2155,8 @@ TimeEntry *Context::Start(
         return nullptr;
     }
 
-    if (te && settings_.open_editor_on_shortcut) {
-        // Open time entry in editor
-        Edit(te->GUID());
-    } else {
-        // just show the app
-        UI()->DisplayApp();
-    }
+    // just show the app
+    UI()->DisplayApp();
 
     if ("production" == environment_) {
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
@@ -2118,7 +2196,7 @@ void Context::DisplayTimeEntryList(const bool open) {
     std::vector<TimedEvent *> list;
     timeEntries(&list);
 
-    if (settings_.render_timeline) {
+    if (kExperimentalFeatureRenderTimeline && settings_.render_timeline) {
         timelineEvents(&list);
     }
 
@@ -3437,7 +3515,8 @@ error Context::pullAllUserData(
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
-            return error("cannot pull user data when logged out");
+            logger().warning("cannot pull user data when logged out");
+            return noError;
         }
         api_token = user_->APIToken();
         if (user_->HasValidSinceDate()) {
@@ -3512,7 +3591,8 @@ error Context::pushChanges(
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
-                return error("cannot push changes when logged out");
+                logger().warning("cannot push changes when logged out");
+                return noError;
             }
 
             api_token = user_->APIToken();

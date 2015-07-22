@@ -31,7 +31,7 @@ extern "C" {
 #define bool_t int
 #endif
 
-    // Constants
+// Constants
 
 #define kOnlineStateOnline 0
 #define kOnlineStateNoNetwork 1
@@ -43,7 +43,11 @@ extern "C" {
 #define kTimedEventTypeTimelineEvent 1
 #define kTimedEventTypeTimeEntry 2
 
-    // Models
+// Experimental features
+
+#define kExperimentalFeatureRenderTimeline false
+
+// Models
 
     typedef struct {
         int64_t DurationInSeconds;

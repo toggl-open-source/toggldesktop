@@ -59,15 +59,20 @@
 #define kCannotDeleteDeletedTimeEntry "Cannot delete deleted time entry"
 #define kErrorRuleAlreadyExists "rule already exists"
 
-#define kModelUser "user"
+#define kModelAutotrackerRule "autotracker_rule"
+#define kModelClient "client"
+#define kModelProject "project"
+#define kModelSettings "settings"
 #define kModelTag "tag"
 #define kModelTask "task"
-#define kModelProject "project"
-#define kModelClient "client"
-#define kModelWorkspace "workspace"
 #define kModelTimeEntry "time_entry"
-#define kModelAutotrackerRule "autotracker_rule"
 #define kModelTimelineEvent "timeline_event"
+#define kModelUser "user"
+#define kModelWorkspace "workspace"
+
+#define kChangeTypeInsert "insert"
+#define kChangeTypeUpdate "update"
+#define kChangeTypeDelete "delete"
 
 #define kPromotionJoinBetaChannel 1
 

@@ -15,6 +15,7 @@
         
         <toggl:AutoCompletionPopup x:Name="autoComplete" x:FieldModifier="private"
             Target="{Binding ElementName=grid}" TextBox="{Binding ElementName=textBox}"
+            EmptyText="No matching tags found."
             ConfirmCompletion="cautoComplete_OnConfirmCompletion"
             ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"/>
         

@@ -180,6 +180,10 @@ BOOL manualMode = NO;
 												 name:kCommandNew
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startNewShortcut:)
+												 name:kCommandNewShortcut
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startContinueTimeEntry:)
 												 name:kCommandContinue
 											   object:nil];
@@ -313,15 +317,18 @@ BOOL manualMode = NO;
 {
 	NSLog(@"didActivateNotification %@", notification);
 
+	// ignore close button
+	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+	{
+		return;
+	}
+
 	// handle autotracker notification
 	if (notification && notification.userInfo && notification.userInfo[@"autotracker"] != nil)
 	{
-		if (NSUserNotificationActivationTypeActionButtonClicked == notification.activationType)
-		{
-			NSNumber *project_id = notification.userInfo[@"project_id"];
-			char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
-			free(guid);
-		}
+		NSNumber *project_id = notification.userInfo[@"project_id"];
+		char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
+		free(guid);
 		return;
 	}
 
@@ -365,6 +372,28 @@ BOOL manualMode = NO;
 							 new_time_entry.TaskID,
 							 new_time_entry.ProjectID,
 							 0);
+	free(guid);
+}
+
+- (void)startNewShortcut:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(newShortcut:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)newShortcut:(TimeEntryViewItem *)new_time_entry
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
+
+	char *guid = toggl_start(ctx,
+							 [new_time_entry.Description UTF8String],
+							 [new_time_entry.duration UTF8String],
+							 new_time_entry.TaskID,
+							 new_time_entry.ProjectID,
+							 0);
+	toggl_edit(ctx, guid, true, "");
 	free(guid);
 }
 
@@ -846,7 +875,7 @@ BOOL manualMode = NO;
 
 - (void)onNewMenuItem:(id)sender
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNew
+	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNewShortcut
 														object:[[TimeEntryViewItem alloc] init]];
 }
 
@@ -1317,10 +1346,19 @@ void on_reminder(const char *title, const char *informative_text)
 {
 	NSUserNotification *notification = [[NSUserNotification alloc] init];
 
+	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
+	[notification setValue:@YES forKey:@"_showsButtons"];
+
 	[notification setTitle:[NSString stringWithUTF8String:title]];
 	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
 	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-	[notification setSoundName:NSUserNotificationDefaultSoundName];
+
+	notification.userInfo = @{ @"reminder": @"YES" };
+
+	notification.hasActionButton = YES;
+	notification.actionButtonTitle = @"Track";
+	notification.otherButtonTitle = @"Close";
+
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
 }
@@ -1404,9 +1442,12 @@ void on_autotracker_notification(const char_t *project_name,
 									[NSString stringWithUTF8String:project_name]];
 	notification.hasActionButton = YES;
 	notification.actionButtonTitle = @"Start";
-	notification.userInfo = @{ @"autotracker": @"YES", @"project_id": [NSNumber numberWithLong:project_id] };
+	notification.otherButtonTitle = @"Close";
+	notification.userInfo = @{
+		@"autotracker": @"YES",
+		@"project_id": [NSNumber numberWithLong:project_id]
+	};
 	notification.deliveryDate = [NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]];
-	notification.soundName = NSUserNotificationDefaultSoundName;
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];

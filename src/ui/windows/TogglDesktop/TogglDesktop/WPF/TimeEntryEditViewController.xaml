@@ -78,7 +78,7 @@
                 </TextBlock>
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
                     Target="{Binding ElementName=descriptionTextBox}" TextBox="{Binding ElementName=descriptionTextBox}"
-                    EmptyText="No previous entries found."
+                    EmptyText="No matching entries found."
                     ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"
                     ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
             </Grid>
@@ -140,10 +140,14 @@
                             Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
                             Padding="9" Visibility="Hidden"
                             Click="newProjectCancelButton_OnClick"/>
+                    <Button x:Name ="newProjectConfirmButton" x:FieldModifier="private" Grid.Column="1"
+                            Style="{StaticResource TextFieldButtonBase}"
+                            Visibility="Hidden"
+                            Click="newProjectConfirmButton_OnClick"/>
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
-                            EmptyText="No projects found."
+                            EmptyText="No matching projects found."
                             ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
                             ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
                             IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
@@ -192,11 +196,15 @@
                             Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
                             Padding="9" Visibility="Hidden"
                             Click="newClientCancelButton_OnClick"/>
+                    <Button x:Name ="newClientConfirmButton" x:FieldModifier="private" Grid.Column="1"
+                            Style="{StaticResource TextFieldButtonBase}"
+                            Visibility="Hidden"
+                            Click="newClientConfirmButton_OnClick"/>
 
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="clientAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=clientTextBox}" TextBox="{Binding ElementName=clientTextBox}"
-                            EmptyText="No clients found."
+                            EmptyText="No matching clients found."
                             ConfirmCompletion="clientAutoComplete_OnConfirmCompletion"
                             ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"
                             IsOpenChanged="clientAutoComplete_OnIsOpenChanged"/>
@@ -217,7 +225,7 @@
 
                     <toggl:AutoCompletionPopup x:Name="workspaceAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=workspaceTextBox}" TextBox="{Binding ElementName=workspaceTextBox}"
-                            EmptyText="No workspaces found."
+                            EmptyText="No matching workspaces found."
                             ConfirmCompletion="workspaceAutoComplete_OnConfirmCompletion"
                             ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"
                             IsOpenChanged="workspaceAutoComplete_OnIsOpenChanged"/>

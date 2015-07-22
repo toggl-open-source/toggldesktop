@@ -92,26 +92,39 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     last_event_started_at_ = now;
 }
 
+#define kWindowRecorderSleepMillis 250
+
 void WindowChangeRecorder::recordLoop() {
     while (!recording_.isStopped()) {
+        {
+            Poco::Mutex::ScopedLock lock(shutdown_m_);
+            if (shutdown_) {
+                break;
+            }
+        }
+
         inspectFocusedWindow();
 
         if (recording_.isStopped()) {
             break;
         }
 
-        Poco::Thread::sleep(250);
+        Poco::Thread::sleep(kWindowRecorderSleepMillis);
 
         if (recording_.isStopped()) {
             break;
         }
 
-        Poco::Thread::sleep(250);
+        Poco::Thread::sleep(kWindowRecorderSleepMillis);
     }
 }
 
 error WindowChangeRecorder::Shutdown() {
     try {
+        {
+            Poco::Mutex::ScopedLock lock(shutdown_m_);
+            shutdown_ = true;
+        }
         if (recording_.isRunning()) {
             recording_.stop();
             recording_.wait(5);

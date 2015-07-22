@@ -30,7 +30,74 @@ Json::Value Settings::SaveToJSON() const {
     json["remind_ends"] = Formatter::EscapeJSONString(remind_ends);
     json["autotrack"] = autotrack;
     json["open_editor_on_shortcut"] = open_editor_on_shortcut;
+    json["has_seen_beta_offering"] = has_seen_beta_offering;
+    json["render_timeline"] = render_timeline;
     return json;
+}
+
+std::string Settings::String() const {
+    std::stringstream ss;
+    ss << "Settings"
+       << " use_idle_detection=" << use_idle_detection
+       << " menubar_timer=" << menubar_timer
+       << " menubar_project=" << menubar_project
+       << " dock_icon=" << dock_icon
+       << " on_top=" << on_top
+       << " reminder=" << reminder
+       << " idle_minutes=" << idle_minutes
+       << " focus_on_shortcut=" << focus_on_shortcut
+       << " reminder_minutes=" << reminder_minutes
+       << " manual_mode=" << manual_mode
+       << " autodetect_proxy=" << autodetect_proxy
+       << " remind_mon=" << remind_mon
+       << " remind_tue=" << remind_tue
+       << " remind_wed=" << remind_wed
+       << " remind_thu=" << remind_thu
+       << " remind_fri=" << remind_fri
+       << " remind_sat=" << remind_sat
+       << " remind_sun=" << remind_sun
+       << " remind_starts=" << remind_starts
+       << " remind_ends=" << remind_ends
+       << " autotrack=" << autotrack
+       << " open_editor_on_shortcut=" << open_editor_on_shortcut
+       << " has_seen_beta_offering=" << has_seen_beta_offering
+       << " render_timeline=" << render_timeline;
+    return ss.str();
+}
+
+bool Settings::IsSame(const Settings &other) const {
+    return ((use_idle_detection == other.use_idle_detection)
+            && (menubar_timer == other.menubar_timer)
+            && (menubar_project == other.menubar_project)
+            && (dock_icon == other.dock_icon)
+            && (on_top == other.on_top)
+            && (reminder == other.reminder)
+            && (idle_minutes == other.idle_minutes)
+            && (focus_on_shortcut == other.focus_on_shortcut)
+            && (reminder_minutes == other.reminder_minutes)
+            && (manual_mode == other.manual_mode)
+            && (autodetect_proxy == other.autodetect_proxy)
+            && (remind_mon == other.remind_mon)
+            && (remind_tue == other.remind_tue)
+            && (remind_wed == other.remind_wed)
+            && (remind_thu == other.remind_thu)
+            && (remind_fri == other.remind_fri)
+            && (remind_sat == other.remind_sat)
+            && (remind_sun == other.remind_sun)
+            && (remind_starts == other.remind_starts)
+            && (remind_ends == other.remind_ends)
+            && (autotrack == other.autotrack)
+            && (open_editor_on_shortcut == other.open_editor_on_shortcut)
+            && (has_seen_beta_offering == other.has_seen_beta_offering)
+            && (render_timeline == other.render_timeline));
+}
+
+std::string Settings::ModelName() const {
+    return kModelSettings;
+}
+
+std::string Settings::ModelURL() const {
+    return "";
 }
 
 }   // namespace toggl

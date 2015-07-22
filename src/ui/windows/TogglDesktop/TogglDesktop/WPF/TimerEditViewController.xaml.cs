@@ -250,6 +250,8 @@ namespace TogglDesktop.WPF
 
             if (!string.IsNullOrEmpty(item.ProjectLabel))
                 this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
+
+            this.invalidate();
         }
 
         private void setUIToStoppedState()
@@ -258,6 +260,13 @@ namespace TogglDesktop.WPF
 
             this.descriptionLabel.Text = "";
             this.durationLabel.Text = "00:00:00";
+
+            this.invalidate();
+        }
+
+        private void invalidate()
+        {
+            this.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         }
 
         private void resetUIState(bool running)

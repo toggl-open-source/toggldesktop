@@ -3,15 +3,18 @@
 #ifndef SRC_SETTINGS_H_
 #define SRC_SETTINGS_H_
 
+#include <sstream>
 #include <string>
 
 #include <json/json.h>  // NOLINT
+
+#include "./base_model.h"
 
 #include "Poco/Types.h"
 
 namespace toggl {
 
-class Settings {
+class Settings : public BaseModel {
  public:
     Settings()
         : use_idle_detection(false)
@@ -38,9 +41,8 @@ class Settings {
     , open_editor_on_shortcut(false)
     , has_seen_beta_offering(false)
     , render_timeline(false) {}
-    ~Settings() {}
 
-    Json::Value SaveToJSON() const;
+    virtual ~Settings() {}
 
     bool use_idle_detection;
     bool menubar_timer;
@@ -66,6 +68,15 @@ class Settings {
     bool open_editor_on_shortcut;
     bool has_seen_beta_offering;
     bool render_timeline;
+
+    bool IsSame(const Settings &other) const;
+
+    // Override BaseModel
+
+    std::string String() const;
+    std::string ModelName() const;
+    std::string ModelURL() const;
+    Json::Value SaveToJSON() const;
 };
 
 }  // namespace toggl

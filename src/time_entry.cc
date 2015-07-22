@@ -123,7 +123,8 @@ void TimeEntry::StopTracking() {
 
 std::string TimeEntry::String() const {
     std::stringstream ss;
-    ss  << "ID=" << ID()
+    ss  << "TimeEntry"
+        << " ID=" << ID()
         << " local_id=" << LocalID()
         << " description=" << description_
         << " wid=" << wid_
