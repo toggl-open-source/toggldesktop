@@ -15,7 +15,11 @@ public partial class TimeEntryListViewController : UserControl
     private readonly Dictionary<string, WPF.TimeEntryCell> cellsByGUID =
         new Dictionary<string, TimeEntryCell>();
 
-    public int TimerHeight { get { return this.entriesHost.Top; } }
+    public int TimerHeight {
+        get {
+            return this.entriesHost.Top;
+        }
+    }
 
     public TimeEntryListViewController()
     {
