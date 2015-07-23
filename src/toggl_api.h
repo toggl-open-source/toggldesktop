@@ -104,6 +104,8 @@ extern "C" {
         uint64_t ProjectID;
         uint64_t WorkspaceID;
         uint64_t Type;
+        // If its a time entry, it has tags
+        char_t *Tags;
         void *Next;
     } TogglAutocompleteView;
 
@@ -617,7 +619,8 @@ extern "C" {
         const char_t *duration,
         const uint64_t task_id,
         const uint64_t project_id,
-        const char_t *project_guid);
+        const char_t *project_guid,
+        const char_t *tags);
 
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_add_project(

@@ -327,7 +327,7 @@ BOOL manualMode = NO;
 	if (notification && notification.userInfo && notification.userInfo[@"autotracker"] != nil)
 	{
 		NSNumber *project_id = notification.userInfo[@"project_id"];
-		char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0);
+		char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0, "");
 		free(guid);
 		return;
 	}
@@ -366,12 +366,15 @@ BOOL manualMode = NO;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
+	const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
+
 	char *guid = toggl_start(ctx,
 							 [new_time_entry.Description UTF8String],
 							 [new_time_entry.duration UTF8String],
 							 new_time_entry.TaskID,
 							 new_time_entry.ProjectID,
-							 0);
+							 0,
+							 tag_list);
 	free(guid);
 }
 
@@ -392,6 +395,7 @@ BOOL manualMode = NO;
 							 [new_time_entry.duration UTF8String],
 							 new_time_entry.TaskID,
 							 new_time_entry.ProjectID,
+							 0,
 							 0);
 	toggl_edit(ctx, guid, true, "");
 	free(guid);

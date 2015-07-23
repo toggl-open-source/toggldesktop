@@ -456,7 +456,8 @@ char_t *toggl_start(
     const char_t *duration,
     const uint64_t task_id,
     const uint64_t project_id,
-    const char_t *project_guid) {
+    const char_t *project_guid,
+    const char_t *tags) {
 
     logger().debug("toggl_start");
 
@@ -475,9 +476,18 @@ char_t *toggl_start(
         p_guid = to_string(project_guid);
     }
 
-    toggl::TimeEntry *te = app(context)->Start(desc, dur,
-                           task_id,
-                           project_id, p_guid);
+    std::string tag_list("");
+    if (tags) {
+        tag_list = to_string(tags);
+    }
+
+    toggl::TimeEntry *te = app(context)->Start(
+        desc,
+        dur,
+        task_id,
+        project_id,
+        p_guid,
+        tag_list);
     if (te) {
         return copy_string(te->GUID());
     }

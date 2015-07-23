@@ -62,6 +62,15 @@
 	self.WorkspaceID = data->WorkspaceID;
 	self.ProjectID = data->ProjectID;
 	self.TaskID = data->TaskID;
+	if (data->Tags)
+	{
+		NSString *tagList = [NSString stringWithUTF8String:data->Tags];
+		self.tags = [tagList componentsSeparatedByString:@"\t"];
+	}
+	else
+	{
+		self.tags = nil;
+	}
 }
 
 - (void)save:(TogglAutocompleteView *)data
@@ -72,6 +81,7 @@
 	data->WorkspaceID = (unsigned int)self.WorkspaceID;
 	data->ProjectID = (unsigned int)self.ProjectID;
 	data->TaskID = (unsigned int)self.TaskID;
+	data->Tags = strdup([[self.tags componentsJoinedByString:@"\t"] UTF8String]);
 }
 
 - (NSString *)description

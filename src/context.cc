@@ -2123,7 +2123,8 @@ TimeEntry *Context::Start(
     const std::string duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string project_guid) {
+    const std::string project_guid,
+    const std::string tags) {
 
     // Do not even allow to add new time entries,
     // else they will linger around in the app
@@ -2146,7 +2147,8 @@ TimeEntry *Context::Start(
                           duration,
                           task_id,
                           project_id,
-                          project_guid);
+                          project_guid,
+                          tags);
     }
 
     error err = save();
