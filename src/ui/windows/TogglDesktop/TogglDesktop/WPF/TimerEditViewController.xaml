@@ -102,7 +102,7 @@
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding ElementName=descriptionTextBox, Path=Text}" Value=""/>
                                 <Condition Binding="{Binding ElementName=descriptionTextBox, Path=IsKeyboardFocused}" Value="False"/>
-                                <Condition Binding="{Binding ElementName=descriptionProjectGrid, Path=Visibility}" Value="Collapsed"/>
+                                <Condition Binding="{Binding ElementName=projectGridRow, Path=Height}" Value="0"/>
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Visible"/>
                         </MultiDataTrigger>
