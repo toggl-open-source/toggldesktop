@@ -546,6 +546,9 @@ public partial class MainWindowController : TogglForm
         editForm.Controls.Add(editViewHost);
 
         editForm.SetViewController(this.timeEntryEditViewController);
+
+        editForm.VisibleChanged += (sender, args) => this.updateEntriesListWidth();
+        editForm.Resize += (sender, args) => this.updateEntriesListWidth();
     }
 
     public void PopupInput(Toggl.TimeEntry te)
@@ -779,6 +782,12 @@ public partial class MainWindowController : TogglForm
     {
         recalculatePopupPosition();
         this.updateMaxmimumSize();
+
+        if (this.WindowState != FormWindowState.Maximized)
+        {
+            if (this.FormBorderStyle != FormBorderStyle.Sizable)
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+        }
     }
 
     private void setEditFormLocation()
@@ -804,26 +813,31 @@ public partial class MainWindowController : TogglForm
 
     private void calculateEditFormPosition()
     {
-        var editPopupLocation = new Point(this.Left, this.Top);
-        bool left;
+        var editPopupLocation = this.Location;
 
         if (this.WindowState == FormWindowState.Maximized)
         {
-            left = false;
+            var timerHeight = this.timeEntryListViewController.TimerHeight;
+            var headerHeight = timerHeight + 40;
+
+            editPopupLocation.Y += headerHeight;
+            editPopupLocation.X += this.Width;
+
+            this.editForm.SetPlacement(true, editPopupLocation, this.Height - headerHeight, true);
         }
         else
         {
             var s = this.getCurrentScreen();
-
-            left = s.WorkingArea.Right - this.Right < this.editForm.Width;
+            bool left = s.WorkingArea.Right - this.Right < this.editForm.Width;
 
             if (!left)
             {
                 editPopupLocation.X += this.Width;
             }
+
+            this.editForm.SetPlacement(left, editPopupLocation, this.Height);
         }
 
-        this.editForm.SetPlacement(left, editPopupLocation, this.Height);
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -848,20 +862,24 @@ public partial class MainWindowController : TogglForm
 
     private void updateMaxmimumSize()
     {
-        var workingArea = this.getCurrentScreen().WorkingArea;
-        this.MaximumSize = workingArea.Size;
+        var screenSize = this.getCurrentScreen().WorkingArea.Size;
+        this.MaximumSize = screenSize;
+    }
 
-        if (this.WindowState == FormWindowState.Maximized)
+    private void updateEntriesListWidth(bool? overrideMaximised = null)
+    {
+        if (this.timeEntryListViewController == null)
+            return;
+
+        var maximised = overrideMaximised ?? (this.WindowState == FormWindowState.Maximized);
+
+        if (!maximised || this.editForm == null || !this.editForm.Visible)
         {
-
-        }
-        else
-        {
-            if(this.FormBorderStyle != FormBorderStyle.Sizable)
-                this.FormBorderStyle = FormBorderStyle.Sizable;
+            this.timeEntryListViewController.DisableListWidth();
+            return;
         }
 
-        //TODO: leave space for edit view
+        this.timeEntryListViewController.SetListWidth(this.Width - this.editForm.Width);
     }
 
     protected override void WndProc(ref Message message)
@@ -877,6 +895,7 @@ public partial class MainWindowController : TogglForm
             if (command == SC_MAXIMIZE)
             {
                 this.FormBorderStyle = FormBorderStyle.None;
+                this.updateEntriesListWidth(true);
             }
         }
         break;

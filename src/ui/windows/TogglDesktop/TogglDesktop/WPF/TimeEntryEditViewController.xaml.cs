@@ -408,6 +408,7 @@ namespace TogglDesktop.WPF
             var item = asProjectItem.Item;
 
             this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel);
+            this.setDescriptionIfChanged(item.TaskLabel);
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)

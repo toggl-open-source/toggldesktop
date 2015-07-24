@@ -23,11 +23,12 @@ public partial class EditForm : Form
         Padding = new Padding(0, 0, 0, 0);
     }
 
-    public void SetPlacement(bool left, Point p, int height)
+    public void SetPlacement(bool left, Point p, int height, bool fixHeight = false)
     {
         this.controller.SetShadow(left, height);
 
-        height = Math.Min(700, Math.Max(450, height));
+        if(!fixHeight)
+            height = Math.Min(700, Math.Max(450, height));
 
         this.TopMost = true;
         this.isLeft = !left;
@@ -129,5 +130,6 @@ public partial class EditForm : Form
         timeEntryEditViewController.MouseDown += (sender, args) => this.mouseDown(args);
         timeEntryEditViewController.MouseMove += (sender, args) => this.mouseMove(args);
     }
+
 }
 }
