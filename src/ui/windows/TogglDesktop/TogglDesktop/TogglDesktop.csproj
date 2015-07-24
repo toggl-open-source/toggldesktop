@@ -235,6 +235,7 @@
       <DependentUpon>DescriptionAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ExtendedTextBox.cs" />
+    <Compile Include="WPF\Extensions.cs" />
     <Compile Include="WPF\LoginConfirmButton.xaml.cs">
       <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
     </Compile>
@@ -388,7 +389,7 @@
     <None Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo64.png" />
+    <Resource Include="Resources\logo64.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon-billable.png" />
@@ -494,7 +495,7 @@
     <None Include="Resources\darkBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\timerDarkBg.png" />
+    <Resource Include="Resources\timerDarkBg.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ic_arrow_back_grey600_24dp.png" />

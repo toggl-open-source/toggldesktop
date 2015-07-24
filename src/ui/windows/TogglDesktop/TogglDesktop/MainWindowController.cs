@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Interop;
+using TogglDesktop.WPF;
 
 namespace TogglDesktop
 {
@@ -20,7 +22,7 @@ public partial class MainWindowController : TogglForm
     private TimeEntryListViewController timeEntryListViewController;
     private WPF.TimeEntryEditViewController timeEntryEditViewController;
     private AboutWindowController aboutWindowController;
-    private PreferencesWindowController preferencesWindowController;
+    private PreferencesWindow preferencesWindowController;
     private FeedbackWindowController feedbackWindowController;
     private IdleNotificationWindowController idleNotificationWindowController;
 
@@ -108,7 +110,7 @@ public partial class MainWindowController : TogglForm
             }
             feedbackWindowController.Close();
             aboutWindowController.Close();
-            preferencesWindowController.Close();
+            preferencesWindowController.Hide();
         }
         else
         {
@@ -186,13 +188,16 @@ public partial class MainWindowController : TogglForm
         timeEntryListViewController = new TimeEntryListViewController();
         timeEntryEditViewController = new WPF.TimeEntryEditViewController();
         aboutWindowController = new AboutWindowController();
-        preferencesWindowController = new PreferencesWindowController();
+        preferencesWindowController = new PreferencesWindow();
         feedbackWindowController = new FeedbackWindowController();
         idleNotificationWindowController = new IdleNotificationWindowController();
 
         initEditForm();
         timeEntryListViewController.setEditPopup(editForm);
-        editForm.Owner = aboutWindowController.Owner = preferencesWindowController.Owner = feedbackWindowController.Owner = this;
+        editForm.Owner = aboutWindowController.Owner = feedbackWindowController.Owner = this;
+
+        var windowInteropHelper = new WindowInteropHelper(this.preferencesWindowController);
+        windowInteropHelper.Owner = this.Handle;
 
         if (!Toggl.StartUI(TogglDesktop.Program.Version()))
         {
