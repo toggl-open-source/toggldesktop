@@ -31,12 +31,6 @@ SOURCES += main.cpp\
     toggl.cpp \
     mainwindowcontroller.cpp \
     errorviewcontroller.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlocalpeer.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile_unix.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile_win.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.cpp \
     loginwidget.cpp \
     timeentrylistwidget.cpp \
     timerwidget.cpp \
@@ -57,12 +51,6 @@ HEADERS  += \
     settingsview.h \
     toggl.h \
     mainwindowcontroller.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlocalpeer.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/QtLockedFile \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/QtSingleApplication \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.h \
     loginwidget.h \
     errorviewcontroller.h \
     timeentrylistwidget.h \
