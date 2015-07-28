@@ -92,25 +92,7 @@
             <ColumnDefinition Width="84"/>
         </Grid.ColumnDefinitions>
 
-        <!-- description placeholder -->
-        <TextBlock Grid.Column="1">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding ElementName=descriptionTextBox, Path=Text}" Value=""/>
-                                <Condition Binding="{Binding ElementName=descriptionTextBox, Path=IsKeyboardFocused}" Value="False"/>
-                                <Condition Binding="{Binding ElementName=projectGridRow, Path=Height}" Value="0"/>
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-            What are you doing?
-        </TextBlock>
+        
 
 
         <!-- description and project-->
@@ -140,7 +122,24 @@
                                Foreground="#dddddd">Client</TextBlock>
             </StackPanel>
 
-            <TextBlock Grid.Row="1" Grid.Column="1"  Name="descriptionLabel" x:FieldModifier="private" MouseLeftButtonDown="onDescriptionLabelMouseDown">Description</TextBlock>
+            <!-- description placeholder/display -->
+            <TextBlock Grid.Row="1" Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private" MouseLeftButtonDown="onDescriptionLabelMouseDown">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=descriptionTextBox, Path=Text}" Value=""/>
+                                    <Condition Binding="{Binding ElementName=descriptionTextBox, Path=IsKeyboardFocused}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+                What are you doing?
+            </TextBlock>
 
             <toggl:ExtendedTextBox Grid.Row="1" Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
                                    Margin="-2, 0, 6, 0"/>

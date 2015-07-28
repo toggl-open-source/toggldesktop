@@ -258,7 +258,7 @@ namespace TogglDesktop.WPF
         {
             this.resetUIState(false);
 
-            this.descriptionLabel.Text = "";
+            this.descriptionLabel.Text = "What are you doing?";
             this.durationLabel.Text = "00:00:00";
 
             this.invalidate();
