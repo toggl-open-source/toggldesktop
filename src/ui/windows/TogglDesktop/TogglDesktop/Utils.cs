@@ -94,31 +94,65 @@ public static class Utils
         return null;
     }
 
-    public static void SetShortcutForShow(KeyEventArgs e)
+
+    public struct KeyCombination
+    {
+        private readonly ModifierKeys modifiers;
+        private readonly string keyCode;
+
+        public KeyCombination(ModifierKeys modifiers, string keyCode)
+        {
+            this.modifiers = modifiers;
+            this.keyCode = keyCode;
+        }
+
+        public ModifierKeys Modifiers { get { return this.modifiers; } }
+        public string KeyCode { get { return this.keyCode; } }
+    }
+
+    public static void SetShortcutForShow(KeyCombination? e)
     {
         try
         {
-            Properties.Settings.Default.ShowModifiers = GetModifiers(e);
-            Properties.Settings.Default.ShowKey = GetKeyCode(e);
+            if (e.HasValue)
+            {
+                Properties.Settings.Default.ShowModifiers = e.Value.Modifiers;
+                Properties.Settings.Default.ShowKey = e.Value.KeyCode;
+            }
+            else
+            {
+                Properties.Settings.Default.ShowModifiers = 0;
+                Properties.Settings.Default.ShowKey = null;
+            }
+
             Properties.Settings.Default.Save();
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Could not set shortcut for show: ", ex);
+            Console.WriteLine("Could not set shortcut for show: {0}", ex);
         }
     }
 
-    public static void SetShortcutForStart(KeyEventArgs e)
+    public static void SetShortcutForStart(KeyCombination? e)
     {
         try
         {
-            Properties.Settings.Default.StartModifiers = GetModifiers(e);
-            Properties.Settings.Default.StartKey = GetKeyCode(e);
+            if (e.HasValue)
+            {
+                Properties.Settings.Default.StartModifiers = e.Value.Modifiers;
+                Properties.Settings.Default.StartKey = e.Value.KeyCode;
+            }
+            else
+            {
+                Properties.Settings.Default.StartModifiers = 0;
+                Properties.Settings.Default.StartKey = null;
+            }
+
             Properties.Settings.Default.Save();
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Could not set shortcut for start: ", ex);
+            Console.WriteLine("Could not set shortcut for start: {0}", ex);
         }
     }
 

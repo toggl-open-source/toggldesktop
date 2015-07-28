@@ -31,7 +31,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="2">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
                                               Margin="{TemplateBinding Padding}"/>
                     </Border>
@@ -46,6 +49,9 @@
         <Setter Property="MinWidth" Value="60"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Style.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="Background" Value="#33999999"/>
+            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#33999999"/>
             </Trigger>
@@ -57,6 +63,34 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    <Style TargetType="Button" x:Key="ShortcutRecordButton" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+    </Style>
+    <Style TargetType="Button" x:Key="ShortcutClearButton" BasedOn="{StaticResource ShortcutRecordButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}" BorderThickness="1 0 0 0" BorderBrush="#33000000">
+                        <Image Source="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
+                                   Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Stretch="Fill" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="Padding" Value="3 4 4 4"/>
+    </Style>
+    <Style TargetType="Border" x:Key="ShortcutRecordContainer">
+        <Setter Property="Background" Value="#44999999"/>
+        <Setter Property="CornerRadius" Value="2" />
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+    
     <Style TargetType="Button" x:Key="WindowHeadButton">
         <Setter Property="Template">
             <Setter.Value>

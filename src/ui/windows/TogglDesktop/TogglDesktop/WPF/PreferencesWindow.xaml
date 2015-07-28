@@ -83,9 +83,52 @@
                                 Margin="5">Record timeline</CheckBox>
                         <CheckBox Name="onTopCheckBox" x:FieldModifier="private"
                                 Margin="5">On top of other windows</CheckBox>
-                        <Separator />
-                        <TextBlock Margin="5">Show/Hide Toggl</TextBlock>
-                        <TextBlock Margin="5">Continue/Stop timer</TextBlock>
+                        <GroupBox Header="Global Shortcuts">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Show/Hide Toggl</TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Continue/Stop timer</TextBlock>
+
+                                <Border Grid.Column="1" Grid.Row="0"
+                                        Style="{StaticResource ShortcutRecordContainer}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                    
+                                        <Button Name="showHideShortcutRecordButton" x:FieldModifier="private"
+                                                Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
+                                                >Record shortcut</Button>
+                                        <Button Name="showHideShortcutClearButton" x:FieldModifier="private"
+                                            Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="1" Grid.Row="1"
+                                        Style="{StaticResource ShortcutRecordContainer}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Name="continueStopShortcutRecordButton" x:FieldModifier="private"
+                                                Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
+                                                >Record shortcut</Button>
+                                        <Button Name="continueStopShortcutClearButton" x:FieldModifier="private"
+                                            Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
+                                    </Grid>
+                                </Border>
+                                
+                            </Grid>
+                        </GroupBox>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="PROXY">
