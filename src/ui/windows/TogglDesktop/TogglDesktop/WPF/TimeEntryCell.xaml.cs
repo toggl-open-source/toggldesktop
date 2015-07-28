@@ -62,14 +62,14 @@ namespace TogglDesktop.WPF
 
             this.projectColor.Fill = projectColorBrush;
             this.labelProject.Foreground = projectColorBrush;
-            this.labelProject.Text = (item.ClientLabel.Length > 0) ? "• " + item.ProjectLabel : item.ProjectLabel;
+            this.labelProject.Text = item.ClientLabel == "" ? item.ProjectLabel : "• " + item.ProjectLabel;
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
-            setOptionalTextBlockText(this.labelTask, item.TaskLabel);
+            setOptionalTextBlockText(this.labelTask, item.TaskLabel == "" ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
             showOnlyIf(this.billabeIcon, item.Billable);
             showOnlyIf(this.tagsIcon, !string.IsNullOrEmpty(item.Tags));
 
-            this.projectRow.Height = string.IsNullOrEmpty(item.ProjectLabel) ? new GridLength(0) : GridLength.Auto;
+            this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
 
             showOnlyIf(this.dayHeader, item.IsHeader);
 
