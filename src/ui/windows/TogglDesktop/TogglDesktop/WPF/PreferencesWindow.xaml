@@ -71,12 +71,18 @@
                                 <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox HorizontalContentAlignment="Stretch">Idle Detection</CheckBox>
-                            <TextBox Grid.Column="1" HorizontalContentAlignment="Right">5</TextBox>
-                            <TextBlock Grid.Column="2" Margin="4 0 0 0">minutes</TextBlock>
+                            <CheckBox Name="idleDetectionCheckBox" x:FieldModifier="private"
+                                HorizontalContentAlignment="Stretch">Idle Detection</CheckBox>
+                            <TextBox Name="idleDetectionDurationTextBox" x:FieldModifier="private"
+                                Grid.Column="1" HorizontalContentAlignment="Right"
+                              IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">5</TextBox>
+                            <TextBlock Grid.Column="2" Margin="4 0 0 0"
+                              IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">minutes</TextBlock>
                         </Grid>
-                        <CheckBox Margin="5">Record timeline</CheckBox>
-                        <CheckBox Margin="5">On top of other windows</CheckBox>
+                        <CheckBox Name="recordTimelineCheckBox" x:FieldModifier="private"
+                                Margin="5">Record timeline</CheckBox>
+                        <CheckBox Name="onTopCheckBox" x:FieldModifier="private"
+                                Margin="5">On top of other windows</CheckBox>
                         <Separator />
                         <TextBlock Margin="5">Show/Hide Toggl</TextBlock>
                         <TextBlock Margin="5">Continue/Stop timer</TextBlock>
@@ -84,7 +90,8 @@
                 </TabItem>
                 <TabItem Header="PROXY">
                     <StackPanel Margin="11 11">
-                        <CheckBox Margin="5">Use system proxy settings</CheckBox>
+                        <CheckBox Name="useSystemProxySettingsCheckBox" x:FieldModifier="private"
+                                Margin="5">Use system proxy settings</CheckBox>
                         <CheckBox Name="useProxyCheckBox" x:FieldModifier="private"
                                   Margin="5">Use proxy to connect to Toggl</CheckBox>
                         <GroupBox Header="Proxy Settings" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
@@ -103,10 +110,14 @@
                                 <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Port</TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="2" Margin="5">Username</TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="3" Margin="5">Password</TextBlock>
-                                <TextBox Grid.Column="1" Grid.Row="0" Margin="5">example.com</TextBox>
-                                <TextBox Grid.Column="1" Grid.Row="1" Margin="5">0</TextBox>
-                                <TextBox Grid.Column="1" Grid.Row="2" Margin="5">user</TextBox>
-                                <PasswordBox Grid.Column="1" Grid.Row="3" Password="password" Margin="5"></PasswordBox>
+                                <TextBox Name="proxyHostTextBox" x:FieldModifier="private"
+                                           Grid.Column="1" Grid.Row="0" Margin="5">example.com</TextBox>
+                                <TextBox Name="proxyPortTextBox" x:FieldModifier="private"
+                                           Grid.Column="1" Grid.Row="1" Margin="5">0</TextBox>
+                                <TextBox Name="proxyUsernameTextBox" x:FieldModifier="private"
+                                           Grid.Column="1" Grid.Row="2" Margin="5">user</TextBox>
+                                <PasswordBox Name="proxyPasswordBox" x:FieldModifier="private"
+                                           Grid.Column="1" Grid.Row="3" Password="password" Margin="5"></PasswordBox>
                             </Grid>
                         </GroupBox>
                     </StackPanel>
@@ -123,34 +134,46 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <CheckBox Grid.Column="0" Grid.Row="0" Margin="5">Remind me to track time</CheckBox>
+                        <CheckBox Name="remindToTrackCheckBox" x:FieldModifier="private"
+                                  Grid.Column="0" Grid.Row="0" Margin="5">Remind me to track time</CheckBox>
                         <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Reminder start time</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="2" Margin="5">Reminder end time</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="3" Margin="5">Reminder days</TextBlock>
 
-                        <Grid Grid.Column="1" Grid.Row="0" Margin="5" HorizontalAlignment="Right">
+                        <Grid Grid.Column="1" Grid.Row="0" Margin="5" HorizontalAlignment="Right"
+                              IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" HorizontalContentAlignment="Right">5</TextBox>
+                            <TextBox Name="remindToTrackIntervalTextBox" x:FieldModifier="private"
+                                     Grid.Column="0" HorizontalContentAlignment="Right">5</TextBox>
                             <TextBlock Grid.Column="1" Margin="4 0 0 0">minutes</TextBlock>
                         </Grid>
 
-                        <TextBox Grid.Column="1" Grid.Row="1" Margin="5"
+                        <TextBox Name="reminderStartTimeTextBox" x:FieldModifier="private"
+                                 Grid.Column="1" Grid.Row="1" Margin="5"
                              Width="50" HorizontalContentAlignment="Right"
                              HorizontalAlignment="Left">8:30</TextBox>
-                        <TextBox Grid.Column="1" Grid.Row="2" Margin="5"
+                        <TextBox Name="reminderEndTimeTextBox" x:FieldModifier="private"
+                                 Grid.Column="1" Grid.Row="2" Margin="5"
                              Width="50" HorizontalContentAlignment="Right"
                              HorizontalAlignment="Left">16:30</TextBox>
                         <StackPanel Grid.Column="1" Grid.Row="3" Margin="3">
-                            <CheckBox  Margin="2">Mon</CheckBox>
-                            <CheckBox  Margin="2">Tue</CheckBox>
-                            <CheckBox  Margin="2">Wed</CheckBox>
-                            <CheckBox  Margin="2">Thu</CheckBox>
-                            <CheckBox  Margin="2">Fri</CheckBox>
-                            <CheckBox  Margin="2">Sat</CheckBox>
-                            <CheckBox  Margin="2">Sun</CheckBox>
+                            <CheckBox Name="remindOnMondayTextBox" x:FieldModifier="private"
+                                      Margin="2">Mon</CheckBox>
+                            <CheckBox Name="remindOnTuesdayTextBox" x:FieldModifier="private"
+                                      Margin="2">Tue</CheckBox>
+                            <CheckBox Name="remindOnWednesdayTextBox" x:FieldModifier="private"
+                                      Margin="2">Wed</CheckBox>
+                            <CheckBox Name="remindOnThursdayTextBox" x:FieldModifier="private"
+                                      Margin="2">Thu</CheckBox>
+                            <CheckBox Name="remindOnFridayTextBox" x:FieldModifier="private"
+                                      Margin="2">Fri</CheckBox>
+                            <CheckBox Name="remindOnSaturdayTextBox" x:FieldModifier="private"
+                                      Margin="2">Sat</CheckBox>
+                            <CheckBox Name="remindOnSundayTextBox" x:FieldModifier="private"
+                                      Margin="2">Sun</CheckBox>
                         </StackPanel>
                     </Grid>
                 </TabItem>
