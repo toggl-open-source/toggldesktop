@@ -7,17 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="455">
     
-    <UserControl.Resources>
-        <Style TargetType="toggl:TimeEntryCell">
-            <Setter Property="EntryBackColor" Value="White"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="EntryBackColor" Value="{Binding EntryHoverColor}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
-    
     <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
                 Background="#F7F7F7">
         
@@ -41,8 +30,7 @@
         </StackPanel>
         
         <!-- Entry -->
-        <Grid Name="entry" x:FieldModifier="private"
-              Height="53" Margin="0, 2, 0, 0" MouseDown="entry_MouseDown">
+        <Grid Height="53" Margin="0, 2, 0, 0" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
             
             <Grid.Background>
                 <SolidColorBrush Color="{Binding EntryBackColor}"/>
@@ -63,8 +51,7 @@
                        HorizontalAlignment="Right" FontSize="14.7"
                            Margin="0, 1, 33, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
             
-            <Button Name="buttonContinue" x:FieldModifier="private"  Grid.Column="4"
-                    Width="36" Height="36"  Margin="0, 0, 4, 0" Click="buttonContinue_Click"/>
+            <Button Grid.Column="4" Width="36" Height="36"  Margin="0, 0, 4, 0" Click="buttonContinue_Click"/>
 
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal" HorizontalAlignment="Right">

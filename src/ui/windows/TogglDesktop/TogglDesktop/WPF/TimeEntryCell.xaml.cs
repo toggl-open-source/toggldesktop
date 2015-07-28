@@ -1,28 +1,19 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace TogglDesktop.WPF
 {
-    /// <summary>
-    /// Interaction logic for TimeEntryCell.xaml
-    /// </summary>
     public partial class TimeEntryCell
     {
+        private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
         private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
 
-        public string GUID { get; set; }
+        private Color entryHoverColor;
 
-        public Color EntryHoverColor
-        {
-            get { return (Color)this.GetValue(EntryHoverColorProperty); }
-            set { this.SetValue(EntryHoverColorProperty, value); }
-        }
-        public static readonly DependencyProperty EntryHoverColorProperty = DependencyProperty
-            .Register("EntryHoverColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(hoverColor));
+        private string guid { get; set; }
 
         public bool Selected
         {
@@ -31,7 +22,12 @@ namespace TogglDesktop.WPF
             {
                 if (value == this.selected)
                     return;
-                this.EntryHoverColor = value ? hoverColorSelected : hoverColor;
+                var color = value ? hoverColorSelected : hoverColor;
+                this.entryHoverColor = color;
+                if (this.IsMouseOver)
+                {
+                    this.EntryBackColor = color;
+                }
                 this.selected = value;
             }
         }
@@ -42,7 +38,7 @@ namespace TogglDesktop.WPF
             set { this.SetValue(EntryBackColorProperty, value); }
         }
         public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
-            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(Color.FromArgb(255, 0, 0, 0)));
+            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
         private readonly ToolTip descriptionToolTip = new ToolTip();
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
@@ -52,13 +48,13 @@ namespace TogglDesktop.WPF
 
         public TimeEntryCell()
         {
-            InitializeComponent();
-            DataContext = this;
+            this.DataContext = this;
+            this.InitializeComponent();
         }
 
         public void Display(Toggl.TimeEntry item)
         {
-            GUID = item.GUID;
+            this.guid = item.GUID;
 
             labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
             
@@ -147,25 +143,25 @@ namespace TogglDesktop.WPF
 
         private void labelDuration_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, Toggl.Duration);
+            Toggl.Edit(this.guid, false, Toggl.Duration);
             e.Handled = true;
         }
 
         private void labelDescription_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, Toggl.Description);
+            Toggl.Edit(this.guid, false, Toggl.Description);
             e.Handled = true;
         }
 
         private void labelProject_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, Toggl.Project);
+            Toggl.Edit(this.guid, false, Toggl.Project);
             e.Handled = true;
         }
 
         private void entry_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, "");
+            Toggl.Edit(this.guid, false, "");
             e.Handled = true;
         }
 
@@ -173,9 +169,18 @@ namespace TogglDesktop.WPF
 
         private void buttonContinue_Click(object sender, RoutedEventArgs e)
         {
-            Toggl.Continue(GUID);
+            Toggl.Continue(this.guid);
         }
 
 
+        private void entryMouseEnter(object sender, MouseEventArgs e)
+        {
+            this.EntryBackColor = this.entryHoverColor;
+        }
+
+        private void entryMouseLeave(object sender, MouseEventArgs e)
+        {
+            this.EntryBackColor = idleBackColor;
+        }
     }
 }
