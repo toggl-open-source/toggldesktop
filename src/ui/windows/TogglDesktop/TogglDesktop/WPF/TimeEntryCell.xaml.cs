@@ -56,36 +56,38 @@ namespace TogglDesktop.WPF
         {
             this.guid = item.GUID;
 
-            labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
+            this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
             
             var projectColorBrush = getProjectColorBrush(ref item);
 
-            projectColor.Fill = projectColorBrush;
-            labelProject.Foreground = projectColorBrush;
-            labelProject.Text = (item.ClientLabel.Length > 0) ? "• " + item.ProjectLabel : item.ProjectLabel;
-            setOptionalTextBlockText(labelClient, item.ClientLabel);
-            setOptionalTextBlockText(labelTask, item.TaskLabel);
-            labelDuration.Text = item.Duration;
-            showOnlyIf(billabeIcon, item.Billable);
-            showOnlyIf(tagsIcon, !string.IsNullOrEmpty(item.Tags));
+            this.projectColor.Fill = projectColorBrush;
+            this.labelProject.Foreground = projectColorBrush;
+            this.labelProject.Text = (item.ClientLabel.Length > 0) ? "• " + item.ProjectLabel : item.ProjectLabel;
+            setOptionalTextBlockText(this.labelClient, item.ClientLabel);
+            setOptionalTextBlockText(this.labelTask, item.TaskLabel);
+            this.labelDuration.Text = item.Duration;
+            showOnlyIf(this.billabeIcon, item.Billable);
+            showOnlyIf(this.tagsIcon, !string.IsNullOrEmpty(item.Tags));
 
-            showOnlyIf(dayHeader, item.IsHeader);
+            this.projectRow.Height = string.IsNullOrEmpty(item.ProjectLabel) ? new GridLength(0) : GridLength.Auto;
+
+            showOnlyIf(this.dayHeader, item.IsHeader);
 
             if (item.IsHeader)
             {
-                labelFormattedDate.Text = item.DateHeader;
-                labelDateDuration.Text = item.DateDuration;
+                this.labelFormattedDate.Text = item.DateHeader;
+                this.labelDateDuration.Text = item.DateDuration;
             }
 
-            updateToolTips(item);
+            this.updateToolTips(item);
         }
 
         private void updateToolTips(Toggl.TimeEntry item)
         {
-            setToolTipIfNotEmpty(labelDescription, descriptionToolTip, item.Description);
-            setToolTipIfNotEmpty(labelTask, taskProjectClientToolTip, item.ProjectAndTaskLabel);
-            setToolTipIfNotEmpty(labelProject, taskProjectClientToolTip, item.ProjectAndTaskLabel);
-            setToolTipIfNotEmpty(labelClient, taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(this.labelDescription, this.descriptionToolTip, item.Description);
+            setToolTipIfNotEmpty(this.labelTask, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(this.labelProject, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(this.labelClient, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
 
             if (item.DurOnly)
             {
@@ -94,12 +96,12 @@ namespace TogglDesktop.WPF
             else
             {
                 this.labelDuration.ToolTip = this.durationToolTip;
-                durationToolTip.Content = item.StartTimeString + " - " + item.EndTimeString;
+                this.durationToolTip.Content = item.StartTimeString + " - " + item.EndTimeString;
             }
 
-            if (tagsIcon.Visibility == Visibility.Visible)
+            if (this.tagsIcon.Visibility == Visibility.Visible)
             {
-                tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
+                this.tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
             }
         }
 
