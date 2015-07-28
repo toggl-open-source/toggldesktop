@@ -155,9 +155,9 @@
                         Orientation="Horizontal" HorizontalAlignment="Right">
 
             <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
-                       Stretch="None" Margin="3, 0, 3, 0"/>
+                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="16"/>
             <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
-                       Stretch="None" Margin="3, 0, 3, 0"/>
+                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
 
         </StackPanel>
 

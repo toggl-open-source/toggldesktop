@@ -12,7 +12,7 @@
                 <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
                 <Setter Property="FontSize" Value="13.3" />
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="0, 0, 6, 0"/>
+                <Setter Property="Margin" Value="0, 0, 4, 0"/>
                 <Setter Property="Foreground" Value="#252525"/>
             </Style>
 

@@ -136,7 +136,7 @@ namespace TogglDesktop.WPF
                 case Key.Down:
                     {
                         if (!this.IsOpen)
-                            this.open();
+                            this.open(showAll:true);
                         this.controller.SelectNext();
                         e.Handled = true;
                         return;
@@ -209,10 +209,10 @@ namespace TogglDesktop.WPF
         {
             this.popup.IsOpen = false;
         }
-        private void open(bool closeIfEmpty = false)
+        private void open(bool closeIfEmpty = false, bool showAll = false)
         {
             this.ensureList();
-            this.controller.Complete(this.textbox.Text);
+            this.controller.Complete(showAll ? "" : this.textbox.Text);
             this.emptyLabel.Visibility = this.controller.VisibleItems.Count == 0
                 ? Visibility.Visible
                 : Visibility.Collapsed;
@@ -225,6 +225,11 @@ namespace TogglDesktop.WPF
             {
                 this.popup.IsOpen = true;
             }
+        }
+
+        public void OpenAndShowAll()
+        {
+            this.open(showAll:true);
         }
 
         private void ensureList()
