@@ -38,6 +38,7 @@ SOURCES += main.cpp\
     timeentryeditorwidget.cpp \
     ../../../../third_party/qt-oauth-lib/logindialog.cpp \
     ../../../../third_party/qt-oauth-lib/oauth2.cpp \
+    ../../../../third_party/SingleApplication/singleapplication.cpp \
     preferencesdialog.cpp \
     aboutdialog.cpp \
     feedbackdialog.cpp \
@@ -59,6 +60,7 @@ HEADERS  += \
     timeentryeditorwidget.h \
     ../../../../third_party/qt-oauth-lib/logindialog.h \
     ../../../../third_party/qt-oauth-lib/oauth2.h \
+    ../../../../third_party/SingleApplication/singleapplication.h \
     preferencesdialog.h \
     aboutdialog.h \
     feedbackdialog.h \
@@ -88,7 +90,7 @@ LIBS += -lX11 -lXss
 
 INCLUDEPATH += $$PWD/../../../
 INCLUDEPATH += $$PWD/../../../../third_party/bugsnag-qt
-INCLUDEPATH += $$PWD/../../../../third_party/qt-solutions/qtsingleapplication/src/
+INCLUDEPATH += $$PWD/../../../../third_party/SingleApplication/
 INCLUDEPATH += $$PWD/../../../../third_party/qt-oauth-lib
 
 QMAKE_RPATHDIR += .
