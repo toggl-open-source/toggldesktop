@@ -853,11 +853,17 @@ public partial class MainWindowController : TogglForm
 
     private void MainWindowController_SizeChanged(object sender, EventArgs e)
     {
+        if (this.WindowState == FormWindowState.Maximized && this.FormBorderStyle != FormBorderStyle.None)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+        }
+
         recalculatePopupPosition();
         resizeHandle.Location = new Point(Width-16, Height-56);
         updateResizeHandleBackground();
     }
-
 
     private void updateMaxmimumSize()
     {

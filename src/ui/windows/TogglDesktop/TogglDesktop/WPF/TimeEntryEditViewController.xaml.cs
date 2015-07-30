@@ -394,8 +394,15 @@ namespace TogglDesktop.WPF
 
         private void projectDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
-            this.projectAutoComplete.IsOpen = this.projectDropDownButton.IsChecked ?? false;
+            var open = this.projectDropDownButton.IsChecked ?? false;
+            if (open)
+            {
+                this.projectAutoComplete.OpenAndShowAll();
+            }
+            else
+            {
+                this.projectAutoComplete.IsOpen = false;
+            }
 
             if (!this.projectTextBox.IsKeyboardFocused)
             {
@@ -422,7 +429,6 @@ namespace TogglDesktop.WPF
             var item = asProjectItem.Item;
 
             this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel);
-            this.setDescriptionIfChanged(item.TaskLabel);
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
@@ -593,8 +599,15 @@ namespace TogglDesktop.WPF
 
         private void clientDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
-            this.clientAutoComplete.IsOpen = this.clientDropDownButton.IsChecked ?? false;
+            var open = this.clientDropDownButton.IsChecked ?? false;
+            if (open)
+            {
+                this.clientAutoComplete.OpenAndShowAll();
+            }
+            else
+            {
+                this.clientAutoComplete.IsOpen = false;
+            }
 
             if (!this.clientTextBox.IsKeyboardFocused)
             {
