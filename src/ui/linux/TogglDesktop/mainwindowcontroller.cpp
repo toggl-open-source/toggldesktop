@@ -351,6 +351,9 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 }
 
 bool MainWindowController::hasTrayIcon() const {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
+    return true;
+#endif
     QString currentDesktop = QProcessEnvironment::systemEnvironment().value(
         "XDG_CURRENT_DESKTOP", "");
     return "Unity" != currentDesktop;
