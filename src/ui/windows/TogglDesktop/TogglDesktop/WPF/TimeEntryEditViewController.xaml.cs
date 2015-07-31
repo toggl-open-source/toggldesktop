@@ -36,7 +36,7 @@ namespace TogglDesktop.WPF
         public TimeEntryEditViewController()
         {
             this.DataContext = this;
-            InitializeComponent();
+            this.InitializeComponent();
 
             Toggl.OnLogin += this.onLogin;
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
@@ -805,7 +805,6 @@ namespace TogglDesktop.WPF
 
         private void workspaceDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
             this.workspaceAutoComplete.IsOpen = this.workspaceDropDownButton.IsChecked ?? false;
 
             if (!this.workspaceTextBox.IsKeyboardFocused)
@@ -953,7 +952,7 @@ namespace TogglDesktop.WPF
             }
             if (DialogResult.Yes == result)
             {
-                Toggl.DeleteTimeEntry(timeEntry.GUID);
+                Toggl.DeleteTimeEntry(this.timeEntry.GUID);
                 //TODO: reset form (specifically add-project controls)?
             }
         }
