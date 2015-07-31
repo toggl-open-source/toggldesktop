@@ -334,6 +334,12 @@ void MainWindowController::writeSettings() {
 }
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
+    if (hasTrayIcon()) {
+        event->ignore();
+        hide();
+        return;
+    }
+
     QMessageBox::StandardButton dialog;
     dialog = QMessageBox::question(this,
                                    "Toggl Desktop",
