@@ -68,9 +68,10 @@ void TimeEntryListWidget::displayTimeEntryList(
             ui->list->setItemWidget(item, cell);
         }
 
-        item->setSizeHint(cell->getSizeHint(te->IsHeader));
-
         cell->display(te);
+
+	QSize sizeHint = cell->getSizeHint(te->IsHeader);
+        item->setSizeHint(sizeHint);
     }
 
     while (ui->list->count() > list.size())
