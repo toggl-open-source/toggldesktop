@@ -114,35 +114,44 @@
             
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
 
-                <TextBlock Name="taskLabel" x:FieldModifier="private"
-                               Foreground="#bbbbbb">Task</TextBlock>
-                <TextBlock Name="projectLabel" x:FieldModifier="private"
-                           >Project</TextBlock>
                 <TextBlock Name="clientLabel" x:FieldModifier="private"
                                Foreground="#dddddd">Client</TextBlock>
+                <TextBlock Name="projectLabel" x:FieldModifier="private"
+                           >Project</TextBlock>
             </StackPanel>
 
-            <!-- description placeholder/display -->
-            <TextBlock Grid.Row="1" Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private" MouseLeftButtonDown="onDescriptionLabelMouseDown">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=descriptionTextBox, Path=Text}" Value=""/>
-                                    <Condition Binding="{Binding ElementName=descriptionTextBox, Path=IsKeyboardFocused}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-                What are you doing?
-            </TextBlock>
+            <Grid Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-            <toggl:ExtendedTextBox Grid.Row="1" Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
+                <TextBlock Grid.Column="0" Name="taskLabel" x:FieldModifier="private"
+                               Foreground="#bbbbbb">Task -</TextBlock>
+                
+                <!-- description placeholder/display -->
+                <TextBlock Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ElementName=descriptionTextBox, Path=Text}" Value=""/>
+                                        <Condition Binding="{Binding ElementName=descriptionTextBox, Path=IsKeyboardFocused}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                What are you doing?
+                </TextBlock>
+
+                <toggl:ExtendedTextBox Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
                                    Margin="-2, 0, 6, 0"/>
+
+            </Grid>
 
             <toggl:AutoCompletionPopup Grid.Row="1" Grid.Column="1"  x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                    TextBox="{Binding ElementName=descriptionTextBox}"

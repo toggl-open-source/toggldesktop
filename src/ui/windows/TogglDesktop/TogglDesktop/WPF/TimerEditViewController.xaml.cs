@@ -170,7 +170,7 @@ namespace TogglDesktop.WPF
                 this.projectLabel.Text = "• " + item.ProjectLabel;
                 this.projectLabel.Foreground = getProjectColorBrush(ref item);
 
-                setOptionalTextBlockText(this.taskLabel, item.TaskLabel);
+                setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
                 setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
 
                 this.projectGridRow.Height = GridLength.Auto;
@@ -187,6 +187,7 @@ namespace TogglDesktop.WPF
         {
             this.projectGridRow.Height = new GridLength(0);
             this.completedProject = new ProjectInfo();
+            this.taskLabel.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -239,9 +240,9 @@ namespace TogglDesktop.WPF
             this.resetUIState(true);
 
             this.descriptionLabel.Text = item.Description == "" ? "(no description)" : item.Description;
-            this.projectLabel.Text = string.IsNullOrEmpty(item.ProjectLabel) ? "" : "• " + item.ProjectLabel;
+            this.projectLabel.Text = string.IsNullOrEmpty(item.ClientLabel) ? item.ProjectLabel : "• " + item.ProjectLabel;
             setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
-            setOptionalTextBlockText(this.taskLabel, item.TaskLabel);
+            setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
 
             this.projectLabel.Foreground = getProjectColorBrush(ref item);
 
@@ -280,6 +281,7 @@ namespace TogglDesktop.WPF
             this.projectGridRow.Height = new GridLength(0);
             this.completedProject = new ProjectInfo();
             this.cancelProjectSelectionButton.Visibility = Visibility.Collapsed;
+            this.taskLabel.Visibility = Visibility.Collapsed;
         }
 
         #region display helpers
