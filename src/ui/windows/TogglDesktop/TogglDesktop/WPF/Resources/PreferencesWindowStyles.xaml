@@ -48,9 +48,6 @@
         <Setter Property="MinWidth" Value="60"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Style.Triggers>
-            <Trigger Property="IsKeyboardFocused" Value="True">
-                <Setter Property="Background" Value="#33999999"/>
-            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#33999999"/>
             </Trigger>
