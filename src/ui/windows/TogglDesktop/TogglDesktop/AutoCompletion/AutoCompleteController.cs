@@ -8,6 +8,8 @@ namespace TogglDesktop.AutoCompletion
 {
     class AutoCompleteController
     {
+        private static readonly char[] splitChars = { ' ' };
+
         private readonly List<IAutoCompleteListItem> list;
 
         private readonly List<AutoCompleteItem> currentlyVisible = new List<AutoCompleteItem>();
@@ -43,8 +45,10 @@ namespace TogglDesktop.AutoCompletion
 
         public void Complete(string input)
         {
+            var words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+
             this.currentlyVisible.Clear();
-            this.currentlyVisible.AddRange(this.list.SelectMany(i => i.Complete(input)));
+            this.currentlyVisible.AddRange(this.list.SelectMany(i => i.Complete(words)));
             this.validateSelection();
         }
 

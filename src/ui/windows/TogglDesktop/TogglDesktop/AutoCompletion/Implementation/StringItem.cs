@@ -14,9 +14,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
             this.hideString = hideString;
         }
 
-        public override IEnumerable<AutoCompleteItem> Complete(string input)
+        public override IEnumerable<AutoCompleteItem> Complete(string[] words)
         {
-            this.Visible = !this.hideString(this.Item) && this.Text.Contains(input);
+            this.Visible = !this.hideString(this.Item) && this.completesAll(words);
 
             if (this.Visible)
             {
