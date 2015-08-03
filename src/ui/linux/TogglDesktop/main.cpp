@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "qtsingleapplication.h"  // NOLINT
+#include "singleapplication.h"  // NOLINT
 
 #include "./autocompleteview.h"
 #include "./bugsnag.h"
@@ -18,14 +18,14 @@
 #include "./mainwindowcontroller.h"
 #include "./toggl.h"
 
-class TogglApplication : public QtSingleApplication {
+class TogglApplication : public SingleApplication {
  public:
     TogglApplication(int &argc, char **argv)  // NOLINT
-        : QtSingleApplication(argc, argv) {}
+        : SingleApplication(argc, argv) {}
 
     virtual bool notify(QObject *receiver, QEvent *event) {
         try {
-            return QtSingleApplication::notify(receiver, event);
+            return SingleApplication::notify(receiver, event);
         } catch(std::exception e) {
             TogglApi::notifyBugsnag("std::exception", e.what(),
                                     receiver->objectName());
@@ -47,15 +47,10 @@ int main(int argc, char *argv[]) try {
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*");
     qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*");
 
+    QApplication::setApplicationName("Toggl Desktop");
+    QApplication::setOrganizationName("Toggl");
+
     TogglApplication a(argc, argv);
-
-    if (a.sendMessage(("Wake up!"))) {
-        qDebug() << "An instance of TogglDesktop is already running. "
-                 "This instance will now quit.";
-        return 0;
-    }
-
-    a.setApplicationName("Toggl Desktop");
 
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;

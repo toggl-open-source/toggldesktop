@@ -21,7 +21,7 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
     </Style>
-    <Style TargetType="TextBlock">
+    <Style TargetType="TextBlock" x:Key="SmallText">
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
         <Setter Property="FontSize" Value="9.75" />
         <Setter Property="Foreground" Value="#9f9f9f"/>

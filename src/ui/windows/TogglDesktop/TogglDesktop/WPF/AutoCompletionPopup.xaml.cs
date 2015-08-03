@@ -59,6 +59,12 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public bool StaysOpen
+        {
+            get { return this.popup.StaysOpen; }
+            set { this.popup.StaysOpen = value; }
+        }
+
         #region dependency properties
 
         public static readonly DependencyProperty TargetProperty = DependencyProperty
@@ -129,15 +135,15 @@ namespace TogglDesktop.WPF
             {
                 case Key.Down:
                     {
-                        if (!this.popup.IsOpen)
-                            this.open();
+                        if (!this.IsOpen)
+                            this.open(showAll:true);
                         this.controller.SelectNext();
                         e.Handled = true;
                         return;
                     }
                 case Key.Up:
                     {
-                        if (this.popup.IsOpen)
+                        if (this.IsOpen)
                             this.controller.SelectPrevious();
                         e.Handled = true;
                         return;
@@ -154,7 +160,7 @@ namespace TogglDesktop.WPF
                 case Key.Enter:
                 case Key.Tab:
                     {
-                        if (this.popup.IsOpen)
+                        if (this.IsOpen)
                         {
                             this.confirmCompletion();
                             e.Handled = true;
@@ -203,10 +209,10 @@ namespace TogglDesktop.WPF
         {
             this.popup.IsOpen = false;
         }
-        private void open(bool closeIfEmpty = false)
+        private void open(bool closeIfEmpty = false, bool showAll = false)
         {
             this.ensureList();
-            this.controller.Complete(this.textbox.Text);
+            this.controller.Complete(showAll ? "" : this.textbox.Text);
             this.emptyLabel.Visibility = this.controller.VisibleItems.Count == 0
                 ? Visibility.Visible
                 : Visibility.Collapsed;
@@ -219,6 +225,11 @@ namespace TogglDesktop.WPF
             {
                 this.popup.IsOpen = true;
             }
+        }
+
+        public void OpenAndShowAll()
+        {
+            this.open(showAll:true);
         }
 
         private void ensureList()

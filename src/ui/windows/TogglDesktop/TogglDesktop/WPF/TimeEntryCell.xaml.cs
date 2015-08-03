@@ -1,28 +1,19 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace TogglDesktop.WPF
 {
-    /// <summary>
-    /// Interaction logic for TimeEntryCell.xaml
-    /// </summary>
     public partial class TimeEntryCell
     {
+        private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
         private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
 
-        public string GUID { get; set; }
+        private Color entryHoverColor;
 
-        public Color EntryHoverColor
-        {
-            get { return (Color)this.GetValue(EntryHoverColorProperty); }
-            set { this.SetValue(EntryHoverColorProperty, value); }
-        }
-        public static readonly DependencyProperty EntryHoverColorProperty = DependencyProperty
-            .Register("EntryHoverColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(hoverColor));
+        private string guid { get; set; }
 
         public bool Selected
         {
@@ -31,7 +22,12 @@ namespace TogglDesktop.WPF
             {
                 if (value == this.selected)
                     return;
-                this.EntryHoverColor = value ? hoverColorSelected : hoverColor;
+                var color = value ? hoverColorSelected : hoverColor;
+                this.entryHoverColor = color;
+                if (this.IsMouseOver)
+                {
+                    this.EntryBackColor = color;
+                }
                 this.selected = value;
             }
         }
@@ -42,7 +38,7 @@ namespace TogglDesktop.WPF
             set { this.SetValue(EntryBackColorProperty, value); }
         }
         public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
-            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(Color.FromArgb(255, 0, 0, 0)));
+            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
         private readonly ToolTip descriptionToolTip = new ToolTip();
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
@@ -52,44 +48,46 @@ namespace TogglDesktop.WPF
 
         public TimeEntryCell()
         {
-            InitializeComponent();
-            DataContext = this;
+            this.DataContext = this;
+            this.InitializeComponent();
         }
 
         public void Display(Toggl.TimeEntry item)
         {
-            GUID = item.GUID;
+            this.guid = item.GUID;
 
-            labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
+            this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
             
             var projectColorBrush = getProjectColorBrush(ref item);
 
-            projectColor.Fill = projectColorBrush;
-            labelProject.Foreground = projectColorBrush;
-            labelProject.Text = (item.ClientLabel.Length > 0) ? "• " + item.ProjectLabel : item.ProjectLabel;
-            setOptionalTextBlockText(labelClient, item.ClientLabel);
-            setOptionalTextBlockText(labelTask, item.TaskLabel);
-            labelDuration.Text = item.Duration;
-            showOnlyIf(billabeIcon, item.Billable);
-            showOnlyIf(tagsIcon, !string.IsNullOrEmpty(item.Tags));
+            this.projectColor.Fill = projectColorBrush;
+            this.labelProject.Foreground = projectColorBrush;
+            this.labelProject.Text = item.ClientLabel == "" ? item.ProjectLabel : "• " + item.ProjectLabel;
+            setOptionalTextBlockText(this.labelClient, item.ClientLabel);
+            setOptionalTextBlockText(this.labelTask, item.TaskLabel == "" ? "" : item.TaskLabel + " -");
+            this.labelDuration.Text = item.Duration;
+            showOnlyIf(this.billabeIcon, item.Billable);
+            showOnlyIf(this.tagsIcon, !string.IsNullOrEmpty(item.Tags));
 
-            showOnlyIf(dayHeader, item.IsHeader);
+            this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
+
+            showOnlyIf(this.dayHeader, item.IsHeader);
 
             if (item.IsHeader)
             {
-                labelFormattedDate.Text = item.DateHeader;
-                labelDateDuration.Text = item.DateDuration;
+                this.labelFormattedDate.Text = item.DateHeader;
+                this.labelDateDuration.Text = item.DateDuration;
             }
 
-            updateToolTips(item);
+            this.updateToolTips(item);
         }
 
         private void updateToolTips(Toggl.TimeEntry item)
         {
-            setToolTipIfNotEmpty(labelDescription, descriptionToolTip, item.Description);
-            setToolTipIfNotEmpty(labelTask, taskProjectClientToolTip, item.ProjectAndTaskLabel);
-            setToolTipIfNotEmpty(labelProject, taskProjectClientToolTip, item.ProjectAndTaskLabel);
-            setToolTipIfNotEmpty(labelClient, taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(this.labelDescription, this.descriptionToolTip, item.Description);
+            setToolTipIfNotEmpty(this.labelTask, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(this.labelProject, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
+            setToolTipIfNotEmpty(this.labelClient, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
 
             if (item.DurOnly)
             {
@@ -98,12 +96,12 @@ namespace TogglDesktop.WPF
             else
             {
                 this.labelDuration.ToolTip = this.durationToolTip;
-                durationToolTip.Content = item.StartTimeString + " - " + item.EndTimeString;
+                this.durationToolTip.Content = item.StartTimeString + " - " + item.EndTimeString;
             }
 
-            if (tagsIcon.Visibility == Visibility.Visible)
+            if (this.tagsIcon.Visibility == Visibility.Visible)
             {
-                tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
+                this.tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
             }
         }
 
@@ -135,10 +133,9 @@ namespace TogglDesktop.WPF
 
         private static SolidColorBrush getProjectColorBrush(ref Toggl.TimeEntry item)
         {
-            var projectColourString = item.Color != "" ? item.Color : "#999999";
-            var projectColor = (Color)ColorConverter.ConvertFromString(projectColourString);
-            var projectColorBrush = new SolidColorBrush(projectColor);
-            return projectColorBrush;
+            var colourString = string.IsNullOrEmpty(item.Color) ? "#999999" : item.Color;
+            var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));
+            return new SolidColorBrush(color);
         }
 
         #endregion
@@ -147,25 +144,25 @@ namespace TogglDesktop.WPF
 
         private void labelDuration_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, Toggl.Duration);
+            Toggl.Edit(this.guid, false, Toggl.Duration);
             e.Handled = true;
         }
 
         private void labelDescription_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, Toggl.Description);
+            Toggl.Edit(this.guid, false, Toggl.Description);
             e.Handled = true;
         }
 
         private void labelProject_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, Toggl.Project);
+            Toggl.Edit(this.guid, false, Toggl.Project);
             e.Handled = true;
         }
 
         private void entry_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Toggl.Edit(GUID, false, "");
+            Toggl.Edit(this.guid, false, "");
             e.Handled = true;
         }
 
@@ -173,9 +170,18 @@ namespace TogglDesktop.WPF
 
         private void buttonContinue_Click(object sender, RoutedEventArgs e)
         {
-            Toggl.Continue(GUID);
+            Toggl.Continue(this.guid);
         }
 
 
+        private void entryMouseEnter(object sender, MouseEventArgs e)
+        {
+            this.EntryBackColor = this.entryHoverColor;
+        }
+
+        private void entryMouseLeave(object sender, MouseEventArgs e)
+        {
+            this.EntryBackColor = idleBackColor;
+        }
     }
 }

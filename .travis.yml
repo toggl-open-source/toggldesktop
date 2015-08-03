@@ -4,7 +4,7 @@ compiler:
   - clang
 install: make deps > /dev/null
 script:
-  - source /opt/qt53/bin/qt53-env.sh && make clean && make qa
+  - source /opt/qt55/bin/qt55-env.sh && make clean && make qa
 branches:
   only:
     - master
@@ -16,6 +16,6 @@ notifications:
     on_failure: always
 before_install:
   - sudo apt-get install lcov
-  - sudo apt-add-repository -y ppa:beineri/opt-qt532
+  - sudo apt-add-repository -y ppa:beineri/opt-qt55
   - sudo apt-get -qq update
-  - sudo apt-get -qq install qt53tools qt53svg qt53webkit libxss-dev xorg-dev
+  - sudo apt-get -qq install qt55tools qt55svg qt55webkit libxss-dev xorg-dev

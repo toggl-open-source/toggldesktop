@@ -38,8 +38,8 @@ partial class TimerEditViewController
         this.labelClearProject = new System.Windows.Forms.Label();
         this.panelLeft = new System.Windows.Forms.Panel();
         this.panelDescription = new System.Windows.Forms.Panel();
-        this.descriptionTextBox = new TogglDesktop.AutoCompleteTextBox();
         this.durationPanel = new System.Windows.Forms.Panel();
+        this.descriptionTextBox = new TogglDesktop.AutoCompleteTextBox();
         this.textBoxDuration = new TogglDesktop.AlphaBlendTextBox();
         this.panelLeft.SuspendLayout();
         this.panelDescription.SuspendLayout();
@@ -175,6 +175,18 @@ partial class TimerEditViewController
         this.panelDescription.Size = new System.Drawing.Size(138, 53);
         this.panelDescription.TabIndex = 1;
         //
+        // durationPanel
+        //
+        this.durationPanel.AutoSize = true;
+        this.durationPanel.BackColor = System.Drawing.Color.Transparent;
+        this.durationPanel.Controls.Add(this.textBoxDuration);
+        this.durationPanel.Controls.Add(this.linkLabelDuration);
+        this.durationPanel.Dock = System.Windows.Forms.DockStyle.Right;
+        this.durationPanel.Location = new System.Drawing.Point(121, 0);
+        this.durationPanel.Name = "durationPanel";
+        this.durationPanel.Size = new System.Drawing.Size(113, 56);
+        this.durationPanel.TabIndex = 2;
+        //
         // descriptionTextBox
         //
         this.descriptionTextBox.AcceptsTab = true;
@@ -196,18 +208,6 @@ partial class TimerEditViewController
         this.descriptionTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.descriptionTextBox_KeyUp);
         this.descriptionTextBox.Leave += new System.EventHandler(this.descriptionTextBox_Leave);
         this.descriptionTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionTextBox_PreviewKeyDown);
-        //
-        // durationPanel
-        //
-        this.durationPanel.AutoSize = true;
-        this.durationPanel.BackColor = System.Drawing.Color.Transparent;
-        this.durationPanel.Controls.Add(this.textBoxDuration);
-        this.durationPanel.Controls.Add(this.linkLabelDuration);
-        this.durationPanel.Dock = System.Windows.Forms.DockStyle.Right;
-        this.durationPanel.Location = new System.Drawing.Point(121, 0);
-        this.durationPanel.Name = "durationPanel";
-        this.durationPanel.Size = new System.Drawing.Size(113, 56);
-        this.durationPanel.TabIndex = 2;
         //
         // textBoxDuration
         //

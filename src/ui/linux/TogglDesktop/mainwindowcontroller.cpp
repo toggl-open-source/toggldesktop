@@ -68,6 +68,9 @@ MainWindowController::MainWindowController(
 
     readSettings();
 
+    connect(QApplication::instance(), SIGNAL(showUp()),
+            this, SLOT(raise()));
+
     connect(TogglApi::instance, SIGNAL(displayApp(bool)),  // NOLINT
             this, SLOT(displayApp(bool)));  // NOLINT
 
@@ -331,6 +334,12 @@ void MainWindowController::writeSettings() {
 }
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
+    if (hasTrayIcon()) {
+        event->ignore();
+        hide();
+        return;
+    }
+
     QMessageBox::StandardButton dialog;
     dialog = QMessageBox::question(this,
                                    "Toggl Desktop",
@@ -348,6 +357,9 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 }
 
 bool MainWindowController::hasTrayIcon() const {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
+    return true;
+#endif
     QString currentDesktop = QProcessEnvironment::systemEnvironment().value(
         "XDG_CURRENT_DESKTOP", "");
     return "Unity" != currentDesktop;

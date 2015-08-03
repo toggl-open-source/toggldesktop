@@ -97,6 +97,16 @@ public partial class EditForm : Form
                           0);
     }
 
+    protected override void OnResize(EventArgs e)
+    {
+        if (this.WindowState == FormWindowState.Maximized)
+        {
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        base.OnResize(e);
+    }
+
     private bool isMouseOverResizeArea(MouseEventArgs e)
     {
         var mousePosition = e.GetPosition(this.controller);

@@ -31,12 +31,6 @@ SOURCES += main.cpp\
     toggl.cpp \
     mainwindowcontroller.cpp \
     errorviewcontroller.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlocalpeer.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile_unix.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile_win.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.cpp \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.cpp \
     loginwidget.cpp \
     timeentrylistwidget.cpp \
     timerwidget.cpp \
@@ -44,6 +38,7 @@ SOURCES += main.cpp\
     timeentryeditorwidget.cpp \
     ../../../../third_party/qt-oauth-lib/logindialog.cpp \
     ../../../../third_party/qt-oauth-lib/oauth2.cpp \
+    ../../../../third_party/SingleApplication/singleapplication.cpp \
     preferencesdialog.cpp \
     aboutdialog.cpp \
     feedbackdialog.cpp \
@@ -57,12 +52,6 @@ HEADERS  += \
     settingsview.h \
     toggl.h \
     mainwindowcontroller.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlocalpeer.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtlockedfile.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/QtLockedFile \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsingleapplication.h \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/QtSingleApplication \
-    ../../../../third_party/qt-solutions/qtsingleapplication/src/qtsinglecoreapplication.h \
     loginwidget.h \
     errorviewcontroller.h \
     timeentrylistwidget.h \
@@ -71,6 +60,7 @@ HEADERS  += \
     timeentryeditorwidget.h \
     ../../../../third_party/qt-oauth-lib/logindialog.h \
     ../../../../third_party/qt-oauth-lib/oauth2.h \
+    ../../../../third_party/SingleApplication/singleapplication.h \
     preferencesdialog.h \
     aboutdialog.h \
     feedbackdialog.h \
@@ -100,7 +90,7 @@ LIBS += -lX11 -lXss
 
 INCLUDEPATH += $$PWD/../../../
 INCLUDEPATH += $$PWD/../../../../third_party/bugsnag-qt
-INCLUDEPATH += $$PWD/../../../../third_party/qt-solutions/qtsingleapplication/src/
+INCLUDEPATH += $$PWD/../../../../third_party/SingleApplication/
 INCLUDEPATH += $$PWD/../../../../third_party/qt-oauth-lib
 
 QMAKE_RPATHDIR += .

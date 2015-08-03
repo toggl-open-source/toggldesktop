@@ -30,24 +30,23 @@ public partial class TimeEntryListViewController : UserControl
         Toggl.OnTimeEntryList += OnTimeEntryList;
         Toggl.OnLogin += OnLogin;
 
-        timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
-        timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
+        //timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
+        //timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
 
         entries.SetFocusCondition(() => timerEditViewController.CanFocusList());
-
     }
 
     void TimeEntryListViewController_MouseWheel(object sender, MouseEventArgs e)
     {
-        if (!timerEditViewController.isAutocompleteOpened())
-        {
-            entriesHost.Focus();
-        }
+        //if (!timerEditViewController.isAutocompleteOpened())
+        //{
+        //    entriesHost.Focus();
+        //}
     }
 
     public void SetAcceptButton(Form frm)
     {
-        timerEditViewController.SetAcceptButton(frm);
+        // TODO: replace concept of accept buttons (wpf does not have this)
     }
 
     void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
@@ -129,9 +128,9 @@ public partial class TimeEntryListViewController : UserControl
         Toggl.OpenInBrowser();
     }
 
-    internal void setEditPopup(EditForm editForm)
+    public void SetEditPopup(WPF.TimeEntryEditViewController editView)
     {
-        timerEditViewController.editForm = editForm;
+        editView.SetTimer(this.timerEditViewController);
     }
 
     public void HighlightEntry(string GUID)

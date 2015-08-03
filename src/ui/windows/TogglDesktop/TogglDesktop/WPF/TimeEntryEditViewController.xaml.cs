@@ -21,7 +21,6 @@ namespace TogglDesktop.WPF
     /// </summary>
     public partial class TimeEntryEditViewController
     {
-        private readonly DispatcherTimer durationUpdateTimer;
         private Toggl.TimeEntry timeEntry;
         private bool isInNewProjectMode = true;
         private bool isInNewClientMode = true;
@@ -36,7 +35,7 @@ namespace TogglDesktop.WPF
         public TimeEntryEditViewController()
         {
             this.DataContext = this;
-            InitializeComponent();
+            this.InitializeComponent();
 
             Toggl.OnLogin += this.onLogin;
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
@@ -45,8 +44,6 @@ namespace TogglDesktop.WPF
             Toggl.OnClientSelect += this.onClientSelect;
             Toggl.OnTags += this.onTags;
             Toggl.OnWorkspaceSelect += this.onWorkspaceSelect;
-
-            this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
 
         private void onLogin(bool open, ulong userId)
@@ -87,7 +84,6 @@ namespace TogglDesktop.WPF
 
             var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
 
-            this.durationUpdateTimer.IsEnabled = isCurrentlyRunning;
             this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
 
             if (open)
@@ -197,16 +193,6 @@ namespace TogglDesktop.WPF
         #endregion
 
         #region duration auto update
-
-        private DispatcherTimer startDurationUpdateTimer()
-        {
-            var timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1),
-            };
-            timer.Tick += this.durationUpdateTimerTick;
-            return timer;
-        }
 
         private void durationUpdateTimerTick(object sender, EventArgs eventArgs)
         {
@@ -394,8 +380,15 @@ namespace TogglDesktop.WPF
 
         private void projectDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
-            this.projectAutoComplete.IsOpen = this.projectDropDownButton.IsChecked ?? false;
+            var open = this.projectDropDownButton.IsChecked ?? false;
+            if (open)
+            {
+                this.projectAutoComplete.OpenAndShowAll();
+            }
+            else
+            {
+                this.projectAutoComplete.IsOpen = false;
+            }
 
             if (!this.projectTextBox.IsKeyboardFocused)
             {
@@ -422,7 +415,6 @@ namespace TogglDesktop.WPF
             var item = asProjectItem.Item;
 
             this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel);
-            this.setDescriptionIfChanged(item.TaskLabel);
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
@@ -593,8 +585,15 @@ namespace TogglDesktop.WPF
 
         private void clientDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
-            this.clientAutoComplete.IsOpen = this.clientDropDownButton.IsChecked ?? false;
+            var open = this.clientDropDownButton.IsChecked ?? false;
+            if (open)
+            {
+                this.clientAutoComplete.OpenAndShowAll();
+            }
+            else
+            {
+                this.clientAutoComplete.IsOpen = false;
+            }
 
             if (!this.clientTextBox.IsKeyboardFocused)
             {
@@ -792,7 +791,6 @@ namespace TogglDesktop.WPF
 
         private void workspaceDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //TODO: fix clicking this to close reopens due to popup-capture->close-event->button-click
             this.workspaceAutoComplete.IsOpen = this.workspaceDropDownButton.IsChecked ?? false;
 
             if (!this.workspaceTextBox.IsKeyboardFocused)
@@ -880,6 +878,11 @@ namespace TogglDesktop.WPF
 
         #region variuos
 
+        public void SetTimer(TimerEditViewController timer)
+        {
+            timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             switch (e.Key)
@@ -940,7 +943,7 @@ namespace TogglDesktop.WPF
             }
             if (DialogResult.Yes == result)
             {
-                Toggl.DeleteTimeEntry(timeEntry.GUID);
+                Toggl.DeleteTimeEntry(this.timeEntry.GUID);
                 //TODO: reset form (specifically add-project controls)?
             }
         }

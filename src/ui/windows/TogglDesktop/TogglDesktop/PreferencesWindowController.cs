@@ -164,20 +164,20 @@ public partial class PreferencesWindowController : TogglForm
 
         if (btnRecordShowHideShortcut.Tag != null)
         {
-            Utils.SetShortcutForShow((KeyEventArgs)btnRecordShowHideShortcut.Tag);
+            //Utils.SetShortcutForShow((KeyEventArgs)btnRecordShowHideShortcut.Tag);
         }
         if (btnClearShowHideShortcut.Tag != null)
         {
-            Utils.SetShortcutForShow(null);
+            //Utils.SetShortcutForShow(null);
         }
 
         if (btnRecordStartStopShortcut.Tag != null)
         {
-            Utils.SetShortcutForStart((KeyEventArgs)btnRecordStartStopShortcut.Tag);
+            //Utils.SetShortcutForStart((KeyEventArgs)btnRecordStartStopShortcut.Tag);
         }
         if (btnClearStartStopTimer.Tag != null)
         {
-            Utils.SetShortcutForStart(null);
+            //Utils.SetShortcutForStart(null);
         }
 
         if (!Toggl.SetSettings(settings))

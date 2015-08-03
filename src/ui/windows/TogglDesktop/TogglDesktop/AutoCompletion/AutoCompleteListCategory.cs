@@ -17,7 +17,7 @@ namespace TogglDesktop.AutoCompletion
 
         public override IEnumerable<AutoCompleteItem> Complete(string input)
         {
-            if (this.Text.Contains(input))
+            if (this.completes(input))
             {
                 this.Visible = true;
                 return this.CompleteAll();
