@@ -69,6 +69,8 @@ void WebSocketClient::Shutdown() {
     activity_.wait();  // wait until activity actually stops
 
     deleteSession();
+
+    logger().debug("Shutdown done");
 }
 
 error WebSocketClient::createSession() {
