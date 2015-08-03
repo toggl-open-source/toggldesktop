@@ -48,8 +48,6 @@ class WebSocketClient {
         WebSocketMessageCallback on_websocket_message);
     virtual void Shutdown();
 
-    bool Up() const;
-
  protected:
     void runActivity();
 

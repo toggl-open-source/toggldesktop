@@ -29,10 +29,6 @@
 
 namespace toggl {
 
-bool WebSocketClient::Up() const {
-    return activity_.isRunning() && !activity_.isStopped();
-}
-
 WebSocketClient::~WebSocketClient() {
     deleteSession();
 }
