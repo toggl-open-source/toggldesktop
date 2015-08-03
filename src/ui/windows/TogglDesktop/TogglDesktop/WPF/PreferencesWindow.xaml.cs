@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace TogglDesktop.WPF
@@ -73,6 +74,7 @@ namespace TogglDesktop.WPF
 
             #region proxy
 
+            this.useNoProxyRadioButton.IsChecked = true;
             this.useSystemProxySettingsCheckBox.IsChecked = settings.AutodetectProxy;
             this.useProxyCheckBox.IsChecked = settings.UseProxy;
             this.proxyHostTextBox.Text = settings.ProxyHost;
@@ -205,7 +207,7 @@ namespace TogglDesktop.WPF
             return settings;
         }
 
-        private static bool isChecked(CheckBox checkBox)
+        private static bool isChecked(ToggleButton checkBox)
         {
             return checkBox.IsChecked ?? false;
         }

@@ -138,10 +138,13 @@
                 </TabItem>
                 <TabItem Header="PROXY">
                     <StackPanel Margin="11 11">
-                        <CheckBox Name="useSystemProxySettingsCheckBox" x:FieldModifier="private"
-                                Margin="5">Use system proxy settings</CheckBox>
-                        <CheckBox Name="useProxyCheckBox" x:FieldModifier="private"
-                                  Margin="5">Use proxy to connect to Toggl</CheckBox>
+                        <RadioButton Name="useNoProxyRadioButton" x:FieldModifier="private" GroupName="Proxy"
+                                     IsChecked="True"
+                                Margin="5">Do not use proxy</RadioButton>
+                        <RadioButton Name="useSystemProxySettingsCheckBox" x:FieldModifier="private" GroupName="Proxy"
+                                Margin="5">Use system proxy settings</RadioButton>
+                        <RadioButton Name="useProxyCheckBox" x:FieldModifier="private" GroupName="Proxy"
+                                  Margin="5">Use proxy to connect to Toggl</RadioButton>
                         <GroupBox Header="Proxy Settings" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
