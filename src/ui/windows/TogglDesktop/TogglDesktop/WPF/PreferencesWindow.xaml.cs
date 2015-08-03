@@ -309,6 +309,8 @@ namespace TogglDesktop.WPF
 
                 this.Shortcut = new Utils.KeyCombination(mods, key);
                 this.HasChanged = true;
+
+                e.Handled = true;
             }
 
             public void Reset()
