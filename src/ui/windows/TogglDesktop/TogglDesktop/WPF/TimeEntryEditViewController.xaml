@@ -257,6 +257,7 @@
         </StackPanel>
         
         <TextBlock Name="lastUpdatedText" x:FieldModifier="private" Grid.Column="1" Grid.Row="3"
+                   Style="{StaticResource SmallText}"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">Last update N/A</TextBlock>
 
         <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ImageButton}"
