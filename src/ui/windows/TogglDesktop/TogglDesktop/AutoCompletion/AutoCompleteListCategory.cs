@@ -15,18 +15,18 @@ namespace TogglDesktop.AutoCompletion
             this.children = children;
         }
 
-        public override IEnumerable<AutoCompleteItem> Complete(string input)
+        public override IEnumerable<AutoCompleteItem> Complete(string[] words)
         {
-            if (this.completes(input))
+            if (this.completesAll(words))
             {
                 this.Visible = true;
                 return this.CompleteAll();
             }
 
-            return this.completeRecursive(input);
+            return this.completeRecursive(words);
         }
 
-        private IEnumerable<AutoCompleteItem> completeRecursive(string input)
+        private IEnumerable<AutoCompleteItem> completeRecursive(string[] input)
         {
             var anyChildren = false;
             foreach (var descendent in this.children.SelectMany(c => c.Complete(input)))

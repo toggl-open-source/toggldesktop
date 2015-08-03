@@ -12,7 +12,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        public override IEnumerable<AutoCompleteItem> Complete(string input)
+        public override IEnumerable<AutoCompleteItem> Complete(string[] input)
         {
             yield return this;
         }

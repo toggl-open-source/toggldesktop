@@ -11,7 +11,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        public override IEnumerable<AutoCompleteItem> Complete(string input)
+        public override IEnumerable<AutoCompleteItem> Complete(string[] input)
         {
             yield return this;
         }
@@ -24,8 +24,35 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
     class ProjectItem : SimpleItem<ProjectEntry, Toggl.AutocompleteItem>
     {
-        public ProjectItem(Toggl.AutocompleteItem item) : base(item, item.ProjectLabel)
+        public ProjectItem(Toggl.AutocompleteItem item)
+            : base(item, createAutocompletionString(item))
         {
+        }
+
+        private static string createAutocompletionString(Toggl.AutocompleteItem item)
+        {
+            if (string.IsNullOrEmpty(item.ClientLabel))
+            {
+                if (string.IsNullOrEmpty(item.TaskLabel))
+                {
+                    return item.ProjectLabel;
+                }
+                else
+                {
+                    return item.ProjectLabel + " " + item.TaskLabel;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(item.TaskLabel))
+                {
+                    return item.ProjectLabel + " " + item.ClientLabel;
+                }
+                else
+                {
+                    return item.ProjectLabel + " " + item.ClientLabel + " " + item.TaskLabel;
+                }
+            }
         }
 
         protected override ProjectEntry createElement(Action selectWithClick)

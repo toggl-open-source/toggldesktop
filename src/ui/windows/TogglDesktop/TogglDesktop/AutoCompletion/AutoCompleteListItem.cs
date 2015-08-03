@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace TogglDesktop.AutoCompletion
@@ -8,11 +9,14 @@ namespace TogglDesktop.AutoCompletion
     {
         public string Text { get; private set; }
 
+        private readonly bool neverCompletes;
+
         private bool visible;
 
         protected AutoCompleteListItem(string text)
         {
             this.Text = text;
+            this.neverCompletes = string.IsNullOrWhiteSpace(text);
             this.visible = true;
         }
 
@@ -35,12 +39,18 @@ namespace TogglDesktop.AutoCompletion
             }
         }
 
-        protected bool completes(string input)
+        protected bool completesAll(string[] words)
         {
-            return this.Text.IndexOf(input, StringComparison.OrdinalIgnoreCase) >= 0;
+            return !this.neverCompletes && words.All(this.completes);
         }
 
-        public abstract IEnumerable<AutoCompleteItem> Complete(string input);
+        private bool completes(string word)
+        {
+            return this.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+
+        public abstract IEnumerable<AutoCompleteItem> Complete(string[] words);
         public abstract IEnumerable<AutoCompleteItem> CompleteAll();
         public abstract void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick);
 

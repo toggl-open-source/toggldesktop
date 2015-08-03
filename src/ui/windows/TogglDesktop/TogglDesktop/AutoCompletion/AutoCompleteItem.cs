@@ -30,9 +30,9 @@ namespace TogglDesktop.AutoCompletion
         }
 
 
-        public override IEnumerable<AutoCompleteItem> Complete(string input)
+        public override IEnumerable<AutoCompleteItem> Complete(string[] words)
         {
-            this.Visible = this.completes(input);
+            this.Visible = this.completesAll(words);
 
             if (this.Visible)
             {
