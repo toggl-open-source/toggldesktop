@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             Height="400" Width="330"
-             WindowStyle="None" ResizeMode="NoResize">
+             Height="420" Width="350"
+             WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" Background="Transparent">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,7 +14,12 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.3" Direction="270" />
+    </Window.Effect>
+
+    <Grid Margin="10 4 10 16">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition />
