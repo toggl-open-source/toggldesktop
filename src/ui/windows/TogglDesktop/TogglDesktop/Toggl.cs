@@ -105,6 +105,9 @@ public static class Toggl
         public UInt64 ProjectID;
         public UInt64 WorkspaceID;
         public UInt64 Type;
+        // If its a time entry, it has tags
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string Tags;
         public IntPtr Next;
 
         public override string ToString()
