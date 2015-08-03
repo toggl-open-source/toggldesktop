@@ -243,6 +243,7 @@
       <DependentUpon>DescriptionAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ExtendedTextBox.cs" />
+    <Compile Include="WPF\Extensions.cs" />
     <Compile Include="WPF\LoginConfirmButton.xaml.cs">
       <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
     </Compile>
@@ -296,6 +297,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="Win32.cs" />
     <Compile Include="WPF\OpacityExtension.cs" />
+    <Compile Include="WPF\PreferencesWindow.xaml.cs">
+      <DependentUpon>PreferencesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\PropertyHelpers.cs" />
     <Compile Include="WPF\Resources.cs" />
     <Compile Include="WPF\AutoComplete\StringEntry.xaml.cs">
@@ -396,7 +400,7 @@
     <None Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo64.png" />
+    <Resource Include="Resources\logo64.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon-billable.png" />
@@ -558,6 +562,14 @@
     <Page Include="WPF\LoginTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\PreferencesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Resources\PreferencesWindowStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Resources\EditViewControllerStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
