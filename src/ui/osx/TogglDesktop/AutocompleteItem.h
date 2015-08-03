@@ -24,4 +24,5 @@
 @property uint64_t WorkspaceID;
 @property uint64_t TaskID;
 @property uint64_t Type;
+@property (strong) NSArray *tags;
 @end

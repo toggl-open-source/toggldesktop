@@ -78,7 +78,8 @@ TimeEntry *User::Start(
     const std::string duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string project_guid) {
+    const std::string project_guid,
+    const std::string tags) {
 
     Stop();
 
@@ -94,6 +95,7 @@ TimeEntry *User::Start(
     te->SetPID(project_id);
     te->SetProjectGUID(project_guid);
     te->SetTID(task_id);
+    te->SetTags(tags);
 
     if (!duration.empty()) {
         int seconds = Formatter::ParseDurationString(duration);

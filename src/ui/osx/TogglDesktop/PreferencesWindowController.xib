@@ -34,7 +34,6 @@
                 <outlet property="remindWed" destination="E0j-Uw-3Nz" id="BSu-Cd-aT5"/>
                 <outlet property="reminderCheckbox" destination="Spu-c6-dBl" id="rce-jc-2Cq"/>
                 <outlet property="reminderMinutesTextField" destination="R9v-BZ-yhR" id="OVt-ic-hzF"/>
-                <outlet property="renderTimeline" destination="pMq-HI-FjT" id="kqw-uL-seP"/>
                 <outlet property="showHideShortcutView" destination="DLB-Fw-7tX" id="T2o-mF-KXG"/>
                 <outlet property="startStopShortcutView" destination="Ft4-tk-xRA" id="5tb-G5-s2R"/>
                 <outlet property="useIdleDetectionButton" destination="Lgk-gZ-8Ha" id="Erp-FO-vcw"/>
@@ -106,8 +105,8 @@
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUE-Lr-nId">
-                                            <rect key="frame" x="16" y="149" width="286" height="18"/>
-                                            <buttonCell key="cell" type="check" title="Show timer in menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="d1o-e3-Xs6">
+                                            <rect key="frame" x="16" y="138" width="286" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Show timer on menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="d1o-e3-Xs6">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -128,8 +127,8 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRq-Fm-A6k">
-                                            <rect key="frame" x="16" y="129" width="286" height="18"/>
-                                            <buttonCell key="cell" type="check" title="Show project in menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CM9-BW-DQq">
+                                            <rect key="frame" x="16" y="118" width="286" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Show project on menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CM9-BW-DQq">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -139,8 +138,8 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kR2-Ee-viZ">
-                                            <rect key="frame" x="16" y="109" width="286" height="18"/>
-                                            <buttonCell key="cell" type="check" title="Dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="L9v-Ys-EtJ">
+                                            <rect key="frame" x="16" y="98" width="286" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Show dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="L9v-Ys-EtJ">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -150,7 +149,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n4h-zi-TcC">
-                                            <rect key="frame" x="16" y="89" width="286" height="18"/>
+                                            <rect key="frame" x="16" y="78" width="286" height="18"/>
                                             <buttonCell key="cell" type="check" title="On top of other windows" bezelStyle="regularSquare" imagePosition="left" inset="2" id="shd-cT-4Jq">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -161,7 +160,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWA-BY-OMt">
-                                            <rect key="frame" x="16" y="69" width="286" height="18"/>
+                                            <rect key="frame" x="16" y="47" width="286" height="18"/>
                                             <buttonCell key="cell" type="check" title="Focus app on global shortcut" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="U1R-lf-nkl">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -193,27 +192,27 @@
                                             </textFieldCell>
                                         </textField>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DRh-rC-B0a">
-                                            <rect key="frame" x="16" y="49" width="414" height="18"/>
+                                            <rect key="frame" x="16" y="27" width="414" height="18"/>
                                             <buttonCell key="cell" type="check" title="Open edit view when starting entry with shortcut" bezelStyle="regularSquare" imagePosition="left" inset="2" id="LFN-fL-iJI">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="openEditorOnShortcut:" target="-2" id="OWz-rT-1io"/>
-                                                <outlet property="nextKeyView" destination="pMq-HI-FjT" id="Kj3-fe-tGK"/>
                                             </connections>
                                         </button>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pMq-HI-FjT">
-                                            <rect key="frame" x="16" y="29" width="387" height="18"/>
-                                            <buttonCell key="cell" type="check" title="Render timeline" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zWr-Pl-lB1">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="renderTimelineChanged:" target="-2" id="fe7-2g-czt"/>
-                                                <outlet property="nextKeyView" destination="DLB-Fw-7tX" id="xd6-9f-Ker"/>
-                                            </connections>
-                                        </button>
+                                        <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="poP-TW-xtx">
+                                            <rect key="frame" x="17" y="160" width="411" height="5"/>
+                                            <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                            <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <font key="titleFont" metaFont="system"/>
+                                        </box>
+                                        <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="9TR-Ue-Rqe">
+                                            <rect key="frame" x="17" y="69" width="411" height="5"/>
+                                            <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                            <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <font key="titleFont" metaFont="system"/>
+                                        </box>
                                     </subviews>
                                 </view>
                             </tabViewItem>

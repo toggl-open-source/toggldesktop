@@ -449,6 +449,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.time_entry.ClientLabel = item.ClientLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
 	self.time_entry.Description = item.Description;
+	self.time_entry.tags = [[NSMutableArray alloc] initWithArray:item.tags copyItems:YES];
 
 	self.descriptionComboBox.stringValue = self.time_entry.Description;
 	if (item.ProjectID)
@@ -515,12 +516,14 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)addButtonClicked
 {
+	const char *tag_list = [[self.time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
 	char *guid = toggl_start(ctx,
 							 [self.descriptionComboBox.stringValue UTF8String],
 							 "0",
 							 self.time_entry.TaskID,
 							 self.time_entry.ProjectID,
-							 0);
+							 0,
+							 tag_list);
 
 	[self clear];
 	self.time_entry = [[TimeEntryViewItem alloc] init];

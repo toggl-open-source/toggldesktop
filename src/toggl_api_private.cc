@@ -29,8 +29,48 @@ TogglAutocompleteView *autocomplete_item_init(
     result->ProjectID = static_cast<unsigned int>(item.ProjectID);
     result->WorkspaceID = static_cast<unsigned int>(item.WorkspaceID);
     result->Type = static_cast<unsigned int>(item.Type);
+    result->Tags = copy_string(item.Tags);
     result->Next = nullptr;
     return result;
+}
+
+void autocomplete_item_clear(TogglAutocompleteView *item) {
+    if (!item) {
+        return;
+    }
+
+    free(item->Text);
+    item->Text = nullptr;
+
+    free(item->ProjectAndTaskLabel);
+    item->ProjectAndTaskLabel = nullptr;
+
+    free(item->TaskLabel);
+    item->TaskLabel = nullptr;
+
+    free(item->ProjectLabel);
+    item->ProjectLabel = nullptr;
+
+    free(item->ClientLabel);
+    item->ClientLabel = nullptr;
+
+    free(item->Description);
+    item->Description = nullptr;
+
+    free(item->ProjectColor);
+    item->ProjectColor = nullptr;
+
+    free(item->Tags);
+    item->Tags = nullptr;
+
+    if (item->Next) {
+        TogglAutocompleteView *next =
+            reinterpret_cast<TogglAutocompleteView *>(item->Next);
+        autocomplete_item_clear(next);
+        item->Next = nullptr;
+    }
+
+    delete item;
 }
 
 TogglGenericView *view_item_init() {
@@ -115,42 +155,6 @@ void view_item_clear(TogglGenericView *item) {
         TogglGenericView *next =
             reinterpret_cast<TogglGenericView *>(item->Next);
         view_item_clear(next);
-    }
-
-    delete item;
-}
-
-void autocomplete_item_clear(TogglAutocompleteView *item) {
-    if (!item) {
-        return;
-    }
-
-    free(item->Text);
-    item->Text = nullptr;
-
-    free(item->ProjectAndTaskLabel);
-    item->ProjectAndTaskLabel = nullptr;
-
-    free(item->TaskLabel);
-    item->TaskLabel = nullptr;
-
-    free(item->ProjectLabel);
-    item->ProjectLabel = nullptr;
-
-    free(item->ClientLabel);
-    item->ClientLabel = nullptr;
-
-    free(item->Description);
-    item->Description = nullptr;
-
-    free(item->ProjectColor);
-    item->ProjectColor = nullptr;
-
-    if (item->Next) {
-        TogglAutocompleteView *next =
-            reinterpret_cast<TogglAutocompleteView *>(item->Next);
-        autocomplete_item_clear(next);
-        item->Next = nullptr;
     }
 
     delete item;
