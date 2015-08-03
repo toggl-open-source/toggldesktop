@@ -106,8 +106,16 @@ public static class Utils
             this.keyCode = keyCode;
         }
 
-        public ModifierKeys Modifiers { get { return this.modifiers; } }
-        public string KeyCode { get { return this.keyCode; } }
+        public ModifierKeys Modifiers {
+            get {
+                return this.modifiers;
+            }
+        }
+        public string KeyCode {
+            get {
+                return this.keyCode;
+            }
+        }
     }
 
     public static void SetShortcutForShow(KeyCombination? e)

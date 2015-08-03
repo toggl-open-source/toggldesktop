@@ -45,9 +45,9 @@ partial class TimerEditViewController
         this.panelDescription.SuspendLayout();
         this.durationPanel.SuspendLayout();
         this.SuspendLayout();
-        // 
+        //
         // buttonStart
-        // 
+        //
         this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(217)))), ((int)(((byte)(101)))));
         this.buttonStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
         this.buttonStart.Dock = System.Windows.Forms.DockStyle.Right;
@@ -64,19 +64,19 @@ partial class TimerEditViewController
         this.buttonStart.Text = "Start";
         this.buttonStart.UseVisualStyleBackColor = false;
         this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
-        // 
+        //
         // timerRunningDuration
-        // 
+        //
         this.timerRunningDuration.Interval = 1000;
         this.timerRunningDuration.Tick += new System.EventHandler(this.timerRunningDuration_Tick);
-        // 
+        //
         // linkLabelProject
-        // 
+        //
         this.linkLabelProject.AccessibleDescription = "A link label with project name, clicking on it will open the time entry editor";
         this.linkLabelProject.AccessibleName = "Time entry project";
         this.linkLabelProject.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
-        this.linkLabelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-        | System.Windows.Forms.AnchorStyles.Right)));
+        this.linkLabelProject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                        | System.Windows.Forms.AnchorStyles.Right)));
         this.linkLabelProject.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
         this.linkLabelProject.ForeColor = System.Drawing.Color.White;
         this.linkLabelProject.Location = new System.Drawing.Point(17, 35);
@@ -88,15 +88,15 @@ partial class TimerEditViewController
         this.linkLabelProject.Visible = false;
         this.linkLabelProject.Click += new System.EventHandler(this.linkLabelProject_Click);
         this.linkLabelProject.MouseEnter += new System.EventHandler(this.linkLabelProject_Enter);
-        // 
+        //
         // linkLabelDescription
-        // 
+        //
         this.linkLabelDescription.AccessibleDescription = "A link label with time entry description, clicking on it opens the time entry edi" +
-    "tor";
+                "tor";
         this.linkLabelDescription.AccessibleName = "Time entry description";
         this.linkLabelDescription.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
-        this.linkLabelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-        | System.Windows.Forms.AnchorStyles.Right)));
+        this.linkLabelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                            | System.Windows.Forms.AnchorStyles.Right)));
         this.linkLabelDescription.AutoEllipsis = true;
         this.linkLabelDescription.Font = new System.Drawing.Font("Lucida Sans Unicode", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
         this.linkLabelDescription.ForeColor = System.Drawing.Color.White;
@@ -108,11 +108,11 @@ partial class TimerEditViewController
         this.linkLabelDescription.UseMnemonic = false;
         this.linkLabelDescription.Visible = false;
         this.linkLabelDescription.Click += new System.EventHandler(this.linkLabelDescription_Click);
-        // 
+        //
         // linkLabelDuration
-        // 
+        //
         this.linkLabelDuration.AccessibleDescription = "A link label with time entry duration, clicking on it will open the time entry ed" +
-    "itor";
+                "itor";
         this.linkLabelDuration.AccessibleName = "Time entry duration";
         this.linkLabelDuration.AccessibleRole = System.Windows.Forms.AccessibleRole.Link;
         this.linkLabelDuration.Font = new System.Drawing.Font("Lucida Sans Unicode", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(186)));
@@ -127,9 +127,9 @@ partial class TimerEditViewController
         this.linkLabelDuration.UseMnemonic = false;
         this.linkLabelDuration.Visible = false;
         this.linkLabelDuration.Click += new System.EventHandler(this.linkLabelDuration_Click);
-        // 
+        //
         // labelClearProject
-        // 
+        //
         this.labelClearProject.AccessibleDescription = "A button that allows to remove the assigned project from the time entry";
         this.labelClearProject.AccessibleName = "Clear project";
         this.labelClearProject.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -146,9 +146,9 @@ partial class TimerEditViewController
         this.labelClearProject.TextAlign = System.Drawing.ContentAlignment.TopCenter;
         this.labelClearProject.Visible = false;
         this.labelClearProject.Click += new System.EventHandler(this.labelClearProject_Click);
-        // 
+        //
         // panelLeft
-        // 
+        //
         this.panelLeft.BackColor = System.Drawing.Color.Transparent;
         this.panelLeft.BackgroundImage = global::TogglDesktop.Properties.Resources.timerDarkBg;
         this.panelLeft.Controls.Add(this.panelDescription);
@@ -159,12 +159,12 @@ partial class TimerEditViewController
         this.panelLeft.Name = "panelLeft";
         this.panelLeft.Size = new System.Drawing.Size(234, 56);
         this.panelLeft.TabIndex = 11;
-        // 
+        //
         // panelDescription
-        // 
-        this.panelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-        | System.Windows.Forms.AnchorStyles.Left) 
-        | System.Windows.Forms.AnchorStyles.Right)));
+        //
+        this.panelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                                        | System.Windows.Forms.AnchorStyles.Left)
+                                        | System.Windows.Forms.AnchorStyles.Right)));
         this.panelDescription.BackColor = System.Drawing.Color.Transparent;
         this.panelDescription.Controls.Add(this.linkLabelProject);
         this.panelDescription.Controls.Add(this.linkLabelDescription);
@@ -174,9 +174,9 @@ partial class TimerEditViewController
         this.panelDescription.Name = "panelDescription";
         this.panelDescription.Size = new System.Drawing.Size(138, 53);
         this.panelDescription.TabIndex = 1;
-        // 
+        //
         // durationPanel
-        // 
+        //
         this.durationPanel.AutoSize = true;
         this.durationPanel.BackColor = System.Drawing.Color.Transparent;
         this.durationPanel.Controls.Add(this.textBoxDuration);
@@ -186,13 +186,13 @@ partial class TimerEditViewController
         this.durationPanel.Name = "durationPanel";
         this.durationPanel.Size = new System.Drawing.Size(113, 56);
         this.durationPanel.TabIndex = 2;
-        // 
+        //
         // descriptionTextBox
-        // 
+        //
         this.descriptionTextBox.AcceptsTab = true;
         this.descriptionTextBox.AccessibleName = "Time entry description";
-        this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-        | System.Windows.Forms.AnchorStyles.Right)));
+        this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                          | System.Windows.Forms.AnchorStyles.Right)));
         this.descriptionTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
         this.descriptionTextBox.BackAlpha = 0;
         this.descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
@@ -208,9 +208,9 @@ partial class TimerEditViewController
         this.descriptionTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.descriptionTextBox_KeyUp);
         this.descriptionTextBox.Leave += new System.EventHandler(this.descriptionTextBox_Leave);
         this.descriptionTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionTextBox_PreviewKeyDown);
-        // 
+        //
         // textBoxDuration
-        // 
+        //
         this.textBoxDuration.AccessibleName = "Time entry duration";
         this.textBoxDuration.BackAlpha = 10;
         this.textBoxDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
@@ -227,9 +227,9 @@ partial class TimerEditViewController
         this.textBoxDuration.Click += new System.EventHandler(this.textBoxDuration_Click);
         this.textBoxDuration.Enter += new System.EventHandler(this.textBoxDuration_Enter);
         this.textBoxDuration.Leave += new System.EventHandler(this.textBoxDuration_Leave);
-        // 
+        //
         // TimerEditViewController
-        // 
+        //
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
