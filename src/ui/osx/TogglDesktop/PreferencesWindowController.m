@@ -90,9 +90,12 @@ extern void *ctx;
 	}
 }
 
-- (IBAction)useProxyButtonChanged:(id)sender
+- (IBAction)proxyRadioChanged:(id)sender
 {
 	[self saveProxySettings];
+
+	toggl_set_settings_autodetect_proxy(ctx,
+										(kUseSystemProxySettings == self.proxyRadio.selectedTag));
 }
 
 - (IBAction)renderTimelineChanged:(id)sender
@@ -145,6 +148,10 @@ extern void *ctx;
 	[self saveProxySettings];
 }
 
+const int kUseNoProxy = 0;
+const int kUseSystemProxySettings = 1;
+const int kUseProxyToConnectToToggl = 2;
+
 - (void)saveProxySettings
 {
 	NSLog(@"saveProxySettings");
@@ -155,7 +162,7 @@ extern void *ctx;
 	NSString *password = [self.passwordTextField stringValue];
 
 	toggl_set_proxy_settings(ctx,
-							 [Utils stateToBool:[self.useProxyButton state]],
+							 (kUseProxyToConnectToToggl == self.proxyRadio.selectedTag),
 							 [host UTF8String],
 							 (unsigned int)port,
 							 [username UTF8String],
@@ -276,17 +283,24 @@ extern void *ctx;
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 	[self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];
 
-	[self.useProxyButton setState:[Utils boolToState:settings.use_proxy]];
+	if (!settings.use_proxy && !settings.autodetect_proxy)
+	{
+		[self.proxyRadio selectCellWithTag:kUseNoProxy];
+	}
+
+	if (settings.use_proxy)
+	{
+		[self.proxyRadio selectCellWithTag:kUseProxyToConnectToToggl];
+	}
 	[self.hostTextField setStringValue:settings.proxy_host];
 	[self.portTextField setIntegerValue:settings.proxy_port];
 	[self.usernameTextField setStringValue:settings.proxy_username];
 	[self.passwordTextField setStringValue:settings.proxy_password];
 
-	bool use_proxy = [self.useProxyButton state] == NSOnState;
-	[self.hostTextField setEnabled:use_proxy];
-	[self.portTextField setEnabled:use_proxy];
-	[self.usernameTextField setEnabled:use_proxy];
-	[self.passwordTextField setEnabled:use_proxy];
+	[self.hostTextField setEnabled:settings.use_proxy];
+	[self.portTextField setEnabled:settings.use_proxy];
+	[self.usernameTextField setEnabled:settings.use_proxy];
+	[self.passwordTextField setEnabled:settings.use_proxy];
 
 	self.idleMinutesTextField.intValue = settings.idle_minutes;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
@@ -294,7 +308,10 @@ extern void *ctx;
 	self.reminderMinutesTextField.intValue = settings.reminder_minutes;
 	self.reminderMinutesTextField.enabled = settings.reminder;
 
-	[self.autodetectProxyCheckbox setState:[Utils boolToState:settings.autodetect_proxy]];
+	if (settings.autodetect_proxy)
+	{
+		[self.proxyRadio selectCellWithTag:kUseSystemProxySettings];
+	}
 
 	[self.remindMon setState:[Utils boolToState:settings.remind_mon]];
 	[self.remindTue setState:[Utils boolToState:settings.remind_tue]];
@@ -332,12 +349,6 @@ extern void *ctx;
 - (IBAction)openEditorOnShortcut:(id)sender
 {
 	toggl_set_settings_open_editor_on_shortcut(ctx, [Utils stateToBool:self.openEditorOnShortcut.state]);
-}
-
-- (IBAction)autodetectProxyCheckboxChanged:(id)sender
-{
-	toggl_set_settings_autodetect_proxy(ctx,
-										[Utils stateToBool:[self.autodetectProxyCheckbox state]]);
 }
 
 - (IBAction)addAutotrackerRule:(id)sender

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
             <connections>
-                <outlet property="autodetectProxyCheckbox" destination="VYH-HQ-PE4" id="b5m-c5-cVN"/>
                 <outlet property="autotrack" destination="jHx-ps-PhJ" id="fMX-1b-q0p"/>
                 <outlet property="autotrackerProject" destination="TN9-Mx-4gf" id="94P-Mq-SHg"/>
                 <outlet property="autotrackerRulesTableView" destination="aw6-zQ-ZW8" id="3SU-TC-YlQ"/>
@@ -22,6 +21,7 @@
                 <outlet property="openEditorOnShortcut" destination="DRh-rC-B0a" id="U3h-ir-axL"/>
                 <outlet property="passwordTextField" destination="bcT-3P-lAf" id="hcg-zO-nf5"/>
                 <outlet property="portTextField" destination="0tH-DP-xDu" id="Opz-2O-YYS"/>
+                <outlet property="proxyRadio" destination="CE1-H6-4lx" id="roW-Cb-dcV"/>
                 <outlet property="recordTimelineCheckbox" destination="V28-KN-5Vi" id="76u-Eg-Kf1"/>
                 <outlet property="remindEnds" destination="4pc-oy-DHZ" id="quq-ky-ubO"/>
                 <outlet property="remindFri" destination="5ab-YA-eHT" id="IcA-xD-aZo"/>
@@ -37,7 +37,6 @@
                 <outlet property="showHideShortcutView" destination="DLB-Fw-7tX" id="T2o-mF-KXG"/>
                 <outlet property="startStopShortcutView" destination="Ft4-tk-xRA" id="5tb-G5-s2R"/>
                 <outlet property="useIdleDetectionButton" destination="Lgk-gZ-8Ha" id="Erp-FO-vcw"/>
-                <outlet property="useProxyButton" destination="B6k-US-RON" id="T6O-Pt-HEa"/>
                 <outlet property="usernameTextField" destination="hml-tw-LUI" id="1nT-Y3-g6A"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -98,12 +97,6 @@
                                         <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ft4-tk-xRA" customClass="MASShortcutView">
                                             <rect key="frame" x="288" y="222" width="140" height="19"/>
                                         </customView>
-                                        <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="LUN-WN-NDq">
-                                            <rect key="frame" x="18" y="211" width="410" height="5"/>
-                                            <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                            <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <font key="titleFont" metaFont="system"/>
-                                        </box>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUE-Lr-nId">
                                             <rect key="frame" x="16" y="138" width="286" height="18"/>
                                             <buttonCell key="cell" type="check" title="Show timer on menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="d1o-e3-Xs6">
@@ -221,30 +214,8 @@
                                     <rect key="frame" x="10" y="33" width="446" height="267"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B6k-US-RON">
-                                            <rect key="frame" x="15" y="223" width="224" height="18"/>
-                                            <buttonCell key="cell" type="check" title="Use proxy to connect to Toggl" bezelStyle="regularSquare" imagePosition="left" inset="2" id="F45-Cb-lbm">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="useProxyButtonChanged:" target="-2" id="quH-yt-nsE"/>
-                                                <outlet property="nextKeyView" destination="eSt-Rf-LI2" id="DXe-Qu-S5h"/>
-                                            </connections>
-                                        </button>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VYH-HQ-PE4">
-                                            <rect key="frame" x="15" y="248" width="286" height="18"/>
-                                            <buttonCell key="cell" type="check" title="Use system proxy settings" bezelStyle="regularSquare" imagePosition="left" inset="2" id="cjs-q4-0EV">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="autodetectProxyCheckboxChanged:" target="-2" id="EzK-ej-Pbb"/>
-                                                <outlet property="nextKeyView" destination="B6k-US-RON" id="mRY-g9-5KE"/>
-                                            </connections>
-                                        </button>
                                         <box autoresizesSubviews="NO" fixedFrame="YES" title="Proxy Settings" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="hoK-7e-akc">
-                                            <rect key="frame" x="15" y="79" width="416" height="138"/>
+                                            <rect key="frame" x="15" y="55" width="416" height="138"/>
                                             <view key="contentView">
                                                 <rect key="frame" x="1" y="1" width="414" height="122"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -333,7 +304,40 @@
                                             </view>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <outlet property="nextKeyView" destination="CE1-H6-4lx" id="uTG-uU-mzc"/>
+                                            </connections>
                                         </box>
+                                        <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CE1-H6-4lx">
+                                            <rect key="frame" x="17" y="173" width="377" height="91"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="cellSize" width="208" height="18"/>
+                                            <size key="intercellSpacing" width="4" height="2"/>
+                                            <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="xKr-dM-ivN">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <cells>
+                                                <column>
+                                                    <buttonCell type="radio" title="Do not use proxy" imagePosition="left" alignment="left" state="on" inset="2" id="gSM-qx-3WW">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <buttonCell type="radio" title="Use system proxy settings" imagePosition="left" alignment="left" tag="1" inset="2" id="u4R-p1-037">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <buttonCell type="radio" title="Use proxy to connect to Toggl" imagePosition="left" alignment="left" tag="2" inset="2" id="sBW-cF-MSS">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </column>
+                                            </cells>
+                                            <connections>
+                                                <action selector="proxyRadioChanged:" target="-2" id="IUa-9e-db2"/>
+                                                <outlet property="nextKeyView" destination="hoK-7e-akc" id="xds-J9-heF"/>
+                                            </connections>
+                                        </matrix>
                                     </subviews>
                                 </view>
                             </tabViewItem>
