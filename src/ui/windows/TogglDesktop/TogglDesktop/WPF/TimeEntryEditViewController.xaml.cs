@@ -21,7 +21,6 @@ namespace TogglDesktop.WPF
     /// </summary>
     public partial class TimeEntryEditViewController
     {
-        private readonly DispatcherTimer durationUpdateTimer;
         private Toggl.TimeEntry timeEntry;
         private bool isInNewProjectMode = true;
         private bool isInNewClientMode = true;
@@ -45,8 +44,6 @@ namespace TogglDesktop.WPF
             Toggl.OnClientSelect += this.onClientSelect;
             Toggl.OnTags += this.onTags;
             Toggl.OnWorkspaceSelect += this.onWorkspaceSelect;
-
-            this.durationUpdateTimer = this.startDurationUpdateTimer();
         }
 
         private void onLogin(bool open, ulong userId)
@@ -87,7 +84,6 @@ namespace TogglDesktop.WPF
 
             var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
 
-            this.durationUpdateTimer.IsEnabled = isCurrentlyRunning;
             this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
 
             if (open)
@@ -197,16 +193,6 @@ namespace TogglDesktop.WPF
         #endregion
 
         #region duration auto update
-
-        private DispatcherTimer startDurationUpdateTimer()
-        {
-            var timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1),
-            };
-            timer.Tick += this.durationUpdateTimerTick;
-            return timer;
-        }
 
         private void durationUpdateTimerTick(object sender, EventArgs eventArgs)
         {
@@ -891,6 +877,11 @@ namespace TogglDesktop.WPF
         #endregion
 
         #region variuos
+
+        public void SetTimer(TimerEditViewController timer)
+        {
+            timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
+        }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {

@@ -185,13 +185,14 @@ public partial class MainWindowController : TogglForm
         loginViewController = new LoginViewController();
         timeEntryListViewController = new TimeEntryListViewController();
         timeEntryEditViewController = new WPF.TimeEntryEditViewController();
+
         aboutWindowController = new AboutWindowController();
         preferencesWindowController = new PreferencesWindowController();
         feedbackWindowController = new FeedbackWindowController();
         idleNotificationWindowController = new IdleNotificationWindowController();
 
         initEditForm();
-        timeEntryListViewController.setEditPopup(editForm);
+        timeEntryListViewController.SetEditPopup(timeEntryEditViewController);
         editForm.Owner = aboutWindowController.Owner = preferencesWindowController.Owner = feedbackWindowController.Owner = this;
 
         if (!Toggl.StartUI(TogglDesktop.Program.Version()))

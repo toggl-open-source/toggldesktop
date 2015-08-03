@@ -59,6 +59,12 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public bool StaysOpen
+        {
+            get { return this.popup.StaysOpen; }
+            set { this.popup.StaysOpen = value; }
+        }
+
         #region dependency properties
 
         public static readonly DependencyProperty TargetProperty = DependencyProperty
@@ -129,7 +135,7 @@ namespace TogglDesktop.WPF
             {
                 case Key.Down:
                     {
-                        if (!this.popup.IsOpen)
+                        if (!this.IsOpen)
                             this.open(showAll:true);
                         this.controller.SelectNext();
                         e.Handled = true;
@@ -137,7 +143,7 @@ namespace TogglDesktop.WPF
                     }
                 case Key.Up:
                     {
-                        if (this.popup.IsOpen)
+                        if (this.IsOpen)
                             this.controller.SelectPrevious();
                         e.Handled = true;
                         return;
@@ -154,7 +160,7 @@ namespace TogglDesktop.WPF
                 case Key.Enter:
                 case Key.Tab:
                     {
-                        if (this.popup.IsOpen)
+                        if (this.IsOpen)
                         {
                             this.confirmCompletion();
                             e.Handled = true;

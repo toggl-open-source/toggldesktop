@@ -7,17 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="455">
     
-    <UserControl.Resources>
-        <Style TargetType="toggl:TimeEntryCell">
-            <Setter Property="EntryBackColor" Value="White"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="EntryBackColor" Value="{Binding EntryHoverColor}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>
-    
     <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
                 Background="#F7F7F7">
         
@@ -41,8 +30,7 @@
         </StackPanel>
         
         <!-- Entry -->
-        <Grid Name="entry" x:FieldModifier="private"
-              Height="53" Margin="0, 2, 0, 0" MouseDown="entry_MouseDown">
+        <Grid Height="53" Margin="0, 2, 0, 0" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
             
             <Grid.Background>
                 <SolidColorBrush Color="{Binding EntryBackColor}"/>
@@ -63,16 +51,15 @@
                        HorizontalAlignment="Right" FontSize="14.7"
                            Margin="0, 1, 33, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
             
-            <Button Name="buttonContinue" x:FieldModifier="private"  Grid.Column="4"
-                    Width="36" Height="36"  Margin="0, 0, 4, 0" Click="buttonContinue_Click"/>
+            <Button Grid.Column="4" Width="36" Height="36"  Margin="0, 0, 4, 0" Click="buttonContinue_Click"/>
 
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal" HorizontalAlignment="Right">
 
                 <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
-                       Stretch="None" Margin="3, 0, 3, 0"/>
+                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="16"/>
                 <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
-                       Stretch="None" Margin="3, 0, 3, 0"/>
+                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
 
             </StackPanel>
             
@@ -80,14 +67,12 @@
             <Grid Grid.Column="1" Margin="16, 8, 0, 8">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
 
-                    <TextBlock Name="labelTask" x:FieldModifier="private"
-                               Foreground="Gray">Task</TextBlock>
                     <TextBlock Name="labelClient" x:FieldModifier="private"
                                Foreground="DimGray">Client</TextBlock>
                     <TextBlock Name="labelProject" x:FieldModifier="private" MouseDown="labelProject_MouseDown"
@@ -95,8 +80,14 @@
 
                 </StackPanel>
 
-                <TextBlock Name="labelDescription" x:FieldModifier="private" Grid.Row="1" MouseDown="labelDescription_MouseDown"
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+
+                    <TextBlock Name="labelTask" x:FieldModifier="private"
+                               Foreground="Gray">Task</TextBlock>
+                    <TextBlock Name="labelDescription" x:FieldModifier="private" MouseDown="labelDescription_MouseDown"
                            HorizontalAlignment="Left">This is a description</TextBlock>
+                    
+                </StackPanel>
             </Grid>
 
 

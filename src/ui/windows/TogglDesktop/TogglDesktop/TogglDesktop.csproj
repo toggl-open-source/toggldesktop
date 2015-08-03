@@ -180,11 +180,13 @@
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
     <Compile Include="AutoCompletion\Implementation\NestedCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleNoncompletingCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
     <Compile Include="AutoCompletion\Implementation\ProjectItem.cs" />
     <Compile Include="AutoCompletion\Implementation\DescriptionItem.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
     <Compile Include="ComboBoxHelper.cs" />
     <Compile Include="ControlHelper.cs" />
@@ -215,9 +217,15 @@
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="StaticObjectPool.cs" />
     <Compile Include="WPF\AddValueConverter.cs" />
+    <Compile Include="WPF\AutoComplete\GrayTextCategory.xaml.cs">
+      <DependentUpon>GrayTextCategory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\AutoComplete\EntryBase.cs" />
     <Compile Include="WPF\AutoComplete\ClientCategory.xaml.cs">
       <DependentUpon>ClientCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\AutoComplete\TimerEntry.xaml.cs">
+      <DependentUpon>TimerEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\AutoComplete\WorkspaceCategory.xaml.cs">
       <DependentUpon>WorkspaceCategory.xaml</DependentUpon>
@@ -307,6 +315,9 @@
     </Compile>
     <Compile Include="WPF\TimeEntryList.xaml.cs">
       <DependentUpon>TimeEntryList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\TimerEditViewController.xaml.cs">
+      <DependentUpon>TimerEditViewController.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
@@ -491,7 +502,7 @@
     <None Include="Resources\darkBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\timerDarkBg.png" />
+    <Resource Include="Resources\timerDarkBg.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ic_arrow_back_grey600_24dp.png" />
@@ -504,7 +515,15 @@
     <None Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\AutoComplete\GrayTextCategory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\AutoComplete\ClientCategory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\AutoComplete\TimerEntry.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -581,6 +600,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\TimeEntryList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\TimerEditViewController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
