@@ -28,8 +28,8 @@ namespace TogglDesktop.WPF.AutoComplete
             }
 
             setOptionalTextBlockText(this.description, item.Description);
-            setOptionalTextBlockText(this.task, item.TaskLabel);
-            setOptionalTextBlockText(this.client, item.ClientLabel);
+            setOptionalTextBlockText(this.task, string.IsNullOrEmpty(item.TaskLabel) ? "" : "- " + item.TaskLabel);
+            setOptionalTextBlockText(this.client, string.IsNullOrEmpty(item.ClientLabel) ? "" : "- " + item.ClientLabel);
         }
 
         private static void setOptionalTextBlockText(TextBlock textBlock, string text)
