@@ -230,6 +230,8 @@ namespace TogglDesktop.WPF
         public void OpenAndShowAll()
         {
             this.open(showAll:true);
+            this.textbox.SelectAll();
+            this.textbox.Focus();
         }
 
         private void ensureList()
