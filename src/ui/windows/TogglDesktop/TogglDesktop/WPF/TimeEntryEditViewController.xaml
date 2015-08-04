@@ -89,6 +89,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
                 <!-- project -->
@@ -140,10 +141,6 @@
                             Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
                             Padding="9" Visibility="Hidden"
                             Click="newProjectCancelButton_OnClick"/>
-                    <Button x:Name ="newProjectConfirmButton" x:FieldModifier="private" Grid.Column="1"
-                            Style="{StaticResource TextFieldButtonBase}"
-                            Visibility="Hidden"
-                            Click="newProjectConfirmButton_OnClick"/>
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
@@ -196,10 +193,6 @@
                             Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
                             Padding="9" Visibility="Hidden"
                             Click="newClientCancelButton_OnClick"/>
-                    <Button x:Name ="newClientConfirmButton" x:FieldModifier="private" Grid.Column="1"
-                            Style="{StaticResource TextFieldButtonBase}"
-                            Visibility="Hidden"
-                            Click="newClientConfirmButton_OnClick"/>
 
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="clientAutoComplete" x:FieldModifier="private"
@@ -230,6 +223,13 @@
                             ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"
                             IsOpenChanged="workspaceAutoComplete_OnIsOpenChanged"/>
                 </Grid>
+
+                <StackPanel Grid.Row="3" Height="50" Visibility="Visible"
+                            Name="projectSaveArea" x:FieldModifier="private"
+                            Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Click="projectSaveButton_Click">SAVE</Button>
+                    <Button Click="projectCancelButton_Click">Cancel</Button>
+                </StackPanel>
             </Grid>
             
             <!-- tags -->
