@@ -59,7 +59,8 @@ public partial class EditForm : Form
     public void SetWindowPos(bool onTop)
     {
         this.remainOnTop = onTop;
-        Win32.SetWindowPos(this.Handle, onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
+        // FIXME: this seems to hang now:
+        // Win32.SetWindowPos(this.Handle, onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
     }
 
     private void mouseDown(MouseEventArgs e)
