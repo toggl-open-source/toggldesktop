@@ -159,5 +159,9 @@ public partial class TimeEntryListViewController : UserControl
         this.entriesHost.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
     }
 
+    public void SetManualMode(bool manualMode)
+    {
+        this.timerEditViewController.SetManualMode(manualMode);
+    }
 }
 }

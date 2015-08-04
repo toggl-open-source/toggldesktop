@@ -36,6 +36,7 @@ using System.Windows.Forms;
 
 namespace TogglDesktop
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     public class TogglForm : CustomBorderForm
     {
         public TogglForm()

@@ -40,6 +40,7 @@ public partial class MainWindowController : TogglForm
     KeyboardHook showHook = new KeyboardHook();
 
     private Timer runScriptTimer;
+    private bool manualMode;
 
     public MainWindowController()
     {
@@ -973,6 +974,16 @@ public partial class MainWindowController : TogglForm
                 }
             }
         }
+    }
+
+    private void useManualModeToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        this.manualMode = !this.manualMode;
+
+        this.useManualModeToolStripMenuItem.Text =
+            this.manualMode ? "Use timer" : "Use manual mode";
+
+        this.timeEntryListViewController.SetManualMode(this.manualMode);
     }
 }
 }

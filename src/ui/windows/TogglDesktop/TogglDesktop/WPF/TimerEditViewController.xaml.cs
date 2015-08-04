@@ -190,6 +190,12 @@ namespace TogglDesktop.WPF
             this.taskLabel.Visibility = Visibility.Collapsed;
         }
 
+        private void onManualAddButtonClick(object sender, RoutedEventArgs e)
+        {
+            var guid = Toggl.Start("", "0", 0, 0, "");
+            Toggl.Edit(guid, false, Toggl.Duration);
+        }
+
         #endregion
 
         #region controlling
@@ -339,5 +345,10 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public void SetManualMode(bool manualMode)
+        {
+            showOnlyIf(this.manualPanel, manualMode);
+            showOnlyIf(this.timerPanel, !manualMode);
+        }
     }
 }
