@@ -190,6 +190,7 @@ namespace TogglDesktop.WPF
 
             this.textbox.SetText(item.Text);
             this.textbox.CaretIndex = this.textbox.Text.Length;
+            this.textbox.Focus();
             if (this.ConfirmCompletion != null)
                 this.ConfirmCompletion(this, item);
         }
