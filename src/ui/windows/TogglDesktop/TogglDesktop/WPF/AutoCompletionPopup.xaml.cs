@@ -65,6 +65,8 @@ namespace TogglDesktop.WPF
             set { this.popup.StaysOpen = value; }
         }
 
+        public bool KeepOpenWhenSelectingWithMouse { get; set; }
+
         #region dependency properties
 
         public static readonly DependencyProperty TargetProperty = DependencyProperty
@@ -115,7 +117,28 @@ namespace TogglDesktop.WPF
 
             this.textbox.PreviewKeyDown += this.textboxOnPreviewKeyDown;
             this.textbox.TextChanged += this.textboxOnTextChanged;
-            this.textbox.LostKeyboardFocus += (sender, args) => this.close();
+            this.textbox.LostKeyboardFocus += (sender, args) =>
+            {
+                if (this.textbox.Focusable && this.textbox.IsEnabled)
+                {
+                    var element = Keyboard.FocusedElement as FrameworkElement;
+                    while (true)
+                    {
+                        if (element == null)
+                            break;
+
+                        if (element == this)
+                        {
+                            this.textbox.Focus();
+                            return;
+                        }
+
+                        element = element.Parent as FrameworkElement;
+                    }
+                }
+
+                this.close();
+            };
         }
 
         #endregion
@@ -174,12 +197,18 @@ namespace TogglDesktop.WPF
         {
             var item = this.controller.SelectedItem;
 
-            this.select(item);
+            this.select(item, true);
         }
 
         private void select(AutoCompleteItem item)
         {
-            this.popup.IsOpen = false;
+            this.select(item, false);
+        }
+
+        private void select(AutoCompleteItem item, bool withKeyboard)
+        {
+            if (withKeyboard || !this.KeepOpenWhenSelectingWithMouse)
+                this.popup.IsOpen = false;
 
             if (item == null)
             {
@@ -191,9 +220,11 @@ namespace TogglDesktop.WPF
             this.textbox.SetText(item.Text);
             this.textbox.CaretIndex = this.textbox.Text.Length;
             this.textbox.Focus();
+
             if (this.ConfirmCompletion != null)
                 this.ConfirmCompletion(this, item);
         }
+
 
         private void textboxOnTextChanged(object sender, TextChangedEventArgs e)
         {

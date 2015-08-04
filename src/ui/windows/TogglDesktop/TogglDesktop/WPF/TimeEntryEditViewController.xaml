@@ -236,7 +236,7 @@
             <Grid MinHeight="50">
                 <toggl:TagList x:Name="tagList" x:FieldModifier="private" Margin="8"
                                LostKeyboardFocus="tagList_OnLostKeyboardFocus"
-                               GotKeyboardFocus="tagList_OnGotKeybardFocus"></toggl:TagList>
+                               GotKeyboardFocus="tagList_OnGotKeybardFocus" />
 
                 <TextBlock x:Name="emptyTagListText" x:FieldModifier="private"
                            Style="{StaticResource TextboxEmptyText}">No tags</TextBlock>

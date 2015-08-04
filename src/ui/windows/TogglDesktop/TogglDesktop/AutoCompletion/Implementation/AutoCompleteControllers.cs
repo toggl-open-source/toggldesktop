@@ -40,7 +40,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             var clientLookup = clients.GroupBy(c => c.WID).ToDictionary(
                 c => c.Key, cs => cs.ToDictionary(c => c.Name)
                 );
-
+            
             Func<Toggl.AutocompleteItem, Toggl.Model> getClientOfProject =
                 p =>
                 {

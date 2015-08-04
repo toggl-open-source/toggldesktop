@@ -8,16 +8,61 @@
              MouseDown="onMouseDown">
     <Grid Name="grid" x:FieldModifier="private">
         <WrapPanel Name="panel" x:FieldModifier="private" Orientation="Horizontal" Margin="8, 4, 0, 4">
-            <toggl:ExtendedTextBox x:Name="textBox" x:FieldModifier="private" MinWidth="50" Margin="0, -3, 3, -3" BorderThickness="0" Padding="0"
+            <toggl:ExtendedTextBox x:Name="textBox" x:FieldModifier="private" MinWidth="80" Margin="0, -3, 3, -3" BorderThickness="0" Padding="0 0 34 0"
                          Height="32" VerticalContentAlignment="Center"
                          PreviewKeyDown="textBoxOnPreviewKeyDown" LostKeyboardFocus="textBoxOnLostKeyboardFocus"/>
         </WrapPanel>
-        
+
+        <ToggleButton x:Name="dropDownButton" x:FieldModifier="private"
+                      Height="34" Width="34"
+                      HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                      IsTabStop="False" Focusable="False"
+                      Click="dropDownButton_OnClick">
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                                    <Image Source="/TogglDesktop;component/Resources/ic_expand_more_grey600_36dp.png" Stretch="Fill"
+                                       Margin="6"
+                                       RenderTransformOrigin="0.5, 0.5">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType=ToggleButton}}"
+                                                             Value="True">
+                                                        <Setter Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <RotateTransform Angle="180"></RotateTransform>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#F4F4F4"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+
         <toggl:AutoCompletionPopup x:Name="autoComplete" x:FieldModifier="private"
             Target="{Binding ElementName=grid}" TextBox="{Binding ElementName=textBox}"
             EmptyText="No matching tags found."
-            ConfirmCompletion="cautoComplete_OnConfirmCompletion"
-            ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"/>
+            ConfirmCompletion="autoComplete_OnConfirmCompletion"
+            ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"
+            IsOpenChanged="autoComplete_OnIsOpenChanged"
+            KeepOpenWhenSelectingWithMouse="True"/>
         
     </Grid>
 </UserControl>

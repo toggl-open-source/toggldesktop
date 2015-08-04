@@ -158,7 +158,7 @@ namespace TogglDesktop.WPF
             return this.tags.ContainsKey(tag);
         }
 
-        private void cautoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        private void autoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
             var asStringItem = e as StringItem;
             if (asStringItem == null)
@@ -167,11 +167,40 @@ namespace TogglDesktop.WPF
             var tag = asStringItem.Text;
             this.tryAddTag(tag);
             this.textBox.SetText("");
+
+            if(this.autoComplete.IsOpen)
+                this.autoComplete.OpenAndShowAll();
         }
 
         private void autoComplete_OnConfirmWithoutCompletion(object sender, string e)
         {
             this.tryAddTagFromTextBox();
+        }
+
+        private void autoComplete_OnIsOpenChanged(object sender, EventArgs e)
+        {
+            this.dropDownButton.IsChecked = this.autoComplete.IsOpen;
+        }
+        
+        private void dropDownButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var open = this.dropDownButton.IsChecked ?? false;
+
+            if (open)
+            {
+                this.autoComplete.OpenAndShowAll();
+            }
+            else
+            {
+                this.autoComplete.IsOpen = false;
+
+                if (!this.textBox.IsKeyboardFocused)
+                {
+                    this.textBox.CaretIndex = this.textBox.Text.Length;
+                    this.textBox.Focus();
+                }
+            }
+
         }
 
     }

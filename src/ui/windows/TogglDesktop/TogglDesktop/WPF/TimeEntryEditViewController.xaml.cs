@@ -388,17 +388,13 @@ namespace TogglDesktop.WPF
             else
             {
                 this.projectAutoComplete.IsOpen = false;
-            }
-
-            if (!this.projectTextBox.IsKeyboardFocused)
-            {
-                this.projectTextBox.Focus();
-                this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
-                if (this.projectAutoComplete.IsOpen)
+                if (!this.projectTextBox.IsKeyboardFocused)
                 {
-                    this.projectTextBox.SelectAll();
+                    this.projectTextBox.Focus();
+                    this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
                 }
             }
+
         }
 
         private void projectAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
@@ -598,17 +594,13 @@ namespace TogglDesktop.WPF
             else
             {
                 this.clientAutoComplete.IsOpen = false;
-            }
-
-            if (!this.clientTextBox.IsKeyboardFocused)
-            {
-                this.clientTextBox.Focus();
-                this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
-                if (this.clientAutoComplete.IsOpen)
+                if (!this.clientTextBox.IsKeyboardFocused)
                 {
-                    this.clientTextBox.SelectAll();
+                    this.clientTextBox.Focus();
+                    this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
                 }
             }
+
         }
 
         private void clientAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
@@ -789,17 +781,21 @@ namespace TogglDesktop.WPF
 
         private void workspaceDropDownButton_OnClick(object sender, RoutedEventArgs e)
         {
-            this.workspaceAutoComplete.IsOpen = this.workspaceDropDownButton.IsChecked ?? false;
-
-            if (!this.workspaceTextBox.IsKeyboardFocused)
+            var open = this.workspaceDropDownButton.IsChecked ?? false;
+            if (open)
             {
-                this.workspaceTextBox.Focus();
-                this.workspaceTextBox.CaretIndex = this.workspaceTextBox.Text.Length;
-                if (this.workspaceAutoComplete.IsOpen)
+                this.workspaceAutoComplete.OpenAndShowAll();
+            }
+            else
+            {
+                this.workspaceAutoComplete.IsOpen = false;
+                if (!this.workspaceTextBox.IsKeyboardFocused)
                 {
-                    this.workspaceTextBox.SelectAll();
+                    this.workspaceTextBox.Focus();
+                    this.workspaceTextBox.CaretIndex = this.workspaceTextBox.Text.Length;
                 }
             }
+
         }
 
         private void workspaceAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
