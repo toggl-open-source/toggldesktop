@@ -123,11 +123,13 @@ public partial class TimeEntryListViewController : UserControl
             });
             return;
         }
+        
         if (!entries.Dispatcher.CheckAccess())
         {
             entries.Dispatcher.Invoke(() => OnLogin(open, user_id));
             return;
         }
+        
         if (open || user_id == 0)
         {
             entries.Children.Clear();

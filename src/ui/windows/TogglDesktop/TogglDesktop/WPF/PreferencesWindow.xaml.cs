@@ -31,7 +31,9 @@ namespace TogglDesktop.WPF
         private void isVisibleChanged()
         {
             if (this.IsVisible)
+            {
                 return;
+            }
 
             this.showHideShortcutRecorder.Reset();
             this.continueStopShortcutRecorder.Reset();
@@ -39,8 +41,10 @@ namespace TogglDesktop.WPF
 
         private void onLogin(bool open, ulong userID)
         {
-            if (this.TryInvoke(() => this.onLogin(open, userID)))
+            if (!this.Dispatcher.CheckAccess()) {
+                this.Dispatcher.Invoke(() => this.onLogin(open, userID));
                 return;
+            }
 
             this.recordTimelineCheckBox.IsEnabled = !open && userID != 0;
             this.recordTimelineCheckBox.IsChecked = Toggl.IsTimelineRecordingEnabled();
@@ -48,8 +52,11 @@ namespace TogglDesktop.WPF
 
         private void onSettings(bool open, Toggl.Settings settings)
         {
-            if (this.TryInvoke(() => this.onSettings(open, settings)))
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => this.onSettings(open, settings));
                 return;
+            }
 
             this.updateUI(settings);
 

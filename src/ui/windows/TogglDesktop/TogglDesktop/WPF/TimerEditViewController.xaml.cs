@@ -47,24 +47,15 @@ namespace TogglDesktop.WPF
 
         private bool isRunning { get { return this.startStopButton.IsChecked ?? false; } }
 
-        #region helper methods
-
-        private bool invoke(Action action)
-        {
-            if (this.Dispatcher.CheckAccess())
-                return false;
-            this.Dispatcher.Invoke(action);
-            return true;
-        }
-
-        #endregion
-
         #region toggl events
 
         private void onStoppedTimerState()
         {
-            if (this.invoke(this.onStoppedTimerState))
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => onStoppedTimerState());
                 return;
+            }
 
             this.secondsTimer.IsEnabled = false;
             this.setUIToStoppedState();
@@ -73,8 +64,11 @@ namespace TogglDesktop.WPF
 
         private void onRunningTimerState(Toggl.TimeEntry te)
         {
-            if (this.invoke(() => this.onRunningTimerState(te)))
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => onRunningTimerState(te));
                 return;
+            }
 
             this.runningTimeEntry = te;
             this.setUIToRunningState(te);
@@ -83,8 +77,11 @@ namespace TogglDesktop.WPF
 
         private void onMiniTimerAutocomplete(List<Toggl.AutocompleteItem> list)
         {
-            if (this.invoke(() => this.onMiniTimerAutocomplete(list)))
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(() => onMiniTimerAutocomplete(list));
                 return;
+            }
 
             this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
         }

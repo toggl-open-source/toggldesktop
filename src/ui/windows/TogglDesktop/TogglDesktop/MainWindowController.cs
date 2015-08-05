@@ -287,6 +287,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnRunningTimerState(te));
+            return;
+        }
+
         isTracking = true;
         enableMenuItems();
         updateStatusIcons(true);
@@ -321,6 +328,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnStoppedTimerState());
+            return;
+        }
+
         isTracking = false;
         enableMenuItems();
         updateStatusIcons(true);
@@ -340,6 +354,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnSettings(open, settings));
+            return;
+        }
+        
         remainOnTop = settings.OnTop;
         setWindowPos();
         timerIdleDetection.Enabled = settings.UseIdleDetection;
@@ -406,6 +427,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnOnlineState(state));
+            return;
+        }
+
         // FIXME: render online state on bottom of the window
         updateStatusIcons(0 == state);
     }
@@ -424,6 +452,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnApp(open));
+            return;
+        }
+
         if (open) {
             show();
         }
@@ -436,6 +471,12 @@ public partial class MainWindowController : TogglForm
             Invoke((MethodInvoker)delegate {
                 OnError(errmsg, user_error);
             });
+            return;
+        }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnError(errmsg, user_error));
             return;
         }
 
@@ -460,6 +501,12 @@ public partial class MainWindowController : TogglForm
             return;
         }
 
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnIdleNotification(guid, since, duration, started, description));
+            return;
+        }
+
         idleNotificationWindowController.ShowWindow();
     }
 
@@ -472,6 +519,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnLogin(open, user_id));
+            return;
+        }
+
         if (open) {
             if (editForm.Visible)
             {
@@ -519,6 +573,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnTimeEntryList(open, list));
+            return;
+        }
+
         if (open)
         {
             troubleBox.Visible = false;
@@ -583,6 +644,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnTimeEntryEditor(open, te, focused_field_name));
+            return;
+        }
+
         if (open)
         {
             contentPanel.Controls.Remove(loginViewController);
@@ -726,6 +794,13 @@ public partial class MainWindowController : TogglForm
             });
             return;
         }
+
+        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
+        {
+            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnReminder(title, informative_text));
+            return;
+        }
+
         trayIcon.ShowBalloonTip(6000 * 100, title, informative_text, ToolTipIcon.None);
     }
 

@@ -251,7 +251,6 @@
       <DependentUpon>DescriptionAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ExtendedTextBox.cs" />
-    <Compile Include="WPF\Extensions.cs" />
     <Compile Include="WPF\LoginConfirmButton.xaml.cs">
       <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
     </Compile>
@@ -280,6 +279,12 @@
     <Compile Include="MainWindowController.Designer.cs">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </Compile>
+    <Compile Include="PreferencesWindowController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesWindowController.Designer.cs">
+      <DependentUpon>PreferencesWindowController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeEntryEditViewController.cs">
@@ -293,6 +298,12 @@
     </Compile>
     <Compile Include="TimeEntryListViewController.Designer.cs">
       <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimerEditViewController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimerEditViewController.Designer.cs">
+      <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="Win32.cs" />
@@ -344,6 +355,9 @@
     <EmbeddedResource Include="MainWindowController.resx">
       <DependentUpon>MainWindowController.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesWindowController.resx">
+      <DependentUpon>PreferencesWindowController.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -354,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TimeEntryListViewController.resx">
       <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimerEditViewController.resx">
+      <DependentUpon>TimerEditViewController.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="cacert.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
