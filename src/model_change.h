@@ -7,6 +7,8 @@
 
 #include "Poco/Types.h"
 
+#include "./const.h"
+
 namespace toggl {
 
 class ModelChange {
