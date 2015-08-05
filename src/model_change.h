@@ -34,7 +34,7 @@ class ModelChange {
         return change_type_;
     }
     bool IsDeletion() const {
-        return "delete" == change_type_;
+        return kChangeTypeDelete == change_type_;
     }
 
  private:
