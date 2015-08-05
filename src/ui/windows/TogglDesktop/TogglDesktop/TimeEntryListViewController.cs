@@ -58,6 +58,13 @@ public partial class TimeEntryListViewController : UserControl
             });
             return;
         }
+
+        if (!entries.Dispatcher.CheckAccess())
+        {
+            entries.Dispatcher.Invoke(() => OnTimeEntryList(open, list));
+            return;
+        }
+
         DateTime start = DateTime.Now;
 
         lock (rendering)
@@ -102,7 +109,6 @@ public partial class TimeEntryListViewController : UserControl
             entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
         }
 
-        entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         entriesHost.Invalidate();
 
         entries.RefreshHighLight();
@@ -115,6 +121,11 @@ public partial class TimeEntryListViewController : UserControl
             Invoke((MethodInvoker)delegate {
                 OnLogin(open, user_id);
             });
+            return;
+        }
+        if (!entries.Dispatcher.CheckAccess())
+        {
+            entries.Dispatcher.Invoke(() => OnLogin(open, user_id));
             return;
         }
         if (open || user_id == 0)
