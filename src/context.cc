@@ -3184,57 +3184,57 @@ error Context::offerBetaChannel() {
 }
 
 void Context::SetWake() {
-	logger().debug("SetWake");
+    logger().debug("SetWake");
 
-	Poco::Timestamp::TimeDiff delay = 0;
-	if (next_wake_at_ > 0) {
-		delay = kRequestThrottleSeconds * kOneSecondInMicros;
-	}
+    Poco::Timestamp::TimeDiff delay = 0;
+    if (next_wake_at_ > 0) {
+        delay = kRequestThrottleSeconds * kOneSecondInMicros;
+    }
 
-	next_wake_at_ = postpone(delay);
-	Poco::Util::TimerTask::Ptr ptask = new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onWake);
+    next_wake_at_ = postpone(delay);
+    Poco::Util::TimerTask::Ptr ptask = new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onWake);
 
-	Poco::Mutex::ScopedLock lock(timer_m_);
-	timer_.schedule(ptask, next_wake_at_);
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_wake_at_);
 
-	std::stringstream ss;
-	ss << "Next wake at "
-		<< Formatter::Format8601(next_wake_at_);
-	logger().debug(ss.str());
+    std::stringstream ss;
+    ss << "Next wake at "
+       << Formatter::Format8601(next_wake_at_);
+    logger().debug(ss.str());
 }
 
 void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
-	if (isPostponed(next_wake_at_,
-		kRequestThrottleSeconds * kOneSecondInMicros)) {
-		logger().debug("onWake postponed");
-		return;
-	}
-	logger().debug("onWake executing");
+    if (isPostponed(next_wake_at_,
+                    kRequestThrottleSeconds * kOneSecondInMicros)) {
+        logger().debug("onWake postponed");
+        return;
+    }
+    logger().debug("onWake executing");
 
-	try {
-		scheduleSync();
+    try {
+        scheduleSync();
 
-		Poco::Mutex::ScopedLock lock(user_m_);
-		if (user_) {
-			Poco::LocalDateTime now;
-			if (now.year() != last_time_entry_list_render_at_.year()
-				|| now.month() != last_time_entry_list_render_at_.month()
-				|| now.day() != last_time_entry_list_render_at_.day()) {
-				DisplayTimeEntryList();
-			}
-		}
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (user_) {
+            Poco::LocalDateTime now;
+            if (now.year() != last_time_entry_list_render_at_.year()
+                    || now.month() != last_time_entry_list_render_at_.month()
+                    || now.day() != last_time_entry_list_render_at_.day()) {
+                DisplayTimeEntryList();
+            }
+        }
 
-		idle_.SetWake(user_);
-	}
-	catch (const Poco::Exception& exc) {
-		logger().error(exc.displayText());
-	}
-	catch (const std::exception& ex) {
-		logger().error(ex.what());
-	}
-	catch (const std::string& ex) {
-		logger().error(ex);
-	}
+        idle_.SetWake(user_);
+    }
+    catch (const Poco::Exception& exc) {
+        logger().error(exc.displayText());
+    }
+    catch (const std::exception& ex) {
+        logger().error(ex.what());
+    }
+    catch (const std::string& ex) {
+        logger().error(ex);
+    }
 }
 
 void Context::SetOnline() {

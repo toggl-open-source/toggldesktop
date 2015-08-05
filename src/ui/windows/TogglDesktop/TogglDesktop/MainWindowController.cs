@@ -360,7 +360,7 @@ public partial class MainWindowController : TogglForm
             this.timeEntryEditViewController.Dispatcher.Invoke(() => OnSettings(open, settings));
             return;
         }
-        
+
         remainOnTop = settings.OnTop;
         setWindowPos();
         timerIdleDetection.Enabled = settings.UseIdleDetection;

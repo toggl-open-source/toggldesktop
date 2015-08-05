@@ -323,7 +323,7 @@ class Context : public TimelineDatasource {
     void onRemind(Poco::Util::TimerTask&);  // NOLINT
     void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
     void onTrackSettingsUsage(Poco::Util::TimerTask& task);  // NOLINT
-	void onWake(Poco::Util::TimerTask& task);  // NOLINT
+    void onWake(Poco::Util::TimerTask& task);  // NOLINT
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
@@ -444,7 +444,7 @@ class Context : public TimelineDatasource {
     Poco::Timestamp next_update_timeline_settings_at_;
     Poco::Timestamp next_reminder_at_;
     Poco::Timestamp next_analytics_at_;
-	Poco::Timestamp next_wake_at_;
+    Poco::Timestamp next_wake_at_;
 
     // Schedule tasks using a timer:
     Poco::Mutex timer_m_;
