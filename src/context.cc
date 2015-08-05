@@ -3192,7 +3192,8 @@ void Context::SetWake() {
     }
 
     next_wake_at_ = postpone(delay);
-    Poco::Util::TimerTask::Ptr ptask = new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onWake);
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onWake);
 
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_wake_at_);
