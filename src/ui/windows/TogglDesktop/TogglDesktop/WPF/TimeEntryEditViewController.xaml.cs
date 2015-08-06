@@ -257,6 +257,7 @@ namespace TogglDesktop.WPF
                 AutoCompleteControllers.ForProjects(this.projects, this.clients, this.workspaces)
                 );
         }
+        
         private void tryUpdatingClientAutoComplete()
         {
             if (this.clients == null || this.workspaces == null)

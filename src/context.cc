@@ -371,6 +371,23 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
         }
     }
 
+    // Tweak for windows app. Its using the dropwdown UI elements
+    // (display_client_select, display_workspace_select etc) for
+    // building an autocomplete. Confirm to it:
+    if (POCO_OS_WINDOWS_NT == POCO_OS) {
+        // project autocomplete = project autocomplete, client select,
+        //  workspace select
+        if (display_project_autocomplete) {
+            display_client_select = true;
+            display_workspace_select = true;
+        }
+
+        // client autocomplete = client select, workspace select
+        if (display_client_select) {
+            display_workspace_select = true;
+        }
+    }
+
     // Apply updates to UI
     if (display_time_entry_editor) {
         TimeEntry *te = nullptr;
@@ -393,9 +410,6 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
     if (display_mini_timer_autocomplete) {
         displayMinitimerAutocomplete();
     }
-    if (display_project_autocomplete) {
-        displayProjectAutocomplete();
-    }
     if (display_workspace_select) {
         displayWorkspaceSelect();
     }
@@ -416,6 +430,11 @@ void Context::updateUI(std::vector<ModelChange> *changes) {
         if (err != noError) {
             displayError(err);
         }
+    }
+    // Apply autocomplete as last element,
+    // as its depending on selects on Windows
+    if (display_project_autocomplete) {
+        displayProjectAutocomplete();
     }
 }
 
