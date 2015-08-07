@@ -212,7 +212,8 @@ public partial class TimeEntryEditViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnTimeEntryEditor(open, te, focused_field_name);
             });
             return;
@@ -355,7 +356,8 @@ public partial class TimeEntryEditViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 filterClientsPerSelectedWorkspace();
             });
             return;
@@ -383,7 +385,8 @@ public partial class TimeEntryEditViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnTags(list);
             });
             return;
@@ -401,7 +404,8 @@ public partial class TimeEntryEditViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnWorkspaceSelect(list);
             });
             return;
@@ -417,7 +421,8 @@ public partial class TimeEntryEditViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnTimeEntryAutocomplete(list);
             });
             return;
@@ -429,7 +434,8 @@ public partial class TimeEntryEditViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnProjectAutocomplete(list);
             });
             return;

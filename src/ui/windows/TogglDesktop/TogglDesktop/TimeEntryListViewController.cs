@@ -53,7 +53,8 @@ public partial class TimeEntryListViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnTimeEntryList(open, list);
             });
             return;
@@ -61,7 +62,7 @@ public partial class TimeEntryListViewController : UserControl
 
         if (!entries.Dispatcher.CheckAccess())
         {
-            entries.Dispatcher.Invoke(() => OnTimeEntryList(open, list));
+            entries.Dispatcher.BeginInvoke(new Action(() => OnTimeEntryList(open, list)));
             return;
         }
 
@@ -118,7 +119,8 @@ public partial class TimeEntryListViewController : UserControl
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnLogin(open, user_id);
             });
             return;
@@ -126,7 +128,7 @@ public partial class TimeEntryListViewController : UserControl
 
         if (!entries.Dispatcher.CheckAccess())
         {
-            entries.Dispatcher.Invoke(() => OnLogin(open, user_id));
+            entries.Dispatcher.BeginInvoke(new Action(() => OnLogin(open, user_id)));
             return;
         }
 

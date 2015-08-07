@@ -46,7 +46,8 @@ public partial class IdleNotificationWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 DisplayIdleNotification(guid, since, duration, started, description);
             });
             return;
@@ -64,7 +65,8 @@ public partial class IdleNotificationWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnStoppedTimerState();
             });
             return;

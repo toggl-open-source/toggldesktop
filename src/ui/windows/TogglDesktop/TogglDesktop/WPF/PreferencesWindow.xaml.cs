@@ -42,7 +42,7 @@ namespace TogglDesktop.WPF
         private void onLogin(bool open, ulong userID)
         {
             if (!this.Dispatcher.CheckAccess()) {
-                this.Dispatcher.Invoke(() => this.onLogin(open, userID));
+                this.Dispatcher.BeginInvoke(new Action(() => this.onLogin(open, userID)));
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => this.onSettings(open, settings));
+                this.Dispatcher.BeginInvoke(new Action(() => this.onSettings(open, settings)));
                 return;
             }
 

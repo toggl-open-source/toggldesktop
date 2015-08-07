@@ -50,7 +50,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onLogin(open, userId));
+                this.Dispatcher.BeginInvoke(new Action(() => onLogin(open, userId)));
                 return;
             }
             this.timeEntry = new Toggl.TimeEntry();
@@ -76,7 +76,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => this.onTimeEntryEditor(open, timeEntry, focusedFieldName));
+                this.Dispatcher.BeginInvoke(new Action(() => this.onTimeEntryEditor(open, timeEntry, focusedFieldName)));
                 return;
             }
 
@@ -215,7 +215,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onTimeEntryAutocomplete(list));
+                this.Dispatcher.BeginInvoke(new Action(() => onTimeEntryAutocomplete(list)));
                 return;
             }
             this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForDescriptions(list));
@@ -225,7 +225,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onProjectAutocomplete(list));
+                this.Dispatcher.BeginInvoke(new Action(() => onProjectAutocomplete(list)));
                 return;
             }
 
@@ -238,7 +238,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onClientSelect(list));
+                this.Dispatcher.BeginInvoke(new Action(() => onClientSelect(list)));
                 return;
             }
 
@@ -272,7 +272,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onTags(list));
+                this.Dispatcher.BeginInvoke(new Action(() => onTags(list)));
                 return;
             }
 
@@ -283,7 +283,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onWorkspaceSelect(list));
+                this.Dispatcher.BeginInvoke(new Action(() => onWorkspaceSelect(list)));
                 return;
             }
 

@@ -282,7 +282,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnRunningTimerState(te);
             });
             return;
@@ -290,7 +291,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnRunningTimerState(te));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnRunningTimerState(te)));
             return;
         }
 
@@ -323,7 +324,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnStoppedTimerState();
             });
             return;
@@ -331,7 +333,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnStoppedTimerState());
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnStoppedTimerState()));
             return;
         }
 
@@ -349,7 +351,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnSettings(open, settings);
             });
             return;
@@ -357,7 +360,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnSettings(open, settings));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnSettings(open, settings)));
             return;
         }
 
@@ -422,7 +425,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnOnlineState(state);
             });
             return;
@@ -430,7 +434,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnOnlineState(state));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnOnlineState(state)));
             return;
         }
 
@@ -447,7 +451,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnApp(open);
             });
             return;
@@ -455,7 +460,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnApp(open));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnApp(open)));
             return;
         }
 
@@ -468,7 +473,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnError(errmsg, user_error);
             });
             return;
@@ -476,7 +482,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnError(errmsg, user_error));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnError(errmsg, user_error)));
             return;
         }
 
@@ -495,7 +501,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnIdleNotification(guid, since, duration, started, description);
             });
             return;
@@ -503,7 +510,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnIdleNotification(guid, since, duration, started, description));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnIdleNotification(guid, since, duration, started, description)));
             return;
         }
 
@@ -514,7 +521,7 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate {
                 OnLogin(open, user_id);
             });
             return;
@@ -522,7 +529,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnLogin(open, user_id));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnLogin(open, user_id)));
             return;
         }
 
@@ -568,7 +575,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnTimeEntryList(open, list);
             });
             return;
@@ -576,7 +584,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnTimeEntryList(open, list));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnTimeEntryList(open, list)));
             return;
         }
 
@@ -639,7 +647,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnTimeEntryEditor(open, te, focused_field_name);
             });
             return;
@@ -647,7 +656,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnTimeEntryEditor(open, te, focused_field_name));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnTimeEntryEditor(open, te, focused_field_name)));
             return;
         }
 
@@ -789,7 +798,8 @@ public partial class MainWindowController : TogglForm
     {
         if (InvokeRequired)
         {
-            Invoke((MethodInvoker)delegate {
+            BeginInvoke((MethodInvoker)delegate
+            {
                 OnReminder(title, informative_text);
             });
             return;
@@ -797,7 +807,7 @@ public partial class MainWindowController : TogglForm
 
         if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
         {
-            this.timeEntryEditViewController.Dispatcher.Invoke(() => OnReminder(title, informative_text));
+            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnReminder(title, informative_text)));
             return;
         }
 

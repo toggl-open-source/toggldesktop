@@ -53,7 +53,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onStoppedTimerState());
+                this.Dispatcher.BeginInvoke(new Action(() => onStoppedTimerState()));
                 return;
             }
 
@@ -66,7 +66,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onRunningTimerState(te));
+                this.Dispatcher.BeginInvoke(new Action(() => onRunningTimerState(te)));
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => onMiniTimerAutocomplete(list));
+                this.Dispatcher.BeginInvoke(new Action(() => onMiniTimerAutocomplete(list)));
                 return;
             }
 
