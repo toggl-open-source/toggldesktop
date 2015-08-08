@@ -341,12 +341,6 @@ class Context : public TimelineDatasource {
 
     Database *db() const;
 
-    void timelineEvents(
-        std::vector<TimedEvent *> *result);
-
-    void timeEntries(
-        std::vector<TimedEvent *> *result);
-
     void displayTimerState();
     void displayTimeEntryEditor(const bool open,
                                 TimeEntry *te,
@@ -360,8 +354,6 @@ class Context : public TimelineDatasource {
     void displayAutotrackerRules();
 
     void displayReminder();
-
-    Poco::Int64 totalDurationForDate(const TimeEntry *te);
 
     void updateUI(std::vector<ModelChange> *changes);
 

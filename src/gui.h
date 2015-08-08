@@ -80,7 +80,7 @@ class GUI : public SyncStateMonitor {
     void DisplayTimeEntryList(
         const bool open,
         const RelatedData &related,
-        const std::vector<TimedEvent *> list);
+        const std::vector<TimeEntry *> list);
 
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
 

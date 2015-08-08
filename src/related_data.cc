@@ -53,6 +53,57 @@ Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
     return count;
 }
 
+std::vector<TimelineEvent *> RelatedData::VisibleTimelineEvents() const {
+    std::vector<TimelineEvent *> result;
+    for (std::vector<TimelineEvent *>::const_iterator i =
+        TimelineEvents.begin();
+            i != TimelineEvents.end();
+            ++i) {
+        TimelineEvent *event = *i;
+        if (event && event->VisibleToUser()) {
+            result.push_back(event);
+        }
+    }
+    return result;
+}
+
+std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
+    std::vector<TimeEntry *> result;
+    for (std::vector<TimeEntry *>::const_iterator it =
+        TimeEntries.begin();
+            it != TimeEntries.end(); it++) {
+        TimeEntry *te = *it;
+        if (te->GUID().empty()) {
+            continue;
+        }
+        if (te->DeletedAt() > 0) {
+            continue;
+        }
+        result.push_back(te);
+    }
+    return result;
+}
+
+Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
+    std::string date_header = Formatter::FormatDateHeader(match->Start());
+    Poco::Int64 duration(0);
+    for (std::vector<TimeEntry *>::const_iterator it =
+        TimeEntries.begin();
+            it != TimeEntries.end(); it++) {
+        TimeEntry *te = *it;
+        if (te->GUID().empty()) {
+            continue;
+        }
+        if (te->DeletedAt() > 0) {
+            continue;
+        }
+        if (Formatter::FormatDateHeader(te->Start()) == date_header) {
+            duration += Formatter::AbsDuration(te->Duration());
+        }
+    }
+    return duration;
+}
+
 TimeEntry *RelatedData::LatestTimeEntry() const {
     TimeEntry *latest = nullptr;
 

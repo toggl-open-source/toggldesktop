@@ -1624,7 +1624,7 @@ void Context::displayTimerState() {
 
     Poco::Int64 total_duration_for_date(0);
     if (te) {
-        total_duration_for_date = totalDurationForDate(te);
+        total_duration_for_date = user_->related.TotalDurationForDate(te);
     }
 
     UI()->DisplayTimerState(user_->related, te, total_duration_for_date);
@@ -2181,23 +2181,6 @@ TimeEntry *Context::Start(
     return te;
 }
 
-Poco::Int64 Context::totalDurationForDate(const TimeEntry *match) {
-    Poco::Int64 duration(0);
-    std::string date_header = Formatter::FormatDateHeader(match->Start());
-    std::vector<TimedEvent *> list;
-    timeEntries(&list);
-    for (unsigned int i = 0; i < list.size(); i++) {
-        TimedEvent *te = list.at(i);
-        if (te->Type() != kTimedEventTypeTimeEntry) {
-            continue;
-        }
-        if (Formatter::FormatDateHeader(te->Start()) == date_header) {
-            duration += Formatter::AbsDuration(te->Duration());
-        }
-    }
-    return duration;
-}
-
 void Context::DisplayTimeEntryList(const bool open) {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
@@ -2208,12 +2191,7 @@ void Context::DisplayTimeEntryList(const bool open) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
 
-    std::vector<TimedEvent *> list;
-    timeEntries(&list);
-
-    if (kExperimentalFeatureRenderTimeline && settings_.render_timeline) {
-        timelineEvents(&list);
-    }
+    std::vector<TimeEntry *> list = user_->related.VisibleTimeEntries();
 
     std::sort(list.begin(), list.end(), CompareByStart);
 
@@ -2289,7 +2267,8 @@ void Context::displayTimeEntryEditor(const bool open,
 
     time_entry_editor_guid_ = te->GUID();
 
-    Poco::Int64 total_duration_for_date = totalDurationForDate(te);
+    Poco::Int64 total_duration_for_date =
+        user_->related.TotalDurationForDate(te);
 
     UI()->DisplayTimeEntryEditor(
         open,
@@ -2853,56 +2832,6 @@ error Context::ToggleTimelineRecording(const bool record_timeline) {
         return displayError(ex);
     }
     return noError;
-}
-
-void Context::timelineEvents(
-    std::vector<TimedEvent *> *result) {
-
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        return;
-    }
-
-    poco_check_ptr(result);
-
-    // Collect visible timeline events
-    for (std::vector<TimelineEvent *>::const_iterator i =
-        user_->related.TimelineEvents.begin();
-            i != user_->related.TimelineEvents.end();
-            ++i) {
-        TimelineEvent *event = *i;
-        poco_check_ptr(event);
-        if (event->VisibleToUser()) {
-            result->push_back(event);
-        }
-    }
-}
-
-void Context::timeEntries(
-    std::vector<TimedEvent *> *result) {
-
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        return;
-    }
-
-    poco_check_ptr(result);
-
-    // Collect visible time entries
-    for (std::vector<TimeEntry *>::const_iterator it =
-        user_->related.TimeEntries.begin();
-            it != user_->related.TimeEntries.end(); it++) {
-        TimeEntry *te = *it;
-
-        if (te->GUID().empty()) {
-            logger().error("Ignoring a time entry without a GUID!");
-            continue;
-        }
-        if (te->DeletedAt() > 0) {
-            continue;
-        }
-        result->push_back(te);
-    }
 }
 
 error Context::SetUpdateChannel(const std::string channel) {
@@ -3497,7 +3426,7 @@ void Context::uiUpdaterActivity() {
             continue;
         }
 
-        Poco::Int64 duration = totalDurationForDate(te);
+        Poco::Int64 duration = user_->related.TotalDurationForDate(te);
         std::string date_duration =
             Formatter::FormatDurationForDateHeader(duration);
 

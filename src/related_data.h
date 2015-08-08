@@ -63,6 +63,14 @@ class RelatedData {
     // Find the time entry that was stopped most recently
     TimeEntry *LatestTimeEntry() const;
 
+    // Collect visible timeline events
+    std::vector<TimelineEvent *> VisibleTimelineEvents() const;
+
+    // Collect visible time entries
+    std::vector<TimeEntry *> VisibleTimeEntries() const;
+
+    Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
+
     void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void ProjectAutocompleteItems(std::vector<AutocompleteItem> *) const;
