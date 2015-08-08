@@ -53,6 +53,33 @@ Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
     return count;
 }
 
+TimeEntry *RelatedData::LatestTimeEntry() const {
+    TimeEntry *latest = nullptr;
+
+    // Find the time entry that was stopped most recently
+    for (std::vector<TimeEntry *>::const_iterator it =
+        TimeEntries.begin();
+            it != TimeEntries.end(); it++) {
+        TimeEntry *te = *it;
+
+        if (te->GUID().empty()) {
+            continue;
+        }
+        if (te->DurationInSeconds() < 0) {
+            continue;
+        }
+        if (te->DeletedAt() > 0) {
+            continue;
+        }
+
+        if (!latest || (te->Stop() > latest->Stop())) {
+            latest = te;
+        }
+    }
+
+    return latest;
+}
+
 // Add time entries, in format:
 // Description - Task. Project. Client
 void RelatedData::timeEntryAutocompleteItems(

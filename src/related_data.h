@@ -60,6 +60,9 @@ class RelatedData {
 
     Poco::Int64 NumberOfUnsyncedTimeEntries() const;
 
+    // Find the time entry that was stopped most recently
+    TimeEntry *LatestTimeEntry() const;
+
     void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void ProjectAutocompleteItems(std::vector<AutocompleteItem> *) const;

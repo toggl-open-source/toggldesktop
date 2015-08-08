@@ -2314,28 +2314,7 @@ error Context::ContinueLatest() {
         return noError;
     }
 
-    TimeEntry *latest = nullptr;
-
-    // Find the time entry that was stopped most recently
-    for (std::vector<TimeEntry *>::const_iterator it =
-        user_->related.TimeEntries.begin();
-            it != user_->related.TimeEntries.end(); it++) {
-        TimeEntry *te = *it;
-
-        if (te->GUID().empty()) {
-            return displayError("Found a time entry without a GUID!");
-        }
-        if (te->DurationInSeconds() < 0) {
-            continue;
-        }
-        if (te->DeletedAt() > 0) {
-            continue;
-        }
-
-        if (!latest || (te->Stop() > latest->Stop())) {
-            latest = te;
-        }
-    }
+    TimeEntry *latest = user_->related.LatestTimeEntry();
 
     if (!latest) {
         return noError;
