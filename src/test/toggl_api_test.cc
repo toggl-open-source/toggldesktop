@@ -11,11 +11,15 @@
 #include "./../toggl_api_private.h"
 #include "./test_data.h"
 
+#include <iostream>   // NOLINT
+
 #include "Poco/DateTime.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
 #include "Poco/LocalDateTime.h"
 #include "Poco/Path.h"
+#include "Poco/Runnable.h"
+#include "Poco/Thread.h"
 
 namespace toggl {
 
@@ -311,6 +315,42 @@ class App {
 
  private:
     void *ctx_;
+};
+
+// For testing API concurrently
+class ApiClient : public Poco::Runnable {
+ public:
+    explicit ApiClient(testing::App *app, const std::string name)
+        : app_(app)
+    , name_(name)
+    , finished_(false) {}
+
+    void run() {
+        std::cout << "runnable " << name_ << " running" << std::endl;
+
+        for (int i = 0; i < 100; i++) {
+            char_t *guid = toggl_start(app_->ctx(), "test", "", 0, 0, 0, 0);
+            ASSERT_TRUE(guid);
+
+            ASSERT_TRUE(toggl_stop(app_->ctx()));
+
+            toggl_edit(app_->ctx(), guid, true, "");
+
+            ASSERT_TRUE(toggl_delete_time_entry(app_->ctx(), guid));
+
+            free(guid);
+        }
+        finished_ = true;
+    }
+
+    bool finished() const {
+        return finished_;
+    }
+
+ private:
+    testing::App *app_;
+    std::string name_;
+    bool finished_;
 };
 
 }  // namespace testing
@@ -1188,6 +1228,47 @@ TEST(toggl_api, toggl_start) {
     free(guid);
 
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
+}
+
+TEST(toggl_api, concurrency) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    const int kThreadCount = 10;
+
+    std::vector<Poco::Thread *> threads;
+    for (int i = 0; i < kThreadCount; i++) {
+        std::stringstream ss;
+        ss << "thread " << i;
+        Poco::Thread *thread = new Poco::Thread(ss.str());
+        threads.push_back(thread);
+    }
+
+    std::vector<testing::ApiClient *> runnables;
+    for (int i = 0; i < kThreadCount; i++) {
+        std::stringstream ss;
+        ss << "runnable " << i;
+        testing::ApiClient *runnable = new testing::ApiClient(&app, ss.str());
+        runnables.push_back(runnable);
+    }
+
+    for (int i = 0; i < kThreadCount; i++) {
+        threads[i]->start(*runnables[i]);
+    }
+
+    Poco::Thread::sleep(2000);
+
+    for (int i = 0; i < kThreadCount; i++) {
+        Poco::Thread *thread = threads[i];
+        testing::ApiClient *runnable = runnables[i];
+        while (!runnable->finished()) {
+            Poco::Thread::sleep(10);
+        }
+        thread->join();
+        delete runnable;
+        delete thread;
+    }
 }
 
 TEST(toggl_api, toggl_start_with_tags) {
