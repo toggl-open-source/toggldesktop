@@ -2835,17 +2835,9 @@ error Context::DeleteAutotrackerRule(
             return noError;
         }
 
-        for (std::vector<AutotrackerRule *>::iterator it =
-            user_->related.AutotrackerRules.begin();
-                it != user_->related.AutotrackerRules.end(); it++) {
-            AutotrackerRule *rule = *it;
-            // Autotracker settings are not saved to DB,
-            // so the ID will be 0 always. But will have local ID
-            if (rule->LocalID() == id) {
-                rule->MarkAsDeletedOnServer();
-                rule->Delete();
-                break;
-            }
+        error err = user_->related.DeleteAutotrackerRule(id);
+        if (err != noError) {
+            return displayError(err);
         }
     }
 

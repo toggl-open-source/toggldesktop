@@ -38,6 +38,25 @@ void RelatedData::Clear() {
     clearList(&TimelineEvents);
 }
 
+error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
+    if (!local_id) {
+        return error("cannot delete rule without an ID");
+    }
+    for (std::vector<AutotrackerRule *>::iterator it =
+        AutotrackerRules.begin();
+            it != AutotrackerRules.end(); it++) {
+        AutotrackerRule *rule = *it;
+        // Autotracker settings are not saved to DB,
+        // so the ID will be 0 always. But will have local ID
+        if (rule->LocalID() == local_id) {
+            rule->MarkAsDeletedOnServer();
+            rule->Delete();
+            break;
+        }
+    }
+    return noError;
+}
+
 bool RelatedData::HasMatchingAutotrackerRule(const std::string lowercase_term) const {
     for (std::vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();

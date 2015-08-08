@@ -74,6 +74,8 @@ class RelatedData {
     // avoid duplicates
     bool HasMatchingAutotrackerRule(const std::string lowercase_term) const;
 
+    error DeleteAutotrackerRule(const Poco::Int64 local_id);
+
     void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void ProjectAutocompleteItems(std::vector<AutocompleteItem> *) const;
