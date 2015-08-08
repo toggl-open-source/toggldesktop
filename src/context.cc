@@ -2844,24 +2844,6 @@ error Context::DeleteAutotrackerRule(
     return displayError(save());
 }
 
-AutotrackerRule *Context::findAutotrackerRule(const TimelineEvent event) {
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        return nullptr;
-    }
-
-    for (std::vector<AutotrackerRule *>::const_iterator it =
-        user_->related.AutotrackerRules.begin();
-            it != user_->related.AutotrackerRules.end(); it++) {
-        AutotrackerRule *rule = *it;
-        if (rule->Matches(event)) {
-            return rule;
-        }
-    }
-
-    return nullptr;
-}
-
 Project *Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
@@ -3222,7 +3204,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
     if (!settings_.autotrack) {
         return noError;
     }
-    AutotrackerRule *rule = findAutotrackerRule(event);
+    AutotrackerRule *rule = user_->related.FindAutotrackerRule(event);
     if (!rule) {
         return noError;
     }

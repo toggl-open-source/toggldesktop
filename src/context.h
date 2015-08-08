@@ -376,8 +376,6 @@ class Context : public TimelineDatasource {
 
     error downloadUpdate();
 
-    AutotrackerRule *findAutotrackerRule(const TimelineEvent event);
-
     void stopActivities();
 
     error offerBetaChannel();

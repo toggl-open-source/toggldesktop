@@ -57,7 +57,21 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     return noError;
 }
 
-bool RelatedData::HasMatchingAutotrackerRule(const std::string lowercase_term) const {
+AutotrackerRule *RelatedData::FindAutotrackerRule(
+    const TimelineEvent event) const {
+    for (std::vector<AutotrackerRule *>::const_iterator it =
+        AutotrackerRules.begin();
+            it != AutotrackerRules.end(); it++) {
+        AutotrackerRule *rule = *it;
+        if (rule->Matches(event)) {
+            return rule;
+        }
+    }
+    return nullptr;
+}
+
+bool RelatedData::HasMatchingAutotrackerRule(
+    const std::string lowercase_term) const {
     for (std::vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();
             it != AutotrackerRules.end(); it++) {

@@ -89,6 +89,8 @@ class RelatedData {
         std::string *client_label,
         std::string *color_code) const;
 
+    AutotrackerRule *FindAutotrackerRule(const TimelineEvent event) const;
+
  private:
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
