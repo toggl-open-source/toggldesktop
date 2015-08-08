@@ -38,6 +38,21 @@ void RelatedData::Clear() {
     clearList(&TimelineEvents);
 }
 
+Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
+    Poco::Int64 count(0);
+
+    for (std::vector<TimeEntry *>::const_iterator it =
+        TimeEntries.begin();
+            it != TimeEntries.end(); it++) {
+        TimeEntry *te = *it;
+        if (te->NeedsPush()) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
 // Add time entries, in format:
 // Description - Task. Project. Client
 void RelatedData::timeEntryAutocompleteItems(

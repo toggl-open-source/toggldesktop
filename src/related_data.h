@@ -58,6 +58,8 @@ class RelatedData {
     Client *ClientByGUID(const guid GUID) const;
     TimelineEvent *TimelineEventByGUID(const guid GUID) const;
 
+    Poco::Int64 NumberOfUnsyncedTimeEntries() const;
+
     void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void ProjectAutocompleteItems(std::vector<AutocompleteItem> *) const;

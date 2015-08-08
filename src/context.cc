@@ -268,14 +268,7 @@ error Context::save(const bool push_changes) {
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (user_) {
-                for (std::vector<TimeEntry *>::const_iterator it =
-                    user_->related.TimeEntries.begin();
-                        it != user_->related.TimeEntries.end(); it++) {
-                    TimeEntry *te = *it;
-                    if (te->NeedsPush()) {
-                        count++;
-                    }
-                }
+                count = user_->related.NumberOfUnsyncedTimeEntries();
             }
         }
 
