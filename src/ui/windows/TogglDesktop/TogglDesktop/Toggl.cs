@@ -80,7 +80,6 @@ public static class Toggl
         public string WorkspaceName;
         [MarshalAs(UnmanagedType.LPWStr)]
         public string Error;
-        public UInt64 ViewType;
         public IntPtr Next;
     }
 

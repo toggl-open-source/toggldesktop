@@ -132,7 +132,6 @@
 	{
 		self.Error = nil;
 	}
-	self.ViewType = te->ViewType;
 }
 
 - (NSString *)description

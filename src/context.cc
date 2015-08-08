@@ -2075,62 +2075,6 @@ error Context::ClearCache() {
     return noError;
 }
 
-TimeEntry *Context::SaveTimelineAsTimeEntry(
-    const std::string GUID) {
-
-    // Do not even allow to add new time entries,
-    // else they will linger around in the app
-    // and the user can continue using the unsupported app.
-    if (urls::ImATeapot()) {
-        displayError(kUnsupportedAppError);
-        return nullptr;
-    }
-
-    if (GUID.empty()) {
-        displayError("missing timeline GUID");
-        return nullptr;
-    }
-
-    TimeEntry *te = nullptr;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot save timeline, user logged out");
-            return nullptr;
-        }
-
-        TimelineEvent *ev = user_->related.TimelineEventByGUID(GUID);
-        if (!ev) {
-            displayError("timeline event not found");
-            return nullptr;
-        }
-
-        TimeEntry *te = new TimeEntry();
-        te->SetCreatedWith(HTTPSClient::Config.UserAgent());
-        te->SetDescription(ev->Title());
-        te->SetUID(user_->ID());
-        te->SetDurationInSeconds(ev->Duration());
-        te->SetStart(ev->Start());
-        te->SetStop(ev->EndTime());
-
-        user_->EnsureWID(te);
-
-        te->SetDurOnly(!user_->StoreStartAndStopTime());
-        te->SetUIModified();
-
-        user_->related.TimeEntries.push_back(te);
-    }
-
-    error err = save();
-    if (err != noError) {
-        displayError(err);
-        return nullptr;
-    }
-
-    return te;
-}
-
 TimeEntry *Context::Start(
     const std::string description,
     const std::string duration,

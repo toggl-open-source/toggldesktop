@@ -263,8 +263,6 @@ TogglTimeEntryView *time_entry_view_item_init(
         view_item->Error = nullptr;
     }
 
-    view_item->ViewType = te->Type();
-
     view_item->Next = nullptr;
 
     return view_item;

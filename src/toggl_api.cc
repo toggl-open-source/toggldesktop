@@ -756,21 +756,6 @@ bool_t toggl_timeline_is_recording_enabled(
     return app(context)->IsTimelineRecordingEnabled();
 }
 
-char_t *toggl_timeline_save_as_time_entry(
-    void *context,
-    const char_t *guid) {
-    std::string timeline_event_guid("");
-    if (guid) {
-        timeline_event_guid = to_string(guid);
-    }
-    toggl::TimeEntry *te =
-        app(context)->SaveTimelineAsTimeEntry(timeline_event_guid);
-    if (te) {
-        return copy_string(te->GUID());
-    }
-    return nullptr;
-}
-
 bool_t toggl_feedback_send(
     void *context,
     const char_t *topic,

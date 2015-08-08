@@ -45,5 +45,4 @@
 @property BOOL CanAddProjects;
 @property (strong) NSString *WorkspaceName;
 @property (strong) NSString *Error;
-@property uint64_t ViewType;
 @end

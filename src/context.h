@@ -164,9 +164,6 @@ class Context : public TimelineDatasource {
     error Continue(
         const std::string GUID);
 
-    TimeEntry *SaveTimelineAsTimeEntry(
-        const std::string GUID);
-
     void DisplayTimeEntryList(const bool open = false);
 
     error DisplaySettings(const bool open = false);
