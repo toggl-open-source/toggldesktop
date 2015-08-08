@@ -2806,15 +2806,9 @@ error Context::AddAutotrackerRule(
             logger().warning("cannot add autotracker rule, user logged out");
             return noError;
         }
-
-        for (std::vector<AutotrackerRule *>::const_iterator it =
-            user_->related.AutotrackerRules.begin();
-                it != user_->related.AutotrackerRules.end(); it++) {
-            AutotrackerRule *rule = *it;
-            if (rule->Term() == lowercase) {
-                // avoid duplicates
-                return displayError(kErrorRuleAlreadyExists);
-            }
+        if (user_->related.HasMatchingAutotrackerRule(lowercase)) {
+            // avoid duplicates
+            return displayError(kErrorRuleAlreadyExists);
         }
 
         AutotrackerRule *rule = new AutotrackerRule();

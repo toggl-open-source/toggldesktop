@@ -71,6 +71,9 @@ class RelatedData {
 
     Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
 
+    // avoid duplicates
+    bool HasMatchingAutotrackerRule(const std::string lowercase_term) const;
+
     void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;
     void ProjectAutocompleteItems(std::vector<AutocompleteItem> *) const;

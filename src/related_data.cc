@@ -38,6 +38,18 @@ void RelatedData::Clear() {
     clearList(&TimelineEvents);
 }
 
+bool RelatedData::HasMatchingAutotrackerRule(const std::string lowercase_term) const {
+    for (std::vector<AutotrackerRule *>::const_iterator it =
+        AutotrackerRules.begin();
+            it != AutotrackerRules.end(); it++) {
+        AutotrackerRule *rule = *it;
+        if (rule->Term() == lowercase_term) {
+            return true;
+        }
+    }
+    return false;
+}
+
 Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
     Poco::Int64 count(0);
 
