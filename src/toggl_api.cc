@@ -508,7 +508,7 @@ bool_t toggl_continue(
 }
 
 void toggl_view_time_entry_list(void *context) {
-    app(context)->DisplayTimeEntryList(true);
+    app(context)->OpenTimeEntryList();
 }
 
 void toggl_edit(
@@ -526,13 +526,14 @@ void toggl_edit(
        << ", focused_field_name = " << focused_field_name;
     logger().debug(ss.str());
 
-    app(context)->Edit(to_string(guid),
-                       edit_running_entry,
-                       to_string(focused_field_name));
+    app(context)->OpenTimeEntryEditor(
+        to_string(guid),
+        edit_running_entry,
+        to_string(focused_field_name));
 }
 
 void toggl_edit_preferences(void *context) {
-    app(context)->DisplaySettings(true);
+    app(context)->OpenSettings();
 }
 
 bool_t toggl_continue_latest(

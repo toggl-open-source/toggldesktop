@@ -44,9 +44,17 @@ class UIElements {
     , display_workspace_select(reset)
     , display_timer_state(reset)
     , display_time_entry_editor(reset)
+    , open_settings(reset)
     , open_time_entry_list(reset)
+    , open_time_entry_editor(reset)
     , display_autotracker_rules(reset)
-    , display_settings(reset) {}
+    , display_settings(reset)
+    , time_entry_editor_guid("")
+    , time_entry_editor_field("") {}
+
+    void ApplyChanges(
+        const std::string time_entry_editor_guid,
+        const std::vector<ModelChange> &changes);
 
     bool display_time_entries;
     bool display_time_entry_autocomplete;
@@ -57,9 +65,13 @@ class UIElements {
     bool display_workspace_select;
     bool display_timer_state;
     bool display_time_entry_editor;
+    bool open_settings;
     bool open_time_entry_list;
+    bool open_time_entry_editor;
     bool display_autotracker_rules;
     bool display_settings;
+    std::string time_entry_editor_guid;
+    std::string time_entry_editor_field;
 };
 
 class Context : public TimelineDatasource {
@@ -194,13 +206,14 @@ class Context : public TimelineDatasource {
     error Continue(
         const std::string GUID);
 
-    void DisplayTimeEntryList(const bool open = false);
+    void OpenTimeEntryList();
 
-    error DisplaySettings(const bool open = false);
+    void OpenSettings();
 
-    void Edit(const std::string GUID,
-              const bool edit_running_entry = false,
-              const std::string focused_field_name = "");
+    void OpenTimeEntryEditor(
+        const std::string GUID,
+        const bool edit_running_entry = false,
+        const std::string focused_field_name = "");
 
     error SetTimeEntryDuration(
         const std::string GUID,
@@ -366,24 +379,12 @@ class Context : public TimelineDatasource {
 
     Database *db() const;
 
-    void displayTimerState();
     void displayTimeEntryEditor(const bool open,
                                 TimeEntry *te,
                                 const std::string focused_field_name);
-    void displayTimeEntryAutocomplete();
-    void displayMinitimerAutocomplete();
-    void displayProjectAutocomplete();
-    void displayWorkspaceSelect();
-    void displayClientSelect();
-    void displayTags();
-    void displayAutotrackerRules();
-
     void displayReminder();
 
-    void updateUI(
-        std::vector<ModelChange> *changes,
-        const bool reset = false);
-    void resetUI();
+    void updateUI(const UIElements &elements);
 
     error displayError(const error err);
 

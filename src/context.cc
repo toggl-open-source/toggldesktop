@@ -202,10 +202,9 @@ error Context::StartEvents() {
             return displayError("UI is not properly wired up!");
         }
 
-        err = DisplaySettings();
-        if (err != noError) {
-            return displayError(err);
-        }
+        UIElements render(false);
+        render.display_settings = true;
+        updateUI(render);
 
         // See if user was logged in into app previously
         User *user = new User();
@@ -222,7 +221,7 @@ error Context::StartEvents() {
         }
         setUser(user);
 
-        resetUI();
+        updateUI(UIElements(true));
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -231,10 +230,6 @@ error Context::StartEvents() {
         return displayError(ex);
     }
     return noError;
-}
-
-void Context::resetUI() {
-    updateUI(nullptr, true);
 }
 
 error Context::save(const bool push_changes) {
@@ -249,7 +244,10 @@ error Context::save(const bool push_changes) {
                 return err;
             }
         }
-        updateUI(&changes);
+
+        UIElements render(false);
+        render.ApplyChanges(time_entry_editor_guid_, changes);
+        updateUI(render);
 
         if (push_changes) {
             pushChanges();
@@ -276,231 +274,227 @@ error Context::save(const bool push_changes) {
     return noError;
 }
 
-void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
-    UIElements what(true);
+void UIElements::ApplyChanges(
+    const std::string time_entry_editor_guid,
+    const std::vector<ModelChange> &changes) {
+    // Check what needs to be updated in UI
+    for (std::vector<ModelChange>::const_iterator it =
+        changes.begin();
+            it != changes.end();
+            it++) {
+        ModelChange ch = *it;
 
-    if (changes) {
-        // Check what needs to be updated in UI
-        for (std::vector<ModelChange>::const_iterator it =
-            changes->begin();
-                it != changes->end();
-                it++) {
-            ModelChange ch = *it;
+        if (ch.ModelType() == kModelTag) {
+            display_tags = true;
+        }
 
-            if (ch.ModelType() == kModelTag) {
-                what.display_tags = true;
-            }
+        if (ch.ModelType() == kModelWorkspace
+                || ch.ModelType() == kModelClient
+                || ch.ModelType() == kModelProject
+                || ch.ModelType() == kModelTask
+                || ch.ModelType() == kModelTimeEntry) {
+            display_time_entry_autocomplete = true;
+            display_time_entries = true;
+            display_mini_timer_autocomplete = true;
+        }
 
-            if (ch.ModelType() == kModelWorkspace
-                    || ch.ModelType() == kModelClient
-                    || ch.ModelType() == kModelProject
-                    || ch.ModelType() == kModelTask
-                    || ch.ModelType() == kModelTimeEntry) {
-                what.display_time_entry_autocomplete = true;
-                what.display_time_entries = true;
-                what.display_mini_timer_autocomplete = true;
-            }
+        if (ch.ModelType() == kModelWorkspace
+                || ch.ModelType() == kModelClient
+                || ch.ModelType() == kModelProject
+                || ch.ModelType() == kModelTask) {
+            display_project_autocomplete = true;
+        }
 
-            if (ch.ModelType() == kModelWorkspace
-                    || ch.ModelType() == kModelClient
-                    || ch.ModelType() == kModelProject
-                    || ch.ModelType() == kModelTask) {
-                what.display_project_autocomplete = true;
-            }
+        if (ch.ModelType() == kModelClient
+                || ch.ModelType() == kModelWorkspace) {
+            display_client_select = true;
+        }
 
-            if (ch.ModelType() == kModelClient
-                    || ch.ModelType() == kModelWorkspace) {
-                what.display_client_select = true;
-            }
-
-            // Check if time entry editor needs to be updated
-            if (ch.ModelType() == kModelTimeEntry) {
-                what.display_timer_state = true;
-                // If time entry was edited, check further
-                if (time_entry_editor_guid_ == ch.GUID()) {
-                    // If time entry was deleted, close editor
-                    // and open list view
-                    if (ch.ChangeType() == kChangeTypeDelete) {
-                        what.open_time_entry_list = true;
-                        what.display_time_entries = true;
-                    } else {
-                        what.display_time_entry_editor = true;
-                    }
+        // Check if time entry editor needs to be updated
+        if (ch.ModelType() == kModelTimeEntry) {
+            display_timer_state = true;
+            // If time entry was edited, check further
+            if (time_entry_editor_guid == ch.GUID()) {
+                // If time entry was deleted, close editor
+                // and open list view
+                if (ch.ChangeType() == kChangeTypeDelete) {
+                    open_time_entry_list = true;
+                    display_time_entries = true;
+                } else {
+                    display_time_entry_editor = true;
                 }
             }
+        }
 
-            if (ch.ModelType() == kModelAutotrackerRule) {
-                what.display_autotracker_rules = true;
-            }
+        if (ch.ModelType() == kModelAutotrackerRule) {
+            display_autotracker_rules = true;
+        }
 
-            if (ch.ModelType() == kModelTimelineEvent) {
-                if (kExperimentalFeatureRenderTimeline) {
-                    Poco::Mutex::ScopedLock lock(user_m_);
-                    if (user_ && user_->RecordTimeline()) {
-                        what.display_time_entries = true;
-                    }
-                }
-            }
-
-            if (ch.ModelType() == kModelSettings) {
-                what.display_settings = true;
-            }
+        if (ch.ModelType() == kModelSettings) {
+            display_settings = true;
         }
     }
+}
 
-    // Tweak for windows app. Its using the dropwdown UI elements
-    // (display_client_select, display_workspace_select etc) for
-    // building an autocomplete. Confirm to it:
-    if (POCO_OS_WINDOWS_NT == POCO_OS) {
-        // project autocomplete = project autocomplete, client select,
-        //  workspace select
-        if (what.display_project_autocomplete) {
-            what.display_client_select = true;
-            what.display_workspace_select = true;
+void Context::OpenTimeEntryList() {
+    logger().debug("OpenTimeEntryList");
+
+    UIElements render(false);
+    render.open_time_entry_list = true;
+    render.display_time_entries = true;
+    updateUI(render);
+}
+
+void Context::updateUI(const UIElements &what) {
+    TimeEntry *editor_time_entry = nullptr;
+    TimeEntry *running_entry = nullptr;
+
+    std::vector<AutocompleteItem> time_entry_autocompletes;
+    std::vector<AutocompleteItem> minitimer_autocompletes;
+    std::vector<AutocompleteItem> project_autocompletes;
+
+    std::vector<Workspace *> workspaces;
+    std::vector<TimeEntry *> time_entries;
+    std::vector<Client *> clients;
+
+    std::vector<std::string> tags;
+
+    Poco::Int64 total_duration_for_date(0);
+
+    bool use_proxy(false);
+    bool record_timeline(false);
+
+    Proxy proxy;
+
+    // Collect data
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+
+        if (what.display_project_autocomplete && user_) {
+            user_->related.ProjectAutocompleteItems(&project_autocompletes);
         }
-
-        // client autocomplete = client select, workspace select
-        if (what.display_client_select) {
-            what. display_workspace_select = true;
+        if (what.display_time_entry_editor && user_) {
+            editor_time_entry =
+                user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
+            if (!editor_time_entry) {
+                return;
+            }
+            total_duration_for_date =
+                user_->related.TotalDurationForDate(editor_time_entry);
+            time_entry_editor_guid_ = editor_time_entry->GUID();
         }
-    }
-
-    // Awhat.pply updates to UI
-    if (what.display_time_entry_editor) {
-        TimeEntry *te = nullptr;
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
+        if (what.display_time_entry_autocomplete && user_) {
+            user_->related.TimeEntryAutocompleteItems(
+                &time_entry_autocompletes);
+        }
+        if (what.display_mini_timer_autocomplete && user_) {
+            user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+        }
+        if (what.display_workspace_select && user_) {
+            user_->related.WorkspaceList(&workspaces);
+        }
+        if (what.display_client_select && user_) {
+            user_->related.ClientList(&clients);
+        }
+        if (what.display_tags) {
+            user_->related.TagList(&tags);
+        }
+        if (what.display_timer_state && user_) {
+            running_entry = user_->RunningTimeEntry();
+            if (running_entry) {
+                total_duration_for_date =
+                    user_->related.TotalDurationForDate(running_entry);
+            }
+        }
+        if (what.display_time_entries && user_) {
+            time_entries = user_->related.VisibleTimeEntries();
+            std::sort(time_entries.begin(), time_entries.end(), CompareByStart);
+            if (what.open_time_entry_list) {
+                time_entry_editor_guid_ = "";
+            }
+        }
+        if (what.display_settings) {
+            error err = db()->LoadSettings(&settings_);
+            if (err != noError) {
+                setUser(nullptr);
+                displayError(err);
+                return;
+            }
+            err = db()->LoadProxySettings(&use_proxy, &proxy);
+            if (err != noError) {
+                setUser(nullptr);
+                displayError(err);
+                return;
+            }
             if (user_) {
-                te = user_->related.TimeEntryByGUID(time_entry_editor_guid_);
+                record_timeline = user_->RecordTimeline();
             }
+            idle_.SetSettings(settings_);
+
+            HTTPSClient::Config.UseProxy = use_proxy;
+            HTTPSClient::Config.IgnoreCert = false;
+            HTTPSClient::Config.ProxySettings = proxy;
+            HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
         }
-        if (te) {
-            displayTimeEntryEditor(false, te, "");
+    }
+
+    // Render data
+    if (what.display_time_entry_editor && editor_time_entry) {
+        if (what.open_time_entry_editor) {
+            UI()->DisplayApp();
         }
+        UI()->DisplayTimeEntryEditor(
+            what.open_time_entry_editor,
+            user_->related,
+            editor_time_entry,
+            "",
+            total_duration_for_date,
+            user_);
     }
     if (what.display_time_entries) {
-        DisplayTimeEntryList(what.open_time_entry_list);
+        UI()->DisplayTimeEntryList(
+            what.open_time_entry_list,
+            user_->related,
+            time_entries);
+        last_time_entry_list_render_at_ = Poco::LocalDateTime();
     }
     if (what.display_time_entry_autocomplete) {
-        displayTimeEntryAutocomplete();
+        UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
     }
     if (what.display_mini_timer_autocomplete) {
-        displayMinitimerAutocomplete();
+        UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
     }
     if (what.display_workspace_select) {
-        displayWorkspaceSelect();
+        UI()->DisplayWorkspaceSelect(&workspaces);
     }
     if (what.display_client_select) {
-        displayClientSelect();
+        UI()->DisplayClientSelect(&clients);
     }
     if (what.display_tags) {
-        displayTags();
+        UI()->DisplayTags(&tags);
     }
     if (what.display_timer_state) {
-        displayTimerState();
+        UI()->DisplayTimerState(
+            user_->related,
+            running_entry,
+            total_duration_for_date);
     }
     if (what.display_autotracker_rules) {
-        displayAutotrackerRules();
+        if (UI()->CanDisplayAutotrackerRules() && user_) {
+            UI()->DisplayAutotrackerRules(user_->related, autotracker_titles_);
+        }
     }
     if (what.display_settings) {
-        error err = DisplaySettings();
-        if (err != noError) {
-            displayError(err);
-        }
+        UI()->DisplaySettings(what.open_settings,
+                              record_timeline,
+                              settings_,
+                              use_proxy,
+                              proxy);
     }
     // Apply autocomplete as last element,
     // as its depending on selects on Windows
     if (what.display_project_autocomplete) {
-        displayProjectAutocomplete();
-    }
-}
-
-void Context::displayTimeEntryAutocomplete() {
-    std::vector<AutocompleteItem> list;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            user_->related.TimeEntryAutocompleteItems(&list);
-        }
-    }
-
-    UI()->DisplayTimeEntryAutocomplete(&list);
-}
-
-void Context::displayMinitimerAutocomplete() {
-    std::vector<AutocompleteItem> list;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            user_->related.MinitimerAutocompleteItems(&list);
-        }
-    }
-
-    UI()->DisplayMinitimerAutocomplete(&list);
-}
-
-void Context::displayProjectAutocomplete() {
-    std::vector<AutocompleteItem> list;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            user_->related.ProjectAutocompleteItems(&list);
-        }
-    }
-
-    UI()->DisplayProjectAutocomplete(&list);
-}
-
-void Context::displayClientSelect() {
-    std::vector<Client *> list;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            user_->related.ClientList(&list);
-        }
-    }
-
-    UI()->DisplayClientSelect(&list);
-}
-
-void Context::displayWorkspaceSelect() {
-    std::vector<Workspace *> list;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            user_->related.WorkspaceList(&list);
-        }
-    }
-
-    UI()->DisplayWorkspaceSelect(&list);
-}
-
-void Context::displayTags() {
-    std::vector<std::string> list;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            user_->related.TagList(&list);
-        }
-    }
-
-    UI()->DisplayTags(&list);
-}
-
-void Context::displayAutotrackerRules() {
-    if (!UI()->CanDisplayAutotrackerRules()) {
-        return;
-    }
-
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (user_) {
-        UI()->DisplayAutotrackerRules(user_->related, autotracker_titles_);
+        UI()->DisplayProjectAutocomplete(&project_autocompletes);
     }
 }
 
@@ -1259,10 +1253,9 @@ error Context::SetSettingsRemindTimes(
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     remindToTrackTime();
 
@@ -1291,10 +1284,9 @@ error Context::SetSettingsRemindDays(
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     remindToTrackTime();
 
@@ -1309,10 +1301,9 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1325,12 +1316,10 @@ error Context::SetSettingsRenderTimeline(const bool &value) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
-
-    DisplayTimeEntryList();
+    UIElements render(false);
+    render.display_settings = true;
+    render.display_time_entries = true;
+    updateUI(render);
 
     return noError;
 }
@@ -1341,10 +1330,9 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1357,10 +1345,9 @@ error Context::SetSettingsAutotrack(const bool value) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1373,10 +1360,9 @@ error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1389,10 +1375,9 @@ error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1405,10 +1390,9 @@ error Context::SetSettingsMenubarProject(const bool menubar_project) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1421,10 +1405,9 @@ error Context::SetSettingsDockIcon(const bool dock_icon) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1437,10 +1420,9 @@ error Context::SetSettingsOnTop(const bool on_top) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1454,10 +1436,9 @@ error Context::SetSettingsReminder(const bool reminder) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     remindToTrackTime();
 
@@ -1472,10 +1453,9 @@ error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1488,10 +1468,9 @@ error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1504,10 +1483,9 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     trackSettingsUsage();
 
@@ -1520,10 +1498,9 @@ error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return displayError(err);
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     remindToTrackTime();
 
@@ -1581,10 +1558,9 @@ error Context::SetProxySettings(
         return displayError(err);
     }
 
-    err = DisplaySettings();
-    if (err != noError) {
-        return err;
-    }
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
 
     if (use_proxy != was_using_proxy
             || proxy.Host() != previous_proxy_settings.Host()
@@ -1598,65 +1574,13 @@ error Context::SetProxySettings(
     return noError;
 }
 
-void Context::displayTimerState() {
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        return;
-    }
+void Context::OpenSettings() {
+    logger().debug("OpenSettings");
 
-    TimeEntry *te = user_->RunningTimeEntry();
-
-    Poco::Int64 total_duration_for_date(0);
-    if (te) {
-        total_duration_for_date = user_->related.TotalDurationForDate(te);
-    }
-
-    UI()->DisplayTimerState(user_->related, te, total_duration_for_date);
-}
-
-error Context::DisplaySettings(const bool open) {
-    error err = db()->LoadSettings(&settings_);
-    if (err != noError) {
-        setUser(nullptr);
-        return displayError(err);
-    }
-
-    std::stringstream ss;
-    ss << "DisplaySettings open=" << open
-       << " " << settings_.String();
-    logger().debug(ss.str());
-
-    bool use_proxy(false);
-    Proxy proxy;
-    err = db()->LoadProxySettings(&use_proxy, &proxy);
-    if (err != noError) {
-        setUser(nullptr);
-        return displayError(err);
-    }
-
-    bool record_timeline(false);
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            record_timeline = user_->RecordTimeline();
-        }
-    }
-
-    idle_.SetSettings(settings_);
-
-    HTTPSClient::Config.UseProxy = use_proxy;
-    HTTPSClient::Config.IgnoreCert = false;
-    HTTPSClient::Config.ProxySettings = proxy;
-    HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
-
-    UI()->DisplaySettings(open,
-                          record_timeline,
-                          settings_,
-                          use_proxy,
-                          proxy);
-
-    return noError;
+    UIElements render(false);
+    render.display_settings = true;
+    render.open_settings = true;
+    updateUI(render);
 }
 
 error Context::SetDBPath(
@@ -1756,7 +1680,7 @@ error Context::attemptOfflineLogin(const std::string email,
 
     setUser(user, true);
 
-    resetUI();
+    updateUI(UIElements(true));
 
     return save();
 }
@@ -1917,18 +1841,19 @@ void Context::setUser(User *value, const bool logged_in) {
         switchWebSocketOff();
 
         // Reset autotracker view
-        autotracker_titles_.clear();
-        displayAutotrackerRules();
-
         // Autotracker rules has a project autocomplete, too
-        displayProjectAutocomplete();
+        autotracker_titles_.clear();
+        UIElements render(false);
+        render.display_autotracker_rules = true;
+        render.display_project_autocomplete = true;
+        updateUI(render);
 
         return;
     }
 
     UI()->DisplayLogin(false, user_id);
 
-    DisplayTimeEntryList(true);
+    OpenTimeEntryList();
 
     {
         Poco::Mutex::ScopedLock l(window_change_recorder_m_);
@@ -1997,7 +1922,7 @@ error Context::SetLoggedInUserFromJSON(
 
     setUser(user, true);
 
-    resetUI();
+    updateUI(UIElements(true));
 
     return displayError(save());
 }
@@ -2109,40 +2034,10 @@ TimeEntry *Context::Start(
     return te;
 }
 
-void Context::DisplayTimeEntryList(const bool open) {
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        logger().warning("Cannot view time entries, user logged out");
-        return;
-    }
-
-    Poco::Stopwatch stopwatch;
-    stopwatch.start();
-
-    std::vector<TimeEntry *> list = user_->related.VisibleTimeEntries();
-
-    std::sort(list.begin(), list.end(), CompareByStart);
-
-    if (open) {
-        time_entry_editor_guid_ = "";
-    }
-
-    UI()->DisplayTimeEntryList(open, user_->related, list);
-
-    last_time_entry_list_render_at_ = Poco::LocalDateTime();
-
-    stopwatch.stop();
-    std::stringstream ss;
-    ss << "Time entry list with "
-       << list.size()
-       << " time entries rendered in "
-       << stopwatch.elapsed() / 1000 << " ms";
-    logger().debug(ss.str());
-}
-
-void Context::Edit(const std::string GUID,
-                   const bool edit_running_entry,
-                   const std::string focused_field_name) {
+void Context::OpenTimeEntryEditor(
+    const std::string GUID,
+    const bool edit_running_entry,
+    const std::string focused_field_name) {
     if (!edit_running_entry && GUID.empty()) {
         logger().error("Cannot edit time entry without a GUID");
         return;
@@ -2169,42 +2064,31 @@ void Context::Edit(const std::string GUID,
         return;
     }
 
-    displayTimeEntryEditor(true, te, focused_field_name);
-}
+    UIElements render(false);
+    render.open_time_entry_editor = true;
+    render.display_time_entry_editor = true;
 
-void Context::displayTimeEntryEditor(const bool open,
-                                     TimeEntry *te,
-                                     const std::string focused_field_name) {
-    poco_check_ptr(te);
+    render.time_entry_editor_guid = te->GUID();
+    render.time_entry_editor_field = focused_field_name;
 
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        return;
-    }
+    render.open_time_entry_list = false;
+    render.display_time_entries = true;
 
-    if (open) {
-        UI()->DisplayApp();
-    }
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
-    if (open && (time_entry_editor_guid_ == te->GUID())) {
-        DisplayTimeEntryList(true);
-        return;
+    if (time_entry_editor_guid_ == te->GUID()) {
+        render.open_time_entry_editor = false;
+        render.display_time_entry_editor = false;
+
+        render.time_entry_editor_guid = "";
+        render.time_entry_editor_field = "";
+
+        render.open_time_entry_list = true;
+        render.display_time_entries = true;
     }
 
-    time_entry_editor_guid_ = te->GUID();
-
-    Poco::Int64 total_duration_for_date =
-        user_->related.TotalDurationForDate(te);
-
-    UI()->DisplayTimeEntryEditor(
-        open,
-        user_->related,
-        te,
-        focused_field_name,
-        total_duration_for_date,
-        user_);
+    updateUI(render);
 }
 
 error Context::ContinueLatest() {
@@ -2275,7 +2159,7 @@ error Context::Continue(
         return displayError(err);
     }
 
-    DisplayTimeEntryList(true);
+    OpenTimeEntryList();
 
     return noError;
 }
@@ -2690,7 +2574,12 @@ error Context::DiscardTimeAt(
     }
 
     if (split_into_new_entry && split) {
-        displayTimeEntryEditor(true, split, "");
+        UIElements render(false);
+        render.open_time_entry_editor = true;
+        render.display_time_entry_editor = true;
+        render.time_entry_editor_guid = split->GUID();
+        render.time_entry_editor_field = "";
+        updateUI(render);
     }
 
     return noError;
@@ -2740,10 +2629,9 @@ error Context::ToggleTimelineRecording(const bool record_timeline) {
             return displayError(err);
         }
 
-        err = DisplaySettings();
-        if (err != noError) {
-            return err;
-        }
+        UIElements render(false);
+        render.display_settings = true;
+        updateUI(render);
 
         TimelineUpdateServerSettings();
 
@@ -2996,7 +2884,11 @@ error Context::offerBetaChannel() {
         return err;
     }
 
-    return DisplaySettings();
+    UIElements render(false);
+    render.display_settings = true;
+    updateUI(render);
+
+    return noError;
 }
 
 void Context::SetWake() {
@@ -3031,14 +2923,13 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
     try {
         scheduleSync();
 
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            Poco::LocalDateTime now;
-            if (now.year() != last_time_entry_list_render_at_.year()
-                    || now.month() != last_time_entry_list_render_at_.month()
-                    || now.day() != last_time_entry_list_render_at_.day()) {
-                DisplayTimeEntryList();
-            }
+        Poco::LocalDateTime now;
+        if (now.year() != last_time_entry_list_render_at_.year()
+                || now.month() != last_time_entry_list_render_at_.month()
+                || now.day() != last_time_entry_list_render_at_.day()) {
+            UIElements render(false);
+            render.display_time_entries = true;
+            updateUI(render);
         }
 
         idle_.SetWake(user_);
@@ -3178,7 +3069,9 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
     // Update the autotracker titles
     if (event.Title().size()) {
         autotracker_titles_.insert(event.Title());
-        displayAutotrackerRules();
+        UIElements render(false);
+        render.display_autotracker_rules = true;
+        updateUI(render);
     }
 
     // Notify user to track using autotracker rules:
@@ -3327,7 +3220,9 @@ void Context::uiUpdaterActivity() {
             Formatter::FormatDurationForDateHeader(duration);
 
         if (running_time != date_duration) {
-            DisplayTimeEntryList();
+            UIElements render(false);
+            render.display_time_entries = true;
+            updateUI(render);
         }
 
         running_time = date_duration;
