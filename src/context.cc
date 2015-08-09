@@ -277,19 +277,7 @@ error Context::save(const bool push_changes) {
 }
 
 void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
-    // Assume nothing needs to be updated
-    bool display_time_entries(reset);
-    bool display_time_entry_autocomplete(reset);
-    bool display_mini_timer_autocomplete(reset);
-    bool display_project_autocomplete(reset);
-    bool display_client_select(reset);
-    bool display_tags(reset);
-    bool display_workspace_select(reset);
-    bool display_timer_state(reset);
-    bool display_time_entry_editor(reset);
-    bool open_time_entry_list(reset);
-    bool display_autotracker_rules(reset);
-    bool display_settings(reset);
+    UIElements what(true);
 
     if (changes) {
         // Check what needs to be updated in UI
@@ -300,7 +288,7 @@ void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
             ModelChange ch = *it;
 
             if (ch.ModelType() == kModelTag) {
-                display_tags = true;
+                what.display_tags = true;
             }
 
             if (ch.ModelType() == kModelWorkspace
@@ -308,54 +296,54 @@ void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
                     || ch.ModelType() == kModelProject
                     || ch.ModelType() == kModelTask
                     || ch.ModelType() == kModelTimeEntry) {
-                display_time_entry_autocomplete = true;
-                display_time_entries = true;
-                display_mini_timer_autocomplete = true;
+                what.display_time_entry_autocomplete = true;
+                what.display_time_entries = true;
+                what.display_mini_timer_autocomplete = true;
             }
 
             if (ch.ModelType() == kModelWorkspace
                     || ch.ModelType() == kModelClient
                     || ch.ModelType() == kModelProject
                     || ch.ModelType() == kModelTask) {
-                display_project_autocomplete = true;
+                what.display_project_autocomplete = true;
             }
 
             if (ch.ModelType() == kModelClient
                     || ch.ModelType() == kModelWorkspace) {
-                display_client_select = true;
+                what.display_client_select = true;
             }
 
             // Check if time entry editor needs to be updated
             if (ch.ModelType() == kModelTimeEntry) {
-                display_timer_state = true;
+                what.display_timer_state = true;
                 // If time entry was edited, check further
                 if (time_entry_editor_guid_ == ch.GUID()) {
                     // If time entry was deleted, close editor
                     // and open list view
                     if (ch.ChangeType() == kChangeTypeDelete) {
-                        open_time_entry_list = true;
-                        display_time_entries = true;
+                        what.open_time_entry_list = true;
+                        what.display_time_entries = true;
                     } else {
-                        display_time_entry_editor = true;
+                        what.display_time_entry_editor = true;
                     }
                 }
             }
 
             if (ch.ModelType() == kModelAutotrackerRule) {
-                display_autotracker_rules = true;
+                what.display_autotracker_rules = true;
             }
 
             if (ch.ModelType() == kModelTimelineEvent) {
                 if (kExperimentalFeatureRenderTimeline) {
                     Poco::Mutex::ScopedLock lock(user_m_);
                     if (user_ && user_->RecordTimeline()) {
-                        display_time_entries = true;
+                        what.display_time_entries = true;
                     }
                 }
             }
 
             if (ch.ModelType() == kModelSettings) {
-                display_settings = true;
+                what.display_settings = true;
             }
         }
     }
@@ -366,19 +354,19 @@ void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
     if (POCO_OS_WINDOWS_NT == POCO_OS) {
         // project autocomplete = project autocomplete, client select,
         //  workspace select
-        if (display_project_autocomplete) {
-            display_client_select = true;
-            display_workspace_select = true;
+        if (what.display_project_autocomplete) {
+            what.display_client_select = true;
+            what.display_workspace_select = true;
         }
 
         // client autocomplete = client select, workspace select
-        if (display_client_select) {
-            display_workspace_select = true;
+        if (what.display_client_select) {
+            what. display_workspace_select = true;
         }
     }
 
-    // Apply updates to UI
-    if (display_time_entry_editor) {
+    // Awhat.pply updates to UI
+    if (what.display_time_entry_editor) {
         TimeEntry *te = nullptr;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
@@ -390,31 +378,31 @@ void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
             displayTimeEntryEditor(false, te, "");
         }
     }
-    if (display_time_entries) {
-        DisplayTimeEntryList(open_time_entry_list);
+    if (what.display_time_entries) {
+        DisplayTimeEntryList(what.open_time_entry_list);
     }
-    if (display_time_entry_autocomplete) {
+    if (what.display_time_entry_autocomplete) {
         displayTimeEntryAutocomplete();
     }
-    if (display_mini_timer_autocomplete) {
+    if (what.display_mini_timer_autocomplete) {
         displayMinitimerAutocomplete();
     }
-    if (display_workspace_select) {
+    if (what.display_workspace_select) {
         displayWorkspaceSelect();
     }
-    if (display_client_select) {
+    if (what.display_client_select) {
         displayClientSelect();
     }
-    if (display_tags) {
+    if (what.display_tags) {
         displayTags();
     }
-    if (display_timer_state) {
+    if (what.display_timer_state) {
         displayTimerState();
     }
-    if (display_autotracker_rules) {
+    if (what.display_autotracker_rules) {
         displayAutotrackerRules();
     }
-    if (display_settings) {
+    if (what.display_settings) {
         error err = DisplaySettings();
         if (err != noError) {
             displayError(err);
@@ -422,7 +410,7 @@ void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
     }
     // Apply autocomplete as last element,
     // as its depending on selects on Windows
-    if (display_project_autocomplete) {
+    if (what.display_project_autocomplete) {
         displayProjectAutocomplete();
     }
 }

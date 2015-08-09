@@ -32,6 +32,36 @@ class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
 
+class UIElements {
+ public:
+    explicit UIElements(const bool reset)
+        : display_time_entries(reset)
+    , display_time_entry_autocomplete(reset)
+    , display_mini_timer_autocomplete(reset)
+    , display_project_autocomplete(reset)
+    , display_client_select(reset)
+    , display_tags(reset)
+    , display_workspace_select(reset)
+    , display_timer_state(reset)
+    , display_time_entry_editor(reset)
+    , open_time_entry_list(reset)
+    , display_autotracker_rules(reset)
+    , display_settings(reset) {}
+
+    bool display_time_entries;
+    bool display_time_entry_autocomplete;
+    bool display_mini_timer_autocomplete;
+    bool display_project_autocomplete;
+    bool display_client_select;
+    bool display_tags;
+    bool display_workspace_select;
+    bool display_timer_state;
+    bool display_time_entry_editor;
+    bool open_time_entry_list;
+    bool display_autotracker_rules;
+    bool display_settings;
+};
+
 class Context : public TimelineDatasource {
  public:
     Context(
