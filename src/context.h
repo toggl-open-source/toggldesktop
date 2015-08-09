@@ -329,8 +329,6 @@ class Context : public TimelineDatasource {
 
     void setUser(User *value, const bool user_logged_in = false);
 
-    void displayUI();
-
     void switchWebSocketOff();
     void switchWebSocketOn();
     void switchTimelineOff();
@@ -352,7 +350,10 @@ class Context : public TimelineDatasource {
 
     void displayReminder();
 
-    void updateUI(std::vector<ModelChange> *changes);
+    void updateUI(
+        std::vector<ModelChange> *changes,
+        const bool reset = false);
+    void resetUI();
 
     error displayError(const error err);
 

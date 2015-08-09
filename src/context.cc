@@ -222,7 +222,7 @@ error Context::StartEvents() {
         }
         setUser(user);
 
-        displayUI();
+        resetUI();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -233,15 +233,8 @@ error Context::StartEvents() {
     return noError;
 }
 
-void Context::displayUI() {
-    displayTimerState();
-    displayWorkspaceSelect();
-    displayClientSelect();
-    displayTags();
-    displayTimeEntryAutocomplete();
-    displayMinitimerAutocomplete();
-    displayProjectAutocomplete();
-    displayAutotrackerRules();
+void Context::resetUI() {
+    updateUI(nullptr, true);
 }
 
 error Context::save(const bool push_changes) {
@@ -283,84 +276,87 @@ error Context::save(const bool push_changes) {
     return noError;
 }
 
-void Context::updateUI(std::vector<ModelChange> *changes) {
+void Context::updateUI(std::vector<ModelChange> *changes, const bool reset) {
     // Assume nothing needs to be updated
-    bool display_time_entries(false);
-    bool display_time_entry_autocomplete(false);
-    bool display_mini_timer_autocomplete(false);
-    bool display_project_autocomplete(false);
-    bool display_client_select(false);
-    bool display_tags(false);
-    bool display_workspace_select(false);
-    bool display_timer_state(false);
-    bool display_time_entry_editor(false);
-    bool open_time_entry_list(false);
-    bool display_autotracker_rules(false);
-    bool display_settings(false);
+    bool display_time_entries(reset);
+    bool display_time_entry_autocomplete(reset);
+    bool display_mini_timer_autocomplete(reset);
+    bool display_project_autocomplete(reset);
+    bool display_client_select(reset);
+    bool display_tags(reset);
+    bool display_workspace_select(reset);
+    bool display_timer_state(reset);
+    bool display_time_entry_editor(reset);
+    bool open_time_entry_list(reset);
+    bool display_autotracker_rules(reset);
+    bool display_settings(reset);
 
-    // Check what needs to be updated in UI
-    for (std::vector<ModelChange>::const_iterator it =
-        changes->begin();
-            it != changes->end();
-            it++) {
-        ModelChange ch = *it;
+    if (changes) {
+        // Check what needs to be updated in UI
+        for (std::vector<ModelChange>::const_iterator it =
+            changes->begin();
+                it != changes->end();
+                it++) {
+            ModelChange ch = *it;
 
-        if (ch.ModelType() == kModelTag) {
-            display_tags = true;
-        }
+            if (ch.ModelType() == kModelTag) {
+                display_tags = true;
+            }
 
-        if (ch.ModelType() == kModelWorkspace
-                || ch.ModelType() == kModelClient
-                || ch.ModelType() == kModelProject
-                || ch.ModelType() == kModelTask
-                || ch.ModelType() == kModelTimeEntry) {
-            display_time_entry_autocomplete = true;
-            display_time_entries = true;
-            display_mini_timer_autocomplete = true;
-        }
+            if (ch.ModelType() == kModelWorkspace
+                    || ch.ModelType() == kModelClient
+                    || ch.ModelType() == kModelProject
+                    || ch.ModelType() == kModelTask
+                    || ch.ModelType() == kModelTimeEntry) {
+                display_time_entry_autocomplete = true;
+                display_time_entries = true;
+                display_mini_timer_autocomplete = true;
+            }
 
-        if (ch.ModelType() == kModelWorkspace
-                || ch.ModelType() == kModelClient
-                || ch.ModelType() == kModelProject
-                || ch.ModelType() == kModelTask) {
-            display_project_autocomplete = true;
-        }
+            if (ch.ModelType() == kModelWorkspace
+                    || ch.ModelType() == kModelClient
+                    || ch.ModelType() == kModelProject
+                    || ch.ModelType() == kModelTask) {
+                display_project_autocomplete = true;
+            }
 
-        if (ch.ModelType() == kModelClient
-                || ch.ModelType() == kModelWorkspace) {
-            display_client_select = true;
-        }
+            if (ch.ModelType() == kModelClient
+                    || ch.ModelType() == kModelWorkspace) {
+                display_client_select = true;
+            }
 
-        // Check if time entry editor needs to be updated
-        if (ch.ModelType() == kModelTimeEntry) {
-            display_timer_state = true;
-            // If time entry was edited, check further
-            if (time_entry_editor_guid_ == ch.GUID()) {
-                // If time entry was deleted, close editor and open list view
-                if (ch.ChangeType() == kChangeTypeDelete) {
-                    open_time_entry_list = true;
-                    display_time_entries = true;
-                } else {
-                    display_time_entry_editor = true;
+            // Check if time entry editor needs to be updated
+            if (ch.ModelType() == kModelTimeEntry) {
+                display_timer_state = true;
+                // If time entry was edited, check further
+                if (time_entry_editor_guid_ == ch.GUID()) {
+                    // If time entry was deleted, close editor
+                    // and open list view
+                    if (ch.ChangeType() == kChangeTypeDelete) {
+                        open_time_entry_list = true;
+                        display_time_entries = true;
+                    } else {
+                        display_time_entry_editor = true;
+                    }
                 }
             }
-        }
 
-        if (ch.ModelType() == kModelAutotrackerRule) {
-            display_autotracker_rules = true;
-        }
+            if (ch.ModelType() == kModelAutotrackerRule) {
+                display_autotracker_rules = true;
+            }
 
-        if (ch.ModelType() == kModelTimelineEvent) {
-            if (kExperimentalFeatureRenderTimeline) {
-                Poco::Mutex::ScopedLock lock(user_m_);
-                if (user_ && user_->RecordTimeline()) {
-                    display_time_entries = true;
+            if (ch.ModelType() == kModelTimelineEvent) {
+                if (kExperimentalFeatureRenderTimeline) {
+                    Poco::Mutex::ScopedLock lock(user_m_);
+                    if (user_ && user_->RecordTimeline()) {
+                        display_time_entries = true;
+                    }
                 }
             }
-        }
 
-        if (ch.ModelType() == kModelSettings) {
-            display_settings = true;
+            if (ch.ModelType() == kModelSettings) {
+                display_settings = true;
+            }
         }
     }
 
@@ -1772,7 +1768,7 @@ error Context::attemptOfflineLogin(const std::string email,
 
     setUser(user, true);
 
-    displayUI();
+    resetUI();
 
     return save();
 }
@@ -2013,7 +2009,7 @@ error Context::SetLoggedInUserFromJSON(
 
     setUser(user, true);
 
-    displayUI();
+    resetUI();
 
     return displayError(save());
 }

@@ -1235,7 +1235,7 @@ TEST(toggl_api, concurrency) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    const int kThreadCount = 10;
+    const int kThreadCount = 20;
 
     std::vector<Poco::Thread *> threads;
     for (int i = 0; i < kThreadCount; i++) {
