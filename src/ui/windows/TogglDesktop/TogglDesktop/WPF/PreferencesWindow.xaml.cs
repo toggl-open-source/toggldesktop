@@ -38,7 +38,7 @@ namespace TogglDesktop.WPF
             this.showHideShortcutRecorder.Reset();
             this.continueStopShortcutRecorder.Reset();
         }
-
+        
         private void onLogin(bool open, ulong userID)
         {
             if (!this.Dispatcher.CheckAccess()) {
@@ -274,6 +274,7 @@ namespace TogglDesktop.WPF
                 this.button = button;
                 button.Click += (sender, args) => this.startRecording();
                 button.KeyUp += this.onKeyUp;
+                button.LostKeyboardFocus += (sender, args) => this.Reset();
                 clearButton.Click += (sender, args) => this.clear();
                 this.button.Content = recordButtonIdleText;
             }
@@ -326,7 +327,17 @@ namespace TogglDesktop.WPF
             {
                 this.recording = false;
                 this.HasChanged = false;
-                this.button.Content = recordButtonIdleText;
+
+                if (this.Shortcut.HasValue)
+                {
+                    var shortcut = this.Shortcut.Value;
+                    this.button.Content = keyEventToString(shortcut.Modifiers, shortcut.KeyCode);
+                }
+                else
+                {
+                    this.button.Content = recordButtonIdleText;
+                }
+
             }
 
 

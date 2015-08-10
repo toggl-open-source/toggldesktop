@@ -29,19 +29,6 @@ public partial class TimeEntryListViewController : UserControl
 
         Toggl.OnTimeEntryList += OnTimeEntryList;
         Toggl.OnLogin += OnLogin;
-
-        //timerEditViewController.DescriptionTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
-        //timerEditViewController.DurationTextBox.MouseWheel += TimeEntryListViewController_MouseWheel;
-
-        entries.SetFocusCondition(() => timerEditViewController.CanFocusList());
-    }
-
-    void TimeEntryListViewController_MouseWheel(object sender, MouseEventArgs e)
-    {
-        //if (!timerEditViewController.isAutocompleteOpened())
-        //{
-        //    entriesHost.Focus();
-        //}
     }
 
     public void SetAcceptButton(Form frm)

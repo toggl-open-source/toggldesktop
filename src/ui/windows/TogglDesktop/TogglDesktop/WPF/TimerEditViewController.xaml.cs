@@ -322,11 +322,6 @@ namespace TogglDesktop.WPF
 
         #endregion
 
-        public bool CanFocusList()
-        {
-            return !this.descriptionTextBox.IsKeyboardFocused && !this.durationTextBox.IsKeyboardFocused;
-        }
-
         private struct ProjectInfo
         {
             private readonly ulong projectId;

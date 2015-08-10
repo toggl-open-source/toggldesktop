@@ -10,7 +10,6 @@ namespace TogglDesktop.WPF
     /// </summary>
     public partial class TimeEntryList
     {
-        private Func<bool> canFocus;
         private TimeEntryCell highlightedCell;
 
         public TimeEntryList()
@@ -23,25 +22,11 @@ namespace TogglDesktop.WPF
             get { return panel.Children; }
         }
 
-        private void onMouseEnter(object sender, MouseEventArgs e)
-        {
-            // FIXME: this condition seems to be always true
-            if (canFocus())
-            {
-                scrollViewer.Focus();
-            }
-        }
-
 
         private void onSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if(this.highlightedCell != null)
                 this.RefreshHighLight();
-        }
-
-        public void SetFocusCondition(Func<bool> canFocus)
-        {
-            this.canFocus = canFocus;
         }
 
         public void RefreshHighLight()
