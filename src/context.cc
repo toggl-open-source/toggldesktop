@@ -428,7 +428,7 @@ void Context::updateUI(const UIElements &what) {
             HTTPSClient::Config.ProxySettings = proxy;
             HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
         }
-        if (what.display_unsynced_items) {
+        if (what.display_unsynced_items && user_) {
             unsynced_item_count = user_->related.NumberOfUnsyncedTimeEntries();
         }
     }
