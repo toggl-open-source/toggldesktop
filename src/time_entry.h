@@ -125,10 +125,6 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     // Implement TimedEvent
 
-    virtual Poco::UInt64 Type() const {
-        return kTimedEventTypeTimeEntry;
-    }
-
     virtual Poco::Int64 Duration() const {
         return DurationInSeconds();
     }

@@ -76,10 +76,6 @@ class TimelineEvent : public BaseModel, public TimedEvent {
 
     // Implement TimedEvent
 
-    virtual Poco::UInt64 Type() const {
-        return kTimedEventTypeTimelineEvent;
-    }
-
     virtual Poco::Int64 Duration() const {
         return EndTime() - Start();
     }

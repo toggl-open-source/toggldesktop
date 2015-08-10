@@ -40,9 +40,6 @@ extern "C" {
 #define kSyncStateIdle 0
 #define kSyncStateWork 1
 
-#define kTimedEventTypeTimelineEvent 1
-#define kTimedEventTypeTimeEntry 2
-
 // Experimental features
 
 #define kExperimentalFeatureRenderTimeline false
