@@ -253,7 +253,6 @@ error Context::save(const bool push_changes) {
         if (push_changes) {
             pushChanges();
         }
-
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1803,25 +1802,21 @@ void Context::setUser(User *value, const bool logged_in) {
         logger().debug(ss.str());
     }
 
+    Poco::UInt64 user_id(0);
+
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (user_) {
             delete user_;
         }
         user_ = value;
+        if (user_) {
+            user_id = user_->ID();
+        }
     }
 
     if (quit_) {
         return;
-    }
-
-    Poco::UInt64 user_id(0);
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (user_) {
-            user_id = user_->ID();
-        }
     }
 
     if (!user_id) {
