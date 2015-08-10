@@ -941,6 +941,19 @@ public partial class MainWindowController : TogglForm
                 editForm.ClosePopup();
             }
         }
+
+        foreach (var item in trayIconMenu.Items)
+        {
+            var asMenuItem = item as ToolStripMenuItem;
+            if (asMenuItem != null)
+            {
+                if (keyData == asMenuItem.ShortcutKeys)
+                {
+                    asMenuItem.PerformClick();
+                }
+            }
+        }
+
         return base.ProcessCmdKey(ref msg, keyData);
     }
 
@@ -1041,23 +1054,6 @@ public partial class MainWindowController : TogglForm
             Win32.ReleaseCapture();
             int buttonEvent = (isResizing) ? Win32.wmNcLButtonDown : Win32.wmNcLButtonUp;
             Win32.SendMessage(Handle, buttonEvent, Win32.HtBottomRight, 0);
-        }
-    }
-
-    private void MainWindowController_KeyDown(object sender, KeyEventArgs e)
-    {
-        foreach (var item in trayIconMenu.Items)
-        {
-            var asMenuItem = item as ToolStripMenuItem;
-            if (asMenuItem != null)
-            {
-                if (e.KeyData == asMenuItem.ShortcutKeys)
-                {
-                    asMenuItem.PerformClick();
-                    e.Handled = true;
-                    return;
-                }
-            }
         }
     }
 
