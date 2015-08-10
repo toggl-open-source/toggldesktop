@@ -281,12 +281,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeEntryEditViewController.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TimeEntryEditViewController.Designer.cs">
-      <DependentUpon>TimeEntryEditViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="TimeEntryListViewController.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -347,9 +341,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeEntryEditViewController.resx">
-      <DependentUpon>TimeEntryEditViewController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeEntryListViewController.resx">
       <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
