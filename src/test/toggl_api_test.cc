@@ -214,7 +214,6 @@ void on_display_settings(
     testing::testresult::settings.focus_on_shortcut = settings->FocusOnShortcut;
     testing::testresult::settings.manual_mode = settings->ManualMode;
     testing::testresult::settings.autotrack = settings->Autotrack;
-    testing::testresult::settings.render_timeline = settings->RenderTimeline;
 
     testing::testresult::use_proxy = settings->UseProxy;
 

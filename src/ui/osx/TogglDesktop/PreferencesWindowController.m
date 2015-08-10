@@ -100,8 +100,7 @@ extern void *ctx;
 
 - (IBAction)renderTimelineChanged:(id)sender
 {
-	toggl_set_settings_render_timeline(ctx,
-									   [Utils stateToBool:[self.renderTimeline state]]);
+	// FIXME: remove
 }
 
 - (IBAction)useIdleDetectionButtonChanged:(id)sender
