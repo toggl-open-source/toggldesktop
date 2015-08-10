@@ -2087,21 +2087,23 @@ error Context::ContinueLatest() {
         return displayError(kUnsupportedAppError);
     }
 
-    Poco::Mutex::ScopedLock lock(user_m_);
-    if (!user_) {
-        logger().warning("Cannot continue tracking, user logged out");
-        return noError;
-    }
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot continue tracking, user logged out");
+            return noError;
+        }
 
-    TimeEntry *latest = user_->related.LatestTimeEntry();
+        TimeEntry *latest = user_->related.LatestTimeEntry();
 
-    if (!latest) {
-        return noError;
-    }
+        if (!latest) {
+            return noError;
+        }
 
-    error err = user_->Continue(latest->GUID());
-    if (err != noError) {
-        return displayError(err);
+        error err = user_->Continue(latest->GUID());
+        if (err != noError) {
+            return displayError(err);
+        }
     }
 
     if (settings_.focus_on_shortcut) {
