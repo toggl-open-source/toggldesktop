@@ -246,6 +246,7 @@ error Context::save(const bool push_changes) {
         }
 
         UIElements render;
+        render.display_unsynced_items = true;
         render.ApplyChanges(time_entry_editor_guid_, changes);
         updateUI(render);
 
@@ -253,17 +254,6 @@ error Context::save(const bool push_changes) {
             pushChanges();
         }
 
-        // Display number of unsynced time entries
-        Poco::Int64 count(0);
-
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (user_) {
-                count = user_->related.NumberOfUnsyncedTimeEntries();
-            }
-        }
-
-        UI()->DisplayUnsyncedItems(count);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -364,6 +354,8 @@ void Context::updateUI(const UIElements &what) {
     bool use_proxy(false);
     bool record_timeline(false);
 
+    Poco::Int64 unsynced_item_count(0);
+
     Proxy proxy;
 
     // Collect data
@@ -437,6 +429,9 @@ void Context::updateUI(const UIElements &what) {
             HTTPSClient::Config.ProxySettings = proxy;
             HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
         }
+        if (what.display_unsynced_items) {
+            unsynced_item_count = user_->related.NumberOfUnsyncedTimeEntries();
+        }
     }
 
     // Render data
@@ -496,6 +491,9 @@ void Context::updateUI(const UIElements &what) {
     // as its depending on selects on Windows
     if (what.display_project_autocomplete) {
         UI()->DisplayProjectAutocomplete(&project_autocompletes);
+    }
+    if (what.display_unsynced_items) {
+        UI()->DisplayUnsyncedItems(unsynced_item_count);
     }
 }
 

@@ -50,7 +50,8 @@ class UIElements {
     , display_autotracker_rules(false)
     , display_settings(false)
     , time_entry_editor_guid("")
-    , time_entry_editor_field("") {}
+    , time_entry_editor_field("")
+    , display_unsynced_items(false) {}
 
     static UIElements Reset() {
         UIElements render;
@@ -65,6 +66,7 @@ class UIElements {
         render.display_time_entry_editor = true;
         render.display_autotracker_rules = true;
         render.display_settings = true;
+        render.display_unsynced_items = true;
 
         render.open_time_entry_list = true;
 
@@ -91,6 +93,7 @@ class UIElements {
     bool display_settings;
     std::string time_entry_editor_guid;
     std::string time_entry_editor_field;
+    bool display_unsynced_items;
 };
 
 class Context : public TimelineDatasource {
