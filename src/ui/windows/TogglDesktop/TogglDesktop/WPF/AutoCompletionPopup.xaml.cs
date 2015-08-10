@@ -241,6 +241,7 @@ namespace TogglDesktop.WPF
         {
             this.popup.IsOpen = false;
         }
+
         private void open(bool closeIfEmpty = false, bool showAll = false)
         {
             this.ensureList();

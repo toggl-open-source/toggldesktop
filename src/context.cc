@@ -202,7 +202,7 @@ error Context::StartEvents() {
             return displayError("UI is not properly wired up!");
         }
 
-        UIElements render(false);
+        UIElements render;
         render.display_settings = true;
         updateUI(render);
 
@@ -221,7 +221,7 @@ error Context::StartEvents() {
         }
         setUser(user);
 
-        updateUI(UIElements(true));
+        updateUI(UIElements::Reset());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -245,7 +245,7 @@ error Context::save(const bool push_changes) {
             }
         }
 
-        UIElements render(false);
+        UIElements render;
         render.ApplyChanges(time_entry_editor_guid_, changes);
         updateUI(render);
 
@@ -339,7 +339,7 @@ void UIElements::ApplyChanges(
 void Context::OpenTimeEntryList() {
     logger().debug("OpenTimeEntryList");
 
-    UIElements render(false);
+    UIElements render;
     render.open_time_entry_list = true;
     render.display_time_entries = true;
     updateUI(render);
@@ -1253,7 +1253,7 @@ error Context::SetSettingsRemindTimes(
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1284,7 +1284,7 @@ error Context::SetSettingsRemindDays(
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1301,7 +1301,7 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1316,7 +1316,7 @@ error Context::SetSettingsRenderTimeline(const bool &value) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     render.display_time_entries = true;
     updateUI(render);
@@ -1330,7 +1330,7 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1345,7 +1345,7 @@ error Context::SetSettingsAutotrack(const bool value) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1360,7 +1360,7 @@ error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1375,7 +1375,7 @@ error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1390,7 +1390,7 @@ error Context::SetSettingsMenubarProject(const bool menubar_project) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1405,7 +1405,7 @@ error Context::SetSettingsDockIcon(const bool dock_icon) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1420,7 +1420,7 @@ error Context::SetSettingsOnTop(const bool on_top) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1436,7 +1436,7 @@ error Context::SetSettingsReminder(const bool reminder) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1453,7 +1453,7 @@ error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1468,7 +1468,7 @@ error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1483,7 +1483,7 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1498,7 +1498,7 @@ error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1558,7 +1558,7 @@ error Context::SetProxySettings(
         return displayError(err);
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -1577,7 +1577,7 @@ error Context::SetProxySettings(
 void Context::OpenSettings() {
     logger().debug("OpenSettings");
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     render.open_settings = true;
     updateUI(render);
@@ -1680,7 +1680,7 @@ error Context::attemptOfflineLogin(const std::string email,
 
     setUser(user, true);
 
-    updateUI(UIElements(true));
+    updateUI(UIElements::Reset());
 
     return save();
 }
@@ -1843,7 +1843,7 @@ void Context::setUser(User *value, const bool logged_in) {
         // Reset autotracker view
         // Autotracker rules has a project autocomplete, too
         autotracker_titles_.clear();
-        UIElements render(false);
+        UIElements render;
         render.display_autotracker_rules = true;
         render.display_project_autocomplete = true;
         updateUI(render);
@@ -1922,7 +1922,7 @@ error Context::SetLoggedInUserFromJSON(
 
     setUser(user, true);
 
-    updateUI(UIElements(true));
+    updateUI(UIElements::Reset());
 
     return displayError(save());
 }
@@ -2064,23 +2064,17 @@ void Context::OpenTimeEntryEditor(
         return;
     }
 
-    UIElements render(false);
+    UIElements render;
     render.open_time_entry_editor = true;
     render.display_time_entry_editor = true;
-
     render.time_entry_editor_guid = te->GUID();
     render.time_entry_editor_field = focused_field_name;
-
-    render.open_time_entry_list = false;
-    render.display_time_entries = true;
-
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
     if (time_entry_editor_guid_ == te->GUID()) {
         render.open_time_entry_editor = false;
         render.display_time_entry_editor = false;
-
         render.time_entry_editor_guid = "";
         render.time_entry_editor_field = "";
 
@@ -2574,7 +2568,7 @@ error Context::DiscardTimeAt(
     }
 
     if (split_into_new_entry && split) {
-        UIElements render(false);
+        UIElements render;
         render.open_time_entry_editor = true;
         render.display_time_entry_editor = true;
         render.time_entry_editor_guid = split->GUID();
@@ -2629,7 +2623,7 @@ error Context::ToggleTimelineRecording(const bool record_timeline) {
             return displayError(err);
         }
 
-        UIElements render(false);
+        UIElements render;
         render.display_settings = true;
         updateUI(render);
 
@@ -2884,7 +2878,7 @@ error Context::offerBetaChannel() {
         return err;
     }
 
-    UIElements render(false);
+    UIElements render;
     render.display_settings = true;
     updateUI(render);
 
@@ -2927,7 +2921,7 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
         if (now.year() != last_time_entry_list_render_at_.year()
                 || now.month() != last_time_entry_list_render_at_.month()
                 || now.day() != last_time_entry_list_render_at_.day()) {
-            UIElements render(false);
+            UIElements render;
             render.display_time_entries = true;
             updateUI(render);
         }
@@ -3069,7 +3063,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
     // Update the autotracker titles
     if (event.Title().size()) {
         autotracker_titles_.insert(event.Title());
-        UIElements render(false);
+		UIElements render;
         render.display_autotracker_rules = true;
         updateUI(render);
     }
@@ -3220,7 +3214,7 @@ void Context::uiUpdaterActivity() {
             Formatter::FormatDurationForDateHeader(duration);
 
         if (running_time != date_duration) {
-            UIElements render(false);
+            UIElements render;
             render.display_time_entries = true;
             updateUI(render);
         }
