@@ -42,34 +42,34 @@ class UIElements {
     , display_client_select(false)
     , display_tags(false)
     , display_workspace_select(false)
-	, display_timer_state(false)
-	, display_time_entry_editor(false)
-	, open_settings(false)
-	, open_time_entry_list(false)
-	, open_time_entry_editor(false)
-	, display_autotracker_rules(false)
-	, display_settings(false)
+    , display_timer_state(false)
+    , display_time_entry_editor(false)
+    , open_settings(false)
+    , open_time_entry_list(false)
+    , open_time_entry_editor(false)
+    , display_autotracker_rules(false)
+    , display_settings(false)
     , time_entry_editor_guid("")
     , time_entry_editor_field("") {}
 
-	static UIElements Reset() {
-		UIElements render;
-		render.display_time_entries = true;
-		render.display_time_entry_autocomplete = true;
-		render.display_mini_timer_autocomplete = true;
-		render.display_project_autocomplete = true;
-		render.display_client_select = true;
-		render.display_tags = true;
-		render.display_workspace_select = true;
-		render.display_timer_state = true;
-		render.display_time_entry_editor = true;
-		render.display_autotracker_rules = true;
-		render.display_settings = true;
+    static UIElements Reset() {
+        UIElements render;
+        render.display_time_entries = true;
+        render.display_time_entry_autocomplete = true;
+        render.display_mini_timer_autocomplete = true;
+        render.display_project_autocomplete = true;
+        render.display_client_select = true;
+        render.display_tags = true;
+        render.display_workspace_select = true;
+        render.display_timer_state = true;
+        render.display_time_entry_editor = true;
+        render.display_autotracker_rules = true;
+        render.display_settings = true;
 
-		render.open_time_entry_list = true;
+        render.open_time_entry_list = true;
 
-		return render;
-	}
+        return render;
+    }
 
     void ApplyChanges(
         const std::string time_entry_editor_guid,

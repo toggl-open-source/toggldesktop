@@ -3063,7 +3063,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
     // Update the autotracker titles
     if (event.Title().size()) {
         autotracker_titles_.insert(event.Title());
-		UIElements render;
+        UIElements render;
         render.display_autotracker_rules = true;
         updateUI(render);
     }
