@@ -376,12 +376,13 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_time_entry_editor && user_) {
             editor_time_entry =
                 user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
-            if (!editor_time_entry) {
-                return;
-            }
-            total_duration_for_date =
-                user_->related.TotalDurationForDate(editor_time_entry);
-            time_entry_editor_guid_ = editor_time_entry->GUID();
+            if (editor_time_entry) {
+	            total_duration_for_date =
+		            user_->related.TotalDurationForDate(editor_time_entry);
+				if (what.open_time_entry_editor) {
+					time_entry_editor_guid_ = editor_time_entry->GUID();
+				}
+			}
         }
         if (what.display_time_entry_autocomplete && user_) {
             user_->related.TimeEntryAutocompleteItems(

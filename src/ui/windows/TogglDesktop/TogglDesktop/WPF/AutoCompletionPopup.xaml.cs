@@ -225,7 +225,6 @@ namespace TogglDesktop.WPF
                 this.ConfirmCompletion(this, item);
         }
 
-
         private void textboxOnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (!this.IsEnabled)
