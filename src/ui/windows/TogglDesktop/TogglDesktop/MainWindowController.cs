@@ -936,13 +936,14 @@ public partial class MainWindowController : TogglForm
     {
         if (keyData == Keys.Escape)
         {
-            if (editForm.Visible)
+            if (this.editForm.Visible)
             {
-                editForm.ClosePopup();
+                this.editForm.ClosePopup();
+                return true;
             }
         }
 
-        foreach (var item in trayIconMenu.Items)
+        foreach (var item in this.trayIconMenu.Items)
         {
             var asMenuItem = item as ToolStripMenuItem;
             if (asMenuItem != null)
@@ -950,6 +951,7 @@ public partial class MainWindowController : TogglForm
                 if (keyData == asMenuItem.ShortcutKeys)
                 {
                     asMenuItem.PerformClick();
+                    return false;
                 }
             }
         }

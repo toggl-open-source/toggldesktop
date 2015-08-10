@@ -1,14 +1,12 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -16,9 +14,6 @@ using TextBox = System.Windows.Controls.TextBox;
 
 namespace TogglDesktop.WPF
 {
-    /// <summary>
-    /// Interaction logic for TimeEntryEditViewController.xaml
-    /// </summary>
     public partial class TimeEntryEditViewController
     {
         private Toggl.TimeEntry timeEntry;
@@ -50,7 +45,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.BeginInvoke(new Action(() => onLogin(open, userId)));
+                this.Dispatcher.BeginInvoke(new Action(() => this.onLogin(open, userId)));
                 return;
             }
             this.timeEntry = new Toggl.TimeEntry();
