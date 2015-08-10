@@ -1229,47 +1229,64 @@ public static class Toggl
     {
         toggl_on_show_app(ctx, delegate(bool open)
         {
+            Console.WriteLine("Calling OnApp");
             OnApp(open);
         });
 
         toggl_on_error(ctx, delegate(string errmsg, bool user_error)
         {
+            Console.WriteLine("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error);
             OnError(errmsg, user_error);
         });
 
         toggl_on_online_state(ctx, delegate(Int64 state)
         {
+            Console.WriteLine("Calling OnOnlineState, state: {0}", state);
             OnOnlineState(state);
         });
 
         toggl_on_login(ctx, delegate(bool open, UInt64 user_id)
         {
+            Console.WriteLine("Calling OnLogin");
             OnLogin(open, user_id);
         });
 
         toggl_on_reminder(ctx, delegate(string title, string informative_text)
         {
+            Console.WriteLine("Calling OnReminder, title: {0}", title);
             OnReminder(title, informative_text);
         });
 
         toggl_on_time_entry_list(ctx, delegate(bool open, IntPtr first)
         {
-            OnTimeEntryList(open, ConvertToTimeEntryList(first));
+            Console.Write("Calling OnTimeEntryList");
+            var list = ConvertToTimeEntryList(first);
+            Console.WriteLine(", number of time entries: {0}", list.Count);
+            OnTimeEntryList(open, list);
         });
 
         toggl_on_time_entry_autocomplete(ctx, delegate(IntPtr first)
         {
-            OnTimeEntryAutocomplete(ConvertToAutocompleteList(first));
+            Console.Write("Calling OnTimeEntryAutocomplete");
+            var list = ConvertToAutocompleteList(first);
+            Console.WriteLine(", number of entries: {0}", list.Count);
+            OnTimeEntryAutocomplete(list);
         });
 
         toggl_on_mini_timer_autocomplete(ctx, delegate(IntPtr first)
         {
-            OnMinitimerAutocomplete(ConvertToAutocompleteList(first));
+            Console.Write("Calling OnMinitimerAutocomplete");
+            var list = ConvertToAutocompleteList(first);
+            Console.WriteLine(", number of entries: {0}", list.Count);
+            OnMinitimerAutocomplete(list);
         });
 
         toggl_on_project_autocomplete(ctx, delegate(IntPtr first)
         {
-            OnProjectAutocomplete(ConvertToAutocompleteList(first));
+            Console.Write("Calling OnProjectAutocomplete");
+            var list = ConvertToAutocompleteList(first);
+            Console.WriteLine(", number of entries: {0}", list.Count);
+            OnProjectAutocomplete(list);
         });
 
         toggl_on_time_entry_editor(ctx, delegate(
@@ -1277,26 +1294,37 @@ public static class Toggl
             ref TimeEntry te,
             string focused_field_name)
         {
+            Console.WriteLine("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name);
             OnTimeEntryEditor(open, te, focused_field_name);
         });
 
         toggl_on_workspace_select(ctx, delegate(IntPtr first)
         {
-            OnWorkspaceSelect(ConvertToViewItemList(first));
+            Console.Write("Calling OnWorkspaceSelect");
+            var list = ConvertToViewItemList(first);
+            Console.WriteLine(", number of entries: {0}", list.Count);
+            OnWorkspaceSelect(list);
         });
 
         toggl_on_client_select(ctx, delegate(IntPtr first)
         {
-            OnClientSelect(ConvertToViewItemList(first));
+            Console.Write("Calling OnClientSelect");
+            var list = ConvertToViewItemList(first);
+            Console.WriteLine(", number of entries: {0}", list.Count);
+            OnClientSelect(list);
         });
 
         toggl_on_tags(ctx, delegate(IntPtr first)
         {
+            Console.Write("Calling OnTags");
+            var list = ConvertToViewItemList(first);
+            Console.WriteLine(", number of entries: {0}", list.Count);
             OnTags(ConvertToViewItemList(first));
         });
 
         toggl_on_settings(ctx, delegate(bool open, ref Settings settings)
         {
+            Console.Write("Calling OnSettings");
             OnSettings(open, settings);
         });
 
@@ -1304,17 +1332,20 @@ public static class Toggl
         {
             if (te == IntPtr.Zero)
             {
+                Console.Write("Calling OnStoppedTimerState");
                 OnStoppedTimerState();
                 return;
             }
             TimeEntry view =
                 (TimeEntry)Marshal.PtrToStructure(
                     te, typeof(TimeEntry));
+            Console.Write("Calling OnRunningTimerState");
             OnRunningTimerState(view);
         });
 
         toggl_on_url(ctx, delegate(string url)
         {
+            Console.Write("Calling OnURL");
             OnURL(url);
         });
 
@@ -1325,6 +1356,7 @@ public static class Toggl
             UInt64 started,
             string description)
         {
+            Console.Write("Calling OnIdleNotification");
             OnIdleNotification(guid, since, duration, started, description);
         });
     }
