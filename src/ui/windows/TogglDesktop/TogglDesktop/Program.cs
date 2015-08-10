@@ -105,6 +105,7 @@ static class Program
 
     static void notifyBugsnag(Exception e)
     {
+        Console.WriteLine("Notifying bugsnag: " + e.ToString());
         try
         {
             var metadata = new Bugsnag.Metadata();
