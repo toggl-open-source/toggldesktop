@@ -31,7 +31,6 @@ Json::Value Settings::SaveToJSON() const {
     json["autotrack"] = autotrack;
     json["open_editor_on_shortcut"] = open_editor_on_shortcut;
     json["has_seen_beta_offering"] = has_seen_beta_offering;
-    json["render_timeline"] = render_timeline;
     return json;
 }
 
@@ -60,8 +59,7 @@ std::string Settings::String() const {
        << " remind_ends=" << remind_ends
        << " autotrack=" << autotrack
        << " open_editor_on_shortcut=" << open_editor_on_shortcut
-       << " has_seen_beta_offering=" << has_seen_beta_offering
-       << " render_timeline=" << render_timeline;
+       << " has_seen_beta_offering=" << has_seen_beta_offering;
     return ss.str();
 }
 
@@ -88,8 +86,7 @@ bool Settings::IsSame(const Settings &other) const {
             && (remind_ends == other.remind_ends)
             && (autotrack == other.autotrack)
             && (open_editor_on_shortcut == other.open_editor_on_shortcut)
-            && (has_seen_beta_offering == other.has_seen_beta_offering)
-            && (render_timeline == other.render_timeline));
+            && (has_seen_beta_offering == other.has_seen_beta_offering));
 }
 
 std::string Settings::ModelName() const {

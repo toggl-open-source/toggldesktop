@@ -191,10 +191,7 @@ public static class Toggl
         public bool Autotrack;
 
         [MarshalAs(UnmanagedType.I1)]
-        public bool OpenEditOnShortcut;
-
-        [MarshalAs(UnmanagedType.I1)]
-        public bool Autotrack;
+        public bool OpenEditorOnShortcut;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

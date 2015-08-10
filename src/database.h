@@ -73,8 +73,6 @@ class Database {
         const Poco::Int64 window_height,
         const Poco::Int64 window_width);
 
-    error SetSettingsRenderTimeline(const bool &value);
-
     error SetSettingsHasSeenBetaOffering(const bool &value);
 
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);

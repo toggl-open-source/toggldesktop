@@ -91,12 +91,6 @@ bool_t toggl_set_settings_remind_times(
         to_string(remind_ends));
 }
 
-bool_t toggl_set_settings_render_timeline(
-    void *context,
-    const bool_t value) {
-    return toggl::noError == app(context)->SetSettingsRenderTimeline(value);
-}
-
 bool_t toggl_set_settings_use_idle_detection(
     void *context,
     const bool_t use_idle_detection) {

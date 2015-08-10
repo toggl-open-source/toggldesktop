@@ -39,8 +39,7 @@ class Settings : public BaseModel {
     , remind_ends("")
     , autotrack(false)
     , open_editor_on_shortcut(false)
-    , has_seen_beta_offering(false)
-    , render_timeline(false) {}
+    , has_seen_beta_offering(false) {}
 
     virtual ~Settings() {}
 
@@ -67,7 +66,6 @@ class Settings : public BaseModel {
     bool autotrack;
     bool open_editor_on_shortcut;
     bool has_seen_beta_offering;
-    bool render_timeline;
 
     bool IsSame(const Settings &other) const;
 

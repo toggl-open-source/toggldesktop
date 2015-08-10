@@ -576,10 +576,6 @@ error Database::SetSettingsRemindDays(
     return last_error("SetSettingsRemindDays");
 }
 
-error Database::SetSettingsRenderTimeline(const bool &value) {
-    return setSettingsValue("render_timeline", value);
-}
-
 error Database::SetSettingsHasSeenBetaOffering(const bool &value) {
     return setSettingsValue("has_seen_beta_offering", value);
 }

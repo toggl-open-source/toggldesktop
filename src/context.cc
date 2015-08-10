@@ -1308,20 +1308,6 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
     return noError;
 }
 
-error Context::SetSettingsRenderTimeline(const bool &value) {
-    error err = db()->SetSettingsRenderTimeline(value);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    render.display_time_entries = true;
-    updateUI(render);
-
-    return noError;
-}
-
 error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
     if (err != noError) {
