@@ -9,6 +9,7 @@
 #include <map>
 
 #include "./autocomplete_item.h"
+#include "./timeline_event.h"
 #include "./types.h"
 
 namespace toggl {
@@ -19,7 +20,6 @@ class Project;
 class Tag;
 class Task;
 class TimeEntry;
-class TimelineEvent;
 class Workspace;
 
 template<typename T>
