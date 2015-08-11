@@ -1330,7 +1330,7 @@ public static class Toggl
 
         toggl_on_settings(ctx, delegate(bool open, ref Settings settings)
         {
-            Console.Write("Calling OnSettings");
+            Console.WriteLine("Calling OnSettings");
             OnSettings(open, settings);
         });
 
@@ -1338,20 +1338,20 @@ public static class Toggl
         {
             if (te == IntPtr.Zero)
             {
-                Console.Write("Calling OnStoppedTimerState");
+                Console.WriteLine("Calling OnStoppedTimerState");
                 OnStoppedTimerState();
                 return;
             }
             TimeEntry view =
                 (TimeEntry)Marshal.PtrToStructure(
                     te, typeof(TimeEntry));
-            Console.Write("Calling OnRunningTimerState");
+            Console.WriteLine("Calling OnRunningTimerState");
             OnRunningTimerState(view);
         });
 
         toggl_on_url(ctx, delegate(string url)
         {
-            Console.Write("Calling OnURL");
+            Console.WriteLine("Calling OnURL");
             OnURL(url);
         });
 
@@ -1362,7 +1362,7 @@ public static class Toggl
             UInt64 started,
             string description)
         {
-            Console.Write("Calling OnIdleNotification");
+            Console.WriteLine("Calling OnIdleNotification");
             OnIdleNotification(guid, since, duration, started, description);
         });
     }
