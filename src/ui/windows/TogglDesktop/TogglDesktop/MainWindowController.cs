@@ -951,7 +951,7 @@ public partial class MainWindowController : TogglForm
                 if (keyData == asMenuItem.ShortcutKeys)
                 {
                     asMenuItem.PerformClick();
-                    return false;
+                    return true;
                 }
             }
         }
