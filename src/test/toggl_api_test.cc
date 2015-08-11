@@ -1045,6 +1045,9 @@ TEST(toggl_api, toggl_check_view_struct_size) {
         sizeof(TogglGenericView),
         sizeof(TogglSettingsView),
         sizeof(TogglAutocompleteView));
+    if (err) {
+        ASSERT_EQ("", std::string(err));
+    }
     ASSERT_FALSE(err);
     free(err);
 }
