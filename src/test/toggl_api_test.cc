@@ -1039,12 +1039,14 @@ TEST(toggl_api, toggl_continue) {
 }
 
 TEST(toggl_api, toggl_check_view_struct_size) {
-    toggl_check_view_struct_size(
+    char_t *err = toggl_check_view_struct_size(
         sizeof(TogglTimeEntryView),
         sizeof(TogglAutocompleteView),
         sizeof(TogglGenericView),
         sizeof(TogglSettingsView),
         sizeof(TogglAutocompleteView));
+    ASSERT_FALSE(err);
+    free(err);
 }
 
 TEST(toggl_api, toggl_view_time_entry_list) {

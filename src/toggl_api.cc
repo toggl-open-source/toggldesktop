@@ -987,7 +987,7 @@ void toggl_debug(const char_t *text) {
     logger().debug(to_string(text));
 }
 
-bool_t toggl_check_view_struct_size(
+char_t *toggl_check_view_struct_size(
     const int time_entry_view_item_size,
     const int autocomplete_view_item_size,
     const int view_item_size,
@@ -995,30 +995,25 @@ bool_t toggl_check_view_struct_size(
     const int autotracker_view_item_size) {
     int size = sizeof(TogglTimeEntryView);
     if (time_entry_view_item_size != size) {
-        std::cerr << "Invalid time entry view item struct size" << std::endl;
-        return false;
+        return copy_string("Invalid time entry view item struct size");
     }
     size = sizeof(TogglAutocompleteView);
     if (autocomplete_view_item_size != size) {
-        std::cerr << "Invalid autocomplete view item struct size" << std::endl;
-        return false;
+        return copy_string("Invalid autocomplete view item struct size");
     }
     size = sizeof(TogglGenericView);
     if (view_item_size != size) {
-        std::cerr << "Invalid view item struct size" << std::endl;
-        return false;
+        return copy_string("Invalid view item struct size");
     }
     size = sizeof(TogglSettingsView);
     if (settings_size != size) {
-        std::cerr << "Invalid settings view item struct size" << std::endl;
-        return false;
+        return copy_string("Invalid settings view item struct size");
     }
     size = sizeof(TogglAutocompleteView);
     if (autocomplete_view_item_size != size) {
-        std::cerr << "Invalid autocomplete view item struct size" << std::endl;
-        return false;
+        return copy_string("Invalid autocomplete view item struct size");
     }
-    return true;
+    return nullptr;
 }
 
 void toggl_set_idle_seconds(

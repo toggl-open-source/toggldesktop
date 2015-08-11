@@ -705,8 +705,9 @@ extern "C" {
 
     // Check if sizeof view struct matches those in UI
     // Else stuff blows up when Marshalling in C#
-    // Will return false if size is invalid.
-    TOGGL_EXPORT bool_t toggl_check_view_struct_size(
+    // Will return error string if size is invalid,
+    // you must free() the result
+    TOGGL_EXPORT char_t *toggl_check_view_struct_size(
         const int time_entry_view_item_size,
         const int autocomplete_view_item_size,
         const int view_item_size,
