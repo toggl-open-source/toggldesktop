@@ -189,7 +189,7 @@ namespace TogglDesktop.WPF
 
         private void onManualAddButtonClick(object sender, RoutedEventArgs e)
         {
-            var guid = Toggl.Start("", "0", 0, 0, "");
+            var guid = Toggl.Start("", "0", 0, 0, "", "");
             Toggl.Edit(guid, false, Toggl.Duration);
         }
 
@@ -225,6 +225,7 @@ namespace TogglDesktop.WPF
                 this.durationTextBox.Text,
                 this.completedProject.TaskId,
                 this.completedProject.ProjectId,
+                "",
                 ""
                 );
         }

@@ -731,7 +731,7 @@ public partial class MainWindowController : TogglForm
 
     private void newToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        Toggl.Start("", "", 0, 0, "");
+        Toggl.Start("", "", 0, 0, "", "");
     }
 
     private void continueToolStripMenuItem_Click(object sender, EventArgs e)
