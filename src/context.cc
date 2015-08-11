@@ -251,7 +251,19 @@ error Context::save(const bool push_changes) {
         updateUI(render);
 
         if (push_changes) {
-            pushChanges();
+            next_push_changes_at_ =
+                postpone(kRequestThrottleSeconds * kOneSecondInMicros);
+            Poco::Util::TimerTask::Ptr ptask =
+                new Poco::Util::TimerTaskAdapter<Context>(
+                    *this, &Context::onPushChanges);
+
+            Poco::Mutex::ScopedLock lock(timer_m_);
+            timer_.schedule(ptask, next_push_changes_at_);
+
+            std::stringstream ss;
+            ss << "Next push at "
+               << Formatter::Format8601(next_push_changes_at_);
+            logger().debug(ss.str());
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -626,24 +638,6 @@ void Context::setOnline(const std::string reason) {
     UI()->DisplayOnlineState(kOnlineStateOnline);
 
     scheduleSync();
-}
-
-void Context::pushChanges() {
-    logger().debug("pushChanges");
-
-    next_push_changes_at_ =
-        postpone(kRequestThrottleSeconds * kOneSecondInMicros);
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(
-            *this, &Context::onPushChanges);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-    timer_.schedule(ptask, next_push_changes_at_);
-
-    std::stringstream ss;
-    ss << "Next push at "
-       << Formatter::Format8601(next_push_changes_at_);
-    logger().debug(ss.str());
 }
 
 void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT

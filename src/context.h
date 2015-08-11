@@ -365,8 +365,6 @@ class Context : public TimelineDatasource {
 
     error save(const bool push_changes = true);
 
-    void pushChanges();
-
     void fetchUpdates();
 
     // timer_ callbacks
