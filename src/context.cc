@@ -3102,10 +3102,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
             user_->related.TimelineEvents.push_back(event);
-            error err = save();
-            if (err != noError) {
-                return displayError(err);
-            }
+            return displayError( save());
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -3164,20 +3161,19 @@ void Context::uiUpdaterActivity() {
         }
 
         TimeEntry *te = nullptr;
-
+        Poco::Int64 duration(0);
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 continue;
             }
             te = user_->RunningTimeEntry();
+            if (!te) {
+                continue;
+            }
+            duration = user_->related.TotalDurationForDate(te);
         }
 
-        if (!te) {
-            continue;
-        }
-
-        Poco::Int64 duration = user_->related.TotalDurationForDate(te);
         std::string date_duration =
             Formatter::FormatDurationForDateHeader(duration);
 
