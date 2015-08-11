@@ -650,14 +650,6 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
 
     TogglClient client(UI());
     bool had_something_to_push(true);
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("User already logged out, cannot push changes");
-            return;
-        }
-    }
     error err = pushChanges(&client, &had_something_to_push);
     if (err != noError) {
         displayError(err);
@@ -3289,7 +3281,6 @@ error Context::pushChanges(
         poco_check_ptr(had_something_to_push);
 
         *had_something_to_push = true;
-
 
         std::map<std::string, BaseModel *> models;
 
