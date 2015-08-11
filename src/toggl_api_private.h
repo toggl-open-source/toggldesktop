@@ -62,11 +62,6 @@ TogglTimeEntryView *time_entry_view_item_init(
     const std::string date_duration,
     const bool time_in_timer_format);
 
-TogglTimeEntryView *time_entry_view_item_init(
-    const toggl::TimelineEvent *te,
-    const std::string date_duration,
-    const bool time_in_timer_format);
-
 void time_entry_view_item_clear(TogglTimeEntryView *item);
 
 TogglSettingsView *settings_view_item_init(
