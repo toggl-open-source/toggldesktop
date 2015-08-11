@@ -29,7 +29,7 @@ public static class Toggl
 
     // Models
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct TimeEntry
     {
         public Int64 DurationInSeconds;
@@ -83,7 +83,7 @@ public static class Toggl
         public IntPtr Next;
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct AutocompleteItem
     {
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -115,7 +115,7 @@ public static class Toggl
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct Model
     {
         public UInt64 ID;
@@ -132,7 +132,7 @@ public static class Toggl
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct Settings
     {
         [MarshalAs(UnmanagedType.I1)]
@@ -194,7 +194,7 @@ public static class Toggl
         public bool OpenEditorOnShortcut;
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct AutotrackerRuleView
     {
         public Int64 ID;
