@@ -53,9 +53,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Toggl.cs" />
     <Compile Include="LibTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TogglDesktop\TogglDesktop.csproj">
+      <Project>{27ac6261-3916-4683-b692-dc57e2fe0abd}</Project>
+      <Name>TogglDesktop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
