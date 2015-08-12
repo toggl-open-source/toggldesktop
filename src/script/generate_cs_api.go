@@ -123,6 +123,7 @@ func main() {
 			if strings.Contains(s, ");") {
 				csfunc = ""
 			}
+			addMarshalInfo(s)
 			write(convert(s, false))
 		} else if strings.Contains(s, "typedef void (*") {
 			cscallback = strings.Replace(s, "typedef void (*", "", -1)
