@@ -218,59 +218,73 @@ public static partial class Toggl
 
     // Callbacks that need to be implemented in UI
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayApp(
         [MarshalAs(UnmanagedType.I1)]
         bool open);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplaySyncState(
         Int64 state);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayUnsyncedItems(
         Int64 count);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayError(
         [MarshalAs(UnmanagedType.LPWStr)]
         string errmsg,
         [MarshalAs(UnmanagedType.I1)]
         bool user_error);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayOnlineState(
         Int64 state);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayURL(
         [MarshalAs(UnmanagedType.LPWStr)]
         string url);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayLogin(
         [MarshalAs(UnmanagedType.I1)]
         bool open,
         UInt64 user_id);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayReminder(
         [MarshalAs(UnmanagedType.LPWStr)]
         string title,
         [MarshalAs(UnmanagedType.LPWStr)]
         string informative_text);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutotrackerNotification(
         [MarshalAs(UnmanagedType.LPWStr)]
         string project_name,
         UInt64 project_id);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayPromotion(
         Int64 promotion_type);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayTimeEntryList(
         [MarshalAs(UnmanagedType.I1)]
         bool open,
         IntPtr first);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutocomplete(
         IntPtr first);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayViewItems(
         IntPtr first);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayTimeEntryEditor(
         [MarshalAs(UnmanagedType.I1)]
         bool open,
@@ -278,14 +292,17 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string focused_field_name);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplaySettings(
         [MarshalAs(UnmanagedType.I1)]
         bool open,
         IntPtr settings);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayTimerState(
         IntPtr te);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayIdleNotification(
         [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
@@ -297,11 +314,13 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string description);
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayUpdate(
         [MarshalAs(UnmanagedType.LPWStr)]
         string url);
 
 
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutotrackerRules(
         IntPtr first,
         UInt64 title_count,

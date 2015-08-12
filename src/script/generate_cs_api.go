@@ -128,6 +128,7 @@ func main() {
 			cscallback = strings.Replace(s, "typedef void (*", "", -1)
 			cscallback = strings.Replace(cscallback, ")", "", -1)
 			cscallback = strings.Replace(cscallback, "(", "", -1)
+			write("[UnmanagedFunctionPointer(convention)]")
 			write("private delegate void " + cscallback + "(")
 		} else if len(cscallback) != 0 {
 			if strings.Contains(s, ");") {
