@@ -121,9 +121,9 @@ public static partial class Toggl
         return toggl_feedback_send(ctx, topic, details, filename);
     }
 
-    public static bool ViewTimeEntryList()
+    public static void ViewTimeEntryList()
     {
-        return toggl_view_time_entry_list(ctx);
+        toggl_view_time_entry_list(ctx);
     }
 
     public static void Edit(
