@@ -1019,6 +1019,7 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_run_script(
         IntPtr context,
+        [MarshalAs(UnmanagedType.LPStr)]
         string script,
         ref Int64 err);
 
@@ -1043,6 +1044,7 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern bool testing_set_logged_in_user(
         IntPtr context,
+        [MarshalAs(UnmanagedType.LPStr)]
         string json);
 
 

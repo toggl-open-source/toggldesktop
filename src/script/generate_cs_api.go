@@ -56,6 +56,8 @@ func main() {
 			write("[MarshalAs(UnmanagedType.LPWStr)]")
 		} else if strings.Contains(s, "bool_t") {
 			write("[MarshalAs(UnmanagedType.I1)]")
+		} else if strings.Contains(s, "char *") {
+			write("[MarshalAs(UnmanagedType.LPStr)]")
 		}
 	}
 	// start class
