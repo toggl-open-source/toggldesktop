@@ -36,7 +36,6 @@ extern "C" {
 
 // Models
 
-    // in C#: TimeEntry
     typedef struct {
         int64_t DurationInSeconds;
         char_t *Description;
@@ -74,7 +73,6 @@ extern "C" {
         void *Next;
     } TogglTimeEntryView;
 
-    // in C#: AutocompleteItem
     typedef struct {
         // This is what is displayed to user, includes project and task.
         char_t *Text;
@@ -95,7 +93,6 @@ extern "C" {
         void *Next;
     } TogglAutocompleteView;
 
-    // in C#: Model
     typedef struct {
         uint64_t ID;
         uint64_t WID;
@@ -104,7 +101,6 @@ extern "C" {
         void *Next;
     } TogglGenericView;
 
-    // in C#: Settings
     typedef struct {
         bool_t UseProxy;
         char_t *ProxyHost;
@@ -136,7 +132,6 @@ extern "C" {
         bool_t OpenEditorOnShortcut;
     } TogglSettingsView;
 
-    // in C#: AutotrackerRule
     typedef struct {
         int64_t ID;
         char_t *Term;
@@ -145,7 +140,6 @@ extern "C" {
         void *Next;
     } TogglAutotrackerRuleView;
 
-    // in C#: TimelineEvent
     typedef struct {
         int64_t ID;
         char_t *Title;
@@ -174,7 +168,7 @@ extern "C" {
     typedef void (*TogglDisplayOnlineState)(
         const int64_t state);
 
-    typedef void(*TogglDisplayURL)(
+    typedef void (*TogglDisplayURL)(
         const char_t *url);
 
     typedef void (*TogglDisplayLogin)(
@@ -224,10 +218,12 @@ extern "C" {
     typedef void (*TogglDisplayUpdate)(
         const char_t *url);
 
+    typedef char_t * string_list_t[];
+
     typedef void (*TogglDisplayAutotrackerRules)(
         TogglAutotrackerRuleView *first,
         const uint64_t title_count,
-        char_t *title_list[]);
+        string_list_t title_list);
 
     // Initialize/destroy an instance of the app
 
@@ -296,95 +292,95 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_on_show_app(
         void *context,
-        TogglDisplayApp);
+        TogglDisplayApp cb);
 
     TOGGL_EXPORT void toggl_on_sync_state(
         void *context,
-        TogglDisplaySyncState);
+        TogglDisplaySyncState cb);
 
     TOGGL_EXPORT void toggl_on_unsynced_items(
         void *context,
-        TogglDisplayUnsyncedItems);
+        TogglDisplayUnsyncedItems cb);
 
     TOGGL_EXPORT void toggl_on_error(
         void *context,
-        TogglDisplayError);
+        TogglDisplayError cb);
 
     TOGGL_EXPORT void toggl_on_update(
         void *context,
-        TogglDisplayUpdate);
+        TogglDisplayUpdate cb);
 
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,
-        TogglDisplayOnlineState);
+        TogglDisplayOnlineState cb);
 
     TOGGL_EXPORT void toggl_on_url(
         void *context,
-        TogglDisplayURL);
+        TogglDisplayURL cb);
 
     TOGGL_EXPORT void toggl_on_login(
         void *context,
-        TogglDisplayLogin);
+        TogglDisplayLogin cb);
 
     TOGGL_EXPORT void toggl_on_reminder(
         void *context,
-        TogglDisplayReminder);
+        TogglDisplayReminder cb);
 
     TOGGL_EXPORT void toggl_on_autotracker_notification(
         void *context,
-        TogglDisplayAutotrackerNotification);
+        TogglDisplayAutotrackerNotification cb);
 
     TOGGL_EXPORT void toggl_on_time_entry_list(
         void *context,
-        TogglDisplayTimeEntryList);
+        TogglDisplayTimeEntryList cb);
 
     TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
         void *context,
-        TogglDisplayAutocomplete);
+        TogglDisplayAutocomplete cb);
 
     TOGGL_EXPORT void toggl_on_time_entry_autocomplete(
         void *context,
-        TogglDisplayAutocomplete);
+        TogglDisplayAutocomplete cb);
 
     TOGGL_EXPORT void toggl_on_project_autocomplete(
         void *context,
-        TogglDisplayAutocomplete);
+        TogglDisplayAutocomplete cb);
 
     TOGGL_EXPORT void toggl_on_workspace_select(
         void *context,
-        TogglDisplayViewItems);
+        TogglDisplayViewItems cb);
 
     TOGGL_EXPORT void toggl_on_client_select(
         void *context,
-        TogglDisplayViewItems);
+        TogglDisplayViewItems cb);
 
     TOGGL_EXPORT void toggl_on_tags(
         void *context,
-        TogglDisplayViewItems);
+        TogglDisplayViewItems cb);
 
     TOGGL_EXPORT void toggl_on_time_entry_editor(
         void *context,
-        TogglDisplayTimeEntryEditor);
+        TogglDisplayTimeEntryEditor cb);
 
     TOGGL_EXPORT void toggl_on_settings(
         void *context,
-        TogglDisplaySettings);
+        TogglDisplaySettings cb);
 
     TOGGL_EXPORT void toggl_on_timer_state(
         void *context,
-        TogglDisplayTimerState);
+        TogglDisplayTimerState cb);
 
     TOGGL_EXPORT void toggl_on_idle_notification(
         void *context,
-        TogglDisplayIdleNotification);
+        TogglDisplayIdleNotification cb);
 
     TOGGL_EXPORT void toggl_on_autotracker_rules(
         void *context,
-        TogglDisplayAutotrackerRules);
+        TogglDisplayAutotrackerRules cb);
 
     TOGGL_EXPORT void toggl_on_promotion(
         void *context,
-        TogglDisplayPromotion);
+        TogglDisplayPromotion cb);
 
     // After UI callbacks are configured, start pumping UI events
 
@@ -481,7 +477,7 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_set_time_entry_billable(
         void *context,
         const char_t *guid,
-        bool_t);
+        bool_t value);
 
     TOGGL_EXPORT bool_t toggl_set_time_entry_description(
         void *context,
@@ -707,7 +703,7 @@ extern "C" {
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_run_script(
         void *context,
-        const char* script,
+        const char *script,
         int64_t *err);
 
     TOGGL_EXPORT bool_t toggl_autotracker_add_rule(
