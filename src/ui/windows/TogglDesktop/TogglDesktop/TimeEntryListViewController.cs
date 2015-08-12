@@ -29,6 +29,13 @@ public partial class TimeEntryListViewController : UserControl
 
         Toggl.OnTimeEntryList += OnTimeEntryList;
         Toggl.OnLogin += OnLogin;
+        Toggl.OnRunningTimerState += te => this.invalidateTimer();
+        Toggl.OnStoppedTimerState += this.invalidateTimer;
+    }
+
+    private void invalidateTimer()
+    {
+        this.miniTimerHost.Invalidate();
     }
 
     public void SetAcceptButton(Form frm)
@@ -97,6 +104,7 @@ public partial class TimeEntryListViewController : UserControl
             entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
         }
 
+        entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         entriesHost.Invalidate();
 
         entries.RefreshHighLight();

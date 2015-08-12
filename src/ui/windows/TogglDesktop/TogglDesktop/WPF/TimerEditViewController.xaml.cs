@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -53,10 +52,10 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.BeginInvoke(new Action(() => onStoppedTimerState()));
+                this.Dispatcher.BeginInvoke(new Action(this.onStoppedTimerState));
                 return;
             }
-
+            
             this.secondsTimer.IsEnabled = false;
             this.setUIToStoppedState();
             this.runningTimeEntry = default(Toggl.TimeEntry);
@@ -66,7 +65,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.BeginInvoke(new Action(() => onRunningTimerState(te)));
+                this.Dispatcher.BeginInvoke(new Action(() => this.onRunningTimerState(te)));
                 return;
             }
 
@@ -79,7 +78,7 @@ namespace TogglDesktop.WPF
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.BeginInvoke(new Action(() => onMiniTimerAutocomplete(list)));
+                this.Dispatcher.BeginInvoke(new Action(() => this.onMiniTimerAutocomplete(list)));
                 return;
             }
 
