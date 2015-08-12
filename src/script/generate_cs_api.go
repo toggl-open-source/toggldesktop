@@ -15,9 +15,15 @@ func convert(s string, public bool) string {
 	if strings.Contains(s, "char_t *") {
 		return visibility + strings.Replace(s, "char_t *", "string ", -1)
 	}
+	if strings.Contains(s, "char *") {
+		return visibility + strings.Replace(s, "char *", "string ", -1)
+	}
 	if strings.Contains(s, "uint64_t") {
 		return visibility + strings.Replace(s, "uint64_t", "UInt64", -1)
 	} 
+	if strings.Contains(s, "int64_t *") {
+		return visibility + strings.Replace(s, "int64_t *", "ref Int64 ", -1)
+	}
 	if strings.Contains(s, "int64_t") {
 		return visibility + strings.Replace(s, "int64_t", "Int64", -1)
 	}
@@ -58,7 +64,7 @@ func main() {
 	write("    		private const CallingConvention convention = CallingConvention.Cdecl;");
 	write("    		private const int structPackingBytes = 8;");
 	write("")
-	csclass, csfunc := "", ""
+	csclass, csfunc, cscallback := "", "", ""
 	for _, s := range l {
 		// line feeds
 		if len(s) == 0 {
@@ -101,15 +107,22 @@ func main() {
 			s = strings.Trim(s, " ")
 			s = convert(s, false)
 			w := strings.Split(s, " ")
-			for i, k := range w {
-				println(i, k)
-			}
 			t := w[1]
 			csfunc = w[len(w) - 1]
 			write("private static extern " + t + " " + csfunc)
 		} else if len(csfunc) != 0 {
 			if strings.Contains(s, ");") {
 				csfunc = ""
+			}
+			write(convert(s, false))
+		} else if strings.Contains(s, "typedef void (*") {
+			cscallback = strings.Replace(s, "typedef void (*", "", -1)
+			cscallback = strings.Replace(cscallback, ")", "", -1)
+			cscallback = strings.Replace(cscallback, "(", "", -1)
+			write("private delegate void " + cscallback + "(")
+		} else if len(cscallback) != 0 {
+			if strings.Contains(s, ");") {
+				cscallback = ""
 			}
 			write(convert(s, false))
 		}
