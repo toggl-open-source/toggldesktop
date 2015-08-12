@@ -65,7 +65,7 @@ func main() {
 	write("    		private const int structPackingBytes = 8;");
 	write("")
 	csclass, csfunc, cscallback := "", "", ""
-	for _, s := range l {
+	for i, s := range l {
 		// line feeds
 		if len(s) == 0 {
 			write(s)
@@ -83,6 +83,14 @@ func main() {
 			write("private const int " + name + " = " + value + ";")
 		}  else if strings.Contains(s, "typedef struct {") {
 			write("[StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]")
+			// look forward for class name
+			for _, text := range l[i:] {
+				if strings.Contains(text, "} ") {
+					text = strings.Replace(text, ";", "", -1)
+					csclass = strings.Replace(text, "} ", "", -1)
+					break
+				}
+			}
 			write("public struct" + csclass)
 			write("{")
 		} else if len(csclass) != 0 {
