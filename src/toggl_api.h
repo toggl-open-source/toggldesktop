@@ -107,7 +107,7 @@ extern "C" {
     // in C#: Settings
     typedef struct {
         bool_t UseProxy;
-        char_t *ProxyHost;;
+        char_t *ProxyHost;
         uint64_t ProxyPort;
         char_t *ProxyUsername;
         char_t *ProxyPassword;
