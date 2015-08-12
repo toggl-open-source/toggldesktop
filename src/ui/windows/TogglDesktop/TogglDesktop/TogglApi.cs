@@ -10,10 +10,9 @@ namespace TogglDesktop
         private const string dll = "TogglDesktopDLL.dll";
         private const CharSet charset = CharSet.Unicode;
         private const CallingConvention convention = CallingConvention.Cdecl;
+        private const int structPackingBytes = 8;
 
         // Models
-
-        private const int structPackingBytes = 8;
 
         [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
         public struct TimeEntry
