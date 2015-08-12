@@ -1,11 +1,5 @@
 // Copyright 2014 Toggl Desktop developers.
 
-// Warning! Modifying the public API header
-// will break C# definitions.
-// If you change anything, you must update the C# definitions in
-// src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs
-// to fix this.
-
 #ifndef SRC_TOGGL_API_H_
 #define SRC_TOGGL_API_H_
 
