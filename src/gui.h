@@ -24,7 +24,6 @@ class Client;
 class Project;
 class RelatedData;
 class User;
-class TimedEvent;
 class TimeEntry;
 class Workspace;
 

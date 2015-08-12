@@ -9,7 +9,6 @@
 #include "./base_model.h"
 #include "./formatter.h"
 #include "./types.h"
-#include "./toggl_api.h"
 
 #include "Poco/Types.h"
 

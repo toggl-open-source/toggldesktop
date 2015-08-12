@@ -997,21 +997,25 @@ public static class Toggl
         UInt64 task_id,
         UInt64 project_id,
         [MarshalAs(UnmanagedType.LPWStr)]
-        string project_guid);
+        string project_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string tags);
 
     public static string Start(
         string description,
         string duration,
         UInt64 task_id,
         UInt64 project_id,
-        string project_guid)
+        string project_guid,
+        string tags)
     {
         return toggl_start(ctx,
                            description,
                            duration,
                            task_id,
                            project_id,
-                           project_guid);
+                           project_guid,
+                           tags);
     }
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
