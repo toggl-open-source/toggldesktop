@@ -505,11 +505,13 @@ public static partial class Toggl
 
         toggl_on_time_entry_editor(ctx, delegate(
             bool open,
-            ref TogglTimeEntryView te,
+            IntPtr te,
             string focused_field_name)
         {
             Console.WriteLine("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name);
-            OnTimeEntryEditor(open, te, focused_field_name);
+            TogglTimeEntryView model = (TogglTimeEntryView)Marshal.PtrToStructure(
+                te, typeof(TogglTimeEntryView));
+            OnTimeEntryEditor(open, model, focused_field_name);
         });
 
         toggl_on_workspace_select(ctx, delegate(IntPtr first)
@@ -536,10 +538,12 @@ public static partial class Toggl
             OnTags(ConvertToViewItemList(first));
         });
 
-        toggl_on_settings(ctx, delegate(bool open, ref TogglSettingsView settings)
+        toggl_on_settings(ctx, delegate(bool open, IntPtr settings)
         {
             Console.WriteLine("Calling OnSettings");
-            OnSettings(open, settings);
+            TogglSettingsView model = (TogglSettingsView)Marshal.PtrToStructure(
+                settings, typeof(TogglSettingsView));
+            OnSettings(open, model);
         });
 
         toggl_on_timer_state(ctx, delegate(IntPtr te)
