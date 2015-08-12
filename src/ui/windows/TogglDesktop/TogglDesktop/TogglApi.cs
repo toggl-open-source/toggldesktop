@@ -87,6 +87,12 @@ public static partial class Toggl
         public         string Error;
         // Next in list
         public         IntPtr Next;
+
+        public override string ToString()
+        {
+            return Error;
+        }
+
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
@@ -117,6 +123,12 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string Tags;
         public         IntPtr Next;
+
+        public override string ToString()
+        {
+            return Tags;
+        }
+
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
@@ -129,6 +141,12 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string Name;
         public         IntPtr Next;
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
@@ -187,6 +205,12 @@ public static partial class Toggl
         public         bool Autotrack;
         [MarshalAs(UnmanagedType.I1)]
         public         bool OpenEditorOnShortcut;
+
+        public override string ToString()
+        {
+            return RemindEnds;
+        }
+
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
@@ -199,6 +223,12 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string ProjectName;
         public         IntPtr Next;
+
+        public override string ToString()
+        {
+            return ProjectName;
+        }
+
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
@@ -214,6 +244,12 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.I1)]
         public         bool Idle;
         public         IntPtr Next;
+
+        public override string ToString()
+        {
+            return Filename;
+        }
+
     }
 
     // Callbacks that need to be implemented in UI

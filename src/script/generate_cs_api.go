@@ -74,7 +74,7 @@ func main() {
 	write("    		private const CallingConvention convention = CallingConvention.Cdecl;");
 	write("    		private const int structPackingBytes = 8;");
 	write("")
-	csclass, csfunc, cscallback := "", "", ""
+	csclass, csfunc, cscallback, firstStringField := "", "", "", ""
 	for i, s := range l {
 		// line feeds
 		if len(s) == 0 {
@@ -106,10 +106,22 @@ func main() {
 		} else if len(csclass) != 0 {
 			if strings.Contains(s, "} Toggl") {
 				csclass = ""
+				write("")
+	            write("public override string ToString()")
+	            write("{")
+	            write("    return " + firstStringField + ";")
+				write("}")
+				write("")
 				write("}")
 			} else {
 				addMarshalInfo(s)
-				write(convert(s, true))
+				s = convert(s, true)
+				write(s)
+				if strings.Contains(s, "string") {
+					w := strings.Split(s, " ")
+					firstStringField = w[len(w) - 1]
+					firstStringField = strings.Replace(firstStringField, ";", "", -1)
+				}
 			}
 		} else if strings.Contains(s, "TOGGL_EXPORT") && !strings.Contains(s, "#") {
 			write("[DllImport(dll, CharSet = charset, CallingConvention = convention)]")
