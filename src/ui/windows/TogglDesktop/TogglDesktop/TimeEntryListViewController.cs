@@ -15,6 +15,8 @@ public partial class TimeEntryListViewController : UserControl
     private readonly Dictionary<string, WPF.TimeEntryCell> cellsByGUID =
         new Dictionary<string, TimeEntryCell>();
 
+    private string highlightedGUID;
+
     public int TimerHeight {
         get {
             return this.entriesHost.Top;
@@ -107,7 +109,7 @@ public partial class TimeEntryListViewController : UserControl
         entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         entriesHost.Invalidate();
 
-        entries.RefreshHighLight();
+        this.refreshHighlight();
     }
 
     void OnLogin(bool open, UInt64 user_id)
@@ -143,8 +145,14 @@ public partial class TimeEntryListViewController : UserControl
         editView.SetTimer(this.timerEditViewController);
     }
 
+    private void refreshHighlight()
+    {
+        this.HighlightEntry(this.highlightedGUID);
+    }
+
     public void HighlightEntry(string GUID)
     {
+        this.highlightedGUID = GUID;
         WPF.TimeEntryCell cell = null;
         if(GUID != null)
             this.cellsByGUID.TryGetValue(GUID, out cell);
