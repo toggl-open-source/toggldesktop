@@ -34,10 +34,6 @@ extern "C" {
 #define kSyncStateIdle 0
 #define kSyncStateWork 1
 
-// Experimental features
-
-#define kExperimentalFeatureRenderTimeline false
-
 // Models
 
     typedef struct {

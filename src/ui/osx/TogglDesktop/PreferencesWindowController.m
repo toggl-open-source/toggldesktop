@@ -84,10 +84,7 @@ extern void *ctx;
 	[self.idleMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
 
-	if (!kExperimentalFeatureRenderTimeline)
-	{
-		self.renderTimeline.hidden = YES;
-	}
+	self.renderTimeline.hidden = YES;
 }
 
 - (IBAction)proxyRadioChanged:(id)sender
