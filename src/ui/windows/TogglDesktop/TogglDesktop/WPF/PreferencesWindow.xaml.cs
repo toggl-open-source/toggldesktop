@@ -50,7 +50,7 @@ namespace TogglDesktop.WPF
             this.recordTimelineCheckBox.IsChecked = Toggl.IsTimelineRecordingEnabled();
         }
 
-        private void onSettings(bool open, Toggl.Settings settings)
+        private void onSettings(bool open, Toggl.TogglSettingsView settings)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -67,7 +67,7 @@ namespace TogglDesktop.WPF
             }
         }
 
-        private void updateUI(Toggl.Settings settings)
+        private void updateUI(Toggl.TogglSettingsView settings)
         {
             #region general
 
@@ -168,9 +168,9 @@ namespace TogglDesktop.WPF
             return res;
         }
 
-        private Toggl.Settings createSettingsFromUI()
+        private Toggl.TogglSettingsView createSettingsFromUI()
         {
-            var settings = new Toggl.Settings
+            var settings = new Toggl.TogglSettingsView
             {
                 #region general
 

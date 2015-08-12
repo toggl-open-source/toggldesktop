@@ -50,6 +50,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BE9EBB
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktopDLLInteropTest", "TogglDesktopDLLInteropTest\TogglDesktopDLLInteropTest.csproj", "{85CA11FB-7793-4026-9998-C8EE9BDB36BF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3ACE25DD-04CE-47D8-9658-3D0546521DA2} = {3ACE25DD-04CE-47D8-9658-3D0546521DA2}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

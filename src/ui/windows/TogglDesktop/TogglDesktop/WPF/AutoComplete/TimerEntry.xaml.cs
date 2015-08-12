@@ -7,14 +7,14 @@ namespace TogglDesktop.WPF.AutoComplete
 {
     partial class TimerEntry
     {
-        public TimerEntry(Toggl.AutocompleteItem item, Action selectWithClick)
+        public TimerEntry(Toggl.TogglAutocompleteView item, Action selectWithClick)
             : base(selectWithClick)
         {
             this.InitializeComponent();
             this.setText(item);
         }
 
-        private void setText(Toggl.AutocompleteItem item)
+        private void setText(Toggl.TogglAutocompleteView item)
         {
             if (string.IsNullOrEmpty(item.ProjectLabel))
             {
@@ -43,7 +43,7 @@ namespace TogglDesktop.WPF.AutoComplete
             element.Visibility = condition ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.AutocompleteItem item)
+        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglAutocompleteView item)
         {
             var colourString = string.IsNullOrEmpty(item.ProjectColor) ? "#999999" : item.ProjectColor;
             var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));

@@ -16,12 +16,12 @@ namespace TogglDesktop.WPF
 {
     public partial class TimeEntryEditViewController
     {
-        private Toggl.TimeEntry timeEntry;
+        private Toggl.TogglTimeEntryView timeEntry;
         private bool isInNewProjectMode = true;
         private bool isInNewClientMode = true;
-        private List<Toggl.AutocompleteItem> projects;
-        private List<Toggl.Model> clients;
-        private List<Toggl.Model> workspaces;
+        private List<Toggl.TogglAutocompleteView> projects;
+        private List<Toggl.TogglGenericView> clients;
+        private List<Toggl.TogglGenericView> workspaces;
         private ulong selectedWorkspaceId;
         private string selectedWorkspaceName;
         private string selectedClientGUID;
@@ -48,7 +48,7 @@ namespace TogglDesktop.WPF
                 this.Dispatcher.BeginInvoke(new Action(() => this.onLogin(open, userId)));
                 return;
             }
-            this.timeEntry = new Toggl.TimeEntry();
+            this.timeEntry = new Toggl.TogglTimeEntryView();
             this.projects = null;
             this.clients = null;
             this.workspaces = null;
@@ -67,7 +67,7 @@ namespace TogglDesktop.WPF
 
         #region from time entry
 
-        private void onTimeEntryEditor(bool open, Toggl.TimeEntry timeEntry, string focusedFieldName)
+        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView timeEntry, string focusedFieldName)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -206,7 +206,7 @@ namespace TogglDesktop.WPF
 
         #endregion
 
-        private void onTimeEntryAutocomplete(List<Toggl.AutocompleteItem> list)
+        private void onTimeEntryAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -216,7 +216,7 @@ namespace TogglDesktop.WPF
             this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForDescriptions(list));
         }
 
-        private void onProjectAutocomplete(List<Toggl.AutocompleteItem> list)
+        private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -229,7 +229,7 @@ namespace TogglDesktop.WPF
             this.tryUpdatingProjectAutoComplete();
         }
 
-        private void onClientSelect(List<Toggl.Model> list)
+        private void onClientSelect(List<Toggl.TogglGenericView> list)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -263,7 +263,7 @@ namespace TogglDesktop.WPF
                 );
         }
 
-        private void onTags(List<Toggl.Model> list)
+        private void onTags(List<Toggl.TogglGenericView> list)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -274,7 +274,7 @@ namespace TogglDesktop.WPF
             this.tagList.SetKnownTags(list.Select(m => m.Name));
         }
 
-        private void onWorkspaceSelect(List<Toggl.Model> list)
+        private void onWorkspaceSelect(List<Toggl.TogglGenericView> list)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -647,7 +647,7 @@ namespace TogglDesktop.WPF
             this.projectTextBox.Focus();
         }
 
-        private void selectClient(Toggl.Model item)
+        private void selectClient(Toggl.TogglGenericView item)
         {
             this.selectedClientGUID = item.GUID;
             this.selectedClientName = item.Name;
@@ -658,7 +658,7 @@ namespace TogglDesktop.WPF
         {
             if (this.clientTextBox.Text == "")
             {
-                this.selectClient(new Toggl.Model());
+                this.selectClient(new Toggl.TogglGenericView());
             }
             else
             {
@@ -673,7 +673,7 @@ namespace TogglDesktop.WPF
 
             if (this.clientTextBox.Text == "")
             {
-                this.selectClient(new Toggl.Model());
+                this.selectClient(new Toggl.TogglGenericView());
             }
             else
             {
@@ -842,7 +842,7 @@ namespace TogglDesktop.WPF
             this.clientTextBox.Focus();
         }
 
-        private void selectWorkspace(Toggl.Model item)
+        private void selectWorkspace(Toggl.TogglGenericView item)
         {
             this.selectedWorkspaceId = item.ID;
             this.selectedWorkspaceName = item.Name;

@@ -13,7 +13,7 @@ namespace TogglDesktop.WPF.AutoComplete
 
     partial class ModelEntry
     {
-        public ModelEntry(Toggl.Model item, Action selectWithClick, string overrideText = null)
+        public ModelEntry(Toggl.TogglGenericView item, Action selectWithClick, string overrideText = null)
             : base(selectWithClick)
         {
             this.ModelName = overrideText ?? item.Name;

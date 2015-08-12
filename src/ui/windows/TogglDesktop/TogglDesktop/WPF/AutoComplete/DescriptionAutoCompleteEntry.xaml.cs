@@ -13,7 +13,7 @@ namespace TogglDesktop.WPF.AutoComplete
 
     partial class DescriptionAutoCompleteEntry
     {
-        public DescriptionAutoCompleteEntry(Toggl.AutocompleteItem item, Action selectWithClick)
+        public DescriptionAutoCompleteEntry(Toggl.TogglAutocompleteView item, Action selectWithClick)
             : base(selectWithClick)
         {
             this.Description = item.Description;

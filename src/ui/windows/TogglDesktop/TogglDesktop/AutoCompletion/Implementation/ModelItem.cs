@@ -8,7 +8,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
     class NoClientItem : ModelItem
     {
         public NoClientItem()
-            : base(new Toggl.Model())
+            : base(new Toggl.TogglGenericView())
         {
         }
 
@@ -23,9 +23,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
         }
     }
 
-    class ModelItem : SimpleItem<ModelEntry, Toggl.Model>
+    class ModelItem : SimpleItem<ModelEntry, Toggl.TogglGenericView>
     {
-        public ModelItem(Toggl.Model model)
+        public ModelItem(Toggl.TogglGenericView model)
             : base(model, model.Name)
         {
         }

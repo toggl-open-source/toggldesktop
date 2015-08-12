@@ -45,7 +45,7 @@ public partial class TimeEntryListViewController : UserControl
         // TODO: replace concept of accept buttons (wpf does not have this)
     }
 
-    void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
+    void OnTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
     {
         if (InvokeRequired)
         {
@@ -74,7 +74,7 @@ public partial class TimeEntryListViewController : UserControl
             DateTime.Now.Subtract(start).TotalMilliseconds);
     }
 
-    private void renderTimeEntryList(List<Toggl.TimeEntry> list)
+    private void renderTimeEntryList(List<Toggl.TogglTimeEntryView> list)
     {
         emptyLabel.Visible = (list.Count == 0);
 
@@ -84,7 +84,7 @@ public partial class TimeEntryListViewController : UserControl
 
         for (int i = 0; i < maxCount; i++)
         {
-            Toggl.TimeEntry te = list[i];
+            Toggl.TogglTimeEntryView te = list[i];
 
             WPF.TimeEntryCell cell = null;
             if (entries.Children.Count > i)

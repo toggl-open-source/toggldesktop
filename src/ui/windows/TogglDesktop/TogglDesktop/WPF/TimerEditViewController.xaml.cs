@@ -14,7 +14,7 @@ namespace TogglDesktop.WPF
     public partial class TimerEditViewController
     {
         private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
-        private Toggl.TimeEntry runningTimeEntry;
+        private Toggl.TogglTimeEntryView runningTimeEntry;
         private ProjectInfo completedProject;
 
         public event EventHandler RunningTimeEntrySecondPulse;
@@ -58,10 +58,10 @@ namespace TogglDesktop.WPF
             
             this.secondsTimer.IsEnabled = false;
             this.setUIToStoppedState();
-            this.runningTimeEntry = default(Toggl.TimeEntry);
+            this.runningTimeEntry = default(Toggl.TogglTimeEntryView);
         }
 
-        private void onRunningTimerState(Toggl.TimeEntry te)
+        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -74,7 +74,7 @@ namespace TogglDesktop.WPF
             this.secondsTimer.IsEnabled = true;
         }
 
-        private void onMiniTimerAutocomplete(List<Toggl.AutocompleteItem> list)
+        private void onMiniTimerAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
             if (!this.Dispatcher.CheckAccess())
             {
@@ -238,7 +238,7 @@ namespace TogglDesktop.WPF
 
         #region updating ui
 
-        private void setUIToRunningState(Toggl.TimeEntry item)
+        private void setUIToRunningState(Toggl.TogglTimeEntryView item)
         {
             this.resetUIState(true);
 
@@ -301,12 +301,12 @@ namespace TogglDesktop.WPF
             element.Visibility = condition ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.TimeEntry item)
+        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglTimeEntryView item)
         {
             return getProjectColorBrush(item.Color);
         }
 
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.AutocompleteItem item)
+        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglAutocompleteView item)
         {
             return getProjectColorBrush(item.ProjectColor);
         }
@@ -330,7 +330,7 @@ namespace TogglDesktop.WPF
             public ulong ProjectId { get { return this.projectId; } }
             public ulong TaskId { get { return this.taskId; } }
 
-            public ProjectInfo(Toggl.AutocompleteItem item)
+            public ProjectInfo(Toggl.TogglAutocompleteView item)
             {
                 this.projectId = item.ProjectID;
                 this.taskId = item.TaskID;

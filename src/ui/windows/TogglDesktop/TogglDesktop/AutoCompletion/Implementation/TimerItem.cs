@@ -3,9 +3,9 @@ using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    sealed class TimerItem : SimpleItem<TimerEntry, Toggl.AutocompleteItem>
+    sealed class TimerItem : SimpleItem<TimerEntry, Toggl.TogglAutocompleteView>
     {
-        public TimerItem(Toggl.AutocompleteItem item, bool isProject)
+        public TimerItem(Toggl.TogglAutocompleteView item, bool isProject)
             : base(item, isProject ? item.ProjectAndTaskLabel : item.Description)
         {
         }

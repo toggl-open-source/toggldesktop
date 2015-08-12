@@ -111,7 +111,7 @@ public class AutoCompleteTextBox : AlphaBlendTextBox
         mouseEntered = false;
     }
 
-    public void UpdateListBox(List<Toggl.AutocompleteItem> autoCompleteList)
+    public void UpdateListBox(List<Toggl.TogglAutocompleteView> autoCompleteList)
     {
         if (Text == _formerValue) return;
         _formerValue = Text;
@@ -120,7 +120,7 @@ public class AutoCompleteTextBox : AlphaBlendTextBox
         {
             ResetListBox();
             autoCompleteListBox.Items.Clear();
-            foreach (Toggl.AutocompleteItem item in autoCompleteList)
+            foreach (Toggl.TogglAutocompleteView item in autoCompleteList)
             {
                 if (item.ToString().IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
@@ -160,7 +160,7 @@ public class AutoCompleteTextBox : AlphaBlendTextBox
         }
     }
 
-    public Boolean parseKeyDown(PreviewKeyDownEventArgs e, List<Toggl.AutocompleteItem> autoCompleteList)
+    public Boolean parseKeyDown(PreviewKeyDownEventArgs e, List<Toggl.TogglAutocompleteView> autoCompleteList)
     {
         switch (e.KeyCode)
         {

@@ -52,7 +52,7 @@ namespace TogglDesktop.WPF
             this.InitializeComponent();
         }
 
-        public void Display(Toggl.TimeEntry item)
+        public void Display(Toggl.TogglTimeEntryView item)
         {
             this.guid = item.GUID;
 
@@ -82,7 +82,7 @@ namespace TogglDesktop.WPF
             this.updateToolTips(item);
         }
 
-        private void updateToolTips(Toggl.TimeEntry item)
+        private void updateToolTips(Toggl.TogglTimeEntryView item)
         {
             setToolTipIfNotEmpty(this.labelDescription, this.descriptionToolTip, item.Description);
             setToolTipIfNotEmpty(this.labelTask, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
@@ -131,7 +131,7 @@ namespace TogglDesktop.WPF
             showOnlyIf(textBlock, !string.IsNullOrEmpty(text));
         }
 
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.TimeEntry item)
+        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglTimeEntryView item)
         {
             var colourString = string.IsNullOrEmpty(item.Color) ? "#999999" : item.Color;
             var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));

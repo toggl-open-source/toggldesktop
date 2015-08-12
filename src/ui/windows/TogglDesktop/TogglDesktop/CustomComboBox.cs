@@ -116,7 +116,7 @@ public class CustomComboBox : TextBox
         mouseEntered = false;
     }
 
-    public void UpdateListBox(List<Toggl.AutocompleteItem> autoCompleteList,
+    public void UpdateListBox(List<Toggl.TogglAutocompleteView> autoCompleteList,
                               KeyEventArgs e)
     {
         if (Text == _formerValue)
@@ -137,7 +137,7 @@ public class CustomComboBox : TextBox
         autoCompleteListBox.Items.Clear();
         wspaces.Clear();
 
-        foreach (Toggl.AutocompleteItem item in autoCompleteList)
+        foreach (Toggl.TogglAutocompleteView item in autoCompleteList)
         {
             if (item.ToString().IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
             {
@@ -167,7 +167,7 @@ public class CustomComboBox : TextBox
         ShowListBox();
     }
 
-    public Boolean parseKeyDown(PreviewKeyDownEventArgs e, List<Toggl.AutocompleteItem> autoCompleteList)
+    public Boolean parseKeyDown(PreviewKeyDownEventArgs e, List<Toggl.TogglAutocompleteView> autoCompleteList)
     {
         switch (e.KeyCode)
         {
@@ -215,12 +215,12 @@ public class CustomComboBox : TextBox
         return false;
     }
 
-    internal void openFullList(List<Toggl.AutocompleteItem> autoCompleteList)
+    internal void openFullList(List<Toggl.TogglAutocompleteView> autoCompleteList)
     {
         ResetListBox();
         autoCompleteListBox.Items.Clear();
         wspaces.Clear();
-        foreach (Toggl.AutocompleteItem item in autoCompleteList)
+        foreach (Toggl.TogglAutocompleteView item in autoCompleteList)
         {
             autoCompleteListBox.Items.Add(item);
             if (item.Type == 3)

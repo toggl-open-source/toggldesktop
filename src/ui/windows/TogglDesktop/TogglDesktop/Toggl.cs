@@ -49,25 +49,25 @@ public static partial class Toggl
 
     public delegate void DisplayTimeEntryList(
         bool open,
-        List<TimeEntry> list);
+        List<TogglTimeEntryView> list);
 
     public delegate void DisplayAutocomplete(
-        List<AutocompleteItem> list);
+        List<TogglAutocompleteView> list);
 
     public delegate void DisplayViewItems(
-        List<Model> list);
+        List<TogglGenericView> list);
 
     public delegate void DisplayTimeEntryEditor(
         bool open,
-        TimeEntry te,
+        TogglTimeEntryView te,
         string focused_field_name);
 
     public delegate void DisplaySettings(
         bool open,
-        Settings settings);
+        TogglSettingsView settings);
 
     public delegate void DisplayRunningTimerState(
-        TimeEntry te);
+        TogglTimeEntryView te);
 
     public delegate void DisplayStoppedTimerState();
 
@@ -232,7 +232,7 @@ public static partial class Toggl
         return toggl_window_settings(ctx, ref x, ref y, ref h, ref w);
     }
 
-    public static bool SetSettings(Settings settings)
+    public static bool SetSettings(TogglSettingsView settings)
     {
         if (!toggl_set_settings_use_idle_detection(ctx,
                 settings.UseIdleDetection)) {
@@ -505,7 +505,7 @@ public static partial class Toggl
 
         toggl_on_time_entry_editor(ctx, delegate(
             bool open,
-            ref TimeEntry te,
+            ref TogglTimeEntryView te,
             string focused_field_name)
         {
             Console.WriteLine("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name);
@@ -536,7 +536,7 @@ public static partial class Toggl
             OnTags(ConvertToViewItemList(first));
         });
 
-        toggl_on_settings(ctx, delegate(bool open, ref Settings settings)
+        toggl_on_settings(ctx, delegate(bool open, ref TogglSettingsView settings)
         {
             Console.WriteLine("Calling OnSettings");
             OnSettings(open, settings);
@@ -550,9 +550,9 @@ public static partial class Toggl
                 OnStoppedTimerState();
                 return;
             }
-            TimeEntry view =
-                (TimeEntry)Marshal.PtrToStructure(
-                    te, typeof(TimeEntry));
+            TogglTimeEntryView view =
+                (TogglTimeEntryView)Marshal.PtrToStructure(
+                    te, typeof(TogglTimeEntryView));
             Console.WriteLine("Calling OnRunningTimerState");
             OnRunningTimerState(view);
         });
@@ -591,11 +591,11 @@ public static partial class Toggl
         toggl_set_cacert_path(ctx, cacert_path);
 
         string err = toggl_check_view_struct_size(
-            Marshal.SizeOf(new TimeEntry()),
-            Marshal.SizeOf(new AutocompleteItem()),
-            Marshal.SizeOf(new Model()),
-            Marshal.SizeOf(new Settings()),
-            Marshal.SizeOf(new AutotrackerRuleView()));
+            Marshal.SizeOf(new TogglTimeEntryView()),
+            Marshal.SizeOf(new TogglAutocompleteView()),
+            Marshal.SizeOf(new TogglGenericView()),
+            Marshal.SizeOf(new TogglSettingsView()),
+            Marshal.SizeOf(new TogglAutotrackerRuleView()));
         if (null != err) {
             throw new System.InvalidOperationException(err);
         }
@@ -707,15 +707,15 @@ public static partial class Toggl
         Console.WriteLine("Failed to start updater process");
     }
 
-    public static List<Model> ConvertToViewItemList(IntPtr first)
+    public static List<TogglGenericView> ConvertToViewItemList(IntPtr first)
     {
-        List<Model> list = new List<Model>();
+        List<TogglGenericView> list = new List<TogglGenericView>();
         if (IntPtr.Zero == first)
         {
             return list;
         }
-        Model n = (Model)Marshal.PtrToStructure(
-            first, typeof(Model));
+        TogglGenericView n = (TogglGenericView)Marshal.PtrToStructure(
+            first, typeof(TogglGenericView));
         while (true)
         {
             list.Add(n);
@@ -723,21 +723,21 @@ public static partial class Toggl
             {
                 break;
             }
-            n = (Model)Marshal.PtrToStructure(
-                n.Next, typeof(Model));
+            n = (TogglGenericView)Marshal.PtrToStructure(
+                n.Next, typeof(TogglGenericView));
         };
         return list;
     }
 
-    private static List<AutocompleteItem> ConvertToAutocompleteList(IntPtr first)
+    private static List<TogglAutocompleteView> ConvertToAutocompleteList(IntPtr first)
     {
-        List<AutocompleteItem> list = new List<AutocompleteItem>();
+        List<TogglAutocompleteView> list = new List<TogglAutocompleteView>();
         if (IntPtr.Zero == first)
         {
             return list;
         }
-        AutocompleteItem n = (AutocompleteItem)Marshal.PtrToStructure(
-            first, typeof(AutocompleteItem));
+        TogglAutocompleteView n = (TogglAutocompleteView)Marshal.PtrToStructure(
+            first, typeof(TogglAutocompleteView));
         while (true)
         {
             list.Add(n);
@@ -745,21 +745,21 @@ public static partial class Toggl
             {
                 break;
             }
-            n = (AutocompleteItem)Marshal.PtrToStructure(
-                n.Next, typeof(AutocompleteItem));
+            n = (TogglAutocompleteView)Marshal.PtrToStructure(
+                n.Next, typeof(TogglAutocompleteView));
         };
         return list;
     }
 
-    private static List<TimeEntry> ConvertToTimeEntryList(IntPtr first)
+    private static List<TogglTimeEntryView> ConvertToTimeEntryList(IntPtr first)
     {
-        List<TimeEntry> list = new List<TimeEntry>();
+        List<TogglTimeEntryView> list = new List<TogglTimeEntryView>();
         if (IntPtr.Zero == first)
         {
             return list;
         }
-        TimeEntry n = (TimeEntry)Marshal.PtrToStructure(
-            first, typeof(TimeEntry));
+        TogglTimeEntryView n = (TogglTimeEntryView)Marshal.PtrToStructure(
+            first, typeof(TogglTimeEntryView));
 
         while (true)
         {
@@ -768,8 +768,8 @@ public static partial class Toggl
             {
                 break;
             }
-            n = (TimeEntry)Marshal.PtrToStructure(
-                n.Next, typeof(TimeEntry));
+            n = (TogglTimeEntryView)Marshal.PtrToStructure(
+                n.Next, typeof(TogglTimeEntryView));
         };
         return list;
     }

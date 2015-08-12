@@ -3,9 +3,9 @@ using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class DescriptionItem : SimpleItem<DescriptionAutoCompleteEntry, Toggl.AutocompleteItem>
+    class DescriptionItem : SimpleItem<DescriptionAutoCompleteEntry, Toggl.TogglAutocompleteView>
     {
-        public DescriptionItem(Toggl.AutocompleteItem item) : base(item, item.Description)
+        public DescriptionItem(Toggl.TogglAutocompleteView item) : base(item, item.Description)
         {
         }
 

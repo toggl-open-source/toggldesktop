@@ -16,7 +16,7 @@ namespace TogglDesktop.WPF.AutoComplete
 
     partial class ProjectEntry
     {
-        public ProjectEntry(Toggl.AutocompleteItem item, Action selectWithClick, string overideText = null)
+        public ProjectEntry(Toggl.TogglAutocompleteView item, Action selectWithClick, string overideText = null)
             : base(selectWithClick)
         {
             this.ProjectColor = getProjectColor(ref item);
@@ -25,7 +25,7 @@ namespace TogglDesktop.WPF.AutoComplete
             this.InitializeComponent();
         }
 
-        private static Color getProjectColor(ref Toggl.AutocompleteItem item)
+        private static Color getProjectColor(ref Toggl.TogglAutocompleteView item)
         {
             var projectColourString = string.IsNullOrEmpty(item.ProjectColor) ? "#999999" : item.ProjectColor;
             var projectColor = (Color)(ColorConverter.ConvertFromString(projectColourString) ?? Color.FromRgb(153, 153, 153));

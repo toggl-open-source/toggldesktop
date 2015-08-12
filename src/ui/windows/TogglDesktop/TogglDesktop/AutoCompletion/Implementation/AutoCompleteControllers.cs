@@ -6,7 +6,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
 {
     static class AutoCompleteControllers
     {
-        public static AutoCompleteController ForTimer(IEnumerable<Toggl.AutocompleteItem> items)
+        public static AutoCompleteController ForTimer(IEnumerable<Toggl.TogglAutocompleteView> items)
         {
             var splitList = items.ToLookup(i => string.IsNullOrEmpty(i.Description));
             
@@ -34,21 +34,21 @@ namespace TogglDesktop.AutoCompletion.Implementation
         }
 
         public static AutoCompleteController ForProjects(
-            List<Toggl.AutocompleteItem> projects, List<Toggl.Model> clients, List<Toggl.Model> workspaces)
+            List<Toggl.TogglAutocompleteView> projects, List<Toggl.TogglGenericView> clients, List<Toggl.TogglGenericView> workspaces)
         {
             var workspaceLookup = workspaces.ToDictionary(w => w.ID);
             var clientLookup = clients.GroupBy(c => c.WID).ToDictionary(
                 c => c.Key, cs => cs.ToDictionary(c => c.Name)
                 );
             
-            Func<Toggl.AutocompleteItem, Toggl.Model> getClientOfProject =
+            Func<Toggl.TogglAutocompleteView, Toggl.TogglGenericView> getClientOfProject =
                 p =>
                 {
-                    var client = default(Toggl.Model);
+                    var client = default(Toggl.TogglGenericView);
                     if (string.IsNullOrEmpty(p.ClientLabel))
                         return client;
 
-                    Dictionary<string, Toggl.Model> clientDictionary;
+                    Dictionary<string, Toggl.TogglGenericView> clientDictionary;
                     if (clientLookup.TryGetValue(p.WorkspaceID, out clientDictionary))
                         clientDictionary.TryGetValue(p.ClientLabel, out client);
 
@@ -87,7 +87,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             return new AutoCompleteController(list);
         }
 
-        public static AutoCompleteController ForDescriptions(List<Toggl.AutocompleteItem> items)
+        public static AutoCompleteController ForDescriptions(List<Toggl.TogglAutocompleteView> items)
         {
             var list = items.Select(i => new DescriptionItem(i)).Cast<IAutoCompleteListItem>().ToList();
 
@@ -97,7 +97,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         }
 
         public static AutoCompleteController ForClients(
-            List<Toggl.Model> clients, List<Toggl.Model> workspaces)
+            List<Toggl.TogglGenericView> clients, List<Toggl.TogglGenericView> workspaces)
         {
             var workspaceLookup = workspaces.ToDictionary(w => w.ID);
 
@@ -115,7 +115,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             return new AutoCompleteController(list);
         }
 
-        public static AutoCompleteController ForWorkspaces(List<Toggl.Model> list)
+        public static AutoCompleteController ForWorkspaces(List<Toggl.TogglGenericView> list)
         {
             var items = list.Select(m => new ModelItem(m))
                 .Cast<IAutoCompleteListItem>().ToList();

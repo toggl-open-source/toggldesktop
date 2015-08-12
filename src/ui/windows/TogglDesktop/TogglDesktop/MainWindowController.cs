@@ -278,7 +278,7 @@ public partial class MainWindowController : TogglForm
         }, null);
     }
 
-    void OnRunningTimerState(Toggl.TimeEntry te)
+    void OnRunningTimerState(Toggl.TogglTimeEntryView te)
     {
         if (InvokeRequired)
         {
@@ -347,7 +347,7 @@ public partial class MainWindowController : TogglForm
         updateResizeHandleBackground();
     }
 
-    void OnSettings(bool open, Toggl.Settings settings)
+    void OnSettings(bool open, Toggl.TogglSettingsView settings)
     {
         if (InvokeRequired)
         {
@@ -571,7 +571,7 @@ public partial class MainWindowController : TogglForm
         openInBrowserToolStripMenuItem.Enabled = isLoggedIn;
     }
 
-    void OnTimeEntryList(bool open, List<Toggl.TimeEntry> list)
+    void OnTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
     {
         if (InvokeRequired)
         {
@@ -627,7 +627,7 @@ public partial class MainWindowController : TogglForm
         editForm.Resize += (sender, args) => this.updateEntriesListWidth();
     }
 
-    public void PopupInput(Toggl.TimeEntry te)
+    public void PopupInput(Toggl.TogglTimeEntryView te)
     {
         if (te.GUID == editForm.GUID) {
             editForm.ClosePopup();
@@ -642,7 +642,7 @@ public partial class MainWindowController : TogglForm
 
     void OnTimeEntryEditor(
         bool open,
-        Toggl.TimeEntry te,
+        Toggl.TogglTimeEntryView te,
         string focused_field_name)
     {
         if (InvokeRequired)

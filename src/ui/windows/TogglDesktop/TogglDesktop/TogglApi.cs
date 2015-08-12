@@ -15,7 +15,7 @@ namespace TogglDesktop
         // Models
 
         [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
-        public struct TimeEntry
+        public struct TogglTimeEntryView
         {
             public Int64 DurationInSeconds;
             [MarshalAs(UnmanagedType.LPWStr)]
@@ -69,7 +69,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
-        public struct AutocompleteItem
+        public struct TogglAutocompleteView
         {
             [MarshalAs(UnmanagedType.LPWStr)]
             public string Text;
@@ -101,7 +101,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
-        public struct Model
+        public struct TogglGenericView
         {
             public UInt64 ID;
             public UInt64 WID;
@@ -118,7 +118,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
-        public struct Settings
+        public struct TogglSettingsView
         {
             [MarshalAs(UnmanagedType.I1)]
             public bool UseProxy;
@@ -180,7 +180,7 @@ namespace TogglDesktop
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
-        public struct AutotrackerRuleView
+        public struct TogglAutotrackerRuleView
         {
             public Int64 ID;
             [MarshalAs(UnmanagedType.LPWStr)]
@@ -250,7 +250,7 @@ namespace TogglDesktop
         private delegate void TogglDisplayTimeEntryEditor(
             [MarshalAs(UnmanagedType.I1)]
         bool open,
-            ref TimeEntry te,
+            ref TogglTimeEntryView te,
             [MarshalAs(UnmanagedType.LPWStr)]
         string focused_field_name);
 
@@ -258,7 +258,7 @@ namespace TogglDesktop
         private delegate void TogglDisplaySettings(
             [MarshalAs(UnmanagedType.I1)]
         bool open,
-            ref Settings settings);
+            ref TogglSettingsView settings);
 
         [UnmanagedFunctionPointer(convention)]
         private delegate void TogglDisplayTimerState(
