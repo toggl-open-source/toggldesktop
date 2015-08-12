@@ -36,6 +36,7 @@ extern "C" {
 
 // Models
 
+    // in C#: TimeEntry
     typedef struct {
         int64_t DurationInSeconds;
         char_t *Description;
@@ -73,6 +74,7 @@ extern "C" {
         void *Next;
     } TogglTimeEntryView;
 
+    // in C#: AutocompleteItem
     typedef struct {
         // This is what is displayed to user, includes project and task.
         char_t *Text;
@@ -93,6 +95,7 @@ extern "C" {
         void *Next;
     } TogglAutocompleteView;
 
+    // in C#: Model
     typedef struct {
         uint64_t ID;
         uint64_t WID;
@@ -101,6 +104,7 @@ extern "C" {
         void *Next;
     } TogglGenericView;
 
+    // in C#: Settings
     typedef struct {
         bool_t UseProxy;
         char_t *ProxyHost;;
@@ -132,6 +136,7 @@ extern "C" {
         bool_t OpenEditorOnShortcut;
     } TogglSettingsView;
 
+    // in C#: AutotrackerRule
     typedef struct {
         int64_t ID;
         char_t *Term;
@@ -140,6 +145,7 @@ extern "C" {
         void *Next;
     } TogglAutotrackerRuleView;
 
+    // in C#: TimelineEvent
     typedef struct {
         int64_t ID;
         char_t *Title;
