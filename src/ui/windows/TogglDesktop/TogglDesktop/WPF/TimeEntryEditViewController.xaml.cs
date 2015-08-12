@@ -435,7 +435,7 @@ namespace TogglDesktop.WPF
 
             var item = asProjectItem.Item;
 
-            this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel);
+            this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel, item.ProjectColor);
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
@@ -468,11 +468,12 @@ namespace TogglDesktop.WPF
 
         }
 
-        private void setProjectIfDifferent(ulong taskId, ulong projectId, string projectName)
+        private void setProjectIfDifferent(ulong taskId, ulong projectId, string projectName, string projectColor = null)
         {
             if (projectId == this.timeEntry.PID && taskId == this.timeEntry.TID)
                 return;
-            this.projectTextBox.Text = projectName;
+            this.projectTextBox.SetText(projectName);
+            this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(projectColor));
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, taskId, projectId, "");
         }
 
