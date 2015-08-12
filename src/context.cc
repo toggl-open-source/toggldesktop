@@ -276,8 +276,11 @@ error Context::save(const bool push_changes) {
 }
 
 void UIElements::ApplyChanges(
-    const std::string time_entry_editor_guid,
+    const std::string editor_guid,
     const std::vector<ModelChange> &changes) {
+
+	time_entry_editor_guid = editor_guid;
+
     // Check what needs to be updated in UI
     for (std::vector<ModelChange>::const_iterator it =
         changes.begin();

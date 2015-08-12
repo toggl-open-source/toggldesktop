@@ -74,7 +74,7 @@ class UIElements {
     }
 
     void ApplyChanges(
-        const std::string time_entry_editor_guid,
+        const std::string editor_guid,
         const std::vector<ModelChange> &changes);
 
     bool display_time_entries;
