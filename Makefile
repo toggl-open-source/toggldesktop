@@ -173,7 +173,7 @@ endif
 
 cxx=g++ -fprofile-arcs -ftest-coverage -std=gnu++0x
 
-default: csapi fmt lint app
+default: csapi fmt app
 
 csapi:
 	go run src/script/generate_cs_api.go
