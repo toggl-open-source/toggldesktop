@@ -5,8 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
-             mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="300"
+             mc:Ignorable="d"
+             Height="0" Width="0"
              d:DataContext ="{d:DesignInstance {x:Type toggl:AutoCompletionPopupSample}, IsDesignTimeCreatable=True}">
 
     <Popup Name="popup" x:FieldModifier="private"

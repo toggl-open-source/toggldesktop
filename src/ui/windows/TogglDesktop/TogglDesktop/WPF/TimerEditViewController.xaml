@@ -144,7 +144,8 @@
                         >Project</TextBlock>
                 </StackPanel>
 
-                <Grid Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown">
+                <Grid Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown"
+                      Name="taskDescriptionGrid" x:FieldModifier="private">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition />
@@ -179,6 +180,7 @@
 
                 <toggl:AutoCompletionPopup Grid.Row="1" Grid.Column="1"  x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                 TextBox="{Binding ElementName=descriptionTextBox}"
+                                Target="{Binding ElementName=taskDescriptionGrid}"
                                 EmptyText="No previous entries found." StaysOpen="False"
                                 ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
             </Grid>
