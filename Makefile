@@ -56,10 +56,6 @@ pocolib=$(pocodir)/lib/CYGWIN/i686
 osname=windows
 endif
 
-csapi:
-	go run src/script/generate_cs_api.go
-	mcs src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs /target:library
-
 ifeq ($(osname), mac)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
 	-I$(openssldir)/include \
@@ -178,6 +174,10 @@ endif
 cxx=g++ -fprofile-arcs -ftest-coverage -std=gnu++0x
 
 default: app
+
+csapi:
+	go run src/script/generate_cs_api.go
+	mcs src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs /target:library
 
 clean: clean_ui clean_lib clean_test
 	rm -rf build coverage
