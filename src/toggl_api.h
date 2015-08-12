@@ -720,11 +720,11 @@ extern "C" {
         const int64_t id);
 
     // Testing helpers. May change any time
-    void testing_sleep(
+    TOGGL_EXPORT void testing_sleep(
         const int seconds);
 
     // For testing only
-    bool_t testing_set_logged_in_user(
+    TOGGL_EXPORT bool_t testing_set_logged_in_user(
         void *context,
         const char *json);
 
