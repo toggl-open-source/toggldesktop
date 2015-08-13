@@ -169,7 +169,7 @@ namespace TogglDesktop.WPF
 
         private static void setTimeIfUnfocused(TextBox textBox, string time)
         {
-            if (textBox.IsFocused)
+            if (textBox.IsKeyboardFocused)
                 return;
             textBox.Text = time;
             textBox.Tag = time;
@@ -177,14 +177,14 @@ namespace TogglDesktop.WPF
 
         private static void setTextIfUnfocused(TextBox textBox, string text)
         {
-            if (textBox.IsFocused)
+            if (textBox.IsKeyboardFocused)
                 return;
             textBox.Text = text;
         }
 
         private static void setTextIfUnfocused(ExtendedTextBox textBox, string text)
         {
-            if (textBox.IsFocused)
+            if (textBox.IsKeyboardFocused)
                 return;
             textBox.SetText(text);
         }
