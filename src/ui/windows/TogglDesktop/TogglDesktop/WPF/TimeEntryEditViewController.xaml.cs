@@ -155,6 +155,8 @@ namespace TogglDesktop.WPF
 
         }
 
+        #region helpers
+
         private static Color getProjectColor(string colorString)
         {
             var projectColourString = string.IsNullOrEmpty(colorString) ? "#999999" : colorString;
@@ -192,6 +194,8 @@ namespace TogglDesktop.WPF
 
         #endregion
 
+        #endregion
+
         #region duration auto update
 
         private void durationUpdateTimerTick(object sender, EventArgs eventArgs)
@@ -210,6 +214,8 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
+        #region auto completion
 
         private void onTimeEntryAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
@@ -293,6 +299,8 @@ namespace TogglDesktop.WPF
             this.tryUpdatingClientAutoComplete();
             this.tryUpdatingProjectAutoComplete();
         }
+
+        #endregion
 
         #endregion
 
@@ -878,12 +886,27 @@ namespace TogglDesktop.WPF
 
             this.updateTagListEmptyText();
 
-            Toggl.SetTimeEntryTags(this.timeEntry.GUID, this.tagList.Tags.ToList());
+            this.saveTags();
         }
 
         private void tagList_OnGotKeybardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             this.updateTagListEmptyText();
+        }
+
+        private void tagList_TagAdded(object sender, string e)
+        {
+            this.saveTags();
+        }
+
+        private void tagList_TagRemoved(object sender, string e)
+        {
+            this.saveTags();
+        }
+
+        private void saveTags()
+        {
+            Toggl.SetTimeEntryTags(this.timeEntry.GUID, this.tagList.Tags.ToList());
         }
 
         private void updateTagListEmptyText()
