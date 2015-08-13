@@ -75,6 +75,8 @@ namespace TogglDesktop.WPF
                 return;
             }
 
+            var isNewTimeEntry = this.timeEntry.GUID != timeEntry.GUID;
+
             this.timeEntry = timeEntry;
 
             var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
@@ -122,10 +124,13 @@ namespace TogglDesktop.WPF
                 this.lastUpdatedText.Visibility = Visibility.Collapsed;
             }
 
-            this.tagList.Clear(open);
-            if(timeEntry.Tags != null)
-                this.tagList.AddTags(timeEntry.Tags.Split(new[] { Toggl.TagSeparator }, StringSplitOptions.RemoveEmptyEntries));
-            this.updateTagListEmptyText();
+            if (isNewTimeEntry || !this.tagList.IsKeyboardFocusWithin)
+            {
+                this.tagList.Clear(open);
+                if (timeEntry.Tags != null)
+                    this.tagList.AddTags(timeEntry.Tags.Split(new[] { Toggl.TagSeparator }, StringSplitOptions.RemoveEmptyEntries));
+                this.updateTagListEmptyText();
+            }
 
             if (this.isInNewProjectMode)
                 this.disableNewProjectMode();
