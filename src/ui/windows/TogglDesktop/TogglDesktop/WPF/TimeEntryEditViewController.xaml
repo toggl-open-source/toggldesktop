@@ -43,13 +43,16 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Name="startTimeTextBox" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
                          Style="{StaticResource TimeBox}"
-                         LostKeyboardFocus="startTimeTextBox_OnLostKeyboardFocus">12:45</TextBox>
+                         LostKeyboardFocus="startTimeTextBox_OnLostKeyboardFocus"
+                         KeyDown="startTimeTextBox_OnKeyDown">12:45</TextBox>
                 <TextBox Name="durationTextBox" x:FieldModifier="private"  Grid.Column="1" Grid.Row="0"
                          Style="{StaticResource DurationBox}"
-                         LostKeyboardFocus="durationTextBox_OnLostKeyboardFocus">10:12 min</TextBox>
+                         LostKeyboardFocus="durationTextBox_OnLostKeyboardFocus"
+                         KeyDown="durationTextBox_OnKeyDown">10:12 min</TextBox>
                 <TextBox Name="endTimeTextBox" x:FieldModifier="private"  Grid.Column="2" Grid.Row="0"
                          Style="{StaticResource TimeBox}"
-                         LostKeyboardFocus="endTimeTextBox_OnLostKeyboardFocus">12:55</TextBox>
+                         LostKeyboardFocus="endTimeTextBox_OnLostKeyboardFocus"
+                         KeyDown="endTimeTextBox_OnKeyDown">12:55</TextBox>
 
                 <DatePicker Name="startDatePicker" x:FieldModifier="private" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
                          Height="20" VerticalAlignment="Bottom" SelectedDate="05.01.2015"

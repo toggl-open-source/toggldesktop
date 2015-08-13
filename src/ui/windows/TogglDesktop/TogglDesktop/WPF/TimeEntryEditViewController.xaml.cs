@@ -307,18 +307,59 @@ namespace TogglDesktop.WPF
 
         private void startTimeTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
         {
-            this.setTimeEntryTimeIfChanged(this.startTimeTextBox, Toggl.SetTimeEntryStart, "start time");
+            this.saveStartTimeIfChanged();
         }
 
         private void endTimeTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
         {
-            this.setTimeEntryTimeIfChanged(this.endTimeTextBox, Toggl.SetTimeEntryEnd, "end time");
+            this.saveEndTimeIfChanged();
         }
 
         private void durationTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
         {
+            this.saveDurationIfChanged();
+        }
+
+        private void startTimeTextBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.saveStartTimeIfChanged();
+                e.Handled = true;
+            }
+        }
+
+        private void endTimeTextBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.saveEndTimeIfChanged();
+                e.Handled = true;
+            }
+        }
+
+        private void durationTextBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.saveDurationIfChanged();
+                e.Handled = true;
+            }
+        }
+
+        private void saveStartTimeIfChanged()
+        {
+            this.setTimeEntryTimeIfChanged(this.startTimeTextBox, Toggl.SetTimeEntryStart, "start time");
+        }
+        private void saveEndTimeIfChanged()
+        {
+            this.setTimeEntryTimeIfChanged(this.endTimeTextBox, Toggl.SetTimeEntryEnd, "end time");
+        }
+        private void saveDurationIfChanged()
+        {
             this.setTimeEntryTimeIfChanged(this.durationTextBox, Toggl.SetTimeEntryDuration, "duration");
         }
+
 
         private void setTimeEntryTimeIfChanged(TextBox textBox, Func<string, string, bool> apiCall, string timeType)
         {
