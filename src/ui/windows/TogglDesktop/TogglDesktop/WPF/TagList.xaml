@@ -7,7 +7,8 @@
              mc:Ignorable="d" Background="White" d:DesignWidth="300" d:DesignHeight="34"
              MouseDown="onMouseDown">
     <Grid Name="grid" x:FieldModifier="private">
-        <WrapPanel Name="panel" x:FieldModifier="private" Orientation="Horizontal" Margin="8, 4, 0, 4">
+        <WrapPanel Name="panel" x:FieldModifier="private" Orientation="Horizontal" Margin="8, 4, 0, 4"
+                   SizeChanged="panel_OnSizeChanged">
             <toggl:ExtendedTextBox x:Name="textBox" x:FieldModifier="private" MinWidth="80" Margin="0, -3, 3, -3" BorderThickness="0" Padding="0 0 34 0"
                          Height="32" VerticalContentAlignment="Center"
                          PreviewKeyDown="textBoxOnPreviewKeyDown" LostKeyboardFocus="textBoxOnLostKeyboardFocus"/>

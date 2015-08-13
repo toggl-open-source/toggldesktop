@@ -227,5 +227,9 @@ namespace TogglDesktop.WPF
 
         }
 
+        private void panel_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.autoComplete.RecalculatePosition();
+        }
     }
 }

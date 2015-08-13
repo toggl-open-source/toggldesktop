@@ -291,5 +291,16 @@ namespace TogglDesktop.WPF
             if (e != null)
                 e(this, EventArgs.Empty);
         }
+
+        public void RecalculatePosition()
+        {
+            if (!this.popup.IsOpen)
+                return;
+
+            // hack to make the popup re-calculate its position
+            var offset = this.popup.HorizontalOffset;
+            this.popup.HorizontalOffset = offset + 1;
+            this.popup.HorizontalOffset = offset;
+        }
     }
 }
