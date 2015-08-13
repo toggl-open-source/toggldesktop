@@ -321,7 +321,7 @@ namespace TogglDesktopDLLInteropTest
         }
 
         [TestMethod]
-        public void Test()
+        public void TestFormatDurationInSecondsHHMMSS()
         {
             string formatted = TogglDesktop.Toggl.FormatDurationInSecondsHHMMSS(123);
             Assert.AreEqual("02:03", formatted);
