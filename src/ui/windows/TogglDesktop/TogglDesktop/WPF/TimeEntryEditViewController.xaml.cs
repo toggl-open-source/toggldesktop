@@ -436,6 +436,15 @@ namespace TogglDesktop.WPF
             this.setDescriptionIfChanged(this.descriptionTextBox.Text);
         }
 
+        private void descriptionTextBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.setDescriptionIfChanged(this.descriptionTextBox.Text);
+                e.Handled = true;
+            }
+        }
+
         private void setDescriptionIfChanged(string text)
         {
             if (text == null || text == this.timeEntry.Description)

@@ -63,7 +63,8 @@
             <!-- description -->
             <Grid Height="50">
                 <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
-                    LostKeyboardFocus="descriptionTextBox_OnLostKeyboardFocus"/>
+                    LostKeyboardFocus="descriptionTextBox_OnLostKeyboardFocus"
+                                       KeyDown="descriptionTextBox_OnKeyDown"/>
                 <TextBlock>No description
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
