@@ -63,7 +63,8 @@
             ConfirmCompletion="autoComplete_OnConfirmCompletion"
             ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"
             IsOpenChanged="autoComplete_OnIsOpenChanged"
-            KeepOpenWhenSelectingWithMouse="True"/>
+            KeepOpenWhenSelectingWithMouse="True"
+            FillTextBoxOnComplete="False" />
         
     </Grid>
 </UserControl>

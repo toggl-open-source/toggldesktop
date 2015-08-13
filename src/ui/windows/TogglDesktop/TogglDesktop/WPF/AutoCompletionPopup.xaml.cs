@@ -37,6 +37,8 @@ namespace TogglDesktop.WPF
             this.popup.Closed += (s, e) => this.tryInvoke(this.IsOpenChanged);
 
             this.IsEnabledChanged += onIsEnabledChanged;
+
+            this.FillTextBoxOnComplete = true;
         }
 
         private void onIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs args)
@@ -66,6 +68,7 @@ namespace TogglDesktop.WPF
         }
 
         public bool KeepOpenWhenSelectingWithMouse { get; set; }
+        public bool FillTextBoxOnComplete { get; set; }
 
         #region dependency properties
 
@@ -217,9 +220,12 @@ namespace TogglDesktop.WPF
                 return;
             }
 
-            this.textbox.SetText(item.Text);
-            this.textbox.CaretIndex = this.textbox.Text.Length;
-            this.textbox.Focus();
+            if (this.FillTextBoxOnComplete)
+            {
+                this.textbox.SetText(item.Text);
+                this.textbox.CaretIndex = this.textbox.Text.Length;
+                this.textbox.Focus();
+            }
 
             if (this.ConfirmCompletion != null)
                 this.ConfirmCompletion(this, item);
