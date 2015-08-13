@@ -177,6 +177,7 @@ default: csapi fmt app
 
 csapi:
 	go run src/script/generate_cs_api.go
+	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs
 	mcs src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs /target:library
 
 clean: clean_ui clean_lib clean_test
