@@ -2456,6 +2456,11 @@ void VarTest::testEmpty()
 	assert (da == da);
 	assert (!(da != da));
 
+	assert (da != Var(1));
+	assert (!(da == Var(1)));
+	assert (Var(1) != da);
+	assert (!(Var(1) == da));
+
 	da = "123";
 	int i = da.convert<int>();
 	assert (123 == i);
@@ -2472,6 +2477,11 @@ void VarTest::testEmpty()
 	assert (!da.isString());
 	assert (da == da);
 	assert (!(da != da));
+
+	assert (da != Var(1));
+	assert (!(da == Var(1)));
+	assert (Var(1) != da);
+	assert (!(Var(1) == da));
 
 	assert (da != "");
 	assert ("" != da);

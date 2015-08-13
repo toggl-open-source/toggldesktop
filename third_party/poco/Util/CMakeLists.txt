@@ -24,7 +24,18 @@ set_target_properties( "${LIBNAME}"
     DEFINE_SYMBOL Util_EXPORTS
     )
 
-target_link_libraries( "${LIBNAME}" JSON XML Foundation)
+target_link_libraries( "${LIBNAME}" Foundation)
+if (ENABLE_XML)
+	target_link_libraries( "${LIBNAME}" XML)
+else ()
+	add_definitions( -DPOCO_UTIL_NO_XMLCONFIGURATION )
+endif()
+if (ENABLE_JSON)
+	target_link_libraries( "${LIBNAME}" JSON)
+else ()
+	add_definitions( -DPOCO_UTIL_NO_JSONCONFIGURATION )
+endif()
+
 target_include_directories( "${LIBNAME}"
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -32,22 +43,8 @@ target_include_directories( "${LIBNAME}"
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-install(
-    DIRECTORY include/Poco
-    DESTINATION include
-    COMPONENT Devel
-    PATTERN ".svn" EXCLUDE
-    )
-
-install(
-    TARGETS "${LIBNAME}" EXPORT "${LIBNAME}Targets"
-    LIBRARY DESTINATION lib${LIB_SUFFIX}
-    ARCHIVE DESTINATION lib${LIB_SUFFIX}
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
-    )
-
-POCO_GENERATE_PACKAGE("${LIBNAME}" "${LIBNAME}Targets" "lib/cmake/${PROJECT_NAME}")
+POCO_INSTALL("${LIBNAME}")
+POCO_GENERATE_PACKAGE("${LIBNAME}")
 
 if (ENABLE_TESTS)
     add_subdirectory(samples)

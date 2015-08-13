@@ -109,12 +109,13 @@ private:
 	unsigned indent();
 	bool printFlat() const;
 	void arrayValue();
+	bool array() const;
 
 	std::ostream& _out;
 	unsigned      _indent;
 	std::string   _tab;
-	bool          _array;
-	bool          _value;
+	int           _array;
+	bool          _objStart;
 };
 
 
@@ -122,6 +123,13 @@ inline void PrintHandler::setIndent(unsigned indent)
 {
 	_indent = indent;
 }
+
+
+inline bool PrintHandler::array() const
+{
+	return _array > 0;
+}
+
 
 
 }} // namespace Poco::JSON
