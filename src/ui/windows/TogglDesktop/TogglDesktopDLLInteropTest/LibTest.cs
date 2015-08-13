@@ -8,9 +8,10 @@ namespace TogglDesktopDLLInteropTest
     [TestClass]
     public class LibTest
     {
-        [TestInitialize]
-        public void Initialize()
+        [ClassInitialize]
+        public static void ClassInit(TestContext context)
         {
+            TogglDesktop.Toggl.Env = "test";
             Assert.IsTrue(TogglDesktop.Toggl.StartUI("0.0.0"));
             string path = Path.Combine(Directory.GetCurrentDirectory(), "me.json");
             Assert.AreNotEqual("", path);
@@ -19,10 +20,11 @@ namespace TogglDesktopDLLInteropTest
             Assert.AreNotEqual("", json);
             Assert.IsNotNull(json);
             Assert.IsTrue(TogglDesktop.Toggl.SetLoggedInUser(json));
+            Assert.AreEqual("test", TogglDesktop.Toggl.Env);
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        [ClassCleanup]
+        public static void ClassCleanup()
         {
             TogglDesktop.Toggl.Clear();
         }
@@ -197,7 +199,7 @@ namespace TogglDesktopDLLInteropTest
         [TestMethod]
         public void TestStart()
         {
-            string guid = TogglDesktop.Toggl.Start("doing stuff", "", 0, 0, "", null);
+            string guid = TogglDesktop.Toggl.Start("doing stuff", "", 0, 0, "", "");
             Assert.IsNotNull(guid);
             Assert.AreNotEqual("", guid);
             // FIXME: check that timer got updated
