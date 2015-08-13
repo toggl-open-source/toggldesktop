@@ -8,25 +8,129 @@ namespace TogglDesktopDLLInteropTest
     [TestClass]
     public class LibTest
     {
+        private static List<TogglDesktop.Toggl.TogglTimeEntryView> timeentries;
+
+        private static TogglDesktop.Toggl.TogglTimeEntryView editorTimeEntry;
+        private static string focusedFieldName;
+        private static bool openTimeEntryEditor;
+        private static bool openTimeEntryList;
+
+        private static TogglDesktop.Toggl.TogglSettingsView settings;
+        private static bool openSettings;
+
+        private static TogglDesktop.Toggl.TogglTimeEntryView timerTimeEntry;
+        private static bool running;
+
+        private static bool openLogin;
+        private static UInt64 userID;
+
+        private static List<TogglDesktop.Toggl.TogglGenericView> clients;
+
+        private static List<TogglDesktop.Toggl.TogglAutocompleteView> projectAutocomplete;
+
         [ClassInitialize]
         public static void ClassInit(TestContext context)
         {
             TogglDesktop.Toggl.Env = "test";
+
             Assert.IsTrue(TogglDesktop.Toggl.StartUI("0.0.0"));
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "me.json");
-            Assert.AreNotEqual("", path);
-            Assert.IsNotNull(path);
-            string json = File.ReadAllText(path);
-            Assert.AreNotEqual("", json);
-            Assert.IsNotNull(json);
-            Assert.IsTrue(TogglDesktop.Toggl.SetLoggedInUser(json));
+
             Assert.AreEqual("test", TogglDesktop.Toggl.Env);
+
+            TogglDesktop.Toggl.OnTimeEntryList +=Toggl_OnTimeEntryList;
+            TogglDesktop.Toggl.OnTimeEntryEditor += Toggl_OnTimeEntryEditor;
+            TogglDesktop.Toggl.OnSettings += Toggl_OnSettings;
+            TogglDesktop.Toggl.OnRunningTimerState += Toggl_OnRunningTimerState;
+            TogglDesktop.Toggl.OnStoppedTimerState += Toggl_OnStoppedTimerState;
+            TogglDesktop.Toggl.OnLogin += Toggl_OnLogin;
+            TogglDesktop.Toggl.OnProjectAutocomplete += Toggl_OnProjectAutocomplete;
+            TogglDesktop.Toggl.OnClientSelect += Toggl_OnClientSelect;
+        }
+
+        static void Toggl_OnClientSelect(List<TogglDesktop.Toggl.TogglGenericView> list)
+        {
+            clients = list;
+        }
+
+        static void Toggl_OnProjectAutocomplete(List<TogglDesktop.Toggl.TogglAutocompleteView> list)
+        {
+            projectAutocomplete = list;
+        }
+
+        static void Toggl_OnLogin(bool open, ulong user_id)
+        {
+            openLogin = open;
+            userID = user_id;
+        }
+
+        static void Toggl_OnStoppedTimerState()
+        {
+            running = false;
+            timerTimeEntry = new TogglDesktop.Toggl.TogglTimeEntryView();
+        }
+
+        static void Toggl_OnRunningTimerState(TogglDesktop.Toggl.TogglTimeEntryView te)
+        {
+            running = true;
+            timerTimeEntry = te;
+        }
+
+        static void Toggl_OnSettings(bool open, TogglDesktop.Toggl.TogglSettingsView s)
+        {
+            openSettings = true;
+            settings = s;
+        }
+
+        static void Toggl_OnTimeEntryEditor(bool open, TogglDesktop.Toggl.TogglTimeEntryView te, string focused_field_name)
+        {
+            openTimeEntryEditor = open;
+            editorTimeEntry = te;
+            focusedFieldName = focused_field_name;
+        }
+
+        static void Toggl_OnTimeEntryList(bool open, List<TogglDesktop.Toggl.TogglTimeEntryView> list)
+        {
+            openTimeEntryList = open;
+            timeentries = list;
         }
 
         [ClassCleanup]
         public static void ClassCleanup()
         {
             TogglDesktop.Toggl.Clear();
+        }
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            openTimeEntryList = false;
+            timeentries = null;
+
+            openTimeEntryEditor = false;
+            focusedFieldName = null;
+            editorTimeEntry = new TogglDesktop.Toggl.TogglTimeEntryView();
+
+            openSettings = false;
+            settings = new TogglDesktop.Toggl.TogglSettingsView();
+
+            running = false;
+            timerTimeEntry = new TogglDesktop.Toggl.TogglTimeEntryView();
+
+            openLogin = false;
+            userID = 0;
+
+            clients = null;
+
+            projectAutocomplete = null;
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "me.json");
+            Assert.AreNotEqual("", path);
+            Assert.IsNotNull(path);
+
+            string json = File.ReadAllText(path);
+            Assert.AreNotEqual("", json);
+            Assert.IsNotNull(json);
+            Assert.IsTrue(TogglDesktop.Toggl.SetLoggedInUser(json));
         }
 
         [TestMethod]
@@ -77,8 +181,13 @@ namespace TogglDesktopDLLInteropTest
         [TestMethod]
         public void TestViewTimeEntryList()
         {
+            string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
+
             TogglDesktop.Toggl.ViewTimeEntryList();
-            // FIXME: that TE list was rendered
+            Assert.IsNotNull(timeentries);
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.AreEqual(guid, te.GUID);
         }
 
         [TestMethod]
@@ -86,14 +195,17 @@ namespace TogglDesktopDLLInteropTest
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f"; 
             TogglDesktop.Toggl.Edit(guid, false, "description");
-            // FIXME: check that TE editor was opened
+            Assert.IsTrue(openTimeEntryEditor);
+            Assert.AreEqual(guid, editorTimeEntry.GUID);
+            Assert.AreEqual("description", focusedFieldName);
         }
 
         [TestMethod]
         public void TestEditPreferences()
         {
             TogglDesktop.Toggl.EditPreferences();
-            // FIXME: check that prefs were rendered
+            Assert.IsTrue(openSettings);
+            Assert.IsNotNull(settings);
         }
 
         [TestMethod]
@@ -101,22 +213,29 @@ namespace TogglDesktopDLLInteropTest
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f"; 
             Assert.IsTrue(TogglDesktop.Toggl.Continue(guid));
-            // FIXME: check that TE "07fba193-91c4-0ec8-2894-820df0548a8f" is running now
+            Assert.IsTrue(running);
+            Assert.IsNotNull(timerTimeEntry);
+            Assert.AreNotEqual(guid, timerTimeEntry.GUID);
         }
 
         [TestMethod]
         public void TestContinueLatest()
         {
             Assert.IsTrue(TogglDesktop.Toggl.ContinueLatest());
-            // FIXME: check that TE is really running
+            Assert.IsTrue(running);
+            Assert.IsNotNull(timerTimeEntry);
         }
 
         [TestMethod]
         public void TestDeleteTimeEntry()
         {
-            string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
+            string guid = "6c97dc31-582e-7662-1d6f-5e9d623b1685";
             Assert.IsTrue(TogglDesktop.Toggl.DeleteTimeEntry(guid));
-            // FIXME: that TE is really gone
+            
+            Assert.IsNotNull(timeentries);
+
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNull(te);
         }
 
         [TestMethod]
@@ -124,7 +243,9 @@ namespace TogglDesktopDLLInteropTest
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
             Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryDuration(guid, "1 hour"));
-            // FIXME: check duration
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.AreEqual("1:00:00", te.Duration);
         }
 
         [TestMethod]
@@ -135,7 +256,9 @@ namespace TogglDesktopDLLInteropTest
             uint project_id = 2567324;
             string project_guid = null;
             Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryProject(guid, task_id, project_id, project_guid));
-            // FIXME: check project
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.AreEqual(project_id, te.PID);
         }
 
         [TestMethod]
@@ -143,15 +266,23 @@ namespace TogglDesktopDLLInteropTest
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
             Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryStart(guid, "12:34"));
-            // FIXME: check start
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.AreEqual("12:34", te.StartTimeString);
         }
 
         [TestMethod]
         public void TestSetTimeEntryDate()
         {
+            DateTime now = DateTime.Now;
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
-            Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryDate(guid, DateTime.Now));
-            // FIXME: check date
+            Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryDate(guid, now));
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            DateTime started = TogglDesktop.Toggl.DateTimeFromUnix(te.Started);
+            Assert.AreEqual(now.Year, started.Year);
+            Assert.AreEqual(now.Month, started.Month);
+            Assert.AreEqual(now.Day, started.Day);
         }
 
         [TestMethod]
@@ -159,7 +290,9 @@ namespace TogglDesktopDLLInteropTest
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
             Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryEnd(guid, "23:45"));
-            // FIXME: check end
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.AreEqual("23:45", te.EndTimeString);
         }
 
         [TestMethod]
@@ -168,15 +301,26 @@ namespace TogglDesktopDLLInteropTest
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
             List<string> tags = new List<string>() { "John", "Anna", "Monica" };
             Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryTags(guid, tags));
-            // FIXME: check tags
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            string[] assignedTags = te.Tags.Split('\t');
+            Assert.AreEqual(tags.Count, assignedTags.Length);
         }
 
         [TestMethod]
         public void TestSetTimeEntryBillable()
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
+
             Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryBillable(guid, true));
-            // FIXME: check billable flag
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.IsTrue(te.Billable);
+
+            Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryBillable(guid, false));
+            te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.IsFalse(te.Billable);
         }
 
         [TestMethod]
@@ -184,7 +328,9 @@ namespace TogglDesktopDLLInteropTest
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
             Assert.IsTrue(TogglDesktop.Toggl.SetTimeEntryDescription(guid, "blah"));
-            // FIXME: check description
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.AreEqual("blah", te.Description);
         }
 
         [TestMethod]
@@ -193,7 +339,12 @@ namespace TogglDesktopDLLInteropTest
             string guid = TogglDesktop.Toggl.Start("doing stuff", "", 0, 0, "", "");
             Assert.IsNotNull(guid);
             Assert.AreNotEqual("", guid);
+            Assert.AreEqual(guid, timerTimeEntry.GUID);
+            Assert.IsTrue(running);
+
             Assert.IsTrue(TogglDesktop.Toggl.Stop());
+            Assert.IsFalse(running);
+            Assert.AreNotEqual(guid, timerTimeEntry.GUID);
         }
 
         [TestMethod]
@@ -202,19 +353,25 @@ namespace TogglDesktopDLLInteropTest
             string guid = TogglDesktop.Toggl.Start("doing stuff", "", 0, 0, "", "");
             Assert.IsNotNull(guid);
             Assert.AreNotEqual("", guid);
-            // FIXME: check that timer got updated
+            Assert.IsTrue(running);
+            Assert.AreEqual(guid, timerTimeEntry.GUID);
         }
 
         [TestMethod]
         public void TestDiscardAt()
         {
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
-            bool split = false;
             ulong at = (ulong)TogglDesktop.Toggl.UnixFromDateTime(DateTime.Now);
-            Assert.IsTrue(TogglDesktop.Toggl.DiscardTimeAt(guid, at-1, split));
+
+            int count = timeentries.Count;
+
+            bool split = false;
+            Assert.IsTrue(TogglDesktop.Toggl.DiscardTimeAt(guid, at - 1, split));
+            Assert.AreEqual(count, timeentries.Count);
+
             split = true;
             Assert.IsTrue(TogglDesktop.Toggl.DiscardTimeAt(guid, at, split));
-            // FIXME: check that TE was actually split 2 times
+            Assert.AreEqual(count + 1, timeentries.Count);
         }
 
         [TestMethod]
@@ -243,25 +400,30 @@ namespace TogglDesktopDLLInteropTest
         public void TestLogout()
         {
             Assert.IsTrue(TogglDesktop.Toggl.Logout());
-            // FIXME: check that login view was displayed
+            Assert.IsTrue(openLogin);
+            Assert.AreEqual((UInt64)0, userID);
         }
 
         [TestMethod]
         public void TestClearCache()
         {
             Assert.IsTrue(TogglDesktop.Toggl.ClearCache());
-            // FIXME: check that user is gone now
+            Assert.IsTrue(openLogin);
+            Assert.AreEqual((UInt64)0, userID);
         }
 
         [TestMethod]
         public void TestAddProject()
         {
+            int count = projectAutocomplete.Count;
+
             string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
             ulong workspace_id = 123456789;
             ulong client_id = 0;
             string client_guid = null;
             string project_name = "testing project adding";
             bool is_private = false;
+            
             string project_guid = TogglDesktop.Toggl.AddProject(guid,
                 workspace_id,
                 client_id,
@@ -270,18 +432,26 @@ namespace TogglDesktopDLLInteropTest
                 is_private);
             Assert.IsNotNull(project_guid);
             Assert.AreNotEqual("", project_guid);
-            // FIXME: check that TE has the project attached now
-            // FIXME: check that the project exists now
+            
+            TogglDesktop.Toggl.TogglTimeEntryView te = timeentries.Find(x => guid == x.GUID);
+            Assert.IsNotNull(te);
+            Assert.AreEqual(project_name, te.ProjectLabel);
+            
+            Assert.IsNotNull(projectAutocomplete);
+            Assert.AreEqual(count + 1, projectAutocomplete.Count);
         }
 
         [TestMethod]
         public void TestCreateClient()
         {
             ulong workspace_id = 123456789;
-            string guid = TogglDesktop.Toggl.CreateClient(workspace_id, "new test client");
+            string name = "new test client";
+            string guid = TogglDesktop.Toggl.CreateClient(workspace_id, name);
             Assert.IsNotNull(guid);
             Assert.AreNotEqual("", guid);
-            // FIXME: check that the client exists now
+            Assert.IsNotNull(clients);
+            TogglDesktop.Toggl.TogglGenericView c = clients.Find(x => name == x.Name);
+            Assert.IsNotNull(c);
         }
 
         [TestMethod]
