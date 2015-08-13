@@ -243,6 +243,11 @@ namespace TogglDesktop.WPF
 
         private void open(bool closeIfEmpty = false, bool showAll = false)
         {
+            if (!showAll && this.textbox.Text == "" && !this.popup.IsOpen)
+            {
+                return;
+            }
+
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
             this.emptyLabel.Visibility = this.controller.VisibleItems.Count == 0

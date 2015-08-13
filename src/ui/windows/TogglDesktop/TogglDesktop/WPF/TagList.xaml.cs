@@ -16,6 +16,7 @@ namespace TogglDesktop.WPF
         public event EventHandler<string> TagAdded;
 
         private readonly Dictionary<string, Tag> tags = new Dictionary<string, Tag>();
+        private readonly Stack<string> orderedTags = new Stack<string>(); 
 
         public int TagCount { get { return this.tags.Count; } }
         public IEnumerable<string> Tags { get { return this.tags.Keys; } }
@@ -48,6 +49,11 @@ namespace TogglDesktop.WPF
                 {
                     e.Handled = true;
                 }
+            }
+            else if(e.Key == Key.Back && !e.IsRepeat && this.textBox.CaretIndex == 0)
+            {
+                if (this.tryRemoveLastTag())
+                    e.Handled = true;
             }
         }
 
@@ -106,6 +112,7 @@ namespace TogglDesktop.WPF
             var element = TogglDesktop.WPF.Tag.Make(tag);
 
             this.tags.Add(tag, element);
+            this.orderedTags.Push(tag);
 
             this.panel.Children.Insert(this.panel.Children.Count - 1, element);
 
@@ -130,6 +137,10 @@ namespace TogglDesktop.WPF
 
             this.panel.Children.Remove(element);
             this.tags.Remove(tag);
+
+            if (this.orderedTags.Count > 0 && this.orderedTags.Peek() == tag)
+                this.orderedTags.Pop();
+
             element.Dispose();
             return true;
         }
@@ -142,8 +153,21 @@ namespace TogglDesktop.WPF
                 tag.Dispose();
             }
             this.tags.Clear();
+            this.orderedTags.Clear();
             if (clearTextBox)
                 this.textBox.SetText("");
+        }
+
+        private bool tryRemoveLastTag()
+        {
+            while (this.orderedTags.Count > 0)
+            {
+                var tag = this.orderedTags.Pop();
+                if (this.RemoveTag(tag))
+                    return true;
+            }
+
+            return false;
         }
 
         #endregion
