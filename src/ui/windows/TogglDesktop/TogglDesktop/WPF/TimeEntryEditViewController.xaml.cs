@@ -74,9 +74,6 @@ namespace TogglDesktop.WPF
                 this.Dispatcher.BeginInvoke(new Action(() => this.onTimeEntryEditor(open, timeEntry, focusedFieldName)));
                 return;
             }
-
-            var isNewTimeEntry = this.timeEntry.GUID != timeEntry.GUID;
-
             this.timeEntry = timeEntry;
 
             var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
@@ -124,7 +121,7 @@ namespace TogglDesktop.WPF
                 this.lastUpdatedText.Visibility = Visibility.Collapsed;
             }
 
-            if (isNewTimeEntry || !this.tagList.IsKeyboardFocusWithin)
+            if (open || !this.tagList.IsKeyboardFocusWithin)
             {
                 this.tagList.Clear(open);
                 if (timeEntry.Tags != null)
