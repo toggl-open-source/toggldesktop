@@ -976,6 +976,7 @@ namespace TogglDesktop.WPF
         public void SetTimer(TimerEditViewController timer)
         {
             timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
+            timer.StartStopClick += (sender, args) => this.Close();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

@@ -17,6 +17,7 @@ namespace TogglDesktop.WPF
         private Toggl.TogglTimeEntryView runningTimeEntry;
         private ProjectInfo completedProject;
 
+        public event EventHandler StartStopClick;
         public event EventHandler RunningTimeEntrySecondPulse;
 
         public TimerEditViewController()
@@ -198,6 +199,9 @@ namespace TogglDesktop.WPF
 
         private void startStop()
         {
+            if (this.StartStopClick != null)
+                this.StartStopClick(this, EventArgs.Empty);
+
             if (this.isRunning)
             {
                 this.start();
