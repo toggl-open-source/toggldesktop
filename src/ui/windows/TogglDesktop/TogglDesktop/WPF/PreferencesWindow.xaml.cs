@@ -274,7 +274,11 @@ namespace TogglDesktop.WPF
                 this.button = button;
                 button.Click += (sender, args) => this.startRecording();
                 button.KeyUp += this.onKeyUp;
-                button.LostKeyboardFocus += (sender, args) => this.Reset();
+                button.LostKeyboardFocus += (sender, args) =>
+                {
+                    if (this.recording)
+                        this.Reset();
+                };
                 clearButton.Click += (sender, args) => this.clear();
                 this.button.Content = recordButtonIdleText;
             }
