@@ -162,6 +162,7 @@ public partial class TimeEntryListViewController : UserControl
 
     public void DisableHighlight()
     {
+        this.highlightedGUID = null;
         this.entries.DisableHighlight();
     }
 
