@@ -1070,6 +1070,7 @@ TEST(toggl_api, toggl_edit) {
     toggl_edit(app.ctx(), guid.c_str(), edit_running_time_entry,
                focused_field.c_str());
     ASSERT_EQ(guid, testing::testresult::editor_state.GUID());
+    ASSERT_EQ("description", testing::testresult::editor_focused_field_name);
 }
 
 TEST(toggl_api, toggl_set_online) {
