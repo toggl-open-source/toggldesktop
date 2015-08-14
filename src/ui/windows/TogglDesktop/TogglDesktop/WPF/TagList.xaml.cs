@@ -119,8 +119,6 @@ namespace TogglDesktop.WPF
             element.RemoveClicked += (s, e) =>
             {
                 this.RemoveTag(tag);
-                if (this.TagRemoved != null)
-                    this.TagRemoved(this, tag);
                 this.focusTextBox();
             };
         }
@@ -142,6 +140,10 @@ namespace TogglDesktop.WPF
                 this.orderedTags.Pop();
 
             element.Dispose();
+
+            if (this.TagRemoved != null)
+                this.TagRemoved(this, tag);
+
             return true;
         }
 
