@@ -525,10 +525,10 @@ bool_t toggl_set_time_entry_project(
     const uint64_t project_id,
     const char_t *project_guid) {
     return toggl::noError == app(context)->SetTimeEntryProject(
-		to_string(guid),
-            task_id,
-            project_id,
-			to_string(project_guid));
+        to_string(guid),
+        task_id,
+        project_id,
+        to_string(project_guid));
 }
 
 bool_t toggl_set_time_entry_date(
@@ -641,7 +641,7 @@ bool_t toggl_feedback_send(
     const char_t *details,
     const char_t *filename) {
 
-	toggl::Feedback feedback;
+    toggl::Feedback feedback;
     feedback.SetSubject(to_string(topic));
     feedback.SetDetails(to_string(details));
     feedback.SetAttachmentPath(to_string(filename));
@@ -665,12 +665,12 @@ char_t *toggl_get_update_channel(
 
 char_t *toggl_get_user_fullname(
     void *context) {
-	return copy_string(app(context)->UserFullName());
+    return copy_string(app(context)->UserFullName());
 }
 
 char_t *toggl_get_user_email(
     void *context) {
-	return copy_string(app(context)->UserEmail());
+    return copy_string(app(context)->UserEmail());
 }
 
 int64_t toggl_parse_duration_string_into_seconds(

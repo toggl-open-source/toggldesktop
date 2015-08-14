@@ -746,7 +746,7 @@ public partial class MainWindowController : TogglForm
         }
         else
         {
-            Toggl.Start("", "", 0, 0, "", "");   
+            Toggl.Start("", "", 0, 0, "", "");
         }
     }
 
