@@ -408,8 +408,8 @@ namespace TogglDesktop.WPF
 
         private void descriptionAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asDescriptionItem = e as DescriptionItem;
-            if (asDescriptionItem == null)
+            var asTimerItem = e as TimerItem;
+            if (asTimerItem == null)
                 return;
 
             if (!this.hasTimeEntry())
@@ -418,7 +418,7 @@ namespace TogglDesktop.WPF
                 return;
             }
 
-            var item = asDescriptionItem.Item;
+            var item = asTimerItem.Item;
 
             // TODO: fill in project already if possible (instead of waiting for dll)?
 
