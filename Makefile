@@ -561,7 +561,6 @@ ifeq ($(osname), mac)
 	install_name_tool -change /usr/local/lib/libPocoXML.31.dylib @loader_path/libPocoXML.31.dylib test/toggl_test
 	install_name_tool -change /usr/local/lib/libPocoXML.31.dylib @loader_path/libPocoXML.31.dylib test/libPocoUtil.31.dylib
 	install_name_tool -change /usr/local/lib/libPocoJSON.31.dylib @loader_path/libPocoJSON.31.dylib test/libPocoUtil.31.dylib
-
 	cd test && ./toggl_test --gtest_shuffle
 endif
 ifeq ($(osname), windows)
