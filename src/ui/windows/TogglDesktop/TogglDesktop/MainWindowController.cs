@@ -96,7 +96,15 @@ public partial class MainWindowController : TogglForm
         }
         else
         {
-            Toggl.ContinueLatest();
+            if (this.manualMode)
+            {
+                var guid = Toggl.Start("", "0", 0, 0, "", "");
+                Toggl.Edit(guid, false, Toggl.Duration);
+            }
+            else
+            {
+                Toggl.ContinueLatest();
+            }
         }
     }
 
@@ -731,7 +739,15 @@ public partial class MainWindowController : TogglForm
 
     private void newToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        Toggl.Start("", "", 0, 0, "", "");
+        if (this.manualMode)
+        {
+            var guid = Toggl.Start("", "0", 0, 0, "", "");
+            Toggl.Edit(guid, false, Toggl.Duration);
+        }
+        else
+        {
+            Toggl.Start("", "", 0, 0, "", "");   
+        }
     }
 
     private void continueToolStripMenuItem_Click(object sender, EventArgs e)
