@@ -53,25 +53,9 @@ class UIElements {
     , time_entry_editor_field("")
     , display_unsynced_items(false) {}
 
-    static UIElements Reset() {
-        UIElements render;
-        render.display_time_entries = true;
-        render.display_time_entry_autocomplete = true;
-        render.display_mini_timer_autocomplete = true;
-        render.display_project_autocomplete = true;
-        render.display_client_select = true;
-        render.display_tags = true;
-        render.display_workspace_select = true;
-        render.display_timer_state = true;
-        render.display_time_entry_editor = true;
-        render.display_autotracker_rules = true;
-        render.display_settings = true;
-        render.display_unsynced_items = true;
+    static UIElements Reset();
 
-        render.open_time_entry_list = true;
-
-        return render;
-    }
+    std::string String() const;
 
     void ApplyChanges(
         const std::string editor_guid,

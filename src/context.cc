@@ -275,6 +275,48 @@ error Context::save(const bool push_changes) {
     return noError;
 }
 
+UIElements UIElements::Reset() {
+    UIElements render;
+    render.display_time_entries = true;
+    render.display_time_entry_autocomplete = true;
+    render.display_mini_timer_autocomplete = true;
+    render.display_project_autocomplete = true;
+    render.display_client_select = true;
+    render.display_tags = true;
+    render.display_workspace_select = true;
+    render.display_timer_state = true;
+    render.display_time_entry_editor = true;
+    render.display_autotracker_rules = true;
+    render.display_settings = true;
+    render.display_unsynced_items = true;
+
+    render.open_time_entry_list = true;
+
+    return render;
+}
+
+std::string UIElements::String() const {
+    std::stringstream ss;
+    ss << "display_time_entries=" << display_time_entries
+       << " display_time_entry_autocomplete=" << display_time_entry_autocomplete
+       << " display_mini_timer_autocomplete=" << display_mini_timer_autocomplete
+       << " display_project_autocomplete=" << display_project_autocomplete
+       << " display_client_select=" << display_client_select
+       << " display_tags=" << display_tags
+       << " display_workspace_select=" << display_workspace_select
+       << " display_timer_state=" << display_timer_state
+       << " display_time_entry_editor=" << display_time_entry_editor
+       << " open_settings=" << open_settings
+       << " open_time_entry_list=" << open_time_entry_list
+       << " open_time_entry_editor=" << open_time_entry_editor
+       << " display_autotracker_rules=" << display_autotracker_rules
+       << " display_settings=" << display_settings
+       << " time_entry_editor_guid=" << time_entry_editor_guid
+       << " time_entry_editor_field=" << time_entry_editor_field
+       << " display_unsynced_items=" << display_unsynced_items;
+    return ss.str();
+}
+
 void UIElements::ApplyChanges(
     const std::string editor_guid,
     const std::vector<ModelChange> &changes) {
@@ -350,6 +392,8 @@ void Context::OpenTimeEntryList() {
 }
 
 void Context::updateUI(const UIElements &what) {
+    logger().debug("updateUI " + what.String());
+
     TimeEntry *editor_time_entry = nullptr;
     TimeEntry *running_entry = nullptr;
 
@@ -457,7 +501,7 @@ void Context::updateUI(const UIElements &what) {
             what.open_time_entry_editor,
             user_->related,
             editor_time_entry,
-            "",
+            what.time_entry_editor_field,
             total_duration_for_date,
             user_);
     }

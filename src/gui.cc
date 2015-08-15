@@ -421,7 +421,8 @@ void GUI::DisplayTimeEntryEditor(
     const Poco::Int64 total_duration_for_date,
     const User *user) {
 
-    logger().debug("DisplayTimeEntryEditor");
+    logger().debug(
+        "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
 
     TogglTimeEntryView *view =
         timeEntryViewItem(related, te, total_duration_for_date);
