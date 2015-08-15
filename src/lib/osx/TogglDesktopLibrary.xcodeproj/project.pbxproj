@@ -47,6 +47,7 @@
 		748B7DAA1AC5963B00FE01D2 /* netconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7DA21AC5963B00FE01D2 /* netconf.h */; };
 		748B7DAB1AC5963B00FE01D2 /* settings.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7DA31AC5963B00FE01D2 /* settings.cc */; };
 		748B7DAC1AC5963B00FE01D2 /* settings.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7DA41AC5963B00FE01D2 /* settings.h */; };
+		749956241B7ED735009B3C81 /* libPocoJSON.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 749956231B7ED735009B3C81 /* libPocoJSON.31.dylib */; };
 		74A026E11A884D5A0087570A /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74A026E01A884D5A0087570A /* liblua.a */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
@@ -137,6 +138,7 @@
 		748B7DA21AC5963B00FE01D2 /* netconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = netconf.h; path = ../../../netconf.h; sourceTree = "<group>"; };
 		748B7DA31AC5963B00FE01D2 /* settings.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = settings.cc; path = ../../../settings.cc; sourceTree = "<group>"; };
 		748B7DA41AC5963B00FE01D2 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = settings.h; path = ../../../settings.h; sourceTree = "<group>"; };
+		749956231B7ED735009B3C81 /* libPocoJSON.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.31.dylib; sourceTree = "<group>"; };
 		74A026E01A884D5A0087570A /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../../third_party/lua/install/lib/liblua.a; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				749956241B7ED735009B3C81 /* libPocoJSON.31.dylib in Frameworks */,
 				74213486195C4D41007EF78B /* libPocoUtil.31.dylib in Frameworks */,
 				74213487195C4D41007EF78B /* libPocoData.31.dylib in Frameworks */,
 				74213488195C4D41007EF78B /* libPocoNetSSL.31.dylib in Frameworks */,
@@ -228,6 +231,7 @@
 		C55DA59317F06A3B00B42178 = {
 			isa = PBXGroup;
 			children = (
+				749956231B7ED735009B3C81 /* libPocoJSON.31.dylib */,
 				7421347E195C4D41007EF78B /* libPocoUtil.31.dylib */,
 				7421347F195C4D41007EF78B /* libPocoData.31.dylib */,
 				74213480195C4D41007EF78B /* libPocoNetSSL.31.dylib */,
@@ -465,7 +469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $TARGET_BUILD_DIR/*.dylib $PROJECT_DIR/build";
+			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $TARGET_BUILD_DIR/*.dylib $PROJECT_DIR/build\ninstall_name_tool -change /usr/local/lib/libPocoUtil.31.dylib @loader_path/libPocoUtil.31.dylib $TARGET_BUILD_DIR/TogglDesktopLibrary.dylib\ninstall_name_tool -change /usr/local/lib/libPocoJSON.31.dylib @loader_path/libPocoJSON.31.dylib $TARGET_BUILD_DIR/TogglDesktopLibrary.dylib\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -635,6 +639,7 @@
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/lua/install/lib,
+					../../../third_party/poco/lib/Darwin/x86_64,
 				);
 				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -665,6 +670,7 @@
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/lua/install/lib,
+					../../../third_party/poco/lib/Darwin/x86_64,
 				);
 				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;
