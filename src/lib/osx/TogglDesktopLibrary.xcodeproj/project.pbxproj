@@ -469,7 +469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $TARGET_BUILD_DIR/*.dylib $PROJECT_DIR/build\ninstall_name_tool -change /usr/local/lib/libPocoUtil.31.dylib @loader_path/libPocoUtil.31.dylib $TARGET_BUILD_DIR/TogglDesktopLibrary.dylib\ninstall_name_tool -change /usr/local/lib/libPocoJSON.31.dylib @loader_path/libPocoJSON.31.dylib $TARGET_BUILD_DIR/TogglDesktopLibrary.dylib\n";
+			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $TARGET_BUILD_DIR/*.dylib $PROJECT_DIR/build";
 		};
 /* End PBXShellScriptBuildPhase section */
 
