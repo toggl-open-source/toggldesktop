@@ -305,17 +305,17 @@ namespace TogglDesktop.WPF
 
         #region time and date
 
-        private void startTimeTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
+        private void startTimeTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             this.saveStartTimeIfChanged();
         }
 
-        private void endTimeTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
+        private void endTimeTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             this.saveEndTimeIfChanged();
         }
 
-        private void durationTextBox_OnLostKeyboardFocus(object sender, RoutedEventArgs e)
+        private void durationTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             this.saveDurationIfChanged();
         }

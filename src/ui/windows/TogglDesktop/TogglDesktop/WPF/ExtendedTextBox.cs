@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace TogglDesktop.WPF
 {
@@ -11,6 +12,12 @@ namespace TogglDesktop.WPF
             this.IsTextChangingProgrammatically = true;
             this.Text = text;
             this.IsTextChangingProgrammatically = false;
+        }
+
+        protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
+        {
+            this.SelectAll();
+            e.Handled = true;
         }
     }
 }
