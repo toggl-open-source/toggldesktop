@@ -43,11 +43,9 @@ namespace TogglDesktop.WPF
 
         private void onLogin(bool open, ulong userId)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => this.onLogin(open, userId)));
+            if (this.TryBeginInvoke(this.onLogin, open, userId))
                 return;
-            }
+
             this.timeEntry = new Toggl.TogglTimeEntryView();
             this.projects = null;
             this.clients = null;
@@ -69,11 +67,9 @@ namespace TogglDesktop.WPF
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView timeEntry, string focusedFieldName)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => this.onTimeEntryEditor(open, timeEntry, focusedFieldName)));
+            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, timeEntry, focusedFieldName))
                 return;
-            }
+
             this.timeEntry = timeEntry;
 
             var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
@@ -216,21 +212,16 @@ namespace TogglDesktop.WPF
 
         private void onTimeEntryAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => onTimeEntryAutocomplete(list)));
+            if (this.TryBeginInvoke(this.onTimeEntryAutocomplete, list))
                 return;
-            }
+
             this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForDescriptions(list));
         }
 
         private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => onProjectAutocomplete(list)));
+            if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
                 return;
-            }
 
             this.projects = list;
 
@@ -239,11 +230,8 @@ namespace TogglDesktop.WPF
 
         private void onClientSelect(List<Toggl.TogglGenericView> list)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => onClientSelect(list)));
+            if (this.TryBeginInvoke(this.onClientSelect, list))
                 return;
-            }
 
             this.clients = list;
 
@@ -273,22 +261,16 @@ namespace TogglDesktop.WPF
 
         private void onTags(List<Toggl.TogglGenericView> list)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => onTags(list)));
+            if (this.TryBeginInvoke(this.onTags, list))
                 return;
-            }
 
             this.tagList.SetKnownTags(list.Select(m => m.Name));
         }
 
         private void onWorkspaceSelect(List<Toggl.TogglGenericView> list)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => onWorkspaceSelect(list)));
+            if (this.TryBeginInvoke(this.onWorkspaceSelect, list))
                 return;
-            }
 
             this.workspaces = list;
             this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));

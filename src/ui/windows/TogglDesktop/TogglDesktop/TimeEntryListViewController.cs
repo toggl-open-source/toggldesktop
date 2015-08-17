@@ -47,20 +47,8 @@ public partial class TimeEntryListViewController : UserControl
 
     void OnTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnTimeEntryList(open, list);
-            });
+        if (this.TryBeginInvoke(this.OnTimeEntryList, open, list))
             return;
-        }
-
-        if (!entries.Dispatcher.CheckAccess())
-        {
-            entries.Dispatcher.BeginInvoke(new Action(() => OnTimeEntryList(open, list)));
-            return;
-        }
 
         DateTime start = DateTime.Now;
 
@@ -114,20 +102,8 @@ public partial class TimeEntryListViewController : UserControl
 
     void OnLogin(bool open, UInt64 user_id)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnLogin(open, user_id);
-            });
+        if (this.TryBeginInvoke(this.OnLogin, open, user_id))
             return;
-        }
-
-        if (!entries.Dispatcher.CheckAccess())
-        {
-            entries.Dispatcher.BeginInvoke(new Action(() => OnLogin(open, user_id)));
-            return;
-        }
 
         if (open || user_id == 0)
         {

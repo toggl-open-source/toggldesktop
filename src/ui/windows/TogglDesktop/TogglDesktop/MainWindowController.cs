@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Interop;
+using System.Windows.Navigation;
 using TogglDesktop.WPF;
 
 namespace TogglDesktop
@@ -288,20 +289,8 @@ public partial class MainWindowController : TogglForm
 
     void OnRunningTimerState(Toggl.TogglTimeEntryView te)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnRunningTimerState(te);
-            });
+        if (this.TryBeginInvoke(this.OnRunningTimerState, te))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnRunningTimerState(te)));
-            return;
-        }
 
         isTracking = true;
         enableMenuItems();
@@ -330,20 +319,8 @@ public partial class MainWindowController : TogglForm
 
     void OnStoppedTimerState()
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnStoppedTimerState();
-            });
+        if (this.TryBeginInvoke(this.OnStoppedTimerState))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnStoppedTimerState()));
-            return;
-        }
 
         isTracking = false;
         enableMenuItems();
@@ -357,20 +334,8 @@ public partial class MainWindowController : TogglForm
 
     void OnSettings(bool open, Toggl.TogglSettingsView settings)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnSettings(open, settings);
-            });
+        if (this.TryBeginInvoke(this.OnSettings, open, settings))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnSettings(open, settings)));
-            return;
-        }
 
         remainOnTop = settings.OnTop;
         setWindowPos();
@@ -431,20 +396,8 @@ public partial class MainWindowController : TogglForm
 
     void OnOnlineState(Int64 state)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnOnlineState(state);
-            });
+        if (this.TryBeginInvoke(this.OnOnlineState, state))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnOnlineState(state)));
-            return;
-        }
 
         // FIXME: render online state on bottom of the window
         updateStatusIcons(0 == state);
@@ -457,20 +410,8 @@ public partial class MainWindowController : TogglForm
 
     void OnApp(bool open)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnApp(open);
-            });
+        if (this.TryBeginInvoke(this.OnApp, open))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnApp(open)));
-            return;
-        }
 
         if (open) {
             show();
@@ -479,20 +420,8 @@ public partial class MainWindowController : TogglForm
 
     void OnError(string errmsg, bool user_error)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnError(errmsg, user_error);
-            });
+        if (this.TryBeginInvoke(this.OnError, errmsg, user_error))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnError(errmsg, user_error)));
-            return;
-        }
 
         errorLabel.Text = errmsg;
         errorToolTip.SetToolTip(errorLabel, errmsg);
@@ -507,39 +436,16 @@ public partial class MainWindowController : TogglForm
         UInt64 started,
         string description)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnIdleNotification(guid, since, duration, started, description);
-            });
+        if (this.TryBeginInvoke(this.OnIdleNotification, guid, since, duration, started, description))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnIdleNotification(guid, since, duration, started, description)));
-            return;
-        }
 
         idleNotificationWindowController.ShowWindow();
     }
 
     void OnLogin(bool open, UInt64 user_id)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate {
-                OnLogin(open, user_id);
-            });
+        if (this.TryBeginInvoke(this.OnLogin, open, user_id))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnLogin(open, user_id)));
-            return;
-        }
 
         if (open) {
             if (editForm.Visible)
@@ -581,20 +487,8 @@ public partial class MainWindowController : TogglForm
 
     void OnTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnTimeEntryList(open, list);
-            });
+        if (this.TryBeginInvoke(this.OnTimeEntryList, open, list))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnTimeEntryList(open, list)));
-            return;
-        }
 
         if (open)
         {
@@ -653,20 +547,8 @@ public partial class MainWindowController : TogglForm
         Toggl.TogglTimeEntryView te,
         string focused_field_name)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnTimeEntryEditor(open, te, focused_field_name);
-            });
+        if (this.TryBeginInvoke(this.OnTimeEntryEditor, open, te, focused_field_name))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnTimeEntryEditor(open, te, focused_field_name)));
-            return;
-        }
 
         if (open)
         {
@@ -812,20 +694,8 @@ public partial class MainWindowController : TogglForm
 
     void OnReminder(string title, string informative_text)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnReminder(title, informative_text);
-            });
+        if (this.TryBeginInvoke(this.OnReminder, title, informative_text))
             return;
-        }
-
-        if (!this.timeEntryEditViewController.Dispatcher.CheckAccess())
-        {
-            this.timeEntryEditViewController.Dispatcher.BeginInvoke(new Action(() => OnReminder(title, informative_text)));
-            return;
-        }
 
         trayIcon.ShowBalloonTip(6000 * 100, title, informative_text, ToolTipIcon.None);
     }

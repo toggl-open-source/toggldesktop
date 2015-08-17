@@ -51,12 +51,9 @@ namespace TogglDesktop.WPF
 
         private void onStoppedTimerState()
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(this.onStoppedTimerState));
+            if (this.TryBeginInvoke(this.onStoppedTimerState))
                 return;
-            }
-            
+
             this.secondsTimer.IsEnabled = false;
             this.setUIToStoppedState();
             this.runningTimeEntry = default(Toggl.TogglTimeEntryView);
@@ -64,11 +61,8 @@ namespace TogglDesktop.WPF
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => this.onRunningTimerState(te)));
+            if (this.TryBeginInvoke(this.onRunningTimerState, te))
                 return;
-            }
 
             this.runningTimeEntry = te;
             this.setUIToRunningState(te);
@@ -77,11 +71,8 @@ namespace TogglDesktop.WPF
 
         private void onMiniTimerAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => this.onMiniTimerAutocomplete(list)));
+            if (this.TryBeginInvoke(this.onMiniTimerAutocomplete, list))
                 return;
-            }
 
             this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
         }

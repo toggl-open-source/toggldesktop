@@ -41,10 +41,8 @@ namespace TogglDesktop.WPF
         
         private void onLogin(bool open, ulong userID)
         {
-            if (!this.Dispatcher.CheckAccess()) {
-                this.Dispatcher.BeginInvoke(new Action(() => this.onLogin(open, userID)));
+            if (this.TryBeginInvoke(this.onLogin, open, userID))
                 return;
-            }
 
             this.recordTimelineCheckBox.IsEnabled = !open && userID != 0;
             this.recordTimelineCheckBox.IsChecked = Toggl.IsTimelineRecordingEnabled();
@@ -52,11 +50,8 @@ namespace TogglDesktop.WPF
 
         private void onSettings(bool open, Toggl.TogglSettingsView settings)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => this.onSettings(open, settings)));
+            if (this.TryBeginInvoke(this.onSettings, open, settings))
                 return;
-            }
 
             this.updateUI(settings);
 

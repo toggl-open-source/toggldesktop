@@ -225,6 +225,7 @@
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
+    <Compile Include="UIExtensions.cs" />
     <Compile Include="WPF\AddValueConverter.cs" />
     <Compile Include="WPF\AutoComplete\GrayTextCategory.xaml.cs">
       <DependentUpon>GrayTextCategory.xaml</DependentUpon>

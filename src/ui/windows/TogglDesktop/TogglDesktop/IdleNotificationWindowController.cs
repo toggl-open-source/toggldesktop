@@ -44,14 +44,8 @@ public partial class IdleNotificationWindowController : TogglForm
         UInt64 started,
         string description)
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                DisplayIdleNotification(guid, since, duration, started, description);
-            });
+        if (this.TryBeginInvoke(this.DisplayIdleNotification, guid, since, duration, started, description))
             return;
-        }
 
         time_entry_guid = guid;
 
@@ -63,14 +57,9 @@ public partial class IdleNotificationWindowController : TogglForm
 
     void OnStoppedTimerState()
     {
-        if (InvokeRequired)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                OnStoppedTimerState();
-            });
+        if (this.TryBeginInvoke(this.OnStoppedTimerState))
             return;
-        }
+
         if (Visible)
         {
             Close();
