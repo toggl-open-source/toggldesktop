@@ -259,6 +259,15 @@ namespace TogglDesktop.WPF
             this.DragMove();
         }
 
+        private void windowKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                this.Hide();
+                e.Handled = true;
+            }
+        }
+
         #region shortcuts
 
         private class ShortcutRecorder
@@ -363,5 +372,6 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
     }
 }
