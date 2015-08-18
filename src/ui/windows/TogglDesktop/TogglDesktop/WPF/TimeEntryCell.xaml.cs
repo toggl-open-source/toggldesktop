@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF
 {
@@ -142,27 +143,32 @@ namespace TogglDesktop.WPF
 
         #region open edit window event handlers
 
-        private void labelDuration_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void labelDuration_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Toggl.Edit(this.guid, false, Toggl.Duration);
-            e.Handled = true;
+            this.openEditView(e, Toggl.Duration);
         }
 
-        private void labelDescription_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void labelDescription_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Toggl.Edit(this.guid, false, Toggl.Description);
-            e.Handled = true;
+            this.openEditView(e, Toggl.Description);
         }
 
-        private void labelProject_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void labelProject_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Toggl.Edit(this.guid, false, Toggl.Project);
-            e.Handled = true;
+            this.openEditView(e, Toggl.Project);
         }
 
-        private void entry_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void entry_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Toggl.Edit(this.guid, false, "");
+            this.openEditView(e, "");
+        }
+
+        private void openEditView(MouseButtonEventArgs e, string focusedField)
+        {
+            using (Performance.Measure("opening edit view from cell, focussing " + focusedField))
+            {
+                Toggl.Edit(this.guid, false, focusedField);
+            }
             e.Handled = true;
         }
 
@@ -170,7 +176,10 @@ namespace TogglDesktop.WPF
 
         private void buttonContinue_Click(object sender, RoutedEventArgs e)
         {
-            Toggl.Continue(this.guid);
+            using (Performance.Measure("continuing time entry from cell"))
+            {
+                Toggl.Continue(this.guid);
+            }
         }
 
 

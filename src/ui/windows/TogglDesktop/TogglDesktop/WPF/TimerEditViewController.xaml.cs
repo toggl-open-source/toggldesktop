@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.Diagnostics;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace TogglDesktop.WPF
@@ -54,9 +55,12 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onStoppedTimerState))
                 return;
 
-            this.secondsTimer.IsEnabled = false;
-            this.setUIToStoppedState();
-            this.runningTimeEntry = default(Toggl.TogglTimeEntryView);
+            using (Performance.Measure("timer responding to OnStoppedTimerState"))
+            {
+                this.secondsTimer.IsEnabled = false;
+                this.setUIToStoppedState();
+                this.runningTimeEntry = default(Toggl.TogglTimeEntryView);
+            }
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
@@ -64,9 +68,12 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onRunningTimerState, te))
                 return;
 
-            this.runningTimeEntry = te;
-            this.setUIToRunningState(te);
-            this.secondsTimer.IsEnabled = true;
+            using (Performance.Measure("timer responding to OnRunningTimerState"))
+            {
+                this.runningTimeEntry = te;
+                this.setUIToRunningState(te);
+                this.secondsTimer.IsEnabled = true;
+            }
         }
 
         private void onMiniTimerAutocomplete(List<Toggl.TogglAutocompleteView> list)
@@ -74,7 +81,10 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onMiniTimerAutocomplete, list))
                 return;
 
-            this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
+            using (Performance.Measure("timer building auto complete controller, {0} items", list.Count))
+            {
+                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
+            }
         }
 
         #endregion
@@ -207,26 +217,35 @@ namespace TogglDesktop.WPF
         {
             if (this.isRunning)
             {
-                Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
+                using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
+                {
+                    Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
+                }
                 e.Handled = true;
             }
         }
 
         private void start()
         {
-            Toggl.Start(
-                this.descriptionTextBox.Text,
-                this.durationTextBox.Text,
-                this.completedProject.TaskId,
-                this.completedProject.ProjectId,
-                "",
-                ""
-                );
+            using (Performance.Measure("starting time entry from timer"))
+            {
+                Toggl.Start(
+                    this.descriptionTextBox.Text,
+                    this.durationTextBox.Text,
+                    this.completedProject.TaskId,
+                    this.completedProject.ProjectId,
+                    "",
+                    ""
+                    );
+            }
         }
 
         private void stop()
         {
-            Toggl.Stop();
+            using (Performance.Measure("stopping time entry from timer"))
+            {
+                Toggl.Stop();
+            }
         }
 
         #endregion 

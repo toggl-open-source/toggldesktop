@@ -203,6 +203,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CustomForm\NativeMethods.cs" />
+    <Compile Include="Diagnostics\IPerformanceToken.cs" />
+    <Compile Include="Diagnostics\Performance.cs" />
     <Compile Include="EditForm.cs">
       <SubType>Form</SubType>
     </Compile>
