@@ -29,6 +29,8 @@ namespace TogglDesktop.Diagnostics
             private readonly string activity;
             private readonly Stopwatch timer;
 
+            private string additionalInformation;
+
             public PerformanceToken(string activity)
             {
                 Console.WriteLine("Starting activity '{0}'", activity);
@@ -43,11 +45,6 @@ namespace TogglDesktop.Diagnostics
 
             public void Stop()
             {
-                this.Stop(null);
-            }
-
-            public void Stop(string additionalInformation)
-            {
                 lock (this.timer)
                 {
                     if (!this.timer.IsRunning)
@@ -56,11 +53,14 @@ namespace TogglDesktop.Diagnostics
                     this.timer.Stop();
                 }
 
-                var template = string.IsNullOrWhiteSpace(additionalInformation)
-                    ? "Measured activity '{0}', took {1} ms"
-                    : "Measured activity '{0}, {2}', took {1} ms";
+                Console.WriteLine("Measured activity '{0}', took {1} ms",
+                    this.activity + this.additionalInformation, this.timer.Elapsed.TotalMilliseconds);
+            }
 
-                Console.WriteLine(template, this.activity, this.timer.Elapsed.TotalMilliseconds, additionalInformation);
+            public IPerformanceToken WithInfo(string additionalInfo)
+            {
+                this.additionalInformation = this.additionalInformation + ", " + additionalInfo;
+                return this;
             }
         }
     }

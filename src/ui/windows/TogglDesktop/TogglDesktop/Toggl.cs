@@ -354,22 +354,28 @@ public static partial class Toggl
         string project_name,
         bool is_private)
     {
-        return toggl_add_project(ctx,
-                                 time_entry_guid,
-                                 workspace_id,
-                                 client_id,
-                                 client_guid,
-                                 project_name,
-                                 is_private);
+        using (Performance.Measure("adding project"))
+        {
+            return toggl_add_project(ctx,
+                time_entry_guid,
+                workspace_id,
+                client_id,
+                client_guid,
+                project_name,
+                is_private);
+        }
     }
 
     public static string CreateClient(
         UInt64 workspace_id,
         string client_name)
     {
-        return toggl_create_client(ctx,
-                                   workspace_id,
-                                   client_name);
+        using (Performance.Measure("adding client"))
+        {
+            return toggl_create_client(ctx,
+                workspace_id,
+                client_name);
+        }
     }
 
     public static bool SetUpdateChannel(string channel)
@@ -472,64 +478,82 @@ public static partial class Toggl
     {
         toggl_on_show_app(ctx, delegate(bool open)
         {
-            Console.WriteLine("Calling OnApp");
-            OnApp(open);
+            using (Performance.Measure("Calling OnApp"))
+            {
+                OnApp(open);
+            }
         });
 
         toggl_on_error(ctx, delegate(string errmsg, bool user_error)
         {
-            Console.WriteLine("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error);
-            OnError(errmsg, user_error);
+            using (Performance.Measure("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error))
+            {
+                OnError(errmsg, user_error);
+            }
         });
 
         toggl_on_online_state(ctx, delegate(Int64 state)
         {
-            Console.WriteLine("Calling OnOnlineState, state: {0}", state);
-            OnOnlineState(state);
+            using (Performance.Measure("Calling OnOnlineState, state: {0}", state))
+            {
+                OnOnlineState(state);
+            }
         });
 
         toggl_on_login(ctx, delegate(bool open, UInt64 user_id)
         {
-            Console.WriteLine("Calling OnLogin");
-            OnLogin(open, user_id);
+            using (Performance.Measure("Calling OnLogin"))
+            {
+                OnLogin(open, user_id);
+            }
         });
 
         toggl_on_reminder(ctx, delegate(string title, string informative_text)
         {
-            Console.WriteLine("Calling OnReminder, title: {0}", title);
-            OnReminder(title, informative_text);
+            using (Performance.Measure("Calling OnReminder, title: {0}", title))
+            {
+                OnReminder(title, informative_text);
+            }
         });
 
         toggl_on_time_entry_list(ctx, delegate(bool open, IntPtr first)
         {
-            Console.Write("Calling OnTimeEntryList");
-            var list = ConvertToTimeEntryList(first);
-            Console.WriteLine(", number of time entries: {0}", list.Count);
-            OnTimeEntryList(open, list);
+            using (var token = Performance.Measure("Calling OnTimeEntryList"))
+            {
+                var list = ConvertToTimeEntryList(first);
+                token.WithInfo("items: " + list.Count);
+                OnTimeEntryList(open, list);
+            }
         });
 
         toggl_on_time_entry_autocomplete(ctx, delegate(IntPtr first)
         {
-            Console.Write("Calling OnTimeEntryAutocomplete");
-            var list = ConvertToAutocompleteList(first);
-            Console.WriteLine(", number of entries: {0}", list.Count);
-            OnTimeEntryAutocomplete(list);
+            using (var token = Performance.Measure("Calling OnTimeEntryAutocomplete"))
+            {
+                var list = ConvertToAutocompleteList(first);
+                token.WithInfo("items: " + list.Count);
+                OnTimeEntryAutocomplete(list);
+            }
         });
 
         toggl_on_mini_timer_autocomplete(ctx, delegate(IntPtr first)
         {
-            Console.Write("Calling OnMinitimerAutocomplete");
-            var list = ConvertToAutocompleteList(first);
-            Console.WriteLine(", number of entries: {0}", list.Count);
-            OnMinitimerAutocomplete(list);
+            using (var token = Performance.Measure("Calling OnMinitimerAutocomplete"))
+            {
+                var list = ConvertToAutocompleteList(first);
+                token.WithInfo("items: " + list.Count);
+                OnMinitimerAutocomplete(list);
+            }
         });
 
         toggl_on_project_autocomplete(ctx, delegate(IntPtr first)
         {
-            Console.Write("Calling OnProjectAutocomplete");
-            var list = ConvertToAutocompleteList(first);
-            Console.WriteLine(", number of entries: {0}", list.Count);
-            OnProjectAutocomplete(list);
+            using (var token = Performance.Measure("Calling OnProjectAutocomplete"))
+            {
+                var list = ConvertToAutocompleteList(first);
+                token.WithInfo("items: " + list.Count);
+                OnProjectAutocomplete(list);
+            }
         });
 
         toggl_on_time_entry_editor(ctx, delegate(
@@ -537,63 +561,79 @@ public static partial class Toggl
             IntPtr te,
             string focused_field_name)
         {
-            Console.WriteLine("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name);
-            TogglTimeEntryView model = (TogglTimeEntryView)Marshal.PtrToStructure(
-                te, typeof(TogglTimeEntryView));
-            OnTimeEntryEditor(open, model, focused_field_name);
+            using (Performance.Measure("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name))
+            {
+                TogglTimeEntryView model = (TogglTimeEntryView)Marshal.PtrToStructure(
+                    te, typeof(TogglTimeEntryView));
+                OnTimeEntryEditor(open, model, focused_field_name);
+            }
         });
 
         toggl_on_workspace_select(ctx, delegate(IntPtr first)
         {
-            Console.Write("Calling OnWorkspaceSelect");
-            var list = ConvertToViewItemList(first);
-            Console.WriteLine(", number of entries: {0}", list.Count);
-            OnWorkspaceSelect(list);
+            using (var token = Performance.Measure("Calling OnWorkspaceSelect"))
+            {
+                var list = ConvertToViewItemList(first);
+                token.WithInfo("items: " + list.Count);
+                OnWorkspaceSelect(list);
+            }
         });
 
         toggl_on_client_select(ctx, delegate(IntPtr first)
         {
-            Console.Write("Calling OnClientSelect");
-            var list = ConvertToViewItemList(first);
-            Console.WriteLine(", number of entries: {0}", list.Count);
-            OnClientSelect(list);
+            using (var token = Performance.Measure("Calling OnClientSelect"))
+            {
+                var list = ConvertToViewItemList(first);
+                token.WithInfo("items: " + list.Count);
+                OnClientSelect(list);
+            }
         });
 
         toggl_on_tags(ctx, delegate(IntPtr first)
         {
-            Console.Write("Calling OnTags");
-            var list = ConvertToViewItemList(first);
-            Console.WriteLine(", number of entries: {0}", list.Count);
-            OnTags(ConvertToViewItemList(first));
+            using (var token = Performance.Measure("Calling OnTags"))
+            {
+                var list = ConvertToViewItemList(first);
+                token.WithInfo("items: " + list.Count);
+                OnTags(list);
+            }
         });
 
         toggl_on_settings(ctx, delegate(bool open, IntPtr settings)
         {
-            Console.WriteLine("Calling OnSettings");
-            TogglSettingsView model = (TogglSettingsView)Marshal.PtrToStructure(
-                settings, typeof(TogglSettingsView));
-            OnSettings(open, model);
+            using (Performance.Measure("Calling OnSettings"))
+            {
+                TogglSettingsView model = (TogglSettingsView)Marshal.PtrToStructure(
+                    settings, typeof(TogglSettingsView));
+                OnSettings(open, model);
+            }
         });
 
         toggl_on_timer_state(ctx, delegate(IntPtr te)
         {
             if (te == IntPtr.Zero)
             {
-                Console.WriteLine("Calling OnStoppedTimerState");
-                OnStoppedTimerState();
-                return;
+                using (Performance.Measure("Calling OnStoppedTimerState"))
+                {
+                    OnStoppedTimerState();
+                    return;
+                }
             }
-            TogglTimeEntryView view =
-                (TogglTimeEntryView)Marshal.PtrToStructure(
-                    te, typeof(TogglTimeEntryView));
-            Console.WriteLine("Calling OnRunningTimerState");
-            OnRunningTimerState(view);
+            using (Performance.Measure("Calling OnRunningTimerState"))
+            {
+                TogglTimeEntryView view =
+                    (TogglTimeEntryView)Marshal.PtrToStructure(
+                        te, typeof(TogglTimeEntryView));
+                OnRunningTimerState(view);
+            }
         });
 
         toggl_on_url(ctx, delegate(string url)
         {
-            Console.WriteLine("Calling OnURL");
-            OnURL(url);
+            using (Performance.Measure("Calling OnURL"))
+            {
+                OnURL(url);
+            }
         });
 
         toggl_on_idle_notification(ctx, delegate(
@@ -603,8 +643,10 @@ public static partial class Toggl
             UInt64 started,
             string description)
         {
-            Console.WriteLine("Calling OnIdleNotification");
-            OnIdleNotification(guid, since, duration, started, description);
+            using (Performance.Measure("Calling OnIdleNotification"))
+            {
+                OnIdleNotification(guid, since, duration, started, description);
+            }
         });
     }
 

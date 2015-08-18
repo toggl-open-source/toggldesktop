@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF
 {
@@ -53,7 +54,10 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onSettings, open, settings))
                 return;
 
-            this.updateUI(settings);
+            using (Performance.Measure("filling settings from OnSettings"))
+            {
+                this.updateUI(settings);
+            }
 
             if (open)
             {
@@ -223,12 +227,18 @@ namespace TogglDesktop.WPF
 
         private void saveButtonClicked(object sender, RoutedEventArgs e)
         {
-            this.saveShortCuts();
+            using (Performance.Measure("saving global sortcuts"))
+            {
+                this.saveShortCuts();
+            }
 
-            var settings = this.createSettingsFromUI();
+            using (Performance.Measure("saving settings"))
+            {
+                var settings = this.createSettingsFromUI();
 
-            if(Toggl.SetSettings(settings))
-                this.Hide();
+                if(Toggl.SetSettings(settings))
+                    this.Hide();
+            }
         }
 
         private void saveShortCuts()
