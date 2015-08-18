@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.Diagnostics;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBox = System.Windows.Controls.TextBox;
 
@@ -70,82 +71,86 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onTimeEntryEditor, open, timeEntry, focusedFieldName))
                 return;
 
-            this.timeEntry = timeEntry;
-
-            var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
-
-            this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
-
-            if (open)
+            using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
-                this.descriptionTextBox.SetText(timeEntry.Description);
-                this.durationTextBox.Text = timeEntry.Duration;
-                setTime(this.startTimeTextBox, timeEntry.StartTimeString);
-                setTime(this.endTimeTextBox, timeEntry.EndTimeString);
-                this.projectTextBox.SetText(timeEntry.ProjectLabel);
-                this.clientTextBox.SetText(timeEntry.ClientLabel);
-                this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
-            }
-            else
-            {
-                setTextIfUnfocused(this.descriptionTextBox, timeEntry.Description);
-                setTextIfUnfocused(this.durationTextBox, timeEntry.Duration);
-                setTimeIfUnfocused(this.startTimeTextBox, timeEntry.StartTimeString);
-                setTimeIfUnfocused(this.endTimeTextBox, timeEntry.EndTimeString);
-                setTextIfUnfocused(this.projectTextBox, timeEntry.ProjectLabel);
+                this.timeEntry = timeEntry;
 
-                if (!this.startDatePicker.IsFocused)
+                var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
+
+                this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
+
+                if (open)
+                {
+                    this.descriptionTextBox.SetText(timeEntry.Description);
+                    this.durationTextBox.Text = timeEntry.Duration;
+                    setTime(this.startTimeTextBox, timeEntry.StartTimeString);
+                    setTime(this.endTimeTextBox, timeEntry.EndTimeString);
+                    this.projectTextBox.SetText(timeEntry.ProjectLabel);
+                    this.clientTextBox.SetText(timeEntry.ClientLabel);
                     this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
+                }
+                else
+                {
+                    setTextIfUnfocused(this.descriptionTextBox, timeEntry.Description);
+                    setTextIfUnfocused(this.durationTextBox, timeEntry.Duration);
+                    setTimeIfUnfocused(this.startTimeTextBox, timeEntry.StartTimeString);
+                    setTimeIfUnfocused(this.endTimeTextBox, timeEntry.EndTimeString);
+                    setTextIfUnfocused(this.projectTextBox, timeEntry.ProjectLabel);
+
+                    if (!this.startDatePicker.IsFocused)
+                        this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
+                }
+
+                if (isCurrentlyRunning)
+                {
+                    this.endTimeTextBox.Text = "";
+                }
+
+                this.billableCheckBox.Visibility = timeEntry.CanSeeBillable ? Visibility.Visible : Visibility.Collapsed;
+                this.billableCheckBox.IsChecked = timeEntry.Billable;
+
+                if (timeEntry.UpdatedAt > 0)
+                {
+                    var updatedAt = Toggl.DateTimeFromUnix(timeEntry.UpdatedAt);
+                    this.lastUpdatedText.Text = "Last update " + updatedAt.ToShortDateString() + " at " +
+                                                updatedAt.ToLongTimeString();
+                    this.lastUpdatedText.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    this.lastUpdatedText.Visibility = Visibility.Collapsed;
+                }
+
+                if (open || !this.tagList.IsKeyboardFocusWithin)
+                {
+                    this.tagList.Clear(open);
+                    if (timeEntry.Tags != null)
+                        this.tagList.AddTags(timeEntry.Tags.Split(new[] {Toggl.TagSeparator},
+                            StringSplitOptions.RemoveEmptyEntries));
+                    this.updateTagListEmptyText();
+                }
+
+                if (this.isInNewProjectMode)
+                    this.disableNewProjectMode();
+
+                this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
+
+                this.selectedWorkspaceId = timeEntry.WID;
+                this.selectedWorkspaceName = timeEntry.WorkspaceName;
+
+                if (timeEntry.CanAddProjects)
+                {
+                    this.newProjectButton.Visibility = Visibility.Visible;
+                    this.projectAddButtonColumn.Width = GridLength.Auto;
+                    this.projectAddButtonColumn.SharedSizeGroup = "AddButtons";
+                }
+                else
+                {
+                    this.newProjectButton.Visibility = Visibility.Hidden;
+                    this.projectAddButtonColumn.Width = new GridLength(0);
+                    this.projectAddButtonColumn.SharedSizeGroup = null;
+                }
             }
-
-            if (isCurrentlyRunning)
-            {
-                this.endTimeTextBox.Text = "";
-            }
-
-            this.billableCheckBox.Visibility = timeEntry.CanSeeBillable ? Visibility.Visible : Visibility.Collapsed;
-            this.billableCheckBox.IsChecked = timeEntry.Billable;
-
-            if (timeEntry.UpdatedAt > 0)
-            {
-                var updatedAt = Toggl.DateTimeFromUnix(timeEntry.UpdatedAt);
-                this.lastUpdatedText.Text = "Last update " + updatedAt.ToShortDateString() + " at " + updatedAt.ToLongTimeString();
-                this.lastUpdatedText.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                this.lastUpdatedText.Visibility = Visibility.Collapsed;
-            }
-
-            if (open || !this.tagList.IsKeyboardFocusWithin)
-            {
-                this.tagList.Clear(open);
-                if (timeEntry.Tags != null)
-                    this.tagList.AddTags(timeEntry.Tags.Split(new[] { Toggl.TagSeparator }, StringSplitOptions.RemoveEmptyEntries));
-                this.updateTagListEmptyText();
-            }
-
-            if (this.isInNewProjectMode)
-                this.disableNewProjectMode();
-
-            this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
-
-            this.selectedWorkspaceId = timeEntry.WID;
-            this.selectedWorkspaceName = timeEntry.WorkspaceName;
-
-            if (timeEntry.CanAddProjects)
-            {
-                this.newProjectButton.Visibility = Visibility.Visible;
-                this.projectAddButtonColumn.Width = GridLength.Auto;
-                this.projectAddButtonColumn.SharedSizeGroup = "AddButtons";
-            }
-            else
-            {
-                this.newProjectButton.Visibility = Visibility.Hidden;
-                this.projectAddButtonColumn.Width = new GridLength(0);
-                this.projectAddButtonColumn.SharedSizeGroup = null;
-            }
-
         }
 
         #region helpers
@@ -215,7 +220,10 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onTimeEntryAutocomplete, list))
                 return;
 
-            this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForDescriptions(list));
+            using (Performance.Measure("building edit view entry auto complete controller, {0} items", list.Count))
+            {
+                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForDescriptions(list));
+            }
         }
 
         private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
@@ -244,9 +252,12 @@ namespace TogglDesktop.WPF
             if (this.projects == null || this.clients == null || this.workspaces == null)
                 return;
 
-            this.projectAutoComplete.SetController(
-                AutoCompleteControllers.ForProjects(this.projects, this.clients, this.workspaces)
-                );
+            using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
+            {
+                this.projectAutoComplete.SetController(
+                    AutoCompleteControllers.ForProjects(this.projects, this.clients, this.workspaces)
+                    );
+            }
         }
         
         private void tryUpdatingClientAutoComplete()
@@ -254,9 +265,12 @@ namespace TogglDesktop.WPF
             if (this.clients == null || this.workspaces == null)
                 return;
 
-            this.clientAutoComplete.SetController(
-                AutoCompleteControllers.ForClients(this.clients, this.workspaces)
-                );
+            using (Performance.Measure("building edit view client auto complete controller, {0} items", this.clients.Count))
+            {
+                this.clientAutoComplete.SetController(
+                    AutoCompleteControllers.ForClients(this.clients, this.workspaces)
+                    );
+            }
         }
 
         private void onTags(List<Toggl.TogglGenericView> list)
@@ -264,7 +278,10 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onTags, list))
                 return;
 
-            this.tagList.SetKnownTags(list.Select(m => m.Name));
+            using (Performance.Measure("building edit view tags auto complete controller, {0} items", list.Count))
+            {
+                this.tagList.SetKnownTags(list.Select(m => m.Name));
+            }
         }
 
         private void onWorkspaceSelect(List<Toggl.TogglGenericView> list)
@@ -273,7 +290,11 @@ namespace TogglDesktop.WPF
                 return;
 
             this.workspaces = list;
-            this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
+
+            using (Performance.Measure("building edit view workspace auto complete controller, {0} items", list.Count))
+            {
+                this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
+            }
 
             this.tryUpdatingClientAutoComplete();
             this.tryUpdatingProjectAutoComplete();

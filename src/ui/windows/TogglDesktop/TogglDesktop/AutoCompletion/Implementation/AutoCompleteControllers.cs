@@ -13,24 +13,28 @@ namespace TogglDesktop.AutoCompletion.Implementation
             var entries = splitList[false];
             var projects = splitList[true];
 
+            int entriesCount;
+            int projectsCount;
+
             var list = new List<IAutoCompleteListItem>
             {
                 new SimpleNoncompletingCategory("Time Entries",
-                    entries.Select(i => new TimerItem(i, false)).ToList<IAutoCompleteListItem>()
+                    entries.Select(i => new TimerItem(i, false)).ToList<IAutoCompleteListItem>().GetCount(out entriesCount)
                     ),
                 new SimpleNoncompletingCategory("Projects",
-                    projects.Select(i => new TimerItem(i, true)).ToList<IAutoCompleteListItem>()
+                    projects.Select(i => new TimerItem(i, true)).ToList<IAutoCompleteListItem>().GetCount(out projectsCount)
                     )
             };
 
-            return new AutoCompleteController(list);
+            return new AutoCompleteController(list, string.Format("Timer(entries: {0}, projects: {1})", entriesCount, projectsCount));
         }
 
-        public static AutoCompleteController ForStrings(IEnumerable<string> items, Func<string, bool> ignoreTag)
+
+        public static AutoCompleteController ForTags(IEnumerable<string> items, Func<string, bool> ignoreTag)
         {
             var list = items.Select(i => new StringItem(i, ignoreTag)).Cast<IAutoCompleteListItem>().ToList();
 
-            return new AutoCompleteController(list);
+            return new AutoCompleteController(list, string.Format("Tags({0})", list.Count));
         }
 
         public static AutoCompleteController ForProjects(
@@ -84,7 +88,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
                         ))
                     ).ToList();
 
-            return new AutoCompleteController(list);
+            return new AutoCompleteController(list, string.Format("Projects({0})", projects.Count));
         }
 
         public static AutoCompleteController ForDescriptions(List<Toggl.TogglAutocompleteView> items)
@@ -93,7 +97,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
             // TODO: categorize by workspace/client/project?
 
-            return new AutoCompleteController(list);
+            return new AutoCompleteController(list, string.Format("Descriptions({0})", list.Count));
         }
 
         public static AutoCompleteController ForClients(
@@ -112,7 +116,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
                     )
                 ).ToList();
 
-            return new AutoCompleteController(list);
+            return new AutoCompleteController(list, string.Format("Clients({0})", clients.Count));
         }
 
         public static AutoCompleteController ForWorkspaces(List<Toggl.TogglGenericView> list)
@@ -120,7 +124,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             var items = list.Select(m => new ModelItem(m))
                 .Cast<IAutoCompleteListItem>().ToList();
 
-            return new AutoCompleteController(items);
+            return new AutoCompleteController(items, string.Format("Workspaces({0})", list.Count));
         }
     }
 }

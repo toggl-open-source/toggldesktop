@@ -31,6 +31,7 @@ namespace TogglDesktop.Diagnostics
 
             public PerformanceToken(string activity)
             {
+                Console.WriteLine("Starting activity '{0}'", activity);
                 this.activity = activity;
                 this.timer = Stopwatch.StartNew();
             }

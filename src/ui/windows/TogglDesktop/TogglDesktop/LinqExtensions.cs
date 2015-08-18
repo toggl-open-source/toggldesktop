@@ -20,5 +20,11 @@ static class LinqExtensions
         }
     }
 
+    public static List<T> GetCount<T>
+        (this List<T> list, out int count)
+    {
+        count = list.Count;
+        return list;
+    }
 }
 }

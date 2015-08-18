@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Runtime.InteropServices;
+using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
 {
@@ -157,7 +158,10 @@ public static partial class Toggl
 
     public static bool SetTimeEntryDuration(string guid, string value)
     {
-        return toggl_set_time_entry_duration(ctx, guid, value);
+        using (Performance.Measure("changing time entry duration"))
+        {
+            return toggl_set_time_entry_duration(ctx, guid, value);
+        }
     }
 
     public static bool SetTimeEntryProject(
@@ -166,41 +170,62 @@ public static partial class Toggl
         UInt64 project_id,
         string project_guid)
     {
-        return toggl_set_time_entry_project(ctx,
-                                            guid, task_id, project_id, project_guid);
+        using (Performance.Measure("changing time entry project"))
+        {
+            return toggl_set_time_entry_project(ctx,
+                guid, task_id, project_id, project_guid);
+        }
     }
 
     public static bool SetTimeEntryStart(string guid, string value)
     {
-        return toggl_set_time_entry_start(ctx, guid, value);
+        using (Performance.Measure("changing time entry start time"))
+        {
+            return toggl_set_time_entry_start(ctx, guid, value);
+        }
     }
 
     public static bool SetTimeEntryDate(string guid, DateTime value)
     {
-        return toggl_set_time_entry_date(ctx, guid, UnixFromDateTime(value));
+        using (Performance.Measure("changing time entry date"))
+        {
+            return toggl_set_time_entry_date(ctx, guid, UnixFromDateTime(value));
+        }
     }
 
     public static bool SetTimeEntryEnd(string guid, string value)
     {
-        return toggl_set_time_entry_end(ctx, guid, value);
+        using (Performance.Measure("changing time entry end time"))
+        {
+            return toggl_set_time_entry_end(ctx, guid, value);
+        }
     }
 
 
     public static bool SetTimeEntryTags(string guid, List<string> tags)
     {
-        string value = String.Join(Toggl.TagSeparator, tags);
-        return toggl_set_time_entry_tags(ctx, guid, value);
+        using (Performance.Measure("changing time entry tags, count: {0}", tags.Count))
+        {
+            string value = String.Join(Toggl.TagSeparator, tags);
+            return toggl_set_time_entry_tags(ctx, guid, value);
+        }
     }
 
     public static bool SetTimeEntryBillable(string guid, bool billable)
     {
-        return toggl_set_time_entry_billable(ctx, guid, billable);
+        using (Performance.Measure("changing time entry billable"))
+        {
+            return toggl_set_time_entry_billable(ctx, guid, billable);
+        }
     }
 
 
     public static bool SetTimeEntryDescription(string guid, string value)
     {
-        return toggl_set_time_entry_description(ctx, guid, value);
+        using (Performance.Measure("changing time entry description"))
+        {
+            return toggl_set_time_entry_description(ctx, guid, value);
+        }
     }
 
     public static bool Stop()

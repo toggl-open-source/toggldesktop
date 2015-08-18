@@ -11,6 +11,7 @@ namespace TogglDesktop.AutoCompletion
         private static readonly char[] splitChars = { ' ' };
 
         private readonly List<IAutoCompleteListItem> list;
+        public string DebugIdentifier { get; private set; }
 
         private readonly List<AutoCompleteItem> currentlyVisible = new List<AutoCompleteItem>();
         private readonly ReadOnlyCollection<AutoCompleteItem> currentlyVisibleAsReadonly;
@@ -18,9 +19,10 @@ namespace TogglDesktop.AutoCompletion
         private int selectedIndex;
         private AutoCompleteItem selectedItem;
 
-        public AutoCompleteController(List<IAutoCompleteListItem> list)
+        public AutoCompleteController(List<IAutoCompleteListItem> list, string debugIdentifier)
         {
             this.list = list;
+            this.DebugIdentifier = debugIdentifier;
 
             this.currentlyVisibleAsReadonly = this.currentlyVisible.AsReadOnly();
         }

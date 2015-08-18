@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
+using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF
 {
@@ -282,12 +283,11 @@ namespace TogglDesktop.WPF
             if (!this.needsToRefreshList)
                 return;
 
-            var timer = Stopwatch.StartNew();
-
-            this.dropDownList.Children.Clear();
-            this.controller.FillList(this.dropDownList, this.select);
-
-            Console.WriteLine("Filled autocomplete list with {0} items. Took {1} ms.", this.dropDownList.Children.Count, timer.ElapsedMilliseconds);
+            using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
+            {
+                this.dropDownList.Children.Clear();
+                this.controller.FillList(this.dropDownList, this.select);
+            }
 
             this.needsToRefreshList = false;
         }
