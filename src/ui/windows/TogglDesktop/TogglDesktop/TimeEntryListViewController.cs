@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using TogglDesktop.WPF;
@@ -10,8 +8,6 @@ namespace TogglDesktop
 {
 public partial class TimeEntryListViewController : UserControl
 {
-    private Object rendering = new Object();
-
     private readonly Dictionary<string, WPF.TimeEntryCell> cellsByGUID =
         new Dictionary<string, TimeEntryCell>();
 
@@ -50,16 +46,7 @@ public partial class TimeEntryListViewController : UserControl
         if (this.TryBeginInvoke(this.OnTimeEntryList, open, list))
             return;
 
-        DateTime start = DateTime.Now;
-
-        lock (rendering)
-        {
-            renderTimeEntryList(list);
-        }
-
-        Console.WriteLine(
-            "Time entries list view rendered in {0} ms",
-            DateTime.Now.Subtract(start).TotalMilliseconds);
+        renderTimeEntryList(list);
     }
 
     private void renderTimeEntryList(List<Toggl.TogglTimeEntryView> list)
