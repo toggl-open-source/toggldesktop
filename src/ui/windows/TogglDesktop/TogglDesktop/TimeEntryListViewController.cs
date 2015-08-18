@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using TogglDesktop.Diagnostics;
 using TogglDesktop.WPF;
 
 namespace TogglDesktop
@@ -51,40 +52,47 @@ public partial class TimeEntryListViewController : UserControl
 
     private void renderTimeEntryList(List<Toggl.TogglTimeEntryView> list)
     {
-        emptyLabel.Visible = (list.Count == 0);
+        var previousCount = this.entries.Children.Count;
+        var newCount = list.Count;
 
-        this.cellsByGUID.Clear();
-
-        int maxCount = list.Count;
-
-        for (int i = 0; i < maxCount; i++)
+        using (Performance.Measure("rendering time entry list, previous count: {0}, new count: {1}", previousCount, newCount))
         {
-            Toggl.TogglTimeEntryView te = list[i];
+            emptyLabel.Visible = (list.Count == 0);
 
-            WPF.TimeEntryCell cell = null;
-            if (entries.Children.Count > i)
+            this.cellsByGUID.Clear();
+
+            int maxCount = list.Count;
+
+            for (int i = 0; i < maxCount; i++)
             {
-                cell = (TogglDesktop.WPF.TimeEntryCell)entries.Children[i];
+                Toggl.TogglTimeEntryView te = list[i];
+
+                WPF.TimeEntryCell cell = null;
+                if (entries.Children.Count > i)
+                {
+                    cell = (TogglDesktop.WPF.TimeEntryCell)entries.Children[i];
+                }
+
+                if (cell == null)
+                {
+                    cell = new WPF.TimeEntryCell();
+                    entries.Children.Add(cell);
+                }
+                cell.Display(te);
+                this.cellsByGUID.Add(te.GUID, cell);
             }
 
-            if (cell == null)
+            if (entries.Children.Count > list.Count)
             {
-                cell = new WPF.TimeEntryCell();
-                entries.Children.Add(cell);
+                entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
             }
-            cell.Display(te);
-            this.cellsByGUID.Add(te.GUID, cell);
+
+            entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
+            entriesHost.Invalidate();
+
+            this.refreshHighlight();
         }
 
-        if (entries.Children.Count > list.Count)
-        {
-            entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
-        }
-
-        entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
-        entriesHost.Invalidate();
-
-        this.refreshHighlight();
     }
 
     void OnLogin(bool open, UInt64 user_id)

@@ -17,6 +17,10 @@ namespace TogglDesktop.Diagnostics
         {
             return Measure(string.Format(template, p0));
         }
+        public static IPerformanceToken Measure(string template, object p0, object p1)
+        {
+            return Measure(string.Format(template, p0, p1));
+        }
 
         #endregion
 
