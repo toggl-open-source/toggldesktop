@@ -233,8 +233,7 @@ app: lib ui
 
 ifeq ($(osname), mac)
 lib:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj && \
-	!(otool -L ./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/Frameworks/*.dylib | grep "Users" && echo "Shared library should not contain hardcoded paths!")
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj
 endif
 
 ifeq ($(osname), linux)
