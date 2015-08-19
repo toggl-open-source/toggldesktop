@@ -89,6 +89,11 @@ public static partial class Toggl
         toggl_show_app(ctx);
     }
 
+    public static bool Debug(string text)
+    {
+        toggl_debug(text);
+    }
+
     public static bool Signup(string email, string password)
     {
         return toggl_signup(ctx, email, password);
