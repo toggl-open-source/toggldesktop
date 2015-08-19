@@ -44,6 +44,7 @@
 		69FC180B17E6534500B96425 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180917E6534500B96425 /* MainMenu.xib */; };
 		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
 		74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */; };
+		74083B291B84B6BF00685E21 /* libPocoNetSSL.31.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 742134B5195C63A3007EF78B /* libPocoNetSSL.31.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		74098C331919899600CBDFB9 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
 		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
 		7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
@@ -267,11 +268,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				74083B291B84B6BF00685E21 /* libPocoNetSSL.31.dylib in CopyFiles */,
+				3CBF85371B81E72700DD3B55 /* libPocoNet.31.dylib in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
 				3CBF85341B81E72700DD3B55 /* libPocoCrypto.31.dylib in CopyFiles */,
 				3CBF85351B81E72700DD3B55 /* libPocoData.31.dylib in CopyFiles */,
 				3CBF85361B81E72700DD3B55 /* libPocoFoundation.31.dylib in CopyFiles */,
-				3CBF85371B81E72700DD3B55 /* libPocoNet.31.dylib in CopyFiles */,
 				3CBF85381B81E72700DD3B55 /* libPocoDataSQLite.31.dylib in CopyFiles */,
 				3CBF85391B81E72700DD3B55 /* libPocoXML.31.dylib in CopyFiles */,
 				3CBF853A1B81E72700DD3B55 /* libPocoUtil.31.dylib in CopyFiles */,
