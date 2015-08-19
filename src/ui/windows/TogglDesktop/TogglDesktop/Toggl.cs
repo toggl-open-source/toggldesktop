@@ -178,7 +178,7 @@ public static partial class Toggl
         using (Performance.Measure("changing time entry project"))
         {
             return toggl_set_time_entry_project(ctx,
-                guid, task_id, project_id, project_guid);
+                                                guid, task_id, project_id, project_guid);
         }
     }
 
@@ -362,12 +362,12 @@ public static partial class Toggl
         using (Performance.Measure("adding project"))
         {
             return toggl_add_project(ctx,
-                time_entry_guid,
-                workspace_id,
-                client_id,
-                client_guid,
-                project_name,
-                is_private);
+                                     time_entry_guid,
+                                     workspace_id,
+                                     client_id,
+                                     client_guid,
+                                     project_name,
+                                     is_private);
         }
     }
 
@@ -378,8 +378,8 @@ public static partial class Toggl
         using (Performance.Measure("adding client"))
         {
             return toggl_create_client(ctx,
-                workspace_id,
-                client_name);
+                                       workspace_id,
+                                       client_name);
         }
     }
 
