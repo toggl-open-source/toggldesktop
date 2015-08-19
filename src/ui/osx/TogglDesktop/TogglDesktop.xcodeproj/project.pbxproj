@@ -931,9 +931,9 @@
 				69FC17ED17E6534400B96425 /* Sources */,
 				69FC17EE17E6534400B96425 /* Frameworks */,
 				69FC17EF17E6534400B96425 /* Resources */,
-				74E3CDDA17FC37A500C3ADD3 /* Run Script */,
+				74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */,
 				74A50AA818434D90006F37BB /* CopyFiles */,
-				7407F1F41AA80466000380C4 /* ShellScript */,
+				7407F1F41AA80466000380C4 /* Run Script (fix Poco dylib paths) */,
 			);
 			buildRules = (
 			);
@@ -1148,27 +1148,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7407F1F41AA80466000380C4 /* ShellScript */ = {
+		7407F1F41AA80466000380C4 /* Run Script (fix Poco dylib paths) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script (fix Poco dylib paths)";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n    return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n        # change shared library id name\n        install_name_tool -id @loader_path/$basename $pocolib\n    }\n    \n    fix_poco_paths() {\n        f=$1\n        fix $f libPocoUtil.31.dylib\n        fix $f libPocoData.31.dylib\n        fix $f libPocoNetSSL.31.dylib\n        fix $f libPocoXML.31.dylib\n        fix $f libPocoDataSQLite.31.dylib\n        fix $f libPocoNet.31.dylib\n        fix $f libPocoFoundation.31.dylib\n        fix $f libPocoCrypto.31.dylib\n        fix $f libPocoJSON.31.dylib\n    }\n    \n    for f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib\n                                                                                        do\n                                                                                        fix_poco_paths $f\n                                                                                        done\n";
 		};
-		74E3CDDA17FC37A500C3ADD3 /* Run Script */ = {
+		74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = "Run Script (install bugsnag)";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
