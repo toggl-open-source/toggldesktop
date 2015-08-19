@@ -7,10 +7,10 @@ if [ "$(uname -m)" == "i686" ]; then
 fi
 
 if [ -z "$QPATH" ]; then
-	export QPATH=/home/buildbot/Qt/5.3/gcc_64/
+	export QPATH=/home/tanel/Qt5.5.0/5.5/gcc_64/
 fi
 if [ -z "$QLIBPATH" ]; then
-	export QLIBPATH=/home/buildbot/Qt/5.3/gcc_64/lib
+	export QLIBPATH=/home/tanel/Qt5.5.0/5.5/gcc_64/lib
 fi
 
 set -e
