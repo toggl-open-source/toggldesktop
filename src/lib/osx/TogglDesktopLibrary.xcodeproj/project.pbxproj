@@ -117,14 +117,6 @@
 		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
 		741951C71B41FCE500FA2724 /* migrations.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = migrations.cc; path = ../../../migrations.cc; sourceTree = "<group>"; };
 		741951C81B41FCE500FA2724 /* migrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = migrations.h; path = ../../../migrations.h; sourceTree = "<group>"; };
-		7421347E195C4D41007EF78B /* libPocoUtil.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.31.dylib; sourceTree = "<group>"; };
-		7421347F195C4D41007EF78B /* libPocoData.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoData.31.dylib; sourceTree = "<group>"; };
-		74213480195C4D41007EF78B /* libPocoNetSSL.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.31.dylib; sourceTree = "<group>"; };
-		74213481195C4D41007EF78B /* libPocoXML.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.31.dylib; sourceTree = "<group>"; };
-		74213482195C4D41007EF78B /* libPocoDataSQLite.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.31.dylib; sourceTree = "<group>"; };
-		74213483195C4D41007EF78B /* libPocoNet.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.31.dylib; sourceTree = "<group>"; };
-		74213484195C4D41007EF78B /* libPocoFoundation.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.31.dylib; sourceTree = "<group>"; };
-		74213485195C4D41007EF78B /* libPocoCrypto.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.31.dylib; sourceTree = "<group>"; };
 		743024121AEFA819006DC911 /* autotracker.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = autotracker.cc; path = ../../../autotracker.cc; sourceTree = "<group>"; };
 		743024131AEFA819006DC911 /* autotracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autotracker.h; path = ../../../autotracker.h; sourceTree = "<group>"; };
 		7458ED271A355746007B529E /* idle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = idle.cc; path = ../../../idle.cc; sourceTree = "<group>"; };
@@ -147,7 +139,6 @@
 		748B7DA21AC5963B00FE01D2 /* netconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = netconf.h; path = ../../../netconf.h; sourceTree = "<group>"; };
 		748B7DA31AC5963B00FE01D2 /* settings.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = settings.cc; path = ../../../settings.cc; sourceTree = "<group>"; };
 		748B7DA41AC5963B00FE01D2 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = settings.h; path = ../../../settings.h; sourceTree = "<group>"; };
-		749956231B7ED735009B3C81 /* libPocoJSON.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.31.dylib; sourceTree = "<group>"; };
 		74A026E01A884D5A0087570A /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../../third_party/lua/install/lib/liblua.a; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
@@ -249,15 +240,6 @@
 				3CBF850D1B81E5DA00DD3B55 /* libPocoData.31.dylib */,
 				3CBF850B1B81E5D600DD3B55 /* libPocoUtil.31.dylib */,
 				3CBF85091B81E5D000DD3B55 /* libPocoJSON.31.dylib */,
-				749956231B7ED735009B3C81 /* libPocoJSON.31.dylib */,
-				7421347E195C4D41007EF78B /* libPocoUtil.31.dylib */,
-				7421347F195C4D41007EF78B /* libPocoData.31.dylib */,
-				74213480195C4D41007EF78B /* libPocoNetSSL.31.dylib */,
-				74213481195C4D41007EF78B /* libPocoXML.31.dylib */,
-				74213482195C4D41007EF78B /* libPocoDataSQLite.31.dylib */,
-				74213483195C4D41007EF78B /* libPocoNet.31.dylib */,
-				74213484195C4D41007EF78B /* libPocoFoundation.31.dylib */,
-				74213485195C4D41007EF78B /* libPocoCrypto.31.dylib */,
 				74CAAD0218185A9B001B77BB /* Carbon.framework */,
 				74AA947918091AE10000539F /* WebKit.framework */,
 				C5DA1F9417F18D2B001C4565 /* libPocoCrypto.a */,
