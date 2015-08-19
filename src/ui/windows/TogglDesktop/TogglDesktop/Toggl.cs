@@ -89,7 +89,7 @@ public static partial class Toggl
         toggl_show_app(ctx);
     }
 
-    public static bool Debug(string text)
+    public static void Debug(string text)
     {
         toggl_debug(text);
     }

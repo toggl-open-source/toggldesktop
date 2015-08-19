@@ -33,7 +33,7 @@ namespace TogglDesktop.Diagnostics
 
             public PerformanceToken(string activity)
             {
-                Console.WriteLine("Starting activity '{0}'", activity);
+                Toggl.Debug(string.Format("Starting activity '{0}'", activity));
                 this.activity = activity;
                 this.timer = Stopwatch.StartNew();
             }
@@ -53,8 +53,8 @@ namespace TogglDesktop.Diagnostics
                     this.timer.Stop();
                 }
 
-                Console.WriteLine("Measured activity '{0}', took {1} ms",
-                    this.activity + this.additionalInformation, this.timer.Elapsed.TotalMilliseconds);
+                Toggl.Debug(string.Format("Measured activity '{0}', took {1} ms",
+                    this.activity + this.additionalInformation, this.timer.Elapsed.TotalMilliseconds));
             }
 
             public IPerformanceToken WithInfo(string additionalInfo)
