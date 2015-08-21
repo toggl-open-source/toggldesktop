@@ -40,6 +40,9 @@ cp $QLIBPATH/libQt5Svg.so.5 $(pwd)/$out/lib/
 cp $QLIBPATH/libQt5Xml.so.5 $(pwd)/$out/lib/
 mkdir -p $(pwd)/$out/imageformats
 mkdir -p $(pwd)/$out/iconengines
+ls -la $QPATH/plugins/
+ls -la $QPATH/plugins/imageformats/
+ls -la $QPATH/plugins/iconengines/
 cp $QPATH/plugins/imageformats/libqsvg.so $(pwd)/$out/imageformats/
 cp $QPATH/plugins/iconengines/libqsvgicon.so $(pwd)/$out/iconengines/
 
