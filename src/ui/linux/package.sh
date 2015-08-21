@@ -36,6 +36,7 @@ go run src/ui/linux/copy_deps.go --executable $(pwd)/$out/TogglDesktop --destina
 chrpath -r "\$ORIGIN/lib" $out/TogglDesktop
 
 # SVG plugins dont come out as deps need to copy manually
+ls -la $QLIBPATH
 cp $QLIBPATH/libQt5Svg.so.5 $(pwd)/$out/lib/
 cp $QLIBPATH/libQt5Xml.so.5 $(pwd)/$out/lib/
 mkdir -p $(pwd)/$out/imageformats
