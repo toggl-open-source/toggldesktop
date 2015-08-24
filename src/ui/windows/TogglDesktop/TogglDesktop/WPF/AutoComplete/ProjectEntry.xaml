@@ -7,18 +7,16 @@
              xmlns:autoComplete="clr-namespace:TogglDesktop.WPF.AutoComplete"
              mc:Ignorable="d"
              d:DesignWidth="400"
-             d:DataContext ="{d:DesignInstance {x:Type autoComplete:ProjectEntrySample}, IsDesignTimeCreatable=True}"
              Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
 
     <StackPanel Height="30" Orientation="Horizontal">
         
-        <Border CornerRadius="100" Width="10" Height="10" BorderThickness="0"
-                Margin="10, 0, 10, 0">
-            <Border.Background><SolidColorBrush Color="{Binding ProjectColor}"/></Border.Background>
-        </Border>
-        <TextBlock VerticalAlignment="Center" Text="{Binding ProjectName}"/>
-        <TextBlock VerticalAlignment="Center" Text="{Binding TaskName}" Foreground="DimGray"/>
-        
+        <Border Name="projectColor" x:FieldModifier="private"
+                CornerRadius="100" Width="10" Height="10" BorderThickness="0"
+                Margin="10, 0, 10, 0" />
+        <TextBlock Name="project" x:FieldModifier="private" VerticalAlignment="Center">A project</TextBlock>
+        <TextBlock Name="task" x:FieldModifier="private" VerticalAlignment="Center" Foreground="DimGray">- A task</TextBlock>
+
     </StackPanel>
     
 </autoComplete:EntryBase>

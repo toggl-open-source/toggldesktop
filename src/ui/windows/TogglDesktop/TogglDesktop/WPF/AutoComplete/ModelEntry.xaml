@@ -7,12 +7,10 @@
              xmlns:autoComplete="clr-namespace:TogglDesktop.WPF.AutoComplete"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance {x:Type autoComplete:ModelEntrySample}, IsDesignTimeCreatable=True}"
              Height="30"
              Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
 
-    <TextBlock VerticalAlignment="Center" Text="{Binding ModelName}"
-                Margin="10, 0, 10, 0"
-                />
+    <TextBlock Name="text" x:FieldModifier="private" VerticalAlignment="Center"
+                Margin="10, 0, 10, 0">Big Company Inc.</TextBlock>
 
 </autoComplete:EntryBase>

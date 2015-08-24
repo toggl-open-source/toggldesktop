@@ -1,35 +1,14 @@
 ﻿using System;
-using System.Windows;
-using System.Windows.Media;
 
 namespace TogglDesktop.WPF.AutoComplete
 {
-    sealed class ModelEntrySample
-    {
-        public string ModelName { get { return "Big money company"; } }
-
-        public Color BackgroundColor { get { return Color.FromRgb(255, 255, 255); } }
-    }
-
     partial class ModelEntry
     {
         public ModelEntry(Toggl.TogglGenericView item, Action selectWithClick, string overrideText = null)
             : base(selectWithClick)
         {
-            this.ModelName = overrideText ?? item.Name;
-            InitializeComponent();
+            this.InitializeComponent();
+            this.text.Text = overrideText ?? item.Name;
         }
-
-        #region dependency properties
-
-        public static readonly DependencyProperty ModelNameProperty = DependencyProperty
-            .Register("ModelName", typeof(string), typeof(ModelEntry));
-
-        public string ModelName
-        {
-            get { return (string)this.GetValue(ModelNameProperty); }
-            set { this.SetValue(ModelNameProperty, value); }
-        }
-        #endregion
     }
 }

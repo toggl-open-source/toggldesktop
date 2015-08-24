@@ -7,7 +7,6 @@
              xmlns:autoComplete="clr-namespace:TogglDesktop.WPF.AutoComplete"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance {x:Type autoComplete:StringEntrySample}, IsDesignTimeCreatable=True}"
              Height="30"
              Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
 
