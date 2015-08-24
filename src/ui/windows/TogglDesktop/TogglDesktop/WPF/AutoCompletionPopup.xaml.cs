@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.WPF
 {
@@ -28,6 +30,8 @@ namespace TogglDesktop.WPF
         private bool needsToRefreshList;
 
         private AutoCompleteController controller;
+
+        private List<IRecyclable> recyclableEntries = new List<IRecyclable>();
 
         public AutoCompletionPopup()
         {
@@ -286,7 +290,18 @@ namespace TogglDesktop.WPF
             using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
             {
                 this.dropDownList.Children.Clear();
-                this.controller.FillList(this.dropDownList, this.select);
+                if (this.recyclableEntries.Count > 0)
+                {
+                    using (Performance.Measure("recycling entries, count: " + this.recyclableEntries.Count))
+                    {
+                        foreach (var entry in this.recyclableEntries)
+                        {
+                            entry.Recycle();
+                        }
+                    }
+                    this.recyclableEntries.Clear();
+                }
+                this.controller.FillList(this.dropDownList, this.select, this.recyclableEntries);
             }
 
             this.needsToRefreshList = false;

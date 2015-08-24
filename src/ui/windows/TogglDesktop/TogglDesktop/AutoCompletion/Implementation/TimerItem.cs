@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
@@ -10,7 +11,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        protected override TimerEntry createElement(Action selectWithClick)
+        protected override TimerEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
             return new TimerEntry(this.Item, selectWithClick);
         }

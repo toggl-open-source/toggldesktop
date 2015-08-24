@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
@@ -11,11 +12,11 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        protected override UIElement createElement(out Panel childrenPanel)
+        protected override UIElement createElement(out Panel childrenPanel, List<IRecyclable> recyclables)
         {
-            var e = new WPF.AutoComplete.ClientCategory(this.Text);
-            childrenPanel = e.ProjectPanel;
-            return e;
+            return StaticObjectPool.PopOrNew<WPF.AutoComplete.ClientCategory>()
+                .Initialised(this.Text, out childrenPanel)
+                .Recycle(recyclables);
         }
     }
 }

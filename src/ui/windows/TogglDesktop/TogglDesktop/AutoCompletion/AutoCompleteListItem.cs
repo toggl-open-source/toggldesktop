@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion
 {
@@ -52,7 +53,7 @@ namespace TogglDesktop.AutoCompletion
 
         public abstract IEnumerable<AutoCompleteItem> Complete(string[] words);
         public abstract IEnumerable<AutoCompleteItem> CompleteAll();
-        public abstract void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick);
+        public abstract void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables);
 
         protected abstract void hide();
         protected abstract void show();

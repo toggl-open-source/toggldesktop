@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion
 {
@@ -37,11 +38,11 @@ namespace TogglDesktop.AutoCompletion
             get { return this.currentlyVisibleAsReadonly; }
         }
 
-        public void FillList(Panel list, Action<AutoCompleteItem> selectWithClick)
+        public void FillList(Panel list, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
         {
             foreach (var item in this.list)
             {
-                item.CreateFrameworkElement(list, selectWithClick);
+                item.CreateFrameworkElement(list, selectWithClick, recyclables);
             }
         }
 

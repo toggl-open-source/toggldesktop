@@ -17,7 +17,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             yield return this;
         }
 
-        protected override ModelEntry createElement(Action selectWithClick)
+        protected override ModelEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
             return new ModelEntry(this.Item, selectWithClick, "No client");
         }
@@ -30,7 +30,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        protected override ModelEntry createElement(Action selectWithClick)
+        protected override ModelEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
             return new ModelEntry(this.Item, selectWithClick);
         }

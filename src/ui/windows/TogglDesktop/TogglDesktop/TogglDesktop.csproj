@@ -236,6 +236,7 @@
     <Compile Include="WPF\AutoComplete\ClientCategory.xaml.cs">
       <DependentUpon>ClientCategory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\AutoComplete\IRecyclable.cs" />
     <Compile Include="WPF\AutoComplete\TimerEntry.xaml.cs">
       <DependentUpon>TimerEntry.xaml</DependentUpon>
     </Compile>

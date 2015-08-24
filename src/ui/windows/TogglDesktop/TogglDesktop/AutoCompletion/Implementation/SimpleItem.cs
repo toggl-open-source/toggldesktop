@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
@@ -21,13 +23,13 @@ namespace TogglDesktop.AutoCompletion.Implementation
             get { return this.item; }
         }
 
-        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick)
+        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
         {
-            this.element = this.createElement(() => selectWithClick(this));
+            this.element = this.createElement(() => selectWithClick(this), recyclables);
             parent.Children.Add(this.element);
         }
 
-        protected abstract TFrameworkElement createElement(Action selectWithClick);
+        protected abstract TFrameworkElement createElement(Action selectWithClick, List<IRecyclable> recyclables);
 
         protected override void hide()
         {

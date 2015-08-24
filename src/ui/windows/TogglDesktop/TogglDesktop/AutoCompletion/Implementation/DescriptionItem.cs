@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
@@ -9,7 +10,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
         }
 
-        protected override DescriptionAutoCompleteEntry createElement(Action selectWithClick)
+        protected override DescriptionAutoCompleteEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
             return new DescriptionAutoCompleteEntry(this.Item, selectWithClick);
         }

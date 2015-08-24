@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion
 {
@@ -43,15 +44,15 @@ namespace TogglDesktop.AutoCompletion
             return this.children.SelectMany(c => c.CompleteAll());
         }
 
-        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick)
+        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
         {
-            var newParent = this.createFrameworkElement(parent);
+            var newParent = this.createFrameworkElement(parent, recyclables);
             foreach (var child in this.children)
             {
-                child.CreateFrameworkElement(newParent, selectWithClick);
+                child.CreateFrameworkElement(newParent, selectWithClick, recyclables);
             }
         }
 
-        protected abstract Panel createFrameworkElement(Panel parent);
+        protected abstract Panel createFrameworkElement(Panel parent, List<IRecyclable> recyclables);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
@@ -13,7 +14,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             this.text = text;
         }
 
-        protected override UIElement createElement()
+        protected override UIElement createElement(List<IRecyclable> recyclables)
         {
             return new WPF.AutoComplete.WorkspaceCategory(this.text);
         }

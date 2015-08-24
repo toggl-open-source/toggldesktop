@@ -14,7 +14,7 @@
                    FontSize="11"
                    Margin="0, 5, 0, 2"
                >Example Client</TextBlock>
-        <StackPanel Name="ProjectPanel" Margin="16, 0, 0, 0">
+        <StackPanel Name="projectPanel" x:FieldModifier="private" Margin="16, 0, 0, 0">
         </StackPanel>
     </StackPanel>
 </UserControl>

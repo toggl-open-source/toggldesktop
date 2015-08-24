@@ -24,7 +24,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             }
         }
 
-        protected override StringEntry createElement(Action selectWithClick)
+        protected override StringEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
             return new StringEntry(this.Item, selectWithClick);
         }

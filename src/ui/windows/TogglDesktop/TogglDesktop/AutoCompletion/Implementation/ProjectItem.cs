@@ -16,9 +16,11 @@ namespace TogglDesktop.AutoCompletion.Implementation
             yield return this;
         }
 
-        protected override ProjectEntry createElement(Action selectWithClick)
+        protected override ProjectEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
-            return new ProjectEntry(this.Item, selectWithClick, "No project");
+            return StaticObjectPool.PopOrNew<ProjectEntry>()
+                .Initialised(this.Item, selectWithClick, "No project")
+                .Recycle(recyclables);
         }
     }
 
@@ -55,9 +57,11 @@ namespace TogglDesktop.AutoCompletion.Implementation
             }
         }
 
-        protected override ProjectEntry createElement(Action selectWithClick)
+        protected override ProjectEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
-            return new ProjectEntry(this.Item, selectWithClick);
+            return StaticObjectPool.PopOrNew<ProjectEntry>()
+                .Initialised(this.Item, selectWithClick)
+                .Recycle(recyclables);
         }
     }
 }

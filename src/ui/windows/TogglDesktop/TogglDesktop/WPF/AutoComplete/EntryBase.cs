@@ -11,11 +11,13 @@ namespace TogglDesktop.WPF.AutoComplete
         private static readonly Color backgroundColorSelected = Color.FromRgb(244, 244, 244);
         private static readonly Color backgroundColorHover = Color.FromRgb(244, 244, 244);
         private static readonly Color backgroundColor = Color.FromRgb(255, 255, 255);
-        private bool selected;
 
         private static readonly SolidColorBrush backgroundBrushSelected = new SolidColorBrush(backgroundColorSelected);
         private static readonly SolidColorBrush backgroundBrushHover = new SolidColorBrush(backgroundColorHover);
         private static readonly SolidColorBrush backgroundBrush = new SolidColorBrush(backgroundColor);
+
+        private bool selected;
+        private Action selectWithClick;
 
         static EntryBase()
         {
@@ -24,13 +26,20 @@ namespace TogglDesktop.WPF.AutoComplete
             backgroundBrushHover.Freeze();
         }
 
-        public EntryBase(Action selectWithClick)
+        public EntryBase(Action selectWithClick = null)
         {
             this.DataContext = this;
             this.Background = backgroundBrush;
+            this.setClickAction(selectWithClick);
             this.MouseEnter += (sender, args) => this.updateBackgroundColor();
             this.MouseLeave += (sender, args) => this.updateBackgroundColor();
-            this.MouseDown += (sender, args) => selectWithClick();
+            this.MouseDown += (sender, args) => this.mouseDown();
+        }
+
+        private void mouseDown()
+        {
+            if (this.selectWithClick != null)
+                this.selectWithClick();
         }
 
         public bool Selected
@@ -50,6 +59,17 @@ namespace TogglDesktop.WPF.AutoComplete
             this.Background = this.IsMouseOver
                 ? backgroundBrushHover
                 : this.selected ? backgroundBrushSelected : backgroundBrush;
+        }
+
+        protected void setClickAction(Action selectWithClick)
+        {
+            this.selectWithClick = selectWithClick;
+        }
+
+        protected void prepareForRecycling()
+        {
+            this.selectWithClick = null;
+            this.Background = backgroundBrush;
         }
     }
 }
