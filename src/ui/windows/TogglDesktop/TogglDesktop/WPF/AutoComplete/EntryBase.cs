@@ -13,26 +13,25 @@ namespace TogglDesktop.WPF.AutoComplete
         private static readonly Color backgroundColor = Color.FromRgb(255, 255, 255);
         private bool selected;
 
+        private static readonly SolidColorBrush backgroundBrushSelected = new SolidColorBrush(backgroundColorSelected);
+        private static readonly SolidColorBrush backgroundBrushHover = new SolidColorBrush(backgroundColorHover);
+        private static readonly SolidColorBrush backgroundBrush = new SolidColorBrush(backgroundColor);
+
+        static EntryBase()
+        {
+            backgroundBrush.Freeze();
+            backgroundBrushSelected.Freeze();
+            backgroundBrushHover.Freeze();
+        }
+
         public EntryBase(Action selectWithClick)
         {
             this.DataContext = this;
+            this.Background = backgroundBrush;
             this.MouseEnter += (sender, args) => this.updateBackgroundColor();
             this.MouseLeave += (sender, args) => this.updateBackgroundColor();
             this.MouseDown += (sender, args) => selectWithClick();
         }
-
-        #region dependency properties
-
-        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty
-            .Register("BackgroundColor", typeof(Color), typeof(EntryBase));
-
-        public Color BackgroundColor
-        {
-            get { return (Color)this.GetValue(BackgroundColorProperty); }
-            set { this.SetValue(BackgroundColorProperty, value); }
-        }
-
-        #endregion
 
         public bool Selected
         {
@@ -48,9 +47,9 @@ namespace TogglDesktop.WPF.AutoComplete
 
         private void updateBackgroundColor()
         {
-            this.BackgroundColor = this.IsMouseOver
-                ? backgroundColorHover
-                : this.selected ? backgroundColorSelected : backgroundColor;
+            this.Background = this.IsMouseOver
+                ? backgroundBrushHover
+                : this.selected ? backgroundBrushSelected : backgroundBrush;
         }
     }
 }

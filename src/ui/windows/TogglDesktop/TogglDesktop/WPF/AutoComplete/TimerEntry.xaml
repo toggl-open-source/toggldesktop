@@ -11,10 +11,6 @@
              Height="30"
              Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
 
-    <UserControl.Background>
-        <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
-    </UserControl.Background>
-
     <StackPanel Margin="10, 0, 0, 0" Orientation="Horizontal">
 
         <TextBlock Name="description" x:FieldModifier="private">Description</TextBlock>

@@ -10,10 +10,6 @@
              d:DataContext ="{d:DesignInstance {x:Type autoComplete:ProjectEntrySample}, IsDesignTimeCreatable=True}"
              Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
 
-    <UserControl.Background>
-        <SolidColorBrush Color="{Binding BackgroundColor}"></SolidColorBrush>
-    </UserControl.Background>
-    
     <StackPanel Height="30" Orientation="Horizontal">
         
         <Border CornerRadius="100" Width="10" Height="10" BorderThickness="0"
