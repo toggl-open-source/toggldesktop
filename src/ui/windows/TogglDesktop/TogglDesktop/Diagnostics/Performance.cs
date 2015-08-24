@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace TogglDesktop.Diagnostics
 {
@@ -54,7 +55,8 @@ namespace TogglDesktop.Diagnostics
                 }
 
                 Toggl.Debug(string.Format("Measured activity '{0}', took {1} ms",
-                    this.activity + this.additionalInformation, this.timer.Elapsed.TotalMilliseconds));
+                    this.activity + this.additionalInformation,
+                    this.timer.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)));
             }
 
             public IPerformanceToken WithInfo(string additionalInfo)
