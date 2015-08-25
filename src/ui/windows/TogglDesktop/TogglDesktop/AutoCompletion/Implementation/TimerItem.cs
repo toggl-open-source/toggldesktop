@@ -13,7 +13,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         protected override TimerEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
-            return new TimerEntry(this.Item, selectWithClick);
+            return StaticObjectPool.PopOrNew<TimerEntry>()
+                .Initialised(this.Item, selectWithClick)
+                .Recycle(recyclables);
         }
     }
 }

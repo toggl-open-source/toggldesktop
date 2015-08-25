@@ -2,13 +2,24 @@
 
 namespace TogglDesktop.WPF.AutoComplete
 {
-    partial class StringEntry
+    partial class StringEntry : IRecyclable
     {
-        public StringEntry(string item, Action selectWithClick)
-            : base(selectWithClick)
+        public StringEntry()
+        {
+            this.InitializeComponent();
+        }
+
+        public StringEntry Initialised(string item, Action selectWithClick)
         {
             this.text.Text = item;
-            this.InitializeComponent();
+            this.setClickAction(selectWithClick);
+            return this;
+        }
+
+        public void Recycle()
+        {
+            this.prepareForRecycling();
+            StaticObjectPool.Push(this);
         }
     }
 }

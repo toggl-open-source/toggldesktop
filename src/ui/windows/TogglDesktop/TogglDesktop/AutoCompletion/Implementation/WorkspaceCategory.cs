@@ -16,7 +16,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         protected override UIElement createElement(List<IRecyclable> recyclables)
         {
-            return new WPF.AutoComplete.WorkspaceCategory(this.text);
+            return StaticObjectPool.PopOrNew<WPF.AutoComplete.WorkspaceCategory>()
+                .Initialised(this.text)
+                .Recycle(recyclables);
         }
     }
 }

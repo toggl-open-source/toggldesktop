@@ -186,7 +186,6 @@
     <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
     <Compile Include="AutoCompletion\Implementation\ProjectItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\DescriptionItem.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
@@ -251,9 +250,6 @@
     </Compile>
     <Compile Include="WPF\AutoComplete\ProjectEntry.xaml.cs">
       <DependentUpon>ProjectEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPF\AutoComplete\DescriptionAutoCompleteEntry.xaml.cs">
-      <DependentUpon>DescriptionAutoCompleteEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ExtendedTextBox.cs" />
     <Compile Include="WPF\LoginConfirmButton.xaml.cs">
@@ -535,10 +531,6 @@
     <Page Include="WPF\AutoComplete\ProjectEntry.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\AutoComplete\DescriptionAutoCompleteEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\LoginConfirmButton.xaml">
       <SubType>Designer</SubType>

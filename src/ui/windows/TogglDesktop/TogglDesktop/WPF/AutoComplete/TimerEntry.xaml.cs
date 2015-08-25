@@ -5,13 +5,18 @@ using System.Windows.Media;
 
 namespace TogglDesktop.WPF.AutoComplete
 {
-    partial class TimerEntry
+    partial class TimerEntry : IRecyclable
     {
-        public TimerEntry(Toggl.TogglAutocompleteView item, Action selectWithClick)
-            : base(selectWithClick)
+        public TimerEntry()
         {
             this.InitializeComponent();
+        }
+
+        public TimerEntry Initialised(Toggl.TogglAutocompleteView item, Action selectWithClick)
+        {
             this.setText(item);
+            this.setClickAction(selectWithClick);
+            return this;
         }
 
         private void setText(Toggl.TogglAutocompleteView item)
@@ -48,6 +53,12 @@ namespace TogglDesktop.WPF.AutoComplete
             var colourString = string.IsNullOrEmpty(item.ProjectColor) ? "#999999" : item.ProjectColor;
             var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));
             return new SolidColorBrush(color);
+        }
+
+        public void Recycle()
+        {
+            this.prepareForRecycling();
+            StaticObjectPool.Push(this);
         }
     }
 }

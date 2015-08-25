@@ -16,7 +16,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         protected override UIElement createElement(List<IRecyclable> recyclables)
         {
-            return new GrayTextCategory(this.text);
+            return StaticObjectPool.PopOrNew<GrayTextCategory>()
+                .Initialised(this.text)
+                .Recycle(recyclables);
         }
     }
 }

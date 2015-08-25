@@ -2,13 +2,24 @@
 
 namespace TogglDesktop.WPF.AutoComplete
 {
-    partial class ModelEntry
+    partial class ModelEntry : IRecyclable
     {
-        public ModelEntry(Toggl.TogglGenericView item, Action selectWithClick, string overrideText = null)
-            : base(selectWithClick)
+        public ModelEntry()
         {
             this.InitializeComponent();
+        }
+
+        public ModelEntry Initialised(Toggl.TogglGenericView item, Action selectWithClick, string overrideText = null)
+        {
             this.text.Text = overrideText ?? item.Name;
+            this.setClickAction(selectWithClick);
+            return this;
+        }
+
+        public void Recycle()
+        {
+            this.prepareForRecycling();
+            StaticObjectPool.Push(this);
         }
     }
 }

@@ -1,13 +1,23 @@
 ﻿
 namespace TogglDesktop.WPF.AutoComplete
 {
-    public partial class WorkspaceCategory
+    public partial class WorkspaceCategory : IRecyclable
     {
-        public WorkspaceCategory(string text)
+        public WorkspaceCategory()
         {
             this.DataContext = this;
             this.InitializeComponent();
+        }
+
+        public WorkspaceCategory Initialised(string text)
+        {
             this.workspaceName.Text = text;
+            return this;
+        }
+
+        public void Recycle()
+        {
+            StaticObjectPool.Push(this);
         }
     }
 }

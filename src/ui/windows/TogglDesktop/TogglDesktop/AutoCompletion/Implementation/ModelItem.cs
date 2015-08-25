@@ -19,7 +19,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         protected override ModelEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
-            return new ModelEntry(this.Item, selectWithClick, "No client");
+            return StaticObjectPool.PopOrNew<ModelEntry>()
+                .Initialised(this.Item, selectWithClick, "No client")
+                .Recycle(recyclables);
         }
     }
 
@@ -32,7 +34,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         protected override ModelEntry createElement(Action selectWithClick, List<IRecyclable> recyclables)
         {
-            return new ModelEntry(this.Item, selectWithClick);
+            return StaticObjectPool.PopOrNew<ModelEntry>()
+                .Initialised(this.Item, selectWithClick)
+                .Recycle(recyclables);
         }
     }
 }
