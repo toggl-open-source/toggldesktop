@@ -28,7 +28,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             return StaticObjectPool.PopOrNew<StringEntry>()
                 .Initialised(this.Item, selectWithClick)
-                .Recycle(recyclables);
+                .MarkForRecycling(recyclables);
         }
     }
 }

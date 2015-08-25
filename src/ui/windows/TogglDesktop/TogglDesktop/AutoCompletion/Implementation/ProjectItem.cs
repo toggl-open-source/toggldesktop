@@ -20,7 +20,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             return StaticObjectPool.PopOrNew<ProjectEntry>()
                 .Initialised(this.Item, selectWithClick, "No project")
-                .Recycle(recyclables);
+                .MarkForRecycling(recyclables);
         }
     }
 
@@ -61,7 +61,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             return StaticObjectPool.PopOrNew<ProjectEntry>()
                 .Initialised(this.Item, selectWithClick)
-                .Recycle(recyclables);
+                .MarkForRecycling(recyclables);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TogglDesktop.WPF.AutoComplete
 
     static class RecyclableExtensions
     {
-        public static T Recycle<T>(this T recyclable, List<IRecyclable> recyclables)
+        public static T MarkForRecycling<T>(this T recyclable, List<IRecyclable> recyclables)
             where T : IRecyclable
         {
             recyclables.Add(recyclable);

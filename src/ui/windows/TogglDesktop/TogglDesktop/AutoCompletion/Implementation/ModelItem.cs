@@ -21,7 +21,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             return StaticObjectPool.PopOrNew<ModelEntry>()
                 .Initialised(this.Item, selectWithClick, "No client")
-                .Recycle(recyclables);
+                .MarkForRecycling(recyclables);
         }
     }
 
@@ -36,7 +36,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             return StaticObjectPool.PopOrNew<ModelEntry>()
                 .Initialised(this.Item, selectWithClick)
-                .Recycle(recyclables);
+                .MarkForRecycling(recyclables);
         }
     }
 }

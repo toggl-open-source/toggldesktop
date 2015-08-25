@@ -18,7 +18,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             return StaticObjectPool.PopOrNew<GrayTextCategory>()
                 .Initialised(this.text)
-                .Recycle(recyclables);
+                .MarkForRecycling(recyclables);
         }
     }
 }
