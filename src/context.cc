@@ -3237,8 +3237,12 @@ void Context::uiUpdaterActivity() {
 void Context::SetLogPath(const std::string path) {
     Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
         new Poco::SimpleFileChannel);
-    simpleFileChannel->setProperty("path", path);
-    simpleFileChannel->setProperty("rotation", "1 M");
+    simpleFileChannel->setProperty(
+        Poco::SimpleFileChannel::PROP_PATH, path);
+    simpleFileChannel->setProperty(
+        Poco::SimpleFileChannel::PROP_ROTATION, "1 M");
+    simpleFileChannel->setProperty(
+        Poco::SimpleFileChannel::PROP_FLUSH, "false");
 
     Poco::AutoPtr<Poco::FormattingChannel> formattingChannel(
         new Poco::FormattingChannel(
