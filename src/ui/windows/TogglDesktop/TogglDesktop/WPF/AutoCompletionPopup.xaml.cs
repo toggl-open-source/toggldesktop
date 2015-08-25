@@ -298,8 +298,8 @@ namespace TogglDesktop.WPF
                         {
                             entry.Recycle();
                         }
+                        this.recyclableEntries.Clear();
                     }
-                    this.recyclableEntries.Clear();
                 }
                 this.controller.FillList(this.dropDownList, this.select, this.recyclableEntries);
             }
