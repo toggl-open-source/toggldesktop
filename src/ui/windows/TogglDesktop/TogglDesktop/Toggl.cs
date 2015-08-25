@@ -309,6 +309,28 @@ public static partial class Toggl
         {
             return false;
         }
+        if (!toggl_set_settings_remind_days(
+            ctx,
+            settings.RemindMon,
+            settings.RemindTue,
+            settings.RemindWed,
+            settings.RemindThu,
+            settings.RemindFri,
+            settings.RemindSat,
+            settings.RemindSun
+            ))
+        {
+            return false;
+        }
+        if (!toggl_set_settings_remind_times(
+            ctx,
+            settings.RemindStarts,
+            settings.RemindEnds
+            ))
+        {
+            return false;
+        }
+
 
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
