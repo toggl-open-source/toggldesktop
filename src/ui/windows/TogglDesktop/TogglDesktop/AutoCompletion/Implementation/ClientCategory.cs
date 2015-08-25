@@ -16,7 +16,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             return StaticObjectPool.PopOrNew<WPF.AutoComplete.ClientCategory>()
                 .Initialised(this.Text, out childrenPanel)
-                .Recycle(recyclables);
+                .MarkForRecycling(recyclables);
         }
     }
 }
