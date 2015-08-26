@@ -317,6 +317,9 @@
     <Compile Include="WPF\TimerEditViewController.xaml.cs">
       <DependentUpon>TimerEditViewController.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\TogglWindow.xaml.cs">
+      <DependentUpon>TogglWindow.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
@@ -548,6 +551,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WPF\Resources\TogglWindowStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WPF\Resources\PreferencesWindowStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -600,6 +607,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WPF\TogglWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\timerLightBg.png" />
@@ -617,6 +628,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ic_calendar_2x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_maximize_grey600_36dp.png" />
+    <Resource Include="Resources\ic_minimize_grey600_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_cog_grey600_36dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

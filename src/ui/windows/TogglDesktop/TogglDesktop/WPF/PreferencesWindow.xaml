@@ -20,7 +20,6 @@
     </Window.Effect>
 
     <Grid Margin="10 4 10 16">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition />
