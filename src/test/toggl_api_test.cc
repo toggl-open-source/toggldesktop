@@ -750,9 +750,8 @@ TEST(toggl_api, toggl_clear_cache) {
 }
 
 TEST(toggl_api, toggl_debug) {
-    for (int i = 0; i < 1000000; i++) {
-        toggl_debug("Test 123");
-    }
+    toggl_set_log_path("test.log");
+    toggl_debug("Test 123");
 }
 
 TEST(toggl_api, toggl_set_idle_seconds) {
