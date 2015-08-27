@@ -5,11 +5,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Interop;
 using System.Windows.Navigation;
 using TogglDesktop.WPF;
+using MessageBox = System.Windows.Forms.MessageBox;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace TogglDesktop
 {
@@ -22,7 +26,7 @@ public partial class MainWindowController : TogglForm
     private LoginViewController loginViewController;
     private TimeEntryListViewController timeEntryListViewController;
     private WPF.TimeEntryEditViewController timeEntryEditViewController;
-    private AboutWindowController aboutWindowController;
+    private WPF.AboutWindow aboutWindowController;
     private PreferencesWindow preferencesWindowController;
     private FeedbackWindowController feedbackWindowController;
     private IdleNotificationWindowController idleNotificationWindowController;
@@ -198,18 +202,17 @@ public partial class MainWindowController : TogglForm
         timeEntryListViewController = new TimeEntryListViewController();
         timeEntryEditViewController = new WPF.TimeEntryEditViewController();
 
-        aboutWindowController = new AboutWindowController();
+        aboutWindowController = new WPF.AboutWindow();
         preferencesWindowController = new PreferencesWindow();
         feedbackWindowController = new FeedbackWindowController();
         idleNotificationWindowController = new IdleNotificationWindowController();
 
         initEditForm();
         timeEntryListViewController.SetEditPopup(timeEntryEditViewController);
-        editForm.Owner = aboutWindowController.Owner = feedbackWindowController.Owner = this;
+        editForm.Owner = feedbackWindowController.Owner = this;
 
-        var windowInteropHelper = new WindowInteropHelper(this.preferencesWindowController);
-        windowInteropHelper.Owner = this.Handle;
-        ElementHost.EnableModelessKeyboardInterop(this.preferencesWindowController);
+        this.ownWPFWindow(this.preferencesWindowController);
+        this.ownWPFWindow(this.aboutWindowController);
 
         if (!Toggl.StartUI(TogglDesktop.Program.Version()))
         {
@@ -227,12 +230,19 @@ public partial class MainWindowController : TogglForm
 
         setCorrectMinimumSize();
 
-        aboutWindowController.initAndCheck();
+        aboutWindowController.UpdateReleaseChannel();
 
         runScriptTimer = new Timer();
         runScriptTimer.Interval = 1000;
         runScriptTimer.Tick += runScriptTimer_Tick;
         runScriptTimer.Start();
+    }
+
+    private void ownWPFWindow(Window window)
+    {
+        var windowInteropHelper = new WindowInteropHelper(window);
+        windowInteropHelper.Owner = this.Handle;
+        ElementHost.EnableModelessKeyboardInterop(window);
     }
 
     private void setCorrectMinimumSize()

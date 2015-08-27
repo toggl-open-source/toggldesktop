@@ -154,18 +154,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutWindowController.Designer.cs">
-      <DependentUpon>AboutWindowController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AddProjectViewController.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AddProjectViewController.Designer.cs">
-      <DependentUpon>AddProjectViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="AlphaBlendTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -227,6 +215,9 @@
     <Compile Include="StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="UIExtensions.cs" />
+    <Compile Include="WPF\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\AddValueConverter.cs" />
     <Compile Include="WPF\AutoComplete\GrayTextCategory.xaml.cs">
       <DependentUpon>GrayTextCategory.xaml</DependentUpon>
@@ -322,12 +313,6 @@
     </Compile>
     <Compile Include="WPF\TogglWindow.cs" />
     <Compile Include="WPF\TogglChromeDesignTimeConverter.cs" />
-    <EmbeddedResource Include="AboutWindowController.resx">
-      <DependentUpon>AboutWindowController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddProjectViewController.resx">
-      <DependentUpon>AddProjectViewController.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="EditForm.resx">
       <DependentUpon>EditForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -509,6 +494,10 @@
     <None Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\AutoComplete\GrayTextCategory.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -552,6 +541,10 @@
     <Page Include="WPF\PreferencesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Resources\AboutWindowStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Resources\TogglWindowStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
