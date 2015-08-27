@@ -1,7 +1,7 @@
 
 -- set timeouts for testers
 
-local seconds = 1
+local seconds = 5
 
 -- disable update check
 
