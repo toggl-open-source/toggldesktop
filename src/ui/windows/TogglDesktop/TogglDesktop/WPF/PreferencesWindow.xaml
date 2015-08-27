@@ -26,6 +26,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <Grid.Background>
+            <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerLightBg.png"
+                            AlignmentX="Left" AlignmentY="Top"
+                            TileMode="Tile" Stretch="UniformToFill"
+                            Viewport="0 0 634 822" ViewportUnits="Absolute"/>
+        </Grid.Background>
+
         <toggl:TogglChromeDesignTimeConverter
             Title="Preferences" IsToolWindow="True" />
 
