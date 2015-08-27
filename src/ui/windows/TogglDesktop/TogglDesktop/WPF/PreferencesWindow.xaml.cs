@@ -8,7 +8,7 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF
 {
-    public partial class PreferencesWindow
+    partial class PreferencesWindow
     {
         private const string recordButtonIdleText = "Record shortcut";
         private const string recordButtonRecordingText = "Type shortcut...";
@@ -254,14 +254,9 @@ namespace TogglDesktop.WPF
             this.Hide();
         }
 
-        private void closeButtonClick(object sender, RoutedEventArgs e)
+        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Hide();
-        }
-
-        private void headerLeftMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
         }
 
         private void windowKeyDown(object sender, KeyEventArgs e)

@@ -120,7 +120,7 @@ public partial class MainWindowController : TogglForm
             }
             feedbackWindowController.Close();
             aboutWindowController.Close();
-            preferencesWindowController.Hide();
+            //preferencesWindowController.Hide();
         }
         else
         {

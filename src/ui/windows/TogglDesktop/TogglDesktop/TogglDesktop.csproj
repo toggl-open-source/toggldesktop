@@ -317,9 +317,11 @@
     <Compile Include="WPF\TimerEditViewController.xaml.cs">
       <DependentUpon>TimerEditViewController.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\TogglWindow.xaml.cs">
-      <DependentUpon>TogglWindow.xaml</DependentUpon>
+    <Compile Include="WPF\TogglChrome.xaml.cs">
+      <DependentUpon>TogglChrome.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\TogglWindow.cs" />
+    <Compile Include="WPF\TogglChromeDesignTimeConverter.cs" />
     <EmbeddedResource Include="AboutWindowController.resx">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
     </EmbeddedResource>
@@ -607,7 +609,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\TogglWindow.xaml">
+    <Page Include="WPF\TogglChrome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

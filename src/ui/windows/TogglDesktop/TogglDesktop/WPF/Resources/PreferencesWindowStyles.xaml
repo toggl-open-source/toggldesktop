@@ -20,11 +20,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style TargetType="TextBlock" x:Key="WindowTitle" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="FontSize" Value="15" />
-    </Style>
 
     <!-- buttons -->
     <Style TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">
@@ -88,27 +83,6 @@
         <Setter Property="Margin" Value="2"/>
     </Style>
     
-    <Style TargetType="Button" x:Key="WindowHeadButton">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ButtonBase">
-                    <Border Background="{TemplateBinding Background}">
-                        <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Stretch="Fill" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#12FFFFFF"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <!-- checkboxes, textboxes, groupings -->
     <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Padding" Value="0"/>
