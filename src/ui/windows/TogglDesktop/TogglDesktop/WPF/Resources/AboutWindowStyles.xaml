@@ -31,5 +31,10 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="13.3" />
+        <Setter Property="Foreground" Value="#252525"/>
+    </Style>
     
 </ResourceDictionary>
