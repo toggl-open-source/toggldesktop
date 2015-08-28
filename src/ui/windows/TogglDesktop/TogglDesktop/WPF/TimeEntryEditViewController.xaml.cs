@@ -79,27 +79,13 @@ namespace TogglDesktop.WPF
 
                 this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
 
-                if (open)
-                {
-                    this.descriptionTextBox.SetText(timeEntry.Description);
-                    this.durationTextBox.Text = timeEntry.Duration;
-                    setTime(this.startTimeTextBox, timeEntry.StartTimeString);
-                    setTime(this.endTimeTextBox, timeEntry.EndTimeString);
-                    this.projectTextBox.SetText(timeEntry.ProjectLabel);
-                    this.clientTextBox.SetText(timeEntry.ClientLabel);
-                    this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
-                }
-                else
-                {
-                    setTextIfUnfocused(this.descriptionTextBox, timeEntry.Description);
-                    setTextIfUnfocused(this.durationTextBox, timeEntry.Duration);
-                    setTimeIfUnfocused(this.startTimeTextBox, timeEntry.StartTimeString);
-                    setTimeIfUnfocused(this.endTimeTextBox, timeEntry.EndTimeString);
-                    setTextIfUnfocused(this.projectTextBox, timeEntry.ProjectLabel);
-
-                    if (!this.startDatePicker.IsFocused)
-                        this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
-                }
+                this.descriptionTextBox.SetText(timeEntry.Description);
+                setTime(this.durationTextBox, timeEntry.Duration);
+                setTime(this.startTimeTextBox, timeEntry.StartTimeString);
+                setTime(this.endTimeTextBox, timeEntry.EndTimeString);
+                this.projectTextBox.SetText(timeEntry.ProjectLabel);
+                this.clientTextBox.SetText(timeEntry.ClientLabel);
+                this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
 
                 if (isCurrentlyRunning)
                 {
@@ -162,32 +148,10 @@ namespace TogglDesktop.WPF
             return projectColor;
         }
 
-        private static void setTime(TextBox textBox, string time)
+        private static void setTime(ExtendedTextBox textBox, string time)
         {
-            textBox.Text = time;
+            textBox.SetText(time);
             textBox.Tag = time;
-        }
-
-        private static void setTimeIfUnfocused(TextBox textBox, string time)
-        {
-            if (textBox.IsKeyboardFocused)
-                return;
-            textBox.Text = time;
-            textBox.Tag = time;
-        }
-
-        private static void setTextIfUnfocused(TextBox textBox, string text)
-        {
-            if (textBox.IsKeyboardFocused)
-                return;
-            textBox.Text = text;
-        }
-
-        private static void setTextIfUnfocused(ExtendedTextBox textBox, string text)
-        {
-            if (textBox.IsKeyboardFocused)
-                return;
-            textBox.SetText(text);
         }
 
         #endregion
@@ -201,14 +165,17 @@ namespace TogglDesktop.WPF
             if (!this.hasTimeEntry() || this.timeEntry.DurationInSeconds >= 0)
                 return;
 
-            if (this.durationTextBox.IsFocused)
+            if (this.durationTextBox.Text != (this.durationTextBox.Tag as string)
+                || this.durationTextBox.SelectedText != "")
                 return;
 
+            var caret = this.durationTextBox.CaretIndex;
+
             var s = Toggl.FormatDurationInSecondsHHMMSS(this.timeEntry.DurationInSeconds);
-            if (this.durationTextBox.Text != s)
-            {
-                this.durationTextBox.Text = s;
-            }
+            this.durationTextBox.Text = s;
+            this.durationTextBox.Tag = s;
+
+            this.durationTextBox.CaretIndex = caret;
         }
 
         #endregion
