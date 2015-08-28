@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Interop;
-using System.Windows.Navigation;
 using TogglDesktop.WPF;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Point = System.Drawing.Point;
@@ -25,13 +24,12 @@ public partial class MainWindowController : TogglForm
 
     private LoginViewController loginViewController;
     private TimeEntryListViewController timeEntryListViewController;
-    private WPF.TimeEntryEditViewController timeEntryEditViewController;
     private WPF.AboutWindow aboutWindowController;
     private PreferencesWindow preferencesWindowController;
     private FeedbackWindowController feedbackWindowController;
     private IdleNotificationWindowController idleNotificationWindowController;
 
-    private EditForm editForm;
+    private EditViewPopup editViewPopup;
 
     private bool isTracking = false;
     private Point defaultContentPosition =  new System.Drawing.Point(0, 0);
@@ -118,9 +116,9 @@ public partial class MainWindowController : TogglForm
         if (Visible)
         {
             Hide();
-            if (editForm.Visible)
+            if (this.editViewPopup.IsVisible)
             {
-                editForm.ClosePopup();
+                this.editViewPopup.ClosePopup();
             }
             feedbackWindowController.Close();
             aboutWindowController.Close();
@@ -200,7 +198,6 @@ public partial class MainWindowController : TogglForm
 
         loginViewController = new LoginViewController();
         timeEntryListViewController = new TimeEntryListViewController();
-        timeEntryEditViewController = new WPF.TimeEntryEditViewController();
 
         aboutWindowController = new WPF.AboutWindow();
         preferencesWindowController = new PreferencesWindow();
@@ -208,9 +205,10 @@ public partial class MainWindowController : TogglForm
         idleNotificationWindowController = new IdleNotificationWindowController();
 
         initEditForm();
-        timeEntryListViewController.SetEditPopup(timeEntryEditViewController);
-        editForm.Owner = feedbackWindowController.Owner = this;
+        timeEntryListViewController.SetEditPopup(this.editViewPopup.EditView);
+        feedbackWindowController.Owner = this;
 
+        this.ownWPFWindow(this.editViewPopup);
         this.ownWPFWindow(this.preferencesWindowController);
         this.ownWPFWindow(this.aboutWindowController);
 
@@ -226,7 +224,7 @@ public partial class MainWindowController : TogglForm
             TogglDesktop.Program.Shutdown(1);
         }
 
-        Utils.LoadWindowLocation(this, editForm);
+        Utils.LoadWindowLocation(this, editViewPopup);
 
         setCorrectMinimumSize();
 
@@ -458,10 +456,10 @@ public partial class MainWindowController : TogglForm
             return;
 
         if (open) {
-            if (editForm.Visible)
+            if (editViewPopup.IsVisible)
             {
-                editForm.Hide();
-                editForm.GUID = null;
+                editViewPopup.Hide();
+                editViewPopup.GUID = null;
                 timeEntryListViewController.DisableHighlight();
             }
             contentPanel.Controls.Remove(timeEntryListViewController);
@@ -508,10 +506,10 @@ public partial class MainWindowController : TogglForm
             setCorrectMinimumSize();
             contentPanel.Controls.Add(timeEntryListViewController);
             timeEntryListViewController.SetAcceptButton(this);
-            if (editForm.Visible)
+            if (this.editViewPopup.IsVisible)
             {
-                editForm.Hide();
-                editForm.GUID = null;
+                this.editViewPopup.Hide();
+                this.editViewPopup.GUID = null;
                 timeEntryListViewController.DisableHighlight();
             }
         }
@@ -519,37 +517,23 @@ public partial class MainWindowController : TogglForm
 
     private void initEditForm()
     {
-        editForm = new EditForm
-        {
-            ControlBox = false,
-            StartPosition = FormStartPosition.Manual
-        };
+        this.editViewPopup = new EditViewPopup();
 
-        var editViewHost = new ElementHost
-        {
-            Dock = DockStyle.Fill,
-            Child = this.timeEntryEditViewController
-        };
-
-        editForm.Controls.Add(editViewHost);
-
-        editForm.SetViewController(this.timeEntryEditViewController);
-
-        editForm.VisibleChanged += (sender, args) => this.updateEntriesListWidth();
-        editForm.Resize += (sender, args) => this.updateEntriesListWidth();
+        this.editViewPopup.IsVisibleChanged += (sender, args) => this.updateEntriesListWidth();
+        this.editViewPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
     }
 
     public void PopupInput(Toggl.TogglTimeEntryView te)
     {
-        if (te.GUID == editForm.GUID) {
-            editForm.ClosePopup();
+        if (te.GUID == this.editViewPopup.GUID)
+        {
+            this.editViewPopup.ClosePopup();
             return;
         }
-        editForm.reset();
-        setEditFormLocation();
-        editForm.GUID = te.GUID;
-        editForm.Show();
-        timeEntryListViewController.HighlightEntry(te.GUID);
+        this.setEditFormLocation();
+        this.editViewPopup.GUID = te.GUID;
+        this.editViewPopup.Show();
+        this.timeEntryListViewController.HighlightEntry(te.GUID);
     }
 
     void OnTimeEntryEditor(
@@ -564,7 +548,7 @@ public partial class MainWindowController : TogglForm
         {
             contentPanel.Controls.Remove(loginViewController);
             MinimumSize = new Size(230, 86);
-            timeEntryEditViewController.FocusField(focused_field_name);
+            this.editViewPopup.EditView.FocusField(focused_field_name);
             PopupInput(te);
         }
         timeEntryListViewController.HighlightEntry(te.GUID);
@@ -572,7 +556,7 @@ public partial class MainWindowController : TogglForm
 
     private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
     {
-        Utils.SaveWindowLocation(this, editForm);
+        Utils.SaveWindowLocation(this, this.editViewPopup);
 
         if (CloseReason.WindowsShutDown == e.CloseReason)
         {
@@ -585,9 +569,9 @@ public partial class MainWindowController : TogglForm
             e.Cancel = true;
         }
 
-        if (editForm.Visible)
+        if (this.editViewPopup.IsVisible)
         {
-            editForm.ClosePopup();
+            this.editViewPopup.ClosePopup();
         }
     }
 
@@ -607,7 +591,7 @@ public partial class MainWindowController : TogglForm
     {
         if (Visible)
         {
-            Utils.SaveWindowLocation(this, editForm);
+            Utils.SaveWindowLocation(this, this.editViewPopup);
         }
 
         TogglDesktop.Program.Shutdown(0);
@@ -696,9 +680,9 @@ public partial class MainWindowController : TogglForm
         var hwndInsertAfter = onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST;
 
         Win32.SetWindowPos(this.Handle, hwndInsertAfter, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
-        if (this.editForm != null)
+        if (this.editViewPopup != null)
         {
-            this.editForm.SetWindowPos(onTop);
+            this.editViewPopup.SetWindowPos(onTop);
         }
     }
 
@@ -811,19 +795,19 @@ public partial class MainWindowController : TogglForm
             editPopupLocation.Y += headerHeight;
             editPopupLocation.X += this.Width;
 
-            this.editForm.SetPlacement(true, editPopupLocation, this.Height - headerHeight, true);
+            this.editViewPopup.SetPlacement(true, editPopupLocation, this.Height - headerHeight, true);
         }
         else
         {
             var s = this.getCurrentScreen();
-            bool left = s.WorkingArea.Right - this.Right < this.editForm.Width;
+            bool left = s.WorkingArea.Right - this.Right < this.editViewPopup.Width;
 
             if (!left)
             {
                 editPopupLocation.X += this.Width;
             }
 
-            this.editForm.SetPlacement(left, editPopupLocation, this.Height);
+            this.editViewPopup.SetPlacement(left, editPopupLocation, this.Height);
         }
 
     }
@@ -832,9 +816,9 @@ public partial class MainWindowController : TogglForm
     {
         if (keyData == Keys.Escape)
         {
-            if (this.editForm.Visible)
+            if (this.editViewPopup.IsVisible)
             {
-                this.editForm.ClosePopup();
+                this.editViewPopup.ClosePopup();
                 return true;
             }
         }
@@ -882,13 +866,13 @@ public partial class MainWindowController : TogglForm
 
         var maximised = overrideMaximised ?? (this.WindowState == FormWindowState.Maximized);
 
-        if (!maximised || this.editForm == null || !this.editForm.Visible)
+        if (!maximised || this.editViewPopup == null || !this.editViewPopup .IsVisible)
         {
             this.timeEntryListViewController.DisableListWidth();
             return;
         }
 
-        this.timeEntryListViewController.SetListWidth(this.Width - this.editForm.Width);
+        this.timeEntryListViewController.SetListWidth(this.Width - (int)this.editViewPopup.Width);
     }
 
     protected override void WndProc(ref Message message)
@@ -932,9 +916,9 @@ public partial class MainWindowController : TogglForm
     }
     private void recalculatePopupPosition()
     {
-        if (editForm != null && editForm.Visible)
+        if (this.editViewPopup != null && this.editViewPopup.IsVisible)
         {
-            setEditFormLocation();
+            this.setEditFormLocation();
         }
     }
 

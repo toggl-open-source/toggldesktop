@@ -192,12 +192,6 @@
     <Compile Include="CustomForm\NativeMethods.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
-    <Compile Include="EditForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditForm.Designer.cs">
-      <DependentUpon>EditForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="FeedbackWindowController.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,6 +235,9 @@
     </Compile>
     <Compile Include="WPF\AutoComplete\ProjectEntry.xaml.cs">
       <DependentUpon>ProjectEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\EditViewPopup.xaml.cs">
+      <DependentUpon>EditViewPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\ExtendedTextBox.cs" />
     <Compile Include="WPF\LoginConfirmButton.xaml.cs">
@@ -313,9 +310,6 @@
     </Compile>
     <Compile Include="WPF\TogglWindow.cs" />
     <Compile Include="WPF\TogglChromeDesignTimeConverter.cs" />
-    <EmbeddedResource Include="EditForm.resx">
-      <DependentUpon>EditForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FeedbackWindowController.resx">
       <DependentUpon>FeedbackWindowController.cs</DependentUpon>
     </EmbeddedResource>
@@ -525,6 +519,10 @@
     <Page Include="WPF\AutoComplete\ProjectEntry.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\EditViewPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\LoginConfirmButton.xaml">
       <SubType>Designer</SubType>

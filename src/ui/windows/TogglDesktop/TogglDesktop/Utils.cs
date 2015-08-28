@@ -5,17 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using TogglDesktop.WPF;
 
 namespace TogglDesktop
 {
 public static class Utils
 {
-    public static void LoadWindowLocation(Form f, Form edit)
+    public static void LoadWindowLocation(Form f, EditViewPopup edit)
     {
         try
         {
-            if (edit != null) {
-                edit.MinimumSize = Properties.Settings.Default.EditSize;
+            if (edit != null)
+            {
+                var size = Properties.Settings.Default.EditSize;
+                edit.Width = size.Width;
+                edit.Height = size.Height;
             }
             if (Properties.Settings.Default.Maximized)
             {
@@ -164,7 +168,7 @@ public static class Utils
         }
     }
 
-    public static void SaveWindowLocation(Form f, Form edit)
+    public static void SaveWindowLocation(Form f, EditViewPopup edit)
     {
         try
         {
@@ -191,7 +195,7 @@ public static class Utils
             }
 
             if (edit != null) {
-                Properties.Settings.Default.EditSize = edit.Size;
+                Properties.Settings.Default.EditSize = new Size((int)edit.Width, (int)edit.Height);
             }
 
             Properties.Settings.Default.Save();
