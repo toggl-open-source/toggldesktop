@@ -55,6 +55,16 @@ namespace TogglDesktop.WPF
             }
         }
 
+        protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            if (this.SelectAllOnKeyboardFocus)
+            {
+                this.SelectionLength = 0;
+            }
+
+            base.OnLostKeyboardFocus(e);
+        }
+
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {
             this.SelectAll();
