@@ -109,25 +109,24 @@ namespace TogglDesktop.WPF
 
             #region global shortcuts
 
-            this.showHideShortcutRecorder.Reset();
-            this.continueStopShortcutRecorder.Reset();
-
             trySetHotKey(
                 () => Properties.Settings.Default.ShowKey,
                 () => Properties.Settings.Default.ShowModifiers,
-                this.showHideShortcutRecordButton
+                this.showHideShortcutRecordButton,
+                this.showHideShortcutRecorder
                 );
             trySetHotKey(
                 () => Properties.Settings.Default.StartKey,
                 () => Properties.Settings.Default.StartModifiers,
-                this.continueStopShortcutRecordButton
+                this.continueStopShortcutRecordButton,
+                this.continueStopShortcutRecorder
                 );
 
             #endregion
         }
 
         private static void trySetHotKey(Func<string> getKeyCode, Func<ModifierKeys> getModifiers,
-            Button recordButton)
+            Button recordButton, ShortcutRecorder recorder)
         {
             try
             {
@@ -136,15 +135,19 @@ namespace TogglDesktop.WPF
                 if (string.IsNullOrEmpty(keyCode))
                 {
                     recordButton.Content = recordButtonIdleText;
+                    recorder.Reset(null);
                     return;
                 }
 
                 var modifiers = getModifiers();
                 recordButton.Content = keyEventToString(modifiers, keyCode);
+                recorder.Reset(new Utils.KeyCombination(modifiers, keyCode));
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not load hotkey: {0}", e);
+                Toggl.Debug(string.Format("Could not load hotkey: {0}", e));
+                recorder.Reset(null);
             }
         }
 
@@ -316,15 +319,21 @@ namespace TogglDesktop.WPF
                 if (!this.recording)
                     return;
 
-                this.button.Content = recordButtonIdleText;
-                this.recording = false;
-
                 var mods = getCurrentModifiers();
 
                 if (!mods.HasFlag(ModifierKeys.Alt) && !mods.HasFlag(ModifierKeys.Control))
                 {
+                    if (e.Key == Key.Enter || e.Key == Key.Space)
+                    {
+                        // this happens when user starts recoding with keyboard
+                        return;
+                    }
+
+                    this.cancelRecording();
                     return;
                 }
+
+                this.cancelRecording();
 
                 if (e.Key == Key.None)
                 {
@@ -341,11 +350,8 @@ namespace TogglDesktop.WPF
                 e.Handled = true;
             }
 
-            public void Reset()
+            private void cancelRecording()
             {
-                this.recording = false;
-                this.HasChanged = false;
-
                 if (this.Shortcut.HasValue)
                 {
                     var shortcut = this.Shortcut.Value;
@@ -355,9 +361,20 @@ namespace TogglDesktop.WPF
                 {
                     this.button.Content = recordButtonIdleText;
                 }
-
+                this.recording = false;
             }
 
+            public void Reset()
+            {
+                this.cancelRecording();
+                this.HasChanged = false;
+            }
+
+            public void Reset(Utils.KeyCombination? shortcut)
+            {
+                this.Shortcut = shortcut;
+                this.Reset();
+            }
 
             private static ModifierKeys getCurrentModifiers()
             {
@@ -374,6 +391,7 @@ namespace TogglDesktop.WPF
 
                 return modifiers;
             }
+
         }
 
         #endregion
