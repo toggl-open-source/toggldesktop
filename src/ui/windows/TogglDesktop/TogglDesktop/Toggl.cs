@@ -318,7 +318,7 @@ public static partial class Toggl
             settings.RemindFri,
             settings.RemindSat,
             settings.RemindSun
-            ))
+                ))
         {
             return false;
         }
@@ -326,7 +326,7 @@ public static partial class Toggl
             ctx,
             settings.RemindStarts,
             settings.RemindEnds
-            ))
+                ))
         {
             return false;
         }
