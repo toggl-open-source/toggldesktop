@@ -2735,7 +2735,7 @@ Project *Context::CreateProject(
     const bool is_private) {
 
     if (!workspace_id) {
-        displayError("Please select a workspace");
+        displayError(kPleaseSelectAWorkspace);
         return nullptr;
     }
 
@@ -2746,7 +2746,7 @@ Project *Context::CreateProject(
         return nullptr;
     }
     if (trimmed_project_name.empty()) {
-        displayError("Project name must not be empty");
+        displayError(kProjectNameMustNotBeEmpty);
         return nullptr;
     }
 
@@ -2758,6 +2758,15 @@ Project *Context::CreateProject(
             logger().warning("Cannot add project, user logged out");
             return nullptr;
         }
+
+        for (int i = 0; i < user_->related.Projects.size(); i++) {
+            Project *p = user_->related.Projects[i];
+            if (p->Name() == trimmed_project_name) {
+                displayError(kProjectNameAlreadyExists);
+                return nullptr;
+            }
+        }
+
         result = user_->CreateProject(
             workspace_id,
             client_id,
@@ -2780,7 +2789,7 @@ Client *Context::CreateClient(
     const std::string client_name) {
 
     if (!workspace_id) {
-        displayError("Please select a workspace");
+        displayError(kPleaseSelectAWorkspace);
         return nullptr;
     }
 
@@ -2791,7 +2800,7 @@ Client *Context::CreateClient(
         return nullptr;
     }
     if (trimmed_client_name.empty()) {
-        displayError("Client name must not be empty");
+        displayError(kClientNameMustNotBeEmpty);
         return nullptr;
     }
 
@@ -2802,6 +2811,13 @@ Client *Context::CreateClient(
         if (!user_) {
             logger().warning("Cannot create a client, user logged out");
             return nullptr;
+        }
+        for (int i = 0; i < user_->related.Clients.size(); i++) {
+            Client *c = user_->related.Clients[i];
+            if (c->Name() == trimmed_client_name) {
+                displayError(kClientNameAlreadyExists);
+                return nullptr;
+            }
         }
         result = user_->CreateClient(workspace_id, trimmed_client_name);
     }
