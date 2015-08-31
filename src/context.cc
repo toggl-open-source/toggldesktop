@@ -2758,15 +2758,15 @@ Project *Context::CreateProject(
             logger().warning("Cannot add project, user logged out");
             return nullptr;
         }
-
-        for (int i = 0; i < user_->related.Projects.size(); i++) {
-            Project *p = user_->related.Projects[i];
+        for (std::vector<Project *>::iterator it =
+            user_->related.Projects.begin();
+                it != user_->related.Projects.end(); it++) {
+            Project *p = *it;
             if (p->Name() == trimmed_project_name) {
                 displayError(kProjectNameAlreadyExists);
                 return nullptr;
             }
         }
-
         result = user_->CreateProject(
             workspace_id,
             client_id,
@@ -2812,8 +2812,10 @@ Client *Context::CreateClient(
             logger().warning("Cannot create a client, user logged out");
             return nullptr;
         }
-        for (int i = 0; i < user_->related.Clients.size(); i++) {
-            Client *c = user_->related.Clients[i];
+        for (std::vector<Client *>::iterator it =
+            user_->related.Clients.begin();
+                it != user_->related.Clients.end(); it++) {
+            Client *c = *it;
             if (c->Name() == trimmed_client_name) {
                 displayError(kClientNameAlreadyExists);
                 return nullptr;
