@@ -103,7 +103,7 @@
     <Grid>
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">
             <Button Style="{StaticResource ManualAddButton}"
-                    Click="onManualAddButtonClick">+ Add time entry</Button>
+                    Click="onManualAddButtonClick" Content="+ Add time entry"/>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
     MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" Background="Transparent" KeyDown="onGridKeyDown">
@@ -139,9 +139,9 @@
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
 
                     <TextBlock Name="clientLabel" x:FieldModifier="private"
-                            Foreground="#dddddd">Client</TextBlock>
+                            Foreground="#dddddd" Text="Client"/>
                     <TextBlock Name="projectLabel" x:FieldModifier="private"
-                        >Project</TextBlock>
+                         Text="Project"/>
                 </StackPanel>
 
                 <Grid Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown"
@@ -152,10 +152,11 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Name="taskLabel" x:FieldModifier="private"
-                            Foreground="#bbbbbb">Task -</TextBlock>
+                            Foreground="#bbbbbb" Text="Task -" />
 
                     <!-- description placeholder/display -->
-                    <TextBlock Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private">
+                    <TextBlock Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private"
+                               Text="What are you doing?">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -170,7 +171,6 @@
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
-            What are you doing?
                     </TextBlock>
 
                     <toggl:ExtendedTextBox Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
@@ -199,7 +199,7 @@
             <!-- time placeholder/display -->
             <TextBlock Grid.Column="3" Name="durationLabel" x:FieldModifier="private"
                 FontSize="25" HorizontalAlignment="Right" FontWeight="UltraLight"
-                MouseLeftButtonDown="onTimeLabelMouseDown">
+                MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -214,7 +214,6 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
-        00:00:00
             </TextBlock>
 
             <!-- time textbox -->
