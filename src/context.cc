@@ -1228,14 +1228,15 @@ error Context::SendFeedback(Feedback fb) {
 void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onSendFeedback");
 
-    std::string apitoken("");
+    std::string api_token_value("");
+    std::string api_token_name("");
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            return;
+        if (user_) {
+            api_token_value = user_->APIToken();
+            api_token_name = "api_token";
         }
-        apitoken = user_->APIToken();
     }
 
     std::string update_channel("");
@@ -1265,10 +1266,11 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     error err = client.Post(urls::API(),
                             "/api/v8/feedback/web",
                             "",
-                            apitoken,
-                            "api_token",
+                            api_token_value,
+                            api_token_name,
                             &response_body,
                             &form);
+    logger().debug("Feedback result: " + err);
     if (err != noError) {
         displayError(err);
         return;
