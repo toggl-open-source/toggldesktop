@@ -34,7 +34,7 @@ namespace TogglDesktop.WPF
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            if (Mouse.LeftButton != MouseButtonState.Pressed)
+            if (!(Mouse.LeftButton == MouseButtonState.Pressed && this.IsMouseOver))
             {
                 this.onFocusedByTab();
             }

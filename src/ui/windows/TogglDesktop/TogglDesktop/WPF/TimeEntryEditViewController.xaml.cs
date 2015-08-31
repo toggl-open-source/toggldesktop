@@ -136,6 +136,7 @@ namespace TogglDesktop.WPF
                     this.projectAddButtonColumn.Width = new GridLength(0);
                     this.projectAddButtonColumn.SharedSizeGroup = null;
                 }
+
             }
         }
 
