@@ -27,7 +27,6 @@
 
 namespace toggl {
 
-class AutotrackerRule;
 class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
