@@ -1,0 +1,42 @@
+Toggl Desktop app requires Qt 5.5 and Poco libraries version 1.6.1 to run.
+These libraries *are not* packaged with the Toggl Desktop app.
+
+To install Qt and Poco libraries, please follow these links:
+
+http://www.qt.io/download-open-source/
+http://pocoproject.org/releases/poco-1.6.1/poco-1.6.1-all.tar.gz
+
+After building and installing Qt and Poco libraries, you'll need
+to add the libraries to your LD_LIBRARY_PATH in order for the
+Toggl Desktop app to run. You can run add it each time you run the
+Toggl Desktop app like this:
+
+	LD_LIBRARY_PATH=/home/tanel/poco/lib/Linux/x86_64:/home/tanel/Qt/5.5/gcc_64/lib ./TogglDesktop
+
+(Assuming the Poco libraries are installed at /home/tanel/poco/lib/Linux/x86_64
+and the Qt libraries at /home/tanel/Qt/5.5/gcc_64/lib)
+
+Or you can append the libraries permanently like this:
+
+	LD_LIBRARY_PATH=/home/tanel/poco/lib/Linux/x86_64:/home/tanel/Qt/5.5/gcc_64/lib
+
+(Then just type ./TogglDesktop to run the Toggl Desktop app).
+
+Please note that the Poco and Qt libraries may or may not be
+available on your distro. Installing the libraries from source
+is possible on any Linux platform.
+
+Should you experience any problems, please contact the Toggl
+Desktop app developers at:
+
+	support@toggl.com
+
+Or create a new Github issue directly, by visiting:
+
+	https://github.com/toggl/toggldesktop/issues/new
+
+If you're able to run the Toggl Desktop app, then you
+can also send feedback directly from the app itself.
+In that case, log files are automatically included with
+the feedback to resolve the issue faster.
+
