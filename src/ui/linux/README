@@ -11,14 +11,14 @@ to add the libraries to your LD_LIBRARY_PATH in order for the
 Toggl Desktop app to run. You can run add it each time you run the
 Toggl Desktop app like this:
 
-	LD_LIBRARY_PATH=/home/tanel/poco/lib/Linux/x86_64:/home/tanel/Qt/5.5/gcc_64/lib ./TogglDesktop
+	LD_LIBRARY_PATH=/home/tanel/poco/lib/Linux/x86_64:/home/tanel/Qt/5.5/gcc_64/lib:$LD_LIBRARY_PATH ./TogglDesktop
 
 (Assuming the Poco libraries are installed at /home/tanel/poco/lib/Linux/x86_64
 and the Qt libraries at /home/tanel/Qt/5.5/gcc_64/lib)
 
 Or you can append the libraries permanently like this:
 
-	LD_LIBRARY_PATH=/home/tanel/poco/lib/Linux/x86_64:/home/tanel/Qt/5.5/gcc_64/lib
+	LD_LIBRARY_PATH=/home/tanel/poco/lib/Linux/x86_64:/home/tanel/Qt/5.5/gcc_64/lib:$LD_LIBRARY_PATH
 
 (Then just type ./TogglDesktop to run the Toggl Desktop app).
 
