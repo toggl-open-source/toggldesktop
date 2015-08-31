@@ -181,7 +181,6 @@ default: fmt app
 
 csapi:
 	go run src/script/generate_cs_api.go
-	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs
 	mcs src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs /target:library
 
 clean: clean_ui clean_lib clean_test
@@ -354,6 +353,7 @@ fmt_lib: third_party/google-astyle/build/google-astyle
 fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
 	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/*.cs
+	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs
 
 build/jsoncpp.o: $(jsoncppdir)/jsoncpp.cpp
 	$(cxx) $(cflags) -c $(jsoncppdir)/jsoncpp.cpp -o build/jsoncpp.o
