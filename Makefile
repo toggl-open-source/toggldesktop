@@ -174,7 +174,7 @@ endif
 cxx=g++ -fprofile-arcs -ftest-coverage -std=gnu++0x
 
 ifeq ($(osname), windows)
-default: csapi fmt app
+default: fmt app
 endif
 
 default: fmt app
