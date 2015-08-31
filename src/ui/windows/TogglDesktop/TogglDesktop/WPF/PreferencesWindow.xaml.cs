@@ -112,21 +112,18 @@ namespace TogglDesktop.WPF
             trySetHotKey(
                 () => Properties.Settings.Default.ShowKey,
                 () => Properties.Settings.Default.ShowModifiers,
-                this.showHideShortcutRecordButton,
                 this.showHideShortcutRecorder
                 );
             trySetHotKey(
                 () => Properties.Settings.Default.StartKey,
                 () => Properties.Settings.Default.StartModifiers,
-                this.continueStopShortcutRecordButton,
                 this.continueStopShortcutRecorder
                 );
 
             #endregion
         }
 
-        private static void trySetHotKey(Func<string> getKeyCode, Func<ModifierKeys> getModifiers,
-            Button recordButton, ShortcutRecorder recorder)
+        private static void trySetHotKey(Func<string> getKeyCode, Func<ModifierKeys> getModifiers, ShortcutRecorder recorder)
         {
             try
             {
@@ -134,13 +131,11 @@ namespace TogglDesktop.WPF
 
                 if (string.IsNullOrEmpty(keyCode))
                 {
-                    recordButton.Content = recordButtonIdleText;
                     recorder.Reset(null);
                     return;
                 }
 
                 var modifiers = getModifiers();
-                recordButton.Content = keyEventToString(modifiers, keyCode);
                 recorder.Reset(new Utils.KeyCombination(modifiers, keyCode));
 
             }
