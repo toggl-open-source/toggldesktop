@@ -329,14 +329,14 @@ endif
 poco:
 ifeq ($(osname), windows)
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page,CppUnit --no-tests --no-samples \
 	--sqlite-thread-safe=0 \
 	--include-path=$(pwd)/$(openssldir)/inc32 --library-path=$(pwd)/$(openssldir) && \
 	make clean && \
 	make
 else
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples --cflags=-fPIC \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page,CppUnit --no-tests --no-samples --cflags=-fPIC \
 	--sqlite-thread-safe=1 \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make clean && \
