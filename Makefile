@@ -584,3 +584,6 @@ loco:
 ifeq ($(osname), mac)
 	xcodebuild -exportLocalizations -localizationPath src/ui/osx/localization -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj -exportLanguage et
 endif
+
+package:
+	./src/ui/linux/package.sh
