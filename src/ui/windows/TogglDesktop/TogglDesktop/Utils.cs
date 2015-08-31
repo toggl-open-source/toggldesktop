@@ -29,10 +29,7 @@ public static class Utils
             Int64 x = 0, y = 0, h = 0, w = 0;
             if (Toggl.WindowSettings(ref x, ref y, ref h, ref w))
             {
-                if (x >= 0 && y >= 0)
-                {
-                    f.Location = new Point((int)x, (int)y);
-                }
+                f.Location = new Point((int)x, (int)y);
 
                 if (h >= 0 && w >= 0)
                 {
