@@ -71,10 +71,7 @@ int getFocusedWindowInfo(
 
         std::string utf8("");
 
-#ifndef __CYGWIN__
-        // FIXME: does not work with Cygwin
         Poco::UnicodeConverter::toUTF8(buf, utf8);
-#endif
 
         *title = utf8;
     }
