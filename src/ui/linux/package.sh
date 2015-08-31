@@ -29,6 +29,8 @@ cp third_party/bugsnag-qt/build/release/libbugsnag-qt.so.1.0.0 $out
 
 cp src/ui/linux/TogglDesktop/build/release/TogglDesktop $out/.
 
+chrpath -r "\$ORIGIN" $out/TogglDesktop
+
 # copy icons
 cp -r src/ui/linux/TogglDesktop/icons $out/icons
 
