@@ -699,6 +699,31 @@ error Database::SaveProxySettings(
     return last_error("SaveProxySettings");
 }
 
+error Database::Trim(const std::string text, std::string *result) {
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+        poco_check_ptr(result);
+
+        *result = "";
+
+        *session_ <<
+                  "select trim(:text) limit 1",
+                  into(*result),
+                  useRef(text),
+                  limit(1),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("Trim");
+}
+
 error Database::LoadUpdateChannel(
     std::string *update_channel) {
 

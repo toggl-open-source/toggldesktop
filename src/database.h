@@ -167,6 +167,8 @@ class Database {
 
     error EnsureTimelineGUIDS();
 
+    error Trim(const std::string text, std::string *result);
+
  private:
     error vacuum();
 

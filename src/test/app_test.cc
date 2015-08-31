@@ -233,6 +233,15 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     ASSERT_EQ(std::size_t(0), left_for_upload.size());
 }
 
+TEST(Database, Trim) {
+    testing::Database db;
+    std::string text(" jäääär ");
+    std::string result("");
+    error err = db.instance()->Trim(text, &result);
+    ASSERT_EQ(noError, err);
+    ASSERT_EQ(std::string("jäääär"), result);
+}
+
 TEST(Database, SaveAndLoadCurrentAPIToken) {
     testing::Database db;
     std::string api_token("");
