@@ -58,6 +58,11 @@
 #define kCannotContinueDeletedTimeEntry "Cannot continue deleted time entry"
 #define kCannotDeleteDeletedTimeEntry "Cannot delete deleted time entry"
 #define kErrorRuleAlreadyExists "rule already exists"
+#define kPleaseSelectAWorkspace "Please select a workspace"
+#define kClientNameMustNotBeEmpty "Client name must not be empty"
+#define kProjectNameMustNotBeEmpty "Project name must not be empty"
+#define kProjectNameAlreadyExists "Project name already exists"
+#define kClientNameAlreadyExists "Client name already exists"
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"

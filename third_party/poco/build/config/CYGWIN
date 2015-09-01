@@ -39,18 +39,18 @@ SHAREDLIBLINKEXT = .dll
 #
 # Compiler and Linker Flags
 #
-CFLAGS          = 
+CFLAGS          = -O2 -pipe -Wimplicit-function-declaration
 CFLAGS32        =
 CFLAGS64        =
-CXXFLAGS        = -DPOCO_NO_FPENVIRONMENT -DPOCO_NO_WSTRING -DPOCO_NO_SHAREDMEMORY
+CXXFLAGS        = -O2 -pipe
 CXXFLAGS32      =
 CXXFLAGS64      =
 LINKFLAGS       =
 LINKFLAGS32     =
 LINKFLAGS64     =
 STATICOPT_CC    =
-STATICOPT_CXX   =
-STATICOPT_LINK  = -static
+STATICOPT_CXX   = -frepo
+STATICOPT_LINK  = -frepo
 SHAREDOPT_CC    = 
 SHAREDOPT_CXX   = 
 SHAREDOPT_LINK  = 

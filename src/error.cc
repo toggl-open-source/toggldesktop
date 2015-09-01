@@ -188,7 +188,18 @@ bool IsUserError(const error err) {
     if (err.find(kCannotDeleteDeletedTimeEntry) != std::string::npos) {
         return true;
     }
-
+    if (err.find(kPleaseSelectAWorkspace) != std::string::npos) {
+        return true;
+    }
+    if (err.find(kClientNameMustNotBeEmpty) != std::string::npos) {
+        return true;
+    }
+    if (err.find(kProjectNameMustNotBeEmpty) != std::string::npos) {
+        return true;
+    }
+    if (err.find(kClientNameAlreadyExists) != std::string::npos) {
+        return true;
+    }
     return false;
 }
 

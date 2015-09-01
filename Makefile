@@ -174,14 +174,13 @@ endif
 cxx=g++ -fprofile-arcs -ftest-coverage -std=gnu++0x
 
 ifeq ($(osname), windows)
-default: csapi fmt app
+default: fmt app
 endif
 
 default: fmt app
 
 csapi:
 	go run src/script/generate_cs_api.go
-	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs
 	mcs src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs /target:library
 
 clean: clean_ui clean_lib clean_test
@@ -330,14 +329,14 @@ endif
 poco:
 ifeq ($(osname), windows)
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page,CppUnit --no-tests --no-samples \
 	--sqlite-thread-safe=0 \
 	--include-path=$(pwd)/$(openssldir)/inc32 --library-path=$(pwd)/$(openssldir) && \
 	make clean && \
 	make
 else
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page --no-tests --no-samples --cflags=-fPIC \
+	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page,CppUnit --no-tests --no-samples --cflags=-fPIC \
 	--sqlite-thread-safe=1 \
 	--include-path=$(pwd)/$(openssldir)/include --library-path=$(pwd)/$(openssldir) && \
 	make clean && \
@@ -354,6 +353,7 @@ fmt_lib: third_party/google-astyle/build/google-astyle
 fmt_ui:
 	./third_party/Xcode-formatter/CodeFormatter/scripts/formatAllSources.sh src/ui/osx/
 	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/*.cs
+	third_party/google-astyle/build/google-astyle -n src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs
 
 build/jsoncpp.o: $(jsoncppdir)/jsoncpp.cpp
 	$(cxx) $(cflags) -c $(jsoncppdir)/jsoncpp.cpp -o build/jsoncpp.o
@@ -584,3 +584,6 @@ loco:
 ifeq ($(osname), mac)
 	xcodebuild -exportLocalizations -localizationPath src/ui/osx/localization -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj -exportLanguage et
 endif
+
+package:
+	./src/ui/linux/package.sh

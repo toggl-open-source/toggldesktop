@@ -906,8 +906,7 @@ TEST(toggl_api, toggl_create_project) {
 
     uint64_t wid = 0;
     uint64_t cid = 0;
-    // FIXME: std::string project_name("    ");
-    std::string project_name("");
+    std::string project_name("    ");
     bool_t is_private = false;
 
     testing::testresult::error = "";
@@ -964,6 +963,16 @@ TEST(toggl_api, toggl_create_project) {
         ASSERT_TRUE(project_guid);
         free(project_guid);
     }
+
+    // But none with existing project name
+    testing::testresult::error = "";
+    project_guid = toggl_create_project(app.ctx(),
+                                        wid,
+                                        cid,
+                                        project_name.c_str(),
+                                        is_private);
+    ASSERT_FALSE(project_guid);
+    ASSERT_EQ("Project name already exists", testing::testresult::error);
 }
 
 TEST(toggl_api, toggl_create_client) {
@@ -973,8 +982,7 @@ TEST(toggl_api, toggl_create_client) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     uint64_t wid = 0;
-    // FIXME: std::string client_name("        ");
-    std::string client_name("");
+    std::string client_name("        ");
 
     testing::testresult::error = "";
     char_t *res = toggl_create_client(app.ctx(),
@@ -1023,6 +1031,14 @@ TEST(toggl_api, toggl_create_client) {
         ASSERT_TRUE(res);
         free(res);
     }
+
+    // But none with an existing client name
+    testing::testresult::error = "";
+    res = toggl_create_client(app.ctx(),
+                              wid,
+                              client_name.c_str());
+    ASSERT_FALSE(res);
+    ASSERT_EQ("Client name already exists", testing::testresult::error);
 }
 
 TEST(toggl_api, toggl_continue) {

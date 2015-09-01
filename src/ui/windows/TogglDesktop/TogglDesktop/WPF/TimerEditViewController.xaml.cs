@@ -96,11 +96,7 @@ namespace TogglDesktop.WPF
             if (!this.isRunning)
                 return;
 
-            var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
-            if (this.durationLabel.Text != s)
-            {
-                this.durationLabel.Text = s;
-            }
+            this.setRunningDurationLabels();
         }
 
         private void startStopButtonOnClick(object sender, RoutedEventArgs e)
@@ -269,7 +265,51 @@ namespace TogglDesktop.WPF
             if (!string.IsNullOrEmpty(item.ProjectLabel))
                 this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
 
+            this.setRunningDurationLabels();
+
             this.invalidate();
+        }
+
+        private void setRunningDurationLabels()
+        {
+            var seconds = this.runningTimeEntry.DurationInSeconds;
+            var unixTimestamp = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            var realSeconds = unixTimestamp + seconds;
+
+            var s = Toggl.FormatDurationInSecondsHHMMSS(seconds);
+
+            if (realSeconds < 10)
+            {
+                this.durationLabelLeft.Text = "";
+                this.durationLabelRight.Text = s;
+                return;
+            }
+
+            if (realSeconds >= 3600)
+            {
+                this.durationLabelLeft.Text = s;
+                this.durationLabelRight.Text = "";
+                this.durationLabelLeft.Margin = new Thickness(14, 0, 0, 0);
+                return;
+            }
+
+
+            var split = s.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+
+            if (split.Length != 2)
+            {
+                this.durationLabelLeft.Text = "";
+                this.durationLabelRight.Text = s;
+
+                Console.WriteLine("Warning: Running time entry time has unknown format.");
+                return;
+            }
+
+            this.durationLabelLeft.Text = split[0];
+            this.durationLabelRight.Text = split[1];
+
+            this.durationLabelLeft.Margin = new Thickness(realSeconds < 60 ? 42 : 6, 0, 0, 0);
+
         }
 
         private void setUIToStoppedState()
@@ -277,7 +317,9 @@ namespace TogglDesktop.WPF
             this.resetUIState(false);
 
             this.descriptionLabel.Text = "What are you doing?";
-            this.durationLabel.Text = "00:00:00";
+            this.durationLabelLeft.Text = "00:00:00";
+            this.durationLabelRight.Text = "";
+            this.durationLabelLeft.Margin = new Thickness(14, 0, 0, 0);
 
             this.invalidate();
         }
