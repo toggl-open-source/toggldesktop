@@ -278,6 +278,9 @@
     </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="Win32.cs" />
+    <Compile Include="WPF\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\OpacityExtension.cs" />
     <Compile Include="WPF\PreferencesWindow.xaml.cs">
       <DependentUpon>PreferencesWindow.xaml</DependentUpon>
@@ -533,6 +536,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\LoginTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
