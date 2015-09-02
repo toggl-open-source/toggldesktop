@@ -6,6 +6,11 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF
 {
+    sealed class TimeEntryCellSample
+    {
+        public Color EntryBackColor { get { return Color.FromRgb(255, 255, 255); } }
+    }
+
     public partial class TimeEntryCell
     {
         private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
