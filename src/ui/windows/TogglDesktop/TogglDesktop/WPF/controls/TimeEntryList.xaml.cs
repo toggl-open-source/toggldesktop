@@ -4,9 +4,6 @@ using System.Windows.Controls;
 
 namespace TogglDesktop.WPF
 {
-    /// <summary>
-    /// Interaction logic for TimeEntryList.xaml
-    /// </summary>
     public partial class TimeEntryList
     {
         private TimeEntryCell highlightedCell;

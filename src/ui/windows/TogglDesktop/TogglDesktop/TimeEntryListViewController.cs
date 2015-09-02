@@ -118,7 +118,7 @@ public partial class TimeEntryListViewController : UserControl
 
     private void refreshHighlight()
     {
-        this.HighlightEntry(this.highlightedGUID);
+        this.entries.RefreshHighLight();
     }
 
     public void HighlightEntry(string GUID)
