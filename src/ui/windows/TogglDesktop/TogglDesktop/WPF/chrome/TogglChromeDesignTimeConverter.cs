@@ -70,7 +70,7 @@ namespace TogglDesktop.WPF
                 }
                 parent = parent.Parent as FrameworkElement;
             }
-            throw new Exception("TogglWindowDesignTimeConverter must be descendend of ContentControl");
+            throw new Exception("TogglWindowDesignTimeConverter must be descendend of ContentControl.\n\nTry rebuilding.");
         }
 
 
