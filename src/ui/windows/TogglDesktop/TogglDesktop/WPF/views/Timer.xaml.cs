@@ -12,7 +12,7 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace TogglDesktop.WPF
 {
-    public partial class TimerEditViewController
+    public partial class Timer
     {
         private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
         private Toggl.TogglTimeEntryView runningTimeEntry;
@@ -21,7 +21,7 @@ namespace TogglDesktop.WPF
         public event EventHandler StartStopClick;
         public event EventHandler RunningTimeEntrySecondPulse;
 
-        public TimerEditViewController()
+        public Timer()
         {
             this.InitializeComponent();
 

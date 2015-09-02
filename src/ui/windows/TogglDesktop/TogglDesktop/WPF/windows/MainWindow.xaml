@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop"/>
         
-        <toggl:TimerEditViewController Grid.Row="0"/>
+        <toggl:Timer Grid.Row="0"/>
         <toggl:TimeEntryList Grid.Row="1"/>
         
     </Grid>

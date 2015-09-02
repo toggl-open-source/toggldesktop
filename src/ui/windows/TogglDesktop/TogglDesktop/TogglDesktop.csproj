@@ -212,7 +212,6 @@
     <Compile Include="WPF\windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\AddValueConverter.cs" />
     <Compile Include="WPF\AutoComplete\GrayTextCategory.xaml.cs">
       <DependentUpon>GrayTextCategory.xaml</DependentUpon>
     </Compile>
@@ -299,14 +298,14 @@
     <Compile Include="WPF\controls\TimeEntryCell.xaml.cs">
       <DependentUpon>TimeEntryCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\views\TimeEntryEditViewController.xaml.cs">
-      <DependentUpon>TimeEntryEditViewController.xaml</DependentUpon>
+    <Compile Include="WPF\views\EditView.xaml.cs">
+      <DependentUpon>EditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\controls\TimeEntryList.xaml.cs">
       <DependentUpon>TimeEntryList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\views\TimerEditViewController.xaml.cs">
-      <DependentUpon>TimerEditViewController.xaml</DependentUpon>
+    <Compile Include="WPF\views\Timer.xaml.cs">
+      <DependentUpon>Timer.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\chrome\TogglChrome.xaml.cs">
       <DependentUpon>TogglChrome.xaml</DependentUpon>
@@ -595,7 +594,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\views\TimeEntryEditViewController.xaml">
+    <Page Include="WPF\views\EditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -603,7 +602,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\views\TimerEditViewController.xaml">
+    <Page Include="WPF\views\Timer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

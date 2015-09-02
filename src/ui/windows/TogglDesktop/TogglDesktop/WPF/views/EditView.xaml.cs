@@ -15,7 +15,7 @@ using TextBox = System.Windows.Controls.TextBox;
 
 namespace TogglDesktop.WPF
 {
-    public partial class TimeEntryEditViewController
+    public partial class EditView
     {
         private Toggl.TogglTimeEntryView timeEntry;
         private bool isInNewProjectMode = true;
@@ -28,7 +28,7 @@ namespace TogglDesktop.WPF
         private string selectedClientGUID;
         private string selectedClientName;
 
-        public TimeEntryEditViewController()
+        public EditView()
         {
             this.DataContext = this;
             this.InitializeComponent();
@@ -944,7 +944,7 @@ namespace TogglDesktop.WPF
 
         #region variuos
 
-        public void SetTimer(TimerEditViewController timer)
+        public void SetTimer(Timer timer)
         {
             timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
             timer.StartStopClick += (sender, args) => this.Close();

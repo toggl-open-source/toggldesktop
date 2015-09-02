@@ -111,7 +111,7 @@ public partial class TimeEntryListViewController : UserControl
         Toggl.OpenInBrowser();
     }
 
-    public void SetEditPopup(WPF.TimeEntryEditViewController editView)
+    public void SetEditPopup(WPF.EditView editView)
     {
         editView.SetTimer(this.timerEditViewController);
     }

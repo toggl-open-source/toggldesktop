@@ -13,6 +13,7 @@ using TogglDesktop.WPF;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
+using Timer = System.Windows.Forms.Timer;
 
 namespace TogglDesktop
 {

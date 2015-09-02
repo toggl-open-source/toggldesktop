@@ -20,7 +20,7 @@
     </WindowChrome.WindowChrome>
     
     <Grid>
-        <wpf:TimeEntryEditViewController 
+        <wpf:EditView 
             x:Name="EditView"
             />
         <Rectangle

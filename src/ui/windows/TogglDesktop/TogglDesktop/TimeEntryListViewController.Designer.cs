@@ -30,7 +30,7 @@ partial class TimeEntryListViewController
     {
         this.emptyLabel = new System.Windows.Forms.Label();
         this.miniTimerHost = new System.Windows.Forms.Integration.ElementHost();
-        this.timerEditViewController = new TogglDesktop.WPF.TimerEditViewController();
+        this.timerEditViewController = new TogglDesktop.WPF.Timer();
         this.entriesHost = new System.Windows.Forms.Integration.ElementHost();
         this.entries = new TogglDesktop.WPF.TimeEntryList();
         this.SuspendLayout();
@@ -101,6 +101,6 @@ partial class TimeEntryListViewController
     private System.Windows.Forms.Integration.ElementHost entriesHost;
     private WPF.TimeEntryList entries;
     private System.Windows.Forms.Integration.ElementHost miniTimerHost;
-    private WPF.TimerEditViewController timerEditViewController;
+    private WPF.Timer timerEditViewController;
 }
 }
