@@ -212,6 +212,9 @@
     <Compile Include="WPF\views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\views\TimerEntryListView.xaml.cs">
+      <DependentUpon>TimerEntryListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -498,6 +501,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\views\TimerEntryListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

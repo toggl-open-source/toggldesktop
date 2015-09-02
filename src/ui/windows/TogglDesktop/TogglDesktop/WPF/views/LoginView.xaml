@@ -22,10 +22,10 @@
                    Width="120" Height="36" Margin="0 20"/>
 
             <toggl:LoginTextBox
-                Name="emailTextBox" x:FieldModifier="private"
+                x:Name="emailTextBox" x:FieldModifier="private"
                 Margin="0 15" EmptyText="Your email address"/>
             <toggl:LoginPasswordBox
-                Name="passwordBox" x:FieldModifier="private"
+                x:Name="passwordBox" x:FieldModifier="private"
                 EmptyText="Password"/>
 
             <Button Name="forgotPasswordButton" x:FieldModifier="private"

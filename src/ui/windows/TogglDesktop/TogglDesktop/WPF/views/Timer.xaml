@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d" 
-             d:DesignWidth="500" Height="60">
+             d:DesignWidth="500" Height="60" MinWidth="256">
     
     <UserControl.Background>
         <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerDarkBg.png"

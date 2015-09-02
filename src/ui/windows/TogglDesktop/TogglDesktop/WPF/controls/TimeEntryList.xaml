@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <ScrollViewer VerticalScrollBarVisibility="Visible"
                   HorizontalScrollBarVisibility="Disabled"
                   HorizontalAlignment="Stretch"
-                  SizeChanged="onSizeChanged">
+                  SizeChanged="onSizeChanged"
+                  Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
         <Grid>
             <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch">
 
@@ -19,6 +21,34 @@
             <Rectangle x:Name="highlightRectangleBottom" x:FieldModifier="private"
                        Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
                        IsHitTestVisible="False"/>
+
+            <Button Name="emptyListText" x:FieldModifier="private"
+                    FontFamily="/TogglDesktop;component/Resources/Fonts/#Roboto"
+                    FontSize="14" Foreground="Gray" Cursor="Hand"
+                    Click="onEmptyListTextClick">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border BorderThickness="0" Background="Transparent">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                          Margin="10 30"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                <StackPanel>
+                    <TextBlock Text="Welcome. Let's start tracking!"
+                           HorizontalAlignment="Center" Margin="0 0 0 10"/>
+                    <TextBlock Text="If you have previous entries,"
+                           HorizontalAlignment="Center"/>
+                    <TextBlock Text="click here to see them in reports."
+                           HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
         </Grid>
     </ScrollViewer>
 </UserControl>

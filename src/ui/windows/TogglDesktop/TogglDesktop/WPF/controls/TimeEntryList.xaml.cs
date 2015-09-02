@@ -10,14 +10,23 @@ namespace TogglDesktop.WPF
 
         public TimeEntryList()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public UIElementCollection Children
         {
-            get { return panel.Children; }
+            get { return this.panel.Children; }
         }
 
+        public void FinishedFillingList()
+        {
+            this.emptyListText.Visibility = this.panel.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void onEmptyListTextClick(object sender, RoutedEventArgs e)
+        {
+            Toggl.OpenInBrowser();
+        }
 
         private void onSizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -65,5 +74,6 @@ namespace TogglDesktop.WPF
         {
             this.HighlightCell(null);
         }
+
     }
 }
