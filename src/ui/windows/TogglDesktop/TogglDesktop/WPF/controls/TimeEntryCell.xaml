@@ -9,7 +9,7 @@
              d:DesignHeight="100" d:DesignWidth="455">
     
     <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
-                Background="#F7F7F7">
+                Background="Transparent">
         
         <!-- Day Header -->
         <StackPanel Name="dayHeader" x:FieldModifier="private"
@@ -18,7 +18,7 @@
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#CCCCCC" Offset="0.0" />
-                        <GradientStop Color="#F7F7F7" Offset="1" />
+                        <GradientStop Color="Transparent" Offset="1" />
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
@@ -29,9 +29,13 @@
                            Foreground="#6F6F6F">2 h 12 min</TextBlock>
             </StackPanel>
         </StackPanel>
-        
+
+        <!-- seperator -->
+        <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
+
         <!-- Entry -->
-        <Grid Height="53" Margin="0, 2, 0, 0" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
+        <Grid Name="entryGrid" x:FieldModifier="private" 
+            Height="53" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
             
             <Grid.Background>
                 <SolidColorBrush Color="{Binding EntryBackColor}"/>

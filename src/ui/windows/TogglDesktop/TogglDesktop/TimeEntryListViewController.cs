@@ -87,6 +87,8 @@ public partial class TimeEntryListViewController : UserControl
                 entries.Children.RemoveRange(list.Count, entries.Children.Count - list.Count);
             }
 
+            entries.FinishedFillingList();
+
             entries.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
             entriesHost.Invalidate();
 

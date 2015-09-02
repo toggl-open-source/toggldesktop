@@ -17,7 +17,7 @@ namespace TogglDesktop.WPF
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
         private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
 
-        private Color entryHoverColor;
+        private Color entryHoverColor = hoverColor;
 
         private string guid { get; set; }
 
@@ -78,12 +78,17 @@ namespace TogglDesktop.WPF
             this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
 
             showOnlyIf(this.dayHeader, item.IsHeader);
+            showOnlyIf(this.entrySeperator, !item.IsHeader);
+
+            this.entryHoverColor = hoverColor;
+            this.EntryBackColor = idleBackColor;
 
             if (item.IsHeader)
             {
                 this.labelFormattedDate.Text = item.DateHeader;
                 this.labelDateDuration.Text = item.DateDuration;
             }
+
 
             this.updateToolTips(item);
         }
