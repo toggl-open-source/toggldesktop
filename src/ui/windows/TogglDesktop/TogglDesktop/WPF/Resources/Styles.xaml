@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="SharedStyles.xaml" />
         <ResourceDictionary Source="LoginViewStyles.xaml" />
         <ResourceDictionary Source="TimeEntryCellStyles.xaml" />
         <ResourceDictionary Source="EditViewStyles.xaml" />

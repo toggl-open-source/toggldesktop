@@ -1,34 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace TogglDesktop.WPF
 {
-    /// <summary>
-    /// Interaction logic for LoginTextBox.xaml
-    /// </summary>
-    public partial class LoginPasswordBox : UserControl
+    public partial class LoginPasswordBox
     {
         public string Text
         {
             get
             {
-                return passwordBox.Password;
+                return this.passwordBox.Password;
             }
             set
             {
-                passwordBox.Password = value;
+                this.passwordBox.Password = value;
             }
         }
 
@@ -36,24 +20,24 @@ namespace TogglDesktop.WPF
         {
             get
             {
-                return (string)emptyLabel.Content;
+                return (string)this.emptyLabel.Content;
             }
             set
             {
-                emptyLabel.Content = value;
+                this.emptyLabel.Content = value;
             }
         }
 
         public LoginPasswordBox()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            passwordBox.PasswordChanged += (o, e) => setEmptyLabelVisibility();
+            this.passwordBox.PasswordChanged += (o, e) => this.setEmptyLabelVisibility();
         }
 
         private void setEmptyLabelVisibility()
         {
-            emptyLabel.Visibility = passwordBox.Password == "" ? Visibility.Visible : Visibility.Hidden;
+            this.emptyLabel.Visibility = this.passwordBox.Password == "" ? Visibility.Visible : Visibility.Hidden;
         }
 
         internal void Clear()
@@ -63,7 +47,7 @@ namespace TogglDesktop.WPF
 
         new public void Focus()
         {
-            passwordBox.Focus();
+            this.passwordBox.Focus();
         }
 
     }

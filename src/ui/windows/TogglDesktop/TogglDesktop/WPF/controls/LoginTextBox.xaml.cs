@@ -1,40 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace TogglDesktop.WPF
 {
-    /// <summary>
-    /// Interaction logic for LoginTextBox.xaml
-    /// </summary>
-    public partial class LoginTextBox : UserControl
+    public partial class LoginTextBox
     {
         public LoginTextBox()
         {
-            InitializeComponent();
-            textBox.TextChanged += (o, e) => setEmptyLabelVisibility();
+            this.InitializeComponent();
+            this.textBox.TextChanged += (o, e) => this.setEmptyLabelVisibility();
         }
 
         public string Text
         {
             get
             {
-                return textBox.Text;
+                return this.textBox.Text;
             }
             set
             {
-                textBox.Text = value;
+                this.textBox.Text = value;
             }
         }
 
@@ -42,22 +26,22 @@ namespace TogglDesktop.WPF
         {
             get
             {
-                return (string)emptyLabel.Content;
+                return (string)this.emptyLabel.Content;
             }
             set
             {
-                emptyLabel.Content = value;
+                this.emptyLabel.Content = value;
             }
         }
 
         private void setEmptyLabelVisibility()
         {
-            emptyLabel.Visibility = textBox.Text == "" ? Visibility.Visible : Visibility.Hidden;
+            this.emptyLabel.Visibility = this.textBox.Text == "" ? Visibility.Visible : Visibility.Hidden;
         }
 
         new public void Focus()
         {
-            textBox.Focus();
+            this.textBox.Focus();
         }
     }
 }

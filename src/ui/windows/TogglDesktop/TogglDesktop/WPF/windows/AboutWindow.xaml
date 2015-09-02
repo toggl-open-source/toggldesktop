@@ -19,18 +19,11 @@
         </ResourceDictionary>
     </Window.Resources>
     
-    <Grid>
+    <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <Grid.Background>
-            <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerLightBg.png"
-                            AlignmentX="Left" AlignmentY="Top"
-                            TileMode="Tile" Stretch="UniformToFill"
-                            Viewport="0 0 634 822" ViewportUnits="Absolute"/>
-        </Grid.Background>
 
         <toggl:TogglChromeDesignTimeConverter
             Title="About" IsToolWindow="True" />

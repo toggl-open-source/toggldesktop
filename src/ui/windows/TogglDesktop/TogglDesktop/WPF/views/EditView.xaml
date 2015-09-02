@@ -14,7 +14,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Style="{StaticResource MainGrid}">
+    <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
             <ColumnDefinition Width="*" MinWidth="320"/>
