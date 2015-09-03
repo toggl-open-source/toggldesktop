@@ -172,6 +172,18 @@ public class Win32
     public static int WM_HOTKEY = 0x0312;
 
     public const int HtBottom = 15;
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Rectangle
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
 }
 
 }

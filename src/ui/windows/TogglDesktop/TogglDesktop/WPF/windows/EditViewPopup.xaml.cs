@@ -19,6 +19,18 @@ namespace TogglDesktop.WPF
         {
             this.InitializeComponent();
             this.interopHelper = new WindowInteropHelper(this);
+
+            this.MinWidth = this.EditView.MinWidth;
+
+            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
+        }
+
+        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
+        {
+            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
+                return;
+
+            this.Show();
         }
 
         public string GUID { get; set; }
@@ -43,7 +55,7 @@ namespace TogglDesktop.WPF
 
         }
 
-        public void SetPlacement(bool left, Point p, int height, bool fixHeight = false)
+        public void SetPlacement(bool left, double x, double y, double height, bool fixHeight = false)
         {
             this.EditView.SetShadow(left, height);
 
@@ -59,11 +71,11 @@ namespace TogglDesktop.WPF
 
             if (left)
             {
-                p.X -= (int)this.Width;
+                x -= this.Width;
             }
 
-            this.Left = p.X;
-            this.Top = p.Y;
+            this.Left = x;
+            this.Top = y;
 
             this.MinWidth = 400;
             this.MinHeight = height;
@@ -113,5 +125,6 @@ namespace TogglDesktop.WPF
                 this.endResizing();
             }
         }
+
     }
 }

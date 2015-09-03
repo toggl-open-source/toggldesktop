@@ -495,8 +495,8 @@
     <None Include="Resources\shadow.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-google.png" />
-    <None Include="Resources\toggl-logo-white.png" />
+    <Resource Include="Resources\icon-google.png" />
+    <Resource Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="WPF\Resources\SharedStyles.xaml">

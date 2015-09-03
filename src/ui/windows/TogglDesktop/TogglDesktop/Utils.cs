@@ -1,50 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using System.Windows;
 using TogglDesktop.WPF;
+using Size = System.Drawing.Size;
 
 namespace TogglDesktop
 {
 public static class Utils
 {
-    public static void LoadWindowLocation(Form f, EditViewPopup edit)
+    public static void LoadWindowLocation(Window mainWindow, EditViewPopup editPopup)
     {
         try
         {
-            if (edit != null)
+            if (editPopup != null)
             {
                 var size = Properties.Settings.Default.EditSize;
-                edit.Width = size.Width;
-                edit.Height = size.Height;
+                editPopup.Width = size.Width;
+                editPopup.Height = size.Height;
             }
             if (Properties.Settings.Default.Maximized)
             {
-                f.WindowState = FormWindowState.Maximized;
+                mainWindow.WindowState = WindowState.Maximized;
             }
             else if (Properties.Settings.Default.Minimized)
             {
-                f.WindowState = FormWindowState.Minimized;
+                mainWindow.WindowState = WindowState.Minimized;
             }
 
-            Int64 x = 0, y = 0, h = 0, w = 0;
+            long x = 0, y = 0, h = 0, w = 0;
             if (Toggl.WindowSettings(ref x, ref y, ref h, ref w))
             {
-                f.Location = new Point((int)x, (int)y);
+                mainWindow.Left = x;
+                mainWindow.Top = y;
 
                 if (h >= 0 && w >= 0)
                 {
-                    f.Size = new Size((int)w, (int)h);
-                    f.MinimumSize = new Size((int)w, (int)h);
+                    mainWindow.Width = w;
+                    mainWindow.Height = h;
                 }
             }
 
-            if (!visibleOnAnyScreen(f))
+            if (!visibleOnAnyScreen(mainWindow))
             {
-                f.Location = Screen.PrimaryScreen.WorkingArea.Location;
+                var location = Screen.PrimaryScreen.WorkingArea.Location;
+                mainWindow.Left = location.X;
+                mainWindow.Top = location.Y;
             }
         }
         catch (Exception ex)
@@ -53,16 +55,14 @@ public static class Utils
         }
     }
 
-    private static bool visibleOnAnyScreen(Form f)
+    private static bool visibleOnAnyScreen(Window f)
     {
-        foreach (Screen s in Screen.AllScreens)
-        {
-            if (s.WorkingArea.IntersectsWith(f.DesktopBounds))
-            {
-                return true;
-            }
-        }
-        return false;
+        var windowBounds = new Rectangle(
+            (int)f.Left, (int)f.Top, (int)f.Width, (int)f.Height
+            );
+
+        return Screen.AllScreens
+            .Any(s => s.WorkingArea.IntersectsWith(windowBounds));
     }
 
     public static TogglDesktop.ModifierKeys GetModifiers(KeyEventArgs e)
@@ -165,22 +165,22 @@ public static class Utils
         }
     }
 
-    public static void SaveWindowLocation(Form f, EditViewPopup edit)
+    public static void SaveWindowLocation(Window f, EditViewPopup edit)
     {
         try
         {
             Toggl.SetWindowSettings(
-                f.Location.X,
-                f.Location.Y,
-                f.Size.Height,
-                f.Size.Width);
+                (long)f.Left,
+                (long)f.Top,
+                (long)f.Height,
+                (long)f.Width);
 
-            if (f.WindowState == FormWindowState.Maximized)
+            if (f.WindowState == WindowState.Maximized)
             {
                 Properties.Settings.Default.Maximized = true;
                 Properties.Settings.Default.Minimized = false;
             }
-            else if (f.WindowState == FormWindowState.Normal)
+            else if (f.WindowState == WindowState.Normal)
             {
                 Properties.Settings.Default.Maximized = false;
                 Properties.Settings.Default.Minimized = false;

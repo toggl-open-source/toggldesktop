@@ -4,7 +4,6 @@
 
     <Style TargetType="Control">
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="Light" />
@@ -21,6 +20,8 @@
     <Style x:Key="LoginTextBoxLabelShared" TargetType="Control" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Padding" Value="14, 13, 14, 0" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="#252525" />
+        <Setter Property="FontWeight" Value="Regular" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
@@ -29,7 +30,6 @@
         <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Panel.ZIndex" Value="1" />
         <Setter Property="Foreground" Value="#a1a1a1" />
-        <Setter Property="FontWeight" Value="Regular" />
     </Style>
 
     <Style x:Key="LoginTextBoxBase" TargetType="Control" BasedOn="{StaticResource LoginTextBoxLabelShared}">
@@ -62,6 +62,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalAlignment" Value="Center"></Setter>
     </Style>

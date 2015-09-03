@@ -11,6 +11,8 @@ namespace TogglDesktop.WPF
 
         private TogglChrome chrome;
 
+        public int WindowHeaderHeight { get { return 40; } }
+
         public TogglWindow()
         {
             this.WindowStyle = WindowStyle.None;

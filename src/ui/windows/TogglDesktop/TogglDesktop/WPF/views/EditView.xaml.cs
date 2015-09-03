@@ -137,6 +137,7 @@ namespace TogglDesktop.WPF
                     this.projectAddButtonColumn.SharedSizeGroup = null;
                 }
 
+                this.FocusField(focusedFieldName);
             }
         }
 
@@ -986,13 +987,11 @@ namespace TogglDesktop.WPF
 
         public void Close()
         {
-            //TODO: make sure unsaved changes are discarded/saved (what if user is in add-project mode?)
             if (this.isInNewProjectMode)
             {
                 this.confirmNewProject();
             }
             Toggl.ViewTimeEntryList();
-            //TODO: reset form (specifically add-project controls)?
         }
 
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
@@ -1015,7 +1014,7 @@ namespace TogglDesktop.WPF
             }
         }
 
-        public void SetShadow(bool left, int height)
+        public void SetShadow(bool left, double height)
         {
             this.shadowLeft.Visibility = left ? Visibility.Collapsed : Visibility.Visible;
             this.shadowRight.Visibility = left ? Visibility.Visible : Visibility.Collapsed;

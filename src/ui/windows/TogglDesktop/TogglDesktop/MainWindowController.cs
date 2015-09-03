@@ -225,7 +225,7 @@ public partial class MainWindowController : TogglForm
             TogglDesktop.Program.Shutdown(1);
         }
 
-        Utils.LoadWindowLocation(this, editViewPopup);
+        //Utils.LoadWindowLocation(this, editViewPopup);
 
         setCorrectMinimumSize();
 
@@ -557,7 +557,7 @@ public partial class MainWindowController : TogglForm
 
     private void MainWindowController_FormClosing(object sender, FormClosingEventArgs e)
     {
-        Utils.SaveWindowLocation(this, this.editViewPopup);
+        //Utils.SaveWindowLocation(this, this.editViewPopup);
 
         if (CloseReason.WindowsShutDown == e.CloseReason)
         {
@@ -592,7 +592,7 @@ public partial class MainWindowController : TogglForm
     {
         if (Visible)
         {
-            Utils.SaveWindowLocation(this, this.editViewPopup);
+            //Utils.SaveWindowLocation(this, this.editViewPopup);
         }
 
         TogglDesktop.Program.Shutdown(0);
@@ -796,7 +796,7 @@ public partial class MainWindowController : TogglForm
             editPopupLocation.Y += headerHeight;
             editPopupLocation.X += this.Width;
 
-            this.editViewPopup.SetPlacement(true, editPopupLocation, this.Height - headerHeight, true);
+            //this.editViewPopup.SetPlacement(true, editPopupLocation, this.Height - headerHeight, true);
         }
         else
         {
@@ -808,7 +808,7 @@ public partial class MainWindowController : TogglForm
                 editPopupLocation.X += this.Width;
             }
 
-            this.editViewPopup.SetPlacement(left, editPopupLocation, this.Height);
+            //this.editViewPopup.SetPlacement(left, editPopupLocation, this.Height);
         }
 
     }

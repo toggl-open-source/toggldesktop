@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" MinWidth="370"
              >
     <UserControl.Resources>
         <ResourceDictionary>
@@ -17,7 +17,7 @@
     <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="*" MinWidth="320"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="25"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

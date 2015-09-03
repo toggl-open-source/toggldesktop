@@ -2,9 +2,12 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
-using System.Windows.Forms;
+using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using TogglDesktop.WPF;
+using Application = System.Windows.Forms.Application;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace TogglDesktop
 {
@@ -14,7 +17,7 @@ static class Program
     private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
     public static Bugsnag.Clients.BaseClient bugsnag = null;
     private static UInt64 uid = 0;
-    private static MainWindowController mainWindowController;
+    private static MainWindow mainWindowController;
 
     public static bool IsLoggedIn
     {
@@ -98,8 +101,12 @@ static class Program
 
             RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
-            mainWindowController = new MainWindowController();
-            Application.Run(mainWindowController);
+            mainWindowController = new MainWindow();
+            new System.Windows.Application
+            {
+                MainWindow = mainWindowController,
+                ShutdownMode = ShutdownMode.OnExplicitShutdown
+            }.Run(mainWindowController);
         }
     }
 
@@ -137,7 +144,8 @@ static class Program
 
         if (mainWindowController != null)
         {
-            mainWindowController.RemoveTrayIcon();
+            // TODO: replace
+            //mainWindowController.RemoveTrayIcon();
         }
 
         Toggl.Clear();

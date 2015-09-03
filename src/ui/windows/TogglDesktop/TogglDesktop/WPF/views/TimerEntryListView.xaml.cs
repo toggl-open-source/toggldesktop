@@ -17,9 +17,12 @@ namespace TogglDesktop.WPF
         {
             this.InitializeComponent();
 
+            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
             Toggl.OnLogin += this.onLogin;
         }
+
+        public double TimerHeight { get { return this.timer.Height; } }
 
         protected override void OnInitialized(EventArgs e)
         {
@@ -48,6 +51,17 @@ namespace TogglDesktop.WPF
                 return;
 
             this.fillTimeEntryList(list);
+        }
+
+        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
+        {
+            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
+                return;
+
+            TimeEntryCell cell;
+            this.cellsByGUID.TryGetValue(te.GUID, out cell);
+
+            this.entries.HighlightCell(cell);
         }
 
 
@@ -119,7 +133,7 @@ namespace TogglDesktop.WPF
             this.entries.DisableHighlight();
         }
 
-        public void SetListWidth(int width)
+        public void SetListWidth(double width)
         {
             this.entries.HorizontalAlignment = HorizontalAlignment.Left;
             this.entries.Width = width;
@@ -128,6 +142,7 @@ namespace TogglDesktop.WPF
         public void DisableListWidth()
         {
             this.entries.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.entries.Width = this.Width;
         }
 
         public void SetManualMode(bool manualMode)
