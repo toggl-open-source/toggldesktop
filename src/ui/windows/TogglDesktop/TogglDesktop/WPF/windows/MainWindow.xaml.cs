@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
+using Microsoft.SqlServer.Server;
 using MessageBox = System.Windows.MessageBox;
 using UserControl = System.Windows.Controls.UserControl;
 
@@ -28,7 +27,6 @@ namespace TogglDesktop.WPF
         private EditViewPopup editPopup;
 
         private UserControl activeView;
-        private bool isTracking;
         private bool isInManualMode;
 
         public MainWindow()
@@ -169,8 +167,7 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onStoppedTimerState))
                 return;
 
-            this.isTracking = false;
-            this.updateContextMenuItemVisibility();
+            this.updateRunning(null);
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
@@ -178,9 +175,9 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onRunningTimerState, te))
                 return;
 
-            this.isTracking = true;
-            this.updateContextMenuItemVisibility();
+            this.updateRunning(te);
         }
+
 
         private void onURL(string url)
         {
@@ -219,6 +216,16 @@ namespace TogglDesktop.WPF
             {
                 this.setActiveView(this.loginView);
             }
+
+            if (open || userID == 0)
+            {
+                this.emailAddressMenuItem.Header = "Logged out";
+            }
+            else
+            {
+                this.emailAddressMenuItem.Header = Toggl.UserEmail();
+            }
+            this.updateRunning(null);
         }
 
         private void onError(string errmsg, bool userError)
@@ -374,15 +381,45 @@ namespace TogglDesktop.WPF
 
         #endregion
 
-        #region context menu controlling
+        #region ui controlling
 
-        private void updateContextMenuItemVisibility()
+        private void updateRunning(Toggl.TogglTimeEntryView? timeEntry)
+        {
+            var isTracking = timeEntry != null;
+
+            if (isTracking)
+            {
+                var description = timeEntry.Value.Description;
+
+                if (string.IsNullOrEmpty(description))
+                {
+                    this.Title = "Toggl Desktop";
+                    this.runningMenuItem.Header = "Timer is tracking";
+                }
+                else
+                {
+                    this.Title = description + " - Toggl Desktop";
+                    this.runningMenuItem.Header = description;
+                }
+
+            }
+            else
+            {
+                this.runningMenuItem.Header = "Timer is not tracking";
+                this.Title = "Toggl Desktop";
+            }
+
+            this.updateContextMenuItems(isTracking);
+        }
+
+        private void updateContextMenuItems(bool isTracking)
         {
             var loggedIn = TogglDesktop.Program.IsLoggedIn;
 
+            // todo: disable commands (instead)
             this.newMenuItem.IsEnabled = loggedIn;
-            this.continueMenuItem.IsEnabled = loggedIn && !this.isTracking;
-            this.stopMenuItem.IsEnabled = loggedIn && !this.isTracking;
+            this.continueMenuItem.IsEnabled = loggedIn && !isTracking; 
+            this.stopMenuItem.IsEnabled = loggedIn && !isTracking;
             this.syncMenuItem.IsEnabled = loggedIn;
             this.reportsMenuItem.IsEnabled = loggedIn;
             this.togglManualModeMenuItem.IsEnabled = loggedIn;
@@ -471,7 +508,7 @@ namespace TogglDesktop.WPF
             activeView.Visibility = Visibility.Visible;
             this.editPopup.Hide();
             this.timerEntryListView.DisableHighlight();
-            this.updateContextMenuItemVisibility();
+            this.updateContextMenuItems(false);
 
             this.updateMinimumSize(activeView);
         }
