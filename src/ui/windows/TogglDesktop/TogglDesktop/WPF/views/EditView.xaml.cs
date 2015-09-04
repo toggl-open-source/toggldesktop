@@ -11,6 +11,7 @@ using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MessageBox = System.Windows.MessageBox;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace TogglDesktop.WPF
@@ -996,21 +997,12 @@ namespace TogglDesktop.WPF
 
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
         {
-            DialogResult result;
-            try
-            {
-                MainWindowController.DisableTop();
-                result = System.Windows.Forms.MessageBox.Show("Delete time entry?", "Please confirm",
-                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            }
-            finally
-            {
-                MainWindowController.EnableTop();
-            }
-            if (DialogResult.Yes == result)
+            var result = MessageBox.Show("Delete time entry?", "Please confirm",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
             {
                 Toggl.DeleteTimeEntry(this.timeEntry.GUID);
-                //TODO: reset form (specifically add-project controls)?
             }
         }
 

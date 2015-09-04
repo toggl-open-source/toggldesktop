@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +28,8 @@ namespace TogglDesktop.WPF
         private EditViewPopup editPopup;
 
         private UserControl activeView;
+        private bool isTracking;
+        private bool isInManualMode;
 
         public MainWindow()
         {
@@ -162,14 +166,25 @@ namespace TogglDesktop.WPF
 
         private void onStoppedTimerState()
         {
+            if (this.TryBeginInvoke(this.onStoppedTimerState))
+                return;
+
+            this.isTracking = false;
+            this.updateContextMenuItemVisibility();
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
         {
+            if (this.TryBeginInvoke(this.onRunningTimerState, te))
+                return;
+
+            this.isTracking = true;
+            this.updateContextMenuItemVisibility();
         }
 
         private void onURL(string url)
         {
+            Process.Start(url);
         }
 
         private void onReminder(string title, string informativeText)
@@ -234,16 +249,13 @@ namespace TogglDesktop.WPF
 
         protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
-            //TODO: replace by hiding
-
-            Program.Shutdown(0);
+            this.Hide();
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void onCogButtonClick(object sender, RoutedEventArgs e)
         {
-            Utils.SaveWindowLocation(this, this.editPopup);
-
-            base.OnClosing(e);
+            this.mainContextMenu.PlacementTarget = (UIElement)sender;
+            this.mainContextMenu.IsOpen = true;
         }
 
         protected override void OnLocationChanged(EventArgs e)
@@ -259,6 +271,124 @@ namespace TogglDesktop.WPF
             this.updateEditPopupLocation();
 
             base.OnRenderSizeChanged(sizeInfo);
+        }
+
+        #endregion
+
+        #region command events
+
+        private void onNewCommand(object sender, RoutedEventArgs e)
+        {
+            if (this.isInManualMode)
+            {
+                var guid = Toggl.Start("", "0", 0, 0, "", "");
+                Toggl.Edit(guid, false, Toggl.Duration);
+            }
+            else
+            {
+                Toggl.Start("", "", 0, 0, "", "");
+            }
+        }
+        
+        private void onContinueCommand(object sender, RoutedEventArgs e)
+        {
+            Toggl.ContinueLatest();
+        }
+        
+        private void onStopCommand(object sender, RoutedEventArgs e)
+        {
+            Toggl.Stop();
+        }
+        
+        private void onShowCommand(object sender, RoutedEventArgs e)
+        {
+            this.Show();
+            this.Topmost = true;
+        }
+        
+        private void onSyncCommand(object sender, RoutedEventArgs e)
+        {
+            Toggl.Sync();
+        }
+        
+        private void onReportsCommand(object sender, RoutedEventArgs e)
+        {
+            Toggl.OpenInBrowser();
+        }
+        
+        private void onPreferencesCommand(object sender, RoutedEventArgs e)
+        {
+            Toggl.EditPreferences();
+        }
+        
+        private void onToggleManualModeCommand(object sender, RoutedEventArgs e)
+        {
+            this.isInManualMode = !this.isInManualMode;
+
+            this.togglManualModeMenuItem.Header =
+                this.isInManualMode ? "Use timer" : "Use manual mode";
+
+            this.timerEntryListView.SetManualMode(this.isInManualMode);
+        }
+        
+        private void onClearCacheCommand(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(this,
+                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
+                "Any unsynced data will be lost.\nDo you want to continue?", "Clear Cache",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Toggl.ClearCache();
+            }
+        }
+        
+        private void onSendFeedbackCommand(object sender, RoutedEventArgs e)
+        {
+            this.feedbackWindow.Show();
+            this.feedbackWindow.Topmost = true;
+        }
+        
+        private void onAboutCommand(object sender, RoutedEventArgs e)
+        {
+            this.aboutWindow.Show();
+            this.aboutWindow.Topmost = true;
+        }
+        
+        private void onLogoutCommand(object sender, RoutedEventArgs e)
+        {
+            Toggl.Logout();
+        }
+        
+        private void onQuitCommand(object sender, RoutedEventArgs e)
+        {
+            if (this.IsVisible)
+            {
+                Utils.SaveWindowLocation(this, this.editPopup);
+            }
+
+            Program.Shutdown(0);
+        }
+        
+
+        #endregion
+
+        #region context menu controlling
+
+        private void updateContextMenuItemVisibility()
+        {
+            var loggedIn = TogglDesktop.Program.IsLoggedIn;
+
+            this.newMenuItem.IsEnabled = loggedIn;
+            this.continueMenuItem.IsEnabled = loggedIn && !this.isTracking;
+            this.stopMenuItem.IsEnabled = loggedIn && !this.isTracking;
+            this.syncMenuItem.IsEnabled = loggedIn;
+            this.reportsMenuItem.IsEnabled = loggedIn;
+            this.togglManualModeMenuItem.IsEnabled = loggedIn;
+            this.clearCacheMenuItem.IsEnabled = loggedIn;
+            this.sendFeedbackMenuItem.IsEnabled = loggedIn;
+            this.logoutMenuItem.IsEnabled = loggedIn;
         }
 
         #endregion
@@ -341,6 +471,7 @@ namespace TogglDesktop.WPF
             activeView.Visibility = Visibility.Visible;
             this.editPopup.Hide();
             this.timerEntryListView.DisableHighlight();
+            this.updateContextMenuItemVisibility();
 
             this.updateMinimumSize(activeView);
         }
