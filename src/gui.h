@@ -56,6 +56,8 @@ class TimeEntry {
     // If syncing a time entry ended with an error,
     // the error is attached to the time entry
     std::string Error;
+
+    bool operator == (const TimeEntry& other) const;
 };
 
 class Autocomplete {
@@ -76,6 +78,8 @@ class Autocomplete {
     uint64_t Type;
     // If its a time entry, it has tags
     std::string Tags;
+
+    bool operator == (const Autocomplete& other) const;
 };
 
 class Generic {
@@ -84,6 +88,8 @@ class Generic {
     uint64_t WID;
     std::string GUID;
     std::string Name;
+
+    bool operator == (const Generic& other) const;
 };
 
 class Settings {
@@ -116,6 +122,8 @@ class Settings {
     std::string RemindEnds;
     bool Autotrack;
     bool OpenEditorOnShortcut;
+
+    bool operator == (const Settings& other) const;
 };
 
 class AutotrackerRule {
@@ -124,15 +132,20 @@ class AutotrackerRule {
     std::string Term;
     uint64_t PID;
     std::string ProjectName;
+
+    bool operator == (const AutotrackerRule& other) const;
 };
 
 class TimelineEvent {
+ public:
     int64_t ID;
     std::string Title;
     std::string Filename;
     uint64_t StartTime;
     uint64_t EndTime;
     bool Idle;
+
+    bool operator == (const TimelineEvent& other) const;
 };
 
 }  // namespace view

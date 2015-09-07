@@ -22,6 +22,30 @@
 
 namespace toggl {
 
+namespace view {
+
+bool TimeEntry::operator == (const TimeEntry& a) const {
+    return false;
+}
+
+bool Autocomplete::operator == (const Autocomplete& a) const {
+    return false;
+}
+
+bool Generic::operator == (const Generic& a) const {
+    return false;
+}
+
+bool AutotrackerRule::operator == (const AutotrackerRule& a) const {
+    return false;
+}
+
+bool TimelineEvent::operator == (const TimelineEvent& a) const {
+    return false;
+}
+
+}  // namespace view
+
 void GUI::DisplayApp() {
     on_display_app_(true);
 }
