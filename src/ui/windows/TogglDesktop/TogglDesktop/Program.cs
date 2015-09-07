@@ -142,12 +142,6 @@ static class Program
     {
         ShuttingDown = true;
 
-        if (mainWindowController != null)
-        {
-            // TODO: replace
-            //mainWindowController.RemoveTrayIcon();
-        }
-
         Toggl.Clear();
 
         Environment.Exit(exitCode);

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
+             xmlns:tb="http://www.hardcodet.net/taskbar"
              mc:Ignorable="d" 
              d:DesignWidth="400"
              Title="Toggl Desktop">
@@ -22,6 +23,19 @@
         <RoutedUICommand x:Key="AboutCommand" />
         <RoutedUICommand x:Key="LogoutCommand" />
         <RoutedUICommand x:Key="QuitCommand" />
+
+        <BitmapImage
+            x:Key="IconOnlineActive"
+            UriSource="/TogglDesktop;component/Resources/toggltray.ico" />
+        <BitmapImage
+            x:Key="IconOnlineInactive"
+            UriSource="/TogglDesktop;component/Resources/toggltray_inactive.ico" />
+        <BitmapImage
+            x:Key="IconOfflineActive"
+            UriSource="/TogglDesktop;component/Resources/toggl_offline_active.ico" />
+        <BitmapImage
+            x:Key="IconOfflineInactive"
+            UriSource="/TogglDesktop;component/Resources/toggl_offline_inactive.ico" />
     </Window.Resources>
     
     <Window.CommandBindings>
@@ -102,7 +116,12 @@
     </Window.ContextMenu>
     
     <Grid>
+
         <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop"/>
+        
+        <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
+                        TrayMouseDoubleClick="onTaskbarIconDoubleClick"
+                        IconSource="{StaticResource IconOnlineInactive}"/>
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />

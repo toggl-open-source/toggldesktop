@@ -7,12 +7,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
-using Microsoft.SqlServer.Server;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 using MessageBox = System.Windows.MessageBox;
 using UserControl = System.Windows.Controls.UserControl;
+using Screen = System.Windows.Forms.Screen;
 
 namespace TogglDesktop.WPF
 {
@@ -29,9 +32,11 @@ namespace TogglDesktop.WPF
 
         private UserControl activeView;
         private bool isInManualMode;
+        private bool isTracking;
 
         public MainWindow()
         {
+            this.DataContext = this;
             this.InitializeComponent();
 
             this.views = new UserControl[] {this.loginView, this.timerEntryListView};
@@ -39,11 +44,25 @@ namespace TogglDesktop.WPF
             this.hideAllViews();
 
             this.initializeWindows();
+            this.initializeContextMenu();
+            this.initializeTaskbarIcon();
             this.initializeEvents();
 
             this.finalInitialisation();
 
             this.interopHelper = new WindowInteropHelper(this);
+        }
+
+        private void initializeContextMenu()
+        {
+            foreach (var item in this.ContextMenu.Items)
+            {
+                var asMenuItem = item as MenuItem;
+                if (asMenuItem != null)
+                {
+                    asMenuItem.CommandTarget = this;
+                }
+            }
         }
 
         #region setup
@@ -73,6 +92,11 @@ namespace TogglDesktop.WPF
             this.IsVisibleChanged += this.ownChildWindows;
         }
 
+        private void initializeTaskbarIcon()
+        {
+            this.taskbarIcon.ContextMenu = this.mainContextMenu;
+        }
+
         private void ownChildWindows(object sender, DependencyPropertyChangedEventArgs args)
         {
             foreach (var window in this.childWindows)
@@ -82,6 +106,7 @@ namespace TogglDesktop.WPF
 
             this.IsVisibleChanged -= this.ownChildWindows;
         }
+
 
         private void initializeEvents()
         {
@@ -104,7 +129,7 @@ namespace TogglDesktop.WPF
             if (!Toggl.StartUI(TogglDesktop.Program.Version()))
             {
                 MessageBox.Show("Missing callback. See the log file for details");
-                Program.Shutdown(1);
+                this.shutdown(1);
             }
 
             Utils.LoadWindowLocation(this, this.editPopup);
@@ -113,6 +138,7 @@ namespace TogglDesktop.WPF
 
             this.runScriptAsync();
         }
+
 
         private async void runScriptAsync()
         {
@@ -131,7 +157,7 @@ namespace TogglDesktop.WPF
             if (!File.Exists(Toggl.ScriptPath))
             {
                 Toggl.Debug("Script file does not exist: " + Toggl.ScriptPath);
-                TogglDesktop.Program.Shutdown(0);
+                this.shutdown(0);
             }
 
             var script = File.ReadAllText(Toggl.ScriptPath);
@@ -146,7 +172,7 @@ namespace TogglDesktop.WPF
 
             if (errorCode == 0)
             {
-                TogglDesktop.Program.Shutdown(0);
+                this.shutdown(0);
             }
         }
 
@@ -191,6 +217,10 @@ namespace TogglDesktop.WPF
 
         private void onOnlineState(long state)
         {
+            if (this.TryBeginInvoke(this.onOnlineState, state))
+                return;
+
+            this.updateStatusIcons(state == 0);
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
@@ -248,7 +278,6 @@ namespace TogglDesktop.WPF
 
         #region ui events
 
-
         private void editPopupVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             this.updateEditPopupLocation();
@@ -262,7 +291,11 @@ namespace TogglDesktop.WPF
 
         protected override void onCogButtonClick(object sender, RoutedEventArgs e)
         {
-            this.mainContextMenu.PlacementTarget = (UIElement)sender;
+            this.mainContextMenu.PlacementTarget = (FrameworkElement)sender;
+            this.mainContextMenu.Placement = PlacementMode.Bottom;
+            this.mainContextMenu.HorizontalOffset = 0;
+            this.mainContextMenu.VerticalOffset = 0;
+
             this.mainContextMenu.IsOpen = true;
         }
 
@@ -395,12 +428,7 @@ namespace TogglDesktop.WPF
         
         private void onQuitCommand(object sender, RoutedEventArgs e)
         {
-            if (this.IsVisible)
-            {
-                Utils.SaveWindowLocation(this, this.editPopup);
-            }
-
-            Program.Shutdown(0);
+            this.shutdown(0);
         }
         
 
@@ -408,11 +436,57 @@ namespace TogglDesktop.WPF
 
         #region ui controlling
 
+        private void shutdown(int exitCode)
+        {
+            if (this.taskbarIcon != null)
+            {
+                this.taskbarIcon.Visibility = Visibility.Collapsed;
+            }
+
+            if (this.mainContextMenu != null)
+            {
+                this.mainContextMenu.IsOpen = false;
+                this.mainContextMenu.Visibility = Visibility.Collapsed;
+            }
+
+            if (this.IsVisible)
+            {
+                if (exitCode == 0)
+                {
+                    Utils.SaveWindowLocation(this, this.editPopup);
+                }
+                this.Hide();
+            }
+
+            this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                Program.Shutdown(exitCode);
+            }));
+        }
+
+        private void updateStatusIcons(bool isOnline)
+        {
+            string notifyIconName;
+
+            if (this.isTracking)
+            {
+                notifyIconName = isOnline ? "IconOnlineActive" : "IconOfflineActive";
+            }
+            else
+            {
+                notifyIconName = isOnline ? "IconOnlineInactive" : "IconOfflineInactive";
+            }
+
+            this.taskbarIcon.IconSource = (BitmapImage)this.FindResource(notifyIconName);
+        }
+
         private void updateRunning(Toggl.TogglTimeEntryView? timeEntry)
         {
-            var isTracking = timeEntry != null;
+            var tracking = timeEntry != null;
 
-            if (isTracking)
+            this.isTracking = tracking;
+
+            if (tracking)
             {
                 var description = timeEntry.Value.Description;
 
@@ -434,17 +508,18 @@ namespace TogglDesktop.WPF
                 this.Title = "Toggl Desktop";
             }
 
-            this.updateContextMenuItems(isTracking);
+            this.updateContextMenuItems();
+            this.updateStatusIcons(true);
         }
 
-        private void updateContextMenuItems(bool isTracking)
+        private void updateContextMenuItems()
         {
             var loggedIn = TogglDesktop.Program.IsLoggedIn;
 
             // todo: disable commands (instead)
             this.newMenuItem.IsEnabled = loggedIn;
-            this.continueMenuItem.IsEnabled = loggedIn && !isTracking; 
-            this.stopMenuItem.IsEnabled = loggedIn && !isTracking;
+            this.continueMenuItem.IsEnabled = loggedIn && !this.isTracking;
+            this.stopMenuItem.IsEnabled = loggedIn && this.isTracking;
             this.syncMenuItem.IsEnabled = loggedIn;
             this.reportsMenuItem.IsEnabled = loggedIn;
             this.togglManualModeMenuItem.IsEnabled = loggedIn;
@@ -533,7 +608,7 @@ namespace TogglDesktop.WPF
             activeView.Visibility = Visibility.Visible;
             this.editPopup.Hide();
             this.timerEntryListView.DisableHighlight();
-            this.updateContextMenuItems(false);
+            this.updateContextMenuItems();
 
             this.updateMinimumSize(activeView);
         }
@@ -545,5 +620,13 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
+        private void onTaskbarIconDoubleClick(object sender, RoutedEventArgs e)
+        {
+            this.Show();
+            this.Topmost = true;
+            this.Activate();
+        }
+
     }
 }

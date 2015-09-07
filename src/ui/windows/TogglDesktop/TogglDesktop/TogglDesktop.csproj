@@ -97,6 +97,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Google.Apis.1.9.1\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -402,16 +405,16 @@
     <None Include="Resources\toggl_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggltray.ico" />
+    <Resource Include="Resources\toggltray.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggltray_inactive.ico" />
+    <Resource Include="Resources\toggltray_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggl_offline_active.ico" />
+    <Resource Include="Resources\toggl_offline_active.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggl_offline_inactive.ico" />
+    <Resource Include="Resources\toggl_offline_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Border.png" />
