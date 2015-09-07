@@ -112,14 +112,11 @@ namespace TogglDesktop.WPF
             Toggl.OnError += this.onError;
             Toggl.OnLogin += this.onLogin;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
-            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnOnlineState += this.onOnlineState;
             Toggl.OnReminder += this.onReminder;
             Toggl.OnURL += this.onURL;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
-            Toggl.OnSettings += this.onSettings;
-            Toggl.OnIdleNotification += this.onIdleNotification;
         }
 
         private void finalInitialisation()
@@ -179,14 +176,6 @@ namespace TogglDesktop.WPF
 
         #region toggl events
 
-        private void onIdleNotification(string guid, string since, string duration, ulong started, string description)
-        {
-        }
-
-        private void onSettings(bool open, Toggl.TogglSettingsView settings)
-        {
-        }
-
         private void onStoppedTimerState()
         {
             if (this.TryBeginInvoke(this.onStoppedTimerState))
@@ -211,6 +200,10 @@ namespace TogglDesktop.WPF
 
         private void onReminder(string title, string informativeText)
         {
+            if (this.TryBeginInvoke(this.onReminder, title, informativeText))
+                return;
+
+            this.taskbarIcon.ShowBalloonTip(title, informativeText, Properties.Resources.toggl);
         }
 
         private void onOnlineState(long state)
@@ -219,10 +212,6 @@ namespace TogglDesktop.WPF
                 return;
 
             this.updateStatusIcons(state == 0);
-        }
-
-        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
-        {
         }
 
         private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
