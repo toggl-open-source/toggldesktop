@@ -393,6 +393,14 @@ class GUI : public SyncStateMonitor {
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;
 
+    // Cached views
+    // FIXME: zero out, por favor
+    Poco::Int64 lastSyncState;
+    Poco::Int64 lastUnsyncedItemsCount;
+    bool lastDisplayLoginOpen;
+    uint64_t lastDisplayLoginUserID;
+    Poco::Int64 lastOnlineState;
+
     Poco::Logger &logger() const;
 };
 

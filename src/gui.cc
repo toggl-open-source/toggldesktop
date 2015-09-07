@@ -51,23 +51,33 @@ void GUI::DisplayApp() {
 }
 
 void GUI::DisplaySyncState(const Poco::Int64 state) {
-    if (on_display_sync_state_) {
-        on_display_sync_state_(state);
+    if (lastSyncState != state) {
+        if (on_display_sync_state_) {
+            on_display_sync_state_(state);
+        }
     }
+    lastSyncState = state;
 }
 
 void GUI::DisplayUnsyncedItems(const Poco::Int64 count) {
-    if (on_display_unsynced_items_) {
-        on_display_unsynced_items_(count);
+    if (lastUnsyncedItemsCount != count) {
+        if (on_display_unsynced_items_) {
+            on_display_unsynced_items_(count);
+        }
     }
+    lastUnsyncedItemsCount = count;
 }
 
 void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
-    std::stringstream ss;
-    ss << "DisplayLogin open=" << open << ", user_id=" << user_id;
-    logger().debug(ss.str());
+    if (lastDisplayLoginOpen != open || lastDisplayLoginUserID != user_id) {
+        std::stringstream ss;
+        ss << "DisplayLogin open=" << open << ", user_id=" << user_id;
+        logger().debug(ss.str());
 
-    on_display_login_(open, user_id);
+        on_display_login_(open, user_id);
+    }
+    lastDisplayLoginOpen = open;
+    lastDisplayLoginUserID = user_id;
 }
 
 error GUI::DisplayError(const error err) {
@@ -202,32 +212,35 @@ void GUI::DisplayAutotrackerNotification(Project *p) {
 
 
 void GUI::DisplayOnlineState(const Poco::Int64 state) {
-    if (!(kOnlineStateOnline == state
-            || kOnlineStateNoNetwork == state
-            || kOnlineStateBackendDown == state)) {
+    if (lastOnlineState != state) {
+        if (!(kOnlineStateOnline == state
+                || kOnlineStateNoNetwork == state
+                || kOnlineStateBackendDown == state)) {
+            std::stringstream ss;
+            ss << "Invalid online state " << state;
+            logger().error(ss.str());
+            return;
+        }
+
         std::stringstream ss;
-        ss << "Invalid online state " << state;
-        logger().error(ss.str());
-        return;
+        ss << "DisplayOnlineState ";
+
+        switch (state) {
+        case kOnlineStateOnline:
+            ss << "online";
+            break;
+        case kOnlineStateNoNetwork:
+            ss << "no network";
+            break;
+        case kOnlineStateBackendDown:
+            ss << "backend is down";
+            break;
+        }
+        logger().debug(ss.str());
+
+        on_display_online_state_(state);
     }
-
-    std::stringstream ss;
-    ss << "DisplayOnlineState ";
-
-    switch (state) {
-    case kOnlineStateOnline:
-        ss << "online";
-        break;
-    case kOnlineStateNoNetwork:
-        ss << "no network";
-        break;
-    case kOnlineStateBackendDown:
-        ss << "backend is down";
-        break;
-    }
-    logger().debug(ss.str());
-
-    on_display_online_state_(state);
+    lastOnlineState = state;
 }
 
 void GUI::DisplayTimeEntryAutocomplete(
