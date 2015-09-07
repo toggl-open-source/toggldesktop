@@ -13,8 +13,6 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
-using MessageBox = System.Windows.MessageBox;
-using UserControl = System.Windows.Controls.UserControl;
 using Screen = System.Windows.Forms.Screen;
 
 namespace TogglDesktop.WPF
@@ -457,6 +455,8 @@ namespace TogglDesktop.WPF
                 }
                 this.Hide();
             }
+
+            this.Close();
 
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
