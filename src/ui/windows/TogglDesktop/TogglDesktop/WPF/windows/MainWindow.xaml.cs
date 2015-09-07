@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
 using Microsoft.SqlServer.Server;
+using TogglDesktop.Diagnostics;
 using MessageBox = System.Windows.MessageBox;
 using UserControl = System.Windows.Controls.UserControl;
 
@@ -286,25 +287,34 @@ namespace TogglDesktop.WPF
 
         private void onNewCommand(object sender, RoutedEventArgs e)
         {
-            if (this.isInManualMode)
+            using (Performance.Measure("starting time entry from menu, manual mode: {0}", this.isInManualMode))
             {
-                var guid = Toggl.Start("", "0", 0, 0, "", "");
-                Toggl.Edit(guid, false, Toggl.Duration);
-            }
-            else
-            {
-                Toggl.Start("", "", 0, 0, "", "");
+                if (this.isInManualMode)
+                {
+                    var guid = Toggl.Start("", "0", 0, 0, "", "");
+                    Toggl.Edit(guid, false, Toggl.Duration);
+                }
+                else
+                {
+                    Toggl.Start("", "", 0, 0, "", "");
+                }
             }
         }
         
         private void onContinueCommand(object sender, RoutedEventArgs e)
         {
-            Toggl.ContinueLatest();
+            using (Performance.Measure("continuing time entry from menu"))
+            {
+                Toggl.ContinueLatest();
+            }
         }
         
         private void onStopCommand(object sender, RoutedEventArgs e)
         {
-            Toggl.Stop();
+            using (Performance.Measure("stopping time entry from menu"))
+            {
+                Toggl.Stop();   
+            }
         }
         
         private void onShowCommand(object sender, RoutedEventArgs e)
@@ -315,17 +325,26 @@ namespace TogglDesktop.WPF
         
         private void onSyncCommand(object sender, RoutedEventArgs e)
         {
-            Toggl.Sync();
+            using (Performance.Measure("syncing from menu"))
+            {
+                Toggl.Sync();
+            }
         }
         
         private void onReportsCommand(object sender, RoutedEventArgs e)
         {
-            Toggl.OpenInBrowser();
+            using (Performance.Measure("opening reports from menu"))
+            {
+                Toggl.OpenInBrowser();
+            }
         }
         
         private void onPreferencesCommand(object sender, RoutedEventArgs e)
         {
-            Toggl.EditPreferences();
+            using (Performance.Measure("opening preferences from menu"))
+            {
+                Toggl.EditPreferences();
+            }
         }
         
         private void onToggleManualModeCommand(object sender, RoutedEventArgs e)
@@ -347,7 +366,10 @@ namespace TogglDesktop.WPF
 
             if (result == MessageBoxResult.Yes)
             {
-                Toggl.ClearCache();
+                using (Performance.Measure("clearing cache from menu"))
+                {
+                    Toggl.ClearCache();
+                }
             }
         }
         
@@ -365,7 +387,10 @@ namespace TogglDesktop.WPF
         
         private void onLogoutCommand(object sender, RoutedEventArgs e)
         {
-            Toggl.Logout();
+            using (Performance.Measure("logging out from menu"))
+            {
+                Toggl.Logout();
+            }
         }
         
         private void onQuitCommand(object sender, RoutedEventArgs e)

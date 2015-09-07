@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
+using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF
 {
@@ -113,7 +114,10 @@ namespace TogglDesktop.WPF
             {
                 return;
             }
-            Toggl.Login(this.emailTextBox.Text, this.passwordBox.Text);
+            using (Performance.Measure("attempting log in"))
+            {
+                Toggl.Login(this.emailTextBox.Text, this.passwordBox.Text);
+            }
             this.passwordBox.Clear();
         }
 
@@ -128,7 +132,10 @@ namespace TogglDesktop.WPF
                 this.passwordBox.Focus();
                 return;
             }
-            Toggl.Signup(this.emailTextBox.Text, this.passwordBox.Text);
+            using (Performance.Measure("attempting sign up"))
+            {
+                Toggl.Signup(this.emailTextBox.Text, this.passwordBox.Text);
+            }
             this.passwordBox.Clear();
         }
 
