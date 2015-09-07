@@ -25,7 +25,6 @@ namespace TogglDesktop.WPF
 
         private AboutWindow aboutWindow;
         private FeedbackWindow feedbackWindow;
-        private PreferencesWindow preferencesWindow;
         private EditViewPopup editPopup;
 
         private UserControl activeView;
@@ -76,10 +75,11 @@ namespace TogglDesktop.WPF
         private void initializeWindows()
         {
             this.childWindows = new Window[]{
+                this.editPopup = new EditViewPopup(),
                 this.aboutWindow = new AboutWindow(),
                 this.feedbackWindow = new FeedbackWindow(),
-                this.preferencesWindow = new PreferencesWindow(),
-                this.editPopup = new EditViewPopup(),
+                new PreferencesWindow(),
+                new IdleNotificationWindow(),
             };
 
             this.timerEntryListView.SetEditPopup(this.editPopup.EditView);

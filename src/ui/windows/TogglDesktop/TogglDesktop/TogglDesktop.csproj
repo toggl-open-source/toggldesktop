@@ -218,6 +218,9 @@
     <Compile Include="WPF\views\TimerEntryListView.xaml.cs">
       <DependentUpon>TimerEntryListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\windows\IdleNotificationWindow.xaml.cs">
+      <DependentUpon>IdleNotificationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -513,6 +516,10 @@
     <Page Include="WPF\views\TimerEntryListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\windows\IdleNotificationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\windows\AboutWindow.xaml">
       <SubType>Designer</SubType>
