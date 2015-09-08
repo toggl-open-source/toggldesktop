@@ -1786,8 +1786,23 @@ void Context::onTrackSettingsUsage(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    std::string apitoken("");
+    std::string update_channel("");
+    std::string desktop_id("");
+    if (db_) {
+        error err = UpdateChannel(&update_channel);
+        if (err != noError) {
+            logger().error(err);
+            return;
+        }
+        err = db_->EnsureDesktopID();
+        if (err != noError) {
+            logger().error(err);
+            return;
+        }
+        desktop_id = db_->DesktopID();
+    }
 
+    std::string apitoken("");
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
@@ -1796,7 +1811,11 @@ void Context::onTrackSettingsUsage(Poco::Util::TimerTask& task) {  // NOLINT
         apitoken = user_->APIToken();
     }
 
-    analytics_.TrackSettingsUsage(apitoken, tracked_settings_);
+    analytics_.TrackSettingsUsage(
+        apitoken,
+        tracked_settings_,
+        update_channel,
+        desktop_id);
 }
 
 error Context::Signup(
@@ -2667,6 +2686,7 @@ error Context::SetUpdateChannel(const std::string channel) {
         return displayError(err);
     }
     fetchUpdates();
+    trackSettingsUsage();
     return noError;
 }
 
