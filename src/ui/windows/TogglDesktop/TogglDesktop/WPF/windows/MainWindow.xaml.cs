@@ -311,8 +311,9 @@ namespace TogglDesktop.WPF
 
         protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.minimizeToTray();
         }
+
 
         protected override void onCogButtonClick(object sender, RoutedEventArgs e)
         {
@@ -487,7 +488,7 @@ namespace TogglDesktop.WPF
         {
             if (this.IsVisible)
             {
-                this.Hide();
+                this.minimizeToTray();
             }
             else
             {
@@ -495,6 +496,16 @@ namespace TogglDesktop.WPF
             }
         }
 
+        private void minimizeToTray()
+        {
+            this.Hide();
+            if (this.editPopup.IsVisible)
+            {
+                // TODO: consider saving popup open state and restoring when window is shown
+                this.editPopup.Hide();
+                this.timerEntryListView.DisableHighlight();
+            }
+        }
         private void setGlobalShortcutsFromSettings()
         {
             try
