@@ -19,6 +19,8 @@ namespace TogglDesktop.WPF
 {
     public partial class MainWindow
     {
+        #region fields
+
         private readonly WindowInteropHelper interopHelper;
         private readonly UserControl[] views;
         private Window[] childWindows;
@@ -30,6 +32,8 @@ namespace TogglDesktop.WPF
         private UserControl activeView;
         private bool isInManualMode;
         private bool isTracking;
+
+        #endregion
 
         public MainWindow()
         {
@@ -50,6 +54,8 @@ namespace TogglDesktop.WPF
             this.interopHelper = new WindowInteropHelper(this);
         }
 
+        #region setup
+
         private void initializeContextMenu()
         {
             foreach (var item in this.ContextMenu.Items)
@@ -61,8 +67,6 @@ namespace TogglDesktop.WPF
                 }
             }
         }
-
-        #region setup
 
         private void hideAllViews()
         {
@@ -105,7 +109,6 @@ namespace TogglDesktop.WPF
             this.IsVisibleChanged -= this.ownChildWindows;
         }
 
-
         private void initializeEvents()
         {
             Toggl.OnApp += this.onApp;
@@ -133,7 +136,6 @@ namespace TogglDesktop.WPF
 
             this.runScriptAsync();
         }
-
 
         private async void runScriptAsync()
         {
@@ -173,7 +175,6 @@ namespace TogglDesktop.WPF
 
         #endregion
 
-
         #region toggl events
 
         private void onStoppedTimerState()
@@ -181,7 +182,7 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onStoppedTimerState))
                 return;
 
-            this.updateRunning(null);
+            this.updateTracking(null);
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
@@ -189,9 +190,8 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onRunningTimerState, te))
                 return;
 
-            this.updateRunning(te);
+            this.updateTracking(te);
         }
-
 
         private void onURL(string url)
         {
@@ -243,7 +243,7 @@ namespace TogglDesktop.WPF
             {
                 this.emailAddressMenuItem.Header = Toggl.UserEmail();
             }
-            this.updateRunning(null);
+            this.updateTracking(null);
         }
 
         private void onError(string errmsg, bool userError)
@@ -293,12 +293,18 @@ namespace TogglDesktop.WPF
             base.OnLocationChanged(e);
         }
 
-
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             this.updateEditPopupLocation();
 
             base.OnRenderSizeChanged(sizeInfo);
+        }
+
+        private void onTaskbarIconDoubleClick(object sender, RoutedEventArgs e)
+        {
+            this.Show();
+            this.Topmost = true;
+            this.Activate();
         }
 
         #endregion
@@ -469,7 +475,7 @@ namespace TogglDesktop.WPF
             this.taskbarIcon.IconSource = (BitmapImage)this.FindResource(notifyIconName);
         }
 
-        private void updateRunning(Toggl.TogglTimeEntryView? timeEntry)
+        private void updateTracking(Toggl.TogglTimeEntryView? timeEntry)
         {
             var tracking = timeEntry != null;
 
@@ -610,13 +616,6 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
-
-        private void onTaskbarIconDoubleClick(object sender, RoutedEventArgs e)
-        {
-            this.Show();
-            this.Topmost = true;
-            this.Activate();
-        }
 
     }
 }
