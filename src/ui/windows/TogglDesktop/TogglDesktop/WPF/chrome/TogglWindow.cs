@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 
 namespace TogglDesktop.WPF
@@ -66,6 +67,8 @@ namespace TogglDesktop.WPF
                 IsToolWindow = this.IsToolWindow
             };
 
+            this.SetIconState(true);
+
             this.setupChromeEvents();
 
             var oldContent = this.Content;
@@ -91,6 +94,12 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
+        public void SetIconState(bool tracking)
+        {
+            this.Icon = (BitmapImage)this.chrome.FindResource(tracking ? "IconRed" : "IconGray");
+            this.chrome.SetIconState(tracking);
+        }
 
         #region ui events
 

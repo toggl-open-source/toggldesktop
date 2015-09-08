@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 
 namespace TogglDesktop.WPF
 {
@@ -26,6 +27,11 @@ namespace TogglDesktop.WPF
         public TogglChrome()
         {
             this.InitializeComponent();
+        }
+
+        public void SetIconState(bool tracking)
+        {
+            this.icon.Source = (BitmapImage)this.FindResource(tracking ? "IconRed" : "IconGray");
         }
 
         public bool IsToolWindow

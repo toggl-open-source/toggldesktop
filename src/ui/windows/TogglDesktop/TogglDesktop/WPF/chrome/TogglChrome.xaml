@@ -39,7 +39,8 @@
             </Grid.Background>
 
             <Image Grid.Column="0"
-                   Source="/TogglDesktop;component/Resources/logo64.png"
+                   Name="icon" x:FieldModifier="private"
+                   Source="{StaticResource IconRed}"
                    RenderOptions.BitmapScalingMode="Fant"
                    Height="16" Width="16" Margin="6 0 0 0"/>
 

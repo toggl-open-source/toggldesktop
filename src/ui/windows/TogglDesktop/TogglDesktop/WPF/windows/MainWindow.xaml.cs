@@ -499,6 +499,7 @@ namespace TogglDesktop.WPF
 
             this.updateContextMenuItems();
             this.updateStatusIcons(true);
+            this.SetIconState(tracking);
         }
 
         private void updateContextMenuItems()
