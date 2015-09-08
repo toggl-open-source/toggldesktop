@@ -11,6 +11,18 @@ namespace TogglDesktop.WPF
         public TimeEntryList()
         {
             this.InitializeComponent();
+
+            this.LayoutUpdated += this.initResizeBackground;
+        }
+
+        private void initResizeBackground(object sender, EventArgs eventArgs)
+        {
+            var scrollBarWidth = this.ActualWidth - this.panel.ActualWidth;
+
+            this.resizeBackground.Width = scrollBarWidth;
+            this.resizeBackground.Height = scrollBarWidth;
+
+            this.LayoutUpdated -= this.initResizeBackground;
         }
 
         public UIElementCollection Children

@@ -36,6 +36,7 @@ namespace TogglDesktop.WPF
         private UserControl activeView;
         private bool isInManualMode;
         private bool isTracking;
+        private bool isResizingWithHandle;
 
         #endregion
 
@@ -342,6 +343,33 @@ namespace TogglDesktop.WPF
             this.togglVisibility();
         }
 
+        private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            const int htBottomRight = 17;
+
+            Mouse.Capture(null);
+
+            Win32.SendMessage(this.interopHelper.Handle,
+                Win32.wmNcLButtonDown,
+                htBottomRight,
+                0);
+
+            this.resizeHandle.CaptureMouse();
+            this.isResizingWithHandle = true;
+        }
+
+        private void onResizeHandleLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            this.endHandleResizing();
+        }
+
+        private void onWindowMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                this.endHandleResizing();
+            }
+        }
         #endregion
 
         #region command events
@@ -613,6 +641,15 @@ namespace TogglDesktop.WPF
 
         #region window size, position and state handling
 
+        private void endHandleResizing()
+        {
+            if (!this.isResizingWithHandle)
+                return;
+
+            Mouse.Capture(null);
+            this.isResizingWithHandle = false;
+        }
+
         private void updateEntriesListWidth()
         {
             if (this.WindowState == WindowState.Maximized && this.editPopup.IsVisible)
@@ -701,6 +738,7 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
 
     }
 }

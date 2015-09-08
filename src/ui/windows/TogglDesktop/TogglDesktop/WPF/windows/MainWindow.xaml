@@ -7,7 +7,8 @@
              xmlns:tb="http://www.hardcodet.net/taskbar"
              mc:Ignorable="d" 
              d:DesignWidth="400"
-             Title="Toggl Desktop">
+             Title="Toggl Desktop"
+             MouseMove="onWindowMouseMove">
 
     <Window.Resources>
         <RoutedUICommand x:Key="NewCommand" />
@@ -127,6 +128,18 @@
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
-        
+
+
+        <Rectangle x:Name="resizeHandle" x:FieldModifier="private"
+                VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                Width="15" Height="15" Cursor="SizeNWSE"
+                IsHitTestVisible="True"
+                MouseLeftButtonDown="onResizeHandleLeftButtonDown"
+                MouseLeftButtonUp="onResizeHandleLeftButtonUp">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/TogglDesktop;component/Resources/resize.png"/>
+            </Rectangle.Fill>
+        </Rectangle>
+
     </Grid>
 </toggl:TogglWindow>

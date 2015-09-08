@@ -486,7 +486,7 @@
     <Resource Include="Resources\continue_hover.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\resize.png" />
+    <Resource Include="Resources\resize.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\darkBg.png" />
