@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 using Screen = System.Windows.Forms.Screen;
-using Keys = System.Windows.Forms.Keys;
 
 namespace TogglDesktop.WPF
 {
@@ -53,8 +52,8 @@ namespace TogglDesktop.WPF
             this.initializeTaskbarIcon();
             this.initializeEvents();
 
-            startHook.KeyPressed += this.onGlobalStartKeyPressed;
-            showHook.KeyPressed += this.onGlobalShowKeyPressed;
+            this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
+            this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
 
 
             this.finalInitialisation();
@@ -63,33 +62,6 @@ namespace TogglDesktop.WPF
         }
 
         #region setup
-
-        private void setGlobalShortcutsFromSettings()
-        {
-            try
-            {
-                this.startHook.ChangeTo(
-                    Properties.Settings.Default.StartModifiers,
-                    Properties.Settings.Default.StartKey
-                    );
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Could not register start shortcut: ", e);
-            }
-
-            try
-            {
-                this.showHook.ChangeTo(
-                    Properties.Settings.Default.ShowModifiers,
-                    Properties.Settings.Default.ShowKey
-                    );
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Could not register show hotkey: ", e);
-            }
-        }
 
         private void initializeContextMenu()
         {
@@ -488,6 +460,33 @@ namespace TogglDesktop.WPF
         #endregion
 
         #region ui controlling
+
+        private void setGlobalShortcutsFromSettings()
+        {
+            try
+            {
+                this.startHook.ChangeTo(
+                    Properties.Settings.Default.StartModifiers,
+                    Properties.Settings.Default.StartKey
+                    );
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not register start shortcut: ", e);
+            }
+
+            try
+            {
+                this.showHook.ChangeTo(
+                    Properties.Settings.Default.ShowModifiers,
+                    Properties.Settings.Default.ShowKey
+                    );
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not register show hotkey: ", e);
+            }
+        }
 
         private void startTimeEntry()
         {
