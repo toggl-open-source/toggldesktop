@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -280,14 +281,7 @@ namespace TogglDesktop.WPF
 
         private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            if (this.IsVisible)
-            {
-                this.Hide();
-            }
-            else
-            {
-                this.showOnTop();
-            }
+            this.togglVisibility();
         }
 
         private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
@@ -343,9 +337,9 @@ namespace TogglDesktop.WPF
             base.OnRenderSizeChanged(sizeInfo);
         }
 
-        private void onTaskbarIconDoubleClick(object sender, RoutedEventArgs e)
+        private void onTaskbarLeftMouseUp(object sender, RoutedEventArgs e)
         {
-            this.showOnTop();
+            this.togglVisibility();
         }
 
         #endregion
@@ -456,10 +450,22 @@ namespace TogglDesktop.WPF
         {
             this.shutdown(0);
         }
-        
+
         #endregion
 
         #region ui controlling
+
+        private void togglVisibility()
+        {
+            if (this.IsVisible)
+            {
+                this.Hide();
+            }
+            else
+            {
+                this.showOnTop();
+            }
+        }
 
         private void setGlobalShortcutsFromSettings()
         {

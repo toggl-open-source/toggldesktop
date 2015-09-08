@@ -120,7 +120,7 @@
         <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop"/>
         
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
-                        TrayMouseDoubleClick="onTaskbarIconDoubleClick"
+                        TrayLeftMouseUp="onTaskbarLeftMouseUp"
                         IconSource="{StaticResource IconOnlineInactive}"/>
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
