@@ -1,0 +1,67 @@
+h1 {
+  text-align: center;
+  font-size: 38px;
+}
+
+h3 {
+  border-bottom: 1px solid #e0e0e0;
+  line-height: 35px;
+  font-size: 20px;
+}
+
+.platform-links li {
+  list-style: none;
+  display: inline;
+  border-left: 1px solid #e5e5e5;
+  padding: 0 10px;
+  font-size: 18px;
+}
+
+.platform-links li:first-child {
+  border: none;
+}
+
+.platform-links li a {
+  text-align: center;
+  padding: 5px 10px;
+}
+
+.table {
+  display: table;
+  margin: 0 auto;
+}
+
+.table ul {
+  margin-top: 20px;
+}
+
+.os {
+  display: none;
+  min-height: 200px;
+  width: 500px;
+}
+
+.active {
+  display: block!important;
+}
+
+.current {
+  background-color: #39c;
+  color: white;
+  border-radius: 5px;
+}
+
+.date {
+  float: right;
+  font: 14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #777;
+  font-weight: 300;
+  line-height: 35px;
+}
+
+.pages ul li {
+  line-height: 30px;
+  height: 30px;
+  vertical-align: middle;
+  font-size: 16px;
+}
