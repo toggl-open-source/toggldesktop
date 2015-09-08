@@ -24,6 +24,7 @@
         <RoutedUICommand x:Key="LogoutCommand" />
         <RoutedUICommand x:Key="QuitCommand" />
 
+        <!-- ReSharper disable Xaml.RedundantResource -->
         <BitmapImage
             x:Key="IconOnlineActive"
             UriSource="/TogglDesktop;component/Resources/toggltray.ico" />
@@ -36,6 +37,7 @@
         <BitmapImage
             x:Key="IconOfflineInactive"
             UriSource="/TogglDesktop;component/Resources/toggl_offline_inactive.ico" />
+        <!-- ReSharper restore Xaml.RedundantResource -->
     </Window.Resources>
     
     <Window.CommandBindings>
