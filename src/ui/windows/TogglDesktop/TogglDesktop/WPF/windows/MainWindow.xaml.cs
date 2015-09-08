@@ -472,7 +472,7 @@ namespace TogglDesktop.WPF
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not register start shortcut: ", e);
+                Toggl.Debug("Could not register start shortcut: " + e);
             }
 
             try
@@ -484,7 +484,7 @@ namespace TogglDesktop.WPF
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not register show hotkey: ", e);
+                Toggl.Debug("Could not register show hotkey: " + e);
             }
         }
 
