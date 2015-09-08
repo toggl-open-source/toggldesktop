@@ -14,12 +14,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 using Screen = System.Windows.Forms.Screen;
+using Keys = System.Windows.Forms.Keys;
 
 namespace TogglDesktop.WPF
 {
     public partial class MainWindow
     {
         #region fields
+
+        private readonly KeyboardHook startHook = new KeyboardHook();
+        private readonly KeyboardHook showHook = new KeyboardHook();
 
         private readonly WindowInteropHelper interopHelper;
         private readonly UserControl[] views;
@@ -49,12 +53,43 @@ namespace TogglDesktop.WPF
             this.initializeTaskbarIcon();
             this.initializeEvents();
 
+            startHook.KeyPressed += this.onGlobalStartKeyPressed;
+            showHook.KeyPressed += this.onGlobalShowKeyPressed;
+
+
             this.finalInitialisation();
 
             this.interopHelper = new WindowInteropHelper(this);
         }
 
         #region setup
+
+        private void setGlobalShortcutsFromSettings()
+        {
+            try
+            {
+                this.startHook.ChangeTo(
+                    Properties.Settings.Default.StartModifiers,
+                    Properties.Settings.Default.StartKey
+                    );
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not register start shortcut: ", e);
+            }
+
+            try
+            {
+                this.showHook.ChangeTo(
+                    Properties.Settings.Default.ShowModifiers,
+                    Properties.Settings.Default.ShowKey
+                    );
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not register show hotkey: ", e);
+            }
+        }
 
         private void initializeContextMenu()
         {
@@ -120,6 +155,7 @@ namespace TogglDesktop.WPF
             Toggl.OnURL += this.onURL;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            Toggl.OnSettings += this.onSettings;
         }
 
         private void finalInitialisation()
@@ -261,9 +297,44 @@ namespace TogglDesktop.WPF
             }
         }
 
+        private void onSettings(bool open, Toggl.TogglSettingsView settings)
+        {
+            this.setGlobalShortcutsFromSettings();
+        }
+
         #endregion
 
         #region ui events
+
+        private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (this.IsVisible)
+            {
+                this.Hide();
+            }
+            else
+            {
+                this.showOnTop();
+            }
+        }
+
+        private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (this.isTracking)
+            {
+                using (Performance.Measure("stopping time entry from global short cut", this.isInManualMode))
+                {
+                    Toggl.Stop();
+                }
+            }
+            else
+            {
+                using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.isInManualMode))
+                {
+                    this.startTimeEntry();
+                }
+            }
+        }
 
         private void editPopupVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -302,9 +373,7 @@ namespace TogglDesktop.WPF
 
         private void onTaskbarIconDoubleClick(object sender, RoutedEventArgs e)
         {
-            this.Show();
-            this.Topmost = true;
-            this.Activate();
+            this.showOnTop();
         }
 
         #endregion
@@ -315,18 +384,10 @@ namespace TogglDesktop.WPF
         {
             using (Performance.Measure("starting time entry from menu, manual mode: {0}", this.isInManualMode))
             {
-                if (this.isInManualMode)
-                {
-                    var guid = Toggl.Start("", "0", 0, 0, "", "");
-                    Toggl.Edit(guid, false, Toggl.Duration);
-                }
-                else
-                {
-                    Toggl.Start("", "", 0, 0, "", "");
-                }
+                this.startTimeEntry();
             }
         }
-        
+
         private void onContinueCommand(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("continuing time entry from menu"))
@@ -424,10 +485,29 @@ namespace TogglDesktop.WPF
             this.shutdown(0);
         }
         
-
         #endregion
 
         #region ui controlling
+
+        private void startTimeEntry()
+        {
+            if (this.isInManualMode)
+            {
+                var guid = Toggl.Start("", "0", 0, 0, "", "");
+                Toggl.Edit(guid, false, Toggl.Duration);
+            }
+            else
+            {
+                Toggl.Start("", "", 0, 0, "", "");
+            }
+        }
+
+        private void showOnTop()
+        {
+            this.Show();
+            this.Topmost = true;
+            this.Activate();
+        }
 
         private void shutdown(int exitCode)
         {
