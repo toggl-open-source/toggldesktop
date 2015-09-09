@@ -8,6 +8,7 @@
         d:DesignWidth="400" d:DesignHeight="520"
         WindowStyle="None" ResizeMode="NoResize"
         MouseMove="onWindowMouseMove"
+        ShowInTaskbar="False"
         MinWidth="{Binding ElementName=EditView, Path=MinWidth}">
     
     <WindowChrome.WindowChrome>
