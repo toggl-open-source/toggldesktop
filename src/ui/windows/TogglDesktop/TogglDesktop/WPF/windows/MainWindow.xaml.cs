@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +20,7 @@ namespace TogglDesktop.WPF
     {
         #region fields
 
+        private readonly DispatcherTimer idleDetectionTimer = new DispatcherTimer();
         private readonly KeyboardHook startHook = new KeyboardHook();
         private readonly KeyboardHook showHook = new KeyboardHook();
 
@@ -58,6 +60,7 @@ namespace TogglDesktop.WPF
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
             this.IsVisibleChanged += this.onIsVisibleChanged;
+            this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
         }
@@ -273,6 +276,7 @@ namespace TogglDesktop.WPF
         private void onSettings(bool open, Toggl.TogglSettingsView settings)
         {
             this.setGlobalShortcutsFromSettings();
+            this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.remainOnTop = settings.OnTop;
             this.setWindowOnTop();
         }
@@ -378,6 +382,30 @@ namespace TogglDesktop.WPF
             {
                 this.setWindowOnTop();
             }
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            Toggl.SetWake();
+
+            base.OnActivated(e);
+        }
+
+        private void onIdleDetectionTimerTick(object sender, EventArgs e)
+        {
+            Win32.LASTINPUTINFO lastInputInfo;
+            lastInputInfo.cbSize = Win32.LASTINPUTINFO.SizeOf;
+            lastInputInfo.dwTime = 0;
+            if (!Win32.GetLastInputInfo(out lastInputInfo))
+            {
+                return;
+            }
+            var idleSeconds = (Environment.TickCount - lastInputInfo.dwTime) / 1000;
+            if (idleSeconds < 1)
+            {
+                return;
+            }
+            Toggl.SetIdleSeconds((ulong)idleSeconds);
         }
 
         #endregion
