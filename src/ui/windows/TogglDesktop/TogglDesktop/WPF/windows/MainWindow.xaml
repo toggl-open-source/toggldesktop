@@ -135,7 +135,8 @@
                 Width="15" Height="15" Cursor="SizeNWSE"
                 IsHitTestVisible="True"
                 MouseLeftButtonDown="onResizeHandleLeftButtonDown"
-                MouseLeftButtonUp="onResizeHandleLeftButtonUp">
+                MouseLeftButtonUp="onResizeHandleLeftButtonUp"
+                WindowChrome.IsHitTestVisibleInChrome="True">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="/TogglDesktop;component/Resources/resize.png"/>
             </Rectangle.Fill>
