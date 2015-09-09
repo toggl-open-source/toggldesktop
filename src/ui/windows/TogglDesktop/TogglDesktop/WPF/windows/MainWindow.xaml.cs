@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -56,7 +55,6 @@ namespace TogglDesktop.WPF
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
-
 
             this.finalInitialisation();
 
@@ -314,7 +312,6 @@ namespace TogglDesktop.WPF
             this.minimizeToTray();
         }
 
-
         protected override void onCogButtonClick(object sender, RoutedEventArgs e)
         {
             this.mainContextMenu.PlacementTarget = (FrameworkElement)sender;
@@ -328,8 +325,26 @@ namespace TogglDesktop.WPF
         protected override void OnLocationChanged(EventArgs e)
         {
             this.updateEditPopupLocation();
+            this.updateMaximumSize();
+
+            if (this.WindowState != WindowState.Maximized && this.ResizeMode != ResizeMode.CanResize)
+            {
+                this.ResizeMode = ResizeMode.CanResize;
+            }
 
             base.OnLocationChanged(e);
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized && this.ResizeMode != ResizeMode.NoResize)
+            {
+                this.WindowState = WindowState.Normal;
+                this.ResizeMode = ResizeMode.NoResize;
+                this.WindowState = WindowState.Maximized;
+            }
+
+            base.OnStateChanged(e);
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -371,6 +386,7 @@ namespace TogglDesktop.WPF
                 this.endHandleResizing();
             }
         }
+
         #endregion
 
         #region command events
@@ -713,13 +729,10 @@ namespace TogglDesktop.WPF
 
         private Screen getCurrentScreen()
         {
-            var bounds = new Rectangle(
-                (int)this.Left, (int)this.Top, (int)this.Width, (int)this.Height
-                );
-
-            return Screen.AllScreens
-                .FirstOrDefault(s => s.Bounds.IntersectsWith(bounds))
-                ?? Screen.PrimaryScreen;
+            return Screen.FromRectangle(new Rectangle(
+                (int)this.Left, (int)this.Top,
+                (int)this.Width, (int)this.Height
+                ));
         }
 
         private void setActiveView(UserControl activeView)
@@ -748,8 +761,14 @@ namespace TogglDesktop.WPF
             this.MinWidth = activeView.MinWidth;
         }
 
+        private void updateMaximumSize()
+        {
+            var screen = this.getCurrentScreen();
+
+            this.MaxWidth = screen.WorkingArea.Width;
+            this.MaxHeight = screen.WorkingArea.Height;
+        }
+
         #endregion
-
-
     }
 }

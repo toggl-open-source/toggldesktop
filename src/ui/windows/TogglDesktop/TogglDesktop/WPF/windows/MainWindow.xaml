@@ -120,7 +120,7 @@
     
     <Grid>
 
-        <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop"/>
+        <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop" />
         
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
                         TrayLeftMouseUp="onTaskbarLeftMouseUp"
