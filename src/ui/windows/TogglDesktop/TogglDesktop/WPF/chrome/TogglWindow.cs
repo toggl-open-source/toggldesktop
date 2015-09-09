@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
+using Brushes = System.Windows.Media.Brushes;
+using Screen = System.Windows.Forms.Screen;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace TogglDesktop.WPF
 {
@@ -17,14 +19,7 @@ namespace TogglDesktop.WPF
         public TogglWindow()
         {
             this.WindowStyle = WindowStyle.None;
-            WindowChrome.SetWindowChrome(this, new WindowChrome
-            {
-                CaptionHeight = 40,
-                CornerRadius = new CornerRadius(0),
-                //ResizeBorderThickness = new Thickness(0),
-                GlassFrameThickness = new Thickness(1),
-                UseAeroCaptionButtons = false
-            });
+            this.updateWindowChrome();
         }
 
         #region public properties
@@ -115,6 +110,70 @@ namespace TogglDesktop.WPF
         protected virtual void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        protected override void OnLocationChanged(EventArgs e)
+        {
+            this.updateMaximumSize();
+
+            if (this.WindowState != WindowState.Maximized && this.ResizeMode != ResizeMode.CanResize)
+            {
+                this.ResizeMode = ResizeMode.CanResize;
+            }
+
+            base.OnLocationChanged(e);
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized && this.ResizeMode != ResizeMode.NoResize)
+            {
+                this.WindowState = WindowState.Normal;
+                this.ResizeMode = ResizeMode.NoResize;
+                this.WindowState = WindowState.Maximized;
+            }
+
+            this.updateWindowChrome();
+
+            base.OnStateChanged(e);
+        }
+
+        #endregion
+
+        #region ui controlling
+
+        private void updateWindowChrome()
+        {
+            var chrome = new WindowChrome
+            {
+                CaptionHeight = 40,
+                CornerRadius = new CornerRadius(0),
+                GlassFrameThickness = new Thickness(1),
+                UseAeroCaptionButtons = false
+            };
+
+            if (this.WindowState == WindowState.Maximized)
+            {
+                chrome.ResizeBorderThickness = new Thickness(0);
+            }
+
+            WindowChrome.SetWindowChrome(this, chrome);
+        }
+        
+        private void updateMaximumSize()
+        {
+            var screen = this.getCurrentScreen();
+
+            this.MaxWidth = screen.WorkingArea.Width;
+            this.MaxHeight = screen.WorkingArea.Height;
+        }
+
+        protected Screen getCurrentScreen()
+        {
+            return Screen.FromRectangle(new Rectangle(
+                (int)this.Left, (int)this.Top,
+                (int)this.Width, (int)this.Height
+                ));
         }
 
         #endregion

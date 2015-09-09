@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
-using Screen = System.Windows.Forms.Screen;
 
 namespace TogglDesktop.WPF
 {
@@ -325,26 +323,8 @@ namespace TogglDesktop.WPF
         protected override void OnLocationChanged(EventArgs e)
         {
             this.updateEditPopupLocation();
-            this.updateMaximumSize();
-
-            if (this.WindowState != WindowState.Maximized && this.ResizeMode != ResizeMode.CanResize)
-            {
-                this.ResizeMode = ResizeMode.CanResize;
-            }
 
             base.OnLocationChanged(e);
-        }
-
-        protected override void OnStateChanged(EventArgs e)
-        {
-            if (this.WindowState == WindowState.Maximized && this.ResizeMode != ResizeMode.NoResize)
-            {
-                this.WindowState = WindowState.Normal;
-                this.ResizeMode = ResizeMode.NoResize;
-                this.WindowState = WindowState.Maximized;
-            }
-
-            base.OnStateChanged(e);
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
@@ -727,14 +707,6 @@ namespace TogglDesktop.WPF
 
         }
 
-        private Screen getCurrentScreen()
-        {
-            return Screen.FromRectangle(new Rectangle(
-                (int)this.Left, (int)this.Top,
-                (int)this.Width, (int)this.Height
-                ));
-        }
-
         private void setActiveView(UserControl activeView)
         {
             if (activeView == null)
@@ -759,14 +731,6 @@ namespace TogglDesktop.WPF
         {
             this.MinHeight = this.WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
-        }
-
-        private void updateMaximumSize()
-        {
-            var screen = this.getCurrentScreen();
-
-            this.MaxWidth = screen.WorkingArea.Width;
-            this.MaxHeight = screen.WorkingArea.Height;
         }
 
         #endregion
