@@ -43,10 +43,10 @@ namespace TogglDesktop.WPF
         protected override void OnDeactivated(EventArgs e)
         {
             base.OnDeactivated(e);
-            this.SetWindowPos(this.remainOnTop);
+            this.SetWindowOnTop(this.remainOnTop);
         }
 
-        public void SetWindowPos(bool onTop)
+        public void SetWindowOnTop(bool onTop)
         {
             this.remainOnTop = onTop;
             Win32.SetWindowPos(this.interopHelper.Handle,

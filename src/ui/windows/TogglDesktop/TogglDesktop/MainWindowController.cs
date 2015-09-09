@@ -683,7 +683,7 @@ public partial class MainWindowController : TogglForm
         Win32.SetWindowPos(this.Handle, hwndInsertAfter, 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
         if (this.editViewPopup != null)
         {
-            this.editViewPopup.SetWindowPos(onTop);
+            this.editViewPopup.SetWindowOnTop(onTop);
         }
     }
 

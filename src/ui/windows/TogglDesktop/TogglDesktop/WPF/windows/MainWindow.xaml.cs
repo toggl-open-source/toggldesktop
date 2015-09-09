@@ -30,6 +30,8 @@ namespace TogglDesktop.WPF
         private FeedbackWindow feedbackWindow;
         private EditViewPopup editPopup;
 
+        private bool remainOnTop;
+
         private UserControl activeView;
         private bool isInManualMode;
         private bool isTracking;
@@ -42,6 +44,8 @@ namespace TogglDesktop.WPF
             this.DataContext = this;
             this.InitializeComponent();
 
+            this.interopHelper = new WindowInteropHelper(this);
+
             this.views = new UserControl[] {this.loginView, this.timerEntryListView};
 
             this.hideAllViews();
@@ -53,10 +57,9 @@ namespace TogglDesktop.WPF
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
+            this.IsVisibleChanged += this.onIsVisibleChanged;
 
             this.finalInitialisation();
-
-            this.interopHelper = new WindowInteropHelper(this);
         }
 
         #region setup
@@ -270,6 +273,8 @@ namespace TogglDesktop.WPF
         private void onSettings(bool open, Toggl.TogglSettingsView settings)
         {
             this.setGlobalShortcutsFromSettings();
+            this.remainOnTop = settings.OnTop;
+            this.setWindowOnTop();
         }
 
         #endregion
@@ -364,6 +369,14 @@ namespace TogglDesktop.WPF
             if (e.LeftButton == MouseButtonState.Released)
             {
                 this.endHandleResizing();
+            }
+        }
+
+        private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.IsVisible)
+            {
+                this.setWindowOnTop();
             }
         }
 
@@ -502,6 +515,7 @@ namespace TogglDesktop.WPF
                 this.timerEntryListView.DisableHighlight();
             }
         }
+
         private void setGlobalShortcutsFromSettings()
         {
             try
@@ -647,6 +661,18 @@ namespace TogglDesktop.WPF
         #endregion
 
         #region window size, position and state handling
+
+        private void setWindowOnTop()
+        {
+            Win32.SetWindowPos(this.interopHelper.Handle,
+                this.remainOnTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST,
+                0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
+
+            if (this.editPopup != null)
+            {
+                this.editPopup.SetWindowOnTop(this.remainOnTop);
+            }
+        }
 
         private void endHandleResizing()
         {
