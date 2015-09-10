@@ -29,7 +29,15 @@ cp src/ui/linux/README $out/.
 
 cp third_party/bugsnag-qt/build/release/libbugsnag-qt.so.1 $out/.
 
-cp third_party/poco/lib/Linux/x86_64/libPoco*.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoCrypto.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoData.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoDataSQLite.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoFoundation.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoJSON.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoNet.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoNetSSL.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoUtil.so.31 $out/.
+cp third_party/poco/lib/Linux/x86_64/libPocoXML.so.31 $out/.
 
 cp src/ui/linux/TogglDesktop/build/release/TogglDesktop $out/.
 
