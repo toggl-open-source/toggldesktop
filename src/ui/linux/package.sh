@@ -23,11 +23,13 @@ rm -rf toggldesktop*.tar.gz $out
 
 mkdir -p $out
 
-cp src/lib/linux/TogglDesktopLibrary/build/release/libTogglDesktopLibrary.so.1 $out
+cp src/lib/linux/TogglDesktopLibrary/build/release/libTogglDesktopLibrary.so.1 $out/.
 
-cp src/ui/linux/README $out
+cp src/ui/linux/README $out/.
 
-cp third_party/bugsnag-qt/build/release/libbugsnag-qt.so.1 $out
+cp third_party/bugsnag-qt/build/release/libbugsnag-qt.so.1 $out/.
+
+cp third_party/poco/lib/Linux/x86_64/libPoco*.so.31 $out/.
 
 cp src/ui/linux/TogglDesktop/build/release/TogglDesktop $out/.
 
