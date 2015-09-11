@@ -146,6 +146,8 @@ namespace TogglDesktop.WPF
 
             this.aboutWindow.UpdateReleaseChannel();
 
+            this.errorBar.Hide();
+
             this.runScriptAsync();
         }
 
@@ -233,6 +235,7 @@ namespace TogglDesktop.WPF
 
             if (open)
             {
+                this.errorBar.Hide();
                 this.setActiveView(this.timerEntryListView);
             }
         }
@@ -260,6 +263,10 @@ namespace TogglDesktop.WPF
 
         private void onError(string errmsg, bool userError)
         {
+            if (this.TryBeginInvoke(this.onError, errmsg, userError))
+                return;
+
+            this.errorBar.ShowError(errmsg);
         }
 
         private void onApp(bool open)

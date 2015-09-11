@@ -46,8 +46,7 @@
 
             <TextBlock Grid.Column="1"
                        Style="{StaticResource WindowTitle}"
-                       Text="{Binding Title}"
-                       TextTrimming="CharacterEllipsis"/>
+                       Text="{Binding Title}"/>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4 0">
                 <Button Name="CogButton" Style="{StaticResource WindowHeadButton}"

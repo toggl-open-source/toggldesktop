@@ -129,6 +129,8 @@
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
 
+        <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"
+            VerticalAlignment="Bottom"/>
 
         <Rectangle x:Name="resizeHandle" x:FieldModifier="private"
                 VerticalAlignment="Bottom" HorizontalAlignment="Right"
