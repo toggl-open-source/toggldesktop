@@ -16,7 +16,7 @@ Toggl Desktop app like this:
 
 Or you can append the libraries permanently like this:
 
-	export LD_LIBRARY_PATH=/home/tanel/poco/lib/Linux/x86_64:/home/tanel/Qt/5.5/gcc_64/lib:$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=/home/tanel/Qt/5.5/gcc_64/lib:$LD_LIBRARY_PATH
 
 (Then just type ./TogglDesktop to run the Toggl Desktop app).
 
