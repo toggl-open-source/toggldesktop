@@ -158,12 +158,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlphaBlendTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AutoCompleteTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
     <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
