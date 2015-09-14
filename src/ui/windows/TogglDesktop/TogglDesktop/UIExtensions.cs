@@ -18,7 +18,6 @@ static class UIExtensions
 
         return true;
     }
-
     #region overloads
 
     public static bool TryBeginInvoke<T0>(this Control control, Action<T0> action, T0 p0)
@@ -51,13 +50,20 @@ static class UIExtensions
         if (icon == null)
             throw new ArgumentNullException("icon");
 
-        var method = typeof (TaskbarIcon).GetMethod("ShowBalloonTip", BindingFlags.NonPublic | BindingFlags.Instance);
+        var method = typeof (TaskbarIcon)
+            .GetMethod("ShowBalloonTip", BindingFlags.NonPublic | BindingFlags.Instance);
 
         lock (icon)
         {
             // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
             // (The enum behaves like flags)
-            method.Invoke(icon, new object[] { title, message, BalloonFlags.User | BalloonFlags.LargeIcon, customIcon.Handle });
+            method.Invoke(icon, new object[]
+            {
+                title,
+                message,
+                BalloonFlags.User | BalloonFlags.LargeIcon,
+                customIcon.Handle
+            });
         }
     }
 }
