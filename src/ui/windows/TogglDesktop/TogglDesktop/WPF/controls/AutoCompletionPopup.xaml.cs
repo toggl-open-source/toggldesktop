@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.WPF.AutoComplete;
@@ -258,6 +259,9 @@ namespace TogglDesktop.WPF
             {
                 return;
             }
+
+            // fix to make sure list updates layout when first opened
+            this.popup.IsOpen = true;
 
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);

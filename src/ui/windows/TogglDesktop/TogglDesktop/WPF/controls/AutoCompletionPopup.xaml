@@ -13,7 +13,7 @@
            PlacementTarget="{Binding Target}"
            MaxHeight="300" MinWidth="{Binding Path=Target.ActualWidth, Converter={toggl:Resources ResourceKey=AddValueConverter}, ConverterParameter=20}"
            StaysOpen="True" AllowsTransparency="True">
-        <ScrollViewer Background="White"  Margin="10">
+        <ScrollViewer Background="White" Margin="10">
 
             <ScrollViewer.Effect>
                 <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
