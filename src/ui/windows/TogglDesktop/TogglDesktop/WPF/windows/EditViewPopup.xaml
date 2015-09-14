@@ -1,0 +1,38 @@
+﻿<Window x:Class="TogglDesktop.WPF.EditViewPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:wpf="clr-namespace:TogglDesktop.WPF"
+        mc:Ignorable="d"
+        d:DesignWidth="400" d:DesignHeight="520"
+        WindowStyle="None" ResizeMode="NoResize"
+        MouseMove="onWindowMouseMove"
+        ShowInTaskbar="False"
+        MinWidth="{Binding ElementName=EditView, Path=MinWidth}">
+    
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="0"
+            CornerRadius="0"
+            ResizeBorderThickness="0"
+            GlassFrameThickness="0"
+            UseAeroCaptionButtons="False"
+            />
+    </WindowChrome.WindowChrome>
+    
+    <Grid>
+        <wpf:EditView 
+            x:Name="EditView"
+            />
+        <Rectangle
+            x:Name="resizeHandle" x:FieldModifier="private"
+            Fill="Transparent"
+            Width="10" HorizontalAlignment="Right"
+            Cursor="SizeWE"
+            IsHitTestVisible="True"
+            MouseLeftButtonDown="onResizeHandleLeftButtonDown"
+            MouseLeftButtonUp="onResizeHandleLeftButtonUp"
+            />
+    </Grid>
+</Window>

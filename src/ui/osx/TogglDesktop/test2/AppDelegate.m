@@ -960,6 +960,11 @@ BOOL manualMode = NO;
 	[NSApp activateIgnoringOtherApps:YES];
 }
 
+- (IBAction)onViewChangelogMenuItem:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://toggl.github.io/toggldesktop"]];
+}
+
 - (IBAction)onShowMenuItem:(id)sender
 {
 	[self.mainWindowController showWindow:self];

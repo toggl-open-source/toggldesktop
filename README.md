@@ -19,6 +19,7 @@ Table of Contents
     * [OSX](#osx)
     * [Windows](#windows-1)
     * [Linux (64 bit only)](#linux-64-bit-only)
+  * [Change log](#changelog)
   * [Contribute](#contribute)
 
 
@@ -130,6 +131,10 @@ Toggl built and signed app for Windows is [available for download](https://www.t
 * [tarball](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable)
 * [deb](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=stable)
 
+
+# Change log
+
+Change log can be viewed at [http://toggl.github.io/toggldesktop/](http://toggl.github.io/toggldesktop/)
 
 # Contribute
 

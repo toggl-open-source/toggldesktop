@@ -3,15 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:toggl="clr-namespace:TogglDesktop.WPF">
 
-    <Style TargetType="Grid" x:Key="MainGrid">
-        <Setter Property="Background">
-            <Setter.Value>
-                <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerLightBg.png"
-                                AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Uniform"
-                                Viewport="0, 0, 634, 822" ViewportUnits="Absolute"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Style TargetType="Control">
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
         <Setter Property="FontSize" Value="13.3" />

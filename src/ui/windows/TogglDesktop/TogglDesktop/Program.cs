@@ -2,19 +2,22 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
-using System.Windows.Forms;
+using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using TogglDesktop.WPF;
+using Application = System.Windows.Forms.Application;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace TogglDesktop
 {
 static class Program
 {
-    public static bool ShuttingDown = false;
+    public static bool ShuttingDown;
     private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
-    public static Bugsnag.Clients.BaseClient bugsnag = null;
-    private static UInt64 uid = 0;
-    private static MainWindowController mainWindowController;
+    private static Bugsnag.Clients.BaseClient bugsnag;
+    private static UInt64 uid;
+    private static MainWindow mainWindowController;
 
     public static bool IsLoggedIn
     {
@@ -76,7 +79,7 @@ static class Program
 
             Toggl.OnError += delegate(string errmsg, bool user_error)
             {
-                Console.WriteLine(errmsg);
+                Toggl.Debug(errmsg);
                 try
                 {
                     if (!user_error && Properties.Settings.Default.Environment != "development")
@@ -86,26 +89,30 @@ static class Program
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Could not check if can notify bugsnag: ", ex);
+                    Toggl.Debug("Could not check if can notify bugsnag: " + ex);
                 }
             };
 
-            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
-            mainWindowController = new MainWindowController();
-            Application.Run(mainWindowController);
+            mainWindowController = new MainWindow();
+            new System.Windows.Application
+            {
+                MainWindow = mainWindowController,
+                ShutdownMode = ShutdownMode.OnExplicitShutdown
+            }.Run(mainWindowController);
         }
     }
 
     static void notifyBugsnag(Exception e)
     {
-        Console.WriteLine("Notifying bugsnag: " + e.ToString());
+        Toggl.Debug("Notifying bugsnag: " + e);
         try
         {
             var metadata = new Bugsnag.Metadata();
@@ -117,7 +124,7 @@ static class Program
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Could not notify bugsnag: ", ex);
+            Toggl.Debug("Could not notify bugsnag: " + ex);
         }
     }
 
@@ -134,11 +141,6 @@ static class Program
     public static void Shutdown(int exitCode)
     {
         ShuttingDown = true;
-
-        if (mainWindowController != null)
-        {
-            mainWindowController.RemoveTrayIcon();
-        }
 
         Toggl.Clear();
 

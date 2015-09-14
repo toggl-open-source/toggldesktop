@@ -63,10 +63,18 @@ void GoogleAnalyticsEvent::runTask() {
 
 void Analytics::TrackSettingsUsage(
     const std::string user_api_token,
-    const Settings &settings) {
+    const Settings &settings,
+    const std::string update_channel,
+    const std::string desktop_id) {
 
     Json::Value json;
     json["toggl_desktop_settings"] = settings.SaveToJSON();
+    if (!update_channel.empty()) {
+        json["toggl_desktop_settings"]["update_channel"] = update_channel;
+    }
+    if (!desktop_id.empty()) {
+        json["toggl_desktop_settings"]["desktop_id"] = desktop_id;
+    }
 
     start(new TogglAnalyticsEvent(
         user_api_token,

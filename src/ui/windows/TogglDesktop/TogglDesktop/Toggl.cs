@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using TogglDesktop.Diagnostics;
+// ReSharper disable InconsistentNaming
 
 namespace TogglDesktop
 {
@@ -210,7 +211,7 @@ public static partial class Toggl
     {
         using (Performance.Measure("changing time entry tags, count: {0}", tags.Count))
         {
-            string value = String.Join(Toggl.TagSeparator, tags);
+            string value = String.Join(TagSeparator, tags);
             return toggl_set_time_entry_tags(ctx, guid, value);
         }
     }
@@ -750,23 +751,24 @@ public static partial class Toggl
         return toggl_ui_start(ctx);
     }
 
+    // ReSharper disable once UnusedMember.Local
+    // (updates are disabled in Release_VS configuration to allow for proper debugging)
     private static void installPendingUpdates(string updatePath)
     {
-
         if (!Directory.Exists(updatePath))
         {
             return;
         }
 
-        DirectoryInfo di = new DirectoryInfo(updatePath);
-        FileInfo[] files = di.GetFiles("TogglDesktopInstaller*.exe",
+        var di = new DirectoryInfo(updatePath);
+        var files = di.GetFiles("TogglDesktopInstaller*.exe",
                                        SearchOption.TopDirectoryOnly);
         if (files.Length > 1)
         {
             // Somethings fubar. Delete the updates to start over
-            foreach (FileInfo fi in files)
+            foreach (var file in files)
             {
-                fi.Delete();
+                file.Delete();
             }
             return;
         }
@@ -776,29 +778,30 @@ public static partial class Toggl
             return;
         }
 
-        string updater = Path.Combine(
+        var updaterPath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory,
             "TogglDesktopUpdater.exe");
-        if (!File.Exists(updater))
+        if (!File.Exists(updaterPath))
         {
-            Console.WriteLine("TogglDesktopUpdater.exe not found");
+            Debug("TogglDesktopUpdater.exe not found");
             return;
         }
 
-        ProcessStartInfo psi = new ProcessStartInfo();
-        psi.FileName = updater;
-        psi.Arguments = Process.GetCurrentProcess().Id.ToString()
+        var psi = new ProcessStartInfo
+        {
+            FileName = updaterPath,
+            Arguments = Process.GetCurrentProcess().Id
                         + " " + string.Format("\"{0}\"", files[0].FullName)
-                        + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location);
-        Process process = Process.Start(psi);
-        if (!process.HasExited && process.Id != 0)
+                        + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location)
+        };
+        var process = Process.Start(psi);
+        if (process != null && !process.HasExited && process.Id != 0)
         {
             // Update has started. Quit, installer will restart me.
             Environment.Exit(0);
-            return;
         }
 
-        Console.WriteLine("Failed to start updater process");
+        Debug("Failed to start updater process");
     }
 
     public static List<TogglGenericView> ConvertToViewItemList(IntPtr first)
