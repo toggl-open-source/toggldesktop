@@ -356,6 +356,11 @@ namespace TogglDesktop.WPF
             this.togglVisibility();
         }
 
+        private void onTrayBalloonTipClicked(object sender, RoutedEventArgs e)
+        {
+            this.showOnTop();
+        }
+
         private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             const int htBottomRight = 17;
@@ -595,6 +600,8 @@ namespace TogglDesktop.WPF
         private void showOnTop()
         {
             this.Show();
+            if (this.WindowState == WindowState.Minimized)
+                this.WindowState = WindowState.Normal;
             this.Topmost = true;
             this.Activate();
         }
@@ -796,5 +803,6 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
     }
 }

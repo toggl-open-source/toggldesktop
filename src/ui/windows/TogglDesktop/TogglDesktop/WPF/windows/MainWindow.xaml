@@ -124,7 +124,8 @@
         
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
                         TrayLeftMouseUp="onTaskbarLeftMouseUp"
-                        IconSource="{StaticResource IconOnlineInactive}"/>
+                        IconSource="{StaticResource IconOnlineInactive}"
+                        TrayBalloonTipClicked="onTrayBalloonTipClicked"/>
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
