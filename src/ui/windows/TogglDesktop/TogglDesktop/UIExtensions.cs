@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Drawing;
+using System.Reflection;
 using System.Windows.Controls;
+using Hardcodet.Wpf.TaskbarNotification;
+using Hardcodet.Wpf.TaskbarNotification.Interop;
 
 namespace TogglDesktop
 {
@@ -45,7 +49,6 @@ static class UIExtensions
 
     #endregion
 
-
     public static bool TryBeginInvoke(this Control control, Action action)
     {
         if (control.Dispatcher.CheckAccess())
@@ -82,5 +85,20 @@ static class UIExtensions
     }
 
     #endregion
+
+    public static void ShowBalloonTipWithLargeIcon(this TaskbarIcon icon, string title, string message, Icon customIcon)
+    {
+        if (icon == null)
+            throw new ArgumentNullException("icon");
+
+        var method = typeof (TaskbarIcon).GetMethod("ShowBalloonTip", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        lock (icon)
+        {
+            // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
+            // (The enum behaves like flags)
+            method.Invoke(icon, new object[] { title, message, BalloonFlags.User | BalloonFlags.LargeIcon, customIcon.Handle });
+        }
+    }
 }
 }
