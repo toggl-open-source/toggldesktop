@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows;
+using TogglDesktop.Properties;
 using TogglDesktop.WPF;
 using Size = System.Drawing.Size;
 
@@ -10,21 +11,23 @@ namespace TogglDesktop
 {
 public static class Utils
 {
+    #region window position loading and saving
+
     public static void LoadWindowLocation(Window mainWindow, EditViewPopup editPopup)
     {
         try
         {
             if (editPopup != null)
             {
-                var size = Properties.Settings.Default.EditSize;
+                var size = Settings.Default.EditSize;
                 editPopup.Width = size.Width;
                 editPopup.Height = size.Height;
             }
-            if (Properties.Settings.Default.Maximized)
+            if (Settings.Default.Maximized)
             {
                 mainWindow.WindowState = WindowState.Maximized;
             }
-            else if (Properties.Settings.Default.Minimized)
+            else if (Settings.Default.Minimized)
             {
                 mainWindow.WindowState = WindowState.Minimized;
             }
@@ -51,7 +54,7 @@ public static class Utils
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Could not load window location: ", ex);
+            Toggl.Debug("Could not load window location: " + ex);
         }
     }
 
@@ -65,37 +68,37 @@ public static class Utils
             .Any(s => s.WorkingArea.IntersectsWith(windowBounds));
     }
 
-    public static TogglDesktop.ModifierKeys GetModifiers(KeyEventArgs e)
+    public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit)
     {
-        TogglDesktop.ModifierKeys modifiers = 0;
-        if (e != null)
+        try
         {
-            if (e.Alt)
+            Toggl.SetWindowSettings(
+                (long)mainWindow.Left,
+                (long)mainWindow.Top,
+                (long)mainWindow.Height,
+                (long)mainWindow.Width);
+
+            var state = mainWindow.WindowState;
+            Settings.Default.Maximized = state == WindowState.Maximized;
+            Settings.Default.Minimized = state == WindowState.Minimized;
+
+            if (edit != null)
             {
-                modifiers = modifiers | TogglDesktop.ModifierKeys.Alt;
+                Settings.Default.EditSize = new Size((int)edit.Width, (int)edit.Height);
             }
-            if (e.Control)
-            {
-                modifiers = modifiers | TogglDesktop.ModifierKeys.Control;
-            }
-            if (e.Shift)
-            {
-                modifiers = modifiers | TogglDesktop.ModifierKeys.Shift;
-            }
+
+            Settings.Default.Save();
         }
-        return modifiers;
+        catch (Exception ex)
+        {
+            Toggl.Debug("Could not save window location: " + ex);
+        }
     }
 
-    public static string GetKeyCode(KeyEventArgs e)
-    {
-        if (e != null)
-        {
-            return e.KeyCode.ToString();
-        }
-        return null;
-    }
+    #endregion
 
-
+    #region keyboard shortcuts
+    
     public struct KeyCombination
     {
         private readonly ModifierKeys modifiers;
@@ -107,100 +110,50 @@ public static class Utils
             this.keyCode = keyCode;
         }
 
-        public ModifierKeys Modifiers {
-            get {
-                return this.modifiers;
-            }
-        }
-        public string KeyCode {
-            get {
-                return this.keyCode;
-            }
-        }
+        public ModifierKeys Modifiers { get { return this.modifiers; } }
+        public string KeyCode { get { return this.keyCode; } }
     }
 
     public static void SetShortcutForShow(KeyCombination? e)
     {
-        try
-        {
-            if (e.HasValue)
-            {
-                Properties.Settings.Default.ShowModifiers = e.Value.Modifiers;
-                Properties.Settings.Default.ShowKey = e.Value.KeyCode;
-            }
-            else
-            {
-                Properties.Settings.Default.ShowModifiers = 0;
-                Properties.Settings.Default.ShowKey = null;
-            }
-
-            Properties.Settings.Default.Save();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Could not set shortcut for show: {0}", ex);
-        }
+        setShortcut(e, "show",
+            (s, m) => s.ShowModifiers = m,
+            (s, k) => s.ShowKey = k
+            );
     }
 
     public static void SetShortcutForStart(KeyCombination? e)
     {
+        setShortcut(e, "start",
+            (s, m) => s.StartModifiers = m,
+            (s, k) => s.StartKey = k
+            );
+    }
+
+    private static void setShortcut(KeyCombination? e, string shortcutName,
+        Action<Settings, ModifierKeys> setModifier, Action<Settings, string> setKey)
+    {
         try
         {
             if (e.HasValue)
             {
-                Properties.Settings.Default.StartModifiers = e.Value.Modifiers;
-                Properties.Settings.Default.StartKey = e.Value.KeyCode;
+                setModifier(Settings.Default, e.Value.Modifiers);
+                setKey(Settings.Default, e.Value.KeyCode);
             }
             else
             {
-                Properties.Settings.Default.StartModifiers = 0;
-                Properties.Settings.Default.StartKey = null;
+                setModifier(Settings.Default, 0);
+                setKey(Settings.Default, null);
             }
 
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Could not set shortcut for start: {0}", ex);
+            Toggl.Debug(string.Format("Could not set shortcut for {0}: {1}", shortcutName, ex));
         }
     }
 
-    public static void SaveWindowLocation(Window f, EditViewPopup edit)
-    {
-        try
-        {
-            Toggl.SetWindowSettings(
-                (long)f.Left,
-                (long)f.Top,
-                (long)f.Height,
-                (long)f.Width);
-
-            if (f.WindowState == WindowState.Maximized)
-            {
-                Properties.Settings.Default.Maximized = true;
-                Properties.Settings.Default.Minimized = false;
-            }
-            else if (f.WindowState == WindowState.Normal)
-            {
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = false;
-            }
-            else
-            {
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = true;
-            }
-
-            if (edit != null) {
-                Properties.Settings.Default.EditSize = new Size((int)edit.Width, (int)edit.Height);
-            }
-
-            Properties.Settings.Default.Save();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Could not save window location: ", ex);
-        }
-    }
+    #endregion
 }
 }
