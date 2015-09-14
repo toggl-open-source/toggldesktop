@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Hardcodet.Wpf.TaskbarNotification;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF

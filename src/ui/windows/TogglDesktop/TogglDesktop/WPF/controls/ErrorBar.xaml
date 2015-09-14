@@ -45,15 +45,7 @@
     </UserControl.Resources>
     
     <StackPanel>
-        <Rectangle Height="4">
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#00000000" Offset="0" />
-                    <GradientStop Color="#33000000" Offset="1" />
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Grid Background="#ff8080">
+        <Grid Background="#f0ff8080">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
@@ -68,5 +60,13 @@
                     Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"
                     />
         </Grid>
+        <Rectangle Height="4">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#33000000" Offset="0" />
+                    <GradientStop Color="#00000000" Offset="1" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
     </StackPanel>
 </UserControl>

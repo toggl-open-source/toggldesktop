@@ -130,7 +130,7 @@
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
 
         <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"
-            VerticalAlignment="Bottom"/>
+            VerticalAlignment="Top"/>
 
         <Rectangle x:Name="resizeHandle" x:FieldModifier="private"
                 VerticalAlignment="Bottom" HorizontalAlignment="Right"
