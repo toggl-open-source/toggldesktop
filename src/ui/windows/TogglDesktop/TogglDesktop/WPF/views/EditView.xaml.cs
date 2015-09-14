@@ -145,8 +145,6 @@ namespace TogglDesktop.WPF
                         this.projectAddButtonColumn.SharedSizeGroup = null;
                     }
                 }
-
-                this.FocusField(focusedFieldName);
             }
         }
 

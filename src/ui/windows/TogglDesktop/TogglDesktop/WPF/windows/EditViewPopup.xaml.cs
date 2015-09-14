@@ -31,6 +31,7 @@ namespace TogglDesktop.WPF
                 return;
 
             this.Show();
+            this.EditView.FocusField(focusedFieldName);
         }
 
         public string GUID { get; set; }
