@@ -69,6 +69,17 @@ extern void *ctx;
 	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
+- (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation
+{
+	NSLog(@"Download finished: %@", item.displayVersionString);
+
+	self.updateStatus =
+		[NSString stringWithFormat:@"Restart to upgrade to %@",
+		 item.displayVersionString];
+
+	[self displayUpdateStatus];
+}
+
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
 {
 	NSLog(@"update found: %@", update.displayVersionString);

@@ -20,6 +20,136 @@ class Logger;
 
 namespace toggl {
 
+namespace view {
+
+class TimeEntry {
+ public:
+    int64_t DurationInSeconds;
+    std::string Description;
+    std::string ProjectAndTaskLabel;
+    std::string TaskLabel;
+    std::string ProjectLabel;
+    std::string ClientLabel;
+    uint64_t WID;
+    uint64_t PID;
+    uint64_t TID;
+    std::string Duration;
+    std::string Color;
+    std::string GUID;
+    bool Billable;
+    std::string Tags;
+    uint64_t Started;
+    uint64_t Ended;
+    std::string StartTimeString;
+    std::string EndTimeString;
+    uint64_t UpdatedAt;
+    bool DurOnly;
+    // In case it's a header
+    std::string DateHeader;
+    std::string DateDuration;
+    bool IsHeader;
+    // Additional fields; only when in time entry editor
+    bool CanAddProjects;
+    bool CanSeeBillable;
+    uint64_t DefaultWID;
+    std::string WorkspaceName;
+    // If syncing a time entry ended with an error,
+    // the error is attached to the time entry
+    std::string Error;
+
+    bool operator == (const TimeEntry& other) const;
+};
+
+class Autocomplete {
+ public:
+    // This is what is displayed to user, includes project and task.
+    std::string Text;
+    // This is copied to "time_entry.description" field if item is selected
+    std::string Description;
+    // Project label, if has a project
+    std::string ProjectAndTaskLabel;
+    std::string TaskLabel;
+    std::string ProjectLabel;
+    std::string ClientLabel;
+    std::string ProjectColor;
+    uint64_t TaskID;
+    uint64_t ProjectID;
+    uint64_t WorkspaceID;
+    uint64_t Type;
+    // If its a time entry, it has tags
+    std::string Tags;
+
+    bool operator == (const Autocomplete& other) const;
+};
+
+class Generic {
+ public:
+    uint64_t ID;
+    uint64_t WID;
+    std::string GUID;
+    std::string Name;
+
+    bool operator == (const Generic& other) const;
+};
+
+class Settings {
+ public:
+    bool UseProxy;
+    std::string ProxyHost;
+    uint64_t ProxyPort;
+    std::string ProxyUsername;
+    std::string ProxyPassword;
+    bool UseIdleDetection;
+    bool MenubarTimer;
+    bool MenubarProject;
+    bool DockIcon;
+    bool OnTop;
+    bool Reminder;
+    bool RecordTimeline;
+    uint64_t IdleMinutes;
+    bool FocusOnShortcut;
+    uint64_t ReminderMinutes;
+    bool ManualMode;
+    bool AutodetectProxy;
+    bool RemindMon;
+    bool RemindTue;
+    bool RemindWed;
+    bool RemindThu;
+    bool RemindFri;
+    bool RemindSat;
+    bool RemindSun;
+    std::string RemindStarts;
+    std::string RemindEnds;
+    bool Autotrack;
+    bool OpenEditorOnShortcut;
+
+    bool operator == (const Settings& other) const;
+};
+
+class AutotrackerRule {
+ public:
+    int64_t ID;
+    std::string Term;
+    uint64_t PID;
+    std::string ProjectName;
+
+    bool operator == (const AutotrackerRule& other) const;
+};
+
+class TimelineEvent {
+ public:
+    int64_t ID;
+    std::string Title;
+    std::string Filename;
+    uint64_t StartTime;
+    uint64_t EndTime;
+    bool Idle;
+
+    bool operator == (const TimelineEvent& other) const;
+};
+
+}  // namespace view
+
 class Client;
 class Project;
 class RelatedData;
@@ -262,6 +392,14 @@ class GUI : public SyncStateMonitor {
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;
+
+    // Cached views
+    // FIXME: zero out, por favor
+    Poco::Int64 lastSyncState;
+    Poco::Int64 lastUnsyncedItemsCount;
+    bool lastDisplayLoginOpen;
+    uint64_t lastDisplayLoginUserID;
+    Poco::Int64 lastOnlineState;
 
     Poco::Logger &logger() const;
 };

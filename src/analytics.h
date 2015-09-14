@@ -19,7 +19,9 @@ class Analytics : public Poco::TaskManager {
         const bool was_using_autocomplete);
     void TrackSettingsUsage(
         const std::string user_api_token,
-        const Settings &settings);
+        const Settings &settings,
+        const std::string update_channel,
+        const std::string desktop_id);
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {
