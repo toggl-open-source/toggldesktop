@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using TogglDesktop.AutoCompletion;
@@ -74,6 +73,12 @@ namespace TogglDesktop.WPF
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
+                var keepNewProjectModeOpen = this.isInNewProjectMode
+                                             && this.hasTimeEntry()
+                                             && this.timeEntry.PID == timeEntry.PID
+                                             && this.timeEntry.WID == timeEntry.WID
+                                             && timeEntry.CanAddProjects;
+
                 this.timeEntry = timeEntry;
 
                 var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
@@ -117,25 +122,28 @@ namespace TogglDesktop.WPF
                     this.updateTagListEmptyText();
                 }
 
-                if (this.isInNewProjectMode)
-                    this.disableNewProjectMode();
-
-                this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
-
-                this.selectedWorkspaceId = timeEntry.WID;
-                this.selectedWorkspaceName = timeEntry.WorkspaceName;
-
-                if (timeEntry.CanAddProjects)
+                if (!keepNewProjectModeOpen)
                 {
-                    this.newProjectButton.Visibility = Visibility.Visible;
-                    this.projectAddButtonColumn.Width = GridLength.Auto;
-                    this.projectAddButtonColumn.SharedSizeGroup = "AddButtons";
-                }
-                else
-                {
-                    this.newProjectButton.Visibility = Visibility.Hidden;
-                    this.projectAddButtonColumn.Width = new GridLength(0);
-                    this.projectAddButtonColumn.SharedSizeGroup = null;
+                    if (this.isInNewProjectMode)
+                        this.disableNewProjectMode();
+
+                    this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
+
+                    this.selectedWorkspaceId = timeEntry.WID;
+                    this.selectedWorkspaceName = timeEntry.WorkspaceName;
+
+                    if (timeEntry.CanAddProjects)
+                    {
+                        this.newProjectButton.Visibility = Visibility.Visible;
+                        this.projectAddButtonColumn.Width = GridLength.Auto;
+                        this.projectAddButtonColumn.SharedSizeGroup = "AddButtons";
+                    }
+                    else
+                    {
+                        this.newProjectButton.Visibility = Visibility.Hidden;
+                        this.projectAddButtonColumn.Width = new GridLength(0);
+                        this.projectAddButtonColumn.SharedSizeGroup = null;
+                    }
                 }
 
                 this.FocusField(focusedFieldName);
