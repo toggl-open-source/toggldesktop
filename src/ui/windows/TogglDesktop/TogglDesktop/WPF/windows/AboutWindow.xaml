@@ -39,10 +39,20 @@
                        Margin="0 0 0 8"/>
             <TextBlock Name="versionText" x:FieldModifier="private"
                        Text="Version 1.33.7" HorizontalAlignment="Center"
-                       Margin="0 0 0 32"/>
+                       Margin="0 0 0 16"/>
+
+            <TextBlock HorizontalAlignment="Center" Text="View change log:"/>
+            <Label HorizontalAlignment="Center" 
+                       Margin="0 -5 0 16">
+                <Hyperlink NavigateUri="http://toggl.github.io/toggldesktop"
+                           Click="onChangelogLinkClick"
+                           >http://toggl.github.io/toggldesktop</Hyperlink>
+            </Label>
+
             <TextBlock HorizontalAlignment="Center" Text="Toggl Desktop is an open source project."/>
             <TextBlock HorizontalAlignment="Center" Text="You can find the source code at:"/>
-            <Label HorizontalAlignment="Center">
+            <Label HorizontalAlignment="Center"
+                       Margin="0 -5 0 16">
                 <Hyperlink NavigateUri="https://github.com/toggl/toggldesktop"
                            Click="onGithubLinkClick"
                            >https://github.com/toggl/toggldesktop</Hyperlink>

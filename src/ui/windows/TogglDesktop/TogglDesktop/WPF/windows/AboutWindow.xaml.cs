@@ -63,5 +63,10 @@ namespace TogglDesktop.WPF
         {
             Process.Start("https://github.com/toggl/toggldesktop");
         }
+
+        private void onChangelogLinkClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://toggl.github.io/toggldesktop");
+        }
     }
 }
