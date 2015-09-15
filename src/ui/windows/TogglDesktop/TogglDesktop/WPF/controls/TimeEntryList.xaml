@@ -11,9 +11,10 @@
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
                       SizeChanged="onSizeChanged"
-                      Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
+                      Background="#f7f7f7">
             <Grid>
-                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch">
+                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch"
+                                        Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
                 
                 </VirtualizingStackPanel>
                 <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private"
@@ -23,37 +24,39 @@
                            Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
                            IsHitTestVisible="False"/>
 
-                <Button Name="emptyListText" x:FieldModifier="private"
-                        FontFamily="/TogglDesktop;component/Resources/Fonts/#Roboto"
-                        FontSize="14" Foreground="Gray" Cursor="Hand"
-                        Click="onEmptyListTextClick">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border BorderThickness="0" Background="Transparent">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"
-                                                              Margin="10 30"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                    <StackPanel>
-                        <TextBlock Text="Welcome. Let's start tracking!"
-                               HorizontalAlignment="Center" Margin="0 0 0 10"/>
-                        <TextBlock Text="If you have previous entries,"
-                               HorizontalAlignment="Center"/>
-                        <TextBlock Text="click here to see them in reports."
-                               HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
             </Grid>
         </ScrollViewer>
         <Rectangle Name="resizeBackground" x:FieldModifier="private"
             VerticalAlignment="Bottom" HorizontalAlignment="Right"
                 Width="17" Height="17" Fill="#f0f0f0" IsHitTestVisible="True"/>
+
+        <Button Name="emptyListText" x:FieldModifier="private"
+                        FontFamily="/TogglDesktop;component/Resources/Fonts/#Roboto"
+                        FontSize="14" Foreground="Gray" Cursor="Hand"
+                        Click="onEmptyListTextClick">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderThickness="0"
+                                        Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                      Margin="10 30"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+            <StackPanel>
+                <TextBlock Text="Welcome. Let's start tracking!"
+                           HorizontalAlignment="Center" Margin="0 0 0 10"/>
+                <TextBlock Text="If you have previous entries,"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="click here to see them in reports."
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </UserControl>
