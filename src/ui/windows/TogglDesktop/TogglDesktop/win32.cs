@@ -7,21 +7,6 @@ namespace TogglDesktop
 {
 static class Win32
 {
-    public const int WM_MOUSEMOVE = 0x0200;
-    public const int WM_LBUTTONDOWN = 0x0201;
-    public const int WM_LBUTTONUP = 0x0202;
-    public const int WM_RBUTTONDOWN = 0x0204;
-    public const int WM_LBUTTONDBLCLK = 0x0203;
-
-    public const int WM_MOUSELEAVE = 0x02A3;
-
-    public const int WM_PAINT = 0x000F;
-
-    public const int WM_HSCROLL = 0x0114;
-    public const int WM_VSCROLL = 0x0115;
-
-    public const int EM_POSFROMCHAR = 0x00D6;
-
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, ref SearchData data);
@@ -74,8 +59,6 @@ static class Win32
     public static extern int SendMessage(IntPtr hwnd, int msg, int wparam, int lparam);
 
     public const int wmNcLButtonDown = 0xA1;
-    public const int wmNcLButtonUp = 0xA2;
-    public const int HtBottomRight = 17;
 
     [StructLayout(LayoutKind.Sequential)]
     public struct LASTINPUTINFO
