@@ -33,7 +33,6 @@ namespace TogglDesktop.WPF
             this.Hide();
         }
 
-
         private void onReleaseChannelSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var value = this.releaseChannelComboBox.SelectedValue;
@@ -41,16 +40,6 @@ namespace TogglDesktop.WPF
                 return;
 
             Toggl.SetUpdateChannel(value.ToString());
-        }
-
-        public void ShowUpdates()
-        {
-            this.Show();
-
-            if (this.releaseChannelComboBox.IsVisible)
-            {
-                this.UpdateReleaseChannel();
-            }
         }
 
         public void UpdateReleaseChannel()
