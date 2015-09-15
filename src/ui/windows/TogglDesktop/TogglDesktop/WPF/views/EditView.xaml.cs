@@ -1030,14 +1030,6 @@ namespace TogglDesktop.WPF
             }
         }
 
-        public void SetShadow(bool left, double height)
-        {
-            this.shadowLeft.ShowOnlyIf(!left);
-            this.shadowRight.ShowOnlyIf(left);
-
-            this.shadowLeft.MinHeight = height;
-            this.shadowRight.MinHeight = height;
-        }
         #endregion
 
     }

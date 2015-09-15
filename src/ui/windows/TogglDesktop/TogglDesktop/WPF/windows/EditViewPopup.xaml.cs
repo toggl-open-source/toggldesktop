@@ -89,7 +89,7 @@ namespace TogglDesktop.WPF
 
         public void SetPlacement(bool left, double x, double y, double height, bool fixHeight = false)
         {
-            this.EditView.SetShadow(left, height);
+            this.setShadow(left ^ fixHeight, height);
 
             this.resizeHandle.HorizontalAlignment = left ? HorizontalAlignment.Left : HorizontalAlignment.Right;
 
@@ -115,6 +115,11 @@ namespace TogglDesktop.WPF
             this.MaxHeight = height;
         }
 
+        private void setShadow(bool left, double height)
+        {
+            this.mainFormShadow.Height = height;
+            this.mainFormShadow.HorizontalAlignment = left ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+        }
         private void endResizing()
         {
             if (!this.isResizing)
