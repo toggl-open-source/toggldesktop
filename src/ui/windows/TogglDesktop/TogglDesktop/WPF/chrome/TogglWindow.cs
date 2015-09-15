@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
@@ -37,6 +36,33 @@ namespace TogglDesktop.WPF
 
                 this.isToolWindow = value;
             }
+        }
+
+        #endregion
+
+        #region public methods
+
+        public void SetIconState(bool tracking)
+        {
+            this.Icon = (BitmapImage)this.chrome.FindResource(tracking ? "IconRed" : "IconGray");
+            this.chrome.SetIconState(tracking);
+        }
+
+        public void Hide(bool activateOwner = true)
+        {
+            if (activateOwner)
+            {
+                var owner = this.Owner;
+                if (owner != null)
+                {
+                    owner.Show();
+                    if (owner.WindowState == WindowState.Minimized)
+                        owner.WindowState = WindowState.Normal;
+                    owner.Topmost = true;
+                    owner.Activate();
+                }
+            }
+            base.Hide();
         }
 
         #endregion
@@ -90,12 +116,6 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
-
-        public void SetIconState(bool tracking)
-        {
-            this.Icon = (BitmapImage)this.chrome.FindResource(tracking ? "IconRed" : "IconGray");
-            this.chrome.SetIconState(tracking);
-        }
 
         #region ui events
 
@@ -175,23 +195,6 @@ namespace TogglDesktop.WPF
                 (int)this.Left, (int)this.Top,
                 (int)this.Width, (int)this.Height
                 ));
-        }
-
-        public void Hide(bool activateOwner = true)
-        {
-            if (activateOwner)
-            {
-                var owner = this.Owner;
-                if (owner != null)
-                {
-                    owner.Show();
-                    if (owner.WindowState == WindowState.Minimized)
-                        owner.WindowState = WindowState.Normal;
-                    owner.Topmost = true;
-                    owner.Activate();
-                }
-            }
-            base.Hide();
         }
 
         #endregion
