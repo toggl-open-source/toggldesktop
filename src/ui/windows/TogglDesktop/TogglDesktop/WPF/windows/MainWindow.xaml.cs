@@ -136,7 +136,7 @@ namespace TogglDesktop.WPF
 
         private void finalInitialisation()
         {
-            if (!Toggl.StartUI(TogglDesktop.Program.Version()))
+            if (!Toggl.StartUI(Program.Version()))
             {
                 MessageBox.Show("Missing callback. See the log file for details");
                 this.shutdown(1);
@@ -382,6 +382,9 @@ namespace TogglDesktop.WPF
 
         private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (this.isResizingWithHandle)
+                return;
+
             const int htBottomRight = 17;
 
             Mouse.Capture(null);
