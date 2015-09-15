@@ -19,6 +19,7 @@ namespace TogglDesktop.WPF
         public TogglWindow()
         {
             this.WindowStyle = WindowStyle.None;
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             this.updateWindowChrome();
         }
 
@@ -62,6 +63,7 @@ namespace TogglDesktop.WPF
                     owner.Activate();
                 }
             }
+
             base.Hide();
         }
 
