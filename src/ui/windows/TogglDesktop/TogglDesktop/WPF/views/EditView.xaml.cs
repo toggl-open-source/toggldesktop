@@ -541,6 +541,7 @@ namespace TogglDesktop.WPF
             this.projectSaveArea.Visibility = Visibility.Visible;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
+            this.showWorkspaceArea();
 
             this.projectColorCircle.Visibility = Visibility.Collapsed;
             this.projectTextBox.Padding = new Thickness(8, 0, 34 + 34, 0);
@@ -563,6 +564,7 @@ namespace TogglDesktop.WPF
             this.projectSaveArea.Visibility = Visibility.Collapsed;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
+            this.hideWorkspaceArea();
 
             this.projectColorCircle.Visibility = Visibility.Visible;
             this.projectTextBox.Padding = new Thickness(28, 0, 34, 0);
@@ -691,6 +693,13 @@ namespace TogglDesktop.WPF
             this.selectedClientGUID = item.GUID;
             this.selectedClientName = item.Name;
             this.clientTextBox.SetText(item.Name);
+
+            if (item.WID != 0)
+            {
+                this.selectedWorkspaceId = item.WID;
+                this.selectedWorkspaceName = this.workspaces.First(ws => ws.ID == item.WID).Name;
+                this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+            }
         }
 
         private void clientAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
@@ -731,13 +740,20 @@ namespace TogglDesktop.WPF
         private void newClientCancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             this.disableNewClientMode();
+            
+            this.clientTextBox.SetText(this.timeEntry.ClientLabel);
+            if (!string.IsNullOrEmpty(this.timeEntry.ClientLabel))
+            {
+                this.selectedWorkspaceId = this.timeEntry.WID;
+                this.selectedWorkspaceName = this.timeEntry.WorkspaceName;
+                this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+            }
 
             this.projectTextBox.Focus();
         }
         #endregion
 
         #region new client mode
-
 
         private void enableNewClientMode()
         {
@@ -751,7 +767,6 @@ namespace TogglDesktop.WPF
 
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
-            this.showWorkspaceArea();
 
             this.emptyClientText.Text = "Add client";
 
@@ -770,7 +785,6 @@ namespace TogglDesktop.WPF
 
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
-            this.hideWorkspaceArea();
 
             this.emptyClientText.Text = "No client";
 
@@ -883,6 +897,11 @@ namespace TogglDesktop.WPF
 
         private void selectWorkspace(Toggl.TogglGenericView item)
         {
+            if (this.selectedWorkspaceId != item.ID && !this.isInNewClientMode)
+            {
+                this.selectClient(new Toggl.TogglGenericView());
+            }
+
             this.selectedWorkspaceId = item.ID;
             this.selectedWorkspaceName = item.Name;
             this.workspaceTextBox.SetText(item.Name);

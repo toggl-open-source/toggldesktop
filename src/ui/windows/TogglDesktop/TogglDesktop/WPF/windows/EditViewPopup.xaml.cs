@@ -54,7 +54,7 @@ namespace TogglDesktop.WPF
             this.resizeHandle.HorizontalAlignment = left ? HorizontalAlignment.Left : HorizontalAlignment.Right;
 
             if (!fixHeight)
-                height = Math.Min(700, Math.Max(450, height));
+                height = Math.Min(700, Math.Max(520, height));
 
             this.Topmost = true;
             this.isLeft = !left;
