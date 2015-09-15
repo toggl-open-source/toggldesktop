@@ -11,10 +11,10 @@ namespace TogglDesktop.WPF
         public FeedbackWindow()
         {
             this.InitializeComponent();
-            this.Reset();
+            this.reset();
         }
 
-        private void Reset()
+        private void reset()
         {
             this.topicComboBox.SelectedItem = null;
             this.messageTextBox.Text = "";
@@ -27,7 +27,7 @@ namespace TogglDesktop.WPF
         protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            this.Reset();
+            this.reset();
         }
 
         private void onTopicSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -71,7 +71,7 @@ namespace TogglDesktop.WPF
 
             MessageBox.Show("Your feedback was sent successfully.", "Thank you!");
             
-            this.Reset();
+            this.reset();
             this.Hide();
         }
 
