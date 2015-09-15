@@ -39,6 +39,11 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public TogglChrome Chrome
+        {
+            get { return this.chrome; }
+        }
+
         #endregion
 
         #region public methods

@@ -304,6 +304,7 @@ namespace TogglDesktop.WPF
             this.mainContextMenu.HorizontalOffset = 0;
             this.mainContextMenu.VerticalOffset = 0;
 
+            this.Chrome.CogButton.IsEnabled = false;
             this.mainContextMenu.IsOpen = true;
         }
 
@@ -333,6 +334,11 @@ namespace TogglDesktop.WPF
             Toggl.SetWake();
 
             base.OnActivated(e);
+        }
+
+        private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
+        {
+            this.Chrome.CogButton.IsEnabled = true;
         }
 
         private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)

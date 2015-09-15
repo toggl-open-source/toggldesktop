@@ -69,7 +69,8 @@
     </Window.InputBindings>
     
     <Window.ContextMenu>
-        <ContextMenu Name="mainContextMenu" x:FieldModifier="private">
+        <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
+                     Closed="onMainContextMenuClosed">
             <MenuItem Header="your email address"
                       Name="emailAddressMenuItem" x:FieldModifier="private"
                       IsEnabled="False"/>
