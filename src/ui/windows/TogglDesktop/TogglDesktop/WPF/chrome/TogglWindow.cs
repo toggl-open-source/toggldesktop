@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
@@ -174,6 +175,23 @@ namespace TogglDesktop.WPF
                 (int)this.Left, (int)this.Top,
                 (int)this.Width, (int)this.Height
                 ));
+        }
+
+        public void Hide(bool activateOwner = true)
+        {
+            if (activateOwner)
+            {
+                var owner = this.Owner;
+                if (owner != null)
+                {
+                    owner.Show();
+                    if (owner.WindowState == WindowState.Minimized)
+                        owner.WindowState = WindowState.Normal;
+                    owner.Topmost = true;
+                    owner.Activate();
+                }
+            }
+            base.Hide();
         }
 
         #endregion
