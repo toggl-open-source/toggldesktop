@@ -3,7 +3,6 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using Point = System.Drawing.Point;
 
 namespace TogglDesktop.WPF
 {
@@ -34,13 +33,6 @@ namespace TogglDesktop.WPF
             this.EditView.FocusField(focusedFieldName);
         }
 
-        public string GUID { get; set; }
-
-        public void ClosePopup()
-        {
-            this.EditView.Close();
-        }
-
         protected override void OnDeactivated(EventArgs e)
         {
             base.OnDeactivated(e);
@@ -53,7 +45,6 @@ namespace TogglDesktop.WPF
             Win32.SetWindowPos(this.interopHelper.Handle,
                 onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST,
                 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
-
         }
 
         public void SetPlacement(bool left, double x, double y, double height, bool fixHeight = false)
@@ -82,7 +73,6 @@ namespace TogglDesktop.WPF
             this.MinHeight = height;
             this.MaxWidth = 1200;
             this.MaxHeight = height;
-
         }
 
         private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
