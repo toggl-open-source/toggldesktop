@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -33,11 +32,52 @@ namespace TogglDesktop.WPF
             this.EditView.FocusField(focusedFieldName);
         }
 
+        #region ui events
+
         protected override void OnDeactivated(EventArgs e)
         {
             base.OnDeactivated(e);
             this.SetWindowOnTop(this.remainOnTop);
         }
+
+        private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.isResizing)
+                return;
+
+            const int htleft = 10;
+            const int htright = 11;
+
+            Mouse.Capture(null);
+
+            this.ResizeMode = ResizeMode.CanResize;
+
+            Win32.SendMessage(this.interopHelper.Handle,
+                Win32.wmNcLButtonDown,
+                this.isLeft ? htright : htleft,
+                0);
+
+            this.resizeHandle.CaptureMouse();
+
+            this.isResizing = true;
+        }
+
+        private void onResizeHandleLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            this.endResizing();
+        }
+
+        private void onWindowMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                this.endResizing();
+            }
+        }
+
+        #endregion
+
+        #region controlling
 
         public void SetWindowOnTop(bool onTop)
         {
@@ -75,30 +115,6 @@ namespace TogglDesktop.WPF
             this.MaxHeight = height;
         }
 
-        private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            const int htleft = 10;
-            const int htright = 11;
-
-            Mouse.Capture(null);
-
-            this.ResizeMode = ResizeMode.CanResize;
-
-            Win32.SendMessage(this.interopHelper.Handle,
-                Win32.wmNcLButtonDown,
-                this.isLeft ? htright : htleft,
-                0);
-
-            this.resizeHandle.CaptureMouse();
-
-            this.isResizing = true;
-        }
-
-        private void onResizeHandleLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            this.endResizing();
-        }
-
         private void endResizing()
         {
             if (!this.isResizing)
@@ -109,13 +125,6 @@ namespace TogglDesktop.WPF
             this.isResizing = false;
         }
 
-        private void onWindowMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Released)
-            {
-                this.endResizing();
-            }
-        }
-
+        #endregion
     }
 }
