@@ -87,7 +87,8 @@ namespace TogglDesktop.WPF
                 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
         }
 
-        public void SetPlacement(bool left, double x, double y, double height, bool fixHeight = false)
+        public void SetPlacement(bool left,
+            double x, double y, double height, double maxWidth, bool fixHeight = false)
         {
             this.setShadow(left ^ fixHeight, height);
 
@@ -111,7 +112,7 @@ namespace TogglDesktop.WPF
 
             this.MinWidth = 400;
             this.MinHeight = height;
-            this.MaxWidth = 1200;
+            this.MaxWidth = maxWidth;
             this.MaxHeight = height;
         }
 

@@ -136,7 +136,7 @@ namespace TogglDesktop.WPF
         public void SetListWidth(double width)
         {
             this.entries.HorizontalAlignment = HorizontalAlignment.Left;
-            this.entries.Width = width;
+            this.entries.Width = Math.Max(width, 0);
         }
 
         public void DisableListWidth()

@@ -771,7 +771,8 @@ namespace TogglDesktop.WPF
                 y += headerHeight;
                 x += this.ActualWidth;
 
-                this.editPopup.SetPlacement(true, x, y, this.ActualHeight - headerHeight, true);
+                this.editPopup.SetPlacement(true, x, y, this.ActualHeight - headerHeight,
+                    this.ActualWidth - 300, true);
             }
             else
             {
@@ -786,7 +787,7 @@ namespace TogglDesktop.WPF
                     x += this.ActualWidth;
                 }
 
-                this.editPopup.SetPlacement(left, x, y, this.Height);
+                this.editPopup.SetPlacement(left, x, y, this.Height, s.WorkingArea.Width * 0.5);
             }
 
         }
