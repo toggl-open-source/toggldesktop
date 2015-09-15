@@ -27,35 +27,21 @@
         <StackPanel Grid.Row="0" Margin="11 6 11 0">
             <TextBlock Margin="0 5"
                 Text="Send us your feedback and questions."/>
-        
-            <ComboBox Name="topicComboBox" x:FieldModifier="private"
-                Margin="0 5" SelectionChanged="onTopicSelectionChanged">
-                <ComboBox.Template>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Grid>
-                            <ComboBox x:Name="box" 
-                                DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
-                                ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource TemplatedParent}}"
-                                SelectedValue ="{Binding SelectedValue, RelativeSource={RelativeSource TemplatedParent}}"
-                                />
-                            <TextBlock x:Name="emptyText" Text="- Please specify a topic -"
-                                       IsHitTestVisible="False" Visibility="Hidden"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       Foreground="DimGray"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger SourceName="box" Property="SelectedItem" Value="{x:Null}">
-                                <Setter TargetName="emptyText" Property="Visibility" Value="Visible"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </ComboBox.Template>
-            
-                <ComboBoxItem Content="Bug report"/>
-                <ComboBoxItem Content="Feature request"/>
-                <ComboBoxItem Content="Other"/>
-            </ComboBox>
 
+            <Grid Margin="0 5" >
+                <ComboBox Name="topicComboBox" x:FieldModifier="private"
+                    SelectionChanged="onTopicSelectionChanged">
+                    <ComboBoxItem Content="Bug report"/>
+                    <ComboBoxItem Content="Feature request"/>
+                    <ComboBoxItem Content="Other"/>
+                </ComboBox>
+                <TextBlock x:Name="topicEmptyText" x:FieldModifier="private"
+                    Text="- Please specify a topic -"
+                    IsHitTestVisible="False"
+                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Foreground="DimGray" Margin="0">
+                </TextBlock>
+            </Grid>
         </StackPanel>
 
         <TextBox Grid.Row="1"

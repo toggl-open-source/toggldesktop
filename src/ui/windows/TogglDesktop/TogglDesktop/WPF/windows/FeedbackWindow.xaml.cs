@@ -20,6 +20,7 @@ namespace TogglDesktop.WPF
             this.messageTextBox.Text = "";
             this.attachedFileText.Text = "";
             this.noTopicText.Visibility = Visibility.Hidden;
+            this.topicEmptyText.Visibility = Visibility.Visible;
             this.attachedFileName = null;
         }
 
@@ -32,6 +33,7 @@ namespace TogglDesktop.WPF
         private void onTopicSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this.noTopicText.Visibility = Visibility.Hidden;
+            this.topicEmptyText.Visibility = Visibility.Hidden;
         }
 
         private void onAttachImageClick(object sender, RoutedEventArgs e)
