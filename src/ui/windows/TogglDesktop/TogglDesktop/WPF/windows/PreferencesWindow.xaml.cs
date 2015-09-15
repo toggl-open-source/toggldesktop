@@ -272,6 +272,7 @@ namespace TogglDesktop.WPF
         {
             private readonly Button button;
             private bool recording;
+            private ModifierKeys prematurelyReleasedModifiers;
 
             public bool HasChanged { get; private set; }
             public Utils.KeyCombination? Shortcut { get; private set; }
@@ -302,18 +303,28 @@ namespace TogglDesktop.WPF
             {
                 this.recording = true;
                 this.button.Content = recordButtonRecordingText;
+                this.prematurelyReleasedModifiers = ModifierKeys.None;
             }
+
+            private const ModifierKeys requiredModifiersUnion =
+                ModifierKeys.Alt | ModifierKeys.Control | ModifierKeys.Win;
 
             private void onKeyUp(object sender, KeyEventArgs e)
             {
                 if (!this.recording)
                     return;
 
-                var mods = getCurrentModifiers();
+                var key = (e.Key == Key.System ? e.SystemKey : e.Key);
 
-                if (!mods.HasFlag(ModifierKeys.Alt) && !mods.HasFlag(ModifierKeys.Control))
+                // this allows modifiers to be released before actual key and still record properly
+                if (this.checkPrematureModifiers(key))
+                    return;
+
+                var mods = getCurrentModifiers() | this.prematurelyReleasedModifiers;
+
+                if ((mods & requiredModifiersUnion) == ModifierKeys.None)
                 {
-                    if (e.Key == Key.Enter || e.Key == Key.Space)
+                    if (key == Key.Enter || key == Key.Space)
                     {
                         // this happens when user starts recoding with keyboard
                         return;
@@ -325,19 +336,38 @@ namespace TogglDesktop.WPF
 
                 this.cancelRecording();
 
-                if (e.Key == Key.None)
+                if (key == Key.None)
                 {
                     return;
                 }
 
-                var key = e.Key.ToString();
+                var keyString = key.ToString();
 
-                this.button.Content = keyEventToString(mods, key);
+                this.button.Content = keyEventToString(mods, keyString);
 
-                this.Shortcut = new Utils.KeyCombination(mods, key);
+                this.Shortcut = new Utils.KeyCombination(mods, keyString);
                 this.HasChanged = true;
 
                 e.Handled = true;
+            }
+
+            private bool checkPrematureModifier(
+                Key capturedKey, Key modifierLeft, Key modifierRight, ModifierKeys modifier)
+            {
+                if (capturedKey != modifierLeft && capturedKey != modifierRight)
+                    return false;
+
+                this.prematurelyReleasedModifiers |= modifier;
+                return true;
+            }
+
+
+            private bool checkPrematureModifiers(Key key)
+            {
+                return this.checkPrematureModifier(key, Key.LeftShift, Key.RightShift, ModifierKeys.Shift)
+                    || this.checkPrematureModifier(key, Key.LeftAlt, Key.RightAlt, ModifierKeys.Alt)
+                    || this.checkPrematureModifier(key, Key.LeftCtrl, Key.RightCtrl, ModifierKeys.Control)
+                    || this.checkPrematureModifier(key, Key.LWin, Key.RWin, ModifierKeys.Win);
             }
 
             private void cancelRecording()
@@ -378,6 +408,8 @@ namespace TogglDesktop.WPF
                     modifiers |= ModifierKeys.Control;
                 if (mods.HasFlag(System.Windows.Input.ModifierKeys.Shift))
                     modifiers |= ModifierKeys.Shift;
+                if (mods.HasFlag(System.Windows.Input.ModifierKeys.Windows))
+                    modifiers |= ModifierKeys.Win;
 
                 return modifiers;
             }
