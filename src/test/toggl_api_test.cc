@@ -1609,4 +1609,37 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
     ASSERT_FALSE(res);
 }
 
+TEST(toggl_api, toggl_set_default_project) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    uint64_t default_pid = toggl_get_default_project(app.ctx());
+    ASSERT_FALSE(default_pid);
+
+    testing::testresult::error = noError;
+    bool_t res = toggl_set_default_project(app.ctx(), 123);
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(res);
+
+    default_pid = toggl_get_default_project(app.ctx());
+    ASSERT_FALSE(default_pid);
+
+    const uint64_t existing_project_id = 2598305;
+
+    testing::testresult::error = noError;
+    res = toggl_set_default_project(app.ctx(), existing_project_id);
+    ASSERT_TRUE(res);
+
+    default_pid = toggl_get_default_project(app.ctx());
+    ASSERT_EQ(existing_project_id, default_pid);
+
+    testing::testresult::error = noError;
+    res = toggl_set_default_project(app.ctx(), 0);
+    ASSERT_TRUE(res);
+
+    default_pid = toggl_get_default_project(app.ctx());
+    ASSERT_FALSE(default_pid);
+}
+
 }  // namespace toggl

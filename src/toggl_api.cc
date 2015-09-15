@@ -649,6 +649,19 @@ bool_t toggl_feedback_send(
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
 
+bool_t toggl_set_default_project(
+    void *context,
+    const uint64_t pid) {
+    return toggl::noError == app(context)->SetDefaultProject(pid);
+}
+
+uint64_t toggl_get_default_project(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultProject(&ret);
+    return ret;
+}
+
 bool_t toggl_set_update_channel(
     void *context,
     const char_t *update_channel) {

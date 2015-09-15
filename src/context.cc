@@ -2690,6 +2690,17 @@ error Context::SetUpdateChannel(const std::string channel) {
     return noError;
 }
 
+error Context::SetDefaultProject(const Poco::UInt64 pid) {
+    // FIXME:
+    return noError;
+}
+
+error Context::DefaultProject(Poco::UInt64 *pid) {
+    poco_check_ptr(pid);
+    // FIXME:
+    return noError;
+}
+
 error Context::AddAutotrackerRule(
     const std::string term,
     const Poco::UInt64 pid) {
