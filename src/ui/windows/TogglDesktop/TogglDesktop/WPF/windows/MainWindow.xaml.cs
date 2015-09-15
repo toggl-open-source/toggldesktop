@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Hardcodet.Wpf.TaskbarNotification;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.WPF
@@ -21,7 +19,8 @@ namespace TogglDesktop.WPF
     {
         #region fields
 
-        private readonly DispatcherTimer idleDetectionTimer = new DispatcherTimer();
+        private readonly DispatcherTimer idleDetectionTimer =
+            new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         private readonly KeyboardHook startHook = new KeyboardHook();
         private readonly KeyboardHook showHook = new KeyboardHook();
 
