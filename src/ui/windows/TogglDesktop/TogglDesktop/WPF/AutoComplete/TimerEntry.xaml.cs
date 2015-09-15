@@ -40,12 +40,7 @@ namespace TogglDesktop.WPF.AutoComplete
         private static void setOptionalTextBlockText(TextBlock textBlock, string text)
         {
             textBlock.Text = text;
-            showOnlyIf(textBlock, !string.IsNullOrEmpty(text));
-        }
-
-        private static void showOnlyIf(UIElement element, bool condition)
-        {
-            element.Visibility = condition ? Visibility.Visible : Visibility.Collapsed;
+            textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
         }
 
         private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglAutocompleteView item)

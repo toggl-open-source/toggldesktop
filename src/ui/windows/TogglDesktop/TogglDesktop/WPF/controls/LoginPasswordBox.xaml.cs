@@ -37,7 +37,7 @@ namespace TogglDesktop.WPF
 
         private void setEmptyLabelVisibility()
         {
-            this.emptyLabel.Visibility = this.passwordBox.Password == "" ? Visibility.Visible : Visibility.Hidden;
+            this.emptyLabel.ShowOnlyIf(this.passwordBox.Password == "");
         }
 
         internal void Clear()

@@ -292,35 +292,6 @@ namespace TogglDesktop.WPF
 
         #region ui events
 
-        private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
-        {
-            this.togglVisibility();
-        }
-
-        private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
-        {
-            if (this.isTracking)
-            {
-                using (Performance.Measure("stopping time entry from global short cut", this.isInManualMode))
-                {
-                    Toggl.Stop();
-                }
-            }
-            else
-            {
-                using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.isInManualMode))
-                {
-                    this.startTimeEntry();
-                }
-            }
-        }
-
-        private void editPopupVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            this.updateEditPopupLocation();
-            this.updateEntriesListWidth();
-        }
-
         protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
             this.minimizeToTray();
@@ -348,6 +319,49 @@ namespace TogglDesktop.WPF
             this.updateEditPopupLocation();
 
             base.OnRenderSizeChanged(sizeInfo);
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            this.resizeHandle.ShowOnlyIf(this.WindowState != WindowState.Maximized);
+
+            base.OnStateChanged(e);
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            Toggl.SetWake();
+
+            base.OnActivated(e);
+        }
+
+        private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            this.togglVisibility();
+        }
+
+        private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (this.isTracking)
+            {
+                using (Performance.Measure("stopping time entry from global short cut", this.isInManualMode))
+                {
+                    Toggl.Stop();
+                }
+            }
+            else
+            {
+                using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.isInManualMode))
+                {
+                    this.startTimeEntry();
+                }
+            }
+        }
+
+        private void editPopupVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            this.updateEditPopupLocation();
+            this.updateEntriesListWidth();
         }
 
         private void onTaskbarLeftMouseUp(object sender, RoutedEventArgs e)
@@ -394,13 +408,6 @@ namespace TogglDesktop.WPF
             {
                 this.setWindowOnTop();
             }
-        }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            Toggl.SetWake();
-
-            base.OnActivated(e);
         }
 
         private void onIdleDetectionTimerTick(object sender, EventArgs e)

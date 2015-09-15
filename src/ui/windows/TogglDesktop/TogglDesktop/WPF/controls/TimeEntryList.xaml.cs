@@ -23,7 +23,7 @@ namespace TogglDesktop.WPF
 
         public void FinishedFillingList()
         {
-            this.emptyListText.Visibility = this.panel.Children.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            this.emptyListText.ShowOnlyIf(this.panel.Children.Count == 0);
         }
 
         private void onEmptyListTextClick(object sender, RoutedEventArgs e)

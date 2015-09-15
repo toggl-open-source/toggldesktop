@@ -36,7 +36,7 @@ namespace TogglDesktop.WPF
 
         private void setEmptyLabelVisibility()
         {
-            this.emptyLabel.Visibility = this.textBox.Text == "" ? Visibility.Visible : Visibility.Hidden;
+            this.emptyLabel.ShowOnlyIf(this.textBox.Text == "");
         }
 
         new public void Focus()

@@ -259,8 +259,8 @@ namespace TogglDesktop.WPF
 
             this.projectLabel.Foreground = getProjectColorBrush(ref item);
 
-            showOnlyIf(this.billabeIcon, item.Billable);
-            showOnlyIf(this.tagsIcon, !string.IsNullOrEmpty(item.Tags));
+            this.billabeIcon.ShowOnlyIf(item.Billable);
+            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
 
             if (!string.IsNullOrEmpty(item.ProjectLabel))
                 this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
@@ -334,9 +334,9 @@ namespace TogglDesktop.WPF
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
             this.durationTextBox.Text = "";
-            showOnlyIf(this.descriptionTextBox, !running);
-            showOnlyIf(this.durationTextBox, !running);
-            showOnlyIf(this.iconPanel, running);
+            this.descriptionTextBox.ShowOnlyIf(!running);
+            this.durationTextBox.ShowOnlyIf(!running);
+            this.iconPanel.ShowOnlyIf(running);
             this.projectGridRow.Height = new GridLength(0);
             this.completedProject = new ProjectInfo();
             this.cancelProjectSelectionButton.Visibility = Visibility.Collapsed;
@@ -349,12 +349,7 @@ namespace TogglDesktop.WPF
         private static void setOptionalTextBlockText(TextBlock textBlock, string text)
         {
             textBlock.Text = text;
-            showOnlyIf(textBlock, !string.IsNullOrEmpty(text));
-        }
-
-        private static void showOnlyIf(UIElement element, bool condition)
-        {
-            element.Visibility = condition ? Visibility.Visible : Visibility.Collapsed;
+            textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
         }
 
         private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglTimeEntryView item)
@@ -395,8 +390,8 @@ namespace TogglDesktop.WPF
 
         public void SetManualMode(bool manualMode)
         {
-            showOnlyIf(this.manualPanel, manualMode);
-            showOnlyIf(this.timerPanel, !manualMode);
+            this.manualPanel.ShowOnlyIf(manualMode);
+            this.timerPanel.ShowOnlyIf(!manualMode);
         }
     }
 }

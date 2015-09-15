@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
@@ -65,6 +66,21 @@ static class UIExtensions
                 customIcon.Handle
             });
         }
+    }
+
+    public static void ShowOnlyIf(this UIElement control, bool condition)
+    {
+        control.Visibility = condition
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
+    public static void ShowOnlyIf(this UIElement control, bool condition, bool hideInsteadOfCollapse)
+    {
+        control.Visibility = condition
+            ? Visibility.Visible
+            : hideInsteadOfCollapse
+                ? Visibility.Hidden
+                : Visibility.Collapsed;
     }
 }
 }

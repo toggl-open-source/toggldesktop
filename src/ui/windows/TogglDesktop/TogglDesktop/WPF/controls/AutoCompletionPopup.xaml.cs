@@ -265,9 +265,7 @@ namespace TogglDesktop.WPF
 
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
-            this.emptyLabel.Visibility = this.controller.VisibleItems.Count == 0
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            this.emptyLabel.ShowOnlyIf(this.controller.VisibleItems.Count == 0);
 
             if (closeIfEmpty)
             {

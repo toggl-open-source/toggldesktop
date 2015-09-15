@@ -14,9 +14,8 @@ namespace TogglDesktop.WPF
             this.versionText.Text = Program.Version();
 
             var isUpdatCheckDisabled = Toggl.IsUpdateCheckDisabled();
-            var releaseChannelVisibility = isUpdatCheckDisabled ? Visibility.Hidden : Visibility.Visible;
-            this.releaseChannelComboBox.Visibility = releaseChannelVisibility;
-            this.releaseChannelLabel.Visibility = releaseChannelVisibility;
+            this.releaseChannelComboBox.ShowOnlyIf(!isUpdatCheckDisabled, true);
+            this.releaseChannelLabel.ShowOnlyIf(!isUpdatCheckDisabled, true);
         }
 
         private void windowKeyDown(object sender, KeyEventArgs e)

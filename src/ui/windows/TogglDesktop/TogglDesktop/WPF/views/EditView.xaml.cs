@@ -98,7 +98,7 @@ namespace TogglDesktop.WPF
                     this.endTimeTextBox.Text = "";
                 }
 
-                this.billableCheckBox.Visibility = timeEntry.CanSeeBillable ? Visibility.Visible : Visibility.Collapsed;
+                this.billableCheckBox.ShowOnlyIf(timeEntry.CanSeeBillable);
                 this.billableCheckBox.IsChecked = timeEntry.Billable;
 
                 if (timeEntry.UpdatedAt > 0)
@@ -937,8 +937,7 @@ namespace TogglDesktop.WPF
 
         private void updateTagListEmptyText()
         {
-            this.emptyTagListText.Visibility = this.tagList.TagCount == 0 && !this.tagList.IsKeyboardFocusWithin
-                ? Visibility.Visible : Visibility.Collapsed;
+            this.emptyTagListText.ShowOnlyIf(this.tagList.TagCount == 0 && !this.tagList.IsKeyboardFocusWithin);
         }
 
         #endregion
@@ -1014,8 +1013,8 @@ namespace TogglDesktop.WPF
 
         public void SetShadow(bool left, double height)
         {
-            this.shadowLeft.Visibility = left ? Visibility.Collapsed : Visibility.Visible;
-            this.shadowRight.Visibility = left ? Visibility.Visible : Visibility.Collapsed;
+            this.shadowLeft.ShowOnlyIf(!left);
+            this.shadowRight.ShowOnlyIf(left);
 
             this.shadowLeft.MinHeight = height;
             this.shadowRight.MinHeight = height;

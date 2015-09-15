@@ -72,13 +72,13 @@ namespace TogglDesktop.WPF
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
             setOptionalTextBlockText(this.labelTask, item.TaskLabel == "" ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
-            showOnlyIf(this.billabeIcon, item.Billable);
-            showOnlyIf(this.tagsIcon, !string.IsNullOrEmpty(item.Tags));
+            this.billabeIcon.ShowOnlyIf(item.Billable);
+            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
 
             this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
 
-            showOnlyIf(this.dayHeader, item.IsHeader);
-            showOnlyIf(this.entrySeperator, !item.IsHeader);
+            this.dayHeader.ShowOnlyIf(item.IsHeader);
+            this.entrySeperator.ShowOnlyIf(!item.IsHeader);
 
             this.entryHoverColor = hoverColor;
             this.EntryBackColor = idleBackColor;
@@ -131,15 +131,10 @@ namespace TogglDesktop.WPF
 
         #region display helpers
 
-        private static void showOnlyIf(FrameworkElement element, bool condition)
-        {
-            element.Visibility = condition ? Visibility.Visible : Visibility.Collapsed;
-        }
-
         private static void setOptionalTextBlockText(TextBlock textBlock, string text)
         {
             textBlock.Text = text;
-            showOnlyIf(textBlock, !string.IsNullOrEmpty(text));
+            textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
         }
 
         private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglTimeEntryView item)
