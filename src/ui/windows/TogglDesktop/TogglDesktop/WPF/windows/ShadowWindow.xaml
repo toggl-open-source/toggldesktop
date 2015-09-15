@@ -1,0 +1,32 @@
+﻿<Window x:Class="TogglDesktop.WPF.ShadowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        mc:Ignorable="d" 
+        d:DesignHeight="300" d:DesignWidth="300"
+        WindowStyle="None" ResizeMode="NoResize"
+        ShowInTaskbar="False" AllowsTransparency="True"
+        Background="Transparent" Focusable="False" IsHitTestVisible="False">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="0"
+            CornerRadius="0"
+            ResizeBorderThickness="0"
+            GlassFrameThickness="0"
+            UseAeroCaptionButtons="False"
+            />
+    </WindowChrome.WindowChrome>
+
+    <Rectangle Margin="15 15 15 20" Fill="Gray" IsHitTestVisible="False">
+        <Rectangle.Effect>
+            <DropShadowEffect 
+                    BlurRadius="20"
+                    Direction="270"
+                    ShadowDepth="4"
+                    Opacity="0.6"
+                    />
+        </Rectangle.Effect>
+    </Rectangle>
+</Window>

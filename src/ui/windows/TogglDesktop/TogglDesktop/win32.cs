@@ -98,10 +98,13 @@ static class Win32
     public static extern bool SetWindowPos(IntPtr hWnd,
                                            int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
 
+
+    public const int HWND_BOTTOM = 1;
     public const int HWND_TOPMOST = -1;
     public const int HWND_NOTOPMOST = -2;
     public const int SWP_NOMOVE = 0x0002;
     public const int SWP_NOSIZE = 0x0001;
+    public const int SWP_NOACTIVATE = 0x0010;
 
     [DllImport("user32", CharSet = CharSet.Auto)]
     public static extern int GetWindowLong(IntPtr hwnd, int nIndex);
@@ -127,6 +130,18 @@ static class Win32
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
+
+    const int WS_EX_TRANSPARENT = 0x00000020;
+    const int GWL_EXSTYLE = (-20);
+
+    [DllImport("user32.dll")]
+    static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+
+    public static void SetWindowExTransparent(IntPtr hwnd)
+    {
+        var extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+        SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TRANSPARENT);
+    }
 }
 
 }

@@ -7,6 +7,7 @@ namespace TogglDesktop.WPF
 {
     public partial class EditViewPopup
     {
+        private readonly ShadowWindow shadowWindow;
         private readonly WindowInteropHelper interopHelper;
 
         private bool isLeft;
@@ -21,6 +22,8 @@ namespace TogglDesktop.WPF
             this.MinWidth = this.EditView.MinWidth;
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
+
+            this.shadowWindow = new ShadowWindow(this);
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
@@ -28,6 +31,7 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
                 return;
 
+            this.shadowWindow.Show();
             this.Show();
             this.EditView.FocusField(focusedFieldName);
         }
@@ -37,7 +41,7 @@ namespace TogglDesktop.WPF
         protected override void OnDeactivated(EventArgs e)
         {
             base.OnDeactivated(e);
-            this.SetWindowOnTop(this.remainOnTop);
+            this.SetWindowOnTop();
         }
 
         private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -79,11 +83,12 @@ namespace TogglDesktop.WPF
 
         #region controlling
 
-        public void SetWindowOnTop(bool onTop)
+        public void SetWindowOnTop(bool? onTop = null)
         {
-            this.remainOnTop = onTop;
+            var t = onTop ?? this.remainOnTop;
+            this.remainOnTop = t;
             Win32.SetWindowPos(this.interopHelper.Handle,
-                onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST,
+                t ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST,
                 0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
         }
 
@@ -113,6 +118,8 @@ namespace TogglDesktop.WPF
             this.MinHeight = height;
             this.MaxWidth = 1200;
             this.MaxHeight = height;
+
+            this.shadowWindow.SetVisibility(!fixHeight);
         }
 
         private void setShadow(bool left, double height)
