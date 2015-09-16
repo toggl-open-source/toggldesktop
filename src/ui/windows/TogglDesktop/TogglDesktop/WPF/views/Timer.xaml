@@ -98,7 +98,19 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
+
+
+        <RoutedUICommand x:Key="FocusTimeEntryListCommand" />
     </UserControl.Resources>
+    
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource FocusTimeEntryListCommand}" Executed="onFocusTimeEntryListCommand"/>
+
+    </UserControl.CommandBindings>
+    
+    <UserControl.InputBindings>
+        <KeyBinding Key="Down" Modifiers="Shift" Command="{StaticResource FocusTimeEntryListCommand}" />
+    </UserControl.InputBindings>
 
     <Grid>
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">

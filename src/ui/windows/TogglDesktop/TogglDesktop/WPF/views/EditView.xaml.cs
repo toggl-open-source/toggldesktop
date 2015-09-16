@@ -1002,6 +1002,10 @@ namespace TogglDesktop.WPF
                 case Toggl.Description:
                     this.descriptionTextBox.Focus();
                     break;
+                default:
+                    if (!this.IsKeyboardFocusWithin)
+                        this.descriptionTextBox.Focus();
+                    break;
             }
         }
 

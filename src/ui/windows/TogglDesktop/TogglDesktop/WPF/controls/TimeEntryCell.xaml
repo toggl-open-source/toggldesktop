@@ -9,7 +9,7 @@
              d:DesignHeight="100" d:DesignWidth="455">
     
     <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
-                Background="Transparent">
+                Background="Transparent" VerticalAlignment="Bottom">
         
         <!-- Day Header -->
         <StackPanel Name="dayHeader" x:FieldModifier="private"
@@ -56,7 +56,8 @@
                        HorizontalAlignment="Right" FontSize="14.7"
                            Margin="0, 1, 33, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
             
-            <Button Grid.Column="4" Width="36" Height="36"  Margin="0, 0, 4, 0" Click="buttonContinue_Click"/>
+            <Button Grid.Column="4" Width="36" Height="36" Margin="0, 0, 4, 0"
+                    Focusable="False" Click="buttonContinue_Click"/>
 
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal" HorizontalAlignment="Right">

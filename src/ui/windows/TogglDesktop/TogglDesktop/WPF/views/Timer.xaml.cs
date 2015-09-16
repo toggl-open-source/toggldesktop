@@ -20,6 +20,7 @@ namespace TogglDesktop.WPF
 
         public event EventHandler StartStopClick;
         public event EventHandler RunningTimeEntrySecondPulse;
+        public event EventHandler FocusTimeEntryList;
 
         public Timer()
         {
@@ -188,6 +189,12 @@ namespace TogglDesktop.WPF
         {
             var guid = Toggl.Start("", "0", 0, 0, "", "");
             Toggl.Edit(guid, false, Toggl.Duration);
+        }
+
+        private void onFocusTimeEntryListCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (this.FocusTimeEntryList != null)
+                this.FocusTimeEntryList(this, e);
         }
 
         #endregion
@@ -393,5 +400,6 @@ namespace TogglDesktop.WPF
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
         }
+
     }
 }

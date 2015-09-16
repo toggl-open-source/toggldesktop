@@ -1,10 +1,7 @@
-﻿
-using System;
+﻿using System;
+using System.Windows;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
-using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
 namespace TogglDesktop.WPF
 {
@@ -12,6 +9,8 @@ namespace TogglDesktop.WPF
     {
         private readonly Dictionary<string, TimeEntryCell> cellsByGUID =
             new Dictionary<string, TimeEntryCell>();
+
+        private string highlightedGUID;
 
         public TimerEntryListView()
         {
@@ -51,6 +50,12 @@ namespace TogglDesktop.WPF
                 return;
 
             this.fillTimeEntryList(list);
+
+            if (open)
+            {
+                this.DisableHighlight();
+                this.entries.Focus();
+            }
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
@@ -58,10 +63,11 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
                 return;
 
-            TimeEntryCell cell;
-            this.cellsByGUID.TryGetValue(te.GUID, out cell);
-
-            this.entries.HighlightCell(cell);
+            this.highlightEntry(te.GUID);
+            if (open)
+            {
+                this.entries.HighlightKeyboard(te.GUID);
+            }
         }
 
 
@@ -72,9 +78,12 @@ namespace TogglDesktop.WPF
             var previousCount = this.entries.Children.Count;
             var newCount = list.Count;
 
+            var cells = new List<Tuple<string, TimeEntryCell>>(newCount);
+
             using (Performance.Measure("rendering time entry list, previous count: {0}, new count: {1}", previousCount, newCount))
             {
                 this.cellsByGUID.Clear();
+                this.entries.Children.Clear();
 
                 int maxCount = list.Count;
 
@@ -94,7 +103,9 @@ namespace TogglDesktop.WPF
                         this.entries.Children.Add(cell);
                     }
                     cell.Display(entry);
+
                     this.cellsByGUID.Add(entry.GUID, cell);
+                    cells.Add(Tuple.Create(entry.GUID, cell));
                 }
 
                 if (this.entries.Children.Count > list.Count)
@@ -103,29 +114,31 @@ namespace TogglDesktop.WPF
                 }
 
                 this.entries.FinishedFillingList();
-
-                this.refreshHighlight();
+                this.entries.SetTimeEntryCellList(cells);
+                this.refreshHighLight();
             }
 
         }
 
-        private void refreshHighlight()
+        private void refreshHighLight()
         {
-            this.entries.RefreshHighLight();
+            this.highlightEntry(this.highlightedGUID);
         }
 
-        public void SetEditPopup(EditView editView)
+        private void highlightEntry(string guid)
         {
-            editView.SetTimer(this.timer);
-        }
+            this.highlightedGUID = guid;
 
-        public void HighlightEntry(string guid)
-        {
             TimeEntryCell cell = null;
             if (guid != null)
                 this.cellsByGUID.TryGetValue(guid, out cell);
 
             this.entries.HighlightCell(cell);
+        }
+
+        public void SetEditPopup(EditView editView)
+        {
+            editView.SetTimer(this.timer);
         }
 
         public void DisableHighlight()
@@ -148,6 +161,11 @@ namespace TogglDesktop.WPF
         public void SetManualMode(bool manualMode)
         {
             this.timer.SetManualMode(manualMode);
+        }
+
+        private void onFocusTimeEntryList(object sender, EventArgs e)
+        {
+            this.entries.Focus();
         }
     }
 }

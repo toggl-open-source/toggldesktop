@@ -5,7 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Focusable="True">
+
+    <UserControl.Resources>
+        <RoutedUICommand x:Key="HighlightDown" />
+        <RoutedUICommand x:Key="HighlightUp" />
+        <RoutedUICommand x:Key="HighlightEdit" />
+        <RoutedUICommand x:Key="HighlightContinue" />
+        <RoutedUICommand x:Key="HighlightDelete" />
+    </UserControl.Resources>
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource HighlightDown}" Executed="onHighlightDown"/>
+        <CommandBinding Command="{StaticResource HighlightUp}" Executed="onHighlightUp"/>
+        <CommandBinding Command="{StaticResource HighlightEdit}" Executed="onHighlightEdit"/>
+        <CommandBinding Command="{StaticResource HighlightContinue}" Executed="onHighlightContinue"/>
+        <CommandBinding Command="{StaticResource HighlightDelete}" Executed="onHighlightDelete"/>
+    </UserControl.CommandBindings>
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Down" Command="{StaticResource HighlightDown}" />
+        <KeyBinding Key="Up" Command="{StaticResource HighlightUp}" />
+        <KeyBinding Key="Enter" Command="{StaticResource HighlightEdit}" />
+        <KeyBinding Key="Space" Command="{StaticResource HighlightContinue}" />
+        <KeyBinding Key="Back" Command="{StaticResource HighlightDelete}" />
+    </UserControl.InputBindings>
+    
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Visible"
                       HorizontalScrollBarVisibility="Disabled"
@@ -15,7 +41,7 @@
             <Grid>
                 <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch"
                                         Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
-                
+
                 </VirtualizingStackPanel>
                 <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private"
                            Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0"
@@ -24,13 +50,27 @@
                            Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
                            IsHitTestVisible="False"/>
 
+                <Border x:Name="keyboardHighlight" x:FieldModifier="private" Visibility="Visible"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="53" Margin="-10 20"
+                        Background="White">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            Direction="270"
+                            ShadowDepth="1"
+                            BlurRadius="10"
+                            Opacity="0.5"/>
+                    </Border.Effect>
+                    <toggl:TimeEntryCell x:Name="keyboardHighlightCellImposter" x:FieldModifier="private" 
+                        Margin="10 0" />
+                </Border>
+
             </Grid>
         </ScrollViewer>
         <Rectangle Name="resizeBackground" x:FieldModifier="private"
             VerticalAlignment="Bottom" HorizontalAlignment="Right"
                 Width="17" Height="17" Fill="#f0f0f0" IsHitTestVisible="True"/>
 
-        <Button Name="emptyListText" x:FieldModifier="private"
+        <Button Name="emptyListText" x:FieldModifier="private" Visibility="Hidden"
                         FontFamily="/TogglDesktop;component/Resources/Fonts/#Roboto"
                         FontSize="14" Foreground="Gray" Cursor="Hand"
                         Click="onEmptyListTextClick">
