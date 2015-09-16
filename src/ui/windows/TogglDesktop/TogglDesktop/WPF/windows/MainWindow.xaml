@@ -40,21 +40,30 @@
             UriSource="/TogglDesktop;component/Resources/toggl_offline_inactive.ico" />
         <!-- ReSharper restore Xaml.RedundantResource -->
     </Window.Resources>
-    
+
     <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource NewCommand}" Executed="onNewCommand"/>
-        <CommandBinding Command="{StaticResource ContinueCommand}" Executed="onContinueCommand"/>
-        <CommandBinding Command="{StaticResource StopCommand}" Executed="onStopCommand"/>
         <CommandBinding Command="{StaticResource ShowCommand}" Executed="onShowCommand"/>
-        <CommandBinding Command="{StaticResource SyncCommand}" Executed="onSyncCommand"/>
-        <CommandBinding Command="{StaticResource ReportsCommand}" Executed="onReportsCommand"/>
         <CommandBinding Command="{StaticResource PreferencesCommand}" Executed="onPreferencesCommand"/>
-        <CommandBinding Command="{StaticResource ToggleManualModeCommand}" Executed="onToggleManualModeCommand"/>
-        <CommandBinding Command="{StaticResource ClearCacheCommand}" Executed="onClearCacheCommand"/>
         <CommandBinding Command="{StaticResource SendFeedbackCommand}" Executed="onSendFeedbackCommand"/>
         <CommandBinding Command="{StaticResource AboutCommand}" Executed="onAboutCommand"/>
-        <CommandBinding Command="{StaticResource LogoutCommand}" Executed="onLogoutCommand"/>
         <CommandBinding Command="{StaticResource QuitCommand}" Executed="onQuitCommand"/>
+        
+        <CommandBinding Command="{StaticResource NewCommand}"
+                        Executed="onNewCommand" CanExecute="canExecuteNewCommand"/>
+        <CommandBinding Command="{StaticResource ContinueCommand}"
+                        Executed="onContinueCommand" CanExecute="canExecuteContinueCommand"/>
+        <CommandBinding Command="{StaticResource StopCommand}"
+                        Executed="onStopCommand" CanExecute="canExecuteStopCommand"/>
+        <CommandBinding Command="{StaticResource SyncCommand}"
+                        Executed="onSyncCommand" CanExecute="canExecuteSyncCommand"/>
+        <CommandBinding Command="{StaticResource ReportsCommand}"
+                        Executed="onReportsCommand" CanExecute="canExecuteReportsCommand"/>
+        <CommandBinding Command="{StaticResource ToggleManualModeCommand}"
+                        Executed="onToggleManualModeCommand" CanExecute="canExecuteToggleManualModeCommand"/>
+        <CommandBinding Command="{StaticResource ClearCacheCommand}"
+                        Executed="onClearCacheCommand" CanExecute="canExecuteClearCacheCommand"/>
+        <CommandBinding Command="{StaticResource LogoutCommand}"
+                        Executed="onLogoutCommand" CanExecute="canExecuteLogoutCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>

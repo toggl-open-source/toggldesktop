@@ -547,6 +547,43 @@ namespace TogglDesktop.WPF
 
         #endregion
 
+        #region canExecutes
+
+        private void canExecuteNewCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+        private void canExecuteContinueCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn && !this.isTracking;
+        }
+        private void canExecuteStopCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn && this.isTracking;
+        }
+        private void canExecuteSyncCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+        private void canExecuteReportsCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+        private void canExecuteToggleManualModeCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+        private void canExecuteClearCacheCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+        private void canExecuteLogoutCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+        
+        #endregion
+        
         #region ui controlling
 
         private void togglVisibility()
@@ -695,25 +732,8 @@ namespace TogglDesktop.WPF
                 this.Title = "Toggl Desktop";
             }
 
-            this.updateContextMenuItems();
             this.updateStatusIcons(true);
             this.SetIconState(tracking);
-        }
-
-        private void updateContextMenuItems()
-        {
-            var loggedIn = TogglDesktop.Program.IsLoggedIn;
-
-            // todo: disable commands (instead)
-            this.newMenuItem.IsEnabled = loggedIn;
-            this.continueMenuItem.IsEnabled = loggedIn && !this.isTracking;
-            this.stopMenuItem.IsEnabled = loggedIn && this.isTracking;
-            this.syncMenuItem.IsEnabled = loggedIn;
-            this.reportsMenuItem.IsEnabled = loggedIn;
-            this.togglManualModeMenuItem.IsEnabled = loggedIn;
-            this.clearCacheMenuItem.IsEnabled = loggedIn;
-            this.sendFeedbackMenuItem.IsEnabled = loggedIn;
-            this.logoutMenuItem.IsEnabled = loggedIn;
         }
 
         #endregion
@@ -807,7 +827,6 @@ namespace TogglDesktop.WPF
             activeView.Visibility = Visibility.Visible;
             this.editPopup.Hide();
             this.timerEntryListView.DisableHighlight();
-            this.updateContextMenuItems();
 
             this.updateMinimumSize(activeView);
         }
@@ -819,6 +838,5 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
-
     }
 }
