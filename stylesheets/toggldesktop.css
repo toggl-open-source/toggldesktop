@@ -38,7 +38,7 @@ h3 {
 .os {
   display: none;
   min-height: 200px;
-  width: 500px;
+  max-width: 500px;
 }
 
 .active {
