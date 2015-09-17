@@ -38,6 +38,19 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public bool IsFloating
+        {
+            set
+            {
+                if (value == false)
+                    return;
+
+                this.dayHeader.Visibility = Visibility.Collapsed;
+                this.entrySeperator.Visibility = Visibility.Collapsed;
+                this.entryGrid.Height = 59;
+            }
+        }
+
         public Color EntryBackColor
         {
             get { return (Color)this.GetValue(EntryBackColorProperty); }
@@ -73,9 +86,6 @@ namespace TogglDesktop.WPF
             this.tagsIcon.Visibility = cell.tagsIcon.Visibility;
 
             this.projectRow.Height = cell.projectRow.Height;
-
-            this.dayHeader.Visibility = Visibility.Collapsed;
-            this.entrySeperator.Visibility = Visibility.Collapsed;
 
             this.entryHoverColor = cell.entryHoverColor;
             this.EntryBackColor = cell.EntryBackColor;

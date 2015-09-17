@@ -54,7 +54,7 @@ namespace TogglDesktop.WPF
             if (open)
             {
                 this.DisableHighlight();
-                this.entries.Focus();
+                this.entries.Focus(true, true);
             }
         }
 
@@ -143,6 +143,7 @@ namespace TogglDesktop.WPF
 
         public void DisableHighlight()
         {
+            this.highlightedGUID = null;
             this.entries.DisableHighlight();
         }
 
@@ -165,7 +166,7 @@ namespace TogglDesktop.WPF
 
         private void onFocusTimeEntryList(object sender, EventArgs e)
         {
-            this.entries.Focus();
+            this.entries.Focus(true);
         }
     }
 }

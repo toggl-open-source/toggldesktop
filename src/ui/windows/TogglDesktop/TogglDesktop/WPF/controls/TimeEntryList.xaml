@@ -9,6 +9,7 @@
              Focusable="True">
 
     <UserControl.Resources>
+
         <RoutedUICommand x:Key="HighlightDown" />
         <RoutedUICommand x:Key="HighlightUp" />
         <RoutedUICommand x:Key="HighlightEdit" />
@@ -37,7 +38,8 @@
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
                       SizeChanged="onSizeChanged"
-                      Background="#f7f7f7">
+                      Background="#f7f7f7"
+                      >
             <Grid>
                 <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch"
                                         Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
@@ -51,7 +53,7 @@
                            IsHitTestVisible="False"/>
 
                 <Border x:Name="keyboardHighlight" x:FieldModifier="private" Visibility="Visible"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="53" Margin="-10 20"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="59" Margin="-10 20"
                         Background="White">
                     <Border.Effect>
                         <DropShadowEffect
@@ -60,8 +62,8 @@
                             BlurRadius="10"
                             Opacity="0.5"/>
                     </Border.Effect>
-                    <toggl:TimeEntryCell x:Name="keyboardHighlightCellImposter" x:FieldModifier="private" 
-                        Margin="10 0" />
+                    <toggl:TimeEntryCell x:Name="keyboardHighlightCellImposter" x:FieldModifier="private"
+                        Margin="10 0" IsFloating="True" VerticalAlignment="Center" Height="59"/>
                 </Border>
 
             </Grid>

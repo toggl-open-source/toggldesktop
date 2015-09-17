@@ -1025,13 +1025,7 @@ namespace TogglDesktop.WPF
 
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("Delete time entry?", "Please confirm",
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                Toggl.DeleteTimeEntry(this.timeEntry.GUID);
-            }
+            Toggl.AskToDeleteEntry(this.timeEntry.GUID);
         }
 
         #endregion

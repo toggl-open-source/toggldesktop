@@ -13,7 +13,21 @@ namespace TogglDesktop.WPF
 
         private List<Tuple<string, TimeEntryCell>> cells;
         private int keyboardSelectedId;
-        private TimeEntryCell highlightingCell;
+        private TimeEntryCell cellAboutToKeyboardHighlight;
+
+        private bool hasKeyboardSelection
+        {
+            get { return this.keyboardSelectedId != -1 && this.keyboardHighlightCellImposter.IsVisible; }
+        }
+
+        private string keyboardHighlightedGUID
+        {
+            get { return this.cells[this.keyboardSelectedId].Item1; }
+        }
+        private TimeEntryCell keyboardHighlightedCell
+        {
+            get { return this.cells[this.keyboardSelectedId].Item2; }
+        }
 
         public TimeEntryList()
         {
@@ -41,12 +55,12 @@ namespace TogglDesktop.WPF
         private void onSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (this.highlightedCell != null)
-                this.RefreshHighLight();
+                this.refreshHighLight();
         }
 
         #region editing highlight
 
-        public void RefreshHighLight()
+        private void refreshHighLight()
         {
             this.HighlightCell(this.highlightedCell);
         }
@@ -99,19 +113,32 @@ namespace TogglDesktop.WPF
 
         #region keyboard controls
 
+        public void Focus(bool selectKeyboard, bool hideSelection = false)
+        {
+            this.Focus();
+            if (selectKeyboard && !this.hasKeyboardSelection)
+            {
+                this.highlightKeyboard(0);
+            }
+            if (hideSelection)
+            {
+                this.hideSelection();
+            }
+        }
+
         public void SetTimeEntryCellList(List<Tuple<string, TimeEntryCell>> cells)
         {
-            if (this.keyboardSelectedId == -1 || this.cells == null)
+            if (!this.hasKeyboardSelection || this.cells == null)
             {
                 this.cells = cells;
                 return;
             }
 
-            var guid = this.cells[this.keyboardSelectedId].Item1;
+            var guid = this.keyboardHighlightedGUID;
 
             this.cells = cells;
 
-            this.HighlightKeyboard(guid);
+            this.HighlightKeyboard(guid, true);
         }
 
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
@@ -134,81 +161,117 @@ namespace TogglDesktop.WPF
 
         private void onHighlightEdit(object sender, ExecutedRoutedEventArgs e)
         {
-            Toggl.Edit(this.cells[this.keyboardSelectedId].Item1, false, "");
+            if (!this.hasKeyboardSelection)
+                return;
+
+            Toggl.Edit(this.keyboardHighlightedGUID, false, "");
         }
 
         private void onHighlightContinue(object sender, ExecutedRoutedEventArgs e)
         {
+            if (!this.hasKeyboardSelection)
+                return;
+
+            Toggl.Continue(this.keyboardHighlightedGUID);
         }
 
         private void onHighlightDelete(object sender, ExecutedRoutedEventArgs e)
         {
+            if (!this.hasKeyboardSelection)
+                return;
+
+            Toggl.AskToDeleteEntry(this.keyboardHighlightedGUID);
         }
 
         #region updating highlight
 
         private void tryHighlightKeyboard(int id)
         {
-            if (id >= 0 && id < this.cells.Count)
+            if (id < 0)
             {
-                this.highlightKeyboard(id);
+                if(!this.hasKeyboardSelection)
+                    this.highlightKeyboard(0);
+                return;
             }
+
+            if (id >= this.cells.Count)
+            {
+                if (!this.hasKeyboardSelection)
+                    this.highlightKeyboard(this.cells.Count - 1);
+                return;
+            }
+
+            this.highlightKeyboard(id);
         }
 
-        public void HighlightKeyboard(string guid)
+        public void HighlightKeyboard(string guid, bool async = false)
         {
             this.highlightKeyboard(
-                this.cells.FindIndex(t => t.Item1 == guid)
+                this.cells.FindIndex(t => t.Item1 == guid),
+                async
                 );
         }
 
-        private void highlightKeyboard(int id)
+        private void highlightKeyboard(int id, bool async = false)
         {
-            this.removeKeyboardHighlight();
-
             if (id < 0 || id >= this.cells.Count)
             {
+                this.hideSelection();
                 this.keyboardSelectedId = -1;
                 return;
             }
 
             this.keyboardSelectedId = id;
 
-            this.setKeyboardHighlight();
+            this.setKeyboardHighlight(async);
         }
 
-        private void removeKeyboardHighlight()
+        private void hideSelection()
         {
             this.keyboardHighlight.Visibility = Visibility.Collapsed;
+            this.cellAboutToKeyboardHighlight = null;   
         }
 
-        private void setKeyboardHighlight()
+        private void setKeyboardHighlight(bool async)
         {
-            var cell = this.cells[this.keyboardSelectedId].Item2;
+            var cell = this.keyboardHighlightedCell;
 
-            this.highlightingCell = cell;
+            this.cellAboutToKeyboardHighlight = cell;
 
-            this.Dispatcher.BeginInvoke(new Action(() =>
+            if (async)
             {
-                if(this.highlightingCell != cell || !this.panel.IsAncestorOf(cell))
-                {
-                    return;
-                }
-
-                this.keyboardHighlightCellImposter.Imitate(cell);
-
-                var cellYTop = cell.TransformToAncestor(this.panel).Transform(new Point(0, 0)).Y;
-
-                var y = Math.Max(0, cellYTop + cell.ActualHeight - 53);
-
-                this.keyboardHighlight.Margin = new Thickness(-10, y, -10, 0);
-                this.keyboardHighlight.Visibility = Visibility.Visible;
-
-                this.highlightingCell = null;
+                this.Dispatcher.BeginInvoke(
+                    new Action(this.updateKeyboardHighlightImposter),
+                    DispatcherPriority.Background
+                    );
             }
-            ), DispatcherPriority.Render);
+            else
+            {
+                this.updateKeyboardHighlightImposter();
 
+            }
+        }
 
+        private void updateKeyboardHighlightImposter()
+        {
+            var cell = this.cellAboutToKeyboardHighlight;
+            this.cellAboutToKeyboardHighlight = null;
+
+            if (cell == null || !this.panel.IsAncestorOf(cell))
+            {
+                return;
+            }
+
+            this.keyboardHighlightCellImposter.Imitate(cell);
+
+            var cellYTop = cell.TransformToAncestor(this.panel).Transform(new Point(0, 0)).Y;
+
+            var y = Math.Max(0, cellYTop + cell.ActualHeight - 53 - 3);
+
+            this.keyboardHighlight.Margin = new Thickness(-10, y, -10, 0);
+            this.keyboardHighlight.Visibility = Visibility.Visible;
+
+            cell.BringIntoView();
         }
 
         #endregion

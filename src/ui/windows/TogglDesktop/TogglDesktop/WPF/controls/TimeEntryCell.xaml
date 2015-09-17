@@ -9,7 +9,7 @@
              d:DesignHeight="100" d:DesignWidth="455">
     
     <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
-                Background="Transparent" VerticalAlignment="Bottom">
+                Background="Transparent">
         
         <!-- Day Header -->
         <StackPanel Name="dayHeader" x:FieldModifier="private"
@@ -34,7 +34,7 @@
         <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
 
         <!-- Entry -->
-        <Grid Name="entryGrid" x:FieldModifier="private" 
+        <Grid Name="entryGrid" x:FieldModifier="private"
             Height="53" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
             
             <Grid.Background>
@@ -70,7 +70,7 @@
             </StackPanel>
             
 
-            <Grid Grid.Column="1" Margin="16, 8, 0, 8">
+            <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
