@@ -15,6 +15,7 @@
         <RoutedUICommand x:Key="HighlightEdit" />
         <RoutedUICommand x:Key="HighlightContinue" />
         <RoutedUICommand x:Key="HighlightDelete" />
+        <RoutedUICommand x:Key="FocusTimer" />
     </UserControl.Resources>
 
     <UserControl.CommandBindings>
@@ -23,6 +24,7 @@
         <CommandBinding Command="{StaticResource HighlightEdit}" Executed="onHighlightEdit"/>
         <CommandBinding Command="{StaticResource HighlightContinue}" Executed="onHighlightContinue"/>
         <CommandBinding Command="{StaticResource HighlightDelete}" Executed="onHighlightDelete"/>
+        <CommandBinding Command="{StaticResource FocusTimer}" Executed="onFocusTimer"/>
     </UserControl.CommandBindings>
 
     <UserControl.InputBindings>
@@ -31,6 +33,7 @@
         <KeyBinding Key="Enter" Command="{StaticResource HighlightEdit}" />
         <KeyBinding Key="Space" Command="{StaticResource HighlightContinue}" />
         <KeyBinding Key="Back" Command="{StaticResource HighlightDelete}" />
+        <KeyBinding Key="Escape" Command="{StaticResource FocusTimer}" />
     </UserControl.InputBindings>
     
     <Grid>

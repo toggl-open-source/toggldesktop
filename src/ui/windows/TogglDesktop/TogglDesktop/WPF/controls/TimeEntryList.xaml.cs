@@ -9,6 +9,8 @@ namespace TogglDesktop.WPF
 {
     public partial class TimeEntryList
     {
+        public event EventHandler FocusTimer;
+
         private TimeEntryCell highlightedCell;
 
         private List<Tuple<string, TimeEntryCell>> cells;
@@ -183,6 +185,12 @@ namespace TogglDesktop.WPF
             Toggl.AskToDeleteEntry(this.keyboardHighlightedGUID);
         }
 
+        private void onFocusTimer(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (this.FocusTimer != null)
+                this.FocusTimer(this, e);
+        }
+
         #region updating highlight
 
         private void tryHighlightKeyboard(int id)
@@ -277,5 +285,6 @@ namespace TogglDesktop.WPF
         #endregion
 
         #endregion
+
     }
 }

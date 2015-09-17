@@ -168,5 +168,9 @@ namespace TogglDesktop.WPF
         {
             this.entries.Focus(true);
         }
+        private void onFocusTimer(object sender, EventArgs e)
+        {
+            this.timer.Focus();
+        }
     }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d" 
-             d:DesignWidth="500" Height="60" MinWidth="256">
+             d:DesignWidth="500" Height="60" MinWidth="256" Focusable="True">
     
     <UserControl.Background>
         <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerDarkBg.png"
@@ -99,22 +99,12 @@
             </Style.Triggers>
         </Style>
 
-
-        <RoutedUICommand x:Key="FocusTimeEntryListCommand" />
     </UserControl.Resources>
     
-    <UserControl.CommandBindings>
-        <CommandBinding Command="{StaticResource FocusTimeEntryListCommand}" Executed="onFocusTimeEntryListCommand"/>
-
-    </UserControl.CommandBindings>
-    
-    <UserControl.InputBindings>
-        <KeyBinding Key="Down" Modifiers="Shift" Command="{StaticResource FocusTimeEntryListCommand}" />
-    </UserControl.InputBindings>
-
     <Grid>
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">
-            <Button Style="{StaticResource ManualAddButton}"
+            <Button Name="manuelAddButton" x:FieldModifier="private"
+                Style="{StaticResource ManualAddButton}"
                     Click="onManualAddButtonClick" Content="+ Add time entry"/>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
