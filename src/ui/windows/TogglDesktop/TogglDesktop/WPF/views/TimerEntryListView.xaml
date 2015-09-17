@@ -14,11 +14,12 @@
         </Grid.RowDefinitions>
 
         <toggl:Timer Grid.Row="0"
-            x:Name="timer" x:FieldModifier="private"/>
+            x:Name="timer" x:FieldModifier="private"
+            FocusTimeEntryList="onFocusTimeEntryList"
+            />
         
         <toggl:TimeEntryList Grid.Row="1"
-            x:Name="entries" x:FieldModifier="private"/>
-        
-
+            x:Name="entries" x:FieldModifier="private"
+            FocusTimer="onFocusTimer"/>
     </Grid>
 </UserControl>

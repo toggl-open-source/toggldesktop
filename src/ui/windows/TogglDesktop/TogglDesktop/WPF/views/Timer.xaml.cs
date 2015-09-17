@@ -8,7 +8,7 @@ using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+
 
 namespace TogglDesktop.WPF
 {
@@ -20,6 +20,7 @@ namespace TogglDesktop.WPF
 
         public event EventHandler StartStopClick;
         public event EventHandler RunningTimeEntrySecondPulse;
+        public event EventHandler FocusTimeEntryList;
 
         public Timer()
         {
@@ -188,6 +189,34 @@ namespace TogglDesktop.WPF
         {
             var guid = Toggl.Start("", "0", 0, 0, "", "");
             Toggl.Edit(guid, false, Toggl.Duration);
+        }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.Down && Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Shift)
+            {
+                if (this.FocusTimeEntryList != null)
+                    this.FocusTimeEntryList(this, e);
+                e.Handled = true;
+            }
+
+            base.OnPreviewKeyDown(e);
+        }
+
+        protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            if (this.manualPanel.IsVisible)
+            {
+                this.manuelAddButton.Focus();
+            }
+            else if (this.descriptionTextBox.IsVisible)
+            {
+                this.descriptionTextBox.Focus();
+            }
+            else
+            {
+                this.startStopButton.Focus();
+            }
         }
 
         #endregion
@@ -393,5 +422,6 @@ namespace TogglDesktop.WPF
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
         }
+
     }
 }

@@ -38,6 +38,19 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public bool IsFloating
+        {
+            set
+            {
+                if (value == false)
+                    return;
+
+                this.dayHeader.Visibility = Visibility.Collapsed;
+                this.entrySeperator.Visibility = Visibility.Collapsed;
+                this.entryGrid.Height = 59;
+            }
+        }
+
         public Color EntryBackColor
         {
             get { return (Color)this.GetValue(EntryBackColorProperty); }
@@ -56,6 +69,28 @@ namespace TogglDesktop.WPF
         {
             this.DataContext = this;
             this.InitializeComponent();
+        }
+
+        public void Imitate(TimeEntryCell cell)
+        {
+            this.guid = cell.guid;
+            this.labelDescription.Text = cell.labelDescription.Text;
+            this.projectColor.Fill = cell.projectColor.Fill;
+
+            this.labelProject.Foreground = cell.labelProject.Foreground;
+            this.labelProject.Text = cell.labelProject.Text;
+            setOptionalTextBlockText(this.labelClient, cell.labelClient.Text);
+            setOptionalTextBlockText(this.labelTask, cell.labelTask.Text);
+            this.labelDuration.Text = cell.labelDuration.Text;
+            this.billabeIcon.Visibility = cell.billabeIcon.Visibility;
+            this.tagsIcon.Visibility = cell.tagsIcon.Visibility;
+
+            this.projectRow.Height = cell.projectRow.Height;
+
+            this.entryHoverColor = cell.entryHoverColor;
+            this.EntryBackColor = cell.EntryBackColor;
+
+            this.imitateTooltips(cell);
         }
 
         public void Display(Toggl.TogglTimeEntryView item)
@@ -91,6 +126,21 @@ namespace TogglDesktop.WPF
 
 
             this.updateToolTips(item);
+        }
+
+        private void imitateTooltips(TimeEntryCell cell)
+        {
+            setToolTipIfNotEmpty(this.labelDescription, this.descriptionToolTip, cell.descriptionToolTip.Content as string);
+            setToolTipIfNotEmpty(this.labelTask, this.taskProjectClientToolTip, cell.taskProjectClientToolTip.Content as string);
+            setToolTipIfNotEmpty(this.labelProject, this.taskProjectClientToolTip, cell.taskProjectClientToolTip.Content as string);
+            setToolTipIfNotEmpty(this.labelClient, this.taskProjectClientToolTip, cell.taskProjectClientToolTip.Content as string);
+
+            setToolTipIfNotEmpty(this.labelDuration, this.durationToolTip, cell.durationToolTip.Content as string);
+
+            if (this.tagsIcon.Visibility == Visibility.Visible)
+            {
+                this.tagsToolTip.Content = cell.tagsToolTip.Content;
+            }
         }
 
         private void updateToolTips(Toggl.TogglTimeEntryView item)
@@ -197,5 +247,6 @@ namespace TogglDesktop.WPF
         {
             this.EntryBackColor = idleBackColor;
         }
+
     }
 }

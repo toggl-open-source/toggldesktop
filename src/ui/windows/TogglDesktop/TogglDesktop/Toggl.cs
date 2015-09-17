@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows;
 using TogglDesktop.Diagnostics;
 // ReSharper disable InconsistentNaming
 
@@ -918,6 +919,18 @@ public static partial class Toggl
             return false;
         }
         return Convert.ToBoolean(value);
+    }
+
+    public static bool AskToDeleteEntry(string guid)
+    {
+        var result = MessageBox.Show("Delete time entry?", "Please confirm",
+            MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            return DeleteTimeEntry(guid);
+        }
+        return false;
     }
 }
 }

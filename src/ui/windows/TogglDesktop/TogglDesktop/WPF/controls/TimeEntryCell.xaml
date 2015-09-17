@@ -34,7 +34,7 @@
         <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
 
         <!-- Entry -->
-        <Grid Name="entryGrid" x:FieldModifier="private" 
+        <Grid Name="entryGrid" x:FieldModifier="private"
             Height="53" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
             
             <Grid.Background>
@@ -56,7 +56,8 @@
                        HorizontalAlignment="Right" FontSize="14.7"
                            Margin="0, 1, 33, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
             
-            <Button Grid.Column="4" Width="36" Height="36"  Margin="0, 0, 4, 0" Click="buttonContinue_Click"/>
+            <Button Grid.Column="4" Width="36" Height="36" Margin="0, 0, 4, 0"
+                    Focusable="False" Click="buttonContinue_Click"/>
 
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal" HorizontalAlignment="Right">
@@ -69,7 +70,7 @@
             </StackPanel>
             
 
-            <Grid Grid.Column="1" Margin="16, 8, 0, 8">
+            <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
