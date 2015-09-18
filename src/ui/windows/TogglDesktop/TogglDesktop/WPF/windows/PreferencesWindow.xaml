@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop.WPF"
         mc:Ignorable="d" 
-        Height="420" Width="350"
+        Height="420" Width="500"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Preferences"
@@ -136,10 +136,16 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
+            <TabItem Header="AUTOTRACKER">
+                <StackPanel Margin="11 11">
+                    <CheckBox Name="enabmeAutotrackerCheckbox" x:FieldModifier="private"
+                                    Margin="5">Enable autotracker</CheckBox>
+                </StackPanel>
+            </TabItem>
             <TabItem Header="REMINDER">
                 <Grid Margin="11 11">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -149,7 +155,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <CheckBox Name="remindToTrackCheckBox" x:FieldModifier="private"
-                                      Grid.Column="0" Grid.Row="0" Margin="5">Remind me to track time</CheckBox>
+                                      Grid.Column="0" Grid.Row="0" Margin="5">Remind me to track time every</CheckBox>
                     <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Reminder start time</TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="2" Margin="5">Reminder end time</TextBlock>
                     <TextBlock Grid.Column="0" Grid.Row="3" Margin="5">Reminder days</TextBlock>
