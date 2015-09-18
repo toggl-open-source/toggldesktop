@@ -52,7 +52,7 @@ static class UIExtensions
             throw new ArgumentNullException("icon");
 
         var method = typeof (TaskbarIcon)
-            .GetMethod("ShowBalloonTip", BindingFlags.NonPublic | BindingFlags.Instance);
+                     .GetMethod("ShowBalloonTip", BindingFlags.NonPublic | BindingFlags.Instance);
 
         lock (icon)
         {
@@ -71,16 +71,16 @@ static class UIExtensions
     public static void ShowOnlyIf(this UIElement control, bool condition)
     {
         control.Visibility = condition
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+                             ? Visibility.Visible
+                             : Visibility.Collapsed;
     }
     public static void ShowOnlyIf(this UIElement control, bool condition, bool hideInsteadOfCollapse)
     {
         control.Visibility = condition
-            ? Visibility.Visible
-            : hideInsteadOfCollapse
-                ? Visibility.Hidden
-                : Visibility.Collapsed;
+                             ? Visibility.Visible
+                             : hideInsteadOfCollapse
+                             ? Visibility.Hidden
+                             : Visibility.Collapsed;
     }
 }
 }
