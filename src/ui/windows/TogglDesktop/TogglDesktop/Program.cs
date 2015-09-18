@@ -106,7 +106,7 @@ static class Program
             {
                 MainWindow = mainWindowController,
                 ShutdownMode = ShutdownMode.OnExplicitShutdown
-            }.Run(mainWindowController);
+            } .Run(mainWindowController);
         }
     }
 
