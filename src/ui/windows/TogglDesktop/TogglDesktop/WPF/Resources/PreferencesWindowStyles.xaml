@@ -148,7 +148,7 @@
         </Setter>
     </Style>
     <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Padding" Value="2 0"/>
+        <Setter Property="Padding" Value="2 2 2 0"/>
         <Setter Property="FontSize" Value="12" />
     </Style>
     <Style TargetType="PasswordBox" BasedOn="{StaticResource {x:Type Control}}">
@@ -217,7 +217,7 @@
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
                                         ContentSource="Header"
-                                        Margin="10"/>
+                                        Margin="0 10"/>
                         <Rectangle Height="2" VerticalAlignment="Bottom" x:Name="selectedIndicator" />
                     </Grid>
                     <ControlTemplate.Triggers>
