@@ -2782,7 +2782,8 @@ Project *Context::CreateProject(
             user_->related.Projects.begin();
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
-            if (p->Name() == trimmed_project_name) {
+            if ((p->Name() == trimmed_project_name)
+                    && (client_id == p->CID())) {
                 displayError(kProjectNameAlreadyExists);
                 return nullptr;
             }
