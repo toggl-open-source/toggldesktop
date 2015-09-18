@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="TogglDesktop.WPF.TimeEntryCell"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:toggl="clr-namespace:TogglDesktop.WPF"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=toggl:TimeEntryCellSample, IsDesignTimeCreatable=True}"
+             d:DesignHeight="100" d:DesignWidth="455">
+    
+    <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
+                Background="Transparent">
+        
+        <!-- Day Header -->
+        <StackPanel Name="dayHeader" x:FieldModifier="private"
+                    Margin="0, 0, 0, 4">
+            <Rectangle Height="4">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#CCCCCC" Offset="0.0" />
+                        <GradientStop Color="Transparent" Offset="1" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <StackPanel Orientation="Horizontal" Height="37" Margin="20, 0, 0, 0">
+                <TextBlock Name="labelFormattedDate" x:FieldModifier="private"
+                           >Thu 22. Jan</TextBlock>
+                <TextBlock Name="labelDateDuration" x:FieldModifier="private"
+                           Foreground="#6F6F6F">2 h 12 min</TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- seperator -->
+        <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
+
+        <!-- Entry -->
+        <Grid Name="entryGrid" x:FieldModifier="private"
+            Height="53" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
+            
+            <Grid.Background>
+                <SolidColorBrush Color="{Binding EntryBackColor}"/>
+            </Grid.Background>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Name="projectColor" x:FieldModifier="private" Grid.Column="0"
+                       Fill="#999999"/>
+
+            <TextBlock Name="labelDuration" x:FieldModifier="private" Grid.Column="3"
+                       HorizontalAlignment="Right" FontSize="14.7"
+                           Margin="0, 1, 33, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
+            
+            <Button Grid.Column="4" Width="36" Height="36" Margin="0, 0, 4, 0"
+                    Focusable="False" Click="buttonContinue_Click"/>
+
+            <StackPanel Grid.Column="2"
+                        Orientation="Horizontal" HorizontalAlignment="Right">
+
+                <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
+                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="16"/>
+                <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
+                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
+
+            </StackPanel>
+            
+
+            <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
+
+                    <TextBlock Name="labelClient" x:FieldModifier="private"
+                               Foreground="DimGray">Client</TextBlock>
+                    <TextBlock Name="labelProject" x:FieldModifier="private" MouseDown="labelProject_MouseDown"
+                               >Project</TextBlock>
+
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+
+                    <TextBlock Name="labelTask" x:FieldModifier="private"
+                               Foreground="Gray">Task</TextBlock>
+                    <TextBlock Name="labelDescription" x:FieldModifier="private" MouseDown="labelDescription_MouseDown"
+                           HorizontalAlignment="Left">This is a description</TextBlock>
+                    
+                </StackPanel>
+            </Grid>
+
+
+            <Rectangle Grid.Column="1"
+                       Width="30" HorizontalAlignment="Right">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="Transparent" Offset="0.0" />
+                        <GradientStop Color="{Binding Path=EntryBackColor}" Offset="1" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+        </Grid>
+    </StackPanel>
+</UserControl>

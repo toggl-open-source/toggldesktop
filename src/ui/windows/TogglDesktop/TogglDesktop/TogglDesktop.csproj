@@ -97,6 +97,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Google.Apis.1.9.1\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -154,24 +158,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutWindowController.Designer.cs">
-      <DependentUpon>AboutWindowController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AddProjectViewController.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AddProjectViewController.Designer.cs">
-      <DependentUpon>AddProjectViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlphaBlendTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AutoCompleteTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
     <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
@@ -189,45 +175,28 @@
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
-    <Compile Include="ComboBoxHelper.cs" />
-    <Compile Include="ControlHelper.cs" />
-    <Compile Include="CustomComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomForm\CustomBorderForm.cs" />
-    <Compile Include="CustomForm\DrawUtil.cs" />
-    <Compile Include="CustomForm\FormStyle.cs" />
-    <Compile Include="CustomForm\FormWithNonClientArea.cs" />
-    <Compile Include="CustomForm\TogglForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomForm\NativeMethods.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
-    <Compile Include="EditForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditForm.Designer.cs">
-      <DependentUpon>EditForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FeedbackWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FeedbackWindowController.Designer.cs">
-      <DependentUpon>FeedbackWindowController.cs</DependentUpon>
-    </Compile>
     <Compile Include="GlobalShortcuts.cs" />
-    <Compile Include="IdleNotificationWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="IdleNotificationWindowController.Designer.cs">
-      <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
-    </Compile>
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="UIExtensions.cs" />
-    <Compile Include="WPF\AddValueConverter.cs" />
+    <Compile Include="WPF\controls\ErrorBar.xaml.cs">
+      <DependentUpon>ErrorBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\views\TimerEntryListView.xaml.cs">
+      <DependentUpon>TimerEntryListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\windows\IdleNotificationWindow.xaml.cs">
+      <DependentUpon>IdleNotificationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\windows\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\AutoComplete\GrayTextCategory.xaml.cs">
       <DependentUpon>GrayTextCategory.xaml</DependentUpon>
     </Compile>
@@ -242,7 +211,7 @@
     <Compile Include="WPF\AutoComplete\WorkspaceCategory.xaml.cs">
       <DependentUpon>WorkspaceCategory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\AutoCompletionPopup.xaml.cs">
+    <Compile Include="WPF\controls\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\AutoComplete\ModelEntry.xaml.cs">
@@ -251,14 +220,17 @@
     <Compile Include="WPF\AutoComplete\ProjectEntry.xaml.cs">
       <DependentUpon>ProjectEntry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\ExtendedTextBox.cs" />
-    <Compile Include="WPF\LoginConfirmButton.xaml.cs">
+    <Compile Include="WPF\windows\EditViewPopup.xaml.cs">
+      <DependentUpon>EditViewPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\controls\ExtendedTextBox.cs" />
+    <Compile Include="WPF\controls\LoginConfirmButton.xaml.cs">
       <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\LoginPasswordBox.xaml.cs">
+    <Compile Include="WPF\controls\LoginPasswordBox.xaml.cs">
       <DependentUpon>LoginPasswordBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\LoginTextBox.xaml.cs">
+    <Compile Include="WPF\controls\LoginTextBox.xaml.cs">
       <DependentUpon>LoginTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -266,32 +238,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="CheckedListBoxHelper.cs" />
     <Compile Include="Toggl.cs" />
-    <Compile Include="LoginViewController.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="LoginViewController.Designer.cs">
-      <DependentUpon>LoginViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindowController.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainWindowController.Designer.cs">
-      <DependentUpon>MainWindowController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeEntryListViewController.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TimeEntryListViewController.Designer.cs">
-      <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="Win32.cs" />
+    <Compile Include="WPF\windows\FeedbackWindow.xaml.cs">
+      <DependentUpon>FeedbackWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\OpacityExtension.cs" />
-    <Compile Include="WPF\PreferencesWindow.xaml.cs">
+    <Compile Include="WPF\windows\PreferencesWindow.xaml.cs">
       <DependentUpon>PreferencesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\PropertyHelpers.cs" />
@@ -299,52 +258,33 @@
     <Compile Include="WPF\AutoComplete\StringEntry.xaml.cs">
       <DependentUpon>StringEntry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\Tag.xaml.cs">
+    <Compile Include="WPF\controls\Tag.xaml.cs">
       <DependentUpon>Tag.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\TagList.xaml.cs">
+    <Compile Include="WPF\controls\TagList.xaml.cs">
       <DependentUpon>TagList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\TimeEntryCell.xaml.cs">
+    <Compile Include="WPF\controls\TimeEntryCell.xaml.cs">
       <DependentUpon>TimeEntryCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\TimeEntryEditViewController.xaml.cs">
-      <DependentUpon>TimeEntryEditViewController.xaml</DependentUpon>
+    <Compile Include="WPF\views\EditView.xaml.cs">
+      <DependentUpon>EditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\TimeEntryList.xaml.cs">
+    <Compile Include="WPF\controls\TimeEntryList.xaml.cs">
       <DependentUpon>TimeEntryList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\TimerEditViewController.xaml.cs">
-      <DependentUpon>TimerEditViewController.xaml</DependentUpon>
+    <Compile Include="WPF\views\Timer.xaml.cs">
+      <DependentUpon>Timer.xaml</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AboutWindowController.resx">
-      <DependentUpon>AboutWindowController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddProjectViewController.resx">
-      <DependentUpon>AddProjectViewController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditForm.resx">
-      <DependentUpon>EditForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FeedbackWindowController.resx">
-      <DependentUpon>FeedbackWindowController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="IdleNotificationWindowController.resx">
-      <DependentUpon>IdleNotificationWindowController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoginViewController.resx">
-      <DependentUpon>LoginViewController.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainWindowController.resx">
-      <DependentUpon>MainWindowController.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="WPF\chrome\TogglChrome.xaml.cs">
+      <DependentUpon>TogglChrome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\chrome\TogglWindow.cs" />
+    <Compile Include="WPF\chrome\TogglChromeDesignTimeConverter.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeEntryListViewController.resx">
-      <DependentUpon>TimeEntryListViewController.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="cacert.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -401,22 +341,22 @@
     <EmbeddedResource Include="Resources\Fonts\Roboto-Light.ttf" />
     <EmbeddedResource Include="Resources\Fonts\Roboto-Medium.ttf" />
     <EmbeddedResource Include="Resources\Fonts\Roboto-Regular.ttf" />
-    <None Include="Resources\toggl.ico" />
+    <Resource Include="Resources\toggl.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggl_inactive.ico" />
+    <Resource Include="Resources\toggl_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggltray.ico" />
+    <Resource Include="Resources\toggltray.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggltray_inactive.ico" />
+    <Resource Include="Resources\toggltray_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggl_offline_active.ico" />
+    <Resource Include="Resources\toggl_offline_active.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\toggl_offline_inactive.ico" />
+    <Resource Include="Resources\toggl_offline_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Border.png" />
@@ -485,7 +425,7 @@
     <Resource Include="Resources\continue_hover.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\resize.png" />
+    <Resource Include="Resources\resize.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\darkBg.png" />
@@ -500,10 +440,34 @@
     <None Include="Resources\shadow.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-google.png" />
-    <None Include="Resources\toggl-logo-white.png" />
+    <Resource Include="Resources\icon-google.png" />
+    <Resource Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\controls\ErrorBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Resources\SharedStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\views\TimerEntryListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\windows\IdleNotificationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\windows\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\AutoComplete\GrayTextCategory.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -520,7 +484,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\AutoCompletionPopup.xaml">
+    <Page Include="WPF\controls\AutoCompletionPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -532,21 +496,41 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPF\LoginConfirmButton.xaml">
+    <Page Include="WPF\windows\EditViewPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\LoginPasswordBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPF\LoginTextBox.xaml">
+    <Page Include="WPF\controls\LoginConfirmButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\PreferencesWindow.xaml">
+    <Page Include="WPF\controls\LoginPasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\controls\LoginTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\windows\FeedbackWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\windows\PreferencesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\Resources\AboutFeedbackWindowStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPF\Resources\TogglWindowStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WPF\Resources\PreferencesWindowStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -576,27 +560,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\Tag.xaml">
+    <Page Include="WPF\controls\Tag.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\TagList.xaml">
+    <Page Include="WPF\controls\TagList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\TimeEntryCell.xaml">
+    <Page Include="WPF\controls\TimeEntryCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\TimeEntryEditViewController.xaml">
+    <Page Include="WPF\views\EditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\TimeEntryList.xaml">
+    <Page Include="WPF\controls\TimeEntryList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPF\TimerEditViewController.xaml">
+    <Page Include="WPF\views\Timer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\chrome\TogglChrome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -618,6 +606,14 @@
   <ItemGroup>
     <Resource Include="Resources\ic_calendar_2x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_maximize_grey600_36dp.png" />
+    <Resource Include="Resources\ic_minimize_grey600_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_cog_grey600_36dp.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

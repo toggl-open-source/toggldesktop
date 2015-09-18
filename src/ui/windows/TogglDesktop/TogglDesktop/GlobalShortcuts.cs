@@ -110,6 +110,14 @@ public sealed class KeyboardHook : IDisposable
             Win32.UnregisterHotKey(_window.Handle, i);
         }
     }
+
+    public void ChangeTo(ModifierKeys modifiers, string key)
+    {
+        this.Clear();
+        if (string.IsNullOrEmpty(key))
+            return;
+        this.RegisterHotKey(modifiers, (Keys)Enum.Parse(typeof(Keys), key));
+    }
 }
 
 /// <summary>
@@ -147,6 +155,7 @@ public class KeyPressedEventArgs : EventArgs
 [Flags]
 public enum ModifierKeys : uint
 {
+    None = 0,
     Alt = 1,
     Control = 2,
     Shift = 4,
