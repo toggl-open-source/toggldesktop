@@ -553,6 +553,14 @@ error Migrations::migrateUsers() {
         return err;
     }
 
+    err = db_->Migrate(
+        "users.default_pid",
+        "alter table users"
+        " add column default_pid integer");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 

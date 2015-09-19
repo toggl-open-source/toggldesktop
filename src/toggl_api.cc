@@ -649,17 +649,27 @@ bool_t toggl_feedback_send(
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
 
-bool_t toggl_set_default_project(
+bool_t toggl_set_default_project_id(
     void *context,
     const uint64_t pid) {
-    return toggl::noError == app(context)->SetDefaultProject(pid);
+    return toggl::noError == app(context)->SetDefaultPID(pid);
 }
 
-uint64_t toggl_get_default_project(
+uint64_t toggl_get_default_project_id(
     void *context) {
     Poco::UInt64 ret(0);
-    app(context)->DefaultProject(&ret);
+    app(context)->DefaultPID(&ret);
     return ret;
+}
+
+char_t *toggl_get_default_project_name(
+    void *context) {
+    std::string name("");
+    app(context)->DefaultProjectName(&name);
+    if (name.empty()) {
+        return nullptr;
+    }
+    return copy_string(name);
 }
 
 bool_t toggl_set_update_channel(

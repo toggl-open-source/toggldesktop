@@ -627,11 +627,15 @@ extern "C" {
         const char_t *project_name,
         const bool_t is_private);
 
-    TOGGL_EXPORT bool_t toggl_set_default_project(
+    TOGGL_EXPORT bool_t toggl_set_default_project_id(
         void *context,
         const uint64_t pid);
 
-    TOGGL_EXPORT uint64_t toggl_get_default_project(
+    TOGGL_EXPORT uint64_t toggl_get_default_project_id(
+        void *context);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_default_project_name(
         void *context);
 
     TOGGL_EXPORT bool_t toggl_set_update_channel(

@@ -923,6 +923,20 @@ public static partial class Toggl
         bool is_private);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern bool toggl_set_default_project_id(
+        IntPtr context,
+        UInt64 pid);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern UInt64 toggl_get_default_project_id(
+        IntPtr context);
+
+    // You must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_get_default_project_name(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern bool toggl_set_update_channel(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]

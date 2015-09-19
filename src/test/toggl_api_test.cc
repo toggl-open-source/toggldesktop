@@ -1626,32 +1626,50 @@ TEST(toggl_api, toggl_set_default_project) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    uint64_t default_pid = toggl_get_default_project(app.ctx());
+    uint64_t default_pid = toggl_get_default_project_id(app.ctx());
     ASSERT_FALSE(default_pid);
+
+    char_t *default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(default_project_name);
+    free(default_project_name);
 
     testing::testresult::error = noError;
-    bool_t res = toggl_set_default_project(app.ctx(), 123);
-    ASSERT_EQ(noError, testing::testresult::error);
-    ASSERT_TRUE(res);
+    bool_t res = toggl_set_default_project_id(app.ctx(), 123);
+    ASSERT_NE(noError, testing::testresult::error);
+    ASSERT_FALSE(res);
 
-    default_pid = toggl_get_default_project(app.ctx());
+    default_pid = toggl_get_default_project_id(app.ctx());
     ASSERT_FALSE(default_pid);
+
+    default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(default_project_name);
+    free(default_project_name);
 
     const uint64_t existing_project_id = 2598305;
+    const std::string existing_project_name = "Testing stuff";
 
     testing::testresult::error = noError;
-    res = toggl_set_default_project(app.ctx(), existing_project_id);
+    res = toggl_set_default_project_id(app.ctx(), existing_project_id);
     ASSERT_TRUE(res);
 
-    default_pid = toggl_get_default_project(app.ctx());
+    default_pid = toggl_get_default_project_id(app.ctx());
     ASSERT_EQ(existing_project_id, default_pid);
 
+    default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_TRUE(default_project_name);
+    ASSERT_EQ(existing_project_name, std::string(default_project_name));
+    free(default_project_name);
+
     testing::testresult::error = noError;
-    res = toggl_set_default_project(app.ctx(), 0);
+    res = toggl_set_default_project_id(app.ctx(), 0);
     ASSERT_TRUE(res);
 
-    default_pid = toggl_get_default_project(app.ctx());
+    default_pid = toggl_get_default_project_id(app.ctx());
     ASSERT_FALSE(default_pid);
+
+    default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(default_project_name);
+    free(default_project_name);
 }
 
 }  // namespace toggl

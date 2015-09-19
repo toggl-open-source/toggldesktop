@@ -22,17 +22,18 @@ namespace toggl {
 
 class User : public BaseModel {
  public:
-    User() :
-    api_token_(""),
-    default_wid_(0),
-    since_(0),
-    fullname_(""),
-    email_(""),
-    record_timeline_(false),
-    store_start_and_stop_time_(true),
-    timeofday_format_(""),
-    duration_format_(""),
-    offline_data_("") {}
+    User()
+        : api_token_("")
+    , default_wid_(0)
+    , since_(0)
+    , fullname_("")
+    , email_("")
+    , record_timeline_(false)
+    , store_start_and_stop_time_(true)
+    , timeofday_format_("")
+    , duration_format_("")
+    , offline_data_("")
+    , default_pid_(0) {}
 
     ~User();
 
@@ -137,6 +138,11 @@ class User : public BaseModel {
         return offline_data_;
     }
     void SetOfflineData(const std::string);
+
+    const Poco::UInt64& DefaultPID() const {
+        return default_pid_;
+    }
+    void SetDefaultPID(const Poco::UInt64);
 
     RelatedData related;
 
@@ -268,6 +274,7 @@ class User : public BaseModel {
     std::string timeofday_format_;
     std::string duration_format_;
     std::string offline_data_;
+    Poco::UInt64 default_pid_;
 };
 
 template<class T>

@@ -2690,14 +2690,75 @@ error Context::SetUpdateChannel(const std::string channel) {
     return noError;
 }
 
-error Context::SetDefaultProject(const Poco::UInt64 pid) {
-    // FIXME:
+error Context::SetDefaultPID(const Poco::UInt64 pid) {
+    try {
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot set default PID, user logged out");
+                return noError;
+            }
+            if (pid && !user_->related.ProjectByID(pid)) {
+                return displayError("Project not found by ID");
+            }
+            user_->SetDefaultPID(pid);
+        }
+        return displayError(save());
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
     return noError;
 }
 
-error Context::DefaultProject(Poco::UInt64 *pid) {
-    poco_check_ptr(pid);
-    // FIXME:
+error Context::DefaultPID(Poco::UInt64 *pid) {
+    try {
+        poco_check_ptr(pid);
+        *pid = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            *pid = user_->DefaultPID();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultProjectName(std::string *name) {
+    try {
+        poco_check_ptr(name);
+        *name = "";
+        Project *p = nullptr;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            p = user_->related.ProjectByID(user_->DefaultPID());
+        }
+        if (p) {
+            *name = p->Name();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
     return noError;
 }
 

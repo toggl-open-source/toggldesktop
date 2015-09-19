@@ -274,8 +274,9 @@ class Context : public TimelineDatasource {
         return user_ && user_->RecordTimeline();
     }
 
-    error SetDefaultProject(const Poco::UInt64 pid);
-    error DefaultProject(Poco::UInt64 *pid);
+    error SetDefaultPID(const Poco::UInt64 pid);
+    error DefaultPID(Poco::UInt64 *pid);
+    error DefaultProjectName(std::string *name);
 
     error SetUpdateChannel(
         const std::string channel);
