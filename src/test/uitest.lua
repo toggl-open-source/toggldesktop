@@ -240,10 +240,10 @@ toggl.sleep(seconds)
 
 print("create large number of time entries")
 
+local project_guid = toggl.create_project(wid, cid, "startup project", false)
+assert(project_guid)
+
 for i=1,500 do
-	local project_guid = toggl.create_project(wid, cid, "startup project", false)
-	assert(project_guid)
-	
 	local guid = toggl.start("tracking timelike a boss", "10 minutes", 0, 0, project_guid, "")
 	assert(guid)
 
