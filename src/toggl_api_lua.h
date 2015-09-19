@@ -479,6 +479,26 @@ static int l_testing_set_logged_in_user(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_context_init(lua_State *L) {
+    // FIXME:
+    return 0;
+}
+
+static int l_toggl_context_clear(lua_State *L) {
+    // FIXME:
+    return 0;
+}
+
+static int l_toggl_set_update_path(lua_State *L) {
+    // FIXME:
+    return 0;
+}
+
+static int l_toggl_update_path(lua_State *L) {
+    // FIXME:
+    return 1;
+}
+
 static const struct luaL_Reg toggl_f[] = {
     {"set_environment", l_toggl_set_environment},
     {"environment", l_toggl_environment},
@@ -549,6 +569,10 @@ static const struct luaL_Reg toggl_f[] = {
     {"sleep", l_testing_sleep},
     {"set_logged_in_user", l_testing_set_logged_in_user},
     {"autotracker_add_rule", l_toggl_autotracker_add_rule},
+    {"context_init", l_toggl_context_init},
+    {"context_clear", l_toggl_context_clear},
+    {"set_update_path", l_toggl_set_update_path},
+    {"update_path", l_toggl_update_path},
     {NULL, NULL}
 };
 
