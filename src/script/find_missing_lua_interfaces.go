@@ -7,14 +7,37 @@ import (
 )
 
 func main() {
-	missing, err := findMissingInterfaces()
+	var apiFuncs, luaFuncs, testFuncs []string
+	var err error
+	if err == nil {
+		apiFuncs, err = findAPIFuncs()
+	}
+	if err == nil {
+		luaFuncs, err = findLuaFuncs()
+	}
+	if err == nil {
+		testFuncs, err = findTestFuncs()
+	}
 	if err != nil {
 		println(err.Error())
 		os.Exit(1)
 	}
-	if len(missing) > 0 {
+	// Print out missing Lua funcs
+	if missing := findMissingInterfaces(apiFuncs, luaFuncs); len(missing) > 0 {
+		println("------------------------------------------------")
 		println("Following API methods are not available via Lua:")
 		println("------------------------------------------------")
+		for _, f := range missing {
+			println(f)
+		}
+	} else {
+		println("All API methods are available via Lua. Nice.")
+	}
+	// Print out untested API funcs
+	if missing := findMissingInterfaces(apiFuncs, testFuncs); len(missing) > 0 {
+		println("----------------------------------------------------")
+		println("Following API methods are not tested via Lua script:")
+		println("----------------------------------------------------")
 		for _, f := range missing {
 			println(f)
 		}
@@ -24,33 +47,55 @@ func main() {
 	os.Exit(0)
 }
 
-func findMissingInterfaces() ([]string, error) {
-	apiFuncs, err := findApiFuncs()
-	if err != nil {
-		return nil, err
-	}
-	luaFuncs, err := findLuaFuncs()
-	if err != nil {
-		return nil, err
-	}
+func findMissingInterfaces(expected []string, actual []string) []string {
 	var missing []string
-	for _, apiFunc := range apiFuncs {
+	for _, expectedFunc := range expected {
 		found := false
-		for _, luaFunc := range luaFuncs {
-			if apiFunc == luaFunc {
+		for _, actualFunc := range actual {
+			if expectedFunc == actualFunc {
 				found = true
 				break
 			}
 		}
 		if !found {
-			missing = append(missing, apiFunc)
+			missing = append(missing, expectedFunc)
 		}
 	}
-	return missing, nil
+	return missing
+}
+
+func findTestFuncs() ([]string, error) {
+	b, err := ioutil.ReadFile("src/test/uitest.lua")
+	if err != nil {
+		return nil, err
+	}
+	// look for funcs in the source
+	l := strings.Split(string(b), "\n")
+	uniq := make(map[string]bool)
+	for _, s := range l {
+		if !strings.Contains(s, "toggl.") {
+			continue
+		}
+		parts := strings.Split(s, "toggl.")
+		if len(parts) < 2 {
+			continue
+		}
+		s = parts[1]
+		parts = strings.Split(s, "(")
+		if len(parts) < 2 {
+			continue
+		}
+		s = parts[0]
+		uniq[s] = true
+	}
+	var funcs []string
+	for f := range uniq {
+		funcs = append(funcs, f)
+	}
+	return funcs, nil
 }
 
 func findLuaFuncs() ([]string, error) {
-	// read in API declarations
 	b, err := ioutil.ReadFile("src/toggl_api_lua.h")
 	if err != nil {
 		return nil, err
@@ -69,8 +114,7 @@ func findLuaFuncs() ([]string, error) {
 	return funcs, nil
 }
 
-func findApiFuncs() ([]string, error) {
-	// read in API declarations
+func findAPIFuncs() ([]string, error) {
 	b, err := ioutil.ReadFile("src/toggl_api.h")
 	if err != nil {
 		return nil, err
