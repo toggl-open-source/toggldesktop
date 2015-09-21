@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -13,6 +12,9 @@ namespace TogglDesktop.WPF
 {
     public class TogglWindow : Window
     {
+        private static IconBitmapDecoder iconActive;
+        private static IconBitmapDecoder iconInactive;
+
         private bool isToolWindow;
 
         private TogglChrome chrome;
@@ -55,7 +57,10 @@ namespace TogglDesktop.WPF
 
         public void SetIconState(bool tracking)
         {
-            this.Icon = (BitmapImage)this.chrome.FindResource(tracking ? "IconRed" : "IconGray");
+            ensureIconsInitialised();
+
+            this.Icon = (tracking ? iconActive : iconInactive).Frames[0];
+
             this.chrome.SetIconState(tracking);
         }
 
@@ -204,6 +209,35 @@ namespace TogglDesktop.WPF
 
         #endregion
 
+        #region icon loading
+
+        private static void ensureIconsInitialised()
+        {
+            if (iconActive != null)
+            {
+                return;
+            }
+
+            iconActive = loadIconFromResource("toggl");
+            iconInactive = loadIconFromResource("toggl_inactive");
+        }
+
+        private static IconBitmapDecoder loadIconFromResource(string iconName)
+        {
+            var stream = Application.GetResourceStream(
+                new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + iconName + ".ico"));
+
+            if (stream == null)
+                throw new Exception("Icon resource not found");
+
+            return new IconBitmapDecoder(
+                stream.Stream,
+                BitmapCreateOptions.None,
+                BitmapCacheOption.Default);
+        }
+
+        #endregion
+
         #region maximised size fix
 
         // taken from: http://stackoverflow.com/a/25392397/1175259
@@ -267,6 +301,5 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
-
     }
 }
