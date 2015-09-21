@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using Brushes = System.Windows.Media.Brushes;
@@ -21,6 +24,8 @@ namespace TogglDesktop.WPF
             this.WindowStyle = WindowStyle.None;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             this.updateWindowChrome();
+
+            this.SourceInitialized += this.onSourceInitialised;
         }
 
         #region public properties
@@ -154,13 +159,6 @@ namespace TogglDesktop.WPF
 
         protected override void OnStateChanged(EventArgs e)
         {
-            if (this.WindowState == WindowState.Maximized && this.ResizeMode != ResizeMode.NoResize)
-            {
-                this.WindowState = WindowState.Normal;
-                this.ResizeMode = ResizeMode.NoResize;
-                this.WindowState = WindowState.Maximized;
-            }
-
             this.updateWindowChrome();
 
             base.OnStateChanged(e);
@@ -205,5 +203,70 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
+        #region maximised size fix
+
+        // taken from: http://stackoverflow.com/a/25392397/1175259
+
+        void onSourceInitialised(object sender, System.EventArgs e)
+        {
+            var handle = new WindowInteropHelper(this).Handle;
+            var handleSource = HwndSource.FromHwnd(handle);
+            if (handleSource == null)
+                return;
+            handleSource.AddHook(windowProc);
+        }
+
+        private static IntPtr windowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case 0x0024:/* WM_GETMINMAXINFO */
+                    wmGetMinMaxInfo(hwnd, lParam);
+                    handled = true;
+                    break;
+            }
+
+            return IntPtr.Zero;
+        }
+
+        private static void wmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
+        {
+            var mmi = (MinMaxInfo)Marshal.PtrToStructure(lParam, typeof(MinMaxInfo));
+
+            var currentScreen = Screen.FromHandle(hwnd);
+            var workArea = currentScreen.WorkingArea;
+            var monitorArea = currentScreen.Bounds;
+            mmi.ptMaxPosition.x = Math.Abs(workArea.Left - monitorArea.Left);
+            mmi.ptMaxPosition.y = Math.Abs(workArea.Top - monitorArea.Top);
+            mmi.ptMaxSize.x = Math.Abs(workArea.Right - workArea.Left);
+            mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top);
+
+            Marshal.StructureToPtr(mmi, lParam, true);
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MinMaxInfo
+        {
+            // ReSharper disable FieldCanBeMadeReadOnly.Local
+            // ReSharper disable MemberCanBePrivate.Local
+            public Point ptReserved;
+            public Point ptMaxSize;
+            public Point ptMaxPosition;
+            public Point ptMinTrackSize;
+            public Point ptMaxTrackSize;
+            // ReSharper restore MemberCanBePrivate.Local
+            // ReSharper restore FieldCanBeMadeReadOnly.Local
+        };
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Point
+        {
+            public int x;
+            public int y;
+        }
+
+        #endregion
+
     }
 }

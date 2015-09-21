@@ -143,6 +143,7 @@ namespace TogglDesktop.WPF
             }
 
             Utils.LoadWindowLocation(this, this.editPopup);
+            
 
             this.aboutWindow.UpdateReleaseChannel();
 
