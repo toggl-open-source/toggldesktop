@@ -28,6 +28,8 @@ namespace TogglDesktop.WPF
             this.updateWindowChrome();
 
             this.SourceInitialized += this.onSourceInitialised;
+
+            ensureIconsInitialised();
         }
 
         #region public properties
@@ -57,8 +59,6 @@ namespace TogglDesktop.WPF
 
         public void SetIconState(bool tracking)
         {
-            ensureIconsInitialised();
-
             this.Icon = (tracking ? iconActive : iconInactive).Frames[0];
 
             this.chrome.SetIconState(tracking);

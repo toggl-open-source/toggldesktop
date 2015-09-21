@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,6 +67,7 @@ namespace TogglDesktop.WPF
         }
 
         #region setup
+
 
         private void initializeContextMenu()
         {
@@ -691,18 +693,22 @@ namespace TogglDesktop.WPF
 
         private void updateStatusIcons(bool isOnline)
         {
-            string notifyIconName;
+            Icon icon;
 
             if (this.isTracking)
             {
-                notifyIconName = isOnline ? "IconOnlineActive" : "IconOfflineActive";
+                icon = isOnline
+                    ? Properties.Resources.toggltray
+                    : Properties.Resources.toggl_offline_active;
             }
             else
             {
-                notifyIconName = isOnline ? "IconOnlineInactive" : "IconOfflineInactive";
+                icon = isOnline
+                    ? Properties.Resources.toggl_inactive
+                    : Properties.Resources.toggl_offline_inactive;
             }
 
-            this.taskbarIcon.IconSource = (BitmapImage)this.FindResource(notifyIconName);
+            this.taskbarIcon.Icon = icon;
         }
 
         private void updateTracking(Toggl.TogglTimeEntryView? timeEntry)
