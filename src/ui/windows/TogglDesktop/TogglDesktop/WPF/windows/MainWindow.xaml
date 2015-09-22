@@ -142,6 +142,8 @@
 
         <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"
             VerticalAlignment="Top"/>
+        
+        <toggl:StatusBar VerticalAlignment="Bottom"/>
 
         <Rectangle x:Name="resizeHandle" x:FieldModifier="private"
                 VerticalAlignment="Bottom" HorizontalAlignment="Right"

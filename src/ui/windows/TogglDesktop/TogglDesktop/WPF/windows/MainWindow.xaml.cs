@@ -222,12 +222,12 @@ namespace TogglDesktop.WPF
             this.taskbarIcon.ShowBalloonTipWithLargeIcon(title, informativeText, Properties.Resources.toggl);
         }
 
-        private void onOnlineState(long state)
+        private void onOnlineState(Toggl.OnlineState state)
         {
             if (this.TryBeginInvoke(this.onOnlineState, state))
                 return;
 
-            this.updateStatusIcons(state == 0);
+            this.updateStatusIcons(state == Toggl.OnlineState.Online);
         }
 
         private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
