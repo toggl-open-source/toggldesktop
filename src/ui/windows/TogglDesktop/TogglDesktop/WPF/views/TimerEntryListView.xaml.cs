@@ -83,7 +83,6 @@ namespace TogglDesktop.WPF
             using (Performance.Measure("rendering time entry list, previous count: {0}, new count: {1}", previousCount, newCount))
             {
                 this.cellsByGUID.Clear();
-                this.entries.Children.Clear();
 
                 int maxCount = list.Count;
 
