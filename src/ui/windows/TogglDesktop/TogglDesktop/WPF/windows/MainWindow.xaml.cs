@@ -254,11 +254,11 @@ namespace TogglDesktop.WPF
 
             if (open || userID == 0)
             {
-                this.emailAddressMenuItem.Header = "Logged out";
+                this.emailAddressMenuText.Text = "Logged out";
             }
             else
             {
-                this.emailAddressMenuItem.Header = Toggl.UserEmail();
+                this.emailAddressMenuText.Text = Toggl.UserEmail();
             }
             this.updateTracking(null);
         }
@@ -721,18 +721,18 @@ namespace TogglDesktop.WPF
                 if (string.IsNullOrEmpty(description))
                 {
                     this.Title = "Toggl Desktop";
-                    this.runningMenuItem.Header = "Timer is tracking";
+                    this.runningMenuText.Text = "Timer is tracking";
                 }
                 else
                 {
                     this.Title = description + " - Toggl Desktop";
-                    this.runningMenuItem.Header = description;
+                    this.runningMenuText.Text = description;
                 }
 
             }
             else
             {
-                this.runningMenuItem.Header = "Timer is not tracking";
+                this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
             }
 

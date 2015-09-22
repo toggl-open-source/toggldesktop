@@ -70,31 +70,44 @@
     <Window.ContextMenu>
         <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
                      Closed="onMainContextMenuClosed">
-            <MenuItem Header="your email address"
-                      Name="emailAddressMenuItem" x:FieldModifier="private"
-                      IsEnabled="False"/>
-            <MenuItem Header="Running" 
-                      Name="runningMenuItem" x:FieldModifier="private"
-                      IsEnabled="False"/>
+            <ContextMenu.Resources>
+                <Style TargetType="MenuItem">
+                    <Setter Property="Width" Value="260" />
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#707070" />
+                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                    <Setter Property="IsHitTestVisible" Value="False" />
+                </Style>
+            </ContextMenu.Resources>
+            <MenuItem IsEnabled="False">
+                <MenuItem.Header>
+                    <TextBlock Name="emailAddressMenuText"
+                               x:FieldModifier="private"
+                               Text="your email address"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem IsEnabled="False">
+                <MenuItem.Header>
+                    <TextBlock Name="runningMenuText"
+                               x:FieldModifier="private"
+                               Text="Running"/>
+                </MenuItem.Header>
+            </MenuItem>
             <Separator />
             <MenuItem Header="New" InputGestureText="Ctrl+N"
-                      Name="newMenuItem" x:FieldModifier="private"
                       Command="{StaticResource NewCommand}"/>
             <MenuItem Header="Continue" InputGestureText="Ctrl+O"
-                      Name="continueMenuItem" x:FieldModifier="private"
                       Command="{StaticResource ContinueCommand}"/>
             <MenuItem Header="Stop" InputGestureText="Ctrl+S"
-                      Name="stopMenuItem" x:FieldModifier="private"
                       Command="{StaticResource StopCommand}"/>
             <Separator />
             <MenuItem Header="Show" InputGestureText="Ctrl+T"
                       Command="{StaticResource ShowCommand}"/>
             <Separator />
             <MenuItem Header="Sync" InputGestureText="Ctrl+R"
-                      Name="syncMenuItem" x:FieldModifier="private"
                       Command="{StaticResource SyncCommand}"/>
             <MenuItem Header="Reports"
-                      Name="reportsMenuItem" x:FieldModifier="private"
                       Command="{StaticResource ReportsCommand}"/>
             <MenuItem Header="Preferences"
                       Command="{StaticResource PreferencesCommand}"/>
@@ -103,15 +116,12 @@
                       Command="{StaticResource ToggleManualModeCommand}"/>
             <Separator />
             <MenuItem Header="Clear Cache"
-                      Name="clearCacheMenuItem" x:FieldModifier="private"
                       Command="{StaticResource ClearCacheCommand}"/>
             <MenuItem Header="Send Feedack"
-                      Name="sendFeedbackMenuItem" x:FieldModifier="private"
                       Command="{StaticResource SendFeedbackCommand}"/>
             <MenuItem Header="About"
                       Command="{StaticResource AboutCommand}"/>
             <MenuItem Header="Logout"
-                      Name="logoutMenuItem" x:FieldModifier="private"
                       Command="{StaticResource LogoutCommand}"/>
             <MenuItem Header="Quit"
                       Command="{StaticResource QuitCommand}"/>
