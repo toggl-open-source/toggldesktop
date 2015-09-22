@@ -42,7 +42,7 @@ namespace TogglDesktop.WPF
             if ((bool)dialog.ShowDialog(this))
             {
                 this.attachedFileName = dialog.FileName;
-                this.attachedFileText.Text = "Uploading: " + dialog.SafeFileName;
+                this.attachedFileText.Text = "Attached: " + dialog.SafeFileName;
             }
         }
 
