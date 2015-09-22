@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,7 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 
@@ -67,7 +67,6 @@ namespace TogglDesktop.WPF
         }
 
         #region setup
-
 
         private void initializeContextMenu()
         {
@@ -285,6 +284,9 @@ namespace TogglDesktop.WPF
 
         private void onSettings(bool open, Toggl.TogglSettingsView settings)
         {
+            if (this.TryBeginInvoke(this.onSettings, open, settings))
+                return;
+
             this.setGlobalShortcutsFromSettings();
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.remainOnTop = settings.OnTop;
@@ -604,12 +606,7 @@ namespace TogglDesktop.WPF
         private void minimizeToTray()
         {
             this.Hide();
-            if (this.editPopup.IsVisible)
-            {
-                // TODO: consider saving popup open state and restoring when window is shown
-                this.editPopup.Hide();
-                this.timerEntryListView.DisableHighlight();
-            }
+            this.closeEditPopup();
         }
 
         private void setGlobalShortcutsFromSettings()
@@ -743,6 +740,16 @@ namespace TogglDesktop.WPF
             this.SetIconState(tracking);
         }
 
+        private void closeEditPopup()
+        {
+            if (this.editPopup.IsVisible)
+            {
+                // TODO: consider saving popup open state and restoring when window is shown
+                this.editPopup.EditView.EnsureSaved();
+                this.editPopup.Hide();
+                this.timerEntryListView.DisableHighlight();
+            }
+        }
         #endregion
 
         #region window size, position and state handling
@@ -832,8 +839,7 @@ namespace TogglDesktop.WPF
             this.activeView = activeView;
 
             activeView.Visibility = Visibility.Visible;
-            this.editPopup.Hide();
-            this.timerEntryListView.DisableHighlight();
+            this.closeEditPopup();
 
             this.updateMinimumSize(activeView);
         }

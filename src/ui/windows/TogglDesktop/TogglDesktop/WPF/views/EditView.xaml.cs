@@ -10,7 +10,6 @@ using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MessageBox = System.Windows.MessageBox;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace TogglDesktop.WPF
@@ -973,7 +972,7 @@ namespace TogglDesktop.WPF
         public void SetTimer(Timer timer)
         {
             timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
-            timer.StartStopClick += (sender, args) => this.Close();
+            timer.StartStopClick += (sender, args) => this.close();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -982,7 +981,7 @@ namespace TogglDesktop.WPF
             {
                 case Key.Escape:
                 {
-                    this.Close();
+                    this.close();
                     e.Handled = true;
                     return;
                 }
@@ -1011,16 +1010,21 @@ namespace TogglDesktop.WPF
 
         private void backButton_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.close();
         }
 
-        public void Close()
+        private void close()
+        {
+            this.EnsureSaved();
+            Toggl.ViewTimeEntryList();
+        }
+
+        public void EnsureSaved()
         {
             if (this.isInNewProjectMode)
             {
                 this.confirmNewProject();
             }
-            Toggl.ViewTimeEntryList();
         }
 
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
