@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -248,15 +249,15 @@ namespace TogglDesktop.WPF
             var handleSource = HwndSource.FromHwnd(handle);
             if (handleSource == null)
                 return;
-            handleSource.AddHook(windowProc);
+            handleSource.AddHook(this.windowProc);
         }
 
-        private static IntPtr windowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private IntPtr windowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch (msg)
             {
                 case 0x0024:/* WM_GETMINMAXINFO */
-                    wmGetMinMaxInfo(hwnd, lParam);
+                    this.wmGetMinMaxInfo(hwnd, lParam);
                     handled = true;
                     break;
             }
@@ -264,7 +265,7 @@ namespace TogglDesktop.WPF
             return IntPtr.Zero;
         }
 
-        private static void wmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
+        private void wmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
             var mmi = (MinMaxInfo)Marshal.PtrToStructure(lParam, typeof(MinMaxInfo));
 
@@ -275,6 +276,8 @@ namespace TogglDesktop.WPF
             mmi.ptMaxPosition.y = Math.Abs(workArea.Top - monitorArea.Top);
             mmi.ptMaxSize.x = Math.Abs(workArea.Right - workArea.Left);
             mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top);
+            mmi.ptMinTrackSize.x = (int)this.MinWidth;
+            mmi.ptMinTrackSize.y = (int)this.MinHeight;
 
             Marshal.StructureToPtr(mmi, lParam, true);
         }
