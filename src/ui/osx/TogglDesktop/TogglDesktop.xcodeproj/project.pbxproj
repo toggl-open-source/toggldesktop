@@ -784,9 +784,9 @@
 				749A3A5D18D889BE000AD2DB /* libCrashReporter-iphoneos.a */,
 				749A3A5F18D889BE000AD2DB /* libCrashReporter-iphonesimulator.a */,
 				749A3A6118D889BE000AD2DB /* plcrashutil */,
-				749A3A6318D889BE000AD2DB /* Tests-MacOSX.octest */,
-				749A3A6518D889BE000AD2DB /* Tests-iOS-Simulator.app */,
-				749A3A6718D889BE000AD2DB /* Tests-iOS-Device.app */,
+				749A3A6318D889BE000AD2DB /* Tests-MacOSX.xctest */,
+				749A3A6518D889BE000AD2DB /* Tests-iOS-Simulator.xctest */,
+				749A3A6718D889BE000AD2DB /* Tests-iOS-Device.xctest */,
 				749A3A6918D889BE000AD2DB /* DemoCrash.app */,
 				749A3A6B18D889BE000AD2DB /* DemoCrash-iOS-Device.app */,
 				749A3A6D18D889BE000AD2DB /* DemoCrash-iOS-Simulator.app */,
@@ -935,6 +935,7 @@
 				74A50AA818434D90006F37BB /* CopyFiles */,
 				7407F1F41AA80466000380C4 /* Run Script (fix Poco paths in Frameworks) */,
 				74083B2B1B84DA3F00685E21 /* Run Script (fix Poco path in main app) */,
+				74F125D51BB2ED9000487B14 /* Run Script (fix CrashReporter path in main app) */,
 			);
 			buildRules = (
 			);
@@ -1042,24 +1043,24 @@
 			remoteRef = 749A3A6018D889BE000AD2DB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		749A3A6318D889BE000AD2DB /* Tests-MacOSX.octest */ = {
+		749A3A6318D889BE000AD2DB /* Tests-MacOSX.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "Tests-MacOSX.octest";
+			path = "Tests-MacOSX.xctest";
 			remoteRef = 749A3A6218D889BE000AD2DB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		749A3A6518D889BE000AD2DB /* Tests-iOS-Simulator.app */ = {
+		749A3A6518D889BE000AD2DB /* Tests-iOS-Simulator.xctest */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Tests-iOS-Simulator.app";
+			fileType = wrapper.cfbundle;
+			path = "Tests-iOS-Simulator.xctest";
 			remoteRef = 749A3A6418D889BE000AD2DB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		749A3A6718D889BE000AD2DB /* Tests-iOS-Device.app */ = {
+		749A3A6718D889BE000AD2DB /* Tests-iOS-Device.xctest */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Tests-iOS-Device.app";
+			fileType = wrapper.cfbundle;
+			path = "Tests-iOS-Device.xctest";
 			remoteRef = 749A3A6618D889BE000AD2DB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1190,6 +1191,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/ruby;
 			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
+		};
+		74F125D51BB2ED9000487B14 /* Run Script (fix CrashReporter path in main app) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (fix CrashReporter path in main app)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "install_name_tool -change @rpath/CrashReporter.framework/Versions/A/CrashReporter @executable_path/../../Contents/Frameworks/CrashReporter.framework/Versions/A/CrashReporter $PROJECT_DIR/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop";
 		};
 /* End PBXShellScriptBuildPhase section */
 
