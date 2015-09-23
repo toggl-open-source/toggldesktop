@@ -617,7 +617,7 @@ static int l_toggl_set_default_project_id(lua_State *L) {
 static int l_toggl_get_default_project_id(lua_State *L) {
     uint64_t pid = toggl_get_default_project_id(
         toggl_app_instance_);
-    lua_pushboolean(L, pid);
+    lua_pushnumber(L, pid);
     return 1;
 }
 
@@ -641,17 +641,17 @@ static int l_toggl_set_promotion_response(lua_State *L) {
 static int l_toggl_parse_duration_string_into_seconds(lua_State *L) {
     int64_t res = toggl_parse_duration_string_into_seconds(
         checkstring(L, 1));
-    lua_pushboolean(L, res);
+    lua_pushnumber(L, res);
     return 1;
 }
 
 static int l_toggl_check_view_struct_size(lua_State *L) {
     char_t *errmsg = toggl_check_view_struct_size(
-        lua_tointeger(L, 1),
-        lua_tointeger(L, 2),
-        lua_tointeger(L, 3),
-        lua_tointeger(L, 4),
-        lua_tointeger(L, 5));
+        lua_tonumber(L, 1),
+        lua_tonumber(L, 2),
+        lua_tonumber(L, 3),
+        lua_tonumber(L, 4),
+        lua_tonumber(L, 5));
     pushstring(L, errmsg);
     free(errmsg);
     return 1;
