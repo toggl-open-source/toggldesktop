@@ -422,6 +422,5 @@ namespace TogglDesktop.WPF
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
         }
-
     }
 }

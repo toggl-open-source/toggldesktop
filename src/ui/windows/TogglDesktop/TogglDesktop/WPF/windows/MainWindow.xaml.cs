@@ -501,14 +501,9 @@ namespace TogglDesktop.WPF
         
         private void onToggleManualModeCommand(object sender, RoutedEventArgs e)
         {
-            this.isInManualMode = !this.isInManualMode;
-
-            this.togglManualModeMenuItem.Header =
-                this.isInManualMode ? "Use timer" : "Use manual mode";
-
-            this.timerEntryListView.SetManualMode(this.isInManualMode);
+            this.setManualMode(!this.isInManualMode);
         }
-        
+
         private void onClearCacheCommand(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show(this,
@@ -544,10 +539,25 @@ namespace TogglDesktop.WPF
                 Toggl.Logout();
             }
         }
-        
+
         private void onQuitCommand(object sender, RoutedEventArgs e)
         {
             this.shutdown(0);
+        }
+
+        private void onEditRunningCommand(object sender, RoutedEventArgs e)
+        {
+            using (Performance.Measure("edit running entry with shortcut"))
+            {
+                if (this.isInManualMode)
+                {
+                    this.startTimeEntry();
+                }
+                else
+                {
+                    Toggl.Edit(null, true, null);
+                }
+            }
         }
 
         #endregion
@@ -576,7 +586,7 @@ namespace TogglDesktop.WPF
         }
         private void canExecuteToggleManualModeCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = Program.IsLoggedIn;
+            e.CanExecute = Program.IsLoggedIn && (this.isInManualMode || !this.isTracking);
         }
         private void canExecuteClearCacheCommand(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -586,10 +596,24 @@ namespace TogglDesktop.WPF
         {
             e.CanExecute = Program.IsLoggedIn;
         }
+        private void canExecuteEditRunningCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn && (this.isTracking || this.isInManualMode);
+        }
         
         #endregion
         
         #region ui controlling
+
+        private void setManualMode(bool manualMode)
+        {
+            this.isInManualMode = manualMode;
+
+            this.togglManualModeMenuItem.Header =
+                this.isInManualMode ? "Use timer" : "Use manual mode";
+
+            this.timerEntryListView.SetManualMode(this.isInManualMode);
+        }
 
         private void togglVisibility()
         {
@@ -729,6 +753,8 @@ namespace TogglDesktop.WPF
                     this.runningMenuText.Text = description;
                 }
 
+                if(this.isInManualMode)
+                    this.setManualMode(false);
             }
             else
             {
