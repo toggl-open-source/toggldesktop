@@ -438,7 +438,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Tambet Masik";
+				ORGANIZATIONNAME = Toggl;
 			};
 			buildConfigurationList = C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "TogglDesktopLibrary" */;
 			compatibilityVersion = "Xcode 3.2";
