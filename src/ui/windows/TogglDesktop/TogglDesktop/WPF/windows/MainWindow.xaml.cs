@@ -149,6 +149,7 @@ namespace TogglDesktop.WPF
             this.aboutWindow.UpdateReleaseChannel();
 
             this.errorBar.Hide();
+            this.statusBar.Hide();
 
             this.runScriptAsync();
         }

@@ -26,7 +26,7 @@ namespace TogglDesktop.WPF
 
             if (open)
             {
-                this.hide();
+                this.Hide();
             }
         }
 
@@ -61,7 +61,7 @@ namespace TogglDesktop.WPF
         {
             if (!Program.IsLoggedIn)
             {
-                this.hide();
+                this.Hide();
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace TogglDesktop.WPF
                 {
                     if (this.unsyncedItems == 0)
                     {
-                        this.hide();
+                        this.Hide();
                         return;
                     }
                     this.statusText.Text = "Un-synced entries: " + this.unsyncedItems;
@@ -97,14 +97,14 @@ namespace TogglDesktop.WPF
             this.Visibility = Visibility.Visible;
         }
 
-        private void hide()
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
-
         private void onSyncButtonClick(object sender, RoutedEventArgs e)
         {
             Toggl.Sync();
+        }
+
+        public void Hide()
+        {
+            this.Visibility = Visibility.Collapsed;
         }
     }
 }
