@@ -350,10 +350,10 @@ static int l_toggl_add_project(lua_State *L) {
 }
 
 static int l_toggl_autotracker_add_rule(lua_State *L) {
-    bool_t res = toggl_autotracker_add_rule(toggl_app_instance_,
-                                            checkstring(L, 1),
-                                            lua_tointeger(L, 2));
-    lua_pushboolean(L, res);
+    int64_t rule_id = toggl_autotracker_add_rule(toggl_app_instance_,
+                      checkstring(L, 1),
+                      lua_tointeger(L, 2));
+    lua_pushnumber(L, rule_id);
     return 1;
 }
 
@@ -726,9 +726,9 @@ static const struct luaL_Reg toggl_f[] = {
     {"create_project", l_toggl_create_project},
     {"create_client", l_toggl_create_client},
     {"set_update_channel", l_toggl_set_update_channel},
-    {"update_channel", l_toggl_get_update_channel},
-    {"user_fullname", l_toggl_get_user_fullname},
-    {"user_email", l_toggl_get_user_email},
+    {"get_update_channel", l_toggl_get_update_channel},
+    {"get_user_fullname", l_toggl_get_user_fullname},
+    {"get_user_email", l_toggl_get_user_email},
     {"sync", l_toggl_sync},
     {"timeline_toggle_recording", l_toggl_timeline_toggle_recording},
     {"timeline_is_recording_enabled", l_toggl_timeline_is_recording_enabled},
@@ -736,10 +736,10 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_wake", l_toggl_set_wake},
     {"set_online", l_toggl_set_online},
     {"set_idle_seconds", l_toggl_set_idle_seconds},
-    {   "toggl_format_tracking_time_duration",
+    {   "format_tracking_time_duration",
         l_toggl_format_tracking_time_duration
     },
-    {   "toggl_format_tracked_time_duration",
+    {   "format_tracked_time_duration",
         l_toggl_format_tracked_time_duration
     },
     {"debug", l_toggl_debug},

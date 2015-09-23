@@ -977,12 +977,16 @@ char_t *toggl_run_script(
     return copy_string(ss.str());
 }
 
-bool_t toggl_autotracker_add_rule(
+int64_t toggl_autotracker_add_rule(
     void *context,
     const char_t *term,
     const uint64_t project_id) {
-    return toggl::noError == app(context)->
-           AddAutotrackerRule(to_string(term), project_id);
+    Poco::Int64 rule_id(0);
+    app(context)->AddAutotrackerRule(
+        to_string(term),
+        project_id,
+        &rule_id);
+    return rule_id;
 }
 
 bool_t toggl_autotracker_delete_rule(

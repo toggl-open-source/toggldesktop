@@ -717,7 +717,7 @@ extern "C" {
         const char *script,
         int64_t *err);
 
-    TOGGL_EXPORT bool_t toggl_autotracker_add_rule(
+    TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
         void *context,
         const char_t *term,
         const uint64_t project_id);

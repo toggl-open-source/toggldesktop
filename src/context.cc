@@ -2764,7 +2764,11 @@ error Context::DefaultProjectName(std::string *name) {
 
 error Context::AddAutotrackerRule(
     const std::string term,
-    const Poco::UInt64 pid) {
+    const Poco::UInt64 pid,
+    Poco::Int64 *rule_id) {
+
+    poco_check_ptr(rule_id);
+    *rule_id = 0;
 
     if (term.empty()) {
         return displayError("missing term");
@@ -2774,6 +2778,8 @@ error Context::AddAutotrackerRule(
     }
 
     std::string lowercase = Poco::UTF8::toLower(term);
+
+    AutotrackerRule *rule = nullptr;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2786,14 +2792,23 @@ error Context::AddAutotrackerRule(
             return displayError(kErrorRuleAlreadyExists);
         }
 
-        AutotrackerRule *rule = new AutotrackerRule();
+        rule = new AutotrackerRule();
         rule->SetTerm(lowercase);
         rule->SetPID(pid);
         rule->SetUID(user_->ID());
         user_->related.AutotrackerRules.push_back(rule);
     }
 
-    return displayError(save());
+    error err = save();
+    if (noError != err) {
+        return displayError(err);
+    }
+
+    if (rule) {
+        *rule_id = rule->LocalID();
+    }
+
+    return noError;
 }
 
 error Context::DeleteAutotrackerRule(

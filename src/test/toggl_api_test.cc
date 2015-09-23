@@ -1612,13 +1612,14 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     testing::testresult::error = noError;
-    bool_t res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    int64_t rule_id = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
     ASSERT_EQ(noError, testing::testresult::error);
-    ASSERT_TRUE(res);
+    ASSERT_TRUE(rule_id);
 
     testing::testresult::error = noError;
-    res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
-    ASSERT_FALSE(res);
+    rule_id = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    ASSERT_EQ("rule already exists", testing::testresult::error);
+    ASSERT_FALSE(rule_id);
 }
 
 TEST(toggl_api, toggl_set_default_project) {

@@ -315,7 +315,8 @@ class Context : public TimelineDatasource {
 
     error AddAutotrackerRule(
         const std::string term,
-        const Poco::UInt64 pid);
+        const Poco::UInt64 pid,
+        Poco::Int64 *rule_id);
 
     error DeleteAutotrackerRule(
         const Poco::Int64 id);
