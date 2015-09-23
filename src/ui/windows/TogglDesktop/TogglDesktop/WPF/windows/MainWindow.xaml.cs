@@ -53,10 +53,10 @@ namespace TogglDesktop.WPF
 
             this.hideAllViews();
 
-            this.initializeWindows();
+            this.initializeEvents();
             this.initializeContextMenu();
             this.initializeTaskbarIcon();
-            this.initializeEvents();
+            this.initializeWindows();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
