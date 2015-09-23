@@ -625,6 +625,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../../third_party/openssl/include,
 					../../../third_party/poco/Data/include/,
 					../../../third_party/poco/Util/include/,
 					../../../third_party/poco/Foundation/include/,
@@ -655,6 +656,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../../third_party/openssl/include,
 					../../../third_party/poco/Data/include/,
 					../../../third_party/poco/Util/include/,
 					../../../third_party/poco/Foundation/include/,
