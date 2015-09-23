@@ -72,11 +72,19 @@ namespace TogglDesktop.WPF
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
-                var keepNewProjectModeOpen = this.isInNewProjectMode
-                                             && this.hasTimeEntry()
-                                             && this.timeEntry.PID == timeEntry.PID
-                                             && this.timeEntry.WID == timeEntry.WID
-                                             && timeEntry.CanAddProjects;
+                var keepNewProjectModeOpen =
+                    !open
+                    && this.isInNewProjectMode
+                    && this.hasTimeEntry()
+                    && this.timeEntry.GUID == timeEntry.GUID
+                    && this.timeEntry.PID == timeEntry.PID
+                    && this.timeEntry.WID == timeEntry.WID
+                    && timeEntry.CanAddProjects;
+
+                if (!keepNewProjectModeOpen && this.hasTimeEntry() && this.isInNewProjectMode)
+                {
+                    this.confirmNewProject();
+                }
 
                 this.timeEntry = timeEntry;
 
