@@ -27,6 +27,7 @@
  */
 
 #include "PLCrashAsyncThread.h"
+#include "PLCrashMacros.h"
 
 /**
  * @internal
@@ -100,7 +101,7 @@ plcrash_error_t plcrash_async_thread_state_init (plcrash_async_thread_state_t *t
  * Initialize the @a thread_state using the provided context.
  *
  * @param thread_state The thread state to be initialized.
- * @param uap The context to use for cursor initialization.
+ * @param mctx The context to use for cursor initialization.
  *
  * All registers will be marked as available.
  */
@@ -189,8 +190,8 @@ plcrash_error_t plcrash_async_thread_state_mach_thread_init (plcrash_async_threa
 #elif defined(PLCRASH_ASYNC_THREAD_ARM_SUPPORT) && !defined(PLCRASH_ASYNC_THREAD_ARM_UNIFIED_SUPPORT)
     /* Legacy non-unified ARM32 thread state */
     // Sanity check to assert that the state32 and legacy state structures are identical.
-    PLCF_ASSERT_STATIC(ARM_STATE_COUNT, ARM_THREAD_STATE32_COUNT == ARM_THREAD_STATE_COUNT);
-    PLCF_ASSERT_STATIC(ARM_STATE_SIZE, sizeof(arm_thread_state_t) == sizeof(arm_thread_state32_t));
+    PLCR_ASSERT_STATIC(ARM_STATE_COUNT, ARM_THREAD_STATE32_COUNT == ARM_THREAD_STATE_COUNT);
+    PLCR_ASSERT_STATIC(ARM_STATE_SIZE, sizeof(arm_thread_state_t) == sizeof(arm_thread_state32_t));
     
     state_count = ARM_THREAD_STATE_COUNT;
     kr = thread_get_state(thread, ARM_THREAD_STATE, (thread_state_t) &thread_state->arm_state.thread.ts_32, &state_count);
