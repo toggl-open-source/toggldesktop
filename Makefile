@@ -262,7 +262,7 @@ endif
 
 ifeq ($(osname), mac)
 ui:
-	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj -sdk macosx10.9 && \
+	xcodebuild -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
 	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 endif
 

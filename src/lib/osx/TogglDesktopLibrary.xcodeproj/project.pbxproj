@@ -562,6 +562,7 @@
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
 					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
+					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -606,6 +607,7 @@
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
 					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
+					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -625,6 +627,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../../third_party/openssl/include,
 					../../../third_party/poco/Data/include/,
 					../../../third_party/poco/Util/include/,
 					../../../third_party/poco/Foundation/include/,
@@ -655,6 +658,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../../third_party/openssl/include,
 					../../../third_party/poco/Data/include/,
 					../../../third_party/poco/Util/include/,
 					../../../third_party/poco/Foundation/include/,
