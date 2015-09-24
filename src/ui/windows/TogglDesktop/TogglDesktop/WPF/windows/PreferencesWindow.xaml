@@ -137,10 +137,15 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="AUTOTRACKER">
-                <StackPanel Margin="11 11">
-                    <CheckBox Name="enabmeAutotrackerCheckbox" x:FieldModifier="private"
-                                    Margin="5">Enable autotracker</CheckBox>
-                </StackPanel>
+                <Grid Margin="11 11">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Name="enableAutotrackerCheckbox" x:FieldModifier="private"
+                              Grid.Row="0" Margin="5" Content="Enable autotracker"/>
+                    <toggl:AutotrackerSettings Grid.Row="1" Margin="5" />
+                </Grid>
             </TabItem>
             <TabItem Header="REMINDER">
                 <Grid Margin="11 11">
