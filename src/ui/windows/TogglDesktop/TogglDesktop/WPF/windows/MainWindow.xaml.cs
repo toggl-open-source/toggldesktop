@@ -1,6 +1,8 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 
@@ -52,10 +53,10 @@ namespace TogglDesktop.WPF
 
             this.hideAllViews();
 
-            this.initializeWindows();
+            this.initializeEvents();
             this.initializeContextMenu();
             this.initializeTaskbarIcon();
-            this.initializeEvents();
+            this.initializeWindows();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
@@ -143,6 +144,7 @@ namespace TogglDesktop.WPF
             }
 
             Utils.LoadWindowLocation(this, this.editPopup);
+            
 
             this.aboutWindow.UpdateReleaseChannel();
 
@@ -252,11 +254,11 @@ namespace TogglDesktop.WPF
 
             if (open || userID == 0)
             {
-                this.emailAddressMenuItem.Header = "Logged out";
+                this.emailAddressMenuText.Text = "Logged out";
             }
             else
             {
-                this.emailAddressMenuItem.Header = Toggl.UserEmail();
+                this.emailAddressMenuText.Text = Toggl.UserEmail();
             }
             this.updateTracking(null);
         }
@@ -282,6 +284,9 @@ namespace TogglDesktop.WPF
 
         private void onSettings(bool open, Toggl.TogglSettingsView settings)
         {
+            if (this.TryBeginInvoke(this.onSettings, open, settings))
+                return;
+
             this.setGlobalShortcutsFromSettings();
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.remainOnTop = settings.OnTop;
@@ -359,7 +364,7 @@ namespace TogglDesktop.WPF
             {
                 using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.isInManualMode))
                 {
-                    this.startTimeEntry();
+                    this.startTimeEntry(true);
                 }
             }
         }
@@ -496,14 +501,9 @@ namespace TogglDesktop.WPF
         
         private void onToggleManualModeCommand(object sender, RoutedEventArgs e)
         {
-            this.isInManualMode = !this.isInManualMode;
-
-            this.togglManualModeMenuItem.Header =
-                this.isInManualMode ? "Use timer" : "Use manual mode";
-
-            this.timerEntryListView.SetManualMode(this.isInManualMode);
+            this.setManualMode(!this.isInManualMode);
         }
-        
+
         private void onClearCacheCommand(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show(this,
@@ -539,10 +539,25 @@ namespace TogglDesktop.WPF
                 Toggl.Logout();
             }
         }
-        
+
         private void onQuitCommand(object sender, RoutedEventArgs e)
         {
             this.shutdown(0);
+        }
+
+        private void onEditRunningCommand(object sender, RoutedEventArgs e)
+        {
+            using (Performance.Measure("edit running entry with shortcut"))
+            {
+                if (this.isInManualMode)
+                {
+                    this.startTimeEntry();
+                }
+                else
+                {
+                    Toggl.Edit(null, true, null);
+                }
+            }
         }
 
         #endregion
@@ -571,7 +586,7 @@ namespace TogglDesktop.WPF
         }
         private void canExecuteToggleManualModeCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = Program.IsLoggedIn;
+            e.CanExecute = Program.IsLoggedIn && (this.isInManualMode || !this.isTracking);
         }
         private void canExecuteClearCacheCommand(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -581,10 +596,24 @@ namespace TogglDesktop.WPF
         {
             e.CanExecute = Program.IsLoggedIn;
         }
+        private void canExecuteEditRunningCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn && (this.isTracking || this.isInManualMode);
+        }
         
         #endregion
         
         #region ui controlling
+
+        private void setManualMode(bool manualMode)
+        {
+            this.isInManualMode = manualMode;
+
+            this.togglManualModeMenuItem.Header =
+                this.isInManualMode ? "Use timer" : "Use manual mode";
+
+            this.timerEntryListView.SetManualMode(this.isInManualMode);
+        }
 
         private void togglVisibility()
         {
@@ -601,12 +630,7 @@ namespace TogglDesktop.WPF
         private void minimizeToTray()
         {
             this.Hide();
-            if (this.editPopup.IsVisible)
-            {
-                // TODO: consider saving popup open state and restoring when window is shown
-                this.editPopup.Hide();
-                this.timerEntryListView.DisableHighlight();
-            }
+            this.closeEditPopup();
         }
 
         private void setGlobalShortcutsFromSettings()
@@ -636,7 +660,7 @@ namespace TogglDesktop.WPF
             }
         }
 
-        private void startTimeEntry()
+        private void startTimeEntry(bool continueIfNotInManualMode = false)
         {
             if (this.isInManualMode)
             {
@@ -645,7 +669,14 @@ namespace TogglDesktop.WPF
             }
             else
             {
-                Toggl.Start("", "", 0, 0, "", "");
+                if (continueIfNotInManualMode)
+                {
+                    Toggl.ContinueLatest();
+                }
+                else
+                {
+                    Toggl.Start("", "", 0, 0, "", "");   
+                }
             }
         }
 
@@ -690,18 +721,22 @@ namespace TogglDesktop.WPF
 
         private void updateStatusIcons(bool isOnline)
         {
-            string notifyIconName;
+            Icon icon;
 
             if (this.isTracking)
             {
-                notifyIconName = isOnline ? "IconOnlineActive" : "IconOfflineActive";
+                icon = isOnline
+                    ? Properties.Resources.toggltray
+                    : Properties.Resources.toggl_offline_active;
             }
             else
             {
-                notifyIconName = isOnline ? "IconOnlineInactive" : "IconOfflineInactive";
+                icon = isOnline
+                    ? Properties.Resources.toggl_inactive
+                    : Properties.Resources.toggl_offline_inactive;
             }
 
-            this.taskbarIcon.IconSource = (BitmapImage)this.FindResource(notifyIconName);
+            this.taskbarIcon.Icon = icon;
         }
 
         private void updateTracking(Toggl.TogglTimeEntryView? timeEntry)
@@ -717,18 +752,20 @@ namespace TogglDesktop.WPF
                 if (string.IsNullOrEmpty(description))
                 {
                     this.Title = "Toggl Desktop";
-                    this.runningMenuItem.Header = "Timer is tracking";
+                    this.runningMenuText.Text = "Timer is tracking";
                 }
                 else
                 {
                     this.Title = description + " - Toggl Desktop";
-                    this.runningMenuItem.Header = description;
+                    this.runningMenuText.Text = description;
                 }
 
+                if(this.isInManualMode)
+                    this.setManualMode(false);
             }
             else
             {
-                this.runningMenuItem.Header = "Timer is not tracking";
+                this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
             }
 
@@ -736,6 +773,16 @@ namespace TogglDesktop.WPF
             this.SetIconState(tracking);
         }
 
+        private void closeEditPopup()
+        {
+            if (this.editPopup.IsVisible)
+            {
+                // TODO: consider saving popup open state and restoring when window is shown
+                this.editPopup.EditView.EnsureSaved();
+                this.editPopup.Hide();
+                this.timerEntryListView.DisableHighlight();
+            }
+        }
         #endregion
 
         #region window size, position and state handling
@@ -825,8 +872,7 @@ namespace TogglDesktop.WPF
             this.activeView = activeView;
 
             activeView.Visibility = Visibility.Visible;
-            this.editPopup.Hide();
-            this.timerEntryListView.DisableHighlight();
+            this.closeEditPopup();
 
             this.updateMinimumSize(activeView);
         }

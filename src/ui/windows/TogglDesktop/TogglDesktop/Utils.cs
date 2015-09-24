@@ -62,10 +62,10 @@ public static class Utils
     {
         var windowBounds = new Rectangle(
             (int)f.Left, (int)f.Top, (int)f.Width, (int)f.Height
-            );
+        );
 
         return Screen.AllScreens
-            .Any(s => s.WorkingArea.IntersectsWith(windowBounds));
+               .Any(s => s.WorkingArea.IntersectsWith(windowBounds));
     }
 
     public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit)
@@ -98,7 +98,7 @@ public static class Utils
     #endregion
 
     #region keyboard shortcuts
-    
+
     public struct KeyCombination
     {
         private readonly ModifierKeys modifiers;
@@ -110,28 +110,36 @@ public static class Utils
             this.keyCode = keyCode;
         }
 
-        public ModifierKeys Modifiers { get { return this.modifiers; } }
-        public string KeyCode { get { return this.keyCode; } }
+        public ModifierKeys Modifiers {
+            get {
+                return this.modifiers;
+            }
+        }
+        public string KeyCode {
+            get {
+                return this.keyCode;
+            }
+        }
     }
 
     public static void SetShortcutForShow(KeyCombination? e)
     {
         setShortcut(e, "show",
-            (s, m) => s.ShowModifiers = m,
-            (s, k) => s.ShowKey = k
-            );
+                    (s, m) => s.ShowModifiers = m,
+                    (s, k) => s.ShowKey = k
+                   );
     }
 
     public static void SetShortcutForStart(KeyCombination? e)
     {
         setShortcut(e, "start",
-            (s, m) => s.StartModifiers = m,
-            (s, k) => s.StartKey = k
-            );
+                    (s, m) => s.StartModifiers = m,
+                    (s, k) => s.StartKey = k
+                   );
     }
 
     private static void setShortcut(KeyCombination? e, string shortcutName,
-        Action<Settings, ModifierKeys> setModifier, Action<Settings, string> setKey)
+                                    Action<Settings, ModifierKeys> setModifier, Action<Settings, string> setKey)
     {
         try
         {

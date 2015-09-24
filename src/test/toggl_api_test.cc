@@ -973,6 +973,18 @@ TEST(toggl_api, toggl_create_project) {
                                         is_private);
     ASSERT_FALSE(project_guid);
     ASSERT_EQ("Project name already exists", testing::testresult::error);
+
+    // Adding a project under another client should work, still
+    testing::testresult::error = "";
+    const uint64_t another_cid = 878318;
+    project_guid = toggl_create_project(app.ctx(),
+                                        wid,
+                                        another_cid,
+                                        project_name.c_str(),
+                                        is_private);
+    ASSERT_TRUE(project_guid);
+    free(project_guid);
+    ASSERT_NE("Project name already exists", testing::testresult::error);
 }
 
 TEST(toggl_api, toggl_create_client) {

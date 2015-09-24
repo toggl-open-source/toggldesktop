@@ -205,6 +205,9 @@ namespace TogglDesktop.WPF
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
+            if (!this.IsKeyboardFocused)
+                return;
+
             if (this.manualPanel.IsVisible)
             {
                 this.manuelAddButton.Focus();
@@ -422,6 +425,5 @@ namespace TogglDesktop.WPF
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
         }
-
     }
 }

@@ -27,6 +27,7 @@
 #include "PLCrashAsyncDwarfCFAState.hpp"
 
 #include "PLCrashFeatureConfig.h"
+#include "PLCrashMacros.h"
 
 #if PLCRASH_FEATURE_UNWIND_DWARF
 
@@ -83,7 +84,7 @@ bool dwarf_cfa_state<machine_ptr, machine_ptr_s>::pop_state (void) {
 template <typename machine_ptr, typename machine_ptr_s>
 dwarf_cfa_state<machine_ptr, machine_ptr_s>::dwarf_cfa_state (void) {
     /* The size must be smaller than the invalid entry index, which is used as a NULL flag */
-    PLCF_ASSERT_STATIC(max_size, DWARF_CFA_STATE_MAX_REGISTERS < DWARF_CFA_STATE_INVALID_ENTRY_IDX);
+    PLCR_ASSERT_STATIC(max_size, DWARF_CFA_STATE_MAX_REGISTERS < DWARF_CFA_STATE_INVALID_ENTRY_IDX);
     
     /* Initialize the free list */
     for (uint8_t i = 0; i < DWARF_CFA_STATE_MAX_REGISTERS; i++)
@@ -341,11 +342,11 @@ bool dwarf_cfa_state_iterator<machine_ptr, machine_ptr_s>::next (dwarf_cfa_state
 }
 
 /* Provide explicit 32/64-bit instantiations */
-template class dwarf_cfa_state<uint32_t, int32_t>;
-template class dwarf_cfa_state_iterator<uint32_t, int32_t>;
+template class plcrash::async::dwarf_cfa_state<uint32_t, int32_t>;
+template class plcrash::async::dwarf_cfa_state_iterator<uint32_t, int32_t>;
 
-template class dwarf_cfa_state<uint64_t, int64_t>;
-template class dwarf_cfa_state_iterator<uint64_t, int64_t>;
+template class plcrash::async::dwarf_cfa_state<uint64_t, int64_t>;
+template class plcrash::async::dwarf_cfa_state_iterator<uint64_t, int64_t>;
 
 /**
  * @}

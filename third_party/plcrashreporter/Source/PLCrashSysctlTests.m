@@ -26,11 +26,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#import "GTMSenTestCase.h"
+#import "SenTestCompat.h"
 
 #import "PLCrashSysctl.h"
 
 #include <sys/mman.h>
+#include <mach/mach.h>
 
 @interface PLCrashSysctlTests : SenTestCase @end
 

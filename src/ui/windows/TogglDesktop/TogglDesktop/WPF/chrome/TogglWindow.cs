@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using Brushes = System.Windows.Media.Brushes;
@@ -10,6 +13,9 @@ namespace TogglDesktop.WPF
 {
     public class TogglWindow : Window
     {
+        private static IconBitmapDecoder iconActive;
+        private static IconBitmapDecoder iconInactive;
+
         private bool isToolWindow;
 
         private TogglChrome chrome;
@@ -21,6 +27,10 @@ namespace TogglDesktop.WPF
             this.WindowStyle = WindowStyle.None;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             this.updateWindowChrome();
+
+            this.SourceInitialized += this.onSourceInitialised;
+
+            ensureIconsInitialised();
         }
 
         #region public properties
@@ -50,7 +60,8 @@ namespace TogglDesktop.WPF
 
         public void SetIconState(bool tracking)
         {
-            this.Icon = (BitmapImage)this.chrome.FindResource(tracking ? "IconRed" : "IconGray");
+            this.Icon = (tracking ? iconActive : iconInactive).Frames[0];
+
             this.chrome.SetIconState(tracking);
         }
 
@@ -154,13 +165,6 @@ namespace TogglDesktop.WPF
 
         protected override void OnStateChanged(EventArgs e)
         {
-            if (this.WindowState == WindowState.Maximized && this.ResizeMode != ResizeMode.NoResize)
-            {
-                this.WindowState = WindowState.Normal;
-                this.ResizeMode = ResizeMode.NoResize;
-                this.WindowState = WindowState.Maximized;
-            }
-
             this.updateWindowChrome();
 
             base.OnStateChanged(e);
@@ -202,6 +206,101 @@ namespace TogglDesktop.WPF
                 (int)this.Left, (int)this.Top,
                 (int)this.Width, (int)this.Height
                 ));
+        }
+
+        #endregion
+
+        #region icon loading
+
+        private static void ensureIconsInitialised()
+        {
+            if (iconActive != null)
+            {
+                return;
+            }
+
+            iconActive = loadIconFromResource("toggl");
+            iconInactive = loadIconFromResource("toggl_inactive");
+        }
+
+        private static IconBitmapDecoder loadIconFromResource(string iconName)
+        {
+            var stream = Application.GetResourceStream(
+                new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + iconName + ".ico"));
+
+            if (stream == null)
+                throw new Exception("Icon resource not found");
+
+            return new IconBitmapDecoder(
+                stream.Stream,
+                BitmapCreateOptions.None,
+                BitmapCacheOption.Default);
+        }
+
+        #endregion
+
+        #region maximised size fix
+
+        // taken from: http://stackoverflow.com/a/25392397/1175259
+
+        void onSourceInitialised(object sender, System.EventArgs e)
+        {
+            var handle = new WindowInteropHelper(this).Handle;
+            var handleSource = HwndSource.FromHwnd(handle);
+            if (handleSource == null)
+                return;
+            handleSource.AddHook(this.windowProc);
+        }
+
+        private IntPtr windowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case 0x0024:/* WM_GETMINMAXINFO */
+                    this.wmGetMinMaxInfo(hwnd, lParam);
+                    handled = true;
+                    break;
+            }
+
+            return IntPtr.Zero;
+        }
+
+        private void wmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
+        {
+            var mmi = (MinMaxInfo)Marshal.PtrToStructure(lParam, typeof(MinMaxInfo));
+
+            var currentScreen = Screen.FromHandle(hwnd);
+            var workArea = currentScreen.WorkingArea;
+            var monitorArea = currentScreen.Bounds;
+            mmi.ptMaxPosition.x = Math.Abs(workArea.Left - monitorArea.Left);
+            mmi.ptMaxPosition.y = Math.Abs(workArea.Top - monitorArea.Top);
+            mmi.ptMaxSize.x = Math.Abs(workArea.Right - workArea.Left);
+            mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top);
+            mmi.ptMinTrackSize.x = (int)this.MinWidth;
+            mmi.ptMinTrackSize.y = (int)this.MinHeight;
+
+            Marshal.StructureToPtr(mmi, lParam, true);
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MinMaxInfo
+        {
+            // ReSharper disable FieldCanBeMadeReadOnly.Local
+            // ReSharper disable MemberCanBePrivate.Local
+            public Point ptReserved;
+            public Point ptMaxSize;
+            public Point ptMaxPosition;
+            public Point ptMinTrackSize;
+            public Point ptMaxTrackSize;
+            // ReSharper restore MemberCanBePrivate.Local
+            // ReSharper restore FieldCanBeMadeReadOnly.Local
+        };
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Point
+        {
+            public int x;
+            public int y;
         }
 
         #endregion

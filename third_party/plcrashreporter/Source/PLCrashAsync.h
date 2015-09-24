@@ -131,17 +131,6 @@ typedef int64_t pl_vm_off_t;
 
 #endif /* PLCF_RELEASE_BUILD */
 
-/**
- * Static compile-time assertion.
- *
- * @param name The assertion name; must be valid for use within a C identifier.
- * @param cond Assertion condition
- */
-#define PLCF_ASSERT_STATIC(name, cond) PLCF_ASSERT_STATIC_(name, cond, __LINE__)
-
-#define PLCF_ASSERT_STATIC_(name, cond, line) PLCF_ASSERT_STATIC__(name, cond, line)
-#define PLCF_ASSERT_STATIC__(name, cond, line) typedef int plcf_static_assert_##name##_##line [(cond) ? 1 : -1]
-
 // Debug output support. Lines are capped at 128 (stack space is scarce). This implemention
 // is not async-safe and should not be enabled in release builds
 #ifdef PLCF_RELEASE_BUILD
@@ -206,8 +195,6 @@ typedef enum  {
 } plcrash_error_t;
 
 const char *plcrash_async_strerror (plcrash_error_t error);
-
-kern_return_t plcrash_async_read_addr (mach_port_t task, pl_vm_address_t source, void *dest, pl_vm_size_t len);
 
 bool plcrash_async_address_apply_offset (pl_vm_address_t base_address, pl_vm_off_t offset, pl_vm_address_t *result);
     

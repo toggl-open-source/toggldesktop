@@ -763,7 +763,7 @@ public static partial class Toggl
 
         var di = new DirectoryInfo(updatePath);
         var files = di.GetFiles("TogglDesktopInstaller*.exe",
-                                       SearchOption.TopDirectoryOnly);
+                                SearchOption.TopDirectoryOnly);
         if (files.Length > 1)
         {
             // Somethings fubar. Delete the updates to start over
@@ -792,8 +792,8 @@ public static partial class Toggl
         {
             FileName = updaterPath,
             Arguments = Process.GetCurrentProcess().Id
-                        + " " + string.Format("\"{0}\"", files[0].FullName)
-                        + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location)
+            + " " + string.Format("\"{0}\"", files[0].FullName)
+            + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location)
         };
         var process = Process.Start(psi);
         if (process != null && !process.HasExited && process.Id != 0)
@@ -924,7 +924,7 @@ public static partial class Toggl
     public static bool AskToDeleteEntry(string guid)
     {
         var result = MessageBox.Show("Delete time entry?", "Please confirm",
-            MessageBoxButton.YesNo, MessageBoxImage.Question);
+                                     MessageBoxButton.YesNo, MessageBoxImage.Question);
 
         if (result == MessageBoxResult.Yes)
         {

@@ -28,6 +28,9 @@ namespace TogglDesktop.WPF
             if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
                 return;
 
+            if (!this.Owner.IsVisible)
+                return;
+
             this.Show();
             this.EditView.FocusField(focusedFieldName);
         }
