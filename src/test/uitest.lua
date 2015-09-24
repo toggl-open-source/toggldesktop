@@ -163,6 +163,15 @@ toggl.set_log_level("trace")
 
 toggl.sleep(seconds)
 
+-- run_script
+
+print("run_script")
+
+local script_result = toggl.run_script("print(123)")
+assert(script_result)
+
+toggl.sleep(seconds)
+
 -- get_support
 
 print("get_support")
