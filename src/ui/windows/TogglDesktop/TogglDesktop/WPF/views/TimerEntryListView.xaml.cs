@@ -83,34 +83,40 @@ namespace TogglDesktop.WPF
             using (Performance.Measure("rendering time entry list, previous count: {0}, new count: {1}", previousCount, newCount))
             {
                 this.cellsByGUID.Clear();
-                this.entries.Children.Clear();
 
-                int maxCount = list.Count;
+                var children = this.entries.Children;
 
-                for (int i = 0; i < maxCount; i++)
+                // remove superfluous cells
+                if (children.Count > list.Count)
+                {
+                    children.RemoveRange(list.Count, children.Count - list.Count);
+                }
+
+                // update existing cells
+                var i = 0;
+                for (; i < children.Count; i++)
                 {
                     var entry = list[i];
 
-                    TimeEntryCell cell = null;
-                    if (this.entries.Children.Count > i)
-                    {
-                        cell = (TimeEntryCell)this.entries.Children[i];
-                    }
-
-                    if (cell == null)
-                    {
-                        cell = new WPF.TimeEntryCell();
-                        this.entries.Children.Add(cell);
-                    }
+                    var cell = (TimeEntryCell)this.entries.Children[i];
                     cell.Display(entry);
 
                     this.cellsByGUID.Add(entry.GUID, cell);
                     cells.Add(Tuple.Create(entry.GUID, cell));
                 }
 
-                if (this.entries.Children.Count > list.Count)
+                // add additional cells
+                for (; i < list.Count; i++)
                 {
-                    this.entries.Children.RemoveRange(list.Count, this.entries.Children.Count - list.Count);
+                    var entry = list[i];
+
+                    var cell = new TimeEntryCell();
+                    cell.Display(entry);
+
+                    this.cellsByGUID.Add(entry.GUID, cell);
+                    cells.Add(Tuple.Create(entry.GUID, cell));
+
+                    children.Add(cell);
                 }
 
                 this.entries.FinishedFillingList();

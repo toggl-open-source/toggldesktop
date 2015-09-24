@@ -9,7 +9,7 @@
              d:DesignHeight="100" d:DesignWidth="455">
     
     <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
-                Background="Transparent">
+                Background="#F7F7F7">
         
         <!-- Day Header -->
         <StackPanel Name="dayHeader" x:FieldModifier="private"
@@ -18,7 +18,7 @@
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#CCCCCC" Offset="0.0" />
-                        <GradientStop Color="Transparent" Offset="1" />
+                        <GradientStop Color="#F7F7F7" Offset="1" />
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>

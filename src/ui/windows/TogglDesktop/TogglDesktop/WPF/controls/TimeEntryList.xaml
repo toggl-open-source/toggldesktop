@@ -42,6 +42,7 @@
                       HorizontalAlignment="Stretch"
                       SizeChanged="onSizeChanged"
                       Background="#f7f7f7"
+                      Style="{toggl:Resources ResourceKey=CustomSrollViewer}"
                       >
             <Grid>
                 <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch"

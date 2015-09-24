@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.WPF.AutoComplete;
@@ -16,7 +14,6 @@ namespace TogglDesktop.WPF
     {
         public FrameworkElement Target { get { return null; } }
         public ExtendedTextBox TextBox { get { return null; } }
-        public string EmptyText { get { return "Hello. Yes, this is list."; } }
     }
 
     partial class AutoCompletionPopup
@@ -32,7 +29,7 @@ namespace TogglDesktop.WPF
 
         private AutoCompleteController controller;
 
-        private List<IRecyclable> recyclableEntries = new List<IRecyclable>();
+        private readonly List<IRecyclable> recyclableEntries = new List<IRecyclable>();
 
         public AutoCompletionPopup()
         {
@@ -42,7 +39,7 @@ namespace TogglDesktop.WPF
             this.popup.Opened += (s, e) => this.tryInvoke(this.IsOpenChanged);
             this.popup.Closed += (s, e) => this.tryInvoke(this.IsOpenChanged);
 
-            this.IsEnabledChanged += onIsEnabledChanged;
+            this.IsEnabledChanged += this.onIsEnabledChanged;
 
             this.FillTextBoxOnComplete = true;
         }
@@ -79,7 +76,11 @@ namespace TogglDesktop.WPF
         #region dependency properties
 
         public static readonly DependencyProperty TargetProperty = DependencyProperty
-            .Register("Target", typeof(FrameworkElement), typeof(AutoCompletionPopup));
+            .Register("Target", typeof(FrameworkElement), typeof(AutoCompletionPopup),
+            new FrameworkPropertyMetadata
+            {
+                PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).updateTarget()
+            });
         public FrameworkElement Target
         {
             get { return (FrameworkElement)this.GetValue(TargetProperty); }
@@ -98,13 +99,10 @@ namespace TogglDesktop.WPF
             set { this.SetValue(TextBoxProperty, value); }
         }
 
-        public static readonly DependencyProperty EmptyTextProperty = DependencyProperty
-            .Register("EmptyText", typeof(string), typeof(AutoCompletionPopup), new FrameworkPropertyMetadata("Nothing found."));
-
         public string EmptyText
         {
-            get { return (string)this.GetValue(EmptyTextProperty); }
-            set { this.SetValue(EmptyTextProperty, value); }
+            get { return this.emptyLabel.Text; }
+            set { this.emptyLabel.Text = value; }
         }
 
         #endregion
@@ -260,6 +258,11 @@ namespace TogglDesktop.WPF
                 return;
             }
 
+            if (!this.popup.IsOpen)
+            {
+                this.updateTarget();
+            }
+
             // fix to make sure list updates layout when first opened
             this.popup.IsOpen = true;
 
@@ -275,6 +278,13 @@ namespace TogglDesktop.WPF
             {
                 this.popup.IsOpen = true;
             }
+        }
+
+        private void updateTarget()
+        {
+            var target = this.Target;
+            this.popup.PlacementTarget = target;
+            this.popup.MinWidth = target == null ? 0 : target.ActualWidth + 20;
         }
 
         public void OpenAndShowAll()
@@ -320,6 +330,7 @@ namespace TogglDesktop.WPF
             if (!this.popup.IsOpen)
                 return;
 
+            this.updateTarget();
             // hack to make the popup re-calculate its position
             var offset = this.popup.HorizontalOffset;
             this.popup.HorizontalOffset = offset + 1;
