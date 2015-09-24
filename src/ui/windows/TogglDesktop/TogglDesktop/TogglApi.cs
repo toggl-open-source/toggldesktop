@@ -1038,7 +1038,7 @@ public static partial class Toggl
         ref Int64 err);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern bool toggl_autotracker_add_rule(
+    private static extern Int64 toggl_autotracker_add_rule(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string term,
