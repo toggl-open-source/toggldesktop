@@ -364,7 +364,7 @@ namespace TogglDesktop.WPF
             {
                 using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.isInManualMode))
                 {
-                    this.startTimeEntry();
+                    this.startTimeEntry(true);
                 }
             }
         }
@@ -660,7 +660,7 @@ namespace TogglDesktop.WPF
             }
         }
 
-        private void startTimeEntry()
+        private void startTimeEntry(bool continueIfNotInManualMode = false)
         {
             if (this.isInManualMode)
             {
@@ -669,7 +669,14 @@ namespace TogglDesktop.WPF
             }
             else
             {
-                Toggl.Start("", "", 0, 0, "", "");
+                if (continueIfNotInManualMode)
+                {
+                    Toggl.ContinueLatest();
+                }
+                else
+                {
+                    Toggl.Start("", "", 0, 0, "", "");   
+                }
             }
         }
 
