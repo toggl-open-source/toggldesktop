@@ -10,12 +10,6 @@ using TogglDesktop.WPF.AutoComplete;
 
 namespace TogglDesktop.WPF
 {
-    sealed class AutoCompletionPopupSample
-    {
-        public FrameworkElement Target { get { return null; } }
-        public ExtendedTextBox TextBox { get { return null; } }
-    }
-
     partial class AutoCompletionPopup
     {
         public event EventHandler<AutoCompleteItem> ConfirmCompletion;
