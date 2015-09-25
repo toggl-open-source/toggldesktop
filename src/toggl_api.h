@@ -587,6 +587,66 @@ extern "C" {
         int64_t *window_height,
         int64_t *window_width);
 
+    TOGGL_EXPORT void toggl_set_window_maximized(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_get_window_maximized(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_window_minimized(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_get_window_minimized(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_window_edit_size_height(
+        void *context,
+        const int64_t value);
+
+    TOGGL_EXPORT int64_t toggl_get_window_edit_size_height(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_window_edit_size_width(
+        void *context,
+        const int64_t value);
+
+    TOGGL_EXPORT int64_t toggl_get_window_edit_size_width(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_start(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_start(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_show(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_show(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_modifier_show(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_modifier_show(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_modifier_start(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_modifier_start(
+        void *context);
+
     TOGGL_EXPORT bool_t toggl_logout(
         void *context);
 

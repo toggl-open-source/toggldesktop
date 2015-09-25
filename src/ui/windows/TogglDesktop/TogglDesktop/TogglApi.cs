@@ -866,6 +866,88 @@ public static partial class Toggl
         ref Int64 window_width);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_window_maximized(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool value);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern bool toggl_get_window_maximized(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_window_minimized(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool value);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern bool toggl_get_window_minimized(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_window_edit_size_height(
+        IntPtr context,
+        Int64 value);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern Int64 toggl_get_window_edit_size_height(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_window_edit_size_width(
+        IntPtr context,
+        Int64 value);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern Int64 toggl_get_window_edit_size_width(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_key_start(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string value);
+
+    // You must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_get_key_start(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_key_show(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string value);
+
+    // You must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_get_key_show(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_key_modifier_show(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string value);
+
+    // You must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_get_key_modifier_show(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_key_modifier_start(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string value);
+
+    // You must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_get_key_modifier_start(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern bool toggl_logout(
         IntPtr context);
 
