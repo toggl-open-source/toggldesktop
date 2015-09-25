@@ -246,7 +246,7 @@ int64_t toggl_get_window_edit_size_width(
 void toggl_set_key_start(
     void *context,
     const char_t *value) {
-    app(context)->SetKeyStart(value);
+    app(context)->SetKeyStart(to_string(value));
 }
 
 char_t *toggl_get_key_start(
@@ -257,7 +257,7 @@ char_t *toggl_get_key_start(
 void toggl_set_key_show(
     void *context,
     const char_t *value) {
-    app(context)->SetKeyShow(value);
+    app(context)->SetKeyShow(to_string(value));
 }
 
 char_t *toggl_get_key_show(
@@ -268,7 +268,7 @@ char_t *toggl_get_key_show(
 void toggl_set_key_modifier_show(
     void *context,
     const char_t *value) {
-    app(context)->SetKeyModifierShow(value);
+    app(context)->SetKeyModifierShow(to_string(value));
 }
 
 char_t *toggl_get_key_modifier_show(
@@ -279,7 +279,7 @@ char_t *toggl_get_key_modifier_show(
 void toggl_set_key_modifier_start(
     void *context,
     const char_t *value) {
-    app(context)->SetKeyModifierStart(value);
+    app(context)->SetKeyModifierStart(to_string(value));
 }
 
 char_t *toggl_get_key_modifier_start(
