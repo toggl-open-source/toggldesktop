@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -33,6 +32,7 @@ namespace TogglDesktop.WPF
         private AboutWindow aboutWindow;
         private FeedbackWindow feedbackWindow;
         private EditViewPopup editPopup;
+        private IdleNotificationWindow idleNotificationWindow;
 
         private bool remainOnTop;
 
@@ -97,13 +97,15 @@ namespace TogglDesktop.WPF
                 this.aboutWindow = new AboutWindow(),
                 this.feedbackWindow = new FeedbackWindow(),
                 new PreferencesWindow(),
-                new IdleNotificationWindow(),
+                this.idleNotificationWindow = new IdleNotificationWindow(),
             };
 
             this.timerEntryListView.SetEditPopup(this.editPopup.EditView);
 
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
+
+            this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.showOnTop();
 
             this.IsVisibleChanged += this.ownChildWindows;
         }
