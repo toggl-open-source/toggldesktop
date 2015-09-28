@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -39,6 +40,7 @@ namespace TogglDesktop.WPF
         private bool isInManualMode;
         private bool isTracking;
         private bool isResizingWithHandle;
+        private bool closing;
 
         #endregion
 
@@ -339,6 +341,18 @@ namespace TogglDesktop.WPF
             Toggl.SetWake();
 
             base.OnActivated(e);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (this.closing)
+            {
+                base.OnClosing(e);
+            }
+            else
+            {
+                this.shutdown(0);   
+            }
         }
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
@@ -691,6 +705,8 @@ namespace TogglDesktop.WPF
 
         private void shutdown(int exitCode)
         {
+            this.closing = true;
+
             if (this.taskbarIcon != null)
             {
                 this.taskbarIcon.Visibility = Visibility.Collapsed;
