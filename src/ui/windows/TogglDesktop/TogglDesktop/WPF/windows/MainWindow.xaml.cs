@@ -652,8 +652,7 @@ namespace TogglDesktop.WPF
             try
             {
                 this.startHook.ChangeTo(
-                    Properties.Settings.Default.StartModifiers,
-                    Properties.Settings.Default.StartKey
+                    Toggl.GetKeyModifierStart(), Toggl.GetKeyStart()
                     );
             }
             catch (Exception e)
@@ -664,8 +663,7 @@ namespace TogglDesktop.WPF
             try
             {
                 this.showHook.ChangeTo(
-                    Properties.Settings.Default.ShowModifiers,
-                    Properties.Settings.Default.ShowKey
+                    Toggl.GetKeyModifierShow(), Toggl.GetKeyShow()
                     );
             }
             catch (Exception e)
