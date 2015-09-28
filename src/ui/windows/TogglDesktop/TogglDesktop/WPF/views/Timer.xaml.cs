@@ -17,6 +17,7 @@ namespace TogglDesktop.WPF
         private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
         private Toggl.TogglTimeEntryView runningTimeEntry;
         private ProjectInfo completedProject;
+        private bool isRunning;
 
         public event EventHandler StartStopClick;
         public event EventHandler RunningTimeEntrySecondPulse;
@@ -34,6 +35,7 @@ namespace TogglDesktop.WPF
 
             this.RunningTimeEntrySecondPulse += this.timerTick;
 
+            this.resetUIState(false, true);
             this.setUIToStoppedState();
         }
 
@@ -47,7 +49,6 @@ namespace TogglDesktop.WPF
             };
         }
 
-        private bool isRunning { get { return this.startStopButton.IsChecked ?? false; } }
 
         #region toggl events
 
@@ -233,11 +234,11 @@ namespace TogglDesktop.WPF
 
             if (this.isRunning)
             {
-                this.start();
+                this.stop();
             }
             else
             {
-                this.stop();
+                this.start();
             }
         }
 
@@ -361,11 +362,17 @@ namespace TogglDesktop.WPF
             this.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         }
 
-        private void resetUIState(bool running)
+        private void resetUIState(bool running, bool forceUpdate = false)
         {
+            var changedState = this.isRunning != running;
+
+            if (!(changedState || forceUpdate))
+                return;
+
+            this.isRunning = running;
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
-            this.durationTextBox.Text = "";
+            this.durationTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
             this.durationTextBox.ShowOnlyIf(!running);
             this.iconPanel.ShowOnlyIf(running);
