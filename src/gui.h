@@ -12,6 +12,7 @@
 #include "./proxy.h"
 #include "./settings.h"
 #include "./toggl_api.h"
+#include "./toggl_api_private.h"
 #include "./types.h"
 
 namespace Poco {
@@ -282,7 +283,13 @@ class GUI : public SyncStateMonitor {
     , on_display_update_(nullptr)
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
-    , on_display_promotion_(nullptr) {}
+    , on_display_promotion_(nullptr)
+    , lastSyncState(-1)
+    , lastUnsyncedItemsCount(-1)
+    , lastDisplayLoginOpen(false)
+    , lastDisplayLoginUserID(0)
+    , lastOnlineState(-1)
+    , lastErr(noError) {}
 
     ~GUI() {}
 
@@ -494,12 +501,12 @@ class GUI : public SyncStateMonitor {
     TogglDisplayPromotion on_display_promotion_;
 
     // Cached views
-    // FIXME: zero out, por favor
     Poco::Int64 lastSyncState;
     Poco::Int64 lastUnsyncedItemsCount;
     bool lastDisplayLoginOpen;
     uint64_t lastDisplayLoginUserID;
     Poco::Int64 lastOnlineState;
+    error lastErr;
 
     Poco::Logger &logger() const;
 };
