@@ -132,6 +132,9 @@ func main() {
 			w := strings.Split(s, " ")
 			t := w[1]
 			csfunc = w[len(w) - 1]
+			if ("bool" == t) {
+				write("[return:MarshalAs(UnmanagedType.I1)]")
+			}
 			write("private static extern " + t + " " + csfunc)
 		} else if len(csfunc) != 0 {
 			if strings.Contains(s, ");") {
