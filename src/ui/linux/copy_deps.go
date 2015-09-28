@@ -85,7 +85,7 @@ func main() {
 		}
 	}
 
-	fmt.Println(copied, "dependencies copied")
+	fmt.Println(copied, "dependencies copied for ", *executable)
 
 	os.Exit(0)
 }
