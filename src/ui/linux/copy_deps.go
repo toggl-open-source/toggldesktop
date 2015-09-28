@@ -61,7 +61,7 @@ func main() {
 
 		if name == "not found" {
 			fmt.Println(s)
-			fmt.Println("Library dependency not found")
+			fmt.Println("Library dependency not found for", *executable)
 			os.Exit(1)
 		}
 		
@@ -85,7 +85,7 @@ func main() {
 		}
 	}
 
-	fmt.Println(copied, "dependencies copied for ", *executable)
+	fmt.Println(copied, "dependencies copied for", *executable)
 
 	os.Exit(0)
 }
