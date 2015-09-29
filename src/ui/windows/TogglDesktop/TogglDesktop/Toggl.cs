@@ -317,6 +317,10 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_autotrack(ctx, settings.Autotrack))
+        {
+            return false;
+        }
 
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
@@ -793,6 +797,7 @@ public static partial class Toggl
         return marshalList<TogglTimeEntryView>(
             first, n => n.Next, "marshalling time entry list");
     }
+
     private static List<TogglAutotrackerRuleView> convertToAutotrackerEntryList(IntPtr first)
     {
         return marshalList<TogglAutotrackerRuleView>(

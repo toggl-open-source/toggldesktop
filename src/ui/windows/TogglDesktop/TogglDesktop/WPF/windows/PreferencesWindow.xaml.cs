@@ -190,6 +190,12 @@ namespace TogglDesktop.WPF
 
                 #endregion
 
+                #region auto tracker
+
+                Autotrack = isChecked(this.enableAutotrackerCheckbox),
+
+                #endregion
+
                 #region reminder
 
                 Reminder = isChecked(this.remindToTrackCheckBox),
@@ -234,7 +240,7 @@ namespace TogglDesktop.WPF
             {
                 var settings = this.createSettingsFromUI();
 
-                if(Toggl.SetSettings(settings))
+                if (Toggl.SetSettings(settings))
                     this.Hide();
             }
         }
