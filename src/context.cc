@@ -497,6 +497,8 @@ void Context::updateUI(const UIElements &what) {
         if (what.open_time_entry_editor) {
             UI()->DisplayApp();
         }
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
             user_->related,
@@ -506,6 +508,8 @@ void Context::updateUI(const UIElements &what) {
             user_);
     }
     if (what.display_time_entries) {
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             user_->related,
@@ -522,12 +526,18 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayWorkspaceSelect(&workspaces);
     }
     if (what.display_client_select) {
-        UI()->DisplayClientSelect(&clients);
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
+        UI()->DisplayClientSelect(
+            user_->related,
+            &clients);
     }
     if (what.display_tags) {
         UI()->DisplayTags(&tags);
     }
     if (what.display_timer_state) {
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimerState(
             user_->related,
             running_entry,
@@ -535,6 +545,8 @@ void Context::updateUI(const UIElements &what) {
     }
     if (what.display_autotracker_rules) {
         if (UI()->CanDisplayAutotrackerRules() && user_) {
+            // FIXME: should not touch related data here any more,
+            // data should be already collected in previous, locked step
             UI()->DisplayAutotrackerRules(user_->related, autotracker_titles_);
         }
     }

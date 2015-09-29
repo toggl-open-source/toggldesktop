@@ -140,11 +140,13 @@ public static partial class Toggl
         public         string GUID;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string Name;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string WorkspaceName;
         public         IntPtr Next;
 
         public override string ToString()
         {
-            return Name;
+            return WorkspaceName;
         }
 
     }

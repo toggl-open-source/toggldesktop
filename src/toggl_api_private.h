@@ -36,7 +36,8 @@ TogglGenericView *workspace_to_view_item(
     toggl::Workspace * const);
 
 TogglGenericView *client_to_view_item(
-    toggl::Client * const);
+    toggl::Client * const,
+    toggl::Workspace * const);
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     toggl::AutotrackerRule * const model,
