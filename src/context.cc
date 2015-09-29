@@ -1560,6 +1560,94 @@ error Context::SaveWindowSettings(
     return displayError(err);
 }
 
+void Context::SetWindowMaximized(
+    const bool value) {
+    displayError(db()->SetWindowMaximized(value));
+}
+
+bool Context::GetWindowMaximized() {
+    bool value(false);
+    displayError(db()->GetWindowMaximized(&value));
+    return value;
+}
+
+void Context::SetWindowMinimized(
+    const bool_t value) {
+    displayError(db()->SetWindowMinimized(value));
+}
+
+bool Context::GetWindowMinimized() {
+    bool value(false);
+    displayError(db()->GetWindowMinimized(&value));
+    return value;
+}
+
+void Context::SetWindowEditSizeHeight(
+    const int64_t value) {
+    displayError(db()->SetWindowEditSizeHeight(value));
+}
+
+int64_t Context::GetWindowEditSizeHeight() {
+    Poco::Int64 value(0);
+    displayError(db()->GetWindowEditSizeHeight(&value));
+    return value;
+}
+
+void Context::SetWindowEditSizeWidth(
+    const int64_t value) {
+    displayError(db()->SetWindowEditSizeWidth(value));
+}
+
+int64_t Context::GetWindowEditSizeWidth() {
+    Poco::Int64 value(0);
+    displayError(db()->GetWindowEditSizeWidth(&value));
+    return value;
+}
+
+void Context::SetKeyStart(
+    const std::string value) {
+    displayError(db()->SetKeyStart(value));
+}
+
+std::string Context::GetKeyStart() {
+    std::string value("");
+    displayError(db()->GetKeyStart(&value));
+    return value;
+}
+
+void Context::SetKeyShow(
+    const std::string value) {
+    displayError(db()->SetKeyShow(value));
+}
+
+std::string Context::GetKeyShow() {
+    std::string value("");
+    displayError(db()->GetKeyShow(&value));
+    return value;
+}
+
+void Context::SetKeyModifierShow(
+    const std::string value) {
+    displayError(db()->SetKeyModifierShow(value));
+}
+
+std::string Context::GetKeyModifierShow() {
+    std::string value("");
+    displayError(db()->GetKeyModifierShow(&value));
+    return value;
+}
+
+void Context::SetKeyModifierStart(
+    const std::string value) {
+    displayError(db()->SetKeyModifierStart(value));
+}
+
+std::string Context::GetKeyModifierStart() {
+    std::string value("");
+    displayError(db()->GetKeyModifierStart(&value));
+    return value;
+}
+
 error Context::SetProxySettings(
     const bool use_proxy,
     const Proxy proxy) {

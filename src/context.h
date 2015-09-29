@@ -162,6 +162,46 @@ class Context : public TimelineDatasource {
         const bool remind_sat,
         const bool remind_sun);
 
+    void SetWindowMaximized(
+        const bool value);
+
+    bool GetWindowMaximized();
+
+    void SetWindowMinimized(
+        const bool_t value);
+
+    bool GetWindowMinimized();
+
+    void SetWindowEditSizeHeight(
+        const int64_t value);
+
+    int64_t GetWindowEditSizeHeight();
+
+    void SetWindowEditSizeWidth(
+        const int64_t value);
+
+    int64_t GetWindowEditSizeWidth();
+
+    void SetKeyStart(
+        const std::string value);
+
+    std::string GetKeyStart();
+
+    void SetKeyShow(
+        const std::string value);
+
+    std::string GetKeyShow();
+
+    void SetKeyModifierShow(
+        const std::string value);
+
+    std::string GetKeyModifierShow();
+
+    void SetKeyModifierStart(
+        const std::string value);
+
+    std::string GetKeyModifierStart();
+
     error ProxySettings(bool *use_proxy, Proxy *proxy);
 
     error SetProxySettings(

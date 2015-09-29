@@ -110,13 +110,13 @@ namespace TogglDesktop.WPF
             #region global shortcuts
 
             trySetHotKey(
-                () => Properties.Settings.Default.ShowKey,
-                () => Properties.Settings.Default.ShowModifiers,
+                Toggl.GetKeyShow,
+                Toggl.GetKeyModifierShow,
                 this.showHideShortcutRecorder
                 );
             trySetHotKey(
-                () => Properties.Settings.Default.StartKey,
-                () => Properties.Settings.Default.StartModifiers,
+                Toggl.GetKeyStart,
+                Toggl.GetKeyModifierStart,
                 this.continueStopShortcutRecorder
                 );
 

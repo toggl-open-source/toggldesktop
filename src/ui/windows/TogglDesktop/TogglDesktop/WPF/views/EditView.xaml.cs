@@ -92,12 +92,10 @@ namespace TogglDesktop.WPF
 
                 this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
 
-                this.descriptionTextBox.SetText(timeEntry.Description);
-                setTime(this.durationTextBox, timeEntry.Duration);
-                setTime(this.startTimeTextBox, timeEntry.StartTimeString);
-                setTime(this.endTimeTextBox, timeEntry.EndTimeString);
-                this.projectTextBox.SetText(timeEntry.ProjectLabel);
-                this.clientTextBox.SetText(timeEntry.ClientLabel);
+                this.setText(this.descriptionTextBox, timeEntry.Description, open);
+                setTime(this.durationTextBox, timeEntry.Duration, open);
+                setTime(this.startTimeTextBox, timeEntry.StartTimeString, open);
+                setTime(this.endTimeTextBox, timeEntry.EndTimeString, open);
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
 
                 if (isCurrentlyRunning)
@@ -135,6 +133,8 @@ namespace TogglDesktop.WPF
                         this.disableNewProjectMode();
 
                     this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
+                    this.setText(this.projectTextBox, timeEntry.ProjectLabel, open);
+                    this.setText(this.clientTextBox, timeEntry.ClientLabel, open);
 
                     this.selectedWorkspaceId = timeEntry.WID;
                     this.selectedWorkspaceName = timeEntry.WorkspaceName;
@@ -164,10 +164,21 @@ namespace TogglDesktop.WPF
             return projectColor;
         }
 
-        private static void setTime(ExtendedTextBox textBox, string time)
+        private void setText(ExtendedTextBox textBox, string text, bool evenIfFocused)
         {
-            textBox.SetText(time);
-            textBox.Tag = time;
+            if (evenIfFocused || textBox.IsKeyboardFocused)
+            {
+                textBox.SetText(text);
+            }
+        }
+
+        private static void setTime(ExtendedTextBox textBox, string time, bool evenIfFocused)
+        {
+            if (evenIfFocused || textBox.IsKeyboardFocused)
+            {
+                textBox.SetText(time);
+                textBox.Tag = time;
+            }
         }
 
         #endregion
@@ -188,7 +199,7 @@ namespace TogglDesktop.WPF
             var caret = this.durationTextBox.CaretIndex;
 
             var s = Toggl.FormatDurationInSecondsHHMMSS(this.timeEntry.DurationInSeconds);
-            this.durationTextBox.Text = s;
+            this.durationTextBox.SetText(s);
             this.durationTextBox.Tag = s;
 
             this.durationTextBox.CaretIndex = caret;

@@ -199,6 +199,94 @@ bool_t toggl_window_settings(
         window_width);
 }
 
+void toggl_set_window_maximized(
+    void *context,
+    const bool_t value) {
+    app(context)->SetWindowMaximized(value);
+}
+
+bool_t toggl_get_window_maximized(
+    void *context) {
+    return app(context)->GetWindowMaximized();
+}
+
+void toggl_set_window_minimized(
+    void *context,
+    const bool_t value) {
+    app(context)->SetWindowMinimized(value);
+}
+
+bool_t toggl_get_window_minimized(
+    void *context) {
+    return app(context)->GetWindowMinimized();
+}
+
+void toggl_set_window_edit_size_height(
+    void *context,
+    const int64_t value) {
+    app(context)->SetWindowEditSizeHeight(value);
+}
+
+int64_t toggl_get_window_edit_size_height(
+    void *context) {
+    return app(context)->GetWindowEditSizeHeight();
+}
+
+void toggl_set_window_edit_size_width(
+    void *context,
+    const int64_t value) {
+    app(context)->SetWindowEditSizeWidth(value);
+}
+
+int64_t toggl_get_window_edit_size_width(
+    void *context) {
+    return app(context)->GetWindowEditSizeWidth();
+}
+
+void toggl_set_key_start(
+    void *context,
+    const char_t *value) {
+    app(context)->SetKeyStart(to_string(value));
+}
+
+char_t *toggl_get_key_start(
+    void *context) {
+    return copy_string(app(context)->GetKeyStart());
+}
+
+void toggl_set_key_show(
+    void *context,
+    const char_t *value) {
+    app(context)->SetKeyShow(to_string(value));
+}
+
+char_t *toggl_get_key_show(
+    void *context) {
+    return copy_string(app(context)->GetKeyShow());
+}
+
+void toggl_set_key_modifier_show(
+    void *context,
+    const char_t *value) {
+    app(context)->SetKeyModifierShow(to_string(value));
+}
+
+char_t *toggl_get_key_modifier_show(
+    void *context) {
+    return copy_string(app(context)->GetKeyModifierShow());
+}
+
+void toggl_set_key_modifier_start(
+    void *context,
+    const char_t *value) {
+    app(context)->SetKeyModifierStart(to_string(value));
+}
+
+char_t *toggl_get_key_modifier_start(
+    void *context) {
+    return copy_string(app(context)->GetKeyModifierStart());
+}
+
 bool_t toggl_set_proxy_settings(void *context,
                                 const bool_t use_proxy,
                                 const char_t *proxy_host,
