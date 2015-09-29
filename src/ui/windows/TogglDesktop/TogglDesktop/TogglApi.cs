@@ -124,6 +124,7 @@ public static partial class Toggl
         public         string Tags;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string WorkspaceName;
+        public         UInt64 ClientID;
         public         IntPtr Next;
 
         public override string ToString()

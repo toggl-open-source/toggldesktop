@@ -16,7 +16,7 @@
 #include "Poco/UnicodeConverter.h"
 
 TogglAutocompleteView *autocomplete_item_init(
-    const toggl::AutocompleteItem item) {
+    const toggl::view::Autocomplete item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();
     result->Description = copy_string(item.Description);
     result->Text = copy_string(item.Text);
@@ -31,6 +31,7 @@ TogglAutocompleteView *autocomplete_item_init(
     result->Type = static_cast<unsigned int>(item.Type);
     result->Tags = copy_string(item.Tags);
     result->WorkspaceName = copy_string(item.WorkspaceName);
+    result->ClientID = static_cast<unsigned int>(item.ClientID);
     result->Next = nullptr;
     return result;
 }
@@ -401,9 +402,9 @@ void settings_view_item_clear(TogglSettingsView *view) {
 }
 
 TogglAutocompleteView *autocomplete_list_init(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     TogglAutocompleteView *first = nullptr;
-    for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
+    for (std::vector<toggl::view::Autocomplete>::const_reverse_iterator it =
         items->rbegin(); it != items->rend(); it++) {
         TogglAutocompleteView *item = autocomplete_item_init(*it);
         item->Next = first;

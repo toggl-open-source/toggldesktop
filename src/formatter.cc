@@ -8,6 +8,7 @@
 #include <set>
 
 #include "./client.h"
+#include "./gui.h"
 #include "./project.h"
 #include "./task.h"
 #include "./time_entry.h"
@@ -604,8 +605,8 @@ bool CompareAutotrackerTitles(const std::string &a, const std::string &b) {
 }
 
 bool CompareAutocompleteItems(
-    AutocompleteItem a,
-    AutocompleteItem b) {
+    view::Autocomplete a,
+    view::Autocomplete b) {
 
     // Time entries first
     if (a.IsTimeEntry() && !b.IsTimeEntry()) {
@@ -635,8 +636,8 @@ bool CompareAutocompleteItems(
 }
 
 bool CompareStructuredAutocompleteItems(
-    AutocompleteItem a,
-    AutocompleteItem b) {
+    view::Autocomplete a,
+    view::Autocomplete b) {
 
     if (a.WorkspaceName == b.WorkspaceName) {
         if (a.IsWorkspace() && !b.IsWorkspace()) {
