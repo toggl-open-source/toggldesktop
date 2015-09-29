@@ -122,11 +122,13 @@ public static partial class Toggl
         // If its a time entry, it has tags
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string Tags;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string WorkspaceName;
         public         IntPtr Next;
 
         public override string ToString()
         {
-            return Tags;
+            return WorkspaceName;
         }
 
     }

@@ -30,6 +30,7 @@ TogglAutocompleteView *autocomplete_item_init(
     result->WorkspaceID = static_cast<unsigned int>(item.WorkspaceID);
     result->Type = static_cast<unsigned int>(item.Type);
     result->Tags = copy_string(item.Tags);
+    result->WorkspaceName = copy_string(item.WorkspaceName);
     result->Next = nullptr;
     return result;
 }
@@ -62,6 +63,9 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
 
     free(item->Tags);
     item->Tags = nullptr;
+
+    free(item->WorkspaceName);
+    item->WorkspaceName = nullptr;
 
     if (item->Next) {
         TogglAutocompleteView *next =
