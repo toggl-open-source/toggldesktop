@@ -87,7 +87,7 @@ public static partial class Toggl
         string description);
 
     public delegate void DisplayAutotrackerRules(
-        List<TogglAutotrackerRuleView> rules);
+        List<TogglAutotrackerRuleView> rules, string[] terms);
 
     public delegate void DisplayAutotrackerNotification(
         string projectName, ulong projectId);
@@ -637,7 +637,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnAutotrackerRules"))
             {
-                OnAutotrackerRules(convertToAutotrackerEntryList(first));
+                OnAutotrackerRules(convertToAutotrackerEntryList(first), list);
             }
         });
 

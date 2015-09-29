@@ -17,7 +17,7 @@
         <Setter Property="FontSize" Value="13.3" />
         <Setter Property="Foreground" Value="#252525"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Margin" Value="8, 0"/>
+        <Setter Property="Margin" Value="16, 0"/>
     </Style>
     <Style TargetType="TextBlock" x:Key="TextboxEmptyText">
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
