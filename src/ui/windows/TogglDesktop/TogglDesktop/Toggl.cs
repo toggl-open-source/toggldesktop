@@ -529,7 +529,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeEntryList"))
             {
-                var list = ConvertToTimeEntryList(first);
+                var list = convertToTimeEntryList(first);
                 OnTimeEntryList(open, list);
             }
         });
@@ -538,7 +538,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeEntryAutocomplete"))
             {
-                var list = ConvertToAutocompleteList(first);
+                var list = convertToAutocompleteList(first);
                 OnTimeEntryAutocomplete(list);
             }
         });
@@ -547,7 +547,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnMinitimerAutocomplete"))
             {
-                var list = ConvertToAutocompleteList(first);
+                var list = convertToAutocompleteList(first);
                 OnMinitimerAutocomplete(list);
             }
         });
@@ -556,7 +556,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnProjectAutocomplete"))
             {
-                var list = ConvertToAutocompleteList(first);
+                var list = convertToAutocompleteList(first);
                 OnProjectAutocomplete(list);
             }
         });
@@ -578,7 +578,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnWorkspaceSelect"))
             {
-                var list = ConvertToViewItemList(first);
+                var list = convertToViewItemList(first);
                 OnWorkspaceSelect(list);
             }
         });
@@ -587,7 +587,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnClientSelect"))
             {
-                var list = ConvertToViewItemList(first);
+                var list = convertToViewItemList(first);
                 OnClientSelect(list);
             }
         });
@@ -596,7 +596,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTags"))
             {
-                var list = ConvertToViewItemList(first);
+                var list = convertToViewItemList(first);
                 OnTags(list);
             }
         });
@@ -786,86 +786,51 @@ public static partial class Toggl
         Debug("Failed to start updater process");
     }
 
-    public static List<TogglGenericView> ConvertToViewItemList(IntPtr first)
+    private static List<TogglGenericView> convertToViewItemList(IntPtr first)
     {
-        using (var token = Performance.Measure("marshalling view item list"))
+        return marshalList<TogglGenericView>(
+            first, n => n.Next, "marshalling view item list");
+    }
+
+    private static List<TogglAutocompleteView> convertToAutocompleteList(IntPtr first)
+    {
+        return marshalList<TogglAutocompleteView>(
+            first, n => n.Next, "marshalling auto complete list");
+    }
+
+    private static List<TogglTimeEntryView> convertToTimeEntryList(IntPtr first)
+    {
+        return marshalList<TogglTimeEntryView>(
+            first, n => n.Next, "marshalling time entry list");
+    }
+
+    private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext, string performanceMessage)
+        where T : struct
+    {
+        if (performanceMessage == null)
+            return marshalList(node, getNext);
+
+        using (var token = Performance.Measure(performanceMessage))
         {
-            List<TogglGenericView> list = new List<TogglGenericView>();
-            if (IntPtr.Zero == first)
-            {
-                token.WithInfo("count: 0");
-                return list;
-            }
-            TogglGenericView n = (TogglGenericView)Marshal.PtrToStructure(
-                first, typeof(TogglGenericView));
-            while (true)
-            {
-                list.Add(n);
-                if (n.Next == IntPtr.Zero)
-                {
-                    break;
-                }
-                n = (TogglGenericView)Marshal.PtrToStructure(
-                    n.Next, typeof(TogglGenericView));
-            }
+            var list = marshalList(node, getNext);
             token.WithInfo("count: " + list.Count);
             return list;
         }
     }
 
-    private static List<TogglAutocompleteView> ConvertToAutocompleteList(IntPtr first)
+    private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext)
+        where T : struct
     {
-        using (var token = Performance.Measure("marshalling auto complete list"))
-        {
-            List<TogglAutocompleteView> list = new List<TogglAutocompleteView>();
-            if (IntPtr.Zero == first)
-            {
-                token.WithInfo("count: 0");
-                return list;
-            }
-            TogglAutocompleteView n = (TogglAutocompleteView)Marshal.PtrToStructure(
-                first, typeof (TogglAutocompleteView));
-            while (true)
-            {
-                list.Add(n);
-                if (n.Next == IntPtr.Zero)
-                {
-                    break;
-                }
-                n = (TogglAutocompleteView)Marshal.PtrToStructure(
-                    n.Next, typeof (TogglAutocompleteView));
-            }
-            token.WithInfo("count: " + list.Count);
-            return list;
-        }
-    }
+        var list = new List<T>();
 
-    private static List<TogglTimeEntryView> ConvertToTimeEntryList(IntPtr first)
-    {
-        using (var token = Performance.Measure("marshalling time entry list"))
+        while (node != IntPtr.Zero)
         {
-            List<TogglTimeEntryView> list = new List<TogglTimeEntryView>();
-            if (IntPtr.Zero == first)
-            {
-                token.WithInfo("count: 0");
-                return list;
-            }
-            TogglTimeEntryView n = (TogglTimeEntryView)Marshal.PtrToStructure(
-                first, typeof (TogglTimeEntryView));
-
-            while (true)
-            {
-                list.Add(n);
-                if (n.Next == IntPtr.Zero)
-                {
-                    break;
-                }
-                n = (TogglTimeEntryView)Marshal.PtrToStructure(
-                    n.Next, typeof (TogglTimeEntryView));
-            }
-            token.WithInfo("count: " + list.Count);
-            return list;
+            var t = (T)Marshal.PtrToStructure(node, typeof(T));
+            list.Add(t);
+            node = getNext(t);
         }
+
+        return list;
     }
 
     private static readonly DateTime UnixEpoch =
