@@ -80,6 +80,9 @@ public static partial class Toggl
         UInt64 started,
         string description);
 
+    public delegate void DisplayAutotrackerRules(
+        List<TogglAutotrackerRuleView> rules);
+
     public static void Clear()
     {
         toggl_context_clear(ctx);
@@ -454,6 +457,7 @@ public static partial class Toggl
     public static event DisplayStoppedTimerState OnStoppedTimerState = delegate { };
     public static event DisplayURL OnURL = delegate { };
     public static event DisplayIdleNotification OnIdleNotification = delegate { };
+    public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
 
     private static void parseCommandlineParams()
     {
@@ -485,7 +489,7 @@ public static partial class Toggl
 
     private static void listenToLibEvents()
     {
-        toggl_on_show_app(ctx, delegate(bool open)
+        toggl_on_show_app(ctx, open =>
         {
             using (Performance.Measure("Calling OnApp"))
             {
@@ -493,7 +497,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_error(ctx, delegate(string errmsg, bool user_error)
+        toggl_on_error(ctx, (errmsg, user_error) =>
         {
             using (Performance.Measure("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error))
             {
@@ -501,7 +505,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_online_state(ctx, delegate(Int64 state)
+        toggl_on_online_state(ctx, state =>
         {
             using (Performance.Measure("Calling OnOnlineState, state: {0}", state))
             {
@@ -509,7 +513,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_login(ctx, delegate(bool open, UInt64 user_id)
+        toggl_on_login(ctx, (open, user_id) =>
         {
             using (Performance.Measure("Calling OnLogin"))
             {
@@ -517,7 +521,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_reminder(ctx, delegate(string title, string informative_text)
+        toggl_on_reminder(ctx, (title, informative_text) =>
         {
             using (Performance.Measure("Calling OnReminder, title: {0}", title))
             {
@@ -525,7 +529,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_time_entry_list(ctx, delegate(bool open, IntPtr first)
+        toggl_on_time_entry_list(ctx, (open, first) =>
         {
             using (Performance.Measure("Calling OnTimeEntryList"))
             {
@@ -534,7 +538,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_time_entry_autocomplete(ctx, delegate(IntPtr first)
+        toggl_on_time_entry_autocomplete(ctx, first =>
         {
             using (Performance.Measure("Calling OnTimeEntryAutocomplete"))
             {
@@ -543,7 +547,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_mini_timer_autocomplete(ctx, delegate(IntPtr first)
+        toggl_on_mini_timer_autocomplete(ctx, first =>
         {
             using (Performance.Measure("Calling OnMinitimerAutocomplete"))
             {
@@ -552,7 +556,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_project_autocomplete(ctx, delegate(IntPtr first)
+        toggl_on_project_autocomplete(ctx, first =>
         {
             using (Performance.Measure("Calling OnProjectAutocomplete"))
             {
@@ -561,57 +565,47 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_time_entry_editor(ctx, delegate(
-            bool open,
-            IntPtr te,
-            string focused_field_name)
+        toggl_on_time_entry_editor(ctx, (open, te, focused_field_name) =>
         {
             using (Performance.Measure("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name))
             {
-                TogglTimeEntryView model = (TogglTimeEntryView)Marshal.PtrToStructure(
-                    te, typeof(TogglTimeEntryView));
-                OnTimeEntryEditor(open, model, focused_field_name);
+                OnTimeEntryEditor(open, marshalStruct<TogglTimeEntryView>(te), focused_field_name);
             }
         });
 
-        toggl_on_workspace_select(ctx, delegate(IntPtr first)
+        toggl_on_workspace_select(ctx, first =>
         {
             using (Performance.Measure("Calling OnWorkspaceSelect"))
             {
-                var list = convertToViewItemList(first);
-                OnWorkspaceSelect(list);
+                OnWorkspaceSelect(convertToViewItemList(first));
             }
         });
 
-        toggl_on_client_select(ctx, delegate(IntPtr first)
+        toggl_on_client_select(ctx, first =>
         {
             using (Performance.Measure("Calling OnClientSelect"))
             {
-                var list = convertToViewItemList(first);
-                OnClientSelect(list);
+                OnClientSelect(convertToViewItemList(first));
             }
         });
 
-        toggl_on_tags(ctx, delegate(IntPtr first)
+        toggl_on_tags(ctx, first =>
         {
             using (Performance.Measure("Calling OnTags"))
             {
-                var list = convertToViewItemList(first);
-                OnTags(list);
+                OnTags(convertToViewItemList(first));
             }
         });
 
-        toggl_on_settings(ctx, delegate(bool open, IntPtr settings)
+        toggl_on_settings(ctx, (open, settings) =>
         {
             using (Performance.Measure("Calling OnSettings"))
             {
-                TogglSettingsView model = (TogglSettingsView)Marshal.PtrToStructure(
-                    settings, typeof(TogglSettingsView));
-                OnSettings(open, model);
+                OnSettings(open, marshalStruct<TogglSettingsView>(settings));
             }
         });
 
-        toggl_on_timer_state(ctx, delegate(IntPtr te)
+        toggl_on_timer_state(ctx, te =>
         {
             if (te == IntPtr.Zero)
             {
@@ -623,14 +617,11 @@ public static partial class Toggl
             }
             using (Performance.Measure("Calling OnRunningTimerState"))
             {
-                TogglTimeEntryView view =
-                    (TogglTimeEntryView)Marshal.PtrToStructure(
-                        te, typeof(TogglTimeEntryView));
-                OnRunningTimerState(view);
+                OnRunningTimerState(marshalStruct<TogglTimeEntryView>(te));
             }
         });
 
-        toggl_on_url(ctx, delegate(string url)
+        toggl_on_url(ctx, url =>
         {
             using (Performance.Measure("Calling OnURL"))
             {
@@ -638,16 +629,19 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_idle_notification(ctx, delegate(
-            string guid,
-            string since,
-            string duration,
-            UInt64 started,
-            string description)
+        toggl_on_idle_notification(ctx, (guid, since, duration, started, description) =>
         {
             using (Performance.Measure("Calling OnIdleNotification"))
             {
                 OnIdleNotification(guid, since, duration, started, description);
+            }
+        });
+
+        toggl_on_autotracker_rules(ctx, (first, count, list) =>
+        {
+            using (Performance.Measure("Calling OnAutotrackerRules"))
+            {
+                OnAutotrackerRules(convertToAutotrackerEntryList(first));
             }
         });
     }
@@ -803,6 +797,11 @@ public static partial class Toggl
         return marshalList<TogglTimeEntryView>(
             first, n => n.Next, "marshalling time entry list");
     }
+    private static List<TogglAutotrackerRuleView> convertToAutotrackerEntryList(IntPtr first)
+    {
+        return marshalList<TogglAutotrackerRuleView>(
+            first, n => n.Next, "marshalling time entry list");
+    }
 
     private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext, string performanceMessage)
         where T : struct
@@ -831,6 +830,12 @@ public static partial class Toggl
         }
 
         return list;
+    }
+
+    private static T marshalStruct<T>(IntPtr pointer)
+        where T : struct
+    {
+        return (T)Marshal.PtrToStructure(pointer, typeof(T));
     }
 
     private static readonly DateTime UnixEpoch =
