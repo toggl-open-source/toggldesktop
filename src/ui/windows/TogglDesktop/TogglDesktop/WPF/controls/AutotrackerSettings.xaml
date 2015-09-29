@@ -34,7 +34,6 @@
             <!-- term selection -->
             <toggl:ExtendedTextBox Grid.Column="0" Grid.Row="0"
                 x:Name="termTextBox" x:FieldModifier="private"
-                LostKeyboardFocus="termTextBox_OnLostKeyboardFocus"
                 Padding="8, 0, 34, 0"/>
 
             <ToggleButton Grid.Column="0" Grid.Row="0"
@@ -45,10 +44,7 @@
             <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0"
                 x:Name="termAutoComplete" x:FieldModifier="private"
                 Target="{Binding ElementName=termTextBox}" TextBox="{Binding ElementName=termTextBox}"
-                EmptyText="No matching terms found."
-                ConfirmCompletion="termAutoComplete_OnConfirmCompletion"
-                ConfirmWithoutCompletion="termAutoComplete_OnConfirmWithoutCompletion"
-                IsOpenChanged="termAutoComplete_OnIsOpenChanged"/>
+                EmptyText="No matching terms found."/>
 
             <!-- project selection -->
             <toggl:ExtendedTextBox Grid.Column="1" Grid.Row="0"
@@ -105,11 +101,8 @@
         </Grid>
         <ScrollViewer Grid.Row="1" Style="{toggl:Resources ResourceKey=CustomScrollViewer}"
             Margin="8">
-            <StackPanel Background="White">
-                <toggl:AutotrackerRuleItem />
-                <toggl:AutotrackerRuleItem />
-                <toggl:AutotrackerRuleItem />
-
+            <StackPanel Background="White" Name="rulesPanel" x:FieldModifier="private">
+                <!-- filled programmatically -->
             </StackPanel>
         </ScrollViewer>
     </Grid>

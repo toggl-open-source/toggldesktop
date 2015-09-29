@@ -10,6 +10,16 @@
         <ResourceDictionary Source="EditViewStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+
+    <Style TargetType="Grid" x:Key="AutotrackerRulesBackground">
+        <Setter Property="Background" Value="Transparent" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#11999999"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <Style TargetType="TextBlock" x:Key="AutotrackerRulesText">
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
         <Setter Property="FontSize" Value="13.3" />
@@ -34,7 +44,7 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
-                <!--<Setter Property="Visibility" Value="Hidden"/>-->
+                <Setter Property="Visibility" Value="Hidden"/>
             </DataTrigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#33999999"/>

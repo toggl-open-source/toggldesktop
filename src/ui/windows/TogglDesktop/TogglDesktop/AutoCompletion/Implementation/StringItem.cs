@@ -8,11 +8,17 @@ namespace TogglDesktop.AutoCompletion.Implementation
     {
         private readonly Func<string, bool> hideString;
 
+        public StringItem(string item)
+            : this(item, s => true)
+        {
+        }
+
         public StringItem(string item, Func<string, bool> hideString)
             : base(item, item)
         {
             this.hideString = hideString;
         }
+
 
         public override IEnumerable<AutoCompleteItem> Complete(string[] words)
         {
