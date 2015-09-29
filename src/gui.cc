@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 
+#include "./client.h"
 #include "./const.h"
 #include "./error.h"
 #include "./formatter.h"
@@ -433,13 +434,20 @@ void GUI::DisplayAutotrackerRules(
     autotracker_view_item_clear(first);
 }
 
-void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
+void GUI::DisplayClientSelect(
+    const RelatedData &related,
+    std::vector<toggl::Client *> *clients) {
     logger().debug("DisplayClientSelect");
 
     TogglGenericView *first = nullptr;
     for (std::vector<toggl::Client *>::const_iterator it = clients->begin();
             it != clients->end(); it++) {
-        TogglGenericView *item = client_to_view_item(*it);
+        Client *c = *it;
+        Workspace *ws = nullptr;
+        if (c->WID()) {
+            ws = related.WorkspaceByID(c->WID());
+        }
+        TogglGenericView *item = client_to_view_item(c, ws);
         item->Next = first;
         first = item;
     }

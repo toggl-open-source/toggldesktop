@@ -79,6 +79,7 @@ TogglGenericView *view_item_init() {
     result->WID = 0;
     result->GUID = nullptr;
     result->Name = nullptr;
+    result->WorkspaceName = nullptr;
     return result;
 }
 
@@ -95,12 +96,17 @@ TogglGenericView *workspace_to_view_item(toggl::Workspace * const ws) {
     return result;
 }
 
-TogglGenericView *client_to_view_item(toggl::Client * const c) {
+TogglGenericView *client_to_view_item(
+    toggl::Client * const c,
+    toggl::Workspace * const ws) {
     TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(c->ID());
     result->WID = static_cast<unsigned int>(c->WID());
     result->GUID = copy_string(c->GUID());
     result->Name = copy_string(c->Name());
+    if (ws) {
+        result->WorkspaceName = copy_string(ws->Name());
+    }
     return result;
 }
 
@@ -150,6 +156,9 @@ void view_item_clear(TogglGenericView *item) {
 
     free(item->GUID);
     item->GUID = nullptr;
+
+    free(item->WorkspaceName);
+    item->WorkspaceName = nullptr;
 
     if (item->Next) {
         TogglGenericView *next =
