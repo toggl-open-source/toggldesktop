@@ -83,6 +83,8 @@ func main() {
 			fmt.Println("cp", name, *destination)
 			os.Exit(1)
 		}
+
+		fmt.Println("Successfully copied ", name, *destination);
 	}
 
 	fmt.Println(copied, "dependencies copied for", *executable)
