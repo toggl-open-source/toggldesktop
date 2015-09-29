@@ -11,7 +11,7 @@ namespace TogglDesktop
 {
 public static partial class Toggl
 {
-    private static IntPtr ctx = IntPtr.Zero;
+    #region constants and static fields
 
     public const string Project = "project";
     public const string Duration = "duration";
@@ -19,13 +19,20 @@ public static partial class Toggl
 
     public const string TagSeparator = "\t";
 
+    private static readonly DateTime UnixEpoch =
+        new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+    private static IntPtr ctx = IntPtr.Zero;
+
     // User can override some parameters when running the app
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
     public static string Env = "production";
 
-    // Callbacks
+    #endregion
+
+    #region callback delegates
 
     public delegate void DisplayApp(
         bool open);
@@ -39,7 +46,6 @@ public static partial class Toggl
 
     public delegate void DisplayURL(
         string url);
-
 
     public delegate void DisplayLogin(
         bool open,
@@ -82,6 +88,13 @@ public static partial class Toggl
 
     public delegate void DisplayAutotrackerRules(
         List<TogglAutotrackerRuleView> rules);
+
+    public delegate void DisplayAutotrackerNotification(
+        string projectName, ulong projectId);
+
+    #endregion
+
+    #region api calls
 
     public static void Clear()
     {
@@ -164,6 +177,7 @@ public static partial class Toggl
         return toggl_delete_time_entry(ctx, guid);
     }
 
+    #region changing time entry
 
     public static bool SetTimeEntryDuration(string guid, string value)
     {
@@ -210,7 +224,6 @@ public static partial class Toggl
         }
     }
 
-
     public static bool SetTimeEntryTags(string guid, List<string> tags)
     {
         using (Performance.Measure("changing time entry tags, count: {0}", tags.Count))
@@ -228,7 +241,6 @@ public static partial class Toggl
         }
     }
 
-
     public static bool SetTimeEntryDescription(string guid, string value)
     {
         using (Performance.Measure("changing time entry description"))
@@ -236,6 +248,8 @@ public static partial class Toggl
             return toggl_set_time_entry_description(ctx, guid, value);
         }
     }
+
+    #endregion
 
     public static bool Stop()
     {
@@ -361,7 +375,6 @@ public static partial class Toggl
                            tags);
     }
 
-
     public static string AddProject(
         string time_entry_guid,
         UInt64 workspace_id,
@@ -404,7 +417,6 @@ public static partial class Toggl
         return toggl_get_update_channel(ctx);
     }
 
-
     public static string UserEmail()
     {
         return toggl_get_user_email(ctx);
@@ -414,7 +426,6 @@ public static partial class Toggl
     {
         toggl_sync(ctx);
     }
-
 
     public static void SetSleep()
     {
@@ -441,7 +452,19 @@ public static partial class Toggl
         return toggl_run_script(ctx, script, ref err);
     }
 
-    // Events for C#
+    public static bool AddAutotrackerRule(string term, ulong projectId)
+    {
+        return toggl_autotracker_add_rule(ctx, term, projectId);
+    }
+
+    public static bool DeleteAutotrackerRule(long id)
+    {
+        return toggl_autotracker_delete_rule(ctx, id);
+    }
+
+    #endregion
+
+    #region callback events
 
     public static event DisplayApp OnApp = delegate { };
     public static event DisplayError OnError = delegate { };
@@ -462,34 +485,7 @@ public static partial class Toggl
     public static event DisplayURL OnURL = delegate { };
     public static event DisplayIdleNotification OnIdleNotification = delegate { };
     public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
-
-    private static void parseCommandlineParams()
-    {
-        string[] args = Environment.GetCommandLineArgs();
-        for (int i = 0; i < args.Length; i++)
-        {
-            if (args[i].Contains("script") && args[i].Contains("path"))
-            {
-                ScriptPath = args[i + 1];
-                Console.WriteLine("ScriptPath = {0}", ScriptPath);
-            }
-            else if (args[i].Contains("log") && args[i].Contains("path"))
-            {
-                LogPath = args[i + 1];
-                Console.WriteLine("LogPath = {0}", LogPath);
-            }
-            else if (args[i].Contains("db") && args[i].Contains("path"))
-            {
-                DatabasePath = args[i + 1];
-                Console.WriteLine("DatabasePath = {0}", DatabasePath);
-            }
-            else if (args[i].Contains("environment"))
-            {
-                Env = args[i + 1];
-                Console.WriteLine("Environment = {0}", Env);
-            }
-        }
-    }
+    public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -644,9 +640,47 @@ public static partial class Toggl
                 OnAutotrackerRules(convertToAutotrackerEntryList(first));
             }
         });
+
+        toggl_on_autotracker_notification(ctx, (name, id) =>
+        {
+            using (Performance.Measure("Calling OnAutotrackerNotification"))
+            {
+                OnAutotrackerNotification(name, id);
+            }
+        });
     }
 
-    // Start UI
+    #endregion
+
+    #region startup
+
+    private static void parseCommandlineParams()
+    {
+        string[] args = Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i].Contains("script") && args[i].Contains("path"))
+            {
+                ScriptPath = args[i + 1];
+                Console.WriteLine("ScriptPath = {0}", ScriptPath);
+            }
+            else if (args[i].Contains("log") && args[i].Contains("path"))
+            {
+                LogPath = args[i + 1];
+                Console.WriteLine("LogPath = {0}", LogPath);
+            }
+            else if (args[i].Contains("db") && args[i].Contains("path"))
+            {
+                DatabasePath = args[i + 1];
+                Console.WriteLine("DatabasePath = {0}", DatabasePath);
+            }
+            else if (args[i].Contains("environment"))
+            {
+                Env = args[i + 1];
+                Console.WriteLine("Environment = {0}", Env);
+            }
+        }
+    }
 
     public static bool StartUI(string version)
     {
@@ -780,6 +814,26 @@ public static partial class Toggl
         Debug("Failed to start updater process");
     }
 
+    public static bool IsUpdateCheckDisabled()
+    {
+        // On Windows platform, system admin can disable
+        // automatic update check via registry key.
+        object value = Microsoft.Win32.Registry.GetValue(
+            "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Toggl\\TogglDesktop",
+            "UpdateCheckDisabled",
+            false);
+        if (value == null)
+        {
+            return false;
+        }
+        return Convert.ToBoolean(value);
+    }
+    #endregion
+
+    #region converting data
+
+    #region high level
+
     private static List<TogglGenericView> convertToViewItemList(IntPtr first)
     {
         return marshalList<TogglGenericView>(
@@ -803,6 +857,10 @@ public static partial class Toggl
         return marshalList<TogglAutotrackerRuleView>(
             first, n => n.Next, "marshalling time entry list");
     }
+
+    #endregion
+
+    #region low level
 
     private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext, string performanceMessage)
         where T : struct
@@ -839,52 +897,9 @@ public static partial class Toggl
         return (T)Marshal.PtrToStructure(pointer, typeof(T));
     }
 
-    private static readonly DateTime UnixEpoch =
-        new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    #endregion
 
-    public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
-    {
-        return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
-    }
-
-    public static Int64 UnixFromDateTime(DateTime value)
-    {
-        TimeSpan span = (value - UnixEpoch.ToLocalTime());
-        return (Int64)span.TotalSeconds;
-    }
-
-    public static void NewError(string errmsg, bool user_error)
-    {
-        OnError(errmsg, user_error);
-    }
-
-    public static bool IsUpdateCheckDisabled()
-    {
-        // On Windows platform, system admin can disable
-        // automatic update check via registry key.
-        object value = Microsoft.Win32.Registry.GetValue(
-            "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Toggl\\TogglDesktop",
-            "UpdateCheckDisabled",
-            false);
-        if (value == null)
-        {
-            return false;
-        }
-        return Convert.ToBoolean(value);
-    }
-
-    public static bool AskToDeleteEntry(string guid)
-    {
-        var result = MessageBox.Show("Delete time entry?", "Please confirm",
-                                     MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-        if (result == MessageBoxResult.Yes)
-        {
-            return DeleteTimeEntry(guid);
-        }
-        return false;
-    }
-
+    #endregion
 
     #region getting/setting global shortcuts
 
@@ -971,5 +986,38 @@ public static partial class Toggl
     }
 
     #endregion
+
+    #region various
+
+    public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
+    {
+        return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
+    }
+
+    public static Int64 UnixFromDateTime(DateTime value)
+    {
+        TimeSpan span = (value - UnixEpoch.ToLocalTime());
+        return (Int64)span.TotalSeconds;
+    }
+
+    public static void NewError(string errmsg, bool user_error)
+    {
+        OnError(errmsg, user_error);
+    }
+
+    public static bool AskToDeleteEntry(string guid)
+    {
+        var result = MessageBox.Show("Delete time entry?", "Please confirm",
+                                     MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            return DeleteTimeEntry(guid);
+        }
+        return false;
+    }
+
+    #endregion
+
 }
 }
