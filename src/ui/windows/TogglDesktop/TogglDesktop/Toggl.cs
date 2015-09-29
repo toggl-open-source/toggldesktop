@@ -533,8 +533,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeEntryList"))
             {
-                var list = convertToTimeEntryList(first);
-                OnTimeEntryList(open, list);
+                OnTimeEntryList(open, convertToTimeEntryList(first));
             }
         });
 
@@ -542,8 +541,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeEntryAutocomplete"))
             {
-                var list = convertToAutocompleteList(first);
-                OnTimeEntryAutocomplete(list);
+                OnTimeEntryAutocomplete(convertToAutocompleteList(first));
             }
         });
 
@@ -551,8 +549,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnMinitimerAutocomplete"))
             {
-                var list = convertToAutocompleteList(first);
-                OnMinitimerAutocomplete(list);
+                OnMinitimerAutocomplete(convertToAutocompleteList(first));
             }
         });
 
@@ -560,8 +557,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnProjectAutocomplete"))
             {
-                var list = convertToAutocompleteList(first);
-                OnProjectAutocomplete(list);
+                OnProjectAutocomplete(convertToAutocompleteList(first));
             }
         });
 
