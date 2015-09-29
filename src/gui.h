@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "./autocomplete_item.h"
 #include "./https_client.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -107,7 +106,39 @@ class Autocomplete {
     , Type(0)
     , Tags("")
     , WorkspaceName("")
-    , ClientiD(0) {}
+    , ClientID(0) {}
+
+    bool IsTimeEntry() const {
+        return kAutocompleteItemTE == Type;
+    }
+    bool IsTask() const {
+        return kAutocompleteItemTask == Type;
+    }
+    bool IsProject() const {
+        return kAutocompleteItemProject == Type;
+    }
+    bool IsWorkspace() const {
+        return kAutocompleteItemWorkspace == Type;
+    }
+
+    std::string String() const {
+        std::stringstream ss;
+        ss << "AutocompleteItem"
+           << " Text=" << Text
+           << " Description=" << Description
+           << " ProjectAndTaskLabel=" << ProjectAndTaskLabel
+           << " TaskLabel=" << TaskLabel
+           << " ProjectLabel=" << ProjectLabel
+           << " ClientLabel=" << ClientLabel
+           << " ProjectColor=" << ProjectColor
+           << " TaskID=" << TaskID
+           << " ProjectID=" << ProjectID
+           << " WorkspaceID=" << WorkspaceID
+           << " Type=" << Type
+           << " WorkspaceName=" << WorkspaceName
+           << " Tags=" << Tags;
+        return ss.str();
+    }
 
     // This is what is displayed to user, includes project and task.
     std::string Text;
@@ -126,7 +157,7 @@ class Autocomplete {
     // If its a time entry, it has tags
     std::string Tags;
     std::string WorkspaceName;
-    uint64_t ClientiD;
+    uint64_t ClientID;
 
     bool operator == (const Autocomplete& other) const;
 };
@@ -307,11 +338,11 @@ class GUI : public SyncStateMonitor {
 
     void DisplayAutotrackerNotification(toggl::Project *p);
 
-    void DisplayMinitimerAutocomplete(std::vector<toggl::AutocompleteItem> *);
+    void DisplayMinitimerAutocomplete(std::vector<toggl::view::Autocomplete> *);
 
-    void DisplayTimeEntryAutocomplete(std::vector<toggl::AutocompleteItem> *);
+    void DisplayTimeEntryAutocomplete(std::vector<toggl::view::Autocomplete> *);
 
-    void DisplayProjectAutocomplete(std::vector<toggl::AutocompleteItem> *);
+    void DisplayProjectAutocomplete(std::vector<toggl::view::Autocomplete> *);
 
     void DisplayTimeEntryList(
         const bool open,
@@ -320,7 +351,9 @@ class GUI : public SyncStateMonitor {
 
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
 
-    void DisplayClientSelect(std::vector<toggl::Client *> *clients);
+    void DisplayClientSelect(
+        const RelatedData &,
+        std::vector<toggl::Client *> *);
 
     void DisplayTags(std::vector<std::string> *tags);
 

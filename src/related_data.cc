@@ -10,6 +10,7 @@
 #include "./autotracker.h"
 #include "./formatter.h"
 #include "./client.h"
+#include "./gui.h"
 #include "./project.h"
 #include "./tag.h"
 #include "./task.h"
@@ -180,7 +181,7 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
 // Description - Task. Project. Client
 void RelatedData::timeEntryAutocompleteItems(
     std::set<std::string> *unique_names,
-    std::vector<AutocompleteItem> *list) const {
+    std::vector<view::Autocomplete> *list) const {
 
     poco_check_ptr(list);
 
@@ -233,7 +234,7 @@ void RelatedData::timeEntryAutocompleteItems(
         }
         unique_names->insert(text);
 
-        AutocompleteItem autocomplete_item;
+        view::Autocomplete autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.Description = description;
         autocomplete_item.ProjectAndTaskLabel = project_task_label;
@@ -244,6 +245,7 @@ void RelatedData::timeEntryAutocompleteItems(
         }
         if (c) {
             autocomplete_item.ClientLabel = c->Name();
+            autocomplete_item.ClientID = c->ID();
         }
         if (t) {
             autocomplete_item.TaskID = t->ID();
@@ -261,7 +263,7 @@ void RelatedData::timeEntryAutocompleteItems(
 void RelatedData::taskAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<AutocompleteItem> *list) const {
+    std::vector<toggl::view::Autocomplete> *list) const {
 
     poco_check_ptr(list);
 
@@ -299,26 +301,19 @@ void RelatedData::taskAutocompleteItems(
         }
         unique_names->insert(text);
 
-        std::string client_label("");
-        if (c) {
-            client_label = c->Name();
-        }
-
-        std::string project_label("");
-        if (p) {
-            project_label = p->Name();
-        }
-
-        AutocompleteItem autocomplete_item;
+        view::Autocomplete autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
         autocomplete_item.TaskLabel = t->Name();
-        autocomplete_item.ProjectLabel = project_label;
-        autocomplete_item.ClientLabel = client_label;
         autocomplete_item.TaskID = t->ID();
+        if (c) {
+            autocomplete_item.ClientLabel = c->Name();
+            autocomplete_item.ClientID = c->ID();
+        }
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
+            autocomplete_item.ProjectLabel = p->Name();
         }
         if (ws_names) {
             autocomplete_item.WorkspaceName = (*ws_names)[t->WID()];
@@ -334,7 +329,7 @@ void RelatedData::taskAutocompleteItems(
 void RelatedData::projectAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<AutocompleteItem> *list) const {
+    std::vector<view::Autocomplete> *list) const {
 
     poco_check_ptr(list);
 
@@ -359,16 +354,14 @@ void RelatedData::projectAutocompleteItems(
         }
         unique_names->insert(text);
 
-        std::string client_label("");
-        if (c) {
-            client_label = c->Name();
-        }
-
-        AutocompleteItem autocomplete_item;
+        view::Autocomplete autocomplete_item;
         autocomplete_item.Text = text;
         autocomplete_item.ProjectAndTaskLabel = text;
         autocomplete_item.ProjectLabel = p->Name();
-        autocomplete_item.ClientLabel = client_label;
+        if (c) {
+            autocomplete_item.ClientLabel = c->Name();
+            autocomplete_item.ClientID = c->ID();
+        }
         autocomplete_item.ProjectID = p->ID();
         autocomplete_item.ProjectColor = p->ColorCode();
         if (ws_names) {
@@ -381,7 +374,7 @@ void RelatedData::projectAutocompleteItems(
 }
 
 void RelatedData::TimeEntryAutocompleteItems(
-    std::vector<AutocompleteItem> *result) const {
+    std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
 
     timeEntryAutocompleteItems(&unique_names, result);
@@ -389,7 +382,7 @@ void RelatedData::TimeEntryAutocompleteItems(
 }
 
 void RelatedData::MinitimerAutocompleteItems(
-    std::vector<AutocompleteItem> *result) const {
+    std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
 
     timeEntryAutocompleteItems(&unique_names, result);
@@ -400,7 +393,7 @@ void RelatedData::MinitimerAutocompleteItems(
 }
 
 void RelatedData::ProjectAutocompleteItems(
-    std::vector<AutocompleteItem> *result) const {
+    std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
 
     std::map<Poco::UInt64, std::string> ws_names;
@@ -415,7 +408,7 @@ void RelatedData::ProjectAutocompleteItems(
 void RelatedData::workspaceAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<AutocompleteItem> *list) const {
+    std::vector<view::Autocomplete> *list) const {
 
     // remember workspaces that have projects
     std::set<Poco::UInt64> ws_ids_with_projects;
@@ -441,7 +434,7 @@ void RelatedData::workspaceAutocompleteItems(
         std::string ws_name = Poco::UTF8::toUpper(ws->Name());
         (*ws_names)[ws->ID()] = ws_name;
 
-        AutocompleteItem autocomplete_item;
+        view::Autocomplete autocomplete_item;
         autocomplete_item.Text = ws_name;
         autocomplete_item.WorkspaceName = ws_name;
         autocomplete_item.WorkspaceID = ws->ID();

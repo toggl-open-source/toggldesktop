@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 
+#include "./client.h"
 #include "./const.h"
 #include "./error.h"
 #include "./formatter.h"
@@ -255,7 +256,7 @@ void GUI::DisplayOnlineState(const Poco::Int64 state) {
 }
 
 void GUI::DisplayTimeEntryAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -264,7 +265,7 @@ void GUI::DisplayTimeEntryAutocomplete(
 }
 
 void GUI::DisplayMinitimerAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayMinitimerAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -273,7 +274,7 @@ void GUI::DisplayMinitimerAutocomplete(
 }
 
 void GUI::DisplayProjectAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayProjectAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -433,13 +434,20 @@ void GUI::DisplayAutotrackerRules(
     autotracker_view_item_clear(first);
 }
 
-void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
+void GUI::DisplayClientSelect(
+    const RelatedData &related,
+    std::vector<toggl::Client *> *clients) {
     logger().debug("DisplayClientSelect");
 
     TogglGenericView *first = nullptr;
     for (std::vector<toggl::Client *>::const_iterator it = clients->begin();
             it != clients->end(); it++) {
-        TogglGenericView *item = client_to_view_item(*it);
+        Client *c = *it;
+        Workspace *ws = nullptr;
+        if (c->WID()) {
+            ws = related.WorkspaceByID(c->WID());
+        }
+        TogglGenericView *item = client_to_view_item(c, ws);
         item->Next = first;
         first = item;
     }
