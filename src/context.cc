@@ -397,9 +397,9 @@ void Context::updateUI(const UIElements &what) {
     TimeEntry *editor_time_entry = nullptr;
     TimeEntry *running_entry = nullptr;
 
-    std::vector<AutocompleteItem> time_entry_autocompletes;
-    std::vector<AutocompleteItem> minitimer_autocompletes;
-    std::vector<AutocompleteItem> project_autocompletes;
+    std::vector<view::Autocomplete> time_entry_autocompletes;
+    std::vector<view::Autocomplete> minitimer_autocompletes;
+    std::vector<view::Autocomplete> project_autocompletes;
 
     std::vector<Workspace *> workspaces;
     std::vector<TimeEntry *> time_entries;

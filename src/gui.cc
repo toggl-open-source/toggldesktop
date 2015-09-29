@@ -256,7 +256,7 @@ void GUI::DisplayOnlineState(const Poco::Int64 state) {
 }
 
 void GUI::DisplayTimeEntryAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -265,7 +265,7 @@ void GUI::DisplayTimeEntryAutocomplete(
 }
 
 void GUI::DisplayMinitimerAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayMinitimerAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -274,7 +274,7 @@ void GUI::DisplayMinitimerAutocomplete(
 }
 
 void GUI::DisplayProjectAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayProjectAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
