@@ -90,6 +90,7 @@ extern "C" {
         uint64_t Type;
         // If its a time entry, it has tags
         char_t *Tags;
+        char_t *WorkspaceName;
         void *Next;
     } TogglAutocompleteView;
 
