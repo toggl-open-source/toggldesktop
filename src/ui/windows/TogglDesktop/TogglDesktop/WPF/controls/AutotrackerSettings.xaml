@@ -105,7 +105,12 @@
         </Grid>
         <ScrollViewer Grid.Row="1" Style="{toggl:Resources ResourceKey=CustomScrollViewer}"
             Margin="8">
-            <StackPanel Background="White" />
+            <StackPanel Background="White">
+                <toggl:AutotrackerRuleItem />
+                <toggl:AutotrackerRuleItem />
+                <toggl:AutotrackerRuleItem />
+
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>

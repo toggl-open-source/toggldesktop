@@ -182,6 +182,9 @@
     <Compile Include="StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="UIExtensions.cs" />
+    <Compile Include="WPF\controls\AutotrackerRuleItem.xaml.cs">
+      <DependentUpon>AutotrackerRuleItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\controls\AutotrackerSettings.xaml.cs">
       <DependentUpon>AutotrackerSettings.xaml</DependentUpon>
     </Compile>
@@ -438,6 +441,10 @@
     <Resource Include="Resources\toggl-logo-white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WPF\controls\AutotrackerRuleItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPF\controls\AutotrackerSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

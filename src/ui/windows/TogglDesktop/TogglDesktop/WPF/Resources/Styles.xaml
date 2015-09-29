@@ -9,5 +9,40 @@
         <ResourceDictionary Source="TimeEntryCellStyles.xaml" />
         <ResourceDictionary Source="EditViewStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
+
+    <Style TargetType="TextBlock" x:Key="AutotrackerRulesText">
+        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="13.3" />
+        <Setter Property="Foreground" Value="#252525"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="8, 0"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="AutotrackerRulesDeleteButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="2">
+                        <Image Source="/TogglDesktop;component/Resources/icon-x.png" Margin="6" Stretch="Fill"></Image>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
+                <!--<Setter Property="Visibility" Value="Hidden"/>-->
+            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#33999999"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#66999999"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

@@ -13,6 +13,23 @@ namespace TogglDesktop.WPF
             this.InitializeComponent();
         }
 
+        #region filling from data
+
+        #endregion
+
+        #region term auto completion
+
+        #endregion
+
+        #region project auto completion
+
+        #endregion
+
+        #region adding/deleting
+
+        #endregion
+
+
         private void termTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
         }
