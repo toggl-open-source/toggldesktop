@@ -505,6 +505,78 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
+error Database::SetWindowMaximized(
+    const bool value) {
+    return setSettingsValue("window_maximized", value);
+}
+
+error Database::GetWindowMaximized(bool *result) {
+    return getSettingsValue("window_maximized", result);
+}
+
+error Database::SetWindowMinimized(
+    const bool value) {
+    return setSettingsValue("window_minimized", value);
+}
+
+error Database::GetWindowMinimized(bool *result) {
+    return getSettingsValue("window_minimized", result);
+}
+
+error Database::SetWindowEditSizeHeight(
+    const Poco::Int64 value) {
+    return setSettingsValue("window_edit_size_height", value);
+}
+
+error Database::GetWindowEditSizeHeight(Poco::Int64 *result) {
+    return getSettingsValue("window_edit_size_height", result);
+}
+
+error Database::SetWindowEditSizeWidth(
+    const Poco::Int64 value) {
+    return setSettingsValue("window_edit_size_width", value);
+}
+
+error Database::GetWindowEditSizeWidth(Poco::Int64 *result) {
+    return getSettingsValue("window_edit_size_width", result);
+}
+
+error Database::SetKeyStart(
+    const std::string value) {
+    return setSettingsValue("key_start", value);
+}
+
+error Database::GetKeyStart(std::string *result) {
+    return getSettingsValue("key_start", result);
+}
+
+error Database::SetKeyShow(
+    const std::string value) {
+    return setSettingsValue("key_show", value);
+}
+
+error Database::GetKeyShow(std::string *result) {
+    return getSettingsValue("key_show", result);
+}
+
+error Database::SetKeyModifierShow(
+    const std::string value) {
+    return setSettingsValue("key_modifier_show", value);
+}
+
+error Database::GetKeyModifierShow(std::string *result) {
+    return getSettingsValue("key_modifier_show", result);
+}
+
+error Database::SetKeyModifierStart(
+    const std::string value) {
+    return setSettingsValue("key_modifier_start", value);
+}
+
+error Database::GetKeyModifierStart(std::string *result) {
+    return getSettingsValue("key_modifier_start", result);
+}
+
 error Database::SetSettingsRemindTimes(
     const std::string &remind_starts,
     const std::string &remind_ends) {
@@ -643,7 +715,6 @@ error Database::setSettingsValue(
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
-
         *session_ <<
                   "update settings set " + field_name + " = :" + field_name,
                   useRef(value),
@@ -656,6 +727,32 @@ error Database::setSettingsValue(
         return ex;
     }
     return last_error("setSettingsValue");
+}
+
+template<typename T>
+error Database::getSettingsValue(
+    const std::string field_name,
+    T *value) {
+
+    try {
+        poco_check_ptr(session_);
+        poco_check_ptr(value);
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        *session_ <<
+                  "select " + field_name + " from settings limit 1",
+                  into(*value),
+                  limit(1),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("getSettingsValue");
 }
 
 error Database::SetSettingsReminderMinutes(

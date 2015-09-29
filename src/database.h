@@ -114,6 +114,46 @@ class Database {
         const bool &remind_sat,
         const bool &remind_sun);
 
+    error SetWindowMaximized(
+        const bool value);
+
+    error GetWindowMaximized(bool *result);
+
+    error SetWindowMinimized(
+        const bool value);
+
+    error GetWindowMinimized(bool *result);
+
+    error SetWindowEditSizeHeight(
+        const Poco::Int64 value);
+
+    error GetWindowEditSizeHeight(Poco::Int64 *result);
+
+    error SetWindowEditSizeWidth(
+        const Poco::Int64 value);
+
+    error GetWindowEditSizeWidth(Poco::Int64 *result);
+
+    error SetKeyStart(
+        const std::string value);
+
+    error GetKeyStart(std::string *result);
+
+    error SetKeyShow(
+        const std::string value);
+
+    error GetKeyShow(std::string *result);
+
+    error SetKeyModifierShow(
+        const std::string value);
+
+    error GetKeyModifierShow(std::string *result);
+
+    error SetKeyModifierStart(
+        const std::string value);
+
+    error GetKeyModifierStart(std::string *result);
+
     error LoadProxySettings(
         bool *use_proxy,
         Proxy *proxy);
@@ -180,6 +220,11 @@ class Database {
     error setSettingsValue(
         const std::string field_name,
         const T &value);
+
+    template<typename T>
+    error getSettingsValue(
+        const std::string field_name,
+        T *value);
 
     error execute(
         const std::string sql);

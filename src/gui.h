@@ -12,6 +12,7 @@
 #include "./proxy.h"
 #include "./settings.h"
 #include "./toggl_api.h"
+#include "./toggl_api_private.h"
 #include "./types.h"
 
 namespace Poco {
@@ -24,6 +25,36 @@ namespace view {
 
 class TimeEntry {
  public:
+    TimeEntry()
+        : DurationInSeconds(0)
+    , Description("")
+    , ProjectAndTaskLabel("")
+    , TaskLabel("")
+    , ProjectLabel("")
+    , ClientLabel("")
+    , WID(0)
+    , PID(0)
+    , TID(0)
+    , Duration("")
+    , Color("")
+    , GUID("")
+    , Billable(false)
+    , Tags("")
+    , Started(0)
+    , Ended(0)
+    , StartTimeString("")
+    , EndTimeString("")
+    , UpdatedAt(0)
+    , DurOnly(false)
+    , DateHeader("")
+    , DateDuration("")
+    , IsHeader(false)
+    , CanAddProjects(false)
+    , CanSeeBillable(false)
+    , DefaultWID(0)
+    , WorkspaceName("")
+    , Error(noError) {}
+
     int64_t DurationInSeconds;
     std::string Description;
     std::string ProjectAndTaskLabel;
@@ -62,6 +93,22 @@ class TimeEntry {
 
 class Autocomplete {
  public:
+    Autocomplete()
+        : Text("")
+    , Description("")
+    , ProjectAndTaskLabel("")
+    , TaskLabel("")
+    , ProjectLabel("")
+    , ClientLabel("")
+    , ProjectColor("")
+    , TaskID(0)
+    , ProjectID(0)
+    , WorkspaceID(0)
+    , Type(0)
+    , Tags("")
+    , WorkspaceName("")
+    , ClientiD(0) {}
+
     // This is what is displayed to user, includes project and task.
     std::string Text;
     // This is copied to "time_entry.description" field if item is selected
@@ -78,22 +125,62 @@ class Autocomplete {
     uint64_t Type;
     // If its a time entry, it has tags
     std::string Tags;
+    std::string WorkspaceName;
+    uint64_t ClientiD;
 
     bool operator == (const Autocomplete& other) const;
 };
 
 class Generic {
  public:
+    Generic()
+        : ID(0)
+    , WID(0)
+    , GUID("")
+    , Name("")
+    , WorkspaceName("") {}
+
     uint64_t ID;
     uint64_t WID;
     std::string GUID;
     std::string Name;
+    std::string WorkspaceName;
 
     bool operator == (const Generic& other) const;
 };
 
 class Settings {
  public:
+    Settings()
+        : UseProxy(false)
+    , ProxyHost("")
+    , ProxyPort(0)
+    , ProxyUsername("")
+    , ProxyPassword("")
+    , UseIdleDetection(false)
+    , MenubarTimer(false)
+    , MenubarProject(false)
+    , DockIcon(false)
+    , OnTop(false)
+    , Reminder(false)
+    , RecordTimeline(false)
+    , IdleMinutes(0)
+    , FocusOnShortcut(false)
+    , ReminderMinutes(0)
+    , ManualMode(false)
+    , AutodetectProxy(false)
+    , RemindMon(false)
+    , RemindTue(false)
+    , RemindWed(false)
+    , RemindThu(false)
+    , RemindFri(false)
+    , RemindSat(false)
+    , RemindSun(false)
+    , RemindStarts("")
+    , RemindEnds("")
+    , Autotrack(false)
+    , OpenEditorOnShortcut(false) {}
+
     bool UseProxy;
     std::string ProxyHost;
     uint64_t ProxyPort;
@@ -128,6 +215,12 @@ class Settings {
 
 class AutotrackerRule {
  public:
+    AutotrackerRule()
+        : ID(0)
+    , Term("")
+    , PID(0)
+    , ProjectName("") {}
+
     int64_t ID;
     std::string Term;
     uint64_t PID;
@@ -138,6 +231,14 @@ class AutotrackerRule {
 
 class TimelineEvent {
  public:
+    TimelineEvent()
+        : ID(0)
+    , Title("")
+    , Filename("")
+    , StartTime(0)
+    , EndTime(0)
+    , Idle(false) {}
+
     int64_t ID;
     std::string Title;
     std::string Filename;
@@ -182,7 +283,13 @@ class GUI : public SyncStateMonitor {
     , on_display_update_(nullptr)
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
-    , on_display_promotion_(nullptr) {}
+    , on_display_promotion_(nullptr)
+    , lastSyncState(-1)
+    , lastUnsyncedItemsCount(-1)
+    , lastDisplayLoginOpen(false)
+    , lastDisplayLoginUserID(0)
+    , lastOnlineState(-1)
+    , lastErr(noError) {}
 
     ~GUI() {}
 
@@ -394,12 +501,12 @@ class GUI : public SyncStateMonitor {
     TogglDisplayPromotion on_display_promotion_;
 
     // Cached views
-    // FIXME: zero out, por favor
     Poco::Int64 lastSyncState;
     Poco::Int64 lastUnsyncedItemsCount;
     bool lastDisplayLoginOpen;
     uint64_t lastDisplayLoginUserID;
     Poco::Int64 lastOnlineState;
+    error lastErr;
 
     Poco::Logger &logger() const;
 };

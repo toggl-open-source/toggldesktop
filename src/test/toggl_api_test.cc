@@ -1297,6 +1297,94 @@ TEST(toggl_api, concurrency) {
     }
 }
 
+TEST(toggl_api, toggl_set_window_maximized) {
+    testing::App app;
+
+    toggl_set_window_maximized(app.ctx(), true);
+    ASSERT_TRUE(toggl_get_window_maximized(app.ctx()));
+
+    toggl_set_window_maximized(app.ctx(), false);
+    ASSERT_FALSE(toggl_get_window_maximized(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_window_minimized) {
+    testing::App app;
+
+    toggl_set_window_minimized(app.ctx(), true);
+    ASSERT_TRUE(toggl_get_window_minimized(app.ctx()));
+
+    toggl_set_window_minimized(app.ctx(), false);
+    ASSERT_FALSE(toggl_get_window_minimized(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_window_edit_size_height) {
+    testing::App app;
+
+    toggl_set_window_edit_size_height(app.ctx(), 0);
+    ASSERT_EQ(0, toggl_get_window_edit_size_height(app.ctx()));
+
+    toggl_set_window_edit_size_height(app.ctx(), 123);
+    ASSERT_EQ(123, toggl_get_window_edit_size_height(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_window_edit_size_width) {
+    testing::App app;
+
+    toggl_set_window_edit_size_width(app.ctx(), -10);
+    ASSERT_EQ(-10, toggl_get_window_edit_size_width(app.ctx()));
+
+    toggl_set_window_edit_size_width(app.ctx(), 1234);
+    ASSERT_EQ(1234, toggl_get_window_edit_size_width(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_key_start) {
+    testing::App app;
+
+    toggl_set_key_start(app.ctx(), "a");
+    char_t *res = toggl_get_key_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("a", std::string(res));
+    free(res);
+
+    toggl_set_key_start(app.ctx(), "");
+    res = toggl_get_key_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("", std::string(res));
+    free(res);
+}
+
+TEST(toggl_api, toggl_set_key_show) {
+    testing::App app;
+
+    toggl_set_key_show(app.ctx(), "a");
+    char_t *res = toggl_get_key_show(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("a", std::string(res));
+    free(res);
+
+    toggl_set_key_show(app.ctx(), "");
+    res = toggl_get_key_show(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("", std::string(res));
+    free(res);
+}
+
+TEST(toggl_api, toggl_set_key_modifier_start) {
+    testing::App app;
+
+    toggl_set_key_modifier_start(app.ctx(), "a");
+    char_t *res = toggl_get_key_modifier_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("a", std::string(res));
+    free(res);
+
+    toggl_set_key_modifier_start(app.ctx(), "");
+    res = toggl_get_key_modifier_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("", std::string(res));
+    free(res);
+}
+
 TEST(toggl_api, toggl_start_with_tags) {
     testing::App app;
     std::string json = loadTestData();

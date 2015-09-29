@@ -1043,6 +1043,70 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.window_maximized",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_maximized INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.window_minimized",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_minimized INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.window_edit_size_height",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_edit_size_height INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.window_edit_size_width",
+        "ALTER TABLE settings "
+        "ADD COLUMN window_edit_size_width INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.key_start",
+        "ALTER TABLE settings "
+        "ADD COLUMN key_start varchar not null default ''");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.key_show",
+        "ALTER TABLE settings "
+        "ADD COLUMN key_show varchar not null default '';");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.key_modifier_show",
+        "ALTER TABLE settings "
+        "ADD COLUMN key_modifier_show varchar not null default '';");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.key_modifier_start",
+        "ALTER TABLE settings "
+        "ADD COLUMN key_modifier_start varchar not null default '';");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

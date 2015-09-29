@@ -1,6 +1,6 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -32,6 +32,7 @@ namespace TogglDesktop.WPF
         private AboutWindow aboutWindow;
         private FeedbackWindow feedbackWindow;
         private EditViewPopup editPopup;
+        private IdleNotificationWindow idleNotificationWindow;
 
         private bool remainOnTop;
 
@@ -39,6 +40,7 @@ namespace TogglDesktop.WPF
         private bool isInManualMode;
         private bool isTracking;
         private bool isResizingWithHandle;
+        private bool closing;
 
         #endregion
 
@@ -95,13 +97,15 @@ namespace TogglDesktop.WPF
                 this.aboutWindow = new AboutWindow(),
                 this.feedbackWindow = new FeedbackWindow(),
                 new PreferencesWindow(),
-                new IdleNotificationWindow(),
+                this.idleNotificationWindow = new IdleNotificationWindow(),
             };
 
             this.timerEntryListView.SetEditPopup(this.editPopup.EditView);
 
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
+
+            this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.showOnTop();
 
             this.IsVisibleChanged += this.ownChildWindows;
         }
@@ -339,6 +343,18 @@ namespace TogglDesktop.WPF
             Toggl.SetWake();
 
             base.OnActivated(e);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (this.closing)
+            {
+                base.OnClosing(e);
+            }
+            else
+            {
+                this.shutdown(0);   
+            }
         }
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
@@ -638,8 +654,7 @@ namespace TogglDesktop.WPF
             try
             {
                 this.startHook.ChangeTo(
-                    Properties.Settings.Default.StartModifiers,
-                    Properties.Settings.Default.StartKey
+                    Toggl.GetKeyModifierStart(), Toggl.GetKeyStart()
                     );
             }
             catch (Exception e)
@@ -650,8 +665,7 @@ namespace TogglDesktop.WPF
             try
             {
                 this.showHook.ChangeTo(
-                    Properties.Settings.Default.ShowModifiers,
-                    Properties.Settings.Default.ShowKey
+                    Toggl.GetKeyModifierShow(), Toggl.GetKeyShow()
                     );
             }
             catch (Exception e)
@@ -691,6 +705,8 @@ namespace TogglDesktop.WPF
 
         private void shutdown(int exitCode)
         {
+            this.closing = true;
+
             if (this.taskbarIcon != null)
             {
                 this.taskbarIcon.Visibility = Visibility.Collapsed;

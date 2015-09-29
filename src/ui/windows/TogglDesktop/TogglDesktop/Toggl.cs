@@ -244,25 +244,6 @@ public static partial class Toggl
         return toggl_discard_time_at(ctx, guid, at, split);
     }
 
-    public static bool SetWindowSettings(
-        Int64 x,
-        Int64 y,
-        Int64 h,
-        Int64 w)
-    {
-        return toggl_set_window_settings(ctx, x, y, h, w);
-    }
-
-
-    public static bool WindowSettings(
-        ref Int64 x,
-        ref Int64 y,
-        ref Int64 h,
-        ref Int64 w)
-    {
-        return toggl_window_settings(ctx, ref x, ref y, ref h, ref w);
-    }
-
     public static bool SetSettings(TogglSettingsView settings)
     {
         if (!toggl_set_settings_use_idle_detection(ctx,
@@ -932,5 +913,92 @@ public static partial class Toggl
         }
         return false;
     }
+
+
+    #region getting/setting global shortcuts
+
+    public static void SetKeyStart(string key)
+    {
+        toggl_set_key_start(ctx, key);
+    }
+    public static string GetKeyStart()
+    {
+        return toggl_get_key_start(ctx);
+    }
+    public static void SetKeyShow(string key)
+    {
+        toggl_set_key_show(ctx, key);
+    }
+    public static string GetKeyShow()
+    {
+        return toggl_get_key_show(ctx);
+    }
+    public static void SetKeyModifierShow(ModifierKeys mods)
+    {
+        toggl_set_key_modifier_show(ctx, mods.ToString());
+    }
+    public static ModifierKeys GetKeyModifierShow()
+    {
+        var s = toggl_get_key_modifier_show(ctx);
+        if (string.IsNullOrWhiteSpace(s))
+            return ModifierKeys.None;
+        return (ModifierKeys)Enum.Parse(typeof(ModifierKeys), s, true);
+    }
+    public static void SetKeyModifierStart(ModifierKeys mods)
+    {
+        toggl_set_key_modifier_start(ctx, mods.ToString());
+    }
+    public static ModifierKeys GetKeyModifierStart()
+    {
+        var s = toggl_get_key_modifier_start(ctx);
+        if(string.IsNullOrWhiteSpace(s))
+            return ModifierKeys.None;
+        return (ModifierKeys)Enum.Parse(typeof(ModifierKeys), s, true);
+    }
+
+    #endregion
+
+    #region getting/setting window settings
+
+    public static void SetWindowMaximized(bool maximised)
+    {
+        toggl_set_window_maximized(ctx, maximised);
+    }
+    public static bool GetWindowMaximized()
+    {
+        return toggl_get_window_maximized(ctx);
+    }
+    public static void SetWindowMinimized(bool minimized)
+    {
+        toggl_set_window_minimized(ctx, minimized);
+    }
+    public static bool GetWindowMinimized()
+    {
+        return toggl_get_window_minimized(ctx);
+    }
+
+    public static void SetEditViewWidth(long width)
+    {
+        toggl_set_window_edit_size_width(ctx, width);
+    }
+    public static long GetEditViewWidth()
+    {
+        return toggl_get_window_edit_size_width(ctx);
+    }
+
+    public static bool SetWindowSettings(
+        long x, long y, long h, long w)
+    {
+        return toggl_set_window_settings(ctx, x, y, h, w);
+    }
+
+
+    public static bool WindowSettings(
+        ref long x, ref long y, ref long h, ref long w)
+    {
+        return toggl_window_settings(ctx, ref x, ref y, ref h, ref w);
+    }
+
+    #endregion
 }
 }
