@@ -166,7 +166,7 @@ namespace TogglDesktop.WPF
 
         private void setText(ExtendedTextBox textBox, string text, bool evenIfFocused)
         {
-            if (evenIfFocused || textBox.IsKeyboardFocused)
+            if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
                 textBox.SetText(text);
             }
@@ -174,7 +174,7 @@ namespace TogglDesktop.WPF
 
         private static void setTime(ExtendedTextBox textBox, string time, bool evenIfFocused)
         {
-            if (evenIfFocused || textBox.IsKeyboardFocused)
+            if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
                 textBox.SetText(time);
                 textBox.Tag = time;
