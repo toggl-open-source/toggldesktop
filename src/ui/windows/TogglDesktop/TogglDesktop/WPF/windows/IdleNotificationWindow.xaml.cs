@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace TogglDesktop.WPF
@@ -7,6 +8,8 @@ namespace TogglDesktop.WPF
     {
         private string guid;
         private ulong started;
+
+        public event EventHandler AddedIdleTimeAsNewEntry;
 
         public IdleNotificationWindow()
         {
@@ -71,6 +74,8 @@ namespace TogglDesktop.WPF
         {
             Toggl.DiscardTimeAt(this.guid, this.started, true);
             this.Hide();
+            if (this.AddedIdleTimeAsNewEntry != null)
+                this.AddedIdleTimeAsNewEntry(this, EventArgs.Empty);
         }
     }
 }

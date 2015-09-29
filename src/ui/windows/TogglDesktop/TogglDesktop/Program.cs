@@ -67,10 +67,11 @@ static class Program
 
             bugsnag = new Bugsnag.Clients.BaseClient("2a46aa1157256f759053289f2d687c2f");
 
-            if (Properties.Settings.Default != null)
-            {
-                bugsnag.Config.ReleaseStage = Properties.Settings.Default.Environment;
-            }
+#if INVS
+            bugsnag.Config.ReleaseStage = "development";
+#else
+            bugsnag.Config.ReleaseStage = "production";
+#endif
 
             Toggl.OnLogin += delegate(bool open, UInt64 user_id)
             {
@@ -82,7 +83,7 @@ static class Program
                 Toggl.Debug(errmsg);
                 try
                 {
-                    if (!user_error && Properties.Settings.Default.Environment != "development")
+                    if (!user_error && bugsnag.Config.ReleaseStage != "development")
                     {
                         notifyBugsnag(new Exception(errmsg));
                     }
