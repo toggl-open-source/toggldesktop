@@ -44,16 +44,15 @@
             <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0"
                 x:Name="termAutoComplete" x:FieldModifier="private"
                 Target="{Binding ElementName=termTextBox}" TextBox="{Binding ElementName=termTextBox}"
-                EmptyText="No matching terms found."/>
+                EmptyText="No matching terms found."
+                IsOpenChanged="termAutoComplete_OnIsOpenChanged"/>
 
             <!-- project selection -->
             <toggl:ExtendedTextBox Grid.Column="1" Grid.Row="0"
                 x:Name="projectTextBox" x:FieldModifier="private"
-                LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
                 Padding="28, 0, 34, 0"
-                PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
-                
-
+                LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"/>
+            
             <ToggleButton Grid.Column="1" Grid.Row="0"
                 x:Name="projectDropDownButton" x:FieldModifier="private"
                 Style="{StaticResource AutoCompleteTextFieldButton}"
