@@ -8,6 +8,7 @@
         <ResourceDictionary Source="LoginViewStyles.xaml" />
         <ResourceDictionary Source="TimeEntryCellStyles.xaml" />
         <ResourceDictionary Source="EditViewStyles.xaml" />
+        <ResourceDictionary Source="AutotrackerNotificationStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 

@@ -59,6 +59,7 @@ namespace TogglDesktop.WPF
             this.initializeContextMenu();
             this.initializeTaskbarIcon();
             this.initializeWindows();
+            this.initializeCustomNotifications();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
@@ -69,6 +70,11 @@ namespace TogglDesktop.WPF
         }
 
         #region setup
+
+        private void initializeCustomNotifications()
+        {
+            new AutotrackerNotification(this.taskbarIcon, this);
+        }
 
         private void initializeContextMenu()
         {
@@ -105,7 +111,7 @@ namespace TogglDesktop.WPF
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
 
-            this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.showOnTop();
+            this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.ShowOnTop();
 
             this.IsVisibleChanged += this.ownChildWindows;
         }
@@ -398,7 +404,7 @@ namespace TogglDesktop.WPF
 
         private void onTrayBalloonTipClicked(object sender, RoutedEventArgs e)
         {
-            this.showOnTop();
+            this.ShowOnTop();
         }
 
         private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -639,7 +645,7 @@ namespace TogglDesktop.WPF
             }
             else
             {
-                this.showOnTop();
+                this.ShowOnTop();
             }
         }
 
@@ -694,7 +700,7 @@ namespace TogglDesktop.WPF
             }
         }
 
-        private void showOnTop()
+        public void ShowOnTop()
         {
             this.Show();
             if (this.WindowState == WindowState.Minimized)
