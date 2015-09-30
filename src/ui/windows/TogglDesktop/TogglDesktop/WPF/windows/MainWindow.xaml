@@ -124,7 +124,7 @@
             <Separator />
             <MenuItem Header="Clear Cache"
                       Command="{StaticResource ClearCacheCommand}"/>
-            <MenuItem Header="Send Feedack"
+            <MenuItem Header="Send Feedback"
                       Command="{StaticResource SendFeedbackCommand}"/>
             <MenuItem Header="About"
                       Command="{StaticResource AboutCommand}"/>
