@@ -196,7 +196,6 @@
     <ClCompile Include="..\..\..\..\third_party\lua\src\lvm.c" />
     <ClCompile Include="..\..\..\..\third_party\lua\src\lzio.c" />
     <ClCompile Include="..\..\..\analytics.cc" />
-    <ClCompile Include="..\..\..\autocomplete_item.cc" />
     <ClCompile Include="..\..\..\autotracker.cc" />
     <ClCompile Include="..\..\..\base_model.cc" />
     <ClCompile Include="..\..\..\batch_update_result.cc" />

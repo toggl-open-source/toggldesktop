@@ -218,9 +218,6 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\autocomplete_item.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\base_model.cc">
       <Filter>Source Files</Filter>
     </ClCompile>

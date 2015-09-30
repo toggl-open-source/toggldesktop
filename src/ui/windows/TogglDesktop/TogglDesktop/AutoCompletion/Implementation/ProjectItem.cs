@@ -6,7 +6,12 @@ namespace TogglDesktop.AutoCompletion.Implementation
 {
     class NoProjectItem : ProjectItem
     {
-        public NoProjectItem()
+        public static IAutoCompleteListItem Create()
+        {
+            return new NoProjectItem();
+        }
+
+        private NoProjectItem()
             : base(new Toggl.TogglAutocompleteView())
         {
         }
@@ -26,7 +31,12 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
     class ProjectItem : SimpleItem<ProjectEntry, Toggl.TogglAutocompleteView>
     {
-        public ProjectItem(Toggl.TogglAutocompleteView item)
+        public static ProjectItem Create(Toggl.TogglAutocompleteView item)
+        {
+            return new ProjectItem(item);
+        }
+
+        protected ProjectItem(Toggl.TogglAutocompleteView item)
             : base(item, createAutocompletionString(item))
         {
         }
