@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -227,29 +228,38 @@ namespace TogglDesktop.WPF
             return ret;
         }
 
-        private void saveButtonClicked(object sender, RoutedEventArgs e)
+        private async void saveButtonClicked(object sender, RoutedEventArgs e)
         {
             try
             {
                 this.isSaving = true;
-
-                using (Performance.Measure("saving global sortcuts"))
-                {
-                    this.saveShortCuts();
-                }
-
+                this.IsEnabled = false;
+                
                 using (Performance.Measure("saving settings"))
                 {
                     var settings = this.createSettingsFromUI();
 
-                    if (Toggl.SetSettings(settings))
+                    var success = await Task.Run(() => this.save(settings));
+
+                    if (success)
                         this.Hide();
                 }
             }
             finally
             {
+                this.IsEnabled = true;
                 this.isSaving = false;
             }
+        }
+
+        private bool save(Toggl.TogglSettingsView settings)
+        {
+            using (Performance.Measure("saving global shortcuts"))
+            {
+                this.saveShortCuts();
+            }
+
+            return Toggl.SetSettings(settings);
         }
 
         private void saveShortCuts()
