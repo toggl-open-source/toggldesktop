@@ -159,7 +159,7 @@ namespace TogglDesktop.WPF
 
         private void onAddButtonClick(object sender, RoutedEventArgs e)
         {
-            if (Toggl.AddAutotrackerRule(this.termTextBox.Text, this.selectedProject.ProjectID))
+            if (Toggl.AddAutotrackerRule(this.termTextBox.Text, this.selectedProject.ProjectID) != 0)
             {
                 this.reset();
             }

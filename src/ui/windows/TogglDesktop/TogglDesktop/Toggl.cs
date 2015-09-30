@@ -452,7 +452,7 @@ public static partial class Toggl
         return toggl_run_script(ctx, script, ref err);
     }
 
-    public static bool AddAutotrackerRule(string term, ulong projectId)
+    public static long AddAutotrackerRule(string term, ulong projectId)
     {
         return toggl_autotracker_add_rule(ctx, term, projectId);
     }
