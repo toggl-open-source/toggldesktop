@@ -79,6 +79,7 @@ extern void *ctx;
 											   object:nil];
 
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
+	[self.defaultProject setEnabled:self.user_id != 0];
 
 	[self displaySettings:self.originalCmd];
 
@@ -249,8 +250,8 @@ const int kUseProxyToConnectToToggl = 2;
 	self.user_id = cmd.user_id;
 
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
-
 	[self.defaultProject setEnabled:self.user_id != 0];
+
 	if (!self.user_id)
 	{
 		self.defaultProject.stringValue = @"";
