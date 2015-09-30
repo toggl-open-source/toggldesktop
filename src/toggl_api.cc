@@ -1023,7 +1023,7 @@ bool_t toggl_set_promotion_response(
 
 char_t *toggl_run_script(
     void *context,
-    const char* script,
+    const char_t* script,
     int64_t *err) {
 
     lua_State *L = luaL_newstate();
@@ -1031,7 +1031,7 @@ char_t *toggl_run_script(
     toggl_register_lua(context, L);
     lua_settop(L, 0);
 
-    *err = luaL_loadstring(L, script);
+    *err = luaL_loadstring(L, to_string(script).c_str());
     if (*err) {
         return copy_string(lua_tostring(L, -1));
     }
