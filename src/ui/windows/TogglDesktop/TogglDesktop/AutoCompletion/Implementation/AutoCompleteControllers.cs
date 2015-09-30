@@ -43,52 +43,24 @@ namespace TogglDesktop.AutoCompletion.Implementation
             return new AutoCompleteController(list, string.Format("Strings({0})", list.Count));
         }
 
-        public static AutoCompleteController ForProjects(
-            List<Toggl.TogglAutocompleteView> projects, List<Toggl.TogglGenericView> clients, List<Toggl.TogglGenericView> workspaces)
+        public static AutoCompleteController ForProjects(List<Toggl.TogglAutocompleteView> projects)
         {
-            var workspaceLookup = workspaces.ToDictionary(w => w.ID);
-            var clientLookup = clients.GroupBy(c => c.WID).ToDictionary(
-                c => c.Key, cs => cs.ToDictionary(c => c.Name)
-                );
-            
-            Func<Toggl.TogglAutocompleteView, Toggl.TogglGenericView> getClientOfProject =
-                p =>
-                {
-                    var client = default(Toggl.TogglGenericView);
-                    if (string.IsNullOrEmpty(p.ClientLabel))
-                        return client;
-
-                    Dictionary<string, Toggl.TogglGenericView> clientDictionary;
-                    if (clientLookup.TryGetValue(p.WorkspaceID, out clientDictionary))
-                        clientDictionary.TryGetValue(p.ClientLabel, out client);
-
-                    return client;
-                };
-
             // categorise by workspace and client
-            var list = ((IAutoCompleteListItem)new NoProjectItem())
+            var list = NoProjectItem.Create()
                 .Prepend(projects
                     .Where(p => p.ProjectID != 0) // TODO: get rid of these at an earlier stage (they are workspace entries which are not needed anymore)
                     .GroupBy(p => p.WorkspaceID)
                     .Select(ps => new WorkspaceCategory(
-                        workspaceLookup[ps.Key].Name,
-                        ps
-                            //.Where(p =>
-                            //{
-                            //    var knownWorkspace = workspaceLookup.ContainsKey(p.WorkspaceID);
-                            //    if(!knownWorkspace)
-                            //        Console.WriteLine("Autocomplete contains project({0}) with unknown workspace({1}).", p.ProjectID, p.WorkspaceID);
-                            //    return knownWorkspace;
-                            //})
-                            .GroupBy(p => getClientOfProject(p).ID)
+                        ps.First().WorkspaceName,
+                        ps.GroupBy(p => p.ClientID)
                             .OrderBy(g => g.Key != 0) // TODO: decide how clients should be sorted
                             .Select(c =>
                             {
-                                var projectItems = c.Select(p2 => new ProjectItem(p2));
+                                var projectItems = c.Select(ProjectItem.Create);
                                 if (c.Key == 0)
                                     return projectItems;
                                 var clientName = c.First().ClientLabel;
-                                return new ClientCategory(clientName, projectItems.Cast<IAutoCompleteListItem>().ToList()).Yield<IAutoCompleteListItem>();
+                                return new ClientCategory(clientName, projectItems.ToList<IAutoCompleteListItem>()).Yield<IAutoCompleteListItem>();
                             })
                             .SelectMany(i => i).ToList()
                         ))
@@ -106,18 +78,15 @@ namespace TogglDesktop.AutoCompletion.Implementation
             return new AutoCompleteController(list, string.Format("Descriptions({0})", list.Count));
         }
 
-        public static AutoCompleteController ForClients(
-            List<Toggl.TogglGenericView> clients, List<Toggl.TogglGenericView> workspaces)
+        public static AutoCompleteController ForClients(List<Toggl.TogglGenericView> clients)
         {
-            var workspaceLookup = workspaces.ToDictionary(w => w.ID);
-
             // categorise by workspace
             var list =
                 ((IAutoCompleteListItem)new NoClientItem()).Prepend(
                     clients.GroupBy(c => c.WID).Select(
                         cs =>
-                            new WorkspaceCategory(workspaceLookup[cs.Key].Name, cs.Select(
-                                c => new ModelItem(c)).Cast<IAutoCompleteListItem>().ToList()
+                            new WorkspaceCategory(cs.First().WorkspaceName,
+                                cs.Select(ModelItem.Create).ToList<IAutoCompleteListItem>()
                                 )
                     )
                 ).ToList();

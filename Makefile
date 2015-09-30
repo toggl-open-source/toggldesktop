@@ -412,9 +412,6 @@ build/migrations.o: src/migrations.cc
 build/database.o: src/database.cc
 	$(cxx) $(cflags) -c src/database.cc -o build/database.o
 
-build/autocomplete_item.o: src/autocomplete_item.cc
-	$(cxx) $(cflags) -c src/autocomplete_item.cc -o build/autocomplete_item.o
-
 build/feedback.o: src/feedback.cc
 	$(cxx) $(cflags) -c src/feedback.cc -o build/feedback.o
 
@@ -490,7 +487,6 @@ objects: build/jsoncpp.o \
 	build/formatter.o \
 	build/model_change.o \
 	build/database.o \
-	build/autocomplete_item.o \
 	build/feedback.o \
 	build/error.o \
 	build/gui.o \

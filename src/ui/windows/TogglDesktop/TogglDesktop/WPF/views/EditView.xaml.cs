@@ -166,7 +166,7 @@ namespace TogglDesktop.WPF
 
         private void setText(ExtendedTextBox textBox, string text, bool evenIfFocused)
         {
-            if (evenIfFocused || textBox.IsKeyboardFocused)
+            if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
                 textBox.SetText(text);
             }
@@ -174,7 +174,7 @@ namespace TogglDesktop.WPF
 
         private static void setTime(ExtendedTextBox textBox, string time, bool evenIfFocused)
         {
-            if (evenIfFocused || textBox.IsKeyboardFocused)
+            if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
                 textBox.SetText(time);
                 textBox.Tag = time;
@@ -227,7 +227,10 @@ namespace TogglDesktop.WPF
 
             this.projects = list;
 
-            this.tryUpdatingProjectAutoComplete();
+            using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
+            {
+                this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            }
         }
 
         private void onClientSelect(List<Toggl.TogglGenericView> list)
@@ -237,33 +240,9 @@ namespace TogglDesktop.WPF
 
             this.clients = list;
 
-            this.tryUpdatingClientAutoComplete();
-            this.tryUpdatingProjectAutoComplete();
-        }
-
-        private void tryUpdatingProjectAutoComplete()
-        {
-            if (this.projects == null || this.clients == null || this.workspaces == null)
-                return;
-
-            using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
-            {
-                this.projectAutoComplete.SetController(
-                    AutoCompleteControllers.ForProjects(this.projects, this.clients, this.workspaces)
-                    );
-            }
-        }
-        
-        private void tryUpdatingClientAutoComplete()
-        {
-            if (this.clients == null || this.workspaces == null)
-                return;
-
             using (Performance.Measure("building edit view client auto complete controller, {0} items", this.clients.Count))
             {
-                this.clientAutoComplete.SetController(
-                    AutoCompleteControllers.ForClients(this.clients, this.workspaces)
-                    );
+                this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list));
             }
         }
 
@@ -289,9 +268,6 @@ namespace TogglDesktop.WPF
             {
                 this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
             }
-
-            this.tryUpdatingClientAutoComplete();
-            this.tryUpdatingProjectAutoComplete();
         }
 
         #endregion

@@ -47,8 +47,13 @@ cp $QPATH/plugins/platforms/libqxcb.so $out/platforms/.
 
 (chrpath -r "\$ORIGIN/lib" $out/platforms/* || true)
 
+echo "-- DEPENDENCIES for libqxcb --"
+ldd $(pwd)/$out/platforms/libqxcb.so
+
 go run src/ui/linux/copy_deps.go --executable $(pwd)/$out/platforms/libqxcb.so --destination $(pwd)/$out/lib
 
+echo "-- DEPENDENCIES for TogglDesktop --"
+ldd $(pwd)/$out/TogglDesktop
 go run src/ui/linux/copy_deps.go --executable $(pwd)/$out/TogglDesktop --destination $(pwd)/$out/lib
 
 chrpath -r "\$ORIGIN/lib" $out/TogglDesktop

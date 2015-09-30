@@ -16,7 +16,6 @@ CONFIG(debug, debug|release) {
 }   
 
 SOURCES += \
-    ../../../autocomplete_item.cc \
     ../../../base_model.cc \
     ../../../batch_update_result.cc \
     ../../../client.cc \
@@ -88,7 +87,6 @@ SOURCES += \
     ../../../../third_party/lua/src/lzio.c
 
 HEADERS += \
-    ../../../autocomplete_item.h \
     ../../../base_model.h \
     ../../../batch_update_result.h \
     ../../../client.h \

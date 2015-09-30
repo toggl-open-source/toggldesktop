@@ -90,6 +90,8 @@ extern "C" {
         uint64_t Type;
         // If its a time entry, it has tags
         char_t *Tags;
+        char_t *WorkspaceName;
+        uint64_t ClientID;
         void *Next;
     } TogglAutocompleteView;
 
@@ -98,6 +100,7 @@ extern "C" {
         uint64_t WID;
         char_t *GUID;
         char_t *Name;
+        char_t *WorkspaceName;
         void *Next;
     } TogglGenericView;
 

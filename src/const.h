@@ -81,4 +81,9 @@
 
 #define kPromotionJoinBetaChannel 1
 
+#define kAutocompleteItemTE  0
+#define kAutocompleteItemTask 1
+#define kAutocompleteItemProject 2
+#define kAutocompleteItemWorkspace 3
+
 #endif  // SRC_CONST_H_
