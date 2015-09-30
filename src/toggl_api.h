@@ -777,7 +777,7 @@ extern "C" {
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_run_script(
         void *context,
-        const char *script,
+        const char_t *script,
         int64_t *err);
 
     TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
