@@ -20,9 +20,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ButtonBase">
                         <Border Background="{TemplateBinding Background}" CornerRadius="2">
-                            <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Stretch="Fill" />
+                            <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -30,7 +28,6 @@
             <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
             <Setter Property="Height" Value="26"/>
             <Setter Property="Width" Value="26"/>
-            <Setter Property="Padding" Value="4"/>
             <Setter Property="Margin" Value="2"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -43,14 +40,21 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <!-- ReSharper disable once Xaml.RedundantResource -->
+        <Storyboard x:Key="RotateSpinner" BeginTime="00:00:00.000" Duration="00:00:1.000" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="spinnerImage"
+                Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(RotateTransform.Angle)" 
+                From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
+        </Storyboard>
     </UserControl.Resources>
 
     <StackPanel>
         <Rectangle Height="4">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#00000000" Offset="0" />
-                    <GradientStop Color="#33000000" Offset="1" />
+                    <GradientStop Color="#00000000" Offset="0"/>
+                    <GradientStop Color="#33000000" Offset="1"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
@@ -63,11 +67,20 @@
             <TextBlock Grid.Column="0"
                        x:Name="statusText" x:FieldModifier="private"
                        Text="Status: No status."/>
+            
             <Button Grid.Column="1"
                     x:Name="syncButton" x:FieldModifier="private"
-                    Click="onSyncButtonClick"
-                    Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"
-                    />
+                    Click="onSyncButtonClick">
+                <Image Source="/TogglDesktop;component/Resources/syncing-spinner.png"
+                    Name="spinnerImage" x:FieldModifier="private"
+                    Stretch="Fill" Width="16" Height="16"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image.LayoutTransform>
+                        <RotateTransform Angle="0"/>
+                    </Image.LayoutTransform>
+                </Image>
+            </Button>
+            
         </Grid>
     </StackPanel>
 </UserControl>

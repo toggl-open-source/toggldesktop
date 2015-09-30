@@ -1,18 +1,25 @@
 ﻿
 using System;
 using System.Windows;
+using System.Windows.Media.Animation;
 
 namespace TogglDesktop.WPF
 {
     public partial class StatusBar
     {
+        private readonly Storyboard spinnerAnimation;
+
         private Toggl.OnlineState onlineState;
         private long unsyncedItems;
         private Toggl.SyncState syncState;
+        private bool spinnerIsAnimating;
 
         public StatusBar()
         {
             this.InitializeComponent();
+
+            this.spinnerAnimation = (Storyboard)this.Resources["RotateSpinner"];
+
             Toggl.OnDisplaySyncState += this.onDisplaySyncState;
             Toggl.OnDisplayUnsyncedItems += this.onDisplayUnsyncedItems;
             Toggl.OnOnlineState += this.onOnlineState;
@@ -61,12 +68,14 @@ namespace TogglDesktop.WPF
         {
             if (!Program.IsLoggedIn)
             {
+                this.stopSpinnerAnimation();
                 this.Hide();
                 return;
             }
 
             if (this.onlineState != Toggl.OnlineState.Online)
             {
+                this.stopSpinnerAnimation();
                 this.statusText.Text = "Offline";
                 this.syncButton.Visibility = Visibility.Collapsed;
                 this.Visibility = Visibility.Visible;
@@ -77,6 +86,8 @@ namespace TogglDesktop.WPF
             {
                 case Toggl.SyncState.Idle:
                 {
+                    this.stopSpinnerAnimation();
+
                     if (this.unsyncedItems == 0)
                     {
                         this.Hide();
@@ -87,6 +98,8 @@ namespace TogglDesktop.WPF
                 }
                 case Toggl.SyncState.Syncing:
                 {
+                    this.startSpinnerAnimation();
+
                     this.statusText.Text = "Syncing...";
                     break;
                 }
@@ -95,6 +108,26 @@ namespace TogglDesktop.WPF
             }
             this.syncButton.Visibility = Visibility.Visible;
             this.Visibility = Visibility.Visible;
+        }
+
+        private void stopSpinnerAnimation()
+        {
+            if (!this.spinnerIsAnimating)
+                return;
+
+            this.spinnerAnimation.Stop();
+            this.spinnerIsAnimating = false;
+            this.syncButton.IsEnabled = true;
+        }
+
+        private void startSpinnerAnimation()
+        {
+            if (this.spinnerIsAnimating)
+                return;
+
+            this.spinnerAnimation.Begin();
+            this.spinnerIsAnimating = true;
+            this.syncButton.IsEnabled = false;
         }
 
         private void onSyncButtonClick(object sender, RoutedEventArgs e)

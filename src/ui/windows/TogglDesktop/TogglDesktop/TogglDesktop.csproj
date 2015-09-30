@@ -615,7 +615,9 @@
   <ItemGroup>
     <Resource Include="Resources\ic_cog_grey600_36dp.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\syncing-spinner.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
