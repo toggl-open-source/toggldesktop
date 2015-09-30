@@ -974,11 +974,13 @@ error Database::LoadUserByID(
         std::string timeofday_format("");
         std::string duration_format("");
         std::string offline_data("");
+        Poco::UInt64 default_pid(0);
         *session_ <<
                   "select local_id, id, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
-                  "timeofday_format, duration_format, offline_data "
+                  "timeofday_format, duration_format, offline_data, "
+                  "default_pid "
                   "from users where id = :id limit 1",
                   into(local_id),
                   into(id),
@@ -991,6 +993,7 @@ error Database::LoadUserByID(
                   into(timeofday_format),
                   into(duration_format),
                   into(offline_data),
+                  into(default_pid),
                   useRef(UID),
                   limit(1),
                   now;
@@ -1016,6 +1019,7 @@ error Database::LoadUserByID(
         user->SetTimeOfDayFormat(timeofday_format);
         user->SetDurationFormat(duration_format);
         user->SetOfflineData(offline_data);
+        user->SetDefaultPID(default_pid);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2859,7 +2863,8 @@ error Database::SaveUser(
                           " :store_start_and_stop_time, "
                           "timeofday_format = :timeofday_format, "
                           "duration_format = :duration_format, "
-                          "offline_data = :offline_data "
+                          "offline_data = :offline_data, "
+                          "default_pid = :default_pid "
                           "where local_id = :local_id",
                           useRef(user->DefaultWID()),
                           useRef(user->Since()),
@@ -2871,6 +2876,7 @@ error Database::SaveUser(
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
+                          useRef(user->DefaultPID()),
                           useRef(user->LocalID()),
                           now;
                 error err = last_error("SaveUser");
@@ -2889,12 +2895,14 @@ error Database::SaveUser(
                           "insert into users("
                           "id, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
-                          "timeofday_format, duration_format, offline_data "
+                          "timeofday_format, duration_format, offline_data, "
+                          "default_pid"
                           ") values("
                           ":id, :default_wid, :since, :fullname, "
                           ":email, "
                           ":record_timeline, :store_start_and_stop_time, "
-                          ":timeofday_format, :duration_format, :offline_data "
+                          ":timeofday_format, :duration_format, :offline_data, "
+                          ":default_pid"
                           ")",
                           useRef(user->ID()),
                           useRef(user->DefaultWID()),
@@ -2906,6 +2914,7 @@ error Database::SaveUser(
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
+                          useRef(user->DefaultPID()),
                           now;
                 error err = last_error("SaveUser");
                 if (err != noError) {

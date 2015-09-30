@@ -22,7 +22,8 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 
 @interface PreferencesWindowController ()
 @property NSMutableArray *rules;
-@property AutocompleteDataSource *projectAutocompleteDataSource;
+@property AutocompleteDataSource *autotrackerProjectAutocompleteDataSource;
+@property AutocompleteDataSource *defaultProjectAutocompleteDataSource;
 @property NSMutableArray *termAutocompleteItems;
 @end
 
@@ -35,7 +36,8 @@ extern void *ctx;
 	self = [super initWithWindowNibName:nibNameOrNil];
 	if (self)
 	{
-		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+		self.autotrackerProjectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
+		self.defaultProjectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 
 		self.termAutocompleteItems = [[NSMutableArray alloc] init];
 
@@ -51,9 +53,13 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
-	self.projectAutocompleteDataSource.combobox = self.autotrackerProject;
-	self.projectAutocompleteDataSource.combobox.dataSource = self.projectAutocompleteDataSource;
-	[self.projectAutocompleteDataSource setFilter:@""];
+	self.autotrackerProjectAutocompleteDataSource.combobox = self.autotrackerProject;
+	self.autotrackerProjectAutocompleteDataSource.combobox.dataSource = self.autotrackerProjectAutocompleteDataSource;
+	[self.autotrackerProjectAutocompleteDataSource setFilter:@""];
+
+	self.defaultProjectAutocompleteDataSource.combobox = self.defaultProject;
+	self.defaultProjectAutocompleteDataSource.combobox.dataSource = self.defaultProjectAutocompleteDataSource;
+	[self.defaultProjectAutocompleteDataSource setFilter:@""];
 
 	self.showHideShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutShowHide;
 	self.startStopShortcutView.associatedUserDefaultsKey = kPreferenceGlobalShortcutStartStop;
@@ -72,19 +78,35 @@ extern void *ctx;
 												 name:kDisplayLogin
 											   object:nil];
 
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
+	[self enableLoggedInUserControls];
 
 	[self displaySettings:self.originalCmd];
 
-	[self displayAutotrackerRules:@{
-		 @"rules": self.rules,
-		 @"titles": self.termAutocompleteItems,
-	 }];
+	NSMutableDictionary *autotrackerData = [[NSMutableDictionary alloc] init];
+	if (self.rules != nil)
+	{
+		autotrackerData[@"rules"] = self.rules;
+	}
+	if (self.termAutocompleteItems != nil)
+	{
+		autotrackerData[@"titles"] = self.termAutocompleteItems;
+	}
+	[self displayAutotrackerRules:autotrackerData];
 
 	[self.idleMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
 
 	self.renderTimeline.hidden = YES;
+}
+
+- (void)enableLoggedInUserControls
+{
+	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
+	[self.defaultProject setEnabled:self.user_id != 0];
+	[self.autotrack setEnabled:self.user_id != 0];
+	[self.autotrackerTerm setEnabled:self.user_id != 0];
+	[self.autotrackerProject setEnabled:self.user_id != 0];
+	[self.addAutotrackerRuleButton setEnabled:self.user_id != 0];
 }
 
 - (IBAction)proxyRadioChanged:(id)sender
@@ -95,9 +117,17 @@ extern void *ctx;
 										(kUseSystemProxySettings == self.proxyRadio.selectedTag));
 }
 
-- (IBAction)renderTimelineChanged:(id)sender
+- (IBAction)defaultProjectSelected:(id)sender
 {
-	// FIXME: remove
+	NSString *key = self.defaultProject.stringValue;
+	AutocompleteItem *autocomplete = [self.defaultProjectAutocompleteDataSource get:key];
+	uint64_t pid = 0;
+
+	if (autocomplete != nil)
+	{
+		pid = autocomplete.ProjectID;
+	}
+	toggl_set_default_project_id(ctx, pid);
 }
 
 - (IBAction)useIdleDetectionButtonChanged:(id)sender
@@ -231,8 +261,17 @@ const int kUseProxyToConnectToToggl = 2;
 - (void)displayLogin:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
 	self.user_id = cmd.user_id;
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
+
+	[self enableLoggedInUserControls];
+
+	if (!self.user_id)
+	{
+		self.defaultProject.stringValue = @"";
+
+		[self displayAutotrackerRules:@{}];
+	}
 }
 
 - (void)startDisplayAutotrackerRules:(NSNotification *)notification
@@ -323,6 +362,17 @@ const int kUseProxyToConnectToToggl = 2;
 	[self.autotrack setState:[Utils boolToState:settings.autotrack]];
 
 	[self.openEditorOnShortcut setState:[Utils boolToState:settings.open_editor_on_shortcut]];
+
+	char_t *default_project_name = toggl_get_default_project_name(ctx);
+	if (default_project_name)
+	{
+		self.defaultProject.stringValue = [NSString stringWithUTF8String:default_project_name];
+	}
+	else
+	{
+		self.defaultProject.stringValue = @"";
+	}
+	free(default_project_name);
 }
 
 - (IBAction)idleMinutesChange:(id)sender
@@ -358,7 +408,7 @@ const int kUseProxyToConnectToToggl = 2;
 	}
 
 	NSString *key = self.autotrackerProject.stringValue;
-	AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
+	AutocompleteItem *autocomplete = [self.autotrackerProjectAutocompleteDataSource get:key];
 	uint64_t pid = 0;
 	if (autocomplete != nil)
 	{

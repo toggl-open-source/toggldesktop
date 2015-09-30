@@ -120,17 +120,17 @@ public static class Utils
     public static void SetShortcutForShow(KeyCombination? e)
     {
         setShortcut(e, "show",
-            Toggl.SetKeyModifierShow,
-            Toggl.SetKeyShow
-            );
+                    Toggl.SetKeyModifierShow,
+                    Toggl.SetKeyShow
+                   );
     }
 
     public static void SetShortcutForStart(KeyCombination? e)
     {
         setShortcut(e, "start",
-            Toggl.SetKeyModifierStart,
-            Toggl.SetKeyStart
-            );
+                    Toggl.SetKeyModifierStart,
+                    Toggl.SetKeyStart
+                   );
     }
 
     private static void setShortcut(KeyCombination? e, string shortcutName,

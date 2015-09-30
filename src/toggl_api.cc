@@ -737,6 +737,29 @@ bool_t toggl_feedback_send(
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
 
+bool_t toggl_set_default_project_id(
+    void *context,
+    const uint64_t pid) {
+    return toggl::noError == app(context)->SetDefaultPID(pid);
+}
+
+uint64_t toggl_get_default_project_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultPID(&ret);
+    return ret;
+}
+
+char_t *toggl_get_default_project_name(
+    void *context) {
+    std::string name("");
+    app(context)->DefaultProjectName(&name);
+    if (name.empty()) {
+        return nullptr;
+    }
+    return copy_string(name);
+}
+
 bool_t toggl_set_update_channel(
     void *context,
     const char_t *update_channel) {
@@ -1042,12 +1065,16 @@ char_t *toggl_run_script(
     return copy_string(ss.str());
 }
 
-bool_t toggl_autotracker_add_rule(
+int64_t toggl_autotracker_add_rule(
     void *context,
     const char_t *term,
     const uint64_t project_id) {
-    return toggl::noError == app(context)->
-           AddAutotrackerRule(to_string(term), project_id);
+    Poco::Int64 rule_id(0);
+    app(context)->AddAutotrackerRule(
+        to_string(term),
+        project_id,
+        &rule_id);
+    return rule_id;
 }
 
 bool_t toggl_autotracker_delete_rule(

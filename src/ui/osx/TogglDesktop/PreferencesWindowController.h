@@ -33,6 +33,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSTextField *reminderMinutesTextField;
 @property IBOutlet NSComboBox *autotrackerTerm;
 @property IBOutlet NSCustomComboBox *autotrackerProject;
+@property IBOutlet NSCustomComboBox *defaultProject;
 @property IBOutlet NSTableView *autotrackerRulesTableView;
 @property IBOutlet NSButton *remindMon;
 @property IBOutlet NSButton *remindTue;
@@ -47,6 +48,8 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *openEditorOnShortcut;
 @property IBOutlet NSButton *renderTimeline;
 @property IBOutlet NSMatrix *proxyRadio;
+@property IBOutlet NSButton *addAutotrackerRuleButton;
+
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)proxyRadioChanged:(id)sender;
 - (IBAction)hostTextFieldChanged:(id)sender;
@@ -68,7 +71,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)remindTimesChanged:(id)sender;
 - (IBAction)autotrackChanged:(id)sender;
 - (IBAction)openEditorOnShortcut:(id)sender;
-- (IBAction)renderTimelineChanged:(id)sender;
+- (IBAction)defaultProjectSelected:(id)sender;
 
 @property DisplayCommand *originalCmd;
 @property uint64_t user_id;
