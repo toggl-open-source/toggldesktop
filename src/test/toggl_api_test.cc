@@ -247,6 +247,7 @@ void on_display_timer_state(TogglTimeEntryView *te) {
             testing::testresult::timer_state.SetTags(te->Tags);
         }
         testing::testresult::timer_state.SetBillable(te->Billable);
+        testing::testresult::timer_state.SetPID(te->PID);
     }
 }
 
@@ -1240,6 +1241,35 @@ TEST(toggl_api, toggl_stop) {
 
     ASSERT_TRUE(toggl_stop(app.ctx()));
     ASSERT_TRUE(testing::testresult::timer_state.GUID().empty());
+}
+
+TEST(toggl_api, toggl_with_default_project) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing::testresult::timer_state = TimeEntry();
+
+    ASSERT_TRUE(toggl_set_default_project_id(app.ctx(), 0));
+
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
+    ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
+    ASSERT_FALSE(testing::testresult::timer_state.PID());
+
+    const uint64_t existing_project_id = 2598305;
+    ASSERT_TRUE(toggl_set_default_project_id(app.ctx(), existing_project_id));
+
+    testing::testresult::timer_state = TimeEntry();
+
+    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
+    ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
+    ASSERT_EQ(existing_project_id, testing::testresult::timer_state.PID());
 }
 
 TEST(toggl_api, toggl_start) {

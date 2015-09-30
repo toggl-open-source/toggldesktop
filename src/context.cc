@@ -2143,10 +2143,15 @@ TimeEntry *Context::Start(
             return nullptr;
         }
 
+        Poco::UInt64 pid(project_id);
+        if (!pid && project_guid.empty()) {
+            pid = user_->DefaultPID();
+        }
+
         te = user_->Start(description,
                           duration,
                           task_id,
-                          project_id,
+                          pid,
                           project_guid,
                           tags);
     }
