@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media.Animation;
 
@@ -73,15 +72,17 @@ namespace TogglDesktop.WPF
                 return;
             }
 
-            if (this.onlineState != Toggl.OnlineState.Online)
+            if (this.onlineState == Toggl.OnlineState.Online)
             {
-                this.stopSpinnerAnimation();
-                this.statusText.Text = "Offline";
-                this.syncButton.Visibility = Visibility.Collapsed;
-                this.Visibility = Visibility.Visible;
+                this.setOnline();
                 return;
             }
 
+            this.setOffline();
+        }
+
+        private void setOnline()
+        {
             switch (this.syncState)
             {
                 case Toggl.SyncState.Idle:
@@ -107,6 +108,29 @@ namespace TogglDesktop.WPF
                     throw new ArgumentOutOfRangeException();
             }
             this.syncButton.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Visible;
+        }
+
+        private void setOffline()
+        {
+            switch (this.onlineState)
+            {
+                case Toggl.OnlineState.NoNetwork:
+                {
+                    this.statusText.Text = "Offline, no network";
+                    break;
+                }
+                case Toggl.OnlineState.BackendDown:
+                {
+                    this.statusText.Text = "Offline, Toggl not responding";
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            this.stopSpinnerAnimation();
+            this.syncButton.Visibility = Visibility.Collapsed;
             this.Visibility = Visibility.Visible;
         }
 
