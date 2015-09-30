@@ -15,6 +15,7 @@ namespace TogglDesktop.WPF
 
         private readonly ShortcutRecorder showHideShortcutRecorder;
         private readonly ShortcutRecorder continueStopShortcutRecorder;
+        private bool isSaving;
 
         public PreferencesWindow()
         {
@@ -52,6 +53,9 @@ namespace TogglDesktop.WPF
         private void onSettings(bool open, Toggl.TogglSettingsView settings)
         {
             if (this.TryBeginInvoke(this.onSettings, open, settings))
+                return;
+
+            if (this.isSaving)
                 return;
 
             using (Performance.Measure("filling settings from OnSettings"))
@@ -225,17 +229,26 @@ namespace TogglDesktop.WPF
 
         private void saveButtonClicked(object sender, RoutedEventArgs e)
         {
-            using (Performance.Measure("saving global sortcuts"))
+            try
             {
-                this.saveShortCuts();
+                this.isSaving = true;
+
+                using (Performance.Measure("saving global sortcuts"))
+                {
+                    this.saveShortCuts();
+                }
+
+                using (Performance.Measure("saving settings"))
+                {
+                    var settings = this.createSettingsFromUI();
+
+                    if (Toggl.SetSettings(settings))
+                        this.Hide();
+                }
             }
-
-            using (Performance.Measure("saving settings"))
+            finally
             {
-                var settings = this.createSettingsFromUI();
-
-                if(Toggl.SetSettings(settings))
-                    this.Hide();
+                this.isSaving = false;
             }
         }
 
