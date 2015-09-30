@@ -162,6 +162,46 @@ class Context : public TimelineDatasource {
         const bool remind_sat,
         const bool remind_sun);
 
+    void SetWindowMaximized(
+        const bool value);
+
+    bool GetWindowMaximized();
+
+    void SetWindowMinimized(
+        const bool_t value);
+
+    bool GetWindowMinimized();
+
+    void SetWindowEditSizeHeight(
+        const int64_t value);
+
+    int64_t GetWindowEditSizeHeight();
+
+    void SetWindowEditSizeWidth(
+        const int64_t value);
+
+    int64_t GetWindowEditSizeWidth();
+
+    void SetKeyStart(
+        const std::string value);
+
+    std::string GetKeyStart();
+
+    void SetKeyShow(
+        const std::string value);
+
+    std::string GetKeyShow();
+
+    void SetKeyModifierShow(
+        const std::string value);
+
+    std::string GetKeyModifierShow();
+
+    void SetKeyModifierStart(
+        const std::string value);
+
+    std::string GetKeyModifierStart();
+
     error ProxySettings(bool *use_proxy, Proxy *proxy);
 
     error SetProxySettings(
@@ -274,6 +314,10 @@ class Context : public TimelineDatasource {
         return user_ && user_->RecordTimeline();
     }
 
+    error SetDefaultPID(const Poco::UInt64 pid);
+    error DefaultPID(Poco::UInt64 *pid);
+    error DefaultProjectName(std::string *name);
+
     error SetUpdateChannel(
         const std::string channel);
 
@@ -311,7 +355,8 @@ class Context : public TimelineDatasource {
 
     error AddAutotrackerRule(
         const std::string term,
-        const Poco::UInt64 pid);
+        const Poco::UInt64 pid,
+        Poco::Int64 *rule_id);
 
     error DeleteAutotrackerRule(
         const Poco::Int64 id);

@@ -17,11 +17,9 @@
 		3CBF85181B81E60400DD3B55 /* libPocoFoundation.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF85171B81E60400DD3B55 /* libPocoFoundation.31.dylib */; };
 		3CBF851A1B81E60E00DD3B55 /* libPocoCrypto.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF85191B81E60E00DD3B55 /* libPocoCrypto.31.dylib */; };
 		7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDA918C51CEB00CBE8F1 /* proxy.cc */; };
-		7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */; };
 		7408EDB318C51CEB00CBE8F1 /* const.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAB18C51CEB00CBE8F1 /* const.h */; };
 		7408EDB418C51CEB00CBE8F1 /* proxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAC18C51CEB00CBE8F1 /* proxy.h */; };
 		7408EDB518C51CEB00CBE8F1 /* feedback.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAD18C51CEB00CBE8F1 /* feedback.h */; };
-		7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */; };
 		7408EDB718C51CEB00CBE8F1 /* formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7408EDAF18C51CEB00CBE8F1 /* formatter.h */; };
 		7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDB018C51CEB00CBE8F1 /* feedback.cc */; };
 		741951C91B41FCE500FA2724 /* migrations.cc in Sources */ = {isa = PBXBuildFile; fileRef = 741951C71B41FCE500FA2724 /* migrations.cc */; };
@@ -108,11 +106,9 @@
 		3CBF85171B81E60400DD3B55 /* libPocoFoundation.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.31.dylib; sourceTree = "<group>"; };
 		3CBF85191B81E60E00DD3B55 /* libPocoCrypto.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.31.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.31.dylib; sourceTree = "<group>"; };
 		7408EDA918C51CEB00CBE8F1 /* proxy.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = proxy.cc; path = ../../../proxy.cc; sourceTree = "<group>"; };
-		7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = autocomplete_item.cc; path = ../../../autocomplete_item.cc; sourceTree = "<group>"; };
 		7408EDAB18C51CEB00CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../const.h; sourceTree = "<group>"; };
 		7408EDAC18C51CEB00CBE8F1 /* proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = proxy.h; path = ../../../proxy.h; sourceTree = "<group>"; };
 		7408EDAD18C51CEB00CBE8F1 /* feedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = feedback.h; path = ../../../feedback.h; sourceTree = "<group>"; };
-		7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autocomplete_item.h; path = ../../../autocomplete_item.h; sourceTree = "<group>"; };
 		7408EDAF18C51CEB00CBE8F1 /* formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = formatter.h; path = ../../../formatter.h; sourceTree = "<group>"; };
 		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
 		741951C71B41FCE500FA2724 /* migrations.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = migrations.cc; path = ../../../migrations.cc; sourceTree = "<group>"; };
@@ -297,11 +293,9 @@
 				745E84F3194953A70065E49A /* gui.cc */,
 				745E84F4194953A70065E49A /* gui.h */,
 				7408EDA918C51CEB00CBE8F1 /* proxy.cc */,
-				7408EDAA18C51CEB00CBE8F1 /* autocomplete_item.cc */,
 				7408EDAB18C51CEB00CBE8F1 /* const.h */,
 				7408EDAC18C51CEB00CBE8F1 /* proxy.h */,
 				7408EDAD18C51CEB00CBE8F1 /* feedback.h */,
-				7408EDAE18C51CEB00CBE8F1 /* autocomplete_item.h */,
 				7408EDAF18C51CEB00CBE8F1 /* formatter.h */,
 				7408EDB018C51CEB00CBE8F1 /* feedback.cc */,
 				74BAD32718BEC4FD002FD4CF /* base_model.cc */,
@@ -375,7 +369,6 @@
 				74B587C018BBC77E00E9F6CE /* client.h in Headers */,
 				74BC59DB1A37C6790081104D /* error.h in Headers */,
 				74B587C318BBC77E00E9F6CE /* time_entry.h in Headers */,
-				7408EDB618C51CEB00CBE8F1 /* autocomplete_item.h in Headers */,
 				74B587C418BBC77E00E9F6CE /* related_data.h in Headers */,
 				748B7DAC1AC5963B00FE01D2 /* settings.h in Headers */,
 				74B587BE18BBC77E00E9F6CE /* task.h in Headers */,
@@ -437,8 +430,8 @@
 		C55DA59417F06A3B00B42178 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Tambet Masik";
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Toggl;
 			};
 			buildConfigurationList = C55DA59717F06A3B00B42178 /* Build configuration list for PBXProject "TogglDesktopLibrary" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -480,7 +473,6 @@
 			files = (
 				748B7DA91AC5963B00FE01D2 /* netconf.cc in Sources */,
 				74BC59DA1A37C6790081104D /* error.cc in Sources */,
-				7408EDB218C51CEB00CBE8F1 /* autocomplete_item.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
 				748A0F401B388CCA0001A41E /* urls.cc in Sources */,
@@ -536,6 +528,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -562,6 +555,7 @@
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
 					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
+					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -606,6 +600,7 @@
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
 					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
+					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -625,6 +620,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../../third_party/openssl/include,
 					../../../third_party/poco/Data/include/,
 					../../../third_party/poco/Util/include/,
 					../../../third_party/poco/Foundation/include/,
@@ -655,6 +651,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../../third_party/openssl/include,
 					../../../third_party/poco/Data/include/,
 					../../../third_party/poco/Util/include/,
 					../../../third_party/poco/Foundation/include/,

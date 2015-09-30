@@ -24,6 +24,8 @@
         <RoutedUICommand x:Key="AboutCommand" />
         <RoutedUICommand x:Key="LogoutCommand" />
         <RoutedUICommand x:Key="QuitCommand" />
+        
+        <RoutedUICommand x:Key="EditRunningCommand" />
 
         <!-- ReSharper disable Xaml.RedundantResource -->
         <BitmapImage
@@ -54,6 +56,9 @@
                         Executed="onClearCacheCommand" CanExecute="canExecuteClearCacheCommand"/>
         <CommandBinding Command="{StaticResource LogoutCommand}"
                         Executed="onLogoutCommand" CanExecute="canExecuteLogoutCommand"/>
+
+        <CommandBinding Command="{StaticResource EditRunningCommand}"
+                        Executed="onEditRunningCommand" CanExecute="canExecuteEditRunningCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -63,6 +68,8 @@
 
         <KeyBinding Key="T" Modifiers="Control" Command="{StaticResource ShowCommand}" />
         <KeyBinding Key="R" Modifiers="Control" Command="{StaticResource SyncCommand}" />
+        
+        <KeyBinding Key="E" Modifiers="Control" Command="{StaticResource EditRunningCommand}" />
 
         <KeyBinding Key="D" Modifiers="Control" Command="{StaticResource ToggleManualModeCommand}" />
     </Window.InputBindings>

@@ -27,6 +27,11 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
     class ModelItem : SimpleItem<ModelEntry, Toggl.TogglGenericView>
     {
+        public static ModelItem Create(Toggl.TogglGenericView model)
+        {
+            return new ModelItem(model);
+        }
+
         public ModelItem(Toggl.TogglGenericView model)
             : base(model, model.Name)
         {

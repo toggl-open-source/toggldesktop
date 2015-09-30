@@ -247,6 +247,7 @@ void on_display_timer_state(TogglTimeEntryView *te) {
             testing::testresult::timer_state.SetTags(te->Tags);
         }
         testing::testresult::timer_state.SetBillable(te->Billable);
+        testing::testresult::timer_state.SetPID(te->PID);
     }
 }
 
@@ -1242,6 +1243,35 @@ TEST(toggl_api, toggl_stop) {
     ASSERT_TRUE(testing::testresult::timer_state.GUID().empty());
 }
 
+TEST(toggl_api, toggl_with_default_project) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing::testresult::timer_state = TimeEntry();
+
+    ASSERT_TRUE(toggl_set_default_project_id(app.ctx(), 0));
+
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
+    ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
+    ASSERT_FALSE(testing::testresult::timer_state.PID());
+
+    const uint64_t existing_project_id = 2598305;
+    ASSERT_TRUE(toggl_set_default_project_id(app.ctx(), existing_project_id));
+
+    testing::testresult::timer_state = TimeEntry();
+
+    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
+    ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
+    ASSERT_EQ(existing_project_id, testing::testresult::timer_state.PID());
+}
+
 TEST(toggl_api, toggl_start) {
     testing::App app;
     std::string json = loadTestData();
@@ -1295,6 +1325,94 @@ TEST(toggl_api, concurrency) {
         delete runnable;
         delete thread;
     }
+}
+
+TEST(toggl_api, toggl_set_window_maximized) {
+    testing::App app;
+
+    toggl_set_window_maximized(app.ctx(), true);
+    ASSERT_TRUE(toggl_get_window_maximized(app.ctx()));
+
+    toggl_set_window_maximized(app.ctx(), false);
+    ASSERT_FALSE(toggl_get_window_maximized(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_window_minimized) {
+    testing::App app;
+
+    toggl_set_window_minimized(app.ctx(), true);
+    ASSERT_TRUE(toggl_get_window_minimized(app.ctx()));
+
+    toggl_set_window_minimized(app.ctx(), false);
+    ASSERT_FALSE(toggl_get_window_minimized(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_window_edit_size_height) {
+    testing::App app;
+
+    toggl_set_window_edit_size_height(app.ctx(), 0);
+    ASSERT_EQ(0, toggl_get_window_edit_size_height(app.ctx()));
+
+    toggl_set_window_edit_size_height(app.ctx(), 123);
+    ASSERT_EQ(123, toggl_get_window_edit_size_height(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_window_edit_size_width) {
+    testing::App app;
+
+    toggl_set_window_edit_size_width(app.ctx(), -10);
+    ASSERT_EQ(-10, toggl_get_window_edit_size_width(app.ctx()));
+
+    toggl_set_window_edit_size_width(app.ctx(), 1234);
+    ASSERT_EQ(1234, toggl_get_window_edit_size_width(app.ctx()));
+}
+
+TEST(toggl_api, toggl_set_key_start) {
+    testing::App app;
+
+    toggl_set_key_start(app.ctx(), "a");
+    char_t *res = toggl_get_key_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("a", std::string(res));
+    free(res);
+
+    toggl_set_key_start(app.ctx(), "");
+    res = toggl_get_key_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("", std::string(res));
+    free(res);
+}
+
+TEST(toggl_api, toggl_set_key_show) {
+    testing::App app;
+
+    toggl_set_key_show(app.ctx(), "a");
+    char_t *res = toggl_get_key_show(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("a", std::string(res));
+    free(res);
+
+    toggl_set_key_show(app.ctx(), "");
+    res = toggl_get_key_show(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("", std::string(res));
+    free(res);
+}
+
+TEST(toggl_api, toggl_set_key_modifier_start) {
+    testing::App app;
+
+    toggl_set_key_modifier_start(app.ctx(), "a");
+    char_t *res = toggl_get_key_modifier_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("a", std::string(res));
+    free(res);
+
+    toggl_set_key_modifier_start(app.ctx(), "");
+    res = toggl_get_key_modifier_start(app.ctx());
+    ASSERT_TRUE(res);
+    ASSERT_EQ("", std::string(res));
+    free(res);
 }
 
 TEST(toggl_api, toggl_start_with_tags) {
@@ -1612,13 +1730,65 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     testing::testresult::error = noError;
-    bool_t res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    int64_t rule_id = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
     ASSERT_EQ(noError, testing::testresult::error);
-    ASSERT_TRUE(res);
+    ASSERT_TRUE(rule_id);
 
     testing::testresult::error = noError;
-    res = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    rule_id = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    ASSERT_EQ("rule already exists", testing::testresult::error);
+    ASSERT_FALSE(rule_id);
+}
+
+TEST(toggl_api, toggl_set_default_project) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    uint64_t default_pid = toggl_get_default_project_id(app.ctx());
+    ASSERT_FALSE(default_pid);
+
+    char_t *default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(default_project_name);
+    free(default_project_name);
+
+    testing::testresult::error = noError;
+    bool_t res = toggl_set_default_project_id(app.ctx(), 123);
+    ASSERT_NE(noError, testing::testresult::error);
     ASSERT_FALSE(res);
+
+    default_pid = toggl_get_default_project_id(app.ctx());
+    ASSERT_FALSE(default_pid);
+
+    default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(default_project_name);
+    free(default_project_name);
+
+    const uint64_t existing_project_id = 2598305;
+    const std::string existing_project_name = "Testing stuff";
+
+    testing::testresult::error = noError;
+    res = toggl_set_default_project_id(app.ctx(), existing_project_id);
+    ASSERT_TRUE(res);
+
+    default_pid = toggl_get_default_project_id(app.ctx());
+    ASSERT_EQ(existing_project_id, default_pid);
+
+    default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_TRUE(default_project_name);
+    ASSERT_EQ(existing_project_name, std::string(default_project_name));
+    free(default_project_name);
+
+    testing::testresult::error = noError;
+    res = toggl_set_default_project_id(app.ctx(), 0);
+    ASSERT_TRUE(res);
+
+    default_pid = toggl_get_default_project_id(app.ctx());
+    ASSERT_FALSE(default_pid);
+
+    default_project_name = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(default_project_name);
+    free(default_project_name);
 }
 
 }  // namespace toggl

@@ -90,6 +90,8 @@ extern "C" {
         uint64_t Type;
         // If its a time entry, it has tags
         char_t *Tags;
+        char_t *WorkspaceName;
+        uint64_t ClientID;
         void *Next;
     } TogglAutocompleteView;
 
@@ -98,6 +100,7 @@ extern "C" {
         uint64_t WID;
         char_t *GUID;
         char_t *Name;
+        char_t *WorkspaceName;
         void *Next;
     } TogglGenericView;
 
@@ -587,6 +590,66 @@ extern "C" {
         int64_t *window_height,
         int64_t *window_width);
 
+    TOGGL_EXPORT void toggl_set_window_maximized(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_get_window_maximized(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_window_minimized(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_get_window_minimized(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_window_edit_size_height(
+        void *context,
+        const int64_t value);
+
+    TOGGL_EXPORT int64_t toggl_get_window_edit_size_height(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_window_edit_size_width(
+        void *context,
+        const int64_t value);
+
+    TOGGL_EXPORT int64_t toggl_get_window_edit_size_width(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_start(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_start(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_show(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_show(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_modifier_show(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_modifier_show(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_key_modifier_start(
+        void *context,
+        const char_t *value);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_key_modifier_start(
+        void *context);
+
     TOGGL_EXPORT bool_t toggl_logout(
         void *context);
 
@@ -626,6 +689,17 @@ extern "C" {
         const uint64_t client_id,
         const char_t *project_name,
         const bool_t is_private);
+
+    TOGGL_EXPORT bool_t toggl_set_default_project_id(
+        void *context,
+        const uint64_t pid);
+
+    TOGGL_EXPORT uint64_t toggl_get_default_project_id(
+        void *context);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_default_project_name(
+        void *context);
 
     TOGGL_EXPORT bool_t toggl_set_update_channel(
         void *context,
@@ -703,10 +777,10 @@ extern "C" {
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_run_script(
         void *context,
-        const char *script,
+        const char_t *script,
         int64_t *err);
 
-    TOGGL_EXPORT bool_t toggl_autotracker_add_rule(
+    TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
         void *context,
         const char_t *term,
         const uint64_t project_id);

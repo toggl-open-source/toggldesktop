@@ -505,6 +505,78 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
+error Database::SetWindowMaximized(
+    const bool value) {
+    return setSettingsValue("window_maximized", value);
+}
+
+error Database::GetWindowMaximized(bool *result) {
+    return getSettingsValue("window_maximized", result);
+}
+
+error Database::SetWindowMinimized(
+    const bool value) {
+    return setSettingsValue("window_minimized", value);
+}
+
+error Database::GetWindowMinimized(bool *result) {
+    return getSettingsValue("window_minimized", result);
+}
+
+error Database::SetWindowEditSizeHeight(
+    const Poco::Int64 value) {
+    return setSettingsValue("window_edit_size_height", value);
+}
+
+error Database::GetWindowEditSizeHeight(Poco::Int64 *result) {
+    return getSettingsValue("window_edit_size_height", result);
+}
+
+error Database::SetWindowEditSizeWidth(
+    const Poco::Int64 value) {
+    return setSettingsValue("window_edit_size_width", value);
+}
+
+error Database::GetWindowEditSizeWidth(Poco::Int64 *result) {
+    return getSettingsValue("window_edit_size_width", result);
+}
+
+error Database::SetKeyStart(
+    const std::string value) {
+    return setSettingsValue("key_start", value);
+}
+
+error Database::GetKeyStart(std::string *result) {
+    return getSettingsValue("key_start", result);
+}
+
+error Database::SetKeyShow(
+    const std::string value) {
+    return setSettingsValue("key_show", value);
+}
+
+error Database::GetKeyShow(std::string *result) {
+    return getSettingsValue("key_show", result);
+}
+
+error Database::SetKeyModifierShow(
+    const std::string value) {
+    return setSettingsValue("key_modifier_show", value);
+}
+
+error Database::GetKeyModifierShow(std::string *result) {
+    return getSettingsValue("key_modifier_show", result);
+}
+
+error Database::SetKeyModifierStart(
+    const std::string value) {
+    return setSettingsValue("key_modifier_start", value);
+}
+
+error Database::GetKeyModifierStart(std::string *result) {
+    return getSettingsValue("key_modifier_start", result);
+}
+
 error Database::SetSettingsRemindTimes(
     const std::string &remind_starts,
     const std::string &remind_ends) {
@@ -643,7 +715,6 @@ error Database::setSettingsValue(
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
-
         *session_ <<
                   "update settings set " + field_name + " = :" + field_name,
                   useRef(value),
@@ -656,6 +727,32 @@ error Database::setSettingsValue(
         return ex;
     }
     return last_error("setSettingsValue");
+}
+
+template<typename T>
+error Database::getSettingsValue(
+    const std::string field_name,
+    T *value) {
+
+    try {
+        poco_check_ptr(session_);
+        poco_check_ptr(value);
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        *session_ <<
+                  "select " + field_name + " from settings limit 1",
+                  into(*value),
+                  limit(1),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("getSettingsValue");
 }
 
 error Database::SetSettingsReminderMinutes(
@@ -877,11 +974,13 @@ error Database::LoadUserByID(
         std::string timeofday_format("");
         std::string duration_format("");
         std::string offline_data("");
+        Poco::UInt64 default_pid(0);
         *session_ <<
                   "select local_id, id, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
-                  "timeofday_format, duration_format, offline_data "
+                  "timeofday_format, duration_format, offline_data, "
+                  "default_pid "
                   "from users where id = :id limit 1",
                   into(local_id),
                   into(id),
@@ -894,6 +993,7 @@ error Database::LoadUserByID(
                   into(timeofday_format),
                   into(duration_format),
                   into(offline_data),
+                  into(default_pid),
                   useRef(UID),
                   limit(1),
                   now;
@@ -919,6 +1019,7 @@ error Database::LoadUserByID(
         user->SetTimeOfDayFormat(timeofday_format);
         user->SetDurationFormat(duration_format);
         user->SetOfflineData(offline_data);
+        user->SetDefaultPID(default_pid);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -2762,7 +2863,8 @@ error Database::SaveUser(
                           " :store_start_and_stop_time, "
                           "timeofday_format = :timeofday_format, "
                           "duration_format = :duration_format, "
-                          "offline_data = :offline_data "
+                          "offline_data = :offline_data, "
+                          "default_pid = :default_pid "
                           "where local_id = :local_id",
                           useRef(user->DefaultWID()),
                           useRef(user->Since()),
@@ -2774,6 +2876,7 @@ error Database::SaveUser(
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
+                          useRef(user->DefaultPID()),
                           useRef(user->LocalID()),
                           now;
                 error err = last_error("SaveUser");
@@ -2792,12 +2895,14 @@ error Database::SaveUser(
                           "insert into users("
                           "id, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
-                          "timeofday_format, duration_format, offline_data "
+                          "timeofday_format, duration_format, offline_data, "
+                          "default_pid"
                           ") values("
                           ":id, :default_wid, :since, :fullname, "
                           ":email, "
                           ":record_timeline, :store_start_and_stop_time, "
-                          ":timeofday_format, :duration_format, :offline_data "
+                          ":timeofday_format, :duration_format, :offline_data, "
+                          ":default_pid"
                           ")",
                           useRef(user->ID()),
                           useRef(user->DefaultWID()),
@@ -2809,6 +2914,7 @@ error Database::SaveUser(
                           useRef(user->TimeOfDayFormat()),
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
+                          useRef(user->DefaultPID()),
                           now;
                 error err = last_error("SaveUser");
                 if (err != noError) {

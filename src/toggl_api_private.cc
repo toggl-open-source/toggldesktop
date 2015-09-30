@@ -16,7 +16,7 @@
 #include "Poco/UnicodeConverter.h"
 
 TogglAutocompleteView *autocomplete_item_init(
-    const toggl::AutocompleteItem item) {
+    const toggl::view::Autocomplete item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();
     result->Description = copy_string(item.Description);
     result->Text = copy_string(item.Text);
@@ -30,6 +30,8 @@ TogglAutocompleteView *autocomplete_item_init(
     result->WorkspaceID = static_cast<unsigned int>(item.WorkspaceID);
     result->Type = static_cast<unsigned int>(item.Type);
     result->Tags = copy_string(item.Tags);
+    result->WorkspaceName = copy_string(item.WorkspaceName);
+    result->ClientID = static_cast<unsigned int>(item.ClientID);
     result->Next = nullptr;
     return result;
 }
@@ -63,6 +65,9 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     free(item->Tags);
     item->Tags = nullptr;
 
+    free(item->WorkspaceName);
+    item->WorkspaceName = nullptr;
+
     if (item->Next) {
         TogglAutocompleteView *next =
             reinterpret_cast<TogglAutocompleteView *>(item->Next);
@@ -79,6 +84,7 @@ TogglGenericView *view_item_init() {
     result->WID = 0;
     result->GUID = nullptr;
     result->Name = nullptr;
+    result->WorkspaceName = nullptr;
     return result;
 }
 
@@ -95,12 +101,17 @@ TogglGenericView *workspace_to_view_item(toggl::Workspace * const ws) {
     return result;
 }
 
-TogglGenericView *client_to_view_item(toggl::Client * const c) {
+TogglGenericView *client_to_view_item(
+    toggl::Client * const c,
+    toggl::Workspace * const ws) {
     TogglGenericView *result = view_item_init();
     result->ID = static_cast<unsigned int>(c->ID());
     result->WID = static_cast<unsigned int>(c->WID());
     result->GUID = copy_string(c->GUID());
     result->Name = copy_string(c->Name());
+    if (ws) {
+        result->WorkspaceName = copy_string(ws->Name());
+    }
     return result;
 }
 
@@ -150,6 +161,9 @@ void view_item_clear(TogglGenericView *item) {
 
     free(item->GUID);
     item->GUID = nullptr;
+
+    free(item->WorkspaceName);
+    item->WorkspaceName = nullptr;
 
     if (item->Next) {
         TogglGenericView *next =
@@ -388,9 +402,9 @@ void settings_view_item_clear(TogglSettingsView *view) {
 }
 
 TogglAutocompleteView *autocomplete_list_init(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     TogglAutocompleteView *first = nullptr;
-    for (std::vector<toggl::AutocompleteItem>::const_reverse_iterator it =
+    for (std::vector<toggl::view::Autocomplete>::const_reverse_iterator it =
         items->rbegin(); it != items->rend(); it++) {
         TogglAutocompleteView *item = autocomplete_item_init(*it);
         item->Next = first;

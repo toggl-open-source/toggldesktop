@@ -6,13 +6,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d"
-             Height="0" Width="0"
-             d:DataContext ="{d:DesignInstance {x:Type toggl:AutoCompletionPopupSample}, IsDesignTimeCreatable=True}">
+             Height="0" Width="0">
 
     <Popup Name="popup" x:FieldModifier="private"
-           PlacementTarget="{Binding Target}"
-           MaxHeight="300" MinWidth="{Binding Path=Target.ActualWidth, Converter={toggl:Resources ResourceKey=AddValueConverter}, ConverterParameter=20}"
-           StaysOpen="True" AllowsTransparency="True">
+           MaxHeight="300" StaysOpen="True" AllowsTransparency="True">
         <ScrollViewer Background="White" Margin="10" Style="{toggl:Resources ResourceKey=CustomSrollViewer}">
 
             <ScrollViewer.Effect>
@@ -23,7 +20,7 @@
                 <TextBlock Name="emptyLabel" x:FieldModifier="private"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Margin="4"
-                                   Text="{Binding EmptyText}"/>
+                                   Text="Hello. Yes, this is list."/>
                 <StackPanel Name="dropDownList" x:FieldModifier="private">
                     <!-- filled programatically -->
                 </StackPanel>

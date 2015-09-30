@@ -350,10 +350,10 @@ static int l_toggl_add_project(lua_State *L) {
 }
 
 static int l_toggl_autotracker_add_rule(lua_State *L) {
-    bool_t res = toggl_autotracker_add_rule(toggl_app_instance_,
-                                            checkstring(L, 1),
-                                            lua_tointeger(L, 2));
-    lua_pushboolean(L, res);
+    int64_t rule_id = toggl_autotracker_add_rule(toggl_app_instance_,
+                      checkstring(L, 1),
+                      lua_tointeger(L, 2));
+    lua_pushnumber(L, rule_id);
     return 1;
 }
 
@@ -479,6 +479,203 @@ static int l_testing_set_logged_in_user(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_context_init(lua_State *L) {
+    void *res = toggl_context_init(checkstring(L, 1),
+                                   checkstring(L, 2));
+    lua_pushlightuserdata(L, res);
+    return 1;
+}
+
+static int l_toggl_context_clear(lua_State *L) {
+    void *instance = lua_touserdata(L, -1);
+    toggl_context_clear(instance);
+    return 0;
+}
+
+static int l_toggl_set_update_path(lua_State *L) {
+    toggl_set_update_path(toggl_app_instance_,
+                          checkstring(L, -1));
+    return 0;
+}
+
+static int l_toggl_update_path(lua_State *L) {
+    char_t *res = toggl_update_path(toggl_app_instance_);
+    pushstring(L, res);
+    free(res);
+    return 1;
+}
+
+static int l_toggl_ui_start(lua_State *L) {
+    bool_t res = toggl_ui_start(toggl_app_instance_);
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_discard_time_and_continue(lua_State *L) {
+    bool_t res = toggl_discard_time_and_continue(toggl_app_instance_,
+                 checkstring(L, 1),
+                 lua_tointeger(L, 2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_remind_days(lua_State *L) {
+    bool_t res = toggl_set_settings_remind_days(toggl_app_instance_,
+                 lua_toboolean(L, 1),
+                 lua_toboolean(L, 2),
+                 lua_toboolean(L, 3),
+                 lua_toboolean(L, 4),
+                 lua_toboolean(L, 5),
+                 lua_toboolean(L, 6),
+                 lua_toboolean(L, 7));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_remind_times(lua_State *L) {
+    bool_t res = toggl_set_settings_remind_times(toggl_app_instance_,
+                 checkstring(L, -1),
+                 checkstring(L, -2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_autotrack(lua_State *L) {
+    bool_t res = toggl_set_settings_autotrack(
+        toggl_app_instance_,
+        lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_open_editor_on_shortcut(lua_State *L) {
+    bool_t res = toggl_set_settings_open_editor_on_shortcut(
+        toggl_app_instance_,
+        lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_autodetect_proxy(lua_State *L) {
+    bool_t res = toggl_set_settings_autodetect_proxy(
+        toggl_app_instance_,
+        lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_menubar_project(lua_State *L) {
+    bool_t res = toggl_set_settings_menubar_project(
+        toggl_app_instance_,
+        lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_settings_manual_mode(lua_State *L) {
+    bool_t res = toggl_set_settings_manual_mode(
+        toggl_app_instance_,
+        lua_toboolean(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_window_settings(lua_State *L) {
+    bool_t res = toggl_set_window_settings(
+        toggl_app_instance_,
+        lua_tointeger(L, 1),
+        lua_tointeger(L, 2),
+        lua_tointeger(L, 3),
+        lua_tointeger(L, 4));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_window_settings(lua_State *L) {
+    int64_t window_x(0);
+    int64_t window_y(0);
+    int64_t window_height(0);
+    int64_t window_width(0);
+    bool_t res = toggl_window_settings(
+        toggl_app_instance_,
+        &window_x,
+        &window_y,
+        &window_height,
+        &window_width);
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_set_default_project_id(lua_State *L) {
+    bool_t res = toggl_set_default_project_id(
+        toggl_app_instance_,
+        lua_tointeger(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_get_default_project_id(lua_State *L) {
+    uint64_t pid = toggl_get_default_project_id(
+        toggl_app_instance_);
+    lua_pushnumber(L, pid);
+    return 1;
+}
+
+static int l_toggl_get_default_project_name(lua_State *L) {
+    char_t *res = toggl_get_default_project_name(
+        toggl_app_instance_);
+    pushstring(L, res);
+    free(res);
+    return 1;
+}
+
+static int l_toggl_set_promotion_response(lua_State *L) {
+    bool_t res = toggl_set_promotion_response(
+        toggl_app_instance_,
+        lua_tointeger(L, 1),
+        lua_tointeger(L, 2));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
+static int l_toggl_parse_duration_string_into_seconds(lua_State *L) {
+    int64_t res = toggl_parse_duration_string_into_seconds(
+        checkstring(L, 1));
+    lua_pushnumber(L, res);
+    return 1;
+}
+
+static int l_toggl_check_view_struct_size(lua_State *L) {
+    char_t *errmsg = toggl_check_view_struct_size(
+        lua_tonumber(L, 1),
+        lua_tonumber(L, 2),
+        lua_tonumber(L, 3),
+        lua_tonumber(L, 4),
+        lua_tonumber(L, 5));
+    pushstring(L, errmsg);
+    free(errmsg);
+    return 1;
+}
+
+static int l_toggl_run_script(lua_State *L) {
+    int64_t err(0);
+    char_t *res = toggl_run_script(
+        toggl_app_instance_,
+        checkstring(L, 1),
+        &err);
+    pushstring(L, res);
+    free(res);
+    return 1;
+}
+
+static int l_toggl_autotracker_delete_rule(lua_State *L) {
+    bool_t res = toggl_autotracker_delete_rule(
+        toggl_app_instance_,
+        lua_tointeger(L, 1));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
 static const struct luaL_Reg toggl_f[] = {
     {"set_environment", l_toggl_set_environment},
     {"environment", l_toggl_environment},
@@ -529,9 +726,9 @@ static const struct luaL_Reg toggl_f[] = {
     {"create_project", l_toggl_create_project},
     {"create_client", l_toggl_create_client},
     {"set_update_channel", l_toggl_set_update_channel},
-    {"update_channel", l_toggl_get_update_channel},
-    {"user_fullname", l_toggl_get_user_fullname},
-    {"user_email", l_toggl_get_user_email},
+    {"get_update_channel", l_toggl_get_update_channel},
+    {"get_user_fullname", l_toggl_get_user_fullname},
+    {"get_user_email", l_toggl_get_user_email},
     {"sync", l_toggl_sync},
     {"timeline_toggle_recording", l_toggl_timeline_toggle_recording},
     {"timeline_is_recording_enabled", l_toggl_timeline_is_recording_enabled},
@@ -539,16 +736,43 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_wake", l_toggl_set_wake},
     {"set_online", l_toggl_set_online},
     {"set_idle_seconds", l_toggl_set_idle_seconds},
-    {   "toggl_format_tracking_time_duration",
+    {   "format_tracking_time_duration",
         l_toggl_format_tracking_time_duration
     },
-    {   "toggl_format_tracked_time_duration",
+    {   "format_tracked_time_duration",
         l_toggl_format_tracked_time_duration
     },
     {"debug", l_toggl_debug},
     {"sleep", l_testing_sleep},
     {"set_logged_in_user", l_testing_set_logged_in_user},
     {"autotracker_add_rule", l_toggl_autotracker_add_rule},
+    {"context_init", l_toggl_context_init},
+    {"context_clear", l_toggl_context_clear},
+    {"set_update_path", l_toggl_set_update_path},
+    {"update_path", l_toggl_update_path},
+    {"ui_start", l_toggl_ui_start},
+    {"discard_time_and_continue", l_toggl_discard_time_and_continue},
+    {"set_settings_remind_days", l_toggl_set_settings_remind_days},
+    {"set_settings_remind_times", l_toggl_set_settings_remind_times},
+    {"set_settings_autotrack", l_toggl_set_settings_autotrack},
+    {   "set_settings_open_editor_on_shortcut",
+        l_toggl_set_settings_open_editor_on_shortcut
+    },
+    {"set_settings_autodetect_proxy", l_toggl_set_settings_autodetect_proxy},
+    {"set_settings_menubar_project", l_toggl_set_settings_menubar_project},
+    {"set_settings_manual_mode", l_toggl_set_settings_manual_mode},
+    {"set_window_settings", l_toggl_set_window_settings},
+    {"window_settings", l_toggl_window_settings},
+    {"set_default_project_id", l_toggl_set_default_project_id},
+    {"get_default_project_id", l_toggl_get_default_project_id},
+    {"get_default_project_name", l_toggl_get_default_project_name},
+    {"set_promotion_response", l_toggl_set_promotion_response},
+    {   "parse_duration_string_into_seconds",
+        l_toggl_parse_duration_string_into_seconds
+    },
+    {"check_view_struct_size", l_toggl_check_view_struct_size},
+    {"run_script", l_toggl_run_script},
+    {"autotracker_delete_rule", l_toggl_autotracker_delete_rule},
     {NULL, NULL}
 };
 

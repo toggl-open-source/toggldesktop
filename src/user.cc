@@ -294,6 +294,13 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
     }
 }
 
+void User::SetDefaultPID(const Poco::UInt64 value) {
+    if (default_pid_ != value) {
+        default_pid_ = value;
+        SetDirty();
+    }
+}
+
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).

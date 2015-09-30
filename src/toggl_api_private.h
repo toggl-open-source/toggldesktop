@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "./autocomplete_item.h"
 #include "./autotracker.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -36,7 +35,8 @@ TogglGenericView *workspace_to_view_item(
     toggl::Workspace * const);
 
 TogglGenericView *client_to_view_item(
-    toggl::Client * const);
+    toggl::Client * const,
+    toggl::Workspace * const);
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     toggl::AutotrackerRule * const model,
@@ -45,7 +45,7 @@ TogglAutotrackerRuleView *autotracker_rule_to_view_item(
 void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 
 TogglAutocompleteView *autocomplete_item_init(
-    const toggl::AutocompleteItem item);
+    const toggl::view::Autocomplete item);
 
 void view_item_clear(TogglGenericView *item);
 
@@ -73,7 +73,7 @@ TogglSettingsView *settings_view_item_init(
 void settings_view_item_clear(TogglSettingsView *view);
 
 TogglAutocompleteView *autocomplete_list_init(
-    std::vector<toggl::AutocompleteItem> *items);
+    std::vector<toggl::view::Autocomplete> *items);
 
 Poco::Logger &logger();
 

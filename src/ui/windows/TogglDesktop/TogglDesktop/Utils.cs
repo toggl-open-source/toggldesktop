@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows;
-using TogglDesktop.Properties;
 using TogglDesktop.WPF;
 using Size = System.Drawing.Size;
 
@@ -19,15 +18,13 @@ public static class Utils
         {
             if (editPopup != null)
             {
-                var size = Settings.Default.EditSize;
-                editPopup.Width = size.Width;
-                editPopup.Height = size.Height;
+                editPopup.Width = Toggl.GetEditViewWidth();
             }
-            if (Settings.Default.Maximized)
+            if (Toggl.GetWindowMaximized())
             {
                 mainWindow.WindowState = WindowState.Maximized;
             }
-            else if (Settings.Default.Minimized)
+            else if (Toggl.GetWindowMinimized())
             {
                 mainWindow.WindowState = WindowState.Minimized;
             }
@@ -79,15 +76,13 @@ public static class Utils
                 (long)mainWindow.Width);
 
             var state = mainWindow.WindowState;
-            Settings.Default.Maximized = state == WindowState.Maximized;
-            Settings.Default.Minimized = state == WindowState.Minimized;
+            Toggl.SetWindowMaximized(state == WindowState.Maximized);
+            Toggl.SetWindowMinimized(state == WindowState.Minimized);
 
             if (edit != null)
             {
-                Settings.Default.EditSize = new Size((int)edit.Width, (int)edit.Height);
+                Toggl.SetEditViewWidth((long)edit.Width);
             }
-
-            Settings.Default.Save();
         }
         catch (Exception ex)
         {
@@ -125,36 +120,34 @@ public static class Utils
     public static void SetShortcutForShow(KeyCombination? e)
     {
         setShortcut(e, "show",
-                    (s, m) => s.ShowModifiers = m,
-                    (s, k) => s.ShowKey = k
+                    Toggl.SetKeyModifierShow,
+                    Toggl.SetKeyShow
                    );
     }
 
     public static void SetShortcutForStart(KeyCombination? e)
     {
         setShortcut(e, "start",
-                    (s, m) => s.StartModifiers = m,
-                    (s, k) => s.StartKey = k
+                    Toggl.SetKeyModifierStart,
+                    Toggl.SetKeyStart
                    );
     }
 
     private static void setShortcut(KeyCombination? e, string shortcutName,
-                                    Action<Settings, ModifierKeys> setModifier, Action<Settings, string> setKey)
+                                    Action<ModifierKeys> setModifier, Action<string> setKey)
     {
         try
         {
             if (e.HasValue)
             {
-                setModifier(Settings.Default, e.Value.Modifiers);
-                setKey(Settings.Default, e.Value.KeyCode);
+                setModifier(e.Value.Modifiers);
+                setKey(e.Value.KeyCode);
             }
             else
             {
-                setModifier(Settings.Default, 0);
-                setKey(Settings.Default, null);
+                setModifier(0);
+                setKey(null);
             }
-
-            Settings.Default.Save();
         }
         catch (Exception ex)
         {

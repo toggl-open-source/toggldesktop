@@ -397,9 +397,9 @@ void Context::updateUI(const UIElements &what) {
     TimeEntry *editor_time_entry = nullptr;
     TimeEntry *running_entry = nullptr;
 
-    std::vector<AutocompleteItem> time_entry_autocompletes;
-    std::vector<AutocompleteItem> minitimer_autocompletes;
-    std::vector<AutocompleteItem> project_autocompletes;
+    std::vector<view::Autocomplete> time_entry_autocompletes;
+    std::vector<view::Autocomplete> minitimer_autocompletes;
+    std::vector<view::Autocomplete> project_autocompletes;
 
     std::vector<Workspace *> workspaces;
     std::vector<TimeEntry *> time_entries;
@@ -497,6 +497,8 @@ void Context::updateUI(const UIElements &what) {
         if (what.open_time_entry_editor) {
             UI()->DisplayApp();
         }
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
             user_->related,
@@ -506,6 +508,8 @@ void Context::updateUI(const UIElements &what) {
             user_);
     }
     if (what.display_time_entries) {
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             user_->related,
@@ -522,12 +526,18 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayWorkspaceSelect(&workspaces);
     }
     if (what.display_client_select) {
-        UI()->DisplayClientSelect(&clients);
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
+        UI()->DisplayClientSelect(
+            user_->related,
+            &clients);
     }
     if (what.display_tags) {
         UI()->DisplayTags(&tags);
     }
     if (what.display_timer_state) {
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimerState(
             user_->related,
             running_entry,
@@ -535,6 +545,8 @@ void Context::updateUI(const UIElements &what) {
     }
     if (what.display_autotracker_rules) {
         if (UI()->CanDisplayAutotrackerRules() && user_) {
+            // FIXME: should not touch related data here any more,
+            // data should be already collected in previous, locked step
             UI()->DisplayAutotrackerRules(user_->related, autotracker_titles_);
         }
     }
@@ -1560,6 +1572,94 @@ error Context::SaveWindowSettings(
     return displayError(err);
 }
 
+void Context::SetWindowMaximized(
+    const bool value) {
+    displayError(db()->SetWindowMaximized(value));
+}
+
+bool Context::GetWindowMaximized() {
+    bool value(false);
+    displayError(db()->GetWindowMaximized(&value));
+    return value;
+}
+
+void Context::SetWindowMinimized(
+    const bool_t value) {
+    displayError(db()->SetWindowMinimized(value));
+}
+
+bool Context::GetWindowMinimized() {
+    bool value(false);
+    displayError(db()->GetWindowMinimized(&value));
+    return value;
+}
+
+void Context::SetWindowEditSizeHeight(
+    const int64_t value) {
+    displayError(db()->SetWindowEditSizeHeight(value));
+}
+
+int64_t Context::GetWindowEditSizeHeight() {
+    Poco::Int64 value(0);
+    displayError(db()->GetWindowEditSizeHeight(&value));
+    return value;
+}
+
+void Context::SetWindowEditSizeWidth(
+    const int64_t value) {
+    displayError(db()->SetWindowEditSizeWidth(value));
+}
+
+int64_t Context::GetWindowEditSizeWidth() {
+    Poco::Int64 value(0);
+    displayError(db()->GetWindowEditSizeWidth(&value));
+    return value;
+}
+
+void Context::SetKeyStart(
+    const std::string value) {
+    displayError(db()->SetKeyStart(value));
+}
+
+std::string Context::GetKeyStart() {
+    std::string value("");
+    displayError(db()->GetKeyStart(&value));
+    return value;
+}
+
+void Context::SetKeyShow(
+    const std::string value) {
+    displayError(db()->SetKeyShow(value));
+}
+
+std::string Context::GetKeyShow() {
+    std::string value("");
+    displayError(db()->GetKeyShow(&value));
+    return value;
+}
+
+void Context::SetKeyModifierShow(
+    const std::string value) {
+    displayError(db()->SetKeyModifierShow(value));
+}
+
+std::string Context::GetKeyModifierShow() {
+    std::string value("");
+    displayError(db()->GetKeyModifierShow(&value));
+    return value;
+}
+
+void Context::SetKeyModifierStart(
+    const std::string value) {
+    displayError(db()->SetKeyModifierStart(value));
+}
+
+std::string Context::GetKeyModifierStart() {
+    std::string value("");
+    displayError(db()->GetKeyModifierStart(&value));
+    return value;
+}
+
 error Context::SetProxySettings(
     const bool use_proxy,
     const Proxy proxy) {
@@ -2043,10 +2143,15 @@ TimeEntry *Context::Start(
             return nullptr;
         }
 
+        Poco::UInt64 pid(project_id);
+        if (!pid && project_guid.empty()) {
+            pid = user_->DefaultPID();
+        }
+
         te = user_->Start(description,
                           duration,
                           task_id,
-                          project_id,
+                          pid,
                           project_guid,
                           tags);
     }
@@ -2690,9 +2795,85 @@ error Context::SetUpdateChannel(const std::string channel) {
     return noError;
 }
 
+error Context::SetDefaultPID(const Poco::UInt64 pid) {
+    try {
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot set default PID, user logged out");
+                return noError;
+            }
+            if (pid && !user_->related.ProjectByID(pid)) {
+                return displayError("Project not found by ID");
+            }
+            user_->SetDefaultPID(pid);
+        }
+        return displayError(save());
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultPID(Poco::UInt64 *pid) {
+    try {
+        poco_check_ptr(pid);
+        *pid = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            *pid = user_->DefaultPID();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultProjectName(std::string *name) {
+    try {
+        poco_check_ptr(name);
+        *name = "";
+        Project *p = nullptr;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            p = user_->related.ProjectByID(user_->DefaultPID());
+        }
+        if (p) {
+            *name = p->Name();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
 error Context::AddAutotrackerRule(
     const std::string term,
-    const Poco::UInt64 pid) {
+    const Poco::UInt64 pid,
+    Poco::Int64 *rule_id) {
+
+    poco_check_ptr(rule_id);
+    *rule_id = 0;
 
     if (term.empty()) {
         return displayError("missing term");
@@ -2702,6 +2883,8 @@ error Context::AddAutotrackerRule(
     }
 
     std::string lowercase = Poco::UTF8::toLower(term);
+
+    AutotrackerRule *rule = nullptr;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2714,14 +2897,23 @@ error Context::AddAutotrackerRule(
             return displayError(kErrorRuleAlreadyExists);
         }
 
-        AutotrackerRule *rule = new AutotrackerRule();
+        rule = new AutotrackerRule();
         rule->SetTerm(lowercase);
         rule->SetPID(pid);
         rule->SetUID(user_->ID());
         user_->related.AutotrackerRules.push_back(rule);
     }
 
-    return displayError(save());
+    error err = save();
+    if (noError != err) {
+        return displayError(err);
+    }
+
+    if (rule) {
+        *rule_id = rule->LocalID();
+    }
+
+    return noError;
 }
 
 error Context::DeleteAutotrackerRule(

@@ -72,11 +72,19 @@ namespace TogglDesktop.WPF
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
-                var keepNewProjectModeOpen = this.isInNewProjectMode
-                                             && this.hasTimeEntry()
-                                             && this.timeEntry.PID == timeEntry.PID
-                                             && this.timeEntry.WID == timeEntry.WID
-                                             && timeEntry.CanAddProjects;
+                var keepNewProjectModeOpen =
+                    !open
+                    && this.isInNewProjectMode
+                    && this.hasTimeEntry()
+                    && this.timeEntry.GUID == timeEntry.GUID
+                    && this.timeEntry.PID == timeEntry.PID
+                    && this.timeEntry.WID == timeEntry.WID
+                    && timeEntry.CanAddProjects;
+
+                if (!keepNewProjectModeOpen && this.hasTimeEntry() && this.isInNewProjectMode)
+                {
+                    this.confirmNewProject();
+                }
 
                 this.timeEntry = timeEntry;
 
@@ -84,12 +92,10 @@ namespace TogglDesktop.WPF
 
                 this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
 
-                this.descriptionTextBox.SetText(timeEntry.Description);
-                setTime(this.durationTextBox, timeEntry.Duration);
-                setTime(this.startTimeTextBox, timeEntry.StartTimeString);
-                setTime(this.endTimeTextBox, timeEntry.EndTimeString);
-                this.projectTextBox.SetText(timeEntry.ProjectLabel);
-                this.clientTextBox.SetText(timeEntry.ClientLabel);
+                this.setText(this.descriptionTextBox, timeEntry.Description, open);
+                setTime(this.durationTextBox, timeEntry.Duration, open);
+                setTime(this.startTimeTextBox, timeEntry.StartTimeString, open);
+                setTime(this.endTimeTextBox, timeEntry.EndTimeString, open);
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
 
                 if (isCurrentlyRunning)
@@ -127,6 +133,8 @@ namespace TogglDesktop.WPF
                         this.disableNewProjectMode();
 
                     this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
+                    this.setText(this.projectTextBox, timeEntry.ProjectLabel, open);
+                    this.setText(this.clientTextBox, timeEntry.ClientLabel, open);
 
                     this.selectedWorkspaceId = timeEntry.WID;
                     this.selectedWorkspaceName = timeEntry.WorkspaceName;
@@ -156,10 +164,21 @@ namespace TogglDesktop.WPF
             return projectColor;
         }
 
-        private static void setTime(ExtendedTextBox textBox, string time)
+        private void setText(ExtendedTextBox textBox, string text, bool evenIfFocused)
         {
-            textBox.SetText(time);
-            textBox.Tag = time;
+            if (evenIfFocused || !textBox.IsKeyboardFocused)
+            {
+                textBox.SetText(text);
+            }
+        }
+
+        private static void setTime(ExtendedTextBox textBox, string time, bool evenIfFocused)
+        {
+            if (evenIfFocused || !textBox.IsKeyboardFocused)
+            {
+                textBox.SetText(time);
+                textBox.Tag = time;
+            }
         }
 
         #endregion
@@ -180,7 +199,7 @@ namespace TogglDesktop.WPF
             var caret = this.durationTextBox.CaretIndex;
 
             var s = Toggl.FormatDurationInSecondsHHMMSS(this.timeEntry.DurationInSeconds);
-            this.durationTextBox.Text = s;
+            this.durationTextBox.SetText(s);
             this.durationTextBox.Tag = s;
 
             this.durationTextBox.CaretIndex = caret;
@@ -208,7 +227,10 @@ namespace TogglDesktop.WPF
 
             this.projects = list;
 
-            this.tryUpdatingProjectAutoComplete();
+            using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
+            {
+                this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            }
         }
 
         private void onClientSelect(List<Toggl.TogglGenericView> list)
@@ -218,33 +240,9 @@ namespace TogglDesktop.WPF
 
             this.clients = list;
 
-            this.tryUpdatingClientAutoComplete();
-            this.tryUpdatingProjectAutoComplete();
-        }
-
-        private void tryUpdatingProjectAutoComplete()
-        {
-            if (this.projects == null || this.clients == null || this.workspaces == null)
-                return;
-
-            using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
-            {
-                this.projectAutoComplete.SetController(
-                    AutoCompleteControllers.ForProjects(this.projects, this.clients, this.workspaces)
-                    );
-            }
-        }
-        
-        private void tryUpdatingClientAutoComplete()
-        {
-            if (this.clients == null || this.workspaces == null)
-                return;
-
             using (Performance.Measure("building edit view client auto complete controller, {0} items", this.clients.Count))
             {
-                this.clientAutoComplete.SetController(
-                    AutoCompleteControllers.ForClients(this.clients, this.workspaces)
-                    );
+                this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list));
             }
         }
 
@@ -270,9 +268,6 @@ namespace TogglDesktop.WPF
             {
                 this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
             }
-
-            this.tryUpdatingClientAutoComplete();
-            this.tryUpdatingProjectAutoComplete();
         }
 
         #endregion

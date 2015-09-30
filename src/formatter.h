@@ -9,10 +9,13 @@
 
 #include "Poco/Timestamp.h"
 
-#include "./autocomplete_item.h"
 #include "./types.h"
 
 namespace toggl {
+
+namespace view {
+class Autocomplete;
+}  // namespace view
 
 class Format {
  public:
@@ -130,15 +133,28 @@ class Formatter {
         std::string *whatsleft);
 };
 
-bool CompareClientByName(Client *a, Client *b);
-bool CompareByStart(TimedEvent *a, TimedEvent *b);
-bool CompareAutocompleteItems(AutocompleteItem a, AutocompleteItem b);
+bool CompareClientByName(
+    Client *a,
+    Client *b);
+bool CompareByStart(
+    TimedEvent *a,
+    TimedEvent *b);
+bool CompareAutocompleteItems(
+    view::Autocomplete a,
+    toggl::view::Autocomplete b);
 bool CompareStructuredAutocompleteItems(
-    AutocompleteItem a, AutocompleteItem b);
-bool CompareWorkspaceByName(Workspace *a, Workspace *b);
-bool CompareAutotrackerTitles(const std::string &a, const std::string &b);
+    view::Autocomplete a,
+    view::Autocomplete b);
+bool CompareWorkspaceByName(
+    Workspace *a,
+    Workspace *b);
+bool CompareAutotrackerTitles(
+    const std::string &a,
+    const std::string &b);
 
-bool timeIsWithinLimits(int *hours, int *minutes);
+bool timeIsWithinLimits(
+    int *hours,
+    int *minutes);
 
 }  // namespace toggl
 

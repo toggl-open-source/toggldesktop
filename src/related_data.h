@@ -8,7 +8,6 @@
 #include <string>
 #include <map>
 
-#include "./autocomplete_item.h"
 #include "./timeline_event.h"
 #include "./types.h"
 
@@ -76,9 +75,9 @@ class RelatedData {
 
     error DeleteAutotrackerRule(const Poco::Int64 local_id);
 
-    void TimeEntryAutocompleteItems(std::vector<AutocompleteItem> *) const;
-    void MinitimerAutocompleteItems(std::vector<AutocompleteItem> *) const;
-    void ProjectAutocompleteItems(std::vector<AutocompleteItem> *) const;
+    void TimeEntryAutocompleteItems(std::vector<view::Autocomplete> *) const;
+    void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *) const;
+    void ProjectAutocompleteItems(std::vector<view::Autocomplete> *) const;
 
     void ProjectLabelAndColorCode(
         const TimeEntry *te,
@@ -94,22 +93,22 @@ class RelatedData {
  private:
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
-        std::vector<AutocompleteItem> *list) const;
+        std::vector<view::Autocomplete> *list) const;
 
     void taskAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<AutocompleteItem> *list) const;
+        std::vector<view::Autocomplete> *list) const;
 
     void projectAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<AutocompleteItem> *list) const;
+        std::vector<view::Autocomplete> *list) const;
 
     void workspaceAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<AutocompleteItem> *list) const;
+        std::vector<view::Autocomplete> *list) const;
 
     Client *clientByProject(Project *p) const;
 };

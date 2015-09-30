@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 
+#include "./client.h"
 #include "./const.h"
 #include "./error.h"
 #include "./formatter.h"
@@ -14,8 +15,6 @@
 #include "./time_entry.h"
 #include "./user.h"
 #include "./workspace.h"
-
-#include "./toggl_api_private.h"
 
 #include "Poco/Logger.h"
 #include "Poco/Stopwatch.h"
@@ -51,31 +50,35 @@ void GUI::DisplayApp() {
 }
 
 void GUI::DisplaySyncState(const Poco::Int64 state) {
-    if (lastSyncState != state) {
-        if (on_display_sync_state_) {
-            on_display_sync_state_(state);
-        }
+    if (state == lastSyncState) {
+        return;
+    }
+    if (on_display_sync_state_) {
+        on_display_sync_state_(state);
     }
     lastSyncState = state;
 }
 
 void GUI::DisplayUnsyncedItems(const Poco::Int64 count) {
-    if (lastUnsyncedItemsCount != count) {
-        if (on_display_unsynced_items_) {
-            on_display_unsynced_items_(count);
-        }
+    if (count == lastUnsyncedItemsCount) {
+        return;
+    }
+    if (on_display_unsynced_items_) {
+        on_display_unsynced_items_(count);
     }
     lastUnsyncedItemsCount = count;
 }
 
 void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
-    if (lastDisplayLoginOpen != open || lastDisplayLoginUserID != user_id) {
-        std::stringstream ss;
-        ss << "DisplayLogin open=" << open << ", user_id=" << user_id;
-        logger().debug(ss.str());
-
-        on_display_login_(open, user_id);
+    if (open == lastDisplayLoginOpen && user_id == lastDisplayLoginUserID) {
+        return;
     }
+    std::stringstream ss;
+    ss << "DisplayLogin open=" << open << ", user_id=" << user_id;
+    logger().debug(ss.str());
+
+    on_display_login_(open, user_id);
+
     lastDisplayLoginOpen = open;
     lastDisplayLoginUserID = user_id;
 }
@@ -83,6 +86,10 @@ void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
 error GUI::DisplayError(const error err) {
     if (noError == err) {
         return noError;
+    }
+
+    if (err == lastErr) {
+        return err;
     }
 
     logger().error(err);
@@ -112,6 +119,8 @@ error GUI::DisplayError(const error err) {
     char_t *err_s = copy_string(actionable);
     on_display_error_(err_s, is_user_error);
     free(err_s);
+
+    lastErr = err;
 
     return err;
 }
@@ -212,39 +221,42 @@ void GUI::DisplayAutotrackerNotification(Project *p) {
 
 
 void GUI::DisplayOnlineState(const Poco::Int64 state) {
-    if (lastOnlineState != state) {
-        if (!(kOnlineStateOnline == state
-                || kOnlineStateNoNetwork == state
-                || kOnlineStateBackendDown == state)) {
-            std::stringstream ss;
-            ss << "Invalid online state " << state;
-            logger().error(ss.str());
-            return;
-        }
-
-        std::stringstream ss;
-        ss << "DisplayOnlineState ";
-
-        switch (state) {
-        case kOnlineStateOnline:
-            ss << "online";
-            break;
-        case kOnlineStateNoNetwork:
-            ss << "no network";
-            break;
-        case kOnlineStateBackendDown:
-            ss << "backend is down";
-            break;
-        }
-        logger().debug(ss.str());
-
-        on_display_online_state_(state);
+    if (state == lastOnlineState) {
+        return;
     }
+
+    if (!(kOnlineStateOnline == state
+            || kOnlineStateNoNetwork == state
+            || kOnlineStateBackendDown == state)) {
+        std::stringstream ss;
+        ss << "Invalid online state " << state;
+        logger().error(ss.str());
+        return;
+    }
+
+    std::stringstream ss;
+    ss << "DisplayOnlineState ";
+
+    switch (state) {
+    case kOnlineStateOnline:
+        ss << "online";
+        break;
+    case kOnlineStateNoNetwork:
+        ss << "no network";
+        break;
+    case kOnlineStateBackendDown:
+        ss << "backend is down";
+        break;
+    }
+    logger().debug(ss.str());
+
+    on_display_online_state_(state);
+
     lastOnlineState = state;
 }
 
 void GUI::DisplayTimeEntryAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -253,7 +265,7 @@ void GUI::DisplayTimeEntryAutocomplete(
 }
 
 void GUI::DisplayMinitimerAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayMinitimerAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -262,7 +274,7 @@ void GUI::DisplayMinitimerAutocomplete(
 }
 
 void GUI::DisplayProjectAutocomplete(
-    std::vector<toggl::AutocompleteItem> *items) {
+    std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayProjectAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
@@ -422,13 +434,20 @@ void GUI::DisplayAutotrackerRules(
     autotracker_view_item_clear(first);
 }
 
-void GUI::DisplayClientSelect(std::vector<toggl::Client *> *clients) {
+void GUI::DisplayClientSelect(
+    const RelatedData &related,
+    std::vector<toggl::Client *> *clients) {
     logger().debug("DisplayClientSelect");
 
     TogglGenericView *first = nullptr;
     for (std::vector<toggl::Client *>::const_iterator it = clients->begin();
             it != clients->end(); it++) {
-        TogglGenericView *item = client_to_view_item(*it);
+        Client *c = *it;
+        Workspace *ws = nullptr;
+        if (c->WID()) {
+            ws = related.WorkspaceByID(c->WID());
+        }
+        TogglGenericView *item = client_to_view_item(c, ws);
         item->Next = first;
         first = item;
     }
