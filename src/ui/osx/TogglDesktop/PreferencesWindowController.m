@@ -78,20 +78,35 @@ extern void *ctx;
 												 name:kDisplayLogin
 											   object:nil];
 
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
-	[self.defaultProject setEnabled:self.user_id != 0];
+	[self enableLoggedInUserControls];
 
 	[self displaySettings:self.originalCmd];
 
-	[self displayAutotrackerRules:@{
-		 @"rules": self.rules,
-		 @"titles": self.termAutocompleteItems,
-	 }];
+	NSMutableDictionary *autotrackerData = [[NSMutableDictionary alloc] init];
+	if (self.rules != nil)
+	{
+		autotrackerData[@"rules"] = self.rules;
+	}
+	if (self.termAutocompleteItems != nil)
+	{
+		autotrackerData[@"titles"] = self.termAutocompleteItems;
+	}
+	[self displayAutotrackerRules:autotrackerData];
 
 	[self.idleMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
 
 	self.renderTimeline.hidden = YES;
+}
+
+- (void)enableLoggedInUserControls
+{
+	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
+	[self.defaultProject setEnabled:self.user_id != 0];
+	[self.autotrack setEnabled:self.user_id != 0];
+	[self.autotrackerTerm setEnabled:self.user_id != 0];
+	[self.autotrackerProject setEnabled:self.user_id != 0];
+	[self.addAutotrackerRuleButton setEnabled:self.user_id != 0];
 }
 
 - (IBAction)proxyRadioChanged:(id)sender
@@ -249,12 +264,13 @@ const int kUseProxyToConnectToToggl = 2;
 
 	self.user_id = cmd.user_id;
 
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
-	[self.defaultProject setEnabled:self.user_id != 0];
+	[self enableLoggedInUserControls];
 
 	if (!self.user_id)
 	{
 		self.defaultProject.stringValue = @"";
+
+		[self displayAutotrackerRules:@{}];
 	}
 }
 
