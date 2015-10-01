@@ -794,8 +794,7 @@ namespace TogglDesktop.WPF
             if (this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
-                this.editPopup.EditView.EnsureSaved();
-                this.editPopup.Hide();
+                this.editPopup.ClosePopup();
                 this.timerEntryListView.DisableHighlight();
             }
         }

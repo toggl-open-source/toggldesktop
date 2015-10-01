@@ -35,6 +35,12 @@ namespace TogglDesktop.WPF
             this.EditView.FocusField(focusedFieldName);
         }
 
+        public void ClosePopup()
+        {
+            this.EditView.EnsureSaved();
+            this.Hide();
+        }
+
         #region ui events
 
         protected override void OnDeactivated(EventArgs e)
@@ -45,24 +51,7 @@ namespace TogglDesktop.WPF
 
         private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.isResizing)
-                return;
-
-            const int htleft = 10;
-            const int htright = 11;
-
-            Mouse.Capture(null);
-
-            this.ResizeMode = ResizeMode.CanResize;
-
-            Win32.SendMessage(this.interopHelper.Handle,
-                Win32.wmNcLButtonDown,
-                this.isLeft ? htright : htleft,
-                0);
-
-            this.resizeHandle.CaptureMouse();
-
-            this.isResizing = true;
+            this.startResizing();
         }
 
         private void onResizeHandleLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -124,6 +113,29 @@ namespace TogglDesktop.WPF
             this.mainFormShadow.Height = height;
             this.mainFormShadow.HorizontalAlignment = left ? HorizontalAlignment.Right : HorizontalAlignment.Left;
         }
+
+        private void startResizing()
+        {
+            if (this.isResizing)
+                return;
+
+            const int htleft = 10;
+            const int htright = 11;
+
+            Mouse.Capture(null);
+
+            this.ResizeMode = ResizeMode.CanResize;
+
+            Win32.SendMessage(this.interopHelper.Handle,
+                Win32.wmNcLButtonDown,
+                this.isLeft ? htright : htleft,
+                0);
+
+            this.resizeHandle.CaptureMouse();
+
+            this.isResizing = true;
+        }
+
         private void endResizing()
         {
             if (!this.isResizing)
@@ -135,5 +147,6 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
     }
 }
