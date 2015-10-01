@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media.Animation;
 
 namespace TogglDesktop.WPF
 {
@@ -12,6 +13,7 @@ namespace TogglDesktop.WPF
         private bool isLeft;
         private bool remainOnTop;
         private bool isResizing;
+        private double maxWidth;
 
         public EditViewPopup()
         {
@@ -31,6 +33,7 @@ namespace TogglDesktop.WPF
             if (!this.Owner.IsVisible)
                 return;
 
+            this.startAnimation();
             this.Show();
             this.EditView.FocusField(focusedFieldName);
         }
@@ -69,6 +72,35 @@ namespace TogglDesktop.WPF
 
         #endregion
 
+        #region animate
+
+        private void startAnimation()
+        {
+            var animation = new DoubleAnimation(0, this.Width,
+                new Duration(TimeSpan.FromSeconds(1)),
+                FillBehavior.HoldEnd);
+            animation.Completed += (s, e) => this.stopAnimation();
+
+            this.BeginAnimation(MinWidthProperty, animation);
+            this.BeginAnimation(MaxWidthProperty, animation);
+
+            this.EditView.Width = this.Width;
+            this.EditView.HorizontalAlignment = HorizontalAlignment.Right;
+        }
+
+
+        private void stopAnimation()
+        {
+            this.BeginAnimation(MinWidthProperty, null);
+
+            this.MinWidth = 400;
+            this.MaxWidth = this.maxWidth;
+            this.EditView.HorizontalAlignment = HorizontalAlignment.Stretch;
+        }
+
+
+        #endregion
+
         #region controlling
 
         public void SetWindowOnTop(bool onTop)
@@ -102,10 +134,13 @@ namespace TogglDesktop.WPF
             this.Left = x;
             this.Top = y;
 
-            this.MinWidth = 400;
             this.MinHeight = height;
-            this.MaxWidth = maxWidth;
             this.MaxHeight = height;
+
+            this.maxWidth = maxWidth;
+
+            //this.MinWidth = 400;
+            //this.MaxWidth = maxWidth;
         }
 
         private void setShadow(bool left, double height)
