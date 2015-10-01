@@ -18,6 +18,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             Panel newPanel;
             this.element = this.createElement(out newPanel, recyclables);
+            this.element.Visibility = Visibility.Visible;
             parent.Children.Add(this.element);
             return newPanel;
         }
