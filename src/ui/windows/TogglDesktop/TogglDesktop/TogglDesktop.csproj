@@ -608,7 +608,10 @@
   <ItemGroup>
     <Resource Include="Resources\ic_cog_grey600_36dp.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\toggl-transparent.ico" />
+    <Resource Include="Resources\toggl_inactive-transparent.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

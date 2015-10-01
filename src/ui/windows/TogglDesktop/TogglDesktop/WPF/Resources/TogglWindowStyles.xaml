@@ -2,8 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <BitmapImage x:Key="IconRed" UriSource="/TogglDesktop;component/Resources/toggl.ico"/>
-    <BitmapImage x:Key="IconGray" UriSource="/TogglDesktop;component/Resources/toggl_inactive.ico"/>
+    <BitmapImage x:Key="IconRed" UriSource="/TogglDesktop;component/Resources/toggl-transparent.ico"/>
+    <BitmapImage x:Key="IconGray" UriSource="/TogglDesktop;component/Resources/toggl_inactive-transparent.ico"/>
 
     <Style TargetType="Control" x:Key="ControlBase" >
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
