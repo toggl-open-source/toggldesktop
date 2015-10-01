@@ -17,6 +17,7 @@ namespace TogglDesktop.WPF
         private static IconBitmapDecoder iconInactive;
 
         private bool isToolWindow;
+        private bool disableCloseButton;
 
         private TogglChrome chrome;
 
@@ -52,6 +53,20 @@ namespace TogglDesktop.WPF
         public TogglChrome Chrome
         {
             get { return this.chrome; }
+        }
+
+        public bool DisableCloseButton
+        {
+            get { return this.disableCloseButton; }
+            set
+            {
+                if (this.IsInitialized)
+                {
+                    throw new InvalidOperationException("Can not change DisableCloseButton after initialisation.");
+                }
+
+                this.disableCloseButton = value;
+            }
         }
 
         #endregion
@@ -106,6 +121,11 @@ namespace TogglDesktop.WPF
                 DataContext = this,
                 IsToolWindow = this.IsToolWindow
             };
+
+            if (this.disableCloseButton)
+            {
+                this.chrome.CloseButton.Visibility = Visibility.Collapsed;
+            }
 
             this.SetIconState(true);
 

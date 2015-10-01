@@ -250,6 +250,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\OpacityExtension.cs" />
+    <Compile Include="WPF\windows\TogglMessageBox.xaml.cs">
+      <DependentUpon>TogglMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\windows\PreferencesWindow.xaml.cs">
       <DependentUpon>PreferencesWindow.xaml</DependentUpon>
     </Compile>
@@ -512,6 +515,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\windows\TogglMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
