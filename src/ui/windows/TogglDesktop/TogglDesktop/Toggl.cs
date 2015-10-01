@@ -5,6 +5,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.WPF;
+using MessageBox = TogglDesktop.WPF.MessageBox;
+
 // ReSharper disable InconsistentNaming
 
 namespace TogglDesktop
@@ -24,6 +27,8 @@ public static partial class Toggl
     public static string DatabasePath;
     public static string LogPath;
     public static string Env = "production";
+
+    private static Window mainWindow;
 
     // Callbacks
 
@@ -871,6 +876,7 @@ public static partial class Toggl
     private static readonly DateTime UnixEpoch =
         new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
+
     public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
     {
         return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
@@ -902,12 +908,20 @@ public static partial class Toggl
         return Convert.ToBoolean(value);
     }
 
+    public static void RegisterMainWindow(MainWindow window)
+    {
+        if (mainWindow != null)
+            throw new Exception("Can only register main window once!");
+
+        mainWindow = window;
+    }
+
     public static bool AskToDeleteEntry(string guid)
     {
-        var result = MessageBox.Show("Delete time entry?", "Please confirm",
-                                     MessageBoxButton.YesNo, MessageBoxImage.Question);
+        var result = MessageBox.Show(mainWindow, "Delete time entry?", "Please confirm",
+                                     MessageBoxButton.OKCancel, "DELETE ENTRY");
 
-        if (result == MessageBoxResult.Yes)
+        if (result == MessageBoxResult.OK)
         {
             return DeleteTimeEntry(guid);
         }
