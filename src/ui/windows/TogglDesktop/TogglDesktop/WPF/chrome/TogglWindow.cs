@@ -155,7 +155,9 @@ namespace TogglDesktop.WPF
         {
             this.updateMaximumSize();
 
-            if (this.WindowState != WindowState.Maximized && this.ResizeMode != ResizeMode.CanResize)
+            if (!this.isToolWindow
+                && this.WindowState != WindowState.Maximized
+                && this.ResizeMode != ResizeMode.CanResize)
             {
                 this.ResizeMode = ResizeMode.CanResize;
             }
@@ -183,6 +185,11 @@ namespace TogglDesktop.WPF
                 GlassFrameThickness = new Thickness(1),
                 UseAeroCaptionButtons = false
             };
+
+            if (this.isToolWindow)
+            {
+                chrome.ResizeBorderThickness = new Thickness(0);
+            }
 
             if (this.WindowState == WindowState.Maximized)
             {
