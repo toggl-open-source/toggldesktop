@@ -365,6 +365,7 @@ public static partial class Toggl
     private delegate void     TogglDisplayAutotrackerRules(
         IntPtr first,
         UInt64 title_count,
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPWStr, SizeParamIndex=1)]
         string[] title_list);
 
     // Initialize/destroy an instance of the app

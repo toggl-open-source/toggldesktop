@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Hardcodet.Wpf.TaskbarNotification;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
 
@@ -81,6 +82,33 @@ static class UIExtensions
                              : hideInsteadOfCollapse
                              ? Visibility.Hidden
                              : Visibility.Collapsed;
+    }
+
+    public static void RemoveFromParent(this UIElement control)
+    {
+        var parent = VisualTreeHelper.GetParent(control);
+        if (parent == null)
+            return;
+
+        var parentAsPanel = parent as Panel;
+        if (parentAsPanel != null)
+        {
+            parentAsPanel.Children.Remove(control);
+            return;
+        }
+
+        var parentAsContentControl = parent as ContentControl;
+        if (parentAsContentControl != null)
+        {
+            parentAsContentControl.Content = null;
+            return;
+        }
+
+        var parentAsDecorator = parent as Decorator;
+        if (parentAsDecorator != null)
+        {
+            parentAsDecorator.Child = null;
+        }
     }
 }
 }

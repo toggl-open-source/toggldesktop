@@ -14,6 +14,7 @@
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
         <Setter Property="FontSize" Value="13.3" />
         <Setter Property="Foreground" Value="#252525"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="#B2252525"/>
@@ -150,10 +151,12 @@
     <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Padding" Value="2 2 2 0"/>
         <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style TargetType="PasswordBox" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Padding" Value="2 0"/>
         <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style TargetType="Separator">
         <Setter Property="Margin" Value="0 10"/>
