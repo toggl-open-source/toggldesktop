@@ -157,8 +157,33 @@ namespace TogglDesktop.WPF
 
         #region adding/deleting
 
+        private void onAnyTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                this.tryAdd();
+            }
+        }
+
         private void onAddButtonClick(object sender, RoutedEventArgs e)
         {
+            this.tryAdd();
+        }
+
+        private void tryAdd()
+        {
+            if (string.IsNullOrWhiteSpace(this.termTextBox.Text))
+            {
+                this.termTextBox.Focus();
+                return;
+            }
+            if (this.selectedProject.ProjectID == 0)
+            {
+                this.projectTextBox.Focus();
+                return;
+            }
+
             if (Toggl.AddAutotrackerRule(this.termTextBox.Text, this.selectedProject.ProjectID) != 0)
             {
                 this.reset();
