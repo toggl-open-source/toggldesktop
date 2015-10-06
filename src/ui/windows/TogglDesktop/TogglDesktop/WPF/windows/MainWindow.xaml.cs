@@ -304,6 +304,7 @@ namespace TogglDesktop.WPF
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.remainOnTop = settings.OnTop;
             this.setWindowOnTop();
+            this.setManualMode(settings.ManualMode, true);
         }
 
         #endregion
@@ -630,7 +631,7 @@ namespace TogglDesktop.WPF
         
         #region ui controlling
 
-        private void setManualMode(bool manualMode)
+        private void setManualMode(bool manualMode, bool fromApi = false)
         {
             this.isInManualMode = manualMode;
 
@@ -638,6 +639,11 @@ namespace TogglDesktop.WPF
                 this.isInManualMode ? "Use timer" : "Use manual mode";
 
             this.timerEntryListView.SetManualMode(this.isInManualMode);
+
+            if (!fromApi)
+            {
+                Toggl.SetManualMode(manualMode);
+            }
         }
 
         private void togglVisibility()

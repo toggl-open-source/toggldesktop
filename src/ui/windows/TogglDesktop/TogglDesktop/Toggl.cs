@@ -1035,6 +1035,11 @@ public static partial class Toggl
 
     #region various
 
+    public static void SetManualMode(bool manualMode)
+    {
+        toggl_set_settings_manual_mode(ctx, manualMode);
+    }
+
     public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
     {
         return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
