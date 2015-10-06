@@ -37,8 +37,24 @@ public static partial class Toggl
 
     #endregion
 
-    #region callback delegates
+    #region enums
+    
+    public enum OnlineState
+    {
+        Online = kOnlineStateOnline,
+        NoNetwork = kOnlineStateNoNetwork,
+        BackendDown = kOnlineStateBackendDown
+    }
 
+    public enum SyncState
+    {
+        Idle = kSyncStateIdle,
+        Syncing = kSyncStateWork
+    }
+
+    #endregion
+
+    #region callback delegates
 
     public delegate void DisplayApp(
         bool open);
@@ -47,8 +63,14 @@ public static partial class Toggl
         string errmsg,
         bool user_error);
 
+    public delegate void DisplaySyncState(
+        SyncState state);
+
+    public delegate void DisplayUnsyncedItems(
+        Int64 count);
+
     public delegate void DisplayOnlineState(
-        Int64 state);
+        OnlineState state);
 
     public delegate void DisplayURL(
         string url);
@@ -493,6 +515,9 @@ public static partial class Toggl
     public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
     public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
 
+    public static event DisplaySyncState OnDisplaySyncState = delegate { }; 
+    public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
+
     private static void listenToLibEvents()
     {
         toggl_on_show_app(ctx, open =>
@@ -511,11 +536,26 @@ public static partial class Toggl
             }
         });
 
+        toggl_on_sync_state(ctx, state =>
+        {
+            using (Performance.Measure("Calling OnDisplaySyncState, state: {0}", state))
+            {
+                OnDisplaySyncState((SyncState)state);
+            }
+        });
+        toggl_on_unsynced_items(ctx, count =>
+        {
+            using (Performance.Measure("Calling OnDisplayUnsyncedItems, count: {0}", count))
+            {
+                OnDisplayUnsyncedItems(count);
+            }
+        });
+        
         toggl_on_online_state(ctx, state =>
         {
             using (Performance.Measure("Calling OnOnlineState, state: {0}", state))
             {
-                OnOnlineState(state);
+                OnOnlineState((OnlineState)state);
             }
         });
 

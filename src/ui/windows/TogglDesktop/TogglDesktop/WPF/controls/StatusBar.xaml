@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="TogglDesktop.WPF.StatusBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:toggl="clr-namespace:TogglDesktop.WPF"
+             mc:Ignorable="d" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+            <Setter Property="FontSize" Value="13.3" />
+            <Setter Property="Foreground" Value="white"/>
+            <Setter Property="Margin" Value="14 2 6 2"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ButtonBase">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="2">
+                            <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#33ffffff"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#66ffffff"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- ReSharper disable once Xaml.RedundantResource -->
+        <Storyboard x:Key="RotateSpinner" BeginTime="00:00:00.000" Duration="00:00:1.000" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="spinnerImage"
+                Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(RotateTransform.Angle)" 
+                From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <Rectangle Height="4">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#00000000" Offset="0"/>
+                    <GradientStop Color="#33000000" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundDark}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       x:Name="statusText" x:FieldModifier="private"
+                       Text="Status: No status."/>
+            
+            <Button Grid.Column="1"
+                    x:Name="syncButton" x:FieldModifier="private"
+                    Click="onSyncButtonClick">
+                <Image Source="/TogglDesktop;component/Resources/syncing-spinner.png"
+                    Name="spinnerImage" x:FieldModifier="private"
+                    Stretch="Fill" Width="16" Height="16"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image.LayoutTransform>
+                        <RotateTransform Angle="0"/>
+                    </Image.LayoutTransform>
+                </Image>
+            </Button>
+            
+        </Grid>
+    </StackPanel>
+</UserControl>
