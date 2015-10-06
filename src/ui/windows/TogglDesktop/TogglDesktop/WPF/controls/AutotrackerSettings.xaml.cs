@@ -13,6 +13,7 @@ namespace TogglDesktop.WPF
     {
         private readonly List<AutotrackerRuleItem> ruleItems = new List<AutotrackerRuleItem>();
         private Toggl.TogglAutocompleteView selectedProject;
+        private int selectedRuleId = -1;
 
         public AutotrackerSettings()
         {
@@ -64,6 +65,13 @@ namespace TogglDesktop.WPF
 
                 this.ruleItems.Add(item);
                 this.rulesPanel.Children.Add(item);
+            }
+
+            if (this.selectedRuleId != -1)
+            {
+                var id = Math.Min(this.selectedRuleId, this.ruleItems.Count - 1);
+                this.selectedRuleId = -1;
+                this.selectRule(id);
             }
         }
 
@@ -188,6 +196,72 @@ namespace TogglDesktop.WPF
             {
                 this.reset();
             }
+        }
+
+        #endregion
+
+        #region keyboard list navigation
+
+        private void onListGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (this.selectedRuleId == -1 && this.ruleItems.Count > 0)
+            {
+                this.selectRule(0);
+            }
+        }
+
+        private void onListLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            this.selectRule(-1);
+        }
+
+        private void onListPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                {
+                    if (this.selectedRuleId == -1)
+                        this.selectRule(0);
+                    else if(this.selectedRuleId > 0)
+                        this.selectRule(this.selectedRuleId - 1);
+                    e.Handled = true;
+                    break;
+                }
+                case Key.Down:
+                {
+                    if (this.selectedRuleId == -1)
+                        this.selectRule(0);
+                    else if (this.selectedRuleId < this.ruleItems.Count - 1)
+                        this.selectRule(this.selectedRuleId + 1);
+                    e.Handled = true;
+                    break;
+                }
+                case Key.Delete:
+                case Key.Back:
+                {
+                    if(this.selectedRuleId != -1)
+                        this.selectedRule.DeleteRule();
+                    e.Handled = true;
+                    break;
+                }
+            }
+        }
+
+        private AutotrackerRuleItem selectedRule
+        {
+            get { return this.ruleItems[this.selectedRuleId]; }
+        }
+
+        private void selectRule(int i)
+        {
+            if (this.selectedRuleId != -1)
+                this.selectedRule.Selected = false;
+
+            this.selectedRuleId = i;
+            
+            if (this.selectedRuleId != -1)
+                this.selectedRule.Selected = true;
         }
 
         #endregion

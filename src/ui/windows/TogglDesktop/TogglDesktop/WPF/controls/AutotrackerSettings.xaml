@@ -100,7 +100,10 @@
             <TextBlock Text="Project" Grid.Column="1" Grid.Row="1" Style="{StaticResource ListHeaderText}"/>
         </Grid>
         <ScrollViewer Grid.Row="1" Style="{toggl:Resources ResourceKey=CustomScrollViewer}"
-            Margin="8">
+            Margin="8" Focusable="True" IsTabStop="True"
+            GotKeyboardFocus="onListGotKeyboardFocus"
+            LostKeyboardFocus="onListLostKeyboardFocus"
+            PreviewKeyDown="onListPreviewKeyDown">
             <StackPanel Background="White" Name="rulesPanel" x:FieldModifier="private">
                 <!-- filled programmatically -->
             </StackPanel>

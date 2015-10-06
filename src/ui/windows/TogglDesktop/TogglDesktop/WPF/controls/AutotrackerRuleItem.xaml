@@ -5,12 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:toggl="clr-namespace:TogglDesktop.WPF"
              mc:Ignorable="d" d:DesignWidth="300" Height="24">
-    <Grid Style="{toggl:Resources ResourceKey=AutotrackerRulesBackground}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="47"/>
         </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <SolidColorBrush Color="{Binding BackColor}"/>
+        </Grid.Background>
 
         <TextBlock Name="termText" x:FieldModifier="private"
                    Grid.Column="0"
