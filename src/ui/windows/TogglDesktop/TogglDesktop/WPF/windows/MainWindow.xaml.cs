@@ -586,9 +586,24 @@ namespace TogglDesktop.WPF
             }
         }
 
+        private void onHideCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.minimizeToTray();
+        }
+
         #endregion
 
         #region canExecutes
+
+        private void canExecuteShowCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !this.IsVisible;
+        }
+
+        private void canExecuteHideCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = this.IsVisible;
+        }
 
         private void canExecuteNewCommand(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -914,5 +929,6 @@ namespace TogglDesktop.WPF
         }
 
         #endregion
+
     }
 }

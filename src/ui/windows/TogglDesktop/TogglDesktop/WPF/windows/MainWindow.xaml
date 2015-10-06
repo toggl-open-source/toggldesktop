@@ -15,6 +15,7 @@
         <RoutedUICommand x:Key="ContinueCommand" />
         <RoutedUICommand x:Key="StopCommand" />
         <RoutedUICommand x:Key="ShowCommand" />
+        <RoutedUICommand x:Key="HideCommand" />
         <RoutedUICommand x:Key="SyncCommand" />
         <RoutedUICommand x:Key="ReportsCommand" />
         <RoutedUICommand x:Key="PreferencesCommand" />
@@ -31,15 +32,21 @@
         <BitmapImage
             x:Key="IconOnlineInactive"
             UriSource="/TogglDesktop;component/Resources/toggltray_inactive.ico" />
+        
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource ShowCommand}" Executed="onShowCommand"/>
         <CommandBinding Command="{StaticResource PreferencesCommand}" Executed="onPreferencesCommand"/>
         <CommandBinding Command="{StaticResource SendFeedbackCommand}" Executed="onSendFeedbackCommand"/>
         <CommandBinding Command="{StaticResource AboutCommand}" Executed="onAboutCommand"/>
         <CommandBinding Command="{StaticResource QuitCommand}" Executed="onQuitCommand"/>
-        
+
+        <CommandBinding Command="{StaticResource ShowCommand}"
+                        Executed="onShowCommand" CanExecute="canExecuteShowCommand"/>
+        <CommandBinding Command="{StaticResource HideCommand}"
+                        Executed="onHideCommand" CanExecute="canExecuteHideCommand"/>
+
         <CommandBinding Command="{StaticResource NewCommand}"
                         Executed="onNewCommand" CanExecute="canExecuteNewCommand"/>
         <CommandBinding Command="{StaticResource ContinueCommand}"
@@ -65,8 +72,8 @@
         <KeyBinding Key="N" Modifiers="Control" Command="{StaticResource NewCommand}" />
         <KeyBinding Key="O" Modifiers="Control" Command="{StaticResource ContinueCommand}" />
         <KeyBinding Key="S" Modifiers="Control" Command="{StaticResource StopCommand}" />
-
-        <KeyBinding Key="T" Modifiers="Control" Command="{StaticResource ShowCommand}" />
+        
+        <KeyBinding Key="W" Modifiers="Control" Command="{StaticResource HideCommand}" />
         <KeyBinding Key="R" Modifiers="Control" Command="{StaticResource SyncCommand}" />
         
         <KeyBinding Key="E" Modifiers="Control" Command="{StaticResource EditRunningCommand}" />
@@ -109,8 +116,16 @@
             <MenuItem Header="Stop" InputGestureText="Ctrl+S"
                       Command="{StaticResource StopCommand}"/>
             <Separator />
-            <MenuItem Header="Show" InputGestureText="Ctrl+T"
-                      Command="{StaticResource ShowCommand}"/>
+            <MenuItem Header="Show"
+                      Command="{StaticResource ShowCommand}"
+                      Visibility=
+"{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
+                      />
+            <MenuItem Header="Hide" InputGestureText="Ctrl+W"
+                      Command="{StaticResource HideCommand}"
+                      Visibility=
+"{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
+                      />
             <Separator />
             <MenuItem Header="Sync" InputGestureText="Ctrl+R"
                       Command="{StaticResource SyncCommand}"/>
