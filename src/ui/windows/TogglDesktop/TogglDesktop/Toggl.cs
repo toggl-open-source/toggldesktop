@@ -5,6 +5,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.WPF;
+using MessageBox = TogglDesktop.WPF.MessageBox;
+
 // ReSharper disable InconsistentNaming
 
 namespace TogglDesktop
@@ -24,6 +27,8 @@ public static partial class Toggl
 
     private static IntPtr ctx = IntPtr.Zero;
 
+    private static Window mainWindow;
+
     // User can override some parameters when running the app
     public static string ScriptPath;
     public static string DatabasePath;
@@ -33,6 +38,7 @@ public static partial class Toggl
     #endregion
 
     #region callback delegates
+
 
     public delegate void DisplayApp(
         bool open);
@@ -1007,14 +1013,22 @@ public static partial class Toggl
 
     public static bool AskToDeleteEntry(string guid)
     {
-        var result = MessageBox.Show("Delete time entry?", "Please confirm",
-                                     MessageBoxButton.YesNo, MessageBoxImage.Question);
+        var result = MessageBox.Show(mainWindow, "Delete time entry?", "Please confirm",
+                                     MessageBoxButton.OKCancel, "DELETE ENTRY");
 
-        if (result == MessageBoxResult.Yes)
+        if (result == MessageBoxResult.OK)
         {
             return DeleteTimeEntry(guid);
         }
         return false;
+    }
+
+    public static void RegisterMainWindow(MainWindow window)
+    {
+        if (mainWindow != null)
+            throw new Exception("Can only register main window once!");
+
+        mainWindow = window;
     }
 
     #endregion

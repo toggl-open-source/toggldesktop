@@ -147,9 +147,11 @@ namespace TogglDesktop.WPF
 
         private void finalInitialisation()
         {
+            Toggl.RegisterMainWindow(this);
+
             if (!Toggl.StartUI(Program.Version()))
             {
-                MessageBox.Show("Missing callback. See the log file for details");
+                MessageBox.Show(null, "Missing callback. See the log file for details");
                 this.shutdown(1);
             }
 
@@ -530,10 +532,10 @@ namespace TogglDesktop.WPF
         {
             var result = MessageBox.Show(this,
                 "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
-                "Any unsynced data will be lost.\nDo you want to continue?", "Clear Cache",
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
+                "Any unsynced data will be lost.\n\nDo you want to continue?", "Clear Cache",
+                MessageBoxButton.OKCancel, "CLEAR CACHE");
 
-            if (result == MessageBoxResult.Yes)
+            if (result == MessageBoxResult.OK)
             {
                 using (Performance.Measure("clearing cache from menu"))
                 {

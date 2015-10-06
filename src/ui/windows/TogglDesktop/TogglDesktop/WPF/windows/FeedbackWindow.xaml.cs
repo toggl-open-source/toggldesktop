@@ -69,7 +69,7 @@ namespace TogglDesktop.WPF
                 return;
             }
 
-            MessageBox.Show("Your feedback was sent successfully.", "Thank you!");
+            MessageBox.Show(this, "Your feedback was sent successfully.", "Thank you!");
             
             this.reset();
             this.Hide();

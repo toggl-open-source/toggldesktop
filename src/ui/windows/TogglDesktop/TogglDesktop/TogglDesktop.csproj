@@ -259,6 +259,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPF\OpacityExtension.cs" />
+    <Compile Include="WPF\windows\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPF\windows\PreferencesWindow.xaml.cs">
       <DependentUpon>PreferencesWindow.xaml</DependentUpon>
     </Compile>
@@ -541,6 +544,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPF\windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPF\windows\MessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
