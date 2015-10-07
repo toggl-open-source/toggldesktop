@@ -25,11 +25,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="M2u-7B-WCs">
-            <rect key="frame" x="0.0" y="0.0" width="258" height="45"/>
+            <rect key="frame" x="0.0" y="0.0" width="258" height="46"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-11" width="256" height="56"/>
+                    <rect key="frame" x="1" y="-10" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -66,6 +66,7 @@ DQ
                                 <animations/>
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
                                 <rect key="frame" x="4" y="29" width="215" height="20"/>
@@ -97,6 +98,7 @@ DQ
                                 <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="4" y="29" width="142" height="8"/>
@@ -140,6 +142,7 @@ DQ
                                 <animations/>
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" borderWidth="0.0" title="BillableBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="H0e-5U-BSu">
                                 <rect key="frame" x="145" y="31" width="7" height="13"/>
@@ -168,6 +171,7 @@ DQ
                                 <animations/>
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
                                 <rect key="frame" x="132" y="24" width="75" height="18"/>
@@ -176,7 +180,7 @@ DQ
                                 </constraints>
                                 <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" placeholderString="00:00:00" drawsBackground="YES" id="FoD-qd-An1">
-                                    <font key="font" metaFont="system" size="14"/>
+                                    <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
@@ -223,16 +227,17 @@ DQ
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="87" id="naG-qG-gq3"/>
                         <constraint firstItem="H0e-5U-BSu" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="20" id="nd5-XL-pQK"/>
                         <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="6" id="q1b-AH-TNO"/>
-                        <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="16" id="sKm-6j-h1k"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="18" id="sKm-6j-h1k"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="13" id="tbX-SU-uAB"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="H0e-5U-BSu" secondAttribute="trailing" constant="60" id="y5u-SN-KgL"/>
                     </constraints>
                     <animations/>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                    <font key="titleFont" metaFont="message" size="11"/>
                 </box>
                 <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-7" width="256" height="56"/>
+                    <rect key="frame" x="1" y="-6" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -262,6 +267,7 @@ DQ
                     <animations/>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882" green="0.1764705882" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                    <font key="titleFont" metaFont="message" size="11"/>
                 </box>
             </subviews>
             <constraints>
