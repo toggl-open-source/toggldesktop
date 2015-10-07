@@ -38,7 +38,7 @@ public static partial class Toggl
     #endregion
 
     #region enums
-    
+
     public enum OnlineState
     {
         Online = kOnlineStateOnline,
@@ -515,7 +515,7 @@ public static partial class Toggl
     public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
     public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
 
-    public static event DisplaySyncState OnDisplaySyncState = delegate { }; 
+    public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
 
     private static void listenToLibEvents()
@@ -550,7 +550,7 @@ public static partial class Toggl
                 OnDisplayUnsyncedItems(count);
             }
         });
-        
+
         toggl_on_online_state(ctx, state =>
         {
             using (Performance.Measure("Calling OnOnlineState, state: {0}", state))
@@ -909,7 +909,7 @@ public static partial class Toggl
     #region low level
 
     private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext, string performanceMessage)
-        where T : struct
+    where T : struct
     {
         if (performanceMessage == null)
             return marshalList(node, getNext);
@@ -923,7 +923,7 @@ public static partial class Toggl
     }
 
     private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext)
-        where T : struct
+    where T : struct
     {
         var list = new List<T>();
 
@@ -938,7 +938,7 @@ public static partial class Toggl
     }
 
     private static T marshalStruct<T>(IntPtr pointer)
-        where T : struct
+    where T : struct
     {
         return (T)Marshal.PtrToStructure(pointer, typeof(T));
     }
