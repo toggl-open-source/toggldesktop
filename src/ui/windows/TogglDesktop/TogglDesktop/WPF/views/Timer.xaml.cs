@@ -18,6 +18,7 @@ namespace TogglDesktop.WPF
         private Toggl.TogglTimeEntryView runningTimeEntry;
         private ProjectInfo completedProject;
         private bool isRunning;
+        private bool acceptNextUpdate;
 
         public event EventHandler StartStopClick;
         public event EventHandler RunningTimeEntrySecondPulse;
@@ -232,6 +233,8 @@ namespace TogglDesktop.WPF
             if (this.StartStopClick != null)
                 this.StartStopClick(this, EventArgs.Empty);
 
+            this.acceptNextUpdate = true;
+
             if (this.isRunning)
             {
                 this.stop();
@@ -366,8 +369,10 @@ namespace TogglDesktop.WPF
         {
             var changedState = this.isRunning != running;
 
-            if (!(changedState || forceUpdate))
+            if (!(changedState || forceUpdate || this.acceptNextUpdate))
                 return;
+
+            this.acceptNextUpdate = false;
 
             this.isRunning = running;
             this.startStopButton.IsChecked = running;
