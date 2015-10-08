@@ -659,6 +659,9 @@
     <Resource Include="Resources\toggl-transparent.ico" />
     <Resource Include="Resources\toggl_inactive-transparent.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\login-spinner.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

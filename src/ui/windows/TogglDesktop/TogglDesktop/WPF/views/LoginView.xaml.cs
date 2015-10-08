@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
@@ -17,11 +19,15 @@ namespace TogglDesktop.WPF
             SignUp
         }
 
+        private readonly Storyboard confirmSpinnerAnimation;
+
         private ConfirmAction confirmAction = ConfirmAction.Unknown;
 
         public LoginView()
         {
             this.InitializeComponent();
+            this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
+
             this.setConfirmAction(ConfirmAction.LogIn);
         }
 
@@ -76,13 +82,13 @@ namespace TogglDesktop.WPF
             switch (action)
             {
                 case ConfirmAction.LogIn:
-                    this.confirmButton.Content = "Log in";
+                    this.confirmButtonText.Text = "Log in";
                     this.forgotPasswordButton.Visibility = Visibility.Visible;
                     this.googleLoginButton.Visibility = Visibility.Visible;
                     this.signupLoginToggle.Content = "Sign up for free";
                     break;
                 case ConfirmAction.SignUp:
-                    this.confirmButton.Content = "Sign up";
+                    this.confirmButtonText.Text = "Sign up";
                     this.forgotPasswordButton.Visibility = Visibility.Hidden;
                     this.googleLoginButton.Visibility = Visibility.Hidden;
                     this.signupLoginToggle.Content = "Log in";
@@ -95,48 +101,60 @@ namespace TogglDesktop.WPF
 
         private void tryConfirm()
         {
+            if (!this.validateFields())
+            {
+                return;
+            }
             switch (this.confirmAction)
             {
                 case ConfirmAction.LogIn:
-                    this.login();
+                    this.confirm(Toggl.Login, "log in");
                     break;
                 case ConfirmAction.SignUp:
-                    this.signup();
+                    this.confirm(Toggl.Signup, "sign up");
                     break;
                 default:
                     throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
             }
         }
 
-        private void login()
+        private async void confirm(Func<string, string, bool> confirmAction, string actionName)
         {
-            if (!this.validateFields())
+            using (Performance.Measure("attempting " + actionName))
             {
-                return;
+                try
+                {
+                    this.disableForm();
+
+                    var email = this.emailTextBox.Text;
+                    var password = this.passwordBox.Text;
+
+                    await Task.Run(() => confirmAction(email, password));
+                }
+                finally
+                {
+                    this.enableForm();
+                    this.passwordBox.Clear();
+                }
             }
-            using (Performance.Measure("attempting log in"))
-            {
-                Toggl.Login(this.emailTextBox.Text, this.passwordBox.Text);
-            }
-            this.passwordBox.Clear();
         }
 
-        private void signup()
+        private void enableForm()
         {
-            if (!this.validateFields())
-            {
-                return;
-            }
-            if (this.passwordBox.Text == "")
-            {
-                this.passwordBox.Focus();
-                return;
-            }
-            using (Performance.Measure("attempting sign up"))
-            {
-                Toggl.Signup(this.emailTextBox.Text, this.passwordBox.Text);
-            }
-            this.passwordBox.Clear();
+            this.IsEnabled = true;
+            this.formPanel.Opacity = 1;
+            this.confirmButtonText.Visibility = Visibility.Visible;
+            this.confirmButtonSpinner.Visibility = Visibility.Collapsed;
+            this.confirmSpinnerAnimation.Stop();
+        }
+
+        private void disableForm()
+        {
+            this.IsEnabled = false;
+            this.formPanel.Opacity = 0.5;
+            this.confirmButtonText.Visibility = Visibility.Collapsed;
+            this.confirmButtonSpinner.Visibility = Visibility.Visible;
+            this.confirmSpinnerAnimation.Begin();
         }
 
         private bool validateFields()
@@ -164,7 +182,8 @@ namespace TogglDesktop.WPF
                         ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
                         ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
                     },
-                    new[] {
+                    new[]
+                    {
                         Oauth2Service.Scope.UserinfoEmail,
                         Oauth2Service.Scope.UserinfoProfile
                     },
