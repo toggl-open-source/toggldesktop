@@ -73,12 +73,7 @@ namespace TogglDesktopUpdater
                 throw new Exception(string.Format("Unexpected installer extension {0}", installer));
             }
 
-            var psi = new ProcessStartInfo
-            {
-                FileName = installer,
-                Arguments = "/S /UPDATER"
-            };
-            Process process = Process.Start(psi);
+            Process process = Process.Start(installer, "/S /UPDATER");
             if (!process.WaitForExit(15 * 1000))
             {
                 throw new Exception("The Toggl Desktop installer timed out");
