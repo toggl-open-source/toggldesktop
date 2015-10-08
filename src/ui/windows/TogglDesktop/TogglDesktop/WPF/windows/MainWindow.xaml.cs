@@ -103,8 +103,8 @@ namespace TogglDesktop.WPF
                 this.aboutWindow = new AboutWindow(),
                 this.feedbackWindow = new FeedbackWindow(),
                 new PreferencesWindow(),
-                this.idleNotificationWindow = new IdleNotificationWindow(),
             };
+            this.idleNotificationWindow = new IdleNotificationWindow();
 
             this.timerEntryListView.SetEditPopup(this.editPopup.EditView);
 
