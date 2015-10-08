@@ -9,6 +9,7 @@
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Idle Notification"
+        WindowStartupLocation="CenterScreen"
         >
     
     <Window.Resources>
@@ -44,10 +45,13 @@
         
         <StackPanel Grid.Row="1" Margin="2" HorizontalAlignment="Center">
             <Button Content="KEEP TIME"
+                    Style="{StaticResource RaisedButton}"
                     Click="onKeepTimeClick"/>
             <Button Content="DISCARD TIME"
+                    Style="{StaticResource RaisedButton}"
                     Click="onDiscardTimeClick"/>
-            <Button Content="ADD TIME AS NEW ENTRY"
+            <Button Content="ADD TIME AS NEW ENTRY" 
+                    Style="{StaticResource RaisedButton}"
                     Click="onAddAsNewClick"/>
         </StackPanel>
     </Grid>
