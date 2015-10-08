@@ -98,8 +98,8 @@ namespace TogglDesktop.WPF
             this.guid = item.GUID;
 
             this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
-            
-            var projectColorBrush = getProjectColorBrush(ref item);
+
+            var projectColorBrush = Utils.ProjectColorBrushFromString(item.Color);
 
             this.projectColor.Fill = projectColorBrush;
             this.labelProject.Foreground = projectColorBrush;
@@ -185,13 +185,6 @@ namespace TogglDesktop.WPF
         {
             textBlock.Text = text;
             textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
-        }
-
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglTimeEntryView item)
-        {
-            var colourString = string.IsNullOrEmpty(item.Color) ? "#999999" : item.Color;
-            var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));
-            return new SolidColorBrush(color);
         }
 
         #endregion

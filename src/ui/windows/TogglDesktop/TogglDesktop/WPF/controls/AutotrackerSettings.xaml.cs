@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 
@@ -157,7 +156,7 @@ namespace TogglDesktop.WPF
             var project = item ?? default(Toggl.TogglAutocompleteView);
             this.selectedProject = project;
             this.projectTextBox.SetText(project.ProjectLabel);
-            this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(project.ProjectColor));
+            this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(project.ProjectColor);
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
         }
 
@@ -272,13 +271,5 @@ namespace TogglDesktop.WPF
             this.projectTextBox.Clear();
             this.selectProject(null);
         }
-
-        private static Color getProjectColor(string colorString)
-        {
-            var projectColourString = string.IsNullOrEmpty(colorString) ? "#999999" : colorString;
-            var projectColor = (Color)(ColorConverter.ConvertFromString(projectColourString) ?? Color.FromRgb(153, 153, 153));
-            return projectColor;
-        }
-
     }
 }

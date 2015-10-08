@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Media;
 using TogglDesktop.WPF;
-using Size = System.Drawing.Size;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace TogglDesktop
 {
@@ -153,6 +153,25 @@ public static class Utils
         {
             Toggl.Debug(string.Format("Could not set shortcut for {0}: {1}", shortcutName, ex));
         }
+    }
+
+    #endregion
+
+    #region project color conversion
+
+    public static Color ProjectColorFromString(string rgb)
+    {
+        var projectColourString = string.IsNullOrEmpty(rgb) ? "#999999" : rgb;
+        var projectColor = (Color)(ColorConverter.ConvertFromString(projectColourString) ?? Color.FromRgb(153, 153, 153));
+        return projectColor;
+    }
+
+    public static SolidColorBrush ProjectColorBrushFromString(string rgb)
+    {
+        var color = ProjectColorFromString(rgb);
+        var brush = new SolidColorBrush(color);
+        brush.Freeze();
+        return brush;
     }
 
     #endregion

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -132,7 +131,7 @@ namespace TogglDesktop.WPF
                     if (this.isInNewProjectMode)
                         this.disableNewProjectMode();
 
-                    this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(timeEntry.Color));
+                    this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
                     this.setText(this.projectTextBox, timeEntry.ProjectLabel, open);
                     this.setText(this.clientTextBox, timeEntry.ClientLabel, open);
 
@@ -156,13 +155,6 @@ namespace TogglDesktop.WPF
         }
 
         #region helpers
-
-        private static Color getProjectColor(string colorString)
-        {
-            var projectColourString = string.IsNullOrEmpty(colorString) ? "#999999" : colorString;
-            var projectColor = (Color)(ColorConverter.ConvertFromString(projectColourString) ?? Color.FromRgb(153, 153, 153));
-            return projectColor;
-        }
 
         private void setText(ExtendedTextBox textBox, string text, bool evenIfFocused)
         {
@@ -508,7 +500,7 @@ namespace TogglDesktop.WPF
             if (projectId == this.timeEntry.PID && taskId == this.timeEntry.TID)
                 return;
             this.projectTextBox.SetText(projectName);
-            this.projectColorCircle.Background = new SolidColorBrush(getProjectColor(projectColor));
+            this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(projectColor);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, taskId, projectId, "");
         }
 

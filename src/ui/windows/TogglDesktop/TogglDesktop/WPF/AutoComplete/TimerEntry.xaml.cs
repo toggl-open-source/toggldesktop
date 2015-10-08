@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace TogglDesktop.WPF.AutoComplete
 {
@@ -28,7 +27,7 @@ namespace TogglDesktop.WPF.AutoComplete
             else
             {
                 this.project.Text = "• " + item.ProjectLabel;
-                this.project.Foreground = getProjectColorBrush(ref item);
+                this.project.Foreground = Utils.ProjectColorBrushFromString(item.ProjectColor);
                 this.project.Visibility = Visibility.Visible;
             }
 
@@ -41,13 +40,6 @@ namespace TogglDesktop.WPF.AutoComplete
         {
             textBlock.Text = text;
             textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
-        }
-
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglAutocompleteView item)
-        {
-            var colourString = string.IsNullOrEmpty(item.ProjectColor) ? "#999999" : item.ProjectColor;
-            var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));
-            return new SolidColorBrush(color);
         }
 
         public void Recycle()

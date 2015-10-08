@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
@@ -165,7 +164,7 @@ namespace TogglDesktop.WPF
             if (item.ProjectID != 0)
             {
                 this.projectLabel.Text = "• " + item.ProjectLabel;
-                this.projectLabel.Foreground = getProjectColorBrush(ref item);
+                this.projectLabel.Foreground = Utils.ProjectColorBrushFromString(item.ProjectColor);
 
                 setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
                 setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
@@ -293,7 +292,7 @@ namespace TogglDesktop.WPF
             setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
             setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
 
-            this.projectLabel.Foreground = getProjectColorBrush(ref item);
+            this.projectLabel.Foreground = Utils.ProjectColorBrushFromString(item.Color);
 
             this.billabeIcon.ShowOnlyIf(item.Billable);
             this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
@@ -394,23 +393,6 @@ namespace TogglDesktop.WPF
         {
             textBlock.Text = text;
             textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
-        }
-
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglTimeEntryView item)
-        {
-            return getProjectColorBrush(item.Color);
-        }
-
-        private static SolidColorBrush getProjectColorBrush(ref Toggl.TogglAutocompleteView item)
-        {
-            return getProjectColorBrush(item.ProjectColor);
-        }
-
-        private static SolidColorBrush getProjectColorBrush(string coplourString)
-        {
-            var colourString = string.IsNullOrEmpty(coplourString) ? "#999999" : coplourString;
-            var color = (Color)(ColorConverter.ConvertFromString(colourString) ?? Color.FromRgb(153, 153, 153));
-            return new SolidColorBrush(color);
         }
 
         #endregion
