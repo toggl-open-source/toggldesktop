@@ -11,11 +11,23 @@ namespace TogglDesktop.WPF
         {
             this.InitializeComponent();
 
+            this.updateText.Text = "";
+
             this.versionText.Text = Program.Version();
 
             var isUpdatCheckDisabled = Toggl.IsUpdateCheckDisabled();
             this.releaseChannelComboBox.ShowOnlyIf(!isUpdatCheckDisabled, true);
             this.releaseChannelLabel.ShowOnlyIf(!isUpdatCheckDisabled, true);
+
+            Toggl.OnDisplayUpdate += this.onDisplayUpdate;
+        }
+
+        private void onDisplayUpdate(string url)
+        {
+            if (this.TryBeginInvoke(onDisplayUpdate, url))
+                return;
+
+            // TODO: Display update status
         }
 
         private void windowKeyDown(object sender, KeyEventArgs e)

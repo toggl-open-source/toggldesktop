@@ -120,6 +120,9 @@ public static partial class Toggl
     public delegate void DisplayAutotrackerNotification(
         string projectName, ulong projectId);
 
+    public delegate void DisplayUpdate(
+        string url);
+
     #endregion
 
     #region api calls
@@ -517,6 +520,7 @@ public static partial class Toggl
 
     public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
+    public static event DisplayUpdate OnDisplayUpdate = delegate { }; 
 
     private static void listenToLibEvents()
     {
@@ -692,6 +696,14 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnAutotrackerNotification"))
             {
                 OnAutotrackerNotification(name, id);
+            }
+        });
+
+        toggl_on_update(ctx, url =>
+        {
+            using (Performance.Measure("Calling OnUpdate, url: {0}", url))
+            {
+                OnDisplayUpdate(url);
             }
         });
     }

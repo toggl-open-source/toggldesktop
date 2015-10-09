@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop.WPF"
         mc:Ignorable="d" 
-        Height="420" Width="350"
+        Height="460" Width="370"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="About"
@@ -39,7 +39,12 @@
                        Margin="0 0 0 8"/>
             <TextBlock Name="versionText" x:FieldModifier="private"
                        Text="Version 1.33.7" HorizontalAlignment="Center"
-                       Margin="0 0 0 16"/>
+                       Margin="0 0 0 8"/>
+            
+            <TextBlock Name="updateText" x:FieldModifier="private"
+                       Text="Downloading version X" HorizontalAlignment="Center"
+                       FontWeight="Medium" Foreground="#318a40"
+                       Margin="0 0 0 24"/>
 
             <TextBlock HorizontalAlignment="Center" Text="View change log:"/>
             <Label HorizontalAlignment="Center" 
