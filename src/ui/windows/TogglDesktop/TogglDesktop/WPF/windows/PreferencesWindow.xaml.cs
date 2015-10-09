@@ -154,6 +154,10 @@ namespace TogglDesktop.WPF
         private static string keyEventToString(TogglDesktop.ModifierKeys modifiers, string keyCode)
         {
             var res = "";
+            if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Win))
+            {
+                res += "Win + ";
+            }
             if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Control))
             {
                 res += "Ctrl + ";
@@ -301,7 +305,7 @@ namespace TogglDesktop.WPF
         {
             private readonly Button button;
             private bool recording;
-            private ModifierKeys prematurelyReleasedModifiers;
+            private ModifierKeys activatedModifiers;
 
             public bool HasChanged { get; private set; }
             public Utils.KeyCombination? Shortcut { get; private set; }
@@ -310,6 +314,7 @@ namespace TogglDesktop.WPF
             {
                 this.button = button;
                 button.Click += (sender, args) => this.startRecording();
+                button.KeyDown += this.onKeyDown;
                 button.KeyUp += this.onKeyUp;
                 button.LostKeyboardFocus += (sender, args) =>
                 {
@@ -332,11 +337,24 @@ namespace TogglDesktop.WPF
             {
                 this.recording = true;
                 this.button.Content = recordButtonRecordingText;
-                this.prematurelyReleasedModifiers = ModifierKeys.None;
+                this.activatedModifiers = ModifierKeys.None;
             }
 
             private const ModifierKeys requiredModifiersUnion =
                 ModifierKeys.Alt | ModifierKeys.Control | ModifierKeys.Win;
+
+            private void onKeyDown(object sender, KeyEventArgs e)
+            {
+                // this method is needed in addition to the one below,
+                // to detect the WIN keys (they are not included in Keyboard.Modifiers)
+
+                if (!this.recording)
+                    return;
+
+                var key = (e.Key == Key.System ? e.SystemKey : e.Key);
+
+                this.checkModifiers(key);
+            }
 
             private void onKeyUp(object sender, KeyEventArgs e)
             {
@@ -345,11 +363,11 @@ namespace TogglDesktop.WPF
 
                 var key = (e.Key == Key.System ? e.SystemKey : e.Key);
 
-                // this allows modifiers to be released before actual key and still record properly
-                if (this.checkPrematureModifiers(key))
+                // ignore modifier key releases
+                if (this.checkModifiers(key))
                     return;
 
-                var mods = getCurrentModifiers() | this.prematurelyReleasedModifiers;
+                var mods = this.activatedModifiers;
 
                 if ((mods & requiredModifiersUnion) == ModifierKeys.None)
                 {
@@ -380,23 +398,23 @@ namespace TogglDesktop.WPF
                 e.Handled = true;
             }
 
-            private bool checkPrematureModifier(
+            private bool checkModifier(
                 Key capturedKey, Key modifierLeft, Key modifierRight, ModifierKeys modifier)
             {
                 if (capturedKey != modifierLeft && capturedKey != modifierRight)
                     return false;
 
-                this.prematurelyReleasedModifiers |= modifier;
+                this.activatedModifiers |= modifier;
                 return true;
             }
 
 
-            private bool checkPrematureModifiers(Key key)
+            private bool checkModifiers(Key key)
             {
-                return this.checkPrematureModifier(key, Key.LeftShift, Key.RightShift, ModifierKeys.Shift)
-                    || this.checkPrematureModifier(key, Key.LeftAlt, Key.RightAlt, ModifierKeys.Alt)
-                    || this.checkPrematureModifier(key, Key.LeftCtrl, Key.RightCtrl, ModifierKeys.Control)
-                    || this.checkPrematureModifier(key, Key.LWin, Key.RWin, ModifierKeys.Win);
+                return this.checkModifier(key, Key.LeftShift, Key.RightShift, ModifierKeys.Shift)
+                    || this.checkModifier(key, Key.LeftAlt, Key.RightAlt, ModifierKeys.Alt)
+                    || this.checkModifier(key, Key.LeftCtrl, Key.RightCtrl, ModifierKeys.Control)
+                    || this.checkModifier(key, Key.LWin, Key.RWin, ModifierKeys.Win);
             }
 
             private void cancelRecording()
@@ -423,24 +441,6 @@ namespace TogglDesktop.WPF
             {
                 this.Shortcut = shortcut;
                 this.Reset();
-            }
-
-            private static ModifierKeys getCurrentModifiers()
-            {
-                ModifierKeys modifiers = 0;
-
-                var mods = Keyboard.Modifiers;
-
-                if (mods.HasFlag(System.Windows.Input.ModifierKeys.Alt))
-                    modifiers |= ModifierKeys.Alt;
-                if (mods.HasFlag(System.Windows.Input.ModifierKeys.Control))
-                    modifiers |= ModifierKeys.Control;
-                if (mods.HasFlag(System.Windows.Input.ModifierKeys.Shift))
-                    modifiers |= ModifierKeys.Shift;
-                if (mods.HasFlag(System.Windows.Input.ModifierKeys.Windows))
-                    modifiers |= ModifierKeys.Win;
-
-                return modifiers;
             }
 
         }
