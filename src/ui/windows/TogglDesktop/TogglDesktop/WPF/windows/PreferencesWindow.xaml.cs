@@ -67,7 +67,7 @@ namespace TogglDesktop.WPF
             if (open)
             {
                 this.Show();
-                this.Topmost = true;
+                this.Activate();
             }
         }
 

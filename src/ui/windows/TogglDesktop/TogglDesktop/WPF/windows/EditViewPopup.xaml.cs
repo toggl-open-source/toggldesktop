@@ -10,7 +10,6 @@ namespace TogglDesktop.WPF
         private readonly WindowInteropHelper interopHelper;
 
         private bool isLeft;
-        private bool remainOnTop;
         private bool isResizing;
 
         public EditViewPopup()
@@ -43,12 +42,6 @@ namespace TogglDesktop.WPF
 
         #region ui events
 
-        protected override void OnDeactivated(EventArgs e)
-        {
-            base.OnDeactivated(e);
-            this.SetWindowOnTop(this.remainOnTop);
-        }
-
         private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.startResizing();
@@ -71,14 +64,6 @@ namespace TogglDesktop.WPF
 
         #region controlling
 
-        public void SetWindowOnTop(bool onTop)
-        {
-            this.remainOnTop = onTop;
-            Win32.SetWindowPos(this.interopHelper.Handle,
-                onTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST,
-                0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
-        }
-
         public void SetPlacement(bool left,
             double x, double y, double height, double maxWidth, bool fixHeight = false)
         {
@@ -89,7 +74,6 @@ namespace TogglDesktop.WPF
             if (!fixHeight)
                 height = Math.Min(700, Math.Max(520, height));
 
-            this.Topmost = true;
             this.isLeft = !left;
             this.Height = height;
 

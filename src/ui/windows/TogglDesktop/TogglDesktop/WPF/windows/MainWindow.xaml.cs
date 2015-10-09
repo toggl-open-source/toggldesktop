@@ -34,8 +34,6 @@ namespace TogglDesktop.WPF
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
 
-        private bool remainOnTop;
-
         private UserControl activeView;
         private bool isInManualMode;
         private bool isTracking;
@@ -303,8 +301,7 @@ namespace TogglDesktop.WPF
 
             this.setGlobalShortcutsFromSettings();
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
-            this.remainOnTop = settings.OnTop;
-            this.setWindowOnTop();
+            this.Topmost = settings.OnTop;
             this.setManualMode(settings.ManualMode, true);
         }
 
@@ -447,7 +444,7 @@ namespace TogglDesktop.WPF
         {
             if (this.IsVisible)
             {
-                this.setWindowOnTop();
+                //this.setWindowOnTop();
             }
         }
 
@@ -498,8 +495,7 @@ namespace TogglDesktop.WPF
         
         private void onShowCommand(object sender, RoutedEventArgs e)
         {
-            this.Show();
-            this.Topmost = true;
+            this.ShowOnTop();
         }
         
         private void onSyncCommand(object sender, RoutedEventArgs e)
@@ -550,13 +546,13 @@ namespace TogglDesktop.WPF
         private void onSendFeedbackCommand(object sender, RoutedEventArgs e)
         {
             this.feedbackWindow.Show();
-            this.feedbackWindow.Topmost = true;
+            this.feedbackWindow.Activate();
         }
         
         private void onAboutCommand(object sender, RoutedEventArgs e)
         {
             this.aboutWindow.Show();
-            this.aboutWindow.Topmost = true;
+            this.feedbackWindow.Activate();
         }
         
         private void onLogoutCommand(object sender, RoutedEventArgs e)
@@ -730,7 +726,6 @@ namespace TogglDesktop.WPF
             this.Show();
             if (this.WindowState == WindowState.Minimized)
                 this.WindowState = WindowState.Normal;
-            this.Topmost = true;
             this.Activate();
         }
 
@@ -832,18 +827,6 @@ namespace TogglDesktop.WPF
         #endregion
 
         #region window size, position and state handling
-
-        private void setWindowOnTop()
-        {
-            Win32.SetWindowPos(this.interopHelper.Handle,
-                this.remainOnTop ? Win32.HWND_TOPMOST : Win32.HWND_NOTOPMOST,
-                0, 0, 0, 0, Win32.SWP_NOMOVE | Win32.SWP_NOSIZE);
-
-            if (this.editPopup != null)
-            {
-                this.editPopup.SetWindowOnTop(this.remainOnTop);
-            }
-        }
 
         private void endHandleResizing()
         {

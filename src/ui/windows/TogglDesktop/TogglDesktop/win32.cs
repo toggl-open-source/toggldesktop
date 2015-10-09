@@ -77,21 +77,6 @@ static class Win32
     public static extern bool GetLastInputInfo(out LASTINPUTINFO plii);
 
     [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool SetWindowPos(IntPtr hWnd,
-                                           int hWndInsertAfter, int x, int u, int cx, int cy, int uFlags);
-
-    public const int HWND_TOPMOST = -1;
-    public const int HWND_NOTOPMOST = -2;
-    public const int SWP_NOMOVE = 0x0002;
-    public const int SWP_NOSIZE = 0x0001;
-
-    [DllImport("user32", CharSet = CharSet.Auto)]
-    public static extern int GetWindowLong(IntPtr hwnd, int nIndex);
-    public const int GWL_STYLE = (-16);
-    public const int WS_VSCROLL = 0x200000;
-
-    [DllImport("user32.dll")]
     public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
     [DllImport("user32.dll")]

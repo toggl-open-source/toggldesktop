@@ -10,6 +10,7 @@
         IsToolWindow="True"
         Title="Idle Notification"
         WindowStartupLocation="CenterScreen"
+        Topmost="True"
         >
     
     <Window.Resources>

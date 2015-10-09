@@ -75,7 +75,6 @@ namespace TogglDesktop.WPF
                     owner.Show();
                     if (owner.WindowState == WindowState.Minimized)
                         owner.WindowState = WindowState.Normal;
-                    owner.Topmost = true;
                     owner.Activate();
                 }
             }
