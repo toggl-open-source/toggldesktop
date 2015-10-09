@@ -17,8 +17,7 @@
         <ToggleButton x:Name="dropDownButton" x:FieldModifier="private"
                       Height="34" Width="34"
                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                      IsTabStop="False" Focusable="False"
-                      Click="dropDownButton_OnClick">
+                      IsTabStop="False" Focusable="False">
             <ToggleButton.Style>
                 <Style TargetType="ToggleButton">
                     <Setter Property="Template">
@@ -59,10 +58,9 @@
 
         <toggl:AutoCompletionPopup x:Name="autoComplete" x:FieldModifier="private"
             Target="{Binding ElementName=grid}" TextBox="{Binding ElementName=textBox}"
-            EmptyText="No matching tags found."
+            EmptyText="No matching tags found." DropDownButton="{Binding ElementName=dropDownButton}"
             ConfirmCompletion="autoComplete_OnConfirmCompletion"
             ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"
-            IsOpenChanged="autoComplete_OnIsOpenChanged"
             KeepOpenWhenSelectingWithMouse="True"
             FillTextBoxOnComplete="False" />
         

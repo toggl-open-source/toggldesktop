@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
@@ -12,18 +13,27 @@ namespace TogglDesktop.WPF
 {
     partial class AutoCompletionPopup
     {
+        #region events
+
         public event EventHandler<AutoCompleteItem> ConfirmCompletion;
         public event EventHandler<string> ConfirmWithoutCompletion;
 
         public event EventHandler IsOpenChanged;
 
+        #endregion
+
+        #region fields
+
         private ExtendedTextBox textbox;
+        private ToggleButton dropDownButton;
 
         private bool needsToRefreshList;
 
         private AutoCompleteController controller;
 
         private readonly List<IRecyclable> recyclableEntries = new List<IRecyclable>();
+
+        #endregion
 
         public AutoCompletionPopup()
         {
@@ -38,13 +48,7 @@ namespace TogglDesktop.WPF
             this.FillTextBoxOnComplete = true;
         }
 
-        private void onIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs args)
-        {
-            if (this.IsEnabled)
-                return;
-
-            this.close();
-        }
+        #region properties
 
         public bool IsOpen
         {
@@ -67,37 +71,66 @@ namespace TogglDesktop.WPF
         public bool KeepOpenWhenSelectingWithMouse { get; set; }
         public bool FillTextBoxOnComplete { get; set; }
 
+        public string EmptyText
+        {
+            get { return this.emptyLabel.Text; }
+            set { this.emptyLabel.Text = value; }
+        }
+
+        #endregion
+
         #region dependency properties
 
+        #region Target
+
         public static readonly DependencyProperty TargetProperty = DependencyProperty
-            .Register("Target", typeof(FrameworkElement), typeof(AutoCompletionPopup),
-            new FrameworkPropertyMetadata
-            {
-                PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).updateTarget()
-            });
+            .Register("Target", typeof (FrameworkElement), typeof (AutoCompletionPopup),
+                new FrameworkPropertyMetadata
+                {
+                    PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).updateTarget()
+                });
+
         public FrameworkElement Target
         {
             get { return (FrameworkElement)this.GetValue(TargetProperty); }
             set { this.SetValue(TargetProperty, value); }
         }
 
+        #endregion
+
+        #region TextBox
+
         public static readonly DependencyProperty TextBoxProperty = DependencyProperty
-            .Register("TextBox", typeof(ExtendedTextBox), typeof(AutoCompletionPopup),
-            new FrameworkPropertyMetadata
-            {
-                PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initialise()
-            });
+            .Register("TextBox", typeof (ExtendedTextBox), typeof (AutoCompletionPopup),
+                new FrameworkPropertyMetadata
+                {
+                    PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initialise()
+                });
+
         public ExtendedTextBox TextBox
         {
             get { return (ExtendedTextBox)this.GetValue(TextBoxProperty); }
             set { this.SetValue(TextBoxProperty, value); }
         }
 
-        public string EmptyText
+        #endregion
+
+        #region DropDownButton
+
+        public static readonly DependencyProperty DropDownButtonProperty = DependencyProperty
+           .Register("DropDownButton", typeof(ToggleButton), typeof(AutoCompletionPopup),
+           new FrameworkPropertyMetadata
+           {
+               PropertyChangedCallback = (o, args) => ((AutoCompletionPopup)o).initDropDownButton()
+           });
+
+        public ToggleButton DropDownButton
         {
-            get { return this.emptyLabel.Text; }
-            set { this.emptyLabel.Text = value; }
+            get { return (ToggleButton)this.GetValue(DropDownButtonProperty); }
+            set { this.SetValue(DropDownButtonProperty, value); }
         }
+
+        #endregion
 
         #endregion
 
@@ -142,12 +175,58 @@ namespace TogglDesktop.WPF
             };
         }
 
+        private void initDropDownButton()
+        {
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
+            if (this.dropDownButton != null)
+                throw new Exception("Cannot set auto completion drop down button more than once.");
+
+            this.dropDownButton = this.DropDownButton;
+
+            if (this.dropDownButton == null)
+                throw new Exception("Cannot set auto completion drop down button to null.");
+
+            this.IsOpenChanged += this.updateDropDownButton;
+            this.dropDownButton.Click += this.onDropDownButtonClick;
+        }
+
         #endregion
 
         public void SetController(AutoCompleteController controller)
         {
             this.controller = controller;
             this.needsToRefreshList = true;
+        }
+
+        public void OpenAndShowAll()
+        {
+            this.open(showAll: true);
+            this.textbox.SelectAll();
+            this.textbox.Focus();
+        }
+
+        public void RecalculatePosition()
+        {
+            if (!this.popup.IsOpen)
+                return;
+
+            this.updateTarget();
+            // hack to make the popup re-calculate its position
+            var offset = this.popup.HorizontalOffset;
+            this.popup.HorizontalOffset = offset + 1;
+            this.popup.HorizontalOffset = offset;
+        }
+
+        #region ui events and overrides
+
+        private void onIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs args)
+        {
+            if (this.IsEnabled)
+                return;
+
+            this.close();
         }
 
         private void textboxOnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -160,7 +239,7 @@ namespace TogglDesktop.WPF
                 case Key.Down:
                     {
                         if (!this.IsOpen)
-                            this.open(showAll:true);
+                            this.open(showAll: true);
                         this.controller.SelectNext();
                         e.Handled = true;
                         return;
@@ -193,6 +272,42 @@ namespace TogglDesktop.WPF
                     }
             }
         }
+
+        private void textboxOnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!this.IsEnabled)
+                return;
+
+            if (this.textbox.IsTextChangingProgrammatically)
+                return;
+
+            this.open(true);
+        }
+
+        private void onDropDownButtonClick(object s, RoutedEventArgs e)
+        {
+            var open = this.dropDownButton.IsChecked ?? false;
+            if (open)
+            {
+                this.OpenAndShowAll();
+            }
+            else
+            {
+                this.close();
+                if (!this.textbox.IsKeyboardFocused)
+                {
+                    this.textbox.Focus();
+                    this.textbox.CaretIndex = this.textbox.Text.Length;
+                }
+            }
+        }
+
+        private void updateDropDownButton(object sender, EventArgs e)
+        {
+            this.dropDownButton.IsChecked = this.IsOpen;
+        }
+
+        #endregion
 
         private void confirmCompletion()
         {
@@ -227,17 +342,6 @@ namespace TogglDesktop.WPF
 
             if (this.ConfirmCompletion != null)
                 this.ConfirmCompletion(this, item);
-        }
-
-        private void textboxOnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!this.IsEnabled)
-                return;
-
-            if (this.textbox.IsTextChangingProgrammatically)
-                return;
-
-            this.open(true);
         }
 
         private void close()
@@ -281,13 +385,6 @@ namespace TogglDesktop.WPF
             this.popup.MinWidth = target == null ? 0 : target.ActualWidth + 20;
         }
 
-        public void OpenAndShowAll()
-        {
-            this.open(showAll:true);
-            this.textbox.SelectAll();
-            this.textbox.Focus();
-        }
-
         private void ensureList()
         {
             if (!this.needsToRefreshList)
@@ -319,16 +416,5 @@ namespace TogglDesktop.WPF
                 e(this, EventArgs.Empty);
         }
 
-        public void RecalculatePosition()
-        {
-            if (!this.popup.IsOpen)
-                return;
-
-            this.updateTarget();
-            // hack to make the popup re-calculate its position
-            var offset = this.popup.HorizontalOffset;
-            this.popup.HorizontalOffset = offset + 1;
-            this.popup.HorizontalOffset = offset;
-        }
     }
 }

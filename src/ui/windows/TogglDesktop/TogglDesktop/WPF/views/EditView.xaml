@@ -138,8 +138,7 @@
                     </Border>
 
                     <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                        Style="{StaticResource AutoCompleteTextFieldButton}"
-                                        Click="projectDropDownButton_OnClick"/>
+                                        Style="{StaticResource AutoCompleteTextFieldButton}"/>
 
                     <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1"
                             Style="{StaticResource TextFieldImageButtonBase}"
@@ -149,10 +148,9 @@
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
-                            EmptyText="No matching projects found."
+                            EmptyText="No matching projects found." DropDownButton="{Binding ElementName=projectDropDownButton}"
                             ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
-                            ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
-                            IsOpenChanged="projectAutoComplete_OnIsOpenChanged"/>
+                            ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
 
                 </Grid>
             
@@ -190,8 +188,7 @@
                     </TextBlock>
 
                     <ToggleButton x:Name="clientDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                  Style="{StaticResource AutoCompleteTextFieldButton}"
-                                  Click="clientDropDownButton_OnClick"/>
+                                  Style="{StaticResource AutoCompleteTextFieldButton}"/>
 
                     <Button x:Name ="newClientCancelButton" x:FieldModifier="private" Grid.Column="1"
                             Style="{StaticResource TextFieldImageButtonBase}"
@@ -202,10 +199,9 @@
 
                     <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="clientAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=clientTextBox}" TextBox="{Binding ElementName=clientTextBox}"
-                            EmptyText="No matching clients found."
+                            EmptyText="No matching clients found." DropDownButton="{Binding ElementName=clientDropDownButton}"
                             ConfirmCompletion="clientAutoComplete_OnConfirmCompletion"
-                            ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"
-                            IsOpenChanged="clientAutoComplete_OnIsOpenChanged"/>
+                            ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"/>
 
                 </Grid>
                 
@@ -218,15 +214,13 @@
                                            Padding="8, 0, 34, 0"/>
                     
                     <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private"
-                                  Style="{StaticResource AutoCompleteTextFieldButton}"
-                                  Click="workspaceDropDownButton_OnClick"/>
+                                  Style="{StaticResource AutoCompleteTextFieldButton}"/>
 
                     <toggl:AutoCompletionPopup x:Name="workspaceAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=workspaceTextBox}" TextBox="{Binding ElementName=workspaceTextBox}"
-                            EmptyText="No matching workspaces found."
+                            EmptyText="No matching workspaces found." DropDownButton="{Binding ElementName=workspaceDropDownButton}"
                             ConfirmCompletion="workspaceAutoComplete_OnConfirmCompletion"
-                            ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"
-                            IsOpenChanged="workspaceAutoComplete_OnIsOpenChanged"/>
+                            ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"/>
                 </Grid>
 
                 <StackPanel Grid.Row="3" Height="50" Visibility="Visible"

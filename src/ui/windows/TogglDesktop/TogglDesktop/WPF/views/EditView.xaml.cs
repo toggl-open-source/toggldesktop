@@ -430,30 +430,6 @@ namespace TogglDesktop.WPF
 
         #region project
 
-        private void projectDropDownButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var open = this.projectDropDownButton.IsChecked ?? false;
-            if (open)
-            {
-                this.projectAutoComplete.OpenAndShowAll();
-            }
-            else
-            {
-                this.projectAutoComplete.IsOpen = false;
-                if (!this.projectTextBox.IsKeyboardFocused)
-                {
-                    this.projectTextBox.Focus();
-                    this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
-                }
-            }
-
-        }
-
-        private void projectAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
-        {
-            this.projectDropDownButton.IsChecked = this.projectAutoComplete.IsOpen;
-        }
-
         private void projectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
             var asProjectItem = e as ProjectItem;
@@ -639,30 +615,6 @@ namespace TogglDesktop.WPF
             this.clientAutoComplete.IsOpen = false;
         }
 
-        private void clientDropDownButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var open = this.clientDropDownButton.IsChecked ?? false;
-            if (open)
-            {
-                this.clientAutoComplete.OpenAndShowAll();
-            }
-            else
-            {
-                this.clientAutoComplete.IsOpen = false;
-                if (!this.clientTextBox.IsKeyboardFocused)
-                {
-                    this.clientTextBox.Focus();
-                    this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
-                }
-            }
-
-        }
-
-        private void clientAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
-        {
-            this.clientDropDownButton.IsChecked = this.clientAutoComplete.IsOpen;
-        }
-
         private void clientAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
             var asClientItem = e as ModelItem;
@@ -844,30 +796,6 @@ namespace TogglDesktop.WPF
         {
             this.workspaceArea.Visibility = Visibility.Collapsed;
             this.workspaceAutoComplete.IsOpen = false;
-        }
-
-        private void workspaceDropDownButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var open = this.workspaceDropDownButton.IsChecked ?? false;
-            if (open)
-            {
-                this.workspaceAutoComplete.OpenAndShowAll();
-            }
-            else
-            {
-                this.workspaceAutoComplete.IsOpen = false;
-                if (!this.workspaceTextBox.IsKeyboardFocused)
-                {
-                    this.workspaceTextBox.Focus();
-                    this.workspaceTextBox.CaretIndex = this.workspaceTextBox.Text.Length;
-                }
-            }
-
-        }
-
-        private void workspaceAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
-        {
-            this.workspaceDropDownButton.IsChecked = this.workspaceAutoComplete.IsOpen;
         }
 
         private void workspaceAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)

@@ -76,32 +76,6 @@ namespace TogglDesktop.WPF
 
         #endregion
 
-        #region term auto completion
-
-        private void termDropDownButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var open = this.termDropDownButton.IsChecked ?? false;
-            if (open)
-            {
-                this.termAutoComplete.OpenAndShowAll();
-            }
-            else
-            {
-                this.termAutoComplete.IsOpen = false;
-                if (!this.termTextBox.IsKeyboardFocused)
-                {
-                    this.termTextBox.Focus();
-                    this.termTextBox.CaretIndex = this.termTextBox.Text.Length;
-                }
-            }
-        }
-
-        private void termAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
-        {
-            this.termDropDownButton.IsChecked = this.termAutoComplete.IsOpen;
-        }
-        #endregion
-
         #region project auto completion
 
         private void projectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -111,25 +85,6 @@ namespace TogglDesktop.WPF
                 this.selectProject(this.selectedProject);
             }
         }
-
-        private void projectDropDownButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var open = this.projectDropDownButton.IsChecked ?? false;
-            if (open)
-            {
-                this.projectAutoComplete.OpenAndShowAll();
-            }
-            else
-            {
-                this.projectAutoComplete.IsOpen = false;
-                if (!this.projectTextBox.IsKeyboardFocused)
-                {
-                    this.projectTextBox.Focus();
-                    this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
-                }
-            }
-        }
-
         private void projectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
             var asProjectItem = e as ProjectItem;
@@ -144,11 +99,6 @@ namespace TogglDesktop.WPF
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
         {
             this.selectProject(null);
-        }
-
-        private void projectAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
-        {
-            this.projectDropDownButton.IsChecked = this.projectAutoComplete.IsOpen;
         }
 
         private void selectProject(Toggl.TogglAutocompleteView? item)

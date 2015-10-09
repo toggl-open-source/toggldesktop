@@ -203,32 +203,6 @@ namespace TogglDesktop.WPF
             this.tryAddTagFromTextBox();
         }
 
-        private void autoComplete_OnIsOpenChanged(object sender, EventArgs e)
-        {
-            this.dropDownButton.IsChecked = this.autoComplete.IsOpen;
-        }
-        
-        private void dropDownButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var open = this.dropDownButton.IsChecked ?? false;
-
-            if (open)
-            {
-                this.autoComplete.OpenAndShowAll();
-            }
-            else
-            {
-                this.autoComplete.IsOpen = false;
-
-                if (!this.textBox.IsKeyboardFocused)
-                {
-                    this.textBox.CaretIndex = this.textBox.Text.Length;
-                    this.textBox.Focus();
-                }
-            }
-
-        }
-
         private void panel_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.autoComplete.RecalculatePosition();
