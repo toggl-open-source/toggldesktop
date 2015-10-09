@@ -145,6 +145,7 @@ namespace TogglDesktop.WPF
             {
                 MessageBox.Show("Missing callback. See the log file for details");
                 this.shutdown(1);
+                return;
             }
 
             Utils.LoadWindowLocation(this, this.editPopup);

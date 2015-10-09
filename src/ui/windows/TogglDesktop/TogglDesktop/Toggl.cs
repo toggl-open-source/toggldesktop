@@ -94,6 +94,24 @@ public static partial class Toggl
     {
         toggl_debug(text);
     }
+    #region Debug overloads
+    public static void Debug(string text, object arg0)
+    {
+        toggl_debug(string.Format(text, arg0));
+    }
+    public static void Debug(string text, object arg0, object arg1)
+    {
+        toggl_debug(string.Format(text, arg0, arg1));
+    }
+    public static void Debug(string text, object arg0, object arg1, object arg2)
+    {
+        toggl_debug(string.Format(text, arg0, arg1, arg2));
+    }
+    public static void Debug(string text, params object[] args)
+    {
+        toggl_debug(string.Format(text, args));
+    }
+    #endregion
 
     public static bool Signup(string email, string password)
     {
@@ -243,6 +261,7 @@ public static partial class Toggl
     {
         return toggl_discard_time_at(ctx, guid, at, split);
     }
+
 
     public static bool SetSettings(TogglSettingsView settings)
     {
