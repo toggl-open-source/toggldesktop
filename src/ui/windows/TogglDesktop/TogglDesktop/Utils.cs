@@ -14,44 +14,39 @@ public static class Utils
 
     public static void LoadWindowLocation(Window mainWindow, EditViewPopup editPopup)
     {
-        try
+        if (editPopup != null)
         {
-            if (editPopup != null)
-            {
-                editPopup.Width = Toggl.GetEditViewWidth();
-            }
-            if (Toggl.GetWindowMaximized())
-            {
-                mainWindow.WindowState = WindowState.Maximized;
-            }
-            else if (Toggl.GetWindowMinimized())
-            {
-                mainWindow.WindowState = WindowState.Minimized;
-            }
-
-            long x = 0, y = 0, h = 0, w = 0;
-            if (Toggl.WindowSettings(ref x, ref y, ref h, ref w))
-            {
-                mainWindow.Left = x;
-                mainWindow.Top = y;
-
-                if (h >= 0 && w >= 0)
-                {
-                    mainWindow.Width = w;
-                    mainWindow.Height = h;
-                }
-            }
-
-            if (!visibleOnAnyScreen(mainWindow))
-            {
-                var location = Screen.PrimaryScreen.WorkingArea.Location;
-                mainWindow.Left = location.X;
-                mainWindow.Top = location.Y;
-            }
+            editPopup.Width = Toggl.GetEditViewWidth();
         }
-        catch (Exception ex)
+        if (Toggl.GetWindowMaximized())
         {
-            Toggl.Debug("Could not load window location: " + ex);
+            mainWindow.WindowState = WindowState.Maximized;
+        }
+        else if (Toggl.GetWindowMinimized())
+        {
+            mainWindow.WindowState = WindowState.Minimized;
+        }
+
+        long x = 0, y = 0, h = 0, w = 0;
+        if (Toggl.WindowSettings(ref x, ref y, ref h, ref w))
+        {
+            mainWindow.Left = x;
+            mainWindow.Top = y;
+            mainWindow.Width = w;
+            mainWindow.Height = h;
+            Toggl.Debug("Retrieved window location and size ({0}x{1} by {2}x{3})", x, y, w, h);
+        }
+        else
+        {
+            Toggl.Debug("Failed to retrieve window location and size");
+        }
+
+        if (!visibleOnAnyScreen(mainWindow))
+        {
+            var location = Screen.PrimaryScreen.WorkingArea.Location;
+            mainWindow.Left = location.X;
+            mainWindow.Top = location.Y;
+            Toggl.Debug("Force moved window to primary screen");
         }
     }
 
@@ -67,26 +62,25 @@ public static class Utils
 
     public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit)
     {
-        try
-        {
-            Toggl.SetWindowSettings(
-                (long)mainWindow.Left,
-                (long)mainWindow.Top,
-                (long)mainWindow.Height,
-                (long)mainWindow.Width);
+        var x = (long)mainWindow.Left;
+        var y = (long)mainWindow.Top;
+        var w = (long)mainWindow.Height;
+        var h = (long)mainWindow.Width;
 
-            var state = mainWindow.WindowState;
-            Toggl.SetWindowMaximized(state == WindowState.Maximized);
-            Toggl.SetWindowMinimized(state == WindowState.Minimized);
+        var success = Toggl.SetWindowSettings(x, y, w, h);
 
-            if (edit != null)
-            {
-                Toggl.SetEditViewWidth((long)edit.Width);
-            }
-        }
-        catch (Exception ex)
+        Toggl.Debug(success
+            ? "Saved window location and size ({0}x{1} by {2}x{3})"
+            : "Failed to save window location and size ({0}x{1} by {2}x{3})",
+            x, y, w, h);
+
+        var state = mainWindow.WindowState;
+        Toggl.SetWindowMaximized(state == WindowState.Maximized);
+        Toggl.SetWindowMinimized(state == WindowState.Minimized);
+
+        if (edit != null)
         {
-            Toggl.Debug("Could not save window location: " + ex);
+            Toggl.SetEditViewWidth((long)edit.Width);
         }
     }
 
