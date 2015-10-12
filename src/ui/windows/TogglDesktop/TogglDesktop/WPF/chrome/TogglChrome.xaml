@@ -48,7 +48,8 @@
                        Style="{StaticResource WindowTitle}"
                        Text="{Binding Title}"/>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4 0">
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4 0"
+                        Name="buttonPanel" x:FieldModifier="private">
                 <Button Name="CogButton" Style="{StaticResource WindowHeadButton}"
                         Content="/TogglDesktop;component/Resources/ic_cog_grey600_36dp.png"/>
                 <Button Name="MinimizeButton" Style="{StaticResource WindowHeadButton}"

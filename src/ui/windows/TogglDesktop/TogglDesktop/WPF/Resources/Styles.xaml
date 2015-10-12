@@ -21,10 +21,19 @@
         </Style.Triggers>
     </Style>
     
-    <Style TargetType="TextBlock" x:Key="AutotrackerRulesText">
+    <Style TargetType="TextBlock" x:Key="TextBlockBase">
         <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
         <Setter Property="FontSize" Value="13.3" />
         <Setter Property="Foreground" Value="#252525"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="SyncingIndicatorCount" BasedOn="{StaticResource TextBlockBase}">
+        <Setter Property="FontSize" Value="9" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="#757575"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="AutotrackerRulesText" BasedOn="{StaticResource TextBlockBase}">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="8, 0"/>
     </Style>

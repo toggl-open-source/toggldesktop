@@ -33,6 +33,7 @@ namespace TogglDesktop.WPF
         private FeedbackWindow feedbackWindow;
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
+        private SyncingIndicator syncingIndicator;
 
         private UserControl activeView;
         private bool isInManualMode;
@@ -58,6 +59,7 @@ namespace TogglDesktop.WPF
             this.initializeTaskbarIcon();
             this.initializeWindows();
             this.initializeCustomNotifications();
+            this.initializeSyncingIndicator();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
@@ -68,6 +70,12 @@ namespace TogglDesktop.WPF
         }
 
         #region setup
+
+        private void initializeSyncingIndicator()
+        {
+            this.syncingIndicator = new SyncingIndicator();
+            this.Chrome.AddToHeaderButtons(this.syncingIndicator);
+        }
 
         private void initializeCustomNotifications()
         {
@@ -161,6 +169,7 @@ namespace TogglDesktop.WPF
 
             this.errorBar.Hide();
             this.statusBar.Hide();
+            this.syncingIndicator.Hide();
 
             this.runScriptAsync();
         }

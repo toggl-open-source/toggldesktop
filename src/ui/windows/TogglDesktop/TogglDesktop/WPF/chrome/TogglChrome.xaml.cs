@@ -78,5 +78,10 @@ namespace TogglDesktop.WPF
         {
             this.windowContentGrid.Children.Add(content);
         }
+
+        public void AddToHeaderButtons(UIElement element)
+        {
+            this.buttonPanel.Children.Insert(0, element);
+        }
     }
 }
