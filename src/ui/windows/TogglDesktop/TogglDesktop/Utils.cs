@@ -70,9 +70,9 @@ public static class Utils
         var success = Toggl.SetWindowSettings(x, y, w, h);
 
         Toggl.Debug(success
-            ? "Saved window location and size ({0}x{1} by {2}x{3})"
-            : "Failed to save window location and size ({0}x{1} by {2}x{3})",
-            x, y, w, h);
+                    ? "Saved window location and size ({0}x{1} by {2}x{3})"
+                    : "Failed to save window location and size ({0}x{1} by {2}x{3})",
+                    x, y, w, h);
 
         var state = mainWindow.WindowState;
         Toggl.SetWindowMaximized(state == WindowState.Maximized);
