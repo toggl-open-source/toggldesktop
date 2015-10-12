@@ -53,8 +53,8 @@ namespace TogglDesktop.WPF
 
             if (open)
             {
+                this.entries.Focus(true);
                 this.DisableHighlight();
-                this.entries.Focus(true, true);
             }
         }
 

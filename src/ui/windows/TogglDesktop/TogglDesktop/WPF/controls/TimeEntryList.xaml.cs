@@ -109,22 +109,19 @@ namespace TogglDesktop.WPF
         public void DisableHighlight()
         {
             this.HighlightCell(null);
+            this.hideSelection();
         }
 
         #endregion
 
         #region keyboard controls
 
-        public void Focus(bool selectKeyboard, bool hideSelection = false)
+        public void Focus(bool selectKeyboard)
         {
             this.Focus();
             if (selectKeyboard && !this.hasKeyboardSelection)
             {
                 this.highlightKeyboard(0);
-            }
-            if (hideSelection)
-            {
-                this.hideSelection();
             }
         }
 

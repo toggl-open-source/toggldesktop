@@ -834,7 +834,6 @@ namespace TogglDesktop.WPF
         }
         #endregion
 
-
         #region tag list
 
         private void tagList_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)

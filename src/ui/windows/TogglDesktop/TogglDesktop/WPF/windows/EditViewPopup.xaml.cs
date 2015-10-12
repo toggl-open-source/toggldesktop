@@ -38,6 +38,7 @@ namespace TogglDesktop.WPF
         {
             this.EditView.EnsureSaved();
             this.Hide();
+            Toggl.ViewTimeEntryList();
         }
 
         #region ui events
