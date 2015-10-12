@@ -91,7 +91,8 @@ namespace TogglDesktop.WPF
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            this.unsyncedCount.Text = this.unsyncedItems.ToString();
+            this.unsyncedCount.Text = this.unsyncedItems == 0
+                ? "" : this.unsyncedItems.ToString();
             this.Visibility = Visibility.Visible;
         }
 
