@@ -603,14 +603,12 @@ namespace TogglDesktop.WPF
 
         private void canExecuteShowCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !this.IsVisible;
+            e.CanExecute = this.canBeShown();
         }
-
         private void canExecuteHideCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = this.IsVisible;
+            e.CanExecute = !this.canBeShown();
         }
-
         private void canExecuteNewCommand(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = Program.IsLoggedIn;
@@ -647,7 +645,13 @@ namespace TogglDesktop.WPF
         {
             e.CanExecute = Program.IsLoggedIn && (this.isTracking || this.isInManualMode);
         }
-        
+
+        private bool canBeShown()
+        {
+            return !this.IsVisible
+                || this.WindowState == WindowState.Minimized;
+        }
+
         #endregion
         
         #region ui controlling
@@ -669,13 +673,13 @@ namespace TogglDesktop.WPF
 
         private void togglVisibility()
         {
-            if (this.IsVisible)
+            if (this.canBeShown())
             {
-                this.minimizeToTray();
+                this.ShowOnTop();
             }
             else
             {
-                this.ShowOnTop();
+                this.minimizeToTray();
             }
         }
 
@@ -833,6 +837,7 @@ namespace TogglDesktop.WPF
                 this.timerEntryListView.DisableHighlight();
             }
         }
+
         #endregion
 
         #region window size, position and state handling
