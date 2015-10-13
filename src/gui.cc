@@ -519,6 +519,25 @@ void GUI::DisplayUpdate(const std::string URL) {
     free(url);
 }
 
+void GUI::DisplayUpdateDownloadState(
+    const std::string version,
+    const Poco::Int64 download_state) {
+
+    if (!CanDisplayUpdateDownloadState()) {
+        logger().debug("Update download state display not supported by UI");
+        return;
+    }
+    {
+        std::stringstream ss;
+        ss << "DisplayUpdateDownloadState version=" << version
+           << " state=" << download_state;
+        logger().debug(ss.str());
+    }
+    char_t *version_string = copy_string(version);
+    on_display_update_download_state_(version_string, download_state);
+    free(version_string);
+}
+
 void GUI::DisplaySettings(const bool open,
                           const bool record_timeline,
                           const Settings settings,
