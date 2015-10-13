@@ -334,6 +334,11 @@ namespace TogglDesktop.WPF
             this.mainContextMenu.IsOpen = true;
         }
 
+        protected override void onIconButtonClick(object sender, RoutedEventArgs e)
+        {
+            Toggl.OpenInBrowser();
+        }
+
         protected override void OnLocationChanged(EventArgs e)
         {
             this.updateEditPopupLocation();

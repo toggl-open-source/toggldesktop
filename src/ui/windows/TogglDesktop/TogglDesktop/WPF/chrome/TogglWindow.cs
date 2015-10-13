@@ -17,6 +17,7 @@ namespace TogglDesktop.WPF
         private static IconBitmapDecoder iconInactive;
 
         private bool isToolWindow;
+        private bool canClickIcon;
 
         private TogglChrome chrome;
 
@@ -52,6 +53,20 @@ namespace TogglDesktop.WPF
         public TogglChrome Chrome
         {
             get { return this.chrome; }
+        }
+
+        public bool CanClickIcon
+        {
+            get { return this.canClickIcon; }
+            set
+            {
+                if (this.IsInitialized)
+                {
+                    throw new InvalidOperationException("Can not change IsToolWindow after initialisation.");
+                }
+
+                this.canClickIcon = value;
+            }
         }
 
         #endregion
@@ -103,7 +118,8 @@ namespace TogglDesktop.WPF
             this.chrome = new TogglChrome
             {
                 DataContext = this,
-                IsToolWindow = this.IsToolWindow
+                IsToolWindow = this.IsToolWindow,
+                CanClickIcon = this.CanClickIcon
             };
 
             this.SetIconState(true);
@@ -127,6 +143,7 @@ namespace TogglDesktop.WPF
 
         private void setupChromeEvents()
         {
+            this.chrome.IconButton.Click += this.onIconButtonClick;
             this.chrome.CloseButton.Click += this.onCloseButtonClick;
             this.chrome.MinimizeButton.Click += this.onMinimizeButtonClick;
             this.chrome.CogButton.Click += this.onCogButtonClick;
@@ -135,6 +152,11 @@ namespace TogglDesktop.WPF
         #endregion
 
         #region ui events
+
+        protected virtual void onIconButtonClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
 
         protected virtual void onCogButtonClick(object sender, RoutedEventArgs e)
         {

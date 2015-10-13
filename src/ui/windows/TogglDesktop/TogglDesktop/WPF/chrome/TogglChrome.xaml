@@ -6,7 +6,7 @@
         xmlns:toggl="clr-namespace:TogglDesktop.WPF"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance Type=toggl:TogglChromeSample, IsDesignTimeCreatable=True}"
-        d:DesignHeight="300" d:DesignWidth="500"
+        d:DesignHeight="300" d:DesignWidth="400"
         >
 
     <UserControl.Resources>
@@ -38,11 +38,14 @@
                             Viewport="0 0 634 40" ViewportUnits="Absolute"/>
             </Grid.Background>
 
-            <Image Grid.Column="0"
-                   Name="icon" x:FieldModifier="private"
-                   Source="{StaticResource IconRed}"
-                   RenderOptions.BitmapScalingMode="Fant"
-                   Height="16" Width="16" Margin="6 0 0 0"/>
+            <Button Grid.Column="0" Style="{StaticResource WindowIconButton}"
+                    Name="IconButton" IsEnabled="False" Margin="6 0 0 0">
+                <Image
+                    Name="icon" x:FieldModifier="private"
+                    Source="{StaticResource IconRed}"
+                    RenderOptions.BitmapScalingMode="Fant"
+                    Height="16" Width="16"/>
+            </Button>
 
             <TextBlock Grid.Column="1"
                        Style="{StaticResource WindowTitle}"
