@@ -2,10 +2,8 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
-using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
-using TogglDesktop.WPF;
 using Application = System.Windows.Forms.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -17,7 +15,6 @@ static class Program
     private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
     private static Bugsnag.Clients.BaseClient bugsnag;
     private static UInt64 uid;
-    private static MainWindow mainWindowController;
 
     public static bool IsLoggedIn
     {
@@ -102,12 +99,7 @@ static class Program
 
             RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
-            mainWindowController = new MainWindow();
-            new System.Windows.Application
-            {
-                MainWindow = mainWindowController,
-                ShutdownMode = ShutdownMode.OnExplicitShutdown
-            } .Run(mainWindowController);
+            new App().Run();
         }
     }
 

@@ -180,6 +180,6 @@
                 <ImageBrush ImageSource="/TogglDesktop;component/Resources/resize.png"/>
             </Rectangle.Fill>
         </Rectangle>
-
+        
     </Grid>
 </toggl:TogglWindow>
