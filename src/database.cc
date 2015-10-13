@@ -2006,7 +2006,7 @@ error Database::saveModel(
             std::stringstream ss;
             ss << "Inserting timeline event " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             *session_ <<
                       "insert into timeline_events("
