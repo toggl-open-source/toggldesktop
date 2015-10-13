@@ -1,7 +1,7 @@
 ﻿<Application x:Class="TogglDesktop.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="WPF/windows/MainWindow.xaml"
+             StartupUri="ui/windows/MainWindow.xaml"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
 

@@ -5,8 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using TogglDesktop.Diagnostics;
-using TogglDesktop.WPF;
-using MessageBox = TogglDesktop.WPF.MessageBox;
+using MessageBox = TogglDesktop.MessageBox;
 
 // ReSharper disable InconsistentNaming
 

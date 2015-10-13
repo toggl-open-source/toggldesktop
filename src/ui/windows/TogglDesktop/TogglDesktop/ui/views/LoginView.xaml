@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="TogglDesktop.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop"
+             mc:Ignorable="d" 
+             MinHeight="470" MinWidth="330">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/LoginViewStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+
+            <!-- ReSharper disable once Xaml.RedundantResource -->
+            <Storyboard x:Key="RotateConfirmSpinner" BeginTime="00:00:00.000"
+                        Duration="00:00:1.000" RepeatBehavior="Forever">
+                <DoubleAnimation Storyboard.TargetName="confirmButtonSpinner"
+                Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(RotateTransform.Angle)" 
+                From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
+            </Storyboard>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundDark}">
+        <StackPanel Width="250" Margin="0 35 0 0">
+            
+            <Image Source="/TogglDesktop;component/Resources/toggl-logo-white.png"
+                   Width="120" Height="36" Margin="0 20"/>
+            
+            <StackPanel x:Name="formPanel" x:FieldModifier="private">
+
+                <toggl:LoginTextBox
+                    x:Name="emailTextBox" x:FieldModifier="private"
+                    Margin="0 15" EmptyText="Your email address"/>
+                <toggl:LoginPasswordBox
+                    x:Name="passwordBox" x:FieldModifier="private"
+                    EmptyText="Password"/>
+
+                <Button Name="forgotPasswordButton" x:FieldModifier="private"
+                    Content="Forgot password?"
+                    Style="{StaticResource LoginTextButton}"
+                    Margin="0 5 0 15" HorizontalAlignment="Right"
+                    Click="onForgotPasswordButtonClick"/>
+            
+                <Button
+                    Style="{StaticResource LoginConfirmButton}"
+                    Margin="0 10" HorizontalAlignment="Center"
+                    Click="onConfirmButtonClick">
+                    <Grid Height="40" Width="180">
+                        <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
+                            Name="confirmButtonSpinner" x:FieldModifier="private"
+                            Stretch="Fill" Width="16" Height="16"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Visibility="Collapsed" Opacity="0.5">
+                            <Image.LayoutTransform>
+                                <RotateTransform Angle="0"/>
+                            </Image.LayoutTransform>
+                        </Image>
+                        <TextBlock Name="confirmButtonText" x:FieldModifier="private"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Foreground="#333333"
+                            Text="Log in"/>
+                    </Grid>
+                </Button>
+
+                <Button Name="googleLoginButton" x:FieldModifier="private"
+                    Style="{StaticResource LoginTextButton}"
+                    Click="onGoogleLoginClick">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/TogglDesktop;component/Resources/icon-google.png"
+                               Width="18" Height="27" Margin="0 0 5 0"/>
+                        <TextBlock Text="LOG IN WITH GOOGLE"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+
+                <TextBlock Text="or you can"
+                           Margin="0 40 0 0"/>
+
+                <Button Name="signupLoginToggle" x:FieldModifier="private"
+                        Content="Sign up for free"
+                        Style="{StaticResource LoginTextButton}"
+                        FontWeight="Regular"
+                        Click="onSignupLoginToggleClick"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

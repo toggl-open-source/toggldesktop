@@ -5,7 +5,6 @@ using System.Threading;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Application = System.Windows.Forms.Application;
-using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace TogglDesktop
 {
@@ -57,7 +56,7 @@ static class Program
                 }
 
                 // If not, print an error message and exit.
-                MessageBox.Show("Another copy of Toggl Desktop is already running." +
+                System.Windows.MessageBox.Show("Another copy of Toggl Desktop is already running." +
                                 Environment.NewLine + "This copy will now quit.");
                 return;
             }

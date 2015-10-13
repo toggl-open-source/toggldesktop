@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="TogglDesktop.AutoCompletionPopup"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop"
+             mc:Ignorable="d"
+             Height="0" Width="0">
+
+    <Popup Name="popup" x:FieldModifier="private"
+           MaxHeight="300" StaysOpen="True" AllowsTransparency="True">
+        <ScrollViewer Background="White" Margin="10" Style="{toggl:Resources ResourceKey=CustomSrollViewer}">
+
+            <ScrollViewer.Effect>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
+            </ScrollViewer.Effect>
+            <Grid>
+
+                <TextBlock Name="emptyLabel" x:FieldModifier="private"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Margin="4"
+                                   Text="Hello. Yes, this is list."/>
+                <StackPanel Name="dropDownList" x:FieldModifier="private">
+                    <!-- filled programatically -->
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Popup>
+</UserControl>
