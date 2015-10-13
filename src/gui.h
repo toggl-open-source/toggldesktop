@@ -312,6 +312,7 @@ class GUI : public SyncStateMonitor {
     , on_display_sync_state_(nullptr)
     , on_display_unsynced_items_(nullptr)
     , on_display_update_(nullptr)
+    , on_display_update_download_state_(nullptr)
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
     , on_display_promotion_(nullptr)
@@ -393,10 +394,18 @@ class GUI : public SyncStateMonitor {
 
     void DisplayUpdate(const std::string URL);
 
+    void DisplayUpdateDownloadState(
+        const std::string version,
+        const Poco::Int64 download_state);
+
     error VerifyCallbacks();
 
     void OnDisplayUpdate(TogglDisplayUpdate cb) {
         on_display_update_ = cb;
+    }
+
+    void OnDisplayUpdateDownloadState(TogglDisplayUpdateDownloadState cb) {
+        on_display_update_download_state_ = cb;
     }
 
     void OnDisplayApp(TogglDisplayApp cb) {
@@ -492,6 +501,10 @@ class GUI : public SyncStateMonitor {
         return !!on_display_update_;
     }
 
+    bool CanDisplayUpdateDownloadState() const {
+        return !!on_display_update_download_state_;
+    }
+
     bool CanDisplayAutotrackerRules() const {
         return !!on_display_autotracker_rules_;
     }
@@ -529,6 +542,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplaySyncState on_display_sync_state_;
     TogglDisplayUnsyncedItems on_display_unsynced_items_;
     TogglDisplayUpdate on_display_update_;
+    TogglDisplayUpdateDownloadState on_display_update_download_state_;
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;

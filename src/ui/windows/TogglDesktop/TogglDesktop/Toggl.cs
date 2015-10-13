@@ -539,7 +539,7 @@ public static partial class Toggl
 
     public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
-    public static event DisplayUpdate OnDisplayUpdate = delegate { }; 
+    public static event DisplayUpdate OnDisplayUpdate = delegate { };
 
     private static void listenToLibEvents()
     {
