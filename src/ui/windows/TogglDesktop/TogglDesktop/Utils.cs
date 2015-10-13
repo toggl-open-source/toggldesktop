@@ -64,10 +64,10 @@ public static class Utils
     {
         var x = (long)mainWindow.Left;
         var y = (long)mainWindow.Top;
-        var w = (long)mainWindow.Height;
-        var h = (long)mainWindow.Width;
+        var w = (long)mainWindow.Width;
+        var h = (long)mainWindow.Height;
 
-        var success = Toggl.SetWindowSettings(x, y, w, h);
+        var success = Toggl.SetWindowSettings(x, y, h, w);
 
         Toggl.Debug(success
             ? "Saved window location and size ({0}x{1} by {2}x{3})"
