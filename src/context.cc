@@ -998,6 +998,7 @@ error Context::downloadUpdate() {
 
         // Ask Toggl server if we have updates
         std::string url("");
+        std::string version_number("");
         {
             std::string body("");
             TogglClient client;
@@ -1025,9 +1026,10 @@ error Context::downloadUpdate() {
             }
 
             url = root["url"].asString();
+            version_number = root["version"].asString();
 
             std::stringstream ss;
-            ss << "Found update " << root["version"].asString()
+            ss << "Found update " << version_number
                << " (" << url << ")";
             logger().debug(ss.str());
         }
@@ -1045,7 +1047,7 @@ error Context::downloadUpdate() {
         }
 
         // Ignore update if not compatible with this client version
-        // only windows .exe installers ar supported atm
+        // only windows .exe installers are supported atm
         if (url.find(".exe") == std::string::npos) {
             logger().debug("Update is not compatible with this client,"
                            " will ignore");
@@ -1070,6 +1072,12 @@ error Context::downloadUpdate() {
             }
 
             Poco::File(update_path_).createDirectory();
+
+            if (UI()->CanDisplayUpdateDownloadState()) {
+                UI()->DisplayUpdateDownloadState(
+                    version_number,
+                    kDownloadStatusStarted);
+            }
 
             // Download file
             std::string body("");
@@ -1096,6 +1104,12 @@ error Context::downloadUpdate() {
             fos.close();
 
             logger().debug("Update written");
+
+            if (UI()->CanDisplayUpdateDownloadState()) {
+                UI()->DisplayUpdateDownloadState(
+                    version_number,
+                    kDownloadStatusDone);
+            }
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();

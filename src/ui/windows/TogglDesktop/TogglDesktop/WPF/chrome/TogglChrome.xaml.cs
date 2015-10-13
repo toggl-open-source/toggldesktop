@@ -46,6 +46,12 @@ namespace TogglDesktop.WPF
             }
         }
 
+        public bool CanClickIcon
+        {
+            get { return this.IconButton.IsEnabled; }
+            set { this.IconButton.IsEnabled = value; }
+        }
+
         private void updateToolWindowChrome()
         {
             if (this.isToolWindow)
