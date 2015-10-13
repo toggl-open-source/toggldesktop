@@ -97,7 +97,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     std::string json = convertTimelineToJSON(
         batch->Events(),
         batch->DesktopID());
-    logger().debug(json);
+    logger().trace(json);
 
     std::string response_body("");
     return client.Post(urls::TimelineUpload(),
