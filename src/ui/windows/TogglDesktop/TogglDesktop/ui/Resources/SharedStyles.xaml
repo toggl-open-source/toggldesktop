@@ -33,6 +33,19 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    
+    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Margin" Value="0 0 0 4" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#B2252525"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="Grid" x:Key="AutotrackerRulesBackground">
         <Setter Property="Background" Value="Transparent" />
         <Style.Triggers>
@@ -42,18 +55,18 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="SyncingIndicatorCount" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="SyncingIndicatorCount" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="9" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Foreground" Value="#757575"/>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="AutotrackerRulesText" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="AutotrackerRulesText" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="8, 0"/>
     </Style>
 
-    <Style TargetType="Button" x:Key="AutotrackerRulesDeleteButton">
+    <Style x:Key="AutotrackerRulesDeleteButton" TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -80,7 +93,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="ButtonBase" x:Key="RoundedCornersButtonBase" BasedOn="{StaticResource {x:Type Control}}">
+    <Style x:Key="RoundedCornersButtonBase" TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
@@ -100,7 +113,7 @@
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 
-    <Style TargetType="Button" x:Key="RaisedButton" BasedOn="{StaticResource RoundedCornersButtonBase}">
+    <Style x:Key="RaisedButton" TargetType="Button" BasedOn="{StaticResource RoundedCornersButtonBase}">
         <Setter Property="Padding" Value="8"/>
         <Setter Property="Margin" Value="4"/>
         <Setter Property="MinWidth" Value="60"/>
@@ -129,7 +142,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="Button" x:Key="FlatButton" BasedOn="{StaticResource RoundedCornersButtonBase}">
+    <Style x:Key="FlatButton" TargetType="Button" BasedOn="{StaticResource RoundedCornersButtonBase}">
         <Setter Property="Padding" Value="8"/>
         <Setter Property="Margin" Value="4"/>
         <Setter Property="MinWidth" Value="60"/>

@@ -94,6 +94,7 @@
                         <TextBlock Margin="4, 0, 0, 0"
                             TextDecorations="Underline"
                             VerticalAlignment="Center"
+                            Foreground="DarkGray"
                             Text="{TemplateBinding Content}"/>
                     </BulletDecorator>
                 </ControlTemplate>
@@ -103,7 +104,6 @@
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="DarkGray"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
     <Style x:Key="EditViewImageButton" TargetType="Button" BasedOn="{StaticResource EditViewControlBase}">

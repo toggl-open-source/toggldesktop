@@ -9,14 +9,6 @@
         d:DesignHeight="300" d:DesignWidth="400"
         >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/TogglWindowStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
