@@ -25,6 +25,7 @@ namespace TogglDesktop.WPF
         private ulong selectedWorkspaceId;
         private string selectedWorkspaceName;
         private string selectedClientGUID;
+        private ulong selectedClientId;
         private string selectedClientName;
 
         public EditView()
@@ -613,7 +614,7 @@ namespace TogglDesktop.WPF
                 return false;
             }
 
-            var projectGUID = Toggl.AddProject(this.timeEntry.GUID, this.selectedWorkspaceId, 0, this.selectedClientGUID, text, false);
+            var projectGUID = Toggl.AddProject(this.timeEntry.GUID, this.selectedWorkspaceId, this.selectedClientId, this.selectedClientGUID, text, false);
 
             return !string.IsNullOrEmpty(projectGUID);
         }
@@ -637,6 +638,7 @@ namespace TogglDesktop.WPF
             this.clientTextBox.Text = "";
             this.selectedClientName = "";
             this.selectedClientGUID = "";
+            this.selectedClientId = 0;
             this.clientAutoComplete.IsOpen = false;
             this.clientArea.Visibility = Visibility.Visible;
         }
@@ -687,6 +689,7 @@ namespace TogglDesktop.WPF
         private void selectClient(Toggl.TogglGenericView item)
         {
             this.selectedClientGUID = item.GUID;
+            this.selectedClientId = item.ID;
             this.selectedClientName = item.Name;
             this.clientTextBox.SetText(item.Name);
 
@@ -829,6 +832,7 @@ namespace TogglDesktop.WPF
 
             this.selectedClientName = text;
             this.selectedClientGUID = clientGUID;
+            this.selectedClientId = 0;
 
             this.disableNewClientMode();
 
