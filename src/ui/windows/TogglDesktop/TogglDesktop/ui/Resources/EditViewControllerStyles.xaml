@@ -3,85 +3,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:toggl="clr-namespace:TogglDesktop">
 
-    <Style TargetType="Control">
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        <Setter Property="FontSize" Value="13.3" />
-        <Setter Property="Foreground" Value="#252525"/>
+    <Style TargetType="Control" x:Key="EditViewControlBase" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Margin" Value="8"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
     </Style>
-    <Style TargetType="TextBlock" x:Key="SmallText">
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+    <Style TargetType="TextBlock" x:Key="SmallText" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="9.75" />
         <Setter Property="Foreground" Value="#9f9f9f"/>
     </Style>
-    <Style TargetType="TextBlock" x:Key="TextboxEmptyText">
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        <Setter Property="FontSize" Value="13.3" />
-        <Setter Property="Foreground" Value="#b6b6b6"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="16, 0"/>
-        <Setter Property="Visibility" Value="Hidden"/>
-        <Setter Property="IsHitTestVisible" Value="False"/>
-    </Style>
-    <Style TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ButtonBase">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="2">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              Margin="{TemplateBinding Padding}"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Background" Value="Transparent"/>
-    </Style>
-    <Style TargetType="Button" BasedOn="{StaticResource {x:Type ButtonBase}}">
-        <Setter Property="Padding" Value="8"/>
-        <Setter Property="Margin" Value="4"/>
-        <Setter Property="MinWidth" Value="60"/>
-        <Setter Property="FontWeight" Value="Medium"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#33999999"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#66999999"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="#77000000"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="ButtonBase" x:Key="TextFieldButtonBase" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ButtonBase">
-                    <Border Background="{TemplateBinding Background}">
-                        <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#9f9f9f"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center">SAVE</TextBlock>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="IsTabStop" Value="False"/>
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="Margin" Value="8, 8, 42, 8" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#F4F4F4"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="ButtonBase" x:Key="TextFieldImageButtonBase" BasedOn="{StaticResource {x:Type Control}}">
+
+    <Style x:Key="EditViewTextFieldImageButtonBase" TargetType="ButtonBase" BasedOn="{StaticResource EditViewControlBase}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
@@ -103,41 +34,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type CheckBox}">
-                    <BulletDecorator Background="Transparent" SnapsToDevicePixels="true" >
-                        <BulletDecorator.Bullet>
-                            <Border x:Name="border"
-                                    Width="16" Height="16" Background="White">
-                                <Path x:Name="checkMark"
-                                          Width="12"
-                                          Height="9.5"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          Data="M -1 -1 L 0 0 L 2 -2"
-                                          Stretch="Fill"
-                                          Stroke="#252525"
-                                          StrokeThickness="2" />
-                            </Border>
-                        </BulletDecorator.Bullet>
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="4, 1, 0, -1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </BulletDecorator>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="False">
-                            <Setter TargetName="checkMark" Property="Visibility" Value="Hidden"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#F4F4F4"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="ToggleButton" x:Key="AutoCompleteTextFieldButton"  BasedOn="{StaticResource TextFieldImageButtonBase}">
+    <Style x:Key="EditViewAutoCompleteTextFieldButton" TargetType="ToggleButton" BasedOn="{StaticResource EditViewTextFieldImageButtonBase}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
@@ -171,13 +68,9 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Padding" Value="8, 0, 0, 0"/>
-    </Style>
-    <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Padding" Value="8, 0, 0, 0"/>
-    </Style>
-    <Style TargetType="TextBox" x:Key="TimeBox" BasedOn="{StaticResource {x:Type TextBox}}">
+    
+    
+    <Style TargetType="TextBox" x:Key="TimeBox" BasedOn="{StaticResource EditViewControlBase}">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Background">
@@ -190,48 +83,7 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Background" Value="White"/>
     </Style>
-    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Padding" Value="5, 0, 0, 0"/>
-    </Style>
-    <Style TargetType="DatePicker" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type DatePicker}">
-                    <Grid x:Name="PART_Root"
-                              Background="White">
-                        <DatePickerTextBox x:Name="PART_TextBox">
-                            <DatePickerTextBox.Style>
-                                <Style TargetType="DatePickerTextBox" BasedOn="{StaticResource {x:Type Control}}">
-                                    <Setter Property="Margin" Value="0, 0, 20, 0" />
-                                    <Setter Property="Padding" Value="20, 0, 0, 0" />
-                                    <Setter Property="FontSize" Value="10"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                    <Setter Property="VerticalAlignment" Value="Stretch" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate x:Name="dptext" TargetType="{x:Type DatePickerTextBox}">
-                                                <ScrollViewer x:Name="PART_ContentHost"/>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </DatePickerTextBox.Style>
-                        </DatePickerTextBox>
-                        <Button x:Name="PART_Button" Content="/TogglDesktop;component/Resources/ic_calendar_2x.png">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource TextFieldImageButtonBase}">
-                                    <Setter Property="Margin" Value="0"/>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <Popup x:Name="PART_Popup" StaysOpen="False" AllowsTransparency="True" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="NewButton" TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
+    <Style x:Key="EditViewNewButton" TargetType="Button" BasedOn="{StaticResource EditViewControlBase}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -240,9 +92,10 @@
                             <TextBlock Foreground="#57da6d" FontSize="16">+</TextBlock>
                         </BulletDecorator.Bullet>
                         <TextBlock Margin="4, 0, 0, 0"
-                                               TextDecorations="Underline"
-                                               VerticalAlignment="Center"
-                                               Text="{TemplateBinding Content}"/>
+                            TextDecorations="Underline"
+                            VerticalAlignment="Center"
+                            Foreground="DarkGray"
+                            Text="{TemplateBinding Content}"/>
                     </BulletDecorator>
                 </ControlTemplate>
             </Setter.Value>
@@ -251,10 +104,9 @@
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="DarkGray"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
-    <Style x:Key="ImageButton" TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
+    <Style x:Key="EditViewImageButton" TargetType="Button" BasedOn="{StaticResource EditViewControlBase}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -268,5 +120,98 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
+
+    <Style TargetType="UserControl" x:Key="EditView">
+        <Style.Resources>
+
+            <Style TargetType="DatePicker" BasedOn="{StaticResource EditViewControlBase}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DatePicker}">
+                            <Grid x:Name="PART_Root"
+                              Background="White">
+                                <DatePickerTextBox x:Name="PART_TextBox">
+                                    <DatePickerTextBox.Style>
+                                        <Style TargetType="DatePickerTextBox" BasedOn="{StaticResource EditViewControlBase}">
+                                            <Setter Property="Margin" Value="0, 0, 20, 0" />
+                                            <Setter Property="Padding" Value="20, 0, 0, 0" />
+                                            <Setter Property="FontSize" Value="10"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate x:Name="dptext" TargetType="{x:Type DatePickerTextBox}">
+                                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DatePickerTextBox.Style>
+                                </DatePickerTextBox>
+                                <Button x:Name="PART_Button" Content="/TogglDesktop;component/Resources/ic_calendar_2x.png">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource EditViewTextFieldImageButtonBase}">
+                                            <Setter Property="Margin" Value="0"/>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Popup x:Name="PART_Popup" StaysOpen="False" AllowsTransparency="True" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <Style TargetType="Button" BasedOn="{StaticResource FlatButton}">
+                <Setter Property="Margin" Value="8"/>
+            </Style>
+            
+            <Style TargetType="CheckBox" BasedOn="{StaticResource EditViewControlBase}">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <BulletDecorator Background="Transparent" SnapsToDevicePixels="true" >
+                                <BulletDecorator.Bullet>
+                                    <Border x:Name="border"
+                                    Width="16" Height="16" Background="White">
+                                        <Path x:Name="checkMark"
+                                          Width="12"
+                                          Height="9.5"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="M -1 -1 L 0 0 L 2 -2"
+                                          Stretch="Fill"
+                                          Stroke="#252525"
+                                          StrokeThickness="2" />
+                                    </Border>
+                                </BulletDecorator.Bullet>
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="4, 1, 0, -1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </BulletDecorator>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter TargetName="checkMark" Property="Visibility" Value="Hidden"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#F4F4F4"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <Style TargetType="TextBox" BasedOn="{StaticResource EditViewControlBase}">
+                <Setter Property="Padding" Value="8, 0, 0, 0"/>
+            </Style>
+            
+            <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource EditViewControlBase}">
+                <Setter Property="Padding" Value="8, 0, 0, 0"/>
+            </Style>
+
+        </Style.Resources>
+    </Style>
+    
 
 </ResourceDictionary>

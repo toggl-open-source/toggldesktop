@@ -5,31 +5,14 @@
     <BitmapImage x:Key="IconRed" UriSource="/TogglDesktop;component/Resources/toggl-transparent.ico"/>
     <BitmapImage x:Key="IconGray" UriSource="/TogglDesktop;component/Resources/toggl_inactive-transparent.ico"/>
 
-    <Style TargetType="Control" x:Key="ControlBase" >
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        <Setter Property="FontSize" Value="13.3" />
-        <Setter Property="Foreground" Value="#252525"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
-    </Style>
-    <Style TargetType="TextBlock" x:Key="TextBlockBase" >
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        <Setter Property="FontSize" Value="13.3" />
-        <Setter Property="Foreground" Value="#252525"/>
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="#B2252525"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="TextBlock" x:Key="WindowTitle" BasedOn="{StaticResource TextBlockBase}">
+    <Style x:Key="WindowTitle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
         <Setter Property="FontSize" Value="15" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
 
-    <Style TargetType="Button" x:Key="WindowHeadButton">
+    <Style x:Key="WindowHeadButton" TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">
@@ -53,7 +36,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style TargetType="Button" x:Key="WindowIconButton">
+    <Style x:Key="WindowIconButton" TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ButtonBase">

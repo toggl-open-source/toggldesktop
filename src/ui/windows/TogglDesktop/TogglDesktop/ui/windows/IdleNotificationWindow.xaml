@@ -11,15 +11,8 @@
         Title="Idle Notification"
         WindowStartupLocation="CenterScreen"
         Topmost="True"
+        Style="{StaticResource IdleNotification}"
         >
-    
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/AboutFeedbackWindowStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
     
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>
@@ -44,15 +37,12 @@
                        HorizontalAlignment="Center" FontWeight="Regular"/>
         </StackPanel>
         
-        <StackPanel Grid.Row="1" Margin="2" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="1" Margin="8" HorizontalAlignment="Center">
             <Button Content="KEEP TIME"
-                    Style="{StaticResource RaisedButton}"
                     Click="onKeepTimeClick"/>
             <Button Content="DISCARD TIME"
-                    Style="{StaticResource RaisedButton}"
                     Click="onDiscardTimeClick"/>
-            <Button Content="ADD TIME AS NEW ENTRY" 
-                    Style="{StaticResource RaisedButton}"
+            <Button Content="ADD TIME AS NEW ENTRY"
                     Click="onAddAsNewClick"/>
         </StackPanel>
     </Grid>

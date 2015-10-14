@@ -5,15 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" MinWidth="370"
+             Style="{StaticResource EditView}"
              >
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/EditViewControllerStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
+    
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
@@ -111,7 +105,7 @@
                                             PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
 
                     <Button Name="newProjectButton" x:FieldModifier="private" Grid.Column="1"
-                        Style="{StaticResource NewButton}"
+                        Style="{StaticResource EditViewNewButton}"
                         Click="newProjectButton_OnClick">Add new project</Button>
 
                     <TextBlock x:Name="emptyProjectText" x:FieldModifier="private" Grid.Column="0"
@@ -138,10 +132,10 @@
                     </Border>
 
                     <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                        Style="{StaticResource AutoCompleteTextFieldButton}"/>
+                                        Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
 
                     <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1"
-                            Style="{StaticResource TextFieldImageButtonBase}"
+                            Style="{StaticResource EditViewTextFieldImageButtonBase}"
                             Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
                             Padding="9" Visibility="Hidden"
                             Click="newProjectCancelButton_OnClick"/>
@@ -168,7 +162,7 @@
                                            PreviewKeyDown="clientTextBox_OnPreviewKeyDown"/>
 
                     <Button Name="newClientButton" x:FieldModifier="private" Grid.Column="1"
-                            Style="{StaticResource NewButton}"
+                            Style="{StaticResource EditViewNewButton}"
                             Click="newClientButton_OnClick">Add new client</Button>
 
                     <TextBlock x:Name="emptyClientText" x:FieldModifier="private" Grid.Column="0">No client
@@ -188,10 +182,10 @@
                     </TextBlock>
 
                     <ToggleButton x:Name="clientDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                  Style="{StaticResource AutoCompleteTextFieldButton}"/>
+                                  Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
 
                     <Button x:Name ="newClientCancelButton" x:FieldModifier="private" Grid.Column="1"
-                            Style="{StaticResource TextFieldImageButtonBase}"
+                            Style="{StaticResource EditViewTextFieldImageButtonBase}"
                             Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
                             Padding="9" Visibility="Hidden"
                             Click="newClientCancelButton_OnClick"/>
@@ -214,7 +208,7 @@
                                            Padding="8, 0, 34, 0"/>
                     
                     <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private"
-                                  Style="{StaticResource AutoCompleteTextFieldButton}"/>
+                                  Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
 
                     <toggl:AutoCompletionPopup x:Name="workspaceAutoComplete" x:FieldModifier="private"
                             Target="{Binding ElementName=workspaceTextBox}" TextBox="{Binding ElementName=workspaceTextBox}"
@@ -227,7 +221,7 @@
                             Name="projectSaveArea" x:FieldModifier="private"
                             Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Click="projectSaveButton_Click">SAVE</Button>
-                    <Button Click="projectCancelButton_Click">Cancel</Button>
+                    <Button Click="projectCancelButton_Click">CANCEL</Button>
                 </StackPanel>
             </Grid>
             
@@ -261,19 +255,19 @@
                    Style="{StaticResource SmallText}"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">Last update N/A</TextBlock>
 
-        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ImageButton}"
+        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource EditViewImageButton}"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0"
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_arrow_back_grey600_36dp.png"
                 Click="backButton_OnClick"/>
 
-        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ImageButton}"
+        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource EditViewImageButton}"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0"
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_delete_grey600_36dp.png"
                 Click="deleteButton_OnClick"/>
 
-        <Button Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource ImageButton}"
+        <Button Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource EditViewImageButton}"
                 HorizontalAlignment="right" VerticalAlignment="top" Margin="0"
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"

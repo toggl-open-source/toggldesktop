@@ -1,9 +1,25 @@
 ﻿<Application x:Class="TogglDesktop.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="ui/windows/MainWindow.xaml"
-             ShutdownMode="OnExplicitShutdown">
+             ShutdownMode="OnExplicitShutdown"
+             StartupUri="ui/windows/MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="ui/Resources/Styles.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ui/Resources/SharedStyles.xaml" />
+
+                <ResourceDictionary Source="ui/Resources/ScrollBarStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/TimerStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/LoginViewStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/TimeEntryCellStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/EditViewStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/AutotrackerNotificationStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/AutotrackerStyles.xaml"/>
+                <ResourceDictionary Source="ui/Resources/EditViewControllerStyles.xaml"/>
+                <ResourceDictionary Source="ui/Resources/PreferencesWindowStyles.xaml"/>
+                <ResourceDictionary Source="ui/Resources/DialogStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/TogglWindowStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

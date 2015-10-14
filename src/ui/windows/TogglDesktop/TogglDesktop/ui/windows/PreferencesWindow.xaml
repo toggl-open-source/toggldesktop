@@ -9,15 +9,8 @@
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Preferences"
+        Style="{StaticResource Preferences}"
         >
-                    
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/PreferencesWindowStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
     
     <!-- content -->
     <Grid Background="{StaticResource ViewBackgroundLight}">

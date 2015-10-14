@@ -6,15 +6,9 @@
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
         Height="420" Width="350"
-        Title="Send Feedback" IsToolWindow="True">
+        Title="Send Feedback" IsToolWindow="True"
+        Style="{StaticResource FeedbackWindow}">
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/AboutFeedbackWindowStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
 
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>

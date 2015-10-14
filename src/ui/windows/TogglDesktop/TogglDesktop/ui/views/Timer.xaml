@@ -5,106 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             d:DesignWidth="500" Height="60" MinWidth="256" Focusable="True">
-    
-    <UserControl.Background>
-        <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerDarkBg.png"
-                    Stretch="None" TileMode="Tile" AlignmentX="Left" AlignmentY="Top"
-                    Viewport="0, 0, 634, 822" ViewportUnits="Absolute"/>
-    </UserControl.Background>
-    
-    <UserControl.Resources>
-
-        <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-            <Setter Property="FontSize" Value="16.6" />
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0, 0, 6, 0"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-
-        <Style TargetType="toggl:ExtendedTextBox">
-            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-            <Setter Property="FontSize" Value="16.6" />
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="0, 0, 6, 0"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="CaretBrush" Value="#dddddd"></Setter>
-        </Style>
-        
-        <Style TargetType="ButtonBase">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ButtonBase">
-                        <Border Background="{TemplateBinding Background}" Margin="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        </Style>
-
-        <Style TargetType="Button" x:Key="ManualAddButton" BasedOn="{StaticResource {x:Type ButtonBase}}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="#999999" />
-            <Setter Property="FontSize" Value="16.6" />
-            <Setter Property="Padding" Value="30 10" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground" Value="#BBBBBB"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style  TargetType="Button" x:Key="RemoveButton" BasedOn="{StaticResource {x:Type ButtonBase}}">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <ImageBrush ImageSource="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png" Stretch="Uniform"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        
-        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ButtonBase}}">
-            <Setter Property="Background" Value="#4dd965"/>
-            <Setter Property="FontSize" Value="26.6" />
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="UltraLight"/>
-            <Setter Property="Content" Value="Start"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#3eb052"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#ff3d32"/>
-                    <Setter Property="Content" Value="Stop"/>
-                </Trigger>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsChecked" Value="True"/>
-                        <Condition Property="IsMouseOver" Value="True"/>
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#cf1115"/>
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
-
-    </UserControl.Resources>
+             d:DesignWidth="500" Height="60" MinWidth="256" Focusable="True"
+             Style="{StaticResource Timer}">
     
     <Grid>
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">
             <Button Name="manuelAddButton" x:FieldModifier="private"
-                Style="{StaticResource ManualAddButton}"
+                Style="{StaticResource TimerManualAddButton}"
                     Click="onManualAddButtonClick" Content="+ Add time entry"/>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
@@ -130,7 +37,7 @@
                 </Grid.RowDefinitions>
 
                 <Button Name="cancelProjectSelectionButton" x:FieldModifier="private"
-                        Style="{StaticResource RemoveButton}"
+                        Style="{StaticResource TimerProjectRemoveButton}"
                         Grid.Row="0" Grid.Column="0"
                         Width="16" Height="16" Padding="2"
                         IsTabStop="False" Click="cancelProjectSelectionButtonClick"/>
@@ -157,7 +64,7 @@
                     <TextBlock Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private"
                                Text="What are you doing?">
                         <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource TimerTextBlockBase}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <MultiDataTrigger>

@@ -13,4 +13,152 @@
         TileMode="Tile" Stretch="UniformToFill"
         Viewport="0 0 634 822" ViewportUnits="Absolute"/>
 
+    <Style TargetType="Control">
+        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="13.3" />
+        <Setter Property="Foreground" Value="#252525"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="UseLayoutRounding" Value="True" />
+    </Style>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+        <Setter Property="FontSize" Value="13.3" />
+        <Setter Property="Foreground" Value="#252525"/>
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#B2252525"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    
+    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Margin" Value="0 0 0 4" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#B2252525"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="AutotrackerRulesBackground">
+        <Setter Property="Background" Value="Transparent" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F4F4F4"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="SyncingIndicatorCount" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontSize" Value="9" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="#757575"/>
+    </Style>
+
+    <Style x:Key="AutotrackerRulesText" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="8, 0"/>
+    </Style>
+
+    <Style x:Key="AutotrackerRulesDeleteButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="2">
+                        <Image Source="/TogglDesktop;component/Resources/icon-x.png" Margin="6" Stretch="Fill"></Image>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
+                <Setter Property="Visibility" Value="Hidden"/>
+            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#33999999"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#66999999"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="RoundedCornersButtonBase" TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="2">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style x:Key="RaisedButton" TargetType="Button" BasedOn="{StaticResource RoundedCornersButtonBase}">
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="MinWidth" Value="60"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Direction="270" ShadowDepth="1" BlurRadius="3" Opacity="0.25"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#eaeaea"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#d6d6d6"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Direction="270" ShadowDepth="2" BlurRadius="5" Opacity="0.5"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#77000000"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="FlatButton" TargetType="Button" BasedOn="{StaticResource RoundedCornersButtonBase}">
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="MinWidth" Value="60"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#33999999"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#66999999"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#77000000"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
 </ResourceDictionary>
