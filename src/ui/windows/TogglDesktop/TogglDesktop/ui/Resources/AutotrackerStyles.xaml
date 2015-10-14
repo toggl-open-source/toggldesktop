@@ -3,120 +3,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:toggl="clr-namespace:TogglDesktop">
 
-    <Style TargetType="Control">
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        <Setter Property="FontSize" Value="13.3" />
-        <Setter Property="Foreground" Value="#252525"/>
+    <Style TargetType="Control" x:Key="AutotrackerSettingsControlBase" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Margin" Value="8"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"></Setter>
     </Style>
-    <Style TargetType="TextBlock" x:Key="ListHeaderText">
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        <Setter Property="FontSize" Value="13.3" />
-        <Setter Property="Foreground" Value="#252525"/>
+
+    
+    <Style TargetType="UserControl" x:Key="AutotrackerSettings">
+        <Style.Resources>
+            <Style TargetType="Control" BasedOn="{StaticResource AutotrackerSettingsControlBase}"></Style>
+
+            <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource AutotrackerSettingsControlBase}">
+                <Setter Property="Padding" Value="8, 0, 0, 0"/>
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            
+            <Style TargetType="Button" BasedOn="{StaticResource RaisedButton}" />
+            
+        </Style.Resources>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ListHeaderText" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="VerticalAlignment" Value="Bottom"/>
         <Setter Property="Margin" Value="16, 0"/>
     </Style>
-    <Style TargetType="TextBlock" x:Key="TextboxEmptyText">
-        <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-        <Setter Property="FontSize" Value="13.3" />
+    <Style TargetType="TextBlock" x:Key="TextboxEmptyText" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Foreground" Value="#b6b6b6"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="16, 0"/>
         <Setter Property="Visibility" Value="Hidden"/>
         <Setter Property="IsHitTestVisible" Value="False"/>
     </Style>
-    <Style TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ButtonBase">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="2">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              Margin="{TemplateBinding Padding}"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Background" Value="Transparent"/>
-    </Style>
-    <Style TargetType="Button" BasedOn="{StaticResource {x:Type ButtonBase}}">
-        <Setter Property="Padding" Value="8"/>
-        <Setter Property="Margin" Value="4"/>
-        <Setter Property="MinWidth" Value="60"/>
-        <Setter Property="FontWeight" Value="Medium"/>
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect Direction="270" ShadowDepth="1" BlurRadius="3" Opacity="0.25"/>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#eaeaea"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#d6d6d6"/>
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect Direction="270" ShadowDepth="2" BlurRadius="5" Opacity="0.5"/>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="#77000000"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="ButtonBase" x:Key="TextFieldButtonBase" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ButtonBase">
-                    <Border Background="{TemplateBinding Background}">
-                        <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#9f9f9f"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center">SAVE</TextBlock>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="IsTabStop" Value="False"/>
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="Margin" Value="8, 8, 42, 8" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#F4F4F4"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="ButtonBase" x:Key="TextFieldImageButtonBase" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ButtonBase">
-                    <Border Background="{TemplateBinding Background}">
-                        <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
-                                   Stretch="Fill" Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"
-                                   RenderOptions.BitmapScalingMode="Fant"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="IsTabStop" Value="False"/>
-        <Setter Property="Background" Value="White"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#F4F4F4"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="ToggleButton" x:Key="AutoCompleteTextFieldButton"  BasedOn="{StaticResource TextFieldImageButtonBase}">
+
+    <Style TargetType="ToggleButton" x:Key="AutoCompleteTextFieldButton" BasedOn="{StaticResource AutotrackerSettingsControlBase}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
@@ -143,15 +61,16 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Background" Value="White"/>
         <Setter Property="Focusable" Value="False"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#F4F4F4"/>
             </Trigger>
         </Style.Triggers>
-    </Style>
-    <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Padding" Value="8, 0, 0, 0"/>
     </Style>
 
 </ResourceDictionary>

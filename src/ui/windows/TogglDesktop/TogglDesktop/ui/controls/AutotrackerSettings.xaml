@@ -5,15 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="450">
-    
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/AutotrackerStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+             d:DesignHeight="300" d:DesignWidth="450"
+             Style="{StaticResource AutotrackerSettings}">
     
     <Grid Margin="-8">
         <Grid.RowDefinitions>

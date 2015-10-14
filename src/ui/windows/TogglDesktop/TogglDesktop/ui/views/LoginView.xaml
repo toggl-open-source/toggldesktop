@@ -37,15 +37,14 @@
 
                 <Button Name="forgotPasswordButton" x:FieldModifier="private"
                     Content="Forgot password?"
-                    Style="{StaticResource LoginTextButton}"
                     Margin="0 5 0 15" HorizontalAlignment="Right"
                     Click="onForgotPasswordButtonClick"/>
             
                 <Button
-                    Style="{StaticResource LoginConfirmButton}"
+                    Style="{StaticResource RaisedButton}"
                     Margin="0 10" HorizontalAlignment="Center"
                     Click="onConfirmButtonClick">
-                    <Grid Height="40" Width="180">
+                    <Grid Height="24" Width="160">
                         <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                             Name="confirmButtonSpinner" x:FieldModifier="private"
                             Stretch="Fill" Width="16" Height="16"
@@ -63,7 +62,6 @@
                 </Button>
 
                 <Button Name="googleLoginButton" x:FieldModifier="private"
-                    Style="{StaticResource LoginTextButton}"
                     Click="onGoogleLoginClick">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/TogglDesktop;component/Resources/icon-google.png"
@@ -79,7 +77,6 @@
 
                 <Button Name="signupLoginToggle" x:FieldModifier="private"
                         Content="Sign up for free"
-                        Style="{StaticResource LoginTextButton}"
                         FontWeight="Regular"
                         Click="onSignupLoginToggleClick"/>
             </StackPanel>

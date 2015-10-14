@@ -44,7 +44,7 @@
                        HorizontalAlignment="Center" FontWeight="Regular"/>
         </StackPanel>
         
-        <StackPanel Grid.Row="1" Margin="2" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="1" Margin="8" HorizontalAlignment="Center">
             <Button Content="KEEP TIME"
                     Style="{StaticResource RaisedButton}"
                     Click="onKeepTimeClick"/>

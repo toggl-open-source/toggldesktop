@@ -10,16 +10,9 @@
     Title="Toggl Desktop"
     IsToolWindow="True"
     SizeToContent="WidthAndHeight"
+    Style="{StaticResource Dialog}"
     >
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/AboutFeedbackWindowStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-    
     <Grid Background="{StaticResource ViewBackgroundLight}" Height="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
