@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignWidth="300"
              Height="30"
-             Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}">
+             Style="{StaticResource AutoCompleteItemBase}">
 
     <TextBlock Name="text" x:FieldModifier="private" VerticalAlignment="Center"
                Margin="10, 0, 10, 0">This is test</TextBlock>

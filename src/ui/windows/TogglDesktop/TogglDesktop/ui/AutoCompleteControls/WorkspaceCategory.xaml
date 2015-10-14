@@ -6,7 +6,7 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" d:DesignWidth="300"
              Height="20"
-             Style="{toggl:Resources ResourceKey=AutoCompleteItemBase}"
+             Style="{StaticResource AutoCompleteItemBase}"
              BorderBrush="#dbdbdb"
              BorderThickness="0, 0, 0, 1"
              Padding="0, 3, 0, 0"

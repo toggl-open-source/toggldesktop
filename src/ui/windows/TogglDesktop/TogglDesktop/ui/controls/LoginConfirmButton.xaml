@@ -7,5 +7,5 @@
              mc:Ignorable="d" 
              d:DesignHeight="195" d:DesignWidth="315">
 
-    <Button Content="Button" x:Name="button" x:FieldModifier="private" Style="{toggl:Resources ResourceKey=LoginConfirmButton}" Cursor="Hand"/>
+    <Button Content="Button" x:Name="button" x:FieldModifier="private" Style="{StaticResource LoginConfirmButton}" Cursor="Hand"/>
 </UserControl>

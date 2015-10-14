@@ -17,15 +17,15 @@
 
         <TextBlock Name="termText" x:FieldModifier="private"
                    Grid.Column="0"
-                   Style="{toggl:Resources ResourceKey=AutotrackerRulesText}"
+                   Style="{StaticResource AutotrackerRulesText}"
                    Text="slack"/>
         <TextBlock Name="projectText" x:FieldModifier="private"
                    Grid.Column="1"
-                   Style="{toggl:Resources ResourceKey=AutotrackerRulesText}"
+                   Style="{StaticResource AutotrackerRulesText}"
                    Text="No project"/>
         
         <Button Grid.Column="2" Width="22" Height="22" HorizontalAlignment="Right" Margin="0 0 2 0"
-                Style="{toggl:Resources ResourceKey=AutotrackerRulesDeleteButton}"
+                Style="{StaticResource AutotrackerRulesDeleteButton}"
                 Click="onDeleteButtonClick"/>
 
     </Grid>

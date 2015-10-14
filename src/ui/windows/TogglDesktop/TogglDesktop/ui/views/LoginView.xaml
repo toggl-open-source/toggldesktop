@@ -5,15 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             MinHeight="470" MinWidth="330">
+             MinHeight="470" MinWidth="330"
+             Style="{StaticResource LoginView}">
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TogglDesktop;component/ui/Resources/LoginViewStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-
             <!-- ReSharper disable once Xaml.RedundantResource -->
             <Storyboard x:Key="RotateConfirmSpinner" BeginTime="00:00:00.000"
                         Duration="00:00:1.000" RepeatBehavior="Forever">
@@ -24,7 +20,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundDark}">
+    <Grid Background="{StaticResource ViewBackgroundDark}">
         <StackPanel Width="250" Margin="0 35 0 0">
             
             <Image Source="/TogglDesktop;component/Resources/toggl-logo-white.png"

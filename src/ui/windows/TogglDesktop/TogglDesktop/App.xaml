@@ -4,6 +4,6 @@
              StartupUri="ui/windows/MainWindow.xaml"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
-
+        <ResourceDictionary Source="ui/Resources/Styles.xaml" />
     </Application.Resources>
 </Application>

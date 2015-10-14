@@ -8,7 +8,7 @@
              d:DataContext="{d:DesignInstance Type=toggl:TimeEntryCellSample, IsDesignTimeCreatable=True}"
              d:DesignHeight="100" d:DesignWidth="455">
     
-    <StackPanel  Style="{toggl:Resources ResourceKey=TimeEntryCell}"
+    <StackPanel  Style="{StaticResource TimeEntryCell}"
                 Background="#F7F7F7">
         
         <!-- Day Header -->

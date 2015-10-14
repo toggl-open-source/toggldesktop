@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
-             Style="{toggl:Resources ResourceKey=AutotrackerNotification}">
+             Style="{StaticResource AutotrackerNotification}">
     
     <Border Width="360" Height="60"
-        Background="{toggl:Resources ResourceKey=ViewBackgroundLight}"
+        Background="{StaticResource ViewBackgroundLight}"
         CornerRadius="2"
         BorderThickness="0"
         Margin="5">

@@ -26,7 +26,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundDark}"
+        <Grid Background="{StaticResource ViewBackgroundDark}"
               Height="30">
             <TextBlock x:Name="statusText" x:FieldModifier="private"
                        Text="Status: No status."/>

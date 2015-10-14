@@ -276,7 +276,6 @@
     <Compile Include="ui\windows\PreferencesWindow.xaml.cs">
       <DependentUpon>PreferencesWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\Resources.cs" />
     <Compile Include="ui\AutoCompleteControls\StringEntry.xaml.cs">
       <DependentUpon>StringEntry.xaml</DependentUpon>
     </Compile>

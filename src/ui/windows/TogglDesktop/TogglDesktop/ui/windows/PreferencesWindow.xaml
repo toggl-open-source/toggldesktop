@@ -20,7 +20,7 @@
     </Window.Resources>
     
     <!-- content -->
-    <Grid Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
+    <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>

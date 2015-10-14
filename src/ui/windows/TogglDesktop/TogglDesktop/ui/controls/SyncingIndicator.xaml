@@ -57,7 +57,7 @@
                 </Image.LayoutTransform>
             </Image>
             <TextBlock Name="unsyncedCount" x:FieldModifier="private"
-                       Style="{toggl:Resources ResourceKey=SyncingIndicatorCount}"
+                       Style="{StaticResource SyncingIndicatorCount}"
                        VerticalAlignment="Center" HorizontalAlignment="Center"
                        Text="8" SnapsToDevicePixels="False"/>
         </Grid>

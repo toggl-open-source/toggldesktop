@@ -10,7 +10,7 @@
 
     <Popup Name="popup" x:FieldModifier="private"
            MaxHeight="300" StaysOpen="True" AllowsTransparency="True">
-        <ScrollViewer Background="White" Margin="10" Style="{toggl:Resources ResourceKey=CustomSrollViewer}">
+        <ScrollViewer Background="White" Margin="10" Style="{StaticResource CustomSrollViewer}">
 
             <ScrollViewer.Effect>
                 <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />

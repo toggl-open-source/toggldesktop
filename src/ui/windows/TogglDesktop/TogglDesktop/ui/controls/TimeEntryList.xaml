@@ -42,11 +42,11 @@
                       HorizontalAlignment="Stretch"
                       SizeChanged="onSizeChanged"
                       Background="#f7f7f7"
-                      Style="{toggl:Resources ResourceKey=CustomSrollViewer}"
+                      Style="{StaticResource CustomSrollViewer}"
                       >
             <Grid>
                 <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch"
-                                        Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
+                                        Background="{StaticResource ViewBackgroundLight}">
 
                 </VirtualizingStackPanel>
                 <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private"
@@ -86,7 +86,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
                                 <Border BorderThickness="0"
-                                        Background="{toggl:Resources ResourceKey=ViewBackgroundLight}">
+                                        Background="{StaticResource ViewBackgroundLight}">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"
                                                       Margin="10 30"/>
                                 </Border>

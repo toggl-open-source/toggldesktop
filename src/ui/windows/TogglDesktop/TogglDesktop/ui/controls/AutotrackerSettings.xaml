@@ -95,7 +95,7 @@
             <TextBlock Text="Term" Grid.Column="0" Grid.Row="1" Style="{StaticResource ListHeaderText}"/>
             <TextBlock Text="Project" Grid.Column="1" Grid.Row="1" Style="{StaticResource ListHeaderText}"/>
         </Grid>
-        <ScrollViewer Grid.Row="1" Style="{toggl:Resources ResourceKey=CustomScrollViewer}"
+        <ScrollViewer Grid.Row="1" Style="{StaticResource CustomSrollViewer}"
             Margin="8" Focusable="True" IsTabStop="True"
             GotKeyboardFocus="onListGotKeyboardFocus"
             LostKeyboardFocus="onListLostKeyboardFocus"
