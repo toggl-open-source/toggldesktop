@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,15 +20,33 @@ namespace TogglDesktop
             this.releaseChannelComboBox.ShowOnlyIf(!isUpdatCheckDisabled, true);
             this.releaseChannelLabel.ShowOnlyIf(!isUpdatCheckDisabled, true);
 
-            Toggl.OnDisplayUpdate += this.onDisplayUpdate;
+            Toggl.OnDisplayUpdateDownloadState += this.onDisplayUpdateDownloadState;
         }
 
-        private void onDisplayUpdate(string url)
+        private void onDisplayUpdateDownloadState(string version, Toggl.DownloadStatus status)
         {
-            if (this.TryBeginInvoke(this.onDisplayUpdate, url))
+            if (this.TryBeginInvoke(this.onDisplayUpdateDownloadState, version, status))
                 return;
 
-            // TODO: Display update status
+            string format;
+            switch (status)
+            {
+                case Toggl.DownloadStatus.Started:
+                {
+                    format = "Downloading version {0}";
+                    break;
+                }
+                case Toggl.DownloadStatus.Done:
+                {
+                    format = "Version {0} available,\nrestart Toggl Desktop to upgrade.";
+                    break;
+                }
+                default:
+                    throw new ArgumentOutOfRangeException("status", status, null);
+            }
+
+            this.updateText.Text = string.Format(format, version);
+            this.updateText.Visibility = Visibility.Visible;
         }
 
         private void windowKeyDown(object sender, KeyEventArgs e)

@@ -5,7 +5,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using TogglDesktop.Diagnostics;
-using MessageBox = TogglDesktop.MessageBox;
 
 // ReSharper disable InconsistentNaming
 
@@ -49,6 +48,12 @@ public static partial class Toggl
     {
         Idle = kSyncStateIdle,
         Syncing = kSyncStateWork
+    }
+
+    public enum DownloadStatus
+    {
+        Started = kDownloadStatusStarted,
+        Done = kDownloadStatusDone
     }
 
     #endregion
@@ -119,8 +124,8 @@ public static partial class Toggl
     public delegate void DisplayAutotrackerNotification(
         string projectName, ulong projectId);
 
-    public delegate void DisplayUpdate(
-        string url);
+    public delegate void DisplayUpdateDownloadState(
+        string url, DownloadStatus status);
 
     #endregion
 
@@ -538,7 +543,7 @@ public static partial class Toggl
 
     public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
-    public static event DisplayUpdate OnDisplayUpdate = delegate { };
+    public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -717,11 +722,11 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_update(ctx, url =>
+        toggl_on_update_download_state(ctx, (version, state) =>
         {
-            using (Performance.Measure("Calling OnUpdate, url: {0}", url))
+            using (Performance.Measure("Calling OnUpdateDownloadState, v: {0}, state: {1}", version, state))
             {
-                OnDisplayUpdate(url);
+                OnDisplayUpdateDownloadState(version, (DownloadStatus)state);
             }
         });
     }
