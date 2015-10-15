@@ -1,28 +1,3 @@
-Toggl Desktop app requires Qt 5.5 to run.
-These libraries *are not* packaged with the Toggl Desktop app.
-
-To install Qt, please follow these links:
-
-http://www.qt.io/download-open-source/
-
-After building and installing Qt, you'll need
-to add the libraries to your LD_LIBRARY_PATH in order for the
-Toggl Desktop app to run. You can run add it each time you run the
-Toggl Desktop app like this:
-
-	LD_LIBRARY_PATH=/home/tanel/Qt/5.5/gcc_64/lib:$LD_LIBRARY_PATH ./TogglDesktop
-
-(Assuming the Qt libraries at /home/tanel/Qt/5.5/gcc_64/lib)
-
-Or you can append the libraries permanently like this:
-
-	export LD_LIBRARY_PATH=/home/tanel/Qt/5.5/gcc_64/lib:$LD_LIBRARY_PATH
-
-(Then just type ./TogglDesktop to run the Toggl Desktop app).
-
-Please note that the Qt libraries may or may not be
-available on your distro as a prebuilt package.
-Installing the libraries from source is possible on any Linux platform.
 
 Should you experience any problems, please contact the Toggl
 Desktop app developers at:
