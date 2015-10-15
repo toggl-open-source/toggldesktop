@@ -17,6 +17,9 @@ set -e
 
 echo "Creating package"
 
+echo "QPATH is $QPATH"
+echo "QLIBPATH is $QLIBPATH"
+
 out=out/linux/toggldesktop
 
 rm -rf toggldesktop*.tar.gz $out
