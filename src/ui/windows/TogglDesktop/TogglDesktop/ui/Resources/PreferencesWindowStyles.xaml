@@ -1,0 +1,205 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- buttons -->
+    <Style TargetType="Button" x:Key="ShortcutRecordButton" BasedOn="{StaticResource FlatButton}">
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+    </Style>
+    <Style TargetType="Button" x:Key="ShortcutClearButton" BasedOn="{StaticResource ShortcutRecordButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}" BorderThickness="1 0 0 0" BorderBrush="#33000000">
+                        <Image Source="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
+                                   Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Stretch="Fill" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="Padding" Value="3 4 4 4"/>
+    </Style>
+    <Style TargetType="Border" x:Key="ShortcutRecordContainer">
+        <Setter Property="Background" Value="#44999999"/>
+        <Setter Property="CornerRadius" Value="2" />
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+    
+    <Style TargetType="Window" x:Key="Preferences">
+        <Style.Resources>
+
+            <Style TargetType="Button" BasedOn="{StaticResource FlatButton}" />
+            
+            <!-- checkboxes, textboxes, groupings -->
+            <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type Control}}">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RadioButton}">
+                            <BulletDecorator Background="Transparent" SnapsToDevicePixels="true" >
+                                <BulletDecorator.Bullet>
+                                    <Border x:Name="border"
+                                    Width="16" Height="16" Background="White" CornerRadius="100">
+                                        <Border x:Name="checkMark"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch" 
+                                          Background="Black" Margin="5" CornerRadius="100"/>
+                                    </Border>
+                                </BulletDecorator.Bullet>
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="4, 0, 0, 0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </BulletDecorator>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter TargetName="checkMark" Property="Visibility" Value="Hidden"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#F4F4F4"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type Control}}">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <BulletDecorator Background="Transparent" SnapsToDevicePixels="true" >
+                                <BulletDecorator.Bullet>
+                                    <Border x:Name="border"
+                                    Width="16" Height="16" Background="White">
+                                        <Path x:Name="checkMark"
+                                          Width="12"
+                                          Height="9.5"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="M -1 -1 L 0 0 L 2 -2"
+                                          Stretch="Fill"
+                                          Stroke="#252525"
+                                          StrokeThickness="2" />
+                                    </Border>
+                                </BulletDecorator.Bullet>
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="4, 1, 0, -1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </BulletDecorator>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter TargetName="checkMark" Property="Visibility" Value="Hidden"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#F4F4F4"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
+                <Setter Property="Padding" Value="2 2 2 0"/>
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="PasswordBox" BasedOn="{StaticResource {x:Type Control}}">
+                <Setter Property="Padding" Value="2 0"/>
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Separator">
+                <Setter Property="Margin" Value="0 10"/>
+                <Setter Property="Background" Value="#DDDDDD"/>
+            </Style>
+            <Style TargetType="GroupBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type GroupBox}">
+                            <StackPanel>
+                                <ContentPresenter ContentSource="Header" Margin="6 0"/>
+
+                                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="2">
+
+                                    <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                                </Border>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderBrush" Value="#DDDDDD"/>
+                <Setter Property="Margin" Value="0 5"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Foreground" Value="#9f9f9f"/>
+                <Setter Property="Background" Value="#05000000"/>
+                <Setter Property="FontSize" Value="9.75" />
+            </Style>
+
+            <!-- tabs -->
+            <Style TargetType="TabControl">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabControl">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <UniformGrid Grid.Row="0" IsItemsHost="True" Rows="1">
+                                    <UniformGrid.Background>
+                                        <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerDarkBg.png"
+                                        AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="Uniform"
+                                        Viewport="0, 0, 634, 822" ViewportUnits="Absolute"/>
+                                    </UniformGrid.Background>
+                                </UniformGrid>
+                                <ContentPresenter Grid.Row="1" ContentSource="SelectedContent" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="TabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid Name="Panel" Background="{TemplateBinding Background}" Cursor="Hand">
+                                <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="0 10">
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="ContentPresenter">
+                                            <Style.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type TabItem}} }" />
+                                                </Style>
+                                            </Style.Resources>
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                </ContentPresenter>
+                                <Rectangle Height="2" VerticalAlignment="Bottom" x:Name="selectedIndicator" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter TargetName="selectedIndicator" Property="Fill" Value="#e20000" />
+                                </Trigger>
+                                <Trigger SourceName="Panel" Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#12FFFFFF"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#B2FFFFFF" />
+            </Style>
+        </Style.Resources> 
+    </Style>
+
+</ResourceDictionary>

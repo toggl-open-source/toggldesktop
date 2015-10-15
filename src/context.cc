@@ -998,6 +998,7 @@ error Context::downloadUpdate() {
 
         // Ask Toggl server if we have updates
         std::string url("");
+        std::string version_number("");
         {
             std::string body("");
             TogglClient client;
@@ -1025,9 +1026,10 @@ error Context::downloadUpdate() {
             }
 
             url = root["url"].asString();
+            version_number = root["version"].asString();
 
             std::stringstream ss;
-            ss << "Found update " << root["version"].asString()
+            ss << "Found update " << version_number
                << " (" << url << ")";
             logger().debug(ss.str());
         }
@@ -1045,7 +1047,7 @@ error Context::downloadUpdate() {
         }
 
         // Ignore update if not compatible with this client version
-        // only windows .exe installers ar supported atm
+        // only windows .exe installers are supported atm
         if (url.find(".exe") == std::string::npos) {
             logger().debug("Update is not compatible with this client,"
                            " will ignore");
@@ -1070,6 +1072,12 @@ error Context::downloadUpdate() {
             }
 
             Poco::File(update_path_).createDirectory();
+
+            if (UI()->CanDisplayUpdateDownloadState()) {
+                UI()->DisplayUpdateDownloadState(
+                    version_number,
+                    kDownloadStatusStarted);
+            }
 
             // Download file
             std::string body("");
@@ -1096,6 +1104,12 @@ error Context::downloadUpdate() {
             fos.close();
 
             logger().debug("Update written");
+
+            if (UI()->CanDisplayUpdateDownloadState()) {
+                UI()->DisplayUpdateDownloadState(
+                    version_number,
+                    kDownloadStatusDone);
+            }
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -2143,10 +2157,15 @@ TimeEntry *Context::Start(
             return nullptr;
         }
 
+        Poco::UInt64 pid(project_id);
+        if (!pid && project_guid.empty()) {
+            pid = user_->DefaultPID();
+        }
+
         te = user_->Start(description,
                           duration,
                           task_id,
-                          project_id,
+                          pid,
                           project_guid,
                           tags);
     }
@@ -2790,9 +2809,85 @@ error Context::SetUpdateChannel(const std::string channel) {
     return noError;
 }
 
+error Context::SetDefaultPID(const Poco::UInt64 pid) {
+    try {
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot set default PID, user logged out");
+                return noError;
+            }
+            if (pid && !user_->related.ProjectByID(pid)) {
+                return displayError("Project not found by ID");
+            }
+            user_->SetDefaultPID(pid);
+        }
+        return displayError(save());
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultPID(Poco::UInt64 *pid) {
+    try {
+        poco_check_ptr(pid);
+        *pid = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            *pid = user_->DefaultPID();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultProjectName(std::string *name) {
+    try {
+        poco_check_ptr(name);
+        *name = "";
+        Project *p = nullptr;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            p = user_->related.ProjectByID(user_->DefaultPID());
+        }
+        if (p) {
+            *name = p->Name();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
 error Context::AddAutotrackerRule(
     const std::string term,
-    const Poco::UInt64 pid) {
+    const Poco::UInt64 pid,
+    Poco::Int64 *rule_id) {
+
+    poco_check_ptr(rule_id);
+    *rule_id = 0;
 
     if (term.empty()) {
         return displayError("missing term");
@@ -2802,6 +2897,8 @@ error Context::AddAutotrackerRule(
     }
 
     std::string lowercase = Poco::UTF8::toLower(term);
+
+    AutotrackerRule *rule = nullptr;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2814,14 +2911,23 @@ error Context::AddAutotrackerRule(
             return displayError(kErrorRuleAlreadyExists);
         }
 
-        AutotrackerRule *rule = new AutotrackerRule();
+        rule = new AutotrackerRule();
         rule->SetTerm(lowercase);
         rule->SetPID(pid);
         rule->SetUID(user_->ID());
         user_->related.AutotrackerRules.push_back(rule);
     }
 
-    return displayError(save());
+    error err = save();
+    if (noError != err) {
+        return displayError(err);
+    }
+
+    if (rule) {
+        *rule_id = rule->LocalID();
+    }
+
+    return noError;
 }
 
 error Context::DeleteAutotrackerRule(

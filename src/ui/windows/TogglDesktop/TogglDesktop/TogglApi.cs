@@ -28,6 +28,9 @@ public static partial class Toggl
     private const int kSyncStateIdle = 0;
     private const int kSyncStateWork = 1;
 
+    private const int kDownloadStatusStarted = 0;
+    private const int kDownloadStatusDone = 1;
+
 // Models
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
@@ -360,11 +363,18 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string url);
 
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayUpdateDownloadState(
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string version,
+        int download_state);
+
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutotrackerRules(
         IntPtr first,
         UInt64 title_count,
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPWStr, SizeParamIndex=1)]
         string[] title_list);
 
     // Initialize/destroy an instance of the app
@@ -477,6 +487,11 @@ public static partial class Toggl
     private static extern void toggl_on_update(
         IntPtr context,
         TogglDisplayUpdate cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_update_download_state(
+        IntPtr context,
+        TogglDisplayUpdateDownloadState cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_online_state(
@@ -1053,6 +1068,21 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_default_project_id(
+        IntPtr context,
+        UInt64 pid);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern UInt64 toggl_get_default_project_id(
+        IntPtr context);
+
+    // You must free() the result
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_get_default_project_name(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_update_channel(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -1152,13 +1182,12 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_run_script(
         IntPtr context,
-        [MarshalAs(UnmanagedType.LPStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string script,
         ref Int64 err);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    [return:MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_autotracker_add_rule(
+    private static extern Int64 toggl_autotracker_add_rule(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string term,

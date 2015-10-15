@@ -34,6 +34,9 @@ extern "C" {
 #define kSyncStateIdle 0
 #define kSyncStateWork 1
 
+#define kDownloadStatusStarted 0
+#define kDownloadStatusDone 1
+
 // Models
 
     typedef struct {
@@ -221,6 +224,10 @@ extern "C" {
     typedef void (*TogglDisplayUpdate)(
         const char_t *url);
 
+    typedef void (*TogglDisplayUpdateDownloadState)(
+        const char_t *version,
+        const int download_state);
+
     typedef char_t * string_list_t[];
 
     typedef void (*TogglDisplayAutotrackerRules)(
@@ -312,6 +319,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_update(
         void *context,
         TogglDisplayUpdate cb);
+
+    TOGGL_EXPORT void toggl_on_update_download_state(
+        void *context,
+        TogglDisplayUpdateDownloadState cb);
 
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,
@@ -690,6 +701,17 @@ extern "C" {
         const char_t *project_name,
         const bool_t is_private);
 
+    TOGGL_EXPORT bool_t toggl_set_default_project_id(
+        void *context,
+        const uint64_t pid);
+
+    TOGGL_EXPORT uint64_t toggl_get_default_project_id(
+        void *context);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_default_project_name(
+        void *context);
+
     TOGGL_EXPORT bool_t toggl_set_update_channel(
         void *context,
         const char_t *update_channel);
@@ -766,10 +788,10 @@ extern "C" {
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_run_script(
         void *context,
-        const char *script,
+        const char_t *script,
         int64_t *err);
 
-    TOGGL_EXPORT bool_t toggl_autotracker_add_rule(
+    TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
         void *context,
         const char_t *term,
         const uint64_t project_id);

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using TogglDesktop.WPF.AutoComplete;
+using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
@@ -18,6 +18,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             Panel newPanel;
             this.element = this.createElement(out newPanel, recyclables);
+            this.element.Visibility = Visibility.Visible;
             parent.Children.Add(this.element);
             return newPanel;
         }
