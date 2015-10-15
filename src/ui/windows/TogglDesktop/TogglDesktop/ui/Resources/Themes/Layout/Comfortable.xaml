@@ -8,4 +8,7 @@
     <sys:Double x:Key="TimerFontSize">16.6</sys:Double>
     <sys:Double x:Key="TimerHeight">60</sys:Double>
 
+    <sys:Double x:Key="EditViewMarginH">25</sys:Double>
+    <sys:Double x:Key="EditViewMarginV">45</sys:Double>
+
 </ResourceDictionary>

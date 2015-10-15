@@ -28,6 +28,7 @@
             x:Name="resizeHandle" x:FieldModifier="private"
             Fill="Transparent"
             Width="10" HorizontalAlignment="Right"
+            Margin="0 32"
             Cursor="SizeWE"
             IsHitTestVisible="True"
             MouseLeftButtonDown="onResizeHandleLeftButtonDown"

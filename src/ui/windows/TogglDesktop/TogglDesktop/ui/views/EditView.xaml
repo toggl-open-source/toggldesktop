@@ -10,16 +10,25 @@
     
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <FrameworkElement Grid.Row="0" Grid.Column="0"
+            Width="{DynamicResource EditViewMarginH}"
+            Height="{DynamicResource EditViewMarginV}"
+            />
+        <FrameworkElement Grid.Row="3" Grid.Column="2"
+            Width="{DynamicResource EditViewMarginH}"
+            Height="{DynamicResource EditViewMarginV}"
+            />
 
         <!-- content -->
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
@@ -251,23 +260,20 @@
             
         </StackPanel>
         
-        <TextBlock Name="lastUpdatedText" x:FieldModifier="private" Grid.Column="1" Grid.Row="3"
+        <TextBlock Name="lastUpdatedText" x:FieldModifier="private"
+                   Grid.Column="1" Grid.Row="3"
                    Style="{StaticResource SmallText}"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">Last update N/A</TextBlock>
 
-        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource EditViewImageButton}"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0"
-                Width="32" Height="32"
-                Content="/TogglDesktop;component/Resources/ic_arrow_back_grey600_36dp.png"
-                Click="backButton_OnClick"/>
-
-        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource EditViewImageButton}"
+        <Button Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3"
+                Style="{StaticResource EditViewImageButton}"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0"
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_delete_grey600_36dp.png"
                 Click="deleteButton_OnClick"/>
 
-        <Button Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource EditViewImageButton}"
+        <Button Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"
+                Style="{StaticResource EditViewImageButton}"
                 HorizontalAlignment="right" VerticalAlignment="top" Margin="0"
                 Width="32" Height="32"
                 Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"
