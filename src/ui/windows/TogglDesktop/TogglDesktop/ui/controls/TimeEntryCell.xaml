@@ -44,7 +44,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*" MaxWidth="100" MinWidth="65"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
@@ -52,62 +51,64 @@
             <Rectangle Name="projectColor" x:FieldModifier="private" Grid.Column="0"
                        Fill="#999999"/>
 
-            <StackPanel Grid.Column="3"  Width="60" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <TextBlock Name="labelDuration" x:FieldModifier="private"
-                           HorizontalAlignment="Right" FontSize="14.7"
-                               Margin="0, 1, 0, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
-            </StackPanel>
-
-            <Button Grid.Column="4" Width="36" Height="36" Margin="0, 0, 4, 0"
-                    Focusable="False" Click="buttonContinue_Click"/>
-
-            <StackPanel Grid.Column="2"
-                        Orientation="Horizontal" HorizontalAlignment="Right">
-
-                <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
-                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="16"/>
-                <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
-                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
-
-            </StackPanel>
-            
-
             <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
 
                     <TextBlock Name="labelClient" x:FieldModifier="private"
-                               Foreground="DimGray">Client</TextBlock>
+                                Foreground="DimGray">Client</TextBlock>
                     <TextBlock Name="labelProject" x:FieldModifier="private" MouseDown="labelProject_MouseDown"
-                               >Project</TextBlock>
+                                >Project</TextBlock>
 
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1">
 
                     <TextBlock Name="labelTask" x:FieldModifier="private"
-                               Foreground="Gray">Task</TextBlock>
+                                Foreground="Gray">Task</TextBlock>
                     <TextBlock Name="labelDescription" x:FieldModifier="private" MouseDown="labelDescription_MouseDown"
-                           HorizontalAlignment="Left">This is a description</TextBlock>
-                    
+                            HorizontalAlignment="Left">This is a description</TextBlock>
+
                 </StackPanel>
+
             </Grid>
 
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Rectangle Width="30" HorizontalAlignment="Right">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="Transparent" Offset="0.0" />
+                            <GradientStop Color="{Binding Path=EntryBackColor}" Offset="1" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
 
-            <Rectangle Grid.Column="1"
-                       Width="30" HorizontalAlignment="Right">
-                <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="Transparent" Offset="0.0" />
-                        <GradientStop Color="{Binding Path=EntryBackColor}" Offset="1" />
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
+                <StackPanel Orientation="Horizontal">
+
+                    <StackPanel.Background>
+                        <SolidColorBrush Color="{Binding EntryBackColor}"/>
+                    </StackPanel.Background>
+
+
+                    <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
+                           Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="16"/>
+                    <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
+                           Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
+
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="60"
+                        HorizontalAlignment="Left" FontSize="14.7" TextAlignment="Right"
+                            Margin="0, 1, 0, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
+
+            <Button Grid.Column="3" Width="36" Height="36" Margin="0, 0, 4, 0"
+                    Focusable="False" Click="buttonContinue_Click"/>
 
         </Grid>
     </StackPanel>
