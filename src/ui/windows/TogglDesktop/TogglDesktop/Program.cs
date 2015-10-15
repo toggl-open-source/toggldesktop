@@ -57,7 +57,7 @@ static class Program
 
                 // If not, print an error message and exit.
                 System.Windows.MessageBox.Show("Another copy of Toggl Desktop is already running." +
-                                Environment.NewLine + "This copy will now quit.");
+                                               Environment.NewLine + "This copy will now quit.");
                 return;
             }
 

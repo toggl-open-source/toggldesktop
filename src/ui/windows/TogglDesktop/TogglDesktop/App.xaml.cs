@@ -1,11 +1,11 @@
 ﻿
 namespace TogglDesktop
 {
-    partial class App
+partial class App
+{
+    public App()
     {
-        public App()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
+}
 }
