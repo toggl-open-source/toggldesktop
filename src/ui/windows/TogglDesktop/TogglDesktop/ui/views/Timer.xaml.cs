@@ -323,7 +323,7 @@ namespace TogglDesktop
             {
                 this.durationLabelLeft.Text = s;
                 this.durationLabelRight.Text = "";
-                this.durationLabelLeft.Margin = new Thickness(14, 0, 0, 0);
+                this.durationLabelLeft.Margin = new Thickness(16, 0, 0, 0);
                 return;
             }
 
@@ -342,7 +342,7 @@ namespace TogglDesktop
             this.durationLabelLeft.Text = split[0];
             this.durationLabelRight.Text = split[1];
 
-            this.durationLabelLeft.Margin = new Thickness(realSeconds < 60 ? 42 : 6, 0, 0, 0);
+            this.durationLabelLeft.Margin = new Thickness(realSeconds < 60 ? 36 : 0, 0, 0, 0);
 
         }
 

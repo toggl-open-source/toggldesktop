@@ -43,19 +43,21 @@
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*" MaxWidth="100" MinWidth="65"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
             <Rectangle Name="projectColor" x:FieldModifier="private" Grid.Column="0"
                        Fill="#999999"/>
 
-            <TextBlock Name="labelDuration" x:FieldModifier="private" Grid.Column="3"
-                       HorizontalAlignment="Right" FontSize="14.7"
-                           Margin="0, 1, 33, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
-            
+            <StackPanel Grid.Column="3"  Width="60" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <TextBlock Name="labelDuration" x:FieldModifier="private"
+                           HorizontalAlignment="Right" FontSize="14.7"
+                               Margin="0, 1, 0, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
+            </StackPanel>
+
             <Button Grid.Column="4" Width="36" Height="36" Margin="0, 0, 4, 0"
                     Focusable="False" Click="buttonContinue_Click"/>
 
