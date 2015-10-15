@@ -1121,6 +1121,9 @@ error Migrations::migrateSettings() {
 error Migrations::Run() {
     error err = noError;
 
+    // FIXME: load known migrations before proceeding
+    // FIXME: dont run db->Migrate directly, but consult existing list first
+
     if (noError == err) {
         err = migrateUsers();
     }
