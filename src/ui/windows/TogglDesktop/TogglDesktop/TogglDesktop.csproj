@@ -181,6 +181,9 @@
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="ui\Theme.cs" />
+    <Compile Include="ui\ThemeResourceDictionary.cs" />
+    <Compile Include="ui\ThemeTypes.cs" />
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
@@ -492,6 +495,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\Resources\DialogStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Resources\Themes\Layout\Compact.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Resources\Themes\Layout\Comfortable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

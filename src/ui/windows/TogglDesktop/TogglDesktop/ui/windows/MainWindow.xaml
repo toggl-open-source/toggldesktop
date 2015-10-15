@@ -180,6 +180,11 @@
                 <ImageBrush ImageSource="/TogglDesktop;component/Resources/resize.png"/>
             </Rectangle.Fill>
         </Rectangle>
+
+        <Border Background="{DynamicResource LayoutTestBrush}"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <CheckBox Click="changeThemeTest" Name="themeCheckBox">Compact mode</CheckBox>
+        </Border>
         
     </Grid>
 </toggl:TogglWindow>
