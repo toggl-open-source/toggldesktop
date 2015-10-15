@@ -38,10 +38,6 @@ namespace TogglDesktop
                 loadedDictionaries.Add(this.type, themes);
             }
 
-            Console.WriteLine("-------------------------------");
-            Console.WriteLine("added theme: " + this.type);
-            Console.WriteLine("-------------------------------");
-
             themes.Add(this);
         }
 

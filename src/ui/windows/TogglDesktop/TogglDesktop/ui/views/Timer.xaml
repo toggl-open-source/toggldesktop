@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             d:DesignWidth="500" Height="60" MinWidth="256" Focusable="True"
+             d:DesignWidth="500" Height="{DynamicResource TimerHeight}" MinWidth="256" Focusable="True"
              Style="{StaticResource Timer}">
     
     <Grid>
@@ -132,7 +132,7 @@
 
             <!-- time textbox -->
             <toggl:ExtendedTextBox Grid.Column="3" x:Name="durationTextBox" x:FieldModifier="private"
-                FontSize="25" HorizontalContentAlignment="Right" FontWeight="UltraLight"/>
+                FontSize="24" HorizontalContentAlignment="Right" FontWeight="UltraLight"/>
 
             <!-- start/stop button -->
             <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private" Click="startStopButtonOnClick"/>
