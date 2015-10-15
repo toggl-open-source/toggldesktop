@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="112"/>
                 <ColumnDefinition Width="84"/>
             </Grid.ColumnDefinitions>
 
@@ -121,11 +121,12 @@
 
                 <TextBlock Name="durationLabelRight" x:FieldModifier="private"
                     FontSize="24" HorizontalAlignment="Right" FontWeight="UltraLight"
+                    Margin="0, 0, 14, 0"
                     MouseLeftButtonDown="onTimeLabelMouseDown" Text="" />
                 
                 <TextBlock Name="durationLabelLeft" x:FieldModifier="private"
                     FontSize="24" HorizontalAlignment="Left" FontWeight="UltraLight"
-                    Margin="14, 0, 0, 0"
+                    Margin="16, 0, 0, 0"
                     MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
             </Grid>
 
