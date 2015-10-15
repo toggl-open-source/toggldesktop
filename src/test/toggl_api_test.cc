@@ -1327,6 +1327,16 @@ TEST(toggl_api, concurrency) {
     }
 }
 
+TEST(toggl_api, toggl_set_compact_mode) {
+    testing::App app;
+
+    toggl_set_compact_mode(app.ctx(), true);
+    ASSERT_TRUE(toggl_get_compact_mode(app.ctx()));
+
+    toggl_set_compact_mode(app.ctx(), false);
+    ASSERT_FALSE(toggl_get_compact_mode(app.ctx()));
+}
+
 TEST(toggl_api, toggl_set_window_maximized) {
     testing::App app;
 
