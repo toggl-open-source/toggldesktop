@@ -375,7 +375,8 @@ namespace TogglDesktop
             }
             else
             {
-                this.shutdown(0);   
+                e.Cancel = true;
+                this.shutdown(0);
             }
         }
 
@@ -749,8 +750,6 @@ namespace TogglDesktop
 
         private void shutdown(int exitCode)
         {
-            this.closing = true;
-
             if (this.taskbarIcon != null)
             {
                 this.taskbarIcon.Visibility = Visibility.Collapsed;
@@ -771,7 +770,11 @@ namespace TogglDesktop
                 this.Hide();
             }
 
-            this.Close();
+            if (!this.closing)
+            {
+                this.closing = true;
+                this.Close();
+            }
 
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
