@@ -114,6 +114,12 @@ class Database {
         const bool &remind_sat,
         const bool &remind_sun);
 
+    error SetCompactMode(
+        const bool);
+
+    error GetCompactMode(
+        bool *);
+
     error SetWindowMaximized(
         const bool value);
 

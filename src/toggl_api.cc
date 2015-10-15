@@ -1100,3 +1100,14 @@ bool_t testing_set_logged_in_user(
     toggl::Context *ctx = reinterpret_cast<toggl::Context *>(context);
     return toggl::noError == ctx->SetLoggedInUserFromJSON(std::string(json));
 }
+
+void toggl_set_compact_mode(
+    void *context,
+    const bool_t value) {
+    app(context)->SetCompactMode(value);
+}
+
+bool_t toggl_get_compact_mode(
+    void *context) {
+    return app(context)->GetCompactMode();
+}

@@ -1586,6 +1586,17 @@ error Context::SaveWindowSettings(
     return displayError(err);
 }
 
+void Context::SetCompactMode(
+    const bool value) {
+    displayError(db()->SetCompactMode(value));
+}
+
+bool Context::GetCompactMode() {
+    bool value(false);
+    displayError(db()->GetCompactMode(&value));
+    return value;
+}
+
 void Context::SetWindowMaximized(
     const bool value) {
     displayError(db()->SetWindowMaximized(value));

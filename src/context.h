@@ -162,6 +162,11 @@ class Context : public TimelineDatasource {
         const bool remind_sat,
         const bool remind_sun);
 
+    void SetCompactMode(
+        const bool);
+
+    bool GetCompactMode();
+
     void SetWindowMaximized(
         const bool value);
 

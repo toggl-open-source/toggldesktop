@@ -1107,6 +1107,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.compact_mode",
+        "ALTER TABLE settings "
+        "ADD COLUMN compact_mode INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

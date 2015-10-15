@@ -505,6 +505,15 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
+error Database::SetCompactMode(
+    const bool value) {
+    return setSettingsValue("compact_mode", value);
+}
+
+error Database::GetCompactMode(bool *result) {
+    return getSettingsValue("compact_mode", result);
+}
+
 error Database::SetWindowMaximized(
     const bool value) {
     return setSettingsValue("window_maximized", value);
