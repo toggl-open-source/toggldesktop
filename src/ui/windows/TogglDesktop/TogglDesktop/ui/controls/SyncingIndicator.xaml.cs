@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace TogglDesktop
 {
@@ -23,6 +25,12 @@ namespace TogglDesktop
             Toggl.OnLogin += this.onLogin;
         }
 
+        private bool hasSomethingToShow
+        {
+            get { return Program.IsLoggedIn && (this.unsyncedItems != 0 || this.syncState != Toggl.SyncState.Idle); }
+        }
+
+        #region toggl events
 
         private void onLogin(bool open, ulong userID)
         {
@@ -33,11 +41,6 @@ namespace TogglDesktop
             {
                 this.Hide();
             }
-        }
-
-        public void Hide()
-        {
-            this.Visibility = Visibility.Collapsed;
         }
 
         private void onDisplayUnsyncedItems(long count)
@@ -58,41 +61,83 @@ namespace TogglDesktop
             this.update();
         }
 
+        #endregion
+
+        public void Hide()
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+
         private void update()
         {
-            if (!Program.IsLoggedIn)
+            if (!this.hasSomethingToShow)
             {
                 this.stopSpinnerAnimation();
                 this.Hide();
                 return;
             }
 
+            if (this.IsVisible)
+            {
+                this.show();
+            }
+            else
+            {
+                this.tryShowingDelayed();
+            }
+        }
+
+        private void show()
+        {
+            this.unsyncedCount.Text = this.unsyncedItems == 0
+                ? "" : this.unsyncedItems.ToString();
+
             switch (this.syncState)
             {
                 case Toggl.SyncState.Idle:
-                {
-                    this.stopSpinnerAnimation();
-
-                    if (this.unsyncedItems == 0)
                     {
-                        this.Hide();
-                        return;
+                        this.showIdle();
+                        break;
                     }
-                    this.ToolTip = string.Format("{0} unsynced time entries. Click to Sync.", this.syncState);
-                    break;
-                }
                 case Toggl.SyncState.Syncing:
-                {
-                    this.startSpinnerAnimation();
-                    this.ToolTip = "Syncing...";
-                    break;
-                }
+                    {
+                        this.showSyncing();
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            this.Visibility = Visibility.Visible;
+        }
+
+        private async void tryShowingDelayed()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            if (this.IsVisible)
+                return;
+
+            if (this.hasSomethingToShow)
+            {
+                this.show();
+            }
+        }
+
+        private void showIdle()
+        {
+            this.ToolTip = string.Format("{0} unsynced time entries. Click to Sync.", this.syncState);
+
+            this.stopSpinnerAnimation();
+        }
+
+        private void showSyncing()
+        {
             this.unsyncedCount.Text = this.unsyncedItems == 0
                 ? "" : this.unsyncedItems.ToString();
-            this.Visibility = Visibility.Visible;
+            this.ToolTip = "Syncing...";
+
+            this.startSpinnerAnimation();
         }
 
         private void stopSpinnerAnimation()
