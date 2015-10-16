@@ -59,6 +59,11 @@
         <Setter Property="FontSize" Value="9" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Foreground" Value="#757575"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#757575"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="AutotrackerRulesText" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
