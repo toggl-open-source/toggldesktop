@@ -107,6 +107,53 @@
 
                         </Grid>
                     </GroupBox>
+
+                    <TextBlock Text="Default project" Margin="5 5 5 -5"
+                                   />
+                    <!-- default project selection -->
+                    <Grid Height="50" Width="300" Margin="-3 5" HorizontalAlignment="Left">
+                        
+                        <toggl:ExtendedTextBox
+                            x:Name="defaultProjectTextBox" x:FieldModifier="private"
+                            Padding="28, 0, 34, 0"
+                            Style="{StaticResource AutoCompleteTextBox}"
+                            LostKeyboardFocus="defaultProjectTextBox_OnLostKeyboardFocus"/>
+
+                        <ToggleButton
+                            x:Name="defaultProjectDropDownButton" x:FieldModifier="private"
+                            Style="{StaticResource AutoCompleteTextFieldButton}"/>
+
+                        <toggl:AutoCompletionPopup
+                            x:Name="defaultProjectAutoComplete" x:FieldModifier="private"
+                            Target="{Binding ElementName=defaultProjectTextBox}" TextBox="{Binding ElementName=defaultProjectTextBox}"
+                            EmptyText="No matching projects found." DropDownButton="{Binding ElementName=defaultProjectDropDownButton}"
+                            ConfirmCompletion="defaultProjectAutoComplete_OnConfirmCompletion"
+                            ConfirmWithoutCompletion="defaultProjectAutoComplete_OnConfirmWithoutCompletion"/>
+
+                        <Border
+                            Name="defaultProjectColorCircle" x:FieldModifier="private"
+                            CornerRadius="100" Width="10" Height="10" BorderThickness="0"
+                            Margin="18, 0, 0, 0" Background="#999999"
+                            HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            Margin="36, 0, 16, 0" Text="No project">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(Text)}" Value=""/>
+                                                <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </Grid>
                 </StackPanel>
             </TabItem>
             <TabItem Header="PROXY">

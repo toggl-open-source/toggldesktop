@@ -516,6 +516,21 @@ public static partial class Toggl
         return toggl_autotracker_delete_rule(ctx, id);
     }
 
+    public static bool SetDefaultProjectId(ulong id)
+    {
+        return toggl_set_default_project_id(ctx, id);
+    }
+
+    public static ulong GetDefaultProjectId()
+    {
+        return toggl_get_default_project_id(ctx);
+    }
+
+    public static string GetDefaultProjectName()
+    {
+        return toggl_get_default_project_name(ctx);
+    }
+
     #endregion
 
     #region callback events
