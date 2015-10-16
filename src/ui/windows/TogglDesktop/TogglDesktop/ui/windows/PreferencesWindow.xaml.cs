@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using TogglDesktop.AutoCompletion;
+using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -17,12 +21,16 @@ namespace TogglDesktop
         private readonly ShortcutRecorder continueStopShortcutRecorder;
         private bool isSaving;
 
+        private Toggl.TogglAutocompleteView selectedDefaultProject;
+        private List<Toggl.TogglAutocompleteView> knownProjects;
+
         public PreferencesWindow()
         {
             this.InitializeComponent();
 
             Toggl.OnSettings += this.onSettings;
             Toggl.OnLogin += this.onLogin;
+            Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
 
             this.showHideShortcutRecorder = new ShortcutRecorder(this.showHideShortcutRecordButton, this.showHideShortcutClearButton);
             this.continueStopShortcutRecorder = new ShortcutRecorder(this.continueStopShortcutRecordButton, this.continueStopShortcutClearButton);
@@ -61,6 +69,7 @@ namespace TogglDesktop
             using (Performance.Measure("filling settings from OnSettings"))
             {
                 this.updateUI(settings);
+                this.selectDefaultProjectFromSettings();
             }
 
             if (open)
@@ -69,6 +78,16 @@ namespace TogglDesktop
                 this.Activate();
             }
         }
+        private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
+        {
+            if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
+                return;
+
+            this.knownProjects = list;
+
+            this.defaultProjectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+        }
+
 
         private void updateUI(Toggl.TogglSettingsView settings)
         {
@@ -247,8 +266,9 @@ namespace TogglDesktop
                 using (Performance.Measure("saving settings"))
                 {
                     var settings = this.createSettingsFromUI();
+                    var defaultProject = this.selectedDefaultProject;
 
-                    var success = await Task.Run(() => this.save(settings));
+                    var success = await Task.Run(() => this.save(settings, defaultProject));
 
                     if (success)
                         this.Hide();
@@ -261,12 +281,14 @@ namespace TogglDesktop
             }
         }
 
-        private bool save(Toggl.TogglSettingsView settings)
+        private bool save(Toggl.TogglSettingsView settings, Toggl.TogglAutocompleteView defaultProject)
         {
             using (Performance.Measure("saving global shortcuts"))
             {
                 this.saveShortCuts();
             }
+
+            Toggl.SetDefaultProjectId(defaultProject.ProjectID);
 
             return Toggl.SetSettings(settings);
         }
@@ -446,5 +468,59 @@ namespace TogglDesktop
 
         #endregion
 
+        #region project auto completion
+
+        private void defaultProjectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(this.selectedDefaultProject.ProjectLabel))
+            {
+                this.selectDefaultProject(this.selectedDefaultProject);
+            }
+        }
+
+        private void defaultProjectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
+        {
+            var asProjectItem = e as ProjectItem;
+            if (asProjectItem == null)
+                return;
+
+            var item = asProjectItem.Item;
+
+            this.selectDefaultProject(item);
+        }
+
+        private void defaultProjectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
+        {
+            this.selectDefaultProject(null);
+        }
+
+
+        private void selectDefaultProject(Toggl.TogglAutocompleteView? item)
+        {
+            var project = item ?? default(Toggl.TogglAutocompleteView);
+            this.selectedDefaultProject = project;
+            this.defaultProjectTextBox.SetText(project.ProjectLabel);
+            this.defaultProjectColorCircle.Background = Utils.ProjectColorBrushFromString(project.ProjectColor);
+            this.defaultProjectTextBox.CaretIndex = this.defaultProjectTextBox.Text.Length;
+        }
+
+        private void selectDefaultProjectFromSettings()
+        {
+            var id = Toggl.GetDefaultProjectId();
+            var name = Toggl.GetDefaultProjectName();
+            var project = new Toggl.TogglAutocompleteView
+            {
+                ProjectLabel = name,
+                ProjectID = id,
+            };
+            if (this.knownProjects != null)
+            {
+                project.ProjectColor = this.knownProjects
+                    .FirstOrDefault(p => p.ProjectID == id).ProjectColor;
+            }
+            this.selectDefaultProject(project);
+        }
+
+        #endregion
     }
 }

@@ -33,6 +33,9 @@ namespace TogglDesktop
 
         private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
+            if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
+                return;
+
             this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
         }
 
