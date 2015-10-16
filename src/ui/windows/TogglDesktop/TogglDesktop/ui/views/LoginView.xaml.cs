@@ -28,7 +28,13 @@ namespace TogglDesktop
             this.InitializeComponent();
             this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
 
-            this.setConfirmAction(ConfirmAction.LogIn);
+            this.IsVisibleChanged += this.onIsVisibleChanged;
+        }
+
+        private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.IsVisible)
+                this.setConfirmAction(ConfirmAction.LogIn);
         }
 
         #region events
