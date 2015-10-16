@@ -497,6 +497,7 @@ namespace TogglDesktop
         {
             this.showClientArea();
 
+            this.projectTextBox.SetText("");
             this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 2);
             this.projectAutoComplete.IsEnabled = false;
             this.projectDropDownButton.Visibility = Visibility.Hidden;
@@ -504,7 +505,6 @@ namespace TogglDesktop
             this.newProjectCancelButton.Visibility = Visibility.Visible;
             this.projectSaveArea.Visibility = Visibility.Visible;
             this.projectTextBox.Focus();
-            this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
             this.showWorkspaceArea();
 
             this.projectColorCircle.Visibility = Visibility.Collapsed;
@@ -520,6 +520,7 @@ namespace TogglDesktop
             this.disableNewClientMode();
             this.hideClientArea();
 
+            this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
             this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 1);
             this.projectAutoComplete.IsEnabled = true;
             this.projectDropDownButton.Visibility = Visibility.Visible;
