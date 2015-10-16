@@ -700,6 +700,8 @@ namespace TogglDesktop
 
         private void enableNewClientMode()
         {
+            this.clientTextBox.SetText("");
+
             this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 2);
             this.clientAutoComplete.IsEnabled = false;
             this.clientDropDownButton.Visibility = Visibility.Hidden;
@@ -709,7 +711,6 @@ namespace TogglDesktop
             this.clientTextBox.Padding = new Thickness(8, 0, 34 + 34, 0);
 
             this.clientTextBox.Focus();
-            this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
 
             this.emptyClientText.Text = "Add client";
 
@@ -718,6 +719,8 @@ namespace TogglDesktop
 
         private void disableNewClientMode()
         {
+            this.clientTextBox.SetText(this.selectedClientName);
+
             this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 1);
             this.clientAutoComplete.IsEnabled = true;
             this.clientDropDownButton.Visibility = Visibility.Visible;
