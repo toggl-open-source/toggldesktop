@@ -63,10 +63,13 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
                 return;
 
-            this.highlightEntry(te.GUID);
-            if (open)
+            using (Performance.Measure("highlighting cell in list"))
             {
-                this.entries.HighlightKeyboard(te.GUID);
+                this.highlightEntry(te.GUID);
+                if (open)
+                {
+                    this.entries.HighlightKeyboard(te.GUID);
+                }
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
 {
@@ -30,8 +31,11 @@ namespace TogglDesktop
             if (!this.Owner.IsVisible)
                 return;
 
-            this.Show();
-            this.EditView.FocusField(focusedFieldName);
+            using (Performance.Measure("opening edit popup"))
+            {
+                this.Show();
+                this.EditView.FocusField(focusedFieldName);
+            }
         }
 
         public void ClosePopup()
