@@ -478,6 +478,7 @@ public static partial class Toggl
 
     public static void Sync()
     {
+        OnManualSync();
         toggl_sync(ctx);
     }
 
@@ -746,6 +747,14 @@ public static partial class Toggl
         });
     }
 
+    #endregion
+
+    #region internal ui events
+
+    public delegate void ManualSync();
+
+    public static event ManualSync OnManualSync = delegate { }; 
+    
     #endregion
 
     #region startup

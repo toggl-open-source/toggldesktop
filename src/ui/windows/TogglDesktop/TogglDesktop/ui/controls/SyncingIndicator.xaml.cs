@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace TogglDesktop
 {
@@ -23,6 +22,7 @@ namespace TogglDesktop
             Toggl.OnDisplaySyncState += this.onDisplaySyncState;
             Toggl.OnDisplayUnsyncedItems += this.onDisplayUnsyncedItems;
             Toggl.OnLogin += this.onLogin;
+            Toggl.OnManualSync += this.onManualSync;
         }
 
         private bool hasSomethingToShow
@@ -61,6 +61,15 @@ namespace TogglDesktop
             this.update();
         }
 
+        private void onManualSync()
+        {
+            if (this.TryBeginInvoke(this.onManualSync))
+                return;
+
+            this.syncState = Toggl.SyncState.Syncing;
+            this.show();
+        }
+
         #endregion
 
         public void Hide()
@@ -96,12 +105,14 @@ namespace TogglDesktop
             {
                 case Toggl.SyncState.Idle:
                     {
-                        this.showIdle();
+                        this.ToolTip = string.Format("{0} unsynced time entries. Click to Sync.", this.syncState);
+                        this.stopSpinnerAnimation();
                         break;
                     }
                 case Toggl.SyncState.Syncing:
                     {
-                        this.showSyncing();
+                        this.ToolTip = "Syncing...";
+                        this.startSpinnerAnimation();
                         break;
                     }
                 default:
@@ -122,22 +133,6 @@ namespace TogglDesktop
             {
                 this.show();
             }
-        }
-
-        private void showIdle()
-        {
-            this.ToolTip = string.Format("{0} unsynced time entries. Click to Sync.", this.syncState);
-
-            this.stopSpinnerAnimation();
-        }
-
-        private void showSyncing()
-        {
-            this.unsyncedCount.Text = this.unsyncedItems == 0
-                ? "" : this.unsyncedItems.ToString();
-            this.ToolTip = "Syncing...";
-
-            this.startSpinnerAnimation();
         }
 
         private void stopSpinnerAnimation()
