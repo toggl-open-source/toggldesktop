@@ -28,11 +28,6 @@
         <RoutedUICommand x:Key="QuitCommand" />
         
         <RoutedUICommand x:Key="EditRunningCommand" />
-
-        <!-- ReSharper disable Xaml.RedundantResource -->
-        <BitmapImage
-            x:Key="IconOnlineInactive"
-            UriSource="/TogglDesktop;component/Resources/toggltray_inactive.ico" />
         
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
@@ -157,8 +152,8 @@
         
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
                         TrayLeftMouseUp="onTaskbarLeftMouseUp"
-                        IconSource="{StaticResource IconOnlineInactive}"
-                        TrayBalloonTipClicked="onTrayBalloonTipClicked"/>
+                        TrayBalloonTipClicked="onTrayBalloonTipClicked"
+                        Visibility="Collapsed"/>
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
