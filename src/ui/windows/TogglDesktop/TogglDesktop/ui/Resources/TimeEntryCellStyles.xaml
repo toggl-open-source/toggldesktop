@@ -29,6 +29,7 @@
                 </Setter>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="UseLayoutRounding" Value="True" />
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush ImageSource="/TogglDesktop;component/Resources/continue.png" Stretch="Fill"/>
