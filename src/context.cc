@@ -2273,7 +2273,9 @@ TimeEntry *Context::ContinueLatest() {
             return nullptr;
         }
 
-        result = user_->Continue(latest->GUID());
+        result = user_->Continue(
+            latest->GUID(),
+            settings_.manual_mode);
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2314,7 +2316,9 @@ TimeEntry *Context::Continue(
             return nullptr;
         }
 
-        result = user_->Continue(GUID);
+        result = user_->Continue(
+            GUID,
+            settings_.manual_mode);
     }
 
     if (settings_.focus_on_shortcut) {

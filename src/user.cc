@@ -139,7 +139,8 @@ TimeEntry *User::Start(
 }
 
 TimeEntry *User::Continue(
-    const std::string GUID) {
+    const std::string GUID,
+    const bool manual_mode) {
 
     TimeEntry *existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
@@ -171,8 +172,12 @@ TimeEntry *User::Continue(
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
     result->SetUID(ID());
-    result->SetStart(time(0));
-    result->SetDurationInSeconds(-time(0));
+
+    if (!manual_mode) {
+        result->SetStart(time(0));
+        result->SetDurationInSeconds(-time(0));
+    }
+
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
 
     related.TimeEntries.push_back(result);
