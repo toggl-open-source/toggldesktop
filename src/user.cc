@@ -172,9 +172,9 @@ TimeEntry *User::Continue(
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
     result->SetUID(ID());
+    result->SetStart(time(0));
 
     if (!manual_mode) {
-        result->SetStart(time(0));
         result->SetDurationInSeconds(-time(0));
     }
 
