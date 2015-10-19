@@ -364,10 +364,10 @@
     <Resource Include="Resources\toggltray_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\toggl_offline_active.ico" />
+    <Resource Include="Resources\toggltray_offline_active.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\toggl_offline_inactive.ico" />
+    <Resource Include="Resources\toggltray_offline_inactive.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Border.png" />
