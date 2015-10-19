@@ -2288,6 +2288,14 @@ TimeEntry *Context::ContinueLatest() {
         return nullptr;
     }
 
+    if (settings_.manual_mode && result) {
+        UIElements render;
+        render.open_time_entry_editor = true;
+        render.display_time_entry_editor = true;
+        render.time_entry_editor_guid = result->GUID();
+        updateUI(render);
+    }
+
     return result;
 }
 
@@ -2331,7 +2339,15 @@ TimeEntry *Context::Continue(
         return nullptr;
     }
 
-    OpenTimeEntryList();
+    if (settings_.manual_mode && result) {
+        UIElements render;
+        render.open_time_entry_editor = true;
+        render.display_time_entry_editor = true;
+        render.time_entry_editor_guid = result->GUID();
+        updateUI(render);
+    } else {
+        OpenTimeEntryList();
+    }
 
     return result;
 }

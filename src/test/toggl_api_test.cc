@@ -1080,10 +1080,17 @@ TEST(toggl_api, toggl_continue_in_manual_mode) {
     std::string guid("6c97dc31-582e-7662-1d6f-5e9d623b1685");
 
     testing::testresult::error = "";
+    testing::testresult::editor_state = TimeEntry();
+    testing::testresult::timer_state = TimeEntry();
+
     ASSERT_TRUE(toggl_continue(app.ctx(), guid.c_str()));
+
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
+
     ASSERT_FALSE(testing::testresult::timer_state.Start());
     ASSERT_FALSE(testing::testresult::timer_state.DurationInSeconds());
+
+    ASSERT_NE("", testing::testresult::editor_state.GUID());
 }
 
 TEST(toggl_api, toggl_check_view_struct_size) {
@@ -1192,11 +1199,17 @@ TEST(toggl_api, toggl_continue_latest_with_manual_mode) {
     ASSERT_TRUE(testing::testresult::settings.manual_mode);
 
     testing::testresult::error = noError;
+    testing::testresult::editor_state = TimeEntry();
+    testing::testresult::timer_state = TimeEntry();
+
     ASSERT_TRUE(toggl_continue_latest(app.ctx()));
+
     ASSERT_EQ(noError, testing::testresult::error);
 
     ASSERT_FALSE(testing::testresult::timer_state.Start());
     ASSERT_FALSE(testing::testresult::timer_state.DurationInSeconds());
+
+    ASSERT_NE("", testing::testresult::editor_state.GUID());
 }
 
 TEST(toggl_api, toggl_delete_time_entry) {
