@@ -1250,14 +1250,14 @@ TEST(User, Continue) {
     te->SetDurOnly(true);
 
     size_t count = user.related.TimeEntries.size();
-    ASSERT_EQ(toggl::noError, user.Continue(te->GUID()));
+    ASSERT_TRUE(user.Continue(te->GUID()));
     ASSERT_EQ(count, user.related.TimeEntries.size());
 
     // If the old time entry date is different than
     // today, it should create a new entry when
     // user continues it:
     te->SetStartString("2013-01-25T01:05:15-22:00");
-    ASSERT_EQ(toggl::noError, user.Continue(te->GUID()));
+    ASSERT_TRUE(user.Continue(te->GUID()));
     ASSERT_EQ(count+1, user.related.TimeEntries.size());
 }
 

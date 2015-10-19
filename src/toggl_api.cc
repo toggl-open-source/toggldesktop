@@ -542,7 +542,12 @@ bool_t toggl_continue(
     ss << "toggl_continue guid=" << guid;
     logger().debug(ss.str());
 
-    return toggl::noError == app(context)->Continue(to_string(guid));
+    toggl::TimeEntry *result = app(context)->Continue(to_string(guid));
+    if (!result) {
+        return false;
+    }
+
+    return true;
 }
 
 void toggl_view_time_entry_list(void *context) {
@@ -576,7 +581,11 @@ bool_t toggl_continue_latest(
 
     logger().debug("toggl_continue_latest");
 
-    return toggl::noError == app(context)->ContinueLatest();
+    toggl::TimeEntry *result = app(context)->ContinueLatest();
+    if (!result) {
+        return false;
+    }
+    return true;
 }
 
 bool_t toggl_delete_time_entry(
@@ -706,9 +715,15 @@ bool_t toggl_discard_time_and_continue(
         return false;
     }
 
-    return toggl::noError == app(context)->DiscardTimeAndContinue(
+    toggl::TimeEntry *result = app(context)->DiscardTimeAndContinue(
         to_string(guid),
         at);
+
+    if (!result) {
+        return false;
+    }
+
+    return true;
 }
 
 bool_t toggl_timeline_toggle_recording(
