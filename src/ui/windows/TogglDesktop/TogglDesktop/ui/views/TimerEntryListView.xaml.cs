@@ -53,7 +53,7 @@ namespace TogglDesktop
 
             if (open)
             {
-                this.entries.Focus(true);
+                this.entries.Focus(false);
                 this.DisableHighlight();
             }
         }
