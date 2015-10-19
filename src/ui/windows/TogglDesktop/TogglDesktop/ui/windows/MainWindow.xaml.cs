@@ -7,12 +7,15 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace TogglDesktop
 {
@@ -125,6 +128,8 @@ namespace TogglDesktop
         private void initializeTaskbarIcon()
         {
             this.taskbarIcon.ContextMenu = this.mainContextMenu;
+            this.taskbarIcon.Icon = new Icon(Properties.Resources.toggltray_inactive, SystemInformation.SmallIconSize);
+            this.taskbarIcon.Visibility = Visibility.Visible;
         }
 
         private void ownChildWindows(object sender, DependencyPropertyChangedEventArgs args)
@@ -790,16 +795,16 @@ namespace TogglDesktop
             {
                 icon = isOnline
                     ? Properties.Resources.toggltray
-                    : Properties.Resources.toggl_offline_active;
+                    : Properties.Resources.toggltray_offline_active;
             }
             else
             {
                 icon = isOnline
-                    ? Properties.Resources.toggl_inactive
-                    : Properties.Resources.toggl_offline_inactive;
+                    ? Properties.Resources.toggltray_inactive
+                    : Properties.Resources.toggltray_offline_inactive;
             }
 
-            this.taskbarIcon.Icon = icon;
+            this.taskbarIcon.Icon = new Icon(icon, SystemInformation.SmallIconSize);
         }
 
         private void updateTracking(Toggl.TogglTimeEntryView? timeEntry)
