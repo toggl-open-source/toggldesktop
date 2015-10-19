@@ -753,8 +753,8 @@ public static partial class Toggl
 
     public delegate void ManualSync();
 
-    public static event ManualSync OnManualSync = delegate { }; 
-    
+    public static event ManualSync OnManualSync = delegate { };
+
     #endregion
 
     #region startup
