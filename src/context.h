@@ -249,9 +249,9 @@ class Context : public TimelineDatasource {
         const std::string project_guid,
         const std::string tags);
 
-    error ContinueLatest();
+    TimeEntry *ContinueLatest();
 
-    error Continue(
+    TimeEntry *Continue(
         const std::string GUID);
 
     void OpenTimeEntryList();
@@ -306,7 +306,7 @@ class Context : public TimelineDatasource {
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    error DiscardTimeAndContinue(
+    TimeEntry *DiscardTimeAndContinue(
         const std::string GUID,
         const Poco::Int64 at);
 

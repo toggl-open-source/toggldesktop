@@ -2249,65 +2249,72 @@ void Context::OpenTimeEntryEditor(
     updateUI(render);
 }
 
-error Context::ContinueLatest() {
+TimeEntry *Context::ContinueLatest() {
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        return displayError(kUnsupportedAppError);
+        displayError(kUnsupportedAppError);
+        return nullptr;
     }
+
+    TimeEntry *result = nullptr;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot continue tracking, user logged out");
-            return noError;
+            return nullptr;
         }
 
         TimeEntry *latest = user_->related.LatestTimeEntry();
 
         if (!latest) {
-            return noError;
+            return nullptr;
         }
 
-        error err = user_->Continue(latest->GUID());
-        if (err != noError) {
-            return displayError(err);
-        }
+        result = user_->Continue(latest->GUID());
     }
 
     if (settings_.focus_on_shortcut) {
         UI()->DisplayApp();
     }
 
-    return displayError(save());
+    error err = save();
+    if (noError != err) {
+        displayError(err);
+        return nullptr;
+    }
+
+    return result;
 }
 
-error Context::Continue(
+TimeEntry *Context::Continue(
     const std::string GUID) {
 
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        return displayError(kUnsupportedAppError);
+        displayError(kUnsupportedAppError);
+        return nullptr;
     }
 
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        displayError("Missing GUID");
+        return nullptr;
     }
+
+    TimeEntry *result = nullptr;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot continue time entry, user logged out");
-            return noError;
+            return nullptr;
         }
 
-        error err = user_->Continue(GUID);
-        if (err != noError) {
-            return displayError(err);
-        }
+        result = user_->Continue(GUID);
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2316,12 +2323,13 @@ error Context::Continue(
 
     error err = save();
     if (err != noError) {
-        return displayError(err);
+        displayError(err);
+        return nullptr;
     }
 
     OpenTimeEntryList();
 
-    return noError;
+    return result;
 }
 
 error Context::DeleteTimeEntryByGUID(const std::string GUID) {
@@ -2745,7 +2753,7 @@ error Context::DiscardTimeAt(
     return noError;
 }
 
-error Context::DiscardTimeAndContinue(
+TimeEntry *Context::DiscardTimeAndContinue(
     const std::string guid,
     const Poco::Int64 at) {
 
@@ -2753,14 +2761,15 @@ error Context::DiscardTimeAndContinue(
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot stop time entry, user logged out");
-            return noError;
+            return nullptr;
         }
         user_->DiscardTimeAt(guid, at, false);
     }
 
     error err = save();
     if (err != noError) {
-        return displayError(err);
+        displayError(err);
+        return nullptr;
     }
 
     return Continue(guid);

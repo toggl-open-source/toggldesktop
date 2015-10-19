@@ -138,17 +138,18 @@ TimeEntry *User::Start(
     return te;
 }
 
-toggl::error User::Continue(
+TimeEntry *User::Continue(
     const std::string GUID) {
 
     TimeEntry *existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
-        return noError;
+        return nullptr;
     }
 
     if (existing->DeletedAt()) {
-        return error(kCannotContinueDeletedTimeEntry);
+        logger().warning(kCannotContinueDeletedTimeEntry);
+        return nullptr;
     }
 
     Stop();
@@ -157,7 +158,7 @@ toggl::error User::Continue(
         existing->SetDurationInSeconds(
             -time(0) + existing->DurationInSeconds());
         existing->SetUIModified();
-        return toggl::noError;
+        return existing;
     }
 
     TimeEntry *result = new TimeEntry();
@@ -176,7 +177,7 @@ toggl::error User::Continue(
 
     related.TimeEntries.push_back(result);
 
-    return toggl::noError;
+    return result;
 }
 
 std::string User::DateDuration(TimeEntry * const te) const {
