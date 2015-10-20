@@ -69,18 +69,6 @@ extern void *ctx;
 	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
-- (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation
-{
-	NSLog(@"Download finished: %@", item.displayVersionString);
-
-	self.updateStatus =
-		[NSString stringWithFormat:@"Restart app to upgrade to %@",
-		 item.displayVersionString];
-
-	[self displayUpdateStatus];
-	[self.restartButton setHidden:NO];
-}
-
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
 {
 	NSLog(@"update found: %@", update.displayVersionString);
@@ -154,13 +142,6 @@ extern void *ctx;
 - (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
 	NSLog(@"Update check failed with error %@", error);
-}
-
-- (BOOL)                    updater:(SUUpdater *)updater
-	shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
-					  untilInvoking:(NSInvocation *)invocation
-{
-	return YES;
 }
 
 @end
