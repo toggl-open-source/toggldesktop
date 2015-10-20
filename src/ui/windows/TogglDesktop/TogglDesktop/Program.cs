@@ -10,7 +10,6 @@ namespace TogglDesktop
 {
 static class Program
 {
-    public static bool ShuttingDown;
     private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
     private static Bugsnag.Clients.BaseClient bugsnag;
     private static UInt64 uid;
@@ -132,8 +131,6 @@ static class Program
 
     public static void Shutdown(int exitCode)
     {
-        ShuttingDown = true;
-
         Toggl.Clear();
 
         Environment.Exit(exitCode);

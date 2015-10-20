@@ -25,13 +25,15 @@ public static partial class Toggl
 
     private static IntPtr ctx = IntPtr.Zero;
 
-    private static Window mainWindow;
+    private static MainWindow mainWindow;
+    private static string updatePath;
 
     // User can override some parameters when running the app
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
     public static string Env = "production";
+
 
     #endregion
 
@@ -827,10 +829,10 @@ public static partial class Toggl
             Directory.Move(oldpath, path);
         }
 
-        string updatePath = Path.Combine(path, "updates");
+        updatePath = Path.Combine(path, "updates");
 
 #if !INVS
-        installPendingUpdates(updatePath);
+        installPendingUpdates();
 #endif
 
         // Configure log, db path
@@ -868,11 +870,21 @@ public static partial class Toggl
 
     // ReSharper disable once UnusedMember.Local
     // (updates are disabled in Release_VS configuration to allow for proper debugging)
-    private static void installPendingUpdates(string updatePath)
+    private static void installPendingUpdates()
+    {
+        var update = createUpdateAction();
+
+        if (update != null)
+            update();
+
+        Debug("Failed to start updater process");
+    }
+
+    private static Action createUpdateAction()
     {
         if (!Directory.Exists(updatePath))
         {
-            return;
+            return null;
         }
 
         var di = new DirectoryInfo(updatePath);
@@ -880,17 +892,17 @@ public static partial class Toggl
                                 SearchOption.TopDirectoryOnly);
         if (files.Length > 1)
         {
-            // Somethings fubar. Delete the updates to start over
+            Debug("Multiple update installers found. Deleting.");
             foreach (var file in files)
             {
                 file.Delete();
             }
-            return;
+            return null;
         }
 
         if (files.Length < 1)
         {
-            return;
+            return null;
         }
 
         var updaterPath = Path.Combine(
@@ -899,7 +911,7 @@ public static partial class Toggl
         if (!File.Exists(updaterPath))
         {
             Debug("TogglDesktopUpdater.exe not found");
-            return;
+            return null;
         }
 
         var psi = new ProcessStartInfo
@@ -909,14 +921,18 @@ public static partial class Toggl
             + " " + string.Format("\"{0}\"", files[0].FullName)
             + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location)
         };
-        var process = Process.Start(psi);
-        if (process != null && !process.HasExited && process.Id != 0)
-        {
-            // Update has started. Quit, installer will restart me.
-            Environment.Exit(0);
-        }
 
-        Debug("Failed to start updater process");
+        return () =>
+        {
+            var process = Process.Start(psi);
+            if (process != null && !process.HasExited && process.Id != 0)
+            {
+                // Update has started. Quit, installer will restart me.
+                Environment.Exit(0);
+            }
+
+            Debug("Failed to start updater process");
+        };
     }
 
     public static bool IsUpdateCheckDisabled()
@@ -1093,6 +1109,23 @@ public static partial class Toggl
     #endregion
 
     #region various
+
+    public static void RestartAndUpdate()
+    {
+        var update = createUpdateAction();
+
+        if (update == null)
+        {
+            MessageBox.Show(mainWindow, "Something went wrong.\nPlease restart Toggl Desktop manually.");
+            return;
+        }
+
+        mainWindow.PrepareShutdown(true);
+
+        Clear();
+
+        update();
+    }
 
     public static void SetManualMode(bool manualMode)
     {
