@@ -54,11 +54,11 @@
             <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="0">
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
 
                     <TextBlock Name="labelClient" x:FieldModifier="private"
                                 Foreground="DimGray">Client</TextBlock>
@@ -67,7 +67,7 @@
 
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
 
                     <TextBlock Name="labelTask" x:FieldModifier="private"
                                 Foreground="Gray">Task</TextBlock>
