@@ -1107,11 +1107,22 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.compact_mode",
+        "ALTER TABLE settings "
+        "ADD COLUMN compact_mode INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
 error Migrations::Run() {
     error err = noError;
+
+    // FIXME: load known migrations before proceeding
+    // FIXME: dont run db->Migrate directly, but consult existing list first
 
     if (noError == err) {
         err = migrateUsers();

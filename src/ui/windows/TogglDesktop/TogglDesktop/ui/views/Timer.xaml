@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="TogglDesktop.Timer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop"
+             mc:Ignorable="d" 
+             d:DesignWidth="500" Height="{DynamicResource TimerHeight}" MinWidth="256" Focusable="True"
+             Style="{StaticResource Timer}">
+    
+    <Grid>
+        <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">
+            <Button Name="manuelAddButton" x:FieldModifier="private"
+                Style="{StaticResource TimerManualAddButton}"
+                    Click="onManualAddButtonClick" Content="+ Add time entry"/>
+        </Grid>
+        <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
+    MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" Background="Transparent" KeyDown="onGridKeyDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="10"/>
+                <ColumnDefinition Width="84"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- description and project-->
+            <Grid Grid.Column="1"
+            Margin="-20, 4, 0, 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Name="projectGridRow" x:FieldModifier="private"/>
+                </Grid.RowDefinitions>
+
+                <Button Name="cancelProjectSelectionButton" x:FieldModifier="private"
+                        Style="{StaticResource TimerProjectRemoveButton}"
+                        Grid.Row="1" Grid.Column="0"
+                        Width="16" Height="16" Padding="2"
+                        IsTabStop="False" Click="cancelProjectSelectionButtonClick"/>
+
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
+
+                    <TextBlock Name="clientLabel" x:FieldModifier="private"
+                            Foreground="#dddddd" Text="Client"/>
+                    <TextBlock Name="projectLabel" x:FieldModifier="private"
+                         Text="Project"/>
+                </StackPanel>
+
+                <Grid Grid.Row="0" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown"
+                      Name="taskDescriptionGrid" x:FieldModifier="private">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Name="taskLabel" x:FieldModifier="private"
+                            Foreground="#bbbbbb" Text="Task -" />
+
+                    <!-- description placeholder/display -->
+                    <TextBlock Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private"
+                               Text="What are you doing?">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource TimerTextBlockBase}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=descriptionTextBox, Path=Text}" Value=""/>
+                                            <Condition Binding="{Binding ElementName=descriptionTextBox, Path=IsKeyboardFocused}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <toggl:ExtendedTextBox Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
+                                Margin="-2, 0, 6, 0"/>
+
+                </Grid>
+
+                <toggl:AutoCompletionPopup Grid.Row="0" Grid.Column="1"  x:Name="descriptionAutoComplete" x:FieldModifier="private"
+                                TextBox="{Binding ElementName=descriptionTextBox}"
+                                Target="{Binding ElementName=taskDescriptionGrid}"
+                                EmptyText="No previous entries found." StaysOpen="False"
+                                ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
+            </Grid>
+
+            <!-- billable, tags -->
+            <StackPanel Grid.Column="2" Name="iconPanel" x:FieldModifier="private"
+                    Orientation="Horizontal" HorizontalAlignment="Right">
+
+                <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
+                    Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="16"/>
+                <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
+                    Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
+
+            </StackPanel>
+
+            <!-- time placeholder/display -->
+            <Grid Grid.Column="3" Width="112">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=durationLabelRight, Path=Text}" Value=""/>
+                                    <Condition Binding="{Binding ElementName=durationLabelLeft, Path=Text}" Value=""/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <TextBlock Name="durationLabelRight" x:FieldModifier="private"
+                    FontSize="24" HorizontalAlignment="Right" FontWeight="UltraLight"
+                    Margin="0, 0, 14, 0"
+                    MouseLeftButtonDown="onTimeLabelMouseDown" Text="" />
+                
+                <TextBlock Name="durationLabelLeft" x:FieldModifier="private"
+                    FontSize="24" HorizontalAlignment="Left" FontWeight="UltraLight"
+                    Margin="16, 0, 0, 0"
+                    MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
+            </Grid>
+
+            <!-- start/stop button -->
+            <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private" Click="startStopButtonOnClick"/>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using TogglDesktop.WPF.AutoComplete;
+using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {

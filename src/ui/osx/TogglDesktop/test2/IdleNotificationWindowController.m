@@ -8,6 +8,8 @@
 
 #import "IdleNotificationWindowController.h"
 #import "toggl_api.h"
+#import "DisplayCommand.h"
+#import "UIEvents.h"
 
 @implementation IdleNotificationWindowController
 
@@ -49,6 +51,13 @@ extern void *ctx;
 						  self.idleEvent.started,
 						  YES);
 	[self.window orderOut:nil];
+
+	// Open the main app to add Time Entry details
+	DisplayCommand *cmd = [[DisplayCommand alloc] init];
+
+	cmd.open = YES;
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayApp
+														object:cmd];
 }
 
 - (IBAction)discardIdleAndContinue:(id)sender

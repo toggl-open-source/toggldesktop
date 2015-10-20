@@ -1,0 +1,49 @@
+﻿<toggl:TogglWindow x:Class="TogglDesktop.IdleNotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:toggl="clr-namespace:TogglDesktop"
+        mc:Ignorable="d" 
+        Height="340" Width="280"
+        KeyDown="windowKeyDown"
+        IsToolWindow="True"
+        Title="Idle Notification"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True"
+        Style="{StaticResource IdleNotification}"
+        >
+    
+    <Grid Background="{StaticResource ViewBackgroundLight}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <toggl:TogglChromeDesignTimeConverter
+            Title="Idle Notification" IsToolWindow="True" />
+
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBlock Text="You have been idle since 12:34:56"
+                       Name="timeText" x:FieldModifier="private"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="(5 minutes)"
+                       Name="durationText" x:FieldModifier="private"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Running time entry:"
+                       HorizontalAlignment="Center" Margin="0 15 0 5"/>
+            <TextBlock Text="Doing the thing"
+                       Name="descriptionText" x:FieldModifier="private"
+                       HorizontalAlignment="Center" FontWeight="Regular"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Margin="8" HorizontalAlignment="Center">
+            <Button Content="KEEP TIME"
+                    Click="onKeepTimeClick"/>
+            <Button Content="DISCARD TIME"
+                    Click="onDiscardTimeClick"/>
+            <Button Content="ADD TIME AS NEW ENTRY"
+                    Click="onAddAsNewClick"/>
+        </StackPanel>
+    </Grid>
+</toggl:TogglWindow>

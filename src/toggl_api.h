@@ -34,6 +34,9 @@ extern "C" {
 #define kSyncStateIdle 0
 #define kSyncStateWork 1
 
+#define kDownloadStatusStarted 0
+#define kDownloadStatusDone 1
+
 // Models
 
     typedef struct {
@@ -221,6 +224,10 @@ extern "C" {
     typedef void (*TogglDisplayUpdate)(
         const char_t *url);
 
+    typedef void (*TogglDisplayUpdateDownloadState)(
+        const char_t *version,
+        const int download_state);
+
     typedef char_t * string_list_t[];
 
     typedef void (*TogglDisplayAutotrackerRules)(
@@ -312,6 +319,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_update(
         void *context,
         TogglDisplayUpdate cb);
+
+    TOGGL_EXPORT void toggl_on_update_download_state(
+        void *context,
+        TogglDisplayUpdateDownloadState cb);
 
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,
@@ -797,6 +808,13 @@ extern "C" {
     TOGGL_EXPORT bool_t testing_set_logged_in_user(
         void *context,
         const char *json);
+
+    TOGGL_EXPORT void toggl_set_compact_mode(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_get_compact_mode(
+        void *context);
 
 #undef TOGGL_EXPORT
 

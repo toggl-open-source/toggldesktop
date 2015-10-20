@@ -68,9 +68,6 @@ MainWindowController::MainWindowController(
 
     readSettings();
 
-    connect(QApplication::instance(), SIGNAL(showUp()),
-            this, SLOT(raise()));
-
     connect(TogglApi::instance, SIGNAL(displayApp(bool)),  // NOLINT
             this, SLOT(displayApp(bool)));  // NOLINT
 

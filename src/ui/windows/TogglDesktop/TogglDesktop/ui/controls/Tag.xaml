@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="TogglDesktop.Tag"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop"
+             mc:Ignorable="d"
+             Style="{StaticResource Tag}"
+             Margin="0, 3, 6, 3">
+
+    <Border>
+        <Grid>
+            <TextBlock Name="textBlock" x:FieldModifier="private" Text="This is tag"/>
+            <Button Click="remove_OnClick" />
+        </Grid>
+    </Border>
+</UserControl>

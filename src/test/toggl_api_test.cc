@@ -1068,6 +1068,31 @@ TEST(toggl_api, toggl_continue) {
     ASSERT_EQ("More work", testing::testresult::timer_state.Description());
 }
 
+TEST(toggl_api, toggl_continue_in_manual_mode) {
+    testing::App app;
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.manual_mode);
+
+    std::string guid("6c97dc31-582e-7662-1d6f-5e9d623b1685");
+
+    testing::testresult::error = "";
+    testing::testresult::editor_state = TimeEntry();
+    testing::testresult::timer_state = TimeEntry();
+
+    ASSERT_TRUE(toggl_continue(app.ctx(), guid.c_str()));
+
+    ASSERT_NE(guid, testing::testresult::timer_state.GUID());
+
+    ASSERT_FALSE(testing::testresult::timer_state.Start());
+    ASSERT_FALSE(testing::testresult::timer_state.DurationInSeconds());
+
+    ASSERT_NE("", testing::testresult::editor_state.GUID());
+}
+
 TEST(toggl_api, toggl_check_view_struct_size) {
     char_t *err = toggl_check_view_struct_size(
         sizeof(TogglTimeEntryView),
@@ -1163,6 +1188,28 @@ TEST(toggl_api, toggl_continue_latest) {
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     ASSERT_EQ("arendus käib", testing::testresult::timer_state.Description());
+}
+
+TEST(toggl_api, toggl_continue_latest_with_manual_mode) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
+    ASSERT_TRUE(testing::testresult::settings.manual_mode);
+
+    testing::testresult::error = noError;
+    testing::testresult::editor_state = TimeEntry();
+    testing::testresult::timer_state = TimeEntry();
+
+    ASSERT_TRUE(toggl_continue_latest(app.ctx()));
+
+    ASSERT_EQ(noError, testing::testresult::error);
+
+    ASSERT_FALSE(testing::testresult::timer_state.Start());
+    ASSERT_FALSE(testing::testresult::timer_state.DurationInSeconds());
+
+    ASSERT_NE("", testing::testresult::editor_state.GUID());
 }
 
 TEST(toggl_api, toggl_delete_time_entry) {
@@ -1325,6 +1372,16 @@ TEST(toggl_api, concurrency) {
         delete runnable;
         delete thread;
     }
+}
+
+TEST(toggl_api, toggl_set_compact_mode) {
+    testing::App app;
+
+    toggl_set_compact_mode(app.ctx(), true);
+    ASSERT_TRUE(toggl_get_compact_mode(app.ctx()));
+
+    toggl_set_compact_mode(app.ctx(), false);
+    ASSERT_FALSE(toggl_get_compact_mode(app.ctx()));
 }
 
 TEST(toggl_api, toggl_set_window_maximized) {

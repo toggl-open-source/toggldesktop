@@ -998,6 +998,7 @@ error Context::downloadUpdate() {
 
         // Ask Toggl server if we have updates
         std::string url("");
+        std::string version_number("");
         {
             std::string body("");
             TogglClient client;
@@ -1025,9 +1026,10 @@ error Context::downloadUpdate() {
             }
 
             url = root["url"].asString();
+            version_number = root["version"].asString();
 
             std::stringstream ss;
-            ss << "Found update " << root["version"].asString()
+            ss << "Found update " << version_number
                << " (" << url << ")";
             logger().debug(ss.str());
         }
@@ -1045,7 +1047,7 @@ error Context::downloadUpdate() {
         }
 
         // Ignore update if not compatible with this client version
-        // only windows .exe installers ar supported atm
+        // only windows .exe installers are supported atm
         if (url.find(".exe") == std::string::npos) {
             logger().debug("Update is not compatible with this client,"
                            " will ignore");
@@ -1070,6 +1072,12 @@ error Context::downloadUpdate() {
             }
 
             Poco::File(update_path_).createDirectory();
+
+            if (UI()->CanDisplayUpdateDownloadState()) {
+                UI()->DisplayUpdateDownloadState(
+                    version_number,
+                    kDownloadStatusStarted);
+            }
 
             // Download file
             std::string body("");
@@ -1096,6 +1104,12 @@ error Context::downloadUpdate() {
             fos.close();
 
             logger().debug("Update written");
+
+            if (UI()->CanDisplayUpdateDownloadState()) {
+                UI()->DisplayUpdateDownloadState(
+                    version_number,
+                    kDownloadStatusDone);
+            }
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -1570,6 +1584,17 @@ error Context::SaveWindowSettings(
         window_height,
         window_width);
     return displayError(err);
+}
+
+void Context::SetCompactMode(
+    const bool value) {
+    displayError(db()->SetCompactMode(value));
+}
+
+bool Context::GetCompactMode() {
+    bool value(false);
+    displayError(db()->GetCompactMode(&value));
+    return value;
 }
 
 void Context::SetWindowMaximized(
@@ -2224,65 +2249,84 @@ void Context::OpenTimeEntryEditor(
     updateUI(render);
 }
 
-error Context::ContinueLatest() {
+TimeEntry *Context::ContinueLatest() {
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        return displayError(kUnsupportedAppError);
+        displayError(kUnsupportedAppError);
+        return nullptr;
     }
+
+    TimeEntry *result = nullptr;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot continue tracking, user logged out");
-            return noError;
+            return nullptr;
         }
 
         TimeEntry *latest = user_->related.LatestTimeEntry();
 
         if (!latest) {
-            return noError;
+            return nullptr;
         }
 
-        error err = user_->Continue(latest->GUID());
-        if (err != noError) {
-            return displayError(err);
-        }
+        result = user_->Continue(
+            latest->GUID(),
+            settings_.manual_mode);
     }
 
     if (settings_.focus_on_shortcut) {
         UI()->DisplayApp();
     }
 
-    return displayError(save());
+    error err = save();
+    if (noError != err) {
+        displayError(err);
+        return nullptr;
+    }
+
+    if (settings_.manual_mode && result) {
+        UIElements render;
+        render.open_time_entry_editor = true;
+        render.display_time_entry_editor = true;
+        render.time_entry_editor_guid = result->GUID();
+        updateUI(render);
+    }
+
+    return result;
 }
 
-error Context::Continue(
+TimeEntry *Context::Continue(
     const std::string GUID) {
 
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        return displayError(kUnsupportedAppError);
+        displayError(kUnsupportedAppError);
+        return nullptr;
     }
 
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        displayError("Missing GUID");
+        return nullptr;
     }
+
+    TimeEntry *result = nullptr;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot continue time entry, user logged out");
-            return noError;
+            return nullptr;
         }
 
-        error err = user_->Continue(GUID);
-        if (err != noError) {
-            return displayError(err);
-        }
+        result = user_->Continue(
+            GUID,
+            settings_.manual_mode);
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2291,12 +2335,21 @@ error Context::Continue(
 
     error err = save();
     if (err != noError) {
-        return displayError(err);
+        displayError(err);
+        return nullptr;
     }
 
-    OpenTimeEntryList();
+    if (settings_.manual_mode && result) {
+        UIElements render;
+        render.open_time_entry_editor = true;
+        render.display_time_entry_editor = true;
+        render.time_entry_editor_guid = result->GUID();
+        updateUI(render);
+    } else {
+        OpenTimeEntryList();
+    }
 
-    return noError;
+    return result;
 }
 
 error Context::DeleteTimeEntryByGUID(const std::string GUID) {
@@ -2720,7 +2773,7 @@ error Context::DiscardTimeAt(
     return noError;
 }
 
-error Context::DiscardTimeAndContinue(
+TimeEntry *Context::DiscardTimeAndContinue(
     const std::string guid,
     const Poco::Int64 at) {
 
@@ -2728,14 +2781,15 @@ error Context::DiscardTimeAndContinue(
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot stop time entry, user logged out");
-            return noError;
+            return nullptr;
         }
         user_->DiscardTimeAt(guid, at, false);
     }
 
     error err = save();
     if (err != noError) {
-        return displayError(err);
+        displayError(err);
+        return nullptr;
     }
 
     return Continue(guid);

@@ -22,7 +22,6 @@
 		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
 		3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CAFDFF41AA713830022CD40 /* icon-google.pdf */; };
-		3CBF851C1B81E62C00DD3B55 /* libPocoJSON.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF851B1B81E62C00DD3B55 /* libPocoJSON.31.dylib */; };
 		3CBF85341B81E72700DD3B55 /* libPocoCrypto.31.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CBF852C1B81E72700DD3B55 /* libPocoCrypto.31.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3CBF85351B81E72700DD3B55 /* libPocoData.31.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CBF852D1B81E72700DD3B55 /* libPocoData.31.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3CBF85361B81E72700DD3B55 /* libPocoFoundation.31.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CBF852E1B81E72700DD3B55 /* libPocoFoundation.31.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -508,7 +507,6 @@
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
 				7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
-				3CBF851C1B81E62C00DD3B55 /* libPocoJSON.31.dylib in Frameworks */,
 				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
 				74A3D06119E418B800C51BB6 /* Sparkle.framework in Frameworks */,
 				74033C9817EC1DF100CA53D3 /* libstdc++.dylib in Frameworks */,

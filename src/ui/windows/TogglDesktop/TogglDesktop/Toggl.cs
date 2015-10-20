@@ -5,13 +5,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using TogglDesktop.Diagnostics;
+
 // ReSharper disable InconsistentNaming
 
 namespace TogglDesktop
 {
 public static partial class Toggl
 {
-    private static IntPtr ctx = IntPtr.Zero;
+    #region constants and static fields
 
     public const string Project = "project";
     public const string Duration = "duration";
@@ -19,13 +20,47 @@ public static partial class Toggl
 
     public const string TagSeparator = "\t";
 
+    private static readonly DateTime UnixEpoch =
+        new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+    private static IntPtr ctx = IntPtr.Zero;
+
+    private static MainWindow mainWindow;
+    private static string updatePath;
+
     // User can override some parameters when running the app
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
     public static string Env = "production";
 
-    // Callbacks
+
+    #endregion
+
+    #region enums
+
+    public enum OnlineState
+    {
+        Online = kOnlineStateOnline,
+        NoNetwork = kOnlineStateNoNetwork,
+        BackendDown = kOnlineStateBackendDown
+    }
+
+    public enum SyncState
+    {
+        Idle = kSyncStateIdle,
+        Syncing = kSyncStateWork
+    }
+
+    public enum DownloadStatus
+    {
+        Started = kDownloadStatusStarted,
+        Done = kDownloadStatusDone
+    }
+
+    #endregion
+
+    #region callback delegates
 
     public delegate void DisplayApp(
         bool open);
@@ -34,12 +69,17 @@ public static partial class Toggl
         string errmsg,
         bool user_error);
 
+    public delegate void DisplaySyncState(
+        SyncState state);
+
+    public delegate void DisplayUnsyncedItems(
+        Int64 count);
+
     public delegate void DisplayOnlineState(
-        Int64 state);
+        OnlineState state);
 
     public delegate void DisplayURL(
         string url);
-
 
     public delegate void DisplayLogin(
         bool open,
@@ -80,6 +120,19 @@ public static partial class Toggl
         UInt64 started,
         string description);
 
+    public delegate void DisplayAutotrackerRules(
+        List<TogglAutotrackerRuleView> rules, string[] terms);
+
+    public delegate void DisplayAutotrackerNotification(
+        string projectName, ulong projectId);
+
+    public delegate void DisplayUpdateDownloadState(
+        string url, DownloadStatus status);
+
+    #endregion
+
+    #region api calls
+
     public static void Clear()
     {
         toggl_context_clear(ctx);
@@ -94,6 +147,24 @@ public static partial class Toggl
     {
         toggl_debug(text);
     }
+    #region Debug overloads
+    public static void Debug(string text, object arg0)
+    {
+        toggl_debug(string.Format(text, arg0));
+    }
+    public static void Debug(string text, object arg0, object arg1)
+    {
+        toggl_debug(string.Format(text, arg0, arg1));
+    }
+    public static void Debug(string text, object arg0, object arg1, object arg2)
+    {
+        toggl_debug(string.Format(text, arg0, arg1, arg2));
+    }
+    public static void Debug(string text, params object[] args)
+    {
+        toggl_debug(string.Format(text, args));
+    }
+    #endregion
 
     public static bool Signup(string email, string password)
     {
@@ -161,6 +232,7 @@ public static partial class Toggl
         return toggl_delete_time_entry(ctx, guid);
     }
 
+    #region changing time entry
 
     public static bool SetTimeEntryDuration(string guid, string value)
     {
@@ -207,7 +279,6 @@ public static partial class Toggl
         }
     }
 
-
     public static bool SetTimeEntryTags(string guid, List<string> tags)
     {
         using (Performance.Measure("changing time entry tags, count: {0}", tags.Count))
@@ -225,7 +296,6 @@ public static partial class Toggl
         }
     }
 
-
     public static bool SetTimeEntryDescription(string guid, string value)
     {
         using (Performance.Measure("changing time entry description"))
@@ -233,6 +303,8 @@ public static partial class Toggl
             return toggl_set_time_entry_description(ctx, guid, value);
         }
     }
+
+    #endregion
 
     public static bool Stop()
     {
@@ -243,6 +315,7 @@ public static partial class Toggl
     {
         return toggl_discard_time_at(ctx, guid, at, split);
     }
+
 
     public static bool SetSettings(TogglSettingsView settings)
     {
@@ -314,6 +387,10 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_autotrack(ctx, settings.Autotrack))
+        {
+            return false;
+        }
 
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
@@ -353,7 +430,6 @@ public static partial class Toggl
                            project_guid,
                            tags);
     }
-
 
     public static string AddProject(
         string time_entry_guid,
@@ -397,7 +473,6 @@ public static partial class Toggl
         return toggl_get_update_channel(ctx);
     }
 
-
     public static string UserEmail()
     {
         return toggl_get_user_email(ctx);
@@ -405,9 +480,9 @@ public static partial class Toggl
 
     public static void Sync()
     {
+        OnManualSync();
         toggl_sync(ctx);
     }
-
 
     public static void SetSleep()
     {
@@ -434,7 +509,34 @@ public static partial class Toggl
         return toggl_run_script(ctx, script, ref err);
     }
 
-    // Events for C#
+    public static long AddAutotrackerRule(string term, ulong projectId)
+    {
+        return toggl_autotracker_add_rule(ctx, term, projectId);
+    }
+
+    public static bool DeleteAutotrackerRule(long id)
+    {
+        return toggl_autotracker_delete_rule(ctx, id);
+    }
+
+    public static bool SetDefaultProjectId(ulong id)
+    {
+        return toggl_set_default_project_id(ctx, id);
+    }
+
+    public static ulong GetDefaultProjectId()
+    {
+        return toggl_get_default_project_id(ctx);
+    }
+
+    public static string GetDefaultProjectName()
+    {
+        return toggl_get_default_project_name(ctx);
+    }
+
+    #endregion
+
+    #region callback events
 
     public static event DisplayApp OnApp = delegate { };
     public static event DisplayError OnError = delegate { };
@@ -454,6 +556,210 @@ public static partial class Toggl
     public static event DisplayStoppedTimerState OnStoppedTimerState = delegate { };
     public static event DisplayURL OnURL = delegate { };
     public static event DisplayIdleNotification OnIdleNotification = delegate { };
+    public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
+    public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
+
+    public static event DisplaySyncState OnDisplaySyncState = delegate { };
+    public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
+    public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
+
+    private static void listenToLibEvents()
+    {
+        toggl_on_show_app(ctx, open =>
+        {
+            using (Performance.Measure("Calling OnApp"))
+            {
+                OnApp(open);
+            }
+        });
+
+        toggl_on_error(ctx, (errmsg, user_error) =>
+        {
+            using (Performance.Measure("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error))
+            {
+                OnError(errmsg, user_error);
+            }
+        });
+
+        toggl_on_sync_state(ctx, state =>
+        {
+            using (Performance.Measure("Calling OnDisplaySyncState, state: {0}", state))
+            {
+                OnDisplaySyncState((SyncState)state);
+            }
+        });
+        toggl_on_unsynced_items(ctx, count =>
+        {
+            using (Performance.Measure("Calling OnDisplayUnsyncedItems, count: {0}", count))
+            {
+                OnDisplayUnsyncedItems(count);
+            }
+        });
+
+        toggl_on_online_state(ctx, state =>
+        {
+            using (Performance.Measure("Calling OnOnlineState, state: {0}", state))
+            {
+                OnOnlineState((OnlineState)state);
+            }
+        });
+
+        toggl_on_login(ctx, (open, user_id) =>
+        {
+            using (Performance.Measure("Calling OnLogin"))
+            {
+                OnLogin(open, user_id);
+            }
+        });
+
+        toggl_on_reminder(ctx, (title, informative_text) =>
+        {
+            using (Performance.Measure("Calling OnReminder, title: {0}", title))
+            {
+                OnReminder(title, informative_text);
+            }
+        });
+
+        toggl_on_time_entry_list(ctx, (open, first) =>
+        {
+            using (Performance.Measure("Calling OnTimeEntryList"))
+            {
+                OnTimeEntryList(open, convertToTimeEntryList(first));
+            }
+        });
+
+        toggl_on_time_entry_autocomplete(ctx, first =>
+        {
+            using (Performance.Measure("Calling OnTimeEntryAutocomplete"))
+            {
+                OnTimeEntryAutocomplete(convertToAutocompleteList(first));
+            }
+        });
+
+        toggl_on_mini_timer_autocomplete(ctx, first =>
+        {
+            using (Performance.Measure("Calling OnMinitimerAutocomplete"))
+            {
+                OnMinitimerAutocomplete(convertToAutocompleteList(first));
+            }
+        });
+
+        toggl_on_project_autocomplete(ctx, first =>
+        {
+            using (Performance.Measure("Calling OnProjectAutocomplete"))
+            {
+                OnProjectAutocomplete(convertToAutocompleteList(first));
+            }
+        });
+
+        toggl_on_time_entry_editor(ctx, (open, te, focused_field_name) =>
+        {
+            using (Performance.Measure("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name))
+            {
+                OnTimeEntryEditor(open, marshalStruct<TogglTimeEntryView>(te), focused_field_name);
+            }
+        });
+
+        toggl_on_workspace_select(ctx, first =>
+        {
+            using (Performance.Measure("Calling OnWorkspaceSelect"))
+            {
+                OnWorkspaceSelect(convertToViewItemList(first));
+            }
+        });
+
+        toggl_on_client_select(ctx, first =>
+        {
+            using (Performance.Measure("Calling OnClientSelect"))
+            {
+                OnClientSelect(convertToViewItemList(first));
+            }
+        });
+
+        toggl_on_tags(ctx, first =>
+        {
+            using (Performance.Measure("Calling OnTags"))
+            {
+                OnTags(convertToViewItemList(first));
+            }
+        });
+
+        toggl_on_settings(ctx, (open, settings) =>
+        {
+            using (Performance.Measure("Calling OnSettings"))
+            {
+                OnSettings(open, marshalStruct<TogglSettingsView>(settings));
+            }
+        });
+
+        toggl_on_timer_state(ctx, te =>
+        {
+            if (te == IntPtr.Zero)
+            {
+                using (Performance.Measure("Calling OnStoppedTimerState"))
+                {
+                    OnStoppedTimerState();
+                    return;
+                }
+            }
+            using (Performance.Measure("Calling OnRunningTimerState"))
+            {
+                OnRunningTimerState(marshalStruct<TogglTimeEntryView>(te));
+            }
+        });
+
+        toggl_on_url(ctx, url =>
+        {
+            using (Performance.Measure("Calling OnURL"))
+            {
+                OnURL(url);
+            }
+        });
+
+        toggl_on_idle_notification(ctx, (guid, since, duration, started, description) =>
+        {
+            using (Performance.Measure("Calling OnIdleNotification"))
+            {
+                OnIdleNotification(guid, since, duration, started, description);
+            }
+        });
+
+        toggl_on_autotracker_rules(ctx, (first, count, list) =>
+        {
+            using (Performance.Measure("Calling OnAutotrackerRules"))
+            {
+                OnAutotrackerRules(convertToAutotrackerEntryList(first), list);
+            }
+        });
+
+        toggl_on_autotracker_notification(ctx, (name, id) =>
+        {
+            using (Performance.Measure("Calling OnAutotrackerNotification"))
+            {
+                OnAutotrackerNotification(name, id);
+            }
+        });
+
+        toggl_on_update_download_state(ctx, (version, state) =>
+        {
+            using (Performance.Measure("Calling OnUpdateDownloadState, v: {0}, state: {1}", version, state))
+            {
+                OnDisplayUpdateDownloadState(version, (DownloadStatus)state);
+            }
+        });
+    }
+
+    #endregion
+
+    #region internal ui events
+
+    public delegate void ManualSync();
+
+    public static event ManualSync OnManualSync = delegate { };
+
+    #endregion
+
+    #region startup
 
     private static void parseCommandlineParams()
     {
@@ -482,177 +788,6 @@ public static partial class Toggl
             }
         }
     }
-
-    private static void listenToLibEvents()
-    {
-        toggl_on_show_app(ctx, delegate(bool open)
-        {
-            using (Performance.Measure("Calling OnApp"))
-            {
-                OnApp(open);
-            }
-        });
-
-        toggl_on_error(ctx, delegate(string errmsg, bool user_error)
-        {
-            using (Performance.Measure("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error))
-            {
-                OnError(errmsg, user_error);
-            }
-        });
-
-        toggl_on_online_state(ctx, delegate(Int64 state)
-        {
-            using (Performance.Measure("Calling OnOnlineState, state: {0}", state))
-            {
-                OnOnlineState(state);
-            }
-        });
-
-        toggl_on_login(ctx, delegate(bool open, UInt64 user_id)
-        {
-            using (Performance.Measure("Calling OnLogin"))
-            {
-                OnLogin(open, user_id);
-            }
-        });
-
-        toggl_on_reminder(ctx, delegate(string title, string informative_text)
-        {
-            using (Performance.Measure("Calling OnReminder, title: {0}", title))
-            {
-                OnReminder(title, informative_text);
-            }
-        });
-
-        toggl_on_time_entry_list(ctx, delegate(bool open, IntPtr first)
-        {
-            using (Performance.Measure("Calling OnTimeEntryList"))
-            {
-                var list = ConvertToTimeEntryList(first);
-                OnTimeEntryList(open, list);
-            }
-        });
-
-        toggl_on_time_entry_autocomplete(ctx, delegate(IntPtr first)
-        {
-            using (Performance.Measure("Calling OnTimeEntryAutocomplete"))
-            {
-                var list = ConvertToAutocompleteList(first);
-                OnTimeEntryAutocomplete(list);
-            }
-        });
-
-        toggl_on_mini_timer_autocomplete(ctx, delegate(IntPtr first)
-        {
-            using (Performance.Measure("Calling OnMinitimerAutocomplete"))
-            {
-                var list = ConvertToAutocompleteList(first);
-                OnMinitimerAutocomplete(list);
-            }
-        });
-
-        toggl_on_project_autocomplete(ctx, delegate(IntPtr first)
-        {
-            using (Performance.Measure("Calling OnProjectAutocomplete"))
-            {
-                var list = ConvertToAutocompleteList(first);
-                OnProjectAutocomplete(list);
-            }
-        });
-
-        toggl_on_time_entry_editor(ctx, delegate(
-            bool open,
-            IntPtr te,
-            string focused_field_name)
-        {
-            using (Performance.Measure("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name))
-            {
-                TogglTimeEntryView model = (TogglTimeEntryView)Marshal.PtrToStructure(
-                    te, typeof(TogglTimeEntryView));
-                OnTimeEntryEditor(open, model, focused_field_name);
-            }
-        });
-
-        toggl_on_workspace_select(ctx, delegate(IntPtr first)
-        {
-            using (Performance.Measure("Calling OnWorkspaceSelect"))
-            {
-                var list = ConvertToViewItemList(first);
-                OnWorkspaceSelect(list);
-            }
-        });
-
-        toggl_on_client_select(ctx, delegate(IntPtr first)
-        {
-            using (Performance.Measure("Calling OnClientSelect"))
-            {
-                var list = ConvertToViewItemList(first);
-                OnClientSelect(list);
-            }
-        });
-
-        toggl_on_tags(ctx, delegate(IntPtr first)
-        {
-            using (Performance.Measure("Calling OnTags"))
-            {
-                var list = ConvertToViewItemList(first);
-                OnTags(list);
-            }
-        });
-
-        toggl_on_settings(ctx, delegate(bool open, IntPtr settings)
-        {
-            using (Performance.Measure("Calling OnSettings"))
-            {
-                TogglSettingsView model = (TogglSettingsView)Marshal.PtrToStructure(
-                    settings, typeof(TogglSettingsView));
-                OnSettings(open, model);
-            }
-        });
-
-        toggl_on_timer_state(ctx, delegate(IntPtr te)
-        {
-            if (te == IntPtr.Zero)
-            {
-                using (Performance.Measure("Calling OnStoppedTimerState"))
-                {
-                    OnStoppedTimerState();
-                    return;
-                }
-            }
-            using (Performance.Measure("Calling OnRunningTimerState"))
-            {
-                TogglTimeEntryView view =
-                    (TogglTimeEntryView)Marshal.PtrToStructure(
-                        te, typeof(TogglTimeEntryView));
-                OnRunningTimerState(view);
-            }
-        });
-
-        toggl_on_url(ctx, delegate(string url)
-        {
-            using (Performance.Measure("Calling OnURL"))
-            {
-                OnURL(url);
-            }
-        });
-
-        toggl_on_idle_notification(ctx, delegate(
-            string guid,
-            string since,
-            string duration,
-            UInt64 started,
-            string description)
-        {
-            using (Performance.Measure("Calling OnIdleNotification"))
-            {
-                OnIdleNotification(guid, since, duration, started, description);
-            }
-        });
-    }
-
-    // Start UI
 
     public static bool StartUI(string version)
     {
@@ -694,10 +829,10 @@ public static partial class Toggl
             Directory.Move(oldpath, path);
         }
 
-        string updatePath = Path.Combine(path, "updates");
+        updatePath = Path.Combine(path, "updates");
 
 #if !INVS
-        installPendingUpdates(updatePath);
+        installPendingUpdates();
 #endif
 
         // Configure log, db path
@@ -735,11 +870,21 @@ public static partial class Toggl
 
     // ReSharper disable once UnusedMember.Local
     // (updates are disabled in Release_VS configuration to allow for proper debugging)
-    private static void installPendingUpdates(string updatePath)
+    private static void installPendingUpdates()
+    {
+        var update = createUpdateAction();
+
+        if (update != null)
+            update();
+
+        Debug("Failed to start updater process");
+    }
+
+    private static Action createUpdateAction()
     {
         if (!Directory.Exists(updatePath))
         {
-            return;
+            return null;
         }
 
         var di = new DirectoryInfo(updatePath);
@@ -747,17 +892,17 @@ public static partial class Toggl
                                 SearchOption.TopDirectoryOnly);
         if (files.Length > 1)
         {
-            // Somethings fubar. Delete the updates to start over
+            Debug("Multiple update installers found. Deleting.");
             foreach (var file in files)
             {
                 file.Delete();
             }
-            return;
+            return null;
         }
 
         if (files.Length < 1)
         {
-            return;
+            return null;
         }
 
         var updaterPath = Path.Combine(
@@ -766,7 +911,7 @@ public static partial class Toggl
         if (!File.Exists(updaterPath))
         {
             Debug("TogglDesktopUpdater.exe not found");
-            return;
+            return null;
         }
 
         var psi = new ProcessStartInfo
@@ -776,115 +921,18 @@ public static partial class Toggl
             + " " + string.Format("\"{0}\"", files[0].FullName)
             + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location)
         };
-        var process = Process.Start(psi);
-        if (process != null && !process.HasExited && process.Id != 0)
+
+        return () =>
         {
-            // Update has started. Quit, installer will restart me.
-            Environment.Exit(0);
-        }
-
-        Debug("Failed to start updater process");
-    }
-
-    public static List<TogglGenericView> ConvertToViewItemList(IntPtr first)
-    {
-        using (var token = Performance.Measure("marshalling view item list"))
-        {
-            List<TogglGenericView> list = new List<TogglGenericView>();
-            if (IntPtr.Zero == first)
+            var process = Process.Start(psi);
+            if (process != null && !process.HasExited && process.Id != 0)
             {
-                token.WithInfo("count: 0");
-                return list;
+                // Update has started. Quit, installer will restart me.
+                Environment.Exit(0);
             }
-            TogglGenericView n = (TogglGenericView)Marshal.PtrToStructure(
-                first, typeof(TogglGenericView));
-            while (true)
-            {
-                list.Add(n);
-                if (n.Next == IntPtr.Zero)
-                {
-                    break;
-                }
-                n = (TogglGenericView)Marshal.PtrToStructure(
-                    n.Next, typeof(TogglGenericView));
-            }
-            token.WithInfo("count: " + list.Count);
-            return list;
-        }
-    }
 
-    private static List<TogglAutocompleteView> ConvertToAutocompleteList(IntPtr first)
-    {
-        using (var token = Performance.Measure("marshalling auto complete list"))
-        {
-            List<TogglAutocompleteView> list = new List<TogglAutocompleteView>();
-            if (IntPtr.Zero == first)
-            {
-                token.WithInfo("count: 0");
-                return list;
-            }
-            TogglAutocompleteView n = (TogglAutocompleteView)Marshal.PtrToStructure(
-                first, typeof (TogglAutocompleteView));
-            while (true)
-            {
-                list.Add(n);
-                if (n.Next == IntPtr.Zero)
-                {
-                    break;
-                }
-                n = (TogglAutocompleteView)Marshal.PtrToStructure(
-                    n.Next, typeof (TogglAutocompleteView));
-            }
-            token.WithInfo("count: " + list.Count);
-            return list;
-        }
-    }
-
-    private static List<TogglTimeEntryView> ConvertToTimeEntryList(IntPtr first)
-    {
-        using (var token = Performance.Measure("marshalling time entry list"))
-        {
-            List<TogglTimeEntryView> list = new List<TogglTimeEntryView>();
-            if (IntPtr.Zero == first)
-            {
-                token.WithInfo("count: 0");
-                return list;
-            }
-            TogglTimeEntryView n = (TogglTimeEntryView)Marshal.PtrToStructure(
-                first, typeof (TogglTimeEntryView));
-
-            while (true)
-            {
-                list.Add(n);
-                if (n.Next == IntPtr.Zero)
-                {
-                    break;
-                }
-                n = (TogglTimeEntryView)Marshal.PtrToStructure(
-                    n.Next, typeof (TogglTimeEntryView));
-            }
-            token.WithInfo("count: " + list.Count);
-            return list;
-        }
-    }
-
-    private static readonly DateTime UnixEpoch =
-        new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-    public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
-    {
-        return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
-    }
-
-    public static Int64 UnixFromDateTime(DateTime value)
-    {
-        TimeSpan span = (value - UnixEpoch.ToLocalTime());
-        return (Int64)span.TotalSeconds;
-    }
-
-    public static void NewError(string errmsg, bool user_error)
-    {
-        OnError(errmsg, user_error);
+            Debug("Failed to start updater process");
+        };
     }
 
     public static bool IsUpdateCheckDisabled()
@@ -901,19 +949,78 @@ public static partial class Toggl
         }
         return Convert.ToBoolean(value);
     }
+    #endregion
 
-    public static bool AskToDeleteEntry(string guid)
+    #region converting data
+
+    #region high level
+
+    private static List<TogglGenericView> convertToViewItemList(IntPtr first)
     {
-        var result = MessageBox.Show("Delete time entry?", "Please confirm",
-                                     MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-        if (result == MessageBoxResult.Yes)
-        {
-            return DeleteTimeEntry(guid);
-        }
-        return false;
+        return marshalList<TogglGenericView>(
+            first, n => n.Next, "marshalling view item list");
     }
 
+    private static List<TogglAutocompleteView> convertToAutocompleteList(IntPtr first)
+    {
+        return marshalList<TogglAutocompleteView>(
+            first, n => n.Next, "marshalling auto complete list");
+    }
+
+    private static List<TogglTimeEntryView> convertToTimeEntryList(IntPtr first)
+    {
+        return marshalList<TogglTimeEntryView>(
+            first, n => n.Next, "marshalling time entry list");
+    }
+
+    private static List<TogglAutotrackerRuleView> convertToAutotrackerEntryList(IntPtr first)
+    {
+        return marshalList<TogglAutotrackerRuleView>(
+            first, n => n.Next, "marshalling time entry list");
+    }
+
+    #endregion
+
+    #region low level
+
+    private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext, string performanceMessage)
+    where T : struct
+    {
+        if (performanceMessage == null)
+            return marshalList(node, getNext);
+
+        using (var token = Performance.Measure(performanceMessage))
+        {
+            var list = marshalList(node, getNext);
+            token.WithInfo("count: " + list.Count);
+            return list;
+        }
+    }
+
+    private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext)
+    where T : struct
+    {
+        var list = new List<T>();
+
+        while (node != IntPtr.Zero)
+        {
+            var t = (T)Marshal.PtrToStructure(node, typeof(T));
+            list.Add(t);
+            node = getNext(t);
+        }
+
+        return list;
+    }
+
+    private static T marshalStruct<T>(IntPtr pointer)
+    where T : struct
+    {
+        return (T)Marshal.PtrToStructure(pointer, typeof(T));
+    }
+
+    #endregion
+
+    #endregion
 
     #region getting/setting global shortcuts
 
@@ -1000,5 +1107,67 @@ public static partial class Toggl
     }
 
     #endregion
+
+    #region various
+
+    public static void RestartAndUpdate()
+    {
+        var update = createUpdateAction();
+
+        if (update == null)
+        {
+            return;
+        }
+
+        mainWindow.PrepareShutdown(true);
+
+        Clear();
+
+        update();
+    }
+
+    public static void SetManualMode(bool manualMode)
+    {
+        toggl_set_settings_manual_mode(ctx, manualMode);
+    }
+
+    public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
+    {
+        return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
+    }
+
+    public static Int64 UnixFromDateTime(DateTime value)
+    {
+        TimeSpan span = (value - UnixEpoch.ToLocalTime());
+        return (Int64)span.TotalSeconds;
+    }
+
+    public static void NewError(string errmsg, bool user_error)
+    {
+        OnError(errmsg, user_error);
+    }
+
+    public static bool AskToDeleteEntry(string guid)
+    {
+        var result = MessageBox.Show(mainWindow, "Delete time entry?", "Please confirm",
+                                     MessageBoxButton.OKCancel, "DELETE ENTRY");
+
+        if (result == MessageBoxResult.OK)
+        {
+            return DeleteTimeEntry(guid);
+        }
+        return false;
+    }
+
+    public static void RegisterMainWindow(MainWindow window)
+    {
+        if (mainWindow != null)
+            throw new Exception("Can only register main window once!");
+
+        mainWindow = window;
+    }
+
+    #endregion
+
 }
 }
