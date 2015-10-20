@@ -938,7 +938,7 @@ namespace TogglDesktop
 
         private void changeThemeTest(object sender, RoutedEventArgs e)
         {
-            Theme.Activate(ThemeTypes.Layout, themeCheckBox.IsChecked ?? false ? "Compact" : "Comfortable");
+            Theme.Activate(ThemeTypes.Layout, this.themeCheckBox.IsChecked ?? false ? "Compact" : "Comfortable");
         }
     }
 }

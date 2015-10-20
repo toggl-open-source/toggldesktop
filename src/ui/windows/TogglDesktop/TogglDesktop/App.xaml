@@ -21,7 +21,7 @@
                 <ResourceDictionary Source="ui/Resources/DialogStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/TogglWindowStyles.xaml" />
                 
-                <toggl:ThemeResourceDictionary Source="ui/Resources/Themes/Layout/Comfortable.xaml" Type="Layout"/>
+                <toggl:ThemeResourceDictionary Source="ui/Resources/Themes/Layout/Compact.xaml" Type="Layout"/>
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
