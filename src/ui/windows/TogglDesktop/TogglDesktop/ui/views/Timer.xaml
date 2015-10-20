@@ -32,17 +32,17 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Name="projectGridRow" x:FieldModifier="private"/>
                     <RowDefinition/>
+                    <RowDefinition Name="projectGridRow" x:FieldModifier="private"/>
                 </Grid.RowDefinitions>
 
                 <Button Name="cancelProjectSelectionButton" x:FieldModifier="private"
                         Style="{StaticResource TimerProjectRemoveButton}"
-                        Grid.Row="0" Grid.Column="0"
+                        Grid.Row="1" Grid.Column="0"
                         Width="16" Height="16" Padding="2"
                         IsTabStop="False" Click="cancelProjectSelectionButtonClick"/>
 
-                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
 
                     <TextBlock Name="clientLabel" x:FieldModifier="private"
                             Foreground="#dddddd" Text="Client"/>
@@ -50,7 +50,7 @@
                          Text="Project"/>
                 </StackPanel>
 
-                <Grid Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown"
+                <Grid Grid.Row="0" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown"
                       Name="taskDescriptionGrid" x:FieldModifier="private">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -84,7 +84,7 @@
 
                 </Grid>
 
-                <toggl:AutoCompletionPopup Grid.Row="1" Grid.Column="1"  x:Name="descriptionAutoComplete" x:FieldModifier="private"
+                <toggl:AutoCompletionPopup Grid.Row="0" Grid.Column="1"  x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                 TextBox="{Binding ElementName=descriptionTextBox}"
                                 Target="{Binding ElementName=taskDescriptionGrid}"
                                 EmptyText="No previous entries found." StaysOpen="False"
