@@ -3029,6 +3029,7 @@ Project *Context::CreateProject(
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
             if ((p->Name() == trimmed_project_name)
+                    && (workspace_id == p->WID())
                     && (client_id == p->CID())) {
                 displayError(kProjectNameAlreadyExists);
                 return nullptr;
