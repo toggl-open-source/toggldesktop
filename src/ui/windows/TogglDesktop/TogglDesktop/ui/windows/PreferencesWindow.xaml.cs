@@ -335,8 +335,8 @@ namespace TogglDesktop
             {
                 this.button = button;
                 button.Click += (sender, args) => this.startRecording();
-                button.KeyDown += this.onKeyDown;
-                button.KeyUp += this.onKeyUp;
+                button.PreviewKeyDown += this.onKeyDown;
+                button.PreviewKeyUp += this.onKeyUp;
                 button.LostKeyboardFocus += (sender, args) =>
                 {
                     if (this.recording)
