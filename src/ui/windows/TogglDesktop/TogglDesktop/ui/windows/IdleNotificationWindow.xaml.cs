@@ -32,6 +32,7 @@ namespace TogglDesktop
             this.descriptionText.Text = description;
 
             this.Show();
+            this.Topmost = true;
             this.Activate();
         }
         private void onStoppedTimerState()
