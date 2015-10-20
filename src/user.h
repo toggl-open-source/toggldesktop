@@ -61,8 +61,9 @@ class User : public BaseModel {
         const std::string project_guid,
         const std::string tags);
 
-    toggl::error Continue(
-        const std::string GUID);
+    TimeEntry *Continue(
+        const std::string GUID,
+        const bool manual_mode);
 
     void Stop(std::vector<TimeEntry *> *stopped = nullptr);
 

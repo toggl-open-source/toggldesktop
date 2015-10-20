@@ -1,17 +1,4 @@
 export qt_arch=x86_64
-if [ "$(uname -m)" == "i386" ]; then
-  export qt_arch=i386
-fi
-if [ "$(uname -m)" == "i686" ]; then
-  export qt_arch=i386
-fi
-
-if [ -z "$QPATH" ]; then
-	export QPATH=/home/tanel/Qt5.5.0/5.5/gcc_64/
-fi
-if [ -z "$QLIBPATH" ]; then
-	export QLIBPATH=/home/tanel/Qt5.5.0/5.5/gcc_64/lib
-fi
 
 set -e
 
@@ -52,7 +39,6 @@ cp $QPATH/plugins/platforms/libqxcb.so $out/platforms/.
 
 echo "-- DEPENDENCIES for libqxcb --"
 ldd $(pwd)/$out/platforms/libqxcb.so
-
 go run src/ui/linux/copy_deps.go --executable $(pwd)/$out/platforms/libqxcb.so --destination $(pwd)/$out/lib
 
 echo "-- DEPENDENCIES for TogglDesktop --"

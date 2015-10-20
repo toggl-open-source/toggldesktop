@@ -73,4 +73,8 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="AutoCompleteTextBox" TargetType="TextBox" BasedOn="{StaticResource AutotrackerSettingsControlBase}">
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
 </ResourceDictionary>

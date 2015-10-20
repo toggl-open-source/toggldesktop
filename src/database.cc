@@ -505,6 +505,15 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
+error Database::SetCompactMode(
+    const bool value) {
+    return setSettingsValue("compact_mode", value);
+}
+
+error Database::GetCompactMode(bool *result) {
+    return getSettingsValue("compact_mode", result);
+}
+
 error Database::SetWindowMaximized(
     const bool value) {
     return setSettingsValue("window_maximized", value);
@@ -3332,6 +3341,43 @@ error Database::saveAnalyticsClientID() {
         return ex;
     }
     return last_error("saveAnalyticsClientID");
+}
+
+error Database::LoadMigrations(
+    std::vector<std::string> *list) {
+
+    try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        Poco::Data::Statement select(*session_);
+        select <<
+               "SELECT name FROM kopsik_migrations";
+        error err = last_error("LoadMigrations");
+        if (err != noError) {
+            return err;
+        }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                std::string name(rs[0].convert<std::string>());
+                list->push_back(name);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("LoadMigrations");
 }
 
 error Database::Migrate(

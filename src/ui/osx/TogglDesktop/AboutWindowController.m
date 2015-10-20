@@ -78,6 +78,7 @@ extern void *ctx;
 		 item.displayVersionString];
 
 	[self displayUpdateStatus];
+	[self.restartButton setHidden:NO];
 }
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
@@ -88,6 +89,7 @@ extern void *ctx;
 		[NSString stringWithFormat:@"Update found: %@. Downloading..",
 		 update.displayVersionString];
 
+	[self.restartButton setHidden:YES];
 	[self displayUpdateStatus];
 }
 
@@ -126,6 +128,19 @@ extern void *ctx;
 	[self checkForUpdates];
 }
 
+- (IBAction)clickRestartButton:(id)sender;
+{
+	float seconds = 2.0;
+	NSTask *task = [[NSTask alloc] init];
+	NSMutableArray *args = [NSMutableArray array];
+	[args addObject:@"-c"];
+	[args addObject:[NSString stringWithFormat:@"sleep %f; open \"%@\"", seconds, [[NSBundle mainBundle] bundlePath]]];
+	[task setLaunchPath:@"/bin/sh"];
+	[task setArguments:args];
+	[task launch];
+	[[NSApplication sharedApplication] terminate:nil];
+}
+
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
 	NSLog(@"No update found");
@@ -139,6 +154,13 @@ extern void *ctx;
 - (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
 	NSLog(@"Update check failed with error %@", error);
+}
+
+- (BOOL)                    updater:(SUUpdater *)updater
+	shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
+					  untilInvoking:(NSInvocation *)invocation
+{
+	return YES;
 }
 
 @end

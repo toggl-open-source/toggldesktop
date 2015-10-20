@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace TogglDesktop
 {
@@ -58,6 +59,22 @@ namespace TogglDesktop
             this.cancelButton.ShowOnlyIf(cancel);
 
             this.okButton.Content = okButtonText;
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            var key = e.Key;
+
+            if (key == Key.Escape && this.cancelButton.IsVisible)
+            {
+                e.Handled = true;
+                this.close(MessageBoxResult.Cancel);
+            }
+            else if (key == Key.Enter && this.okButton.IsVisible)
+            {
+                e.Handled = true;
+                this.close(MessageBoxResult.OK);
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)

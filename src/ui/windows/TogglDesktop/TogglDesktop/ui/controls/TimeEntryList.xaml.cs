@@ -19,7 +19,7 @@ namespace TogglDesktop
 
         private bool hasKeyboardSelection
         {
-            get { return this.keyboardSelectedId != -1 && this.keyboardHighlightCellImposter.IsVisible; }
+            get { return this.keyboardSelectedId != -1 && this.keyboardHighlightCellImposter.Visibility == Visibility.Visible; }
         }
 
         private string keyboardHighlightedGUID

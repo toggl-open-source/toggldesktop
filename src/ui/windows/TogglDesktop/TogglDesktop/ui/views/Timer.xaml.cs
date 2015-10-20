@@ -300,8 +300,6 @@ namespace TogglDesktop
                 this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
 
             this.setRunningDurationLabels();
-
-            this.invalidate();
         }
 
         private void setRunningDurationLabels()
@@ -354,13 +352,6 @@ namespace TogglDesktop
             this.durationLabelLeft.Text = "";
             this.durationLabelRight.Text = "";
             this.durationLabelLeft.Margin = new Thickness(14, 0, 0, 0);
-
-            this.invalidate();
-        }
-
-        private void invalidate()
-        {
-            this.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         }
 
         private void resetUIState(bool running, bool forceUpdate = false)

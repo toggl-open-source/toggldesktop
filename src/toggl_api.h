@@ -809,6 +809,13 @@ extern "C" {
         void *context,
         const char *json);
 
+    TOGGL_EXPORT void toggl_set_compact_mode(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_get_compact_mode(
+        void *context);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

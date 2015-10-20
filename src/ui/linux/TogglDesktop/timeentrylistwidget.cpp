@@ -70,7 +70,7 @@ void TimeEntryListWidget::displayTimeEntryList(
 
         cell->display(te);
 
-	QSize sizeHint = cell->getSizeHint(te->IsHeader);
+        QSize sizeHint = cell->getSizeHint(te->IsHeader);
         item->setSizeHint(sizeHint);
     }
 
