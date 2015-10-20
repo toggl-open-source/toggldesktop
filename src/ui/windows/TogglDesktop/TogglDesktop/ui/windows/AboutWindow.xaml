@@ -19,8 +19,8 @@
 
         <toggl:TogglChromeDesignTimeConverter
             Title="About" IsToolWindow="True" />
-        
-        <StackPanel Grid.Row="0">
+
+        <StackPanel Grid.Row="0" VerticalAlignment="Top">
             <Image Source="/TogglDesktop;component/Resources/logo64.png"
                    Height="64"
                    Width="64"
@@ -37,9 +37,16 @@
                        Text="Downloading version X" HorizontalAlignment="Center"
                        FontWeight="Medium" Foreground="#318a40"
                        TextAlignment="Center"
-                       Margin="0 0 0 24"/>
+                       Margin="0 0 0 8"/>
 
-            <TextBlock HorizontalAlignment="Center" Text="View change log:"/>
+            <Button Name="restartButton" x:FieldModifier="private"
+                    Click="onRestartButtonClick"
+                    Content="RESTART NOW" Style="{StaticResource RaisedButton}"
+                    HorizontalAlignment="Center" />
+        </StackPanel>
+        
+        <StackPanel Grid.Row="0" VerticalAlignment="Bottom">
+             <TextBlock HorizontalAlignment="Center" Text="View change log:"/>
             <Label HorizontalAlignment="Center" 
                        Margin="0 -5 0 16">
                 <Hyperlink NavigateUri="http://toggl.github.io/toggldesktop"

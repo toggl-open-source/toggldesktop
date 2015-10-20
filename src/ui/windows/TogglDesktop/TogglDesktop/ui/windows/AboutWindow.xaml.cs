@@ -13,6 +13,7 @@ namespace TogglDesktop
             this.InitializeComponent();
 
             this.updateText.Text = "";
+            this.restartButton.Visibility = Visibility.Collapsed;
 
             this.versionText.Text = Program.Version();
 
@@ -34,11 +35,14 @@ namespace TogglDesktop
                 case Toggl.DownloadStatus.Started:
                 {
                     format = "Downloading version {0}";
+                    this.restartButton.Visibility = Visibility.Collapsed;
                     break;
                 }
                 case Toggl.DownloadStatus.Done:
                 {
                     format = "Version {0} available,\nrestart Toggl Desktop to upgrade.";
+                    this.restartButton.IsEnabled = true;
+                    this.restartButton.Visibility = Visibility.Visible;
                     break;
                 }
                 default:
@@ -86,6 +90,13 @@ namespace TogglDesktop
         private void onChangelogLinkClick(object sender, RoutedEventArgs e)
         {
             Process.Start("http://toggl.github.io/toggldesktop");
+        }
+
+        private void onRestartButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.restartButton.IsEnabled = false;
+
+            Toggl.RestartAndUpdate();
         }
     }
 }

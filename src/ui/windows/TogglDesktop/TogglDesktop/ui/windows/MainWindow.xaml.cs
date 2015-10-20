@@ -762,6 +762,22 @@ namespace TogglDesktop
 
         private void shutdown(int exitCode)
         {
+            this.PrepareShutdown(exitCode == 0);
+
+            if (!this.closing)
+            {
+                this.closing = true;
+                this.Close();
+            }
+
+            this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                Program.Shutdown(exitCode);
+            }));
+        }
+
+        public void PrepareShutdown(bool saveWindowLocation)
+        {
             if (this.taskbarIcon != null)
             {
                 this.taskbarIcon.Visibility = Visibility.Collapsed;
@@ -775,23 +791,12 @@ namespace TogglDesktop
 
             if (this.IsVisible)
             {
-                if (exitCode == 0)
+                if (saveWindowLocation)
                 {
                     Utils.SaveWindowLocation(this, this.editPopup);
                 }
                 this.Hide();
             }
-
-            if (!this.closing)
-            {
-                this.closing = true;
-                this.Close();
-            }
-
-            this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-            {
-                Program.Shutdown(exitCode);
-            }));
         }
 
         private void updateStatusIcons(bool isOnline)
