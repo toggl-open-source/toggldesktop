@@ -51,6 +51,10 @@ int main(int argc, char *argv[]) try {
     QApplication::setOrganizationName("Toggl");
 
     TogglApplication a(argc, argv);
+    if (a.isRunning()) {
+        qDebug() << "An instance of the app is already running";
+        return 0;
+    }
 
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
@@ -96,6 +100,9 @@ int main(int argc, char *argv[]) try {
                            parser.value(logPathOption),
                            parser.value(dbPathOption),
                            parser.value(scriptPathOption));
+
+    a.w = &w;
+
     w.show();
 
     return a.exec();
