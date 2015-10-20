@@ -156,4 +156,11 @@ extern void *ctx;
 	NSLog(@"Update check failed with error %@", error);
 }
 
+- (BOOL)                    updater:(SUUpdater *)updater
+	shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
+					  untilInvoking:(NSInvocation *)invocation
+{
+	return YES;
+}
+
 @end
