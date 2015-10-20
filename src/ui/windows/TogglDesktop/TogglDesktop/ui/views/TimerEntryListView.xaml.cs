@@ -21,12 +21,12 @@ namespace TogglDesktop
             Toggl.OnLogin += this.onLogin;
         }
 
-        public double TimerHeight { get { return this.timer.Height; } }
+        public double TimerHeight { get { return this.Timer.Height; } }
 
         protected override void OnInitialized(EventArgs e)
         {
-            this.MinHeight = this.timer.Height;
-            this.MinWidth = this.timer.MinWidth;
+            this.MinHeight = this.Timer.Height;
+            this.MinWidth = this.Timer.MinWidth;
 
             base.OnInitialized(e);
         }
@@ -145,11 +145,6 @@ namespace TogglDesktop
             this.entries.HighlightCell(cell);
         }
 
-        public void SetEditPopup(EditView editView)
-        {
-            editView.SetTimer(this.timer);
-        }
-
         public void DisableHighlight()
         {
             this.highlightedGUID = null;
@@ -170,7 +165,7 @@ namespace TogglDesktop
 
         public void SetManualMode(bool manualMode)
         {
-            this.timer.SetManualMode(manualMode);
+            this.Timer.SetManualMode(manualMode);
         }
 
         private void onFocusTimeEntryList(object sender, EventArgs e)
@@ -179,7 +174,7 @@ namespace TogglDesktop
         }
         private void onFocusTimer(object sender, EventArgs e)
         {
-            this.timer.Focus();
+            this.Timer.Focus();
         }
     }
 }
