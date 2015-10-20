@@ -168,7 +168,7 @@ namespace TogglDesktop
                 setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
                 setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
 
-                this.projectGridRow.Height = GridLength.Auto;
+                this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
                 this.cancelProjectSelectionButton.Visibility = Visibility.Visible;
             }
             else
