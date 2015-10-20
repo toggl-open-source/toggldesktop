@@ -468,8 +468,16 @@ void RelatedData::TagList(std::vector<std::string> *tags) const {
 }
 
 void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
-    *result = Workspaces;
-
+    for (std::vector<Workspace *>::const_iterator it =
+        Workspaces.begin();
+            it != Workspaces.end();
+            it++) {
+        Workspace *ws = *it;
+        if (!ws->Admin() && ws->OnlyAdminsMayCreateProjects()) {
+            continue;
+        }
+        result->push_back(ws);
+    }
     std::sort(result->rbegin(), result->rend(), CompareWorkspaceByName);
 }
 
