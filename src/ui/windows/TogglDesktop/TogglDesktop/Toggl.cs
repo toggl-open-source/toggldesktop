@@ -1116,7 +1116,6 @@ public static partial class Toggl
 
         if (update == null)
         {
-            MessageBox.Show(mainWindow, "Something went wrong.\nPlease restart Toggl Desktop manually.");
             return;
         }
 
