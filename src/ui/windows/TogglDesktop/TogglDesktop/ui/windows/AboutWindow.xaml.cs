@@ -97,6 +97,8 @@ namespace TogglDesktop
             this.restartButton.IsEnabled = false;
 
             Toggl.RestartAndUpdate();
+
+            MessageBox.Show(this, "Something went wrong.\nPlease restart Toggl Desktop manually.");
         }
     }
 }
