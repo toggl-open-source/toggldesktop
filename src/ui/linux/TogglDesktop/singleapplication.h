@@ -1,5 +1,7 @@
-#ifndef SINGLEAPPLICATION_H
-#define SINGLEAPPLICATION_H
+// Copyright 2015 Toggl Desktop developers.
+
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_SINGLEAPPLICATION_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_SINGLEAPPLICATION_H_
 
 #include <QObject>
 #include <QApplication>
@@ -9,12 +11,12 @@
 class SingleApplication : public QApplication {
     Q_OBJECT
  public:
-    SingleApplication(int &argc, char **argv);
+    SingleApplication(const int &argc, char **argv);
 
     bool isRunning();
     QWidget *w;
 
- private slots:
+ private slots:  // NOLINT
     void newLocalConnection();
 
  private:
@@ -27,4 +29,4 @@ class SingleApplication : public QApplication {
     QString server_name_;
 };
 
-#endif // SINGLEAPPLICATION_H
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_SINGLEAPPLICATION_H_

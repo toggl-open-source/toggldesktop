@@ -57,7 +57,8 @@ void TimeEntryListWidget::displayTimeEntryList(
 
         if (ui->list->count() > i) {
             item = ui->list->item(i);
-            cell = static_cast<TimeEntryCellWidget *>(ui->list->itemWidget(item));
+            cell = static_cast<TimeEntryCellWidget *>(
+                ui->list->itemWidget(item));
         }
 
         if (!item) {
@@ -74,8 +75,7 @@ void TimeEntryListWidget::displayTimeEntryList(
         item->setSizeHint(sizeHint);
     }
 
-    while (ui->list->count() > list.size())
-    {
+    while (ui->list->count() > list.size()) {
         ui->list->model()->removeRow(list.size());
     }
 
@@ -95,7 +95,6 @@ void TimeEntryListWidget::displayTimeEntryEditor(
     }
 }
 
-void TimeEntryListWidget::on_blankView_linkActivated(const QString &link)
-{
+void TimeEntryListWidget::on_blankView_linkActivated(const QString &link) {
     TogglApi::instance->openInBrowser();
 }

@@ -1,17 +1,19 @@
-#include "singleapplication.h"
+// Copyright 2015 Toggl Desktop developers.
+
+#include "./singleapplication.h"
 
 #include <QtNetwork/QLocalSocket>
 #include <QFileInfo>
 
-#define TIME_OUT                (500)    // 500ms
+#define TIMEOUT_MS                (500)
 
 SingleApplication::SingleApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 , w(0)
 , is_running_(false)
 , local_server_(0) {
-
-    server_name_ = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
+    server_name_ = QFileInfo(
+        QCoreApplication::applicationFilePath()).fileName();
 
     initLocalConnection();
 }
@@ -22,8 +24,8 @@ bool SingleApplication::isRunning() {
 
 void SingleApplication::newLocalConnection() {
     QLocalSocket *socket = local_server_->nextPendingConnection();
-    if(socket) {
-        socket->waitForReadyRead(2*TIME_OUT);
+    if (socket) {
+        socket->waitForReadyRead(2 * TIMEOUT_MS);
         delete socket;
 
         activateWindow();
@@ -35,7 +37,7 @@ void SingleApplication::initLocalConnection() {
 
     QLocalSocket socket;
     socket.connectToServer(server_name_);
-    if(socket.waitForConnected(TIME_OUT)) {
+    if (socket.waitForConnected(TIMEOUT_MS)) {
         fprintf(stderr, "%s already running.\n",
                 server_name_.toLocal8Bit().constData());
         is_running_ = true;
@@ -47,9 +49,11 @@ void SingleApplication::initLocalConnection() {
 
 void SingleApplication::newLocalServer() {
     local_server_ = new QLocalServer(this);
-    connect(local_server_, SIGNAL(newConnection()), this, SLOT(newLocalConnection()));
-    if(!local_server_->listen(server_name_)) {
-        if(local_server_->serverError() == QAbstractSocket::AddressInUseError) {
+    connect(local_server_, SIGNAL(newConnection()),
+            this, SLOT(newLocalConnection()));
+    if (!local_server_->listen(server_name_)) {
+        if (local_server_->serverError() ==
+                QAbstractSocket::AddressInUseError) {
             QLocalServer::removeServer(server_name_);
             local_server_->listen(server_name_);
         }
@@ -57,9 +61,9 @@ void SingleApplication::newLocalServer() {
 }
 
 void SingleApplication::activateWindow() {
-    if(w) {
+    if (w) {
         w->show();
         w->raise();
-        w->activateWindow(); // Activates the window
+        w->activateWindow();
     }
 }
