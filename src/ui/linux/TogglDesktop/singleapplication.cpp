@@ -1,4 +1,5 @@
-#include "SingleApplication.h"
+#include "singleapplication.h"
+
 #include <QtNetwork/QLocalSocket>
 #include <QFileInfo>
 
@@ -6,9 +7,9 @@
 
 SingleApplication::SingleApplication(int &argc, char **argv)
     : QApplication(argc, argv)
-, w(nullptr)
+, w(0)
 , is_running_(false)
-, local_server_(nullptr) {
+, local_server_(0) {
 
     server_name_ = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
 
