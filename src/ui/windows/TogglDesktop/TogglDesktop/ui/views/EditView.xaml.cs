@@ -181,7 +181,7 @@ namespace TogglDesktop
 
         #region duration auto update
 
-        private void durationUpdateTimerTick(object sender, EventArgs eventArgs)
+        private void durationUpdateTimerTick(object sender, string s)
         {
             if (!this.hasTimeEntry() || this.timeEntry.DurationInSeconds >= 0)
                 return;
@@ -192,7 +192,6 @@ namespace TogglDesktop
 
             var caret = this.durationTextBox.CaretIndex;
 
-            var s = Toggl.FormatDurationInSecondsHHMMSS(this.timeEntry.DurationInSeconds);
             this.durationTextBox.SetText(s);
             this.durationTextBox.Tag = s;
 

@@ -43,6 +43,7 @@ namespace TogglDesktop
         private bool isTracking;
         private bool isResizingWithHandle;
         private bool closing;
+        private string trackingTitle;
 
         #endregion
 
@@ -115,7 +116,8 @@ namespace TogglDesktop
             };
             this.idleNotificationWindow = new IdleNotificationWindow();
 
-            this.timerEntryListView.SetEditPopup(this.editPopup.EditView);
+            this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
+            this.timerEntryListView.Timer.RunningTimeEntrySecondPulse += this.updateTaskbarTooltip;
 
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
@@ -485,6 +487,11 @@ namespace TogglDesktop
             Toggl.SetIdleSeconds((ulong)idleSeconds);
         }
 
+        private void updateTaskbarTooltip(object sender, string s)
+        {
+            this.taskbarIcon.ToolTipText = this.trackingTitle + s;
+        }
+
         #endregion
 
         #region command events
@@ -821,12 +828,15 @@ namespace TogglDesktop
                 {
                     this.Title = "Toggl Desktop";
                     this.runningMenuText.Text = "Timer is tracking";
+                    this.trackingTitle = "";
                 }
                 else
                 {
                     this.Title = description + " - Toggl Desktop";
                     this.runningMenuText.Text = description;
+                    this.trackingTitle = description + " - ";
                 }
+
 
                 if(this.isInManualMode)
                     this.setManualMode(false);
@@ -835,6 +845,7 @@ namespace TogglDesktop
             {
                 this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
+                this.taskbarIcon.ToolTipText = "Toggl Desktop";
             }
 
             this.updateStatusIcons(true);

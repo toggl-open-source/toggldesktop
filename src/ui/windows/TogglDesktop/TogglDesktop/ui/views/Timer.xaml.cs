@@ -19,7 +19,7 @@ namespace TogglDesktop
         private bool acceptNextUpdate;
 
         public event EventHandler StartStopClick;
-        public event EventHandler RunningTimeEntrySecondPulse;
+        public event EventHandler<string> RunningTimeEntrySecondPulse;
         public event EventHandler FocusTimeEntryList;
 
         public Timer()
@@ -43,8 +43,13 @@ namespace TogglDesktop
             this.secondsTimer.Interval = TimeSpan.FromSeconds(1);
             this.secondsTimer.Tick += (sender, args) =>
             {
+                if (!this.isRunning)
+                    return;
+
+                var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
+
                 if (this.RunningTimeEntrySecondPulse != null)
-                    this.RunningTimeEntrySecondPulse(this, EventArgs.Empty);
+                    this.RunningTimeEntrySecondPulse(this, s);
             };
         }
 
@@ -92,12 +97,9 @@ namespace TogglDesktop
 
         #region ui events
 
-        private void timerTick(object sender, EventArgs e)
+        private void timerTick(object sender, string t)
         {
-            if (!this.isRunning)
-                return;
-
-            this.setRunningDurationLabels();
+            this.setRunningDurationLabels(t);
         }
 
         private void startStopButtonOnClick(object sender, RoutedEventArgs e)
@@ -304,11 +306,16 @@ namespace TogglDesktop
 
         private void setRunningDurationLabels()
         {
+            var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
+
+            this.setRunningDurationLabels(s);
+        }
+
+        private void setRunningDurationLabels(string s)
+        {
             var seconds = this.runningTimeEntry.DurationInSeconds;
             var unixTimestamp = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             var realSeconds = unixTimestamp + seconds;
-
-            var s = Toggl.FormatDurationInSecondsHHMMSS(seconds);
 
             if (realSeconds < 10)
             {
