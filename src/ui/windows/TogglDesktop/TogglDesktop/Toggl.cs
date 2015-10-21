@@ -622,7 +622,7 @@ public static partial class Toggl
 
         toggl_on_time_entry_list(ctx, (open, first) =>
         {
-            using (Performance.Measure("Calling OnTimeEntryList"))
+            using (Performance.Measure("Calling OnTimeEntryList, open: {0}", open))
             {
                 OnTimeEntryList(open, convertToTimeEntryList(first));
             }

@@ -41,7 +41,6 @@ namespace TogglDesktop
         {
             this.EditView.EnsureSaved();
             this.Hide();
-            Toggl.ViewTimeEntryList();
         }
 
         #region ui events

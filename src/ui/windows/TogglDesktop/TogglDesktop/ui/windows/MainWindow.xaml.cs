@@ -117,6 +117,7 @@ namespace TogglDesktop
 
             this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
             this.timerEntryListView.Timer.RunningTimeEntrySecondPulse += this.updateTaskbarTooltip;
+            this.timerEntryListView.Timer.StartStopClick += (sender, args) => this.closeEditPopup();
 
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
@@ -688,7 +689,7 @@ namespace TogglDesktop
         private void minimizeToTray()
         {
             this.Hide();
-            this.closeEditPopup();
+            this.closeEditPopup(true);
         }
 
         private void setGlobalShortcutsFromSettings()
@@ -842,13 +843,17 @@ namespace TogglDesktop
             this.SetIconState(tracking);
         }
 
-        private void closeEditPopup()
+        private void closeEditPopup(bool focusTimeEntryList = false)
         {
             if (this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup();
                 this.timerEntryListView.DisableHighlight();
+                if (focusTimeEntryList)
+                {
+                    Toggl.ViewTimeEntryList();
+                }
             }
         }
 
