@@ -11,7 +11,7 @@
 class SingleApplication : public QApplication {
     Q_OBJECT
  public:
-    SingleApplication(int &argc, char **argv);
+    SingleApplication(int &argc, char **argv);  // NOLINT
 
     bool isRunning();
     QWidget *w;
