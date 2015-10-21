@@ -271,11 +271,24 @@ BOOL manualMode = NO;
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	}
 
+	// Listen for system shutdown, to automatically stop timer. Experimental feature.
+	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+														   selector:@selector(systemWillPowerOff:)
+															   name:NSWorkspaceWillPowerOffNotification
+															 object:nil];
+
 	if (self.scriptPath)
 	{
 		[self performSelectorInBackground:@selector(runScript:)
 							   withObject:self.scriptPath];
 	}
+}
+
+- (void)systemWillPowerOff:(NSNotification *)aNotification
+{
+	NSLog(@"System will power off");
+	// FIXME: we could stop timer here, if its running and user has configured
+	// the app to stop the timer automatically.
 }
 
 - (void)runScript:(NSString *)scriptFile
