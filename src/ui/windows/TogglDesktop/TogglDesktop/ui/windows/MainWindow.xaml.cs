@@ -67,7 +67,6 @@ namespace TogglDesktop
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
-            this.IsVisibleChanged += this.onIsVisibleChanged;
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
@@ -376,15 +375,8 @@ namespace TogglDesktop
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (this.closing)
-            {
-                base.OnClosing(e);
-            }
-            else
-            {
-                e.Cancel = true;
-                this.shutdown(0);
-            }
+            e.Cancel = true;
+            this.shutdown(0);
         }
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
@@ -459,14 +451,6 @@ namespace TogglDesktop
             if (e.LeftButton == MouseButtonState.Released)
             {
                 this.endHandleResizing();
-            }
-        }
-
-        private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (this.IsVisible)
-            {
-                //this.setWindowOnTop();
             }
         }
 
@@ -762,13 +746,14 @@ namespace TogglDesktop
 
         private void shutdown(int exitCode)
         {
+            if (this.closing)
+                return;
+
+            this.closing = true;
+
             this.PrepareShutdown(exitCode == 0);
 
-            if (!this.closing)
-            {
-                this.closing = true;
-                this.Close();
-            }
+            this.Close();
 
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
