@@ -16,10 +16,11 @@ namespace TogglDesktop
         private List<Tuple<string, TimeEntryCell>> cells;
         private int keyboardSelectedId;
         private TimeEntryCell cellAboutToKeyboardHighlight;
+        private bool imposterVisible;
 
         private bool hasKeyboardSelection
         {
-            get { return this.keyboardSelectedId != -1 && this.keyboardHighlightCellImposter.Visibility == Visibility.Visible; }
+            get { return this.keyboardSelectedId != -1 && this.imposterVisible; }
         }
 
         private string keyboardHighlightedGUID
@@ -234,6 +235,7 @@ namespace TogglDesktop
         private void hideSelection()
         {
             this.keyboardHighlight.Visibility = Visibility.Collapsed;
+            this.imposterVisible = false;
             this.cellAboutToKeyboardHighlight = null;   
         }
 
@@ -275,6 +277,7 @@ namespace TogglDesktop
 
             this.keyboardHighlight.Margin = new Thickness(-10, y, -10, 0);
             this.keyboardHighlight.Visibility = Visibility.Visible;
+            this.imposterVisible = true;
 
             cell.BringIntoView();
         }
@@ -282,6 +285,5 @@ namespace TogglDesktop
         #endregion
 
         #endregion
-
     }
 }
