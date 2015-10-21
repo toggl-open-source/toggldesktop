@@ -11,7 +11,7 @@
 class SingleApplication : public QApplication {
     Q_OBJECT
  public:
-    SingleApplication(const int &argc, char **argv);
+    SingleApplication(int &argc, char **argv);
 
     bool isRunning();
     QWidget *w;
