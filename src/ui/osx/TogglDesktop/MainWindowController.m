@@ -9,6 +9,7 @@
 #import "MainWindowController.h"
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
+#import "TimelineViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "MenuItemTags.h"
@@ -18,6 +19,7 @@
 @interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
+@property (nonatomic, strong) IBOutlet TimelineViewController *timelineViewController;
 @property NSLayoutConstraint *contentViewTop;
 @property NSLayoutConstraint *contentViewBottom;
 
@@ -36,10 +38,12 @@ extern void *ctx;
 									initWithNibName:@"LoginViewController" bundle:nil];
 		self.timeEntryListViewController = [[TimeEntryListViewController alloc]
 											initWithNibName:@"TimeEntryListViewController" bundle:nil];
-
+		self.timelineViewController = [[TimelineViewController alloc]
+									   initWithNibName:@"TimelineViewController" bundle:nil];
 
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+		[self.timelineViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayLogin:)
@@ -117,6 +121,7 @@ extern void *ctx;
 		[self.loginViewController.email becomeFirstResponder];
 
 		[self.timeEntryListViewController.view removeFromSuperview];
+		[self.timelineViewController.view removeFromSuperview];
 	}
 }
 
@@ -142,12 +147,13 @@ extern void *ctx;
 		[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
 		[self.loginViewController.view removeFromSuperview];
+		[self.timelineViewController.view removeFromSuperview];
 	}
 }
 
 - (void)startDisplayTimeline:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
+	[self performSelectorOnMainThread:@selector(displayTimeline:)
 						   withObject:notification.object
 						waitUntilDone:NO];
 }
@@ -157,7 +163,11 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-		// FIXME: replace time entry list view with timeline view
+		[self.contentView addSubview:self.timelineViewController.view];
+		[self.timelineViewController.view setFrame:self.contentView.bounds];
+
+		[self.loginViewController.view removeFromSuperview];
+		[self.timeEntryListViewController.view removeFromSuperview];
 	}
 }
 
