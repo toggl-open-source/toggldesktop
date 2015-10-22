@@ -61,6 +61,10 @@ extern void *ctx;
 												 selector:@selector(startDisplayOnlineState:)
 													 name:kDisplayOnlineState
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayTimeline:)
+													 name:kDisplayTimeline
+												   object:nil];
 	}
 	return self;
 }
@@ -128,7 +132,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-		// Close error when loging in
+		// Close error when logging in
 		if ([self.loginViewController.view superview] != nil)
 		{
 			[self closeError];
@@ -138,6 +142,22 @@ extern void *ctx;
 		[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
 		[self.loginViewController.view removeFromSuperview];
+	}
+}
+
+- (void)startDisplayTimeline:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayTimeline:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	if (cmd.open)
+	{
+		// FIXME: replace time entry list view with timeline view
 	}
 }
 

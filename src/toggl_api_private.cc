@@ -344,6 +344,45 @@ void time_entry_view_item_clear(
     delete item;
 }
 
+TogglTimelineView *timeline_view_init() {
+    TogglTimelineView *view_item = new TogglTimelineView();
+    poco_check_ptr(view_item);
+
+    // FIXME: fill data
+
+    view_item->Next = nullptr;
+
+    return view_item;
+}
+
+void timeline_view_clear(
+    TogglTimelineView *view) {
+    if (!view) {
+        return;
+    }
+
+    free(view->Title);
+    view->Title = nullptr;
+
+    free(view->Filename);
+    view->Filename = nullptr;
+
+    free(view->StartTimeString);
+    view->StartTimeString = nullptr;
+
+    free(view->EndTimeString);
+    view->EndTimeString = nullptr;
+
+    if (view->Next) {
+        TogglTimelineView *next =
+            reinterpret_cast<TogglTimelineView *>(view->Next);
+        timeline_view_clear(next);
+        view->Next = nullptr;
+    }
+
+    delete view;
+}
+
 TogglSettingsView *settings_view_item_init(
     const bool_t record_timeline,
     const toggl::Settings settings,
