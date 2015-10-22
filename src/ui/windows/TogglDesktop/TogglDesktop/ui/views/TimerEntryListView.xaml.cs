@@ -40,7 +40,7 @@ namespace TogglDesktop
 
             if (open || userID == 0)
             {
-                this.entries.Children.Clear();
+                this.Entries.Children.Clear();
             }
         }
 
@@ -53,7 +53,7 @@ namespace TogglDesktop
 
             if (open)
             {
-                this.entries.Focus(false);
+                this.Entries.Focus(false);
                 this.DisableHighlight();
             }
         }
@@ -68,7 +68,7 @@ namespace TogglDesktop
                 this.highlightEntry(te.GUID);
                 if (open)
                 {
-                    this.entries.HighlightKeyboard(te.GUID);
+                    this.Entries.HighlightKeyboard(te.GUID);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace TogglDesktop
 
         private void fillTimeEntryList(List<Toggl.TogglTimeEntryView> list)
         {
-            var previousCount = this.entries.Children.Count;
+            var previousCount = this.Entries.Children.Count;
             var newCount = list.Count;
 
             var cells = new List<Tuple<string, TimeEntryCell>>(newCount);
@@ -87,7 +87,7 @@ namespace TogglDesktop
             {
                 this.cellsByGUID.Clear();
 
-                var children = this.entries.Children;
+                var children = this.Entries.Children;
 
                 // remove superfluous cells
                 if (children.Count > list.Count)
@@ -101,7 +101,7 @@ namespace TogglDesktop
                 {
                     var entry = list[i];
 
-                    var cell = (TimeEntryCell)this.entries.Children[i];
+                    var cell = (TimeEntryCell)this.Entries.Children[i];
                     cell.Display(entry);
 
                     this.cellsByGUID.Add(entry.GUID, cell);
@@ -122,8 +122,8 @@ namespace TogglDesktop
                     children.Add(cell);
                 }
 
-                this.entries.FinishedFillingList();
-                this.entries.SetTimeEntryCellList(cells);
+                this.Entries.FinishedFillingList();
+                this.Entries.SetTimeEntryCellList(cells);
                 this.refreshHighLight();
             }
 
@@ -142,25 +142,25 @@ namespace TogglDesktop
             if (guid != null)
                 this.cellsByGUID.TryGetValue(guid, out cell);
 
-            this.entries.HighlightCell(cell);
+            this.Entries.HighlightCell(cell);
         }
 
         public void DisableHighlight()
         {
             this.highlightedGUID = null;
-            this.entries.DisableHighlight();
+            this.Entries.DisableHighlight();
         }
 
         public void SetListWidth(double width)
         {
-            this.entries.HorizontalAlignment = HorizontalAlignment.Left;
-            this.entries.Width = Math.Max(width, 0);
+            this.Entries.HorizontalAlignment = HorizontalAlignment.Left;
+            this.Entries.Width = Math.Max(width, 0);
         }
 
         public void DisableListWidth()
         {
-            this.entries.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.entries.Width = this.Width;
+            this.Entries.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.Entries.Width = this.Width;
         }
 
         public void SetManualMode(bool manualMode)
@@ -170,7 +170,7 @@ namespace TogglDesktop
 
         private void onFocusTimeEntryList(object sender, EventArgs e)
         {
-            this.entries.Focus(true);
+            this.Entries.Focus(true);
         }
         private void onFocusTimer(object sender, EventArgs e)
         {
