@@ -35,6 +35,13 @@ namespace TogglDesktop
             this.Topmost = true;
             this.Activate();
         }
+
+        protected override void OnDeactivated(EventArgs e)
+        {
+            this.Topmost = true;
+            this.Activate();
+        }
+
         private void onStoppedTimerState()
         {
             if (this.TryBeginInvoke(this.onStoppedTimerState))
