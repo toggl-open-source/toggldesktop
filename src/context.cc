@@ -65,7 +65,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_reminder_at_(0)
 , next_analytics_at_(0)
 , next_wake_at_(0)
-, time_entry_editor_guid_("")
 , environment_("production")
 , idle_(&ui_)
 , last_sync_started_(0)
@@ -247,7 +246,7 @@ error Context::save(const bool push_changes) {
 
         UIElements render;
         render.display_unsynced_items = true;
-        render.ApplyChanges(time_entry_editor_guid_, changes);
+        render.ApplyChanges(UI()->TimeEntryEditorGUID(), changes);
         updateUI(render);
 
         if (push_changes) {
@@ -438,9 +437,6 @@ void Context::updateUI(const UIElements &what) {
             if (editor_time_entry) {
                 total_duration_for_date =
                     user_->related.TotalDurationForDate(editor_time_entry);
-                if (what.open_time_entry_editor) {
-                    time_entry_editor_guid_ = editor_time_entry->GUID();
-                }
             }
         }
         if (what.display_time_entry_autocomplete && user_) {
@@ -469,9 +465,6 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_time_entries && user_) {
             time_entries = user_->related.VisibleTimeEntries();
             std::sort(time_entries.begin(), time_entries.end(), CompareByStart);
-            if (what.open_time_entry_list) {
-                time_entry_editor_guid_ = "";
-            }
         }
         if (what.display_settings) {
             error err = db()->LoadSettings(&settings_);
@@ -2248,7 +2241,7 @@ void Context::OpenTimeEntryEditor(
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
-    if (time_entry_editor_guid_ == te->GUID()) {
+    if (UI()->TimeEntryEditorGUID() == te->GUID()) {
         render.open_time_entry_editor = false;
         render.display_time_entry_editor = false;
         render.time_entry_editor_guid = "";

@@ -285,6 +285,8 @@ void GUI::DisplayProjectAutocomplete(
 void GUI::DisplayTimeEntryList(const bool open,
                                const RelatedData &related,
                                const std::vector<TimeEntry *> list) {
+    time_entry_editor_guid_ = "";
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
     {
@@ -490,6 +492,8 @@ void GUI::DisplayTimeEntryEditor(
     const std::string focused_field_name,
     const Poco::Int64 total_duration_for_date,
     const User *user) {
+
+    time_entry_editor_guid_ = te->GUID();
 
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
