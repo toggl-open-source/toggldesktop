@@ -26,9 +26,11 @@
         <RoutedUICommand x:Key="AboutCommand" />
         <RoutedUICommand x:Key="LogoutCommand" />
         <RoutedUICommand x:Key="QuitCommand" />
-        
+
         <RoutedUICommand x:Key="EditRunningCommand" />
         
+        <RoutedUICommand x:Key="EscapeCommand" />
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
 
@@ -62,6 +64,9 @@
 
         <CommandBinding Command="{StaticResource EditRunningCommand}"
                         Executed="onEditRunningCommand" CanExecute="canExecuteEditRunningCommand"/>
+        
+        <CommandBinding Command="{StaticResource EscapeCommand}"
+                        Executed="onEscapeCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -75,6 +80,8 @@
         <KeyBinding Key="E" Modifiers="Control" Command="{StaticResource EditRunningCommand}" />
 
         <KeyBinding Key="D" Modifiers="Control" Command="{StaticResource ToggleManualModeCommand}" />
+
+        <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
     
     <Window.ContextMenu>

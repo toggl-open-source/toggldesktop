@@ -120,11 +120,10 @@ namespace TogglDesktop
                 }
                 case Key.Escape:
                 {
-                    if (!this.isRunning)
-                    {
-                        this.setUIToStoppedState();
-                        e.Handled = true;
-                    }
+                    if (this.isRunning || this.completedProject.ProjectId == 0)
+                        return;
+                    this.clearSelectedProject();
+                    e.Handled = true;
                     return;
                 }
             }
@@ -175,12 +174,16 @@ namespace TogglDesktop
             }
             else
             {
-                this.projectGridRow.Height = new GridLength(0);
-                this.cancelProjectSelectionButton.Visibility = Visibility.Collapsed;
+                this.clearSelectedProject();
             }
         }
 
         private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.clearSelectedProject();
+        }
+
+        private void clearSelectedProject()
         {
             this.projectGridRow.Height = new GridLength(0);
             this.completedProject = new ProjectInfo();
