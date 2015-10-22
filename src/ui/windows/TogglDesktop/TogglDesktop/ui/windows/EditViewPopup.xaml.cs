@@ -21,6 +21,7 @@ namespace TogglDesktop
 
         private bool isLeft;
         private bool isResizing;
+        private bool skipAnimation;
 
         public EditViewPopup()
         {
@@ -43,7 +44,15 @@ namespace TogglDesktop
             
             using (Performance.Measure("opening edit popup"))
             {
-                this.startAnimationOpen();
+                if (this.skipAnimation)
+                {
+                    this.stopAnimationOpen();
+                }
+                else
+                {
+                    this.startAnimationOpen();
+                }
+
                 this.Show();
                 this.EditView.FocusField(focusedFieldName);
             }
@@ -51,7 +60,7 @@ namespace TogglDesktop
 
         public void ClosePopup(bool skipAnimation = false)
         {
-            if (skipAnimation)
+            if (skipAnimation || this.skipAnimation)
             {
                 this.EditView.EnsureSaved();
                 this.stopAnimationClose();
@@ -177,6 +186,8 @@ namespace TogglDesktop
             this.setShadow(left ^ fixHeight, height);
 
             this.resizeHandle.HorizontalAlignment = left ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+
+            this.skipAnimation = fixHeight;
 
             if (!fixHeight)
                 height = Math.Min(700, Math.Max(520, height));
