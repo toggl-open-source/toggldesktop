@@ -71,7 +71,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
 , next_wake_at_(0)
-, time_entry_editor_guid_("")
 , environment_("production")
 , idle_(&ui_)
 , last_sync_started_(0)
@@ -282,7 +281,7 @@ error Context::save(const bool push_changes) {
 
         UIElements render;
         render.display_unsynced_items = true;
-        render.ApplyChanges(time_entry_editor_guid_, changes);
+        render.ApplyChanges(UI()->TimeEntryEditorGUID(), changes);
         updateUI(render);
 
         if (push_changes) {
@@ -2389,7 +2388,7 @@ void Context::OpenTimeEntryEditor(
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
-    if (time_entry_editor_guid_ == te->GUID()) {
+    if (UI()->TimeEntryEditorGUID() == te->GUID()) {
         render.open_time_entry_editor = false;
         render.display_time_entry_editor = false;
         render.time_entry_editor_guid = "";
