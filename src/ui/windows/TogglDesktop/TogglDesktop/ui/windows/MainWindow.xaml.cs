@@ -117,7 +117,7 @@ namespace TogglDesktop
 
             this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
             this.timerEntryListView.Timer.RunningTimeEntrySecondPulse += this.updateTaskbarTooltip;
-            this.timerEntryListView.Timer.StartStopClick += (sender, args) => this.closeEditPopup();
+            this.timerEntryListView.Timer.StartStopClick += (sender, args) => this.closeEditPopup(true);
 
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
@@ -149,6 +149,7 @@ namespace TogglDesktop
             Toggl.OnApp += this.onApp;
             Toggl.OnError += this.onError;
             Toggl.OnLogin += this.onLogin;
+            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
             Toggl.OnOnlineState += this.onOnlineState;
             Toggl.OnReminder += this.onReminder;
@@ -220,6 +221,14 @@ namespace TogglDesktop
         #endregion
 
         #region toggl events
+
+        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
+        {
+            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
+                return;
+
+            this.updateEditPopupLocation(true);
+        }
 
         private void onStoppedTimerState()
         {
@@ -689,7 +698,7 @@ namespace TogglDesktop
         private void minimizeToTray()
         {
             this.Hide();
-            this.closeEditPopup(true);
+            this.closeEditPopup(skipAnimation:true);
         }
 
         private void setGlobalShortcutsFromSettings()
@@ -843,12 +852,12 @@ namespace TogglDesktop
             this.SetIconState(tracking);
         }
 
-        private void closeEditPopup(bool focusTimeEntryList = false)
+        private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
         {
             if (this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
-                this.editPopup.ClosePopup();
+                this.editPopup.ClosePopup(skipAnimation);
                 this.timerEntryListView.DisableHighlight();
                 if (focusTimeEntryList)
                 {
@@ -882,9 +891,9 @@ namespace TogglDesktop
             }
         }
 
-        private void updateEditPopupLocation()
+        private void updateEditPopupLocation(bool forceUpdate = false)
         {
-            if (this.editPopup == null || !this.editPopup.IsVisible)
+            if (this.editPopup == null || (!forceUpdate && !this.editPopup.IsVisible))
                 return;
 
             if (this.WindowState == WindowState.Maximized)

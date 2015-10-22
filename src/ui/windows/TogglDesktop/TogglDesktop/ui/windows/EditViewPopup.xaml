@@ -8,8 +8,9 @@
         d:DesignWidth="400" d:DesignHeight="520"
         WindowStyle="None" ResizeMode="NoResize"
         MouseMove="onWindowMouseMove"
+        Background="Transparent"
         ShowInTaskbar="False"
-        MinWidth="{Binding ElementName=EditView, Path=MinWidth}">
+        AllowsTransparency="True">
     
     <WindowChrome.WindowChrome>
         <WindowChrome
@@ -21,7 +22,7 @@
             />
     </WindowChrome.WindowChrome>
 
-    <Grid ClipToBounds="True">
+    <Grid ClipToBounds="True" Name="mainGrid" x:FieldModifier="private">
         <toggl:EditView
             x:Name="EditView"
             />

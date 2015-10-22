@@ -911,21 +911,27 @@ namespace TogglDesktop
 
         public void FocusField(string focusedFieldName)
         {
+            UIElement focus = null;
             switch (focusedFieldName)
             {
                 case Toggl.Project:
-                    this.projectTextBox.Focus();
+                    focus = this.projectTextBox;
                     break;
                 case Toggl.Duration:
-                    this.durationTextBox.Focus();
+                    focus = this.durationTextBox;
                     break;
                 case Toggl.Description:
-                    this.descriptionTextBox.Focus();
+                    focus = this.descriptionTextBox;
                     break;
                 default:
                     if (!this.IsKeyboardFocusWithin)
-                        this.descriptionTextBox.Focus();
+                        focus = this.durationTextBox;
                     break;
+            }
+
+            if (focus != null)
+            {
+                focus.Focus();
             }
         }
 
