@@ -349,10 +349,15 @@ void RelatedData::projectAutocompleteItems(
             continue;
         }
 
-        if (unique_names->find(text) != unique_names->end()) {
-            continue;
+        {
+            std::stringstream ss;
+            ss << p->WID() << "/" << text;
+            std::string uniq_name = ss.str();
+            if (unique_names->find(uniq_name) != unique_names->end()) {
+                continue;
+            }
+            unique_names->insert(uniq_name);
         }
-        unique_names->insert(text);
 
         view::Autocomplete autocomplete_item;
         autocomplete_item.Text = text;
@@ -369,6 +374,7 @@ void RelatedData::projectAutocompleteItems(
         }
         autocomplete_item.WorkspaceID = p->WID();
         autocomplete_item.Type = kAutocompleteItemProject;
+
         list->push_back(autocomplete_item);
     }
 }
@@ -462,8 +468,16 @@ void RelatedData::TagList(std::vector<std::string> *tags) const {
 }
 
 void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
-    *result = Workspaces;
-
+    for (std::vector<Workspace *>::const_iterator it =
+        Workspaces.begin();
+            it != Workspaces.end();
+            it++) {
+        Workspace *ws = *it;
+        if (!ws->Admin() && ws->OnlyAdminsMayCreateProjects()) {
+            continue;
+        }
+        result->push_back(ws);
+    }
     std::sort(result->rbegin(), result->rend(), CompareWorkspaceByName);
 }
 

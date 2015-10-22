@@ -67,7 +67,6 @@ namespace TogglDesktop
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
-            this.IsVisibleChanged += this.onIsVisibleChanged;
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
@@ -118,6 +117,7 @@ namespace TogglDesktop
 
             this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
             this.timerEntryListView.Timer.RunningTimeEntrySecondPulse += this.updateTaskbarTooltip;
+            this.timerEntryListView.Timer.StartStopClick += (sender, args) => this.closeEditPopup(true);
 
             this.editPopup.IsVisibleChanged += this.editPopupVisibleChanged;
             this.editPopup.SizeChanged += (sender, args) => this.updateEntriesListWidth();
@@ -382,15 +382,8 @@ namespace TogglDesktop
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (this.closing)
-            {
-                base.OnClosing(e);
-            }
-            else
-            {
-                e.Cancel = true;
-                this.shutdown(0);
-            }
+            e.Cancel = true;
+            this.shutdown(0);
         }
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
@@ -465,14 +458,6 @@ namespace TogglDesktop
             if (e.LeftButton == MouseButtonState.Released)
             {
                 this.endHandleResizing();
-            }
-        }
-
-        private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (this.IsVisible)
-            {
-                //this.setWindowOnTop();
             }
         }
 
@@ -710,7 +695,7 @@ namespace TogglDesktop
         private void minimizeToTray()
         {
             this.Hide();
-            this.closeEditPopup(true);
+            this.closeEditPopup(skipAnimation:true);
         }
 
         private void setGlobalShortcutsFromSettings()
@@ -768,13 +753,14 @@ namespace TogglDesktop
 
         private void shutdown(int exitCode)
         {
+            if (this.closing)
+                return;
+
+            this.closing = true;
+
             this.PrepareShutdown(exitCode == 0);
 
-            if (!this.closing)
-            {
-                this.closing = true;
-                this.Close();
-            }
+            this.Close();
 
             this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
@@ -863,13 +849,17 @@ namespace TogglDesktop
             this.SetIconState(tracking);
         }
 
-        private void closeEditPopup(bool skipAnimation = false)
+        private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
         {
             if (this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup(skipAnimation);
                 this.timerEntryListView.DisableHighlight();
+                if (focusTimeEntryList)
+                {
+                    Toggl.ViewTimeEntryList();
+                }
             }
         }
 

@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="460" Width="370"
+        Height="470" Width="370"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="About"
@@ -34,7 +34,7 @@
                        Margin="0 0 0 8"/>
             
             <TextBlock Name="updateText" x:FieldModifier="private"
-                       Text="Downloading version X" HorizontalAlignment="Center"
+                       Text="Downloading version X&#10;This is a test" HorizontalAlignment="Center"
                        FontWeight="Medium" Foreground="#318a40"
                        TextAlignment="Center"
                        Margin="0 0 0 8"/>

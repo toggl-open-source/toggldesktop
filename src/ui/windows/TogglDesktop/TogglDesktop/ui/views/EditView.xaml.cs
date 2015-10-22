@@ -894,7 +894,6 @@ namespace TogglDesktop
         public void SetTimer(Timer timer)
         {
             timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
-            timer.StartStopClick += (sender, args) => this.close();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -937,7 +936,6 @@ namespace TogglDesktop
 
         private void close()
         {
-            this.EnsureSaved();
             Toggl.ViewTimeEntryList();
         }
 

@@ -1,4 +1,12 @@
 
+To start Toggl Desktop, please run the script
+
+	TogglDesktop.sh
+
+It will automatically set up the Qt library paths
+and then start the app.
+
+
 Should you experience any problems, please contact the Toggl
 Desktop app developers at:
 

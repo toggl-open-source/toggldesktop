@@ -3029,6 +3029,7 @@ Project *Context::CreateProject(
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
             if ((p->Name() == trimmed_project_name)
+                    && (workspace_id == p->WID())
                     && (client_id == p->CID())) {
                 displayError(kProjectNameAlreadyExists);
                 return nullptr;
@@ -3372,6 +3373,10 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
         return noError;
     }
 
+    if (!settings_.autotrack) {
+        return noError;
+    }
+
     // Update the autotracker titles
     if (event.Title().size()) {
         autotracker_titles_.insert(event.Title());
@@ -3382,9 +3387,6 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
 
     // Notify user to track using autotracker rules:
     if (user_ && user_->RunningTimeEntry()) {
-        return noError;
-    }
-    if (!settings_.autotrack) {
         return noError;
     }
     AutotrackerRule *rule = user_->related.FindAutotrackerRule(event);
@@ -3446,7 +3448,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
             user_->related.TimelineEvents.push_back(event);
-            return displayError( save());
+            return displayError(save());
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());

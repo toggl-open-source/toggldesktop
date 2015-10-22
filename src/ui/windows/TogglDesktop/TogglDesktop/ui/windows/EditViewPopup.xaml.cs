@@ -55,7 +55,6 @@ namespace TogglDesktop
             {
                 this.EditView.EnsureSaved();
                 this.stopAnimationClose();
-                Toggl.ViewTimeEntryList();
             }
             else
             {
@@ -64,7 +63,6 @@ namespace TogglDesktop
 
                 this.EditView.EnsureSaved();
                 this.startAnimationClose();
-                Toggl.ViewTimeEntryList();
             }
         }
 
