@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="TogglDesktop.Tutorial.BasicTutorialScreen7"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="559.069" d:DesignWidth="381.927">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+
+        <Grid Grid.Row="2" Background="{StaticResource ViewBackgroundLight}">
+            <StackPanel Background="#b2434343">
+                <Grid Margin="0 0 0 40"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Top">
+                    <TextBlock Margin="20 10 10 10"
+                        Foreground="White" FontSize="20"
+                        TextAlignment="Left">
+                        <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                               Height="22" VerticalAlignment="Top" Margin="-20 0 -10 0">
+                            <Image.LayoutTransform>
+                                <RotateTransform Angle="45"></RotateTransform>
+                            </Image.LayoutTransform>
+                        </Image>
+                        You can also edit<LineBreak/>
+                        previous entries by<LineBreak/>
+                        clicking on them<LineBreak/>
+                        in the list
+                    </TextBlock>
+
+                    <TextBlock Margin="10"
+                        Foreground="White" FontSize="20"
+                        TextAlignment="Left" HorizontalAlignment="Right">
+                        
+                        or continue
+                        <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                               Height="22" VerticalAlignment="Top" Margin="-15 0 -10 0">
+                            <Image.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="-1"></ScaleTransform>
+                                <RotateTransform Angle="-45"></RotateTransform>
+                                </TransformGroup>
+                            </Image.LayoutTransform>
+                        </Image>
+                        <LineBreak/>
+                        any entry by<LineBreak/>
+                        clicking here
+                    </TextBlock>
+
+                </Grid>
+
+                <TextBlock Text="Happy Toggling!" Margin="10"
+                        Foreground="White" FontSize="20"
+                        TextAlignment="Left" HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</UserControl>

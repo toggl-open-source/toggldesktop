@@ -98,6 +98,28 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="TextButton" TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Rectangle Height="1" Fill="{TemplateBinding Foreground}" VerticalAlignment="Bottom" />
+
+                        <ContentPresenter
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="" />
+    </Style>
+
     <Style x:Key="RoundedCornersButtonBase" TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Template">
             <Setter.Value>

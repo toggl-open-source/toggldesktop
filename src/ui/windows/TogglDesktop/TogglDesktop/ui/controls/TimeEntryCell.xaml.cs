@@ -51,6 +51,18 @@ namespace TogglDesktop
             }
         }
 
+        public bool IsDummy
+        {
+            set
+            {
+                if (value == false)
+                    return;
+
+                this.IsEnabled = false;
+                this.dayHeader.Visibility = Visibility.Collapsed;
+            }
+        }
+
         public Color EntryBackColor
         {
             get { return (Color)this.GetValue(EntryBackColorProperty); }

@@ -184,6 +184,30 @@
     <Compile Include="ui\Theme.cs" />
     <Compile Include="ui\ThemeResourceDictionary.cs" />
     <Compile Include="ui\ThemeTypes.cs" />
+    <Compile Include="ui\Tutorial\BasicTutorialScreen7.xaml.cs">
+      <DependentUpon>BasicTutorialScreen7.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen6.xaml.cs">
+      <DependentUpon>BasicTutorialScreen6.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen5.xaml.cs">
+      <DependentUpon>BasicTutorialScreen5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen4.xaml.cs">
+      <DependentUpon>BasicTutorialScreen4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen3.xaml.cs">
+      <DependentUpon>BasicTutorialScreen3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen2.xaml.cs">
+      <DependentUpon>BasicTutorialScreen2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen1.xaml.cs">
+      <DependentUpon>BasicTutorialScreen1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\NewUserWelcomeScreen.xaml.cs">
+      <DependentUpon>NewUserWelcomeScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
@@ -518,6 +542,38 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen7.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen6.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen5.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Tutorial\BasicTutorialScreen1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Tutorial\NewUserWelcomeScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -684,6 +740,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\login-spinner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tutorial-arrow-curved.png" />
+    <Resource Include="Resources\tutorial-line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_close_white600_36dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
