@@ -558,6 +558,16 @@ void toggl_view_timeline_data(void *context) {
     app(context)->OpenTimelineDataView();
 }
 
+void toggl_view_timeline_prev_day(
+    void *context) {
+    app(context)->ViewTimelinePrevDay();
+}
+
+void toggl_view_timeline_next_day(
+    void *context) {
+    app(context)->ViewTimelineNextDay();
+}
+
 void toggl_edit(
     void *context,
     const char_t *guid,

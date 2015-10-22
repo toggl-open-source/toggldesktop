@@ -375,8 +375,10 @@ void GUI::DisplayTimeline(const bool open) {
 
     // FIXME: collect data
 
+    std::string date("Thu 22 Oct");
+
     if (on_display_timeline_) {
-        on_display_timeline_(open, first);
+        on_display_timeline_(open, date.c_str(), first);
     }
 
     timeline_view_clear(first);

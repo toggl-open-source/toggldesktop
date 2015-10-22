@@ -16,4 +16,7 @@
 @property IBOutlet NSButton *nextButton;
 @property IBOutlet NSButton *createButton;
 @property IBOutlet NSScrollView *scrollView;
+- (IBAction)prevButtonClicked:(id)sender;
+- (IBAction)nextButtonClicked:(id)sender;
+- (IBAction)createButtonClicked:(id)sender;
 @end

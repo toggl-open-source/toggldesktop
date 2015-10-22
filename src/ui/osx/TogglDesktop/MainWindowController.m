@@ -14,6 +14,7 @@
 #import "UIEvents.h"
 #import "MenuItemTags.h"
 #import "DisplayCommand.h"
+
 #include <Carbon/Carbon.h>
 
 @interface MainWindowController ()

@@ -17,4 +17,5 @@
 @property Settings *settings;
 @property uint64_t user_id;
 @property NSMutableArray *timeline;
+@property NSString *timelineDate;
 @end

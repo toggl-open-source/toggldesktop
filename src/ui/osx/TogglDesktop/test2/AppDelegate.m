@@ -1477,6 +1477,7 @@ void on_time_entry_list(const bool_t open,
 }
 
 void on_timeline(const bool_t open,
+				 const char_t *date,
 				 TogglTimelineView *first)
 {
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
@@ -1492,6 +1493,7 @@ void on_timeline(const bool_t open,
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.timeline = viewitems;
+	cmd.timelineDate = [NSString stringWithUTF8String:date];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
 														object:cmd];
 }
