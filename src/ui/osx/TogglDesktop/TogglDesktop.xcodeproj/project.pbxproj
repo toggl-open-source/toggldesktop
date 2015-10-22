@@ -63,6 +63,8 @@
 		743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 743E584F1A775BB300F17CB0 /* Localizable.strings */; };
 		74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; };
 		74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		7448D1411BD93511003109EA /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7448D13F1BD93511003109EA /* TimelineViewController.m */; settings = {ASSET_TAGS = (); }; };
+		7448D1421BD93511003109EA /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7448D1401BD93511003109EA /* TimelineViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		745126B619A28AA600390F47 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
 		74664DB118AA860800AAD282 /* on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DAF18AA860800AAD282 /* on.pdf */; };
@@ -375,6 +377,9 @@
 		743E584A1A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		743E584E1A775BB300F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/Localizable.strings; sourceTree = "<group>"; };
 		74456B9F1A774E12002A6338 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		7448D13E1BD93511003109EA /* TimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineViewController.h; sourceTree = "<group>"; };
+		7448D13F1BD93511003109EA /* TimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineViewController.m; sourceTree = "<group>"; };
+		7448D1401BD93511003109EA /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
 		744E126617F22AB900ABE72A /* app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app.icns; sourceTree = "<group>"; };
 		745126B419A28AA500390F47 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../../../../third_party/Reachability/Reachability/Reachability.h; sourceTree = "<group>"; };
 		745126B519A28AA600390F47 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../../third_party/Reachability/Reachability/Reachability.m; sourceTree = "<group>"; };
@@ -521,6 +526,9 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				7448D13E1BD93511003109EA /* TimelineViewController.h */,
+				7448D13F1BD93511003109EA /* TimelineViewController.m */,
+				7448D1401BD93511003109EA /* TimelineViewController.xib */,
 				3CBF852C1B81E72700DD3B55 /* libPocoCrypto.31.dylib */,
 				3CBF852D1B81E72700DD3B55 /* libPocoData.31.dylib */,
 				3CBF852E1B81E72700DD3B55 /* libPocoFoundation.31.dylib */,
@@ -1104,6 +1112,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7448D1421BD93511003109EA /* TimelineViewController.xib in Resources */,
 				3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
@@ -1240,6 +1249,7 @@
 				74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */,
 				748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
+				7448D1411BD93511003109EA /* TimelineViewController.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
