@@ -75,7 +75,7 @@ class MainWindowController : public QMainWindow {
     void onActionClear_Cache();
     void onActionHelp();
 
-private:
+ private:
     Ui::MainWindowController *ui;
 
     TogglApi *togglApi;
