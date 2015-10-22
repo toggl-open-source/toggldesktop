@@ -925,7 +925,7 @@ namespace TogglDesktop
                     break;
                 default:
                     if (!this.IsKeyboardFocusWithin)
-                        focus = this.durationTextBox;
+                        focus = this.descriptionTextBox;
                     break;
             }
 
