@@ -224,6 +224,9 @@ namespace TogglDesktop
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
         {
+            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
+                return;
+
             this.updateEditPopupLocation(true);
         }
 
