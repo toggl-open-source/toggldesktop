@@ -10,6 +10,7 @@ namespace TogglDesktop
     public partial class TimeEntryList
     {
         public event EventHandler FocusTimer;
+        public event EventHandler CloseEditPopup;
 
         private TimeEntryCell highlightedCell;
 
@@ -17,6 +18,7 @@ namespace TogglDesktop
         private int keyboardSelectedId;
         private TimeEntryCell cellAboutToKeyboardHighlight;
         private bool imposterVisible;
+        private EditViewPopup editPopup;
 
         private bool hasKeyboardSelection
         {
@@ -43,6 +45,11 @@ namespace TogglDesktop
         public UIElementCollection Children
         {
             get { return this.panel.Children; }
+        }
+
+        public void SetEditPopup(EditViewPopup editPopup)
+        {
+            this.editPopup = editPopup;
         }
 
         public void FinishedFillingList()
@@ -185,8 +192,16 @@ namespace TogglDesktop
 
         private void onFocusTimer(object sender, ExecutedRoutedEventArgs e)
         {
-            if (this.FocusTimer != null)
-                this.FocusTimer(this, e);
+            if (this.editPopup.IsVisible)
+            {
+                if (this.CloseEditPopup != null)
+                    this.CloseEditPopup(this, e);
+            }
+            else
+            {
+                if (this.FocusTimer != null)
+                    this.FocusTimer(this, e);
+            }
         }
 
         #region updating highlight

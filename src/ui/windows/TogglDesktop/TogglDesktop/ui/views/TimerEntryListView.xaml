@@ -19,7 +19,7 @@
             />
         
         <toggl:TimeEntryList Grid.Row="1"
-            x:Name="entries" x:FieldModifier="private"
+            x:Name="Entries"
             FocusTimer="onFocusTimer"/>
     </Grid>
 </UserControl>
