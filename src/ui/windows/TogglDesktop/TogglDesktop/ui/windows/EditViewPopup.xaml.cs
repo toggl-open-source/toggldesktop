@@ -100,7 +100,7 @@ namespace TogglDesktop
             this.setAlignmentsForAnimation();
             this.mainGrid.Width = 0;
             this.EditView.Width = this.ActualWidth;
-            this.mainGrid.IsEnabled = false;
+            this.mainGrid.IsEnabled = true;
 
             this.startAnimation(0, this.ActualWidth, this.stopAnimationOpen);
         }
