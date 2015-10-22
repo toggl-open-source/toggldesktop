@@ -600,6 +600,11 @@ namespace TogglDesktop
             this.minimizeToTray();
         }
 
+        private void onEscapeCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.closeEditPopup();
+        }
+
         #endregion
 
         #region canExecutes
@@ -951,5 +956,6 @@ namespace TogglDesktop
         {
             Theme.Activate(ThemeTypes.Layout, this.themeCheckBox.IsChecked ?? false ? "Compact" : "Comfortable");
         }
+
     }
 }
