@@ -9,5 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @interface TimelineViewController : NSViewController
-
+@property IBOutlet NSTextField *dateLabel;
+@property IBOutlet NSTextField *timeLabel;
+@property IBOutlet NSTextField *descriptionText;
+@property IBOutlet NSButton *prevButton;
+@property IBOutlet NSButton *nextButton;
+@property IBOutlet NSButton *createButton;
+@property IBOutlet NSScrollView *scrollView;
 @end
