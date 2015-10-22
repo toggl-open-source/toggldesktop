@@ -409,6 +409,18 @@ void GUI::DisplayTimeEntryList(const bool open,
         logger().debug(ss.str());
     }
 }
+    
+void GUI::DisplayTimeline(const bool open) {
+    TogglTimelineView *first = nullptr;
+        
+    // FIXME: collect data
+        
+    if (on_display_timeline_) {
+        on_display_timeline_(open, first);
+    }
+        
+    timeline_view_clear(first);
+}
 
 void GUI::DisplayTags(const std::vector<view::Generic> list) {
     logger().debug("DisplayTags");

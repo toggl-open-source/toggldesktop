@@ -455,6 +455,15 @@ void Context::OpenTimeEntryList() {
     updateUI(render);
 }
 
+void Context::OpenTimelineDataView() {
+    logger().debug("OpenTimelineDataView");
+
+    UIElements render;
+    render.open_timeline = true;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
 void Context::updateUI(const UIElements &what) {
     logger().debug("updateUI " + what.String());
 
@@ -743,6 +752,10 @@ void Context::updateUI(const UIElements &what) {
             what.open_time_entry_list,
             time_entry_views);
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
+    }
+
+    if (what.display_timeline) {
+        UI()->DisplayTimeline(what.open_timeline);
     }
 
     if (what.display_time_entry_autocomplete) {

@@ -56,6 +56,10 @@ TogglTimeEntryView *time_entry_view_item_init(
 
 void time_entry_view_item_clear(TogglTimeEntryView *item);
 
+TogglTimelineView *timeline_view_init();
+
+void timeline_view_clear(TogglTimelineView *view);
+
 TogglSettingsView *settings_view_item_init(
     const bool_t record_timeline,
     const toggl::Settings settings,

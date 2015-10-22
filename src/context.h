@@ -51,7 +51,9 @@ class UIElements {
     , display_settings(false)
     , time_entry_editor_guid("")
     , time_entry_editor_field("")
-    , display_unsynced_items(false) {}
+    , display_unsynced_items(false)
+    , display_timeline(false)
+    , open_timeline(false) {}
 
     static UIElements Reset();
 
@@ -77,6 +79,8 @@ class UIElements {
     std::string time_entry_editor_guid;
     std::string time_entry_editor_field;
     bool display_unsynced_items;
+    bool display_timeline;
+    bool open_timeline;
 };
 
 class Context : public TimelineDatasource {
@@ -286,6 +290,8 @@ class Context : public TimelineDatasource {
         const std::string GUID);
 
     void OpenTimeEntryList();
+
+    void OpenTimelineDataView();
 
     void OpenSettings();
 

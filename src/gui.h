@@ -331,7 +331,8 @@ class GUI : public SyncStateMonitor {
     , lastDisplayLoginOpen(false)
     , lastDisplayLoginUserID(0)
     , lastOnlineState(-1)
-    , lastErr(noError) {}
+    , lastErr(noError)
+    , on_display_timeline_(nullptr) {}
 
     ~GUI() {}
 
@@ -370,6 +371,9 @@ class GUI : public SyncStateMonitor {
 
     void DisplayWorkspaceSelect(
         const std::vector<view::Generic> list);
+
+    void DisplayTimeline(
+        const bool open);
 
     void DisplayClientSelect(
         const std::vector<view::Generic> list);
@@ -467,6 +471,10 @@ class GUI : public SyncStateMonitor {
 
     void OnDisplayTimeEntryList(TogglDisplayTimeEntryList cb) {
         on_display_time_entry_list_ = cb;
+    }
+
+    void OnDisplayTimeline(TogglDisplayTimeline cb) {
+        on_display_timeline_ = cb;
     }
 
     void OnDisplayWorkspaceSelect(TogglDisplayViewItems cb) {
@@ -591,6 +599,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayHelpArticles on_display_help_articles_;
     TogglDisplayProjectColors on_display_project_colors_;
     TogglDisplayObmExperiment on_display_obm_experiment_;
+    TogglDisplayTimeline on_display_timeline_;
 
     // Cached views
     Poco::Int64 lastSyncState;

@@ -82,6 +82,17 @@ extern "C" {
     } TogglTimeEntryView;
 
     typedef struct {
+        char_t *Title;
+        char_t *Filename;
+        uint64_t Started;
+        uint64_t Ended;
+        char_t *StartTimeString;
+        char_t *EndTimeString;
+        // Next in list
+        void *Next;
+    } TogglTimelineView;
+
+    typedef struct {
         // This is what is displayed to user, includes project and task.
         char_t *Text;
         // This is copied to "time_entry.description" field if item is selected
@@ -218,6 +229,10 @@ extern "C" {
     typedef void (*TogglDisplayTimeEntryList)(
         const bool_t open,
         TogglTimeEntryView *first);
+
+    typedef void (*TogglDisplayTimeline)(
+        const bool_t open,
+        TogglTimelineView *first);
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
@@ -382,6 +397,10 @@ extern "C" {
         void *context,
         TogglDisplayTimeEntryList cb);
 
+    TOGGL_EXPORT void toggl_on_timeline(
+        void *context,
+        TogglDisplayTimeline cb);
+
     TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
         void *context,
         TogglDisplayAutocomplete cb);
@@ -483,6 +502,9 @@ extern "C" {
         const char_t *keywords);
 
     TOGGL_EXPORT void toggl_view_time_entry_list(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_data(
         void *context);
 
     TOGGL_EXPORT void toggl_edit(
