@@ -31,6 +31,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
+                        <action selector="prevButtonClicked:" target="-2" id="9Lq-D1-jEb"/>
                         <outlet property="nextKeyView" destination="Maz-tC-VOn" id="1n8-2v-YX7"/>
                     </connections>
                 </button>
@@ -42,6 +43,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
+                        <action selector="nextButtonClicked:" target="-2" id="6oZ-MC-YBQ"/>
                         <outlet property="nextKeyView" destination="8ar-DY-jiG" id="mNN-O0-G0b"/>
                     </connections>
                 </button>
@@ -89,6 +91,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="createButtonClicked:" target="-2" id="AdI-vM-iuP"/>
+                    </connections>
                 </button>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iGf-Px-Lk2">
                     <rect key="frame" x="20" y="19" width="363" height="22"/>

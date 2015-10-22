@@ -232,6 +232,7 @@ extern "C" {
 
     typedef void (*TogglDisplayTimeline)(
         const bool_t open,
+        const char_t *date,
         TogglTimelineView *first);
 
     typedef void (*TogglDisplayAutocomplete)(
@@ -505,6 +506,12 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT void toggl_view_timeline_data(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_prev_day(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_next_day(
         void *context);
 
     TOGGL_EXPORT void toggl_edit(

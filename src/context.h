@@ -293,6 +293,14 @@ class Context : public TimelineDatasource {
 
     void OpenTimelineDataView();
 
+    void ViewTimelinePrevDay() {
+        // FIXME: implement
+    }
+
+    void ViewTimelineNextDay() {
+        // FIXME: implement
+    }
+
     void OpenSettings();
 
     void OpenTimeEntryEditor(
