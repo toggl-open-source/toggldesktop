@@ -356,7 +356,8 @@ class GUI : public SyncStateMonitor {
         const std::vector<TimeEntry *> list);
 
     void DisplayTimeline(
-        const bool open);
+        const bool open,
+        const std::vector<TimelineEvent> list);
 
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
 

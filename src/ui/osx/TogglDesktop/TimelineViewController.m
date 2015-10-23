@@ -54,10 +54,11 @@ extern void *ctx;
 - (void)displayTimeline:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	self.dateLabel.stringValue = [NSString stringWithFormat:@"Timeline %@", cmd.timelineDate];
+
 	if (cmd.open)
 	{
-		self.dateLabel.stringValue = [NSString stringWithFormat:@"Timeline %@", cmd.timelineDate];
-
 		// FIXME: reload list
 	}
 }

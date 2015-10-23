@@ -344,7 +344,7 @@ void time_entry_view_item_clear(
     delete item;
 }
 
-TogglTimelineView *timeline_view_init() {
+TogglTimelineView *timeline_view_init(const toggl::TimelineEvent &event) {
     TogglTimelineView *view_item = new TogglTimelineView();
     poco_check_ptr(view_item);
 
