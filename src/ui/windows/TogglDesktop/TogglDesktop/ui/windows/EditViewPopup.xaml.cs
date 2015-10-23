@@ -115,8 +115,10 @@ namespace TogglDesktop
             this.startAnimation(0, this.ActualWidth, this.stopAnimationOpen);
         }
 
-        private void stopAnimationOpen(object token = null)
+        private void stopAnimationOpen()
         {
+            this.animationToken = null;
+
             this.animationState = AnimationStates.Opening;
 
             this.mainGrid.BeginAnimation(WidthProperty, null);
@@ -142,13 +144,9 @@ namespace TogglDesktop
             this.startAnimation(this.ActualWidth, 0, this.stopAnimationClose);
         }
 
-        private void stopAnimationClose(object token = null)
+        private void stopAnimationClose()
         {
-            if (token != null && token != this.animationToken)
-            {
-                this.animationToken = null;
-                return;
-            }
+            this.animationToken = null;
 
             this.animationState = AnimationStates.Closing;
 
@@ -159,7 +157,7 @@ namespace TogglDesktop
             this.Hide();
         }
 
-        private void startAnimation(double from, double to, Action<object> stopAction)
+        private void startAnimation(double from, double to, Action stopAction)
         {
             var token = new object();
             this.animationToken = token;
@@ -167,7 +165,15 @@ namespace TogglDesktop
             var animation = new DoubleAnimation(from, to,
                new Duration(TimeSpan.FromSeconds(0.15)),
                FillBehavior.HoldEnd);
-            animation.Completed += (s, e) => stopAction(token);
+            animation.Completed += (s, e) =>
+            {
+                if (token != this.animationToken)
+                {
+                    this.animationToken = null;
+                    return;
+                }
+                stopAction();
+            };
 
             this.mainGrid.BeginAnimation(WidthProperty, animation);
         }
