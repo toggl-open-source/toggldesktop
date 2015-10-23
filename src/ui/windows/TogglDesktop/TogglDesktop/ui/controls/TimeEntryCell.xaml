@@ -12,9 +12,9 @@
                 Background="#F7F7F7">
         
         <!-- Day Header -->
-        <StackPanel Name="dayHeader" x:FieldModifier="private"
-                    Margin="0, 0, 0, 4">
-            <Rectangle Height="4">
+        <Grid Name="dayHeader" x:FieldModifier="private"
+                    Height="{StaticResource TimeEntryDayHeaderHeight}">
+            <Rectangle Height="4" VerticalAlignment="Top">
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#CCCCCC" Offset="0.0" />
@@ -22,20 +22,20 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <StackPanel Orientation="Horizontal" Height="37" Margin="20, 0, 0, 0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20, 0, 0, 0">
                 <TextBlock Name="labelFormattedDate" x:FieldModifier="private"
                            >Thu 22. Jan</TextBlock>
                 <TextBlock Name="labelDateDuration" x:FieldModifier="private"
                            Foreground="#6F6F6F">2 h 12 min</TextBlock>
             </StackPanel>
-        </StackPanel>
+        </Grid>
 
         <!-- seperator -->
         <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
 
         <!-- Entry -->
         <Grid Name="entryGrid" x:FieldModifier="private"
-            Height="53" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
+            Height="{StaticResource TimeEntryHeight}" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
             
             <Grid.Background>
                 <SolidColorBrush Color="{Binding EntryBackColor}"/>

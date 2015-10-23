@@ -9,12 +9,15 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+        <FrameworkElement Grid.Row="1" Height="{StaticResource TimeEntryDayHeaderHeight}"/>
+        <FrameworkElement Grid.Row="2" Height="{StaticResource TimeEntryHeight}"/>
 
-        <Grid Grid.Row="2" Background="{StaticResource ViewBackgroundLight}">
+        <Grid Grid.Row="3" Background="{StaticResource ViewBackgroundLight}">
             <StackPanel Background="{StaticResource TutorialDarkOverlay}">
                 <Grid Margin="0 0 0 40">
                     <TextBlock Margin="20 10 10 10"
