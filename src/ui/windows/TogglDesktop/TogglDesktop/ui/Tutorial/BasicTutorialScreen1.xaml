@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             d:DesignHeight="485" d:DesignWidth="387">
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
+    
     <Grid ClipToBounds="True">
         <Grid>
             <Grid.RowDefinitions>
@@ -20,7 +22,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Background="#b2434343" Margin="0 -25 0 0">
+        <Grid Background="{StaticResource TutorialDarkOverlay}" Margin="0 -25 0 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition MinHeight="120" MaxHeight="235" Height="4*"/>
@@ -35,14 +37,14 @@
                         VerticalAlignment="Top">
                 <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                        Height="22" VerticalAlignment="Bottom" Margin="15 0 0 10"/>
-                <TextBlock Foreground="White" FontSize="20" Margin="5 5 0 0"
+                <TextBlock Margin="5 5 0 0"
                            ><Bold>Describe</Bold> activity</TextBlock>
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="10"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top">
-                <TextBlock Foreground="White" FontSize="20" Margin="0 45 5 5"
+                <TextBlock Margin="0 45 5 5"
                            ><Bold>Start</Bold> and stop your entry here</TextBlock>
                 <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                        Height="20" VerticalAlignment="Bottom" Margin="-12 0 0 20">
@@ -56,15 +58,11 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2" Margin="10">
-                <TextBlock Foreground="White" FontSize="20"
-                           HorizontalAlignment="Center" Margin="0 0 0 4"
+                <TextBlock Margin="0 0 0 4"
                            >Your <Bold>activity</Bold> will appear here</TextBlock>
                 <Image Source="/TogglDesktop;component/Resources/tutorial-line.png"
                            HorizontalAlignment="Center" Width="230" />
-                <Button Style="{StaticResource RaisedButton}" Content="Ok, let's go!"
-                        HorizontalAlignment="Center" FontSize="20"
-                        Padding="16 8" Margin="0 20 0 0"
-                        Background="#4dd965" Foreground="White" />
+                <Button Content="Ok, let's go!" Margin="0 20 0 0" />
             </StackPanel>
             
         </Grid>

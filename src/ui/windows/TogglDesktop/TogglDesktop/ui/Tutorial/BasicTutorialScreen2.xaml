@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="485" d:DesignWidth="387">
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,23 +14,16 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
-            <StackPanel Background="#b2434343">
-                <StackPanel Margin="10"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top">
-                    <TextBlock Foreground="White" FontSize="20"
-                               TextAlignment="Center" Margin="0 0 0 40">
-                        <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
-                               Height="22" VerticalAlignment="Top" Margin="0 0 0 5"/>
-                        Click here and tell us<LineBreak />
-                        what you are doing
-                    </TextBlock>
+            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
+                <TextBlock Margin="0 10 0 40">
+                    <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                            Height="22" VerticalAlignment="Top" Margin="0 0 0 5"/>
+                    Click here and tell us<LineBreak />
+                    what you are doing
+                </TextBlock>
 
-                    <TextBlock Foreground="White" FontSize="20"
-                               TextAlignment="Center"
-                               Text="For example, try typing&#10;&#34;Toggl Tutorial&#34;"></TextBlock>
+                <TextBlock Text="For example, try typing&#10;&#34;Toggl Tutorial&#34;"></TextBlock>
                     
-                </StackPanel>
             </StackPanel>
         </Grid>
 

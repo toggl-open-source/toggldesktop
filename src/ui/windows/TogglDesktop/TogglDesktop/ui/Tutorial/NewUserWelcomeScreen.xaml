@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="469" d:DesignWidth="351">
+             d:DesignHeight="469" d:DesignWidth="351"
+             Style="{StaticResource WelcomeScreen}">
 
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>
@@ -20,10 +21,8 @@
             <TextBlock 
                    Text="Would you like us to show you how to&#10;use Toggl Desktop to track your time?"
                    TextAlignment="Center" Margin="0 0 0 10"/>
-            <Button Style="{StaticResource RaisedButton}" Content="TAKE THE TOUR"
-                    HorizontalAlignment="Center" FontSize="20"
-                    Padding="16 8" Margin="0 0 0 20"
-                    Background="#4dd965" Foreground="White"/>
+            <Button Content="TAKE THE TOUR" Margin="0 0 0 20"
+                    />
         </StackPanel>
 
         <StackPanel Grid.Row="2" >
