@@ -1,7 +1,11 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
+    <sys:Double x:Key="TimeEntryHeight">53</sys:Double>
+    <sys:Double x:Key="TimeEntryDayHeaderHeight">45</sys:Double>
+    
     <Style x:Key="TimeEntryCell" TargetType="StackPanel">
 
         <Setter Property="Background" Value="White"/>
@@ -21,9 +25,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
+                            <Border Background="{TemplateBinding Background}" />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
