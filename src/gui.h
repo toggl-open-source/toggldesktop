@@ -377,7 +377,8 @@ class GUI : public SyncStateMonitor {
         const std::vector<view::Generic> list);
 
     void DisplayTimeline(
-        const bool open);
+        const bool open,
+        const std::vector<TimelineEvent> list);
 
     void DisplayClientSelect(
         const std::vector<view::Generic> list);

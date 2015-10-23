@@ -411,22 +411,27 @@ void GUI::DisplayTimeEntryList(const bool open,
         logger().debug(ss.str());
     }
 }
-    
-void GUI::DisplayTimeline(const bool open) {
+
+
+void GUI::DisplayTimeline(
+    const bool open,
+    const std::vector<TimelineEvent> list) {
+
+    if (!on_display_timeline_) {
+        return;
+    }
+
+    std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
+
     TogglTimelineView *first = nullptr;
-
-    if (open) {
-        timeline_date_at_ = Poco::LocalDateTime();
+    for (std::vector<TimelineEvent>::const_iterator it = list.begin();
+            it != list.end(); it++) {
+        TogglTimelineView *view = timeline_view_init(*it);
+        view->Next = first;
+        first = view;
     }
 
-    // FIXME: collect data
-
-    std::string date("Thu 22 Oct");
-
-    if (on_display_timeline_) {
-        on_display_timeline_(open, date.c_str(), first);
-    }
-        
+    on_display_timeline_(open, formatted_date.c_str(), first);
     timeline_view_clear(first);
 }
 

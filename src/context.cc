@@ -381,6 +381,13 @@ std::string UIElements::String() const {
     if (display_unsynced_items) {
         ss << "display_unsynced_items ";
     }
+    if(display_timeline) {
+        ss << " display_timeline=" << display_timeline;
+    }
+    if (open_timeline) {
+        ss << " open_timeline=" << open_timeline;
+    }
+
     return ss.str();
 }
 
@@ -454,15 +461,6 @@ void Context::OpenTimeEntryList() {
     updateUI(render);
 }
 
-void Context::OpenTimelineDataView() {
-    logger().debug("OpenTimelineDataView");
-
-    UIElements render;
-    render.open_timeline = true;
-    render.display_timeline = true;
-    updateUI(render);
-}
-
 void Context::updateUI(const UIElements &what) {
     logger().debug("updateUI " + what.String());
 
@@ -471,6 +469,16 @@ void Context::updateUI(const UIElements &what) {
     std::vector<view::Autocomplete> time_entry_autocompletes;
     std::vector<view::Autocomplete> minitimer_autocompletes;
     std::vector<view::Autocomplete> project_autocompletes;
+
+    std::vector<Workspace *> workspaces;
+    std::vector<TimeEntry *> time_entries;
+    std::vector<Client *> clients;
+
+    std::vector<std::string> tags;
+
+    std::vector<TimelineEvent> timeline;
+
+    Poco::Int64 total_duration_for_date(0);
 
     bool use_proxy(false);
     bool record_timeline(false);
@@ -731,6 +739,13 @@ void Context::updateUI(const UIElements &what) {
                           CompareAutotrackerTitles);
             }
         }
+
+        if (what.display_timeline) {
+            if (user_) {
+                Poco::LocalDateTime date(UI()->TimelineDateAt());
+                timeline = user_->CompressedTimeline(&date);
+            }
+        }
     }
 
     // Render data
@@ -754,7 +769,7 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_timeline) {
-        UI()->DisplayTimeline(what.open_timeline);
+        UI()->DisplayTimeline(what.open_timeline, timeline);
     }
 
     if (what.display_time_entry_autocomplete) {
@@ -4541,16 +4556,33 @@ error Context::signup(
     return noError;
 }
 
+void Context::OpenTimelineDataView() {
+    logger().debug("OpenTimelineDataView");
+
+    UI()->SetTimelineDateAt(Poco::LocalDateTime());
+
+    UIElements render;
+    render.open_timeline = true;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
 void Context::ViewTimelinePrevDay() {
     UI()->SetTimelineDateAt(
         UI()->TimelineDateAt() - Poco::Timespan(1 * Poco::Timespan::DAYS));
-    UI()->DisplayTimeline(false);
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
 }
 
 void Context::ViewTimelineNextDay() {
     UI()->SetTimelineDateAt(
         UI()->TimelineDateAt() + Poco::Timespan(1 * Poco::Timespan::DAYS));
-    UI()->DisplayTimeline(false);
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
 }
 
 template<typename T>
