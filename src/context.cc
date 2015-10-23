@@ -3808,6 +3808,18 @@ error Context::signup(
     }
 }
 
+void Context::ViewTimelinePrevDay() {
+    UI()->SetTimelineDateAt(
+        UI()->TimelineDateAt() - Poco::Timespan(1 * Poco::Timespan::DAYS));
+    UI()->DisplayTimeline(false);
+}
+
+void Context::ViewTimelineNextDay() {
+    UI()->SetTimelineDateAt(
+        UI()->TimelineDateAt() + Poco::Timespan(1 * Poco::Timespan::DAYS));
+    UI()->DisplayTimeline(false);
+}
+
 template<typename T>
 void Context::collectPushableModels(
     const std::vector<T *> list,

@@ -375,6 +375,10 @@ void GUI::DisplayTimeEntryList(const bool open,
 void GUI::DisplayTimeline(const bool open) {
     TogglTimelineView *first = nullptr;
 
+    if (open) {
+        timeline_date_at_ = Poco::LocalDateTime();
+    }
+
     // FIXME: collect data
 
     std::string date("Thu 22 Oct");

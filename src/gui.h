@@ -14,6 +14,8 @@
 #include "./toggl_api_private.h"
 #include "./types.h"
 
+#include "Poco/LocalDateTime.h"
+
 namespace Poco {
 class Logger;
 }
@@ -323,7 +325,8 @@ class GUI : public SyncStateMonitor {
     , lastDisplayLoginUserID(0)
     , lastOnlineState(-1)
     , lastErr(noError)
-    , time_entry_editor_guid_("") {}
+    , time_entry_editor_guid_("")
+    , timeline_date_at_(Poco::LocalDateTime()) {}
 
     ~GUI() {}
 
@@ -532,6 +535,14 @@ class GUI : public SyncStateMonitor {
         return time_entry_editor_guid_;
     }
 
+    const Poco::LocalDateTime &TimelineDateAt() {
+        return timeline_date_at_;
+    }
+
+    void SetTimelineDateAt(const Poco::LocalDateTime &value) {
+        timeline_date_at_ = value;
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -571,6 +582,7 @@ class GUI : public SyncStateMonitor {
 
     // UI state
     std::string time_entry_editor_guid_;
+    Poco::LocalDateTime timeline_date_at_;
 
     Poco::Logger &logger() const;
 };
