@@ -1,8 +1,9 @@
-﻿<UserControl x:Class="TogglDesktop.Tutorial.NewUserWelcomeScreen"
+﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Tutorial.NewUserWelcomeScreen"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
              mc:Ignorable="d" 
              d:DesignHeight="469" d:DesignWidth="351"
              Style="{StaticResource WelcomeScreen}">
@@ -22,12 +23,13 @@
                    Text="Would you like us to show you how to&#10;use Toggl Desktop to track your time?"
                    TextAlignment="Center" Margin="0 0 0 10"/>
             <Button Content="TAKE THE TOUR" Margin="0 0 0 20"
+                    Click="startTutorialButtonClick"
                     />
         </StackPanel>
 
         <StackPanel Grid.Row="2" >
             <Button Style="{StaticResource TextButton}" Content="skip"
-                    Foreground="DarkGray"/>
+                    Foreground="DarkGray" Click="skipTutorialButtonClicked"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="(you can always revisit this later in the menu"
                            TextAlignment="Center" Foreground="DarkGray"/>
@@ -38,4 +40,4 @@
         </StackPanel>
     </Grid>
 
-</UserControl>
+</tutorial:TutorialScreen>

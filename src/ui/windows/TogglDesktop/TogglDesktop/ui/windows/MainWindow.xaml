@@ -28,8 +28,9 @@
         <RoutedUICommand x:Key="QuitCommand" />
 
         <RoutedUICommand x:Key="EditRunningCommand" />
-        
+
         <RoutedUICommand x:Key="EscapeCommand" />
+        <RoutedUICommand x:Key="BasicTutorialCommand" />
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
@@ -64,9 +65,11 @@
 
         <CommandBinding Command="{StaticResource EditRunningCommand}"
                         Executed="onEditRunningCommand" CanExecute="canExecuteEditRunningCommand"/>
-        
+
         <CommandBinding Command="{StaticResource EscapeCommand}"
                         Executed="onEscapeCommand"/>
+        <CommandBinding Command="{StaticResource BasicTutorialCommand}"
+                        Executed="onBasicTutorialCommand" CanExecute="canExecuteBasicTutorialCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -142,6 +145,8 @@
             <Separator />
             <MenuItem Header="Clear Cache"
                       Command="{StaticResource ClearCacheCommand}"/>
+            <MenuItem Header="Toggl Desktop Tutorial"
+                      Command="{StaticResource BasicTutorialCommand}"/>
             <MenuItem Header="Send Feedback"
                       Command="{StaticResource SendFeedbackCommand}"/>
             <MenuItem Header="About"
@@ -156,7 +161,7 @@
     <Grid>
 
         <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop" />
-        
+
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
                         TrayLeftMouseUp="onTaskbarLeftMouseUp"
                         TrayBalloonTipClicked="onTrayBalloonTipClicked"
@@ -164,6 +169,8 @@
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
+
+        <Grid Name="tutorialPanel" x:FieldModifier="private" />
 
         <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"
             VerticalAlignment="Top"/>
