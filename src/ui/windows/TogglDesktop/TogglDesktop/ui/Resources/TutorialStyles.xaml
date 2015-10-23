@@ -1,0 +1,40 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="TutorialButton" TargetType="Button" BasedOn="{StaticResource RaisedButton}">
+
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="16 8" />
+        <Setter Property="Background" Value="#4dd965" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="20" />
+    </Style>
+
+    <SolidColorBrush x:Key="TutorialDarkOverlay" Color="#b2434343" />
+
+    <Style x:Key="WelcomeScreen" TargetType="UserControl">
+        <Style.Resources>
+
+            <Style TargetType="Button" BasedOn="{StaticResource TutorialButton}" />
+
+        </Style.Resources>
+
+    </Style>
+
+    <Style x:Key="TutorialScreen" TargetType="UserControl">
+        <Style.Resources>
+            
+            <Style TargetType="Button" BasedOn="{StaticResource TutorialButton}" />
+            
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+            </Style>
+            
+        </Style.Resources>
+        
+    </Style>
+    
+</ResourceDictionary>

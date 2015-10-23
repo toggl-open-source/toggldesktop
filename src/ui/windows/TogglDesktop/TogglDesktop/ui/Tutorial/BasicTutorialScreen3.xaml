@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="485" d:DesignWidth="387">
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,12 +14,11 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
-            <StackPanel Background="#b2434343">
+            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
                 <StackPanel Margin="20 10"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top">
-                    <TextBlock Foreground="White" FontSize="20"
-                               TextAlignment="Left">
+                    <TextBlock TextAlignment="Left">
                         Click here
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="10 0 0 5">

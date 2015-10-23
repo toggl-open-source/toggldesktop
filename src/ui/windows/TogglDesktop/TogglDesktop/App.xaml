@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="ui/Resources/PreferencesWindowStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/DialogStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/TogglWindowStyles.xaml" />
+                <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
                 
                 <toggl:ThemeResourceDictionary Source="ui/Resources/Themes/Layout/Compact.xaml" Type="Layout"/>
                 

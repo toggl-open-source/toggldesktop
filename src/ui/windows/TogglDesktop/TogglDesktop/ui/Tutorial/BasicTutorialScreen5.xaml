@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="485" d:DesignWidth="387">
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,12 +14,10 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
-            <StackPanel Background="#b2434343">
+            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
                 <StackPanel Margin="30"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top">
-                    <TextBlock Foreground="White" FontSize="20"
-                               TextAlignment="Left" Margin="0 0 0 20">
+                            HorizontalAlignment="Center">
+                    <TextBlock Margin="0 0 0 20" HorizontalAlignment="Left">
                         When you are done editing,<LineBreak />
                         close the edit window<LineBreak />
                         with ESC or by clicking the
@@ -28,9 +27,8 @@
                         </Border>
                     </TextBlock>
 
-                    <TextBlock Foreground="White" FontSize="20"
-                               TextAlignment="Left"
-                               Text="Your changes will always be saved"></TextBlock>
+                    <TextBlock HorizontalAlignment="Left"
+                               Text="Your changes will always be saved" />
                 </StackPanel>
             </StackPanel>
         </Grid>

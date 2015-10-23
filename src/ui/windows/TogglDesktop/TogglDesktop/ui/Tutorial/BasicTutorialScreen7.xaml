@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="559.069" d:DesignWidth="381.927">
+             d:DesignHeight="559.069" d:DesignWidth="381.927"
+             Style="{StaticResource TutorialScreen}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,13 +15,10 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
 
         <Grid Grid.Row="2" Background="{StaticResource ViewBackgroundLight}">
-            <StackPanel Background="#b2434343">
-                <Grid Margin="0 0 0 40"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Top">
+            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
+                <Grid Margin="0 0 0 40">
                     <TextBlock Margin="20 10 10 10"
-                        Foreground="White" FontSize="20"
-                        TextAlignment="Left">
+                        HorizontalAlignment="Left">
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="-20 0 -10 0">
                             <Image.LayoutTransform>
@@ -33,10 +31,7 @@
                         in the list
                     </TextBlock>
 
-                    <TextBlock Margin="10"
-                        Foreground="White" FontSize="20"
-                        TextAlignment="Left" HorizontalAlignment="Right">
-                        
+                    <TextBlock Margin="10" HorizontalAlignment="Right">
                         or continue
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="-15 0 -10 0">
@@ -54,9 +49,7 @@
 
                 </Grid>
 
-                <TextBlock Text="Happy Toggling!" Margin="10"
-                        Foreground="White" FontSize="20"
-                        TextAlignment="Left" HorizontalAlignment="Center" />
+                <TextBlock Text="Happy Toggling!" Margin="10"/>
             </StackPanel>
         </Grid>
 
