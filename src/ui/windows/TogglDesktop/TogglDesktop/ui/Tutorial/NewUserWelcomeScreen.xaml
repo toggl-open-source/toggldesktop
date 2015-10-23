@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="TogglDesktop.Tutorial.NewUserWelcomeScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="469" d:DesignWidth="351"
+             Style="{StaticResource WelcomeScreen}">
+
+    <Grid Background="{StaticResource ViewBackgroundLight}">
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="100"/>
+            <RowDefinition MinHeight="100"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Text="Welcome to&#10;Toggl Desktop!" TextAlignment="Center"
+                   FontSize="20" FontWeight="Regular" Margin="20"/>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock 
+                   Text="Would you like us to show you how to&#10;use Toggl Desktop to track your time?"
+                   TextAlignment="Center" Margin="0 0 0 10"/>
+            <Button Content="TAKE THE TOUR" Margin="0 0 0 20"
+                    />
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" >
+            <Button Style="{StaticResource TextButton}" Content="skip"
+                    Foreground="DarkGray"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="(you can always revisit this later in the menu"
+                           TextAlignment="Center" Foreground="DarkGray"/>
+                <Image Source="/TogglDesktop;component/Resources/ic_cog_grey600_36dp.png"
+                       Height="17" Opacity="0.4"/>
+                <TextBlock Text=")" TextAlignment="Center" Foreground="DarkGray"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+</UserControl>

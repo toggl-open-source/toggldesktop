@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="TogglDesktop.Tutorial.BasicTutorialScreen2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+        
+        <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
+            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
+                <TextBlock Margin="0 10 0 40">
+                    <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                            Height="22" VerticalAlignment="Top" Margin="0 0 0 5"/>
+                    Click here and tell us<LineBreak />
+                    what you are doing
+                </TextBlock>
+
+                <TextBlock Text="For example, try typing&#10;&#34;Toggl Tutorial&#34;"></TextBlock>
+                    
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</UserControl>

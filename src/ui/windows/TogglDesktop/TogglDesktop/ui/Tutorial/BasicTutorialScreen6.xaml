@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="TogglDesktop.Tutorial.BasicTutorialScreen6"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+        
+        <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
+            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
+                <TextBlock Margin="20 10" HorizontalAlignment="Right">
+                    Click here
+                    <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                            Height="22" VerticalAlignment="Top" Margin="10 0 0 5">
+                        <Image.LayoutTransform>
+                            <ScaleTransform ScaleX="-1"/>
+                        </Image.LayoutTransform>
+                    </Image>
+                    <LineBreak />
+                    to stop tracking
+                </TextBlock>
+
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</UserControl>
