@@ -208,6 +208,8 @@
     <Compile Include="ui\Tutorial\NewUserWelcomeScreen.xaml.cs">
       <DependentUpon>NewUserWelcomeScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Tutorial\TutorialManager.cs" />
+    <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />

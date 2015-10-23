@@ -7,5 +7,21 @@ namespace TogglDesktop.Tutorial
         {
             this.InitializeComponent();
         }
+
+        protected override void initialise()
+        {
+            Toggl.OnRunningTimerState += this.onRunningTimerState;
+        }
+
+        protected override void cleanup()
+        {
+            Toggl.OnRunningTimerState -= this.onRunningTimerState;
+        }
+
+        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
+        {
+            this.activateScreen<BasicTutorialScreen4>();
+        }
+
     }
 }

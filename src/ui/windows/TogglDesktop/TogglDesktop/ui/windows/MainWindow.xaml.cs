@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Tutorial;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using UserControl = System.Windows.Controls.UserControl;
@@ -31,6 +32,7 @@ namespace TogglDesktop
         private readonly WindowInteropHelper interopHelper;
         private readonly UserControl[] views;
         private Window[] childWindows;
+        private TutorialManager tutorialManager;
 
         private AboutWindow aboutWindow;
         private FeedbackWindow feedbackWindow;
@@ -64,6 +66,7 @@ namespace TogglDesktop
             this.initializeWindows();
             this.initializeCustomNotifications();
             this.initializeSyncingIndicator();
+            this.initializeTutorialManager();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
@@ -72,8 +75,13 @@ namespace TogglDesktop
             this.finalInitialisation();
         }
 
+
         #region setup
 
+        private void initializeTutorialManager()
+        {
+            this.tutorialManager = new TutorialManager(this, this.timerEntryListView.Timer, this.tutorialPanel);
+        }
         private void initializeSyncingIndicator()
         {
             this.syncingIndicator = new SyncingIndicator();
@@ -616,6 +624,12 @@ namespace TogglDesktop
             this.closeEditPopup();
         }
 
+
+        private void onBasicTutorialCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.tutorialManager.ActivateScreen<BasicTutorialScreen1>();
+        }
+
         #endregion
 
         #region canExecutes
@@ -663,6 +677,11 @@ namespace TogglDesktop
         private void canExecuteEditRunningCommand(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = Program.IsLoggedIn && (this.isTracking || this.isInManualMode);
+        }
+
+        private void canExecuteBasicTutorialCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
         }
 
         private bool canBeShown()
@@ -789,6 +808,11 @@ namespace TogglDesktop
             {
                 this.mainContextMenu.IsOpen = false;
                 this.mainContextMenu.Visibility = Visibility.Collapsed;
+            }
+
+            if (this.editPopup != null)
+            {
+                this.closeEditPopup(skipAnimation:true);
             }
 
             if (this.IsVisible)

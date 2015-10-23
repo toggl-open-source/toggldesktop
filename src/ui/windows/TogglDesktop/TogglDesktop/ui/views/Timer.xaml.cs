@@ -21,6 +21,7 @@ namespace TogglDesktop
         public event EventHandler StartStopClick;
         public event EventHandler<string> RunningTimeEntrySecondPulse;
         public event EventHandler FocusTimeEntryList;
+        public event EventHandler<string> DescriptionTextBoxTextChanged;
 
         public Timer()
         {
@@ -416,6 +417,14 @@ namespace TogglDesktop
         {
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
+        }
+
+        private void onDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (this.DescriptionTextBoxTextChanged != null)
+            {
+                this.DescriptionTextBoxTextChanged(sender, this.descriptionTextBox.Text);
+            }
         }
     }
 }
