@@ -307,14 +307,25 @@ void time_entry_view_item_clear(
 }
 
 TogglTimelineView *timeline_view_init(const toggl::TimelineEvent &event) {
-    TogglTimelineView *view_item = new TogglTimelineView();
-    poco_check_ptr(view_item);
+    TogglTimelineView *view = new TogglTimelineView();
+    poco_check_ptr(view);
 
-    // FIXME: fill data
+    view->Title = copy_string(event.Title());
+    view->Filename = copy_string(event.Filename());
+    view->Started = static_cast<unsigned int>(event.Start());
+    view->Ended = static_cast<unsigned int>(event.EndTime());
 
-    view_item->Next = nullptr;
+    std::string started =
+        toggl::Formatter::FormatTimeForTimeEntryEditor(event.Start());
+    std::string ended =
+        toggl::Formatter::FormatTimeForTimeEntryEditor(event.EndTime());
 
-    return view_item;
+    view->StartTimeString = copy_string(started);
+    view->EndTimeString = copy_string(ended);
+
+    view->Next = nullptr;
+
+    return view;
 }
 
 void timeline_view_clear(
