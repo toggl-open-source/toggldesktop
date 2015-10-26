@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
+             xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
              d:DesignHeight="559.069" d:DesignWidth="381.927"
              Style="{StaticResource TutorialScreen}">
@@ -58,5 +59,8 @@
             </StackPanel>
         </Grid>
 
+        <toggl:ProgressBar Grid.Row="3" Margin="30 20"
+            VerticalAlignment="Bottom"
+            MaxValue="6" Value="6"/>
     </Grid>
 </tutorial:TutorialScreen>
