@@ -76,7 +76,7 @@
                         <animations/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="6Ca-Uu-0eI">
-                        <rect key="frame" x="424" y="1" width="15" height="258"/>
+                        <rect key="frame" x="423" y="1" width="16" height="258"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </scroller>

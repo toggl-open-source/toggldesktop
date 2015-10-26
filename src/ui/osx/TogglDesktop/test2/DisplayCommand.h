@@ -16,6 +16,6 @@
 @property TimeEntryViewItem *timeEntry;
 @property Settings *settings;
 @property uint64_t user_id;
-@property NSMutableArray *timeline;
+@property NSMutableArray *timelineChunks;
 @property NSString *timelineDate;
 @end
