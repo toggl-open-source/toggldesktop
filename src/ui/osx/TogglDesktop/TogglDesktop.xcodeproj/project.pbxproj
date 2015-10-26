@@ -55,6 +55,8 @@
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
 		742B29821BDEA4DB005102B8 /* TimelineEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29811BDEA4DB005102B8 /* TimelineEventView.m */; settings = {ASSET_TAGS = (); }; };
 		742B29941BDEA4FF005102B8 /* TimelineChunkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29931BDEA4FF005102B8 /* TimelineChunkView.m */; settings = {ASSET_TAGS = (); }; };
+		742B29981BDEAA74005102B8 /* TimelineChunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29961BDEAA74005102B8 /* TimelineChunkViewController.m */; settings = {ASSET_TAGS = (); }; };
+		742B29991BDEAA74005102B8 /* TimelineChunkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 742B29971BDEAA74005102B8 /* TimelineChunkViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		7430750418204EFB009019CB /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		7430750518204EFB009019CB /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
 		7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 7438B3D218253CD2002AE43C /* MenuItemTags.m */; };
@@ -366,6 +368,9 @@
 		742B29811BDEA4DB005102B8 /* TimelineEventView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineEventView.m; sourceTree = "<group>"; };
 		742B29921BDEA4FF005102B8 /* TimelineChunkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineChunkView.h; sourceTree = "<group>"; };
 		742B29931BDEA4FF005102B8 /* TimelineChunkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkView.m; sourceTree = "<group>"; };
+		742B29951BDEAA74005102B8 /* TimelineChunkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineChunkViewController.h; sourceTree = "<group>"; };
+		742B29961BDEAA74005102B8 /* TimelineChunkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkViewController.m; sourceTree = "<group>"; };
+		742B29971BDEAA74005102B8 /* TimelineChunkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineChunkViewController.xib; sourceTree = "<group>"; };
 		7430750118204EFB009019CB /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutWindowController.h; path = ../AboutWindowController.h; sourceTree = "<group>"; };
 		7430750218204EFB009019CB /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutWindowController.m; path = ../AboutWindowController.m; sourceTree = "<group>"; };
 		7430750318204EFB009019CB /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutWindowController.xib; path = ../AboutWindowController.xib; sourceTree = "<group>"; };
@@ -705,6 +710,9 @@
 				742B29811BDEA4DB005102B8 /* TimelineEventView.m */,
 				742B29921BDEA4FF005102B8 /* TimelineChunkView.h */,
 				742B29931BDEA4FF005102B8 /* TimelineChunkView.m */,
+				742B29951BDEAA74005102B8 /* TimelineChunkViewController.h */,
+				742B29961BDEAA74005102B8 /* TimelineChunkViewController.m */,
+				742B29971BDEAA74005102B8 /* TimelineChunkViewController.xib */,
 			);
 			name = ui;
 			path = test2;
@@ -1153,6 +1161,7 @@
 				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
 				3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */,
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
+				742B29991BDEAA74005102B8 /* TimelineChunkViewController.xib in Resources */,
 				744E126717F22AB900ABE72A /* app.icns in Resources */,
 				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
 				74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */,
@@ -1278,6 +1287,7 @@
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				74FE0D5D18E260A000ECFED2 /* MASShortcut+UserDefaults.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
+				742B29981BDEAA74005102B8 /* TimelineChunkViewController.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
