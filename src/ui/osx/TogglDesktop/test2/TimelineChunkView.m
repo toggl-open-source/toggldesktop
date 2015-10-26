@@ -17,7 +17,7 @@
 	self.Started = view->Started;
 	self.StartTimeString = [NSString stringWithUTF8String:view->StartTimeString];
 	self.Events = [[NSMutableArray alloc] init];
-    NSLog(@"Timeline chunk loaded: %@", self);
+	NSLog(@"Timeline chunk loaded: %@", self);
 
 	TogglTimelineEventView *it = view->FirstEvent;
 	while (it)
@@ -25,7 +25,7 @@
 		TimelineEventView *event = [[TimelineEventView alloc] init];
 		[event load:view->FirstEvent];
 		[self.Events addObject:event];
-        NSLog(@"Timeline event loaded: %@", event);
+		NSLog(@"Timeline event loaded: %@", event);
 		it = view->Next;
 	}
 }
