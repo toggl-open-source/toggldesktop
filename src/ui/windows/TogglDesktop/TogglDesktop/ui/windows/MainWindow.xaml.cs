@@ -30,7 +30,7 @@ namespace TogglDesktop
         private readonly KeyboardHook showHook = new KeyboardHook();
 
         private readonly WindowInteropHelper interopHelper;
-        private readonly UserControl[] views;
+        private readonly IMainView[] views;
         private Window[] childWindows;
         private TutorialManager tutorialManager;
 
@@ -40,7 +40,7 @@ namespace TogglDesktop
         private IdleNotificationWindow idleNotificationWindow;
         private SyncingIndicator syncingIndicator;
 
-        private UserControl activeView;
+        private IMainView activeView;
         private bool isInManualMode;
         private bool isTracking;
         private bool isResizingWithHandle;
@@ -56,7 +56,7 @@ namespace TogglDesktop
 
             this.interopHelper = new WindowInteropHelper(this);
 
-            this.views = new UserControl[] {this.loginView, this.timerEntryListView};
+            this.views = new IMainView[] {this.loginView, this.timerEntryListView};
 
             this.hideAllViews();
 
@@ -109,7 +109,7 @@ namespace TogglDesktop
         {
             foreach (var view in this.views)
             {
-                view.Visibility = Visibility.Collapsed;
+                view.Deactivate(false);
             }
         }
 
@@ -950,25 +950,27 @@ namespace TogglDesktop
 
         }
 
-        private void setActiveView(UserControl activeView)
+        private void setActiveView(IMainView activeView)
         {
             if (activeView == null)
                 throw new ArgumentNullException("activeView");
 
-            if (this.activeView != null)
+            var hadActiveView = this.activeView != null;
+            if (hadActiveView)
             {
-                this.activeView.Visibility = Visibility.Collapsed;
+                this.activeView.Deactivate(true);
             }
 
             this.activeView = activeView;
 
-            activeView.Visibility = Visibility.Visible;
+            this.activeView.Activate(hadActiveView);
+
             this.closeEditPopup();
 
             this.updateMinimumSize(activeView);
         }
 
-        private void updateMinimumSize(UserControl activeView)
+        private void updateMinimumSize(IMainView activeView)
         {
             this.MinHeight = this.WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
