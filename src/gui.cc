@@ -380,17 +380,41 @@ void GUI::DisplayTimeline(
         return;
     }
 
-    std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
+    Poco::LocalDateTime datetime(
+        TimelineDateAt().year(),
+        TimelineDateAt().month(),
+        TimelineDateAt().day());
 
-    TogglTimelineView *first = nullptr;
-    for (std::vector<TimelineEvent>::const_iterator it = list.begin();
-            it != list.end(); it++) {
-        TogglTimelineView *view = timeline_view_init(*it);
-        view->Next = first;
-        first = view;
+    TogglTimelineChunkView *first_chunk = nullptr;
+
+    while (datetime.year() == TimelineDateAt().year()
+            && datetime.month() == TimelineDateAt().month()
+            && datetime.day() == TimelineDateAt().day()) {
+
+        time_t epoch_time = datetime.timestamp().epochTime();
+
+        // Create new chunk
+        TogglTimelineChunkView *chunk_view =
+            timeline_chunk_view_init(epoch_time);
+
+        // Attach matching events to chunk
+        for (std::vector<TimelineEvent>::const_iterator it = list.begin();
+                it != list.end(); it++) {
+            const TimelineEvent event = *it;
+            if (epoch_time != event.Start()) {
+                // Skip event if does not match chunk
+                continue;
+            }
+        }
+        chunk_view->Next = first_chunk;
+        first_chunk = chunk_view;
+        datetime += Poco::Timespan(15 * Poco::Timespan::MINUTES);
     }
-    on_display_timeline_(open, formatted_date.c_str(), first);
-    timeline_view_clear(first);
+
+    std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
+    on_display_timeline_(open, formatted_date.c_str(), first_chunk);
+
+    timeline_chunk_view_clear(first_chunk);
 }
 
 void GUI::DisplayTags(std::vector<std::string> *tags) {

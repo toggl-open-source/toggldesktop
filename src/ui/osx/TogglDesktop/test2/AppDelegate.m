@@ -1478,10 +1478,10 @@ void on_time_entry_list(const bool_t open,
 
 void on_timeline(const bool_t open,
 				 const char_t *date,
-				 TogglTimelineView *first)
+				 TogglTimelineChunkView *first)
 {
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
-	TogglTimelineView *it = first;
+	TogglTimelineChunkView *it = first;
 
 	while (it)
 		/*

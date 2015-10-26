@@ -344,56 +344,6 @@ void time_entry_view_item_clear(
     delete item;
 }
 
-TogglTimelineView *timeline_view_init(const toggl::TimelineEvent &event) {
-    TogglTimelineView *view = new TogglTimelineView();
-    poco_check_ptr(view);
-
-    view->Title = copy_string(event.Title());
-    view->Filename = copy_string(event.Filename());
-    view->Started = static_cast<unsigned int>(event.Start());
-    view->Ended = static_cast<unsigned int>(event.EndTime());
-
-    std::string started =
-        toggl::Formatter::FormatTimeForTimeEntryEditor(event.Start());
-    std::string ended =
-        toggl::Formatter::FormatTimeForTimeEntryEditor(event.EndTime());
-
-    view->StartTimeString = copy_string(started);
-    view->EndTimeString = copy_string(ended);
-
-    view->Next = nullptr;
-
-    return view;
-}
-
-void timeline_view_clear(
-    TogglTimelineView *view) {
-    if (!view) {
-        return;
-    }
-
-    free(view->Title);
-    view->Title = nullptr;
-
-    free(view->Filename);
-    view->Filename = nullptr;
-
-    free(view->StartTimeString);
-    view->StartTimeString = nullptr;
-
-    free(view->EndTimeString);
-    view->EndTimeString = nullptr;
-
-    if (view->Next) {
-        TogglTimelineView *next =
-            reinterpret_cast<TogglTimelineView *>(view->Next);
-        timeline_view_clear(next);
-        view->Next = nullptr;
-    }
-
-    delete view;
-}
-
 TogglSettingsView *settings_view_item_init(
     const bool_t record_timeline,
     const toggl::Settings settings,
@@ -461,6 +411,34 @@ TogglAutocompleteView *autocomplete_list_init(
         first = item;
     }
     return first;
+}
+
+TogglTimelineChunkView *timeline_chunk_view_init(
+    const time_t &start) {
+    TogglTimelineChunkView *chunk_view = new TogglTimelineChunkView();
+    chunk_view->Started = static_cast<unsigned int>(start);
+    chunk_view->StartTimeString = copy_string(
+        toggl::Formatter::FormatTimeForTimeEntryEditor(start));
+    chunk_view->Next = nullptr;
+    return chunk_view;
+}
+
+void timeline_chunk_view_clear(
+    TogglTimelineChunkView *chunk_view) {
+    if (!chunk_view) {
+        return;
+    }
+    if (chunk_view->StartTimeString) {
+        free(chunk_view->StartTimeString);
+        chunk_view->StartTimeString = nullptr;
+    }
+    if (chunk_view->Next) {
+        TogglTimelineChunkView *next =
+            reinterpret_cast<TogglTimelineChunkView *>(chunk_view->Next);
+        timeline_chunk_view_clear(next);
+        chunk_view->Next = nullptr;
+    }
+    delete chunk_view;
 }
 
 Poco::Logger &logger() {

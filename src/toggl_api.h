@@ -79,13 +79,15 @@ extern "C" {
     typedef struct {
         char_t *Title;
         char_t *Filename;
-        uint64_t Started;
-        uint64_t Ended;
-        char_t *StartTimeString;
-        char_t *EndTimeString;
         // Next in list
         void *Next;
-    } TogglTimelineView;
+    } TogglTimelineEventView;
+
+    typedef struct {
+        uint64_t Started;
+        char_t *StartTimeString;
+        void *Next;
+    } TogglTimelineChunkView;
 
     typedef struct {
         // This is what is displayed to user, includes project and task.
@@ -157,16 +159,6 @@ extern "C" {
         void *Next;
     } TogglAutotrackerRuleView;
 
-    typedef struct {
-        int64_t ID;
-        char_t *Title;
-        char_t *Filename;
-        uint64_t StartTime;
-        uint64_t EndTime;
-        bool_t Idle;
-        void *Next;
-    } TogglTimelineEventView;
-
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -210,7 +202,7 @@ extern "C" {
     typedef void (*TogglDisplayTimeline)(
         const bool_t open,
         const char_t *date,
-        TogglTimelineView *first);
+        TogglTimelineChunkView *first);
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
