@@ -46,7 +46,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top">
                 <TextBlock Margin="0 45 5 5"
-                           ><Bold>Start</Bold> and stop your entry here</TextBlock>
+                           ><Bold>Start</Bold> and stop your entry</TextBlock>
                 <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                        Height="20" VerticalAlignment="Bottom" Margin="-12 0 0 20">
                     <Image.LayoutTransform>
@@ -65,7 +65,7 @@
                            HorizontalAlignment="Center" Width="230" />
                 <Button Content="Ok, let's go!" Margin="0 20 0 0" Click="nextButtonClick" />
             </StackPanel>
-            
+
         </Grid>
     </Grid>
 </tutorial:TutorialScreen>
