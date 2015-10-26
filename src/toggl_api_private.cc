@@ -420,6 +420,7 @@ TogglTimelineChunkView *timeline_chunk_view_init(
     chunk_view->StartTimeString = copy_string(
         toggl::Formatter::FormatTimeForTimeEntryEditor(start));
     chunk_view->Next = nullptr;
+    chunk_view->FirstEvent = nullptr;
     return chunk_view;
 }
 
@@ -432,6 +433,10 @@ void timeline_chunk_view_clear(
         free(chunk_view->StartTimeString);
         chunk_view->StartTimeString = nullptr;
     }
+    if (chunk_view->FirstEvent) {
+        timeline_event_view_clear(chunk_view->FirstEvent);
+        chunk_view->FirstEvent = nullptr;
+    }
     if (chunk_view->Next) {
         TogglTimelineChunkView *next =
             reinterpret_cast<TogglTimelineChunkView *>(chunk_view->Next);
@@ -439,6 +444,37 @@ void timeline_chunk_view_clear(
         chunk_view->Next = nullptr;
     }
     delete chunk_view;
+}
+
+TogglTimelineEventView *timeline_event_view_init(
+    const toggl::TimelineEvent &event) {
+    TogglTimelineEventView *event_view = new TogglTimelineEventView();
+    event_view->Title = copy_string(event.Title());
+    event_view->Filename = copy_string(event.Filename());
+    event_view->Next = nullptr;
+    return event_view;
+}
+
+void timeline_event_view_clear(
+    TogglTimelineEventView *event_view) {
+    if (!event_view) {
+        return;
+    }
+    if (event_view->Title) {
+        free(event_view->Title);
+        event_view->Title = nullptr;
+    }
+    if (event_view->Filename) {
+        free(event_view->Filename);
+        event_view->Filename = nullptr;
+    }
+    if (event_view->Next) {
+        TogglTimelineEventView *next =
+            reinterpret_cast<TogglTimelineEventView *>(event_view->Next);
+        timeline_event_view_clear(next);
+        event_view->Next = nullptr;
+    }
+    delete event_view;
 }
 
 Poco::Logger &logger() {

@@ -390,7 +390,6 @@ void GUI::DisplayTimeline(
     while (datetime.year() == TimelineDateAt().year()
             && datetime.month() == TimelineDateAt().month()
             && datetime.day() == TimelineDateAt().day()) {
-
         time_t epoch_time = datetime.timestamp().epochTime();
 
         // Create new chunk
@@ -398,6 +397,7 @@ void GUI::DisplayTimeline(
             timeline_chunk_view_init(epoch_time);
 
         // Attach matching events to chunk
+        TogglTimelineEventView *first_event = nullptr;
         for (std::vector<TimelineEvent>::const_iterator it = list.begin();
                 it != list.end(); it++) {
             const TimelineEvent event = *it;
@@ -405,7 +405,13 @@ void GUI::DisplayTimeline(
                 // Skip event if does not match chunk
                 continue;
             }
+            TogglTimelineEventView *event_view =
+                timeline_event_view_init(event);
+            event_view->Next = first_event;
+            first_event = event_view;
         }
+        chunk_view->FirstEvent = first_event;
+
         chunk_view->Next = first_chunk;
         first_chunk = chunk_view;
         datetime += Poco::Timespan(15 * Poco::Timespan::MINUTES);
