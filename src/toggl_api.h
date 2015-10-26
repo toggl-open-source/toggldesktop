@@ -92,6 +92,7 @@ extern "C" {
         uint64_t Started;
         char_t *StartTimeString;
         void *Next;
+        TogglTimelineEventView *FirstEvent;
     } TogglTimelineChunkView;
 
     typedef struct {

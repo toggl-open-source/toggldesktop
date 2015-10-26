@@ -79,6 +79,12 @@ TogglTimelineChunkView *timeline_chunk_view_init(
 void timeline_chunk_view_clear(
     TogglTimelineChunkView *first);
 
+TogglTimelineEventView *timeline_event_view_init(
+    const toggl::TimelineEvent &event);
+
+void timeline_event_view_clear(
+    TogglTimelineEventView *event_view);
+
 Poco::Logger &logger();
 
 toggl::Context *app(void *context);

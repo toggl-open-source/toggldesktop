@@ -411,6 +411,7 @@ void GUI::DisplayTimeEntryList(const bool open,
         logger().debug(ss.str());
     }
 }
+
     void GUI::DisplayTimeline(
                               const bool open,
                               const std::vector<TimelineEvent> list) {
@@ -559,8 +560,14 @@ void GUI::DisplayTimeEntryList(const bool open,
             current->Next = nullptr;
             if (top == nullptr) {
                 top = current;
+
             }
+            TogglTimelineEventView *event_view =
+                timeline_event_view_init(event);
+            event_view->Next = first_event;
+            first_event = event_view;
         }
+
         current->Next = head;
         return top;
     }
