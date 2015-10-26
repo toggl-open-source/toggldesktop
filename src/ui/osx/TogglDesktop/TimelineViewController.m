@@ -23,6 +23,8 @@ extern void *ctx;
 {
 	[super viewDidLoad];
 
+	timelineChunks = [NSMutableArray array];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayTimeline:)
 												 name:kDisplayTimeline
@@ -57,10 +59,13 @@ extern void *ctx;
 
 	self.dateLabel.stringValue = [NSString stringWithFormat:@"Timeline %@", cmd.timelineDate];
 
-	if (cmd.open)
+	@synchronized(timelineChunks)
 	{
-		// FIXME: reload list
+		[timelineChunks removeAllObjects];
+		[timelineChunks addObjectsFromArray:cmd.timelineChunks];
 	}
+
+	// FIXME: reload view
 }
 
 @end

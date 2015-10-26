@@ -25,9 +25,12 @@
 #import "Settings.h"
 #import "Sparkle.h"
 #import "TimeEntryViewItem.h"
+#import "TimelineChunkView.h"
+#import "TimelineEventView.h"
 #import "UIEvents.h"
 #import "Utils.h"
 #import "ViewItem.h"
+
 #import "idler.h"
 #import "toggl_api.h"
 
@@ -1572,19 +1575,20 @@ void on_timeline(const bool_t open,
 				 const char_t *date,
 				 TogglTimelineChunkView *first)
 {
-	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
+	NSMutableArray *timelineChunks = [[NSMutableArray alloc] init];
 	TogglTimelineChunkView *it = first;
 
 	while (it)
-		/*
-		 * TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-		 * [model load:it];
-		 * [viewitems addObject:model];
-		 */
+	{
+		TimelineChunkView *chunk = [[TimelineChunkView alloc] init];
+		[chunk load:it];
+		[timelineChunks addObject:chunk];
+
 		it = it->Next;
+	}
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
-	cmd.timeline = viewitems;
+	cmd.timelineChunks = timelineChunks;
 	cmd.timelineDate = [NSString stringWithUTF8String:date];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
 														object:cmd];

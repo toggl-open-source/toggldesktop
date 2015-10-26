@@ -8,7 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TimelineViewController : NSViewController
+@interface TimelineViewController : NSViewController {
+	@private
+	NSMutableArray *timelineChunks;
+}
 @property IBOutlet NSTextField *dateLabel;
 @property IBOutlet NSTextField *timeLabel;
 @property IBOutlet NSTextField *descriptionText;
