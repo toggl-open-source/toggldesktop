@@ -1,9 +1,8 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace TogglDesktop.Tutorial
 {
-    public abstract class TutorialScreen : UserControl, IDisposable
+    public abstract class TutorialScreen : UserControl
     {
         protected TutorialManager tutorialManager { get; private set; }
 
@@ -13,7 +12,7 @@ namespace TogglDesktop.Tutorial
             this.initialise();
         }
 
-        public void Dispose()
+        public void Cleanup()
         {
             this.cleanup();
         }

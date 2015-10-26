@@ -20,7 +20,9 @@
                     </Setter.Value>
                 </Setter>
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False" />
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
 
@@ -44,6 +46,11 @@
                 <Setter Property="FontSize" Value="20" />
                 <Setter Property="Foreground" Value="White" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
             
         </Style.Resources>

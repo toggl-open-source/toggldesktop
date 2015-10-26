@@ -1,4 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media.Animation;
 
 namespace TogglDesktop.Tutorial
 {
@@ -42,18 +46,43 @@ namespace TogglDesktop.Tutorial
         {
             if (this.activeScreen != null)
             {
-                this.tutorialPanel.Children.Remove(this.activeScreen);
-                this.activeScreen.Dispose();
+                this.removeScreen(this.activeScreen, screen != null);
             }
 
             this.activeScreen = screen;
 
             if (screen != null)
             {
-                this.tutorialPanel.Children.Add(screen);
-                screen.Initialise(this);
+                this.addScreen(screen);
             }
         }
 
+        private const double screenFadeTime = 0.15;
+
+        private void addScreen(TutorialScreen screen)
+        {
+            var anim = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(screenFadeTime));
+            screen.BeginAnimation(UIElement.OpacityProperty, anim);
+
+            this.tutorialPanel.Children.Add(screen);
+            screen.Initialise(this);
+        }
+
+        private void removeScreen(TutorialScreen screen, bool waitForNextScreenToFadeIn)
+        {
+            var anim = new DoubleAnimation(0, TimeSpan.FromSeconds(screenFadeTime))
+            {
+                BeginTime = TimeSpan.FromSeconds(
+                    waitForNextScreenToFadeIn ? screenFadeTime : 0)
+            };
+            anim.Completed += (sender, args) =>
+            {
+                this.tutorialPanel.Children.Remove(screen);
+            };
+            screen.BeginAnimation(UIElement.OpacityProperty, anim);
+
+            screen.IsEnabled = false;
+            screen.Cleanup();
+        }
     }
 }
