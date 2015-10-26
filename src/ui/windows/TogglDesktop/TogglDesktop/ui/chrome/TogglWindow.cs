@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
-using Brushes = System.Windows.Media.Brushes;
 using Screen = System.Windows.Forms.Screen;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -24,7 +23,6 @@ namespace TogglDesktop
 
         public TogglWindow()
         {
-            this.WindowStyle = WindowStyle.None;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             this.updateWindowChrome();
 
@@ -134,8 +132,6 @@ namespace TogglDesktop
         private void turnIntoToolWindow()
         {
             this.ResizeMode = ResizeMode.NoResize;
-            this.AllowsTransparency = true;
-            this.Background = Brushes.Transparent;
 
             this.isToolWindow = true;
         }
@@ -296,13 +292,16 @@ namespace TogglDesktop
         {
             var mmi = (MinMaxInfo)Marshal.PtrToStructure(lParam, typeof(MinMaxInfo));
 
+            var yOffset = 0;
+            var xOffset = (int)SystemParameters.BorderWidth;
+
             var currentScreen = Screen.FromHandle(hwnd);
             var workArea = currentScreen.WorkingArea;
             var monitorArea = currentScreen.Bounds;
-            mmi.ptMaxPosition.x = Math.Abs(workArea.Left - monitorArea.Left);
-            mmi.ptMaxPosition.y = Math.Abs(workArea.Top - monitorArea.Top);
-            mmi.ptMaxSize.x = Math.Abs(workArea.Right - workArea.Left);
-            mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top);
+            mmi.ptMaxPosition.x = Math.Abs(workArea.Left - monitorArea.Left) + xOffset;
+            mmi.ptMaxPosition.y = Math.Abs(workArea.Top - monitorArea.Top) + yOffset;
+            mmi.ptMaxSize.x = Math.Abs(workArea.Right - workArea.Left) - xOffset;
+            mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top) - yOffset;
             mmi.ptMinTrackSize.x = (int)this.MinWidth;
             mmi.ptMinTrackSize.y = (int)this.MinHeight;
 
