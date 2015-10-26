@@ -56,11 +56,6 @@ TogglTimeEntryView *time_entry_view_item_init(
 
 void time_entry_view_item_clear(TogglTimeEntryView *item);
 
-TogglTimelineView *timeline_view_init(
-    const toggl::TimelineEvent &event);
-
-void timeline_view_clear(TogglTimelineView *view);
-
 TogglSettingsView *settings_view_item_init(
     const bool_t record_timeline,
     const toggl::Settings settings,
@@ -77,6 +72,12 @@ TogglHelpArticleView *help_article_list_init(
 
 void help_article_clear(
     TogglHelpArticleView *first);
+
+TogglTimelineChunkView *timeline_chunk_view_init(
+    const time_t &start);
+
+void timeline_chunk_view_clear(
+    TogglTimelineChunkView *first);
 
 Poco::Logger &logger();
 
