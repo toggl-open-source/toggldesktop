@@ -167,10 +167,11 @@
                         TrayBalloonTipClicked="onTrayBalloonTipClicked"
                         Visibility="Collapsed"/>
 
-        <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
 
         <Grid Name="tutorialPanel" x:FieldModifier="private" />
+        
+        <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
 
         <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"
             VerticalAlignment="Top"/>
