@@ -158,6 +158,7 @@
         </ContextMenu>
     </Window.ContextMenu>
     
+    
     <Grid>
 
         <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop" />
