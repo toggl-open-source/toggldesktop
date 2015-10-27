@@ -62,7 +62,7 @@ namespace TogglDesktop
 
             foreach (var rule in rules)
             {
-                var item = AutotrackerRuleItem.Make(rule.ID, rule.Term, rule.ProjectName);
+                var item = AutotrackerRuleItem.Make(rule.ID, rule.Term, rule.ProjectAndTaskLabel);
 
                 this.ruleItems.Add(item);
                 this.rulesPanel.Children.Add(item);
@@ -137,13 +137,16 @@ namespace TogglDesktop
                 this.termTextBox.Focus();
                 return;
             }
-            if (this.selectedProject.ProjectID == 0)
+            if (this.selectedProject.ProjectID == 0 && this.selectedProject.TaskID == 0)
             {
                 this.projectTextBox.Focus();
                 return;
             }
 
-            if (Toggl.AddAutotrackerRule(this.termTextBox.Text, this.selectedProject.ProjectID) != 0)
+            if (Toggl.AddAutotrackerRule(
+                this.termTextBox.Text,
+                this.selectedProject.ProjectID,
+                this.selectedProject.TaskID) != 0)
             {
                 this.reset();
             }
