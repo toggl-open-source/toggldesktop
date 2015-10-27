@@ -769,6 +769,20 @@ char_t *toggl_get_default_project_name(
     return copy_string(name);
 }
 
+uint64_t toggl_get_default_project_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultPID(&ret);
+    return ret;
+}
+
+uint64_t toggl_get_default_task_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultTID(&ret);
+    return ret;
+}
+
 bool_t toggl_set_update_channel(
     void *context,
     const char_t *update_channel) {
