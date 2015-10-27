@@ -288,7 +288,7 @@ namespace TogglDesktop
                 this.saveShortCuts();
             }
 
-            Toggl.SetDefaultProjectId(defaultProject.ProjectID);
+            Toggl.SetDefaultProject(defaultProject.ProjectID, defaultProject.TaskID);
 
             return Toggl.SetSettings(settings);
         }
@@ -506,17 +506,19 @@ namespace TogglDesktop
 
         private void selectDefaultProjectFromSettings()
         {
-            var id = Toggl.GetDefaultProjectId();
+            var project_id = Toggl.GetDefaultProjectId();
+            var task_id = Toggl.GetDefaultTaskId();
             var name = Toggl.GetDefaultProjectName();
             var project = new Toggl.TogglAutocompleteView
             {
                 ProjectLabel = name,
-                ProjectID = id,
+                ProjectID = project_id,
+                TaskID = task_id,
             };
             if (this.knownProjects != null)
             {
                 project.ProjectColor = this.knownProjects
-                    .FirstOrDefault(p => p.ProjectID == id).ProjectColor;
+                    .FirstOrDefault(p => p.ProjectID == project_id).ProjectColor;
             }
             this.selectDefaultProject(project);
         }

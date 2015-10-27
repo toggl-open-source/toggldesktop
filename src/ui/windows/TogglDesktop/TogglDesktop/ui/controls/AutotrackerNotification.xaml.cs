@@ -11,6 +11,7 @@ namespace TogglDesktop
         private readonly MainWindow mainWindow;
 
         private ulong projectId;
+        private ulong taskId;
 
         public AutotrackerNotification(TaskbarIcon icon, MainWindow mainWindow)
         {
@@ -21,13 +22,14 @@ namespace TogglDesktop
             Toggl.OnAutotrackerNotification += this.onAutotrackerNotification;
         }
 
-        private void onAutotrackerNotification(string projectName, ulong projectId)
+        private void onAutotrackerNotification(string projectName, ulong projectId, ulong taskId)
         {
-            if (this.TryBeginInvoke(this.onAutotrackerNotification, projectName, projectId))
+            if (this.TryBeginInvoke(this.onAutotrackerNotification, projectName, projectId, taskId))
                 return;
 
             this.projectText.Text = string.Format("Track {0}?", projectName);
             this.projectId = projectId;
+            this.taskId = taskId;
 
             this.RemoveFromParent();
 
@@ -37,7 +39,7 @@ namespace TogglDesktop
         private void onStartButtonClick(object sender, RoutedEventArgs e)
         {
             this.icon.CloseBalloon();
-            Toggl.Start("", "", 0, this.projectId, null, null);
+            Toggl.Start("", "", this.taskId, this.projectId, null, null);
             this.mainWindow.ShowOnTop();
         }
 
