@@ -984,12 +984,13 @@ error Database::LoadUserByID(
         std::string duration_format("");
         std::string offline_data("");
         Poco::UInt64 default_pid(0);
+        Poco::UInt64 default_tid(0);
         *session_ <<
                   "select local_id, id, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
                   "timeofday_format, duration_format, offline_data, "
-                  "default_pid "
+                  "default_pid, default_tid "
                   "from users where id = :id limit 1",
                   into(local_id),
                   into(id),
@@ -1003,6 +1004,7 @@ error Database::LoadUserByID(
                   into(duration_format),
                   into(offline_data),
                   into(default_pid),
+                  into(default_tid),
                   useRef(UID),
                   limit(1),
                   now;
@@ -1029,6 +1031,7 @@ error Database::LoadUserByID(
         user->SetDurationFormat(duration_format);
         user->SetOfflineData(offline_data);
         user->SetDefaultPID(default_pid);
+        user->SetDefaultTID(default_tid);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -1385,7 +1388,7 @@ error Database::loadAutotrackerRules(
 
         Poco::Data::Statement select(*session_);
         select <<
-               "SELECT local_id, uid, term, pid "
+               "SELECT local_id, uid, term, pid, tid "
                "FROM autotracker_settings "
                "WHERE uid = :uid "
                "ORDER BY term DESC",
@@ -1404,6 +1407,7 @@ error Database::loadAutotrackerRules(
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetTerm(rs[2].convert<std::string>());
                 model->SetPID(rs[3].convert<Poco::UInt64>());
+                model->SetTID(rs[4].convert<Poco::UInt64>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -2103,11 +2107,13 @@ error Database::saveModel(
 
             *session_ <<
                       "update autotracker_settings set "
-                      "uid = :uid, term = :term, pid = :pid "
+                      "uid = :uid, term = :term, pid = :pid, "
+                      "tid = :tid "
                       "where local_id = :local_id",
                       useRef(model->UID()),
                       useRef(model->Term()),
                       useRef(model->PID()),
+                      useRef(model->TID()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveAutotrackerRule");
@@ -2134,11 +2140,12 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().trace(ss.str());
             *session_ <<
-                      "insert into autotracker_settings(uid, term, pid) "
-                      "values(:uid, :term, :pid)",
+                      "insert into autotracker_settings(uid, term, pid, tid) "
+                      "values(:uid, :term, :pid, :tid)",
                       useRef(model->UID()),
                       useRef(model->Term()),
                       useRef(model->PID()),
+                      useRef(model->TID()),
                       now;
             error err = last_error("saveAutotrackerRule");
             if (err != noError) {
@@ -2873,7 +2880,8 @@ error Database::SaveUser(
                           "timeofday_format = :timeofday_format, "
                           "duration_format = :duration_format, "
                           "offline_data = :offline_data, "
-                          "default_pid = :default_pid "
+                          "default_pid = :default_pid, "
+                          "default_tid = :default_tid "
                           "where local_id = :local_id",
                           useRef(user->DefaultWID()),
                           useRef(user->Since()),
@@ -2886,6 +2894,7 @@ error Database::SaveUser(
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
                           useRef(user->DefaultPID()),
+                          useRef(user->DefaultTID()),
                           useRef(user->LocalID()),
                           now;
                 error err = last_error("SaveUser");
@@ -2905,13 +2914,13 @@ error Database::SaveUser(
                           "id, default_wid, since, fullname, email, "
                           "record_timeline, store_start_and_stop_time, "
                           "timeofday_format, duration_format, offline_data, "
-                          "default_pid"
+                          "default_pid, default_tid"
                           ") values("
                           ":id, :default_wid, :since, :fullname, "
                           ":email, "
                           ":record_timeline, :store_start_and_stop_time, "
                           ":timeofday_format, :duration_format, :offline_data, "
-                          ":default_pid"
+                          ":default_pid, :default_tid"
                           ")",
                           useRef(user->ID()),
                           useRef(user->DefaultWID()),
@@ -2924,6 +2933,7 @@ error Database::SaveUser(
                           useRef(user->DurationFormat()),
                           useRef(user->OfflineData()),
                           useRef(user->DefaultPID()),
+                          useRef(user->DefaultTID()),
                           now;
                 error err = last_error("SaveUser");
                 if (err != noError) {

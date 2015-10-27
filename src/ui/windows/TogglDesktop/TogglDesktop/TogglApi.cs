@@ -227,14 +227,13 @@ public static partial class Toggl
         public         Int64 ID;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string Term;
-        public         UInt64 PID;
         [MarshalAs(UnmanagedType.LPWStr)]
-        public         string ProjectName;
+        public         string ProjectAndTaskLabel;
         public         IntPtr Next;
 
         public override string ToString()
         {
-            return ProjectName;
+            return ProjectAndTaskLabel;
         }
 
     }
@@ -308,7 +307,8 @@ public static partial class Toggl
     private delegate void     TogglDisplayAutotrackerNotification(
         [MarshalAs(UnmanagedType.LPWStr)]
         string project_name,
-        UInt64 project_id);
+        UInt64 project_id,
+        UInt64 task_id);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayPromotion(
@@ -1068,13 +1068,10 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_set_default_project_id(
+    private static extern bool toggl_set_default_project(
         IntPtr context,
-        UInt64 pid);
-
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern UInt64 toggl_get_default_project_id(
-        IntPtr context);
+        UInt64 pid,
+        UInt64 tid);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1191,7 +1188,8 @@ public static partial class Toggl
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string term,
-        UInt64 project_id);
+        UInt64 project_id,
+        UInt64 task_id);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
