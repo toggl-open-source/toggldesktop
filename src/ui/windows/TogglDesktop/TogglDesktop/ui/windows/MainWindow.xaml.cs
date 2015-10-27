@@ -13,6 +13,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Tutorial;
+using Clipboard = System.Windows.Clipboard;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using UserControl = System.Windows.Controls.UserControl;
@@ -29,8 +31,9 @@ namespace TogglDesktop
         private readonly KeyboardHook showHook = new KeyboardHook();
 
         private readonly WindowInteropHelper interopHelper;
-        private readonly UserControl[] views;
+        private readonly IMainView[] views;
         private Window[] childWindows;
+        private TutorialManager tutorialManager;
 
         private AboutWindow aboutWindow;
         private FeedbackWindow feedbackWindow;
@@ -38,7 +41,7 @@ namespace TogglDesktop
         private IdleNotificationWindow idleNotificationWindow;
         private SyncingIndicator syncingIndicator;
 
-        private UserControl activeView;
+        private IMainView activeView;
         private bool isInManualMode;
         private bool isTracking;
         private bool isResizingWithHandle;
@@ -54,7 +57,7 @@ namespace TogglDesktop
 
             this.interopHelper = new WindowInteropHelper(this);
 
-            this.views = new UserControl[] {this.loginView, this.timerEntryListView};
+            this.views = new IMainView[] {this.loginView, this.timerEntryListView};
 
             this.hideAllViews();
 
@@ -64,6 +67,7 @@ namespace TogglDesktop
             this.initializeWindows();
             this.initializeCustomNotifications();
             this.initializeSyncingIndicator();
+            this.initializeTutorialManager();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
@@ -72,8 +76,13 @@ namespace TogglDesktop
             this.finalInitialisation();
         }
 
+
         #region setup
 
+        private void initializeTutorialManager()
+        {
+            this.tutorialManager = new TutorialManager(this, this.timerEntryListView.Timer, this.tutorialPanel);
+        }
         private void initializeSyncingIndicator()
         {
             this.syncingIndicator = new SyncingIndicator();
@@ -101,7 +110,7 @@ namespace TogglDesktop
         {
             foreach (var view in this.views)
             {
-                view.Visibility = Visibility.Collapsed;
+                view.Deactivate(false);
             }
         }
 
@@ -616,6 +625,21 @@ namespace TogglDesktop
             this.closeEditPopup();
         }
 
+        private void onBasicTutorialCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.tutorialManager.ActivateScreen<BasicTutorialScreen1>();
+        }
+
+        private void onNewFromPasteCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            using (Performance.Measure("starting time entry from paste, manual mode: {0}", this.isInManualMode))
+            {
+                this.startTimeEntry(description:
+                    Clipboard.GetText().Replace(Environment.NewLine, " ")
+                    );
+            }
+        }
+
         #endregion
 
         #region canExecutes
@@ -665,10 +689,21 @@ namespace TogglDesktop
             e.CanExecute = Program.IsLoggedIn && (this.isTracking || this.isInManualMode);
         }
 
+        private void canExecuteBasicTutorialCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+
         private bool canBeShown()
         {
             return !this.IsVisible
                 || this.WindowState == WindowState.Minimized;
+        }
+
+
+        private void canExecuteNewFromPasteCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn && !this.isTracking;
         }
 
         #endregion
@@ -733,11 +768,11 @@ namespace TogglDesktop
             }
         }
 
-        private void startTimeEntry(bool continueIfNotInManualMode = false)
+        private void startTimeEntry(bool continueIfNotInManualMode = false, string description = "")
         {
             if (this.isInManualMode)
             {
-                var guid = Toggl.Start("", "0", 0, 0, "", "");
+                var guid = Toggl.Start(description, "0", 0, 0, "", "");
                 Toggl.Edit(guid, false, Toggl.Duration);
             }
             else
@@ -748,7 +783,7 @@ namespace TogglDesktop
                 }
                 else
                 {
-                    Toggl.Start("", "", 0, 0, "", "");   
+                    Toggl.Start(description, "", 0, 0, "", "");   
                 }
             }
         }
@@ -789,6 +824,11 @@ namespace TogglDesktop
             {
                 this.mainContextMenu.IsOpen = false;
                 this.mainContextMenu.Visibility = Visibility.Collapsed;
+            }
+
+            if (this.editPopup != null)
+            {
+                this.closeEditPopup(skipAnimation:true);
             }
 
             if (this.IsVisible)
@@ -861,7 +901,7 @@ namespace TogglDesktop
 
         private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
         {
-            if (this.editPopup.IsVisible)
+            if (this.editPopup != null && this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup(skipAnimation);
@@ -937,25 +977,27 @@ namespace TogglDesktop
 
         }
 
-        private void setActiveView(UserControl activeView)
+        private void setActiveView(IMainView activeView)
         {
             if (activeView == null)
                 throw new ArgumentNullException("activeView");
 
-            if (this.activeView != null)
+            var hadActiveView = this.activeView != null;
+            if (hadActiveView)
             {
-                this.activeView.Visibility = Visibility.Collapsed;
+                this.activeView.Deactivate(true);
             }
 
             this.activeView = activeView;
 
-            activeView.Visibility = Visibility.Visible;
+            this.activeView.Activate(hadActiveView);
+
             this.closeEditPopup();
 
             this.updateMinimumSize(activeView);
         }
 
-        private void updateMinimumSize(UserControl activeView)
+        private void updateMinimumSize(IMainView activeView)
         {
             this.MinHeight = this.WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;

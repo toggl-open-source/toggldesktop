@@ -5,7 +5,7 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
 {
-    public partial class TimerEntryListView
+    public partial class TimerEntryListView : IMainView
     {
         private readonly Dictionary<string, TimeEntryCell> cellsByGUID =
             new Dictionary<string, TimeEntryCell>();
@@ -175,6 +175,16 @@ namespace TogglDesktop
         private void onFocusTimer(object sender, EventArgs e)
         {
             this.Timer.Focus();
+        }
+
+        public void Activate(bool allowAnimation)
+        {
+            this.IsEnabled = true;
+        }
+
+        public void Deactivate(bool allowAnimation)
+        {
+            this.IsEnabled = false;
         }
     }
 }

@@ -248,6 +248,7 @@ void on_display_timer_state(TogglTimeEntryView *te) {
         }
         testing::testresult::timer_state.SetBillable(te->Billable);
         testing::testresult::timer_state.SetPID(te->PID);
+        testing::testresult::timer_state.SetTID(te->TID);
     }
 }
 
@@ -1295,9 +1296,17 @@ TEST(toggl_api, toggl_with_default_project) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    testing::testresult::timer_state = TimeEntry();
+    // Clear default project ID
+    // Check that project ID and task ID are cleared
 
-    ASSERT_TRUE(toggl_set_default_project_id(app.ctx(), 0));
+    ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, 0));
+    char_t *s = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(s);
+    free(s);
+
+    // Start a time entry, no defaults should apply
+
+    testing::testresult::timer_state = TimeEntry();
 
     char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
     ASSERT_TRUE(guid);
@@ -1305,9 +1314,20 @@ TEST(toggl_api, toggl_with_default_project) {
 
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
     ASSERT_FALSE(testing::testresult::timer_state.PID());
+    ASSERT_FALSE(testing::testresult::timer_state.TID());
+
+    // Set default project ID.
+    // Task ID should remain 0
 
     const uint64_t existing_project_id = 2598305;
-    ASSERT_TRUE(toggl_set_default_project_id(app.ctx(), existing_project_id));
+    const std::string existing_project_name = "Testing stuff";
+    ASSERT_TRUE(toggl_set_default_project(app.ctx(), existing_project_id, 0));
+    s = toggl_get_default_project_name(app.ctx());
+    ASSERT_TRUE(s);
+    ASSERT_EQ(existing_project_name, std::string(s));
+    free(s);
+
+    // Start timer, the default project should apply
 
     testing::testresult::timer_state = TimeEntry();
 
@@ -1317,6 +1337,58 @@ TEST(toggl_api, toggl_with_default_project) {
 
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
     ASSERT_EQ(existing_project_id, testing::testresult::timer_state.PID());
+    ASSERT_EQ(0, testing::testresult::timer_state.TID());
+
+    // Set default task
+
+    const uint64_t existing_task_id = 1879027;
+    ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, existing_task_id));
+    s = toggl_get_default_project_name(app.ctx());
+    ASSERT_TRUE(s);
+    ASSERT_EQ("dadsad. Testing stuff", std::string(s));
+    free(s);
+
+    // Start timer, the default task should apply
+
+    testing::testresult::timer_state = TimeEntry();
+
+    guid = toggl_start(app.ctx(), "more testing", "", 0, 0, 0, 0);
+    ASSERT_TRUE(guid);
+    free(guid);
+
+    ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
+    ASSERT_EQ(existing_project_id, testing::testresult::timer_state.PID());
+    ASSERT_EQ(existing_task_id, testing::testresult::timer_state.TID());
+
+    // Setting task ID to 0 should not affect project ID
+
+    ASSERT_TRUE(toggl_set_default_project(app.ctx(), existing_project_id, 0));
+    s = toggl_get_default_project_name(app.ctx());
+    ASSERT_TRUE(s);
+    ASSERT_EQ(existing_project_name, std::string(s));
+    free(s);
+
+    // Setting task ID to not 0 should attach a project ID, too
+
+    const uint64_t another_task_id = 1894794;
+    ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, another_task_id));
+    s = toggl_get_default_project_name(app.ctx());
+    ASSERT_TRUE(s);
+    ASSERT_EQ("blog (writing). Testing stuff", std::string(s));
+    free(s);
+
+    // Setting project ID to 0 should not clear out task ID
+
+    ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, existing_task_id));
+    s = toggl_get_default_project_name(app.ctx());
+    ASSERT_TRUE(s);
+    ASSERT_EQ("dadsad. Testing stuff", std::string(s));
+    free(s);
+
+    ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, 0));
+    s = toggl_get_default_project_name(app.ctx());
+    ASSERT_FALSE(s);
+    free(s);
 }
 
 TEST(toggl_api, toggl_start) {
@@ -1787,14 +1859,36 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     testing::testresult::error = noError;
-    int64_t rule_id = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+
+    const uint64_t existing_project_id = 2598305;
+
+    int64_t rule_id = toggl_autotracker_add_rule(
+        app.ctx(), "delfi", existing_project_id, 0);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(rule_id);
 
     testing::testresult::error = noError;
-    rule_id = toggl_autotracker_add_rule(app.ctx(), "delfi", 123);
+    rule_id = toggl_autotracker_add_rule(
+        app.ctx(), "delfi", existing_project_id, 0);
     ASSERT_EQ("rule already exists", testing::testresult::error);
     ASSERT_FALSE(rule_id);
+
+    const uint64_t existing_task_id = 1879027;
+
+    testing::testresult::error = noError;
+    rule_id = toggl_autotracker_add_rule(
+        app.ctx(), "with task", 0, existing_task_id);
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(rule_id);
+
+    testing::testresult::error = noError;
+    rule_id = toggl_autotracker_add_rule(
+        app.ctx(),
+        "with task and project",
+        existing_project_id,
+        existing_task_id);
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(rule_id);
 }
 
 TEST(toggl_api, toggl_set_default_project) {
@@ -1802,20 +1896,14 @@ TEST(toggl_api, toggl_set_default_project) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    uint64_t default_pid = toggl_get_default_project_id(app.ctx());
-    ASSERT_FALSE(default_pid);
-
     char_t *default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_FALSE(default_project_name);
     free(default_project_name);
 
     testing::testresult::error = noError;
-    bool_t res = toggl_set_default_project_id(app.ctx(), 123);
+    bool_t res = toggl_set_default_project(app.ctx(), 123, 0);
     ASSERT_NE(noError, testing::testresult::error);
     ASSERT_FALSE(res);
-
-    default_pid = toggl_get_default_project_id(app.ctx());
-    ASSERT_FALSE(default_pid);
 
     default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_FALSE(default_project_name);
@@ -1825,11 +1913,8 @@ TEST(toggl_api, toggl_set_default_project) {
     const std::string existing_project_name = "Testing stuff";
 
     testing::testresult::error = noError;
-    res = toggl_set_default_project_id(app.ctx(), existing_project_id);
+    res = toggl_set_default_project(app.ctx(), existing_project_id, 0);
     ASSERT_TRUE(res);
-
-    default_pid = toggl_get_default_project_id(app.ctx());
-    ASSERT_EQ(existing_project_id, default_pid);
 
     default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_TRUE(default_project_name);
@@ -1837,11 +1922,8 @@ TEST(toggl_api, toggl_set_default_project) {
     free(default_project_name);
 
     testing::testresult::error = noError;
-    res = toggl_set_default_project_id(app.ctx(), 0);
+    res = toggl_set_default_project(app.ctx(), 0, 0);
     ASSERT_TRUE(res);
-
-    default_pid = toggl_get_default_project_id(app.ctx());
-    ASSERT_FALSE(default_pid);
 
     default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_FALSE(default_project_name);

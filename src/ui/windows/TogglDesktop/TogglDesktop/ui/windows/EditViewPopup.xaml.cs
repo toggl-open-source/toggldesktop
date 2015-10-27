@@ -22,6 +22,7 @@ namespace TogglDesktop
         private bool isLeft;
         private bool isResizing;
         private bool skipAnimation;
+        private object animationToken;
 
         public EditViewPopup()
         {
@@ -116,6 +117,8 @@ namespace TogglDesktop
 
         private void stopAnimationOpen()
         {
+            this.animationToken = null;
+
             this.animationState = AnimationStates.Opening;
 
             this.mainGrid.BeginAnimation(WidthProperty, null);
@@ -143,6 +146,8 @@ namespace TogglDesktop
 
         private void stopAnimationClose()
         {
+            this.animationToken = null;
+
             this.animationState = AnimationStates.Closing;
 
             this.mainGrid.BeginAnimation(WidthProperty, null);
@@ -154,10 +159,21 @@ namespace TogglDesktop
 
         private void startAnimation(double from, double to, Action stopAction)
         {
+            var token = new object();
+            this.animationToken = token;
+
             var animation = new DoubleAnimation(from, to,
                new Duration(TimeSpan.FromSeconds(0.15)),
                FillBehavior.HoldEnd);
-            animation.Completed += (s, e) => stopAction();
+            animation.Completed += (s, e) =>
+            {
+                if (token != this.animationToken)
+                {
+                    this.animationToken = null;
+                    return;
+                }
+                stopAction();
+            };
 
             this.mainGrid.BeginAnimation(WidthProperty, animation);
         }

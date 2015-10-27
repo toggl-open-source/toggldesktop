@@ -1,8 +1,10 @@
-﻿<UserControl x:Class="TogglDesktop.Tutorial.BasicTutorialScreen4"
+﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Tutorial.BasicTutorialScreen5"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
+             xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
              d:DesignHeight="485" d:DesignWidth="387"
              Style="{StaticResource TutorialScreen}">
@@ -33,5 +35,8 @@
             </StackPanel>
         </Grid>
 
+        <toggl:ProgressBar Grid.Row="1" Margin="30 20"
+            VerticalAlignment="Bottom"
+            MaxValue="6" Value="4"/>
     </Grid>
-</UserControl>
+</tutorial:TutorialScreen>

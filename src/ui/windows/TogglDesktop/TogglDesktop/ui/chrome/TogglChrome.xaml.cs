@@ -56,27 +56,13 @@ namespace TogglDesktop
         {
             if (this.isToolWindow)
             {
-                this.MainGrid.Margin = new Thickness(10, 4, 10, 16);
-
                 this.CogButton.Visibility = Visibility.Collapsed;
                 this.MinimizeButton.Visibility = Visibility.Collapsed;
-
-                this.Effect = new DropShadowEffect
-                {
-                    BlurRadius = 16,
-                    ShadowDepth = 4,
-                    Opacity = 0.3,
-                    Direction = 270
-                };
             }
             else
             {
-                this.MainGrid.Margin = new Thickness(0);
-
                 this.CogButton.Visibility = Visibility.Visible;
                 this.MinimizeButton.Visibility = Visibility.Visible;
-
-                this.Effect = null;
             }
         }
 

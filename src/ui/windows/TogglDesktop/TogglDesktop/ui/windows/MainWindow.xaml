@@ -28,8 +28,10 @@
         <RoutedUICommand x:Key="QuitCommand" />
 
         <RoutedUICommand x:Key="EditRunningCommand" />
-        
+
         <RoutedUICommand x:Key="EscapeCommand" />
+        <RoutedUICommand x:Key="BasicTutorialCommand" />
+        <RoutedUICommand x:Key="NewFromPasteCommand" />
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
@@ -64,9 +66,13 @@
 
         <CommandBinding Command="{StaticResource EditRunningCommand}"
                         Executed="onEditRunningCommand" CanExecute="canExecuteEditRunningCommand"/>
-        
+
         <CommandBinding Command="{StaticResource EscapeCommand}"
                         Executed="onEscapeCommand"/>
+        <CommandBinding Command="{StaticResource BasicTutorialCommand}"
+                        Executed="onBasicTutorialCommand" CanExecute="canExecuteBasicTutorialCommand"/>
+        <CommandBinding Command="{StaticResource NewFromPasteCommand}"
+                        Executed="onNewFromPasteCommand" CanExecute="canExecuteNewFromPasteCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -80,6 +86,8 @@
         <KeyBinding Key="E" Modifiers="Control" Command="{StaticResource EditRunningCommand}" />
 
         <KeyBinding Key="D" Modifiers="Control" Command="{StaticResource ToggleManualModeCommand}" />
+        
+        <KeyBinding Key="V" Modifiers="Control" Command="{StaticResource NewFromPasteCommand}" />
 
         <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
@@ -89,7 +97,7 @@
                      Closed="onMainContextMenuClosed">
             <ContextMenu.Resources>
                 <Style TargetType="MenuItem">
-                    <Setter Property="Width" Value="260" />
+                    <Setter Property="Width" Value="280" />
                 </Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="#707070" />
@@ -142,6 +150,8 @@
             <Separator />
             <MenuItem Header="Clear Cache"
                       Command="{StaticResource ClearCacheCommand}"/>
+            <MenuItem Header="Toggl Desktop Tutorial"
+                      Command="{StaticResource BasicTutorialCommand}"/>
             <MenuItem Header="Send Feedback"
                       Command="{StaticResource SendFeedbackCommand}"/>
             <MenuItem Header="About"
@@ -153,17 +163,21 @@
         </ContextMenu>
     </Window.ContextMenu>
     
+    
     <Grid>
 
         <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop" />
-        
+
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
                         TrayLeftMouseUp="onTaskbarLeftMouseUp"
                         TrayBalloonTipClicked="onTrayBalloonTipClicked"
                         Visibility="Collapsed"/>
 
-        <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
+
+        <Grid Name="tutorialPanel" x:FieldModifier="private" />
+        
+        <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
 
         <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"
             VerticalAlignment="Top"/>

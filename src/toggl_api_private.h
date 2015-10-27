@@ -40,7 +40,7 @@ TogglGenericView *client_to_view_item(
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     toggl::AutotrackerRule * const model,
-    const std::string project_name);
+    const std::string project_and_task_label);
 
 void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 

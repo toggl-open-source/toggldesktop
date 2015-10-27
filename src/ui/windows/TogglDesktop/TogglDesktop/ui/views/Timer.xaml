@@ -80,6 +80,7 @@
                     </TextBlock>
 
                     <toggl:ExtendedTextBox Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
+                                           TextChanged="onDescriptionTextBoxTextChanged"
                                 Margin="-2, 0, 6, 0"/>
 
                 </Grid>

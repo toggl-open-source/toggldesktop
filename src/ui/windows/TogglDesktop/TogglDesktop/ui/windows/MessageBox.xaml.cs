@@ -6,6 +6,7 @@ namespace TogglDesktop
 {
     public partial class MessageBox
     {
+        private bool first = true;
         private MessageBoxResult result;
 
         private MessageBox()
@@ -59,6 +60,28 @@ namespace TogglDesktop
             this.cancelButton.ShowOnlyIf(cancel);
 
             this.okButton.Content = okButtonText;
+
+            this.refreshSize();
+        }
+
+        private void refreshSize()
+        {
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+
+            // this hack is needed to make sure the message box
+            // has the correct size the first time it is shown
+            // not sure exactly why this works, there may be a better solution
+            if (this.first)
+            {
+                this.Show();
+                this.Hide();
+
+                this.SizeToContent = SizeToContent.Manual;
+
+                this.first = false;
+            }
+
+            this.UpdateLayout();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

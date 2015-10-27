@@ -10,7 +10,7 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
 {
-    public partial class LoginView
+    public partial class LoginView : IMainView
     {
         private enum ConfirmAction
         {
@@ -21,7 +21,11 @@ namespace TogglDesktop
 
         private readonly Storyboard confirmSpinnerAnimation;
 
+        private Action onLogin;
+        private object opacityAnimationToken;
+
         private ConfirmAction confirmAction = ConfirmAction.Unknown;
+        private bool loggingIn;
 
         public LoginView()
         {
@@ -128,26 +132,37 @@ namespace TogglDesktop
         {
             using (Performance.Measure("attempting " + actionName))
             {
+                var success = false;
                 try
                 {
+                    this.loggingIn = true;
                     this.disableForm();
 
                     var email = this.emailTextBox.Text;
                     var password = this.passwordBox.Text;
 
-                    await Task.Run(() => confirmAction(email, password));
+                    success = await Task.Run(() => confirmAction(email, password));
                 }
                 finally
                 {
-                    this.enableForm();
-                    this.passwordBox.Clear();
+                    this.loggingIn = false;
+                    if (success && this.onLogin != null)
+                    {
+                        var action = this.onLogin;
+                        this.onLogin = null;
+                        action();
+                    }
+                    else
+                    {
+                        this.reset();
+                    }
                 }
             }
         }
 
         private void enableForm()
         {
-            this.IsEnabled = true;
+            this.formPanel.IsEnabled = true;
             this.formPanel.Opacity = 1;
             this.confirmButtonText.Visibility = Visibility.Visible;
             this.confirmButtonSpinner.Visibility = Visibility.Collapsed;
@@ -156,7 +171,7 @@ namespace TogglDesktop
 
         private void disableForm()
         {
-            this.IsEnabled = false;
+            this.formPanel.IsEnabled = false;
             this.formPanel.Opacity = 0.5;
             this.confirmButtonText.Visibility = Visibility.Collapsed;
             this.confirmButtonSpinner.Visibility = Visibility.Visible;
@@ -212,7 +227,73 @@ namespace TogglDesktop
             }
         }
 
+        private void reset()
+        {
+            this.enableForm();
+            this.passwordBox.Clear();
+        }
+
         #endregion
 
+
+        #region fade in/out
+
+        private const double opacityFadeTime = 0.25;
+
+        public void Activate(bool allowAnimation)
+        {
+            this.opacityAnimationToken = null;
+
+            if (allowAnimation)
+            {
+                var anim = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(opacityFadeTime));
+                this.BeginAnimation(OpacityProperty, anim);
+            }
+            else
+            {
+                this.BeginAnimation(OpacityProperty, null);
+            }
+
+            this.reset();
+            this.IsEnabled = true;
+            this.Visibility = Visibility.Visible;
+        }
+
+        public void Deactivate(bool allowAnimation)
+        {
+            this.opacityAnimationToken = null;
+
+            if (allowAnimation)
+            {
+                var anim = new DoubleAnimation(0, TimeSpan.FromSeconds(opacityFadeTime));
+                this.opacityAnimationToken = anim;
+                anim.Completed += (sender, args) =>
+                {
+                    if (this.opacityAnimationToken == anim)
+                    {
+                        this.Visibility = Visibility.Collapsed;
+                        this.reset();
+                    }
+                };
+                if (this.loggingIn)
+                {
+                    this.onLogin = () => this.BeginAnimation(OpacityProperty, anim);
+                }
+                else
+                {
+                    this.BeginAnimation(OpacityProperty, anim);
+                }
+            }
+            else
+            {
+                this.BeginAnimation(OpacityProperty, null);
+                this.Visibility = Visibility.Collapsed;
+            }
+
+            this.IsEnabled = false;
+        }
+
+
+        #endregion
     }
 }

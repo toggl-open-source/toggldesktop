@@ -12,6 +12,7 @@
 #include "./formatter.h"
 #include "./project.h"
 #include "./related_data.h"
+#include "./task.h"
 #include "./time_entry.h"
 #include "./user.h"
 #include "./workspace.h"
@@ -199,24 +200,41 @@ void GUI::DisplayReminder() {
     free(s2);
 }
 
-void GUI::DisplayAutotrackerNotification(Project *p) {
+void GUI::DisplayAutotrackerNotification(Project *const p, Task *const t) {
     poco_check_ptr(p);
 
     std::stringstream ss;
-    ss << "DisplayAutotrackerNotification "
-       << p->Name() << ", " << p->ID() << ", " << p->GUID();
-
+    ss << "DisplayAutotrackerNotification ";
+    if (p) {
+        ss << "project " << p->Name() << ", " << p->ID() << ", " << p->GUID();
+    }
+    if (t) {
+        ss << " task " << t->Name() << ", " << t->ID();
+    }
     logger().debug(ss.str());
+
+    if (!p && !t) {
+        logger().error(
+            "Need project ID or task ID for autotracker notification");
+        return;
+    }
 
     if (!on_display_autotracker_notification_) {
         return;
     }
 
-    char_t *project_name_s = copy_string(p->Name());
+    uint64_t pid(0);
+    if (p) {
+        pid = p->ID();
+    }
+    uint64_t tid(0);
+    if (t) {
+        tid = t->ID();
+    }
 
-    on_display_autotracker_notification_(project_name_s, p->ID());
-
-    free(project_name_s);
+    char_t *label = copy_string(Formatter::JoinTaskName(t, p, nullptr));
+    on_display_autotracker_notification_(label, pid, tid);
+    free(label);
 }
 
 
@@ -454,12 +472,11 @@ void GUI::DisplayAutotrackerRules(
             it++) {
         AutotrackerRule *rule = *it;
         Project *p = related.ProjectByID(rule->PID());
-        std::string project_name("");
-        if (p) {
-            project_name = p->Name();
-        }
+        Task *t = related.TaskByID(rule->TID());
+        std::string project_and_task_label =
+            Formatter::JoinTaskName(t, p, nullptr);
         TogglAutotrackerRuleView *item =
-            autotracker_rule_to_view_item(*it, project_name);
+            autotracker_rule_to_view_item(*it, project_and_task_label);
         item->Next = first;
         first = item;
     }

@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="TogglDesktop.Tutorial.BasicTutorialScreen1"
+﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Tutorial.BasicTutorialScreen1"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
              mc:Ignorable="d" 
              d:DesignHeight="485" d:DesignWidth="387"
              Style="{StaticResource TutorialScreen}">
@@ -16,9 +17,9 @@
             </Grid.RowDefinitions>
             <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
             <StackPanel Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
-                <toggl:TimeEntryCell />
-                <toggl:TimeEntryCell IsDummy="True" />
-                <toggl:TimeEntryCell IsDummy="True" />
+                <toggl:TimeEntryCell x:Name="cellDummy0" x:FieldModifier="private"/>
+                <toggl:TimeEntryCell x:Name="cellDummy1" x:FieldModifier="private" IsDummy="True" />
+                <toggl:TimeEntryCell x:Name="cellDummy2" x:FieldModifier="private" IsDummy="True" />
             </StackPanel>
         </Grid>
 
@@ -45,7 +46,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top">
                 <TextBlock Margin="0 45 5 5"
-                           ><Bold>Start</Bold> and stop your entry here</TextBlock>
+                           ><Bold>Start</Bold> and stop your entry</TextBlock>
                 <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                        Height="20" VerticalAlignment="Bottom" Margin="-12 0 0 20">
                     <Image.LayoutTransform>
@@ -62,9 +63,9 @@
                            >Your <Bold>activity</Bold> will appear here</TextBlock>
                 <Image Source="/TogglDesktop;component/Resources/tutorial-line.png"
                            HorizontalAlignment="Center" Width="230" />
-                <Button Content="Ok, let's go!" Margin="0 20 0 0" />
+                <Button Content="Ok, let's go!" Margin="0 20 0 0" Click="nextButtonClick" />
             </StackPanel>
-            
+
         </Grid>
     </Grid>
-</UserControl>
+</tutorial:TutorialScreen>

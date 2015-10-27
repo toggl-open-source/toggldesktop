@@ -124,7 +124,7 @@ public static partial class Toggl
         List<TogglAutotrackerRuleView> rules, string[] terms);
 
     public delegate void DisplayAutotrackerNotification(
-        string projectName, ulong projectId);
+        string projectName, ulong projectId, ulong taskId);
 
     public delegate void DisplayUpdateDownloadState(
         string url, DownloadStatus status);
@@ -509,9 +509,9 @@ public static partial class Toggl
         return toggl_run_script(ctx, script, ref err);
     }
 
-    public static long AddAutotrackerRule(string term, ulong projectId)
+    public static long AddAutotrackerRule(string term, ulong projectId, ulong taskId)
     {
-        return toggl_autotracker_add_rule(ctx, term, projectId);
+        return toggl_autotracker_add_rule(ctx, term, projectId, taskId);
     }
 
     public static bool DeleteAutotrackerRule(long id)
@@ -519,9 +519,14 @@ public static partial class Toggl
         return toggl_autotracker_delete_rule(ctx, id);
     }
 
-    public static bool SetDefaultProjectId(ulong id)
+    public static bool SetDefaultProject(ulong projectId, ulong taskId)
     {
-        return toggl_set_default_project_id(ctx, id);
+        return toggl_set_default_project(ctx, projectId, taskId);
+    }
+
+    public static string GetDefaultProjectName()
+    {
+        return toggl_get_default_project_name(ctx);
     }
 
     public static ulong GetDefaultProjectId()
@@ -529,9 +534,9 @@ public static partial class Toggl
         return toggl_get_default_project_id(ctx);
     }
 
-    public static string GetDefaultProjectName()
+    public static ulong GetDefaultTaskId()
     {
-        return toggl_get_default_project_name(ctx);
+        return toggl_get_default_task_id(ctx);
     }
 
     #endregion
@@ -732,11 +737,11 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_autotracker_notification(ctx, (name, id) =>
+        toggl_on_autotracker_notification(ctx, (name, project_id, task_id) =>
         {
             using (Performance.Measure("Calling OnAutotrackerNotification"))
             {
-                OnAutotrackerNotification(name, id);
+                OnAutotrackerNotification(name, project_id, task_id);
             }
         });
 

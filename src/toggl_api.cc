@@ -766,17 +766,11 @@ bool_t toggl_feedback_send(
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
 
-bool_t toggl_set_default_project_id(
+bool_t toggl_set_default_project(
     void *context,
-    const uint64_t pid) {
-    return toggl::noError == app(context)->SetDefaultPID(pid);
-}
-
-uint64_t toggl_get_default_project_id(
-    void *context) {
-    Poco::UInt64 ret(0);
-    app(context)->DefaultPID(&ret);
-    return ret;
+    const uint64_t pid,
+    const uint64_t tid) {
+    return toggl::noError == app(context)->SetDefaultProject(pid, tid);
 }
 
 char_t *toggl_get_default_project_name(
@@ -787,6 +781,20 @@ char_t *toggl_get_default_project_name(
         return nullptr;
     }
     return copy_string(name);
+}
+
+uint64_t toggl_get_default_project_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultPID(&ret);
+    return ret;
+}
+
+uint64_t toggl_get_default_task_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultTID(&ret);
+    return ret;
 }
 
 bool_t toggl_set_update_channel(
@@ -1109,11 +1117,13 @@ char_t *toggl_run_script(
 int64_t toggl_autotracker_add_rule(
     void *context,
     const char_t *term,
-    const uint64_t project_id) {
+    const uint64_t project_id,
+    const uint64_t task_id) {
     Poco::Int64 rule_id(0);
     app(context)->AddAutotrackerRule(
         to_string(term),
         project_id,
+        task_id,
         &rule_id);
     return rule_id;
 }

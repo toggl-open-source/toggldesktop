@@ -37,8 +37,19 @@ const Poco::UInt64 &AutotrackerRule::PID() const {
 }
 
 void AutotrackerRule::SetPID(const Poco::UInt64 value) {
-    if (value != pid_) {
+    if (pid_ != value) {
         pid_ = value;
+        SetDirty();
+    }
+}
+
+const Poco::UInt64 &AutotrackerRule::TID() const {
+    return tid_;
+}
+
+void AutotrackerRule::SetTID(const Poco::UInt64 value) {
+    if (tid_ != value) {
+        tid_ = value;
         SetDirty();
     }
 }
@@ -48,7 +59,8 @@ std::string AutotrackerRule::String() const {
     ss << " local_id=" << LocalID()
        << " term=" << term_
        << " uid=" << UID()
-       << " pid=" << pid_;
+       << " pid=" << pid_
+       << " tid=" << tid_;
     return ss.str();
 }
 

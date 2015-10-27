@@ -7,9 +7,8 @@
 + (NSMutableArray *)loadAll:(TogglAutotrackerRuleView *)first;
 - (void)load:(TogglAutotrackerRuleView *)data;
 @property int64_t ID;
-@property uint64_t PID;
 @property (strong) NSString *Term;
-@property (strong) NSString *ProjectName;
+@property (strong) NSString *ProjectAndTaskLabel;
 @end
 
 

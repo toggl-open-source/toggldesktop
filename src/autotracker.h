@@ -19,7 +19,8 @@ class AutotrackerRule : public BaseModel {
     AutotrackerRule()
         : BaseModel()
     , term_("")
-    , pid_(0) {}
+    , pid_(0)
+    , tid_(0) {}
 
     virtual ~AutotrackerRule() {}
 
@@ -31,6 +32,9 @@ class AutotrackerRule : public BaseModel {
     const Poco::UInt64 &PID() const;
     void SetPID(const Poco::UInt64 value);
 
+    const Poco::UInt64 &TID() const;
+    void SetTID(const Poco::UInt64 value);
+
     // Override BaseModel
     std::string String() const;
     std::string ModelName() const;
@@ -39,6 +43,7 @@ class AutotrackerRule : public BaseModel {
  private:
     std::string term_;
     Poco::UInt64 pid_;
+    Poco::UInt64 tid_;
 };
 
 };  // namespace toggl

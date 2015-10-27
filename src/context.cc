@@ -22,6 +22,7 @@
 #include "./https_client.h"
 #include "./project.h"
 #include "./settings.h"
+#include "./task.h"
 #include "./time_entry.h"
 #include "./timeline_uploader.h"
 #include "./urls.h"
@@ -2174,6 +2175,13 @@ TimeEntry *Context::Start(
             return nullptr;
         }
 
+        // Check if there's a default TID set
+        Poco::UInt64 tid(task_id);
+        if (!tid) {
+            tid = user_->DefaultTID();
+        }
+
+        // Check if there's a default PID set
         Poco::UInt64 pid(project_id);
         if (!pid && project_guid.empty()) {
             pid = user_->DefaultPID();
@@ -2181,7 +2189,7 @@ TimeEntry *Context::Start(
 
         te = user_->Start(description,
                           duration,
-                          task_id,
+                          tid,
                           pid,
                           project_guid,
                           tags);
@@ -2855,7 +2863,9 @@ error Context::SetUpdateChannel(const std::string channel) {
     return noError;
 }
 
-error Context::SetDefaultPID(const Poco::UInt64 pid) {
+error Context::SetDefaultProject(
+    const Poco::UInt64 pid,
+    const Poco::UInt64 tid) {
     try {
         {
             Poco::Mutex::ScopedLock lock(user_m_);
@@ -2863,34 +2873,43 @@ error Context::SetDefaultPID(const Poco::UInt64 pid) {
                 logger().warning("Cannot set default PID, user logged out");
                 return noError;
             }
-            if (pid && !user_->related.ProjectByID(pid)) {
-                return displayError("Project not found by ID");
+
+            Task *t = nullptr;
+            if (tid) {
+                t = user_->related.TaskByID(tid);
             }
-            user_->SetDefaultPID(pid);
+            if (tid && !t) {
+                return displayError("task not found");
+            }
+
+            Project *p = nullptr;
+            if (pid) {
+                p = user_->related.ProjectByID(pid);
+            }
+            if (pid && !p) {
+                return displayError("project not found");
+            }
+            if (!p && t && t->PID()) {
+                p = user_->related.ProjectByID(t->PID());
+            }
+
+            if (p && t && p->ID() != t->PID()) {
+                return displayError("task does not belong to project");
+            }
+
+            if (p) {
+                user_->SetDefaultPID(p->ID());
+            } else {
+                user_->SetDefaultPID(0);
+            }
+
+            if (t) {
+                user_->SetDefaultTID(t->ID());
+            } else {
+                user_->SetDefaultTID(0);
+            }
         }
         return displayError(save());
-    } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
-    } catch(const std::exception& ex) {
-        return displayError(ex.what());
-    } catch(const std::string& ex) {
-        return displayError(ex);
-    }
-    return noError;
-}
-
-error Context::DefaultPID(Poco::UInt64 *pid) {
-    try {
-        poco_check_ptr(pid);
-        *pid = 0;
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger().warning("Cannot get default PID, user logged out");
-                return noError;
-            }
-            *pid = user_->DefaultPID();
-        }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2904,18 +2923,65 @@ error Context::DefaultPID(Poco::UInt64 *pid) {
 error Context::DefaultProjectName(std::string *name) {
     try {
         poco_check_ptr(name);
-        *name = "";
         Project *p = nullptr;
+        Task *t = nullptr;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().warning("Cannot get default PID, user logged out");
                 return noError;
             }
-            p = user_->related.ProjectByID(user_->DefaultPID());
+            if (user_->DefaultPID()) {
+                p = user_->related.ProjectByID(user_->DefaultPID());
+            }
+            if (user_->DefaultTID()) {
+                t = user_->related.TaskByID(user_->DefaultTID());
+            }
         }
-        if (p) {
-            *name = p->Name();
+        *name = Formatter::JoinTaskName(t, p, nullptr);
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultPID(Poco::UInt64 *result) {
+    try {
+        poco_check_ptr(result);
+        *result = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            *result = user_->DefaultPID();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultTID(Poco::UInt64 *result) {
+    try {
+        poco_check_ptr(result);
+        *result = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            *result = user_->DefaultTID();
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -2930,6 +2996,7 @@ error Context::DefaultProjectName(std::string *name) {
 error Context::AddAutotrackerRule(
     const std::string term,
     const Poco::UInt64 pid,
+    const Poco::UInt64 tid,
     Poco::Int64 *rule_id) {
 
     poco_check_ptr(rule_id);
@@ -2938,8 +3005,8 @@ error Context::AddAutotrackerRule(
     if (term.empty()) {
         return displayError("missing term");
     }
-    if (!pid) {
-        return displayError("missing project");
+    if (!pid && !tid) {
+        return displayError("missing project and task");
     }
 
     std::string lowercase = Poco::UTF8::toLower(term);
@@ -2957,9 +3024,37 @@ error Context::AddAutotrackerRule(
             return displayError(kErrorRuleAlreadyExists);
         }
 
+        Task *t = nullptr;
+        if (tid) {
+            t = user_->related.TaskByID(tid);
+        }
+        if (tid && !t) {
+            return displayError("task not found");
+        }
+
+        Project *p = nullptr;
+        if (pid) {
+            p = user_->related.ProjectByID(pid);
+        }
+        if (pid && !p) {
+            return displayError("project not found");
+        }
+        if (t && t->PID() && !p) {
+            p = user_->related.ProjectByID(t->PID());
+        }
+
+        if (p && t && p->ID() != t->PID()) {
+            return displayError("task does not belong to project");
+        }
+
         rule = new AutotrackerRule();
         rule->SetTerm(lowercase);
-        rule->SetPID(pid);
+        if (t) {
+            rule->SetTID(t->ID());
+        }
+        if (p) {
+            rule->SetPID(p->ID());
+        }
         rule->SetUID(user_->ID());
         user_->related.AutotrackerRules.push_back(rule);
     }
@@ -3399,11 +3494,28 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
     if (!rule) {
         return noError;
     }
-    Project *p = user_->related.ProjectByID(rule->PID());
-    if (!p) {
-        return noError;
+
+    Project *p = nullptr;
+    if (rule->PID()) {
+        p = user_->related.ProjectByID(rule->PID());
     }
-    UI()->DisplayAutotrackerNotification(p);
+    if (rule->PID() && !p) {
+        return error("autotracker project not found");
+    }
+
+    Task *t = nullptr;
+    if (rule->TID()) {
+        t = user_->related.TaskByID(rule->TID());
+    }
+    if (rule->TID() && !t) {
+        return error("autotracker task not found");
+    }
+
+    if (!p && !t) {
+        return error("no project or task specified in autotracker rule");
+    }
+
+    UI()->DisplayAutotrackerNotification(p, t);
 
     return noError;
 }
