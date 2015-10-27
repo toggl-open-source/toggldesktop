@@ -2943,6 +2943,50 @@ error Context::DefaultProjectName(std::string *name) {
     return noError;
 }
 
+error Context::DefaultPID(Poco::UInt64 *result) {
+    try {
+        poco_check_ptr(result);
+        *result = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            *result = user_->DefaultPID();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::DefaultTID(Poco::UInt64 *result) {
+    try {
+        poco_check_ptr(result);
+        *result = 0;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot get default PID, user logged out");
+                return noError;
+            }
+            *result = user_->DefaultTID();
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
 error Context::AddAutotrackerRule(
     const std::string term,
     const Poco::UInt64 pid,

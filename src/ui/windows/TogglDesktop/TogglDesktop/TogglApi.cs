@@ -1079,6 +1079,14 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern UInt64 toggl_get_default_project_id(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern UInt64 toggl_get_default_task_id(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_update_channel(
         IntPtr context,

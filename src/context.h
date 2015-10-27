@@ -323,6 +323,8 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 pid,
         const Poco::UInt64 tid);
     error DefaultProjectName(std::string *name);
+    error DefaultPID(Poco::UInt64 *result);
+    error DefaultTID(Poco::UInt64 *result);
 
     error SetUpdateChannel(
         const std::string channel);

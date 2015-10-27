@@ -710,6 +710,12 @@ extern "C" {
     TOGGL_EXPORT char_t *toggl_get_default_project_name(
         void *context);
 
+    TOGGL_EXPORT uint64_t toggl_get_default_project_id(
+        void *context);
+
+    TOGGL_EXPORT uint64_t toggl_get_default_task_id(
+        void *context);
+
     TOGGL_EXPORT bool_t toggl_set_update_channel(
         void *context,
         const char_t *update_channel);
