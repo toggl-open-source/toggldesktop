@@ -92,7 +92,7 @@
                      Closed="onMainContextMenuClosed">
             <ContextMenu.Resources>
                 <Style TargetType="MenuItem">
-                    <Setter Property="Width" Value="260" />
+                    <Setter Property="Width" Value="280" />
                 </Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="#707070" />
