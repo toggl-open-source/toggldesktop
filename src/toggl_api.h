@@ -141,8 +141,7 @@ extern "C" {
     typedef struct {
         int64_t ID;
         char_t *Term;
-        uint64_t PID;
-        char_t *ProjectName;
+        char_t *ProjectAndTaskLabel;
         void *Next;
     } TogglAutotrackerRuleView;
 
@@ -187,7 +186,8 @@ extern "C" {
 
     typedef void (*TogglDisplayAutotrackerNotification)(
         const char_t *project_name,
-        const uint64_t project_id);
+        const uint64_t project_id,
+        const uint64_t task_id);
 
     typedef void (*TogglDisplayPromotion)(
         const int64_t promotion_type);
@@ -701,12 +701,10 @@ extern "C" {
         const char_t *project_name,
         const bool_t is_private);
 
-    TOGGL_EXPORT bool_t toggl_set_default_project_id(
+    TOGGL_EXPORT bool_t toggl_set_default_project(
         void *context,
-        const uint64_t pid);
-
-    TOGGL_EXPORT uint64_t toggl_get_default_project_id(
-        void *context);
+        const uint64_t pid,
+        const uint64_t tid);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_get_default_project_name(
@@ -794,7 +792,8 @@ extern "C" {
     TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
         void *context,
         const char_t *term,
-        const uint64_t project_id);
+        const uint64_t project_id,
+        const uint64_t task_id);
 
     TOGGL_EXPORT bool_t toggl_autotracker_delete_rule(
         void *context,

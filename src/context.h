@@ -319,8 +319,9 @@ class Context : public TimelineDatasource {
         return user_ && user_->RecordTimeline();
     }
 
-    error SetDefaultPID(const Poco::UInt64 pid);
-    error DefaultPID(Poco::UInt64 *pid);
+    error SetDefaultProject(
+        const Poco::UInt64 pid,
+        const Poco::UInt64 tid);
     error DefaultProjectName(std::string *name);
 
     error SetUpdateChannel(
@@ -361,6 +362,7 @@ class Context : public TimelineDatasource {
     error AddAutotrackerRule(
         const std::string term,
         const Poco::UInt64 pid,
+        const Poco::UInt64 tid,
         Poco::Int64 *rule_id);
 
     error DeleteAutotrackerRule(

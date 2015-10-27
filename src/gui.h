@@ -337,7 +337,9 @@ class GUI : public SyncStateMonitor {
 
     void DisplayReminder();
 
-    void DisplayAutotrackerNotification(toggl::Project *p);
+    void DisplayAutotrackerNotification(
+        toggl::Project *const p,
+        toggl::Task *const t);
 
     void DisplayMinitimerAutocomplete(std::vector<toggl::view::Autocomplete> *);
 

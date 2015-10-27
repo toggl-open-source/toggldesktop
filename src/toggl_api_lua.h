@@ -352,7 +352,8 @@ static int l_toggl_add_project(lua_State *L) {
 static int l_toggl_autotracker_add_rule(lua_State *L) {
     int64_t rule_id = toggl_autotracker_add_rule(toggl_app_instance_,
                       checkstring(L, 1),
-                      lua_tointeger(L, 2));
+                      lua_tointeger(L, 2),
+                      lua_tointeger(L, 3));
     lua_pushnumber(L, rule_id);
     return 1;
 }
@@ -606,18 +607,12 @@ static int l_toggl_window_settings(lua_State *L) {
     return 1;
 }
 
-static int l_toggl_set_default_project_id(lua_State *L) {
-    bool_t res = toggl_set_default_project_id(
+static int l_toggl_set_default_project(lua_State *L) {
+    bool_t res = toggl_set_default_project(
         toggl_app_instance_,
-        lua_tointeger(L, 1));
+        lua_tointeger(L, 1),
+        lua_tointeger(L, 2));
     lua_pushboolean(L, res);
-    return 1;
-}
-
-static int l_toggl_get_default_project_id(lua_State *L) {
-    uint64_t pid = toggl_get_default_project_id(
-        toggl_app_instance_);
-    lua_pushnumber(L, pid);
     return 1;
 }
 
@@ -763,8 +758,7 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_settings_manual_mode", l_toggl_set_settings_manual_mode},
     {"set_window_settings", l_toggl_set_window_settings},
     {"window_settings", l_toggl_window_settings},
-    {"set_default_project_id", l_toggl_set_default_project_id},
-    {"get_default_project_id", l_toggl_get_default_project_id},
+    {"set_default_project", l_toggl_set_default_project},
     {"get_default_project_name", l_toggl_get_default_project_name},
     {"set_promotion_response", l_toggl_set_promotion_response},
     {   "parse_duration_string_into_seconds",

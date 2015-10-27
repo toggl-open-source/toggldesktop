@@ -122,12 +122,15 @@ extern void *ctx;
 	NSString *key = self.defaultProject.stringValue;
 	AutocompleteItem *autocomplete = [self.defaultProjectAutocompleteDataSource get:key];
 	uint64_t pid = 0;
+	uint64_t tid = 0;
 
 	if (autocomplete != nil)
 	{
 		pid = autocomplete.ProjectID;
+		tid = autocomplete.TaskID;
 	}
-	toggl_set_default_project_id(ctx, pid);
+
+	toggl_set_default_project(ctx, pid, tid);
 }
 
 - (IBAction)useIdleDetectionButtonChanged:(id)sender
@@ -410,17 +413,19 @@ const int kUseProxyToConnectToToggl = 2;
 	NSString *key = self.autotrackerProject.stringValue;
 	AutocompleteItem *autocomplete = [self.autotrackerProjectAutocompleteDataSource get:key];
 	uint64_t pid = 0;
+	uint64_t tid = 0;
 	if (autocomplete != nil)
 	{
 		pid = autocomplete.ProjectID;
+		tid = autocomplete.TaskID;
 	}
-	if (!pid)
+	if (!pid && !tid)
 	{
 		[self.autotrackerProject becomeFirstResponder];
 		return;
 	}
 
-	if (!toggl_autotracker_add_rule(ctx, [term UTF8String], pid))
+	if (!toggl_autotracker_add_rule(ctx, [term UTF8String], pid, tid))
 	{
 		return;
 	}
@@ -453,7 +458,7 @@ const int kUseProxyToConnectToToggl = 2;
 	NSString *columnIdentifer = [aTableColumn identifier];
 	if ([columnIdentifer isEqualTo:@"project"])
 	{
-		return view.ProjectName;
+		return view.ProjectAndTaskLabel;
 	}
 	if ([columnIdentifer isEqualTo:@"term"])
 	{

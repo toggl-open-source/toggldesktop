@@ -34,6 +34,14 @@ error Migrations::migrateAutotracker() {
         return err;
     }
 
+    err = db_->Migrate(
+        "autotracker_settings.tid",
+        "alter table autotracker_settings"
+        " add column tid integer references tasks (id);");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -557,6 +565,14 @@ error Migrations::migrateUsers() {
         "users.default_pid",
         "alter table users"
         " add column default_pid integer");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "users.default_tid",
+        "alter table users"
+        " add column default_tid integer references tasks (id);");
     if (err != noError) {
         return err;
     }
