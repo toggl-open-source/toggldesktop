@@ -885,7 +885,7 @@ namespace TogglDesktop
 
         private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
         {
-            if (this.editPopup.IsVisible)
+            if (this.editPopup != null && this.editPopup.IsVisible)
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup(skipAnimation);
