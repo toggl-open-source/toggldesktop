@@ -14,6 +14,7 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Tutorial;
+using Clipboard = System.Windows.Clipboard;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using UserControl = System.Windows.Controls.UserControl;
@@ -613,10 +614,19 @@ namespace TogglDesktop
             this.closeEditPopup();
         }
 
-
         private void onBasicTutorialCommand(object sender, ExecutedRoutedEventArgs e)
         {
             this.tutorialManager.ActivateScreen<BasicTutorialScreen1>();
+        }
+
+        private void onNewFromPasteCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            using (Performance.Measure("starting time entry from paste, manual mode: {0}", this.isInManualMode))
+            {
+                this.startTimeEntry(description:
+                    Clipboard.GetText().Replace(Environment.NewLine, " ")
+                    );
+            }
         }
 
         #endregion
@@ -677,6 +687,12 @@ namespace TogglDesktop
         {
             return !this.IsVisible
                 || this.WindowState == WindowState.Minimized;
+        }
+
+
+        private void canExecuteNewFromPasteCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn && !this.isTracking;
         }
 
         #endregion
@@ -741,11 +757,11 @@ namespace TogglDesktop
             }
         }
 
-        private void startTimeEntry(bool continueIfNotInManualMode = false)
+        private void startTimeEntry(bool continueIfNotInManualMode = false, string description = "")
         {
             if (this.isInManualMode)
             {
-                var guid = Toggl.Start("", "0", 0, 0, "", "");
+                var guid = Toggl.Start(description, "0", 0, 0, "", "");
                 Toggl.Edit(guid, false, Toggl.Duration);
             }
             else
@@ -756,7 +772,7 @@ namespace TogglDesktop
                 }
                 else
                 {
-                    Toggl.Start("", "", 0, 0, "", "");   
+                    Toggl.Start(description, "", 0, 0, "", "");   
                 }
             }
         }

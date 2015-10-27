@@ -31,6 +31,7 @@
 
         <RoutedUICommand x:Key="EscapeCommand" />
         <RoutedUICommand x:Key="BasicTutorialCommand" />
+        <RoutedUICommand x:Key="NewFromPasteCommand" />
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
@@ -70,6 +71,8 @@
                         Executed="onEscapeCommand"/>
         <CommandBinding Command="{StaticResource BasicTutorialCommand}"
                         Executed="onBasicTutorialCommand" CanExecute="canExecuteBasicTutorialCommand"/>
+        <CommandBinding Command="{StaticResource NewFromPasteCommand}"
+                        Executed="onNewFromPasteCommand" CanExecute="canExecuteNewFromPasteCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -83,6 +86,8 @@
         <KeyBinding Key="E" Modifiers="Control" Command="{StaticResource EditRunningCommand}" />
 
         <KeyBinding Key="D" Modifiers="Control" Command="{StaticResource ToggleManualModeCommand}" />
+        
+        <KeyBinding Key="V" Modifiers="Control" Command="{StaticResource NewFromPasteCommand}" />
 
         <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
