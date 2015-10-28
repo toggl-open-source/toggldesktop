@@ -48,8 +48,9 @@ static class Program
                         {
                             hWnd = Win32.SearchForWindow(current.ProcessName, "Toggl Desktop");
                         }
-                        Win32.ShowWindow(hWnd, Win32.SW_RESTORE);
-                        Win32.SetForegroundWindow(hWnd);
+
+                        Win32.ShowWindow(hWnd, Win32.SW_SHOW);
+
                         return;
                     }
                 }
