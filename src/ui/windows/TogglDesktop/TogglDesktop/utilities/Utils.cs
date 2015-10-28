@@ -61,10 +61,24 @@ public static class Utils
 
     public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit)
     {
-        var x = (long)mainWindow.Left;
-        var y = (long)mainWindow.Top;
-        var w = (long)mainWindow.Width;
-        var h = (long)mainWindow.Height;
+        long x, y, w, h;
+
+        if (mainWindow.WindowState == WindowState.Minimized)
+        {
+            var rb = mainWindow.RestoreBounds;
+            x = (long)rb.X;
+            y = (long)rb.Y;
+            w = (long)rb.Width;
+            h = (long)rb.Height;
+        }
+        else
+        {
+
+            x = (long)mainWindow.Left;
+            y = (long)mainWindow.Top;
+            w = (long)mainWindow.Width;
+            h = (long)mainWindow.Height;
+        }
 
         var success = Toggl.SetWindowSettings(x, y, h, w);
 

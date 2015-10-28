@@ -842,12 +842,13 @@ namespace TogglDesktop
                 this.closeEditPopup(skipAnimation:true);
             }
 
+            if (saveWindowLocation)
+            {
+                Utils.SaveWindowLocation(this, this.editPopup);
+            }
+
             if (this.IsVisible)
             {
-                if (saveWindowLocation)
-                {
-                    Utils.SaveWindowLocation(this, this.editPopup);
-                }
                 this.Hide();
             }
         }
