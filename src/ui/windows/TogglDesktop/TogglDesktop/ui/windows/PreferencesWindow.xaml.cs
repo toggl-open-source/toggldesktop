@@ -130,6 +130,12 @@ namespace TogglDesktop
 
             #endregion
 
+            #region auto tracker
+
+            this.enableAutotrackerCheckbox.IsChecked = settings.Autotrack;
+
+            #endregion
+
             #region global shortcuts
 
             trySetHotKey(

@@ -71,7 +71,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         public static AutoCompleteController ForDescriptions(List<Toggl.TogglAutocompleteView> items)
         {
-            var list = items.Select(i => new TimerItem(i, false)).Cast<IAutoCompleteListItem>().ToList();
+            var list = items.Select(TimerItem.ForDescriptionCompletion).ToList<IAutoCompleteListItem>();
 
             // TODO: categorize by workspace/client/project?
 
