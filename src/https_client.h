@@ -130,18 +130,18 @@ class HTTPSClient {
 
     error statusCodeToError(const Poco::Int64 status_code) const;
 
-	bool isRedirect(const Poco::Int64 status_code) const;
+    bool isRedirect(const Poco::Int64 status_code) const;
 
-	virtual error makeHttpRequest(
-		const std::string method,
-		const std::string host,
-		const std::string relative_url,
-		const std::string json,
-		const std::string basic_auth_username,
-		const std::string basic_auth_password,
-		std::string *response_body,
-		Poco::Int64 *response_status,
-		Poco::Net::HTMLForm *form = nullptr);
+    virtual error makeHttpRequest(
+        const std::string method,
+        const std::string host,
+        const std::string relative_url,
+        const std::string json,
+        const std::string basic_auth_username,
+        const std::string basic_auth_password,
+        std::string *response_body,
+        Poco::Int64 *response_status,
+        Poco::Net::HTMLForm *form = nullptr);
 };
 
 class SyncStateMonitor {
