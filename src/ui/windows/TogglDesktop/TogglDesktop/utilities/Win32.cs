@@ -15,9 +15,12 @@ static class Win32
     private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
     [DllImport("User32")]
+    public static extern int SetForegroundWindow(IntPtr hwnd);
+
+    [DllImport("User32")]
     public static extern bool ShowWindow(IntPtr hwnd, int cmdshow);
 
-    public const int SW_SHOW = 5;
+    public const int SW_RESTORE = 9;
 
     private delegate bool EnumWindowsProc(IntPtr hWnd, ref SearchData data);
 
