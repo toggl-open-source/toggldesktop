@@ -1082,7 +1082,7 @@ error Context::downloadUpdate() {
 
             // Download file
             std::string body("");
-            TogglClient client;
+            HTTPSClient client;
             err = client.Get(uri.getScheme() + "://" + uri.getHost(),
                              uri.getPathEtc(),
                              std::string(""),

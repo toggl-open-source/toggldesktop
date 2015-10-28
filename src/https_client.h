@@ -129,6 +129,19 @@ class HTTPSClient {
     static std::map<std::string, Poco::Timestamp> banned_until_;
 
     error statusCodeToError(const Poco::Int64 status_code) const;
+
+	bool isRedirect(const Poco::Int64 status_code) const;
+
+	virtual error makeHttpRequest(
+		const std::string method,
+		const std::string host,
+		const std::string relative_url,
+		const std::string json,
+		const std::string basic_auth_username,
+		const std::string basic_auth_password,
+		std::string *response_body,
+		Poco::Int64 *response_status,
+		Poco::Net::HTMLForm *form = nullptr);
 };
 
 class SyncStateMonitor {
@@ -155,7 +168,7 @@ class TogglClient : public HTTPSClient {
         const std::string basic_auth_password,
         std::string *response_body,
         Poco::Int64 *response_status,
-        Poco::Net::HTMLForm *form = nullptr);
+        Poco::Net::HTMLForm *form);
 
     virtual Poco::Logger &logger() const;
 
