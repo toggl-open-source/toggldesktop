@@ -54,7 +54,7 @@ namespace TogglDesktop
         {
             this.DataContext = this;
             this.InitializeComponent();
-
+            
             this.interopHelper = new WindowInteropHelper(this);
 
             this.views = new IMainView[] {this.loginView, this.timerEntryListView};
