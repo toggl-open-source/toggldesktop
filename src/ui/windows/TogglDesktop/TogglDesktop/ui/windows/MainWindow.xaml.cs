@@ -17,7 +17,6 @@ using TogglDesktop.Tutorial;
 using Clipboard = System.Windows.Clipboard;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace TogglDesktop
 {
@@ -47,6 +46,7 @@ namespace TogglDesktop
         private bool isResizingWithHandle;
         private bool closing;
         private string trackingTitle;
+        private WindowState previousWindowState;
 
         #endregion
 
@@ -54,7 +54,7 @@ namespace TogglDesktop
         {
             this.DataContext = this;
             this.InitializeComponent();
-
+            
             this.interopHelper = new WindowInteropHelper(this);
 
             this.views = new IMainView[] {this.loginView, this.timerEntryListView};
@@ -384,11 +384,20 @@ namespace TogglDesktop
         {
             this.resizeHandle.ShowOnlyIf(this.WindowState != WindowState.Maximized);
 
+            // fix for when maximised window is activated from a different process using ShowWindow()
+            if (this.fixWindowStateOnShowWindow())
+                return;
+
+            this.previousWindowState = this.WindowState;
+
             base.OnStateChanged(e);
         }
 
         protected override void OnActivated(EventArgs e)
         {
+            // fix for when the window is activated from a different process using ShowWindow()
+            this.fixVisibilityOnShowWindow();
+
             Toggl.SetWake();
 
             base.OnActivated(e);
@@ -792,7 +801,9 @@ namespace TogglDesktop
         {
             this.Show();
             if (this.WindowState == WindowState.Minimized)
+            {
                 this.WindowState = WindowState.Normal;
+            }
             this.Activate();
         }
 
@@ -831,12 +842,13 @@ namespace TogglDesktop
                 this.closeEditPopup(skipAnimation:true);
             }
 
+            if (saveWindowLocation)
+            {
+                Utils.SaveWindowLocation(this, this.editPopup);
+            }
+
             if (this.IsVisible)
             {
-                if (saveWindowLocation)
-                {
-                    Utils.SaveWindowLocation(this, this.editPopup);
-                }
                 this.Hide();
             }
         }
@@ -1002,6 +1014,29 @@ namespace TogglDesktop
             this.MinHeight = this.WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
         }
+
+        private bool fixWindowStateOnShowWindow()
+        {
+            if (this.Visibility != Visibility.Visible)
+            {
+                if (this.previousWindowState == WindowState.Maximized && this.WindowState != WindowState.Maximized)
+                {
+                    this.WindowState = WindowState.Maximized;
+                    this.Visibility = Visibility.Visible;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void fixVisibilityOnShowWindow()
+        {
+            if (this.Visibility != Visibility.Visible)
+            {
+                this.Visibility = Visibility.Visible;
+            }
+        }
+
 
         #endregion
 

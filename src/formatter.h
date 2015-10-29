@@ -145,7 +145,7 @@ bool CompareByStart(
     TimedEvent *b);
 bool CompareAutocompleteItems(
     view::Autocomplete a,
-    toggl::view::Autocomplete b);
+    view::Autocomplete b);
 bool CompareStructuredAutocompleteItems(
     view::Autocomplete a,
     view::Autocomplete b);

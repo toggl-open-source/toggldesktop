@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
@@ -61,10 +62,24 @@ public static class Utils
 
     public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit)
     {
-        var x = (long)mainWindow.Left;
-        var y = (long)mainWindow.Top;
-        var w = (long)mainWindow.Width;
-        var h = (long)mainWindow.Height;
+        long x, y, w, h;
+
+        if (mainWindow.WindowState == WindowState.Minimized)
+        {
+            var rb = mainWindow.RestoreBounds;
+            x = (long)rb.X;
+            y = (long)rb.Y;
+            w = (long)rb.Width;
+            h = (long)rb.Height;
+        }
+        else
+        {
+
+            x = (long)mainWindow.Left;
+            y = (long)mainWindow.Top;
+            w = (long)mainWindow.Width;
+            h = (long)mainWindow.Height;
+        }
 
         var success = Toggl.SetWindowSettings(x, y, h, w);
 
@@ -87,7 +102,7 @@ public static class Utils
 
     #region keyboard shortcuts
 
-    public struct KeyCombination
+    public struct KeyCombination : IEquatable<KeyCombination>
     {
         private readonly ModifierKeys modifiers;
         private readonly string keyCode;
@@ -107,6 +122,35 @@ public static class Utils
             get {
                 return this.keyCode;
             }
+        }
+
+        public bool Equals(KeyCombination other)
+        {
+            return this.modifiers == other.modifiers && string.Equals(this.keyCode, other.keyCode);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is KeyCombination && Equals((KeyCombination)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int)this.modifiers * 397) ^ (this.keyCode != null ? this.keyCode.GetHashCode() : 0);
+            }
+        }
+
+        public static bool operator ==(KeyCombination c0, KeyCombination c1)
+        {
+            return c0.Equals(c1);
+        }
+
+        public static bool operator !=(KeyCombination c0, KeyCombination c1)
+        {
+            return !(c0 == c1);
         }
     }
 

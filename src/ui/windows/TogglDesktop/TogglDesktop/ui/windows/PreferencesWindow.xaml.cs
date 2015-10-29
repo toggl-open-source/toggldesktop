@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using ServiceStack.Text.Common;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -32,8 +33,28 @@ namespace TogglDesktop
             Toggl.OnLogin += this.onLogin;
             Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
 
-            this.showHideShortcutRecorder = new ShortcutRecorder(this.showHideShortcutRecordButton, this.showHideShortcutClearButton);
-            this.continueStopShortcutRecorder = new ShortcutRecorder(this.continueStopShortcutRecordButton, this.continueStopShortcutClearButton);
+            this.showHideShortcutRecorder = new ShortcutRecorder(
+                this.showHideShortcutRecordButton,
+                this.showHideShortcutClearButton,
+                this.shortcutErrorText,
+                "Global Show/Hide"
+                );
+            this.continueStopShortcutRecorder = new ShortcutRecorder(
+                this.continueStopShortcutRecordButton,
+                this.continueStopShortcutClearButton,
+                this.shortcutErrorText,
+                "Global Continue/Stop"
+                );
+
+            var allShortcutRecorders = new List<ShortcutRecorder>
+            {
+                this.showHideShortcutRecorder, this.continueStopShortcutRecorder
+            }.AsReadOnly();
+
+            foreach (var recorder in allShortcutRecorders)
+            {
+                recorder.SetShortcutList(allShortcutRecorders);
+            }
 
             this.IsVisibleChanged += (sender, args) => this.isVisibleChanged();
         }
@@ -130,6 +151,12 @@ namespace TogglDesktop
 
             #endregion
 
+            #region auto tracker
+
+            this.enableAutotrackerCheckbox.IsChecked = settings.Autotrack;
+
+            #endregion
+
             #region global shortcuts
 
             trySetHotKey(
@@ -142,6 +169,8 @@ namespace TogglDesktop
                 Toggl.GetKeyModifierStart,
                 this.continueStopShortcutRecorder
                 );
+
+            this.shortcutErrorText.Text = "";
 
             #endregion
         }
@@ -169,8 +198,10 @@ namespace TogglDesktop
             }
         }
 
-        private static string keyEventToString(TogglDesktop.ModifierKeys modifiers, string keyCode)
+        private static string keyEventToString(Utils.KeyCombination shortcut)
         {
+            var modifiers = shortcut.Modifiers;
+
             var res = "";
             if (modifiers.HasFlag(TogglDesktop.ModifierKeys.Win))
             {
@@ -188,7 +219,7 @@ namespace TogglDesktop
             {
                 res += "Alt + ";
             }
-            res += keyCode;
+            res += shortcut.KeyCode;
             return res;
         }
 
@@ -324,16 +355,37 @@ namespace TogglDesktop
 
         private class ShortcutRecorder
         {
+            private static readonly Dictionary<Utils.KeyCombination, string> knownShortcuts =
+                new Dictionary<Utils.KeyCombination, string>
+            {
+                { new Utils.KeyCombination(ModifierKeys.Control, "N"), "New time entry" },
+                { new Utils.KeyCombination(ModifierKeys.Control, "O"), "Continue last entry" },
+                { new Utils.KeyCombination(ModifierKeys.Control, "S"), "Stop time entry" },
+                { new Utils.KeyCombination(ModifierKeys.Control, "W"), "Hide Toggl Desktop" },
+                { new Utils.KeyCombination(ModifierKeys.Control, "R"), "Sync" },
+                { new Utils.KeyCombination(ModifierKeys.Control, "E"), "Edit time entry" },
+                { new Utils.KeyCombination(ModifierKeys.Control, "D"), "Toggle manual mode" },
+                { new Utils.KeyCombination(ModifierKeys.Control, "V"), "New time entry from clipboard" },
+            };
+
+            private IReadOnlyList<ShortcutRecorder> allSettableShortcuts;
+
             private readonly Button button;
+            private readonly TextBlock errorText;
             private bool recording;
             private ModifierKeys activatedModifiers;
+
+            public string ShortcutName { get; private set; }
 
             public bool HasChanged { get; private set; }
             public Utils.KeyCombination? Shortcut { get; private set; }
 
-            public ShortcutRecorder(Button button, Button clearButton)
+
+            public ShortcutRecorder(Button button, Button clearButton, TextBlock errorText, string shortcutName)
             {
                 this.button = button;
+                this.errorText = errorText;
+                this.ShortcutName = shortcutName;
                 button.Click += (sender, args) => this.startRecording();
                 button.PreviewKeyDown += this.onKeyDown;
                 button.PreviewKeyUp += this.onKeyUp;
@@ -344,6 +396,14 @@ namespace TogglDesktop
                 };
                 clearButton.Click += (sender, args) => this.clear();
                 this.button.Content = recordButtonIdleText;
+            }
+
+            public void SetShortcutList(IReadOnlyList<ShortcutRecorder> shortcutRecorders)
+            {
+                if (this.allSettableShortcuts != null)
+                    throw new Exception("Cannot set known shortcuts more than once.");
+
+                this.allSettableShortcuts = shortcutRecorders;
             }
 
             private void clear()
@@ -359,6 +419,7 @@ namespace TogglDesktop
                 this.recording = true;
                 this.button.Content = recordButtonRecordingText;
                 this.activatedModifiers = ModifierKeys.None;
+                this.errorText.Text = "";
             }
 
             private const ModifierKeys requiredModifiersUnion =
@@ -398,6 +459,8 @@ namespace TogglDesktop
                         return;
                     }
 
+                    this.errorText.Text = "Shortcut must contain Alt, Ctrl, or Windows key.";
+
                     this.cancelRecording();
                     return;
                 }
@@ -406,17 +469,56 @@ namespace TogglDesktop
 
                 if (key == Key.None)
                 {
+                    this.errorText.Text = "Something went wrong. Please try again.";
                     return;
                 }
 
+                e.Handled = true;
+                
                 var keyString = key.ToString();
 
-                this.button.Content = keyEventToString(mods, keyString);
+                var shortcut = new Utils.KeyCombination(mods, keyString);
 
-                this.Shortcut = new Utils.KeyCombination(mods, keyString);
+                if (this.findCollision(shortcut))
+                    return;
+
+                this.setShortcut(shortcut);
+            }
+
+            private void setShortcut(Utils.KeyCombination shortcut)
+            {
+                this.Shortcut = shortcut;
                 this.HasChanged = true;
 
-                e.Handled = true;
+                this.button.Content = keyEventToString(shortcut);
+                this.errorText.Text = "";
+            }
+
+            private bool findCollision(Utils.KeyCombination shortcut)
+            {
+                string collision;
+
+                if (!knownShortcuts.TryGetValue(shortcut, out collision)
+                    && this.allSettableShortcuts != null)
+                {
+                    var collisionRecorder = this.allSettableShortcuts
+                        .FirstOrDefault(r => r != this && r.Shortcut == shortcut);
+
+                    if (collisionRecorder != null)
+                    {
+                        collision = collisionRecorder.ShortcutName;
+                    }
+                }
+
+                if (collision == null)
+                    return false;
+
+                this.errorText.Text = string.Format(
+                    "{0} already taken by: {1}",
+                    keyEventToString(shortcut), collision
+                    );
+
+                return true;
             }
 
             private bool checkModifier(
@@ -443,7 +545,7 @@ namespace TogglDesktop
                 if (this.Shortcut.HasValue)
                 {
                     var shortcut = this.Shortcut.Value;
-                    this.button.Content = keyEventToString(shortcut.Modifiers, shortcut.KeyCode);
+                    this.button.Content = keyEventToString(shortcut);
                 }
                 else
                 {
@@ -506,19 +608,19 @@ namespace TogglDesktop
 
         private void selectDefaultProjectFromSettings()
         {
-            var project_id = Toggl.GetDefaultProjectId();
-            var task_id = Toggl.GetDefaultTaskId();
+            var projectID = Toggl.GetDefaultProjectId();
+            var taskID = Toggl.GetDefaultTaskId();
             var name = Toggl.GetDefaultProjectName();
             var project = new Toggl.TogglAutocompleteView
             {
                 ProjectLabel = name,
-                ProjectID = project_id,
-                TaskID = task_id,
+                ProjectID = projectID,
+                TaskID = taskID,
             };
             if (this.knownProjects != null)
             {
                 project.ProjectColor = this.knownProjects
-                    .FirstOrDefault(p => p.ProjectID == project_id).ProjectColor;
+                    .FirstOrDefault(p => p.ProjectID == projectID).ProjectColor;
             }
             this.selectDefaultProject(project);
         }

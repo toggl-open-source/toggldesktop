@@ -22,7 +22,7 @@
         <Grid Grid.Row="3" Background="{StaticResource ViewBackgroundLight}">
             <StackPanel Background="{StaticResource TutorialDarkOverlay}">
                 <Grid Margin="0 0 0 40">
-                    <TextBlock Margin="20 10 10 10"
+                    <TextBlock Margin="20 10 10 10" TextAlignment="Center"
                         HorizontalAlignment="Left">
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="-20 0 -10 0">
@@ -30,14 +30,14 @@
                                 <RotateTransform Angle="45"></RotateTransform>
                             </Image.LayoutTransform>
                         </Image>
-                        You can also edit<LineBreak/>
-                        previous entries by<LineBreak/>
+                        <Bold>Edit</Bold> previous <LineBreak/>
+                        time entries by<LineBreak/>
                         clicking on them<LineBreak/>
-                        in the list
+                        in the list.
                     </TextBlock>
 
                     <TextBlock Margin="10" HorizontalAlignment="Right">
-                        or continue
+                        Or continue
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="-15 0 -10 0">
                             <Image.LayoutTransform>
@@ -49,7 +49,7 @@
                         </Image>
                         <LineBreak/>
                         any entry by<LineBreak/>
-                        clicking here
+                        clicking here.
                     </TextBlock>
 
                 </Grid>

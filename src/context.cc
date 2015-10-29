@@ -64,7 +64,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
 , next_reminder_at_(0)
-, next_analytics_at_(0)
 , next_wake_at_(0)
 , environment_("production")
 , idle_(&ui_)
@@ -1007,18 +1006,17 @@ error Context::downloadUpdate() {
         std::string url("");
         std::string version_number("");
         {
-            std::string body("");
+            HTTPSRequest req;
+            req.host = urls::API();
+            req.relative_url = update_url;
+
             TogglClient client;
-            err = client.Get(urls::API(),
-                             update_url,
-                             std::string(""),
-                             std::string(""),
-                             &body);
-            if (err != noError) {
-                return err;
+            HTTPSResponse resp = client.Get(req);
+            if (resp.err != noError) {
+                return resp.err;
             }
 
-            if ("null" == body) {
+            if ("null" == resp.body) {
                 logger().debug("The app is up to date");
                 if (UI()->CanDisplayUpdate()) {
                     UI()->DisplayUpdate("");
@@ -1028,7 +1026,7 @@ error Context::downloadUpdate() {
 
             Json::Value root;
             Json::Reader reader;
-            if (!reader.parse(body, root)) {
+            if (!reader.parse(resp.body, root)) {
                 return error("Error parsing update check response body");
             }
 
@@ -1087,18 +1085,17 @@ error Context::downloadUpdate() {
             }
 
             // Download file
-            std::string body("");
-            TogglClient client;
-            err = client.Get(uri.getScheme() + "://" + uri.getHost(),
-                             uri.getPathEtc(),
-                             std::string(""),
-                             std::string(""),
-                             &body);
-            if (err != noError) {
-                return err;
+            HTTPSRequest req;
+            req.host = uri.getScheme() + "://" + uri.getHost();
+            req.relative_url = uri.getPathEtc();
+
+            HTTPSClient client;
+            HTTPSResponse resp = client.GetFile(req);
+            if (resp.err != noError) {
+                return resp.err;
             }
 
-            if ("null" == body || !body.size()) {
+            if ("null" == resp.body || !resp.body.size()) {
                 return error("Failed to download update");
             }
 
@@ -1107,7 +1104,7 @@ error Context::downloadUpdate() {
             logger().debug(ss.str());
 
             Poco::FileOutputStream fos(file, std::ios::binary);
-            fos << body;
+            fos << resp.body;
             fos.close();
 
             logger().debug("Update written");
@@ -1218,18 +1215,19 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
         apitoken = user_->APIToken();
     }
 
-    std::string response_body("");
+    HTTPSRequest req;
+    req.host = urls::TimelineUpload();
+    req.relative_url = "/api/v8/timeline_settings";
+    req.payload = json;
+    req.basic_auth_username = apitoken;
+    req.basic_auth_password = "api_token";
+
     TogglClient client(UI());
-    error err = client.Post(urls::TimelineUpload(),
-                            "/api/v8/timeline_settings",
-                            json,
-                            apitoken,
-                            "api_token",
-                            &response_body);
-    if (err != noError) {
-        displayError(err);
-        logger().error(response_body);
-        logger().error(err);
+    HTTPSResponse resp = client.Post(req);
+    if (resp.err != noError) {
+        displayError(resp.err);
+        logger().error(resp.body);
+        logger().error(resp.err);
     }
 }
 
@@ -1294,18 +1292,18 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     form.addPart("files",
                  new Poco::Net::FilePartSource(log_path_));
 
-    std::string response_body("");
+    HTTPSRequest req;
+    req.host = urls::API();
+    req.relative_url ="/api/v8/feedback/web";
+    req.basic_auth_username = api_token_value;
+    req.basic_auth_password = api_token_name;
+    req.form = &form;
+
     TogglClient client(UI());
-    error err = client.Post(urls::API(),
-                            "/api/v8/feedback/web",
-                            "",
-                            api_token_value,
-                            api_token_name,
-                            &response_body,
-                            &form);
-    logger().debug("Feedback result: " + err);
-    if (err != noError) {
-        displayError(err);
+    HTTPSResponse resp = client.Post(req);
+    logger().debug("Feedback result: " + resp.err);
+    if (resp.err != noError) {
+        displayError(resp.err);
         return;
     }
 }
@@ -1324,8 +1322,6 @@ error Context::SetSettingsRemindTimes(
     updateUI(render);
 
     remindToTrackTime();
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1356,8 +1352,6 @@ error Context::SetSettingsRemindDays(
 
     remindToTrackTime();
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1370,8 +1364,6 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1386,8 +1378,6 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1400,8 +1390,6 @@ error Context::SetSettingsAutotrack(const bool value) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1416,8 +1404,6 @@ error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1430,8 +1416,6 @@ error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1446,8 +1430,6 @@ error Context::SetSettingsMenubarProject(const bool menubar_project) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1460,8 +1442,6 @@ error Context::SetSettingsDockIcon(const bool dock_icon) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1476,11 +1456,8 @@ error Context::SetSettingsOnTop(const bool on_top) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
-
 
 error Context::SetSettingsReminder(const bool reminder) {
     error err = db()->SetSettingsReminder(reminder);
@@ -1493,8 +1470,6 @@ error Context::SetSettingsReminder(const bool reminder) {
     updateUI(render);
 
     remindToTrackTime();
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1509,8 +1484,6 @@ error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1524,8 +1497,6 @@ error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1538,8 +1509,6 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1555,8 +1524,6 @@ error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     updateUI(render);
 
     remindToTrackTime();
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1876,12 +1843,7 @@ error Context::Login(
             }
         }
 
-        err = save();
-        if (err != noError) {
-            return displayError(err);
-        }
-
-        trackSettingsUsage();
+        return displayError(save());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -1890,64 +1852,6 @@ error Context::Login(
         return displayError(ex);
     }
     return noError;
-}
-
-void Context::trackSettingsUsage() {
-    if (tracked_settings_.IsSame(settings_)) {
-        // settings have not changed, will not track
-        return;
-    }
-
-    tracked_settings_ = settings_;
-
-    next_analytics_at_ =
-        postpone(kRequestThrottleSeconds * kOneSecondInMicros);
-
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(
-            *this, &Context::onTrackSettingsUsage);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-
-    timer_.schedule(ptask, next_analytics_at_);
-}
-
-void Context::onTrackSettingsUsage(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_analytics_at_,
-                    (kRequestThrottleSeconds * kOneSecondInMicros))) {
-        return;
-    }
-
-    std::string update_channel("");
-    std::string desktop_id("");
-    if (db_) {
-        error err = UpdateChannel(&update_channel);
-        if (err != noError) {
-            logger().error(err);
-            return;
-        }
-        err = db_->EnsureDesktopID();
-        if (err != noError) {
-            logger().error(err);
-            return;
-        }
-        desktop_id = db_->DesktopID();
-    }
-
-    std::string apitoken("");
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            return;
-        }
-        apitoken = user_->APIToken();
-    }
-
-    analytics_.TrackSettingsUsage(
-        apitoken,
-        tracked_settings_,
-        update_channel,
-        desktop_id);
 }
 
 error Context::Signup(
@@ -2859,7 +2763,6 @@ error Context::SetUpdateChannel(const std::string channel) {
         return displayError(err);
     }
     fetchUpdates();
-    trackSettingsUsage();
     return noError;
 }
 
@@ -3225,23 +3128,24 @@ error Context::OpenReportsInBrowser() {
         apitoken = user_->APIToken();
     }
 
-    std::string response_body("");
+    HTTPSRequest req;
+    req.host = urls::API();
+    req.relative_url = "/api/v8/desktop_login_tokens";
+    req.payload = "{}";
+    req.basic_auth_username = apitoken;
+    req.basic_auth_password = "api_token";
+
     TogglClient client(UI());
-    error err = client.Post(urls::API(),
-                            "/api/v8/desktop_login_tokens",
-                            "{}",
-                            apitoken,
-                            "api_token",
-                            &response_body);
-    if (err != noError) {
-        return displayError(err);
+    HTTPSResponse resp = client.Post(req);
+    if (resp.err != noError) {
+        return displayError(resp.err);
     }
-    if (response_body.empty()) {
+    if (resp.body.empty()) {
         return displayError("Unexpected empty response from API");
     }
 
     std::string login_token("");
-    err = User::LoginToken(response_body, &login_token);
+    error err = User::LoginToken(resp.body, &login_token);
     if (err != noError) {
         return displayError(err);
     }
@@ -3797,19 +3701,20 @@ error Context::pushChanges(
 
         logger().debug(json);
 
-        std::string response_body("");
-        error err = toggl_client->Post(urls::API(),
-                                       "/api/v8/batch_updates",
-                                       json,
-                                       api_token,
-                                       "api_token",
-                                       &response_body);
-        if (err != noError) {
-            return err;
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v8/batch_updates";
+        req.payload = json;
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client->Post(req);
+        if (resp.err != noError) {
+            return resp.err;
         }
 
         std::vector<BatchUpdateResult> results;
-        err = BatchUpdateResult::ParseResponseArray(response_body, &results);
+        error err = BatchUpdateResult::ParseResponseArray(resp.body, &results);
         if (err != noError) {
             return err;
         }
@@ -3867,11 +3772,18 @@ error Context::me(
             ss << "&since=" << since;
         }
 
-        return toggl_client->Get(urls::API(),
-                                 ss.str(),
-                                 email,
-                                 password,
-                                 user_data_json);
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = email;
+        req.basic_auth_password = password;
+
+        HTTPSResponse resp = toggl_client->Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        *user_data_json = resp.body;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -3879,6 +3791,7 @@ error Context::me(
     } catch(const std::string& ex) {
         return ex;
     }
+    return noError;
 }
 
 error Context::signup(
@@ -3906,12 +3819,17 @@ error Context::signup(
         Json::Value root;
         root["user"] = user;
 
-        return toggl_client->Post(urls::API(),
-                                  "/api/v8/signups",
-                                  Json::StyledWriter().write(root),
-                                  "",
-                                  "",
-                                  user_data_json);
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v8/signups";
+        req.payload = Json::StyledWriter().write(root);
+
+        HTTPSResponse resp = toggl_client->Post(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        *user_data_json = resp.body;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -3919,6 +3837,7 @@ error Context::signup(
     } catch(const std::string& ex) {
         return ex;
     }
+    return noError;
 }
 
 void Context::OpenTimelineDataView() {

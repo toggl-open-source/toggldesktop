@@ -37,18 +37,18 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top">
                 <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
-                       Height="22" VerticalAlignment="Bottom" Margin="15 0 0 10"/>
-                <TextBlock Margin="5 5 0 0"
+                       Height="22" VerticalAlignment="Bottom" Margin="15 0 0 15"/>
+                <TextBlock Margin="5 10 0 0"
                            ><Bold>Describe</Bold> activity</TextBlock>
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="10"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top">
-                <TextBlock Margin="0 45 5 5"
-                           ><Bold>Start</Bold> and stop your entry</TextBlock>
+                <TextBlock Margin="0 25 5 5"
+                           ><Bold>Start</Bold> tracking<LineBreak/>with one click</TextBlock>
                 <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
-                       Height="20" VerticalAlignment="Bottom" Margin="-12 0 0 20">
+                       Height="20" VerticalAlignment="Bottom" Margin="-12 0 0 40">
                     <Image.LayoutTransform>
                         <TransformGroup>
                             <ScaleTransform ScaleX="-1"/>

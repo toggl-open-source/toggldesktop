@@ -97,7 +97,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	};
 
 	NSAttributedString *descriptionLightString =
-		[[NSAttributedString alloc] initWithString:NSLocalizedString(@"What are you doing?", nil)
+		[[NSAttributedString alloc] initWithString:NSLocalizedString(@"What are you working on?", nil)
 										attributes:descriptionDictionary];
 
 	NSAttributedString *durationLightString =

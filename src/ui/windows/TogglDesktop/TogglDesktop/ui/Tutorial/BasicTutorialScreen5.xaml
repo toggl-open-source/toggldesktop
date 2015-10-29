@@ -19,18 +19,18 @@
             <StackPanel Background="{StaticResource TutorialDarkOverlay}">
                 <StackPanel Margin="30"
                             HorizontalAlignment="Center">
-                    <TextBlock Margin="0 0 0 20" HorizontalAlignment="Left">
+                    <TextBlock TextAlignment="Center">
                         When you are done editing,<LineBreak />
-                        close the edit window<LineBreak />
-                        with ESC or by clicking the
+                        close the edit window with ESC<LineBreak />
+                        or by clicking
                         <Border Background="#33ffffff" Margin="0 -5 0 -5" CornerRadius="2">
                         <Image Source="/TogglDesktop;component/Resources/ic_close_white600_36dp.png"
                                Height="24" VerticalAlignment="Top" />
                         </Border>
+                        <LineBreak /><LineBreak />
+                        Your changes will always be saved.
                     </TextBlock>
 
-                    <TextBlock HorizontalAlignment="Left"
-                               Text="Your changes will always be saved" />
                 </StackPanel>
             </StackPanel>
         </Grid>

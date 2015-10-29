@@ -16,15 +16,17 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
-            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
-                <TextBlock TextAlignment="Center" Margin="10">
-                    <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
-                            Height="22" VerticalAlignment="Top" Margin="0 0 0 5"/>
-                    Click here to edit<LineBreak />
-                    the running time entry
-                </TextBlock>
+            <Grid Background="{StaticResource TutorialDarkOverlay}" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 
-            </StackPanel>
+                    <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                                Height="22" VerticalAlignment="Top" Margin="10 -10 5 0"/>
+                    <TextBlock Margin="0 3 0 0" TextAlignment="Center">
+                        <Bold>Edit</Bold> running time entry
+                    </TextBlock>
+
+                </StackPanel>
+            </Grid>
         </Grid>
 
         <toggl:ProgressBar Grid.Row="1" Margin="30 20"

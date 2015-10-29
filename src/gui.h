@@ -285,7 +285,6 @@ class TimelineEvent {
 }  // namespace view
 
 class Client;
-class Project;
 class RelatedData;
 class User;
 class TimeEntry;
