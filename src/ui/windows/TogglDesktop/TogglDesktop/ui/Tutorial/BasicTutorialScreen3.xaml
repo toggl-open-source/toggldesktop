@@ -17,24 +17,27 @@
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
             <StackPanel Background="{StaticResource TutorialDarkOverlay}">
-                <StackPanel Margin="20 10"
+                <Grid Margin="20 3"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top">
-                    <TextBlock TextAlignment="Left">
+                    
+                    <TextBlock TextAlignment="Center" Margin="0 8 15 0">
                         Click here
-                        <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
-                               Height="22" VerticalAlignment="Top" Margin="10 0 0 5">
-                            <Image.LayoutTransform>
-                                <ScaleTransform ScaleX="-1"/>
-                            </Image.LayoutTransform>
-                        </Image>
                         <LineBreak />
                         (or press Enter)
                         <LineBreak />
-                        to start tracking
+                        to <Bold>start</Bold>
                     </TextBlock>
 
-                </StackPanel>
+
+                    <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                               Height="22" VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <Image.LayoutTransform>
+                            <ScaleTransform ScaleX="-1"/>
+                        </Image.LayoutTransform>
+                    </Image>
+
+                </Grid>
             </StackPanel>
         </Grid>
 
