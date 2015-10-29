@@ -7,7 +7,6 @@
 #include <string>
 #include <sstream>
 
-#include "./const.h"
 #include "./formatter.h"
 #include "./netconf.h"
 #include "./urls.h"

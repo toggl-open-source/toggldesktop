@@ -10,8 +10,6 @@
 
 namespace toggl {
 
-class Settings;
-
 class Analytics : public Poco::TaskManager {
  public:
     void TrackAutocompleteUsage(
