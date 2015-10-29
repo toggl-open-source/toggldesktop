@@ -235,6 +235,13 @@ HTTPSResponse HTTPSClient::Get(
     return request(req);
 }
 
+HTTPSResponse HTTPSClient::GetFile(
+    HTTPSRequest req) {
+    req.method = Poco::Net::HTTPRequest::HTTP_GET;
+    req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
+    return request(req);
+}
+
 HTTPSResponse HTTPSClient::request(
     HTTPSRequest req) {
     HTTPSResponse resp = makeHttpRequest(req);
@@ -324,8 +331,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                                               context);
 
         session.setKeepAlive(false);
-        session.setTimeout(Poco::Timespan(kHTTPClientTimeoutSeconds
-                                          * Poco::Timespan::SECONDS));
+        session.setTimeout(
+            Poco::Timespan(req.timeout_seconds * Poco::Timespan::SECONDS));
 
         {
             std::stringstream ss;

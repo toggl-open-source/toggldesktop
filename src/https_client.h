@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 
+#include "./const.h"
 #include "./proxy.h"
 #include "./types.h"
 
@@ -96,7 +97,8 @@ class HTTPSRequest {
     , payload("")
     , basic_auth_username("")
     , basic_auth_password("")
-    , form(nullptr) {}
+    , form(nullptr)
+    , timeout_seconds(kHTTPClientTimeoutSeconds) {}
     virtual ~HTTPSRequest() {}
 
     std::string method;
@@ -106,6 +108,7 @@ class HTTPSRequest {
     std::string basic_auth_username;
     std::string basic_auth_password;
     Poco::Net::HTMLForm *form;
+    Poco::Int64 timeout_seconds;
 };
 
 class HTTPSResponse {
@@ -130,6 +133,9 @@ class HTTPSClient {
         HTTPSRequest req);
 
     HTTPSResponse Get(
+        HTTPSRequest req);
+
+    HTTPSResponse GetFile(
         HTTPSRequest req);
 
     static HTTPSClientConfig Config;

@@ -1084,7 +1084,7 @@ error Context::downloadUpdate() {
             req.relative_url = uri.getPathEtc();
 
             HTTPSClient client;
-            HTTPSResponse resp = client.Get(req);
+            HTTPSResponse resp = client.GetFile(req);
             if (resp.err != noError) {
                 return resp.err;
             }
