@@ -34,6 +34,7 @@
 #include "Poco/Net/Session.h"
 #include "Poco/Net/SSLManager.h"
 #include "Poco/NumberParser.h"
+#include "Poco/StreamCopier.h"
 #include "Poco/TextEncoding.h"
 #include "Poco/URI.h"
 #include "Poco/UTF8Encoding.h"
@@ -443,9 +444,11 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                 resp.body = ss.str();
             }
         } else {
-            // FIXME: use streamcopier instead!
-            std::istreambuf_iterator<char> eos;
-            resp.body = std::string(std::istreambuf_iterator<char>(is), eos);
+            std::streamsize n =
+                Poco::StreamCopier::copyToString(is, resp.body);
+            std::stringstream ss;
+            ss << n << " characters transferred with download";
+            logger().debug(ss.str());
         }
 
         if (resp.body.size() < 1204 * 10) {
