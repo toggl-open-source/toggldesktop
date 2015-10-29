@@ -50,12 +50,10 @@ void GoogleAnalyticsEvent::runTask() {
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
 
-    HTTPSResponse resp;
-
     HTTPSClient client;
-    error err = client.Get(req, &resp);
-    if (err != noError) {
-        Poco::Logger::get("Analytics").error(err);
+    HTTPSResponse resp = client.Get(req);
+    if (resp.err != noError) {
+        Poco::Logger::get("Analytics").error(resp.err);
         return;
     }
 }
