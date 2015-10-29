@@ -73,6 +73,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Show/Hide Toggl</TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Continue/Stop timer</TextBlock>
+                            
 
                             <Border Grid.Column="1" Grid.Row="0"
                                             Style="{StaticResource ShortcutRecordContainer}">
@@ -108,6 +109,11 @@
                         </Grid>
                     </GroupBox>
 
+                    <TextBlock Name="shortcutErrorText" x:FieldModifier="private"
+                               TextAlignment="Right" Margin="0 -2 10 0"
+                               FontSize="12" Foreground="Red"
+                               Text="No error. Everything is ok." />
+                    
                     <TextBlock Text="Default project" Margin="5 5 5 -5"
                                    />
                     <!-- default project selection -->
