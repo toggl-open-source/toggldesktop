@@ -1003,11 +1003,10 @@ error Context::downloadUpdate() {
         {
             std::string body("");
             TogglClient client;
-            err = client.Get(urls::API(),
-                             update_url,
-                             std::string(""),
-                             std::string(""),
-                             &body);
+            HTTPSRequest req;
+            req.host = urls::API();
+            req.relative_url = update_url;
+            err = client.Get(req, &body);
             if (err != noError) {
                 return err;
             }
@@ -1083,11 +1082,10 @@ error Context::downloadUpdate() {
             // Download file
             std::string body("");
             HTTPSClient client;
-            err = client.Get(uri.getScheme() + "://" + uri.getHost(),
-                             uri.getPathEtc(),
-                             std::string(""),
-                             std::string(""),
-                             &body);
+            HTTPSRequest req;
+            req.host = uri.getScheme() + "://" + uri.getHost();
+            req.relative_url = uri.getPathEtc();
+            err = client.Get(req, &body);
             if (err != noError) {
                 return err;
             }
@@ -1214,12 +1212,13 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(urls::TimelineUpload(),
-                            "/api/v8/timeline_settings",
-                            json,
-                            apitoken,
-                            "api_token",
-                            &response_body);
+    HTTPSRequest req;
+    req.host = urls::TimelineUpload();
+    req.relative_url = "/api/v8/timeline_settings";
+    req.payload = json;
+    req.basic_auth_username = apitoken;
+    req.basic_auth_password = "api_token";
+    error err = client.Post(req, &response_body);
     if (err != noError) {
         displayError(err);
         logger().error(response_body);
@@ -1290,13 +1289,13 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(urls::API(),
-                            "/api/v8/feedback/web",
-                            "",
-                            api_token_value,
-                            api_token_name,
-                            &response_body,
-                            &form);
+    HTTPSRequest req;
+    req.host = urls::API();
+    req.relative_url ="/api/v8/feedback/web";
+    req.basic_auth_username = api_token_value;
+    req.basic_auth_password = api_token_name;
+    req.form = &form;
+    error err = client.Post(req, &response_body);
     logger().debug("Feedback result: " + err);
     if (err != noError) {
         displayError(err);
@@ -3221,12 +3220,13 @@ error Context::OpenReportsInBrowser() {
 
     std::string response_body("");
     TogglClient client(UI());
-    error err = client.Post(urls::API(),
-                            "/api/v8/desktop_login_tokens",
-                            "{}",
-                            apitoken,
-                            "api_token",
-                            &response_body);
+    HTTPSRequest req;
+    req.host = urls::API();
+    req.relative_url = "/api/v8/desktop_login_tokens";
+    req.payload = "{}";
+    req.basic_auth_username = apitoken;
+    req.basic_auth_password = "api_token";
+    error err = client.Post(req, &response_body);
     if (err != noError) {
         return displayError(err);
     }
@@ -3792,12 +3792,13 @@ error Context::pushChanges(
         logger().debug(json);
 
         std::string response_body("");
-        error err = toggl_client->Post(urls::API(),
-                                       "/api/v8/batch_updates",
-                                       json,
-                                       api_token,
-                                       "api_token",
-                                       &response_body);
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v8/batch_updates";
+        req.payload = json;
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+        error err = toggl_client->Post(req, &response_body);
         if (err != noError) {
             return err;
         }
@@ -3861,11 +3862,12 @@ error Context::me(
             ss << "&since=" << since;
         }
 
-        return toggl_client->Get(urls::API(),
-                                 ss.str(),
-                                 email,
-                                 password,
-                                 user_data_json);
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = email;
+        req.basic_auth_password = password;
+        return toggl_client->Get(req, user_data_json);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -3899,13 +3901,11 @@ error Context::signup(
 
         Json::Value root;
         root["user"] = user;
-
-        return toggl_client->Post(urls::API(),
-                                  "/api/v8/signups",
-                                  Json::StyledWriter().write(root),
-                                  "",
-                                  "",
-                                  user_data_json);
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v8/signups";
+        req.payload = Json::StyledWriter().write(root);
+        return toggl_client->Post(req, user_data_json);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
