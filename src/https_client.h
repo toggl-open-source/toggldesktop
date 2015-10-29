@@ -97,6 +97,7 @@ class HTTPSRequest {
     , basic_auth_username("")
     , basic_auth_password("")
     , form(nullptr) {}
+    virtual ~HTTPSRequest() {}
 
     std::string method;
     std::string host;
@@ -107,6 +108,19 @@ class HTTPSRequest {
     Poco::Net::HTMLForm *form;
 };
 
+class HTTPSResponse {
+ public:
+    HTTPSResponse()
+        : body("")
+    , err(noError)
+    , status_code(0) {}
+    virtual ~HTTPSResponse() {}
+
+    std::string body;
+    error err;
+    Poco::Int64 status_code;
+};
+
 class HTTPSClient {
  public:
     HTTPSClient() {}
@@ -114,19 +128,18 @@ class HTTPSClient {
 
     error Post(
         HTTPSRequest req,
-        std::string *response_body);
+        HTTPSResponse *resp);
 
     error Get(
         HTTPSRequest req,
-        std::string *response_body);
+        HTTPSResponse *resp);
 
     static HTTPSClientConfig Config;
 
  protected:
     virtual error request(
         HTTPSRequest req,
-        std::string *response_body,
-        Poco::Int64 *response_status);
+        HTTPSResponse *resp);
 
     virtual Poco::Logger &logger() const;
 
@@ -140,8 +153,7 @@ class HTTPSClient {
 
     virtual error makeHttpRequest(
         HTTPSRequest req,
-        std::string *response_body,
-        Poco::Int64 *response_status);
+        HTTPSResponse *resp);
 };
 
 class SyncStateMonitor {
@@ -161,8 +173,7 @@ class TogglClient : public HTTPSClient {
  protected:
     virtual error request(
         HTTPSRequest req,
-        std::string *response_body,
-        Poco::Int64 *response_status);
+        HTTPSResponse *resp);
 
     virtual Poco::Logger &logger() const;
 
