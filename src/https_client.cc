@@ -103,8 +103,10 @@ void ServerStatus::runActivity() {
         HTTPSRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v8/status";
-        std::string response;
-        error err = client.Get(req, &response);
+
+        HTTPSResponse resp;
+
+        error err = client.Get(req, &resp);
         if (noError != err) {
             logger().error(err);
 
@@ -225,58 +227,44 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
 
 error HTTPSClient::Post(
     HTTPSRequest req,
-    std::string *response_body) {
-    Poco::Int64 status_code(0);
+    HTTPSResponse *resp) {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
-    return request(req,
-                   response_body,
-                   &status_code);
+    return request(req, resp);
 }
 
 error HTTPSClient::Get(
     HTTPSRequest req,
-    std::string *response_body) {
-    Poco::Int64 status_code(0);
+    HTTPSResponse *resp) {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return request(req,
-                   response_body,
-                   &status_code);
+    return request(req, resp);
 }
 
 error HTTPSClient::request(
     HTTPSRequest req,
-    std::string *response_body,
-    Poco::Int64 *status_code) {
+    HTTPSResponse *resp) {
+    error err = makeHttpRequest(req, resp);
 
-    error err = makeHttpRequest(req,
-                                response_body,
-                                status_code);
-
-    if (kCannotConnectError == err && isRedirect(*status_code)) {
+    if (kCannotConnectError == err && isRedirect(resp->status_code)) {
         // Reattempt request to the given location.
-        Poco::URI uri(*response_body);
+        Poco::URI uri(resp->body);
 
         req.host = uri.getScheme() + "://" + uri.getHost();
         req.relative_url = uri.getPathEtc();
         {
             std::stringstream ss;
-            ss << "Redirect to URL=" << *response_body
+            ss << "Redirect to URL=" << resp->body
                << " host=" << req.host
                << " relative_url=" << req.relative_url;
             logger().debug(ss.str());
         }
-        err = makeHttpRequest(
-            req,
-            response_body,
-            status_code);
+        err = makeHttpRequest(req, resp);
     }
     return err;
 }
 
 error HTTPSClient::makeHttpRequest(
     HTTPSRequest req,
-    std::string *response_body,
-    Poco::Int64 *status_code) {
+    HTTPSResponse *resp) {
 
     if (!urls::RequestsAllowed()) {
         return error(kCannotSyncInTestEnv);
@@ -309,11 +297,9 @@ error HTTPSClient::makeHttpRequest(
         return error("Cannot make a HTTP request without certificates");
     }
 
-    poco_check_ptr(response_body);
-    poco_check_ptr(status_code);
-
-    *response_body = "";
-    *status_code = 0;
+    poco_check_ptr(resp);
+    resp->body = "";
+    resp->status_code = 0;
 
     try {
         Poco::URI uri(req.host);
@@ -412,7 +398,7 @@ error HTTPSClient::makeHttpRequest(
         Poco::Net::HTTPResponse response;
         std::istream& is = session.receiveResponse(response);
 
-        *status_code = response.getStatus();
+        resp->status_code = response.getStatus();
 
         {
             std::stringstream ss;
@@ -447,26 +433,25 @@ error HTTPSClient::makeHttpRequest(
             {
                 std::stringstream ss;
                 ss << inflater.rdbuf();
-                *response_body = ss.str();
+                resp->body = ss.str();
             }
         } else {
             std::istreambuf_iterator<char> eos;
-            *response_body =
-                std::string(std::istreambuf_iterator<char>(is), eos);
+            resp->body = std::string(std::istreambuf_iterator<char>(is), eos);
         }
 
-        if (response_body->size() < 1204 * 10) {
-            logger().trace(*response_body);
+        if (resp->body.size() < 1204 * 10) {
+            logger().trace(resp->body);
         }
 
         // When we get redirect, set the Location as response body
-        if (isRedirect(*status_code) && response.has("Location")) {
+        if (isRedirect(resp->status_code) && response.has("Location")) {
             std::string decoded_url("");
             Poco::URI::decode(response.get("Location"), decoded_url);
-            *response_body = decoded_url;
+            resp->body = decoded_url;
         }
 
-        if (429 == *status_code) {
+        if (429 == resp->status_code) {
             Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);
             banned_until_[req.host] = ts;
 
@@ -477,7 +462,7 @@ error HTTPSClient::makeHttpRequest(
             logger().debug(ss.str());
         }
 
-        return statusCodeToError(*status_code);
+        return statusCodeToError(resp->status_code);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -495,8 +480,7 @@ Poco::Logger &TogglClient::logger() const {
 
 error TogglClient::request(
     HTTPSRequest req,
-    std::string *response_body,
-    Poco::Int64 *status_code) {
+    HTTPSResponse *resp) {
 
     error err = TogglStatus.Status();
     if (err != noError) {
@@ -510,10 +494,7 @@ error TogglClient::request(
         monitor_->DisplaySyncState(kSyncStateWork);
     }
 
-    err = HTTPSClient::request(
-        req,
-        response_body,
-        status_code);
+    err = HTTPSClient::request(req, resp);
 
     if (monitor_) {
         monitor_->DisplaySyncState(kSyncStateIdle);
@@ -522,7 +503,7 @@ error TogglClient::request(
     // We only update Toggl status from this
     // client, not websocket or regular http client,
     // as they are not critical.
-    TogglStatus.UpdateStatus(*status_code);
+    TogglStatus.UpdateStatus(resp->status_code);
 
     return err;
 }

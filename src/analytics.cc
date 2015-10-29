@@ -46,12 +46,14 @@ const std::string GoogleAnalyticsEvent::relativeURL() {
 }
 
 void GoogleAnalyticsEvent::runTask() {
-    std::string response_body("");
-    HTTPSClient client;
     HTTPSRequest req;
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();
-    error err = client.Get(req, &response_body);
+
+    HTTPSResponse resp;
+
+    HTTPSClient client;
+    error err = client.Get(req, &resp);
     if (err != noError) {
         Poco::Logger::get("Analytics").error(err);
         return;

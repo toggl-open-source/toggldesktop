@@ -105,8 +105,9 @@ error TimelineUploader::upload(TimelineBatch *batch) {
     req.payload = json;
     req.basic_auth_username = batch->APIToken();
     req.basic_auth_password = "api_token";
-    std::string response_body("");
-    return client.Post(req, &response_body);
+
+    HTTPSResponse resp;
+    return client.Post(req, &resp);
 }
 
 std::string convertTimelineToJSON(
