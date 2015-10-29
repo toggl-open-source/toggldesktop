@@ -58,47 +58,4 @@ void GoogleAnalyticsEvent::runTask() {
     }
 }
 
-void Analytics::TrackSettingsUsage(
-    const std::string user_api_token,
-    const Settings &settings,
-    const std::string update_channel,
-    const std::string desktop_id) {
-
-    Json::Value json;
-    json["toggl_desktop_settings"] = settings.SaveToJSON();
-    if (!update_channel.empty()) {
-        json["toggl_desktop_settings"]["update_channel"] = update_channel;
-    }
-    if (!desktop_id.empty()) {
-        json["toggl_desktop_settings"]["desktop_id"] = desktop_id;
-    }
-
-    start(new TogglAnalyticsEvent(
-        user_api_token,
-        Json::StyledWriter().write(json)));
-}
-
-void TogglAnalyticsEvent::runTask() {
-    Poco::Logger &logger = Poco::Logger::get("Analytics");
-
-    logger.debug(json_);
-
-    TogglClient toggl_client;
-    std::string response_body("");
-    HTTPSRequest req;
-    req.host = urls::API();
-    req.relative_url = "/api/v9/analytics";
-    req.payload = json_;
-    req.basic_auth_username = api_token_;
-    req.basic_auth_password = "api_token";
-
-    error err = toggl_client.Post(req, &response_body);
-    if (err != noError) {
-        logger.error(err);
-        return;
-    }
-
-    logger.debug(response_body);
-}
-
 }  // namespace toggl

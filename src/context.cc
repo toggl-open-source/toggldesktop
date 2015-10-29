@@ -64,7 +64,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
 , next_reminder_at_(0)
-, next_analytics_at_(0)
 , next_wake_at_(0)
 , time_entry_editor_guid_("")
 , environment_("production")
@@ -1318,8 +1317,6 @@ error Context::SetSettingsRemindTimes(
 
     remindToTrackTime();
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1349,8 +1346,6 @@ error Context::SetSettingsRemindDays(
 
     remindToTrackTime();
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1363,8 +1358,6 @@ error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1379,8 +1372,6 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1393,8 +1384,6 @@ error Context::SetSettingsAutotrack(const bool value) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1409,8 +1398,6 @@ error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1423,8 +1410,6 @@ error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1439,8 +1424,6 @@ error Context::SetSettingsMenubarProject(const bool menubar_project) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1453,8 +1436,6 @@ error Context::SetSettingsDockIcon(const bool dock_icon) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1469,11 +1450,8 @@ error Context::SetSettingsOnTop(const bool on_top) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
-
 
 error Context::SetSettingsReminder(const bool reminder) {
     error err = db()->SetSettingsReminder(reminder);
@@ -1486,8 +1464,6 @@ error Context::SetSettingsReminder(const bool reminder) {
     updateUI(render);
 
     remindToTrackTime();
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1502,8 +1478,6 @@ error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1517,8 +1491,6 @@ error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
     render.display_settings = true;
     updateUI(render);
 
-    trackSettingsUsage();
-
     return noError;
 }
 
@@ -1531,8 +1503,6 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
     UIElements render;
     render.display_settings = true;
     updateUI(render);
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1548,8 +1518,6 @@ error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     updateUI(render);
 
     remindToTrackTime();
-
-    trackSettingsUsage();
 
     return noError;
 }
@@ -1869,12 +1837,7 @@ error Context::Login(
             }
         }
 
-        err = save();
-        if (err != noError) {
-            return displayError(err);
-        }
-
-        trackSettingsUsage();
+        return displayError(save());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -1883,64 +1846,6 @@ error Context::Login(
         return displayError(ex);
     }
     return noError;
-}
-
-void Context::trackSettingsUsage() {
-    if (tracked_settings_.IsSame(settings_)) {
-        // settings have not changed, will not track
-        return;
-    }
-
-    tracked_settings_ = settings_;
-
-    next_analytics_at_ =
-        postpone(kRequestThrottleSeconds * kOneSecondInMicros);
-
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(
-            *this, &Context::onTrackSettingsUsage);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-
-    timer_.schedule(ptask, next_analytics_at_);
-}
-
-void Context::onTrackSettingsUsage(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_analytics_at_,
-                    (kRequestThrottleSeconds * kOneSecondInMicros))) {
-        return;
-    }
-
-    std::string update_channel("");
-    std::string desktop_id("");
-    if (db_) {
-        error err = UpdateChannel(&update_channel);
-        if (err != noError) {
-            logger().error(err);
-            return;
-        }
-        err = db_->EnsureDesktopID();
-        if (err != noError) {
-            logger().error(err);
-            return;
-        }
-        desktop_id = db_->DesktopID();
-    }
-
-    std::string apitoken("");
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            return;
-        }
-        apitoken = user_->APIToken();
-    }
-
-    analytics_.TrackSettingsUsage(
-        apitoken,
-        tracked_settings_,
-        update_channel,
-        desktop_id);
 }
 
 error Context::Signup(
@@ -2852,7 +2757,6 @@ error Context::SetUpdateChannel(const std::string channel) {
         return displayError(err);
     }
     fetchUpdates();
-    trackSettingsUsage();
     return noError;
 }
 
