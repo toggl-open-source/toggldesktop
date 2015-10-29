@@ -1004,12 +1004,10 @@ error Context::downloadUpdate() {
             req.host = urls::API();
             req.relative_url = update_url;
 
-            HTTPSResponse resp;
-
             TogglClient client;
-            err = client.Get(req, &resp);
-            if (err != noError) {
-                return err;
+            HTTPSResponse resp = client.Get(req);
+            if (resp.err != noError) {
+                return resp.err;
             }
 
             if ("null" == resp.body) {
@@ -1085,12 +1083,10 @@ error Context::downloadUpdate() {
             req.host = uri.getScheme() + "://" + uri.getHost();
             req.relative_url = uri.getPathEtc();
 
-            HTTPSResponse resp;
-
             HTTPSClient client;
-            err = client.Get(req, &resp);
-            if (err != noError) {
-                return err;
+            HTTPSResponse resp = client.Get(req);
+            if (resp.err != noError) {
+                return resp.err;
             }
 
             if ("null" == resp.body || !resp.body.size()) {
@@ -1220,14 +1216,12 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     req.basic_auth_username = apitoken;
     req.basic_auth_password = "api_token";
 
-    HTTPSResponse resp;
-
     TogglClient client(UI());
-    error err = client.Post(req, &resp);
-    if (err != noError) {
-        displayError(err);
+    HTTPSResponse resp = client.Post(req);
+    if (resp.err != noError) {
+        displayError(resp.err);
         logger().error(resp.body);
-        logger().error(err);
+        logger().error(resp.err);
     }
 }
 
@@ -1299,13 +1293,11 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     req.basic_auth_password = api_token_name;
     req.form = &form;
 
-    HTTPSResponse resp;
-
     TogglClient client(UI());
-    error err = client.Post(req, &resp);
-    logger().debug("Feedback result: " + err);
-    if (err != noError) {
-        displayError(err);
+    HTTPSResponse resp = client.Post(req);
+    logger().debug("Feedback result: " + resp.err);
+    if (resp.err != noError) {
+        displayError(resp.err);
         return;
     }
 }
@@ -3137,19 +3129,17 @@ error Context::OpenReportsInBrowser() {
     req.basic_auth_username = apitoken;
     req.basic_auth_password = "api_token";
 
-    HTTPSResponse resp;
-
     TogglClient client(UI());
-    error err = client.Post(req, &resp);
-    if (err != noError) {
-        return displayError(err);
+    HTTPSResponse resp = client.Post(req);
+    if (resp.err != noError) {
+        return displayError(resp.err);
     }
     if (resp.body.empty()) {
         return displayError("Unexpected empty response from API");
     }
 
     std::string login_token("");
-    err = User::LoginToken(resp.body, &login_token);
+    error err = User::LoginToken(resp.body, &login_token);
     if (err != noError) {
         return displayError(err);
     }
@@ -3712,15 +3702,13 @@ error Context::pushChanges(
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp;
-
-        error err = toggl_client->Post(req, &resp);
-        if (err != noError) {
-            return err;
+        HTTPSResponse resp = toggl_client->Post(req);
+        if (resp.err != noError) {
+            return resp.err;
         }
 
         std::vector<BatchUpdateResult> results;
-        err = BatchUpdateResult::ParseResponseArray(resp.body, &results);
+        error err = BatchUpdateResult::ParseResponseArray(resp.body, &results);
         if (err != noError) {
             return err;
         }
@@ -3784,11 +3772,9 @@ error Context::me(
         req.basic_auth_username = email;
         req.basic_auth_password = password;
 
-        HTTPSResponse resp;
-
-        error err = toggl_client->Get(req, &resp);
-        if (err != noError) {
-            return err;
+        HTTPSResponse resp = toggl_client->Get(req);
+        if (resp.err != noError) {
+            return resp.err;
         }
 
         *user_data_json = resp.body;
@@ -3832,11 +3818,9 @@ error Context::signup(
         req.relative_url = "/api/v8/signups";
         req.payload = Json::StyledWriter().write(root);
 
-        HTTPSResponse resp;
-
-        error err = toggl_client->Post(req, &resp);
-        if (err != noError) {
-            return err;
+        HTTPSResponse resp = toggl_client->Post(req);
+        if (resp.err != noError) {
+            return resp.err;
         }
 
         *user_data_json = resp.body;
