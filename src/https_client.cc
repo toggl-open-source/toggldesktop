@@ -168,6 +168,10 @@ Poco::Logger &HTTPSClient::logger() const {
     return Poco::Logger::get("HTTPSClient");
 }
 
+bool HTTPSClient::isRedirect(const Poco::Int64 status_code) const {
+    return (status_code >= 300 && status_code < 400);
+}
+
 error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
     switch (status_code) {
     case 200:
@@ -255,6 +259,53 @@ error HTTPSClient::Get(
 }
 
 error HTTPSClient::request(
+    const std::string method,
+    const std::string host,
+    const std::string relative_url,
+    const std::string payload,
+    const std::string basic_auth_username,
+    const std::string basic_auth_password,
+    std::string *response_body,
+    Poco::Int64 *status_code,
+    Poco::Net::HTMLForm *form) {
+
+    error err = makeHttpRequest(
+        method,
+        host,
+        relative_url,
+        payload,
+        basic_auth_username,
+        basic_auth_password,
+        response_body,
+        status_code,
+        form);
+    if (kCannotConnectError == err && isRedirect(*status_code)) {
+        // Reattempt request to the given location.
+        Poco::URI uri(*response_body);
+        std::string redirect_host = uri.getScheme() + "://" + uri.getHost();
+        std::string redirect_relative_url = uri.getPathEtc();
+        {
+            std::stringstream ss;
+            ss << "Redirect to URL=" << *response_body
+               << " host=" << redirect_host
+               << " relative_url=" << redirect_relative_url;
+            logger().debug(ss.str());
+        }
+        err = makeHttpRequest(
+            method,
+            redirect_host,
+            redirect_relative_url,
+            payload,
+            basic_auth_username,
+            basic_auth_password,
+            response_body,
+            status_code,
+            form);
+    }
+    return err;
+}
+
+error HTTPSClient::makeHttpRequest(
     const std::string method,
     const std::string host,
     const std::string relative_url,
@@ -362,7 +413,6 @@ error HTTPSClient::request(
             cred.authenticate(req);
         }
 
-
         if (!form) {
             std::istringstream requestStream(payload);
 
@@ -419,6 +469,11 @@ error HTTPSClient::request(
                            + response.get("X-Toggl-Request-Id"));
         }
 
+        if (response.has("Content-Encoding")) {
+            std::string content_encoding = response.get("Content-Encoding");
+            logger().debug("Response Content-Encoding is" + content_encoding);
+        }
+
         // Inflate, if gzip was sent
         if (response.has("Content-Encoding") &&
                 "gzip" == response.get("Content-Encoding")) {
@@ -438,6 +493,13 @@ error HTTPSClient::request(
 
         if (response_body->size() < 1204 * 10) {
             logger().trace(*response_body);
+        }
+
+        // When we get redirect, set the Location as response body
+        if (isRedirect(*status_code) && response.has("Location")) {
+            std::string decoded_url("");
+            Poco::URI::decode(response.get("Location"), decoded_url);
+            *response_body = decoded_url;
         }
 
         if (429 == *status_code) {
