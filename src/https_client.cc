@@ -100,9 +100,11 @@ void ServerStatus::runActivity() {
 
         // Check server status
         HTTPSClient client;
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v8/status";
         std::string response;
-        error err = client.Get(
-            urls::API(), "/api/v8/status", "", "", &response);
+        error err = client.Get(req, &response);
         if (noError != err) {
             logger().error(err);
 
@@ -222,99 +224,59 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
 }
 
 error HTTPSClient::Post(
-    const std::string host,
-    const std::string relative_url,
-    const std::string json,
-    const std::string basic_auth_username,
-    const std::string basic_auth_password,
-    std::string *response_body,
-    Poco::Net::HTMLForm *form) {
+    HTTPSRequest req,
+    std::string *response_body) {
     Poco::Int64 status_code(0);
-    return request(Poco::Net::HTTPRequest::HTTP_POST,
-                   host,
-                   relative_url,
-                   json,
-                   basic_auth_username,
-                   basic_auth_password,
+    req.method = Poco::Net::HTTPRequest::HTTP_POST;
+    return request(req,
                    response_body,
-                   &status_code,
-                   form);
+                   &status_code);
 }
 
 error HTTPSClient::Get(
-    const std::string host,
-    const std::string relative_url,
-    const std::string basic_auth_username,
-    const std::string basic_auth_password,
+    HTTPSRequest req,
     std::string *response_body) {
     Poco::Int64 status_code(0);
-    return request(Poco::Net::HTTPRequest::HTTP_GET,
-                   host,
-                   relative_url,
-                   "",
-                   basic_auth_username,
-                   basic_auth_password,
+    req.method = Poco::Net::HTTPRequest::HTTP_GET;
+    return request(req,
                    response_body,
                    &status_code);
 }
 
 error HTTPSClient::request(
-    const std::string method,
-    const std::string host,
-    const std::string relative_url,
-    const std::string payload,
-    const std::string basic_auth_username,
-    const std::string basic_auth_password,
+    HTTPSRequest req,
     std::string *response_body,
-    Poco::Int64 *status_code,
-    Poco::Net::HTMLForm *form) {
+    Poco::Int64 *status_code) {
 
-    error err = makeHttpRequest(
-        method,
-        host,
-        relative_url,
-        payload,
-        basic_auth_username,
-        basic_auth_password,
-        response_body,
-        status_code,
-        form);
+    error err = makeHttpRequest(req,
+                                response_body,
+                                status_code);
+
     if (kCannotConnectError == err && isRedirect(*status_code)) {
         // Reattempt request to the given location.
         Poco::URI uri(*response_body);
-        std::string redirect_host = uri.getScheme() + "://" + uri.getHost();
-        std::string redirect_relative_url = uri.getPathEtc();
+
+        req.host = uri.getScheme() + "://" + uri.getHost();
+        req.relative_url = uri.getPathEtc();
         {
             std::stringstream ss;
             ss << "Redirect to URL=" << *response_body
-               << " host=" << redirect_host
-               << " relative_url=" << redirect_relative_url;
+               << " host=" << req.host
+               << " relative_url=" << req.relative_url;
             logger().debug(ss.str());
         }
         err = makeHttpRequest(
-            method,
-            redirect_host,
-            redirect_relative_url,
-            payload,
-            basic_auth_username,
-            basic_auth_password,
+            req,
             response_body,
-            status_code,
-            form);
+            status_code);
     }
     return err;
 }
 
 error HTTPSClient::makeHttpRequest(
-    const std::string method,
-    const std::string host,
-    const std::string relative_url,
-    const std::string payload,
-    const std::string basic_auth_username,
-    const std::string basic_auth_password,
+    HTTPSRequest req,
     std::string *response_body,
-    Poco::Int64 *status_code,
-    Poco::Net::HTMLForm *form) {
+    Poco::Int64 *status_code) {
 
     if (!urls::RequestsAllowed()) {
         return error(kCannotSyncInTestEnv);
@@ -325,7 +287,7 @@ error HTTPSClient::makeHttpRequest(
     }
 
     std::map<std::string, Poco::Timestamp>::const_iterator cit =
-        banned_until_.find(host);
+        banned_until_.find(req.host);
     if (cit != banned_until_.end()) {
         if (cit->second >= Poco::Timestamp()) {
             logger().warning(
@@ -334,13 +296,13 @@ error HTTPSClient::makeHttpRequest(
         }
     }
 
-    if (host.empty()) {
+    if (req.host.empty()) {
         return error("Cannot make a HTTP request without a host");
     }
-    if (method.empty()) {
+    if (req.method.empty()) {
         return error("Cannot make a HTTP request without a method");
     }
-    if (relative_url.empty()) {
+    if (req.relative_url.empty()) {
         return error("Cannot make a HTTP request without a relative URL");
     }
     if (HTTPSClient::Config.CACertPath.empty()) {
@@ -354,7 +316,7 @@ error HTTPSClient::makeHttpRequest(
     *status_code = 0;
 
     try {
-        Poco::URI uri(host);
+        Poco::URI uri(req.host);
 
         Poco::SharedPtr<Poco::Net::InvalidCertificateHandler>
         acceptCertHandler =
@@ -382,39 +344,41 @@ error HTTPSClient::makeHttpRequest(
 
         {
             std::stringstream ss;
-            ss << "Sending request to " << host << relative_url << " ..";
+            ss << "Sending request to "
+               << req.host << req.relative_url << " ..";
             logger().debug(ss.str());
         }
 
         std::string encoded_url("");
-        Poco::URI::encode(relative_url, "", encoded_url);
+        Poco::URI::encode(req.relative_url, "", encoded_url);
 
-        error err = Netconf::ConfigureProxy(host + encoded_url, &session);
+        error err = Netconf::ConfigureProxy(req.host + encoded_url, &session);
         if (err != noError) {
             logger().error("Error while configuring proxy: " + err);
             return err;
         }
 
-        Poco::Net::HTTPRequest req(method,
-                                   encoded_url,
-                                   Poco::Net::HTTPMessage::HTTP_1_1);
-        req.setKeepAlive(false);
+        Poco::Net::HTTPRequest poco_req(req.method,
+                                        encoded_url,
+                                        Poco::Net::HTTPMessage::HTTP_1_1);
+        poco_req.setKeepAlive(false);
 
         // FIXME: should get content type as parameter instead
-        if (payload.size()) {
-            req.setContentType(kContentTypeApplicationJSON);
+        if (req.payload.size()) {
+            poco_req.setContentType(kContentTypeApplicationJSON);
         }
-        req.set("User-Agent", HTTPSClient::Config.UserAgent());
-        req.setChunkedTransferEncoding(true);
+        poco_req.set("User-Agent", HTTPSClient::Config.UserAgent());
+        poco_req.setChunkedTransferEncoding(true);
 
         Poco::Net::HTTPBasicCredentials cred(
-            basic_auth_username, basic_auth_password);
-        if (!basic_auth_username.empty() && !basic_auth_password.empty()) {
-            cred.authenticate(req);
+            req.basic_auth_username, req.basic_auth_password);
+        if (!req.basic_auth_username.empty()
+                && !req.basic_auth_password.empty()) {
+            cred.authenticate(poco_req);
         }
 
-        if (!form) {
-            std::istringstream requestStream(payload);
+        if (!req.form) {
+            std::istringstream requestStream(req.payload);
 
             Poco::DeflatingInputStream gzipRequest(
                 requestStream,
@@ -425,21 +389,21 @@ error HTTPSClient::makeHttpRequest(
                 pBuff->pubseekoff(0, std::ios::end, std::ios::in);
             pBuff->pubseekpos(0, std::ios::in);
 
-            req.setContentLength(size);
-            req.set("Content-Encoding", "gzip");
+            poco_req.setContentLength(size);
+            poco_req.set("Content-Encoding", "gzip");
 
-            session.sendRequest(req) << pBuff << std::flush;
+            session.sendRequest(poco_req) << pBuff << std::flush;
         } else {
-            form->prepareSubmit(req);
-            std::ostream& send = session.sendRequest(req);
-            form->write(send);
+            req.form->prepareSubmit(poco_req);
+            std::ostream& send = session.sendRequest(poco_req);
+            req.form->write(send);
         }
 
-        req.set("Accept-Encoding", "gzip");
+        poco_req.set("Accept-Encoding", "gzip");
 
         // Log out request contents
         std::stringstream request_string;
-        req.write(request_string);
+        poco_req.write(request_string);
         logger().debug(request_string.str());
 
         logger().debug("Request sent. Receiving response..");
@@ -504,11 +468,11 @@ error HTTPSClient::makeHttpRequest(
 
         if (429 == *status_code) {
             Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);
-            banned_until_[host] = ts;
+            banned_until_[req.host] = ts;
 
             std::stringstream ss;
             ss << "Server indicated we're making too many requests to host "
-               << host << ". So we cannot make new requests until "
+               << req.host << ". So we cannot make new requests until "
                << Formatter::Format8601(ts);
             logger().debug(ss.str());
         }
@@ -530,15 +494,9 @@ Poco::Logger &TogglClient::logger() const {
 }
 
 error TogglClient::request(
-    const std::string method,
-    const std::string host,
-    const std::string relative_url,
-    const std::string json,
-    const std::string basic_auth_username,
-    const std::string basic_auth_password,
+    HTTPSRequest req,
     std::string *response_body,
-    Poco::Int64 *status_code,
-    Poco::Net::HTMLForm *form) {
+    Poco::Int64 *status_code) {
 
     error err = TogglStatus.Status();
     if (err != noError) {
@@ -553,15 +511,9 @@ error TogglClient::request(
     }
 
     err = HTTPSClient::request(
-        method,
-        host,
-        relative_url,
-        json,
-        basic_auth_username,
-        basic_auth_password,
+        req,
         response_body,
-        status_code,
-        form);
+        status_code);
 
     if (monitor_) {
         monitor_->DisplaySyncState(kSyncStateIdle);

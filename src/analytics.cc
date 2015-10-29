@@ -48,13 +48,10 @@ const std::string GoogleAnalyticsEvent::relativeURL() {
 void GoogleAnalyticsEvent::runTask() {
     std::string response_body("");
     HTTPSClient client;
-    error err = client.Get(
-        "https://ssl.google-analytics.com",
-        relativeURL(),
-        std::string(""),
-        std::string(""),
-        &response_body);
-
+    HTTPSRequest req;
+    req.host = "https://ssl.google-analytics.com";
+    req.relative_url = relativeURL();
+    error err = client.Get(req, &response_body);
     if (err != noError) {
         Poco::Logger::get("Analytics").error(err);
         return;
@@ -88,12 +85,14 @@ void TogglAnalyticsEvent::runTask() {
 
     TogglClient toggl_client;
     std::string response_body("");
-    error err = toggl_client.Post(urls::API(),
-                                  "/api/v9/analytics",
-                                  json_,
-                                  api_token_,
-                                  "api_token",
-                                  &response_body);
+    HTTPSRequest req;
+    req.host = urls::API();
+    req.relative_url = "/api/v9/analytics";
+    req.payload = json_;
+    req.basic_auth_username = api_token_;
+    req.basic_auth_password = "api_token";
+
+    error err = toggl_client.Post(req, &response_body);
     if (err != noError) {
         logger.error(err);
         return;
