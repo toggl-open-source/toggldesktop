@@ -78,7 +78,7 @@
                                           x:Name="projectAddButtonColumn" x:FieldModifier="private"/>
                     </Grid.ColumnDefinitions>
 
-                    <toggl:ExtendedTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
+                    <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
                                             LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
                                             Padding="28, 0, 34, 0"
                                             PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>

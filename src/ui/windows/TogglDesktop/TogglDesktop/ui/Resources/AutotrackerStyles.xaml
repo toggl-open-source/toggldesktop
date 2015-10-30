@@ -76,5 +76,59 @@
     <Style x:Key="AutoCompleteTextBox" TargetType="TextBox" BasedOn="{StaticResource AutotrackerSettingsControlBase}">
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
+    
+    <Style TargetType="toggl:ProjectTextBox" BasedOn="{StaticResource AutoCompleteTextBox}">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="toggl:ProjectTextBox">
+                    <Grid x:Name="root" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border x:Name="normalBorder" 
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+
+                        </Border>
+
+                        <ScrollViewer 
+                                    Cursor="IBeam"
+                                    Grid.Column="0"
+                                    Padding="{TemplateBinding Padding}"
+                                    BorderThickness="0" 
+                                    IsTabStop="False" 
+                                    Margin="2" 
+                                    Background="{x:Null}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Decorator 
+                                        TextElement.Foreground="{TemplateBinding Foreground}"
+                                        Grid.Column="0"
+                                        x:Name="PART_ContentHost" />
+
+                                <TextBlock Foreground="DimGray"
+                                    x:Name="taskTextBlock" Text="- Task"
+                                    Grid.Column="1"/>
+                            </Grid>
+                        </ScrollViewer>
+
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
 
 </ResourceDictionary>

@@ -118,11 +118,10 @@
                                    />
                     <!-- default project selection -->
                     <Grid Height="50" Width="300" Margin="-3 5" HorizontalAlignment="Left">
-                        
-                        <toggl:ExtendedTextBox
+
+                        <toggl:ProjectTextBox
                             x:Name="defaultProjectTextBox" x:FieldModifier="private"
                             Padding="28, 0, 34, 0"
-                            Style="{StaticResource AutoCompleteTextBox}"
                             LostKeyboardFocus="defaultProjectTextBox_OnLostKeyboardFocus"/>
 
                         <ToggleButton
