@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using ServiceStack.Text.Common;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -601,7 +600,7 @@ namespace TogglDesktop
         {
             var project = item ?? default(Toggl.TogglAutocompleteView);
             this.selectedDefaultProject = project;
-            this.defaultProjectTextBox.SetText(project.ProjectLabel);
+            this.defaultProjectTextBox.SetText(project.ProjectLabel, project.TaskLabel);
             this.defaultProjectColorCircle.Background = Utils.ProjectColorBrushFromString(project.ProjectColor);
             this.defaultProjectTextBox.CaretIndex = this.defaultProjectTextBox.Text.Length;
         }
@@ -610,18 +609,25 @@ namespace TogglDesktop
         {
             var projectID = Toggl.GetDefaultProjectId();
             var taskID = Toggl.GetDefaultTaskId();
-            var name = Toggl.GetDefaultProjectName();
-            var project = new Toggl.TogglAutocompleteView
-            {
-                ProjectLabel = name,
-                ProjectID = projectID,
-                TaskID = taskID,
-            };
+
+            var project = default(Toggl.TogglAutocompleteView);
+
             if (this.knownProjects != null)
             {
-                project.ProjectColor = this.knownProjects
-                    .FirstOrDefault(p => p.ProjectID == projectID).ProjectColor;
+                project = this.knownProjects
+                    .FirstOrDefault(p => p.ProjectID == projectID && p.TaskID == taskID);
             }
+
+            if (project.ProjectID != projectID || project.TaskID != taskID)
+            {
+                project = new Toggl.TogglAutocompleteView
+                {
+                    ProjectLabel = Toggl.GetDefaultProjectName(),
+                    ProjectID = projectID,
+                    TaskID = taskID,
+                }; 
+            }
+
             this.selectDefaultProject(project);
         }
 

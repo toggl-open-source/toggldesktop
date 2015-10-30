@@ -91,7 +91,7 @@ namespace TogglDesktop
 
                 this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
 
-                this.setText(this.descriptionTextBox, timeEntry.Description, open);
+                setText(this.descriptionTextBox, timeEntry.Description, open);
                 setTime(this.durationTextBox, timeEntry.Duration, open);
                 setTime(this.startTimeTextBox, timeEntry.StartTimeString, open);
                 setTime(this.endTimeTextBox, timeEntry.EndTimeString, open);
@@ -132,8 +132,9 @@ namespace TogglDesktop
                         this.disableNewProjectMode();
 
                     this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
-                    this.setText(this.projectTextBox, timeEntry.ProjectLabel, open);
-                    this.setText(this.clientTextBox, timeEntry.ClientLabel, open);
+
+                    setText(this.projectTextBox, timeEntry.ProjectLabel, timeEntry.TaskLabel, open);
+                    setText(this.clientTextBox, timeEntry.ClientLabel, open);
 
                     this.selectedWorkspaceId = timeEntry.WID;
                     this.selectedWorkspaceName = timeEntry.WorkspaceName;
@@ -156,7 +157,15 @@ namespace TogglDesktop
 
         #region helpers
 
-        private void setText(ExtendedTextBox textBox, string text, bool evenIfFocused)
+        private static void setText(ProjectTextBox textBox, string project, string task, bool evenIfFocused)
+        {
+            if (evenIfFocused || !textBox.IsKeyboardFocused)
+            {
+                textBox.SetText(project, task);
+            }
+        }
+
+        private static void setText(ExtendedTextBox textBox, string text, bool evenIfFocused)
         {
             if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
@@ -437,14 +446,14 @@ namespace TogglDesktop
 
             var item = asProjectItem.Item;
 
-            this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel, item.ProjectColor);
+            this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel, item.TaskLabel, item.ProjectColor);
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
         {
             if (this.projectTextBox.Text == "")
             {
-                this.setProjectIfDifferent(0, 0, "");
+                this.setProjectIfDifferent(0, 0, "", "");
             }
             else
             {
@@ -459,22 +468,22 @@ namespace TogglDesktop
             
             if (this.projectTextBox.Text == "")
             {
-                this.setProjectIfDifferent(0, 0, "");
+                this.setProjectIfDifferent(0, 0, "", "");
             }
             else
             {
                 // TODO: if only one entry is left in auto complete box, should it be selected?
 
-                this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
+                this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
             }
 
         }
 
-        private void setProjectIfDifferent(ulong taskId, ulong projectId, string projectName, string projectColor = null)
+        private void setProjectIfDifferent(ulong taskId, ulong projectId, string projectName, string taskName, string projectColor = null)
         {
             if (projectId == this.timeEntry.PID && taskId == this.timeEntry.TID)
                 return;
-            this.projectTextBox.SetText(projectName);
+            this.projectTextBox.SetText(projectName, taskName);
             this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(projectColor);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, taskId, projectId, "");
         }
@@ -496,7 +505,7 @@ namespace TogglDesktop
         {
             this.showClientArea();
 
-            this.projectTextBox.SetText("");
+            this.projectTextBox.SetText("", "");
             this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 2);
             this.projectAutoComplete.IsEnabled = false;
             this.projectDropDownButton.Visibility = Visibility.Hidden;
@@ -519,7 +528,7 @@ namespace TogglDesktop
             this.disableNewClientMode();
             this.hideClientArea();
 
-            this.projectTextBox.SetText(this.timeEntry.ProjectLabel);
+            this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
             this.projectTextBox.SetValue(Grid.ColumnSpanProperty, 1);
             this.projectAutoComplete.IsEnabled = true;
             this.projectDropDownButton.Visibility = Visibility.Visible;

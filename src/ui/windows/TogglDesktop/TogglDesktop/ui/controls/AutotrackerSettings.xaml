@@ -39,7 +39,7 @@
                 EmptyText="No matching terms found." DropDownButton="{Binding ElementName=termDropDownButton}"/>
 
             <!-- project selection -->
-            <toggl:ExtendedTextBox Grid.Column="1" Grid.Row="0"
+            <toggl:ProjectTextBox Grid.Column="1" Grid.Row="0"
                 x:Name="projectTextBox" x:FieldModifier="private"
                 Padding="28, 0, 34, 0"
                 LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
