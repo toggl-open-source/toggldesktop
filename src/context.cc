@@ -1082,26 +1082,13 @@ error Context::downloadUpdate() {
             HTTPSRequest req;
             req.host = uri.getScheme() + "://" + uri.getHost();
             req.relative_url = uri.getPathEtc();
+			req.file = file;
 
             HTTPSClient client;
             HTTPSResponse resp = client.GetFile(req);
             if (resp.err != noError) {
                 return resp.err;
             }
-
-            if ("null" == resp.body || !resp.body.size()) {
-                return error("Failed to download update");
-            }
-
-            std::stringstream ss;
-            ss << "Writing update to file " << file;
-            logger().debug(ss.str());
-
-            Poco::FileOutputStream fos(file, std::ios::binary);
-            fos << resp.body;
-            fos.close();
-
-            logger().debug("Update written");
 
             if (UI()->CanDisplayUpdateDownloadState()) {
                 UI()->DisplayUpdateDownloadState(
