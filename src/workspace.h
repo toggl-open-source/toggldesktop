@@ -8,7 +8,6 @@
 #include <json/json.h>  // NOLINT
 
 #include "./base_model.h"
-#include "./const.h"
 
 namespace toggl {
 

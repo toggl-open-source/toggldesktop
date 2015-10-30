@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "./const.h"
 #include "./timeline_event.h"
 #include "./timeline_notifications.h"
 #include "./types.h"

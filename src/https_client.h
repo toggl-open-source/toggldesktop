@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 
+#include "./const.h"
 #include "./proxy.h"
 #include "./types.h"
 
@@ -87,40 +88,61 @@ class HTTPSClientConfig {
     }
 };
 
+class HTTPSRequest {
+ public:
+    HTTPSRequest()
+        : method("")
+    , host("")
+    , relative_url("")
+    , payload("")
+    , basic_auth_username("")
+    , basic_auth_password("")
+    , form(nullptr)
+    , timeout_seconds(kHTTPClientTimeoutSeconds) {}
+    virtual ~HTTPSRequest() {}
+
+    std::string method;
+    std::string host;
+    std::string relative_url;
+    std::string payload;
+    std::string basic_auth_username;
+    std::string basic_auth_password;
+    Poco::Net::HTMLForm *form;
+    Poco::Int64 timeout_seconds;
+};
+
+class HTTPSResponse {
+ public:
+    HTTPSResponse()
+        : body("")
+    , err(noError)
+    , status_code(0) {}
+    virtual ~HTTPSResponse() {}
+
+    std::string body;
+    error err;
+    Poco::Int64 status_code;
+};
+
 class HTTPSClient {
  public:
     HTTPSClient() {}
     virtual ~HTTPSClient() {}
 
-    error Post(
-        const std::string host,
-        const std::string relative_url,
-        const std::string json,
-        const std::string basic_auth_username,
-        const std::string basic_auth_password,
-        std::string *response_body,
-        Poco::Net::HTMLForm *form = nullptr);
+    HTTPSResponse Post(
+        HTTPSRequest req);
 
-    error Get(
-        const std::string host,
-        const std::string relative_url,
-        const std::string basic_auth_username,
-        const std::string basic_auth_password,
-        std::string *response_body);
+    HTTPSResponse Get(
+        HTTPSRequest req);
+
+    HTTPSResponse GetFile(
+        HTTPSRequest req);
 
     static HTTPSClientConfig Config;
 
  protected:
-    virtual error request(
-        const std::string method,
-        const std::string host,
-        const std::string relative_url,
-        const std::string payload,
-        const std::string basic_auth_username,
-        const std::string basic_auth_password,
-        std::string *response_body,
-        Poco::Int64 *response_status,
-        Poco::Net::HTMLForm *form = nullptr);
+    virtual HTTPSResponse request(
+        HTTPSRequest req);
 
     virtual Poco::Logger &logger() const;
 
@@ -132,16 +154,8 @@ class HTTPSClient {
 
     bool isRedirect(const Poco::Int64 status_code) const;
 
-    virtual error makeHttpRequest(
-        const std::string method,
-        const std::string host,
-        const std::string relative_url,
-        const std::string json,
-        const std::string basic_auth_username,
-        const std::string basic_auth_password,
-        std::string *response_body,
-        Poco::Int64 *response_status,
-        Poco::Net::HTMLForm *form = nullptr);
+    virtual HTTPSResponse makeHttpRequest(
+        HTTPSRequest req);
 };
 
 class SyncStateMonitor {
@@ -159,16 +173,8 @@ class TogglClient : public HTTPSClient {
     static ServerStatus TogglStatus;
 
  protected:
-    virtual error request(
-        const std::string method,
-        const std::string host,
-        const std::string relative_url,
-        const std::string json,
-        const std::string basic_auth_username,
-        const std::string basic_auth_password,
-        std::string *response_body,
-        Poco::Int64 *response_status,
-        Poco::Net::HTMLForm *form);
+    virtual HTTPSResponse request(
+        HTTPSRequest req);
 
     virtual Poco::Logger &logger() const;
 

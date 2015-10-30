@@ -99,13 +99,14 @@ error TimelineUploader::upload(TimelineBatch *batch) {
         batch->DesktopID());
     logger().trace(json);
 
-    std::string response_body("");
-    return client.Post(urls::TimelineUpload(),
-                       "/api/v8/timeline",
-                       json,
-                       batch->APIToken(),
-                       "api_token",
-                       &response_body);
+    HTTPSRequest req;
+    req.host = urls::TimelineUpload();
+    req.relative_url = "/api/v8/timeline";
+    req.payload = json;
+    req.basic_auth_username = batch->APIToken();
+    req.basic_auth_password = "api_token";
+
+    return client.Post(req).err;
 }
 
 std::string convertTimelineToJSON(

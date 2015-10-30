@@ -10,18 +10,11 @@
 
 namespace toggl {
 
-class Settings;
-
 class Analytics : public Poco::TaskManager {
  public:
     void TrackAutocompleteUsage(
         const std::string client_id,
         const bool was_using_autocomplete);
-    void TrackSettingsUsage(
-        const std::string user_api_token,
-        const Settings &settings,
-        const std::string update_channel,
-        const std::string desktop_id);
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {
@@ -48,21 +41,6 @@ class GoogleAnalyticsEvent : public Poco::Task {
     int opt_value_;
 
     const std::string relativeURL();
-};
-
-class TogglAnalyticsEvent : public Poco::Task {
- public:
-    TogglAnalyticsEvent(
-        const std::string user_api_token,
-        const std::string json) : Poco::Task("TogglAnalyticsEvent")
-    , api_token_(user_api_token)
-    , json_(json) {}
-
-    void runTask();
-
- private:
-    std::string api_token_;
-    std::string json_;
 };
 
 }  // namespace toggl
