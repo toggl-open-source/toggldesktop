@@ -1082,7 +1082,7 @@ error Context::downloadUpdate() {
             HTTPSRequest req;
             req.host = uri.getScheme() + "://" + uri.getHost();
             req.relative_url = uri.getPathEtc();
-			req.file = file;
+            req.file = file;
 
             HTTPSClient client;
             HTTPSResponse resp = client.GetFile(req);
