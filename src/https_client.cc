@@ -15,6 +15,7 @@
 #include "Poco/DeflatingStream.h"
 #include "Poco/Environment.h"
 #include "Poco/Exception.h"
+#include "Poco/FileStream.h"
 #include "Poco/InflatingStream.h"
 #include "Poco/Logger.h"
 #include "Poco/Net/AcceptCertificateHandler.h"
@@ -392,7 +393,10 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             req.form->write(send);
         }
 
-        poco_req.set("Accept-Encoding", "gzip");
+		// Request gzip unless downloading files
+		if (req.file.empty()) {
+			poco_req.set("Accept-Encoding", "gzip");
+		}
 
         // Log out request contents
         std::stringstream request_string;
@@ -426,13 +430,34 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                            + response.get("X-Toggl-Request-Id"));
         }
 
-        if (response.has("Content-Encoding")) {
-            std::string content_encoding = response.get("Content-Encoding");
-            logger().debug("Response Content-Encoding is" + content_encoding);
-        }
+		// Print out response headers
+		Poco::Net::NameValueCollection::ConstIterator it = response.begin();
+		while (it != response.end()) {
+			logger().debug(it->first + ": " + it->second);
+			++it;
+		}
+
+		// When we get redirect, set the Location as response body
+		if (isRedirect(resp.status_code) && response.has("Location")) {
+			std::string decoded_url("");
+			Poco::URI::decode(response.get("Location"), decoded_url);
+			resp.body = decoded_url;
+		}
+
+		// Write to file, if requested to do so
+		else if (!req.file.empty()) {
+			logger().debug("Writing download to file " + req.file);
+
+			Poco::FileOutputStream fos(req.file, std::ios::binary);
+			Poco::StreamCopier::copyStream(is, fos);
+			fos.flush();
+			fos.close();
+
+			logger().debug("Download written to " + req.file);
+		}
 
         // Inflate, if gzip was sent
-        if (response.has("Content-Encoding") &&
+        else if (response.has("Content-Encoding") &&
                 "gzip" == response.get("Content-Encoding")) {
             Poco::InflatingInputStream inflater(
                 is,
@@ -442,6 +467,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                 ss << inflater.rdbuf();
                 resp.body = ss.str();
             }
+
+		// Write the response to string
         } else {
             std::streamsize n =
                 Poco::StreamCopier::copyToString(is, resp.body);
@@ -452,13 +479,6 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
 
         if (resp.body.size() < 1204 * 10) {
             logger().trace(resp.body);
-        }
-
-        // When we get redirect, set the Location as response body
-        if (isRedirect(resp.status_code) && response.has("Location")) {
-            std::string decoded_url("");
-            Poco::URI::decode(response.get("Location"), decoded_url);
-            resp.body = decoded_url;
         }
 
         if (429 == resp.status_code) {
