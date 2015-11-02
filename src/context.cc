@@ -3349,7 +3349,10 @@ void Context::displayReminder() {
             Poco::LocalDateTime end(
                 now.year(), now.month(), now.day(), h, m, now.second());
             if (now > end) {
-                logger().debug("its too late for reminders");
+                std::stringstream ss;
+                ss << "its too late for reminders (allowed until "
+                   << h << ":" << m;
+                logger().debug(ss.str());
                 return;
             }
         }
