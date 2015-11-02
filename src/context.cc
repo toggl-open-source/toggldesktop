@@ -39,6 +39,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Net/FilePartSource.h"
 #include "Poco/Net/HTMLForm.h"
+#include "Poco/Net/HTTPStreamFactory.h"
 #include "Poco/Net/HTTPSStreamFactory.h"
 #include "Poco/Net/NetSSL.h"
 #include "Poco/Path.h"
@@ -101,6 +102,9 @@ Context::Context(const std::string app_name, const std::string app_version)
 }
 
 Context::~Context() {
+    Poco::Net::HTTPStreamFactory::unregisterFactory();
+    Poco::Net::HTTPSStreamFactory::unregisterFactory();
+
     SetQuit();
 
     stopActivities();
@@ -1084,7 +1088,8 @@ error Context::downloadUpdate() {
                     kDownloadStatusStarted);
             }
 
-            std::auto_ptr<std::istream> stream(Poco::URIStreamOpener::defaultOpener().open(uri));
+            std::auto_ptr<std::istream> stream(
+                Poco::URIStreamOpener::defaultOpener().open(uri));
             Poco::FileOutputStream fos(file, std::ios::binary);
             Poco::StreamCopier::copyStream(*stream.get(), fos);
             fos.flush();

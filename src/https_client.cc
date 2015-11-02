@@ -440,11 +440,10 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             std::string decoded_url("");
             Poco::URI::decode(response.get("Location"), decoded_url);
             resp.body = decoded_url;
-        }
 
-        // Inflate, if gzip was sent
-        else if (response.has("Content-Encoding") &&
-                 "gzip" == response.get("Content-Encoding")) {
+            // Inflate, if gzip was sent
+        } else if (response.has("Content-Encoding") &&
+                   "gzip" == response.get("Content-Encoding")) {
             Poco::InflatingInputStream inflater(
                 is,
                 Poco::InflatingStreamBuf::STREAM_GZIP);
