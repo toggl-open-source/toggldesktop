@@ -282,6 +282,19 @@ void GUI::DisplayTimeEntryAutocomplete(
     autocomplete_item_clear(first);
 }
 
+void GUI::DisplayHelpArticles(
+    std::vector<view::HelpArticle> *articles) {
+    logger().debug("DisplayHelpArticles");
+
+    if (!on_display_help_articles_) {
+        return;
+    }
+
+    TogglHelpArticleView *first = help_article_list_init(articles);
+    on_display_help_articles_(first);
+    help_article_clear(first);
+}
+
 void GUI::DisplayMinitimerAutocomplete(
     std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayMinitimerAutocomplete");

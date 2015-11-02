@@ -108,6 +108,13 @@ extern "C" {
     } TogglGenericView;
 
     typedef struct {
+        char_t *Category;
+        char_t *Name;
+        char_t *URL;
+        void *Next;
+    } TogglHelpArticleView;
+
+    typedef struct {
         bool_t UseProxy;
         char_t *ProxyHost;
         uint64_t ProxyPort;
@@ -198,6 +205,9 @@ extern "C" {
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
+
+    typedef void (*TogglDisplayHelpArticles)(
+        TogglHelpArticleView *first);
 
     typedef void (*TogglDisplayViewItems)(
         TogglGenericView *first);
@@ -352,6 +362,10 @@ extern "C" {
         void *context,
         TogglDisplayAutocomplete cb);
 
+    TOGGL_EXPORT void toggl_on_help_articles(
+        void *context,
+        TogglDisplayHelpArticles cb);
+
     TOGGL_EXPORT void toggl_on_time_entry_autocomplete(
         void *context,
         TogglDisplayAutocomplete cb);
@@ -431,6 +445,10 @@ extern "C" {
         const char_t *topic,
         const char_t *details,
         const char_t *filename);
+
+    TOGGL_EXPORT void toggl_search_help_articles(
+        void *context,
+        const char_t *keywords);
 
     TOGGL_EXPORT void toggl_view_time_entry_list(
         void *context);

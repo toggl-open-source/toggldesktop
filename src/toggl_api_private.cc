@@ -403,8 +403,58 @@ TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::view::Autocomplete> *items) {
     TogglAutocompleteView *first = nullptr;
     for (std::vector<toggl::view::Autocomplete>::const_reverse_iterator it =
-        items->rbegin(); it != items->rend(); it++) {
+        items->rbegin();
+            it != items->rend();
+            it++) {
         TogglAutocompleteView *item = autocomplete_item_init(*it);
+        item->Next = first;
+        first = item;
+    }
+    return first;
+}
+
+TogglHelpArticleView *help_artice_init(
+    const toggl::view::HelpArticle item) {
+    TogglHelpArticleView *result = new TogglHelpArticleView();
+    result->Category = copy_string(item.Category);
+    result->Name = copy_string(item.Name);
+    result->URL = copy_string(item.URL);
+    result->Next = nullptr;
+    return result;
+}
+
+void help_article_clear(TogglHelpArticleView *item) {
+    if (!item) {
+        return;
+    }
+
+    free(item->Category);
+    item->Category = nullptr;
+
+    free(item->Name);
+    item->Name = nullptr;
+
+    free(item->URL);
+    item->URL = nullptr;
+
+    if (item->Next) {
+        TogglHelpArticleView *next =
+            reinterpret_cast<TogglHelpArticleView *>(item->Next);
+        help_article_clear(next);
+        item->Next = nullptr;
+    }
+
+    delete item;
+}
+
+TogglHelpArticleView *help_article_list_init(
+    std::vector<toggl::view::HelpArticle> *items) {
+    TogglHelpArticleView *first = nullptr;
+    for (std::vector<toggl::view::HelpArticle>::const_reverse_iterator it =
+        items->rbegin();
+            it != items->rend();
+            it++) {
+        TogglHelpArticleView *item = help_artice_init(*it);
         item->Next = first;
         first = item;
     }

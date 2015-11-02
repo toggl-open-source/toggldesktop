@@ -20,6 +20,9 @@ class Client;
 class Context;
 class TimeEntry;
 class Workspace;
+namespace view {
+class HelpArticle;
+}
 }
 
 int compare_string(const char_t *s1, const char_t *s2);
@@ -74,6 +77,12 @@ void settings_view_item_clear(TogglSettingsView *view);
 
 TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::view::Autocomplete> *items);
+
+TogglHelpArticleView *help_article_list_init(
+    std::vector<toggl::view::HelpArticle> *items);
+
+void help_article_clear(
+    TogglHelpArticleView *first);
 
 Poco::Logger &logger();
 

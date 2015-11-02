@@ -158,6 +158,24 @@ public static partial class Toggl
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
+    public struct    TogglHelpArticleView
+    {
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string Category;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string Name;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string URL;
+        public         IntPtr Next;
+
+        public override string ToString()
+        {
+            return URL;
+        }
+
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
     public struct    TogglSettingsView
     {
         [MarshalAs(UnmanagedType.I1)]
@@ -322,6 +340,10 @@ public static partial class Toggl
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutocomplete(
+        IntPtr first);
+
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayHelpArticles(
         IntPtr first);
 
     [UnmanagedFunctionPointer(convention)]
@@ -529,6 +551,11 @@ public static partial class Toggl
         TogglDisplayAutocomplete cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_help_articles(
+        IntPtr context,
+        TogglDisplayHelpArticles cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_time_entry_autocomplete(
         IntPtr context,
         TogglDisplayAutocomplete cb);
@@ -639,6 +666,12 @@ public static partial class Toggl
         string details,
         [MarshalAs(UnmanagedType.LPWStr)]
         string filename);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_search_help_articles(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string keywords);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_view_time_entry_list(

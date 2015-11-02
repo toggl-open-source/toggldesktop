@@ -752,6 +752,12 @@ bool_t toggl_feedback_send(
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
 
+void toggl_search_help_articles(
+    void *context,
+    const char_t *keywords) {
+    app(context)->SearchHelpArticles(to_string(keywords));
+}
+
 bool_t toggl_set_default_project(
     void *context,
     const uint64_t pid,
@@ -819,6 +825,12 @@ void toggl_on_show_app(
     void *context,
     TogglDisplayApp cb) {
     app(context)->UI()->OnDisplayApp(cb);
+}
+
+void toggl_on_help_articles(
+    void *context,
+    TogglDisplayHelpArticles cb) {
+    app(context)->UI()->OnDisplayHelpArticles(cb);
 }
 
 void toggl_on_sync_state(
