@@ -5,10 +5,10 @@
     <Style x:Key="TutorialButton" TargetType="Button" BasedOn="{StaticResource RaisedButton}">
 
         <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Padding" Value="16 8" />
+        <Setter Property="Padding" Value="24 12" />
         <Setter Property="Background" Value="#4dd965" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontSize" Value="14" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#3eb052"/>
@@ -26,7 +26,7 @@
         </Style.Triggers>
     </Style>
 
-    <SolidColorBrush x:Key="TutorialDarkOverlay" Color="#b2434343" />
+    <SolidColorBrush x:Key="TutorialDarkOverlay" Color="#e0434343" />
 
     <Style x:Key="WelcomeScreen" TargetType="UserControl">
         <Style.Resources>
@@ -43,7 +43,7 @@
             <Style TargetType="Button" BasedOn="{StaticResource TutorialButton}" />
             
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontSize" Value="18" />
                 <Setter Property="Foreground" Value="White" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Style.Triggers>
