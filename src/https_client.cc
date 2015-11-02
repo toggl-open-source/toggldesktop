@@ -394,9 +394,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         }
 
         // Request gzip unless downloading files
-        if (req.file.empty()) {
-            poco_req.set("Accept-Encoding", "gzip");
-        }
+		poco_req.set("Accept-Encoding", "gzip");
 
         // Log out request contents
         std::stringstream request_string;
@@ -442,18 +440,6 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             std::string decoded_url("");
             Poco::URI::decode(response.get("Location"), decoded_url);
             resp.body = decoded_url;
-        }
-
-        // Write to file, if requested to do so
-        else if (!req.file.empty()) {
-            logger().debug("Writing download to file " + req.file);
-
-            Poco::FileOutputStream fos(req.file, std::ios::binary);
-            Poco::StreamCopier::copyStream(is, fos);
-            fos.flush();
-            fos.close();
-
-            logger().debug("Download written to " + req.file);
         }
 
         // Inflate, if gzip was sent
