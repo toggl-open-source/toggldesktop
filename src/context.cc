@@ -77,6 +77,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , update_path_("") {
+    Poco::Net::HTTPStreamFactory::registerFactory();
     Poco::Net::HTTPSStreamFactory::registerFactory();
 
     urls::SetUseStagingAsBackend(
