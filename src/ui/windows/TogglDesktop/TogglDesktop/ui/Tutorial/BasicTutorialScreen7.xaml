@@ -37,7 +37,7 @@
                     </TextBlock>
 
                     <TextBlock Margin="10" HorizontalAlignment="Right">
-                        Or continue
+                        Or <Bold>continue</Bold>
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
                                Height="22" VerticalAlignment="Top" Margin="-15 0 -10 0">
                             <Image.LayoutTransform>
