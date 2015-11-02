@@ -22,7 +22,7 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Border>
-                        <Border Name="TextBoxBorder" CornerRadius="3" BorderThickness="0" Background="#ebebeb">
+                        <Border Name="TextBoxBorder" CornerRadius="0" BorderThickness="0" Background="#ebebeb">
                             <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                     </Border>

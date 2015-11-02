@@ -13,13 +13,6 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#3eb052"/>
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect Direction="270" ShadowDepth="2" BlurRadius="5" Opacity="0.5"/>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="White"/>
             </Trigger>

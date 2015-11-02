@@ -127,7 +127,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="2">
+                            CornerRadius="0">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Margin="{TemplateBinding Padding}">
@@ -156,22 +156,12 @@
         <Setter Property="MinWidth" Value="60"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="Background" Value="White"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect Direction="270" ShadowDepth="1" BlurRadius="3" Opacity="0.25"/>
-            </Setter.Value>
-        </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#eaeaea"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="#d6d6d6"/>
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect Direction="270" ShadowDepth="2" BlurRadius="5" Opacity="0.5"/>
-                    </Setter.Value>
-                </Setter>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="#77000000"/>

@@ -81,7 +81,7 @@
 
             <!-- add button -->
             <Button Grid.Column="2" Grid.Row="0"
-                    Margin="8" Content="Add"
+                    Margin="8" Content="ADD"
                     Click="onAddButtonClick"/>
 
             <!-- list headers -->
