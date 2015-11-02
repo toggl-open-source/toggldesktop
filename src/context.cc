@@ -39,6 +39,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Net/FilePartSource.h"
 #include "Poco/Net/HTMLForm.h"
+#include "Poco/Net/HTTPStreamFactory.h"
 #include "Poco/Net/NetSSL.h"
 #include "Poco/Path.h"
 #include "Poco/PatternFormatter.h"
@@ -74,6 +75,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , update_path_("") {
+    Poco::Net::HTTPStreamFactory::registerFactory();
+
     urls::SetUseStagingAsBackend(
         app_version.find("7.0.0") != std::string::npos);
 
