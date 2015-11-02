@@ -98,7 +98,7 @@ class HTTPSRequest {
     , basic_auth_username("")
     , basic_auth_password("")
     , form(nullptr)
-	, timeout_seconds(kHTTPClientTimeoutSeconds) {}
+    , timeout_seconds(kHTTPClientTimeoutSeconds) {}
     virtual ~HTTPSRequest() {}
 
     std::string method;
