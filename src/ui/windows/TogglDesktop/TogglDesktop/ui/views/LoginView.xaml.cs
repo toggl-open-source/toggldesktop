@@ -92,13 +92,13 @@ namespace TogglDesktop
             switch (action)
             {
                 case ConfirmAction.LogIn:
-                    this.confirmButtonText.Text = "Log in";
+                    this.confirmButtonText.Text = "LOG IN";
                     this.forgotPasswordButton.Visibility = Visibility.Visible;
                     this.googleLoginButton.Visibility = Visibility.Visible;
                     this.signupLoginToggle.Content = "Sign up for free";
                     break;
                 case ConfirmAction.SignUp:
-                    this.confirmButtonText.Text = "Sign up";
+                    this.confirmButtonText.Text = "SIGN UP";
                     this.forgotPasswordButton.Visibility = Visibility.Hidden;
                     this.googleLoginButton.Visibility = Visibility.Hidden;
                     this.signupLoginToggle.Content = "Log in";

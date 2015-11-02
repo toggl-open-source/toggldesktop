@@ -58,7 +58,7 @@
                         <TextBlock Name="confirmButtonText" x:FieldModifier="private"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
                             Foreground="#333333"
-                            Text="Log in"/>
+                            Text="LOG IN"/>
                     </Grid>
                 </Button>
 
