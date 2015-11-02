@@ -25,7 +25,7 @@
                     <TextBlock Margin="20 10 10 10" TextAlignment="Center"
                         HorizontalAlignment="Left">
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
-                               Height="22" VerticalAlignment="Top" Margin="-20 0 -10 0">
+                               Height="22" VerticalAlignment="Top" Margin="-20 -5 -10 5">
                             <Image.LayoutTransform>
                                 <RotateTransform Angle="45"></RotateTransform>
                             </Image.LayoutTransform>
@@ -39,7 +39,7 @@
                     <TextBlock Margin="10" HorizontalAlignment="Right">
                         Or <Bold>continue</Bold>
                         <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
-                               Height="22" VerticalAlignment="Top" Margin="-15 0 -10 0">
+                               Height="22" VerticalAlignment="Top" Margin="-15 -5 -10 5">
                             <Image.LayoutTransform>
                                 <TransformGroup>
                                     <ScaleTransform ScaleX="-1"></ScaleTransform>
