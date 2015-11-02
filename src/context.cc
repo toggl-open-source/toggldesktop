@@ -1083,11 +1083,11 @@ error Context::downloadUpdate() {
                     kDownloadStatusStarted);
             }
 
-			std::auto_ptr<std::istream> stream(Poco::URIStreamOpener::defaultOpener().open(uri));
-			Poco::FileOutputStream fos(file, std::ios::binary);
-			Poco::StreamCopier::copyStream(*stream.get(), fos);
-			fos.flush();
-			fos.close();
+            std::auto_ptr<std::istream> stream(Poco::URIStreamOpener::defaultOpener().open(uri));
+            Poco::FileOutputStream fos(file, std::ios::binary);
+            Poco::StreamCopier::copyStream(*stream.get(), fos);
+            fos.flush();
+            fos.close();
 
             if (UI()->CanDisplayUpdateDownloadState()) {
                 UI()->DisplayUpdateDownloadState(

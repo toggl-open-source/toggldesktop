@@ -394,7 +394,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         }
 
         // Request gzip unless downloading files
-		poco_req.set("Accept-Encoding", "gzip");
+        poco_req.set("Accept-Encoding", "gzip");
 
         // Log out request contents
         std::stringstream request_string;
