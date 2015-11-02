@@ -39,15 +39,17 @@
 #include "Poco/Logger.h"
 #include "Poco/Net/FilePartSource.h"
 #include "Poco/Net/HTMLForm.h"
-#include "Poco/Net/HTTPStreamFactory.h"
+#include "Poco/Net/HTTPSStreamFactory.h"
 #include "Poco/Net/NetSSL.h"
 #include "Poco/Path.h"
 #include "Poco/PatternFormatter.h"
 #include "Poco/Random.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
+#include "Poco/StreamCopier.h"
 #include "Poco/URI.h"
 #include "Poco/UTF8String.h"
+#include "Poco/URIStreamOpener.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 
@@ -75,7 +77,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , update_path_("") {
-    Poco::Net::HTTPStreamFactory::registerFactory();
+    Poco::Net::HTTPSStreamFactory::registerFactory();
 
     urls::SetUseStagingAsBackend(
         app_version.find("7.0.0") != std::string::npos);
@@ -1081,17 +1083,11 @@ error Context::downloadUpdate() {
                     kDownloadStatusStarted);
             }
 
-            // Download file
-            HTTPSRequest req;
-            req.host = uri.getScheme() + "://" + uri.getHost();
-            req.relative_url = uri.getPathEtc();
-            req.file = file;
-
-            HTTPSClient client;
-            HTTPSResponse resp = client.GetFile(req);
-            if (resp.err != noError) {
-                return resp.err;
-            }
+			std::auto_ptr<std::istream> stream(Poco::URIStreamOpener::defaultOpener().open(uri));
+			Poco::FileOutputStream fos(file, std::ios::binary);
+			Poco::StreamCopier::copyStream(*stream.get(), fos);
+			fos.flush();
+			fos.close();
 
             if (UI()->CanDisplayUpdateDownloadState()) {
                 UI()->DisplayUpdateDownloadState(

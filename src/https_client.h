@@ -98,8 +98,7 @@ class HTTPSRequest {
     , basic_auth_username("")
     , basic_auth_password("")
     , form(nullptr)
-    , timeout_seconds(kHTTPClientTimeoutSeconds)
-    , file("") {}
+	, timeout_seconds(kHTTPClientTimeoutSeconds) {}
     virtual ~HTTPSRequest() {}
 
     std::string method;
@@ -110,10 +109,6 @@ class HTTPSRequest {
     std::string basic_auth_password;
     Poco::Net::HTMLForm *form;
     Poco::Int64 timeout_seconds;
-
-    // When downloading a file, the response
-    // content will be saved to the given file name.
-    std::string file;
 };
 
 class HTTPSResponse {
