@@ -326,6 +326,9 @@ class Context : public TimelineDatasource {
     error DefaultPID(Poco::UInt64 *result);
     error DefaultTID(Poco::UInt64 *result);
 
+    void SearchHelpArticles(
+        const std::string keywords);
+
     error SetUpdateChannel(
         const std::string channel);
 

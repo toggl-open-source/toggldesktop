@@ -22,6 +22,19 @@ namespace toggl {
 
 namespace view {
 
+class HelpArticle {
+ public:
+    HelpArticle()
+        : Category("")
+    , Name("")
+    , URL("") {}
+    virtual ~HelpArticle() {}
+
+    std::string Category;
+    std::string Name;
+    std::string URL;
+};
+
 class TimeEntry {
  public:
     TimeEntry()
@@ -315,6 +328,7 @@ class GUI : public SyncStateMonitor {
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
     , on_display_promotion_(nullptr)
+    , on_display_help_articles_(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
     , lastDisplayLoginOpen(false)
@@ -327,6 +341,9 @@ class GUI : public SyncStateMonitor {
     void DisplayApp();
 
     error DisplayError(const error);
+
+    void DisplayHelpArticles(
+        std::vector<view::HelpArticle> *articles);
 
     void DisplaySyncState(const Poco::Int64 state);
 
@@ -403,6 +420,10 @@ class GUI : public SyncStateMonitor {
 
     void OnDisplayUpdate(TogglDisplayUpdate cb) {
         on_display_update_ = cb;
+    }
+
+    void OnDisplayHelpArticles(TogglDisplayHelpArticles cb) {
+        on_display_help_articles_ = cb;
     }
 
     void OnDisplayUpdateDownloadState(TogglDisplayUpdateDownloadState cb) {
@@ -547,6 +568,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;
+    TogglDisplayHelpArticles on_display_help_articles_;
 
     // Cached views
     Poco::Int64 lastSyncState;

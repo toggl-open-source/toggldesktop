@@ -2752,6 +2752,11 @@ error Context::SetUpdateChannel(const std::string channel) {
     return noError;
 }
 
+void Context::SearchHelpArticles(
+    const std::string keywords) {
+    // FIXME: implement
+}
+
 error Context::SetDefaultProject(
     const Poco::UInt64 pid,
     const Poco::UInt64 tid) {
