@@ -63,7 +63,7 @@
                            >Your <Bold>activity</Bold> will appear here</TextBlock>
                 <Image Source="/TogglDesktop;component/Resources/tutorial-line.png"
                            HorizontalAlignment="Center" Width="230" />
-                <Button Content="Ok, let's go!" Margin="0 20 0 0" Click="nextButtonClick" />
+                <Button Content="Ok, let's go" Margin="0 20 0 0" Click="nextButtonClick" />
             </StackPanel>
 
         </Grid>

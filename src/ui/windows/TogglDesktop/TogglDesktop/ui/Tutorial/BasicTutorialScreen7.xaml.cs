@@ -1,4 +1,6 @@
 ﻿
+using System.Windows;
+
 namespace TogglDesktop.Tutorial
 {
     public partial class BasicTutorialScreen7
@@ -29,6 +31,9 @@ namespace TogglDesktop.Tutorial
             this.quitTutorial();
         }
 
-
+        private void finishButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.quitTutorial();
+        }
     }
 }
