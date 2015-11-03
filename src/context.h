@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <memory>
 #include <iostream> // NOLINT
 
 #include "./analytics.h"
