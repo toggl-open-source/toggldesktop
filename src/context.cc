@@ -42,6 +42,7 @@
 #include "Poco/Net/HTTPStreamFactory.h"
 #include "Poco/Net/HTTPSStreamFactory.h"
 #include "Poco/Net/NetSSL.h"
+#include "Poco/Net/StringPartSource.h"
 #include "Poco/Path.h"
 #include "Poco/PatternFormatter.h"
 #include "Poco/Random.h"
@@ -1277,6 +1278,12 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 
     form.addPart("files",
                  new Poco::Net::FilePartSource(log_path_));
+
+    form.addPart("files",
+                 new Poco::Net::StringPartSource(
+                     Json::StyledWriter().write(settings_.SaveToJSON()),
+                     "application/json",
+                     "settings.json"));
 
     HTTPSRequest req;
     req.host = urls::API();
