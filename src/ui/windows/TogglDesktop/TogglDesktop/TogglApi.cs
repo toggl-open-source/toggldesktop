@@ -399,6 +399,12 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPWStr, SizeParamIndex=1)]
         string[] title_list);
 
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayProjectColors(
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPWStr, SizeParamIndex=1)]
+        string[] color_list,
+        UInt64 color_count);
+
     // Initialize/destroy an instance of the app
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -604,6 +610,11 @@ public static partial class Toggl
     private static extern void toggl_on_autotracker_rules(
         IntPtr context,
         TogglDisplayAutotrackerRules cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_project_colors(
+        IntPtr context,
+        TogglDisplayProjectColors cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_promotion(
@@ -1105,6 +1116,16 @@ public static partial class Toggl
         IntPtr context,
         UInt64 pid,
         UInt64 tid);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_project_color(
+        IntPtr context,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_guid,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string color);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

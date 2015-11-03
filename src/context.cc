@@ -2764,6 +2764,14 @@ void Context::SearchHelpArticles(
     // FIXME: implement
 }
 
+error Context::SetProjectColor(
+    const Poco::UInt64 project_id,
+    const std::string project_guid,
+    const std::string color) {
+    // FIXME: implement
+    return noError;
+}
+
 error Context::SetDefaultProject(
     const Poco::UInt64 pid,
     const Poco::UInt64 tid) {

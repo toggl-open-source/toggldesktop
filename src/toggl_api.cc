@@ -765,6 +765,17 @@ bool_t toggl_set_default_project(
     return toggl::noError == app(context)->SetDefaultProject(pid, tid);
 }
 
+bool_t toggl_set_project_color(
+    void *context,
+    const uint64_t project_id,
+    const char_t *project_guid,
+    const char_t *color) {
+    return toggl::noError == app(context)->SetProjectColor(
+        project_id,
+        to_string(project_guid),
+        to_string(color));
+}
+
 char_t *toggl_get_default_project_name(
     void *context) {
     std::string name("");
@@ -995,6 +1006,12 @@ void toggl_on_autotracker_rules(
     void *context,
     TogglDisplayAutotrackerRules cb) {
     app(context)->UI()->OnDisplayAutotrackerRules(cb);
+}
+
+void toggl_on_project_colors(
+    void *context,
+    TogglDisplayProjectColors cb) {
+    app(context)->UI()->OnDisplayProjectColors(cb);
 }
 
 void toggl_debug(const char_t *text) {
