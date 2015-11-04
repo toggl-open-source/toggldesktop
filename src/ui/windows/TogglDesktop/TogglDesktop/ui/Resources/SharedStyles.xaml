@@ -108,7 +108,17 @@
                         <ContentPresenter
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Margin="{TemplateBinding Padding}"/>
+                            Margin="{TemplateBinding Padding}">
+
+                            <ContentPresenter.Resources>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                    <Setter Property="Foreground"
+                                        Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}} }" />
+                                    <Setter Property="FontSize"
+                                        Value="{Binding Path=FontSize, RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}} }" />
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -117,7 +127,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Cursor" Value="" />
+        <Setter Property="Cursor" Value="Hand" />
     </Style>
 
     <Style x:Key="RoundedCornersButtonBase" TargetType="ButtonBase" BasedOn="{StaticResource {x:Type Control}}">

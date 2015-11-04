@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace TogglDesktop.Tutorial
 {
@@ -31,5 +32,10 @@ namespace TogglDesktop.Tutorial
         protected abstract void initialise();
 
         protected abstract void cleanup();
+
+        protected void endTutorialClick(object sender, RoutedEventArgs e)
+        {
+            this.quitTutorial();
+        }
     }
 }

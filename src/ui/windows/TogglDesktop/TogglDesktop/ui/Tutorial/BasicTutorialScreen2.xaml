@@ -17,6 +17,11 @@
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
             <Grid Background="{StaticResource TutorialDarkOverlay}" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 
                     <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
@@ -27,12 +32,17 @@
                     </TextBlock>
                     
                 </StackPanel>
+
+                <toggl:ProgressBar Grid.Row="2" Margin="30 5"
+                    VerticalAlignment="Top"
+                    MaxValue="6" Value="1"/>
+
+                <Button Grid.Row="2"
+                    Style="{StaticResource TutorialEndButton}"
+                    Click="endTutorialClick"/>
             </Grid>
         </Grid>
 
-        <toggl:ProgressBar Grid.Row="1" Margin="30 20"
-            VerticalAlignment="Bottom"
-            MaxValue="6" Value="1"/>
 
     </Grid>
 </tutorial:TutorialScreen>

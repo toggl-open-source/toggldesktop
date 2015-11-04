@@ -29,6 +29,7 @@
                 <RowDefinition MinHeight="120" MaxHeight="235" Height="4*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
 
@@ -66,6 +67,10 @@
                 <Button Content="Ok, let's go" Margin="0 20 0 0" Click="nextButtonClick" />
             </StackPanel>
 
+            <Button Grid.Row="4"
+                Style="{StaticResource TutorialEndButton}"
+                Click="endTutorialClick"/>
+            
         </Grid>
     </Grid>
 </tutorial:TutorialScreen>

@@ -16,27 +16,37 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
-            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
+            <Grid Background="{StaticResource TutorialDarkOverlay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
                 <StackPanel Margin="30"
                             HorizontalAlignment="Center">
                     <TextBlock TextAlignment="Center">
                         When you are done editing,<LineBreak />
                         close the edit window with ESC<LineBreak />
                         or by clicking
-                        <Border Background="#33ffffff" Margin="0 -5 0 -5" CornerRadius="2">
-                        <Image Source="/TogglDesktop;component/Resources/ic_close_white600_36dp.png"
-                               Height="24" VerticalAlignment="Top" />
+                        <Border Background="#33ffffff" Margin="0 -7 0 -7" CornerRadius="2">
+                            <Image Source="/TogglDesktop;component/Resources/ic_close_white600_36dp.png"
+                                   Height="22" VerticalAlignment="Top" />
                         </Border>
                         <LineBreak /><LineBreak />
                         Your changes will always be saved.
                     </TextBlock>
 
                 </StackPanel>
-            </StackPanel>
+
+                <toggl:ProgressBar Grid.Row="2" Margin="30 5"
+                    VerticalAlignment="Top"
+                    MaxValue="6" Value="4"/>
+
+                <Button Grid.Row="2"
+                    Style="{StaticResource TutorialEndButton}"
+                    Click="endTutorialClick"/>
+            </Grid>
         </Grid>
 
-        <toggl:ProgressBar Grid.Row="1" Margin="30 20"
-            VerticalAlignment="Bottom"
-            MaxValue="6" Value="4"/>
     </Grid>
 </tutorial:TutorialScreen>

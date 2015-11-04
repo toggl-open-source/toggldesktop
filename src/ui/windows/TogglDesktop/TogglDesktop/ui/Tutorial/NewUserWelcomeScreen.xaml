@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
              mc:Ignorable="d" 
-             d:DesignHeight="469" d:DesignWidth="351"
+             d:DesignHeight="484.701" d:DesignWidth="422.778"
              Style="{StaticResource WelcomeScreen}">
 
     <Grid Background="{StaticResource ViewBackgroundLight}">

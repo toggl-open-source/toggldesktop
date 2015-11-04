@@ -16,7 +16,12 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
         
         <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
-            <StackPanel Background="{StaticResource TutorialDarkOverlay}">
+            <Grid Background="{StaticResource TutorialDarkOverlay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
                 <Grid Margin="20 3"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top">
@@ -37,12 +42,15 @@
 
                 </Grid>
 
-            </StackPanel>
-        </Grid>
+                <toggl:ProgressBar Grid.Row="2" Margin="30 5"
+                    VerticalAlignment="Top"
+                    MaxValue="6" Value="5"/>
 
-        <toggl:ProgressBar Grid.Row="1" Margin="30 20"
-            VerticalAlignment="Bottom"
-            MaxValue="6" Value="5"/>
+                <Button Grid.Row="2"
+                    Style="{StaticResource TutorialEndButton}"
+                    Click="endTutorialClick"/>
+            </Grid>
+        </Grid>
 
     </Grid>
 </tutorial:TutorialScreen>
