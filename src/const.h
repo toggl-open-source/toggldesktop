@@ -74,6 +74,7 @@
 #define kModelTimelineEvent "timeline_event"
 #define kModelUser "user"
 #define kModelWorkspace "workspace"
+#define kModelObmAction "obm_action"
 
 #define kChangeTypeInsert "insert"
 #define kChangeTypeUpdate "update"

@@ -732,6 +732,9 @@ extern "C" {
         const uint64_t pid,
         const uint64_t tid);
 
+    TOGGL_EXPORT void toggl_get_project_colors(
+        void *context);
+
     TOGGL_EXPORT bool_t toggl_set_project_color(
         void *context,
         const uint64_t project_id,

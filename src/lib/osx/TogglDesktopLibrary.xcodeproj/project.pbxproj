@@ -46,6 +46,8 @@
 		748B7DAA1AC5963B00FE01D2 /* netconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7DA21AC5963B00FE01D2 /* netconf.h */; };
 		748B7DAB1AC5963B00FE01D2 /* settings.cc in Sources */ = {isa = PBXBuildFile; fileRef = 748B7DA31AC5963B00FE01D2 /* settings.cc */; };
 		748B7DAC1AC5963B00FE01D2 /* settings.h in Headers */ = {isa = PBXBuildFile; fileRef = 748B7DA41AC5963B00FE01D2 /* settings.h */; };
+		7497E90A1BEA786A00517BAF /* obm_action.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7497E9081BEA786A00517BAF /* obm_action.cc */; settings = {ASSET_TAGS = (); }; };
+		7497E90B1BEA786A00517BAF /* obm_action.h in Headers */ = {isa = PBXBuildFile; fileRef = 7497E9091BEA786A00517BAF /* obm_action.h */; settings = {ASSET_TAGS = (); }; };
 		74A026E11A884D5A0087570A /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74A026E01A884D5A0087570A /* liblua.a */; };
 		74AA947A18091AE10000539F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947918091AE10000539F /* WebKit.framework */; };
 		74B587BB18BBC77E00E9F6CE /* formatter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74B587A618BBC77E00E9F6CE /* formatter.cc */; };
@@ -135,6 +137,8 @@
 		748B7DA21AC5963B00FE01D2 /* netconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = netconf.h; path = ../../../netconf.h; sourceTree = "<group>"; };
 		748B7DA31AC5963B00FE01D2 /* settings.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = settings.cc; path = ../../../settings.cc; sourceTree = "<group>"; };
 		748B7DA41AC5963B00FE01D2 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = settings.h; path = ../../../settings.h; sourceTree = "<group>"; };
+		7497E9081BEA786A00517BAF /* obm_action.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = obm_action.cc; path = ../../../obm_action.cc; sourceTree = "<group>"; };
+		7497E9091BEA786A00517BAF /* obm_action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = obm_action.h; path = ../../../obm_action.h; sourceTree = "<group>"; };
 		74A026E01A884D5A0087570A /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = ../../../third_party/lua/install/lib/liblua.a; sourceTree = "<group>"; };
 		74AA947918091AE10000539F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		74B587A618BBC77E00E9F6CE /* formatter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = formatter.cc; path = ../../../formatter.cc; sourceTree = "<group>"; };
@@ -268,6 +272,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				7497E9081BEA786A00517BAF /* obm_action.cc */,
+				7497E9091BEA786A00517BAF /* obm_action.h */,
 				741951C71B41FCE500FA2724 /* migrations.cc */,
 				741951C81B41FCE500FA2724 /* migrations.h */,
 				74DF24E41B414BD8000179AE /* timeline_event.cc */,
@@ -396,6 +402,7 @@
 				7484A2A818887BEE0025A88B /* toggl_api_private.h in Headers */,
 				748A0F411B388CCA0001A41E /* urls.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
+				7497E90B1BEA786A00517BAF /* obm_action.h in Headers */,
 				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,
 				74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */,
 				C5DA1FAC17F18D7B001C4565 /* database.h in Headers */,
@@ -475,6 +482,7 @@
 				74BC59DA1A37C6790081104D /* error.cc in Sources */,
 				74CAAD19181860F7001B77BB /* get_focused_window_mac.cc in Sources */,
 				74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */,
+				7497E90A1BEA786A00517BAF /* obm_action.cc in Sources */,
 				748A0F401B388CCA0001A41E /* urls.cc in Sources */,
 				74EB0F1717F9A2600046ABC1 /* https_client.cc in Sources */,
 				74B587C918BBC77E00E9F6CE /* user.cc in Sources */,
