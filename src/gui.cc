@@ -50,6 +50,22 @@ void GUI::DisplayApp() {
     on_display_app_(true);
 }
 
+void GUI::DisplayProjectColors() {
+    if (!on_display_project_colors_) {
+        return;
+    }
+    uint64_t count = Project::ColorCodes.size();
+    char_t **list = new char_t *[count];
+    for (uint64_t i = 0; i < count; i++) {
+        list[i] = copy_string(Project::ColorCodes[i]);
+    }
+    on_display_project_colors_(list, count);
+    for (uint64_t i = 0; i < count; i++) {
+        free(list[i]);
+    }
+    delete[] list;
+}
+
 void GUI::DisplaySyncState(const Poco::Int64 state) {
     if (state == lastSyncState) {
         return;

@@ -9,6 +9,25 @@
 
 namespace toggl {
 
+error Migrations::migrateObmActions() {
+    error err = db_->Migrate(
+        "obm_actions",
+        "create table obm_actions("
+        "local_id integer primary key,"
+        "uid integer not null, "
+        "experiment_id integer not null, "
+        "key varchar not null, "
+        "value varchar not null, "
+        "constraint fk_obm_actions_uid foreign key (uid) "
+        "   references users(id) on delete no action on update no action"
+        "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    return noError;
+}
+
 error Migrations::migrateAutotracker() {
     error err = db_->Migrate(
         "autotracker_settings",
@@ -1175,6 +1194,9 @@ error Migrations::Run() {
     }
     if (noError == err) {
         err = migrateTimeline();
+    }
+    if (noError == err) {
+        err = migrateObmActions();
     }
 
     return err;

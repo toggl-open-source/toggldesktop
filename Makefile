@@ -390,6 +390,9 @@ build/project.o: src/project.cc
 build/task.o: src/task.cc
 	$(cxx) $(cflags) -c src/task.cc -o build/task.o
 
+build/obm_action.o: src/obm_action.cc
+	$(cxx) $(cflags) -c src/obm_action.cc -o build/obm_action.o
+
 build/time_entry.o: src/time_entry.cc
 	$(cxx) $(cflags) -c src/time_entry.cc -o build/time_entry.o
 
@@ -483,6 +486,7 @@ objects: build/jsoncpp.o \
 	build/client.o \
 	build/project.o \
 	build/task.o \
+	build/obm_action.o \
 	build/time_entry.o \
 	build/tag.o \
 	build/batch_update_result.o \
