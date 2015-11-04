@@ -329,6 +329,7 @@ class GUI : public SyncStateMonitor {
     , on_display_autotracker_notification_(nullptr)
     , on_display_promotion_(nullptr)
     , on_display_help_articles_(nullptr)
+    , on_display_project_colors_(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
     , lastDisplayLoginOpen(false)
@@ -424,6 +425,10 @@ class GUI : public SyncStateMonitor {
 
     void OnDisplayHelpArticles(TogglDisplayHelpArticles cb) {
         on_display_help_articles_ = cb;
+    }
+
+    void OnDisplayProjectColors(TogglDisplayProjectColors cb) {
+        on_display_project_colors_ = cb;
     }
 
     void OnDisplayUpdateDownloadState(TogglDisplayUpdateDownloadState cb) {
@@ -569,6 +574,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;
     TogglDisplayHelpArticles on_display_help_articles_;
+    TogglDisplayProjectColors on_display_project_colors_;
 
     // Cached views
     Poco::Int64 lastSyncState;

@@ -245,6 +245,10 @@ extern "C" {
         const uint64_t title_count,
         string_list_t title_list);
 
+    typedef void (*TogglDisplayProjectColors)(
+        string_list_t color_list,
+        const uint64_t color_count);
+
     // Initialize/destroy an instance of the app
 
     TOGGL_EXPORT void *toggl_context_init(
@@ -405,6 +409,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_autotracker_rules(
         void *context,
         TogglDisplayAutotrackerRules cb);
+
+    TOGGL_EXPORT void toggl_on_project_colors(
+        void *context,
+        TogglDisplayProjectColors cb);
 
     TOGGL_EXPORT void toggl_on_promotion(
         void *context,
@@ -723,6 +731,12 @@ extern "C" {
         void *context,
         const uint64_t pid,
         const uint64_t tid);
+
+    TOGGL_EXPORT bool_t toggl_set_project_color(
+        void *context,
+        const uint64_t project_id,
+        const char_t *project_guid,
+        const char_t *color);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_get_default_project_name(
