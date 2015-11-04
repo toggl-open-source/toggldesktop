@@ -30,10 +30,5 @@ namespace TogglDesktop.Tutorial
         {
             this.quitTutorial();
         }
-
-        private void finishButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.quitTutorial();
-        }
     }
 }

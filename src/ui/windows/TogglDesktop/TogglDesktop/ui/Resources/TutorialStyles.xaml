@@ -50,4 +50,12 @@
         
     </Style>
     
+    <Style x:Key="TutorialEndButton" TargetType="Button" BasedOn="{StaticResource TextButton}">
+        
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="DarkGray" />
+        <Setter Property="Content" Value="end tutorial" />
+
+    </Style>
+    
 </ResourceDictionary>

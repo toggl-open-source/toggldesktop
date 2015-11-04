@@ -55,7 +55,7 @@
                 </Grid>
 
                 <Button Content="Start Toggling!"
-                        Click="finishButtonClick"/>
+                        Click="endTutorialClick"/>
 
             </StackPanel>
         </Grid>
