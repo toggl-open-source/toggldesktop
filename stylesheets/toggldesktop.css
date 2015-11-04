@@ -62,3 +62,20 @@ h3 {
 .pages ul li {
   font-size: 16px;
 }
+
+.beta {
+  font-size: 12px;
+  font-weight: normal;
+  color: #fff;
+  background-color: #6ECC33;
+  border-radius: 5px;
+  padding: 3px 5px;
+  margin-left: 13px;
+  line-height: 35px;
+  height: 35px;
+  vertical-align: middle;
+}
+
+.beta::after {
+  content: "beta";
+}
