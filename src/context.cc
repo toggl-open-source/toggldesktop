@@ -310,23 +310,60 @@ UIElements UIElements::Reset() {
 
 std::string UIElements::String() const {
     std::stringstream ss;
-    ss << "display_time_entries=" << display_time_entries
-       << " display_time_entry_autocomplete=" << display_time_entry_autocomplete
-       << " display_mini_timer_autocomplete=" << display_mini_timer_autocomplete
-       << " display_project_autocomplete=" << display_project_autocomplete
-       << " display_client_select=" << display_client_select
-       << " display_tags=" << display_tags
-       << " display_workspace_select=" << display_workspace_select
-       << " display_timer_state=" << display_timer_state
-       << " display_time_entry_editor=" << display_time_entry_editor
-       << " open_settings=" << open_settings
-       << " open_time_entry_list=" << open_time_entry_list
-       << " open_time_entry_editor=" << open_time_entry_editor
-       << " display_autotracker_rules=" << display_autotracker_rules
-       << " display_settings=" << display_settings
-       << " time_entry_editor_guid=" << time_entry_editor_guid
-       << " time_entry_editor_field=" << time_entry_editor_field
-       << " display_unsynced_items=" << display_unsynced_items;
+    if (display_time_entries) {
+        ss << "display_time_entries ";
+    }
+    if (display_time_entry_autocomplete) {
+        ss << "display_time_entry_autocomplete ";
+    }
+    if (display_mini_timer_autocomplete) {
+        ss << "display_mini_timer_autocomplete ";
+    }
+    if (display_project_autocomplete) {
+        ss << "display_project_autocomplete ";
+    }
+    if (display_client_select) {
+        ss << "display_client_select ";
+    }
+    if (display_client_select) {
+        ss << "display_client_select ";
+    }
+    if (display_tags) {
+        ss << "display_tags ";
+    }
+    if (display_workspace_select) {
+        ss << "display_workspace_select ";
+    }
+    if (display_timer_state) {
+        ss << "display_timer_state ";
+    }
+    if (display_time_entry_editor) {
+        ss << "display_time_entry_editor ";
+    }
+    if (open_settings) {
+        ss << "open_settings ";
+    }
+    if (open_time_entry_list) {
+        ss << "open_time_entry_list ";
+    }
+    if (open_time_entry_editor) {
+        ss << "open_time_entry_editor ";
+    }
+    if (display_autotracker_rules) {
+        ss << "display_autotracker_rules ";
+    }
+    if (display_settings) {
+        ss << "display_settings ";
+    }
+    if (!time_entry_editor_guid.empty()) {
+        ss << "time_entry_editor_guid=" << time_entry_editor_guid << " ";
+    }
+    if (!time_entry_editor_field.empty())  {
+        ss << "time_entry_editor_field=" << time_entry_editor_field << " ";
+    }
+    if (display_unsynced_items) {
+        ss << "display_unsynced_items ";
+    }
     return ss.str();
 }
 
