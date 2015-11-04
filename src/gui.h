@@ -369,6 +369,8 @@ class GUI : public SyncStateMonitor {
         const RelatedData &related,
         const std::vector<TimeEntry *> list);
 
+    void DisplayProjectColors();
+
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
 
     void DisplayClientSelect(

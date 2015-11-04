@@ -776,6 +776,12 @@ bool_t toggl_set_project_color(
         to_string(color));
 }
 
+// result is passed by toggl_on_project_colors
+void toggl_get_project_colors(
+    void *context) {
+    app(context)->UI()->DisplayProjectColors();
+}
+
 char_t *toggl_get_default_project_name(
     void *context) {
     std::string name("");

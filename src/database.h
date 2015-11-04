@@ -31,6 +31,7 @@ namespace toggl {
 
 class AutotrackerRule;
 class Client;
+class ObmAction;
 class Project;
 class Proxy;
 class Settings;
@@ -270,6 +271,10 @@ class Database {
         const Poco::UInt64 &UID,
         std::vector<AutotrackerRule *> *list);
 
+    error loadObmActions(
+        const Poco::UInt64 &UID,
+        std::vector<ObmAction *> *list);
+
     error loadTimeEntries(
         const Poco::UInt64 &UID,
         std::vector<TimeEntry *> *list);
@@ -296,6 +301,10 @@ class Database {
     error deleteAllFromTableByUID(
         const std::string table_name,
         const Poco::Int64 &UID);
+
+    error saveModel(
+        ObmAction *model,
+        std::vector<ModelChange> *changes);
 
     error saveModel(
         AutotrackerRule *model,

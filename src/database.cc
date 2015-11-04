@@ -12,6 +12,7 @@
 #include "./client.h"
 #include "./const.h"
 #include "./migrations.h"
+#include "./obm_action.h"
 #include "./project.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -951,6 +952,11 @@ error Database::loadUsersRelatedData(User *user) {
         return err;
     }
 
+    err = loadObmActions(user->ID(), &user->related.ObmActions);
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -1421,6 +1427,58 @@ error Database::loadAutotrackerRules(
         return ex;
     }
     return last_error("loadAutotrackerRules");
+}
+
+error Database::loadObmActions(
+    const Poco::UInt64 &UID,
+    std::vector<ObmAction *> *list) {
+
+    if (!UID) {
+        return error("Cannot load OBM actions without an user ID");
+    }
+
+    try {
+        poco_check_ptr(list);
+
+        list->clear();
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        Poco::Data::Statement select(*session_);
+        select <<
+               "SELECT local_id, uid, "
+               "experiment_id, key, value "
+               "FROM obm_actions "
+               "WHERE uid = :uid ",
+               useRef(UID);
+        error err = last_error("loadObmActions");
+        if (err != noError) {
+            return err;
+        }
+        Poco::Data::RecordSet rs(select);
+        while (!select.done()) {
+            select.execute();
+            bool more = rs.moveFirst();
+            while (more) {
+                ObmAction *model = new ObmAction();
+                model->SetLocalID(rs[0].convert<Poco::Int64>());
+                model->SetUID(rs[1].convert<Poco::UInt64>());
+                model->SetExperimentID(rs[2].convert<Poco::UInt64>());
+                model->SetKey(rs[3].convert<std::string>());
+                model->SetValue(rs[4].convert<std::string>());
+                model->ClearDirty();
+                list->push_back(model);
+                more = rs.moveNext();
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("loadObmActions");
 }
 
 error Database::loadTimelineEvents(
