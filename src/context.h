@@ -493,6 +493,8 @@ class Context : public TimelineDatasource {
         std::string *user_data,
         const Poco::UInt64 since);
 
+    error pushObmAction();
+
     template<typename T>
     void collectPushableModels(
         const std::vector<T *> list,

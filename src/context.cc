@@ -20,6 +20,7 @@
 #include "./error.h"
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./obm_action.h"
 #include "./project.h"
 #include "./settings.h"
 #include "./task.h"
@@ -691,6 +692,13 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 
     if (had_something_to_push) {
         setOnline("Data pushed");
+    }
+
+    // Push cached OBM action
+    err = pushObmAction();
+    if (err != noError) {
+        displayError(err);
+        return;
     }
 
     displayError(save(false));
@@ -3693,7 +3701,9 @@ error Context::pushChanges(
                 user_->related.Clients,
                 &clients,
                 &models);
-            if (time_entries.empty() && projects.empty() && clients.empty()) {
+            if (time_entries.empty()
+                    && projects.empty()
+                    && clients.empty()) {
                 *had_something_to_push = false;
                 return noError;
             }
@@ -3744,6 +3754,77 @@ error Context::pushChanges(
         ss << "Changes data JSON pushed and responses parsed in "
            << stopwatch.elapsed() / 1000 << " ms";
         logger().debug(ss.str());
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::pushObmAction() {
+    try {
+        Poco::Int64 local_id(0);
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.basic_auth_password = "api_token";
+
+        // Get next OBM action for upload
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("cannot push changes when logged out");
+                return noError;
+            }
+
+            if (user_->related.ObmActions.empty()) {
+                return noError;
+            }
+
+            req.basic_auth_username = user_->APIToken();
+            if (req.basic_auth_username.empty()) {
+                return error("cannot push OBM actions without API token");
+            }
+
+            // Upload first OBM action available.
+            ObmAction *for_upload = user_->related.ObmActions[0];
+            Json::Value root = for_upload->SaveToJSON();
+            req.relative_url = for_upload->ModelURL();
+            req.payload = Json::StyledWriter().write(root);
+            local_id = for_upload->LocalID();
+        }
+
+        logger().debug(req.payload);
+
+        TogglClient toggl_client;
+        HTTPSResponse resp = toggl_client.Post(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        // Delete the uploaded OBM action
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("cannot push changes when logged out");
+                return noError;
+            }
+
+            for (std::vector<ObmAction *>::iterator it =
+                user_->related.ObmActions.begin();
+                    it != user_->related.ObmActions.end();
+                    it++) {
+                ObmAction *model = *it;
+                if (model->LocalID() == local_id) {
+                    model->MarkAsDeletedOnServer();
+                    model->Delete();
+                }
+            }
+        }
+
+        return displayError(save());
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

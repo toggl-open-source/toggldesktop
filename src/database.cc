@@ -127,12 +127,12 @@ error Database::DeleteUser(
 
     poco_check_ptr(model);
 
-    error err = deleteFromTable("sessions", model->LocalID());
+    error err = DeleteFromTable("sessions", model->LocalID());
     if (err != noError) {
         return err;
     }
 
-    err = deleteFromTable("users", model->LocalID());
+    err = DeleteFromTable("users", model->LocalID());
     if (err != noError) {
         return err;
     }
@@ -162,6 +162,10 @@ error Database::DeleteUser(
             return err;
         }
         err = deleteAllFromTableByUID("autotracker_settings", model->ID());
+        if (err != noError) {
+            return err;
+        }
+        err = deleteAllFromTableByUID("obm_actions", model->ID());
         if (err != noError) {
             return err;
         }
@@ -269,7 +273,7 @@ Poco::Logger &Database::logger() const {
     return Poco::Logger::get("database");
 }
 
-error Database::deleteFromTable(
+error Database::DeleteFromTable(
     const std::string table_name,
     const Poco::Int64 &local_id) {
 
@@ -291,7 +295,6 @@ error Database::deleteFromTable(
         Poco::Mutex::ScopedLock lock(session_m_);
         poco_check_ptr(session_);
 
-
         *session_ <<
                   "delete from " + table_name +
                   " where local_id = :local_id",
@@ -304,7 +307,7 @@ error Database::deleteFromTable(
     } catch(const std::string& ex) {
         return ex;
     }
-    return last_error("deleteFromTable");
+    return last_error("DeleteFromTable");
 }
 
 error Database::last_error(const std::string was_doing) {
@@ -1727,7 +1730,7 @@ error Database::saveRelatedModels(
     for (size_t i = 0; i < list->size(); i++) {
         T *model = list->at(i);
         if (model->IsMarkedAsDeletedOnServer()) {
-            error err = deleteFromTable(table_name, model->LocalID());
+            error err = DeleteFromTable(table_name, model->LocalID());
             if (err != noError) {
                 return err;
             }
@@ -2215,6 +2218,102 @@ error Database::saveModel(
                       into(local_id),
                       now;
             err = last_error("saveAutotrackerRule");
+            if (err != noError) {
+                return err;
+            }
+            model->SetLocalID(local_id);
+            changes->push_back(ModelChange(
+                model->ModelName(),
+                kChangeTypeInsert,
+                model->ID(),
+                model->GUID()));
+        }
+
+        model->ClearDirty();
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Database::saveModel(
+    ObmAction *model,
+    std::vector<ModelChange> *changes) {
+
+    try {
+        poco_check_ptr(model);
+
+        if (model->LocalID() && !model->Dirty()) {
+            return noError;
+        }
+
+        Poco::Mutex::ScopedLock lock(session_m_);
+        poco_check_ptr(session_);
+
+        if (model->LocalID()) {
+            std::stringstream ss;
+            ss << "Updating OBM action " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger().trace(ss.str());
+
+            *session_ <<
+                      "update obm_actions set "
+                      "uid = :uid, "
+                      "experiment_id = :experiment_id, "
+                      "key = :key, "
+                      "value = :value "
+                      "where local_id = :local_id",
+                      useRef(model->UID()),
+                      useRef(model->ExperimentID()),
+                      useRef(model->Key()),
+                      useRef(model->Value()),
+                      useRef(model->LocalID()),
+                      now;
+            error err = last_error("saveObmAction");
+            if (err != noError) {
+                return err;
+            }
+            if (model->DeletedAt()) {
+                changes->push_back(ModelChange(
+                    model->ModelName(),
+                    kChangeTypeDelete,
+                    model->ID(),
+                    model->GUID()));
+            } else {
+                changes->push_back(ModelChange(
+                    model->ModelName(),
+                    kChangeTypeUpdate,
+                    model->ID(),
+                    model->GUID()));
+            }
+
+        } else {
+            std::stringstream ss;
+            ss << "Inserting OBM action " + model->String()
+               << " in thread " << Poco::Thread::currentTid();
+            logger().trace(ss.str());
+            *session_ <<
+                      "insert into obm_actions(uid, experiment_id, key, value) "
+                      "values(:uid, :experiment_id, :key, :value)",
+                      useRef(model->UID()),
+                      useRef(model->ExperimentID()),
+                      useRef(model->Key()),
+                      useRef(model->Value()),
+                      now;
+            error err = last_error("saveObmAction");
+            if (err != noError) {
+                return err;
+            }
+            Poco::Int64 local_id(0);
+            *session_ <<
+                      "select last_insert_rowid()",
+                      into(local_id),
+                      now;
+            err = last_error("saveObmAction");
             if (err != noError) {
                 return err;
             }
@@ -3147,6 +3246,16 @@ error Database::SaveUser(
         err = saveRelatedModels(user->ID(),
                                 "timeline_events",
                                 &user->related.TimelineEvents,
+                                changes);
+        if (err != noError) {
+            session_->rollback();
+            return err;
+        }
+
+        // OBM actions
+        err = saveRelatedModels(user->ID(),
+                                "obm_actions",
+                                &user->related.ObmActions,
                                 changes);
         if (err != noError) {
             session_->rollback();

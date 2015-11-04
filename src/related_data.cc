@@ -11,6 +11,7 @@
 #include "./formatter.h"
 #include "./client.h"
 #include "./gui.h"
+#include "./obm_action.h"
 #include "./project.h"
 #include "./tag.h"
 #include "./task.h"
