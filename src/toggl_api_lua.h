@@ -358,6 +358,15 @@ static int l_toggl_autotracker_add_rule(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_add_obm_action(lua_State *L) {
+    bool_t res = toggl_add_obm_action(toggl_app_instance_,
+                                      lua_tointeger(L, 1),
+                                      checkstring(L, 2),
+                                      checkstring(L, 3));
+    lua_pushboolean(L, res);
+    return 1;
+}
+
 static int l_toggl_create_project(lua_State *L) {
     char_t *guid = toggl_create_project(toggl_app_instance_,
                                         lua_tointeger(L, 1),
@@ -624,6 +633,13 @@ static int l_toggl_get_default_project_name(lua_State *L) {
     return 1;
 }
 
+static int l_toggl_get_default_project_id(lua_State *L) {
+    int64_t project_id = toggl_get_default_project_id(
+        toggl_app_instance_);
+    lua_pushnumber(L, project_id);
+    return 1;
+}
+
 static int l_toggl_set_promotion_response(lua_State *L) {
     bool_t res = toggl_set_promotion_response(
         toggl_app_instance_,
@@ -719,6 +735,7 @@ static const struct luaL_Reg toggl_f[] = {
     {"start", l_toggl_start},
     {"add_project", l_toggl_add_project},
     {"create_project", l_toggl_create_project},
+    {"add_obm_action", l_toggl_add_obm_action},
     {"create_client", l_toggl_create_client},
     {"set_update_channel", l_toggl_set_update_channel},
     {"get_update_channel", l_toggl_get_update_channel},
@@ -760,6 +777,7 @@ static const struct luaL_Reg toggl_f[] = {
     {"window_settings", l_toggl_window_settings},
     {"set_default_project", l_toggl_set_default_project},
     {"get_default_project_name", l_toggl_get_default_project_name},
+    {"get_default_project_id", l_toggl_get_default_project_id},
     {"set_promotion_response", l_toggl_set_promotion_response},
     {   "parse_duration_string_into_seconds",
         l_toggl_parse_duration_string_into_seconds

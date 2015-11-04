@@ -418,6 +418,18 @@ char_t *toggl_create_project(
     return nullptr;
 }
 
+bool_t toggl_add_obm_action(
+    void *context,
+    const uint64_t experiment_id,
+    const char_t *key,
+    const char_t *value) {
+
+    return toggl::noError == app(context)->AddObmAction(
+        experiment_id,
+        to_string(key),
+        to_string(value));
+}
+
 char_t *toggl_create_client(
     void *context,
     const uint64_t workspace_id,

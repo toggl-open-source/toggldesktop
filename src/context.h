@@ -352,6 +352,11 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 
+    error AddObmAction(
+        const Poco::UInt64 experiment_id,
+        const std::string key,
+        const std::string value);
+
     void SetSleep();
 
     void SetWake();

@@ -840,6 +840,19 @@ TEST(toggl_api, toggl_sync) {
     toggl_sync(app.ctx());
 }
 
+TEST(toggl_api, toggl_add_obm_action) {
+    testing::App app;
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 0, "key", "value"));
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 1, "key", " "));
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 2, " ", ""));
+    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, "key", "value"));
+    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, "key", "value"));
+}
+
 TEST(toggl_api, toggl_add_project) {
     testing::App app;
 

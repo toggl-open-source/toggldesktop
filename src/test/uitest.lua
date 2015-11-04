@@ -149,7 +149,7 @@ toggl.sleep(seconds)
 
 print("set_default_project_id")
 
-assert(toggl.set_default_project_id(2567324))
+assert(toggl.set_default_project(2567324, 0))
 assert(2567324 == toggl.get_default_project_id())
 assert("Even more work" == toggl.get_default_project_name())
 
@@ -280,6 +280,14 @@ print("format_tracked_time_duration")
 
 local formatted_tracked_time = toggl.format_tracked_time_duration(120)
 assert("0:02" == formatted_tracked_time, formatted_tracked_time)
+
+toggl.sleep(seconds)
+
+-- add obm action
+
+print("add OBM action")
+
+assert(toggl.add_obm_action(123, "some", "thing"))
 
 toggl.sleep(seconds)
 
