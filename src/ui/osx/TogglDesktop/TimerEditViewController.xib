@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -25,16 +25,16 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="M2u-7B-WCs">
-            <rect key="frame" x="0.0" y="0.0" width="258" height="45"/>
+            <rect key="frame" x="0.0" y="0.0" width="258" height="46"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-11" width="256" height="56"/>
+                    <rect key="frame" x="1" y="-10" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="nFI-HH-zd7">
+                            <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="nFI-HH-zd7" userLabel="StartButtonBox">
                                 <rect key="frame" x="197" y="2" width="58" height="56"/>
                                 <view key="contentView">
                                     <rect key="frame" x="0.0" y="0.0" width="58" height="56"/>
@@ -42,6 +42,7 @@
                                     <subviews>
                                         <button toolTip="Start" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Fx-4L-YGZ" customClass="NSHoverButton">
                                             <rect key="frame" x="17" y="15" width="26" height="26"/>
+                                            <animations/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="start_button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="jVO-3V-i8I">
                                                 <behavior key="behavior" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -55,20 +56,24 @@ DQ
                                             </connections>
                                         </button>
                                     </subviews>
+                                    <animations/>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="2Fx-4L-YGZ" secondAttribute="trailing" constant="15" id="IA0-yM-ema"/>
                                     <constraint firstAttribute="width" constant="58" id="Rff-cG-Y36"/>
                                     <constraint firstItem="2Fx-4L-YGZ" firstAttribute="top" secondItem="nFI-HH-zd7" secondAttribute="top" constant="16" id="gBP-7a-tuV"/>
                                 </constraints>
+                                <animations/>
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
                                 <rect key="frame" x="4" y="29" width="215" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="WR0-PJ-917"/>
                                 </constraints>
+                                <animations/>
                                 <comboBoxCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" focusRingType="none" placeholderString="What are you doing?" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="SSh-62-AYH" customClass="NSCustomComboBoxCell">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
@@ -80,24 +85,28 @@ DQ
                                     <outlet property="nextKeyView" destination="oie-Un-asQ" id="14S-Ev-aQF"/>
                                 </connections>
                             </comboBox>
-                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="none" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh">
+                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="none" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh" userLabel="HidingBox">
                                 <rect key="frame" x="132" y="43" width="5" height="30"/>
                                 <view key="contentView">
                                     <rect key="frame" x="0.0" y="0.0" width="5" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <animations/>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="9" id="Th5-GH-lKS"/>
                                 </constraints>
+                                <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="4" y="29" width="142" height="8"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="6EN-7v-jSX"/>
                                 </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" placeholderString="What are you doing?" id="V5P-6k-9NM">
+                                <animations/>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" placeholderString="What are you working on?" id="V5P-6k-9NM">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.81568627450980391" green="0.81568627450980391" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -118,9 +127,11 @@ DQ
                                                 <constraint firstAttribute="width" constant="13" id="Wlr-yr-aQc"/>
                                                 <constraint firstAttribute="height" constant="11" id="l4d-z5-e2j"/>
                                             </constraints>
+                                            <animations/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-tags" id="P9N-4a-4fL"/>
                                         </imageView>
                                     </subviews>
+                                    <animations/>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="11" id="3hM-O6-ZBw"/>
@@ -128,8 +139,10 @@ DQ
                                     <constraint firstItem="VGm-xf-5d1" firstAttribute="centerY" secondItem="aty-o7-z5X" secondAttribute="centerY" id="XlW-f2-bZS"/>
                                     <constraint firstAttribute="width" constant="13" id="afd-py-wnR"/>
                                 </constraints>
+                                <animations/>
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <box autoresizesSubviews="NO" misplaced="YES" transparent="YES" borderWidth="0.0" title="BillableBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="H0e-5U-BSu">
                                 <rect key="frame" x="145" y="31" width="7" height="13"/>
@@ -143,9 +156,11 @@ DQ
                                                 <constraint firstAttribute="width" constant="7" id="Jk1-pz-gSa"/>
                                                 <constraint firstAttribute="height" constant="13" id="sT0-9z-H0t"/>
                                             </constraints>
+                                            <animations/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-billable" id="pYF-hS-QNr"/>
                                         </imageView>
                                     </subviews>
+                                    <animations/>
                                 </view>
                                 <constraints>
                                     <constraint firstItem="9mO-OH-ebm" firstAttribute="centerY" secondItem="H0e-5U-BSu" secondAttribute="centerY" id="Asq-qB-YGf"/>
@@ -153,16 +168,19 @@ DQ
                                     <constraint firstAttribute="height" constant="13" id="oXE-jM-dNf"/>
                                     <constraint firstAttribute="width" constant="7" id="yy1-kj-eQf"/>
                                 </constraints>
+                                <animations/>
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="titleFont" metaFont="message" size="11"/>
                             </box>
                             <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
                                 <rect key="frame" x="132" y="24" width="75" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="x2K-5w-zfF"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" placeholderString="00:00:00" drawsBackground="YES" id="FoD-qd-An1">
-                                    <font key="font" metaFont="system" size="14"/>
+                                    <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
@@ -177,6 +195,7 @@ DQ
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="wqt-c9-CBt"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" lineBreakMode="charWrapping" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="NEW - TOGGL" id="Wt0-TO-JZG">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
@@ -187,6 +206,7 @@ DQ
                                 </connections>
                             </textField>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="40" id="1Qf-HH-85e"/>
@@ -207,15 +227,17 @@ DQ
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="87" id="naG-qG-gq3"/>
                         <constraint firstItem="H0e-5U-BSu" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="20" id="nd5-XL-pQK"/>
                         <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="6" id="q1b-AH-TNO"/>
-                        <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="16" id="sKm-6j-h1k"/>
+                        <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="18" id="sKm-6j-h1k"/>
                         <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="13" id="tbX-SU-uAB"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="H0e-5U-BSu" secondAttribute="trailing" constant="60" id="y5u-SN-KgL"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                    <font key="titleFont" metaFont="message" size="11"/>
                 </box>
                 <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" borderWidth="0.0" title="Box" boxType="custom" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-7" width="256" height="56"/>
+                    <rect key="frame" x="1" y="-6" width="256" height="56"/>
                     <view key="contentView">
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -225,6 +247,7 @@ DQ
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="jI3-Oy-ic9"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="+ Add time entry" placeholderString="" id="6je-P7-19t">
                                     <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
@@ -235,13 +258,16 @@ DQ
                                 </connections>
                             </textField>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="Pm5-UM-PRp" secondAttribute="centerX" id="uaN-HV-WBL"/>
                         <constraint firstAttribute="centerY" secondItem="Pm5-UM-PRp" secondAttribute="centerY" id="ufC-5r-y0J"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882" green="0.1764705882" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                    <font key="titleFont" metaFont="message" size="11"/>
                 </box>
             </subviews>
             <constraints>
@@ -254,6 +280,7 @@ DQ
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="1" id="s0O-bN-wX6"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" constant="1" id="wJK-xr-4eQ"/>
             </constraints>
+            <animations/>
         </customView>
     </objects>
     <resources>

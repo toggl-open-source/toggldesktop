@@ -48,6 +48,8 @@
     <addaction name="actionContinue"/>
     <addaction name="actionStop"/>
     <addaction name="separator"/>
+    <addaction name="actionShow"/>
+    <addaction name="separator"/>
     <addaction name="actionSync"/>
     <addaction name="actionReports"/>
     <addaction name="actionPreferences"/>
@@ -83,14 +85,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionShow">
-   <property name="text">
-    <string>Show</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+T</string>
    </property>
   </action>
   <action name="actionSync">
@@ -147,6 +141,11 @@
    </property>
    <property name="text">
     <string>email</string>
+   </property>
+  </action>
+  <action name="actionShow">
+   <property name="text">
+    <string>Show</string>
    </property>
   </action>
  </widget>

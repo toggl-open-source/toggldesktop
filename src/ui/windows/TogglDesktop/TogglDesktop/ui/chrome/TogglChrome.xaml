@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="TogglDesktop.TogglChrome"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:toggl="clr-namespace:TogglDesktop"
+        mc:Ignorable="d" 
+        d:DataContext="{d:DesignInstance Type=toggl:TogglChromeSample, IsDesignTimeCreatable=True}"
+        d:DesignHeight="300" d:DesignWidth="400"
+        >
+
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- window header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="34"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.Background>
+                <ImageBrush ImageSource="/TogglDesktop;component/Resources/timerDarkBg.png"
+                            AlignmentX="Left" AlignmentY="Bottom"
+                            TileMode="Tile" Stretch="UniformToFill"
+                            Viewport="0 0 634 40" ViewportUnits="Absolute"/>
+            </Grid.Background>
+
+            <Button Grid.Column="0" Style="{StaticResource WindowIconButton}"
+                    Name="IconButton" IsEnabled="False" Margin="6 0 0 0">
+                <Image
+                    Name="icon" x:FieldModifier="private"
+                    Source="{StaticResource IconRed}"
+                    RenderOptions.BitmapScalingMode="Fant"
+                    Height="16" Width="16"/>
+            </Button>
+
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource WindowTitle}"
+                       Text="{Binding Title}"/>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4 0"
+                        Name="buttonPanel" x:FieldModifier="private">
+                <Button Name="CogButton" Style="{StaticResource WindowHeadButton}"
+                        Content="/TogglDesktop;component/Resources/ic_cog_grey600_36dp.png"/>
+                <Button Name="MinimizeButton" Style="{StaticResource WindowHeadButton}"
+                        Content="/TogglDesktop;component/Resources/ic_minimize_grey600_36dp.png"/>
+                <Button Name="CloseButton" Style="{StaticResource WindowHeadButton}"
+                        Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Name="windowContentGrid" x:FieldModifier="private" Background="#eee" />
+    </Grid>
+</UserControl>

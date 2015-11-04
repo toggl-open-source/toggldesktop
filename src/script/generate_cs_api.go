@@ -58,6 +58,9 @@ func main() {
 			write("[MarshalAs(UnmanagedType.I1)]")
 		} else if strings.Contains(s, "char *") {
 			write("[MarshalAs(UnmanagedType.LPStr)]")
+		} else if strings.Contains(s, "string_list_t") {
+			// warning: it assumes a size parameter at index 1
+			write("[MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPWStr, SizeParamIndex=1)]")
 		}
 	}
 	// start class

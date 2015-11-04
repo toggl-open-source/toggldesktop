@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using TogglDesktop.WPF.AutoComplete;
+using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
@@ -16,7 +16,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         protected override UIElement createElement(List<IRecyclable> recyclables)
         {
-            return StaticObjectPool.PopOrNew<WPF.AutoComplete.WorkspaceCategory>()
+            return StaticObjectPool.PopOrNew<AutoCompleteControls.WorkspaceCategory>()
                 .Initialised(this.text)
                 .MarkForRecycling(recyclables);
         }

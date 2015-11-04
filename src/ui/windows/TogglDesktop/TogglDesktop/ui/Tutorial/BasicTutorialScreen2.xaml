@@ -1,0 +1,38 @@
+﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Tutorial.BasicTutorialScreen2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
+             xmlns:toggl="clr-namespace:TogglDesktop"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" d:DesignWidth="387"
+             Style="{StaticResource TutorialScreen}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+        
+        <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
+            <Grid Background="{StaticResource TutorialDarkOverlay}" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+
+                    <Image Source="/TogglDesktop;component/Resources/tutorial-arrow-curved.png"
+                                Height="22" VerticalAlignment="Top" Margin="10 -10 5 0"/>
+                    <TextBlock Margin="0 3 0 0" TextAlignment="Center">
+                        Click here and tell us<LineBreak />
+                        what you are doing
+                    </TextBlock>
+                    
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <toggl:ProgressBar Grid.Row="1" Margin="30 20"
+            VerticalAlignment="Bottom"
+            MaxValue="6" Value="1"/>
+
+    </Grid>
+</tutorial:TutorialScreen>

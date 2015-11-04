@@ -22,6 +22,19 @@ namespace toggl {
 
 namespace view {
 
+class HelpArticle {
+ public:
+    HelpArticle()
+        : Category("")
+    , Name("")
+    , URL("") {}
+    virtual ~HelpArticle() {}
+
+    std::string Category;
+    std::string Name;
+    std::string URL;
+};
+
 class TimeEntry {
  public:
     TimeEntry()
@@ -283,7 +296,6 @@ class TimelineEvent {
 }  // namespace view
 
 class Client;
-class Project;
 class RelatedData;
 class User;
 class TimeEntry;
@@ -312,9 +324,11 @@ class GUI : public SyncStateMonitor {
     , on_display_sync_state_(nullptr)
     , on_display_unsynced_items_(nullptr)
     , on_display_update_(nullptr)
+    , on_display_update_download_state_(nullptr)
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
     , on_display_promotion_(nullptr)
+    , on_display_help_articles_(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
     , lastDisplayLoginOpen(false)
@@ -328,6 +342,9 @@ class GUI : public SyncStateMonitor {
 
     error DisplayError(const error);
 
+    void DisplayHelpArticles(
+        std::vector<view::HelpArticle> *articles);
+
     void DisplaySyncState(const Poco::Int64 state);
 
     void DisplayOnlineState(const Poco::Int64 state);
@@ -336,7 +353,9 @@ class GUI : public SyncStateMonitor {
 
     void DisplayReminder();
 
-    void DisplayAutotrackerNotification(toggl::Project *p);
+    void DisplayAutotrackerNotification(
+        toggl::Project *const p,
+        toggl::Task *const t);
 
     void DisplayMinitimerAutocomplete(std::vector<toggl::view::Autocomplete> *);
 
@@ -393,10 +412,22 @@ class GUI : public SyncStateMonitor {
 
     void DisplayUpdate(const std::string URL);
 
+    void DisplayUpdateDownloadState(
+        const std::string version,
+        const Poco::Int64 download_state);
+
     error VerifyCallbacks();
 
     void OnDisplayUpdate(TogglDisplayUpdate cb) {
         on_display_update_ = cb;
+    }
+
+    void OnDisplayHelpArticles(TogglDisplayHelpArticles cb) {
+        on_display_help_articles_ = cb;
+    }
+
+    void OnDisplayUpdateDownloadState(TogglDisplayUpdateDownloadState cb) {
+        on_display_update_download_state_ = cb;
     }
 
     void OnDisplayApp(TogglDisplayApp cb) {
@@ -492,6 +523,10 @@ class GUI : public SyncStateMonitor {
         return !!on_display_update_;
     }
 
+    bool CanDisplayUpdateDownloadState() const {
+        return !!on_display_update_download_state_;
+    }
+
     bool CanDisplayAutotrackerRules() const {
         return !!on_display_autotracker_rules_;
     }
@@ -529,9 +564,11 @@ class GUI : public SyncStateMonitor {
     TogglDisplaySyncState on_display_sync_state_;
     TogglDisplayUnsyncedItems on_display_unsynced_items_;
     TogglDisplayUpdate on_display_update_;
+    TogglDisplayUpdateDownloadState on_display_update_download_state_;
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;
+    TogglDisplayHelpArticles on_display_help_articles_;
 
     // Cached views
     Poco::Int64 lastSyncState;

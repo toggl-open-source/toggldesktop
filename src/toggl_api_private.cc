@@ -117,14 +117,13 @@ TogglGenericView *client_to_view_item(
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     toggl::AutotrackerRule * const model,
-    const std::string project_name) {
+    const std::string project_and_task_label) {
     TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
     // Autotracker settings are not saved to DB,
     // so the ID will be 0 always. But will have local ID
     view->ID = static_cast<int>(model->LocalID());
-    view->PID = static_cast<unsigned int>(model->PID());
     view->Term = copy_string(model->Term());
-    view->ProjectName = copy_string(project_name);
+    view->ProjectAndTaskLabel = copy_string(project_and_task_label);
     return view;
 }
 
@@ -134,13 +133,12 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
     }
 
     view->ID = 0;
-    view->PID = 0;
 
     free(view->Term);
     view->Term = nullptr;
 
-    free(view->ProjectName);
-    view->ProjectName = nullptr;
+    free(view->ProjectAndTaskLabel);
+    view->ProjectAndTaskLabel = nullptr;
 
     if (view->Next) {
         TogglAutotrackerRuleView *next =
@@ -405,8 +403,58 @@ TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::view::Autocomplete> *items) {
     TogglAutocompleteView *first = nullptr;
     for (std::vector<toggl::view::Autocomplete>::const_reverse_iterator it =
-        items->rbegin(); it != items->rend(); it++) {
+        items->rbegin();
+            it != items->rend();
+            it++) {
         TogglAutocompleteView *item = autocomplete_item_init(*it);
+        item->Next = first;
+        first = item;
+    }
+    return first;
+}
+
+TogglHelpArticleView *help_artice_init(
+    const toggl::view::HelpArticle item) {
+    TogglHelpArticleView *result = new TogglHelpArticleView();
+    result->Category = copy_string(item.Category);
+    result->Name = copy_string(item.Name);
+    result->URL = copy_string(item.URL);
+    result->Next = nullptr;
+    return result;
+}
+
+void help_article_clear(TogglHelpArticleView *item) {
+    if (!item) {
+        return;
+    }
+
+    free(item->Category);
+    item->Category = nullptr;
+
+    free(item->Name);
+    item->Name = nullptr;
+
+    free(item->URL);
+    item->URL = nullptr;
+
+    if (item->Next) {
+        TogglHelpArticleView *next =
+            reinterpret_cast<TogglHelpArticleView *>(item->Next);
+        help_article_clear(next);
+        item->Next = nullptr;
+    }
+
+    delete item;
+}
+
+TogglHelpArticleView *help_article_list_init(
+    std::vector<toggl::view::HelpArticle> *items) {
+    TogglHelpArticleView *first = nullptr;
+    for (std::vector<toggl::view::HelpArticle>::const_reverse_iterator it =
+        items->rbegin();
+            it != items->rend();
+            it++) {
+        TogglHelpArticleView *item = help_artice_init(*it);
         item->Next = first;
         first = item;
     }

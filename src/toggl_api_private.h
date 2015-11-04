@@ -20,6 +20,9 @@ class Client;
 class Context;
 class TimeEntry;
 class Workspace;
+namespace view {
+class HelpArticle;
+}
 }
 
 int compare_string(const char_t *s1, const char_t *s2);
@@ -40,7 +43,7 @@ TogglGenericView *client_to_view_item(
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     toggl::AutotrackerRule * const model,
-    const std::string project_name);
+    const std::string project_and_task_label);
 
 void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 
@@ -74,6 +77,12 @@ void settings_view_item_clear(TogglSettingsView *view);
 
 TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::view::Autocomplete> *items);
+
+TogglHelpArticleView *help_article_list_init(
+    std::vector<toggl::view::HelpArticle> *items);
+
+void help_article_clear(
+    TogglHelpArticleView *first);
 
 Poco::Logger &logger();
 

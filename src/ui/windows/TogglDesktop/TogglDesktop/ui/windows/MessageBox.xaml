@@ -1,0 +1,53 @@
+﻿<toggl:TogglWindow x:Class="TogglDesktop.MessageBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:toggl="clr-namespace:TogglDesktop"
+    mc:Ignorable="d" 
+    MinHeight="200"
+    MinWidth="260"
+    Title="Toggl Desktop"
+    IsToolWindow="True"
+    SizeToContent="WidthAndHeight"
+    Style="{StaticResource Dialog}"
+    >
+
+    <Grid Background="{StaticResource ViewBackgroundLight}" Height="Auto" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <toggl:TogglChromeDesignTimeConverter
+            Title="Toggl Desktop" IsToolWindow="True" />
+
+        <Grid Margin="13" Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock MaxWidth="400"
+                TextWrapping="WrapWithOverflow" Grid.Column="1"
+                Name="messageText" x:FieldModifier="private"
+                LineHeight="18" LineStackingStrategy="BlockLineHeight">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </TextBlock>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal"
+            HorizontalAlignment="Right" Margin="4">
+            <Button Name="okButton" x:FieldModifier="private"
+                Content="OK" Click="onOkButtonClick"/>
+            <Button Name="yesButton" x:FieldModifier="private"
+                Content="YES" Click="onYesButtonClick"/>
+            <Button Name="noButton" x:FieldModifier="private"
+                Content="NO" Click="onNoButtonClick"/>
+            <Button Name="cancelButton" x:FieldModifier="private"
+                Content="CANCEL" Click="onCancelButtonClick"/>
+        </StackPanel>
+    </Grid>
+</toggl:TogglWindow>

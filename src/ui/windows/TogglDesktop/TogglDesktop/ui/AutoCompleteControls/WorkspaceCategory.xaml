@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="TogglDesktop.AutoCompleteControls.WorkspaceCategory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop"
+             mc:Ignorable="d" d:DesignWidth="300"
+             Height="20"
+             Style="{StaticResource AutoCompleteItemBase}"
+             BorderBrush="#dbdbdb"
+             BorderThickness="0, 0, 0, 1"
+             Padding="0, 3, 0, 0"
+             >
+    
+    <TextBlock Name="workspaceName" x:FieldModifier="private"
+        HorizontalAlignment="Center" Foreground="#a1a1a1"
+        FontSize="11"
+        >Example Workspace</TextBlock>
+    
+</UserControl>

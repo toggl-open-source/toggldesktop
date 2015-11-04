@@ -12,6 +12,7 @@
 #include "./formatter.h"
 #include "./project.h"
 #include "./related_data.h"
+#include "./task.h"
 #include "./time_entry.h"
 #include "./user.h"
 #include "./workspace.h"
@@ -199,24 +200,41 @@ void GUI::DisplayReminder() {
     free(s2);
 }
 
-void GUI::DisplayAutotrackerNotification(Project *p) {
+void GUI::DisplayAutotrackerNotification(Project *const p, Task *const t) {
     poco_check_ptr(p);
 
     std::stringstream ss;
-    ss << "DisplayAutotrackerNotification "
-       << p->Name() << ", " << p->ID() << ", " << p->GUID();
-
+    ss << "DisplayAutotrackerNotification ";
+    if (p) {
+        ss << "project " << p->Name() << ", " << p->ID() << ", " << p->GUID();
+    }
+    if (t) {
+        ss << " task " << t->Name() << ", " << t->ID();
+    }
     logger().debug(ss.str());
+
+    if (!p && !t) {
+        logger().error(
+            "Need project ID or task ID for autotracker notification");
+        return;
+    }
 
     if (!on_display_autotracker_notification_) {
         return;
     }
 
-    char_t *project_name_s = copy_string(p->Name());
+    uint64_t pid(0);
+    if (p) {
+        pid = p->ID();
+    }
+    uint64_t tid(0);
+    if (t) {
+        tid = t->ID();
+    }
 
-    on_display_autotracker_notification_(project_name_s, p->ID());
-
-    free(project_name_s);
+    char_t *label = copy_string(Formatter::JoinTaskName(t, p, nullptr));
+    on_display_autotracker_notification_(label, pid, tid);
+    free(label);
 }
 
 
@@ -262,6 +280,19 @@ void GUI::DisplayTimeEntryAutocomplete(
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_time_entry_autocomplete_(first);
     autocomplete_item_clear(first);
+}
+
+void GUI::DisplayHelpArticles(
+    std::vector<view::HelpArticle> *articles) {
+    logger().debug("DisplayHelpArticles");
+
+    if (!on_display_help_articles_) {
+        return;
+    }
+
+    TogglHelpArticleView *first = help_article_list_init(articles);
+    on_display_help_articles_(first);
+    help_article_clear(first);
 }
 
 void GUI::DisplayMinitimerAutocomplete(
@@ -401,12 +432,11 @@ void GUI::DisplayAutotrackerRules(
             it++) {
         AutotrackerRule *rule = *it;
         Project *p = related.ProjectByID(rule->PID());
-        std::string project_name("");
-        if (p) {
-            project_name = p->Name();
-        }
+        Task *t = related.TaskByID(rule->TID());
+        std::string project_and_task_label =
+            Formatter::JoinTaskName(t, p, nullptr);
         TogglAutotrackerRuleView *item =
-            autotracker_rule_to_view_item(*it, project_name);
+            autotracker_rule_to_view_item(*it, project_and_task_label);
         item->Next = first;
         first = item;
     }
@@ -517,6 +547,25 @@ void GUI::DisplayUpdate(const std::string URL) {
     char_t *url = copy_string(URL);
     on_display_update_(url);
     free(url);
+}
+
+void GUI::DisplayUpdateDownloadState(
+    const std::string version,
+    const Poco::Int64 download_state) {
+
+    if (!CanDisplayUpdateDownloadState()) {
+        logger().debug("Update download state display not supported by UI");
+        return;
+    }
+    {
+        std::stringstream ss;
+        ss << "DisplayUpdateDownloadState version=" << version
+           << " state=" << download_state;
+        logger().debug(ss.str());
+    }
+    char_t *version_string = copy_string(version);
+    on_display_update_download_state_(version_string, download_state);
+    free(version_string);
 }
 
 void GUI::DisplaySettings(const bool open,

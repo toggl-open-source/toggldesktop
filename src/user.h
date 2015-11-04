@@ -33,7 +33,8 @@ class User : public BaseModel {
     , timeofday_format_("")
     , duration_format_("")
     , offline_data_("")
-    , default_pid_(0) {}
+    , default_pid_(0)
+    , default_tid_(0) {}
 
     ~User();
 
@@ -61,8 +62,9 @@ class User : public BaseModel {
         const std::string project_guid,
         const std::string tags);
 
-    toggl::error Continue(
-        const std::string GUID);
+    TimeEntry *Continue(
+        const std::string GUID,
+        const bool manual_mode);
 
     void Stop(std::vector<TimeEntry *> *stopped = nullptr);
 
@@ -143,6 +145,11 @@ class User : public BaseModel {
         return default_pid_;
     }
     void SetDefaultPID(const Poco::UInt64);
+
+    const Poco::UInt64& DefaultTID() const {
+        return default_tid_;
+    }
+    void SetDefaultTID(const Poco::UInt64);
 
     RelatedData related;
 
@@ -275,6 +282,7 @@ class User : public BaseModel {
     std::string duration_format_;
     std::string offline_data_;
     Poco::UInt64 default_pid_;
+    Poco::UInt64 default_tid_;
 };
 
 template<class T>

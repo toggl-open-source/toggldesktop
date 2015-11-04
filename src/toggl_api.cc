@@ -542,7 +542,12 @@ bool_t toggl_continue(
     ss << "toggl_continue guid=" << guid;
     logger().debug(ss.str());
 
-    return toggl::noError == app(context)->Continue(to_string(guid));
+    toggl::TimeEntry *result = app(context)->Continue(to_string(guid));
+    if (!result) {
+        return false;
+    }
+
+    return true;
 }
 
 void toggl_view_time_entry_list(void *context) {
@@ -576,7 +581,11 @@ bool_t toggl_continue_latest(
 
     logger().debug("toggl_continue_latest");
 
-    return toggl::noError == app(context)->ContinueLatest();
+    toggl::TimeEntry *result = app(context)->ContinueLatest();
+    if (!result) {
+        return false;
+    }
+    return true;
 }
 
 bool_t toggl_delete_time_entry(
@@ -706,9 +715,15 @@ bool_t toggl_discard_time_and_continue(
         return false;
     }
 
-    return toggl::noError == app(context)->DiscardTimeAndContinue(
+    toggl::TimeEntry *result = app(context)->DiscardTimeAndContinue(
         to_string(guid),
         at);
+
+    if (!result) {
+        return false;
+    }
+
+    return true;
 }
 
 bool_t toggl_timeline_toggle_recording(
@@ -737,17 +752,17 @@ bool_t toggl_feedback_send(
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
 
-bool_t toggl_set_default_project_id(
+void toggl_search_help_articles(
     void *context,
-    const uint64_t pid) {
-    return toggl::noError == app(context)->SetDefaultPID(pid);
+    const char_t *keywords) {
+    app(context)->SearchHelpArticles(to_string(keywords));
 }
 
-uint64_t toggl_get_default_project_id(
-    void *context) {
-    Poco::UInt64 ret(0);
-    app(context)->DefaultPID(&ret);
-    return ret;
+bool_t toggl_set_default_project(
+    void *context,
+    const uint64_t pid,
+    const uint64_t tid) {
+    return toggl::noError == app(context)->SetDefaultProject(pid, tid);
 }
 
 char_t *toggl_get_default_project_name(
@@ -758,6 +773,20 @@ char_t *toggl_get_default_project_name(
         return nullptr;
     }
     return copy_string(name);
+}
+
+uint64_t toggl_get_default_project_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultPID(&ret);
+    return ret;
+}
+
+uint64_t toggl_get_default_task_id(
+    void *context) {
+    Poco::UInt64 ret(0);
+    app(context)->DefaultTID(&ret);
+    return ret;
 }
 
 bool_t toggl_set_update_channel(
@@ -798,6 +827,12 @@ void toggl_on_show_app(
     app(context)->UI()->OnDisplayApp(cb);
 }
 
+void toggl_on_help_articles(
+    void *context,
+    TogglDisplayHelpArticles cb) {
+    app(context)->UI()->OnDisplayHelpArticles(cb);
+}
+
 void toggl_on_sync_state(
     void *context,
     TogglDisplaySyncState cb) {
@@ -826,6 +861,12 @@ void toggl_on_update(
     void *context,
     TogglDisplayUpdate cb) {
     app(context)->UI()->OnDisplayUpdate(cb);
+}
+
+void toggl_on_update_download_state(
+    void *context,
+    TogglDisplayUpdateDownloadState cb) {
+    app(context)->UI()->OnDisplayUpdateDownloadState(cb);
 }
 
 void toggl_on_url(
@@ -1068,11 +1109,13 @@ char_t *toggl_run_script(
 int64_t toggl_autotracker_add_rule(
     void *context,
     const char_t *term,
-    const uint64_t project_id) {
+    const uint64_t project_id,
+    const uint64_t task_id) {
     Poco::Int64 rule_id(0);
     app(context)->AddAutotrackerRule(
         to_string(term),
         project_id,
+        task_id,
         &rule_id);
     return rule_id;
 }
@@ -1093,4 +1136,15 @@ bool_t testing_set_logged_in_user(
     const char *json) {
     toggl::Context *ctx = reinterpret_cast<toggl::Context *>(context);
     return toggl::noError == ctx->SetLoggedInUserFromJSON(std::string(json));
+}
+
+void toggl_set_compact_mode(
+    void *context,
+    const bool_t value) {
+    app(context)->SetCompactMode(value);
+}
+
+bool_t toggl_get_compact_mode(
+    void *context) {
+    return app(context)->GetCompactMode();
 }

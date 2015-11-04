@@ -69,17 +69,6 @@ extern void *ctx;
 	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
-- (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation
-{
-	NSLog(@"Download finished: %@", item.displayVersionString);
-
-	self.updateStatus =
-		[NSString stringWithFormat:@"Restart to upgrade to %@",
-		 item.displayVersionString];
-
-	[self displayUpdateStatus];
-}
-
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
 {
 	NSLog(@"update found: %@", update.displayVersionString);
@@ -88,6 +77,7 @@ extern void *ctx;
 		[NSString stringWithFormat:@"Update found: %@. Downloading..",
 		 update.displayVersionString];
 
+	[self.restartButton setHidden:YES];
 	[self displayUpdateStatus];
 }
 
@@ -124,6 +114,19 @@ extern void *ctx;
 	[Utils setUpdaterChannel:updateChannel];
 
 	[self checkForUpdates];
+}
+
+- (IBAction)clickRestartButton:(id)sender;
+{
+	float seconds = 2.0;
+	NSTask *task = [[NSTask alloc] init];
+	NSMutableArray *args = [NSMutableArray array];
+	[args addObject:@"-c"];
+	[args addObject:[NSString stringWithFormat:@"sleep %f; open \"%@\"", seconds, [[NSBundle mainBundle] bundlePath]]];
+	[task setLaunchPath:@"/bin/sh"];
+	[task setArguments:args];
+	[task launch];
+	[[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update

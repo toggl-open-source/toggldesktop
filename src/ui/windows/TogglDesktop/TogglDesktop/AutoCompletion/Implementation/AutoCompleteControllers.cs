@@ -32,9 +32,15 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         public static AutoCompleteController ForTags(IEnumerable<string> items, Func<string, bool> ignoreTag)
         {
-            var list = items.Select(i => new StringItem(i, ignoreTag)).Cast<IAutoCompleteListItem>().ToList();
+            var list = items.Select(i => new StringItem(i, ignoreTag)).ToList<IAutoCompleteListItem>();
 
             return new AutoCompleteController(list, string.Format("Tags({0})", list.Count));
+        }
+        public static AutoCompleteController ForStrings(IEnumerable<string> items)
+        {
+            var list = items.Select(i => new StringItem(i)).ToList<IAutoCompleteListItem>();
+
+            return new AutoCompleteController(list, string.Format("Strings({0})", list.Count));
         }
 
         public static AutoCompleteController ForProjects(List<Toggl.TogglAutocompleteView> projects)
@@ -65,7 +71,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         public static AutoCompleteController ForDescriptions(List<Toggl.TogglAutocompleteView> items)
         {
-            var list = items.Select(i => new TimerItem(i, false)).Cast<IAutoCompleteListItem>().ToList();
+            var list = items.Select(TimerItem.ForDescriptionCompletion).ToList<IAutoCompleteListItem>();
 
             // TODO: categorize by workspace/client/project?
 

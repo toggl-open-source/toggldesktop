@@ -114,6 +114,15 @@ class Database {
         const bool &remind_sat,
         const bool &remind_sun);
 
+    error LoadMigrations(
+        std::vector<std::string> *);
+
+    error SetCompactMode(
+        const bool);
+
+    error GetCompactMode(
+        bool *);
+
     error SetWindowMaximized(
         const bool value);
 

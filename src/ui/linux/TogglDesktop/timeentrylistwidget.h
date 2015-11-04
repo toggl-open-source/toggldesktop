@@ -38,7 +38,7 @@ class TimeEntryListWidget : public QWidget {
 
     void on_blankView_linkActivated(const QString &link);
 
-private:
+ private:
     Ui::TimeEntryListWidget *ui;
 
     QMutex render_m_;

@@ -34,6 +34,9 @@ extern "C" {
 #define kSyncStateIdle 0
 #define kSyncStateWork 1
 
+#define kDownloadStatusStarted 0
+#define kDownloadStatusDone 1
+
 // Models
 
     typedef struct {
@@ -105,6 +108,13 @@ extern "C" {
     } TogglGenericView;
 
     typedef struct {
+        char_t *Category;
+        char_t *Name;
+        char_t *URL;
+        void *Next;
+    } TogglHelpArticleView;
+
+    typedef struct {
         bool_t UseProxy;
         char_t *ProxyHost;
         uint64_t ProxyPort;
@@ -138,8 +148,7 @@ extern "C" {
     typedef struct {
         int64_t ID;
         char_t *Term;
-        uint64_t PID;
-        char_t *ProjectName;
+        char_t *ProjectAndTaskLabel;
         void *Next;
     } TogglAutotrackerRuleView;
 
@@ -184,7 +193,8 @@ extern "C" {
 
     typedef void (*TogglDisplayAutotrackerNotification)(
         const char_t *project_name,
-        const uint64_t project_id);
+        const uint64_t project_id,
+        const uint64_t task_id);
 
     typedef void (*TogglDisplayPromotion)(
         const int64_t promotion_type);
@@ -195,6 +205,9 @@ extern "C" {
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
+
+    typedef void (*TogglDisplayHelpArticles)(
+        TogglHelpArticleView *first);
 
     typedef void (*TogglDisplayViewItems)(
         TogglGenericView *first);
@@ -220,6 +233,10 @@ extern "C" {
 
     typedef void (*TogglDisplayUpdate)(
         const char_t *url);
+
+    typedef void (*TogglDisplayUpdateDownloadState)(
+        const char_t *version,
+        const int download_state);
 
     typedef char_t * string_list_t[];
 
@@ -313,6 +330,10 @@ extern "C" {
         void *context,
         TogglDisplayUpdate cb);
 
+    TOGGL_EXPORT void toggl_on_update_download_state(
+        void *context,
+        TogglDisplayUpdateDownloadState cb);
+
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,
         TogglDisplayOnlineState cb);
@@ -340,6 +361,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
         void *context,
         TogglDisplayAutocomplete cb);
+
+    TOGGL_EXPORT void toggl_on_help_articles(
+        void *context,
+        TogglDisplayHelpArticles cb);
 
     TOGGL_EXPORT void toggl_on_time_entry_autocomplete(
         void *context,
@@ -420,6 +445,10 @@ extern "C" {
         const char_t *topic,
         const char_t *details,
         const char_t *filename);
+
+    TOGGL_EXPORT void toggl_search_help_articles(
+        void *context,
+        const char_t *keywords);
 
     TOGGL_EXPORT void toggl_view_time_entry_list(
         void *context);
@@ -690,15 +719,19 @@ extern "C" {
         const char_t *project_name,
         const bool_t is_private);
 
-    TOGGL_EXPORT bool_t toggl_set_default_project_id(
+    TOGGL_EXPORT bool_t toggl_set_default_project(
         void *context,
-        const uint64_t pid);
+        const uint64_t pid,
+        const uint64_t tid);
+
+    // You must free() the result
+    TOGGL_EXPORT char_t *toggl_get_default_project_name(
+        void *context);
 
     TOGGL_EXPORT uint64_t toggl_get_default_project_id(
         void *context);
 
-    // You must free() the result
-    TOGGL_EXPORT char_t *toggl_get_default_project_name(
+    TOGGL_EXPORT uint64_t toggl_get_default_task_id(
         void *context);
 
     TOGGL_EXPORT bool_t toggl_set_update_channel(
@@ -783,7 +816,8 @@ extern "C" {
     TOGGL_EXPORT int64_t toggl_autotracker_add_rule(
         void *context,
         const char_t *term,
-        const uint64_t project_id);
+        const uint64_t project_id,
+        const uint64_t task_id);
 
     TOGGL_EXPORT bool_t toggl_autotracker_delete_rule(
         void *context,
@@ -797,6 +831,13 @@ extern "C" {
     TOGGL_EXPORT bool_t testing_set_logged_in_user(
         void *context,
         const char *json);
+
+    TOGGL_EXPORT void toggl_set_compact_mode(
+        void *context,
+        const bool_t value);
+
+    TOGGL_EXPORT bool_t toggl_get_compact_mode(
+        void *context);
 
 #undef TOGGL_EXPORT
 

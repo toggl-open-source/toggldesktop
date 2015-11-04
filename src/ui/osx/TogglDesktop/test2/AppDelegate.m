@@ -271,11 +271,24 @@ BOOL manualMode = NO;
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	}
 
+	// Listen for system shutdown, to automatically stop timer. Experimental feature.
+	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+														   selector:@selector(systemWillPowerOff:)
+															   name:NSWorkspaceWillPowerOffNotification
+															 object:nil];
+
 	if (self.scriptPath)
 	{
 		[self performSelectorInBackground:@selector(runScript:)
 							   withObject:self.scriptPath];
 	}
+}
+
+- (void)systemWillPowerOff:(NSNotification *)aNotification
+{
+	NSLog(@"System will power off");
+	// FIXME: we could stop timer here, if its running and user has configured
+	// the app to stop the timer automatically.
 }
 
 - (void)runScript:(NSString *)scriptFile
@@ -327,7 +340,9 @@ BOOL manualMode = NO;
 	if (notification && notification.userInfo && notification.userInfo[@"autotracker"] != nil)
 	{
 		NSNumber *project_id = notification.userInfo[@"project_id"];
-		char_t *guid = toggl_start(ctx, "", "", 0, project_id.longValue, 0, "");
+		NSNumber *task_id = notification.userInfo[@"task_id"];
+		NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
+		char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "");
 		free(guid);
 		return;
 	}
@@ -1437,7 +1452,8 @@ void on_autotracker_rules(TogglAutotrackerRuleView *first, const uint64_t title_
 }
 
 void on_autotracker_notification(const char_t *project_name,
-								 const uint64_t project_id)
+								 const uint64_t project_id,
+								 const uint64_t task_id)
 {
 	NSUserNotification *notification = [[NSUserNotification alloc] init];
 
@@ -1452,7 +1468,8 @@ void on_autotracker_notification(const char_t *project_name,
 	notification.otherButtonTitle = @"Close";
 	notification.userInfo = @{
 		@"autotracker": @"YES",
-		@"project_id": [NSNumber numberWithLong:project_id]
+		@"project_id": [NSNumber numberWithLong:project_id],
+		@"task_id": [NSNumber numberWithLong:task_id]
 	};
 	notification.deliveryDate = [NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]];
 

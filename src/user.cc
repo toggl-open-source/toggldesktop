@@ -138,17 +138,19 @@ TimeEntry *User::Start(
     return te;
 }
 
-toggl::error User::Continue(
-    const std::string GUID) {
+TimeEntry *User::Continue(
+    const std::string GUID,
+    const bool manual_mode) {
 
     TimeEntry *existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
-        return noError;
+        return nullptr;
     }
 
     if (existing->DeletedAt()) {
-        return error(kCannotContinueDeletedTimeEntry);
+        logger().warning(kCannotContinueDeletedTimeEntry);
+        return nullptr;
     }
 
     Stop();
@@ -157,7 +159,7 @@ toggl::error User::Continue(
         existing->SetDurationInSeconds(
             -time(0) + existing->DurationInSeconds());
         existing->SetUIModified();
-        return toggl::noError;
+        return existing;
     }
 
     TimeEntry *result = new TimeEntry();
@@ -171,12 +173,16 @@ toggl::error User::Continue(
     result->SetTags(existing->Tags());
     result->SetUID(ID());
     result->SetStart(time(0));
-    result->SetDurationInSeconds(-time(0));
+
+    if (!manual_mode) {
+        result->SetDurationInSeconds(-time(0));
+    }
+
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
 
     related.TimeEntries.push_back(result);
 
-    return toggl::noError;
+    return result;
 }
 
 std::string User::DateDuration(TimeEntry * const te) const {
@@ -297,6 +303,13 @@ void User::SetDefaultWID(const Poco::UInt64 value) {
 void User::SetDefaultPID(const Poco::UInt64 value) {
     if (default_pid_ != value) {
         default_pid_ = value;
+        SetDirty();
+    }
+}
+
+void User::SetDefaultTID(const Poco::UInt64 value) {
+    if (default_tid_ != value) {
+        default_tid_ = value;
         SetDirty();
     }
 }

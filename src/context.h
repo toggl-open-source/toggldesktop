@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <memory>
 #include <iostream> // NOLINT
 
 #include "./analytics.h"
@@ -162,6 +163,11 @@ class Context : public TimelineDatasource {
         const bool remind_sat,
         const bool remind_sun);
 
+    void SetCompactMode(
+        const bool);
+
+    bool GetCompactMode();
+
     void SetWindowMaximized(
         const bool value);
 
@@ -244,9 +250,9 @@ class Context : public TimelineDatasource {
         const std::string project_guid,
         const std::string tags);
 
-    error ContinueLatest();
+    TimeEntry *ContinueLatest();
 
-    error Continue(
+    TimeEntry *Continue(
         const std::string GUID);
 
     void OpenTimeEntryList();
@@ -301,7 +307,7 @@ class Context : public TimelineDatasource {
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    error DiscardTimeAndContinue(
+    TimeEntry *DiscardTimeAndContinue(
         const std::string GUID,
         const Poco::Int64 at);
 
@@ -314,9 +320,15 @@ class Context : public TimelineDatasource {
         return user_ && user_->RecordTimeline();
     }
 
-    error SetDefaultPID(const Poco::UInt64 pid);
-    error DefaultPID(Poco::UInt64 *pid);
+    error SetDefaultProject(
+        const Poco::UInt64 pid,
+        const Poco::UInt64 tid);
     error DefaultProjectName(std::string *name);
+    error DefaultPID(Poco::UInt64 *result);
+    error DefaultTID(Poco::UInt64 *result);
+
+    void SearchHelpArticles(
+        const std::string keywords);
 
     error SetUpdateChannel(
         const std::string channel);
@@ -356,6 +368,7 @@ class Context : public TimelineDatasource {
     error AddAutotrackerRule(
         const std::string term,
         const Poco::UInt64 pid,
+        const Poco::UInt64 tid,
         Poco::Int64 *rule_id);
 
     error DeleteAutotrackerRule(
@@ -381,8 +394,6 @@ class Context : public TimelineDatasource {
 
  private:
     error updateURL(std::string *result);
-
-    void trackSettingsUsage();
 
     static const std::string installerPlatform();
     static const std::string linuxPlatformName();
@@ -508,7 +519,6 @@ class Context : public TimelineDatasource {
     Poco::Timestamp next_fetch_updates_at_;
     Poco::Timestamp next_update_timeline_settings_at_;
     Poco::Timestamp next_reminder_at_;
-    Poco::Timestamp next_analytics_at_;
     Poco::Timestamp next_wake_at_;
 
     // Schedule tasks using a timer:
@@ -542,7 +552,6 @@ class Context : public TimelineDatasource {
     static std::string log_path_;
 
     Settings settings_;
-    Settings tracked_settings_;
 
     std::set<std::string> autotracker_titles_;
 };

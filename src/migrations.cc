@@ -34,6 +34,14 @@ error Migrations::migrateAutotracker() {
         return err;
     }
 
+    err = db_->Migrate(
+        "autotracker_settings.tid",
+        "alter table autotracker_settings"
+        " add column tid integer references tasks (id);");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
@@ -557,6 +565,14 @@ error Migrations::migrateUsers() {
         "users.default_pid",
         "alter table users"
         " add column default_pid integer");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "users.default_tid",
+        "alter table users"
+        " add column default_tid integer references tasks (id);");
     if (err != noError) {
         return err;
     }
@@ -1107,11 +1123,22 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.compact_mode",
+        "ALTER TABLE settings "
+        "ADD COLUMN compact_mode INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
 error Migrations::Run() {
     error err = noError;
+
+    // FIXME: load known migrations before proceeding
+    // FIXME: dont run db->Migrate directly, but consult existing list first
 
     if (noError == err) {
         err = migrateUsers();
