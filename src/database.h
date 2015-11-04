@@ -46,6 +46,10 @@ class Database {
     explicit Database(const std::string db_path);
     ~Database();
 
+    error DeleteFromTable(
+        const std::string table_name,
+        const Poco::Int64 &local_id);
+
     error DeleteUser(
         User *model,
         const bool with_related_data);
@@ -293,10 +297,6 @@ class Database {
         const std::string table_name,
         std::vector<T *> *list,
         std::vector<ModelChange> *changes);
-
-    error deleteFromTable(
-        const std::string table_name,
-        const Poco::Int64 &local_id);
 
     error deleteAllFromTableByUID(
         const std::string table_name,
