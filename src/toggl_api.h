@@ -719,6 +719,12 @@ extern "C" {
         const uint64_t workspace_id,
         const char_t *client_name);
 
+    TOGGL_EXPORT bool_t toggl_add_obm_action(
+        void *context,
+        const uint64_t experiment_id,
+        const char_t *key,
+        const char_t *value);
+
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_create_project(
         void *context,

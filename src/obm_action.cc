@@ -51,7 +51,7 @@ Json::Value ObmAction::SaveToJSON() const {
     Json::Value n;
     n["experiment_id"] = Json::UInt64(ExperimentID());
     n["key"] = Formatter::EscapeJSONString(Key());
-    n["key"] = Formatter::EscapeJSONString(Value());
+    n["value"] = Formatter::EscapeJSONString(Value());
     return n;
 }
 
