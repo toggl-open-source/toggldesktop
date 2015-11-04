@@ -139,6 +139,7 @@
     <ClInclude Include="..\..\..\idle.h" />
     <ClInclude Include="..\..\..\migrations.h" />
     <ClInclude Include="..\..\..\netconf.h" />
+    <ClInclude Include="..\..\..\obm_action.h" />
     <ClInclude Include="..\..\..\toggl_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
     <ClInclude Include="..\..\..\proxy.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="..\..\..\idle.cc" />
     <ClCompile Include="..\..\..\migrations.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
+    <ClCompile Include="..\..\..\obm_action.cc" />
     <ClCompile Include="..\..\..\settings.cc" />
     <ClCompile Include="..\..\..\timeline_event.cc" />
     <ClCompile Include="..\..\..\toggl_api.cc" />
