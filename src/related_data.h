@@ -15,6 +15,7 @@ namespace toggl {
 
 class AutotrackerRule;
 class Client;
+class ObmAction;
 class Project;
 class Tag;
 class Task;
@@ -37,6 +38,7 @@ class RelatedData {
     std::vector<TimeEntry *> TimeEntries;
     std::vector<AutotrackerRule *> AutotrackerRules;
     std::vector<TimelineEvent *> TimelineEvents;
+    std::vector<ObmAction *> ObmActions;
 
     void Clear();
 

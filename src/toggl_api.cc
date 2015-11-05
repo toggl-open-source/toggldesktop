@@ -418,6 +418,18 @@ char_t *toggl_create_project(
     return nullptr;
 }
 
+bool_t toggl_add_obm_action(
+    void *context,
+    const uint64_t experiment_id,
+    const char_t *key,
+    const char_t *value) {
+
+    return toggl::noError == app(context)->AddObmAction(
+        experiment_id,
+        to_string(key),
+        to_string(value));
+}
+
 char_t *toggl_create_client(
     void *context,
     const uint64_t workspace_id,
@@ -774,6 +786,12 @@ bool_t toggl_set_project_color(
         project_id,
         to_string(project_guid),
         to_string(color));
+}
+
+// result is passed by toggl_on_project_colors
+void toggl_get_project_colors(
+    void *context) {
+    app(context)->UI()->DisplayProjectColors();
 }
 
 char_t *toggl_get_default_project_name(

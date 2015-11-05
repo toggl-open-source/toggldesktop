@@ -1099,6 +1099,16 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string client_name);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_add_obm_action(
+        IntPtr context,
+        UInt64 experiment_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string key,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string value);
+
     // returns GUID of the new project. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_create_project(
@@ -1116,6 +1126,10 @@ public static partial class Toggl
         IntPtr context,
         UInt64 pid,
         UInt64 tid);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_get_project_colors(
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]

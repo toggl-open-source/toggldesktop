@@ -50,7 +50,9 @@ class Project : public BaseModel {
         return color_;
     }
     void SetColor(const std::string value);
+
     std::string ColorCode() const;
+    error SetColorCode(const std::string color_code);
 
     const bool &Active() const {
         return active_;
@@ -77,11 +79,11 @@ class Project : public BaseModel {
     bool ResourceCannotBeCreated(const toggl::error) const;
     bool ResolveError(const toggl::error);
 
+    static std::vector<std::string> ColorCodes;
+
  private:
     bool clientIsInAnotherWorkspace(const toggl::error) const;
     bool onlyAdminsCanChangeProjectVisibility(const toggl::error err) const;
-
-    static std::vector<std::string> color_codes;
 
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;

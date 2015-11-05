@@ -22,7 +22,7 @@ template<typename T, size_t N> T *end(T (&ra)[N]) {
     return ra + N;
 }
 
-std::vector<std::string> Project::color_codes(known_colors, end(known_colors));
+std::vector<std::string> Project::ColorCodes(known_colors, end(known_colors));
 
 std::string Project::String() const {
     std::stringstream ss;
@@ -86,9 +86,21 @@ void Project::SetColor(const std::string value) {
 std::string Project::ColorCode() const {
     int index(0);
     if (!Poco::NumberParser::tryParse(Color(), index)) {
-        return color_codes.back();
+        return ColorCodes.back();
     }
-    return color_codes[index % color_codes.size()];
+    return ColorCodes[index % ColorCodes.size()];
+}
+
+error Project::SetColorCode(const std::string color_code) {
+    for (std::size_t i = 0; i < Project::ColorCodes.size(); i++) {
+        if (Project::ColorCodes[i] == color_code) {
+            std::stringstream ss;
+            ss << i;
+            SetColor(ss.str());
+            return noError;
+        }
+    }
+    return error("invalid color code");
 }
 
 void Project::SetWID(const Poco::UInt64 value) {

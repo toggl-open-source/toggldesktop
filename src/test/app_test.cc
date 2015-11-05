@@ -725,7 +725,7 @@ TEST(User, ParsesAndSavesData) {
     ASSERT_EQ(uint(2), user.related.Projects.size());
 
     ASSERT_EQ(uint(2598305), user.related.Projects[0]->ID());
-    ASSERT_EQ("2f0b8f51-f898-d992-3e1a-6bc261fc41ef",
+    ASSERT_EQ("2f0b8f51-f898-d992-3e1a-6bc261fc41xf",
               user.related.Projects[0]->GUID());
     ASSERT_EQ(uint(123456789), user.related.Projects[0]->WID());
     ASSERT_EQ("Testing stuff", user.related.Projects[0]->Name());

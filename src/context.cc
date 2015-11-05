@@ -20,6 +20,7 @@
 #include "./error.h"
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./obm_action.h"
 #include "./project.h"
 #include "./settings.h"
 #include "./task.h"
@@ -79,8 +80,12 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , update_path_("") {
-    Poco::Net::HTTPStreamFactory::registerFactory();
-    Poco::Net::HTTPSStreamFactory::registerFactory();
+    if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
+        Poco::Net::HTTPStreamFactory::registerFactory();
+    }
+    if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("https")) {
+        Poco::Net::HTTPSStreamFactory::registerFactory();
+    }
 
     urls::SetUseStagingAsBackend(
         app_version.find("7.0.0") != std::string::npos);
@@ -103,9 +108,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 }
 
 Context::~Context() {
-    Poco::Net::HTTPStreamFactory::unregisterFactory();
-    Poco::Net::HTTPSStreamFactory::unregisterFactory();
-
     SetQuit();
 
     stopActivities();
@@ -308,23 +310,60 @@ UIElements UIElements::Reset() {
 
 std::string UIElements::String() const {
     std::stringstream ss;
-    ss << "display_time_entries=" << display_time_entries
-       << " display_time_entry_autocomplete=" << display_time_entry_autocomplete
-       << " display_mini_timer_autocomplete=" << display_mini_timer_autocomplete
-       << " display_project_autocomplete=" << display_project_autocomplete
-       << " display_client_select=" << display_client_select
-       << " display_tags=" << display_tags
-       << " display_workspace_select=" << display_workspace_select
-       << " display_timer_state=" << display_timer_state
-       << " display_time_entry_editor=" << display_time_entry_editor
-       << " open_settings=" << open_settings
-       << " open_time_entry_list=" << open_time_entry_list
-       << " open_time_entry_editor=" << open_time_entry_editor
-       << " display_autotracker_rules=" << display_autotracker_rules
-       << " display_settings=" << display_settings
-       << " time_entry_editor_guid=" << time_entry_editor_guid
-       << " time_entry_editor_field=" << time_entry_editor_field
-       << " display_unsynced_items=" << display_unsynced_items;
+    if (display_time_entries) {
+        ss << "display_time_entries ";
+    }
+    if (display_time_entry_autocomplete) {
+        ss << "display_time_entry_autocomplete ";
+    }
+    if (display_mini_timer_autocomplete) {
+        ss << "display_mini_timer_autocomplete ";
+    }
+    if (display_project_autocomplete) {
+        ss << "display_project_autocomplete ";
+    }
+    if (display_client_select) {
+        ss << "display_client_select ";
+    }
+    if (display_client_select) {
+        ss << "display_client_select ";
+    }
+    if (display_tags) {
+        ss << "display_tags ";
+    }
+    if (display_workspace_select) {
+        ss << "display_workspace_select ";
+    }
+    if (display_timer_state) {
+        ss << "display_timer_state ";
+    }
+    if (display_time_entry_editor) {
+        ss << "display_time_entry_editor ";
+    }
+    if (open_settings) {
+        ss << "open_settings ";
+    }
+    if (open_time_entry_list) {
+        ss << "open_time_entry_list ";
+    }
+    if (open_time_entry_editor) {
+        ss << "open_time_entry_editor ";
+    }
+    if (display_autotracker_rules) {
+        ss << "display_autotracker_rules ";
+    }
+    if (display_settings) {
+        ss << "display_settings ";
+    }
+    if (!time_entry_editor_guid.empty()) {
+        ss << "time_entry_editor_guid=" << time_entry_editor_guid << " ";
+    }
+    if (!time_entry_editor_field.empty()) {
+        ss << "time_entry_editor_field=" << time_entry_editor_field << " ";
+    }
+    if (display_unsynced_items) {
+        ss << "display_unsynced_items ";
+    }
     return ss.str();
 }
 
@@ -686,11 +725,16 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
     err = pushChanges(&client, &had_something_to_push);
     if (err != noError) {
         displayError(err);
-        return;
     }
 
-    if (had_something_to_push) {
+    if (err != noError && had_something_to_push) {
         setOnline("Data pushed");
+    }
+
+    // Push cached OBM action
+    err = pushObmAction();
+    if (err != noError) {
+        logger().error("Error pushing OBM action: " + err);
     }
 
     displayError(save(false));
@@ -727,11 +771,13 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         setOnline("Changes pushed");
     }
 
-    err = save(false);
+    // Push cached OBM action
+    err = pushObmAction();
     if (err != noError) {
-        displayError(err);
-        return;
+        logger().error("Error pushing OBM action: " + err);
     }
+
+    displayError(save(false));
 }
 
 void Context::switchWebSocketOff() {
@@ -2768,7 +2814,45 @@ error Context::SetProjectColor(
     const Poco::UInt64 project_id,
     const std::string project_guid,
     const std::string color) {
-    // FIXME: implement
+    try {
+        // Validate input
+        std::string trimmed_color("");
+        error err = db_->Trim(color, &trimmed_color);
+        if (err != noError) {
+            return displayError(err);
+        }
+        if (trimmed_color.empty()) {
+            return displayError("missing color");
+        }
+        // Modify project
+        Project *p = nullptr;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot set project color, user logged out");
+                return noError;
+            }
+            if (project_id) {
+                p = user_->related.ProjectByID(project_id);
+            } else if (!project_guid.empty()) {
+                p = user_->related.ProjectByGUID(project_guid);
+            }
+        }
+        if (!p) {
+            return displayError("project not found");
+        }
+        err = p->SetColorCode(trimmed_color);
+        if (err != noError) {
+            return displayError(err);
+        }
+        return displayError(save());
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
     return noError;
 }
 
@@ -3060,6 +3144,47 @@ Project *Context::CreateProject(
     }
 
     return result;
+}
+
+error Context::AddObmAction(
+    const Poco::UInt64 experiment_id,
+    const std::string key,
+    const std::string value) {
+    // Check input
+    if (!experiment_id) {
+        return error("missing experiment_id");
+    }
+    std::string trimmed_key("");
+    error err = db_->Trim(key, &trimmed_key);
+    if (err != noError) {
+        return displayError(err);
+    }
+    if (trimmed_key.empty()) {
+        return error("missing key");
+    }
+    std::string trimmed_value("");
+    err = db_->Trim(value, &trimmed_value);
+    if (err != noError) {
+        return displayError(err);
+    }
+    if (trimmed_value.empty()) {
+        return error("missing value");
+    }
+    // Add OBM action and save
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot create a OBM action, user logged out");
+            return noError;
+        }
+        ObmAction *action = new ObmAction();
+        action->SetExperimentID(experiment_id);
+        action->SetUID(user_->ID());
+        action->SetKey(trimmed_key);
+        action->SetValue(trimmed_value);
+        user_->related.ObmActions.push_back(action);
+    }
+    return displayError(save());
 }
 
 Client *Context::CreateClient(
@@ -3693,7 +3818,9 @@ error Context::pushChanges(
                 user_->related.Clients,
                 &clients,
                 &models);
-            if (time_entries.empty() && projects.empty() && clients.empty()) {
+            if (time_entries.empty()
+                    && projects.empty()
+                    && clients.empty()) {
                 *had_something_to_push = false;
                 return noError;
             }
@@ -3744,6 +3871,77 @@ error Context::pushChanges(
         ss << "Changes data JSON pushed and responses parsed in "
            << stopwatch.elapsed() / 1000 << " ms";
         logger().debug(ss.str());
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::pushObmAction() {
+    try {
+        Poco::Int64 local_id(0);
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.basic_auth_password = "api_token";
+
+        // Get next OBM action for upload
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("cannot push changes when logged out");
+                return noError;
+            }
+
+            if (user_->related.ObmActions.empty()) {
+                return noError;
+            }
+
+            req.basic_auth_username = user_->APIToken();
+            if (req.basic_auth_username.empty()) {
+                return error("cannot push OBM actions without API token");
+            }
+
+            // Upload first OBM action available.
+            ObmAction *for_upload = user_->related.ObmActions[0];
+            Json::Value root = for_upload->SaveToJSON();
+            req.relative_url = for_upload->ModelURL();
+            req.payload = Json::StyledWriter().write(root);
+            local_id = for_upload->LocalID();
+        }
+
+        logger().debug(req.payload);
+
+        TogglClient toggl_client;
+        HTTPSResponse resp = toggl_client.Post(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        // Delete the uploaded OBM action
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("cannot push changes when logged out");
+                return noError;
+            }
+
+            for (std::vector<ObmAction *>::iterator it =
+                user_->related.ObmActions.begin();
+                    it != user_->related.ObmActions.end();
+                    it++) {
+                ObmAction *model = *it;
+                if (model->LocalID() == local_id) {
+                    model->MarkAsDeletedOnServer();
+                    model->Delete();
+                }
+            }
+        }
+
+        return noError;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

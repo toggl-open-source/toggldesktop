@@ -66,6 +66,9 @@ std::vector<std::string> clients;
 // on_time_entry_list
 std::vector<TimeEntry> time_entries;
 
+// on_project_colors
+std::vector<std::string> project_colors;
+
 TimeEntry time_entry_by_guid(const std::string guid) {
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
@@ -235,6 +238,15 @@ void on_display_settings(
     testing::testresult::settings.remind_sun = settings->RemindSun;
 }
 
+void on_project_colors(
+    string_list_t color_list,
+    const uint64_t color_count) {
+    testresult::project_colors.clear();
+    for (int i = 0; i < color_count; i++) {
+        testresult::project_colors.push_back(std::string(color_list[i]));
+    }
+}
+
 void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
@@ -302,6 +314,7 @@ class App {
         toggl_on_settings(ctx_, on_display_settings);
         toggl_on_timer_state(ctx_, on_display_timer_state);
         toggl_on_idle_notification(ctx_, on_display_idle_notification);
+        toggl_on_project_colors(ctx_, on_project_colors);
 
         poco_assert(toggl_ui_start(ctx_));
     }
@@ -838,6 +851,19 @@ TEST(toggl_api, toggl_google_login) {
 TEST(toggl_api, toggl_sync) {
     testing::App app;
     toggl_sync(app.ctx());
+}
+
+TEST(toggl_api, toggl_add_obm_action) {
+    testing::App app;
+
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 0, "key", "value"));
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 1, "key", " "));
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 2, " ", ""));
+    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, "key", "value"));
+    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, "key", "value"));
 }
 
 TEST(toggl_api, toggl_add_project) {
@@ -1928,6 +1954,63 @@ TEST(toggl_api, toggl_set_default_project) {
     default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_FALSE(default_project_name);
     free(default_project_name);
+}
+
+TEST(toggl_api, toggl_set_project_color) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    const uint64_t project_id = 2598305;
+    const std::string project_guid = "2f0b8f51-f898-d992-3e1a-6bc261fc41xf";
+
+    // Try invalid color code
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         project_id,
+                                         project_guid.c_str(),
+                                         "foobar"));
+    ASSERT_EQ("invalid color code", testing::testresult::error);
+
+    // Try missing color code
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         project_id,
+                                         project_guid.c_str(),
+                                         ""));
+    ASSERT_EQ("missing color", testing::testresult::error);
+
+    // Try empty project ID and GUID
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         0,
+                                         "",
+                                         "#999999"));
+    ASSERT_EQ("project not found", testing::testresult::error);
+
+    // Try non existing project ID and GUID
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         213123123,
+                                         "blah",
+                                         "#999999"));
+
+    // Set color using ID
+    testing::testresult::error = noError;
+    ASSERT_TRUE(toggl_set_project_color(app.ctx(),
+                                        project_id,
+                                        "",
+                                        "#999999"));
+    ASSERT_EQ(noError, testing::testresult::error);
+
+    // Set color using GUID
+    testing::testresult::error = noError;
+
+    ASSERT_TRUE(toggl_set_project_color(app.ctx(),
+                                        0,
+                                        project_guid.c_str(),
+                                        "#4dc3ff"));
+    ASSERT_EQ(noError, testing::testresult::error);
 }
 
 }  // namespace toggl
