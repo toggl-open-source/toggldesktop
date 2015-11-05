@@ -48,6 +48,46 @@ class ObmAction : public BaseModel {
     std::string value_;
 };
 
+class ObmExperiment : public BaseModel {
+ public:
+    ObmExperiment()
+        : BaseModel()
+    , included_(false)
+    , nr_(0)
+    , has_seen_(false)
+    , actions_("") {}
+
+    const bool &Included() const {
+        return included_;
+    }
+    void SetIncluded(const bool value);
+
+    const bool &HasSeen() const {
+        return has_seen_;
+    }
+    void SetHasSeen(const bool value);
+
+    const Poco::UInt64 &Nr() const {
+        return nr_;
+    }
+    void SetNr(const Poco::UInt64 value);
+
+    const std::string Actions() const {
+        return actions_;
+    }
+    void SetActions(const std::string value);
+
+    // Override BaseModel
+    std::string String() const;
+    std::string ModelName() const;
+
+ private:
+    bool included_;
+    Poco::UInt64 nr_;
+    bool has_seen_;
+    std::string actions_;
+};
+
 }  // namespace toggl
 
 #endif  // SRC_OBM_ACTION_H_

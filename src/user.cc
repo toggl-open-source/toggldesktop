@@ -642,6 +642,9 @@ void User::loadUserAndRelatedDataFromJSON(
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
 
+    // OBM experiments
+
+
     {
         std::set<Poco::UInt64> alive;
 
