@@ -185,6 +185,9 @@
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\Experiments\BasicOverviewScreen.xaml.cs">
+      <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\Theme.cs" />
     <Compile Include="ui\ThemeResourceDictionary.cs" />
     <Compile Include="ui\ThemeTypes.cs" />
@@ -516,6 +519,10 @@
     <Page Include="ui\controls\SyncingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Experiments\BasicOverviewScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ui\Resources\AutotrackerNotificationStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
