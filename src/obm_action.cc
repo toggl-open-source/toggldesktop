@@ -98,4 +98,8 @@ std::string ObmExperiment::ModelName() const {
     return kModelObmExperiment;
 }
 
+std::string ObmExperiment::ModelURL() const {
+    return "";
+}
+
 }   // namespace toggl

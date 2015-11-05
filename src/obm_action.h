@@ -80,6 +80,7 @@ class ObmExperiment : public BaseModel {
     // Override BaseModel
     std::string String() const;
     std::string ModelName() const;
+    std::string ModelURL() const;
 
  private:
     bool included_;
