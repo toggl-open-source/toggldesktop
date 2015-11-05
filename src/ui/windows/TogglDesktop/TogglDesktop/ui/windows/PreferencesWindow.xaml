@@ -136,9 +136,9 @@
                             ConfirmWithoutCompletion="defaultProjectAutoComplete_OnConfirmWithoutCompletion"/>
 
                         <Border
+                            Style="{StaticResource ProjectColorCircle}"
                             Name="defaultProjectColorCircle" x:FieldModifier="private"
-                            CornerRadius="100" Width="10" Height="10" BorderThickness="0"
-                            Margin="18, 0, 0, 0" Background="#999999"
+                            Margin="18, 0, 0, 0"
                             HorizontalAlignment="Left" />
 
                         <TextBlock
