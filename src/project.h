@@ -50,7 +50,9 @@ class Project : public BaseModel {
         return color_;
     }
     void SetColor(const std::string value);
+
     std::string ColorCode() const;
+    error SetColorCode(const std::string color_code);
 
     const bool &Active() const {
         return active_;

@@ -358,7 +358,7 @@ std::string UIElements::String() const {
     if (!time_entry_editor_guid.empty()) {
         ss << "time_entry_editor_guid=" << time_entry_editor_guid << " ";
     }
-    if (!time_entry_editor_field.empty())  {
+    if (!time_entry_editor_field.empty()) {
         ss << "time_entry_editor_field=" << time_entry_editor_field << " ";
     }
     if (display_unsynced_items) {
@@ -2814,7 +2814,45 @@ error Context::SetProjectColor(
     const Poco::UInt64 project_id,
     const std::string project_guid,
     const std::string color) {
-    // FIXME: implement
+    try {
+        // Validate input
+        std::string trimmed_color("");
+        error err = db_->Trim(color, &trimmed_color);
+        if (err != noError) {
+            return displayError(err);
+        }
+        if (trimmed_color.empty()) {
+            return displayError("missing color");
+        }
+        // Modify project
+        Project *p = nullptr;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot set project color, user logged out");
+                return noError;
+            }
+            if (project_id) {
+                p = user_->related.ProjectByID(project_id);
+            } else if (!project_guid.empty()) {
+                p = user_->related.ProjectByGUID(project_guid);
+            }
+        }
+        if (!p) {
+            return displayError("project not found");
+        }
+        err = p->SetColorCode(trimmed_color);
+        if (err != noError) {
+            return displayError(err);
+        }
+        return displayError(save());
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
     return noError;
 }
 
