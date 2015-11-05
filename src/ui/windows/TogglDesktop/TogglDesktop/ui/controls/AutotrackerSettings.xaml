@@ -58,9 +58,9 @@
 
             <Border Grid.Column="1" Grid.Row="0"
                 Name="projectColorCircle" x:FieldModifier="private"
-                CornerRadius="100" Width="10" Height="10" BorderThickness="0"
-                Margin="18, 0, 0, 0" Background="#999999"
-                HorizontalAlignment="Left" />
+                Margin="18, 0, 0, 0"
+                HorizontalAlignment="Left"
+                Style="{StaticResource ProjectColorCircle}"/>
             
             <TextBlock Grid.Column="1" Grid.Row="0"
                 Margin="36, 0, 16, 0" Text="No project">

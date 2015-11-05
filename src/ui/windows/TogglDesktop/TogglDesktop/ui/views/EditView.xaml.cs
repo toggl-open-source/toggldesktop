@@ -131,7 +131,7 @@ namespace TogglDesktop
                     if (this.isInNewProjectMode)
                         this.disableNewProjectMode();
 
-                    this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
+                    this.projectColorSelector.SelectedColor = timeEntry.Color;
 
                     setText(this.projectTextBox, timeEntry.ProjectLabel, timeEntry.TaskLabel, open);
                     setText(this.clientTextBox, timeEntry.ClientLabel, open);
@@ -484,7 +484,7 @@ namespace TogglDesktop
             if (projectId == this.timeEntry.PID && taskId == this.timeEntry.TID)
                 return;
             this.projectTextBox.SetText(projectName, taskName);
-            this.projectColorCircle.Background = Utils.ProjectColorBrushFromString(projectColor);
+            this.projectColorSelector.SelectedColor = projectColor;
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, taskId, projectId, "");
         }
 
@@ -515,10 +515,8 @@ namespace TogglDesktop
             this.projectTextBox.Focus();
             this.showWorkspaceArea();
 
-            this.projectColorCircle.Visibility = Visibility.Collapsed;
-            this.projectTextBox.Padding = new Thickness(8, 0, 34 + 34, 0);
+            this.projectColorSelector.IsEnabled = true;
             this.emptyProjectText.Text = "Add project";
-            this.emptyProjectText.Margin = new Thickness(16, 0, 16, 0);
 
             this.isInNewProjectMode = true;
         }
@@ -539,10 +537,8 @@ namespace TogglDesktop
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
             this.hideWorkspaceArea();
 
-            this.projectColorCircle.Visibility = Visibility.Visible;
-            this.projectTextBox.Padding = new Thickness(28, 0, 34, 0);
+            this.projectColorSelector.IsEnabled = false;
             this.emptyProjectText.Text = "No project";
-            this.emptyProjectText.Margin = new Thickness(36, 0, 16, 0);
 
             this.isInNewProjectMode = false;
         }
@@ -716,8 +712,6 @@ namespace TogglDesktop
             this.newClientButton.Visibility = Visibility.Hidden;
             this.newClientCancelButton.Visibility = Visibility.Visible;
 
-            this.clientTextBox.Padding = new Thickness(8, 0, 34 + 34, 0);
-
             this.clientTextBox.Focus();
 
             this.emptyClientText.Text = "Add client";
@@ -734,8 +728,6 @@ namespace TogglDesktop
             this.clientDropDownButton.Visibility = Visibility.Visible;
             this.newClientButton.Visibility = Visibility.Visible;
             this.newClientCancelButton.Visibility = Visibility.Hidden;
-
-            this.clientTextBox.Padding = new Thickness(8, 0, 34, 0);
 
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;

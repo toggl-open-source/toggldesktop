@@ -184,6 +184,9 @@
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\ProjectColorPicker.xaml.cs">
+      <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
     <Compile Include="ui\Experiments\BasicOverviewScreen.xaml.cs">
       <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
@@ -513,6 +516,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\ProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\ProjectColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
