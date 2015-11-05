@@ -39,6 +39,7 @@ void RelatedData::Clear() {
     clearList(&AutotrackerRules);
     clearList(&TimelineEvents);
     clearList(&ObmActions);
+    clearList(&ObmExperiments);
 }
 
 error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
