@@ -33,6 +33,7 @@ class Migrations {
     error migrateTimeEntries();
     error migrateSettings();
     error migrateObmActions();
+    error migrateObmExperiments();
 };
 
 }  // namespace toggl
