@@ -481,6 +481,8 @@ class Context : public TimelineDatasource {
 
     error runObmExperiments();
 
+    error setCurrentOBMExperimentNumber();
+
     error compressTimeline();
 
     error pullAllUserData(TogglClient *https_client);
