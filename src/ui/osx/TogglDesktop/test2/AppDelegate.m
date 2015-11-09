@@ -560,7 +560,8 @@ BOOL manualMode = NO;
 	NSLog(@"displayPromotion %d", promotion_type.intValue);
 
 	// OSX app knows only about beta channel promotion
-	if (kPromotionJoinBetaChannel != promotion_type.intValue) {
+	if (kPromotionJoinBetaChannel != promotion_type.intValue)
+	{
 		return;
 	}
 
