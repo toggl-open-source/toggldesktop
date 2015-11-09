@@ -68,7 +68,32 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="ProjectColorSelectionButton" TargetType="Button"
+           BasedOn="{StaticResource EditViewTextFieldImageButtonBase}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="IsTabStop" Value="True"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Width" Value="Auto"></Setter>
+    </Style>
     
+    <Style x:Key="ProjectColorCircle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="100" />
+        <Setter Property="Width" Value="10" />
+        <Setter Property="Height" Value="10" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="#999999" />
+    </Style>
     
     <Style TargetType="TextBox" x:Key="TimeBox" BasedOn="{StaticResource EditViewControlBase}">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
