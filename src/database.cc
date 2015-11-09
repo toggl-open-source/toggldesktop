@@ -3304,16 +3304,6 @@ error Database::SaveUser(
             return err;
         }
 
-        // Timeline events
-        err = saveRelatedModels(user->ID(),
-                                "timeline_events",
-                                &user->related.TimelineEvents,
-                                changes);
-        if (err != noError) {
-            session_->rollback();
-            return err;
-        }
-
         // OBM actions
         err = saveRelatedModels(user->ID(),
                                 "obm_actions",
@@ -3328,6 +3318,16 @@ error Database::SaveUser(
         err = saveRelatedModels(user->ID(),
                                 "obm_experiments",
                                 &user->related.ObmExperiments,
+                                changes);
+        if (err != noError) {
+            session_->rollback();
+            return err;
+        }
+
+        // Timeline events
+        err = saveRelatedModels(user->ID(),
+                                "timeline_events",
+                                &user->related.TimelineEvents,
                                 changes);
         if (err != noError) {
             session_->rollback();
