@@ -496,6 +496,38 @@ TEST(Database, SavesAndLoadsObmExperiments) {
               user2.related.ObmExperiments.size());
 }
 
+TEST(Database, SavesAndLoadsObmExperimentsArray) {
+    testing::Database db;
+
+    std::string json = loadTestDataFile("../testdata/me_with_obm_array.json");
+
+    User user;
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(json, true));
+
+    ASSERT_EQ(2, user.related.ObmExperiments.size());
+
+    ObmExperiment *obm = user.related.ObmExperiments[0];
+    ASSERT_TRUE(obm->Included());
+    ASSERT_EQ(74, obm->Nr());
+    ASSERT_EQ("stringarray/hasopmitempty/canbemissing", obm->Actions());
+
+    obm = user.related.ObmExperiments[1];
+    ASSERT_FALSE(obm->Included());
+    ASSERT_EQ(73, obm->Nr());
+    ASSERT_EQ("blah", obm->Actions());
+
+    std::vector<ModelChange> changes;
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+
+    // Load user into another instance
+    User user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
+    ASSERT_EQ(user.related.ObmExperiments.size(),
+              user2.related.ObmExperiments.size());
+}
+
+
 TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
