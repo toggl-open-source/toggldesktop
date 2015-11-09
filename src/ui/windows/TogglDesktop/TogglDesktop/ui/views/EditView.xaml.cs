@@ -515,6 +515,7 @@ namespace TogglDesktop
             this.projectTextBox.Focus();
             this.showWorkspaceArea();
 
+            this.projectColorSelector.SelectedColor = null;
             this.projectColorSelector.IsEnabled = true;
             this.emptyProjectText.Text = "Add project";
 
@@ -537,6 +538,7 @@ namespace TogglDesktop
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
             this.hideWorkspaceArea();
 
+            this.projectColorSelector.SelectedColor = this.timeEntry.Color;
             this.projectColorSelector.IsEnabled = false;
             this.emptyProjectText.Text = "No project";
 
@@ -572,13 +574,13 @@ namespace TogglDesktop
                 this.tryCreatingNewClient(this.clientTextBox.Text);
             }
 
-            if (this.tryCreatingNewProject(this.projectTextBox.Text))
+            if (this.tryCreatingNewProject(this.projectTextBox.Text, this.projectColorSelector.SelectedColor))
             {
                 this.disableNewProjectMode();
             }
         }
 
-        private bool tryCreatingNewProject(string text)
+        private bool tryCreatingNewProject(string text, string color)
         {
             if (!this.hasTimeEntry())
             {
@@ -588,7 +590,14 @@ namespace TogglDesktop
 
             var projectGUID = Toggl.AddProject(this.timeEntry.GUID, this.selectedWorkspaceId, this.selectedClientId, this.selectedClientGUID, text, false);
 
-            return !string.IsNullOrEmpty(projectGUID);
+            var success = !string.IsNullOrEmpty(projectGUID);
+
+            if (success && color != null)
+            {
+                Toggl.SetProjectColor(0, projectGUID, color);
+            }
+
+            return success;
         }
 
         private void projectSaveButton_Click(object sender, RoutedEventArgs e)

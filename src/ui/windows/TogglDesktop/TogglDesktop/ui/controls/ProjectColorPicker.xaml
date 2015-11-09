@@ -23,20 +23,15 @@
 
         <Popup Name="popup" x:FieldModifier="private"
             MaxHeight="300" StaysOpen="True" AllowsTransparency="True"
-            PlacementTarget="{Binding ElementName=button}">
+            PlacementTarget="{Binding ElementName=button}"
+            PreviewKeyDown="onPopupPreviewKeyDown"
+            IsKeyboardFocusWithinChanged="onPopupKeyboardFocusWithinChanged">
 
             <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      BorderThickness="0" Margin="10" Padding="0" Background="White"
                      Name="list" x:FieldModifier="private"
-                     ItemsSource="{Binding Colors}">
-                <ListBox.Resources>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="0" />
-                        <Setter Property="Margin" Value="1" />
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="Background" Value="Red"/>
-                    </Style>
-                </ListBox.Resources>
+                     ItemsSource="{Binding Colors}"
+                     >
 
                 <ListBox.Effect>
                     <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
@@ -60,17 +55,14 @@
                 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Button Width="25" Height="25">
-                            <Button.Template>
-                                <ControlTemplate>
-                                    <Border Background="{TemplateBinding Background}"
-                                            CornerRadius="2"/>
-                                </ControlTemplate>
-                            </Button.Template>
-                            <Button.Background>
+                        <Border Width="25" Height="25"
+                                MouseLeftButtonUp="onColorSelect"
+                                CornerRadius="2"
+                                >
+                            <Border.Background>
                                 <SolidColorBrush Color="{Binding}" />
-                            </Button.Background>
-                        </Button>
+                            </Border.Background>
+                        </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 

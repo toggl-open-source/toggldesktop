@@ -546,6 +546,11 @@ public static partial class Toggl
         return toggl_set_project_color(ctx, projectId, projectGUID, color);
     }
 
+    public static void GetProjectColors()
+    {
+        toggl_get_project_colors(ctx);
+    }
+
     #endregion
 
     #region callback events
