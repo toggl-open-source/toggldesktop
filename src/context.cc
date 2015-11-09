@@ -1989,7 +1989,22 @@ void Context::setUser(User *value, const bool logged_in) {
 
     remindToTrackTime();
 
-    displayError(offerBetaChannel());
+    // Offer beta channel, if not offered yet
+    bool did_offer_beta_channel(false);
+    error err = offerBetaChannel(&did_offer_beta_channel);
+    if (err != noError) {
+        displayError(err);
+        return;
+    }
+
+    // If beta channel was not offered,
+    // run some OBM experiment instead.
+    if (!did_offer_beta_channel) {
+        err = runObmExperiments();
+        if (err != noError) {
+            displayError(err);
+        }
+    }
 }
 
 error Context::SetLoggedInUserFromJSON(
@@ -3294,43 +3309,102 @@ error Context::OpenReportsInBrowser() {
     return noError;
 }
 
-error Context::offerBetaChannel() {
-    if (update_check_disabled_) {
-        // if update check is disabled, then
-        // the channel selection won't be ever
-        // used anyway
-        return noError;
-    }
+error Context::offerBetaChannel(bool *did_offer) {
+    try {
+        poco_check_ptr(did_offer);
 
-    if (settings_.has_seen_beta_offering) {
-        return noError;
-    }
+        *did_offer = false;
 
+        if (update_check_disabled_) {
+            // if update check is disabled, then
+            // the channel selection won't be ever
+            // used anyway
+            return noError;
+        }
+
+        if (settings_.has_seen_beta_offering) {
+            return noError;
+        }
+
+        if (!UI()->CanDisplayPromotion()) {
+            return noError;
+        }
+
+        std::string update_channel("");
+        error err = db()->LoadUpdateChannel(&update_channel);
+        if (err != noError) {
+            return err;
+        }
+
+        if ("beta" == update_channel) {
+            return noError;
+        }
+
+        UI()->DisplayPromotion(kPromotionJoinBetaChannel);
+
+        err = db()->SetSettingsHasSeenBetaOffering(true);
+        if (err != noError) {
+            return err;
+        }
+
+        UIElements render;
+        render.display_settings = true;
+        updateUI(render);
+
+        *did_offer = true;
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::runObmExperiments() {
     if (!UI()->CanDisplayPromotion()) {
         return noError;
     }
-
-    std::string update_channel("");
-    error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != noError) {
-        return err;
+    try {
+        Poco::UInt64 nr(0);
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("User logged out, cannot OBM experiment");
+                return noError;
+            }
+            // Check what needs to be updated in UI
+            for (std::vector<ObmExperiment *>::const_iterator it =
+                user_->related.ObmExperiments.begin();
+                    it != user_->related.ObmExperiments.end();
+                    it++) {
+                ObmExperiment *model = *it;
+                if (model->DeletedAt()) {
+                    continue;
+                }
+                if (!model->Included()) {
+                    continue;
+                }
+                if (model->HasSeen()) {
+                    continue;
+                }
+                model->SetHasSeen(true);
+                nr = model->Nr();
+                break;
+            }
+        }
+        if (!nr) {
+            return noError;
+        }
+        UI()->DisplayPromotion(nr);
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
     }
-
-    if ("beta" == update_channel) {
-        return noError;
-    }
-
-    UI()->DisplayPromotion(kPromotionJoinBetaChannel);
-
-    err = db()->SetSettingsHasSeenBetaOffering(true);
-    if (err != noError) {
-        return err;
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
     return noError;
 }
 
@@ -3639,10 +3713,6 @@ error Context::MarkTimelineBatchAsUploaded(
 error Context::SetPromotionResponse(
     const int64_t promotion_type,
     const int64_t promotion_response) {
-
-    if (kPromotionJoinBetaChannel != promotion_type) {
-        return error("bad promotion type");
-    }
 
     if (kPromotionJoinBetaChannel == promotion_type && promotion_response) {
         return SetUpdateChannel("beta");

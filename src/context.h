@@ -477,7 +477,9 @@ class Context : public TimelineDatasource {
 
     void stopActivities();
 
-    error offerBetaChannel();
+    error offerBetaChannel(bool *did_offer);
+
+    error runObmExperiments();
 
     error compressTimeline();
 

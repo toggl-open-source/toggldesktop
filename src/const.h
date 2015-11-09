@@ -81,8 +81,6 @@
 #define kChangeTypeUpdate "update"
 #define kChangeTypeDelete "delete"
 
-#define kPromotionJoinBetaChannel 1
-
 #define kAutocompleteItemTE  0
 #define kAutocompleteItemTask 1
 #define kAutocompleteItemProject 2
