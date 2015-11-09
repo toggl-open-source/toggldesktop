@@ -37,6 +37,8 @@ extern "C" {
 #define kDownloadStatusStarted 0
 #define kDownloadStatusDone 1
 
+#define kPromotionJoinBetaChannel 1
+
 // Models
 
     typedef struct {
