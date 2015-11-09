@@ -10,6 +10,7 @@
 #include "./const.h"
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./obm_action.h"
 #include "./project.h"
 #include "./tag.h"
 #include "./task.h"
@@ -643,7 +644,29 @@ void User::loadUserAndRelatedDataFromJSON(
     SetDurationFormat(data["duration_format"].asString());
 
     // OBM experiments
-
+    if (data.isMember("obm")) {
+        Json::Value obm = data["obm"];
+        Poco::UInt64 nr = obm["nr"].asUInt64();
+        ObmExperiment *model = nullptr;
+        for (std::vector<ObmExperiment *>::const_iterator it =
+            related.ObmExperiments.begin();
+                it != related.ObmExperiments.end();
+                it++) {
+            ObmExperiment *existing = *it;
+            if (existing->Nr() == nr) {
+                model = existing;
+                break;
+            }
+        }
+        if (!model) {
+            model = new ObmExperiment();
+            model->SetUID(ID());
+            model->SetNr(nr);
+            related.ObmExperiments.push_back(model);
+        }
+        model->SetIncluded(obm["included"].asBool());
+        model->SetActions(obm["actions"].asString());
+    }
 
     {
         std::set<Poco::UInt64> alive;

@@ -9,6 +9,7 @@
 #include "./../const.h"
 #include "./../database.h"
 #include "./../formatter.h"
+#include "./../obm_action.h"
 #include "./../project.h"
 #include "./../proxy.h"
 #include "./../settings.h"
@@ -469,6 +470,30 @@ TEST(Database, SavesAndLoadsUserFields) {
     User user3;
     ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user3));
     ASSERT_TRUE(user3.StoreStartAndStopTime());
+}
+
+TEST(Database, SavesAndLoadsObmExperiments) {
+    testing::Database db;
+
+    User user;
+    ASSERT_EQ(noError,
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+
+    ASSERT_EQ(1, user.related.ObmExperiments.size());
+
+    ObmExperiment *obm = user.related.ObmExperiments[0];
+    ASSERT_TRUE(obm->Included());
+    ASSERT_EQ(74, obm->Nr());
+    ASSERT_EQ("stringarray/hasopmitempty/canbemissing", obm->Actions());
+
+    std::vector<ModelChange> changes;
+    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+
+    // Load user into another instance
+    User user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
+    ASSERT_EQ(user.related.ObmExperiments.size(),
+              user2.related.ObmExperiments.size());
 }
 
 TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {

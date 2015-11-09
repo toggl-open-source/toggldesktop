@@ -24,7 +24,7 @@ error Migrations::migrateObmActions() {
 }
 
 error Migrations::migrateObmExperiments() {
-    return db_->Migrate(
+    error err = db_->Migrate(
         "obm_experiments",
         "create table obm_experiments("
         "local_id integer primary key,"
@@ -36,6 +36,19 @@ error Migrations::migrateObmExperiments() {
         "constraint fk_obm_experiments_uid foreign key (uid) "
         "   references users(id) on delete no action on update no action"
         "); ");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "obm_experiments.nr",
+        "CREATE UNIQUE INDEX idx_obm_experiments_nr "
+        "   ON obm_experiments (nr);");
+    if (err != noError) {
+        return err;
+    }
+
+    return err;
 }
 
 error Migrations::migrateAutotracker() {
