@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "./help_article.h"
 #include "./https_client.h"
 #include "./proxy.h"
 #include "./settings.h"
@@ -21,19 +22,6 @@ class Logger;
 namespace toggl {
 
 namespace view {
-
-class HelpArticle {
- public:
-    HelpArticle()
-        : Category("")
-    , Name("")
-    , URL("") {}
-    virtual ~HelpArticle() {}
-
-    std::string Category;
-    std::string Name;
-    std::string URL;
-};
 
 class TimeEntry {
  public:
@@ -344,7 +332,7 @@ class GUI : public SyncStateMonitor {
     error DisplayError(const error);
 
     void DisplayHelpArticles(
-        std::vector<view::HelpArticle> *articles);
+        const std::vector<HelpArticle> articles);
 
     void DisplaySyncState(const Poco::Int64 state);
 

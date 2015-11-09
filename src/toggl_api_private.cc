@@ -414,9 +414,9 @@ TogglAutocompleteView *autocomplete_list_init(
 }
 
 TogglHelpArticleView *help_artice_init(
-    const toggl::view::HelpArticle item) {
+    const toggl::HelpArticle item) {
     TogglHelpArticleView *result = new TogglHelpArticleView();
-    result->Category = copy_string(item.Category);
+    result->Category = copy_string(item.Type);
     result->Name = copy_string(item.Name);
     result->URL = copy_string(item.URL);
     result->Next = nullptr;
@@ -448,11 +448,11 @@ void help_article_clear(TogglHelpArticleView *item) {
 }
 
 TogglHelpArticleView *help_article_list_init(
-    std::vector<toggl::view::HelpArticle> *items) {
+    const std::vector<toggl::HelpArticle> items) {
     TogglHelpArticleView *first = nullptr;
-    for (std::vector<toggl::view::HelpArticle>::const_reverse_iterator it =
-        items->rbegin();
-            it != items->rend();
+    for (std::vector<toggl::HelpArticle>::const_reverse_iterator it =
+        items.rbegin();
+            it != items.rend();
             it++) {
         TogglHelpArticleView *item = help_artice_init(*it);
         item->Next = first;

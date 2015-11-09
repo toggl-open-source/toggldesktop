@@ -86,6 +86,9 @@ TimeEntry editor_state;
 bool_t editor_open(false);
 std::string editor_focused_field_name("");
 
+// toggl_on_help_articles
+std::vector<std::string> help_article_names;
+
 bool on_app_open;
 
 int64_t sync_state;
@@ -137,6 +140,16 @@ void on_login(const bool_t open, const uint64_t user_id) {
 void on_reminder(const char *title, const char *informative_text) {
     testresult::reminder_title = std::string(title);
     testresult::reminder_informative_text = std::string(informative_text);
+}
+
+void on_help_articles(TogglHelpArticleView *first) {
+    testing::testresult::help_article_names.clear();
+    TogglHelpArticleView *it = first;
+    while (it) {
+        std::string name(it->Name);
+        testing::testresult::help_article_names.push_back(name);
+        it = reinterpret_cast<TogglHelpArticleView *>(it->Next);
+    }
 }
 
 void on_time_entry_list(
@@ -315,6 +328,7 @@ class App {
         toggl_on_timer_state(ctx_, on_display_timer_state);
         toggl_on_idle_notification(ctx_, on_display_idle_notification);
         toggl_on_project_colors(ctx_, on_project_colors);
+        toggl_on_help_articles(ctx_, on_help_articles);
 
         poco_assert(toggl_ui_start(ctx_));
     }
@@ -1750,6 +1764,21 @@ TEST(toggl_api, toggl_discard_time_at) {
     ASSERT_EQ(stopped, testing::testresult::timer_state.Start());
     ASSERT_TRUE(testing::testresult::timer_state.IsTracking());
     ASSERT_EQ("", testing::testresult::timer_state.Description());
+}
+
+TEST(toggl_api, toggl_search_help_articles) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing::testresult::help_article_names.clear();
+    toggl_search_help_articles(app.ctx(), "Tracking");
+    ASSERT_TRUE(testing::testresult::help_article_names.size());
+    ASSERT_TRUE(std::find(
+        testing::testresult::help_article_names.begin(),
+        testing::testresult::help_article_names.end(),
+        "Tracking time") !=
+                testing::testresult::help_article_names.end());
 }
 
 TEST(toggl_api, toggl_feedback_send) {

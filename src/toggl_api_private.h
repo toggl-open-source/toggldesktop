@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "./autotracker.h"
+#include "./help_article.h"
 #include "./proxy.h"
 #include "./settings.h"
 #include "./toggl_api.h"
@@ -79,7 +80,7 @@ TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::view::Autocomplete> *items);
 
 TogglHelpArticleView *help_article_list_init(
-    std::vector<toggl::view::HelpArticle> *items);
+    const std::vector<toggl::HelpArticle> items);
 
 void help_article_clear(
     TogglHelpArticleView *first);
