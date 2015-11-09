@@ -183,6 +183,8 @@ extern void *ctx;
 	[self removeCustomConstraints];
 	[self.descriptionCombobox setNextKeyView:self.projectSelect];
 	[self toggleAddClient:YES];
+	[self.addProjectButton setNextKeyView:self.durationTextField];
+	[self.projectPublicCheckbox setNextKeyView:self.addProjectButton];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -229,6 +231,11 @@ extern void *ctx;
 	[self.addProjectBox setHidden:NO];
 	[self.projectSelectBox setHidden:YES];
 	[self.addProjectButton setHidden:YES];
+
+	// Updating TAB order
+	[self.projectNameTextField setNextKeyView:self.projectPublicCheckbox];
+	[self.projectPublicCheckbox setNextKeyView:self.addClientButton];
+	[self.addClientButton setNextKeyView:self.durationTextField];
 }
 
 - (void)removeCustomConstraints
@@ -349,6 +356,18 @@ extern void *ctx;
 	[self.billableCheckbox setHidden:!self.timeEntry.CanSeeBillable];
 
 	[self.billableCheckbox setState:[Utils boolToState:self.timeEntry.billable]];
+
+	if (!self.timeEntry.CanSeeBillable)
+	{
+		[self.tagsTokenField setNextKeyView:self.deleteButton];
+	}
+	else
+	{
+		[self.tagsTokenField setNextKeyView:self.deleteButton];
+	}
+
+	// Fixes reverse tabing
+	[self.addProjectButton setNextKeyView:self.durationTextField];
 
 	if (!self.timeEntry.CanAddProjects)
 	{
@@ -1025,7 +1044,10 @@ extern void *ctx;
 - (IBAction)addClientButtonClicked:(id)sender
 {
 	[self toggleAddClient:[self.addClientButton.title isEqualToString:@"cancel"]];
-
+	[self.clientNameTextField becomeFirstResponder];
+	[self.addClientButton setNextKeyView:self.durationTextField];
+	[self.saveNewClientButton setNextKeyView:self.addClientButton];
+	[self.projectPublicCheckbox setNextKeyView:self.clientNameTextField];
 
 	NSLog(@"addClientButtonClicked");
 }
