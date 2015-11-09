@@ -578,7 +578,7 @@ public static partial class Toggl
     public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
     public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
-    public static event DisplayProjectColors OnDisplayProjectColors = delegate { }; 
+    public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
 
     private static void listenToLibEvents()
     {
