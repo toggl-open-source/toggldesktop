@@ -2826,7 +2826,7 @@ error Context::SetUpdateChannel(const std::string channel) {
 
 void Context::SearchHelpArticles(
     const std::string keywords) {
-    // FIXME: implement
+    UI()->DisplayHelpArticles(HelpArticle::GetArticles(keywords));
 }
 
 error Context::SetProjectColor(

@@ -3,18 +3,19 @@
 #ifndef SRC_HELP_ARTICLE_H_
 #define SRC_HELP_ARTICLE_H_
 
-#include <string>
 #include <sstream>
+#include <string>
+#include <vector>
 
 namespace toggl {
 
 class HelpArticle {
  public:
     HelpArticle(
-        const std::string cat,
+        const std::string type,
         const std::string name,
         const std::string url)
-        : Category(cat)
+        : Type(type)
     , Name(name)
     , URL(url) {}
 
@@ -22,13 +23,16 @@ class HelpArticle {
 
     std::string String() const {
         std::stringstream ss;
-        ss  << "category=" << Category
+        ss  << "type=" << Type
             << " name=" << Name
             << " url=" << URL;
         return ss.str();
     }
 
-    std::string Category;
+    static std::vector<HelpArticle> GetArticles(
+        const std::string keywords);
+
+    std::string Type;
     std::string Name;
     std::string URL;
 };

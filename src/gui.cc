@@ -299,7 +299,7 @@ void GUI::DisplayTimeEntryAutocomplete(
 }
 
 void GUI::DisplayHelpArticles(
-    std::vector<view::HelpArticle> *articles) {
+    std::vector<HelpArticle> articles) {
     logger().debug("DisplayHelpArticles");
 
     if (!on_display_help_articles_) {
