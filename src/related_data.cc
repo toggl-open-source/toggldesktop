@@ -452,7 +452,9 @@ void RelatedData::workspaceAutocompleteItems(
     }
 }
 
-void RelatedData::TagList(std::vector<std::string> *tags) const {
+void RelatedData::TagList(
+    std::vector<std::string> *tags,
+    const Poco::UInt64 wid) const {
     std::set<std::string> unique_names;
 
     for (std::vector<Tag *>::const_iterator it =
@@ -460,6 +462,9 @@ void RelatedData::TagList(std::vector<std::string> *tags) const {
             it != Tags.end();
             it++) {
         Tag *tag = *it;
+        if (wid && tag->WID() != wid) {
+            continue;
+        }
         if (unique_names.find(tag->Name()) != unique_names.end()) {
             continue;
         }

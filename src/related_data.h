@@ -51,7 +51,9 @@ class RelatedData {
     Workspace *WorkspaceByID(const Poco::UInt64 id) const;
     TimeEntry *TimeEntryByID(const Poco::UInt64 id) const;
 
-    void TagList(std::vector<std::string> *) const;
+    void TagList(
+        std::vector<std::string> *result,
+        const Poco::UInt64 wid) const;
     void WorkspaceList(std::vector<Workspace *> *) const;
     void ClientList(std::vector<Client *> *) const;
 
