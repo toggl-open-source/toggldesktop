@@ -187,8 +187,17 @@ NSString *kInactiveTimerColor = @"#999999";
 	if (self.time_entry.duration_in_seconds < 0)
 	{
 		[self.durationTextField setDelegate:self];
-		self.descriptionLabel.stringValue = self.time_entry.Description;
-		self.descriptionLabel.toolTip = self.time_entry.Description;
+		// Time entry has a description
+		if (self.time_entry.Description && [self.time_entry.Description length] > 0)
+		{
+			self.descriptionLabel.stringValue = self.time_entry.Description;
+			self.descriptionLabel.toolTip = self.time_entry.Description;
+		}
+		else
+		{
+			self.descriptionLabel.stringValue = @"(no description)";
+			self.descriptionLabel.toolTip = @"(no description)";
+		}
 		[self.descriptionComboBox setHidden:YES];
 		[self.descriptionLabel setHidden:NO];
 		[self.durationTextField setEditable:NO];
