@@ -102,16 +102,13 @@ TogglGenericView *workspace_to_view_item(toggl::Workspace * const ws) {
 }
 
 TogglGenericView *client_to_view_item(
-    toggl::Client * const c,
-    toggl::Workspace * const ws) {
+    const toggl::view::Generic c) {
     TogglGenericView *result = view_item_init();
-    result->ID = static_cast<unsigned int>(c->ID());
-    result->WID = static_cast<unsigned int>(c->WID());
-    result->GUID = copy_string(c->GUID());
-    result->Name = copy_string(c->Name());
-    if (ws) {
-        result->WorkspaceName = copy_string(ws->Name());
-    }
+    result->ID = static_cast<unsigned int>(c.ID);
+    result->WID = static_cast<unsigned int>(c.WID);
+    result->GUID = copy_string(c.GUID);
+    result->Name = copy_string(c.Name);
+    result->WorkspaceName = copy_string(c.WorkspaceName);
     return result;
 }
 

@@ -481,19 +481,14 @@ void GUI::DisplayAutotrackerRules(
 }
 
 void GUI::DisplayClientSelect(
-    const RelatedData &related,
-    std::vector<toggl::Client *> *clients) {
+    const std::vector<view::Generic> list) {
     logger().debug("DisplayClientSelect");
 
     TogglGenericView *first = nullptr;
-    for (std::vector<toggl::Client *>::const_iterator it = clients->begin();
-            it != clients->end(); it++) {
-        Client *c = *it;
-        Workspace *ws = nullptr;
-        if (c->WID()) {
-            ws = related.WorkspaceByID(c->WID());
-        }
-        TogglGenericView *item = client_to_view_item(c, ws);
+    for (std::vector<view::Generic>::const_iterator it = list.begin();
+            it != list.end();
+            it++) {
+        TogglGenericView *item = client_to_view_item(*it);
         item->Next = first;
         first = item;
     }
