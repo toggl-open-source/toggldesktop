@@ -132,12 +132,14 @@ namespace TogglDesktop
                 case Key.Escape:
                 {
                     this.close(true);
+                    e.Handled = true;
                     break;
                 }
                 case Key.Enter:
                 {
                     this.SelectedColor = (string)this.list.SelectedItem;
                     this.close(true);
+                    e.Handled = true;
                     break;
                 }
             }
