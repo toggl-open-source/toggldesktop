@@ -32,13 +32,13 @@ namespace TogglDesktop
         private readonly WindowInteropHelper interopHelper;
         private readonly IMainView[] views;
         private Window[] childWindows;
-        private TutorialManager tutorialManager;
 
         private AboutWindow aboutWindow;
         private FeedbackWindow feedbackWindow;
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
         private SyncingIndicator syncingIndicator;
+        private ExperimentManager experimentManager;
 
         private IMainView activeView;
         private bool isInManualMode;
@@ -68,6 +68,7 @@ namespace TogglDesktop
             this.initializeCustomNotifications();
             this.initializeSyncingIndicator();
             this.initializeTutorialManager();
+            this.initializeExperimentManager();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
@@ -76,12 +77,22 @@ namespace TogglDesktop
             this.finalInitialisation();
         }
 
+        #region properties
+
+        public TutorialManager TutorialManager { get; private set; }
+
+        #endregion
 
         #region setup
 
+        private void initializeExperimentManager()
+        {
+            this.experimentManager = new ExperimentManager(this);
+        }
+
         private void initializeTutorialManager()
         {
-            this.tutorialManager = new TutorialManager(this, this.timerEntryListView.Timer, this.tutorialPanel);
+            this.TutorialManager = new TutorialManager(this, this.timerEntryListView.Timer, this.tutorialPanel);
         }
         private void initializeSyncingIndicator()
         {
@@ -625,7 +636,7 @@ namespace TogglDesktop
 
         private void onBasicTutorialCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            this.tutorialManager.ActivateScreen<BasicTutorialScreen1>();
+            this.TutorialManager.ActivateScreen<BasicTutorialScreen1>();
         }
 
         private void onNewFromPasteCommand(object sender, ExecutedRoutedEventArgs e)

@@ -132,6 +132,9 @@ public static partial class Toggl
     public delegate void DisplayProjectColors(
         string[] colors, ulong count);
 
+    public delegate void DisplayPromotion(
+        long id);
+
     #endregion
 
     #region api calls
@@ -579,6 +582,7 @@ public static partial class Toggl
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
     public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
+    public static event DisplayPromotion OnDisplayPromotion = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -770,6 +774,14 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnProjectColors, count: {0}", count))
             {
                 OnDisplayProjectColors(colors, count);
+            }
+        });
+
+        toggl_on_promotion(ctx, id =>
+        {
+            using (Performance.Measure("Calling OnDisplayPromotino, id: {0}", id))
+            {
+                OnDisplayPromotion(id);
             }
         });
     }
