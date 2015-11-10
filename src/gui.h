@@ -377,7 +377,9 @@ class GUI : public SyncStateMonitor {
         const TimeEntry *te,
         const std::string focused_field_name,
         const Poco::Int64 total_duration_for_date,
-        const User *user);
+        const bool can_see_billable,
+        const Poco::UInt64 default_wid,
+        const bool can_add_projects);
 
     void DisplayURL(const std::string);
 

@@ -437,6 +437,12 @@ void Context::updateUI(const UIElements &what) {
     logger().debug("updateUI " + what.String());
 
     TimeEntry *editor_time_entry = nullptr;
+    bool can_add_projects(false);
+    bool can_see_billable(false);
+    Poco::UInt64 default_wid(0);
+    std::vector<std::string> tags;
+    Poco::Int64 total_duration_for_date(0);
+
     TimeEntry *running_entry = nullptr;
 
     std::vector<view::Autocomplete> time_entry_autocompletes;
@@ -446,10 +452,6 @@ void Context::updateUI(const UIElements &what) {
     std::vector<Workspace *> workspaces;
     std::vector<TimeEntry *> time_entries;
     std::vector<Client *> clients;
-
-    std::vector<std::string> tags;
-
-    Poco::Int64 total_duration_for_date(0);
 
     bool use_proxy(false);
     bool record_timeline(false);
@@ -468,16 +470,31 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_time_entry_editor && user_) {
             editor_time_entry =
                 user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
+            Workspace *ws = nullptr;
             if (editor_time_entry) {
                 total_duration_for_date =
                     user_->related.TotalDurationForDate(editor_time_entry);
                 if (what.open_time_entry_editor) {
                     time_entry_editor_guid_ = editor_time_entry->GUID();
                 }
+
                 // Display tags also when time entry is being edited,
                 // because tags are filtered by TE WID
                 user_->related.TagList(&tags, editor_time_entry->WID());
+
+                if (editor_time_entry->WID()) {
+                    ws = user_->related.WorkspaceByID(editor_time_entry->WID());
+                }
             }
+            // Various fields in TE editor
+            if (ws) {
+                can_add_projects = ws->Admin() ||
+                                   !ws->OnlyAdminsMayCreateProjects();
+            } else {
+                can_add_projects = user_->CanAddProjects();
+            }
+            can_see_billable = user_->CanSeeBillable(ws);
+            default_wid = user_->DefaultWID();
         }
         if (what.display_time_entry_autocomplete && user_) {
             user_->related.TimeEntryAutocompleteItems(
@@ -548,7 +565,9 @@ void Context::updateUI(const UIElements &what) {
             editor_time_entry,
             what.time_entry_editor_field,
             total_duration_for_date,
-            user_);
+            can_see_billable,
+            default_wid,
+            can_add_projects);
     }
     if (what.display_time_entries) {
         // FIXME: should not touch related data here any more,
