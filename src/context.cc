@@ -2171,6 +2171,8 @@ TimeEntry *Context::Start(
                                           task_id || project_id);
     }
 
+    OpenTimeEntryList();
+
     return te;
 }
 
@@ -2712,7 +2714,14 @@ error Context::Stop() {
         UI()->DisplayApp();
     }
 
-    return displayError(save());
+    error err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    OpenTimeEntryList();
+
+    return noError;
 }
 
 error Context::DiscardTimeAt(
