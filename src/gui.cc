@@ -521,7 +521,9 @@ void GUI::DisplayTimeEntryEditor(
     const TimeEntry *te,
     const std::string focused_field_name,
     const Poco::Int64 total_duration_for_date,
-    const User *user) {
+    const bool can_see_billable,
+    const Poco::UInt64 default_wid,
+    const bool can_add_projects) {
 
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
@@ -529,18 +531,9 @@ void GUI::DisplayTimeEntryEditor(
     TogglTimeEntryView *view =
         timeEntryViewItem(related, te, total_duration_for_date);
 
-    Workspace *ws = nullptr;
-    if (te->WID()) {
-        ws = related.WorkspaceByID(te->WID());
-    }
-    view->CanSeeBillable = user->CanSeeBillable(ws);
-    view->DefaultWID = user->DefaultWID();
-    if (ws) {
-        view->CanAddProjects = ws->Admin() ||
-                               !ws->OnlyAdminsMayCreateProjects();
-    } else {
-        view->CanAddProjects = user->CanAddProjects();
-    }
+    view->CanSeeBillable = can_see_billable;
+    view->DefaultWID = default_wid;
+    view->CanAddProjects = can_add_projects;
 
     char_t *field_s = copy_string(focused_field_name);
     on_display_time_entry_editor_(open, view, field_s);
