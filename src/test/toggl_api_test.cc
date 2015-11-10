@@ -1779,6 +1779,15 @@ TEST(toggl_api, toggl_search_help_articles) {
         testing::testresult::help_article_names.end(),
         "Tracking time") !=
                 testing::testresult::help_article_names.end());
+
+    testing::testresult::help_article_names.clear();
+    toggl_search_help_articles(app.ctx(), "basic");
+    ASSERT_TRUE(testing::testresult::help_article_names.size());
+    ASSERT_TRUE(std::find(
+        testing::testresult::help_article_names.begin(),
+        testing::testresult::help_article_names.end(),
+        "Basics") !=
+                testing::testresult::help_article_names.end());
 }
 
 TEST(toggl_api, toggl_feedback_send) {
