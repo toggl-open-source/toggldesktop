@@ -221,6 +221,7 @@
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\views\IMainView.cs" />
+    <Compile Include="ui\ExperimentManager.cs" />
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
