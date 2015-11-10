@@ -170,6 +170,9 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
                                             </buttonCell>
+                                            <connections>
+                                                <outlet property="nextKeyView" destination="sRN-Rb-j5x" id="uIp-Gq-dNs"/>
+                                            </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-y9-OXp">
                                             <rect key="frame" x="6" y="15" width="97" height="16"/>
@@ -183,10 +186,10 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q41-iI-nk2">
+                                        <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q41-iI-nk2" userLabel="Workspace Combo Box">
                                             <rect key="frame" x="114" y="9" width="144" height="26"/>
                                             <animations/>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="10" id="AZn-Xk-njT">
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="10" id="AZn-Xk-njT">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -209,7 +212,7 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kdc-c6-b4n">
+                                        <comboBox verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kdc-c6-b4n" userLabel="Client Combo Box">
                                             <rect key="frame" x="114" y="7" width="144" height="26"/>
                                             <animations/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="10" id="kia-Yb-YgV">
@@ -223,7 +226,7 @@
                                                 <outlet property="nextKeyView" destination="EMR-ul-vEb" id="FcR-hA-6P5"/>
                                             </connections>
                                         </comboBox>
-                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v">
+                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v" userLabel="Client Name Text Field">
                                             <rect key="frame" x="114" y="3" width="144" height="25"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="5eD-cK-W31"/>
@@ -235,7 +238,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <outlet property="nextKeyView" destination="Q41-iI-nk2" id="Q1K-Sb-M7l"/>
+                                                <outlet property="nextKeyView" destination="z0P-ED-dJk" id="zjw-ee-r6x"/>
                                             </connections>
                                         </textField>
                                         <button hidden="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z0P-ED-dJk">
@@ -247,6 +250,7 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="saveAddClientButtonClicked:" target="-2" id="juw-sr-0Vh"/>
+                                                <outlet property="nextKeyView" destination="sRN-Rb-j5x" id="3g1-de-3mY"/>
                                             </connections>
                                         </button>
                                         <button toolTip="Add new project" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sRN-Rb-j5x">
@@ -262,7 +266,7 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="addClientButtonClicked:" target="-2" id="p0v-Fn-2Bi"/>
-                                                <outlet property="nextKeyView" destination="EMR-ul-vEb" id="kup-eJ-Ku9"/>
+                                                <outlet property="nextKeyView" destination="EMR-ul-vEb" id="HM7-CZ-dYl"/>
                                             </connections>
                                         </button>
                                     </subviews>

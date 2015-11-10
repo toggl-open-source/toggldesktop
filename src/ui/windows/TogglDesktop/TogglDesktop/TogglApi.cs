@@ -31,6 +31,8 @@ public static partial class Toggl
     private const int kDownloadStatusStarted = 0;
     private const int kDownloadStatusDone = 1;
 
+    private const int kPromotionJoinBetaChannel = 1;
+
 // Models
 
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]

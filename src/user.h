@@ -270,6 +270,8 @@ class User : public BaseModel {
 
     std::string generateKey(const std::string password);
 
+    void loadObmExperimentFromJson(Json::Value const &obm);
+
     std::string api_token_;
     Poco::UInt64 default_wid_;
     // Unix timestamp of the user data; returned from API

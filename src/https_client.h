@@ -3,9 +3,10 @@
 #ifndef SRC_HTTPS_CLIENT_H_
 #define SRC_HTTPS_CLIENT_H_
 
+#include <map>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "./const.h"
 #include "./proxy.h"
@@ -72,7 +73,8 @@ class HTTPSClientConfig {
     , ProxySettings(Proxy())
     , IgnoreCert(false)
     , CACertPath("")
-    , AutodetectProxy(true) {}
+    , AutodetectProxy(true)
+    , CurrentOBMExprimentNr(0) {}
     ~HTTPSClientConfig() {}
 
     std::string AppName;
@@ -83,8 +85,15 @@ class HTTPSClientConfig {
     std::string CACertPath;
     bool AutodetectProxy;
 
+    Poco::UInt64 CurrentOBMExprimentNr;
+
     std::string UserAgent() const {
-        return AppName + "/" + AppVersion;
+        std::stringstream ss;
+        ss << AppName + "/" + AppVersion;
+        if (CurrentOBMExprimentNr) {
+            ss << "-obm-" << CurrentOBMExprimentNr;
+        }
+        return ss.str();
     }
 };
 

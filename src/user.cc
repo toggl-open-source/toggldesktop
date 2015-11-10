@@ -624,6 +624,32 @@ error User::LoadUserAndRelatedDataFromJSONString(
     return noError;
 }
 
+void User::loadObmExperimentFromJson(Json::Value const &obm) {
+    Poco::UInt64 nr = obm["nr"].asUInt64();
+    if (!nr) {
+        return;
+    }
+    ObmExperiment *model = nullptr;
+    for (std::vector<ObmExperiment *>::const_iterator it =
+        related.ObmExperiments.begin();
+            it != related.ObmExperiments.end();
+            it++) {
+        ObmExperiment *existing = *it;
+        if (existing->Nr() == nr) {
+            model = existing;
+            break;
+        }
+    }
+    if (!model) {
+        model = new ObmExperiment();
+        model->SetUID(ID());
+        model->SetNr(nr);
+        related.ObmExperiments.push_back(model);
+    }
+    model->SetIncluded(obm["included"].asBool());
+    model->SetActions(obm["actions"].asString());
+}
+
 void User::loadUserAndRelatedDataFromJSON(
     Json::Value data,
     const bool &including_related_data) {
@@ -646,27 +672,12 @@ void User::loadUserAndRelatedDataFromJSON(
     // OBM experiments
     if (data.isMember("obm")) {
         Json::Value obm = data["obm"];
-        Poco::UInt64 nr = obm["nr"].asUInt64();
-        if (nr) {
-            ObmExperiment *model = nullptr;
-            for (std::vector<ObmExperiment *>::const_iterator it =
-                related.ObmExperiments.begin();
-                    it != related.ObmExperiments.end();
-                    it++) {
-                ObmExperiment *existing = *it;
-                if (existing->Nr() == nr) {
-                    model = existing;
-                    break;
-                }
+        if (obm.isObject()) {
+            loadObmExperimentFromJson(obm);
+        } else if (obm.isArray()) {
+            for (unsigned int i = 0; i < obm.size(); i++) {
+                loadObmExperimentFromJson(obm[i]);
             }
-            if (!model) {
-                model = new ObmExperiment();
-                model->SetUID(ID());
-                model->SetNr(nr);
-                related.ObmExperiments.push_back(model);
-            }
-            model->SetIncluded(obm["included"].asBool());
-            model->SetActions(obm["actions"].asString());
         }
     }
 
