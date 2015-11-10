@@ -10,6 +10,7 @@
 #include "./const.h"
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./obm_action.h"
 #include "./project.h"
 #include "./tag.h"
 #include "./task.h"
@@ -623,6 +624,32 @@ error User::LoadUserAndRelatedDataFromJSONString(
     return noError;
 }
 
+void User::loadObmExperimentFromJson(Json::Value const &obm) {
+    Poco::UInt64 nr = obm["nr"].asUInt64();
+    if (!nr) {
+        return;
+    }
+    ObmExperiment *model = nullptr;
+    for (std::vector<ObmExperiment *>::const_iterator it =
+        related.ObmExperiments.begin();
+            it != related.ObmExperiments.end();
+            it++) {
+        ObmExperiment *existing = *it;
+        if (existing->Nr() == nr) {
+            model = existing;
+            break;
+        }
+    }
+    if (!model) {
+        model = new ObmExperiment();
+        model->SetUID(ID());
+        model->SetNr(nr);
+        related.ObmExperiments.push_back(model);
+    }
+    model->SetIncluded(obm["included"].asBool());
+    model->SetActions(obm["actions"].asString());
+}
+
 void User::loadUserAndRelatedDataFromJSON(
     Json::Value data,
     const bool &including_related_data) {
@@ -641,6 +668,18 @@ void User::loadUserAndRelatedDataFromJSON(
     SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
+
+    // OBM experiments
+    if (data.isMember("obm")) {
+        Json::Value obm = data["obm"];
+        if (obm.isObject()) {
+            loadObmExperimentFromJson(obm);
+        } else if (obm.isArray()) {
+            for (unsigned int i = 0; i < obm.size(); i++) {
+                loadObmExperimentFromJson(obm[i]);
+            }
+        }
+    }
 
     {
         std::set<Poco::UInt64> alive;

@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="TogglDesktop.ProjectColorPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop"
+             mc:Ignorable="d" d:DesignHeight="34" d:DesignWidth="34"
+             d:DataContext="{d:DesignInstance Type=toggl:ProjectColorPickerSample, IsDesignTimeCreatable=True}"
+             HorizontalAlignment="Left">
+    
+    <Grid>
+    
+        <Button Style="{StaticResource ProjectColorSelectionButton}"
+                Name="button" x:FieldModifier="private"
+                Click="onButtonClick">
+
+            <Border
+                Name="colorCircle" x:FieldModifier="private"
+                Style="{StaticResource ProjectColorCircle}"
+                />
+
+        </Button>
+
+        <Popup Name="popup" x:FieldModifier="private"
+            MaxHeight="300" StaysOpen="True" AllowsTransparency="True"
+            PlacementTarget="{Binding ElementName=button}"
+            PreviewKeyDown="onPopupPreviewKeyDown"
+            IsKeyboardFocusWithinChanged="onPopupKeyboardFocusWithinChanged">
+
+            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     BorderThickness="0" Margin="10" Padding="0" Background="White"
+                     Name="list" x:FieldModifier="private"
+                     ItemsSource="{Binding Colors}"
+                     >
+
+                <ListBox.Effect>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
+                </ListBox.Effect>
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Margin="0"
+                           MaxWidth="150" MinWidth="50"
+                           MinHeight="20" IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="Control.Padding" Value="0" />
+                        <Setter Property="Control.Margin" Value="1" />
+                        <Setter Property="Control.BorderThickness" Value="1"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="25" Height="25"
+                                MouseLeftButtonUp="onColorSelect"
+                                CornerRadius="2"
+                                >
+                            <Border.Background>
+                                <SolidColorBrush Color="{Binding}" />
+                            </Border.Background>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+            </ListBox>
+        </Popup>
+    </Grid>
+    
+</UserControl>

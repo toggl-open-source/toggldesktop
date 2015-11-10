@@ -14,6 +14,7 @@
 #include "./custom_error_handler.h"
 #include "./feedback.h"
 #include "./gui.h"
+#include "./help_article.h"
 #include "./idle.h"
 #include "./model_change.h"
 #include "./timeline_event.h"
@@ -40,7 +41,6 @@ class UIElements {
     , display_mini_timer_autocomplete(false)
     , display_project_autocomplete(false)
     , display_client_select(false)
-    , display_tags(false)
     , display_workspace_select(false)
     , display_timer_state(false)
     , display_time_entry_editor(false)
@@ -66,7 +66,6 @@ class UIElements {
     bool display_mini_timer_autocomplete;
     bool display_project_autocomplete;
     bool display_client_select;
-    bool display_tags;
     bool display_workspace_select;
     bool display_timer_state;
     bool display_time_entry_editor;
@@ -477,9 +476,15 @@ class Context : public TimelineDatasource {
 
     void stopActivities();
 
-    error offerBetaChannel();
+    error offerBetaChannel(bool *did_offer);
+
+    error runObmExperiments();
+
+    error setCurrentOBMExperimentNumber();
 
     error compressTimeline();
+
+    error applySettingsSaveResultToUI(const error err);
 
     error pullAllUserData(TogglClient *https_client);
     error pullChanges(TogglClient *https_client);
@@ -566,6 +571,8 @@ class Context : public TimelineDatasource {
     Settings settings_;
 
     std::set<std::string> autotracker_titles_;
+
+    HelpDatabase help_database_;
 };
 
 void on_websocket_message(

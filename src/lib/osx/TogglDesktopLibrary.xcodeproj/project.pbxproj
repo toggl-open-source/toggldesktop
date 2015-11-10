@@ -24,6 +24,8 @@
 		7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7408EDB018C51CEB00CBE8F1 /* feedback.cc */; };
 		741951C91B41FCE500FA2724 /* migrations.cc in Sources */ = {isa = PBXBuildFile; fileRef = 741951C71B41FCE500FA2724 /* migrations.cc */; };
 		741951CA1B41FCE500FA2724 /* migrations.h in Headers */ = {isa = PBXBuildFile; fileRef = 741951C81B41FCE500FA2724 /* migrations.h */; };
+		7426535E1BEAD91900F0944C /* help_article.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7426535C1BEAD91900F0944C /* help_article.cc */; settings = {ASSET_TAGS = (); }; };
+		7426535F1BEAD91900F0944C /* help_article.h in Headers */ = {isa = PBXBuildFile; fileRef = 7426535D1BEAD91900F0944C /* help_article.h */; settings = {ASSET_TAGS = (); }; };
 		743024141AEFA819006DC911 /* autotracker.cc in Sources */ = {isa = PBXBuildFile; fileRef = 743024121AEFA819006DC911 /* autotracker.cc */; };
 		743024151AEFA819006DC911 /* autotracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 743024131AEFA819006DC911 /* autotracker.h */; };
 		7458ED291A355746007B529E /* idle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7458ED271A355746007B529E /* idle.cc */; };
@@ -115,6 +117,8 @@
 		7408EDB018C51CEB00CBE8F1 /* feedback.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = feedback.cc; path = ../../../feedback.cc; sourceTree = "<group>"; };
 		741951C71B41FCE500FA2724 /* migrations.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = migrations.cc; path = ../../../migrations.cc; sourceTree = "<group>"; };
 		741951C81B41FCE500FA2724 /* migrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = migrations.h; path = ../../../migrations.h; sourceTree = "<group>"; };
+		7426535C1BEAD91900F0944C /* help_article.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = help_article.cc; path = ../../../help_article.cc; sourceTree = "<group>"; };
+		7426535D1BEAD91900F0944C /* help_article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = help_article.h; path = ../../../help_article.h; sourceTree = "<group>"; };
 		743024121AEFA819006DC911 /* autotracker.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = autotracker.cc; path = ../../../autotracker.cc; sourceTree = "<group>"; };
 		743024131AEFA819006DC911 /* autotracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autotracker.h; path = ../../../autotracker.h; sourceTree = "<group>"; };
 		7458ED271A355746007B529E /* idle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = idle.cc; path = ../../../idle.cc; sourceTree = "<group>"; };
@@ -272,6 +276,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				7426535C1BEAD91900F0944C /* help_article.cc */,
+				7426535D1BEAD91900F0944C /* help_article.h */,
 				7497E9081BEA786A00517BAF /* obm_action.cc */,
 				7497E9091BEA786A00517BAF /* obm_action.h */,
 				741951C71B41FCE500FA2724 /* migrations.cc */,
@@ -404,6 +410,7 @@
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
 				7497E90B1BEA786A00517BAF /* obm_action.h in Headers */,
 				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,
+				7426535F1BEAD91900F0944C /* help_article.h in Headers */,
 				74B587C518BBC77E00E9F6CE /* batch_update_result.h in Headers */,
 				C5DA1FAC17F18D7B001C4565 /* database.h in Headers */,
 				74CAAD21181860F7001B77BB /* timeline_uploader.h in Headers */,
@@ -495,6 +502,7 @@
 				74CAAD20181860F7001B77BB /* timeline_uploader.cc in Sources */,
 				745E84F5194953A70065E49A /* gui.cc in Sources */,
 				7484A2AC18887BEE0025A88B /* toggl_api_private.cc in Sources */,
+				7426535E1BEAD91900F0944C /* help_article.cc in Sources */,
 				74DF24E51B414BD8000179AE /* timeline_event.cc in Sources */,
 				74B587CB18BBC77E00E9F6CE /* project.cc in Sources */,
 				748B7DAB1AC5963B00FE01D2 /* settings.cc in Sources */,

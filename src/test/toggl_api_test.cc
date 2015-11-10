@@ -66,6 +66,9 @@ std::vector<std::string> clients;
 // on_time_entry_list
 std::vector<TimeEntry> time_entries;
 
+// on_project_colors
+std::vector<std::string> project_colors;
+
 TimeEntry time_entry_by_guid(const std::string guid) {
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
@@ -82,6 +85,9 @@ TimeEntry time_entry_by_guid(const std::string guid) {
 TimeEntry editor_state;
 bool_t editor_open(false);
 std::string editor_focused_field_name("");
+
+// toggl_on_help_articles
+std::vector<std::string> help_article_names;
 
 bool on_app_open;
 
@@ -134,6 +140,16 @@ void on_login(const bool_t open, const uint64_t user_id) {
 void on_reminder(const char *title, const char *informative_text) {
     testresult::reminder_title = std::string(title);
     testresult::reminder_informative_text = std::string(informative_text);
+}
+
+void on_help_articles(TogglHelpArticleView *first) {
+    testing::testresult::help_article_names.clear();
+    TogglHelpArticleView *it = first;
+    while (it) {
+        std::string name(it->Name);
+        testing::testresult::help_article_names.push_back(name);
+        it = reinterpret_cast<TogglHelpArticleView *>(it->Next);
+    }
 }
 
 void on_time_entry_list(
@@ -235,6 +251,15 @@ void on_display_settings(
     testing::testresult::settings.remind_sun = settings->RemindSun;
 }
 
+void on_project_colors(
+    string_list_t color_list,
+    const uint64_t color_count) {
+    testresult::project_colors.clear();
+    for (int i = 0; i < color_count; i++) {
+        testresult::project_colors.push_back(std::string(color_list[i]));
+    }
+}
+
 void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
@@ -302,6 +327,8 @@ class App {
         toggl_on_settings(ctx_, on_display_settings);
         toggl_on_timer_state(ctx_, on_display_timer_state);
         toggl_on_idle_notification(ctx_, on_display_idle_notification);
+        toggl_on_project_colors(ctx_, on_project_colors);
+        toggl_on_help_articles(ctx_, on_help_articles);
 
         poco_assert(toggl_ui_start(ctx_));
     }
@@ -1739,6 +1766,30 @@ TEST(toggl_api, toggl_discard_time_at) {
     ASSERT_EQ("", testing::testresult::timer_state.Description());
 }
 
+TEST(toggl_api, toggl_search_help_articles) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    testing::testresult::help_article_names.clear();
+    toggl_search_help_articles(app.ctx(), "Tracking");
+    ASSERT_TRUE(testing::testresult::help_article_names.size());
+    ASSERT_TRUE(std::find(
+        testing::testresult::help_article_names.begin(),
+        testing::testresult::help_article_names.end(),
+        "Tracking time") !=
+                testing::testresult::help_article_names.end());
+
+    testing::testresult::help_article_names.clear();
+    toggl_search_help_articles(app.ctx(), "basic");
+    ASSERT_TRUE(testing::testresult::help_article_names.size());
+    ASSERT_TRUE(std::find(
+        testing::testresult::help_article_names.begin(),
+        testing::testresult::help_article_names.end(),
+        "Basics") !=
+                testing::testresult::help_article_names.end());
+}
+
 TEST(toggl_api, toggl_feedback_send) {
     testing::App app;
     std::string json = loadTestData();
@@ -1941,6 +1992,63 @@ TEST(toggl_api, toggl_set_default_project) {
     default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_FALSE(default_project_name);
     free(default_project_name);
+}
+
+TEST(toggl_api, toggl_set_project_color) {
+    testing::App app;
+    std::string json = loadTestData();
+    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+
+    const uint64_t project_id = 2598305;
+    const std::string project_guid = "2f0b8f51-f898-d992-3e1a-6bc261fc41xf";
+
+    // Try invalid color code
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         project_id,
+                                         project_guid.c_str(),
+                                         "foobar"));
+    ASSERT_EQ("invalid color code", testing::testresult::error);
+
+    // Try missing color code
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         project_id,
+                                         project_guid.c_str(),
+                                         ""));
+    ASSERT_EQ("missing color", testing::testresult::error);
+
+    // Try empty project ID and GUID
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         0,
+                                         "",
+                                         "#999999"));
+    ASSERT_EQ("project not found", testing::testresult::error);
+
+    // Try non existing project ID and GUID
+    testing::testresult::error = noError;
+    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
+                                         213123123,
+                                         "blah",
+                                         "#999999"));
+
+    // Set color using ID
+    testing::testresult::error = noError;
+    ASSERT_TRUE(toggl_set_project_color(app.ctx(),
+                                        project_id,
+                                        "",
+                                        "#999999"));
+    ASSERT_EQ(noError, testing::testresult::error);
+
+    // Set color using GUID
+    testing::testresult::error = noError;
+
+    ASSERT_TRUE(toggl_set_project_color(app.ctx(),
+                                        0,
+                                        project_guid.c_str(),
+                                        "#4dc3ff"));
+    ASSERT_EQ(noError, testing::testresult::error);
 }
 
 }  // namespace toggl

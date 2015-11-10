@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "./autotracker.h"
+#include "./help_article.h"
 #include "./proxy.h"
 #include "./settings.h"
 #include "./toggl_api.h"
@@ -22,6 +23,7 @@ class TimeEntry;
 class Workspace;
 namespace view {
 class HelpArticle;
+class Generic;
 }
 }
 
@@ -38,8 +40,7 @@ TogglGenericView *workspace_to_view_item(
     toggl::Workspace * const);
 
 TogglGenericView *client_to_view_item(
-    toggl::Client * const,
-    toggl::Workspace * const);
+    const toggl::view::Generic c);
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     toggl::AutotrackerRule * const model,
@@ -79,7 +80,7 @@ TogglAutocompleteView *autocomplete_list_init(
     std::vector<toggl::view::Autocomplete> *items);
 
 TogglHelpArticleView *help_article_list_init(
-    std::vector<toggl::view::HelpArticle> *items);
+    const std::vector<toggl::HelpArticle> items);
 
 void help_article_clear(
     TogglHelpArticleView *first);

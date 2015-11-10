@@ -295,7 +295,6 @@ UIElements UIElements::Reset() {
     render.display_mini_timer_autocomplete = true;
     render.display_project_autocomplete = true;
     render.display_client_select = true;
-    render.display_tags = true;
     render.display_workspace_select = true;
     render.display_timer_state = true;
     render.display_time_entry_editor = true;
@@ -310,23 +309,57 @@ UIElements UIElements::Reset() {
 
 std::string UIElements::String() const {
     std::stringstream ss;
-    ss << "display_time_entries=" << display_time_entries
-       << " display_time_entry_autocomplete=" << display_time_entry_autocomplete
-       << " display_mini_timer_autocomplete=" << display_mini_timer_autocomplete
-       << " display_project_autocomplete=" << display_project_autocomplete
-       << " display_client_select=" << display_client_select
-       << " display_tags=" << display_tags
-       << " display_workspace_select=" << display_workspace_select
-       << " display_timer_state=" << display_timer_state
-       << " display_time_entry_editor=" << display_time_entry_editor
-       << " open_settings=" << open_settings
-       << " open_time_entry_list=" << open_time_entry_list
-       << " open_time_entry_editor=" << open_time_entry_editor
-       << " display_autotracker_rules=" << display_autotracker_rules
-       << " display_settings=" << display_settings
-       << " time_entry_editor_guid=" << time_entry_editor_guid
-       << " time_entry_editor_field=" << time_entry_editor_field
-       << " display_unsynced_items=" << display_unsynced_items;
+    if (display_time_entries) {
+        ss << "display_time_entries ";
+    }
+    if (display_time_entry_autocomplete) {
+        ss << "display_time_entry_autocomplete ";
+    }
+    if (display_mini_timer_autocomplete) {
+        ss << "display_mini_timer_autocomplete ";
+    }
+    if (display_project_autocomplete) {
+        ss << "display_project_autocomplete ";
+    }
+    if (display_client_select) {
+        ss << "display_client_select ";
+    }
+    if (display_client_select) {
+        ss << "display_client_select ";
+    }
+    if (display_workspace_select) {
+        ss << "display_workspace_select ";
+    }
+    if (display_timer_state) {
+        ss << "display_timer_state ";
+    }
+    if (display_time_entry_editor) {
+        ss << "display_time_entry_editor ";
+    }
+    if (open_settings) {
+        ss << "open_settings ";
+    }
+    if (open_time_entry_list) {
+        ss << "open_time_entry_list ";
+    }
+    if (open_time_entry_editor) {
+        ss << "open_time_entry_editor ";
+    }
+    if (display_autotracker_rules) {
+        ss << "display_autotracker_rules ";
+    }
+    if (display_settings) {
+        ss << "display_settings ";
+    }
+    if (!time_entry_editor_guid.empty()) {
+        ss << "time_entry_editor_guid=" << time_entry_editor_guid << " ";
+    }
+    if (!time_entry_editor_field.empty()) {
+        ss << "time_entry_editor_field=" << time_entry_editor_field << " ";
+    }
+    if (display_unsynced_items) {
+        ss << "display_unsynced_items ";
+    }
     return ss.str();
 }
 
@@ -342,10 +375,6 @@ void UIElements::ApplyChanges(
             it != changes.end();
             it++) {
         ModelChange ch = *it;
-
-        if (ch.ModelType() == kModelTag) {
-            display_tags = true;
-        }
 
         if (ch.ModelType() == kModelWorkspace
                 || ch.ModelType() == kModelClient
@@ -408,6 +437,12 @@ void Context::updateUI(const UIElements &what) {
     logger().debug("updateUI " + what.String());
 
     TimeEntry *editor_time_entry = nullptr;
+    bool can_add_projects(false);
+    bool can_see_billable(false);
+    Poco::UInt64 default_wid(0);
+    std::vector<std::string> tags;
+    Poco::Int64 total_duration_for_date(0);
+
     TimeEntry *running_entry = nullptr;
 
     std::vector<view::Autocomplete> time_entry_autocompletes;
@@ -416,11 +451,7 @@ void Context::updateUI(const UIElements &what) {
 
     std::vector<Workspace *> workspaces;
     std::vector<TimeEntry *> time_entries;
-    std::vector<Client *> clients;
-
-    std::vector<std::string> tags;
-
-    Poco::Int64 total_duration_for_date(0);
+    std::vector<view::Generic> clients;
 
     bool use_proxy(false);
     bool record_timeline(false);
@@ -439,13 +470,31 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_time_entry_editor && user_) {
             editor_time_entry =
                 user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
+            Workspace *ws = nullptr;
             if (editor_time_entry) {
                 total_duration_for_date =
                     user_->related.TotalDurationForDate(editor_time_entry);
                 if (what.open_time_entry_editor) {
                     time_entry_editor_guid_ = editor_time_entry->GUID();
                 }
+
+                // Display tags also when time entry is being edited,
+                // because tags are filtered by TE WID
+                user_->related.TagList(&tags, editor_time_entry->WID());
+
+                if (editor_time_entry->WID()) {
+                    ws = user_->related.WorkspaceByID(editor_time_entry->WID());
+                }
             }
+            // Various fields in TE editor
+            if (ws) {
+                can_add_projects = ws->Admin() ||
+                                   !ws->OnlyAdminsMayCreateProjects();
+            } else {
+                can_add_projects = user_->CanAddProjects();
+            }
+            can_see_billable = user_->CanSeeBillable(ws);
+            default_wid = user_->DefaultWID();
         }
         if (what.display_time_entry_autocomplete && user_) {
             user_->related.TimeEntryAutocompleteItems(
@@ -458,10 +507,25 @@ void Context::updateUI(const UIElements &what) {
             user_->related.WorkspaceList(&workspaces);
         }
         if (what.display_client_select && user_) {
-            user_->related.ClientList(&clients);
-        }
-        if (what.display_tags) {
-            user_->related.TagList(&tags);
+            std::vector<Client *> models;
+            user_->related.ClientList(&models);
+            for (std::vector<Client *>::const_iterator it = models.begin();
+                    it != models.end();
+                    it++) {
+                Client *c = *it;
+                view::Generic view;
+                view.GUID = c->GUID();
+                view.ID = c->ID();
+                view.WID = c->WID();
+                view.Name = c->Name();
+                if (c->WID()) {
+                    Workspace *ws = user_->related.WorkspaceByID(c->WID());
+                    if (ws) {
+                        view.WorkspaceName = ws->Name();
+                    }
+                }
+                clients.push_back(view);
+            }
         }
         if (what.display_timer_state && user_) {
             running_entry = user_->RunningTimeEntry();
@@ -510,6 +574,7 @@ void Context::updateUI(const UIElements &what) {
         if (what.open_time_entry_editor) {
             UI()->DisplayApp();
         }
+        UI()->DisplayTags(&tags);
         // FIXME: should not touch related data here any more,
         // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryEditor(
@@ -518,7 +583,9 @@ void Context::updateUI(const UIElements &what) {
             editor_time_entry,
             what.time_entry_editor_field,
             total_duration_for_date,
-            user_);
+            can_see_billable,
+            default_wid,
+            can_add_projects);
     }
     if (what.display_time_entries) {
         // FIXME: should not touch related data here any more,
@@ -539,14 +606,7 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayWorkspaceSelect(&workspaces);
     }
     if (what.display_client_select) {
-        // FIXME: should not touch related data here any more,
-        // data should be already collected in previous, locked step
-        UI()->DisplayClientSelect(
-            user_->related,
-            &clients);
-    }
-    if (what.display_tags) {
-        UI()->DisplayTags(&tags);
+        UI()->DisplayClientSelect(clients);
     }
     if (what.display_timer_state) {
         // FIXME: should not touch related data here any more,
@@ -1358,20 +1418,16 @@ error Context::SetSettingsRemindDays(
 }
 
 error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
-    error err = db()->SetSettingsAutodetectProxy(autodetect_proxy);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsAutodetectProxy(autodetect_proxy));
 }
 
 error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
-    error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsUseIdleDetection(use_idle_detection));
+}
+
+error Context::applySettingsSaveResultToUI(const error err) {
     if (err != noError) {
         return displayError(err);
     }
@@ -1384,81 +1440,33 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
 }
 
 error Context::SetSettingsAutotrack(const bool value) {
-    error err = db()->SetSettingsAutotrack(value);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsAutotrack(value));
 }
 
 error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
-    error err = db()->SetSettingsOpenEditorOnShortcut(value);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsOpenEditorOnShortcut(value));
 }
 
 error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
-    error err = db()->SetSettingsMenubarTimer(menubar_timer);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsMenubarTimer(menubar_timer));
 }
 
 error Context::SetSettingsMenubarProject(const bool menubar_project) {
-    error err = db()->SetSettingsMenubarProject(menubar_project);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsMenubarProject(menubar_project));
 }
 
 error Context::SetSettingsDockIcon(const bool dock_icon) {
-    error err = db()->SetSettingsDockIcon(dock_icon);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsDockIcon(dock_icon));
 }
 
 error Context::SetSettingsOnTop(const bool on_top) {
-    error err = db()->SetSettingsOnTop(on_top);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsOnTop(on_top));
 }
 
 error Context::SetSettingsReminder(const bool reminder) {
@@ -1477,42 +1485,18 @@ error Context::SetSettingsReminder(const bool reminder) {
 }
 
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
-    error err = db()->SetSettingsIdleMinutes(idle_minutes);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsIdleMinutes(idle_minutes));
 }
 
 error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
-    error err = db()->SetSettingsFocusOnShortcut(focus_on_shortcut);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsFocusOnShortcut(focus_on_shortcut));
 }
 
 error Context::SetSettingsManualMode(const bool manual_mode) {
-    error err = db()->SetSettingsManualMode(manual_mode);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsManualMode(manual_mode));
 }
 
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
@@ -1923,6 +1907,11 @@ void Context::setUser(User *value, const bool logged_in) {
         return;
     }
 
+    error err = setCurrentOBMExperimentNumber();
+    if (err != noError) {
+        displayError(err);
+    }
+
     UI()->DisplayLogin(false, user_id);
 
     OpenTimeEntryList();
@@ -1952,7 +1941,21 @@ void Context::setUser(User *value, const bool logged_in) {
 
     remindToTrackTime();
 
-    displayError(offerBetaChannel());
+    // Offer beta channel, if not offered yet
+    bool did_offer_beta_channel(false);
+    err = offerBetaChannel(&did_offer_beta_channel);
+    if (err != noError) {
+        displayError(err);
+    }
+
+    // If beta channel was not offered,
+    // run some OBM experiment instead.
+    if (!did_offer_beta_channel) {
+        err = runObmExperiments();
+        if (err != noError) {
+            displayError(err);
+        }
+    }
 }
 
 error Context::SetLoggedInUserFromJSON(
@@ -2114,6 +2117,8 @@ TimeEntry *Context::Start(
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
                                           task_id || project_id);
     }
+
+    OpenTimeEntryList();
 
     return te;
 }
@@ -2656,7 +2661,14 @@ error Context::Stop() {
         UI()->DisplayApp();
     }
 
-    return displayError(save());
+    error err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    OpenTimeEntryList();
+
+    return noError;
 }
 
 error Context::DiscardTimeAt(
@@ -2770,14 +2782,52 @@ error Context::SetUpdateChannel(const std::string channel) {
 
 void Context::SearchHelpArticles(
     const std::string keywords) {
-    // FIXME: implement
+    UI()->DisplayHelpArticles(help_database_.GetArticles(keywords));
 }
 
 error Context::SetProjectColor(
     const Poco::UInt64 project_id,
     const std::string project_guid,
     const std::string color) {
-    // FIXME: implement
+    try {
+        // Validate input
+        std::string trimmed_color("");
+        error err = db_->Trim(color, &trimmed_color);
+        if (err != noError) {
+            return displayError(err);
+        }
+        if (trimmed_color.empty()) {
+            return displayError("missing color");
+        }
+        // Modify project
+        Project *p = nullptr;
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot set project color, user logged out");
+                return noError;
+            }
+            if (project_id) {
+                p = user_->related.ProjectByID(project_id);
+            } else if (!project_guid.empty()) {
+                p = user_->related.ProjectByGUID(project_guid);
+            }
+        }
+        if (!p) {
+            return displayError("project not found");
+        }
+        err = p->SetColorCode(trimmed_color);
+        if (err != noError) {
+            return displayError(err);
+        }
+        return displayError(save());
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
     return noError;
 }
 
@@ -3219,43 +3269,144 @@ error Context::OpenReportsInBrowser() {
     return noError;
 }
 
-error Context::offerBetaChannel() {
-    if (update_check_disabled_) {
-        // if update check is disabled, then
-        // the channel selection won't be ever
-        // used anyway
-        return noError;
-    }
+error Context::offerBetaChannel(bool *did_offer) {
+    try {
+        poco_check_ptr(did_offer);
 
-    if (settings_.has_seen_beta_offering) {
-        return noError;
-    }
+        *did_offer = false;
 
+        if (update_check_disabled_) {
+            // if update check is disabled, then
+            // the channel selection won't be ever
+            // used anyway
+            return noError;
+        }
+
+        if (settings_.has_seen_beta_offering) {
+            return noError;
+        }
+
+        if (!UI()->CanDisplayPromotion()) {
+            return noError;
+        }
+
+        std::string update_channel("");
+        error err = db()->LoadUpdateChannel(&update_channel);
+        if (err != noError) {
+            return err;
+        }
+
+        if ("beta" == update_channel) {
+            return noError;
+        }
+
+        UI()->DisplayPromotion(kPromotionJoinBetaChannel);
+
+        err = db()->SetSettingsHasSeenBetaOffering(true);
+        if (err != noError) {
+            return err;
+        }
+
+        UIElements render;
+        render.display_settings = true;
+        updateUI(render);
+
+        *did_offer = true;
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::setCurrentOBMExperimentNumber() {
+    try {
+        Poco::UInt64 nr(0);
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                return noError;
+            }
+            // Select the largest, included and seen by user
+            // OBM experiment
+            for (std::vector<ObmExperiment *>::const_iterator it =
+                user_->related.ObmExperiments.begin();
+                    it != user_->related.ObmExperiments.end();
+                    it++) {
+                ObmExperiment *model = *it;
+                if (model->DeletedAt()) {
+                    continue;
+                }
+                if (!model->Included()) {
+                    continue;
+                }
+                if (!model->HasSeen()) {
+                    continue;
+                }
+                if (model->Nr() > nr) {
+                    nr = model->Nr();
+                }
+            }
+        }
+        if (nr) {
+            HTTPSClient::Config.CurrentOBMExprimentNr = nr;
+        }
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
+    return noError;
+}
+
+error Context::runObmExperiments() {
     if (!UI()->CanDisplayPromotion()) {
         return noError;
     }
-
-    std::string update_channel("");
-    error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != noError) {
-        return err;
+    try {
+        Poco::UInt64 nr(0);
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("User logged out, cannot OBM experiment");
+                return noError;
+            }
+            // Check what needs to be updated in UI
+            for (std::vector<ObmExperiment *>::const_iterator it =
+                user_->related.ObmExperiments.begin();
+                    it != user_->related.ObmExperiments.end();
+                    it++) {
+                ObmExperiment *model = *it;
+                if (model->DeletedAt()) {
+                    continue;
+                }
+                if (!model->Included()) {
+                    continue;
+                }
+                if (model->HasSeen()) {
+                    continue;
+                }
+                model->SetHasSeen(true);
+                nr = model->Nr();
+                break;
+            }
+        }
+        if (!nr) {
+            return noError;
+        }
+        UI()->DisplayPromotion(nr);
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
     }
-
-    if ("beta" == update_channel) {
-        return noError;
-    }
-
-    UI()->DisplayPromotion(kPromotionJoinBetaChannel);
-
-    err = db()->SetSettingsHasSeenBetaOffering(true);
-    if (err != noError) {
-        return err;
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
     return noError;
 }
 
@@ -3564,10 +3715,6 @@ error Context::MarkTimelineBatchAsUploaded(
 error Context::SetPromotionResponse(
     const int64_t promotion_type,
     const int64_t promotion_response) {
-
-    if (kPromotionJoinBetaChannel != promotion_type) {
-        return error("bad promotion type");
-    }
 
     if (kPromotionJoinBetaChannel == promotion_type && promotion_response) {
         return SetUpdateChannel("beta");

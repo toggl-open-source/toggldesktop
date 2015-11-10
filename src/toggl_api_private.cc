@@ -102,16 +102,13 @@ TogglGenericView *workspace_to_view_item(toggl::Workspace * const ws) {
 }
 
 TogglGenericView *client_to_view_item(
-    toggl::Client * const c,
-    toggl::Workspace * const ws) {
+    const toggl::view::Generic c) {
     TogglGenericView *result = view_item_init();
-    result->ID = static_cast<unsigned int>(c->ID());
-    result->WID = static_cast<unsigned int>(c->WID());
-    result->GUID = copy_string(c->GUID());
-    result->Name = copy_string(c->Name());
-    if (ws) {
-        result->WorkspaceName = copy_string(ws->Name());
-    }
+    result->ID = static_cast<unsigned int>(c.ID);
+    result->WID = static_cast<unsigned int>(c.WID);
+    result->GUID = copy_string(c.GUID);
+    result->Name = copy_string(c.Name);
+    result->WorkspaceName = copy_string(c.WorkspaceName);
     return result;
 }
 
@@ -414,9 +411,9 @@ TogglAutocompleteView *autocomplete_list_init(
 }
 
 TogglHelpArticleView *help_artice_init(
-    const toggl::view::HelpArticle item) {
+    const toggl::HelpArticle item) {
     TogglHelpArticleView *result = new TogglHelpArticleView();
-    result->Category = copy_string(item.Category);
+    result->Category = copy_string(item.Type);
     result->Name = copy_string(item.Name);
     result->URL = copy_string(item.URL);
     result->Next = nullptr;
@@ -448,11 +445,11 @@ void help_article_clear(TogglHelpArticleView *item) {
 }
 
 TogglHelpArticleView *help_article_list_init(
-    std::vector<toggl::view::HelpArticle> *items) {
+    const std::vector<toggl::HelpArticle> items) {
     TogglHelpArticleView *first = nullptr;
-    for (std::vector<toggl::view::HelpArticle>::const_reverse_iterator it =
-        items->rbegin();
-            it != items->rend();
+    for (std::vector<toggl::HelpArticle>::const_reverse_iterator it =
+        items.rbegin();
+            it != items.rend();
             it++) {
         TogglHelpArticleView *item = help_artice_init(*it);
         item->Next = first;

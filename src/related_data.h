@@ -16,6 +16,7 @@ namespace toggl {
 class AutotrackerRule;
 class Client;
 class ObmAction;
+class ObmExperiment;
 class Project;
 class Tag;
 class Task;
@@ -39,6 +40,7 @@ class RelatedData {
     std::vector<AutotrackerRule *> AutotrackerRules;
     std::vector<TimelineEvent *> TimelineEvents;
     std::vector<ObmAction *> ObmActions;
+    std::vector<ObmExperiment *> ObmExperiments;
 
     void Clear();
 
@@ -49,7 +51,9 @@ class RelatedData {
     Workspace *WorkspaceByID(const Poco::UInt64 id) const;
     TimeEntry *TimeEntryByID(const Poco::UInt64 id) const;
 
-    void TagList(std::vector<std::string> *) const;
+    void TagList(
+        std::vector<std::string> *result,
+        const Poco::UInt64 wid) const;
     void WorkspaceList(std::vector<Workspace *> *) const;
     void ClientList(std::vector<Client *> *) const;
 

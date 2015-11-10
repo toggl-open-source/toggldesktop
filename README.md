@@ -54,7 +54,7 @@ make uitest
 
 ## Linux
 
-You'll need QT to be at least version 5.2
+You'll need QT to be at least version 5.5
 
 If qmake is not on your PATH, set this first, before running make:
 

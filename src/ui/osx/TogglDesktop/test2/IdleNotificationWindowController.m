@@ -28,6 +28,8 @@ extern void *ctx;
 
 	self.idleAmountTextField.stringValue = self.idleEvent.duration;
 	[self.idleAmountTextField setHidden:NO];
+
+    self.timeentryDescriptionTextField.stringValue = self.idleEvent.timeEntryDescription;
 }
 
 - (IBAction)stopButtonClicked:(id)sender

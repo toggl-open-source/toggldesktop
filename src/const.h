@@ -75,12 +75,11 @@
 #define kModelUser "user"
 #define kModelWorkspace "workspace"
 #define kModelObmAction "obm_action"
+#define kModelObmExperiment "obm_experiment"
 
 #define kChangeTypeInsert "insert"
 #define kChangeTypeUpdate "update"
 #define kChangeTypeDelete "delete"
-
-#define kPromotionJoinBetaChannel 1
 
 #define kAutocompleteItemTE  0
 #define kAutocompleteItemTask 1

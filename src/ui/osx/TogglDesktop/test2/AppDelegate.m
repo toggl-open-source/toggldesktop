@@ -589,6 +589,14 @@ BOOL manualMode = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
+	NSLog(@"displayPromotion %d", promotion_type.intValue);
+
+	// OSX app knows only about beta channel promotion
+	if (kPromotionJoinBetaChannel != promotion_type.intValue)
+	{
+		return;
+	}
+
 	NSAlert *alert = [[NSAlert alloc] init];
 	[alert addButtonWithTitle:@"Let's do it!"];
 	[alert addButtonWithTitle:@"No thanks"];

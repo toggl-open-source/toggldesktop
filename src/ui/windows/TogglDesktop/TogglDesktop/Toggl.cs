@@ -129,6 +129,12 @@ public static partial class Toggl
     public delegate void DisplayUpdateDownloadState(
         string url, DownloadStatus status);
 
+    public delegate void DisplayProjectColors(
+        string[] colors, ulong count);
+
+    public delegate void DisplayPromotion(
+        long id);
+
     #endregion
 
     #region api calls
@@ -315,7 +321,6 @@ public static partial class Toggl
     {
         return toggl_discard_time_at(ctx, guid, at, split);
     }
-
 
     public static bool SetSettings(TogglSettingsView settings)
     {
@@ -539,6 +544,16 @@ public static partial class Toggl
         return toggl_get_default_task_id(ctx);
     }
 
+    public static bool SetProjectColor(ulong projectId, string projectGUID, string color)
+    {
+        return toggl_set_project_color(ctx, projectId, projectGUID, color);
+    }
+
+    public static void GetProjectColors()
+    {
+        toggl_get_project_colors(ctx);
+    }
+
     #endregion
 
     #region callback events
@@ -563,10 +578,11 @@ public static partial class Toggl
     public static event DisplayIdleNotification OnIdleNotification = delegate { };
     public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
     public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
-
     public static event DisplaySyncState OnDisplaySyncState = delegate { };
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
     public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
+    public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
+    public static event DisplayPromotion OnDisplayPromotion = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -750,6 +766,22 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnUpdateDownloadState, v: {0}, state: {1}", version, state))
             {
                 OnDisplayUpdateDownloadState(version, (DownloadStatus)state);
+            }
+        });
+
+        toggl_on_project_colors(ctx, (colors, count) =>
+        {
+            using (Performance.Measure("Calling OnProjectColors, count: {0}", count))
+            {
+                OnDisplayProjectColors(colors, count);
+            }
+        });
+
+        toggl_on_promotion(ctx, id =>
+        {
+            using (Performance.Measure("Calling OnDisplayPromotino, id: {0}", id))
+            {
+                OnDisplayPromotion(id);
             }
         });
     }
