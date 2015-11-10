@@ -295,7 +295,6 @@ UIElements UIElements::Reset() {
     render.display_mini_timer_autocomplete = true;
     render.display_project_autocomplete = true;
     render.display_client_select = true;
-    render.display_tags = true;
     render.display_workspace_select = true;
     render.display_timer_state = true;
     render.display_time_entry_editor = true;
@@ -327,9 +326,6 @@ std::string UIElements::String() const {
     }
     if (display_client_select) {
         ss << "display_client_select ";
-    }
-    if (display_tags) {
-        ss << "display_tags ";
     }
     if (display_workspace_select) {
         ss << "display_workspace_select ";
@@ -379,10 +375,6 @@ void UIElements::ApplyChanges(
             it != changes.end();
             it++) {
         ModelChange ch = *it;
-
-        if (ch.ModelType() == kModelTag) {
-            display_tags = true;
-        }
 
         if (ch.ModelType() == kModelWorkspace
                 || ch.ModelType() == kModelClient
@@ -482,6 +474,9 @@ void Context::updateUI(const UIElements &what) {
                 if (what.open_time_entry_editor) {
                     time_entry_editor_guid_ = editor_time_entry->GUID();
                 }
+                // Display tags also when time entry is being edited,
+                // because tags are filtered by TE WID
+                user_->related.TagList(&tags, editor_time_entry->WID());
             }
         }
         if (what.display_time_entry_autocomplete && user_) {
@@ -496,9 +491,6 @@ void Context::updateUI(const UIElements &what) {
         }
         if (what.display_client_select && user_) {
             user_->related.ClientList(&clients);
-        }
-        if (what.display_tags) {
-            user_->related.TagList(&tags);
         }
         if (what.display_timer_state && user_) {
             running_entry = user_->RunningTimeEntry();
@@ -547,6 +539,7 @@ void Context::updateUI(const UIElements &what) {
         if (what.open_time_entry_editor) {
             UI()->DisplayApp();
         }
+        UI()->DisplayTags(&tags);
         // FIXME: should not touch related data here any more,
         // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryEditor(
@@ -581,9 +574,6 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayClientSelect(
             user_->related,
             &clients);
-    }
-    if (what.display_tags) {
-        UI()->DisplayTags(&tags);
     }
     if (what.display_timer_state) {
         // FIXME: should not touch related data here any more,
@@ -1395,20 +1385,16 @@ error Context::SetSettingsRemindDays(
 }
 
 error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
-    error err = db()->SetSettingsAutodetectProxy(autodetect_proxy);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsAutodetectProxy(autodetect_proxy));
 }
 
 error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
-    error err = db()->SetSettingsUseIdleDetection(use_idle_detection);
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsUseIdleDetection(use_idle_detection));
+}
+
+error Context::applySettingsSaveResultToUI(const error err) {
     if (err != noError) {
         return displayError(err);
     }
@@ -1421,81 +1407,33 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
 }
 
 error Context::SetSettingsAutotrack(const bool value) {
-    error err = db()->SetSettingsAutotrack(value);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsAutotrack(value));
 }
 
 error Context::SetSettingsOpenEditorOnShortcut(const bool value) {
-    error err = db()->SetSettingsOpenEditorOnShortcut(value);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsOpenEditorOnShortcut(value));
 }
 
 error Context::SetSettingsMenubarTimer(const bool menubar_timer) {
-    error err = db()->SetSettingsMenubarTimer(menubar_timer);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsMenubarTimer(menubar_timer));
 }
 
 error Context::SetSettingsMenubarProject(const bool menubar_project) {
-    error err = db()->SetSettingsMenubarProject(menubar_project);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsMenubarProject(menubar_project));
 }
 
 error Context::SetSettingsDockIcon(const bool dock_icon) {
-    error err = db()->SetSettingsDockIcon(dock_icon);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsDockIcon(dock_icon));
 }
 
 error Context::SetSettingsOnTop(const bool on_top) {
-    error err = db()->SetSettingsOnTop(on_top);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsOnTop(on_top));
 }
 
 error Context::SetSettingsReminder(const bool reminder) {
@@ -1514,42 +1452,18 @@ error Context::SetSettingsReminder(const bool reminder) {
 }
 
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
-    error err = db()->SetSettingsIdleMinutes(idle_minutes);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsIdleMinutes(idle_minutes));
 }
 
 error Context::SetSettingsFocusOnShortcut(const bool focus_on_shortcut) {
-    error err = db()->SetSettingsFocusOnShortcut(focus_on_shortcut);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsFocusOnShortcut(focus_on_shortcut));
 }
 
 error Context::SetSettingsManualMode(const bool manual_mode) {
-    error err = db()->SetSettingsManualMode(manual_mode);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsManualMode(manual_mode));
 }
 
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
