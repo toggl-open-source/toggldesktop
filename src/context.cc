@@ -451,7 +451,7 @@ void Context::updateUI(const UIElements &what) {
 
     std::vector<Workspace *> workspaces;
     std::vector<TimeEntry *> time_entries;
-    std::vector<Client *> clients;
+    std::vector<view::Generic> clients;
 
     bool use_proxy(false);
     bool record_timeline(false);
@@ -507,7 +507,25 @@ void Context::updateUI(const UIElements &what) {
             user_->related.WorkspaceList(&workspaces);
         }
         if (what.display_client_select && user_) {
-            user_->related.ClientList(&clients);
+            std::vector<Client *> models;
+            user_->related.ClientList(&models);
+            for (std::vector<Client *>::const_iterator it = models.begin();
+                    it != models.end();
+                    it++) {
+                Client *c = *it;
+                view::Generic view;
+                view.GUID = c->GUID();
+                view.ID = c->ID();
+                view.WID = c->WID();
+                view.Name = c->Name();
+                if (c->WID()) {
+                    Workspace *ws = user_->related.WorkspaceByID(c->WID());
+                    if (ws) {
+                        view.WorkspaceName = ws->Name();
+                    }
+                }
+                clients.push_back(view);
+            }
         }
         if (what.display_timer_state && user_) {
             running_entry = user_->RunningTimeEntry();
@@ -588,11 +606,7 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayWorkspaceSelect(&workspaces);
     }
     if (what.display_client_select) {
-        // FIXME: should not touch related data here any more,
-        // data should be already collected in previous, locked step
-        UI()->DisplayClientSelect(
-            user_->related,
-            &clients);
+        UI()->DisplayClientSelect(clients);
     }
     if (what.display_timer_state) {
         // FIXME: should not touch related data here any more,

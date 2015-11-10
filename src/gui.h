@@ -362,8 +362,7 @@ class GUI : public SyncStateMonitor {
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
 
     void DisplayClientSelect(
-        const RelatedData &,
-        std::vector<toggl::Client *> *);
+        const std::vector<view::Generic> list);
 
     void DisplayTags(std::vector<std::string> *tags);
 

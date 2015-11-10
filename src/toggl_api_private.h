@@ -23,6 +23,7 @@ class TimeEntry;
 class Workspace;
 namespace view {
 class HelpArticle;
+class Generic;
 }
 }
 
@@ -39,8 +40,7 @@ TogglGenericView *workspace_to_view_item(
     toggl::Workspace * const);
 
 TogglGenericView *client_to_view_item(
-    toggl::Client * const,
-    toggl::Workspace * const);
+    const toggl::view::Generic c);
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     toggl::AutotrackerRule * const model,
