@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 )
 
@@ -22,18 +23,42 @@ const ccTemplate = `
 
 #include "../src/help_article.h"
 
+#include "Poco/StringTokenizer.h"
+#include "Poco/UTF8String.h"
+
 namespace toggl {
 
-std::vector<HelpArticle> HelpArticle::GetArticles(
+HelpDatabase::HelpDatabase() {
+{{range .}}  // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "{{ .Type }}",  // NOLINT
+            "{{ .Name }}",  // NOLINT
+            "{{ .URL }}",  // NOLINT
+            "{{ .SearchText }}"));  // NOLINT
+{{end}}  // NOLINT
+}
+
+std::vector<HelpArticle> HelpDatabase::GetArticles(
 		const std::string keywords) {
-	std::vector<HelpArticle> result;
-	// FIXME: implement search by kewords here
-	{{range .}}result.push_back(HelpArticle(
-		"{{ .Type }}",
-		"{{ .Name }}",
-		"{{ .URL }}"));
-	{{end}}
-	return result;
+    std::string lower = Poco::UTF8::toLower(keywords);
+    Poco::StringTokenizer tokenizer(lower, ";, ",
+        Poco::StringTokenizer::TOK_TRIM);
+    std::vector<HelpArticle> result;
+    for (std::vector<HelpArticle>::const_iterator it = articles_.begin();
+            it != articles_.end();
+            it++) {
+        HelpArticle article = *it;
+        for (Poco::StringTokenizer::Iterator sit = tokenizer.begin();
+                sit != tokenizer.end();
+                ++sit) {
+            std::string keyword = *sit;
+            if (article.SearchText.find(keyword) != std::string::npos) {
+                result.push_back(article);
+            }
+        }
+    }
+    return result;
 }
 
 }   // namespace toggl
@@ -42,9 +67,10 @@ std::vector<HelpArticle> HelpArticle::GetArticles(
 var fileName = filepath.Join("src", "help", "sitemap.json")
 
 type Article struct {
-	Type string
-	Name string
-	URL  string
+	Type       string
+	Name       string
+	URL        string
+	SearchText string
 }
 
 func main() {
@@ -85,6 +111,7 @@ func generateSource() error {
 			article.Type = data["type"]
 			article.Name = data["name"]
 			article.URL = data["url"]
+			article.SearchText = strings.ToLower(article.Name)
 			fmt.Println("article", article)
 
 			articles = append(articles, article)

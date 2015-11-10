@@ -14,10 +14,12 @@ class HelpArticle {
     HelpArticle(
         const std::string type,
         const std::string name,
-        const std::string url)
+        const std::string url,
+        const std::string search_text)
         : Type(type)
     , Name(name)
-    , URL(url) {}
+    , URL(url)
+    , SearchText(search_text) {}
 
     virtual ~HelpArticle() {}
 
@@ -25,16 +27,27 @@ class HelpArticle {
         std::stringstream ss;
         ss  << "type=" << Type
             << " name=" << Name
-            << " url=" << URL;
+            << " url=" << URL
+            << " search text=" << SearchText;
         return ss.str();
     }
-
-    static std::vector<HelpArticle> GetArticles(
-        const std::string keywords);
 
     std::string Type;
     std::string Name;
     std::string URL;
+    std::string SearchText;
+};
+
+class HelpDatabase {
+ public:
+    HelpDatabase();
+    virtual ~HelpDatabase() {}
+
+    std::vector<HelpArticle> GetArticles(
+        const std::string keywords);
+
+ private:
+    std::vector<HelpArticle> articles_;
 };
 
 }  // namespace toggl

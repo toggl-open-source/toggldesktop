@@ -14,6 +14,7 @@
 #include "./custom_error_handler.h"
 #include "./feedback.h"
 #include "./gui.h"
+#include "./help_article.h"
 #include "./idle.h"
 #include "./model_change.h"
 #include "./timeline_event.h"
@@ -570,6 +571,8 @@ class Context : public TimelineDatasource {
     Settings settings_;
 
     std::set<std::string> autotracker_titles_;
+
+    HelpDatabase help_database_;
 };
 
 void on_websocket_message(
