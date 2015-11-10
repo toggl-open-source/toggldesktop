@@ -13,6 +13,7 @@
 
 @property IBOutlet NSTextField *idleSinceTextField;
 @property IBOutlet NSTextField *idleAmountTextField;
+@property IBOutlet NSTextField *timeentryDescriptionTextField;
 
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
