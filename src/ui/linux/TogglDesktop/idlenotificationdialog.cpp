@@ -80,7 +80,7 @@ void IdleNotificationDialog::displayIdleNotification(
     ui->idleSince->setText(since);
     ui->idleDuration->setText(duration);
 
-    // FIXME: show description somewhere, too
+    ui->timeEntryDescriptionLabel->setText(description);
 
     show();
 }
