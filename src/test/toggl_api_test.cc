@@ -899,7 +899,8 @@ TEST(toggl_api, toggl_add_project) {
                                     cid,
                                     "",
                                     project_name.c_str(),
-                                    is_private);
+                                    is_private,
+                                    "");
     ASSERT_EQ("Please select a workspace",
               testing::testresult::error);
     ASSERT_FALSE(res);
@@ -911,7 +912,8 @@ TEST(toggl_api, toggl_add_project) {
                             cid,
                             "",
                             project_name.c_str(),
-                            is_private);
+                            is_private,
+                            "#ffffff");
     ASSERT_EQ("Project name must not be empty",
               testing::testresult::error);
     ASSERT_FALSE(res);
@@ -925,7 +927,8 @@ TEST(toggl_api, toggl_add_project) {
                             cid,
                             "",
                             project_name.c_str(),
-                            is_private);
+                            is_private,
+                            0);
     ASSERT_EQ("", testing::testresult::error);
     ASSERT_TRUE(res);
     free(res);
@@ -940,94 +943,6 @@ TEST(toggl_api, toggl_add_project) {
     ASSERT_TRUE(found);
 }
 
-TEST(toggl_api, toggl_create_project) {
-    testing::App app;
-
-    std::string json = loadTestData();
-    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
-
-    uint64_t wid = 0;
-    uint64_t cid = 0;
-    std::string project_name("    ");
-    bool_t is_private = false;
-
-    testing::testresult::error = "";
-    char_t *project_guid = toggl_create_project(app.ctx(),
-                           wid,
-                           cid,
-                           project_name.c_str(),
-                           is_private);
-    ASSERT_EQ("Please select a workspace",
-              testing::testresult::error);
-    ASSERT_FALSE(project_guid);
-
-    wid = 123456789;
-    project_guid = toggl_create_project(app.ctx(),
-                                        wid,
-                                        cid,
-                                        project_name.c_str(),
-                                        is_private);
-    ASSERT_EQ("Project name must not be empty",
-              testing::testresult::error);
-    ASSERT_FALSE(project_guid);
-
-    project_name = "A new project";
-    testing::testresult::error = "";
-    project_guid = toggl_create_project(app.ctx(),
-                                        wid,
-                                        cid,
-                                        project_name.c_str(),
-                                        is_private);
-    ASSERT_EQ("", testing::testresult::error);
-    ASSERT_TRUE(project_guid);
-    free(project_guid);
-
-    bool found(false);
-    for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
-        if (project_name == testing::testresult::projects[i]) {
-            found = true;
-            break;
-        }
-    }
-    ASSERT_TRUE(found);
-
-    // User should be able to add as many projects as it likes
-    for (int i = 0; i < 10; i++) {
-        std::stringstream ss;
-        ss << "another project " << i;
-        testing::testresult::error = "";
-        project_guid = toggl_create_project(app.ctx(),
-                                            wid,
-                                            cid,
-                                            ss.str().c_str(),
-                                            is_private);
-        ASSERT_EQ("", testing::testresult::error);
-        ASSERT_TRUE(project_guid);
-        free(project_guid);
-    }
-
-    // But none with existing project name
-    testing::testresult::error = "";
-    project_guid = toggl_create_project(app.ctx(),
-                                        wid,
-                                        cid,
-                                        project_name.c_str(),
-                                        is_private);
-    ASSERT_FALSE(project_guid);
-    ASSERT_EQ("Project name already exists", testing::testresult::error);
-
-    // Adding a project under another client should work, still
-    testing::testresult::error = "";
-    const uint64_t another_cid = 878318;
-    project_guid = toggl_create_project(app.ctx(),
-                                        wid,
-                                        another_cid,
-                                        project_name.c_str(),
-                                        is_private);
-    ASSERT_TRUE(project_guid);
-    free(project_guid);
-    ASSERT_NE("Project name already exists", testing::testresult::error);
-}
 
 TEST(toggl_api, toggl_create_client) {
     testing::App app;
@@ -1992,63 +1907,6 @@ TEST(toggl_api, toggl_set_default_project) {
     default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_FALSE(default_project_name);
     free(default_project_name);
-}
-
-TEST(toggl_api, toggl_set_project_color) {
-    testing::App app;
-    std::string json = loadTestData();
-    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
-
-    const uint64_t project_id = 2598305;
-    const std::string project_guid = "2f0b8f51-f898-d992-3e1a-6bc261fc41xf";
-
-    // Try invalid color code
-    testing::testresult::error = noError;
-    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
-                                         project_id,
-                                         project_guid.c_str(),
-                                         "foobar"));
-    ASSERT_EQ("invalid color code", testing::testresult::error);
-
-    // Try missing color code
-    testing::testresult::error = noError;
-    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
-                                         project_id,
-                                         project_guid.c_str(),
-                                         ""));
-    ASSERT_EQ("missing color", testing::testresult::error);
-
-    // Try empty project ID and GUID
-    testing::testresult::error = noError;
-    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
-                                         0,
-                                         "",
-                                         "#999999"));
-    ASSERT_EQ("project not found", testing::testresult::error);
-
-    // Try non existing project ID and GUID
-    testing::testresult::error = noError;
-    ASSERT_FALSE(toggl_set_project_color(app.ctx(),
-                                         213123123,
-                                         "blah",
-                                         "#999999"));
-
-    // Set color using ID
-    testing::testresult::error = noError;
-    ASSERT_TRUE(toggl_set_project_color(app.ctx(),
-                                        project_id,
-                                        "",
-                                        "#999999"));
-    ASSERT_EQ(noError, testing::testresult::error);
-
-    // Set color using GUID
-    testing::testresult::error = noError;
-
-    ASSERT_TRUE(toggl_set_project_color(app.ctx(),
-                                        0,
-                                        project_guid.c_str(),
-                                        "#4dc3ff"));
-    ASSERT_EQ(noError, testing::testresult::error);
 }
 
 }  // namespace toggl
