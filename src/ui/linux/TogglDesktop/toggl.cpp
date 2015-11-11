@@ -539,7 +539,8 @@ QString TogglApi::addProject(
     const uint64_t client_id,
     const QString client_guid,
     const QString project_name,
-    const bool is_private) {
+    const bool is_private,
+    const QString project_color) {
 
     char *guid = toggl_add_project(ctx,
                                    time_entry_guid.toStdString().c_str(),
@@ -547,7 +548,8 @@ QString TogglApi::addProject(
                                    client_id,
                                    client_guid.toStdString().c_str(),
                                    project_name.toStdString().c_str(),
-                                   is_private);
+                                   is_private,
+                                   project_color.toStdString().c_str());
     QString res("");
     if (guid) {
         res = QString(guid);
