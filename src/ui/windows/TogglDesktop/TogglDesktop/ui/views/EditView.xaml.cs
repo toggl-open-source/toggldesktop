@@ -588,16 +588,11 @@ namespace TogglDesktop
                 return false;
             }
 
-            var projectGUID = Toggl.AddProject(this.timeEntry.GUID, this.selectedWorkspaceId, this.selectedClientId, this.selectedClientGUID, text, false);
+            return Toggl.AddProject(
+                this.timeEntry.GUID, this.selectedWorkspaceId,
+                this.selectedClientId, this.selectedClientGUID,
+                text, false, color) != null;
 
-            var success = !string.IsNullOrEmpty(projectGUID);
-
-            if (success && color != null)
-            {
-                // FIXME: Toggl.SetProjectColor(0, projectGUID, color);
-            }
-
-            return success;
         }
 
         private void projectSaveButton_Click(object sender, RoutedEventArgs e)
