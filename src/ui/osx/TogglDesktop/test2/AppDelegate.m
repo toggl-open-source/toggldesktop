@@ -1170,6 +1170,31 @@ const NSString *appName = @"osx_native_app";
 		freopen([logPath fileSystemRepresentation], "a+", stderr);
 	}
 
+	[NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent * (NSEvent *theEvent) {
+		 if ([theEvent modifierFlags] & NSCommandKeyMask)
+		 {
+			 NSString *character = [theEvent charactersIgnoringModifiers];
+			 if ([character isEqualToString:@"v"])
+			 {
+				 if (self.lastKnownRunningTimeEntry == nil || self.lastKnownRunningTimeEntry.duration_in_seconds < 0)
+				 {
+					 NSPasteboard *pasteboard  = [NSPasteboard generalPasteboard];
+					 NSString *clipboardText = [pasteboard stringForType:NSPasteboardTypeString];
+
+					 toggl_start(ctx,
+								 [clipboardText UTF8String],
+								 nil,
+								 0,
+								 0,
+								 0,
+								 0);
+				 }
+			 }
+		 }
+
+		 return theEvent;
+	 }];
+
 	NSLog(@"AppDelegate init done");
 
 	return self;
