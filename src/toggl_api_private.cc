@@ -113,14 +113,13 @@ TogglGenericView *client_to_view_item(
 }
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-    toggl::AutotrackerRule * const model,
-    const std::string project_and_task_label) {
+    const toggl::view::AutotrackerRule model) {
     TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
     // Autotracker settings are not saved to DB,
     // so the ID will be 0 always. But will have local ID
-    view->ID = static_cast<int>(model->LocalID());
-    view->Term = copy_string(model->Term());
-    view->ProjectAndTaskLabel = copy_string(project_and_task_label);
+    view->ID = static_cast<int>(model.ID);
+    view->Term = copy_string(model.Term);
+    view->ProjectAndTaskLabel = copy_string(model.ProjectName);
     return view;
 }
 
