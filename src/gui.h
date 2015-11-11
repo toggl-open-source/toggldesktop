@@ -390,9 +390,9 @@ class GUI : public SyncStateMonitor {
         const Proxy proxy);
 
     void DisplayTimerState(
-        const RelatedData &related,
-        const TimeEntry *te,
-        const Poco::Int64 total_duration_for_date);
+        const view::TimeEntry &te);
+
+    void DisplayEmptyTimerState();
 
     void DisplayIdleNotification(const std::string guid,
                                  const std::string since,
