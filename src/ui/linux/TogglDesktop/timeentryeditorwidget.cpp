@@ -277,7 +277,8 @@ bool TimeEntryEditorWidget::applyNewProject() {
                           clientID,
                           "",
                           ui->newProjectName->text(),
-                          !ui->publicProject->isChecked());
+                          !ui->publicProject->isChecked(),
+                          "");
     return !projectGUID.isEmpty();
 }
 
