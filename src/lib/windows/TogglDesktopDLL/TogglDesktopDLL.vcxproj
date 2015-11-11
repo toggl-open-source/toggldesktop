@@ -135,6 +135,7 @@
     <ClInclude Include="..\..\..\get_focused_window.h" />
     <ClInclude Include="..\..\..\error.h" />
     <ClInclude Include="..\..\..\gui.h" />
+    <ClInclude Include="..\..\..\help_article.h" />
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\idle.h" />
     <ClInclude Include="..\..\..\migrations.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="..\..\..\get_focused_window_windows.cc" />
     <ClCompile Include="..\..\..\error.cc" />
     <ClCompile Include="..\..\..\gui.cc" />
+    <ClCompile Include="..\..\..\help_article.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\idle.cc" />
     <ClCompile Include="..\..\..\migrations.cc" />
