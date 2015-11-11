@@ -395,7 +395,7 @@ namespace TogglDesktop
 
             var item = asTimerItem.Item;
 
-            // TODO: fill in project already if possible (instead of waiting for dll)?
+            this.descriptionTextBox.SetText(item.Description);
 
             Toggl.SetTimeEntryDescription(this.timeEntry.GUID, item.Description);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, item.TaskID, item.ProjectID, "");
