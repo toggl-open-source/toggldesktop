@@ -24,8 +24,9 @@ class Workspace;
 namespace view {
 class HelpArticle;
 class Generic;
+class AutotrackerRule;
 }
-}
+}  // namespace toggl
 
 int compare_string(const char_t *s1, const char_t *s2);
 char_t *copy_string(const std::string s);
@@ -43,8 +44,7 @@ TogglGenericView *client_to_view_item(
     const toggl::view::Generic c);
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-    toggl::AutotrackerRule * const model,
-    const std::string project_and_task_label);
+    const toggl::view::AutotrackerRule model);
 
 void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 

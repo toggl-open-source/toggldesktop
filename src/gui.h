@@ -250,12 +250,10 @@ class AutotrackerRule {
     AutotrackerRule()
         : ID(0)
     , Term("")
-    , PID(0)
     , ProjectName("") {}
 
     int64_t ID;
     std::string Term;
-    uint64_t PID;
     std::string ProjectName;
 
     bool operator == (const AutotrackerRule& other) const;
@@ -367,8 +365,8 @@ class GUI : public SyncStateMonitor {
     void DisplayTags(std::vector<std::string> *tags);
 
     void DisplayAutotrackerRules(
-        const RelatedData &related,
-        const std::set<std::string> &autotracker_titles);
+        const std::vector<view::AutotrackerRule> &autotracker_rules,
+        const std::vector<std::string> &titles);
 
     void DisplayTimeEntryEditor(
         const bool open,
