@@ -398,26 +398,6 @@ void toggl_sync(void *context) {
     app(context)->Sync();
 }
 
-char_t *toggl_create_project(
-    void *context,
-    const uint64_t workspace_id,
-    const uint64_t client_id,
-    const char_t *project_name,
-    const bool_t is_private) {
-
-    toggl::Project *p = app(context)->CreateProject(
-        workspace_id,
-        client_id,
-        "",
-        to_string(project_name),
-        is_private);
-
-    if (p) {
-        return copy_string(p->GUID());
-    }
-    return nullptr;
-}
-
 bool_t toggl_add_obm_action(
     void *context,
     const uint64_t experiment_id,
@@ -459,14 +439,16 @@ char_t *toggl_add_project(
     const uint64_t client_id,
     const char_t *client_guid,
     const char_t *project_name,
-    const bool_t is_private) {
+    const bool_t is_private,
+    const char_t *project_color) {
 
     toggl::Project *p = app(context)->CreateProject(
         workspace_id,
         client_id,
         to_string(client_guid),
         to_string(project_name),
-        is_private);
+        is_private,
+        to_string(project_color));
     if (!p) {
         return nullptr;
     }
@@ -775,17 +757,6 @@ bool_t toggl_set_default_project(
     const uint64_t pid,
     const uint64_t tid) {
     return toggl::noError == app(context)->SetDefaultProject(pid, tid);
-}
-
-bool_t toggl_set_project_color(
-    void *context,
-    const uint64_t project_id,
-    const char_t *project_guid,
-    const char_t *color) {
-    return toggl::noError == app(context)->SetProjectColor(
-        project_id,
-        to_string(project_guid),
-        to_string(color));
 }
 
 // result is passed by toggl_on_project_colors
