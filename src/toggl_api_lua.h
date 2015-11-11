@@ -343,7 +343,8 @@ static int l_toggl_add_project(lua_State *L) {
                                      lua_tointeger(L, 3),
                                      checkstring(L, 4),
                                      checkstring(L, 5),
-                                     lua_toboolean(L, 6));
+                                     lua_toboolean(L, 6),
+                                     checkstring(L, 7));
     pushstring(L, guid);
     free(guid);
     return 1;
@@ -364,26 +365,6 @@ static int l_toggl_add_obm_action(lua_State *L) {
                                       checkstring(L, 2),
                                       checkstring(L, 3));
     lua_pushboolean(L, res);
-    return 1;
-}
-
-static int l_toggl_set_project_color(lua_State *L) {
-    bool_t res = toggl_set_project_color(toggl_app_instance_,
-                                         lua_tointeger(L, 1),
-                                         checkstring(L, 2),
-                                         checkstring(L, 3));
-    lua_pushboolean(L, res);
-    return 1;
-}
-
-static int l_toggl_create_project(lua_State *L) {
-    char_t *guid = toggl_create_project(toggl_app_instance_,
-                                        lua_tointeger(L, 1),
-                                        lua_tointeger(L, 2),
-                                        checkstring(L, 3),
-                                        lua_toboolean(L, 4));
-    pushstring(L, guid);
-    free(guid);
     return 1;
 }
 
@@ -743,7 +724,6 @@ static const struct luaL_Reg toggl_f[] = {
     {"clear_cache", l_toggl_clear_cache},
     {"start", l_toggl_start},
     {"add_project", l_toggl_add_project},
-    {"create_project", l_toggl_create_project},
     {"add_obm_action", l_toggl_add_obm_action},
     {"create_client", l_toggl_create_client},
     {"set_update_channel", l_toggl_set_update_channel},
@@ -783,7 +763,6 @@ static const struct luaL_Reg toggl_f[] = {
     {"set_settings_menubar_project", l_toggl_set_settings_menubar_project},
     {"set_settings_manual_mode", l_toggl_set_settings_manual_mode},
     {"set_window_settings", l_toggl_set_window_settings},
-    {"set_project_color", l_toggl_set_project_color},
     {"window_settings", l_toggl_window_settings},
     {"set_default_project", l_toggl_set_default_project},
     {"get_default_project_name", l_toggl_get_default_project_name},

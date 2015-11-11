@@ -45,7 +45,8 @@ Project *User::CreateProject(
     const Poco::UInt64 client_id,
     const std::string client_guid,
     const std::string project_name,
-    const bool is_private) {
+    const bool is_private,
+    const std::string project_color) {
 
     Project *p = new Project();
     p->SetWID(workspace_id);
@@ -55,6 +56,7 @@ Project *User::CreateProject(
     p->SetUID(ID());
     p->SetActive(true);
     p->SetPrivate(is_private);
+    p->SetColor(project_color);
 
     related.Projects.push_back(p);
 

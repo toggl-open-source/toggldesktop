@@ -713,7 +713,8 @@ extern "C" {
         const uint64_t client_id,
         const char_t *client_guid,
         const char_t *project_name,
-        const bool_t is_private);
+        const bool_t is_private,
+        const char_t *project_color);
 
     // returns GUID of the new client. you must free() the result
     TOGGL_EXPORT char_t *toggl_create_client(
@@ -727,14 +728,6 @@ extern "C" {
         const char_t *key,
         const char_t *value);
 
-    // returns GUID of the new project. you must free() the result
-    TOGGL_EXPORT char_t *toggl_create_project(
-        void *context,
-        const uint64_t workspace_id,
-        const uint64_t client_id,
-        const char_t *project_name,
-        const bool_t is_private);
-
     TOGGL_EXPORT bool_t toggl_set_default_project(
         void *context,
         const uint64_t pid,
@@ -742,12 +735,6 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_get_project_colors(
         void *context);
-
-    TOGGL_EXPORT bool_t toggl_set_project_color(
-        void *context,
-        const uint64_t project_id,
-        const char_t *project_guid,
-        const char_t *color);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_get_default_project_name(

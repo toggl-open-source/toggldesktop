@@ -326,11 +326,6 @@ class Context : public TimelineDatasource {
     error DefaultPID(Poco::UInt64 *result);
     error DefaultTID(Poco::UInt64 *result);
 
-    error SetProjectColor(
-        const Poco::UInt64 project_id,
-        const std::string project_guid,
-        const std::string color);
-
     void SearchHelpArticles(
         const std::string keywords);
 
@@ -345,7 +340,8 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 client_id,
         const std::string client_guid,
         const std::string project_name,
-        const bool is_private);
+        const bool is_private,
+        const std::string project_color);
 
     Client *CreateClient(
         const Poco::UInt64 workspace_id,
