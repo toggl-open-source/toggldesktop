@@ -1091,7 +1091,9 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string project_name,
         [MarshalAs(UnmanagedType.I1)]
-        bool is_private);
+        bool is_private,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string project_color);
 
     // returns GUID of the new client. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1111,17 +1113,6 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
-    // returns GUID of the new project. you must free() the result
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern string toggl_create_project(
-        IntPtr context,
-        UInt64 workspace_id,
-        UInt64 client_id,
-        [MarshalAs(UnmanagedType.LPWStr)]
-        string project_name,
-        [MarshalAs(UnmanagedType.I1)]
-        bool is_private);
-
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_default_project(
@@ -1132,16 +1123,6 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_get_project_colors(
         IntPtr context);
-
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    [return:MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_set_project_color(
-        IntPtr context,
-        UInt64 project_id,
-        [MarshalAs(UnmanagedType.LPWStr)]
-        string project_guid,
-        [MarshalAs(UnmanagedType.LPWStr)]
-        string color);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

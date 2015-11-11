@@ -80,7 +80,8 @@ class User : public BaseModel {
         const Poco::UInt64 client_id,
         const std::string client_guid,
         const std::string project_name,
-        const bool is_private);
+        const bool is_private,
+        const std::string project_color);
 
     Client *CreateClient(
         const Poco::UInt64 workspace_id,

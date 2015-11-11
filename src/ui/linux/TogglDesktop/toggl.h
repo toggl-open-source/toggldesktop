@@ -127,7 +127,8 @@ class TogglApi : public QObject {
         const uint64_t client_id,
         const QString client_guid,
         const QString project_name,
-        const bool is_private);
+        const bool is_private,
+        const QString project_color);
 
     QString createClient(
         const uint64_t wid,

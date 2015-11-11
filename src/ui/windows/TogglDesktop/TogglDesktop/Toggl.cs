@@ -452,7 +452,8 @@ public static partial class Toggl
                                      client_id,
                                      client_guid,
                                      project_name,
-                                     is_private);
+                                     is_private,
+                                     null);
         }
     }
 
@@ -542,11 +543,6 @@ public static partial class Toggl
     public static ulong GetDefaultTaskId()
     {
         return toggl_get_default_task_id(ctx);
-    }
-
-    public static bool SetProjectColor(ulong projectId, string projectGUID, string color)
-    {
-        return toggl_set_project_color(ctx, projectId, projectGUID, color);
     }
 
     public static void GetProjectColors()

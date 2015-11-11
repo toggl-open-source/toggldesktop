@@ -292,7 +292,8 @@ extern void *ctx;
 											 clientID,
 											 0,
 											 [projectName UTF8String],
-											 !is_public);
+											 !is_public,
+											 "");
 
 	if (project_guid)
 	{

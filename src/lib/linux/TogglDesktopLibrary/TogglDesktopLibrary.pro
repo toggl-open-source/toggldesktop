@@ -21,6 +21,7 @@ SOURCES += \
     ../../../client.cc \
     ../../../idle.cc \
     ../../../analytics.cc \
+    ../../../help_article.cc \
     ../../../autotracker.cc \
     ../../../urls.cc \
     ../../../migrations.cc \
@@ -94,6 +95,7 @@ HEADERS += \
     ../../../const.h \
     ../../../idle.h \
     ../../../analytics.h \
+    ../../../help_article.h \
     ../../../autotracker.h \
     ../../../urls.h \
     ../../../context.h \
