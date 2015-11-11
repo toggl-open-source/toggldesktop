@@ -594,7 +594,7 @@ namespace TogglDesktop
 
             if (success && color != null)
             {
-                Toggl.SetProjectColor(0, projectGUID, color);
+                // FIXME: Toggl.SetProjectColor(0, projectGUID, color);
             }
 
             return success;
