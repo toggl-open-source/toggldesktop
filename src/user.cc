@@ -56,7 +56,9 @@ Project *User::CreateProject(
     p->SetUID(ID());
     p->SetActive(true);
     p->SetPrivate(is_private);
-    p->SetColorCode(project_color);
+    if (!project_color.empty()) {
+        p->SetColorCode(project_color);
+    }
 
     related.Projects.push_back(p);
 
