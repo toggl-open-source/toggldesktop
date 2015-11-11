@@ -147,6 +147,7 @@ Json::Value Project::SaveToJSON() const {
     n["billable"] = Billable();
     n["is_private"] = IsPrivate();
     n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
+    n["color"] = Color();
 
     return n;
 }
