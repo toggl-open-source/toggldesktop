@@ -442,7 +442,8 @@ public static partial class Toggl
         UInt64 client_id,
         string client_guid,
         string project_name,
-        bool is_private)
+        bool is_private,
+        string color)
     {
         using (Performance.Measure("adding project"))
         {
@@ -453,7 +454,7 @@ public static partial class Toggl
                                      client_guid,
                                      project_name,
                                      is_private,
-                                     null);
+                                     color);
         }
     }
 
