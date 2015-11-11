@@ -436,7 +436,8 @@ public class LibTest
                               client_id,
                               client_guid,
                               project_name,
-                              is_private);
+                              is_private,
+                              null);
         Assert.IsNotNull(project_guid);
         Assert.AreNotEqual("", project_guid);
 
