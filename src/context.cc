@@ -618,9 +618,32 @@ void Context::updateUI(const UIElements &what) {
     }
     if (what.display_autotracker_rules) {
         if (UI()->CanDisplayAutotrackerRules() && user_) {
-            // FIXME: should not touch related data here any more,
-            // data should be already collected in previous, locked step
-            UI()->DisplayAutotrackerRules(user_->related, autotracker_titles_);
+            std::vector<view::AutotrackerRule> rules;
+            for (std::vector<toggl::AutotrackerRule *>::const_iterator
+                    it = user_->related.AutotrackerRules.begin();
+                    it != user_->related.AutotrackerRules.end();
+                    it++) {
+                AutotrackerRule *model = *it;
+                Project *p = user_->related.ProjectByID(model->PID());
+                Task *t = user_->related.TaskByID(model->TID());
+
+                view::AutotrackerRule rule;
+                rule.ProjectName = Formatter::JoinTaskName(t, p, nullptr);
+                rule.ID = model->LocalID();
+                rule.Term = copy_string(model->Term());
+                rules.push_back(rule);
+            }
+
+            std::vector<std::string> titles;
+            for (std::set<std::string>::const_iterator
+                    it = autotracker_titles_.begin();
+                    it != autotracker_titles_.end();
+                    ++it) {
+                titles.push_back(*it);
+            }
+            std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
+
+            UI()->DisplayAutotrackerRules(rules, titles);
         }
     }
     if (what.display_settings) {
