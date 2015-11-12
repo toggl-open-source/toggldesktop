@@ -576,18 +576,16 @@ void GUI::DisplaySettings(const bool open,
 }
 
 void GUI::DisplayTimerState(
-    const view::TimeEntry &te) {
+    const RelatedData &related,
+    const TimeEntry *te,
+    const Poco::Int64 total_duration_for_date) {
 
-    TogglTimeEntryView *view = time_entry_view_item_init(te);
+    TogglTimeEntryView *view =
+        timeEntryViewItem(related, te, total_duration_for_date);
     on_display_timer_state_(view);
     time_entry_view_item_clear(view);
 
     logger().debug("DisplayTimerState");
-}
-
-void GUI::DisplayEmptyTimerState() {
-    on_display_timer_state_(nullptr);
-    logger().debug("DisplayEmptyTimerState");
 }
 
 void GUI::DisplayIdleNotification(const std::string guid,
