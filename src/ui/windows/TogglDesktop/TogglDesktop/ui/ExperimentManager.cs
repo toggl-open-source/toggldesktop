@@ -21,7 +21,7 @@ namespace TogglDesktop
 
             switch (id)
             {
-                case 74:
+                case 73:
                 {
                     this.mainWindow.TutorialManager.ActivateScreen<BasicOverviewScreen>();
                     break;
