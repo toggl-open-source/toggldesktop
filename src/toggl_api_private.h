@@ -22,10 +22,9 @@ class Context;
 class TimeEntry;
 class Workspace;
 namespace view {
-class AutotrackerRule;
-class Generic;
 class HelpArticle;
-class TimeEntry;
+class Generic;
+class AutotrackerRule;
 }
 }  // namespace toggl
 
@@ -66,9 +65,6 @@ TogglTimeEntryView *time_entry_view_item_init(
     const std::string color,
     const std::string date_duration,
     const bool time_in_timer_format);
-
-TogglTimeEntryView *time_entry_view_item_init(
-    const toggl::view::TimeEntry &te);
 
 void time_entry_view_item_clear(TogglTimeEntryView *item);
 

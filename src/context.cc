@@ -611,63 +611,14 @@ void Context::updateUI(const UIElements &what) {
     if (what.display_timer_state) {
         // FIXME: should not touch related data here any more,
         // data should be already collected in previous, locked step
-        if (running_entry && user_) {
-            view::TimeEntry view;
-            view.DurationInSeconds = running_entry->DurationInSeconds();
-            view.Description = running_entry->Description();
-            view.GUID = running_entry->GUID();
-            view.WID = running_entry->WID();
-            view.TID = running_entry->TID();
-            view.PID = running_entry->PID();
-            view.Duration =
-                toggl::Formatter::FormatDuration(
-                    running_entry->DurationInSeconds(),
-                    toggl::Format::Classic);
-
-            view.Started = running_entry->Start();
-            view.Ended = running_entry->Stop();
-
-            view.StartTimeString =
-                toggl::Formatter::FormatTimeForTimeEntryEditor(
-                    running_entry->Start());
-            view.EndTimeString =
-                toggl::Formatter::FormatTimeForTimeEntryEditor(
-                    running_entry->Stop());
-
-            view.DateDuration =
-                Formatter::FormatDurationForDateHeader(
-                    total_duration_for_date);
-
-            view.Billable = running_entry->Billable();
-            view.Tags = running_entry->Tags();
-            view.UpdatedAt = running_entry->UpdatedAt();
-            view.DateHeader =
-                toggl::Formatter::FormatDateHeader(running_entry->Start());
-            view.DurOnly = running_entry->DurOnly();
-            view.IsHeader = false;
-
-            view.CanAddProjects = false;
-            view.CanSeeBillable = false;
-            view.DefaultWID = 0;
-
-            view.Error = running_entry->ValidationError();
-
-            user_->related.ProjectLabelAndColorCode(running_entry,
-                                                    &view.WorkspaceName,
-                                                    &view.ProjectAndTaskLabel,
-                                                    &view.TaskLabel,
-                                                    &view.ProjectLabel,
-                                                    &view.ClientLabel,
-                                                    &view.Color);
-            UI()->DisplayTimerState(view);
-        } else {
-            UI()->DisplayEmptyTimerState();
-        }
+        UI()->DisplayTimerState(
+            user_->related,
+            running_entry,
+            total_duration_for_date);
     }
     if (what.display_autotracker_rules) {
         if (UI()->CanDisplayAutotrackerRules() && user_) {
             std::vector<view::AutotrackerRule> rules;
-            // FIXME: should not touch user related stuff here any more
             for (std::vector<toggl::AutotrackerRule *>::const_iterator
                     it = user_->related.AutotrackerRules.begin();
                     it != user_->related.AutotrackerRules.end();

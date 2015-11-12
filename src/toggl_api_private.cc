@@ -201,57 +201,6 @@ int compare_string(const char_t *s1, const char_t *s2) {
 }
 
 TogglTimeEntryView *time_entry_view_item_init(
-    const toggl::view::TimeEntry &te) {
-
-    TogglTimeEntryView *view_item = new TogglTimeEntryView();
-    poco_check_ptr(view_item);
-
-    view_item->DurationInSeconds = static_cast<int>(te.DurationInSeconds);
-    view_item->Description = copy_string(te.Description);
-    view_item->GUID = copy_string(te.GUID);
-    view_item->WID = static_cast<unsigned int>(te.WID);
-    view_item->TID = static_cast<unsigned int>(te.TID);
-    view_item->PID = static_cast<unsigned int>(te.PID);
-    view_item->Duration = copy_string(te.Duration);
-    view_item->Started = static_cast<unsigned int>(te.Started);
-    view_item->Ended = static_cast<unsigned int>(te.Ended);
-    view_item->WorkspaceName = copy_string(te.WorkspaceName);
-    view_item->ProjectAndTaskLabel = copy_string(te.ProjectAndTaskLabel);
-    view_item->TaskLabel = copy_string(te.TaskLabel);
-    view_item->ProjectLabel = copy_string(te.ProjectLabel);
-    view_item->ClientLabel = copy_string(te.ClientLabel);
-    view_item->Color = copy_string(te.Color);
-    view_item->StartTimeString = copy_string(te.StartTimeString);
-    view_item->EndTimeString = copy_string(te.EndTimeString);
-    view_item->DateDuration = copy_string(te.DateDuration);
-    view_item->Billable = te.Billable;
-    if (te.Tags.empty()) {
-        view_item->Tags = nullptr;
-    } else {
-        view_item->Tags = copy_string(te.Tags.c_str());
-    }
-    view_item->UpdatedAt = static_cast<unsigned int>(te.UpdatedAt);
-    view_item->DateHeader = copy_string(te.DateHeader);
-    view_item->DurOnly = te.DurOnly;
-    view_item->IsHeader = false;
-
-    view_item->CanAddProjects = false;
-    view_item->CanSeeBillable = false;
-    view_item->DefaultWID = 0;
-
-    if (te.Error != toggl::noError) {
-        view_item->Error = copy_string(te.Error);
-    } else {
-        view_item->Error = nullptr;
-    }
-
-    view_item->Next = nullptr;
-
-    return view_item;
-}
-
-// FIXME: deprecated, must remove
-TogglTimeEntryView *time_entry_view_item_init(
     const toggl::TimeEntry *te,
     const std::string workspace_name,
     const std::string project_and_task_label,
