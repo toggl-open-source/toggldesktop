@@ -433,8 +433,8 @@ void GUI::DisplayTags(std::vector<std::string> *tags) {
 }
 
 void GUI::DisplayAutotrackerRules(
-    const std::vector<view::AutotrackerRule> &autotracker_rules,
-    const std::vector<std::string> &titles) {
+    const RelatedData &related,
+    const std::set<std::string> &autotracker_titles) {
 
     if (!on_display_autotracker_rules_) {
         return;
@@ -442,14 +442,29 @@ void GUI::DisplayAutotrackerRules(
 
     // FIXME: dont re-render if cached items (models or view) are the same
     TogglAutotrackerRuleView *first = nullptr;
-    for (std::vector<view::AutotrackerRule>::const_iterator
-            it = autotracker_rules.begin();
-            it != autotracker_rules.end();
+    for (std::vector<toggl::AutotrackerRule *>::const_iterator it =
+        related.AutotrackerRules.begin();
+            it != related.AutotrackerRules.end();
             it++) {
-        TogglAutotrackerRuleView *item = autotracker_rule_to_view_item(*it);
+        AutotrackerRule *rule = *it;
+        Project *p = related.ProjectByID(rule->PID());
+        Task *t = related.TaskByID(rule->TID());
+        std::string project_and_task_label =
+            Formatter::JoinTaskName(t, p, nullptr);
+        TogglAutotrackerRuleView *item =
+            autotracker_rule_to_view_item(*it, project_and_task_label);
         item->Next = first;
         first = item;
     }
+
+    std::vector<std::string> titles;
+    for (std::set<std::string>::const_iterator
+            it = autotracker_titles.begin();
+            it != autotracker_titles.end();
+            ++it) {
+        titles.push_back(*it);
+    }
+    std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
 
     uint64_t title_count = titles.size();
     char_t **title_list = new char_t *[title_count];
