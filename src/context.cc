@@ -680,7 +680,7 @@ void Context::updateUI(const UIElements &what) {
                 view::AutotrackerRule rule;
                 rule.ProjectName = Formatter::JoinTaskName(t, p, nullptr);
                 rule.ID = model->LocalID();
-                rule.Term = copy_string(model->Term());
+                rule.Term = model->Term();
                 rules.push_back(rule);
             }
 
