@@ -436,21 +436,19 @@ void Context::OpenTimeEntryList() {
 void Context::updateUI(const UIElements &what) {
     logger().debug("updateUI " + what.String());
 
+    TimeEntry *editor_time_entry = nullptr;
     bool can_add_projects(false);
     bool can_see_billable(false);
     Poco::UInt64 default_wid(0);
     std::vector<std::string> tags;
     Poco::Int64 total_duration_for_date(0);
 
-    // FIXME: these should be visible in collection phase only
-    TimeEntry *editor_time_entry = nullptr;
     TimeEntry *running_entry = nullptr;
 
     std::vector<view::Autocomplete> time_entry_autocompletes;
     std::vector<view::Autocomplete> minitimer_autocompletes;
     std::vector<view::Autocomplete> project_autocompletes;
 
-    // FIXME: these should be visible in collection phase only
     std::vector<Workspace *> workspaces;
     std::vector<TimeEntry *> time_entries;
     std::vector<view::Generic> clients;
@@ -577,11 +575,11 @@ void Context::updateUI(const UIElements &what) {
             UI()->DisplayApp();
         }
         UI()->DisplayTags(&tags);
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
-            // FIXME: should not touch pointer here
             user_->related,
-            // FIXME: should not touch pointer here
             editor_time_entry,
             what.time_entry_editor_field,
             total_duration_for_date,
@@ -590,9 +588,10 @@ void Context::updateUI(const UIElements &what) {
             can_add_projects);
     }
     if (what.display_time_entries) {
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
-            // FIXME: should not touch pointer here
             user_->related,
             time_entries);
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
@@ -610,7 +609,8 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayClientSelect(clients);
     }
     if (what.display_timer_state) {
-        // FIXME: should not touch pointer here
+        // FIXME: should not touch related data here any more,
+        // data should be already collected in previous, locked step
         if (running_entry && user_) {
             view::TimeEntry view;
             view.DurationInSeconds = running_entry->DurationInSeconds();
@@ -665,10 +665,9 @@ void Context::updateUI(const UIElements &what) {
         }
     }
     if (what.display_autotracker_rules) {
-        // FIXME: should not touch pointer here
         if (UI()->CanDisplayAutotrackerRules() && user_) {
             std::vector<view::AutotrackerRule> rules;
-            // FIXME: should not touch pointer here
+            // FIXME: should not touch user related stuff here any more
             for (std::vector<toggl::AutotrackerRule *>::const_iterator
                     it = user_->related.AutotrackerRules.begin();
                     it != user_->related.AutotrackerRules.end();
