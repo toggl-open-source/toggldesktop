@@ -69,7 +69,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_push_changes_at_(0)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
-, next_reminder_at_(0)
 , next_wake_at_(0)
 , time_entry_editor_guid_("")
 , environment_("production")
@@ -79,6 +78,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , update_check_disabled_(false)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
+, reminder_(this, &Context::reminderActivity)
 , update_path_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
@@ -104,6 +104,10 @@ Context::Context(const std::string app_name, const std::string app_version)
 
     if (!ui_updater_.isRunning()) {
         ui_updater_.start();
+    }
+
+    if (!reminder_.isRunning()) {
+        reminder_.start();
     }
 }
 
@@ -148,6 +152,14 @@ Context::~Context() {
 }
 
 void Context::stopActivities() {
+    {
+        Poco::Mutex::ScopedLock lock(reminder_m_);
+        if (reminder_.isRunning()) {
+            reminder_.stop();
+            reminder_.wait();
+        }
+    }
+
     {
         Poco::Mutex::ScopedLock lock(ui_updater_m_);
         if (ui_updater_.isRunning()) {
@@ -1502,19 +1514,8 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
 error Context::SetSettingsRemindTimes(
     const std::string remind_starts,
     const std::string remind_ends) {
-    error err = db()->SetSettingsRemindTimes(remind_starts, remind_ends);
-
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    remindToTrackTime();
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsRemindTimes(remind_starts, remind_ends));
 }
 
 error Context::SetSettingsRemindDays(
@@ -1525,25 +1526,15 @@ error Context::SetSettingsRemindDays(
     const bool remind_fri,
     const bool remind_sat,
     const bool remind_sun) {
-    error err = db()->SetSettingsRemindDays(
-        remind_mon,
-        remind_tue,
-        remind_wed,
-        remind_thu,
-        remind_fri,
-        remind_sat,
-        remind_sun);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    remindToTrackTime();
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsRemindDays(
+            remind_mon,
+            remind_tue,
+            remind_wed,
+            remind_thu,
+            remind_fri,
+            remind_sat,
+            remind_sun));
 }
 
 error Context::SetSettingsAutodetectProxy(const bool autodetect_proxy) {
@@ -1599,18 +1590,8 @@ error Context::SetSettingsOnTop(const bool on_top) {
 }
 
 error Context::SetSettingsReminder(const bool reminder) {
-    error err = db()->SetSettingsReminder(reminder);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    remindToTrackTime();
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsReminder(reminder));
 }
 
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
@@ -1629,18 +1610,8 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
 }
 
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
-    error err = db()->SetSettingsReminderMinutes(reminder_minutes);
-    if (err != noError) {
-        return displayError(err);
-    }
-
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
-
-    remindToTrackTime();
-
-    return noError;
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsReminderMinutes(reminder_minutes));
 }
 
 error Context::LoadWindowSettings(
@@ -2068,7 +2039,9 @@ void Context::setUser(User *value, const bool logged_in) {
         ui_updater_.start();
     }
 
-    remindToTrackTime();
+    if (!reminder_.isRunning()) {
+        reminder_.start();
+    }
 
     // Offer beta channel, if not offered yet
     bool did_offer_beta_channel(false);
@@ -3568,31 +3541,6 @@ void Context::SetOnline() {
     logger().debug(ss.str());
 }
 
-void Context::remindToTrackTime() {
-    if (!settings_.reminder) {
-        logger().debug("Reminder is not enabled by user");
-        return;
-    }
-
-    next_reminder_at_ =
-        postpone((settings_.reminder_minutes * 60) * kOneSecondInMicros);
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onRemind);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-    timer_.schedule(ptask, next_reminder_at_);
-
-    std::stringstream ss;
-    ss << "Next reminder to track time at "
-       << Formatter::Format8601(next_reminder_at_);
-    logger().debug(ss.str());
-}
-
-void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    displayReminder();
-    remindToTrackTime();
-}
-
 void Context::displayReminder() {
     if (!settings_.reminder) {
         logger().debug("Reminder is not enabled by user");
@@ -3833,6 +3781,26 @@ void Context::uiUpdaterActivity() {
         }
 
         running_time = date_duration;
+    }
+}
+
+void Context::reminderActivity() {
+    while (!reminder_.isStopped()) {
+        int sleep_minutes = settings_.reminder_minutes;
+        if (sleep_minutes < 1) {
+            sleep_minutes = 1;
+        }
+        int sleep_seconds = sleep_minutes * 60;
+
+        // Sleep in increments for faster shutdown.
+        for (unsigned int i = 0; i < 4 * sleep_seconds; i++) {
+            if (reminder_.isStopped()) {
+                return;
+            }
+            Poco::Thread::sleep(250);
+        }
+
+        displayReminder();
     }
 }
 
