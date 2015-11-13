@@ -3589,17 +3589,7 @@ void Context::remindToTrackTime() {
 }
 
 void Context::onRemind(Poco::Util::TimerTask& task) {  // NOLINT
-    // if some code scheduled a reminder for a later time,
-    // meanwhile, then let the later reminder be executed
-    // not this one.
-    if (isPostponed(next_reminder_at_,
-                    (settings_.reminder_minutes * 60) * kOneSecondInMicros)) {
-        logger().debug("onRemind postponed");
-        return;
-    }
-
     displayReminder();
-
     remindToTrackTime();
 }
 
