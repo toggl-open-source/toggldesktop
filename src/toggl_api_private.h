@@ -33,16 +33,11 @@ int compare_string(const char_t *s1, const char_t *s2);
 char_t *copy_string(const std::string s);
 std::string to_string(const char_t *s);
 
-TogglGenericView *view_item_init();
-
-TogglGenericView *tag_to_view_item(
-    const std::string tag_name);
-
-TogglGenericView *workspace_to_view_item(
-    toggl::Workspace * const);
-
-TogglGenericView *client_to_view_item(
+TogglGenericView *generic_to_view_item(
     const toggl::view::Generic c);
+
+TogglGenericView *generic_to_view_item_list(
+    const std::vector<toggl::view::Generic> list);
 
 TogglAutotrackerRuleView *autotracker_rule_to_view_item(
     const toggl::view::AutotrackerRule model);

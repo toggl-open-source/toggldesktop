@@ -78,32 +78,23 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     delete item;
 }
 
-TogglGenericView *view_item_init() {
-    TogglGenericView *result = new TogglGenericView();
-    result->ID = 0;
-    result->WID = 0;
-    result->GUID = nullptr;
-    result->Name = nullptr;
-    result->WorkspaceName = nullptr;
-    return result;
+TogglGenericView *generic_to_view_item_list(
+    const std::vector<toggl::view::Generic> list) {
+    TogglGenericView *first = nullptr;
+    for (std::vector<toggl::view::Generic>::const_iterator
+            it = list.begin();
+            it != list.end();
+            it++) {
+        TogglGenericView *item = generic_to_view_item(*it);
+        item->Next = first;
+        first = item;
+    }
+    return first;
 }
 
-TogglGenericView *tag_to_view_item(const std::string tag_name) {
-    TogglGenericView *result = view_item_init();
-    result->Name = copy_string(tag_name);
-    return result;
-}
-
-TogglGenericView *workspace_to_view_item(toggl::Workspace * const ws) {
-    TogglGenericView *result = view_item_init();
-    result->ID = static_cast<unsigned int>(ws->ID());
-    result->Name = copy_string(ws->Name());
-    return result;
-}
-
-TogglGenericView *client_to_view_item(
+TogglGenericView *generic_to_view_item(
     const toggl::view::Generic c) {
-    TogglGenericView *result = view_item_init();
+    TogglGenericView *result = new TogglGenericView();
     result->ID = static_cast<unsigned int>(c.ID);
     result->WID = static_cast<unsigned int>(c.WID);
     result->GUID = copy_string(c.GUID);
@@ -235,9 +226,9 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->DurOnly = te.DurOnly;
     view_item->IsHeader = false;
 
-    view_item->CanAddProjects = false;
-    view_item->CanSeeBillable = false;
-    view_item->DefaultWID = 0;
+    view_item->CanAddProjects = te.CanAddProjects;
+    view_item->CanSeeBillable = te.CanSeeBillable;
+    view_item->DefaultWID = te.DefaultWID;
 
     if (te.Error != toggl::noError) {
         view_item->Error = copy_string(te.Error);
