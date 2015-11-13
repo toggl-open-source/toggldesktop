@@ -48,7 +48,6 @@ class TimeEntry {
     , DurOnly(false)
     , DateHeader("")
     , DateDuration("")
-    , IsHeader(false)
     , CanAddProjects(false)
     , CanSeeBillable(false)
     , DefaultWID(0)
@@ -78,7 +77,6 @@ class TimeEntry {
     // In case it's a header
     std::string DateHeader;
     std::string DateDuration;
-    bool IsHeader;
     // Additional fields; only when in time entry editor
     bool CanAddProjects;
     bool CanSeeBillable;
@@ -87,6 +85,8 @@ class TimeEntry {
     // If syncing a time entry ended with an error,
     // the error is attached to the time entry
     std::string Error;
+
+    void Fill(toggl::TimeEntry * const model);
 
     bool operator == (const TimeEntry& other) const;
 };
@@ -352,17 +352,18 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTimeEntryList(
         const bool open,
-        const RelatedData &related,
-        const std::vector<TimeEntry *> list);
+        const std::vector<view::TimeEntry> list);
 
     void DisplayProjectColors();
 
-    void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
+    void DisplayWorkspaceSelect(
+        const std::vector<view::Generic> list);
 
     void DisplayClientSelect(
         const std::vector<view::Generic> list);
 
-    void DisplayTags(std::vector<std::string> *tags);
+    void DisplayTags(
+        const std::vector<view::Generic> list);
 
     void DisplayAutotrackerRules(
         const std::vector<view::AutotrackerRule> &autotracker_rules,
@@ -370,13 +371,8 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTimeEntryEditor(
         const bool open,
-        const RelatedData &related,
-        const TimeEntry *te,
-        const std::string focused_field_name,
-        const Poco::Int64 total_duration_for_date,
-        const bool can_see_billable,
-        const Poco::UInt64 default_wid,
-        const bool can_add_projects);
+        const view::TimeEntry te,
+        const std::string focused_field_name);
 
     void DisplayURL(const std::string);
 
@@ -575,11 +571,6 @@ class GUI : public SyncStateMonitor {
 
     Poco::Logger &logger() const;
 };
-
-TogglTimeEntryView *timeEntryViewItem(
-    const RelatedData &related,
-    const TimeEntry *te,
-    const Poco::Int64 total_duration_for_date);
 
 }  // namespace toggl
 

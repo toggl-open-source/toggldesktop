@@ -436,31 +436,27 @@ void Context::OpenTimeEntryList() {
 void Context::updateUI(const UIElements &what) {
     logger().debug("updateUI " + what.String());
 
-    bool can_add_projects(false);
-    bool can_see_billable(false);
-    Poco::UInt64 default_wid(0);
-    std::vector<std::string> tags;
-    Poco::Int64 total_duration_for_date(0);
-
-    // FIXME: these should be visible in collection phase only
-    TimeEntry *editor_time_entry = nullptr;
-    TimeEntry *running_entry = nullptr;
+    view::TimeEntry editor_time_entry_view;
 
     std::vector<view::Autocomplete> time_entry_autocompletes;
     std::vector<view::Autocomplete> minitimer_autocompletes;
     std::vector<view::Autocomplete> project_autocompletes;
 
-    // FIXME: these should be visible in collection phase only
-    std::vector<Workspace *> workspaces;
-    std::vector<TimeEntry *> time_entries;
-    std::vector<view::Generic> clients;
-
     bool use_proxy(false);
     bool record_timeline(false);
-
     Poco::Int64 unsynced_item_count(0);
-
     Proxy proxy;
+
+    view::TimeEntry running_entry_view;
+
+    std::vector<view::TimeEntry> time_entry_views;
+
+    std::vector<view::Generic> client_views;
+    std::vector<view::Generic> workspace_views;
+    std::vector<view::Generic> tag_views;
+
+    std::vector<view::AutotrackerRule> autotracker_rule_views;
+    std::vector<std::string> autotracker_title_views;
 
     // Collect data
     {
@@ -469,45 +465,92 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_project_autocomplete && user_) {
             user_->related.ProjectAutocompleteItems(&project_autocompletes);
         }
+
         if (what.display_time_entry_editor && user_) {
-            editor_time_entry =
+            TimeEntry *editor_time_entry =
                 user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
-            Workspace *ws = nullptr;
             if (editor_time_entry) {
-                total_duration_for_date =
-                    user_->related.TotalDurationForDate(editor_time_entry);
                 if (what.open_time_entry_editor) {
                     time_entry_editor_guid_ = editor_time_entry->GUID();
                 }
 
-                // Display tags also when time entry is being edited,
-                // because tags are filtered by TE WID
-                user_->related.TagList(&tags, editor_time_entry->WID());
+                editor_time_entry_view.Fill(editor_time_entry);
+                editor_time_entry_view.Duration =
+                    toggl::Formatter::FormatDuration(
+                        editor_time_entry->DurationInSeconds(),
+                        Formatter::DurationFormat);
+                editor_time_entry_view.DateDuration =
+                    Formatter::FormatDurationForDateHeader(
+                        user_->related.TotalDurationForDate(
+                            editor_time_entry));
+                user_->related.ProjectLabelAndColorCode(
+                    editor_time_entry,
+                    &editor_time_entry_view.WorkspaceName,
+                    &editor_time_entry_view.ProjectAndTaskLabel,
+                    &editor_time_entry_view.TaskLabel,
+                    &editor_time_entry_view.ProjectLabel,
+                    &editor_time_entry_view.ClientLabel,
+                    &editor_time_entry_view.Color);
 
+                // Various fields in TE editor related to workspace
+                // and user permissions
+                Workspace *ws = nullptr;
                 if (editor_time_entry->WID()) {
                     ws = user_->related.WorkspaceByID(editor_time_entry->WID());
                 }
+                if (ws) {
+                    editor_time_entry_view.CanAddProjects =
+                        ws->Admin() || !ws->OnlyAdminsMayCreateProjects();
+                } else {
+                    editor_time_entry_view.CanAddProjects =
+                        user_->CanAddProjects();
+                }
+                editor_time_entry_view.CanSeeBillable =
+                    user_->CanSeeBillable(ws);
+                editor_time_entry_view.DefaultWID = user_->DefaultWID();
+
+                // Display tags also when time entry is being edited,
+                // because tags are filtered by TE WID
+                std::vector<std::string> tags;
+                user_->related.TagList(&tags, editor_time_entry->WID());
+                for (std::vector<std::string>::const_iterator
+                        it = tags.begin();
+                        it != tags.end();
+                        it++) {
+                    view::Generic view;
+                    view.Name = *it;
+                    tag_views.push_back(view);
+                }
             }
-            // Various fields in TE editor
-            if (ws) {
-                can_add_projects = ws->Admin() ||
-                                   !ws->OnlyAdminsMayCreateProjects();
-            } else {
-                can_add_projects = user_->CanAddProjects();
-            }
-            can_see_billable = user_->CanSeeBillable(ws);
-            default_wid = user_->DefaultWID();
         }
+
         if (what.display_time_entry_autocomplete && user_) {
             user_->related.TimeEntryAutocompleteItems(
                 &time_entry_autocompletes);
         }
+
         if (what.display_mini_timer_autocomplete && user_) {
             user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
         }
+
         if (what.display_workspace_select && user_) {
+            std::vector<Workspace *> workspaces;
             user_->related.WorkspaceList(&workspaces);
+            for (std::vector<Workspace *>::const_iterator
+                    it = workspaces.begin();
+                    it != workspaces.end();
+                    it++) {
+                Workspace *ws = *it;
+                view::Generic view;
+                view.GUID = ws->GUID();
+                view.ID = ws->ID();
+                view.WID = ws->ID();
+                view.Name = ws->Name();
+                view.WorkspaceName = ws->Name();
+                workspace_views.push_back(view);
+            }
         }
+
         if (what.display_client_select && user_) {
             std::vector<Client *> models;
             user_->related.ClientList(&models);
@@ -526,23 +569,73 @@ void Context::updateUI(const UIElements &what) {
                         view.WorkspaceName = ws->Name();
                     }
                 }
-                clients.push_back(view);
+                client_views.push_back(view);
             }
         }
+
         if (what.display_timer_state && user_) {
-            running_entry = user_->RunningTimeEntry();
+            TimeEntry *running_entry = user_->RunningTimeEntry();
             if (running_entry) {
-                total_duration_for_date =
-                    user_->related.TotalDurationForDate(running_entry);
+                running_entry_view.Fill(running_entry);
+                running_entry_view.Duration =
+                    toggl::Formatter::FormatDuration(
+                        running_entry->DurationInSeconds(),
+                        Format::Classic);
+                running_entry_view.DateDuration =
+                    Formatter::FormatDurationForDateHeader(
+                        user_->related.TotalDurationForDate(
+                            running_entry));
+                user_->related.ProjectLabelAndColorCode(
+                    running_entry,
+                    &running_entry_view.WorkspaceName,
+                    &running_entry_view.ProjectAndTaskLabel,
+                    &running_entry_view.TaskLabel,
+                    &running_entry_view.ProjectLabel,
+                    &running_entry_view.ClientLabel,
+                    &running_entry_view.Color);
             }
         }
+
         if (what.display_time_entries && user_) {
-            time_entries = user_->related.VisibleTimeEntries();
-            std::sort(time_entries.begin(), time_entries.end(), CompareByStart);
             if (what.open_time_entry_list) {
                 time_entry_editor_guid_ = "";
             }
+
+            // Get a sorted list of time entries
+            std::vector<TimeEntry *> time_entries =
+                user_->related.VisibleTimeEntries();
+            std::sort(time_entries.begin(), time_entries.end(),
+                      CompareByStart);
+
+            // Collect the time entries into a list
+            std::map<std::string, Poco::Int64> date_durations;
+            for (unsigned int i = 0; i < time_entries.size(); i++) {
+                TimeEntry *te = time_entries[i];
+                view::TimeEntry view;
+                view.Fill(te);
+                view.DateHeader = Formatter::FormatDateHeader(te->Start());
+                // Calculate total duration for each date:
+                // will be displayed in date header
+                Poco::Int64 duration = date_durations[view.DateHeader];
+                duration += Formatter::AbsDuration(te->Duration());
+                date_durations[view.DateHeader] = duration;
+                // Dont render running entry in list,
+                // although its calculated into totals per date.
+                if (te->Duration() < 0) {
+                    // Don't display running entries
+                    continue;
+                }
+                time_entry_views.push_back(view);
+            }
+            // Assign the date durations we calculated previously
+            for (unsigned int i = 0; i < time_entry_views.size(); i++) {
+                view::TimeEntry &view = time_entry_views[i];
+                Poco::Int64 duration = date_durations[view.DateHeader];
+                view.DateDuration =
+                    Formatter::FormatDurationForDateHeader(duration);
+            }
         }
+
         if (what.display_settings) {
             error err = db()->LoadSettings(&settings_);
             if (err != noError) {
@@ -566,136 +659,95 @@ void Context::updateUI(const UIElements &what) {
             HTTPSClient::Config.ProxySettings = proxy;
             HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
         }
+
         if (what.display_unsynced_items && user_) {
             unsynced_item_count = user_->related.NumberOfUnsyncedTimeEntries();
+        }
+
+        if (what.display_autotracker_rules && user_) {
+            if (UI()->CanDisplayAutotrackerRules()) {
+                // Collect rules
+                for (std::vector<toggl::AutotrackerRule *>::const_iterator
+                        it = user_->related.AutotrackerRules.begin();
+                        it != user_->related.AutotrackerRules.end();
+                        it++) {
+                    AutotrackerRule *model = *it;
+                    Project *p = user_->related.ProjectByID(model->PID());
+                    Task *t = user_->related.TaskByID(model->TID());
+
+                    view::AutotrackerRule rule;
+                    rule.ProjectName = Formatter::JoinTaskName(t, p, nullptr);
+                    rule.ID = model->LocalID();
+                    rule.Term = model->Term();
+                    autotracker_rule_views.push_back(rule);
+                }
+
+                // Collect titles
+                for (std::set<std::string>::const_iterator
+                        it = autotracker_titles_.begin();
+                        it != autotracker_titles_.end();
+                        ++it) {
+                    autotracker_title_views.push_back(*it);
+                }
+                std::sort(autotracker_title_views.begin(),
+                          autotracker_title_views.end(),
+                          CompareAutotrackerTitles);
+            }
         }
     }
 
     // Render data
-    if (what.display_time_entry_editor && editor_time_entry) {
+    if (what.display_time_entry_editor
+            && !editor_time_entry_view.GUID.empty()) {
         if (what.open_time_entry_editor) {
             UI()->DisplayApp();
         }
-        UI()->DisplayTags(&tags);
+        UI()->DisplayTags(tag_views);
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
-            // FIXME: should not touch pointer here
-            user_->related,
-            // FIXME: should not touch pointer here
-            editor_time_entry,
-            what.time_entry_editor_field,
-            total_duration_for_date,
-            can_see_billable,
-            default_wid,
-            can_add_projects);
+            editor_time_entry_view,
+            what.time_entry_editor_field);
     }
+
     if (what.display_time_entries) {
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
-            // FIXME: should not touch pointer here
-            user_->related,
-            time_entries);
+            time_entry_views);
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
     }
+
     if (what.display_time_entry_autocomplete) {
         UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
     }
+
     if (what.display_mini_timer_autocomplete) {
         UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
     }
+
     if (what.display_workspace_select) {
-        UI()->DisplayWorkspaceSelect(&workspaces);
+        UI()->DisplayWorkspaceSelect(workspace_views);
     }
+
     if (what.display_client_select) {
-        UI()->DisplayClientSelect(clients);
+        UI()->DisplayClientSelect(client_views);
     }
+
     if (what.display_timer_state) {
-        // FIXME: should not touch pointer here
-        if (running_entry && user_) {
-            view::TimeEntry view;
-            view.DurationInSeconds = running_entry->DurationInSeconds();
-            view.Description = running_entry->Description();
-            view.GUID = running_entry->GUID();
-            view.WID = running_entry->WID();
-            view.TID = running_entry->TID();
-            view.PID = running_entry->PID();
-            view.Duration =
-                toggl::Formatter::FormatDuration(
-                    running_entry->DurationInSeconds(),
-                    toggl::Format::Classic);
-
-            view.Started = running_entry->Start();
-            view.Ended = running_entry->Stop();
-
-            view.StartTimeString =
-                toggl::Formatter::FormatTimeForTimeEntryEditor(
-                    running_entry->Start());
-            view.EndTimeString =
-                toggl::Formatter::FormatTimeForTimeEntryEditor(
-                    running_entry->Stop());
-
-            view.DateDuration =
-                Formatter::FormatDurationForDateHeader(
-                    total_duration_for_date);
-
-            view.Billable = running_entry->Billable();
-            view.Tags = running_entry->Tags();
-            view.UpdatedAt = running_entry->UpdatedAt();
-            view.DateHeader =
-                toggl::Formatter::FormatDateHeader(running_entry->Start());
-            view.DurOnly = running_entry->DurOnly();
-            view.IsHeader = false;
-
-            view.CanAddProjects = false;
-            view.CanSeeBillable = false;
-            view.DefaultWID = 0;
-
-            view.Error = running_entry->ValidationError();
-
-            user_->related.ProjectLabelAndColorCode(running_entry,
-                                                    &view.WorkspaceName,
-                                                    &view.ProjectAndTaskLabel,
-                                                    &view.TaskLabel,
-                                                    &view.ProjectLabel,
-                                                    &view.ClientLabel,
-                                                    &view.Color);
-            UI()->DisplayTimerState(view);
+        if (!running_entry_view.GUID.empty() && user_) {
+            UI()->DisplayTimerState(running_entry_view);
         } else {
             UI()->DisplayEmptyTimerState();
         }
     }
+
     if (what.display_autotracker_rules) {
-        // FIXME: should not touch pointer here
-        if (UI()->CanDisplayAutotrackerRules() && user_) {
-            std::vector<view::AutotrackerRule> rules;
-            // FIXME: should not touch pointer here
-            for (std::vector<toggl::AutotrackerRule *>::const_iterator
-                    it = user_->related.AutotrackerRules.begin();
-                    it != user_->related.AutotrackerRules.end();
-                    it++) {
-                AutotrackerRule *model = *it;
-                Project *p = user_->related.ProjectByID(model->PID());
-                Task *t = user_->related.TaskByID(model->TID());
-
-                view::AutotrackerRule rule;
-                rule.ProjectName = Formatter::JoinTaskName(t, p, nullptr);
-                rule.ID = model->LocalID();
-                rule.Term = model->Term();
-                rules.push_back(rule);
-            }
-
-            std::vector<std::string> titles;
-            for (std::set<std::string>::const_iterator
-                    it = autotracker_titles_.begin();
-                    it != autotracker_titles_.end();
-                    ++it) {
-                titles.push_back(*it);
-            }
-            std::sort(titles.begin(), titles.end(), CompareAutotrackerTitles);
-
-            UI()->DisplayAutotrackerRules(rules, titles);
+        if (UI()->CanDisplayAutotrackerRules()) {
+            UI()->DisplayAutotrackerRules(
+                autotracker_rule_views,
+                autotracker_title_views);
         }
     }
+
     if (what.display_settings) {
         UI()->DisplaySettings(what.open_settings,
                               record_timeline,
@@ -703,11 +755,13 @@ void Context::updateUI(const UIElements &what) {
                               use_proxy,
                               proxy);
     }
+
     // Apply autocomplete as last element,
     // as its depending on selects on Windows
     if (what.display_project_autocomplete) {
         UI()->DisplayProjectAutocomplete(&project_autocompletes);
     }
+
     if (what.display_unsynced_items) {
         UI()->DisplayUnsyncedItems(unsynced_item_count);
     }
