@@ -613,7 +613,6 @@ void Context::updateUI(const UIElements &what) {
                 TimeEntry *te = time_entries[i];
                 view::TimeEntry view;
                 view.Fill(te);
-                view.DateHeader = Formatter::FormatDateHeader(te->Start());
                 // Calculate total duration for each date:
                 // will be displayed in date header
                 Poco::Int64 duration = date_durations[view.DateHeader];
@@ -630,9 +629,12 @@ void Context::updateUI(const UIElements &what) {
             // Assign the date durations we calculated previously
             for (unsigned int i = 0; i < time_entry_views.size(); i++) {
                 view::TimeEntry &view = time_entry_views[i];
-                Poco::Int64 duration = date_durations[view.DateHeader];
+                view.Duration = toggl::Formatter::FormatDuration(
+                    view.DurationInSeconds,
+                    Formatter::DurationFormat);
                 view.DateDuration =
-                    Formatter::FormatDurationForDateHeader(duration);
+                    Formatter::FormatDurationForDateHeader(
+                        date_durations[view.DateHeader]);
             }
         }
 
