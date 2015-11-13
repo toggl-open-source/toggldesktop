@@ -396,6 +396,7 @@ class Context : public TimelineDatasource {
 
  protected:
     void uiUpdaterActivity();
+    void reminderActivity();
 
  private:
     error updateURL(std::string *result);
@@ -422,7 +423,6 @@ class Context : public TimelineDatasource {
     void onPeriodicUpdateCheck(Poco::Util::TimerTask& task);  // NOLINT
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
-    void onRemind(Poco::Util::TimerTask&);  // NOLINT
     void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
     void onTrackSettingsUsage(Poco::Util::TimerTask& task);  // NOLINT
     void onWake(Poco::Util::TimerTask& task);  // NOLINT
@@ -453,8 +453,6 @@ class Context : public TimelineDatasource {
     void scheduleSync();
 
     void setOnline(const std::string reason);
-
-    void remindToTrackTime();
 
     int nextSyncIntervalSeconds() const;
 
@@ -531,7 +529,6 @@ class Context : public TimelineDatasource {
     Poco::Timestamp next_push_changes_at_;
     Poco::Timestamp next_fetch_updates_at_;
     Poco::Timestamp next_update_timeline_settings_at_;
-    Poco::Timestamp next_reminder_at_;
     Poco::Timestamp next_wake_at_;
 
     // Schedule tasks using a timer:
@@ -557,6 +554,9 @@ class Context : public TimelineDatasource {
 
     Poco::Mutex ui_updater_m_;
     Poco::Activity<Context> ui_updater_;
+
+    Poco::Mutex reminder_m_;
+    Poco::Activity<Context> reminder_;
 
     Analytics analytics_;
 
