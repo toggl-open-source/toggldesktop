@@ -680,8 +680,6 @@ BOOL manualMode = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	NSLog(@"displayUnsyncedItems %d", [count intValue]);
-
 	// FIXME: hide/show number of unsynced time entries
 }
 
