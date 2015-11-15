@@ -496,28 +496,18 @@ void RelatedData::ClientList(std::vector<Client *> *result) const {
 }
 
 void RelatedData::ProjectLabelAndColorCode(
-    const TimeEntry *te,
-    std::string *workspace_name,
-    std::string *project_and_task_label,
-    std::string *task_label,
-    std::string *project_label,
-    std::string *client_label,
-    std::string *color_code) const {
+    TimeEntry * const te,
+    view::TimeEntry *view) const {
 
     poco_check_ptr(te);
-    poco_check_ptr(workspace_name);
-    poco_check_ptr(project_and_task_label);
-    poco_check_ptr(task_label);
-    poco_check_ptr(project_label);
-    poco_check_ptr(client_label);
-    poco_check_ptr(color_code);
+    poco_check_ptr(view);
 
     Workspace *ws = nullptr;
     if (te->WID()) {
         ws = WorkspaceByID(te->WID());
     }
     if (ws) {
-        *workspace_name = ws->Name();
+        view->WorkspaceName = ws->Name();
     }
 
     Task *t = nullptr;
@@ -525,7 +515,7 @@ void RelatedData::ProjectLabelAndColorCode(
         t = TaskByID(te->TID());
     }
     if (t) {
-        *task_label = t->Name();
+        view->TaskLabel = t->Name();
     }
 
     Project *p = nullptr;
@@ -541,15 +531,15 @@ void RelatedData::ProjectLabelAndColorCode(
 
     Client *c = clientByProject(p);
 
-    *project_and_task_label = Formatter::JoinTaskName(t, p, c);
+    view->ProjectAndTaskLabel = Formatter::JoinTaskName(t, p, c);
 
     if (p) {
-        *color_code = p->ColorCode();
-        *project_label = p->Name();
+        view->Color = p->ColorCode();
+        view->ProjectLabel = p->Name();
     }
 
     if (c) {
-        *client_label = c->Name();
+        view->ClientLabel = c->Name();
     }
 }
 

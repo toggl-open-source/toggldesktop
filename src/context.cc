@@ -497,12 +497,7 @@ void Context::updateUI(const UIElements &what) {
                             editor_time_entry));
                 user_->related.ProjectLabelAndColorCode(
                     editor_time_entry,
-                    &editor_time_entry_view.WorkspaceName,
-                    &editor_time_entry_view.ProjectAndTaskLabel,
-                    &editor_time_entry_view.TaskLabel,
-                    &editor_time_entry_view.ProjectLabel,
-                    &editor_time_entry_view.ClientLabel,
-                    &editor_time_entry_view.Color);
+                    &editor_time_entry_view);
 
                 // Various fields in TE editor related to workspace
                 // and user permissions
@@ -599,12 +594,7 @@ void Context::updateUI(const UIElements &what) {
                             running_entry));
                 user_->related.ProjectLabelAndColorCode(
                     running_entry,
-                    &running_entry_view.WorkspaceName,
-                    &running_entry_view.ProjectAndTaskLabel,
-                    &running_entry_view.TaskLabel,
-                    &running_entry_view.ProjectLabel,
-                    &running_entry_view.ClientLabel,
-                    &running_entry_view.Color);
+                    &running_entry_view);
             }
         }
 
@@ -636,6 +626,9 @@ void Context::updateUI(const UIElements &what) {
                     // Don't display running entries
                     continue;
                 }
+                user_->related.ProjectLabelAndColorCode(
+                    te,
+                    &view);
                 time_entry_views.push_back(view);
             }
             // Assign the date durations we calculated previously
