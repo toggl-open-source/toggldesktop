@@ -23,6 +23,10 @@ class Task;
 class TimeEntry;
 class Workspace;
 
+namespace view {
+class TimeEntry;
+};
+
 template<typename T>
 T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
 
@@ -86,13 +90,8 @@ class RelatedData {
     void ProjectAutocompleteItems(std::vector<view::Autocomplete> *) const;
 
     void ProjectLabelAndColorCode(
-        const TimeEntry *te,
-        std::string *workspace_name,
-        std::string *project_and_task_label,
-        std::string *task_label,
-        std::string *project_label,
-        std::string *client_label,
-        std::string *color_code) const;
+        TimeEntry * const te,
+        view::TimeEntry *view) const;
 
     AutotrackerRule *FindAutotrackerRule(const TimelineEvent event) const;
 
