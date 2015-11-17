@@ -1650,6 +1650,17 @@ bool Context::GetCompactMode() {
     return value;
 }
 
+void Context::SetKeepEndTimeFixed
+	(const bool value) {
+	displayError(db()->SetKeepEndTimeFixed(value));
+}
+
+bool Context::GetKeepEndTimeFixed() {
+	bool value(false);
+	displayError(db()->GetKeepEndTimeFixed(&value));
+	return value;
+}
+
 void Context::SetWindowMaximized(
     const bool value) {
     displayError(db()->SetWindowMaximized(value));
