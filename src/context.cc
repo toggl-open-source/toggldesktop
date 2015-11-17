@@ -2544,7 +2544,7 @@ error Context::SetTimeEntryDate(
         dt,
         Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    te->SetStartUserInput(s);
+    te->SetStartUserInput(s, false);
 
     return displayError(save());
 }
@@ -2586,7 +2586,7 @@ error Context::SetTimeEntryStart(
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-    te->SetStartUserInput(s);
+	te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
     return displayError(save());
 }
