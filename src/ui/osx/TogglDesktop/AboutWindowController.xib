@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="appnameTextField" destination="HXc-yf-CF8" id="RMp-tH-ocD"/>
                 <outlet property="creditsTextView" destination="Jz9-TH-vw4" id="SvP-e6-Rah"/>
-                <outlet property="restartButton" destination="LJU-VH-pb4" id="NQB-tH-5Rv"/>
                 <outlet property="updateChannelComboBox" destination="TpC-DM-Y6t" id="oDs-wq-gy6"/>
                 <outlet property="updateChannelLabel" destination="tj1-p9-ire" id="wPi-xR-5uL"/>
                 <outlet property="updateStatusTextField" destination="rWB-tA-6v7" id="bal-I2-3Tw"/>
@@ -128,27 +127,7 @@
                             <action selector="updateChannelSelected:" target="-2" id="pMa-RR-oLb"/>
                         </connections>
                     </comboBox>
-                    <button hidden="YES" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LJU-VH-pb4" userLabel="RestartButton">
-                        <rect key="frame" x="81" y="44" width="164" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="32" id="jux-he-WcP"/>
-                        </constraints>
-                        <animations/>
-                        <buttonCell key="cell" type="bevel" title="Restart Toggl Desktop" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gze-wJ-nWE">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
-                        </buttonCell>
-                        <connections>
-                            <action selector="clickRestartButton:" target="-2" id="vpx-iY-p31"/>
-                        </connections>
-                    </button>
                 </subviews>
-                <constraints>
-                    <constraint firstAttribute="centerX" secondItem="LJU-VH-pb4" secondAttribute="centerX" id="jWX-Vx-fQr"/>
-                </constraints>
                 <animations/>
             </view>
             <connections>
