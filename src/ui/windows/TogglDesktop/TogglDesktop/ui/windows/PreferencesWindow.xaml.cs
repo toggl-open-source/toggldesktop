@@ -119,6 +119,8 @@ namespace TogglDesktop
             this.recordTimelineCheckBox.IsChecked = settings.RecordTimeline;
             this.onTopCheckBox.IsChecked = settings.OnTop;
 
+            this.keepEndTimeFixedCheckbox.IsChecked = Toggl.GetKeepEndTimeFixed();
+
             #endregion
 
             #region proxy
@@ -222,7 +224,85 @@ namespace TogglDesktop
             return res;
         }
 
-        private Toggl.TogglSettingsView createSettingsFromUI()
+        private static bool isChecked(ToggleButton checkBox)
+        {
+            return checkBox.IsChecked ?? false;
+        }
+
+        private static ulong toULong(string text)
+        {
+            ulong ret;
+            ulong.TryParse(text, out ret);
+            return ret;
+        }
+
+        private void cancelButtonClicked(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+
+        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void windowKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                this.Hide();
+                e.Handled = true;
+            }
+        }
+
+        #region saving
+
+        private async void saveButtonClicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.isSaving = true;
+                this.IsEnabled = false;
+
+                using (Performance.Measure("saving settings"))
+                {
+                    var settings = this.createSettingsFromUI();
+
+                    var success = await Task.Run(() => this.save(settings));
+
+                    if (success)
+                        this.Hide();
+                }
+            }
+            finally
+            {
+                this.IsEnabled = true;
+                this.isSaving = false;
+            }
+        }
+
+        private bool save(Settings settings)
+        {
+            using (Performance.Measure("saving global shortcuts"))
+            {
+                this.saveShortCuts();
+            }
+
+            Toggl.SetDefaultProject(settings.DefaultProject.ProjectID, settings.DefaultProject.TaskID);
+            Toggl.SetKeepEndTimeFixed(settings.KeepEndTimeFixed);
+
+            return Toggl.SetSettings(settings.TogglSettings);
+        }
+
+        private void saveShortCuts()
+        {
+            if (this.showHideShortcutRecorder.HasChanged)
+                Utils.SetShortcutForShow(this.showHideShortcutRecorder.Shortcut);
+            if (this.continueStopShortcutRecorder.HasChanged)
+                Utils.SetShortcutForStart(this.continueStopShortcutRecorder.Shortcut);
+        }
+
+        private Settings createSettingsFromUI()
         {
             var settings = new Toggl.TogglSettingsView
             {
@@ -271,84 +351,22 @@ namespace TogglDesktop
                 #endregion
             };
 
-            return settings;
-        }
-
-        private static bool isChecked(ToggleButton checkBox)
-        {
-            return checkBox.IsChecked ?? false;
-        }
-
-        private static ulong toULong(string text)
-        {
-            ulong ret;
-            ulong.TryParse(text, out ret);
-            return ret;
-        }
-
-        private async void saveButtonClicked(object sender, RoutedEventArgs e)
-        {
-            try
+            return new Settings
             {
-                this.isSaving = true;
-                this.IsEnabled = false;
-                
-                using (Performance.Measure("saving settings"))
-                {
-                    var settings = this.createSettingsFromUI();
-                    var defaultProject = this.selectedDefaultProject;
-
-                    var success = await Task.Run(() => this.save(settings, defaultProject));
-
-                    if (success)
-                        this.Hide();
-                }
-            }
-            finally
-            {
-                this.IsEnabled = true;
-                this.isSaving = false;
-            }
+                TogglSettings = settings,
+                DefaultProject = this.selectedDefaultProject,
+                KeepEndTimeFixed = isChecked(this.keepEndTimeFixedCheckbox),
+            };
         }
 
-        private bool save(Toggl.TogglSettingsView settings, Toggl.TogglAutocompleteView defaultProject)
+        class Settings
         {
-            using (Performance.Measure("saving global shortcuts"))
-            {
-                this.saveShortCuts();
-            }
-
-            Toggl.SetDefaultProject(defaultProject.ProjectID, defaultProject.TaskID);
-
-            return Toggl.SetSettings(settings);
+            public Toggl.TogglSettingsView TogglSettings { get; set; }
+            public Toggl.TogglAutocompleteView DefaultProject { get; set; }
+            public bool KeepEndTimeFixed { get; set; }
         }
 
-        private void saveShortCuts()
-        {
-            if (this.showHideShortcutRecorder.HasChanged)
-                Utils.SetShortcutForShow(this.showHideShortcutRecorder.Shortcut);
-            if (this.continueStopShortcutRecorder.HasChanged)
-                Utils.SetShortcutForStart(this.continueStopShortcutRecorder.Shortcut);
-        }
-
-        private void cancelButtonClicked(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-        }
-
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-        }
-
-        private void windowKeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Escape)
-            {
-                this.Hide();
-                e.Handled = true;
-            }
-        }
+        #endregion
 
         #region shortcuts
 

@@ -551,6 +551,16 @@ public static partial class Toggl
         toggl_get_project_colors(ctx);
     }
 
+    public static void SetKeepEndTimeFixed(bool b)
+    {
+        toggl_set_keep_end_time_fixed(ctx, b);
+    }
+
+    public static bool GetKeepEndTimeFixed()
+    {
+        return toggl_get_keep_end_time_fixed(ctx);
+    }
+
     #endregion
 
     #region callback events
