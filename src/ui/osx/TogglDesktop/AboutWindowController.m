@@ -74,7 +74,7 @@ extern void *ctx;
 	NSLog(@"Download finished: %@", item.displayVersionString);
 
 	self.updateStatus =
-		[NSString stringWithFormat:@"Restart app to upgrade to %@",
+		[NSString stringWithFormat:@"Restart to upgrade to %@",
 		 item.displayVersionString];
 
 	[self displayUpdateStatus];
