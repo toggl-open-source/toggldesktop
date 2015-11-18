@@ -1418,7 +1418,7 @@ TEST(toggl_api, toggl_set_keep_end_times_fixed) {
     ASSERT_TRUE(toggl_get_keep_end_time_fixed(app.ctx()));
 
     toggl_set_keep_end_times_fixed(app.ctx(), false);
-    ASSERT_FALSE(toggl_get_keeo_end_time_fixed(app.ctx));
+    ASSERT_FALSE(toggl_get_keep_end_time_fixed(app.ctx));
 }
 
 TEST(toggl_api, toggl_set_window_maximized) {
