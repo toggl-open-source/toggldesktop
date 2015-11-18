@@ -266,8 +266,9 @@ void TimeEntry::SetStartUserInput(const std::string value, const bool keepEndTim
     if (IsTracking()) {
         SetDurationInSeconds(-start);
     } else {
-		if (keepEndTimeFixed) {
-			SetDurationInSeconds(Stop() - start);
+		auto stop = Stop();
+		if (keepEndTimeFixed && stop > start) {
+			SetDurationInSeconds(stop - start);
 		} else {
 			SetStop(start + DurationInSeconds());
 		}
