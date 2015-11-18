@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -35,7 +35,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="FQH-VE-Gcc"/>
                                 </constraints>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" placeholderString="Your email address" drawsBackground="YES" id="2P3-Ts-4er" customClass="NSTextFieldVerticallyAligned">
                                     <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -50,7 +49,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="c1m-OY-oBi"/>
                                 </constraints>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" focusRingType="none" placeholderString="Password" drawsBackground="YES" id="0Xp-Z1-qCJ" customClass="NSSecureTextFieldVerticallyAligned">
                                     <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -62,7 +60,6 @@
                             </textField>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kmn-TG-CZe">
                                 <rect key="frame" x="2" y="282" width="246" height="110"/>
-                                <animations/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo-white" id="bAv-hB-mKS"/>
                             </imageView>
                             <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" transparent="YES" borderWidth="0.0" boxType="secondary" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4G0-sP-05G" userLabel="loginBox">
@@ -76,7 +73,6 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="223" id="eFb-g5-Dlf"/>
                                             </constraints>
-                                            <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="LOG IN WITH GOOGLE" id="A3G-xB-gb7">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -93,7 +89,6 @@
                                                 <constraint firstAttribute="height" constant="40" id="3ZB-ph-H36"/>
                                                 <constraint firstAttribute="width" constant="40" id="YTk-5A-MsU"/>
                                             </constraints>
-                                            <animations/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="icon-google" id="vXI-OM-KgZ"/>
                                         </imageView>
                                         <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMO-z4-qcY">
@@ -102,7 +97,6 @@
                                                 <constraint firstAttribute="width" constant="185" id="OqO-J5-RlP"/>
                                                 <constraint firstAttribute="height" constant="37" id="jpX-2Y-CJF"/>
                                             </constraints>
-                                            <animations/>
                                             <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GD1-8h-2ba">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -117,7 +111,6 @@ DQ
                                         </button>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eG-O6-U2n">
                                             <rect key="frame" x="39" y="31" width="145" height="17"/>
-                                            <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" focusRingType="none" alignment="center" title="or you can" id="fy5-tT-J9u">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -126,7 +119,6 @@ DQ
                                         </textField>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pac-Wf-TBM" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="49" y="10" width="124" height="17"/>
-                                            <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" focusRingType="none" alignment="center" title="Sign up for free" id="lLp-z5-1TP">
                                                 <font key="font" metaFont="systemBold"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -139,7 +131,6 @@ DQ
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="0.0" y="180" width="223" height="17"/>
-                                            <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Forgot password?" id="sue-36-IQg">
                                                 <font key="font" metaFont="cellTitle"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -151,7 +142,6 @@ DQ
                                             </connections>
                                         </textField>
                                     </subviews>
-                                    <animations/>
                                 </view>
                                 <constraints>
                                     <constraint firstItem="Pac-Wf-TBM" firstAttribute="top" secondItem="0eG-O6-U2n" secondAttribute="bottom" constant="2" id="1tJ-fw-uH0"/>
@@ -165,7 +155,6 @@ DQ
                                     <constraint firstItem="3Xk-yW-T0s" firstAttribute="leading" secondItem="4G0-sP-05G" secondAttribute="leading" constant="9" id="d5f-ST-7Pa"/>
                                     <constraint firstItem="0eG-O6-U2n" firstAttribute="top" relation="greaterThanOrEqual" secondItem="XvF-yu-GZx" secondAttribute="bottom" constant="20" id="zTS-Ts-x8Q"/>
                                 </constraints>
-                                <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
@@ -181,7 +170,6 @@ DQ
                                                 <constraint firstAttribute="width" constant="185" id="ieH-KS-AJa"/>
                                                 <constraint firstAttribute="height" constant="37" id="zoA-We-cKA"/>
                                             </constraints>
-                                            <animations/>
                                             <buttonCell key="cell" type="bevel" title="Sign up" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lfG-S8-DiK">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -196,7 +184,6 @@ DQ
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sef-d6-OO0" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="71" y="6" width="81" height="17"/>
-                                            <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="back to Login" id="cli-3G-3XA">
                                                 <font key="font" metaFont="systemBold"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -207,7 +194,6 @@ DQ
                                             </connections>
                                         </textField>
                                     </subviews>
-                                    <animations/>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="Sef-d6-OO0" secondAttribute="centerX" id="84B-K7-GQ4"/>
@@ -215,12 +201,10 @@ DQ
                                     <constraint firstItem="AJ3-f3-hRV" firstAttribute="top" secondItem="eFn-63-UsG" secondAttribute="top" constant="36" id="vu8-ra-pPg"/>
                                     <constraint firstAttribute="bottom" secondItem="Sef-d6-OO0" secondAttribute="bottom" constant="6" id="x4s-1e-RXr"/>
                                 </constraints>
-                                <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
                         </subviews>
-                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstItem="oP1-rJ-O83" firstAttribute="top" secondItem="Kmn-TG-CZe" secondAttribute="bottom" constant="25" id="0aS-7N-0KT"/>
@@ -238,7 +222,6 @@ DQ
                         <constraint firstItem="Sok-9q-fwV" firstAttribute="centerX" secondItem="oP1-rJ-O83" secondAttribute="centerX" id="rsN-lc-xqa"/>
                         <constraint firstAttribute="centerX" secondItem="Kmn-TG-CZe" secondAttribute="centerX" id="snE-Wb-daX"/>
                     </constraints>
-                    <animations/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
@@ -250,7 +233,6 @@ DQ
                 <constraint firstItem="AeN-Lk-hKy" firstAttribute="leading" secondItem="d50-27-v7r" secondAttribute="leading" id="hTr-Vb-1Zw"/>
                 <constraint firstAttribute="centerX" secondItem="AeN-Lk-hKy" secondAttribute="centerX" id="xdo-yh-fqg"/>
             </constraints>
-            <animations/>
             <point key="canvasLocation" x="411" y="292.5"/>
         </customView>
     </objects>
