@@ -116,6 +116,7 @@
                                         Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}} }" />
                                     <Setter Property="FontSize"
                                         Value="{Binding Path=FontSize, RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}} }" />
+                                    <Setter Property="TextWrapping" Value="Wrap" />
                                 </Style>
                             </ContentPresenter.Resources>
                         </ContentPresenter>

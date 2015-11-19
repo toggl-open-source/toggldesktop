@@ -5,20 +5,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="420" Width="350"
+        Height="420" Width="600"
         Title="Send Feedback" IsToolWindow="True"
         Style="{StaticResource FeedbackWindow}">
 
-
     <Grid Background="{StaticResource ViewBackgroundLight}">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
         <toggl:TogglChromeDesignTimeConverter Title="Send Feedback" IsToolWindow="True"/>
         
-        <StackPanel Grid.Row="0" Margin="11 6 11 0">
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="11 6 11 0">
             <TextBlock Margin="0 5"
                 Text="Send us your feedback and questions."/>
 
@@ -38,14 +43,14 @@
             </Grid>
         </StackPanel>
 
-        <TextBox Grid.Row="1"
+        <TextBox Grid.Row="1" Grid.Column="0" 
                 Name="messageTextBox" x:FieldModifier="private"
                 Margin="11 5" 
                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
                 AcceptsReturn="True"
-                Text="This is example text!"/>
+                Text="This is example text!" TextChanged="onMessageTextBoxTextChanged"/>
 
-        <Grid Grid.Row="2"  Margin="7 4 4 4">
+        <Grid Grid.Row="2" Grid.Column="0" Margin="7 4 4 4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="120"/>
@@ -74,5 +79,23 @@
 
         </Grid>
 
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Here are some links that may help:"
+                   VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="11 5"/>
+
+        <ItemsControl Grid.Row="1" Grid.Column="1"
+                      Margin="11 5"
+                      Name="articlesList" x:FieldModifier="private"
+                      d:DataContext="{d:DesignInstance Type=toggl:FeedbackWindowSample, IsDesignTimeCreatable=True}"
+                      ItemsSource="{Binding Articles}">
+            
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Style="{StaticResource TextButton}" Content="{Binding Name}"
+                            HorizontalAlignment="Left" Margin="0 5" Foreground="DarkBlue"
+                            Click="helpArticleLinkClicked"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
     </Grid>
 </toggl:TogglWindow>

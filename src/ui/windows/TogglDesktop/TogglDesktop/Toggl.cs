@@ -135,6 +135,9 @@ public static partial class Toggl
     public delegate void DisplayPromotion(
         long id);
 
+    public delegate void DisplayHelpArticles(
+        List<TogglHelpArticleView> articles);
+
     #endregion
 
     #region api calls
@@ -551,6 +554,13 @@ public static partial class Toggl
         toggl_get_project_colors(ctx);
     }
 
+    public static void SearchHelpArticles(string keywords)
+    {
+        toggl_search_help_articles(ctx, keywords);
+    }
+
+
+
     #endregion
 
     #region callback events
@@ -580,6 +590,7 @@ public static partial class Toggl
     public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
+    public static event DisplayHelpArticles OnDisplayHelpArticles = delegate { }; 
 
     private static void listenToLibEvents()
     {
@@ -779,6 +790,14 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnDisplayPromotino, id: {0}", id))
             {
                 OnDisplayPromotion(id);
+            }
+        });
+
+        toggl_on_help_articles(ctx, first =>
+        {
+            using (Performance.Measure("Calling OnDisplayHelpArticles"))
+            {
+                OnDisplayHelpArticles(convertToHelpArticleViewList(first));
             }
         });
     }
@@ -988,6 +1007,12 @@ public static partial class Toggl
     #region converting data
 
     #region high level
+
+    private static List<TogglHelpArticleView> convertToHelpArticleViewList(IntPtr first)
+    {
+        return marshalList<TogglHelpArticleView>(
+            first, n => n.Next, "marshalling help article view list");
+    }
 
     private static List<TogglGenericView> convertToViewItemList(IntPtr first)
     {
