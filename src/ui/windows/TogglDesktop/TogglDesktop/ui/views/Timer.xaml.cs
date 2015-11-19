@@ -267,7 +267,7 @@ namespace TogglDesktop
             {
                 Toggl.Start(
                     this.descriptionTextBox.Text,
-                    "",
+                    this.durationTextBox.Text,
                     this.completedProject.TaskId,
                     this.completedProject.ProjectId,
                     "",
@@ -360,7 +360,7 @@ namespace TogglDesktop
             this.resetUIState(false);
 
             this.descriptionLabel.Text = "What are you doing?";
-            this.durationLabelLeft.Text = "";
+            this.durationLabelLeft.Text = "00:00:00";
             this.durationLabelRight.Text = "";
             this.durationLabelLeft.Margin = new Thickness(14, 0, 0, 0);
         }
@@ -377,7 +377,9 @@ namespace TogglDesktop
             this.isRunning = running;
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
+            this.durationTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
+            this.durationTextBox.ShowOnlyIf(!running);
             this.iconPanel.ShowOnlyIf(running);
             this.projectGridRow.Height = new GridLength(0);
             this.completedProject = new ProjectInfo();
