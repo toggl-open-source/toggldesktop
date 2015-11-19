@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto" MinWidth="10"/>
+                <ColumnDefinition Width="112"/>
                 <ColumnDefinition Width="84"/>
             </Grid.ColumnDefinitions>
 
@@ -104,17 +104,17 @@
             </StackPanel>
 
             <!-- time placeholder/display -->
-            <Grid Grid.Column="3" Width="112">
+            <Grid Grid.Column="3">
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=durationLabelRight, Path=Text}" Value=""/>
-                                    <Condition Binding="{Binding ElementName=durationLabelLeft, Path=Text}" Value=""/>
+                                    <Condition Binding="{Binding ElementName=durationTextBox, Path=Text}" Value=""/>
+                                    <Condition Binding="{Binding ElementName=durationTextBox, Path=IsKeyboardFocused}" Value="False"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Visibility" Value="Visible"/>
                             </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -130,6 +130,10 @@
                     Margin="16, 0, 0, 0"
                     MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
             </Grid>
+
+            <!-- time textbox -->
+            <toggl:ExtendedTextBox Grid.Column="3" x:Name="durationTextBox" x:FieldModifier="private"
+                FontSize="24" HorizontalContentAlignment="Right" FontWeight="UltraLight"/>
 
             <!-- start/stop button -->
             <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private" Click="startStopButtonOnClick"/>
