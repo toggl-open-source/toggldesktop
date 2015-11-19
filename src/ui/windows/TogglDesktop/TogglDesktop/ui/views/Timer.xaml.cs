@@ -304,6 +304,8 @@ namespace TogglDesktop
             setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
             setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
 
+            this.timeDisplayGrid.ToolTip = "started at " + item.StartTimeString;
+
             this.projectLabel.Foreground = Utils.ProjectColorBrushFromString(item.Color);
 
             this.billabeIcon.ShowOnlyIf(item.Billable);
@@ -366,6 +368,7 @@ namespace TogglDesktop
         {
             this.resetUIState(false);
 
+            this.timeDisplayGrid.ToolTip = null;
             this.descriptionLabel.Text = "What are you doing?";
             this.durationLabelLeft.Text = "00:00:00";
             this.durationLabelRight.Text = "";

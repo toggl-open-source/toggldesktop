@@ -104,7 +104,8 @@
             </StackPanel>
 
             <!-- time placeholder/display -->
-            <Grid Grid.Column="3">
+            <Grid Grid.Column="3" VerticalAlignment="Center"
+                  Name="timeDisplayGrid" x:FieldModifier="private">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -119,7 +120,7 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-
+                
                 <TextBlock Name="durationLabelRight" x:FieldModifier="private"
                     FontSize="24" HorizontalAlignment="Right" FontWeight="UltraLight"
                     Margin="0, 0, 14, 0"
