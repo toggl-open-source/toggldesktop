@@ -265,14 +265,21 @@ namespace TogglDesktop
         {
             using (Performance.Measure("starting time entry from timer"))
             {
-                Toggl.Start(
+                var durationText = this.durationTextBox.Text;
+
+                var guid = Toggl.Start(
                     this.descriptionTextBox.Text,
-                    this.durationTextBox.Text,
+                    "",
                     this.completedProject.TaskId,
                     this.completedProject.ProjectId,
                     "",
                     ""
                     );
+
+                if (!string.IsNullOrEmpty(guid))
+                {
+                    Toggl.SetTimeEntryDuration(guid, durationText);
+                }
             }
         }
 
