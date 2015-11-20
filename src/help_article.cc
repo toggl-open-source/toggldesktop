@@ -16,58 +16,58 @@ HelpDatabase::HelpDatabase() {
     articles_.push_back(  // NOLINT
         HelpArticle(
             "cat",  // NOLINT
-            "Customizing Toggl",  // NOLINT
-            "settings",  // NOLINT
-            "customizing toggl"));  // NOLINT
+            "Basics",  // NOLINT
+            "basics",  // NOLINT
+            "basics"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
             "post",  // NOLINT
-            "Timer page settings",  // NOLINT
-            "timer-page-settings",  // NOLINT
-            "timer page settings"));  // NOLINT
+            "Tracking time",  // NOLINT
+            "tracking-time",  // NOLINT
+            "tracking time"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
             "post",  // NOLINT
-            "Rounding",  // NOLINT
-            "rounding-and-decimals",  // NOLINT
-            "rounding"));  // NOLINT
+            "Creating Projects and Clients",  // NOLINT
+            "projects-overview",  // NOLINT
+            "creating projects and clients"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
             "post",  // NOLINT
-            "My Profile settings",  // NOLINT
-            "my-profile",  // NOLINT
-            "my profile settings"));  // NOLINT
+            "How to get most out of Toggl",  // NOLINT
+            "how-to-get-most-out-of-toggl",  // NOLINT
+            "how to get most out of toggl"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
             "post",  // NOLINT
-            "Google sign-in",  // NOLINT
-            "google-sign-in",  // NOLINT
-            "google sign-in"));  // NOLINT
+            "Setting up a workspace",  // NOLINT
+            "workspace",  // NOLINT
+            "setting up a workspace"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
             "post",  // NOLINT
-            "Toggl offline mode",  // NOLINT
-            "toggl-offline-mode",  // NOLINT
-            "toggl offline mode"));  // NOLINT
+            "Categorizing time",  // NOLINT
+            "how-to-categorize-my-time",  // NOLINT
+            "categorizing time"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
             "post",  // NOLINT
-            "Tags",  // NOLINT
-            "tags",  // NOLINT
-            "tags"));  // NOLINT
+            "Toggl Vocabulary and Hierarchy",  // NOLINT
+            "toggl-vocabulary-and-hierarchy",  // NOLINT
+            "toggl vocabulary and hierarchy"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
             "post",  // NOLINT
-            "Keyboard shortcuts",  // NOLINT
-            "keyboard-shortcuts",  // NOLINT
-            "keyboard shortcuts"));  // NOLINT
+            "Why choose Toggl for my company?",  // NOLINT
+            "trust-facts",  // NOLINT
+            "why choose toggl for my company?"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
@@ -117,6 +117,286 @@ HelpDatabase::HelpDatabase() {
             "What is the difference between Pro/Free workspace?",  // NOLINT
             "what-is-the-difference-between-profree-workspace",  // NOLINT
             "what is the difference between pro/free workspace?"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "cat",  // NOLINT
+            "Team management",  // NOLINT
+            "team-management",  // NOLINT
+            "team management"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Why Toggl For Your Team?",  // NOLINT
+            "why-choose-toggl-for-your-team",  // NOLINT
+            "why toggl for your team?"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Team setup video overview",  // NOLINT
+            "team-setup-video-overview",  // NOLINT
+            "team setup video overview"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Tracking Time With a Team",  // NOLINT
+            "tracking-with-a-team-2",  // NOLINT
+            "tracking time with a team"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Add time for team",  // NOLINT
+            "add-time-team",  // NOLINT
+            "add time for team"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Time tracking reminders",  // NOLINT
+            "track-reminders",  // NOLINT
+            "time tracking reminders"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Team's Access Rights",  // NOLINT
+            "user-access-rights",  // NOLINT
+            "team's access rights"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Editing team member profile",  // NOLINT
+            "editing-team-member-profile",  // NOLINT
+            "editing team member profile"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Case studies - how do others use Toggl?",  // NOLINT
+            "case-studies",  // NOLINT
+            "case studies - how do others use toggl?"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "cat",  // NOLINT
+            "Toggl on my Desktop",  // NOLINT
+            "desktopapp",  // NOLINT
+            "toggl on my desktop"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Download links for Desktop",  // NOLINT
+            "toggl-on-my-desktop",  // NOLINT
+            "download links for desktop"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Toggl Desktop for Windows",  // NOLINT
+            "toggl-desktop-for-windows",  // NOLINT
+            "toggl desktop for windows"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Toggl Desktop for Mac",  // NOLINT
+            "toggl-desktop-for-mac-osx",  // NOLINT
+            "toggl desktop for mac"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Toggl Desktop for Linux",  // NOLINT
+            "toggl-desktop-for-linux",  // NOLINT
+            "toggl desktop for linux"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Clearing the local data from Toggl Desktop",  // NOLINT
+            "clearing-the-local-data-from-toggl-desktop",  // NOLINT
+            "clearing the local data from toggl desktop"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "cat",  // NOLINT
+            "Uncategorized",  // NOLINT
+            "uncategorized",  // NOLINT
+            "uncategorized"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Webapp-help",  // NOLINT
+            "webapp-help",  // NOLINT
+            "webapp-help"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "cat",  // NOLINT
+            "Toggl app for iOS &amp; Android",  // NOLINT
+            "toggl-app-for-ios-android",  // NOLINT
+            "toggl app for ios &amp; android"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Toggl Timer for Android",  // NOLINT
+            "toggl-timer-for-android-2",  // NOLINT
+            "toggl timer for android"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Toggl Timer for iOS",  // NOLINT
+            "toggl-timer-for-ios",  // NOLINT
+            "toggl timer for ios"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "cat",  // NOLINT
+            "Customizing Toggl",  // NOLINT
+            "settings",  // NOLINT
+            "customizing toggl"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Timer Page Settings",  // NOLINT
+            "timer-page-settings",  // NOLINT
+            "timer page settings"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Rounding",  // NOLINT
+            "rounding-and-decimals",  // NOLINT
+            "rounding"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "My Profile settings",  // NOLINT
+            "my-profile",  // NOLINT
+            "my profile settings"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Google Sign-in",  // NOLINT
+            "google-sign-in",  // NOLINT
+            "google sign-in"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Toggl offline mode",  // NOLINT
+            "toggl-offline-mode",  // NOLINT
+            "toggl offline mode"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Tags",  // NOLINT
+            "tags",  // NOLINT
+            "tags"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Keyboard shortcuts",  // NOLINT
+            "keyboard-shortcuts",  // NOLINT
+            "keyboard shortcuts"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "cat",  // NOLINT
+            "Extras",  // NOLINT
+            "apps",  // NOLINT
+            "extras"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Toggl Button Chrome Extension",  // NOLINT
+            "toggl-button-chrome-extension",  // NOLINT
+            "toggl button chrome extension"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "User-developed integrations",  // NOLINT
+            "user-developed-integrations",  // NOLINT
+            "user-developed integrations"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Timeline",  // NOLINT
+            "timeline",  // NOLINT
+            "timeline"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "cat",  // NOLINT
+            "Import and Export",  // NOLINT
+            "integrations",  // NOLINT
+            "import and export"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "GitHub",  // NOLINT
+            "github",  // NOLINT
+            "github"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Asana",  // NOLINT
+            "asana",  // NOLINT
+            "asana"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Teamweek",  // NOLINT
+            "teamweek",  // NOLINT
+            "teamweek"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "CSV import",  // NOLINT
+            "csv-import-new",  // NOLINT
+            "csv import"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "Basecamp",  // NOLINT
+            "basecamp",  // NOLINT
+            "basecamp"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "FreshBooks",  // NOLINT
+            "freshbooks",  // NOLINT
+            "freshbooks"));  // NOLINT
+    // NOLINT
+    articles_.push_back(  // NOLINT
+        HelpArticle(
+            "post",  // NOLINT
+            "iCal",  // NOLINT
+            "ical-google-calendar-feed",  // NOLINT
+            "ical"));  // NOLINT
     // NOLINT
     articles_.push_back(  // NOLINT
         HelpArticle(
@@ -306,279 +586,6 @@ HelpDatabase::HelpDatabase() {
             "Locking time entries",  // NOLINT
             "lock-timesheets",  // NOLINT
             "locking time entries"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "cat",  // NOLINT
-            "Toggl app for iOS &amp; Android",  // NOLINT
-            "toggl-app-for-ios-android",  // NOLINT
-            "toggl app for ios &amp; android"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Toggl Timer for Android",  // NOLINT
-            "toggl-timer-for-android-2",  // NOLINT
-            "toggl timer for android"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Toggl Timer for iOS",  // NOLINT
-            "toggl-timer-for-ios",  // NOLINT
-            "toggl timer for ios"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "cat",  // NOLINT
-            "Toggl on my Desktop",  // NOLINT
-            "desktopapp",  // NOLINT
-            "toggl on my desktop"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Download links for Desktop",  // NOLINT
-            "toggl-on-my-desktop",  // NOLINT
-            "download links for desktop"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Toggl Desktop for Windows",  // NOLINT
-            "toggl-desktop-for-windows",  // NOLINT
-            "toggl desktop for windows"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Toggl Desktop for Mac",  // NOLINT
-            "toggl-desktop-for-mac-osx",  // NOLINT
-            "toggl desktop for mac"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Toggl Desktop for Linux",  // NOLINT
-            "toggl-desktop-for-linux",  // NOLINT
-            "toggl desktop for linux"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Clearing the local data from Toggl Desktop",  // NOLINT
-            "clearing-the-local-data-from-toggl-desktop",  // NOLINT
-            "clearing the local data from toggl desktop"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "cat",  // NOLINT
-            "Basics",  // NOLINT
-            "basics",  // NOLINT
-            "basics"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Tracking time",  // NOLINT
-            "tracking-time",  // NOLINT
-            "tracking time"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Creating Projects and Clients",  // NOLINT
-            "projects-overview",  // NOLINT
-            "creating projects and clients"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "How to get most out of Toggl",  // NOLINT
-            "how-to-get-most-out-of-toggl",  // NOLINT
-            "how to get most out of toggl"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Setting up a workspace",  // NOLINT
-            "workspace",  // NOLINT
-            "setting up a workspace"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Categorizing time",  // NOLINT
-            "how-to-categorize-my-time",  // NOLINT
-            "categorizing time"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Toggl Vocabulary and Hierarchy",  // NOLINT
-            "toggl-vocabulary-and-hierarchy",  // NOLINT
-            "toggl vocabulary and hierarchy"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Why choose Toggl for my company?",  // NOLINT
-            "trust-facts",  // NOLINT
-            "why choose toggl for my company?"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "cat",  // NOLINT
-            "Import and Export",  // NOLINT
-            "integrations",  // NOLINT
-            "import and export"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Asana",  // NOLINT
-            "asana",  // NOLINT
-            "asana"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Teamweek",  // NOLINT
-            "teamweek",  // NOLINT
-            "teamweek"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "CSV import",  // NOLINT
-            "csv-import-new",  // NOLINT
-            "csv import"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Basecamp",  // NOLINT
-            "basecamp",  // NOLINT
-            "basecamp"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "FreshBooks",  // NOLINT
-            "freshbooks",  // NOLINT
-            "freshbooks"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "iCal",  // NOLINT
-            "ical-google-calendar-feed",  // NOLINT
-            "ical"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "cat",  // NOLINT
-            "Team management",  // NOLINT
-            "team-management",  // NOLINT
-            "team management"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Why Toggl For Your Team?",  // NOLINT
-            "why-choose-toggl-for-your-team",  // NOLINT
-            "why toggl for your team?"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Team setup video overview",  // NOLINT
-            "team-setup-video-overview",  // NOLINT
-            "team setup video overview"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Tracking Time With a Team",  // NOLINT
-            "tracking-with-a-team-2",  // NOLINT
-            "tracking time with a team"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Add time for team",  // NOLINT
-            "add-time-team",  // NOLINT
-            "add time for team"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Time tracking reminders",  // NOLINT
-            "track-reminders",  // NOLINT
-            "time tracking reminders"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Team's Access Rights",  // NOLINT
-            "user-access-rights",  // NOLINT
-            "team's access rights"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Editing team member profile",  // NOLINT
-            "editing-team-member-profile",  // NOLINT
-            "editing team member profile"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Case studies - how do others use Toggl?",  // NOLINT
-            "case-studies",  // NOLINT
-            "case studies - how do others use toggl?"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "cat",  // NOLINT
-            "Uncategorized",  // NOLINT
-            "uncategorized",  // NOLINT
-            "uncategorized"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Webapp-help",  // NOLINT
-            "webapp-help",  // NOLINT
-            "webapp-help"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "cat",  // NOLINT
-            "Extras",  // NOLINT
-            "apps",  // NOLINT
-            "extras"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Toggl Button Chrome Extension",  // NOLINT
-            "toggl-button-chrome-extension",  // NOLINT
-            "toggl button chrome extension"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "User-developed integrations",  // NOLINT
-            "user-developed-integrations",  // NOLINT
-            "user-developed integrations"));  // NOLINT
-    // NOLINT
-    articles_.push_back(  // NOLINT
-        HelpArticle(
-            "post",  // NOLINT
-            "Timeline",  // NOLINT
-            "timeline",  // NOLINT
-            "timeline"));  // NOLINT
     // NOLINT
 }
 
