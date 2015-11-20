@@ -110,7 +110,7 @@ func generateSource() error {
 			var article Article
 			article.Type = data["type"]
 			article.Name = data["name"]
-			article.URL = data["url"]
+			article.URL = "https://support.toggl.com/" + data["url"]
 			article.SearchText = strings.ToLower(article.Name)
 			fmt.Println("article", article)
 
