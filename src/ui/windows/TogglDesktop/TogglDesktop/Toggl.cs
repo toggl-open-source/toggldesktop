@@ -559,7 +559,15 @@ public static partial class Toggl
         toggl_search_help_articles(ctx, keywords);
     }
 
+    public static void SetKeepEndTimeFixed(bool b)
+    {
+        toggl_set_keep_end_time_fixed(ctx, b);
+    }
 
+    public static bool GetKeepEndTimeFixed()
+    {
+        return toggl_get_keep_end_time_fixed(ctx);
+    }
 
     #endregion
 

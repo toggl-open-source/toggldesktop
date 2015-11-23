@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="420" Width="500"
+        Height="430" Width="500"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Preferences"
@@ -159,6 +159,10 @@
                         </TextBlock>
 
                     </Grid>
+                    
+                    <CheckBox Name="keepEndTimeFixedCheckbox" x:FieldModifier="private"
+                        Content="Change duration when changing start time"
+                              Margin="5"></CheckBox>
                 </StackPanel>
             </TabItem>
             <TabItem Header="PROXY">

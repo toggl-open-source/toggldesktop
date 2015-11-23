@@ -1020,6 +1020,18 @@ BOOL manualMode = NO;
 	[self.reach stopNotifier];
 	toggl_context_clear(ctx);
 	ctx = 0;
+
+	if (self.aboutWindowController.restart == YES)
+	{
+		float seconds = 1.0;
+		NSTask *task = [[NSTask alloc] init];
+		NSMutableArray *args = [NSMutableArray array];
+		[args addObject:@"-c"];
+		[args addObject:[NSString stringWithFormat:@"sleep %f; open \"%@\"", seconds, [[NSBundle mainBundle] bundlePath]]];
+		[task setLaunchPath:@"/bin/sh"];
+		[task setArguments:args];
+		[task launch];
+	}
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender

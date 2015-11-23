@@ -851,6 +851,13 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_get_compact_mode(
         void *context);
 
+	TOGGL_EXPORT void toggl_set_keep_end_time_fixed(
+		void *context,
+		const bool_t value);
+
+	TOGGL_EXPORT bool_t toggl_get_keep_end_time_fixed(
+		void *context);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

@@ -33,6 +33,7 @@ extern void *ctx;
 	[self.creditsTextView readRTFDFromFile:path];
 
 	self.windowHasLoad = YES;
+	self.restart = NO;
 
 	char *str = toggl_get_update_channel(ctx);
 	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
@@ -69,6 +70,18 @@ extern void *ctx;
 	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 
+- (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation
+{
+	NSLog(@"Download finished: %@", item.displayVersionString);
+
+	self.updateStatus =
+		[NSString stringWithFormat:@"Restart app to upgrade to %@",
+		 item.displayVersionString];
+
+	[self displayUpdateStatus];
+	[self.restartButton setHidden:NO];
+}
+
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
 {
 	NSLog(@"update found: %@", update.displayVersionString);
@@ -77,6 +90,7 @@ extern void *ctx;
 		[NSString stringWithFormat:@"Update found: %@. Downloading..",
 		 update.displayVersionString];
 
+	[self.restartButton setHidden:YES];
 	[self displayUpdateStatus];
 }
 
@@ -113,6 +127,12 @@ extern void *ctx;
 	[Utils setUpdaterChannel:updateChannel];
 
 	[self checkForUpdates];
+}
+
+- (IBAction)clickRestartButton:(id)sender;
+{
+	self.restart = YES;
+	[[NSApplication sharedApplication] terminate:nil];
 }
 
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update

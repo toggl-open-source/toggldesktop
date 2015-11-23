@@ -105,7 +105,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     // User-triggered changes to timer:
     void SetDurationUserInput(const std::string);
     void SetStopUserInput(const std::string);
-    void SetStartUserInput(const std::string);
+    void SetStartUserInput(const std::string, const bool);
 
     bool IsTracking() const {
         return duration_in_seconds_ < 0;
