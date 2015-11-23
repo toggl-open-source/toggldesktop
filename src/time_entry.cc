@@ -261,12 +261,17 @@ void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
     }
 }
 
-void TimeEntry::SetStartUserInput(const std::string value) {
+void TimeEntry::SetStartUserInput(const std::string value, const bool keepEndTimeFixed) {
     Poco::Int64 start = Formatter::Parse8601(value);
     if (IsTracking()) {
         SetDurationInSeconds(-start);
     } else {
-        SetStop(start + DurationInSeconds());
+		auto stop = Stop();
+		if (keepEndTimeFixed && stop > start) {
+			SetDurationInSeconds(stop - start);
+		} else {
+			SetStop(start + DurationInSeconds());
+		}
     }
     SetStart(start);
 
