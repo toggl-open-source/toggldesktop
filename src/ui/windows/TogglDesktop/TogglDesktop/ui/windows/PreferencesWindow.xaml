@@ -161,7 +161,7 @@
                     </Grid>
                     
                     <CheckBox Name="keepEndTimeFixedCheckbox" x:FieldModifier="private"
-                        Content="Don't change duration when changing start time"
+                        Content="Change duration when changing start time"
                               Margin="5"></CheckBox>
                 </StackPanel>
             </TabItem>
