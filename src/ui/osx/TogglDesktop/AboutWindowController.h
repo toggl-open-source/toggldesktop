@@ -15,6 +15,7 @@
 @property IBOutlet NSTextField *updateStatusTextField;
 @property IBOutlet NSComboBox *updateChannelComboBox;
 @property BOOL windowHasLoad;
+@property BOOL restart;
 @property NSString *updateStatus;
 @property IBOutlet NSTextField *updateChannelLabel;
 - (IBAction)updateChannelSelected:(id)sender;
