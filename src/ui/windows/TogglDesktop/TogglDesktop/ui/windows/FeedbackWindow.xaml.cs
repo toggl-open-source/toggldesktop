@@ -172,7 +172,7 @@ namespace TogglDesktop
             if (article == null)
                 return;
 
-            Process.Start("http://support.toggl.com/" + article.URL);
+            Process.Start(article.URL);
         }
     }
 }

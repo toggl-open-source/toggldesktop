@@ -92,6 +92,7 @@
                 <DataTemplate>
                     <Button Style="{StaticResource TextButton}" Content="{Binding Name}"
                             HorizontalAlignment="Left" Margin="0 5" Foreground="DarkBlue"
+                            ToolTip="{Binding URL}"
                             Click="helpArticleLinkClicked"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
