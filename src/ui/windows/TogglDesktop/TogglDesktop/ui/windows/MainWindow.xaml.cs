@@ -984,8 +984,8 @@ namespace TogglDesktop
             }
             else
             {
-                var s = this.getCurrentScreen();
-                bool left = s.WorkingArea.Right - (this.Left + this.ActualWidth) < this.editPopup.Width;
+                var s = this.getCurrentScreenRectangle();
+                bool left = s.Right - (this.Left + this.ActualWidth) < this.editPopup.Width;
 
                 var x = this.Left;
                 var y = this.Top;
@@ -995,7 +995,7 @@ namespace TogglDesktop
                     x += this.ActualWidth;
                 }
 
-                this.editPopup.SetPlacement(left, x, y, this.Height, s.WorkingArea.Width * 0.5);
+                this.editPopup.SetPlacement(left, x, y, this.Height, s.Width * 0.5);
             }
 
         }

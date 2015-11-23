@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
@@ -217,18 +218,42 @@ namespace TogglDesktop
         
         private void updateMaximumSize()
         {
-            var screen = this.getCurrentScreen();
+            var screenRect = this.getCurrentScreenRectangle();
 
-            this.MaxWidth = screen.WorkingArea.Width;
-            this.MaxHeight = screen.WorkingArea.Height;
+            this.MaxWidth = screenRect.Width;
+            this.MaxHeight = screenRect.Height;
         }
 
-        protected Screen getCurrentScreen()
+        private Screen getCurrentScreen()
         {
             return Screen.FromRectangle(new Rectangle(
                 (int)this.Left, (int)this.Top,
                 (int)this.Width, (int)this.Height
                 ));
+        }
+
+        protected Rect getCurrentScreenRectangle()
+        {
+            var screen = this.getCurrentScreen();
+            var area = screen.WorkingArea;
+
+            var topleft = new System.Windows.Point(area.Left, area.Top);
+            var bottomRight = new System.Windows.Point(area.Right, area.Bottom);
+
+            var presentationSource = PresentationSource.FromVisual(this);
+            if (presentationSource != null)
+            {
+                var compositionTarget = presentationSource.CompositionTarget;
+                if (compositionTarget != null)
+                {
+                    var t = compositionTarget.TransformFromDevice;
+
+                    topleft = t.Transform(topleft);
+                    bottomRight = t.Transform(bottomRight);
+                }
+            }
+
+            return new Rect(topleft, bottomRight);
         }
 
         #endregion
