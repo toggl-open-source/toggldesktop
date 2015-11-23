@@ -177,6 +177,7 @@ namespace TogglDesktop
         {
             if (evenIfFocused
                 || !textBox.IsKeyboardFocused
+                || textBox.Tag == null
                 || textBox.Text == (textBox.Tag as string))
             {
                 textBox.SetText(time);
@@ -195,9 +196,12 @@ namespace TogglDesktop
             if (!this.hasTimeEntry() || this.timeEntry.DurationInSeconds >= 0)
                 return;
 
-            if (this.durationTextBox.Text != (this.durationTextBox.Tag as string)
-                || this.durationTextBox.SelectedText != "")
-                return;
+            if (this.durationTextBox.Tag != null)
+            {
+                if (this.durationTextBox.Text != (this.durationTextBox.Tag as string)
+                    || this.durationTextBox.SelectedText != "")
+                    return;
+            }
 
             var caret = this.durationTextBox.CaretIndex;
 
@@ -348,6 +352,8 @@ namespace TogglDesktop
             var now = textBox.Text;
             if (before == now)
                 return;
+
+            textBox.Tag = null;
 
             apiCall(this.timeEntry.GUID, now);
         }
