@@ -33,6 +33,7 @@ extern void *ctx;
 	[self.creditsTextView readRTFDFromFile:path];
 
 	self.windowHasLoad = YES;
+	self.restart = NO;
 
 	char *str = toggl_get_update_channel(ctx);
 	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
@@ -130,14 +131,7 @@ extern void *ctx;
 
 - (IBAction)clickRestartButton:(id)sender;
 {
-	float seconds = 2.0;
-	NSTask *task = [[NSTask alloc] init];
-	NSMutableArray *args = [NSMutableArray array];
-	[args addObject:@"-c"];
-	[args addObject:[NSString stringWithFormat:@"sleep %f; open \"%@\"", seconds, [[NSBundle mainBundle] bundlePath]]];
-	[task setLaunchPath:@"/bin/sh"];
-	[task setArguments:args];
-	[task launch];
+	self.restart = YES;
 	[[NSApplication sharedApplication] terminate:nil];
 }
 
