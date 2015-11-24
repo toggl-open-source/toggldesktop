@@ -2104,7 +2104,7 @@ error Database::saveModel(
             std::stringstream ss;
             ss << "Updating timeline event " + model->String()
                << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger().trace(ss.str());
 
             *session_ <<
                       "update timeline_events set "
