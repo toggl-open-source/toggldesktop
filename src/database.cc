@@ -523,12 +523,12 @@ error Database::GetCompactMode(bool *result) {
 }
 
 error Database::SetKeepEndTimeFixed(
-	const bool value) {
-	return setSettingsValue("keep_end_time_fixed", value);
+    const bool value) {
+    return setSettingsValue("keep_end_time_fixed", value);
 }
 
 error Database::GetKeepEndTimeFixed(bool *result) {
-	return getSettingsValue("keep_end_time_fixed", result);
+    return getSettingsValue("keep_end_time_fixed", result);
 }
 
 error Database::SetWindowMaximized(

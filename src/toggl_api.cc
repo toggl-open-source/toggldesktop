@@ -1156,12 +1156,12 @@ bool_t toggl_get_compact_mode(
 }
 
 void toggl_set_keep_end_time_fixed(
-	void *context,
-	const bool_t value) {
-	app(context)->SetKeepEndTimeFixed(value);
+    void *context,
+    const bool_t value) {
+    app(context)->SetKeepEndTimeFixed(value);
 }
 
 bool_t toggl_get_keep_end_time_fixed(
-	void *context) {
-	return app(context)->GetKeepEndTimeFixed();
+    void *context) {
+    return app(context)->GetKeepEndTimeFixed();
 }

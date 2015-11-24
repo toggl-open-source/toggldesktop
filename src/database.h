@@ -129,11 +129,11 @@ class Database {
     error GetCompactMode(
         bool *);
 
-	error SetKeepEndTimeFixed(
-		const bool);
+    error SetKeepEndTimeFixed(
+        const bool);
 
-	error GetKeepEndTimeFixed(
-		bool *);
+    error GetKeepEndTimeFixed(
+        bool *);
 
     error SetWindowMaximized(
         const bool value);

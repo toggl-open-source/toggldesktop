@@ -1651,14 +1651,14 @@ bool Context::GetCompactMode() {
 }
 
 void Context::SetKeepEndTimeFixed
-	(const bool value) {
-	displayError(db()->SetKeepEndTimeFixed(value));
+(const bool value) {
+    displayError(db()->SetKeepEndTimeFixed(value));
 }
 
 bool Context::GetKeepEndTimeFixed() {
-	bool value(false);
-	displayError(db()->GetKeepEndTimeFixed(&value));
-	return value;
+    bool value(false);
+    displayError(db()->GetKeepEndTimeFixed(&value));
+    return value;
 }
 
 void Context::SetWindowMaximized(
@@ -2586,7 +2586,7 @@ error Context::SetTimeEntryStart(
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
 
-	te->SetStartUserInput(s, GetKeepEndTimeFixed());
+    te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
     return displayError(save());
 }
