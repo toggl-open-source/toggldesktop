@@ -167,10 +167,10 @@ class Context : public TimelineDatasource {
 
     bool GetCompactMode();
 
-	void SetKeepEndTimeFixed(
-		const bool);
+    void SetKeepEndTimeFixed(
+        const bool);
 
-	bool GetKeepEndTimeFixed();
+    bool GetKeepEndTimeFixed();
 
     void SetWindowMaximized(
         const bool value);
