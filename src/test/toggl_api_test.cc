@@ -1414,11 +1414,11 @@ TEST(toggl_api, toggl_set_compact_mode) {
 TEST(toggl_api, toggl_set_keep_end_times_fixed) {
     testing::App app;
 
-    toggl_set_keep_end_times_fixed(app.ctx(), true);
+    toggl_set_keep_end_time_fixed(app.ctx(), true);
     ASSERT_TRUE(toggl_get_keep_end_time_fixed(app.ctx()));
 
-    toggl_set_keep_end_times_fixed(app.ctx(), false);
-    ASSERT_FALSE(toggl_get_keep_end_time_fixed(app.ctx));
+    toggl_set_keep_end_time_fixed(app.ctx(), false);
+    ASSERT_FALSE(toggl_get_keep_end_time_fixed(app.ctx()));
 }
 
 TEST(toggl_api, toggl_set_window_maximized) {
