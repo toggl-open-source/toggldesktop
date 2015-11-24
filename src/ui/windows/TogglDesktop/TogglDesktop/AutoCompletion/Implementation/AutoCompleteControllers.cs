@@ -54,19 +54,40 @@ namespace TogglDesktop.AutoCompletion.Implementation
                         ps.First().WorkspaceName,
                         ps.GroupBy(p => p.ClientID)
                             .OrderBy(g => g.Key != 0) // TODO: decide how clients should be sorted
-                            .Select(c =>
-                            {
-                                var projectItems = c.Select(ProjectItem.Create);
-                                if (c.Key == 0)
-                                    return projectItems;
-                                var clientName = c.First().ClientLabel;
-                                return new ClientCategory(clientName, projectItems.ToList<IAutoCompleteListItem>()).Yield<IAutoCompleteListItem>();
-                            })
+                            .Select(parseClientGroup)
                             .SelectMany(i => i).ToList()
                         ))
                     ).ToList();
 
             return new AutoCompleteController(list, string.Format("Projects({0})", projects.Count));
+        }
+
+        private static IEnumerable<IAutoCompleteListItem> parseClientGroup(IGrouping<ulong, Toggl.TogglAutocompleteView> c)
+        {
+            var projectItems = c.GroupBy(p => p.ProjectID).Select(parseProjectGroup);
+            if (c.Key == 0)
+                return projectItems;
+            var clientName = c.First().ClientLabel;
+            return new ClientCategory(clientName, projectItems.ToList()).Yield<IAutoCompleteListItem>();
+        }
+
+        private static IAutoCompleteListItem parseProjectGroup(IGrouping<ulong, Toggl.TogglAutocompleteView> p)
+        {
+            var tasks = p.ToList();
+            if (tasks.Count == 1)
+            {
+                return ProjectItem.Create(tasks[0]);
+            }
+
+            var noTaskProject = tasks[0];
+            noTaskProject.TaskID = 0;
+            noTaskProject.TaskLabel = "";
+
+            return new ProjectCategory(noTaskProject,
+                tasks.Where(t => t.TaskID != 0)
+                    .Select(ProjectItem.Create)
+                    .ToList<IAutoCompleteListItem>()
+                );
         }
 
         public static AutoCompleteController ForDescriptions(List<Toggl.TogglAutocompleteView> items)
