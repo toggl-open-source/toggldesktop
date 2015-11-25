@@ -5,30 +5,46 @@ using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    class ProjectCategory : SimpleItemCategory<TogglDesktop.AutoCompleteControls.ProjectCategory, Toggl.TogglAutocompleteView>
+    public struct CountedAutoCompleteView
     {
-        public ProjectCategory(Toggl.TogglAutocompleteView item, List<IAutoCompleteListItem> children)
+        public readonly int Count;
+        public readonly Toggl.TogglAutocompleteView View;
+
+        public CountedAutoCompleteView(int count, Toggl.TogglAutocompleteView view)
+        {
+            this.Count = count;
+            this.View = view;
+        }
+    }
+
+    class ProjectCategory : SimpleItemCategory<TogglDesktop.AutoCompleteControls.ProjectCategory, CountedAutoCompleteView>, IProjectItem
+    {
+        public ProjectCategory(CountedAutoCompleteView item, List<IAutoCompleteListItem> children)
             : base(item, createAutocompletionString(item), children)
         {
         }
 
+        public new Toggl.TogglAutocompleteView Item { get { return base.Item.View; } }
 
-        private static string createAutocompletionString(Toggl.TogglAutocompleteView item)
+        private static string createAutocompletionString(CountedAutoCompleteView item)
         {
-            return string.IsNullOrEmpty(item.ClientLabel)
-                ? item.ProjectLabel
-                : item.ProjectLabel + " " + item.ClientLabel;
+            var v = item.View;
+
+            return string.IsNullOrEmpty(v.ClientLabel)
+                ? v.ProjectLabel
+                : v.ProjectLabel + " " + v.ClientLabel;
         }
 
         protected override TogglDesktop.AutoCompleteControls.ProjectCategory createElement(
             Action selectWithClick, List<IRecyclable> recyclables, out Panel newParent)
         {
             var element = StaticObjectPool.PopOrNew<TogglDesktop.AutoCompleteControls.ProjectCategory>()
-                .Initialised(this.Item, selectWithClick)
+                .Initialised(base.Item, selectWithClick)
                 .MarkForRecycling(recyclables);
             newParent = element.TaskPanel;
 
             return element;
         }
+
     }
 }

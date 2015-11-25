@@ -4,6 +4,11 @@ using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
+    interface IProjectItem
+    {
+        Toggl.TogglAutocompleteView Item { get; }
+    }
+
     class NoProjectItem : ProjectItem
     {
         public static IAutoCompleteListItem Create()
@@ -29,7 +34,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
         }
     }
 
-    class ProjectItem : SimpleItem<ProjectEntry, Toggl.TogglAutocompleteView>
+    class ProjectItem : SimpleItem<ProjectEntry, Toggl.TogglAutocompleteView>, IProjectItem
     {
         public static ProjectItem Create(Toggl.TogglAutocompleteView item)
         {

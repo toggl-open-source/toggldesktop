@@ -83,7 +83,8 @@ namespace TogglDesktop.AutoCompletion.Implementation
             noTaskProject.TaskID = 0;
             noTaskProject.TaskLabel = "";
 
-            return new ProjectCategory(noTaskProject,
+            return new ProjectCategory(
+                new CountedAutoCompleteView(tasks.Count - 1, noTaskProject),
                 tasks.Where(t => t.TaskID != 0)
                     .Select(ProjectItem.Create)
                     .ToList<IAutoCompleteListItem>()
