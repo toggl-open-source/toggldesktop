@@ -1,6 +1,5 @@
-﻿
-
-using System;
+﻿using System;
+using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop.AutoCompleteControls
 {
@@ -11,9 +10,10 @@ namespace TogglDesktop.AutoCompleteControls
             this.InitializeComponent();
         }
 
-        public ProjectCategory Initialised(Toggl.TogglAutocompleteView item, Action selectWithClick, string overideText = null)
+        public ProjectCategory Initialised(CountedAutoCompleteView item, Action selectWithClick, string overideText = null)
         {
-            this.noTaskProject.Initialised(item, selectWithClick, overideText);
+            this.noTaskProject.Initialised(item.View, selectWithClick, overideText);
+            this.expandTasksButton.Content = string.Format("{0} tasks", item.Count);
             return this;
         }
 
@@ -21,6 +21,13 @@ namespace TogglDesktop.AutoCompleteControls
         {
             this.prepareForRecycling();
             StaticObjectPool.Push(this);
+        }
+
+        protected override void updateBackgroundColor()
+        {
+            base.updateBackgroundColor();
+
+            this.noTaskProject.Background = this.Background;
         }
     }
 }

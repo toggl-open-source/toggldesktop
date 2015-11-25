@@ -53,7 +53,7 @@ namespace TogglDesktop.AutoCompleteControls
             }
         }
 
-        private void updateBackgroundColor()
+        protected virtual void updateBackgroundColor()
         {
             this.Background = this.IsMouseOver
                 ? backgroundBrushHover
