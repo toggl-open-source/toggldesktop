@@ -32,7 +32,8 @@ namespace TogglDesktop.AutoCompleteControls
         public ProjectCategory Initialised(CountedAutoCompleteView item, Action selectWithClick, string overideText = null)
         {
             this.noTaskProject.Initialised(item.View, selectWithClick, overideText);
-            this.expandTasksButton.Content = string.Format("{0} tasks", item.Count);
+            this.expandTasksText.Text = item.Count == 1
+                ? "1 task" : string.Format("{0} tasks", item.Count);
             return this;
         }
 
