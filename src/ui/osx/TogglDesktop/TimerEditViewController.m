@@ -213,7 +213,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		[self.billableFlag setHidden:!self.time_entry.billable];
 
 		// Time entry tags icon
-		if ([self.time_entry.tags count])
+		if ([self.time_entry.tags count] && [[self.time_entry.tags componentsJoinedByString:@", "] length])
 		{
 			[self.tagFlag setHidden:NO];
 			self.tagFlag.toolTip = [self.time_entry.tags componentsJoinedByString:@", "];
