@@ -44,12 +44,21 @@ namespace TogglDesktop.AutoCompletion
             return this.children.SelectMany(c => c.CompleteAll());
         }
 
-        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
+        public override IEnumerable<AutoCompleteItem> CompleteVisible()
+        {
+            if (this.Visible)
+                return this.children.SelectMany(c => c.CompleteVisible());
+            return Enumerable.Empty<AutoCompleteItem>();
+        }
+
+        public override void CreateFrameworkElement(
+            Panel parent, Action<AutoCompleteItem> selectWithClick,
+            List<IRecyclable> recyclables, AutoCompleteController controller)
         {
             var newParent = this.createFrameworkElement(parent, recyclables);
             foreach (var child in this.children)
             {
-                child.CreateFrameworkElement(newParent, selectWithClick, recyclables);
+                child.CreateFrameworkElement(newParent, selectWithClick, recyclables, controller);
             }
         }
 

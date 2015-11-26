@@ -7,11 +7,26 @@ namespace TogglDesktop.AutoCompleteControls
 {
     public partial class ProjectCategory : IRecyclable, ICollapsable
     {
+        public event EventHandler CollapsedChanged;
+
         private bool collapsed;
 
         public ProjectCategory()
         {
             this.InitializeComponent();
+        }
+
+        public bool Collapsed
+        {
+            get { return this.collapsed; }
+            set
+            {
+                if (this.collapsed == value)
+                    return;
+
+                this.collapsed = value;
+                this.updateCollapsed();
+            }
         }
 
         public ProjectCategory Initialised(CountedAutoCompleteView item, Action selectWithClick, string overideText = null)
@@ -27,6 +42,7 @@ namespace TogglDesktop.AutoCompleteControls
             this.TaskPanel.Children.Clear();
             this.TaskPanel.Visibility = Visibility.Visible;
             this.collapsed = false;
+            this.CollapsedChanged = null;
             StaticObjectPool.Push(this);
         }
 
@@ -42,23 +58,14 @@ namespace TogglDesktop.AutoCompleteControls
             this.collapsed = !this.collapsed;
 
             this.updateCollapsed();
+
+            if(this.CollapsedChanged != null)
+                this.CollapsedChanged(this, EventArgs.Empty);
         }
 
         private void updateCollapsed()
         {
             this.TaskPanel.Visibility = this.collapsed ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        public void Collapse()
-        {
-            this.collapsed = true;
-            this.updateCollapsed();
-        }
-
-        public void Expand()
-        {
-            this.collapsed = false;
-            this.updateCollapsed();
         }
     }
 }

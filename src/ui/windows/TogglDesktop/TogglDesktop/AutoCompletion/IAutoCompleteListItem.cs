@@ -9,8 +9,14 @@ namespace TogglDesktop.AutoCompletion
     {
         string Text { get; }
         bool Visible { get; }
+
         IEnumerable<AutoCompleteItem> Complete(string[] words);
         IEnumerable<AutoCompleteItem> CompleteAll();
-        void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables);
+        IEnumerable<AutoCompleteItem> CompleteVisible();
+
+        void CreateFrameworkElement(
+            Panel parent, Action<AutoCompleteItem> selectWithClick,
+            List<IRecyclable> recyclables, AutoCompleteController controller
+            );
     }
 }
