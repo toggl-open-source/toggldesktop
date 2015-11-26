@@ -16,4 +16,5 @@
 @property IBOutlet NSButton *closeTroubleBoxButton;
 @property (strong) IBOutlet NSView *mainView;
 @property (strong) IBOutlet NSTextField *onlineStatusTextField;
+- (BOOL)isEditOpened;
 @end
