@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop.AutoCompleteControls"
              mc:Ignorable="d">
-    <Grid>
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" MaxWidth="30"/>
             <ColumnDefinition />
@@ -17,11 +17,12 @@
         </Grid.RowDefinitions>
         <toggl:ProjectEntry Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
                 x:Name="noTaskProject" x:FieldModifier="private"/>
-        
+
         <Button Grid.Column="2" Grid.Row="0"
                 Name="expandTasksButton" x:FieldModifier="private"
                 Style="{StaticResource AutoCompleteInlineButton}"
-                Content="99 tasks"/>
+                Content="99 tasks" Focusable="False"
+                Click="onCollapseButtonClick"/>
 
         <Rectangle Grid.Column="2" Grid.Row="0" Width="1" Margin="0 5" HorizontalAlignment="Left"
                 Fill="#DDDDDD"/>

@@ -86,7 +86,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             return new ProjectCategory(
                 new CountedAutoCompleteView(tasks.Count - 1, noTaskProject),
                 tasks.Where(t => t.TaskID != 0)
-                    .Select(ProjectItem.Create)
+                    .Select(TaskItem.Create)
                     .ToList<IAutoCompleteListItem>()
                 );
         }

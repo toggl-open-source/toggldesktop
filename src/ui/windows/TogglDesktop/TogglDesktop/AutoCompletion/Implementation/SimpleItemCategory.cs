@@ -23,16 +23,21 @@ namespace TogglDesktop.AutoCompletion.Implementation
             get { return this.item; }
         }
 
-        protected override Panel createFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
+        protected override Panel createFrameworkElement(
+            Panel parent, Action<AutoCompleteItem> selectWithClick,
+            List<IRecyclable> recyclables, out ICollapsable collapsable)
         {
             Panel newParent;
-            this.element = this.createElement(() => selectWithClick(this), recyclables, out newParent);
+            this.element = this.createElement(() => selectWithClick(this), recyclables,
+                out newParent, out collapsable);
             this.element.Visibility = Visibility.Visible;
             parent.Children.Add(this.element);
             return newParent;
         }
 
-        protected abstract TFrameworkElement createElement(Action selectWithClick, List<IRecyclable> recyclables, out Panel newParent);
+        protected abstract TFrameworkElement createElement(
+            Action selectWithClick, List<IRecyclable> recyclables,
+            out Panel newParent, out ICollapsable collapsable);
 
         protected override void hide()
         {
