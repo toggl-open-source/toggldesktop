@@ -27,15 +27,7 @@ namespace TogglDesktop.AutoCompletion
         {
             if (this.completesAll(words))
             {
-                this.Visible = true;
-
-                this.collapsable.Collapsed = true;
-
-                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-                // enumeration to list to make sure all visible status of all children is updated correctly
-                this.CompleteAll().ToList();
-
-                return this.Yield();
+                return this.CompleteAll();
             }
 
             return this.completeRecursive(words);
@@ -62,7 +54,13 @@ namespace TogglDesktop.AutoCompletion
         public override IEnumerable<AutoCompleteItem> CompleteAll()
         {
             this.Visible = true;
-            return this.Prepend(this.children.SelectMany(c => c.CompleteAll()));
+            this.collapsable.Collapsed = true;
+
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            // enumeration to list to make sure all visible status of all children is updated correctly
+            this.children.SelectMany(c => c.CompleteAll()).ToList();
+
+            return this.Yield();
         }
 
         public override IEnumerable<AutoCompleteItem> CompleteVisible()
