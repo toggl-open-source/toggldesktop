@@ -23,9 +23,13 @@ namespace TogglDesktop.AutoCompletion
             {
                 this.Visible = true;
 
-                this.collapsable.Collapse();
+                this.collapsable.Collapsed = true;
 
-                return this.CompleteAll();
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                // enumeration to list to make sure all visible status of all children is updated correctly
+                this.CompleteAll().ToList();
+
+                return this.Yield();
             }
 
             return this.completeRecursive(words);
@@ -46,7 +50,7 @@ namespace TogglDesktop.AutoCompletion
             }
             this.Visible = anyChildren;
 
-            this.collapsable.Expand();
+            this.collapsable.Collapsed = false;
         }
 
         public override IEnumerable<AutoCompleteItem> CompleteAll()
@@ -55,12 +59,38 @@ namespace TogglDesktop.AutoCompletion
             return this.Prepend(this.children.SelectMany(c => c.CompleteAll()));
         }
 
-        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
+        public override IEnumerable<AutoCompleteItem> CompleteVisible()
+        {
+            if (!this.Visible)
+                return Enumerable.Empty<AutoCompleteItem>();
+
+            if (this.collapsable.Collapsed)
+                return this.Yield();
+
+            return this.Prepend(this.children.SelectMany(c => c.CompleteVisible()));
+        }
+
+        public override void CreateFrameworkElement(
+            Panel parent, Action<AutoCompleteItem> selectWithClick,
+            List<IRecyclable> recyclables, AutoCompleteController controller)
         {
             var newParent = this.createFrameworkElement(parent, selectWithClick, recyclables, out this.collapsable);
+
+            this.collapsable.CollapsedChanged += (s, e) =>
+            {
+                var selectThis = controller.SelectedItem != null;
+
+                controller.SelectItem(null);
+                controller.RefreshVisibleList();
+                if (selectThis)
+                {
+                    controller.SelectItem(this);
+                }
+            };
+
             foreach (var child in this.children)
             {
-                child.CreateFrameworkElement(newParent, selectWithClick, recyclables);
+                child.CreateFrameworkElement(newParent, selectWithClick, recyclables, controller);
             }
         }
 

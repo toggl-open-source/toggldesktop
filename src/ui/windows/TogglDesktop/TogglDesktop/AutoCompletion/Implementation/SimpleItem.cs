@@ -23,7 +23,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
             get { return this.item; }
         }
 
-        public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
+        public override void CreateFrameworkElement(
+            Panel parent, Action<AutoCompleteItem> selectWithClick,
+            List<IRecyclable> recyclables, AutoCompleteController controller)
         {
             this.element = this.createElement(() => selectWithClick(this), recyclables);
             this.element.Visibility = Visibility.Visible;

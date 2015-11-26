@@ -45,6 +45,12 @@ namespace TogglDesktop.AutoCompletion
             yield return this;
         }
 
+        public override IEnumerable<AutoCompleteItem> CompleteVisible()
+        {
+            if (this.Visible)
+                yield return this;
+        }
+
         protected abstract void select();
         protected abstract void unselect();
 

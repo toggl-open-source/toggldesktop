@@ -1,8 +1,11 @@
+
+using System;
+
 namespace TogglDesktop.AutoCompletion
 {
     interface ICollapsable
     {
-        void Collapse();
-        void Expand();
+        event EventHandler CollapsedChanged;
+        bool Collapsed { get; set; }
     }
 }

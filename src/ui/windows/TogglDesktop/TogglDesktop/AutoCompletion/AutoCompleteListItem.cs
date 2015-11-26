@@ -53,7 +53,12 @@ namespace TogglDesktop.AutoCompletion
 
         public abstract IEnumerable<AutoCompleteItem> Complete(string[] words);
         public abstract IEnumerable<AutoCompleteItem> CompleteAll();
-        public abstract void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables);
+        public abstract IEnumerable<AutoCompleteItem> CompleteVisible();
+
+        public abstract void CreateFrameworkElement(
+            Panel parent, Action<AutoCompleteItem> selectWithClick,
+            List<IRecyclable> recyclables, AutoCompleteController controller
+            );
 
         protected abstract void hide();
         protected abstract void show();

@@ -42,7 +42,7 @@ namespace TogglDesktop.AutoCompletion
         {
             foreach (var item in this.list)
             {
-                item.CreateFrameworkElement(list, selectWithClick, recyclables);
+                item.CreateFrameworkElement(list, selectWithClick, recyclables, this);
             }
         }
 
@@ -50,8 +50,18 @@ namespace TogglDesktop.AutoCompletion
         {
             var words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
 
+            this.completeWith(i => i.Complete(words));
+        }
+
+        public void RefreshVisibleList()
+        {
+            this.completeWith(i => i.CompleteVisible());
+        }
+
+        private void completeWith(Func<IAutoCompleteListItem, IEnumerable<AutoCompleteItem>> completor)
+        {
             this.currentlyVisible.Clear();
-            this.currentlyVisible.AddRange(this.list.SelectMany(i => i.Complete(words)));
+            this.currentlyVisible.AddRange(this.list.SelectMany(completor));
             this.validateSelection();
         }
 
@@ -103,6 +113,12 @@ namespace TogglDesktop.AutoCompletion
             var i = this.selectedIndex - 1;
             if (i < 0)
                 i = this.currentlyVisible.Count - 1;
+            this.selectIndex(i);
+        }
+
+        public void SelectItem(AutoCompleteItem item)
+        {
+            var i = item == null ? -1 : this.currentlyVisible.IndexOf(item);
             this.selectIndex(i);
         }
     }
