@@ -121,5 +121,27 @@ namespace TogglDesktop.AutoCompletion
             var i = item == null ? -1 : this.currentlyVisible.IndexOf(item);
             this.selectIndex(i);
         }
+
+        public bool TryCollapseCategory()
+        {
+            var asItemCategory = this.selectedItem as AutoCompleteItemCategory;
+            if (asItemCategory == null || asItemCategory.Collapsed)
+                return false;
+
+            asItemCategory.Collapsed = true;
+            this.RefreshVisibleList();
+            return true;
+        }
+
+        public bool TryExpandCategory()
+        {
+            var asItemCategory = this.selectedItem as AutoCompleteItemCategory;
+            if (asItemCategory == null || !asItemCategory.Collapsed)
+                return false;
+
+            asItemCategory.Collapsed = false;
+            this.RefreshVisibleList();
+            return true;
+        }
     }
 }
