@@ -49,6 +49,10 @@ NSString *kInactiveTimerColor = @"#999999";
 													 name:kDisplayTimeEntryList
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayTimeEntryEditor:)
+													 name:kDisplayTimeEntryEditor
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(focusTimer:)
 													 name:kFocusTimer
 												   object:nil];
@@ -258,6 +262,24 @@ NSString *kInactiveTimerColor = @"#999999";
 	else
 	{
 		self.durationTextField.stringValue = @"";
+	}
+}
+
+- (void)startDisplayTimeEntryEditor:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayTimeEntryEditor:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayTimeEntryEditor:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
+	if (cmd.open)
+	{
+		[self.startButton becomeFirstResponder];
 	}
 }
 
