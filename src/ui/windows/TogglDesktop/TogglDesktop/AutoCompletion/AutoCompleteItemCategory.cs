@@ -9,6 +9,7 @@ namespace TogglDesktop.AutoCompletion
     abstract class AutoCompleteItemCategory : AutoCompleteItem
     {
         private readonly List<IAutoCompleteListItem> children;
+        private ICollapsable collapsable;
 
         protected AutoCompleteItemCategory(string text, List<IAutoCompleteListItem> children)
             : base(text)
@@ -22,7 +23,7 @@ namespace TogglDesktop.AutoCompletion
             {
                 this.Visible = true;
 
-                // todo: collapse children
+                this.collapsable.Collapse();
 
                 return this.CompleteAll();
             }
@@ -45,10 +46,7 @@ namespace TogglDesktop.AutoCompletion
             }
             this.Visible = anyChildren;
 
-            if (anyChildren)
-            {
-                // todo: expand children
-            }
+            this.collapsable.Expand();
         }
 
         public override IEnumerable<AutoCompleteItem> CompleteAll()
@@ -59,13 +57,16 @@ namespace TogglDesktop.AutoCompletion
 
         public override void CreateFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
         {
-            var newParent = this.createFrameworkElement(parent, selectWithClick, recyclables);
+            var newParent = this.createFrameworkElement(parent, selectWithClick, recyclables, out this.collapsable);
             foreach (var child in this.children)
             {
                 child.CreateFrameworkElement(newParent, selectWithClick, recyclables);
             }
         }
 
-        protected abstract Panel createFrameworkElement(Panel parent, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables);
+        protected abstract Panel createFrameworkElement(
+            Panel parent, Action<AutoCompleteItem> selectWithClick,
+            List<IRecyclable> recyclables, out ICollapsable collapsable
+            );
     }
 }

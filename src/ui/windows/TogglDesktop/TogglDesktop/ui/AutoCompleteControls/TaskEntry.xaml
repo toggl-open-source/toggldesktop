@@ -1,0 +1,14 @@
+﻿<toggl:EntryBase x:Class="TogglDesktop.AutoCompleteControls.TaskEntry"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop.AutoCompleteControls"
+             mc:Ignorable="d"
+             Height="30">
+
+    <TextBlock Name="task" x:FieldModifier="private"
+                VerticalAlignment="Center" Foreground="DimGray"
+                Margin="10 0" Text="A task"/>
+
+</toggl:EntryBase>

@@ -36,15 +36,16 @@ namespace TogglDesktop.AutoCompletion.Implementation
         }
 
         protected override TogglDesktop.AutoCompleteControls.ProjectCategory createElement(
-            Action selectWithClick, List<IRecyclable> recyclables, out Panel newParent)
+            Action selectWithClick, List<IRecyclable> recyclables,
+            out Panel newParent, out ICollapsable collapsable)
         {
             var element = StaticObjectPool.PopOrNew<TogglDesktop.AutoCompleteControls.ProjectCategory>()
                 .Initialised(base.Item, selectWithClick)
                 .MarkForRecycling(recyclables);
             newParent = element.TaskPanel;
+            collapsable = element;
 
             return element;
         }
-
     }
 }
