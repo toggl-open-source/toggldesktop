@@ -1184,7 +1184,8 @@ const NSString *appName = @"osx_native_app";
 		 if ([theEvent modifierFlags] & NSCommandKeyMask)
 		 {
 			 NSString *character = [theEvent charactersIgnoringModifiers];
-			 if ([character isEqualToString:@"v"])
+	         // Execute only if edit view is not opened
+			 if ([character isEqualToString:@"v"] && ![self.mainWindowController isEditOpened])
 			 {
 				 if (self.lastKnownRunningTimeEntry == nil || self.lastKnownRunningTimeEntry.duration_in_seconds < 0)
 				 {

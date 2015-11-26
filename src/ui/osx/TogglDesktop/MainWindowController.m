@@ -238,4 +238,9 @@ extern void *ctx;
 	}
 }
 
+- (BOOL)isEditOpened
+{
+	return self.timeEntryListViewController.timeEntrypopover.shown;
+}
+
 @end
