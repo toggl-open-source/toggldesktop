@@ -8,6 +8,12 @@ namespace TogglDesktop.AutoCompletion
 {
     abstract class AutoCompleteItemCategory : AutoCompleteItem
     {
+        public bool Collapsed
+        {
+            get { return this.collapsable.Collapsed; }
+            set { this.collapsable.Collapsed = value; }
+        }
+
         private readonly List<IAutoCompleteListItem> children;
         private ICollapsable collapsable;
 
