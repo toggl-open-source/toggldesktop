@@ -6,14 +6,14 @@ using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop.AutoCompletion.Implementation
 {
-    abstract class SimpleItem<TFrameworkElement, TAutoCompleteItem> : AutoCompleteItem
+    abstract class SimpleItemCategory<TFrameworkElement, TAutoCompleteItem> : AutoCompleteItemCategory
         where TFrameworkElement : FrameworkElement, ISelectable
     {
         private readonly TAutoCompleteItem item;
         private TFrameworkElement element;
 
-        protected SimpleItem(TAutoCompleteItem item, string text)
-            : base(text)
+        protected SimpleItemCategory(TAutoCompleteItem item, string text, List<IAutoCompleteListItem> children)
+            : base(text, children)
         {
             this.item = item;
         }
@@ -23,16 +23,21 @@ namespace TogglDesktop.AutoCompletion.Implementation
             get { return this.item; }
         }
 
-        public override void CreateFrameworkElement(
+        protected override Panel createFrameworkElement(
             Panel parent, Action<AutoCompleteItem> selectWithClick,
-            List<IRecyclable> recyclables, AutoCompleteController controller)
+            List<IRecyclable> recyclables, out ICollapsable collapsable)
         {
-            this.element = this.createElement(() => selectWithClick(this), recyclables);
+            Panel newParent;
+            this.element = this.createElement(() => selectWithClick(this), recyclables,
+                out newParent, out collapsable);
             this.element.Visibility = Visibility.Visible;
             parent.Children.Add(this.element);
+            return newParent;
         }
 
-        protected abstract TFrameworkElement createElement(Action selectWithClick, List<IRecyclable> recyclables);
+        protected abstract TFrameworkElement createElement(
+            Action selectWithClick, List<IRecyclable> recyclables,
+            out Panel newParent, out ICollapsable collapsable);
 
         protected override void hide()
         {

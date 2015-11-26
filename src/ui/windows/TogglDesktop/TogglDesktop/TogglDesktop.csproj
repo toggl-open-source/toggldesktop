@@ -167,11 +167,16 @@
     <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\ICollapsable.cs" />
     <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteItemCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\ClientCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
     <Compile Include="AutoCompletion\Implementation\NestedCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\ProjectCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\TaskItem.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleItemCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleNoncompletingCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
     <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
@@ -181,6 +186,12 @@
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="ui\AutoCompleteControls\ProjectCategory.xaml.cs">
+      <DependentUpon>ProjectCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
+      <DependentUpon>TaskEntry.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
@@ -500,6 +511,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ui\AutoCompleteControls\ProjectCategory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\AutoCompleteControls\TaskEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\controls\AutotrackerNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
