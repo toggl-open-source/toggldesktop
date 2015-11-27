@@ -1434,7 +1434,9 @@ error Database::loadAutotrackerRules(
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetTerm(rs[2].convert<std::string>());
                 model->SetPID(rs[3].convert<Poco::UInt64>());
-                model->SetTID(rs[4].convert<Poco::UInt64>());
+                if (!rs[4].isEmpty()) {
+                    model->SetTID(rs[4].convert<Poco::UInt64>());
+                }
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
