@@ -223,6 +223,8 @@ NSString *kInactiveTimerColor = @"#999999";
 			[self.tagFlag setHidden:YES];
 			self.tagFlag.toolTip = nil;
 		}
+
+		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 	}
 	else
 	{
