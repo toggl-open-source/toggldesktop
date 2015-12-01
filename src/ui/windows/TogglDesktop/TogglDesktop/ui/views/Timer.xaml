@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="112"/>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="84"/>
             </Grid.ColumnDefinitions>
 
@@ -122,19 +122,15 @@
                 </Grid.Style>
                 
                 <TextBlock Name="durationLabelRight" x:FieldModifier="private"
-                    FontSize="24" HorizontalAlignment="Right" FontWeight="UltraLight"
-                    Margin="0, 0, 14, 0"
-                    MouseLeftButtonDown="onTimeLabelMouseDown" Text="" />
-                
-                <TextBlock Name="durationLabelLeft" x:FieldModifier="private"
-                    FontSize="24" HorizontalAlignment="Left" FontWeight="UltraLight"
-                    Margin="16, 0, 0, 0"
+                    FontSize="24" HorizontalAlignment="Right" FontWeight="Light"
+                    Margin="0, 0, 12, 0"
                     MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
+
             </Grid>
 
             <!-- time textbox -->
             <toggl:ExtendedTextBox Grid.Column="3" x:Name="durationTextBox" x:FieldModifier="private"
-                FontSize="24" HorizontalContentAlignment="Right" FontWeight="UltraLight"/>
+                FontSize="24" HorizontalContentAlignment="Right" FontWeight="Light"/>
 
             <!-- start/stop button -->
             <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private" Click="startStopButtonOnClick"/>

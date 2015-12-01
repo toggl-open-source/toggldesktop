@@ -326,53 +326,16 @@ namespace TogglDesktop
 
         private void setRunningDurationLabels(string s)
         {
-            var seconds = this.runningTimeEntry.DurationInSeconds;
-            var unixTimestamp = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            var realSeconds = unixTimestamp + seconds;
-
-            if (realSeconds < 10)
-            {
-                this.durationLabelLeft.Text = "";
-                this.durationLabelRight.Text = s;
-                return;
-            }
-
-            if (realSeconds >= 3600)
-            {
-                this.durationLabelLeft.Text = s;
-                this.durationLabelRight.Text = "";
-                this.durationLabelLeft.Margin = new Thickness(16, 0, 0, 0);
-                return;
-            }
-
-
-            var split = s.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-
-            if (split.Length != 2)
-            {
-                this.durationLabelLeft.Text = "";
-                this.durationLabelRight.Text = s;
-
-                Console.WriteLine("Warning: Running time entry time has unknown format.");
-                return;
-            }
-
-            this.durationLabelLeft.Text = split[0];
-            this.durationLabelRight.Text = split[1];
-
-            this.durationLabelLeft.Margin = new Thickness(realSeconds < 60 ? 36 : 0, 0, 0, 0);
-
+            this.durationLabelRight.Text = s;
         }
-
+        
         private void setUIToStoppedState()
         {
             this.resetUIState(false);
 
             this.timeDisplayGrid.ToolTip = null;
             this.descriptionLabel.Text = "What are you doing?";
-            this.durationLabelLeft.Text = "00:00:00";
-            this.durationLabelRight.Text = "";
-            this.durationLabelLeft.Margin = new Thickness(14, 0, 0, 0);
+            this.durationLabelRight.Text = "00:00:00";
         }
 
         private void resetUIState(bool running, bool forceUpdate = false)
