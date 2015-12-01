@@ -400,10 +400,10 @@
     <Resource Include="Resources\continue.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Fonts\Roboto-Bold.ttf" />
-    <EmbeddedResource Include="Resources\Fonts\Roboto-Light.ttf" />
-    <EmbeddedResource Include="Resources\Fonts\Roboto-Medium.ttf" />
-    <EmbeddedResource Include="Resources\Fonts\Roboto-Regular.ttf" />
+    <Resource Include="Resources\Fonts\Roboto-Bold.ttf" />
+    <Resource Include="Resources\Fonts\Roboto-Light.ttf" />
+    <Resource Include="Resources\Fonts\Roboto-Medium.ttf" />
+    <Resource Include="Resources\Fonts\Roboto-Regular.ttf" />
     <Resource Include="Resources\toggl.ico" />
   </ItemGroup>
   <ItemGroup>
