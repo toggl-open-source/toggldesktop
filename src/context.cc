@@ -2011,11 +2011,6 @@ void Context::setUser(User *value, const bool logged_in) {
         return;
     }
 
-    error err = setCurrentOBMExperimentNumber();
-    if (err != noError) {
-        displayError(err);
-    }
-
     UI()->DisplayLogin(false, user_id);
 
     OpenTimeEntryList();
@@ -2049,18 +2044,14 @@ void Context::setUser(User *value, const bool logged_in) {
 
     // Offer beta channel, if not offered yet
     bool did_offer_beta_channel(false);
-    err = offerBetaChannel(&did_offer_beta_channel);
+    error err = offerBetaChannel(&did_offer_beta_channel);
     if (err != noError) {
         displayError(err);
     }
 
-    // If beta channel was not offered,
-    // run some OBM experiment instead.
-    if (!did_offer_beta_channel) {
-        err = runObmExperiments();
-        if (err != noError) {
-            displayError(err);
-        }
+    err = runObmExperiments();
+    if (err != noError) {
+        displayError(err);
     }
 }
 
@@ -3374,48 +3365,6 @@ error Context::offerBetaChannel(bool *did_offer) {
         updateUI(render);
 
         *did_offer = true;
-    } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
-    } catch(const std::exception& ex) {
-        return displayError(ex.what());
-    } catch(const std::string& ex) {
-        return displayError(ex);
-    }
-    return noError;
-}
-
-error Context::setCurrentOBMExperimentNumber() {
-    try {
-        Poco::UInt64 nr(0);
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                return noError;
-            }
-            // Select the largest, included and seen by user
-            // OBM experiment
-            for (std::vector<ObmExperiment *>::const_iterator it =
-                user_->related.ObmExperiments.begin();
-                    it != user_->related.ObmExperiments.end();
-                    it++) {
-                ObmExperiment *model = *it;
-                if (model->DeletedAt()) {
-                    continue;
-                }
-                if (!model->Included()) {
-                    continue;
-                }
-                if (!model->HasSeen()) {
-                    continue;
-                }
-                if (model->Nr() > nr) {
-                    nr = model->Nr();
-                }
-            }
-        }
-        if (nr) {
-            HTTPSClient::Config.CurrentOBMExprimentNr = nr;
-        }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {

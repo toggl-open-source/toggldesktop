@@ -410,6 +410,13 @@ bool_t toggl_add_obm_action(
         to_string(value));
 }
 
+void toggl_set_obm_experiment_nr(
+    void *context,
+    const uint64_t nr) {
+
+    toggl::HTTPSClient::Config.OBMExperimentNr = nr;
+}
+
 char_t *toggl_create_client(
     void *context,
     const uint64_t workspace_id,

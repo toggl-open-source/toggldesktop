@@ -1114,6 +1114,10 @@ public static partial class Toggl
         string value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_obm_experiment_nr(
+        UInt64 nr);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_default_project(
         IntPtr context,
