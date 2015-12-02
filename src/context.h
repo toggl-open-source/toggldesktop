@@ -479,8 +479,6 @@ class Context : public TimelineDatasource {
 
     error runObmExperiments();
 
-    error setCurrentOBMExperimentNumber();
-
     error compressTimeline();
 
     error applySettingsSaveResultToUI(const error err);

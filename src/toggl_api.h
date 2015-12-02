@@ -728,6 +728,9 @@ extern "C" {
         const char_t *key,
         const char_t *value);
 
+    TOGGL_EXPORT void toggl_set_obm_experiment_nr(
+        const uint64_t nr);
+
     TOGGL_EXPORT bool_t toggl_set_default_project(
         void *context,
         const uint64_t pid,
