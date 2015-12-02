@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Experiments;
 using TogglDesktop.Tutorial;
 using Clipboard = System.Windows.Clipboard;
 using MenuItem = System.Windows.Controls.MenuItem;

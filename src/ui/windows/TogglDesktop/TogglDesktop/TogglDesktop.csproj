@@ -199,9 +199,13 @@
       <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\Experiments\Experiment80.cs" />
+    <Compile Include="ui\Experiments\ExperimentBase.cs" />
+    <Compile Include="ui\Experiments\IExperiment.cs" />
     <Compile Include="ui\Experiments\BasicOverviewScreen.xaml.cs">
       <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Experiments\ExperimentParameters.cs" />
     <Compile Include="ui\Theme.cs" />
     <Compile Include="ui\ThemeResourceDictionary.cs" />
     <Compile Include="ui\ThemeTypes.cs" />
@@ -232,7 +236,7 @@
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\views\IMainView.cs" />
-    <Compile Include="ui\ExperimentManager.cs" />
+    <Compile Include="ui\Experiments\ExperimentManager.cs" />
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
