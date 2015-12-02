@@ -199,7 +199,11 @@
       <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\Experiments\Experiment87.cs" />
     <Compile Include="ui\Experiments\Experiment80.cs" />
+    <Compile Include="ui\Experiments\Experiment87WelcomeScreen.xaml.cs">
+      <DependentUpon>Experiment87WelcomeScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\Experiments\ExperimentBase.cs" />
     <Compile Include="ui\Experiments\IExperiment.cs" />
     <Compile Include="ui\Experiments\BasicOverviewScreen.xaml.cs">
@@ -555,6 +559,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ui\Experiments\Experiment87WelcomeScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\Resources\AutotrackerNotificationStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -800,6 +808,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ic_close_white600_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tutorial-line-dark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow-up.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
