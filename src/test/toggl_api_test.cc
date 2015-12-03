@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 
+#include "./../https_client.h"
 #include "./../obm_action.h"
 #include "./../proxy.h"
 #include "./../settings.h"
@@ -429,6 +430,16 @@ TEST(toggl_api, toggl_run_script_with_invalid_script) {
     free(s);
     ASSERT_NE(0, err);
     ASSERT_EQ("[string \"foo bar\"]:1: syntax error near 'bar'", res);
+}
+
+TEST(toggl_api, toggl_set_obm_experiment_nr) {
+    testing::App app;
+
+    toggl_set_obm_experiment_nr(123);
+    ASSERT_EQ("tests/0.1-obm-123", toggl::HTTPSClient::Config.UserAgent());
+
+    toggl_set_obm_experiment_nr(0);
+    ASSERT_EQ("tests/0.1", toggl::HTTPSClient::Config.UserAgent());
 }
 
 TEST(toggl_api, toggl_set_settings) {

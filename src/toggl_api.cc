@@ -411,7 +411,6 @@ bool_t toggl_add_obm_action(
 }
 
 void toggl_set_obm_experiment_nr(
-    void *context,
     const uint64_t nr) {
 
     toggl::HTTPSClient::Config.OBMExperimentNr = nr;
