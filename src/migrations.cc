@@ -48,6 +48,21 @@ error Migrations::migrateObmExperiments() {
         return err;
     }
 
+    err = db_->Migrate(
+        "drop obm_experiments.idx_obm_experiments_nr",
+        "DROP INDEX IF EXISTS idx_obm_experiments_nr;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "correct obm_experiments.idx_obm_experiments_nr",
+        "CREATE UNIQUE INDEX idx_obm_experiments_nr_uid "
+        "   ON obm_experiments (uid, nr);");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 
