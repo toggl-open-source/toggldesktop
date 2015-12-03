@@ -3376,41 +3376,42 @@ error Context::offerBetaChannel(bool *did_offer) {
 }
 
 error Context::runObmExperiments() {
-    if (!UI()->CanDisplayPromotion()) {
-        return noError;
-    }
     try {
-        Poco::UInt64 nr(0);
+        // Collect OBM experiments
+        std::map<Poco::UInt64, ObmExperiment> experiments;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().warning("User logged out, cannot OBM experiment");
                 return noError;
             }
-            // Check what needs to be updated in UI
             for (std::vector<ObmExperiment *>::const_iterator it =
                 user_->related.ObmExperiments.begin();
                     it != user_->related.ObmExperiments.end();
                     it++) {
                 ObmExperiment *model = *it;
-                if (model->DeletedAt()) {
-                    continue;
+                if (!model->DeletedAt()) {
+                    experiments[model->Nr()] = *model;
+                    model->SetHasSeen(true);
                 }
-                if (!model->Included()) {
-                    continue;
-                }
-                if (model->HasSeen()) {
-                    continue;
-                }
-                model->SetHasSeen(true);
-                nr = model->Nr();
-                break;
             }
         }
-        if (!nr) {
-            return noError;
+        // Save the (seen/unseen) state
+        error err = save();
+        if (err != noError) {
+            return err;
         }
-        UI()->DisplayPromotion(nr);
+        // Now pass the experiments on to UI
+        for (std::map<Poco::UInt64, ObmExperiment>::const_iterator
+                it = experiments.begin();
+                it != experiments.end();
+                it++) {
+            ObmExperiment experiment = it->second;
+            UI()->DisplayObmExperiment(
+                experiment.Nr(),
+                experiment.Included(),
+                experiment.HasSeen());
+        }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -3746,7 +3747,7 @@ void Context::reminderActivity() {
         int sleep_seconds = sleep_minutes * 60;
 
         // Sleep in increments for faster shutdown.
-        for (unsigned int i = 0; i < 4 * sleep_seconds; i++) {
+        for (int i = 0; i < 4 * sleep_seconds; i++) {
             if (reminder_.isStopped()) {
                 return;
             }
