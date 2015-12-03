@@ -2011,11 +2011,6 @@ void Context::setUser(User *value, const bool logged_in) {
         return;
     }
 
-    error err = setCurrentOBMExperimentNumber();
-    if (err != noError) {
-        displayError(err);
-    }
-
     UI()->DisplayLogin(false, user_id);
 
     OpenTimeEntryList();
@@ -2049,18 +2044,14 @@ void Context::setUser(User *value, const bool logged_in) {
 
     // Offer beta channel, if not offered yet
     bool did_offer_beta_channel(false);
-    err = offerBetaChannel(&did_offer_beta_channel);
+    error err = offerBetaChannel(&did_offer_beta_channel);
     if (err != noError) {
         displayError(err);
     }
 
-    // If beta channel was not offered,
-    // run some OBM experiment instead.
-    if (!did_offer_beta_channel) {
-        err = runObmExperiments();
-        if (err != noError) {
-            displayError(err);
-        }
+    err = runObmExperiments();
+    if (err != noError) {
+        displayError(err);
     }
 }
 
@@ -3384,84 +3375,43 @@ error Context::offerBetaChannel(bool *did_offer) {
     return noError;
 }
 
-error Context::setCurrentOBMExperimentNumber() {
-    try {
-        Poco::UInt64 nr(0);
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                return noError;
-            }
-            // Select the largest, included and seen by user
-            // OBM experiment
-            for (std::vector<ObmExperiment *>::const_iterator it =
-                user_->related.ObmExperiments.begin();
-                    it != user_->related.ObmExperiments.end();
-                    it++) {
-                ObmExperiment *model = *it;
-                if (model->DeletedAt()) {
-                    continue;
-                }
-                if (!model->Included()) {
-                    continue;
-                }
-                if (!model->HasSeen()) {
-                    continue;
-                }
-                if (model->Nr() > nr) {
-                    nr = model->Nr();
-                }
-            }
-        }
-        if (nr) {
-            HTTPSClient::Config.CurrentOBMExprimentNr = nr;
-        }
-    } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
-    } catch(const std::exception& ex) {
-        return displayError(ex.what());
-    } catch(const std::string& ex) {
-        return displayError(ex);
-    }
-    return noError;
-}
-
 error Context::runObmExperiments() {
-    if (!UI()->CanDisplayPromotion()) {
-        return noError;
-    }
     try {
-        Poco::UInt64 nr(0);
+        // Collect OBM experiments
+        std::map<Poco::UInt64, ObmExperiment> experiments;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().warning("User logged out, cannot OBM experiment");
                 return noError;
             }
-            // Check what needs to be updated in UI
             for (std::vector<ObmExperiment *>::const_iterator it =
                 user_->related.ObmExperiments.begin();
                     it != user_->related.ObmExperiments.end();
                     it++) {
                 ObmExperiment *model = *it;
-                if (model->DeletedAt()) {
-                    continue;
+                if (!model->DeletedAt()) {
+                    experiments[model->Nr()] = *model;
+                    model->SetHasSeen(true);
                 }
-                if (!model->Included()) {
-                    continue;
-                }
-                if (model->HasSeen()) {
-                    continue;
-                }
-                model->SetHasSeen(true);
-                nr = model->Nr();
-                break;
             }
         }
-        if (!nr) {
-            return noError;
+        // Save the (seen/unseen) state
+        error err = save();
+        if (err != noError) {
+            return err;
         }
-        UI()->DisplayPromotion(nr);
+        // Now pass the experiments on to UI
+        for (std::map<Poco::UInt64, ObmExperiment>::const_iterator
+                it = experiments.begin();
+                it != experiments.end();
+                it++) {
+            ObmExperiment experiment = it->second;
+            UI()->DisplayObmExperiment(
+                experiment.Nr(),
+                experiment.Included(),
+                experiment.HasSeen());
+        }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -3797,7 +3747,7 @@ void Context::reminderActivity() {
         int sleep_seconds = sleep_minutes * 60;
 
         // Sleep in increments for faster shutdown.
-        for (unsigned int i = 0; i < 4 * sleep_seconds; i++) {
+        for (int i = 0; i < 4 * sleep_seconds; i++) {
             if (reminder_.isStopped()) {
                 return;
             }

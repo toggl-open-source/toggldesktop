@@ -410,6 +410,13 @@ bool_t toggl_add_obm_action(
         to_string(value));
 }
 
+void toggl_set_obm_experiment_nr(
+    void *context,
+    const uint64_t nr) {
+
+    toggl::HTTPSClient::Config.OBMExperimentNr = nr;
+}
+
 char_t *toggl_create_client(
     void *context,
     const uint64_t workspace_id,
@@ -897,6 +904,12 @@ void toggl_on_promotion(
     void *context,
     TogglDisplayPromotion cb) {
     app(context)->UI()->OnDisplayPromotion(cb);
+}
+
+void toggl_on_obm_experiment(
+    void *context,
+    TogglDisplayObmExperiment cb) {
+    app(context)->UI()->OnDisplayObmExperiment(cb);
 }
 
 void toggl_set_sleep(void *context) {

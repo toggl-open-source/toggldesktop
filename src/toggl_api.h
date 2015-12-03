@@ -201,6 +201,11 @@ extern "C" {
     typedef void (*TogglDisplayPromotion)(
         const int64_t promotion_type);
 
+    typedef void (*TogglDisplayObmExperiment)(
+        const uint64_t nr,
+        const bool_t included,
+        const bool_t seen);
+
     typedef void (*TogglDisplayTimeEntryList)(
         const bool_t open,
         TogglTimeEntryView *first);
@@ -419,6 +424,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_promotion(
         void *context,
         TogglDisplayPromotion cb);
+
+    TOGGL_EXPORT void toggl_on_obm_experiment(
+        void *context,
+        TogglDisplayObmExperiment cb);
 
     // After UI callbacks are configured, start pumping UI events
 
@@ -727,6 +736,9 @@ extern "C" {
         const uint64_t experiment_id,
         const char_t *key,
         const char_t *value);
+
+    TOGGL_EXPORT void toggl_set_obm_experiment_nr(
+        const uint64_t nr);
 
     TOGGL_EXPORT bool_t toggl_set_default_project(
         void *context,

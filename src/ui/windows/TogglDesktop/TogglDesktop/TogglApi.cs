@@ -335,6 +335,14 @@ public static partial class Toggl
         Int64 promotion_type);
 
     [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayObmExperiment(
+        UInt64 nr,
+        [MarshalAs(UnmanagedType.I1)]
+        bool included,
+        [MarshalAs(UnmanagedType.I1)]
+        bool seen);
+
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayTimeEntryList(
         [MarshalAs(UnmanagedType.I1)]
         bool open,
@@ -622,6 +630,11 @@ public static partial class Toggl
     private static extern void toggl_on_promotion(
         IntPtr context,
         TogglDisplayPromotion cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_obm_experiment(
+        IntPtr context,
+        TogglDisplayObmExperiment cb);
 
     // After UI callbacks are configured, start pumping UI events
 
@@ -1112,6 +1125,10 @@ public static partial class Toggl
         string key,
         [MarshalAs(UnmanagedType.LPWStr)]
         string value);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_obm_experiment_nr(
+        UInt64 nr);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
