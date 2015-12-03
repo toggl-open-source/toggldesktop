@@ -76,8 +76,6 @@ namespace TogglDesktop
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
-
-            this.TutorialManager.ActivateScreen<Experiment87WelcomeScreen>();
         }
 
         #region properties
