@@ -43,7 +43,22 @@ error Migrations::migrateObmExperiments() {
     err = db_->Migrate(
         "obm_experiments.nr",
         "CREATE UNIQUE INDEX idx_obm_experiments_nr "
-        "   ON obm_experiments (nr);");
+        "   ON obm_experiments (uid, nr);");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "drop obm_experiments.idx_obm_experiments_nr",
+        "DROP INDEX IF EXISTS idx_obm_experiments_nr;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "correct obm_experiments.idx_obm_experiments_nr",
+        "CREATE UNIQUE INDEX idx_obm_experiments_nr_uid "
+        "   ON obm_experiments (uid, nr);");
     if (err != noError) {
         return err;
     }
