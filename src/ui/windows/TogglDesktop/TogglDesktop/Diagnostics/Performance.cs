@@ -1,5 +1,4 @@
 ﻿
-using System;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -21,6 +20,10 @@ namespace TogglDesktop.Diagnostics
         public static IPerformanceToken Measure(string template, object p0, object p1)
         {
             return Measure(string.Format(template, p0, p1));
+        }
+        public static IPerformanceToken Measure(string template, object p0, object p1, object p2)
+        {
+            return Measure(string.Format(template, p0, p1, p2));
         }
 
         #endregion

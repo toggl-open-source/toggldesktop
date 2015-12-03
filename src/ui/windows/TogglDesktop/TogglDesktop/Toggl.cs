@@ -135,6 +135,9 @@ public static partial class Toggl
     public delegate void DisplayPromotion(
         long id);
 
+    public delegate void DisplayObmExperiment(
+        ulong id, bool included, bool seenBefore);
+
     #endregion
 
     #region api calls
@@ -561,6 +564,11 @@ public static partial class Toggl
         return toggl_get_keep_end_time_fixed(ctx);
     }
 
+    public static void SetObmExperimentId(ulong id)
+    {
+        toggl_set_obm_experiment_nr(id);
+    }
+
     #endregion
 
     #region callback events
@@ -590,6 +598,7 @@ public static partial class Toggl
     public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
+    public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { }; 
 
     private static void listenToLibEvents()
     {
@@ -789,6 +798,16 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnDisplayPromotino, id: {0}", id))
             {
                 OnDisplayPromotion(id);
+            }
+        });
+
+        toggl_on_obm_experiment(ctx, (id, included, seenBefore) =>
+        {
+            using (Performance.Measure(
+                "Calling OnDisplatObmExperiment, id: {0}, included: {1}, seen: {2}",
+                id, included, seenBefore))
+            {
+                OnDisplayObmExperiment(id, included, seenBefore);
             }
         });
     }

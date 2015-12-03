@@ -12,18 +12,17 @@ namespace TogglDesktop.Experiments
         {
             this.mainWindow = mainWindow;
 
-            // TODO: use OBM event instead
-            //Toggl.OnDisplayPromotion += this.onDisplayPromotion;
+            Toggl.OnDisplayObmExperiment += this.onDisplayObmExperiment;
         }
 
-        public int? CurrentExperumentId
+        public ulong? CurrentExperumentId
         {
-            get { return this.experiment == null ? (int?)null : this.experiment.Id; }
+            get { return this.experiment == null ? (ulong?)null : this.experiment.Id; }
         }
 
-        private void onDisplayObmExperiment(int id, bool included, bool firstStart)
+        private void onDisplayObmExperiment(ulong id, bool included, bool seenBefore)
         {
-            if (this.mainWindow.TryBeginInvoke(this.onDisplayObmExperiment, id, included, firstStart))
+            if (this.mainWindow.TryBeginInvoke(this.onDisplayObmExperiment, id, included, seenBefore))
                 return;
 
             if (this.experiment == null)
@@ -35,7 +34,7 @@ namespace TogglDesktop.Experiments
                 return;
             }
 
-            if (!firstStart && this.experiment.OnlyRunOnce)
+            if (seenBefore && this.experiment.OnlyRunOnce)
             {
                 Toggl.Debug("Already ran experiment: {0}", id);
                 return;
@@ -46,26 +45,5 @@ namespace TogglDesktop.Experiments
                 new ExperimentParameters(included, this.mainWindow.TutorialManager)
                 );
         }
-
-        private void onDisplayPromotion(long id)
-        {
-            if (this.mainWindow.TryBeginInvoke(this.onDisplayPromotion, id))
-                return;
-
-            switch (id)
-            {
-                case 73:
-                {
-                    this.mainWindow.TutorialManager.ActivateScreen<BasicOverviewScreen>();
-                    break;
-                }
-                default:
-                {
-                    Toggl.Debug("Tried to show unknown experiment: {0}", id);
-                    break;
-                }
-            }
-        }
-
     }
 }

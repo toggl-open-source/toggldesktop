@@ -2,7 +2,7 @@
 {
     interface IExperiment
     {
-        int Id { get; }
+        ulong Id { get; }
         bool OnlyRunOnce { get; }
         void Run(ExperimentParameters parameters);
     }

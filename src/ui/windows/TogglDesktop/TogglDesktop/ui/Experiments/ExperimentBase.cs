@@ -2,13 +2,13 @@
 {
     abstract class ExperimentBase : IExperiment
     {
-        protected ExperimentBase(int id, bool onlyRunOnce = true)
+        protected ExperimentBase(ulong id, bool onlyRunOnce = true)
         {
             this.Id = id;
             this.OnlyRunOnce = onlyRunOnce;
         }
 
-        public int Id { get; private set; }
+        public ulong Id { get; private set; }
         public bool OnlyRunOnce { get; private set; }
 
         public void Run(ExperimentParameters parameters)
