@@ -494,6 +494,10 @@ TEST(Database, SavesAndLoadsObmExperiments) {
     ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
     ASSERT_EQ(user.related.ObmExperiments.size(),
               user2.related.ObmExperiments.size());
+
+
+    obm = user.related.ObmExperiments[0];
+    ASSERT_TRUE(obm->LocalID());
 }
 
 TEST(Database, SavesAndLoadsObmExperimentsArray) {
