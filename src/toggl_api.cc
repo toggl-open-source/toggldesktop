@@ -906,6 +906,12 @@ void toggl_on_promotion(
     app(context)->UI()->OnDisplayPromotion(cb);
 }
 
+void toggl_on_obm_experiment(
+    void *context,
+    TogglDisplayObmExperiment cb) {
+    app(context)->UI()->OnDisplayObmExperiment(cb);
+}
+
 void toggl_set_sleep(void *context) {
     app(context)->SetSleep();
 }

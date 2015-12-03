@@ -316,6 +316,7 @@ class GUI : public SyncStateMonitor {
     , on_display_promotion_(nullptr)
     , on_display_help_articles_(nullptr)
     , on_display_project_colors_(nullptr)
+    , on_display_obm_experiment_(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
     , lastDisplayLoginOpen(false)
@@ -509,6 +510,10 @@ class GUI : public SyncStateMonitor {
         on_display_promotion_ = cb;
     }
 
+    void OnDisplayObmExperiment(TogglDisplayObmExperiment cb) {
+        on_display_obm_experiment_ = cb;
+    }
+
     bool CanDisplayUpdate() const {
         return !!on_display_update_;
     }
@@ -528,6 +533,15 @@ class GUI : public SyncStateMonitor {
     void DisplayPromotion(const int64_t promotion_type) {
         if (on_display_promotion_) {
             on_display_promotion_(promotion_type);
+        }
+    }
+
+    void DisplayObmExperiment(
+        const uint64_t nr,
+        const bool_t included,
+        const bool_t seen) {
+        if (on_display_obm_experiment_) {
+            on_display_obm_experiment_(nr, included, seen);
         }
     }
 
@@ -560,6 +574,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayPromotion on_display_promotion_;
     TogglDisplayHelpArticles on_display_help_articles_;
     TogglDisplayProjectColors on_display_project_colors_;
+    TogglDisplayObmExperiment on_display_obm_experiment_;
 
     // Cached views
     Poco::Int64 lastSyncState;

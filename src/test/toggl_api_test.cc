@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 
+#include "./../obm_action.h"
 #include "./../proxy.h"
 #include "./../settings.h"
 #include "./../time_entry.h"
@@ -68,6 +69,9 @@ std::vector<TimeEntry> time_entries;
 
 // on_project_colors
 std::vector<std::string> project_colors;
+
+// on_obm_experiment
+std::vector<ObmExperiment> obm_expriments;
 
 TimeEntry time_entry_by_guid(const std::string guid) {
     TimeEntry te;
@@ -255,9 +259,20 @@ void on_project_colors(
     string_list_t color_list,
     const uint64_t color_count) {
     testresult::project_colors.clear();
-    for (int i = 0; i < color_count; i++) {
+    for (uint64_t i = 0; i < color_count; i++) {
         testresult::project_colors.push_back(std::string(color_list[i]));
     }
+}
+
+void on_obm_experiment(
+    const uint64_t nr,
+    const bool_t included,
+    const bool_t seen) {
+    ObmExperiment experiment;
+    experiment.SetNr(nr);
+    experiment.SetIncluded(included);
+    experiment.SetHasSeen(seen);
+    testresult::obm_expriments.push_back(experiment);
 }
 
 void on_display_timer_state(TogglTimeEntryView *te) {
@@ -329,6 +344,7 @@ class App {
         toggl_on_idle_notification(ctx_, on_display_idle_notification);
         toggl_on_project_colors(ctx_, on_project_colors);
         toggl_on_help_articles(ctx_, on_help_articles);
+        toggl_on_obm_experiment(ctx_, on_obm_experiment);
 
         poco_assert(toggl_ui_start(ctx_));
     }
@@ -753,6 +769,35 @@ TEST(toggl_api, testing_set_logged_in_user) {
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     ASSERT_EQ(uint64_t(10471231), testing::testresult::user_id);
+}
+
+TEST(toggl_api, displays_obm_experiments) {
+    std::string json = loadTestData();
+    testing::App app;
+
+    testing::testresult::error = "";
+    testing::testresult::obm_expriments.clear();
+    bool_t res = testing_set_logged_in_user(app.ctx(), json.c_str());
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(res);
+
+    ASSERT_EQ(1, testing::testresult::obm_expriments.size());
+    ObmExperiment experiment = testing::testresult::obm_expriments[0];
+    ASSERT_TRUE(experiment.Included());
+    ASSERT_EQ(74, experiment.Nr());
+    ASSERT_FALSE(experiment.HasSeen());
+
+    testing::testresult::error = "";
+    testing::testresult::obm_expriments.clear();
+    res = testing_set_logged_in_user(app.ctx(), json.c_str());
+    ASSERT_EQ(noError, testing::testresult::error);
+    ASSERT_TRUE(res);
+
+    ASSERT_EQ(1, testing::testresult::obm_expriments.size());
+    experiment = testing::testresult::obm_expriments[0];
+    ASSERT_TRUE(experiment.Included());
+    ASSERT_EQ(74, experiment.Nr());
+    ASSERT_TRUE(experiment.HasSeen());
 }
 
 TEST(toggl_api, toggl_disable_update_check) {
