@@ -852,9 +852,14 @@ public static partial class Toggl
         }
     }
 
-    public static bool StartUI(string version)
+    public static bool StartUI(string version, ulong? experimentId)
     {
         parseCommandlineParams();
+
+        if (experimentId.HasValue)
+        {
+            toggl_set_obm_experiment_nr(experimentId.Value);
+        }
 
         ctx = toggl_context_init("windows_native_app", version);
 

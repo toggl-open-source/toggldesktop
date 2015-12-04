@@ -33,7 +33,7 @@ public class LibTest
     {
         TogglDesktop.Toggl.Env = "test";
 
-        Assert.IsTrue(TogglDesktop.Toggl.StartUI("0.0.0"));
+        Assert.IsTrue(TogglDesktop.Toggl.StartUI("0.0.0", null));
 
         Assert.AreEqual("test", TogglDesktop.Toggl.Env);
 
