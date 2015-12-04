@@ -53,7 +53,7 @@ osname=linux
 endif
 
 ifneq (, $(findstring CYGWIN, $(uname) ))
-executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/release/TogglDesktop.exe
+executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/Release_VS/TogglDesktop.exe
 pocolib=$(pocodir)/lib/CYGWIN/i686
 osname=windows
 endif
