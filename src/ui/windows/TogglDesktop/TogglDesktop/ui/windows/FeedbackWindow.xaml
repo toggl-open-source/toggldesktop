@@ -24,7 +24,8 @@
 
             <Grid Margin="0 5" >
                 <ComboBox Name="topicComboBox" x:FieldModifier="private"
-                    SelectionChanged="onTopicSelectionChanged">
+                    SelectionChanged="onTopicSelectionChanged"
+                    SelectedValuePath="Content">
                     <ComboBoxItem Content="Bug report"/>
                     <ComboBoxItem Content="Feature request"/>
                     <ComboBoxItem Content="Other"/>

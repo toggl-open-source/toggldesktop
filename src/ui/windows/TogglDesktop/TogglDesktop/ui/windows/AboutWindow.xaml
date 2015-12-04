@@ -72,9 +72,9 @@
                   HorizontalAlignment="Right"
                   SelectionChanged="onReleaseChannelSelectionChanged"
                   SelectedValuePath="Content">
-            <ComboBoxItem >stable</ComboBoxItem>
-            <ComboBoxItem >beta</ComboBoxItem>
-            <ComboBoxItem >dev</ComboBoxItem>
+            <ComboBoxItem>stable</ComboBoxItem>
+            <ComboBoxItem>beta</ComboBoxItem>
+            <ComboBoxItem>dev</ComboBoxItem>
         </ComboBox>
     </Grid>
 </toggl:TogglWindow>
