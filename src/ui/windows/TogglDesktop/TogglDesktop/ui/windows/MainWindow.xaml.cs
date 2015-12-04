@@ -183,7 +183,7 @@ namespace TogglDesktop
         {
             Toggl.RegisterMainWindow(this);
 
-            if (!Toggl.StartUI(Program.Version()))
+            if (!Toggl.StartUI(Program.Version(), this.experimentManager.CurrentExperumentId))
             {
                 MessageBox.Show(null, "Missing callback. See the log file for details");
                 this.shutdown(1);
