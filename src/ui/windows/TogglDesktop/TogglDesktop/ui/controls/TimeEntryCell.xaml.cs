@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using ServiceStack;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -96,6 +98,7 @@ namespace TogglDesktop
             this.labelDuration.Text = cell.labelDuration.Text;
             this.billabeIcon.Visibility = cell.billabeIcon.Visibility;
             this.tagsIcon.Visibility = cell.tagsIcon.Visibility;
+            this.tagsCount.Text = cell.tagsCount.Text;
 
             this.projectRow.Height = cell.projectRow.Height;
 
@@ -120,7 +123,16 @@ namespace TogglDesktop
             setOptionalTextBlockText(this.labelTask, item.TaskLabel == "" ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
             this.billabeIcon.ShowOnlyIf(item.Billable);
-            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
+
+            if (string.IsNullOrEmpty(item.Tags))
+            {
+                this.tagsIcon.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this.tagsIcon.Visibility = Visibility.Visible;
+                this.tagsCount.Text = item.Tags.CountSubstrings(Toggl.TagSeparator).ToString();
+            }
 
             this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
 
@@ -152,6 +164,7 @@ namespace TogglDesktop
             if (this.tagsIcon.Visibility == Visibility.Visible)
             {
                 this.tagsToolTip.Content = cell.tagsToolTip.Content;
+                this.tagsIcon.ToolTip = this.tagsToolTip;
             }
         }
 
@@ -175,6 +188,7 @@ namespace TogglDesktop
             if (this.tagsIcon.Visibility == Visibility.Visible)
             {
                 this.tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
+                this.tagsIcon.ToolTip = this.tagsToolTip;
             }
         }
 
