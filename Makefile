@@ -127,7 +127,7 @@ libs=-framework Carbon \
 	-L$(openssldir) \
 	-lssl \
 	-lcrypto \
-        -Lthird_party/lua/install/lib \
+  -Lthird_party/lua/install/lib \
 	-llua \
 	-ldl
 endif
@@ -149,7 +149,7 @@ libs=-lX11 \
 	-lssl \
 	-lcrypto \
 	-lrt \
-        -Lthird_party/lua/install/lib \
+  -Lthird_party/lua/install/lib \
 	-llua \
 	-ldl
 endif
@@ -169,7 +169,7 @@ libs= -L$(pocolib) \
 	-L$(openssldir) \
 	-lrt \
 	-lpsapi \
-        -Lthird_party/lua/install/lib \
+  -Lthird_party/lua/install/lib \
 	-llua
 endif
 
