@@ -99,7 +99,12 @@
                                Stretch="UniformToFill" Margin="3, 5, 3, 5" Height="16"/>
                         <Border Width="12" Height="12" Background="#ddd"
                                 CornerRadius="100" Margin="14 0 0 0"
-                                BorderThickness="1" BorderBrush="White">
+                                BorderThickness="1">
+
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{Binding EntryBackColor}"/>
+                            </Border.BorderBrush>
+                            
                             <TextBlock Text="9" FontSize="8" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                        TextAlignment="Center" FontWeight="Medium" Foreground="DimGray"
                                        Margin="0"
