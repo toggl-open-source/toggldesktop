@@ -3452,8 +3452,6 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onWake executing");
 
     try {
-        scheduleSync();
-
         Poco::LocalDateTime now;
         if (now.year() != last_time_entry_list_render_at_.year()
                 || now.month() != last_time_entry_list_render_at_.month()
@@ -3464,6 +3462,8 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
         }
 
         idle_.SetWake(user_);
+
+        Sync();
     }
     catch (const Poco::Exception& exc) {
         logger().error(exc.displayText());
