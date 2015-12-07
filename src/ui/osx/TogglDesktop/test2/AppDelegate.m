@@ -481,8 +481,14 @@ BOOL manualMode = NO;
 		[self updateStatusItem];
 	}
 
-	// Show/Hide project in menubar
-	self.showMenuBarProject = cmd.settings.menubar_project;
+	if (self.showMenuBarProject != cmd.settings.menubar_project)
+	{
+		// Show/Hide project in menubar
+		self.showMenuBarProject = cmd.settings.menubar_project;
+		[self updateStatusItem];
+	}
+
+
 
 	// Show/Hide dock icon
 	ProcessSerialNumber psn = { 0, kCurrentProcess };
