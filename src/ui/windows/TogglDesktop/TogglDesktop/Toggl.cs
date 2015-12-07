@@ -598,7 +598,7 @@ public static partial class Toggl
     public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
-    public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { }; 
+    public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
 
     private static void listenToLibEvents()
     {
