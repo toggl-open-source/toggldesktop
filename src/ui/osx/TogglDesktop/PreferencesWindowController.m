@@ -109,6 +109,11 @@ extern void *ctx;
 	[self.addAutotrackerRuleButton setEnabled:self.user_id != 0];
 }
 
+- (IBAction)changeDurationButtonChanged:(id)sender
+{
+	toggl_set_keep_end_time_fixed(ctx, [Utils stateToBool:[self.changeDurationButton state]]);
+}
+
 - (IBAction)proxyRadioChanged:(id)sender
 {
 	[self saveProxySettings];
@@ -376,6 +381,8 @@ const int kUseProxyToConnectToToggl = 2;
 		self.defaultProject.stringValue = @"";
 	}
 	free(default_project_name);
+
+	[self.changeDurationButton setState:[Utils boolToState:toggl_get_keep_end_time_fixed(ctx)]];
 }
 
 - (IBAction)idleMinutesChange:(id)sender

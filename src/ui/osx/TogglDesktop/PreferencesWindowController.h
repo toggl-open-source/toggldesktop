@@ -49,6 +49,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 @property IBOutlet NSButton *renderTimeline;
 @property IBOutlet NSMatrix *proxyRadio;
 @property IBOutlet NSButton *addAutotrackerRuleButton;
+@property IBOutlet NSButton *changeDurationButton;
 
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)proxyRadioChanged:(id)sender;
@@ -72,6 +73,7 @@ extern NSString *const kPreferenceGlobalShortcutStartStop;
 - (IBAction)autotrackChanged:(id)sender;
 - (IBAction)openEditorOnShortcut:(id)sender;
 - (IBAction)defaultProjectSelected:(id)sender;
+- (IBAction)changeDurationButtonChanged:(id)sender;
 
 @property DisplayCommand *originalCmd;
 @property uint64_t user_id;
