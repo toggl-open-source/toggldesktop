@@ -8,7 +8,7 @@
              Height="0" Width="0">
 
     <Popup Name="popup" x:FieldModifier="private"
-           MaxHeight="300" StaysOpen="True" AllowsTransparency="True">
+           MaxHeight="500" StaysOpen="True" AllowsTransparency="True">
         <ScrollViewer Background="White" Margin="10" Style="{StaticResource CustomSrollViewer}">
 
             <ScrollViewer.Effect>
