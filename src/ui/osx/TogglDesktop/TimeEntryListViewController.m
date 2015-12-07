@@ -177,9 +177,14 @@ extern void *ctx;
 		[self focusListing:nil];
 	}
 
-	BOOL hasItems = self.timeEntriesTableView.numberOfRows > 0;
-	[self.timeEntryListScrollView setHidden:!hasItems];
-	[self.emptyLabel setEnabled:!hasItems];
+	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;
+	[self.emptyLabel setEnabled:noItems];
+	[self.timeEntryListScrollView setHidden:noItems];
+	// This seems to work for hiding the list when there are no items
+	if (noItems)
+	{
+		[self.timeEntryListScrollView setHidden:noItems];
+	}
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
