@@ -628,6 +628,16 @@ error User::LoadUserAndRelatedDataFromJSONString(
     return noError;
 }
 
+void User::LoadObmExperiments(Json::Value const &obm) {
+    if (obm.isObject()) {
+        loadObmExperimentFromJson(obm);
+    } else if (obm.isArray()) {
+        for (unsigned int i = 0; i < obm.size(); i++) {
+            loadObmExperimentFromJson(obm[i]);
+        }
+    }
+}
+
 void User::loadObmExperimentFromJson(Json::Value const &obm) {
     Poco::UInt64 nr = obm["nr"].asUInt64();
     if (!nr) {
@@ -672,18 +682,6 @@ void User::loadUserAndRelatedDataFromJSON(
     SetStoreStartAndStopTime(data["store_start_and_stop_time"].asBool());
     SetTimeOfDayFormat(data["timeofday_format"].asString());
     SetDurationFormat(data["duration_format"].asString());
-
-    // OBM experiments
-    if (data.isMember("obm")) {
-        Json::Value obm = data["obm"];
-        if (obm.isObject()) {
-            loadObmExperimentFromJson(obm);
-        } else if (obm.isArray()) {
-            for (unsigned int i = 0; i < obm.size(); i++) {
-                loadObmExperimentFromJson(obm[i]);
-            }
-        }
-    }
 
     {
         std::set<Poco::UInt64> alive;
