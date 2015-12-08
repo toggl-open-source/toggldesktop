@@ -85,5 +85,12 @@ namespace TogglDesktop
             if (this.AddedIdleTimeAsNewEntry != null)
                 this.AddedIdleTimeAsNewEntry(this, EventArgs.Empty);
         }
+
+        private void onDiscardContinueClick(object sender, RoutedEventArgs e)
+        {
+            Toggl.DiscardTimeAt(this.guid, this.started, false);
+            Toggl.ContinueLatest();
+            this.Hide();
+        }
     }
 }
