@@ -12,6 +12,11 @@ namespace toggl {
 
 class Analytics : public Poco::TaskManager {
  public:
+    void Track(
+        const std::string client_id,
+        const std::string category,
+        const std::string action);
+
     void TrackAutocompleteUsage(
         const std::string client_id,
         const bool was_using_autocomplete);
