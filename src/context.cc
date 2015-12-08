@@ -2801,7 +2801,7 @@ error Context::DiscardTimeAt(
             ss << "discard-and-stop";
         }
 
-        analytics_.TrackReminderClick(db_->AnalyticsClientID(),
+        analytics_.TrackIdleDetectionClick(db_->AnalyticsClientID(),
                                       ss.str());
     }
 
@@ -2840,7 +2840,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
 
     // Tracking action
     if ("production" == environment_) {
-        analytics_.TrackReminderClick(db_->AnalyticsClientID(),
+        analytics_.TrackIdleDetectionClick(db_->AnalyticsClientID(),
                                       "discard-and-continue");
     }
 

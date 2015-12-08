@@ -17,7 +17,7 @@ class Analytics : public Poco::TaskManager {
         const std::string category,
         const std::string action);
 
-    void TrackReminderClick(
+    void TrackIdleDetectionClick(
         const std::string client_id,
         const std::string button);
 
