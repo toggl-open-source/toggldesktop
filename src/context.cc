@@ -1940,18 +1940,6 @@ error Context::Login(
             }
         }
 
-        // Fetch OBM experiments..
-        err = pullObmExperiments();
-        if (err != noError) {
-            logger().error("Error pulling OBM experiments: " + err);
-        }
-
-        // ..and run the OBM experiments
-        err = runObmExperiments();
-        if (err != noError) {
-            logger().error("Error running OBM experiments: " + err);
-        }
-
         return displayError(save());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -2110,7 +2098,24 @@ error Context::SetLoggedInUserFromJSON(
 
     updateUI(UIElements::Reset());
 
-    return displayError(save());
+    err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    // Fetch OBM experiments..
+    err = pullObmExperiments();
+    if (err != noError) {
+        logger().error("Error pulling OBM experiments: " + err);
+    }
+
+    // ..and run the OBM experiments
+    err = runObmExperiments();
+    if (err != noError) {
+        logger().error("Error running OBM experiments: " + err);
+    }
+
+    return noError;
 }
 
 error Context::Logout() {
