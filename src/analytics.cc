@@ -21,6 +21,13 @@
 
 namespace toggl {
 
+void Analytics::Track(const std::string client_id,
+                      const std::string category,
+                      const std::string action) {
+    start(new GoogleAnalyticsEvent(
+        client_id, category, action, "", 1));
+}
+
 void Analytics::TrackAutocompleteUsage(const std::string client_id,
                                        const bool was_using_autocomplete) {
     int value = 0;
