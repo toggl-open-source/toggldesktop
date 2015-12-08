@@ -126,6 +126,19 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
     ui->project->addItem("");
     foreach(AutocompleteView *view, projectAutocompleteUpdate) {
         ui->project->addItem(view->Text, QVariant::fromValue(view));
+
+        // Disable Workspace items
+        if (view->Type == 3) {
+            // Get the index of the value to disable
+            QModelIndex index = ui->project->model()->index(
+                ui->project->count()-1, 0);
+
+            // This is the effective 'disable' flag
+            QVariant v(0);
+
+            // Setting the disabled flag
+            ui->project->model()->setData(index, v, Qt::UserRole -1);
+        }
     }
     projectAutocompleteNeedsUpdate = false;
 }
