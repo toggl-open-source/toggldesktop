@@ -479,6 +479,10 @@ TEST(Database, SavesAndLoadsObmExperiments) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
+    std::string json = loadTestDataFile("../testdata/obm_response.json");
+    Json::Value data = jsonStringToValue(json);
+    user.LoadObmExperiments(data);
+
     ASSERT_EQ(1, user.related.ObmExperiments.size());
 
     ObmExperiment *obm = user.related.ObmExperiments[0];
@@ -503,11 +507,13 @@ TEST(Database, SavesAndLoadsObmExperiments) {
 TEST(Database, SavesAndLoadsObmExperimentsArray) {
     testing::Database db;
 
-    std::string json = loadTestDataFile("../testdata/me_with_obm_array.json");
-
     User user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+
+    std::string json = loadTestDataFile("../testdata/obm_response_array.json");
+    Json::Value data = jsonStringToValue(json);
+    user.LoadObmExperiments(data);
 
     ASSERT_EQ(2, user.related.ObmExperiments.size());
 
@@ -530,7 +536,6 @@ TEST(Database, SavesAndLoadsObmExperimentsArray) {
     ASSERT_EQ(user.related.ObmExperiments.size(),
               user2.related.ObmExperiments.size());
 }
-
 
 TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
@@ -1616,10 +1621,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         list.push_back(event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
-
-        Json::Value root;
-        Json::Reader reader;
-        ASSERT_TRUE(reader.parse(json, root));
+        Json::Value root = jsonStringToValue(json);
         ASSERT_EQ(std::size_t(1), root.size());
 
         const Json::Value v = root[0];
@@ -1635,10 +1637,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         list.push_back(event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
-
-        Json::Value root;
-        Json::Reader reader;
-        ASSERT_TRUE(reader.parse(json, root));
+        Json::Value root = jsonStringToValue(json);
         ASSERT_EQ(std::size_t(1), root.size());
 
         const Json::Value v = root[0];
@@ -1656,10 +1655,7 @@ TEST(JSON, ConvertTimelineToJSON) {
         list.push_back(event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
-
-        Json::Value root;
-        Json::Reader reader;
-        ASSERT_TRUE(reader.parse(json, root));
+        Json::Value root = jsonStringToValue(json);
         ASSERT_EQ(std::size_t(1), root.size());
 
         const Json::Value v = root[0];

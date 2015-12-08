@@ -487,10 +487,17 @@ void Context::updateUI(const UIElements &what) {
                 }
 
                 editor_time_entry_view.Fill(editor_time_entry);
-                editor_time_entry_view.Duration =
-                    toggl::Formatter::FormatDuration(
-                        editor_time_entry->DurationInSeconds(),
-                        Formatter::DurationFormat);
+                if (editor_time_entry->IsTracking()) {
+                    editor_time_entry_view.Duration =
+                        toggl::Formatter::FormatDuration(
+                            editor_time_entry->DurationInSeconds(),
+                            Format::Classic);
+                } else {
+                    editor_time_entry_view.Duration =
+                        toggl::Formatter::FormatDuration(
+                            editor_time_entry->DurationInSeconds(),
+                            Formatter::DurationFormat);
+                }
                 editor_time_entry_view.DateDuration =
                     Formatter::FormatDurationForDateHeader(
                         user_->related.TotalDurationForDate(
@@ -1933,18 +1940,6 @@ error Context::Login(
             }
         }
 
-        // Fetch OBM experiments..
-        err = pullObmExperiments();
-        if (err != noError) {
-            logger().error("Error pulling OBM experiments: " + err);
-        }
-
-        // ..and run the OBM experiments
-        err = runObmExperiments();
-        if (err != noError) {
-            logger().error("Error running OBM experiments: " + err);
-        }
-
         return displayError(save());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -2103,7 +2098,24 @@ error Context::SetLoggedInUserFromJSON(
 
     updateUI(UIElements::Reset());
 
-    return displayError(save());
+    err = save();
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    // Fetch OBM experiments..
+    err = pullObmExperiments();
+    if (err != noError) {
+        logger().error("Error pulling OBM experiments: " + err);
+    }
+
+    // ..and run the OBM experiments
+    err = runObmExperiments();
+    if (err != noError) {
+        logger().error("Error running OBM experiments: " + err);
+    }
+
+    return noError;
 }
 
 error Context::Logout() {
