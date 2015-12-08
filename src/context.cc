@@ -2791,6 +2791,19 @@ error Context::DiscardTimeAt(
     const std::string guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
+    // Tracking action
+    if ("production" == environment_) {
+
+        std::stringstream ss;
+        if (split_into_new_entry) {
+            ss << "idle-as-new-entry";
+        } else {
+            ss << "discard-and-stop";
+        }
+
+        analytics_.TrackReminderClick(db_->AnalyticsClientID(),
+                                      ss.str());
+    }
 
     TimeEntry *split = nullptr;
 
@@ -2824,6 +2837,12 @@ error Context::DiscardTimeAt(
 TimeEntry *Context::DiscardTimeAndContinue(
     const std::string guid,
     const Poco::Int64 at) {
+
+    // Tracking action
+    if ("production" == environment_) {
+        analytics_.TrackReminderClick(db_->AnalyticsClientID(),
+                                      "discard-and-continue");
+    }
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);

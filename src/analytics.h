@@ -17,6 +17,10 @@ class Analytics : public Poco::TaskManager {
         const std::string category,
         const std::string action);
 
+    void TrackReminderClick(
+        const std::string client_id,
+        const std::string button);
+
     void TrackAutocompleteUsage(
         const std::string client_id,
         const bool was_using_autocomplete);

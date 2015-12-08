@@ -28,6 +28,15 @@ void Analytics::Track(const std::string client_id,
         client_id, category, action, "", 1));
 }
 
+void Analytics::TrackReminderClick(const std::string client_id,
+                                   const std::string button) {
+    std::stringstream ss;
+    ss << "reminder/"
+       << button;
+
+    Track(client_id, "reminder", ss.str());
+}
+
 void Analytics::TrackAutocompleteUsage(const std::string client_id,
                                        const bool was_using_autocomplete) {
     std::stringstream ss;
