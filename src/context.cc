@@ -3994,18 +3994,13 @@ error Context::pullObmExperiments() {
             return error("Error in OBM experiments response body");
         }
 
-        if (!json.isMember("obm")) {
-            logger().debug("No OBM experiments from backend");
-            return noError;
-        }
-
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().warning("Cannot apply OBM experiments without user");
                 return noError;
             }
-            user_->LoadObmExperiments(json["obm"]);
+            user_->LoadObmExperiments(json);
         }
 
         return noError;
