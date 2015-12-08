@@ -888,12 +888,6 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         setOnline("Data pushed");
     }
 
-    // Fetch OBM experiments
-    err = pullObmExperiments();
-    if (err != noError) {
-        logger().error("Error pulling OBM experiments: " + err);
-    }
-
     // Push cached OBM action
     err = pushObmAction();
     if (err != noError) {
@@ -1937,6 +1931,12 @@ error Context::Login(
             if (err != noError) {
                 return displayError(err);
             }
+        }
+
+        // Fetch OBM experiments
+        err = pullObmExperiments();
+        if (err != noError) {
+            logger().error("Error pulling OBM experiments: " + err);
         }
 
         return displayError(save());
