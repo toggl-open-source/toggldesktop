@@ -83,6 +83,9 @@ void TimerWidget::displayRunningTimerState(
 
     ui->duration->setText(te->Duration);
     ui->duration->setEnabled(false);
+    ui->duration->setToolTip(
+        QString("<p style='color:white;background-color:black;'>Started: " +
+                te->StartTimeString+"</p>"));
 
     ui->project->setText(te->ProjectAndTaskLabel);
 
