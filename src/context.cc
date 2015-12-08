@@ -487,10 +487,17 @@ void Context::updateUI(const UIElements &what) {
                 }
 
                 editor_time_entry_view.Fill(editor_time_entry);
-                editor_time_entry_view.Duration =
-                    toggl::Formatter::FormatDuration(
-                        editor_time_entry->DurationInSeconds(),
-                        Formatter::DurationFormat);
+                if (editor_time_entry->IsTracking()) {
+                    editor_time_entry_view.Duration =
+                        toggl::Formatter::FormatDuration(
+                            editor_time_entry->DurationInSeconds(),
+                            Format::Classic);
+                } else {
+                    editor_time_entry_view.Duration =
+                        toggl::Formatter::FormatDuration(
+                            editor_time_entry->DurationInSeconds(),
+                            Formatter::DurationFormat);
+                }
                 editor_time_entry_view.DateDuration =
                     Formatter::FormatDurationForDateHeader(
                         user_->related.TotalDurationForDate(
