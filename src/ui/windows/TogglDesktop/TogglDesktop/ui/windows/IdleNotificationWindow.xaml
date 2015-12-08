@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="340" Width="280"
+        Height="350" Width="280"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Idle Notification"
@@ -44,6 +44,8 @@
                     Click="onDiscardTimeClick"/>
             <Button Content="ADD TIME AS NEW ENTRY"
                     Click="onAddAsNewClick"/>
+            <Button Content="DISCARD TIME AND CONTINUE"
+                    Click="onDiscardContinueClick"/>
         </StackPanel>
     </Grid>
 </toggl:TogglWindow>
