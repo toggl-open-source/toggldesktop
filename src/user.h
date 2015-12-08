@@ -184,6 +184,8 @@ class User : public BaseModel {
         std::vector<TimeEntry *> * const,
         std::string *result) const;
 
+    void LoadObmExperiments(Json::Value const &obm);
+
     template<typename T>
     void EnsureWID(T *model) const {
         // Do nothing if TE already has WID assigned

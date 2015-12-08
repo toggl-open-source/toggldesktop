@@ -888,6 +888,12 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         setOnline("Data pushed");
     }
 
+    // Fetch OBM experiments
+    err = pullObmExperiments();
+    if (err != noError) {
+        logger().error("Error pulling OBM experiments: " + err);
+    }
+
     // Push cached OBM action
     err = pushObmAction();
     if (err != noError) {
@@ -3940,6 +3946,68 @@ error Context::pushChanges(
         ss << "Changes data JSON pushed and responses parsed in "
            << stopwatch.elapsed() / 1000 << " ms";
         logger().debug(ss.str());
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::pullObmExperiments() {
+    try {
+        if (!HTTPSClient::Config.OBMExperimentNr) {
+            logger().debug("No OBM experiment enabled by UI");
+            return noError;
+        }
+
+        logger().trace("Fetching OBM experiments from backend");
+
+        std::string apitoken("");
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot fetch OBM experiments without user");
+                return noError;
+            }
+            apitoken = user_->APIToken();
+        }
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/me/experiments";
+        req.basic_auth_username = apitoken;
+        req.basic_auth_password = "api_token";
+
+        TogglClient client(UI());
+        HTTPSResponse resp = client.Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        Json::Value json;
+        Json::Reader reader;
+        if (!reader.parse(resp.body, json)) {
+            return error("Error in OBM experiments response body");
+        }
+
+        if (!json.isMember("obm")) {
+            logger().debug("No OBM experiments from backend");
+            return noError;
+        }
+
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().warning("Cannot apply OBM experiments without user");
+                return noError;
+            }
+            user_->LoadObmExperiments(json["obm"]);
+        }
+
+        return noError;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
