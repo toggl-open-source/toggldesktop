@@ -462,9 +462,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             logger().debug(ss.str());
         }
 
-        if (resp.body.size() < 1204 * 10) {
-            logger().trace(resp.body);
-        }
+        logger().trace(resp.body);
 
         if (429 == resp.status_code) {
             Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);
