@@ -30,12 +30,15 @@ void Analytics::Track(const std::string client_id,
 
 void Analytics::TrackAutocompleteUsage(const std::string client_id,
                                        const bool was_using_autocomplete) {
-    int value = 0;
+    std::stringstream ss;
+    ss << "timer/autocomplete-";
     if (was_using_autocomplete) {
-        value = 1;
+        ss << "true";
+    } else {
+        ss << "false";
     }
-    start(new GoogleAnalyticsEvent(
-        client_id, "timer", "start", "was_using_autocomplete", value));
+
+    Track(client_id, "timer", ss.str());
 }
 
 const std::string GoogleAnalyticsEvent::relativeURL() {
