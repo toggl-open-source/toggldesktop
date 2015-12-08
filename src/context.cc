@@ -1933,10 +1933,16 @@ error Context::Login(
             }
         }
 
-        // Fetch OBM experiments
+        // Fetch OBM experiments..
         err = pullObmExperiments();
         if (err != noError) {
             logger().error("Error pulling OBM experiments: " + err);
+        }
+
+        // ..and run the OBM experiments
+        err = runObmExperiments();
+        if (err != noError) {
+            logger().error("Error running OBM experiments: " + err);
         }
 
         return displayError(save());
@@ -2051,11 +2057,6 @@ void Context::setUser(User *value, const bool logged_in) {
     // Offer beta channel, if not offered yet
     bool did_offer_beta_channel(false);
     error err = offerBetaChannel(&did_offer_beta_channel);
-    if (err != noError) {
-        displayError(err);
-    }
-
-    err = runObmExperiments();
     if (err != noError) {
         displayError(err);
     }
