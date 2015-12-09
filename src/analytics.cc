@@ -29,7 +29,7 @@ void Analytics::Track(const std::string client_id,
 }
 
 void Analytics::TrackIdleDetectionClick(const std::string client_id,
-                                   const std::string button) {
+                                        const std::string button) {
     std::stringstream ss;
     ss << "reminder/"
        << button;

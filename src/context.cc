@@ -2791,9 +2791,9 @@ error Context::DiscardTimeAt(
     const std::string guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
+
     // Tracking action
     if ("production" == environment_) {
-
         std::stringstream ss;
         if (split_into_new_entry) {
             ss << "idle-as-new-entry";
@@ -2802,7 +2802,7 @@ error Context::DiscardTimeAt(
         }
 
         analytics_.TrackIdleDetectionClick(db_->AnalyticsClientID(),
-                                      ss.str());
+                                           ss.str());
     }
 
     TimeEntry *split = nullptr;
@@ -2841,7 +2841,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
     // Tracking action
     if ("production" == environment_) {
         analytics_.TrackIdleDetectionClick(db_->AnalyticsClientID(),
-                                      "discard-and-continue");
+                                           "discard-and-continue");
     }
 
     {
