@@ -28,6 +28,15 @@ void Analytics::Track(const std::string client_id,
         client_id, category, action, "", 1));
 }
 
+void Analytics::TrackSettings(const std::string client_id,
+                              const bool record_timeline,
+                              const Settings settings,
+                              const bool use_proxy,
+                              const Proxy proxy) {
+    start(new GoogleAnalyticsSettingsEvent(
+        client_id, "settings", record_timeline, settings, use_proxy, proxy));
+}
+
 void Analytics::TrackIdleDetectionClick(const std::string client_id,
                                         const std::string button) {
     std::stringstream ss;
@@ -65,6 +74,140 @@ const std::string GoogleAnalyticsEvent::relativeURL() {
 }
 
 void GoogleAnalyticsEvent::runTask() {
+    HTTPSRequest req;
+    req.host = "https://ssl.google-analytics.com";
+    req.relative_url = relativeURL();
+
+    HTTPSClient client;
+    HTTPSResponse resp = client.Get(req);
+    if (resp.err != noError) {
+        Poco::Logger::get("Analytics").error(resp.err);
+        return;
+    }
+}
+
+const std::string GoogleAnalyticsSettingsEvent::relativeURL() {
+    std::stringstream ss;
+    ss << "/collect"
+       << "?v=" << "1"
+       << "&tid=" << "UA-3215787-27"
+       << "&cid=" << client_id_
+       << "&t=" << "event"
+       << "&ec=" << category_
+       << "&ea=" << action_;
+    return ss.str();
+}
+
+void GoogleAnalyticsSettingsEvent::runTask() {
+    setActionBool("record_timeline-", record_timeline);
+    makeReq();
+
+    setActionBool("uses_proxy-", uses_proxy);
+    makeReq();
+
+    // Settings struct
+
+    if (uses_proxy) {
+        setActionBool("autodetect_proxy-", settings.autodetect_proxy);
+        makeReq();
+    }
+
+    setActionBool("dock_icon-", settings.dock_icon);
+    makeReq();
+
+    setActionBool("menubar_timer-", settings.menubar_timer);
+    makeReq();
+
+    setActionBool("menubar_project-", settings.menubar_project);
+    makeReq();
+
+    setActionBool("on_top-", settings.on_top);
+    makeReq();
+
+
+    setActionBool("use_idle_detection-", settings.use_idle_detection);
+    makeReq();
+
+    if (settings.use_idle_detection) {
+        setActionInt("idle_minutes-", settings.idle_minutes);
+        makeReq();
+    }
+
+    setActionBool("focus_on_shortcut-", settings.focus_on_shortcut);
+    makeReq();
+
+    setActionBool("manual_mode-", settings.manual_mode);
+    makeReq();
+
+    setActionBool("autotrack-", settings.autotrack);
+    makeReq();
+
+    setActionBool("open_editor_on_shortcut-", settings.open_editor_on_shortcut);
+    makeReq();
+
+    setActionBool("reminder-", settings.reminder);
+    makeReq();
+
+    if (settings.reminder) {
+        setActionBool("reminder_day_mon-", settings.remind_mon);
+        makeReq();
+
+        setActionBool("reminder_day_tue-", settings.remind_tue);
+        makeReq();
+
+        setActionBool("reminder_day_wed-", settings.remind_wed);
+        makeReq();
+
+        setActionBool("reminder_day_thu-", settings.remind_thu);
+        makeReq();
+
+        setActionBool("reminder_day_fri-", settings.remind_fri);
+        makeReq();
+
+        setActionBool("reminder_day_sat-", settings.remind_sat);
+        makeReq();
+
+        setActionBool("reminder_day_sun-", settings.remind_sun);
+        makeReq();
+
+        setActionInt("reminder_minutes-", settings.reminder_minutes);
+        makeReq();
+
+        setActionString("remind_starts-", settings.remind_starts);
+        makeReq();
+
+        setActionString("remind_ends-", settings.remind_ends);
+        makeReq();
+    }
+}
+
+void GoogleAnalyticsSettingsEvent::setActionBool(std::string type, bool value) {
+    std::stringstream ss;
+    ss << "settings/"
+       << type
+       << value;
+    action_ = ss.str();
+}
+
+void GoogleAnalyticsSettingsEvent::setActionInt(std::string type,
+                                                Poco::Int64 value) {
+    std::stringstream ss;
+    ss << "settings/"
+       << type
+       << value;
+    action_ = ss.str();
+}
+
+void GoogleAnalyticsSettingsEvent::setActionString(std::string type,
+                                                   std::string value) {
+    std::stringstream ss;
+    ss << "settings/"
+       << type
+       << value;
+    action_ = ss.str();
+}
+
+void GoogleAnalyticsSettingsEvent::makeReq() {
     HTTPSRequest req;
     req.host = "https://ssl.google-analytics.com";
     req.relative_url = relativeURL();

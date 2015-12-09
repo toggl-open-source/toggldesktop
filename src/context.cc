@@ -768,6 +768,14 @@ void Context::updateUI(const UIElements &what) {
                               settings_,
                               use_proxy,
                               proxy);
+        // Tracking Settings
+        if ("production" == environment_) {
+            analytics_.TrackSettings(db_->AnalyticsClientID(),
+                                     record_timeline,
+                                     settings_,
+                                     use_proxy,
+                                     proxy);
+        }
     }
 
     // Apply autocomplete as last element,
