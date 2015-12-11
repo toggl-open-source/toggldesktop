@@ -25,6 +25,7 @@
 @property (strong) NSString *ProjectGUID; // when project is not saved to backend yet
 @property (strong) NSString *GUID;
 @property BOOL billable;
+@property BOOL unsynced;
 @property (strong) NSDate *started;
 @property (strong) NSDate *ended;
 @property (strong) NSString *startTimeString;

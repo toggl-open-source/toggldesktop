@@ -65,6 +65,14 @@
 	{
 		self.billable = NO;
 	}
+	if (te->Unsynced)
+	{
+		self.unsynced = YES;
+	}
+	else
+	{
+		self.unsynced = NO;
+	}
 	self.started = [NSDate dateWithTimeIntervalSince1970:te->Started];
 	self.ended = [NSDate dateWithTimeIntervalSince1970:te->Ended];
 	if (te->StartTimeString)
