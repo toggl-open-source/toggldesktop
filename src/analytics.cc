@@ -190,7 +190,7 @@ void GoogleAnalyticsSettingsEvent::setActionBool(std::string type, bool value) {
 }
 
 void GoogleAnalyticsSettingsEvent::setActionInt(std::string type,
-                                                Poco::Int64 value) {
+        Poco::Int64 value) {
     std::stringstream ss;
     ss << "settings/"
        << type
@@ -199,7 +199,7 @@ void GoogleAnalyticsSettingsEvent::setActionInt(std::string type,
 }
 
 void GoogleAnalyticsSettingsEvent::setActionString(std::string type,
-                                                   std::string value) {
+        std::string value) {
     std::stringstream ss;
     ss << "settings/"
        << type
