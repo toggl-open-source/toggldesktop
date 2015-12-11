@@ -50,6 +50,7 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
         toggl::Formatter::FormatDateHeader(model->Start());
     DurOnly = model->DurOnly();
     Error = model->ValidationError();
+    Unsynced = model->NeedsPush();
 }
 
 bool Autocomplete::operator == (const Autocomplete& a) const {

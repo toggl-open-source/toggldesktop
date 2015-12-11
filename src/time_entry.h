@@ -28,7 +28,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
     , description_("")
     , duronly_(false)
     , created_with_("")
-    , project_guid_("") {}
+    , project_guid_("")
+    , unsynced_(false) {}
 
     virtual ~TimeEntry() {}
 
@@ -140,6 +141,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     bool duronly_;
     std::string created_with_;
     std::string project_guid_;
+    bool unsynced_;
 
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);

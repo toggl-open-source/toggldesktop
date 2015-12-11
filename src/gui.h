@@ -52,6 +52,7 @@ class TimeEntry {
     , CanSeeBillable(false)
     , DefaultWID(0)
     , WorkspaceName("")
+    , Unsynced(false)
     , Error(noError) {}
 
     int64_t DurationInSeconds;
@@ -82,6 +83,7 @@ class TimeEntry {
     bool CanSeeBillable;
     uint64_t DefaultWID;
     std::string WorkspaceName;
+    bool Unsynced;
     // If syncing a time entry ended with an error,
     // the error is attached to the time entry
     std::string Error;

@@ -35,7 +35,8 @@ class BaseModel {
     , deleted_at_(0)
     , is_marked_as_deleted_on_server_(false)
     , updated_at_(0)
-    , validation_error_("") {}
+    , validation_error_("")
+    , unsynced_(false) {}
     virtual ~BaseModel() {}
 
     const Poco::Int64 &LocalID() const {
@@ -74,6 +75,10 @@ class BaseModel {
     }
     void ClearDirty() {
         dirty_ = false;
+    }
+
+    const bool &Unsynced() const {
+        return unsynced_;
     }
 
     // Deleting a time entry hides it from
@@ -163,6 +168,7 @@ class BaseModel {
     Poco::UInt64 deleted_at_;
     bool is_marked_as_deleted_on_server_;
     Poco::UInt64 updated_at_;
+    bool unsynced_;
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.

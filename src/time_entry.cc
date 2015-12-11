@@ -135,6 +135,7 @@ std::string TimeEntry::String() const {
         << " stop=" << stop_
         << " duration=" << duration_in_seconds_
         << " billable=" << billable_
+        << " unsynced=" << unsynced_
         << " duronly=" << duronly_
         << " tags=" << Tags()
         << " created_with=" << CreatedWith()
