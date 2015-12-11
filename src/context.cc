@@ -247,6 +247,15 @@ error Context::StartEvents() {
         setUser(user);
 
         updateUI(UIElements::Reset());
+
+        if ("production" == environment_) {
+            std::string update_channel("");
+            UpdateChannel(&update_channel);
+
+            analytics_.TrackChannel(db_->AnalyticsClientID(), update_channel);
+        }
+
+
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {

@@ -28,6 +28,15 @@ void Analytics::Track(const std::string client_id,
         client_id, category, action, "", 1));
 }
 
+void Analytics::TrackChannel(const std::string client_id,
+                             const std::string channel) {
+    std::stringstream ss;
+    ss << "channel-"
+       << channel;
+
+    Track(client_id, "channel", ss.str());
+}
+
 void Analytics::TrackSettings(const std::string client_id,
                               const bool record_timeline,
                               const Settings settings,
