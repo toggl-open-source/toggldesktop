@@ -20,6 +20,10 @@ class Analytics : public Poco::TaskManager {
         const std::string category,
         const std::string action);
 
+    void TrackChannel(
+        const std::string client_id,
+        const std::string channel);
+
     void TrackSettings(
         const std::string client_id,
         const bool record_timeline,
