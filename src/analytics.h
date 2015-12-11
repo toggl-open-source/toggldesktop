@@ -7,6 +7,7 @@
 
 #include "Poco/Task.h"
 #include "Poco/TaskManager.h"
+#include "Poco/LocalDateTime.h"
 #include "./proxy.h"
 #include "./settings.h"
 
@@ -33,6 +34,9 @@ class Analytics : public Poco::TaskManager {
     void TrackAutocompleteUsage(
         const std::string client_id,
         const bool was_using_autocomplete);
+ private:
+    Poco::LocalDateTime settings_sync_date;
+
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {
