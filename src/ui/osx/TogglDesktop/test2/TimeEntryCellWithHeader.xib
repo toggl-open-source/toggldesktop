@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -24,6 +24,7 @@
                                     <constraint firstAttribute="height" constant="18" id="ABy-En-546"/>
                                     <constraint firstAttribute="width" constant="84" id="W2B-17-IX3"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Thu 22. Jan" id="Rk2-8z-I6y">
                                     <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -36,6 +37,7 @@
                                     <constraint firstAttribute="height" constant="18" id="c0p-f3-udt"/>
                                     <constraint firstAttribute="width" constant="80" id="s4q-xF-eo4"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="2 h  12 min" id="6GT-P9-Wsv">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -43,6 +45,7 @@
                                 </textFieldCell>
                             </textField>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="leading" secondItem="PuG-98-30a" secondAttribute="leading" constant="15" id="DgO-Ce-DLf"/>
@@ -51,6 +54,7 @@
                         <constraint firstAttribute="height" constant="46" id="eG2-i6-1iR"/>
                         <constraint firstAttribute="trailing" secondItem="A9Z-Z5-Qzd" secondAttribute="trailing" constant="14" id="fw4-FX-KbM"/>
                     </constraints>
+                    <animations/>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
@@ -66,6 +70,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="iQU-pZ-Vow"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="PROJECT NAME - CLIENT" id="YKk-bz-65B">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
@@ -77,13 +82,20 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="bVb-c6-mrF"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="This is a time entry" id="bKB-0i-C0M">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m2D-dM-ygH" userLabel="Unsynced_icon">
+                                <rect key="frame" x="1" y="22" width="12" height="12"/>
+                                <animations/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning-icon" id="yL1-f1-EjG"/>
+                            </imageView>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="7ce-Fx-HQZ"/>
@@ -94,6 +106,7 @@
                         <constraint firstItem="IPX-6P-J70" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="8" id="Wy7-b1-IjE"/>
                         <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" priority="750" constant="140" id="yhX-Il-fGP"/>
                     </constraints>
+                    <animations/>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
@@ -110,9 +123,11 @@
                                     <constraint firstAttribute="width" constant="13" id="P4g-bY-g1A"/>
                                     <constraint firstAttribute="height" constant="11" id="R6O-nb-09v"/>
                                 </constraints>
+                                <animations/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-tags" id="YVT-IH-Brh"/>
                             </imageView>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstAttribute="height" constant="11" id="6fJ-Tw-B1Q"/>
@@ -120,6 +135,7 @@
                         <constraint firstAttribute="bottom" secondItem="Uzs-Rq-HN0" secondAttribute="bottom" id="CYP-gH-VXg"/>
                         <constraint firstAttribute="trailing" secondItem="Uzs-Rq-HN0" secondAttribute="trailing" id="Gnf-tS-4NO"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
@@ -135,14 +151,17 @@
                                     <constraint firstAttribute="width" constant="7" id="ZuG-bv-Rm0"/>
                                     <constraint firstAttribute="height" constant="13" id="eQK-Yb-4dp"/>
                                 </constraints>
+                                <animations/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-billable" id="Fxk-x5-AcD"/>
                             </imageView>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstAttribute="height" constant="13" id="MsQ-Qo-FHh"/>
                         <constraint firstAttribute="width" constant="7" id="YIJ-F1-Bv9"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
@@ -154,6 +173,7 @@
                         <subviews>
                             <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9cY-Vq-vDS" customClass="NSHoverButton">
                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                <animations/>
                                 <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -163,11 +183,13 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="LHM-vv-fKF"/>
                         <constraint firstAttribute="width" constant="24" id="ZHA-nf-nWt"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
@@ -183,6 +205,7 @@
                                     <constraint firstAttribute="height" constant="16" id="cJd-Ab-C5y"/>
                                     <constraint firstAttribute="width" constant="56" id="p4K-2C-iZl"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="03:21:30" id="P10-iS-flR">
                                     <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -190,6 +213,7 @@
                                 </textFieldCell>
                             </textField>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstItem="chv-we-eud" firstAttribute="centerY" secondItem="DdV-RE-Kny" secondAttribute="centerY" id="exj-Tx-LIL"/>
@@ -197,6 +221,7 @@
                         <constraint firstItem="chv-we-eud" firstAttribute="leading" secondItem="DdV-RE-Kny" secondAttribute="leading" constant="2" id="jfj-Wn-dJ0"/>
                         <constraint firstAttribute="width" constant="58" id="kOR-ex-wFu"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
@@ -217,6 +242,7 @@
                 <constraint firstAttribute="trailing" secondItem="63N-7j-264" secondAttribute="trailing" constant="77" id="r2G-1n-tQt"/>
                 <constraint firstItem="PuG-98-30a" firstAttribute="leading" secondItem="WaA-ag-4kh" secondAttribute="leading" id="wAO-Q7-Nn4"/>
             </constraints>
+            <animations/>
             <connections>
                 <outlet property="backgroundBox" destination="HvF-1T-7Z3" id="OwT-rX-MgQ"/>
                 <outlet property="billableFlag" destination="HgZ-sm-ajS" id="Jhz-7e-GVO"/>
@@ -227,6 +253,7 @@
                 <outlet property="formattedDateTextField" destination="Eux-yk-8iS" id="Nua-0p-xmm"/>
                 <outlet property="projectTextField" destination="4mY-N2-UMI" id="Kpb-Es-Ieo"/>
                 <outlet property="tagFlag" destination="Uzs-Rq-HN0" id="l8n-70-vhC"/>
+                <outlet property="unsyncedIcon" destination="m2D-dM-ygH" id="jqo-q2-2Lx"/>
             </connections>
         </customView>
     </objects>
@@ -234,5 +261,6 @@
         <image name="continue" width="23" height="23"/>
         <image name="icon-billable" width="6.5" height="12.5"/>
         <image name="icon-tags" width="13" height="10.5"/>
+        <image name="warning-icon" width="32" height="32"/>
     </resources>
 </document>
