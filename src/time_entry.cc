@@ -403,6 +403,7 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     SetUpdatedAtString(data["at"].asString());
 
     SetUIModifiedAt(0);
+    ClearUnsynced();
 }
 
 Json::Value TimeEntry::SaveToJSON() const {

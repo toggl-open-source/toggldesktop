@@ -181,9 +181,10 @@ endif
 
 default: fmt app
 
-csapi:
+csapi: generate_cs_api fmt
+
+generate_cs_api:
 	go run src/script/generate_cs_api.go
-	mcs src/ui/windows/TogglDesktop/TogglDesktop/Toggl.cs src/ui/windows/TogglDesktop/TogglDesktop/TogglApi.cs /target:library
 
 clean: clean_ui clean_lib clean_test
 	rm -rf build coverage

@@ -205,4 +205,8 @@ void BaseModel::SetDirty() {
     dirty_ = true;
 }
 
+void BaseModel::SetUnsynced() {
+    unsynced_ = true;
+}
+
 }   // namespace toggl
