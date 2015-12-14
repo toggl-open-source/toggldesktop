@@ -7,9 +7,9 @@ The total application is composed of two major parts: The interface, written in 
 
 ## Table of contents
 
-- [Overview](/overview.md)
-    - [Namespaces and folders](/overview.md#namespaces-and-folders)
-    - [Architecture](/overview.md#architecture)
+- [Overview](overview.md)
+    - [Namespaces and folders](overview.md#namespaces-and-folders)
+    - [Architecture](overview.md#architecture)
 - Main UI parts
     - Main window
         - Login view
