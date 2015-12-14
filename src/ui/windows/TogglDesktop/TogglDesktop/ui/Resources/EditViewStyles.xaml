@@ -62,8 +62,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-            <Style TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="FontSize" Value="9.75" />
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="-6, 0, 16, 0"/>
