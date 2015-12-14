@@ -3,13 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-            <Setter Property="FontSize" Value="13.3" />
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Foreground" Value="white"/>
             <Setter Property="Margin" Value="14 2 6 2"/>
             <Setter Property="VerticalAlignment" Value="Center"/>

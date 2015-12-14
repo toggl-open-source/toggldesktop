@@ -12,12 +12,9 @@
         <Style.Resources>
 
             <!-- common text settings -->
-            <Style TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-                <Setter Property="FontSize" Value="13.3" />
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="0, 0, 4, 0"/>
-                <Setter Property="Foreground" Value="#252525"/>
             </Style>
 
             <!-- continue button -->

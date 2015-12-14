@@ -6,10 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="/TogglDesktop;component/Resources/Fonts/#Roboto" />
-            <Setter Property="FontSize" Value="13.3" />
-            <Setter Property="Foreground" Value="#252525"/>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Margin" Value="14 2 6 2"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
