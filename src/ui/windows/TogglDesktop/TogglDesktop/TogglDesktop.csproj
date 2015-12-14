@@ -819,6 +819,9 @@
   <ItemGroup>
     <Resource Include="Resources\arrow-up.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\warning-icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

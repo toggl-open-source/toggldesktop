@@ -142,6 +142,8 @@ namespace TogglDesktop
             this.entryHoverColor = hoverColor;
             this.EntryBackColor = idleBackColor;
 
+            this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
+
             if (item.IsHeader)
             {
                 this.labelFormattedDate.Text = item.DateHeader;

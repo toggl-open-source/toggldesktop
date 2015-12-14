@@ -50,6 +50,13 @@
 
             <Rectangle Name="projectColor" x:FieldModifier="private" Grid.Column="0"
                        Fill="#999999"/>
+            
+            <Image Name="unsyncedIcon" x:FieldModifier="private" Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   ToolTip="Unsynced time entry."
+                   Width="16" Height="16"
+                   Source="/TogglDesktop;component/Resources/warning-icon.png"
+                   Stretch="UniformToFill"/>
 
             <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
 
