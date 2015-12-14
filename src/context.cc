@@ -3861,15 +3861,6 @@ error Context::pullAllUserData(
     return noError;
 }
 
-void Context::updatePushFailed(std::vector<TimeEntry *> time_entries) {  // NOLINT
-    for (std::vector<TimeEntry *>::iterator it = time_entries.begin();
-            it != time_entries.end();
-            it++) {
-        TimeEntry *entry = *it;
-        entry->SetUnsynced();
-    }
-}
-
 error Context::pushChanges(
     TogglClient *toggl_client,
     bool *had_something_to_push) {
@@ -3943,8 +3934,17 @@ error Context::pushChanges(
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
-            if (!time_entries.empty()) {
-                updatePushFailed(time_entries);
+            // Mark the time entries as unsynced now
+            {
+                Poco::Mutex::ScopedLock lock(user_m_);
+                if (user_) {
+                    for (std::vector<TimeEntry *>::iterator
+                            it = time_entries.begin();
+                            it != time_entries.end();
+                            it++) {
+                        (*it)->SetUnsynced();
+                    }
+                }
             }
             return resp.err;
         }
