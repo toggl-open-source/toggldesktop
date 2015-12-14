@@ -19,7 +19,8 @@ Table of Contents
     * [OSX](#osx)
     * [Windows](#windows-1)
     * [Linux (64 bit only)](#linux-64-bit-only)
-  * [Change log](#changelog)
+  * [Change log](#change-log)
+  * [Documentation](#documentation)
   * [Contribute](#contribute)
 
 
@@ -135,6 +136,10 @@ Toggl built and signed app for Windows is [available for download](https://www.t
 # Change log
 
 Change log can be viewed at [http://toggl.github.io/toggldesktop/](http://toggl.github.io/toggldesktop/)
+
+# Documentation
+
+The documentation of the code base is currently work in progress and can be found at [/docs/](https://github.com/toggl/toggldesktop/tree/master/docs/index.md).
 
 # Contribute
 
