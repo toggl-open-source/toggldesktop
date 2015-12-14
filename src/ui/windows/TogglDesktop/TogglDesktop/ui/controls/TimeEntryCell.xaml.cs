@@ -105,6 +105,8 @@ namespace TogglDesktop
             this.entryHoverColor = cell.entryHoverColor;
             this.EntryBackColor = cell.EntryBackColor;
 
+            this.unsyncedIcon.Visibility = cell.unsyncedIcon.Visibility;
+
             this.imitateTooltips(cell);
         }
 
