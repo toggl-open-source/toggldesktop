@@ -80,6 +80,10 @@ class BaseModel {
     const bool &Unsynced() const {
         return unsynced_;
     }
+    void SetUnsynced();
+    void ClearUnsynced() {
+        unsynced_ = false;
+    }
 
     // Deleting a time entry hides it from
     // UI and flags it for removal from server:
