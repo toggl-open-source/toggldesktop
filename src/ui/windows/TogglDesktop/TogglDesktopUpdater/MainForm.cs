@@ -34,6 +34,7 @@ namespace TogglDesktopUpdater
             {
                 MessageBox.Show(ex.Message, "Toggl Desktop update failed");
                 notifyBugsnag(ex);
+                upgrade();
                 cleanup();
                 Environment.Exit(1);
             }

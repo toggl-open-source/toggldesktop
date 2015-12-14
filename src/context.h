@@ -485,7 +485,6 @@ class Context : public TimelineDatasource {
 
     error pullAllUserData(TogglClient *https_client);
     error pullChanges(TogglClient *https_client);
-    void updatePushFailed(std::vector<TimeEntry *> time_entries);
 
     error pushChanges(
         TogglClient *https_client,

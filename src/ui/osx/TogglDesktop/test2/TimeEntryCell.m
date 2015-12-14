@@ -68,6 +68,9 @@ extern void *ctx;
 		self.tagFlag.toolTip = nil;
 	}
 
+	// Time entry not synced icon
+	[self.unsyncedIcon setHidden:!view_item.unsynced];
+
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
 	{
