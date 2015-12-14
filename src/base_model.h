@@ -37,6 +37,7 @@ class BaseModel {
     , updated_at_(0)
     , validation_error_("")
     , unsynced_(false) {}
+
     virtual ~BaseModel() {}
 
     const Poco::Int64 &LocalID() const {
@@ -172,11 +173,17 @@ class BaseModel {
     Poco::UInt64 deleted_at_;
     bool is_marked_as_deleted_on_server_;
     Poco::UInt64 updated_at_;
-    bool unsynced_;
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
     std::string validation_error_;
+
+    // Flag is set only when sync fails.
+    // Its for viewing purposes only. It should not
+    // be used to check if a model needs to be
+    // pushed to backend. It only means that some
+    // attempt to push failed somewhere.
+    bool unsynced_;
 };
 
 }  // namespace toggl
