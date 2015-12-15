@@ -256,6 +256,23 @@ namespace TogglDesktop
             return new Rect(topleft, bottomRight);
         }
 
+        private System.Windows.Point transformToDevice(System.Windows.Point p)
+        {
+            var presentationSource = PresentationSource.FromVisual(this);
+            if (presentationSource != null)
+            {
+                var compositionTarget = presentationSource.CompositionTarget;
+                if (compositionTarget != null)
+                {
+                    var t = compositionTarget.TransformToDevice;
+
+                    return t.Transform(p);
+                }
+            }
+
+            return p;
+        }
+
         #endregion
 
         #region icon loading
@@ -327,8 +344,12 @@ namespace TogglDesktop
             mmi.ptMaxPosition.y = Math.Abs(workArea.Top - monitorArea.Top) + yOffset;
             mmi.ptMaxSize.x = Math.Abs(workArea.Right - workArea.Left) - xOffset;
             mmi.ptMaxSize.y = Math.Abs(workArea.Bottom - workArea.Top) - yOffset;
-            mmi.ptMinTrackSize.x = (int)this.MinWidth;
-            mmi.ptMinTrackSize.y = (int)this.MinHeight;
+
+            var minSize = new System.Windows.Point(this.MinWidth, this.MinHeight);
+            minSize = this.transformToDevice(minSize);
+
+            mmi.ptMinTrackSize.x = (int)minSize.X;
+            mmi.ptMinTrackSize.y = (int)minSize.Y;
 
             Marshal.StructureToPtr(mmi, lParam, true);
         }
