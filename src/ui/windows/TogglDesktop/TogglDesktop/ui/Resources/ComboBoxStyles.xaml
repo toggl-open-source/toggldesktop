@@ -2,8 +2,29 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Style x:Key="ListItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Name="Border" Padding="2">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#EEEEEE"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Padding" Value="6 2 25 2" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListItemContainerStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
@@ -59,7 +80,7 @@
                                 <ScrollViewer.Effect>
                                     <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
                                 </ScrollViewer.Effect>
-                                <ItemsPresenter/>
+                                <ItemsPresenter />
                             </ScrollViewer>
                         </Popup>
                     </Grid>
