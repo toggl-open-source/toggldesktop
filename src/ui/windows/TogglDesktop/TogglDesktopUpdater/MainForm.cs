@@ -32,9 +32,13 @@ namespace TogglDesktopUpdater
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Toggl Desktop update failed");
+                String error = ex.Message;
+                if (error == "Access is denied")
+                {
+                    error = "Unable to automatically start Toggl Desktop. Please start Toggl Desktop manually";
+                }
+                MessageBox.Show(error, "Toggl Desktop update failed");
                 notifyBugsnag(ex);
-                upgrade();
                 cleanup();
                 Environment.Exit(1);
             }
