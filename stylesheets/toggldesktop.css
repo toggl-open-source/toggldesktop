@@ -79,3 +79,13 @@ h3 {
 .beta::after {
   content: "beta";
 }
+
+.screenshots {
+  margin-bottom: 20px;
+  margin-left: 22px;
+}
+
+.screenshots p {
+  margin-bottom: 5px;
+  font-style: italic;
+}
