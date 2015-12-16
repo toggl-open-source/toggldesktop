@@ -40,6 +40,7 @@ namespace TogglDesktop
         private IdleNotificationWindow idleNotificationWindow;
         private SyncingIndicator syncingIndicator;
         private ExperimentManager experimentManager;
+        private MiniTimerWindow miniTimer;
 
         private IMainView activeView;
         private bool isInManualMode;
@@ -147,6 +148,8 @@ namespace TogglDesktop
 
             this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.ShowOnTop();
 
+            this.miniTimer = new MiniTimerWindow(this.ContextMenu);
+
             this.IsVisibleChanged += this.ownChildWindows;
         }
 
@@ -203,6 +206,8 @@ namespace TogglDesktop
             this.syncingIndicator.Hide();
 
             this.runScriptAsync();
+
+            this.miniTimer.Show();
         }
 
         private async void runScriptAsync()
@@ -739,6 +744,7 @@ namespace TogglDesktop
                 this.isInManualMode ? "Use timer" : "Use manual mode";
 
             this.timerEntryListView.SetManualMode(this.isInManualMode);
+            this.miniTimer.SetManualMode(this.isInManualMode);
 
             if (!fromApi)
             {
@@ -852,6 +858,11 @@ namespace TogglDesktop
             if (this.editPopup != null)
             {
                 this.closeEditPopup(skipAnimation:true);
+            }
+
+            if (this.miniTimer != null && this.miniTimer.IsVisible)
+            {
+                this.miniTimer.Hide();
             }
 
             if (saveWindowLocation)

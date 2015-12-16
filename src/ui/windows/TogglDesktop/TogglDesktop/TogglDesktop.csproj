@@ -192,6 +192,7 @@
     <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\chrome\ChromelessWindow.cs" />
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
@@ -241,6 +242,9 @@
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
+    <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
+      <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
@@ -708,6 +712,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\windows\MessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\MiniTimerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
