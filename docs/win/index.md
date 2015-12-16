@@ -8,13 +8,14 @@ The total application is composed of two major parts: The interface, written in 
 ## Table of contents
 
 - [Overview](overview.md)
-    - [Namespaces and folders](overview.md#namespaces-and-folders)
     - [Architecture](overview.md#architecture)
+    - [Namespaces and folders](overview.md#namespaces-and-folders)
 - Main UI parts
-    - Main window
-        - Login view
-        - Time entry list view
-            - Time entry cell
+    - [Main window](main-window.md)
+        - [Login view](main-window.md#login-view)
+        - [Time entry list view](main-window.md#time-entry-list-view)
+            - [Timer](main-window.md#timer)
+            - [Time entry list](main-window.md#time-entry-list)
     - Edit popup
         - Edit view
     - Other windows
