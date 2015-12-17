@@ -8,28 +8,9 @@
              d:DataContext="{d:DesignInstance Type=toggl:TimeEntryCellSample, IsDesignTimeCreatable=True}"
              d:DesignWidth="455">
     
-    <StackPanel  Style="{StaticResource TimeEntryCell}"
-                Background="#F7F7F7">
+    <StackPanel Style="{StaticResource TimeEntryCell}"
+                Background="White">
         
-        <!-- Day Header -->
-        <Grid Name="dayHeader" x:FieldModifier="private"
-                    Height="{StaticResource TimeEntryDayHeaderHeight}">
-            <Rectangle Height="4" VerticalAlignment="Top">
-                <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#CCCCCC" Offset="0.0" />
-                        <GradientStop Color="#F7F7F7" Offset="1" />
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20, 0, 0, 0">
-                <TextBlock Name="labelFormattedDate" x:FieldModifier="private"
-                           >Thu 22. Jan</TextBlock>
-                <TextBlock Name="labelDateDuration" x:FieldModifier="private"
-                           Foreground="#6F6F6F">2 h 12 min</TextBlock>
-            </StackPanel>
-        </Grid>
-
         <!-- seperator -->
         <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
 
