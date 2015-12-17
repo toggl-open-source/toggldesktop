@@ -4,26 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignWidth="300"
-             Style="{StaticResource TimeEntryCell}" Background="#F7F7F7">
+             Background="#F7F7F7">
 
     <StackPanel>
-        <Grid Height="{StaticResource TimeEntryDayHeaderHeight}">
-            <Rectangle Height="4" VerticalAlignment="Top">
-                <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#CCCCCC" Offset="0.0" />
-                        <GradientStop Color="#F7F7F7" Offset="1" />
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20, 0, 0, 0"
-                        >
-                <TextBlock Name="labelFormattedDate" x:FieldModifier="private"
-                               >Thu 22. Jan</TextBlock>
-                <TextBlock Name="labelDateDuration" x:FieldModifier="private"
-                               Foreground="#6F6F6F">2 h 12 min</TextBlock>
-            </StackPanel>
-        </Grid>
+        <Button Height="{StaticResource TimeEntryDayHeaderHeight}"
+                Style="{StaticResource FlatButton}" Padding="0" Margin="0"
+                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                Click="onHeaderClick">
+            <Grid Style="{StaticResource TimeEntryCell}">
+                <Rectangle Height="4" VerticalAlignment="Top">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#33000000" Offset="0.0" />
+                            <GradientStop Color="#00000000" Offset="1" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20, 0, 0, 0">
+                    <TextBlock Name="labelFormattedDate" x:FieldModifier="private"
+                                   >Thu 22. Jan</TextBlock>
+                    <TextBlock Name="labelDateDuration" x:FieldModifier="private"
+                                   Foreground="#6F6F6F">2 h 12 min</TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
         <StackPanel Name="panel" x:FieldModifier="private">
             
         </StackPanel>
