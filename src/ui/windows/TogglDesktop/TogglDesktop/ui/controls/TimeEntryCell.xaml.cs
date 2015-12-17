@@ -47,7 +47,6 @@ namespace TogglDesktop
                 if (value == false)
                     return;
 
-                this.dayHeader.Visibility = Visibility.Collapsed;
                 this.entrySeperator.Visibility = Visibility.Collapsed;
                 this.entryGrid.Height = 59;
             }
@@ -61,7 +60,6 @@ namespace TogglDesktop
                     return;
 
                 this.IsEnabled = false;
-                this.dayHeader.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -138,20 +136,12 @@ namespace TogglDesktop
 
             this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
 
-            this.dayHeader.ShowOnlyIf(item.IsHeader);
             this.entrySeperator.ShowOnlyIf(!item.IsHeader);
 
             this.entryHoverColor = hoverColor;
             this.EntryBackColor = idleBackColor;
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
-
-            if (item.IsHeader)
-            {
-                this.labelFormattedDate.Text = item.DateHeader;
-                this.labelDateDuration.Text = item.DateDuration;
-            }
-
 
             this.updateToolTips(item);
         }

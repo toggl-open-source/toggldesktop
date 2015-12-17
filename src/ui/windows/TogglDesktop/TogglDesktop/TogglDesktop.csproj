@@ -200,6 +200,9 @@
       <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
+      <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\Experiments\Experiment87.cs" />
     <Compile Include="ui\Experiments\Experiment80.cs" />
     <Compile Include="ui\Experiments\Experiment87WelcomeScreen.xaml.cs">
@@ -556,6 +559,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\SyncingIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimeEntryCellDayHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
