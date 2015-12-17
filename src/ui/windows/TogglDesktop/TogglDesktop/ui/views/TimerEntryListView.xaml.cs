@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using TogglDesktop.Diagnostics;
 
@@ -107,7 +106,6 @@ namespace TogglDesktop
 
         private void fillDays(List<List<Toggl.TogglTimeEntryView>> days, Action<string, TimeEntryCell> registerCellByGUID)
         {
-
             var children = this.Entries.Children;
 
             // remove superfluous days
@@ -136,7 +134,6 @@ namespace TogglDesktop
 
                 children.Add(header);
             }
-
         }
 
         private static List<List<Toggl.TogglTimeEntryView>> groupByDays(List<Toggl.TogglTimeEntryView> list)

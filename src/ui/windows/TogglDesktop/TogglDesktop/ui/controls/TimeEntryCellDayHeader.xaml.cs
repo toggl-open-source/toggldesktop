@@ -1,7 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 
 namespace TogglDesktop
 {
@@ -47,7 +47,6 @@ namespace TogglDesktop
                 cell.Display(entry);
 
                 registerCellByGUID(entry.GUID, cell);
-
             }
 
             // add additional cells
@@ -60,10 +59,20 @@ namespace TogglDesktop
 
                 registerCellByGUID(entry.GUID, cell);
 
-
                 children.Add(cell);
             }
+        }
 
+        private void onHeaderClick(object sender, RoutedEventArgs e)
+        {
+            if (this.panel.Visibility == Visibility.Visible)
+            {
+                this.panel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this.panel.Visibility = Visibility.Visible;
+            }
         }
     }
 }
