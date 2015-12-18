@@ -14,13 +14,6 @@
 @implementation MKColorPickerView
 @synthesize matrix;
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-    [[NSColor controlHighlightColor] setFill];
-    NSRectFill(dirtyRect);
-    [super drawRect:dirtyRect];
-}
-
 - (id)initWithColors:(NSArray *)colors 
         numberOfRows:(NSInteger)rows 
      numberOfColumns:(NSInteger)columns 

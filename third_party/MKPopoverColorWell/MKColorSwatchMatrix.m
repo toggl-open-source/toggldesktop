@@ -28,9 +28,6 @@
     
     if (self) {
         targetColorWell = aTargetColorWell;
-        
-        [self setBackgroundColor:[NSColor controlHighlightColor]];
-        [self setDrawsBackground:YES];
     }
     
     return self;
