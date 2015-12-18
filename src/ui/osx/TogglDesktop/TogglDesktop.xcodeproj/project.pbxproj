@@ -7,7 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C068C691C22F25000874B9A /* MKColorWellCustom.m */; };
 		3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */; };
+		3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3C0A570D1C22E12E00301D77 /* LICENSE.txt */; };
+		3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */; };
+		3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */; };
+		3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */; };
+		3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */; };
+		3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57171C22E12E00301D77 /* MKColorWell.m */; };
+		3C0A571F1C22E12E00301D77 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57181C22E12E00301D77 /* README.md */; };
+		3C0A572F1C22E16B00301D77 /* MKColorPickerView.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */; };
+		3C0A57301C22E16B00301D77 /* MKColorSwatchCell.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */; };
+		3C0A57311C22E16B00301D77 /* MKColorSwatchMatrix.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */; };
+		3C0A57321C22E16B00301D77 /* MKColorWell+Bindings.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */; };
+		3C0A57331C22E16B00301D77 /* MKColorWell.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57161C22E12E00301D77 /* MKColorWell.h */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A41A2F2AE0007DC17F /* start_button.pdf */; };
 		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
@@ -287,8 +300,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C068C681C22F25000874B9A /* MKColorWellCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWellCustom.h; sourceTree = "<group>"; };
+		3C068C691C22F25000874B9A /* MKColorWellCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWellCustom.m; sourceTree = "<group>"; };
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
 		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
+		3C0A570D1C22E12E00301D77 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorPickerView.h; sourceTree = "<group>"; };
+		3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorPickerView.m; sourceTree = "<group>"; };
+		3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorSwatchCell.h; sourceTree = "<group>"; };
+		3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorSwatchCell.m; sourceTree = "<group>"; };
+		3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorSwatchMatrix.h; sourceTree = "<group>"; };
+		3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorSwatchMatrix.m; sourceTree = "<group>"; };
+		3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKColorWell+Bindings.h"; sourceTree = "<group>"; };
+		3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKColorWell+Bindings.m"; sourceTree = "<group>"; };
+		3C0A57161C22E12E00301D77 /* MKColorWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWell.h; sourceTree = "<group>"; };
+		3C0A57171C22E12E00301D77 /* MKColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWell.m; sourceTree = "<group>"; };
+		3C0A57181C22E12E00301D77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2645A41A2F2AE0007DC17F /* start_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = start_button.pdf; sourceTree = "<group>"; };
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
@@ -519,6 +546,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */ = {
+			isa = PBXGroup;
+			children = (
+				3C0A570D1C22E12E00301D77 /* LICENSE.txt */,
+				3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */,
+				3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */,
+				3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */,
+				3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */,
+				3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */,
+				3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */,
+				3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */,
+				3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */,
+				3C0A57171C22E12E00301D77 /* MKColorWell.m */,
+				3C0A57161C22E12E00301D77 /* MKColorWell.h */,
+				3C0A57181C22E12E00301D77 /* README.md */,
+			);
+			name = MKPopoverColorWell;
+			path = ../../../../third_party/MKPopoverColorWell;
+			sourceTree = "<group>";
+		};
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
@@ -539,6 +586,7 @@
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				745E7FC1192D247300747C18 /* images */,
+				3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */,
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				74E857AA194F8807007A88B9 /* ssl */,
@@ -590,6 +638,8 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				3C068C681C22F25000874B9A /* MKColorWellCustom.h */,
+				3C068C691C22F25000874B9A /* MKColorWellCustom.m */,
 				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
 				746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */,
 				7430750118204EFB009019CB /* AboutWindowController.h */,
@@ -1133,6 +1183,7 @@
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
+				3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */,
 				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
 				3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */,
 				748664D2188D66AA006DB4C5 /* TimeEntryCellWithHeader.xib in Resources */,
@@ -1213,6 +1264,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C0A572F1C22E16B00301D77 /* MKColorPickerView.h in Sources */,
+				3C0A57301C22E16B00301D77 /* MKColorSwatchCell.h in Sources */,
+				3C0A57311C22E16B00301D77 /* MKColorSwatchMatrix.h in Sources */,
+				3C0A57321C22E16B00301D77 /* MKColorWell+Bindings.h in Sources */,
+				3C0A57331C22E16B00301D77 /* MKColorWell.h in Sources */,
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
 				74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */,
 				7484F622191D92C30038885C /* Settings.m in Sources */,
@@ -1230,8 +1286,10 @@
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
+				3C0A571F1C22E12E00301D77 /* README.md in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
+				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
@@ -1246,10 +1304,13 @@
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
+				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
+				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
@@ -1267,9 +1328,11 @@
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
+				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
+				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,
 			);

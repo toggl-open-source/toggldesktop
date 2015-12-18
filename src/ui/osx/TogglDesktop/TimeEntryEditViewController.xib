@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -14,6 +14,7 @@
                 <outlet property="billableCheckbox" destination="sSX-ad-7XC" id="cVv-CO-AcK"/>
                 <outlet property="clientNameTextField" destination="TGq-XU-G0v" id="jY6-Lx-mvf"/>
                 <outlet property="clientSelect" destination="Kdc-c6-b4n" id="6Uc-1n-CV7"/>
+                <outlet property="colorPicker" destination="oQ3-ya-PW0" id="bpE-u9-jke"/>
                 <outlet property="currentWorkspaceLabel" destination="feg-gg-X4L" id="Dae-Qr-tZc"/>
                 <outlet property="dateBox" destination="r22-gF-YfG" id="REl-8J-8Pi"/>
                 <outlet property="deleteButton" destination="Wpz-9G-IOZ" id="opY-mR-5jK"/>
@@ -163,6 +164,17 @@
                                                 <outlet property="nextKeyView" destination="Q41-iI-nk2" id="nNJ-aT-yux"/>
                                             </connections>
                                         </textField>
+                                        <colorWell ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQ3-ya-PW0" customClass="MKColorWellCustom">
+                                            <rect key="frame" x="306" y="48" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="djy-am-I5Z"/>
+                                            </constraints>
+                                            <animations/>
+                                            <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="animatePopover" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                        </colorWell>
                                         <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5J-U3-cc3">
                                             <rect key="frame" x="119" y="31" width="230" height="18"/>
                                             <animations/>
@@ -273,6 +285,7 @@
                                     <animations/>
                                 </view>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="oQ3-ya-PW0" secondAttribute="trailing" constant="16" id="0Qh-Yk-ODV"/>
                                     <constraint firstAttribute="bottom" secondItem="qlN-P5-EqC" secondAttribute="bottom" constant="20" id="0T9-0Z-ZTB"/>
                                     <constraint firstItem="TGq-XU-G0v" firstAttribute="leading" secondItem="qlN-P5-EqC" secondAttribute="trailing" constant="6" id="2TH-uP-oCT"/>
                                     <constraint firstAttribute="trailing" secondItem="Kdc-c6-b4n" secondAttribute="trailing" constant="16" id="3CY-nz-Z4S"/>
@@ -284,7 +297,7 @@
                                     <constraint firstItem="b5J-U3-cc3" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="108" id="VPm-8L-c1Z"/>
                                     <constraint firstItem="qlN-P5-EqC" firstAttribute="leading" secondItem="fz4-yg-eQZ" secondAttribute="leading" constant="15" id="XqX-pg-7H3"/>
                                     <constraint firstAttribute="bottom" secondItem="Kdc-c6-b4n" secondAttribute="bottom" constant="18" id="YQX-i8-qQW"/>
-                                    <constraint firstAttribute="trailing" secondItem="2Pz-WE-b3h" secondAttribute="trailing" constant="16" id="ZLU-1I-gYf"/>
+                                    <constraint firstAttribute="trailing" secondItem="2Pz-WE-b3h" secondAttribute="trailing" constant="39" id="ZLU-1I-gYf"/>
                                     <constraint firstAttribute="trailing" secondItem="z0P-ED-dJk" secondAttribute="trailing" constant="16" id="ZNH-dy-Gnv"/>
                                     <constraint firstItem="Kdc-c6-b4n" firstAttribute="leading" secondItem="qlN-P5-EqC" secondAttribute="trailing" constant="6" id="cac-OP-GiD"/>
                                     <constraint firstItem="Kdc-c6-b4n" firstAttribute="top" secondItem="Q41-iI-nk2" secondAttribute="bottom" constant="13" id="ct7-Ea-YIq"/>

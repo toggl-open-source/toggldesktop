@@ -92,6 +92,10 @@ extern void *ctx;
 												 selector:@selector(setFocus:)
 													 name:NSPopoverWillShowNotification
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(setProjectColors:)
+													 name:kSetProjectColors
+												   object:nil];
 	}
 	return self;
 }
@@ -142,6 +146,7 @@ extern void *ctx;
 	[self.addClientButton setAttributedTitle:self.clientColorTitle];
 	[self.resizeHandle setCursor:[NSCursor resizeLeftRightCursor]];
 	[self.resizeHandleLeft setCursor:[NSCursor resizeLeftRightCursor]];
+	toggl_get_project_colors(ctx);
 }
 
 - (void)loadView
@@ -169,6 +174,11 @@ extern void *ctx;
 		return;
 	}
 	[self.view.window setInitialFirstResponder:self.descriptionCombobox];
+}
+
+- (void)setProjectColors:(NSNotification *)notification
+{
+	[self.colorPicker setProjectColors:notification.object];
 }
 
 - (void)resetPopover:(NSNotification *)notification
