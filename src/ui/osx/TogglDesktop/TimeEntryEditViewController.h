@@ -11,9 +11,11 @@
 #import "NSCustomComboBox.h"
 #import "NSTextFieldClickable.h"
 #import "NSResize.h"
+#import "MkColorWellCustom.h"
 
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
 }
+@property (strong) IBOutlet MKColorWellCustom *colorPicker;
 @property IBOutlet NSCustomComboBox *descriptionCombobox;
 @property IBOutlet NSCustomComboBox *projectSelect;
 @property IBOutlet NSTextField *durationTextField;
