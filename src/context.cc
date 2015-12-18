@@ -254,8 +254,6 @@ error Context::StartEvents() {
 
             analytics_.TrackChannel(db_->AnalyticsClientID(), update_channel);
         }
-
-
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {

@@ -17,7 +17,9 @@ class Analytics : public Poco::TaskManager {
  public:
     Analytics()
         : Poco::TaskManager()
-    , settings_sync_date(Poco::LocalDateTime() - Poco::Timespan(24 * Poco::Timespan::HOURS)) {}
+    , settings_sync_date(
+    Poco::LocalDateTime() -
+    Poco::Timespan(24 * Poco::Timespan::HOURS)) {}
 
     void Track(
         const std::string client_id,
@@ -42,9 +44,9 @@ class Analytics : public Poco::TaskManager {
     void TrackAutocompleteUsage(
         const std::string client_id,
         const bool was_using_autocomplete);
+
  private:
     Poco::LocalDateTime settings_sync_date;
-
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {

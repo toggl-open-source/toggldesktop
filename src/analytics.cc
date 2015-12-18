@@ -48,7 +48,8 @@ void Analytics::TrackSettings(const std::string client_id,
             || now.day() != settings_sync_date.day()) {
         settings_sync_date = Poco::LocalDateTime();
         start(new GoogleAnalyticsSettingsEvent(
-            client_id, "settings", record_timeline, settings, use_proxy, proxy));
+            client_id, "settings", record_timeline,
+            settings, use_proxy, proxy));
     }
 }
 
