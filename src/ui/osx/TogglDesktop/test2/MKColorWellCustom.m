@@ -15,6 +15,7 @@
 
 - (void)setProjectColors:(NSMutableArray *)colorStrings;
 {
+	self.hexColors = colorStrings;
 	NSMutableArray *colorCodes = [NSMutableArray array];
 	for (NSString *c in colorStrings)
 	{
@@ -24,6 +25,21 @@
 	self.colors = colorCodes;
 	self.color = self.colors[0];
 	[self setupPopover];
+}
+
+- (NSString *)getSelectedColor
+{
+	NSInteger i = 0;
+
+	for (NSColor *c in self.colors)
+	{
+		if ([self.color isEqualTo:c])
+		{
+			return self.hexColors[i];
+		}
+		i++;
+	}
+	return self.hexColors[0];
 }
 
 - (NSArray *)colorsForPopover

@@ -10,5 +10,7 @@
 
 @interface MKColorWellCustom : MKColorWell
 @property NSMutableArray *colors;
+@property NSMutableArray *hexColors;
 - (void)setProjectColors:(NSMutableArray *)colors;
+- (NSString *)getSelectedColor;
 @end
