@@ -162,10 +162,15 @@ class Context : public TimelineDatasource {
         const bool remind_sat,
         const bool remind_sun);
 
-    void SetCompactMode(
-        const bool);
+	void SetCompactMode(
+		const bool);
 
-    bool GetCompactMode();
+	bool GetCompactMode();
+
+	void SetMiniTimerVisible(
+		const bool);
+
+	bool GetMiniTimerVisible();
 
     void SetKeepEndTimeFixed(
         const bool);
@@ -229,6 +234,17 @@ class Context : public TimelineDatasource {
         const int64_t window_y,
         const int64_t window_height,
         const int64_t window_width);
+
+	int64_t GetMiniTimerX();
+
+	void SetMiniTimerX(
+		const int64_t x);
+
+	int64_t GetMiniTimerY();
+
+	void SetMiniTimerY(
+		const int64_t y);
+
 
     error Login(
         const std::string email,
