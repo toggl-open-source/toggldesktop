@@ -294,6 +294,8 @@ extern void *ctx;
 	uint64_t clientID = [self selectedClientID];
 	bool_t isBillable = self.timeEntry.billable;
 
+	char *color = (char *)[[self.colorPicker getSelectedColor] UTF8String];
+
 	// A new project is being added!
 	BOOL projectAdded = NO;
 	char_t *project_guid = toggl_add_project(ctx,
@@ -303,7 +305,7 @@ extern void *ctx;
 											 0,
 											 [projectName UTF8String],
 											 !is_public,
-											 "");
+											 color);
 
 	if (project_guid)
 	{
