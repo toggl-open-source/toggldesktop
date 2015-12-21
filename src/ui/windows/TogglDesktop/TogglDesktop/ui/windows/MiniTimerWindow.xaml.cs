@@ -19,7 +19,39 @@ namespace TogglDesktop
             this.InitializeComponent();
             this.WindowStyle = WindowStyle.SingleBorderWindow;
         }
-        
+
+        protected override void OnLocationChanged(EventArgs e)
+        {
+            var screenRect = this.getCurrentScreenRectangle();
+
+            this.snapToEdges(screenRect);
+
+            base.OnLocationChanged(e);
+        }
+
+        private void snapToEdges(Rect screenRect)
+        {
+            const double snapLimit = 10;
+
+            if (Math.Abs(this.Left - screenRect.Left) < snapLimit)
+            {
+                this.Left = screenRect.Left;
+            }
+            else if (Math.Abs(this.Left + this.ActualWidth - screenRect.Right) < snapLimit)
+            {
+                this.Left = screenRect.Right - this.ActualWidth;
+            }
+
+            if (Math.Abs(this.Top - screenRect.Top) < snapLimit)
+            {
+                this.Top = screenRect.Top;
+            }
+            else if (Math.Abs(this.Top + this.ActualHeight - screenRect.Bottom) < snapLimit)
+            {
+                this.Top = screenRect.Bottom - this.ActualHeight;
+            }
+        }
+
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             this.leftMouseDown = true;
