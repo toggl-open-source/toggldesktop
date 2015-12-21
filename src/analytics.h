@@ -18,8 +18,8 @@ class Analytics : public Poco::TaskManager {
     Analytics()
         : Poco::TaskManager()
     , settings_sync_date(
-    Poco::LocalDateTime() -
-    Poco::Timespan(24 * Poco::Timespan::HOURS)) {}
+        Poco::LocalDateTime() -
+        Poco::Timespan(24 * Poco::Timespan::HOURS)) {}
 
     void Track(
         const std::string client_id,
