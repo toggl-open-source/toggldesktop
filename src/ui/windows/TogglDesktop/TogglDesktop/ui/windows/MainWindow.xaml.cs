@@ -196,7 +196,7 @@ namespace TogglDesktop
                 return;
             }
 
-            Utils.LoadWindowLocation(this, this.editPopup);
+            Utils.LoadWindowLocation(this, this.editPopup, this.miniTimer);
             
 
             this.aboutWindow.UpdateReleaseChannel();
@@ -867,7 +867,7 @@ namespace TogglDesktop
 
             if (saveWindowLocation)
             {
-                Utils.SaveWindowLocation(this, this.editPopup);
+                Utils.SaveWindowLocation(this, this.editPopup, this.miniTimer);
             }
 
             if (this.IsVisible)
