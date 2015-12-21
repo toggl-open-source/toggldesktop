@@ -1682,7 +1682,7 @@ int64_t Context::GetMiniTimerY()
 
 void Context::SetMiniTimerY(const int64_t y)
 {
-	displayError(db()->SetMiniTimerX(y));
+	displayError(db()->SetMiniTimerY(y));
 }
 
 void Context::SetCompactMode(

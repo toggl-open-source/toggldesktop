@@ -10,6 +10,7 @@
         IsToolWindow="True" Topmost="True"
         ShowInTaskbar="False"
         ResizeMode="NoResize" WindowStyle="None"
+        WindowStartupLocation="Manual"
         >
     <Grid>
         <toggl:Timer x:Name="timer" x:FieldModifier="private" />

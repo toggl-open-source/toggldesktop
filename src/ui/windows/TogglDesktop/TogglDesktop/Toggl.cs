@@ -564,9 +564,34 @@ public static partial class Toggl
         return toggl_get_keep_end_time_fixed(ctx);
     }
 
-    public static void SetObmExperimentId(ulong id)
+    public static void SetMiniTimerX(long x)
     {
-        toggl_set_obm_experiment_nr(id);
+        toggl_set_mini_timer_x(ctx, x);
+    }
+
+    public static long GetMiniTimerX()
+    {
+        return toggl_get_mini_timer_x(ctx);
+    }
+
+    public static void SetMiniTimerY(long y)
+    {
+        toggl_set_mini_timer_y(ctx, y);
+    }
+
+    public static long GetMiniTimerY()
+    {
+        return toggl_get_mini_timer_y(ctx);
+    }
+
+    public static void SetMiniTimerVisible(bool visible)
+    {
+        toggl_set_mini_timer_visible(ctx, visible);
+    }
+
+    public static bool GetMiniTimerVisible()
+    {
+        return toggl_get_mini_timer_visible(ctx);
     }
 
     #endregion
