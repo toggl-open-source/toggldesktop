@@ -34,6 +34,7 @@ previousTagList("") {
     ui->project->completer()->setMaxVisibleItems(20);
 
     ui->description->installEventFilter(this);
+    ui->project->installEventFilter(this);
 
     toggleNewClientMode(false);
 
@@ -301,7 +302,15 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
             TogglApi::instance->setTimeEntryDescription(guid,
                     ui->description->currentText());
         }
+
+        if (object == ui->project && ui->project->currentText().length() == 0) {
+            TogglApi::instance->setTimeEntryProject(guid,
+                                                    0,
+                                                    0,
+                                                    "");
+        }
     }
+
     return false;
 }
 
