@@ -815,7 +815,7 @@ BOOL manualMode = NO;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"Sync"
 					action:@selector(onSyncMenuItem:)
-			 keyEquivalent:@""].tag = kMenuItemTagSync;
+			 keyEquivalent:@"r"].tag = kMenuItemTagSync;
 	[menu addItemWithTitle:@"Reports"
 					action:@selector(onOpenBrowserMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagOpenBrowser;
