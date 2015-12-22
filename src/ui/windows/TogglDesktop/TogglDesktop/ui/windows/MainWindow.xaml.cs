@@ -44,6 +44,7 @@ namespace TogglDesktop
 
         private IMainView activeView;
         private bool isInManualMode;
+        private bool isMiniTimerVisible;
         private bool isTracking;
         private bool isResizingWithHandle;
         private bool closing;
@@ -56,10 +57,10 @@ namespace TogglDesktop
         {
             this.DataContext = this;
             this.InitializeComponent();
-            
+
             this.interopHelper = new WindowInteropHelper(this);
 
-            this.views = new IMainView[] {this.loginView, this.timerEntryListView};
+            this.views = new IMainView[] { this.loginView, this.timerEntryListView };
 
             this.hideAllViews();
 
@@ -197,7 +198,7 @@ namespace TogglDesktop
             }
 
             Utils.LoadWindowLocation(this, this.editPopup, this.miniTimer);
-            
+
 
             this.aboutWindow.UpdateReleaseChannel();
 
@@ -207,7 +208,7 @@ namespace TogglDesktop
 
             this.runScriptAsync();
 
-            this.miniTimer.Show();
+            this.setMiniTimerVisible(Toggl.GetMiniTimerVisible(), true);
         }
 
         private async void runScriptAsync()
@@ -542,20 +543,20 @@ namespace TogglDesktop
                 Toggl.ContinueLatest();
             }
         }
-        
+
         private void onStopCommand(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("stopping time entry from menu"))
             {
-                Toggl.Stop();   
+                Toggl.Stop();
             }
         }
-        
+
         private void onShowCommand(object sender, RoutedEventArgs e)
         {
             this.ShowOnTop();
         }
-        
+
         private void onSyncCommand(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("syncing from menu"))
@@ -563,7 +564,7 @@ namespace TogglDesktop
                 Toggl.Sync();
             }
         }
-        
+
         private void onReportsCommand(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("opening reports from menu"))
@@ -571,7 +572,7 @@ namespace TogglDesktop
                 Toggl.OpenInBrowser();
             }
         }
-        
+
         private void onPreferencesCommand(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("opening preferences from menu"))
@@ -579,7 +580,7 @@ namespace TogglDesktop
                 Toggl.EditPreferences();
             }
         }
-        
+
         private void onToggleManualModeCommand(object sender, RoutedEventArgs e)
         {
             this.setManualMode(!this.isInManualMode);
@@ -600,19 +601,19 @@ namespace TogglDesktop
                 }
             }
         }
-        
+
         private void onSendFeedbackCommand(object sender, RoutedEventArgs e)
         {
             this.feedbackWindow.Show();
             this.feedbackWindow.Activate();
         }
-        
+
         private void onAboutCommand(object sender, RoutedEventArgs e)
         {
             this.aboutWindow.Show();
             this.feedbackWindow.Activate();
         }
-        
+
         private void onLogoutCommand(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("logging out from menu"))
@@ -664,6 +665,11 @@ namespace TogglDesktop
                     Clipboard.GetText().Replace(Environment.NewLine, " ")
                     );
             }
+        }
+
+        private void togglMiniTimerVisibilityCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.setMiniTimerVisible(!this.isMiniTimerVisible);
         }
 
         #endregion
@@ -732,16 +738,34 @@ namespace TogglDesktop
             e.CanExecute = Program.IsLoggedIn && !this.isTracking;
         }
 
+        private void canExecutetogglMiniTimerVisibilityCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Program.IsLoggedIn;
+        }
+
         #endregion
-        
+
         #region ui controlling
+
+        private void setMiniTimerVisible(bool visible, bool fromApi = false)
+        {
+            this.isMiniTimerVisible = visible;
+
+            this.togglMiniTimerVisibilityMenuItem.IsChecked = visible;
+
+            this.miniTimer.SetVisible(visible);
+
+            if (!fromApi)
+            {
+                Toggl.SetMiniTimerVisible(visible);
+            }
+        }
 
         private void setManualMode(bool manualMode, bool fromApi = false)
         {
             this.isInManualMode = manualMode;
 
-            this.togglManualModeMenuItem.Header =
-                this.isInManualMode ? "Use timer" : "Use manual mode";
+            this.togglManualModeMenuItem.IsChecked = manualMode;
 
             this.timerEntryListView.SetManualMode(this.isInManualMode);
             this.miniTimer.SetManualMode(this.isInManualMode);
@@ -767,7 +791,7 @@ namespace TogglDesktop
         private void minimizeToTray()
         {
             this.Hide();
-            this.closeEditPopup(skipAnimation:true);
+            this.closeEditPopup(skipAnimation: true);
         }
 
         private void setGlobalShortcutsFromSettings()
@@ -810,7 +834,7 @@ namespace TogglDesktop
                 }
                 else
                 {
-                    Toggl.Start(description, "", 0, 0, "", "");   
+                    Toggl.Start(description, "", 0, 0, "", "");
                 }
             }
         }
@@ -857,7 +881,7 @@ namespace TogglDesktop
 
             if (this.editPopup != null)
             {
-                this.closeEditPopup(skipAnimation:true);
+                this.closeEditPopup(skipAnimation: true);
             }
 
             if (this.miniTimer != null && this.miniTimer.IsVisible)
@@ -920,7 +944,7 @@ namespace TogglDesktop
                 }
 
 
-                if(this.isInManualMode)
+                if (this.isInManualMode)
                     this.setManualMode(false);
             }
             else
