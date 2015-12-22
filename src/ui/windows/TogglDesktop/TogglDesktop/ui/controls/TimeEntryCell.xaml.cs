@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using ServiceStack;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -69,6 +70,8 @@ namespace TogglDesktop
         public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
             .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
+        public TimeEntryCellDayHeader DayHeader { get; private set; }
+
         private readonly ToolTip descriptionToolTip = new ToolTip();
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
         private readonly ToolTip durationToolTip = new ToolTip();
@@ -106,9 +109,10 @@ namespace TogglDesktop
             this.imitateTooltips(cell);
         }
 
-        public void Display(Toggl.TogglTimeEntryView item)
+        public void Display(Toggl.TogglTimeEntryView item, TimeEntryCellDayHeader dayHeader)
         {
             this.guid = item.GUID;
+            this.DayHeader = dayHeader;
 
             this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
 
@@ -116,9 +120,9 @@ namespace TogglDesktop
 
             this.projectColor.Fill = projectColorBrush;
             this.labelProject.Foreground = projectColorBrush;
-            this.labelProject.Text = item.ClientLabel == "" ? item.ProjectLabel : "• " + item.ProjectLabel;
+            this.labelProject.Text = item.ClientLabel.IsNullOrEmpty() ? item.ProjectLabel : "• " + item.ProjectLabel;
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
-            setOptionalTextBlockText(this.labelTask, item.TaskLabel == "" ? "" : item.TaskLabel + " -");
+            setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
             this.billabeIcon.ShowOnlyIf(item.Billable);
 
@@ -143,6 +147,7 @@ namespace TogglDesktop
 
             this.updateToolTips(item);
         }
+
 
         private void imitateTooltips(TimeEntryCell cell)
         {
