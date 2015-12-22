@@ -21,6 +21,11 @@ namespace TogglDesktop
                 throw new InvalidDataException("Can only create day header from header time entry view.");
             }
 
+            if (this.labelFormattedDate.Text != item.DateHeader)
+            {
+                this.panel.Visibility = Visibility.Visible;
+            }
+
             this.labelFormattedDate.Text = item.DateHeader;
             this.labelDateDuration.Text = item.DateDuration;
 
@@ -73,6 +78,7 @@ namespace TogglDesktop
             {
                 this.panel.Visibility = Visibility.Visible;
             }
+            Toggl.ViewTimeEntryList();
         }
     }
 }
