@@ -284,6 +284,8 @@ namespace TogglDesktop
                 return;
             }
 
+            cell.DayHeader.ExpandCells();
+
             this.keyboardHighlightCellImposter.Imitate(cell);
 
             var cellYTop = cell.TransformToAncestor(this.panel).Transform(new Point(0, 0)).Y;

@@ -7,9 +7,26 @@ namespace TogglDesktop
 {
     public partial class TimeEntryCellDayHeader
     {
+        public bool IsDummy
+        {
+            set
+            {
+                if (value == false)
+                    return;
+
+                this.IsEnabled = false;
+            }
+        }
+
         public TimeEntryCellDayHeader()
         {
             this.InitializeComponent();
+        }
+
+        public void DisplayDummy(string dateText, string durationText = "")
+        {
+            this.labelFormattedDate.Text = dateText;
+            this.labelDateDuration.Text = durationText;
         }
 
         public void Display(List<Toggl.TogglTimeEntryView> items, Action<string, TimeEntryCell> registerCellByGUID)
@@ -49,7 +66,7 @@ namespace TogglDesktop
                 var entry = list[i];
 
                 var cell = (TimeEntryCell)children[i];
-                cell.Display(entry);
+                cell.Display(entry, this);
 
                 registerCellByGUID(entry.GUID, cell);
             }
@@ -60,7 +77,7 @@ namespace TogglDesktop
                 var entry = list[i];
 
                 var cell = new TimeEntryCell();
-                cell.Display(entry);
+                cell.Display(entry, this);
 
                 registerCellByGUID(entry.GUID, cell);
 
@@ -80,5 +97,15 @@ namespace TogglDesktop
             }
             Toggl.ViewTimeEntryList();
         }
+
+        public void ExpandCells()
+        {
+            if (this.panel.Visibility == Visibility.Visible)
+                return;
+
+            this.panel.Visibility = Visibility.Visible;
+            Toggl.ViewTimeEntryList();
+        }
+
     }
 }
