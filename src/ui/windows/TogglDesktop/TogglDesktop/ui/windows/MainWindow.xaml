@@ -32,6 +32,7 @@
         <RoutedUICommand x:Key="EscapeCommand" />
         <RoutedUICommand x:Key="BasicTutorialCommand" />
         <RoutedUICommand x:Key="NewFromPasteCommand" />
+        <RoutedUICommand x:Key="ToggleMiniTimerVisibilityCommand" />
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
@@ -73,6 +74,8 @@
                         Executed="onBasicTutorialCommand" CanExecute="canExecuteBasicTutorialCommand"/>
         <CommandBinding Command="{StaticResource NewFromPasteCommand}"
                         Executed="onNewFromPasteCommand" CanExecute="canExecuteNewFromPasteCommand"/>
+        <CommandBinding Command="{StaticResource ToggleMiniTimerVisibilityCommand}"
+                        Executed="togglMiniTimerVisibilityCommand" CanExecute="canExecutetogglMiniTimerVisibilityCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -146,7 +149,12 @@
                       Command="{StaticResource PreferencesCommand}"/>
             <MenuItem Header="Use manual mode" InputGestureText="Ctrl+D"
                       Name="togglManualModeMenuItem" x:FieldModifier="private"
-                      Command="{StaticResource ToggleManualModeCommand}"/>
+                      Command="{StaticResource ToggleManualModeCommand}"
+                      IsCheckable="True"/>
+            <MenuItem Header="Use mini timer"
+                      Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
+                      Command="{StaticResource ToggleMiniTimerVisibilityCommand}"
+                      IsCheckable="True"/>
             <Separator />
             <MenuItem Header="Clear Cache"
                       Command="{StaticResource ClearCacheCommand}"/>

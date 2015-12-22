@@ -93,5 +93,17 @@ namespace TogglDesktop
         {
             this.timer.SetManualMode(isInManualMode);
         }
+
+        public void SetVisible(bool visible)
+        {
+            if (visible)
+            {
+                this.Show();
+            }
+            else
+            {
+                this.Hide();
+            }
+        }
     }
 }
