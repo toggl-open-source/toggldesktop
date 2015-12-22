@@ -78,7 +78,7 @@ namespace TogglDesktop
 
         private void fillTimeEntryList(List<Toggl.TogglTimeEntryView> list)
         {
-            var previousCount = this.Entries.Children.Count;
+            var previousCount = this.cellsByGUID.Count;
             var newCount = list.Count;
 
             var cells = new List<Tuple<string, TimeEntryCell>>(newCount);
@@ -87,46 +87,72 @@ namespace TogglDesktop
             {
                 this.cellsByGUID.Clear();
 
-                var children = this.Entries.Children;
-
-                // remove superfluous cells
-                if (children.Count > list.Count)
+                Action<string, TimeEntryCell> registerCellByGUID = (guid, cell) =>
                 {
-                    children.RemoveRange(list.Count, children.Count - list.Count);
-                }
+                    this.cellsByGUID.Add(guid, cell);
+                    cells.Add(Tuple.Create(guid, cell));
+                };
 
-                // update existing cells
-                var i = 0;
-                for (; i < children.Count; i++)
-                {
-                    var entry = list[i];
+                var days = groupByDays(list);
 
-                    var cell = (TimeEntryCell)this.Entries.Children[i];
-                    cell.Display(entry);
-
-                    this.cellsByGUID.Add(entry.GUID, cell);
-                    cells.Add(Tuple.Create(entry.GUID, cell));
-                }
-
-                // add additional cells
-                for (; i < list.Count; i++)
-                {
-                    var entry = list[i];
-
-                    var cell = new TimeEntryCell();
-                    cell.Display(entry);
-
-                    this.cellsByGUID.Add(entry.GUID, cell);
-                    cells.Add(Tuple.Create(entry.GUID, cell));
-
-                    children.Add(cell);
-                }
+                this.fillDays(days, registerCellByGUID);
 
                 this.Entries.FinishedFillingList();
                 this.Entries.SetTimeEntryCellList(cells);
                 this.refreshHighLight();
             }
 
+        }
+
+        private void fillDays(List<List<Toggl.TogglTimeEntryView>> days, Action<string, TimeEntryCell> registerCellByGUID)
+        {
+            var children = this.Entries.Children;
+
+            // remove superfluous days
+            if (children.Count > days.Count)
+            {
+                children.RemoveRange(days.Count, children.Count - days.Count);
+            }
+
+            // update existing days
+            var i = 0;
+            for (; i < children.Count; i++)
+            {
+                var day = days[i];
+
+                var header = (TimeEntryCellDayHeader)children[i];
+                header.Display(day, registerCellByGUID);
+            }
+
+            // add additional days
+            for (; i < days.Count; i++)
+            {
+                var day = days[i];
+
+                var header = new TimeEntryCellDayHeader();
+                header.Display(day, registerCellByGUID);
+
+                children.Add(header);
+            }
+        }
+
+        private static List<List<Toggl.TogglTimeEntryView>> groupByDays(List<Toggl.TogglTimeEntryView> list)
+        {
+            var days = new List<List<Toggl.TogglTimeEntryView>>();
+            List<Toggl.TogglTimeEntryView> currentDay = null;
+
+            foreach (var item in list)
+            {
+                if (item.IsHeader)
+                {
+                    currentDay = new List<Toggl.TogglTimeEntryView>();
+                    days.Add(currentDay);
+                }
+
+                currentDay.Add(item);
+            }
+
+            return days;
         }
 
         private void refreshHighLight()

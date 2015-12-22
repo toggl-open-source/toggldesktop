@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -47,7 +46,6 @@ namespace TogglDesktop
                 if (value == false)
                     return;
 
-                this.dayHeader.Visibility = Visibility.Collapsed;
                 this.entrySeperator.Visibility = Visibility.Collapsed;
                 this.entryGrid.Height = 59;
             }
@@ -61,7 +59,6 @@ namespace TogglDesktop
                     return;
 
                 this.IsEnabled = false;
-                this.dayHeader.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -72,6 +69,8 @@ namespace TogglDesktop
         }
         public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
             .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
+
+        public TimeEntryCellDayHeader DayHeader { get; private set; }
 
         private readonly ToolTip descriptionToolTip = new ToolTip();
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
@@ -110,9 +109,10 @@ namespace TogglDesktop
             this.imitateTooltips(cell);
         }
 
-        public void Display(Toggl.TogglTimeEntryView item)
+        public void Display(Toggl.TogglTimeEntryView item, TimeEntryCellDayHeader dayHeader)
         {
             this.guid = item.GUID;
+            this.DayHeader = dayHeader;
 
             this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
 
@@ -120,9 +120,9 @@ namespace TogglDesktop
 
             this.projectColor.Fill = projectColorBrush;
             this.labelProject.Foreground = projectColorBrush;
-            this.labelProject.Text = item.ClientLabel == "" ? item.ProjectLabel : "• " + item.ProjectLabel;
+            this.labelProject.Text = item.ClientLabel.IsNullOrEmpty() ? item.ProjectLabel : "• " + item.ProjectLabel;
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
-            setOptionalTextBlockText(this.labelTask, item.TaskLabel == "" ? "" : item.TaskLabel + " -");
+            setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
             this.billabeIcon.ShowOnlyIf(item.Billable);
 
@@ -138,7 +138,6 @@ namespace TogglDesktop
 
             this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
 
-            this.dayHeader.ShowOnlyIf(item.IsHeader);
             this.entrySeperator.ShowOnlyIf(!item.IsHeader);
 
             this.entryHoverColor = hoverColor;
@@ -146,15 +145,9 @@ namespace TogglDesktop
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
 
-            if (item.IsHeader)
-            {
-                this.labelFormattedDate.Text = item.DateHeader;
-                this.labelDateDuration.Text = item.DateDuration;
-            }
-
-
             this.updateToolTips(item);
         }
+
 
         private void imitateTooltips(TimeEntryCell cell)
         {

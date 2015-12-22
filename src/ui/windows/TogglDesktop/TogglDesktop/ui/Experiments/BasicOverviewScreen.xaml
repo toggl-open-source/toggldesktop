@@ -17,6 +17,7 @@
             </Grid.RowDefinitions>
             <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
             <StackPanel Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
+                <toggl:TimeEntryCellDayHeader x:Name="dayHeaderDummy" x:FieldModifier="private" IsDummy="True"/>
                 <toggl:TimeEntryCell x:Name="cellDummy0" x:FieldModifier="private"/>
                 <toggl:TimeEntryCell x:Name="cellDummy1" x:FieldModifier="private" IsDummy="True" />
                 <toggl:TimeEntryCell x:Name="cellDummy2" x:FieldModifier="private" IsDummy="True" />
