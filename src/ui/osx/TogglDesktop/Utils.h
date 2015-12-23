@@ -23,6 +23,7 @@
 + (void)addUnderlineToTextField:(NSTextField *)field;
 + (void)setUpdaterChannel:(NSString *)channel;
 + (ScriptResult *)runScript:(NSString *)script;
++ (void)runClearCommand;
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem();

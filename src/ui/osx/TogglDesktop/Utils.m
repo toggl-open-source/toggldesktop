@@ -56,6 +56,21 @@ extern void *ctx;
 	return result;
 }
 
++ (void)runClearCommand
+{
+	NSString *location = @"Library/Application Support/TogglDesktop/.Sparkle";
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSString *userPath = NSHomeDirectory();
+	NSString *directory = [userPath stringByAppendingPathComponent:location];
+	NSError *error = nil;
+	BOOL success = [fm removeItemAtPath:directory error:&error];
+
+	if (!success)
+	{
+		NSLog(@"Failed to clear old updates folder at: %@", directory);
+	}
+}
+
 + (void)setUpdaterChannel:(NSString *)channel
 {
 	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/darwin_%@_appcast.xml", channel];
