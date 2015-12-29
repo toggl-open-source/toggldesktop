@@ -16,15 +16,8 @@ The total application is composed of two major parts: The interface, written in 
         - [Time entry list view](main-window.md#time-entry-list-view)
             - [Timer](main-window.md#timer)
             - [Time entry list](main-window.md#time-entry-list)
-    - Edit popup
-        - Edit view
-    - Other windows
-        - Preferences
-        - About window
-        - Feedback window
-        - Idle notification
-        - Autotracker notification
-        - Message boxes
+    - [Edit popup](edit-popup.md)
+        - [Edit view](edit-popup.md#edit-view)
 - Other major systems
     - Application entry point
     - API to library

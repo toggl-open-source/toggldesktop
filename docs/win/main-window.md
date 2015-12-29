@@ -5,7 +5,7 @@ This file documents the main window of the Windows UI of Toggl Desktop.
 
 The main window is the central part of the UI, host to the application's main views, and serves as a parent of most other parts of the UI.
 
-The implementation of the main window can be found in `MainWindow.xaml` and `MainWindow.xaml.cs` in `ui/windows`
+The implementation of the main window can be found in `MainWindow.xaml` and `MainWindow.xaml.cs` in `ui/windows`.
 
 The main window's constructor creates the rest of the UI and afterwards initialises the library.
 
