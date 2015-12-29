@@ -10,7 +10,8 @@
         MouseMove="onWindowMouseMove"
         Background="Transparent"
         ShowInTaskbar="False"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        UseLayoutRounding="True">
     
     <WindowChrome.WindowChrome>
         <WindowChrome

@@ -34,7 +34,7 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
-    <Style TargetType="UserControl" x:Key="Timer">
+    <Style TargetType="UserControl" x:Key="Timer" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Background" Value="{StaticResource ViewBackgroundDark}" />
         <Style.Resources>
 

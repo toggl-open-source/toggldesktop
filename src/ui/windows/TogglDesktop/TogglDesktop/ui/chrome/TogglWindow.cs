@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
@@ -25,6 +24,7 @@ namespace TogglDesktop
         public TogglWindow()
         {
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            this.UseLayoutRounding = true;
             this.updateWindowChrome();
 
             this.SourceInitialized += this.onSourceInitialised;

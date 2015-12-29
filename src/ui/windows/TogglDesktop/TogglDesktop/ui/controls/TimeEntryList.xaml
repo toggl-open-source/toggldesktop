@@ -67,7 +67,8 @@
                             Opacity="0.5"/>
                     </Border.Effect>
                     <toggl:TimeEntryCell x:Name="keyboardHighlightCellImposter" x:FieldModifier="private"
-                        Margin="10 0" IsFloating="True" VerticalAlignment="Center" Height="59"/>
+                        Margin="10 0" IsFloating="True" VerticalAlignment="Center" Height="59"
+                        />
                 </Border>
 
             </Grid>
