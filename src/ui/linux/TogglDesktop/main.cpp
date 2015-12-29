@@ -40,6 +40,8 @@ class TogglApplication : public SingleApplication {
 int main(int argc, char *argv[]) try {
     Bugsnag::apiKey = "2a46aa1157256f759053289f2d687c2f";
 
+    TogglApplication::setQuitOnLastWindowClosed(false);
+
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<bool_t>("bool_t");
