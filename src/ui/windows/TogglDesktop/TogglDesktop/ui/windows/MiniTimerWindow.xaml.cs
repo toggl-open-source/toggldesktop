@@ -3,6 +3,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -10,14 +11,28 @@ namespace TogglDesktop
 {
     public partial class MiniTimerWindow
     {
+        private readonly ContextMenu contextMenu;
+
         private bool leftMouseDown;
         private Point mouseDownPosition;
 
         public MiniTimerWindow(ContextMenu contextMenu)
         {
-            this.ContextMenu = contextMenu;
+            this.contextMenu = contextMenu;
             this.InitializeComponent();
             this.WindowStyle = WindowStyle.SingleBorderWindow;
+        }
+
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        {
+            this.contextMenu.PlacementTarget = this;
+            this.contextMenu.Placement = PlacementMode.Bottom;
+            this.contextMenu.HorizontalOffset = 0;
+            this.contextMenu.VerticalOffset = 0;
+
+            this.contextMenu.IsOpen = true;
+
+            e.Handled = true;
         }
 
         protected override void OnLocationChanged(EventArgs e)
