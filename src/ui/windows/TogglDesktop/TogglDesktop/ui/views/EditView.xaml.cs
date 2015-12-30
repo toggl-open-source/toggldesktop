@@ -25,6 +25,7 @@ namespace TogglDesktop
         private string selectedClientGUID;
         private ulong selectedClientId;
         private string selectedClientName;
+        private bool isCreatingProject;
 
         public EditView()
         {
@@ -575,6 +576,9 @@ namespace TogglDesktop
 
         private void confirmNewProject()
         {
+            if (this.isCreatingProject)
+                return;
+
             if (this.isInNewClientMode)
             {
                 this.tryCreatingNewClient(this.clientTextBox.Text);
@@ -594,11 +598,16 @@ namespace TogglDesktop
                 return false;
             }
 
-            return Toggl.AddProject(
+            this.isCreatingProject = true;
+
+            var ret = Toggl.AddProject(
                 this.timeEntry.GUID, this.selectedWorkspaceId,
                 this.selectedClientId, this.selectedClientGUID,
                 text, false, color) != null;
 
+            this.isCreatingProject = false;
+
+            return ret;
         }
 
         private void projectSaveButton_Click(object sender, RoutedEventArgs e)
