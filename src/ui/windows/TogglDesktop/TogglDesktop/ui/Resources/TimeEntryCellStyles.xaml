@@ -6,9 +6,8 @@
     <sys:Double x:Key="TimeEntryHeight">53</sys:Double>
     <sys:Double x:Key="TimeEntryDayHeaderHeight">45</sys:Double>
     
-    <Style x:Key="TimeEntryCell" TargetType="StackPanel">
+    <Style x:Key="TimeEntryCell">
 
-        <Setter Property="Background" Value="White"/>
         <Style.Resources>
 
             <!-- common text settings -->

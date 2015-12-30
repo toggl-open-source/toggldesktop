@@ -247,6 +247,13 @@ error Context::StartEvents() {
         setUser(user);
 
         updateUI(UIElements::Reset());
+
+        if ("production" == environment_) {
+            std::string update_channel("");
+            UpdateChannel(&update_channel);
+
+            analytics_.TrackChannel(db_->AnalyticsClientID(), update_channel);
+        }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -768,6 +775,14 @@ void Context::updateUI(const UIElements &what) {
                               settings_,
                               use_proxy,
                               proxy);
+        // Tracking Settings
+        if ("production" == environment_) {
+            analytics_.TrackSettings(db_->AnalyticsClientID(),
+                                     record_timeline,
+                                     settings_,
+                                     use_proxy,
+                                     proxy);
+        }
     }
 
     // Apply autocomplete as last element,
@@ -2827,6 +2842,19 @@ error Context::DiscardTimeAt(
     const Poco::Int64 at,
     const bool split_into_new_entry) {
 
+    // Tracking action
+    if ("production" == environment_) {
+        std::stringstream ss;
+        if (split_into_new_entry) {
+            ss << "idle-as-new-entry";
+        } else {
+            ss << "discard-and-stop";
+        }
+
+        analytics_.TrackIdleDetectionClick(db_->AnalyticsClientID(),
+                                           ss.str());
+    }
+
     TimeEntry *split = nullptr;
 
     {
@@ -2859,6 +2887,12 @@ error Context::DiscardTimeAt(
 TimeEntry *Context::DiscardTimeAndContinue(
     const std::string guid,
     const Poco::Int64 at) {
+
+    // Tracking action
+    if ("production" == environment_) {
+        analytics_.TrackIdleDetectionClick(db_->AnalyticsClientID(),
+                                           "discard-and-continue");
+    }
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);

@@ -92,6 +92,7 @@ extern void *ctx;
 
 	[self.restartButton setHidden:YES];
 	[self displayUpdateStatus];
+	[Utils runClearCommand];
 }
 
 - (void)displayUpdateStatus

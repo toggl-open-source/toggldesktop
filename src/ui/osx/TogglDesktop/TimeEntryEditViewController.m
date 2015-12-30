@@ -92,6 +92,10 @@ extern void *ctx;
 												 selector:@selector(setFocus:)
 													 name:NSPopoverWillShowNotification
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(setProjectColors:)
+													 name:kSetProjectColors
+												   object:nil];
 	}
 	return self;
 }
@@ -142,6 +146,7 @@ extern void *ctx;
 	[self.addClientButton setAttributedTitle:self.clientColorTitle];
 	[self.resizeHandle setCursor:[NSCursor resizeLeftRightCursor]];
 	[self.resizeHandleLeft setCursor:[NSCursor resizeLeftRightCursor]];
+	toggl_get_project_colors(ctx);
 }
 
 - (void)loadView
@@ -169,6 +174,11 @@ extern void *ctx;
 		return;
 	}
 	[self.view.window setInitialFirstResponder:self.descriptionCombobox];
+}
+
+- (void)setProjectColors:(NSNotification *)notification
+{
+	[self.colorPicker setProjectColors:notification.object];
 }
 
 - (void)resetPopover:(NSNotification *)notification
@@ -284,6 +294,8 @@ extern void *ctx;
 	uint64_t clientID = [self selectedClientID];
 	bool_t isBillable = self.timeEntry.billable;
 
+	char *color = (char *)[[self.colorPicker getSelectedColor] UTF8String];
+
 	// A new project is being added!
 	BOOL projectAdded = NO;
 	char_t *project_guid = toggl_add_project(ctx,
@@ -293,7 +305,7 @@ extern void *ctx;
 											 0,
 											 [projectName UTF8String],
 											 !is_public,
-											 "");
+											 color);
 
 	if (project_guid)
 	{

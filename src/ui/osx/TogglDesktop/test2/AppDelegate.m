@@ -847,7 +847,7 @@ BOOL manualMode = NO;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"Sync"
 					action:@selector(onSyncMenuItem:)
-			 keyEquivalent:@""].tag = kMenuItemTagSync;
+			 keyEquivalent:@"r"].tag = kMenuItemTagSync;
 	[menu addItemWithTitle:@"Reports"
 					action:@selector(onOpenBrowserMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagOpenBrowser;
@@ -1155,6 +1155,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_autotracker_rules(ctx, on_autotracker_rules);
 	toggl_on_autotracker_notification(ctx, on_autotracker_notification);
 	toggl_on_promotion(ctx, on_promotion);
+	toggl_on_project_colors(ctx, on_project_colors);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1626,6 +1627,19 @@ void on_idle_notification(
 	idleEvent.started = started;
 	idleEvent.timeEntryDescription = [NSString stringWithUTF8String:description];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayIdleNotification object:idleEvent];
+}
+
+void on_project_colors(
+	const char_t *list[],
+	const uint64_t count)
+{
+	NSMutableArray *colors = [NSMutableArray array];
+
+	for (int i = 0; i < count; i++)
+	{
+		[colors addObject:[NSString stringWithUTF8String:list[i]]];
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSetProjectColors object:colors];
 }
 
 @end

@@ -22,6 +22,7 @@ namespace TogglDesktop
         public ChromelessWindow()
         {
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            this.UseLayoutRounding = true;
 
             this.updateWindowChrome();
 
