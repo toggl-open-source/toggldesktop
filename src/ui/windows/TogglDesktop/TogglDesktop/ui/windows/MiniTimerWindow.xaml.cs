@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 
 namespace TogglDesktop
@@ -12,15 +13,19 @@ namespace TogglDesktop
     public partial class MiniTimerWindow
     {
         private readonly ContextMenu contextMenu;
+        private readonly WindowInteropHelper interopHelper;
 
         private bool leftMouseDown;
         private Point mouseDownPosition;
+        private bool isResizing;
 
         public MiniTimerWindow(ContextMenu contextMenu)
         {
             this.contextMenu = contextMenu;
             this.InitializeComponent();
             this.WindowStyle = WindowStyle.SingleBorderWindow;
+
+            this.interopHelper = new WindowInteropHelper(this);
         }
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
@@ -120,5 +125,66 @@ namespace TogglDesktop
                 this.Hide();
             }
         }
+
+
+        #region resizing
+
+        private void onLeftResizeHandleButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.startResizing(true, (FrameworkElement)sender);
+        }
+
+        private void onRightResizeHandleButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.startResizing(false, (FrameworkElement)sender);
+        }
+
+        private void onResizeHandleButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            this.endResizing();
+        }
+
+        private void onWindowMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                this.endResizing();
+            }
+        }
+
+        private void startResizing(bool left, FrameworkElement handle)
+        {
+            if (this.isResizing)
+                return;
+
+            const int htleft = 10;
+            const int htright = 11;
+
+            Mouse.Capture(null);
+
+            this.ResizeMode = ResizeMode.CanResize;
+
+            Win32.SendMessage(this.interopHelper.Handle,
+                Win32.wmNcLButtonDown,
+                left ? htleft : htright,
+                0);
+
+            handle.CaptureMouse();
+
+            this.isResizing = true;
+        }
+
+        private void endResizing()
+        {
+            if (!this.isResizing)
+                return;
+
+            Mouse.Capture(null);
+            this.ResizeMode = ResizeMode.NoResize;
+            this.isResizing = false;
+        }
+
+        #endregion
+
     }
 }

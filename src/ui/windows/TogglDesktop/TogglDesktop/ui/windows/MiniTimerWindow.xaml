@@ -6,13 +6,24 @@
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d"
         Height="{DynamicResource TimerHeight}"
-        Width="400"
+        Width="360" MinWidth="360"
         IsToolWindow="True" Topmost="True"
         ShowInTaskbar="False"
         ResizeMode="NoResize" WindowStyle="None"
         WindowStartupLocation="Manual"
+        MouseMove="onWindowMouseMove"
         >
     <Grid>
         <toggl:Timer x:Name="timer" x:FieldModifier="private" />
+        <Rectangle Width="10"  HorizontalAlignment="Left" Fill="Transparent"
+                   Cursor="SizeWE" IsHitTestVisible="True"
+                   WindowChrome.IsHitTestVisibleInChrome="True"
+                   MouseLeftButtonDown="onLeftResizeHandleButtonDown"
+                   MouseLeftButtonUp="onResizeHandleButtonUp"/>
+        <Rectangle Width="10" HorizontalAlignment="Right" Fill="Transparent"
+                   Cursor="SizeWE" IsHitTestVisible="True"
+                   WindowChrome.IsHitTestVisibleInChrome="True"
+                   MouseLeftButtonDown="onRightResizeHandleButtonDown"
+                   MouseLeftButtonUp="onResizeHandleButtonUp"/>
     </Grid>
 </toggl:ChromelessWindow>
