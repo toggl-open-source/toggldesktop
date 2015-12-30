@@ -18,13 +18,13 @@ The total application is composed of two major parts: The interface, written in 
             - [Time entry list](main-window.md#time-entry-list)
     - [Edit popup](edit-popup.md)
         - [Edit view](edit-popup.md#edit-view)
-- Other major systems
-    - Application entry point
-    - API to library
-    - Styling
-        - Custom window styling
-        - Themes
-    - Overlays
-        - Tutorials
-        - OBM Experiments
+- [Other major systems](other-major-systems.md)
+    - [Application entry point](other-major-systems.md#application-entry-point)
+    - [Library API](other-major-systems.md#library-api)
+    - [Styling](other-major-systems.md#styling)
+        - [Custom window styling](other-major-systems.md#custom-window-styling)
+        - [Themes](other-major-systems.md#themes)
+    - [Overlays](other-major-systems.md#overlays)
+        - [Tutorials](other-major-systems.md#tutorials)
+        - [OBM Experiments](other-major-systems.md#obm-experiments)
     - [Autocompletion](autocompletion.md)
