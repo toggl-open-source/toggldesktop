@@ -18,6 +18,12 @@ namespace TogglDesktop
             }
         }
 
+        public bool IsCollapsed
+        {
+            get { return this.panel.Visibility == Visibility.Collapsed; }
+            private set { this.panel.Visibility = value ? Visibility.Collapsed : Visibility.Visible; }
+        }
+
         public TimeEntryCellDayHeader()
         {
             this.InitializeComponent();
@@ -87,23 +93,16 @@ namespace TogglDesktop
 
         private void onHeaderClick(object sender, RoutedEventArgs e)
         {
-            if (this.panel.Visibility == Visibility.Visible)
-            {
-                this.panel.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                this.panel.Visibility = Visibility.Visible;
-            }
+            this.IsCollapsed = !this.IsCollapsed;
             Toggl.ViewTimeEntryList();
         }
 
         public void ExpandCells()
         {
-            if (this.panel.Visibility == Visibility.Visible)
+            if (!this.IsCollapsed)
                 return;
 
-            this.panel.Visibility = Visibility.Visible;
+            this.IsCollapsed = true;
             Toggl.ViewTimeEntryList();
         }
 
