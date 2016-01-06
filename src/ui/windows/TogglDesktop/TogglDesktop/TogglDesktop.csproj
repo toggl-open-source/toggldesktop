@@ -202,10 +202,10 @@
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\Experiments\Experiment87.cs" />
-    <Compile Include="ui\Experiments\Experiment80.cs" />
-    <Compile Include="ui\Experiments\Experiment87WelcomeScreen.xaml.cs">
-      <DependentUpon>Experiment87WelcomeScreen.xaml</DependentUpon>
+    <Compile Include="ui\Experiments\ExperimentSimpleWelcomeScreen.cs" />
+    <Compile Include="ui\Experiments\ExperimentBasicOverviewScreen.cs" />
+    <Compile Include="ui\Experiments\SimpleWelcomeScreen.xaml.cs">
+      <DependentUpon>SimpleWelcomeScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentBase.cs" />
     <Compile Include="ui\Experiments\IExperiment.cs" />
@@ -566,7 +566,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ui\Experiments\Experiment87WelcomeScreen.xaml">
+    <Page Include="ui\Experiments\SimpleWelcomeScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

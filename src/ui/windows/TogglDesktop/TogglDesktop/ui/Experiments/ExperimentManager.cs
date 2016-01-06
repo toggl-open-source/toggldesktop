@@ -1,10 +1,12 @@
 
+using System;
+
 namespace TogglDesktop.Experiments
 {
     sealed class ExperimentManager
     {
         // this is where the currently supported experiment is defined
-        private readonly IExperiment experiment = new Experiment80();
+        private readonly IExperiment experiment = new ExperimentBasicOverviewScreen();
 
         private readonly MainWindow mainWindow;
 
@@ -13,6 +15,11 @@ namespace TogglDesktop.Experiments
             this.mainWindow = mainWindow;
 
             Toggl.OnDisplayObmExperiment += this.onDisplayObmExperiment;
+
+            if (this.experiment != null && this.experiment.Id == 0)
+            {
+                throw new Exception("Experiment with id 0 is invalid.");
+            }
         }
 
         public ulong? CurrentExperumentId

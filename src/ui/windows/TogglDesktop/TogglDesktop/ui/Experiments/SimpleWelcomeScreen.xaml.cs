@@ -1,9 +1,9 @@
 ﻿
 namespace TogglDesktop.Experiments
 {
-    public partial class Experiment87WelcomeScreen
+    public partial class SimpleWelcomeScreen
     {
-        public Experiment87WelcomeScreen()
+        public SimpleWelcomeScreen()
         {
             this.InitializeComponent();
         }

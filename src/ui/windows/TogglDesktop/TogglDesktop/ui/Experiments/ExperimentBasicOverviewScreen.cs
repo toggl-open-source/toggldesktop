@@ -1,9 +1,9 @@
 ﻿namespace TogglDesktop.Experiments
 {
-    sealed class Experiment80 : ExperimentBase
+    sealed class ExperimentBasicOverviewScreen : ExperimentBase
     {
-        public Experiment80()
-            : base(80)
+        public ExperimentBasicOverviewScreen()
+            : base(87)
         {
         }
 
