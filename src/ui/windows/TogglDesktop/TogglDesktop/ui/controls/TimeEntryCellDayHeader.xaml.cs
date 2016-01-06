@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 
 namespace TogglDesktop
 {
     public partial class TimeEntryCellDayHeader
     {
+        private bool isSelected;
+
         public bool IsDummy
         {
             set
@@ -22,6 +25,19 @@ namespace TogglDesktop
         {
             get { return this.panel.Visibility == Visibility.Collapsed; }
             private set { this.panel.Visibility = value ? Visibility.Collapsed : Visibility.Visible; }
+        }
+       
+        public bool IsSelected
+        {
+            get { return this.isSelected; }
+            set
+            {
+                if (this.isSelected == value)
+                    return;
+                this.isSelected = value;
+
+                this.updateBackground();
+            }
         }
 
         public TimeEntryCellDayHeader()
@@ -106,5 +122,11 @@ namespace TogglDesktop
             Toggl.ViewTimeEntryList();
         }
 
+        private void updateBackground()
+        {
+            this.Background = new SolidColorBrush(
+                this.isSelected ? Color.FromRgb(200, 200, 200) : Color.FromRgb(247, 247, 247)
+                );
+        }
     }
 }
