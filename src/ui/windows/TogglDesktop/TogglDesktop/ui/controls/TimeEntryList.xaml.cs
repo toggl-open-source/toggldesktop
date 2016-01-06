@@ -17,6 +17,7 @@ namespace TogglDesktop
         private List<Tuple<string, TimeEntryCell>> cells;
         private int keyboardSelectedId;
         private TimeEntryCell cellAboutToKeyboardHighlight;
+        private TimeEntryCellDayHeader selectedDay;
         private bool imposterVisible;
         private EditViewPopup editPopup;
 
@@ -158,12 +159,36 @@ namespace TogglDesktop
 
         private void onHighlightDown(object sender, ExecutedRoutedEventArgs e)
         {
-            this.tryHighlightKeyboard(this.keyboardSelectedId + 1);
+            if (this.selectedDay != null)
+            {
+                this.trySelectBeforeCurrentDay();
+            }
+            else
+            {
+                this.tryHighlightKeyboard(this.keyboardSelectedId + 1);
+            }
         }
 
         private void onHighlightUp(object sender, ExecutedRoutedEventArgs e)
         {
-            this.tryHighlightKeyboard(this.keyboardSelectedId - 1);
+            if (this.selectedDay != null)
+            {
+                this.trySelectAfterCurrentDay();
+            }
+            else
+            {
+                this.tryHighlightKeyboard(this.keyboardSelectedId - 1);
+            }
+        }
+
+        private void trySelectBeforeCurrentDay()
+        {
+            var i = this.cells.FindIndex(t => t.Item2.DayHeader == this.selectedDay);
+        }
+
+        private void trySelectAfterCurrentDay()
+        {
+            var i = this.cells.FindLastIndex(t => t.Item2.DayHeader == this.selectedDay);
         }
 
         private void onHighlightEdit(object sender, ExecutedRoutedEventArgs e)
@@ -284,7 +309,12 @@ namespace TogglDesktop
                 return;
             }
 
-            cell.DayHeader.ExpandCells();
+            if (cell.DayHeader.IsCollapsed)
+            {
+                this.selectDay(cell.DayHeader);
+                return;
+            }
+            this.selectDay(null);
 
             this.keyboardHighlightCellImposter.Imitate(cell);
 
@@ -297,6 +327,24 @@ namespace TogglDesktop
             this.imposterVisible = true;
 
             cell.BringIntoView();
+        }
+
+        private void selectDay(TimeEntryCellDayHeader dayHeader)
+        {
+            if (this.selectedDay != null)
+            {
+                this.selectedDay.IsSelected = false;
+            }
+
+            this.selectedDay = dayHeader;
+
+            if (dayHeader == null)
+            {
+                return;
+            }
+
+            dayHeader.IsSelected = true;
+            this.hideSelection();
         }
 
         #endregion
