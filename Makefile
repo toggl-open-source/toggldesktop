@@ -594,3 +594,6 @@ endif
 
 package:
 	./src/ui/linux/package.sh
+
+authors:
+	git log --all --format='%aN <%cE>' | sort -u > AUTHORS
