@@ -852,6 +852,19 @@ public static partial class Toggl
         }
     }
 
+    public static void InitialiseLog()
+    {
+        string path = Path.Combine(Environment.GetFolderPath(
+            Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+
+        if (null == LogPath)
+        {
+            LogPath = Path.Combine(path, "toggldesktop.log");
+        }
+        toggl_set_log_path(LogPath);
+        toggl_set_log_level("debug");
+    }
+
     public static bool StartUI(string version, ulong? experimentId)
     {
         parseCommandlineParams();
@@ -906,13 +919,6 @@ public static partial class Toggl
         // Configure log, db path
         Directory.CreateDirectory(path);
 
-        if (null == LogPath)
-        {
-            LogPath = Path.Combine(path, "toggldesktop.log");
-        }
-        toggl_set_log_path(LogPath);
-        toggl_set_log_level("debug");
-
         if (null == DatabasePath)
         {
             DatabasePath = Path.Combine(path, "toggldesktop.db");
@@ -942,8 +948,10 @@ public static partial class Toggl
     {
         var update = createUpdateAction();
 
-        if (update != null)
-            update();
+        if (update == null)
+            return;
+        
+        update();
 
         Debug("Failed to start updater process");
     }

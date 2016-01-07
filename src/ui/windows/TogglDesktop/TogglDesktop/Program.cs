@@ -62,6 +62,8 @@ static class Program
                 return;
             }
 
+            Toggl.InitialiseLog();
+
             bugsnag = new Bugsnag.Clients.BaseClient("2a46aa1157256f759053289f2d687c2f");
 
 #if INVS
