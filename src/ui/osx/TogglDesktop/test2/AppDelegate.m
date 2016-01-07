@@ -109,6 +109,7 @@ BOOL manualMode = NO;
 		free(str);
 		[Utils setUpdaterChannel:channel];
 	}
+	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
