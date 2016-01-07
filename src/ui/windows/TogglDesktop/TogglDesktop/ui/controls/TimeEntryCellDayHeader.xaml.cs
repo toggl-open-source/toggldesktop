@@ -113,13 +113,25 @@ namespace TogglDesktop
             Toggl.ViewTimeEntryList();
         }
 
-        public void ExpandCells()
+        public void Expand(bool supressTimeEntryListEvent = false)
         {
             if (!this.IsCollapsed)
                 return;
 
+            this.IsCollapsed = false;
+
+            if(!supressTimeEntryListEvent)
+                Toggl.ViewTimeEntryList();
+        }
+        public void Collapse(bool supressTimeEntryListEvent = false)
+        {
+            if (this.IsCollapsed)
+                return;
+
             this.IsCollapsed = true;
-            Toggl.ViewTimeEntryList();
+
+            if (!supressTimeEntryListEvent)
+                Toggl.ViewTimeEntryList();
         }
 
         private void updateBackground()
@@ -128,5 +140,6 @@ namespace TogglDesktop
                 this.isSelected ? Color.FromRgb(200, 200, 200) : Color.FromRgb(247, 247, 247)
                 );
         }
+
     }
 }

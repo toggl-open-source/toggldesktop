@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -161,7 +162,7 @@ namespace TogglDesktop
         {
             if (this.selectedDay != null)
             {
-                this.trySelectBeforeCurrentDay();
+                this.trySelectAfterCurrentDay();
             }
             else
             {
@@ -173,7 +174,7 @@ namespace TogglDesktop
         {
             if (this.selectedDay != null)
             {
-                this.trySelectAfterCurrentDay();
+                this.trySelectBeforeCurrentDay();
             }
             else
             {
@@ -184,19 +185,44 @@ namespace TogglDesktop
         private void trySelectBeforeCurrentDay()
         {
             var i = this.cells.FindIndex(t => t.Item2.DayHeader == this.selectedDay);
+            this.tryHighlightKeyboard(i - 1);
         }
 
         private void trySelectAfterCurrentDay()
         {
             var i = this.cells.FindLastIndex(t => t.Item2.DayHeader == this.selectedDay);
+            this.tryHighlightKeyboard(i + 1);
         }
 
         private void onHighlightEdit(object sender, ExecutedRoutedEventArgs e)
         {
+            if (this.tryExpandSelectedDay())
+                return;
+
             if (!this.hasKeyboardSelection)
                 return;
 
             Toggl.Edit(this.keyboardHighlightedGUID, false, "");
+        }
+
+        private void onExpandDay(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.tryExpandSelectedDay();
+        }
+
+        private void onCollapseDay(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.tryCollapseCurrentDay();
+        }
+
+        private void onExpandAllDays(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.expandAllDays();
+        }
+
+        private void onCollapseAllDays(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.collapseAllDays();
         }
 
         private void onHighlightContinue(object sender, ExecutedRoutedEventArgs e)
@@ -227,6 +253,54 @@ namespace TogglDesktop
                 if (this.FocusTimer != null)
                     this.FocusTimer(this, e);
             }
+        }
+
+
+        private bool tryCollapseCurrentDay()
+        {
+            if (this.selectedDay != null)
+                return false;
+
+            this.keyboardHighlightedCell.DayHeader.Collapse();
+            this.refreshKeyboardHighlight();
+
+            return true;
+        }
+
+        private bool tryExpandSelectedDay()
+        {
+            if (this.selectedDay == null)
+                return false;
+
+            this.selectedDay.Expand();
+            this.tryHighlightKeyboard(this.cells.FindIndex(t => t.Item2.DayHeader == this.selectedDay));
+
+            return true;
+        }
+
+        private void collapseAllDays()
+        {
+            foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
+            {
+                day.Collapse(true);
+            }
+            this.refreshKeyboardHighlight();
+            Toggl.ViewTimeEntryList();
+        }
+
+        private void expandAllDays()
+        {
+            foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
+            {
+                day.Expand(true);
+            }
+            this.refreshKeyboardHighlight();
+            Toggl.ViewTimeEntryList();
+        }
+
+        private void refreshKeyboardHighlight()
+        {
+            this.tryHighlightKeyboard(this.keyboardSelectedId);
         }
 
         #region updating highlight
@@ -343,7 +417,9 @@ namespace TogglDesktop
                 return;
             }
 
+
             dayHeader.IsSelected = true;
+            dayHeader.BringIntoView();
             this.hideSelection();
         }
 
