@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -76,6 +77,7 @@ namespace TogglDesktop
         private readonly ToolTip durationToolTip = new ToolTip();
         private readonly ToolTip tagsToolTip = new ToolTip();
         private bool selected;
+        private Point mouseDownPosition;
 
         public TimeEntryCell()
         {
@@ -213,22 +215,22 @@ namespace TogglDesktop
 
         #region open edit window event handlers
 
-        private void labelDuration_MouseDown(object sender, MouseButtonEventArgs e)
+        private void labelDuration_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Duration);
         }
 
-        private void labelDescription_MouseDown(object sender, MouseButtonEventArgs e)
+        private void labelDescription_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Description);
         }
 
-        private void labelProject_MouseDown(object sender, MouseButtonEventArgs e)
+        private void labelProject_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Project);
         }
 
-        private void entry_MouseDown(object sender, MouseButtonEventArgs e)
+        private void entry_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, "");
         }
@@ -241,6 +243,31 @@ namespace TogglDesktop
             }
             e.Handled = true;
         }
+
+        #endregion
+
+        #region drag drop
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            this.mouseDownPosition = e.GetPosition(null);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var d = e.GetPosition(null) - this.mouseDownPosition;
+
+                if (Math.Abs(d.X) < SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(d.Y) < SystemParameters.MinimumVerticalDragDistance)
+                    return;
+
+                DragDrop.DoDragDrop(this, new DataObject("time-entry-cell", this), DragDropEffects.Move);
+                e.Handled = true;
+            }
+        }
+
 
         #endregion
 

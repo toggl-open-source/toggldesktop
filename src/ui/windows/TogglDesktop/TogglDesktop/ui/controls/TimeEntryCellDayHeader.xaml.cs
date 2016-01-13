@@ -141,5 +141,23 @@ namespace TogglDesktop
                 );
         }
 
+
+        protected override void OnDragEnter(DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent("time-entry-cell"))
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("time-entry-cell"))
+            {
+                var cell = (TimeEntryCell)e.Data.GetData("time-entry-cell");
+                // todo: move cell to this day
+                Console.WriteLine("moved cell to " + this.labelFormattedDate.Text);
+            }
+        }
     }
 }
