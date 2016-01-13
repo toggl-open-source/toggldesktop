@@ -78,6 +78,8 @@ namespace TogglDesktop
         private readonly ToolTip tagsToolTip = new ToolTip();
         private bool selected;
         private Point mouseDownPosition;
+        private bool isMouseDown;
+        private bool dragging;
 
         public TimeEntryCell()
         {
@@ -251,23 +253,43 @@ namespace TogglDesktop
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             this.mouseDownPosition = e.GetPosition(null);
+            this.isMouseDown = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            this.tryStartDrag(e);
+        }
+
+        public void MoveToDay(DateTime date)
+        {
+            Toggl.SetTimeEntryDate(this.guid, date);
+        }
+
+        private void tryStartDrag(MouseEventArgs e, bool ignoreDistance = false)
+        {
+            if (this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
             {
                 var d = e.GetPosition(null) - this.mouseDownPosition;
 
-                if (Math.Abs(d.X) < SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(d.Y) < SystemParameters.MinimumVerticalDragDistance)
-                    return;
+                if (!ignoreDistance)
+                {
+                    if (Math.Abs(d.X) < SystemParameters.MinimumHorizontalDragDistance ||
+                        Math.Abs(d.Y) < SystemParameters.MinimumVerticalDragDistance)
+                        return;
+                }
 
+                this.EntryBackColor = this.entryHoverColor;
+                this.dragging = true;
                 DragDrop.DoDragDrop(this, new DataObject("time-entry-cell", this), DragDropEffects.Move);
+                this.dragging = false;
+                this.EntryBackColor = idleBackColor;
+
                 e.Handled = true;
             }
-        }
 
+            this.isMouseDown = false;
+        }
 
         #endregion
 
@@ -279,7 +301,6 @@ namespace TogglDesktop
             }
         }
 
-
         private void entryMouseEnter(object sender, MouseEventArgs e)
         {
             this.EntryBackColor = this.entryHoverColor;
@@ -287,7 +308,12 @@ namespace TogglDesktop
 
         private void entryMouseLeave(object sender, MouseEventArgs e)
         {
+            if (this.dragging)
+                return;
+
+            this.tryStartDrag(e, true);
             this.EntryBackColor = idleBackColor;
+            this.isMouseDown = false;
         }
 
     }
