@@ -9,6 +9,7 @@ namespace TogglDesktop
     public partial class TimeEntryCellDayHeader
     {
         private bool isSelected;
+        private DateTime date;
 
         public bool IsDummy
         {
@@ -59,6 +60,8 @@ namespace TogglDesktop
             {
                 throw new InvalidDataException("Can only create day header from header time entry view.");
             }
+
+            this.date = Toggl.DateTimeFromUnix(item.Started);
 
             if (this.labelFormattedDate.Text != item.DateHeader)
             {
@@ -141,5 +144,14 @@ namespace TogglDesktop
                 );
         }
 
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("time-entry-cell"))
+            {
+                var cell = (TimeEntryCell)e.Data.GetData("time-entry-cell");
+                cell.MoveToDay(this.date);
+            }
+        }
     }
 }

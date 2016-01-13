@@ -6,7 +6,8 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=toggl:TimeEntryCellSample, IsDesignTimeCreatable=True}"
-             d:DesignWidth="455">
+             d:DesignWidth="455"
+             >
     
     <StackPanel Style="{StaticResource TimeEntryCell}"
                 Background="White">
@@ -16,7 +17,7 @@
 
         <!-- Entry -->
         <Grid Name="entryGrid" x:FieldModifier="private"
-            Height="{StaticResource TimeEntryHeight}" MouseDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
+            Height="{StaticResource TimeEntryHeight}" MouseUp="entry_MouseUp" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
             
             <Grid.Background>
                 <SolidColorBrush Color="{Binding EntryBackColor}"/>
@@ -50,7 +51,7 @@
 
                     <TextBlock Name="labelClient" x:FieldModifier="private"
                                 Foreground="DimGray">Client</TextBlock>
-                    <TextBlock Name="labelProject" x:FieldModifier="private" MouseDown="labelProject_MouseDown"
+                    <TextBlock Name="labelProject" x:FieldModifier="private" MouseUp="labelProject_MouseUp"
                                 >Project</TextBlock>
 
                 </StackPanel>
@@ -59,7 +60,7 @@
 
                     <TextBlock Name="labelTask" x:FieldModifier="private"
                                 Foreground="Gray">Task</TextBlock>
-                    <TextBlock Name="labelDescription" x:FieldModifier="private" MouseDown="labelDescription_MouseDown"
+                    <TextBlock Name="labelDescription" x:FieldModifier="private" MouseUp="labelDescription_MouseUp"
                             HorizontalAlignment="Left">This is a description</TextBlock>
 
                 </StackPanel>
@@ -107,7 +108,7 @@
 
             <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="60"
                         HorizontalAlignment="Left" FontSize="14.7" TextAlignment="Right"
-                            Margin="0, 1, 0, 0" MouseDown="labelDuration_MouseDown">03:21:30</TextBlock>
+                            Margin="0, 1, 0, 0" MouseUp="labelDuration_MouseUp">03:21:30</TextBlock>
 
             <Button Grid.Column="3" Width="36" Height="36" Margin="0, 0, 4, 1"
                     Focusable="False" Click="buttonContinue_Click"/>
