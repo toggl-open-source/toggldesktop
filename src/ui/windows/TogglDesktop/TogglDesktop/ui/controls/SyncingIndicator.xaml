@@ -51,7 +51,8 @@
                    Name="spinnerImage" x:FieldModifier="private"
                    Width="24" Height="24"
                    VerticalAlignment="Center"
-                   HorizontalAlignment="Center">
+                   HorizontalAlignment="Center"
+                   UseLayoutRounding="False">
                 <Image.LayoutTransform>
                     <RotateTransform Angle="0"/>
                 </Image.LayoutTransform>
