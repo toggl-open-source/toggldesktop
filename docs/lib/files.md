@@ -214,5 +214,21 @@ Toggl Desktop Library uses LiteSQL C++ framework for the local database.
 ### obm_action.cc
 ### autotracker.cc
 ### help_article.cc
+
+Has collection of all articles in the Toggl Knowlegebase. !This is subject to change in near future.
+
+#### std::vector<HelpArticle> HelpDatabase::GetArticles(const std::string keywords)
+    Gets article by seraching the help articles collection by keywords
 ### feedback.cc
+
+#### const std::string Feedback::filename() const
+    Get attached filename
+#### toggl::error Feedback::Validate() const
+    Validate the that all feedback requirements are met
+
 ### idle.cc
+
+#### void Idle::SetIdleSeconds(const Poco::UInt64 idle_seconds, User *current_user)
+    Sets idle seconds for user
+#### void Idle::computeIdleState(const Poco::UInt64 idle_seconds, User *current_user)
+    Compute idle state. If we have been idle for the amount defined in the settings trigger idle notification.
