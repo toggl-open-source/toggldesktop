@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 
 namespace TogglDesktop
 {
     public partial class TimeEntryCellDayHeader
     {
+        private bool isSelected;
+        private DateTime date;
+
         public bool IsDummy
         {
             set
@@ -15,6 +19,25 @@ namespace TogglDesktop
                     return;
 
                 this.IsEnabled = false;
+            }
+        }
+
+        public bool IsCollapsed
+        {
+            get { return this.panel.Visibility == Visibility.Collapsed; }
+            private set { this.panel.Visibility = value ? Visibility.Collapsed : Visibility.Visible; }
+        }
+       
+        public bool IsSelected
+        {
+            get { return this.isSelected; }
+            set
+            {
+                if (this.isSelected == value)
+                    return;
+                this.isSelected = value;
+
+                this.updateBackground();
             }
         }
 
@@ -37,6 +60,8 @@ namespace TogglDesktop
             {
                 throw new InvalidDataException("Can only create day header from header time entry view.");
             }
+
+            this.date = Toggl.DateTimeFromUnix(item.Started);
 
             if (this.labelFormattedDate.Text != item.DateHeader)
             {
@@ -87,25 +112,46 @@ namespace TogglDesktop
 
         private void onHeaderClick(object sender, RoutedEventArgs e)
         {
-            if (this.panel.Visibility == Visibility.Visible)
-            {
-                this.panel.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                this.panel.Visibility = Visibility.Visible;
-            }
+            this.IsCollapsed = !this.IsCollapsed;
             Toggl.ViewTimeEntryList();
         }
 
-        public void ExpandCells()
+        public void Expand(bool supressTimeEntryListEvent = false)
         {
-            if (this.panel.Visibility == Visibility.Visible)
+            if (!this.IsCollapsed)
                 return;
 
-            this.panel.Visibility = Visibility.Visible;
-            Toggl.ViewTimeEntryList();
+            this.IsCollapsed = false;
+
+            if(!supressTimeEntryListEvent)
+                Toggl.ViewTimeEntryList();
+        }
+        public void Collapse(bool supressTimeEntryListEvent = false)
+        {
+            if (this.IsCollapsed)
+                return;
+
+            this.IsCollapsed = true;
+
+            if (!supressTimeEntryListEvent)
+                Toggl.ViewTimeEntryList();
         }
 
+        private void updateBackground()
+        {
+            this.Background = new SolidColorBrush(
+                this.isSelected ? Color.FromRgb(200, 200, 200) : Color.FromRgb(247, 247, 247)
+                );
+        }
+
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("time-entry-cell"))
+            {
+                var cell = (TimeEntryCell)e.Data.GetData("time-entry-cell");
+                cell.MoveToDay(this.date);
+            }
+        }
     }
 }
