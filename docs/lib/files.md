@@ -5,50 +5,50 @@ In this section we will give an overview of all the files in the library. We wil
 ## Sitemap
 
 - [User Models](#user-models)
-  - [base_model.cc](#base_model.cc)
-  - [workspace.cc](#workspace.cc)
-  - [user.cc](#user.cc)
-  - [time_entry.cc](#time_entry.cc)
-  - [project.cc](#project.cc)
-  - [client.cc](#client.cc)
-  - [tag.cc](#tag.cc)
-  - [task.cc](#task.cc)
-  - [settings.cc](#settings.cc)
-  - [related_data.cc](#related_data.cc)
-  - [batch_update_result.cc](#batch_update_result.cc)
-  - [model_change.cc](#model_change.cc)
+  - [base_model.cc](#base_modelcc)
+  - [workspace.cc](#workspacecc)
+  - [user.cc](#usercc)
+  - [time_entry.cc](#time_entrycc)
+  - [project.cc](#projectcc)
+  - [client.cc](#clientcc)
+  - [tag.cc](#tagcc)
+  - [task.cc](#taskcc)
+  - [settings.cc](#settingscc)
+  - [related_data.cc](#related_datacc)
+  - [batch_update_result.cc](#batch_update_resultcc)
+  - [model_change.cc](#model_changecc)
 - [Database](#database)
-  - [migrations.cc](#migrations.cc)
-  - [database.cc](#database.cc)
+  - [migrations.cc](#migrationscc)
+  - [database.cc](#databasecc)
 - [Core API](#core-api)
-  - [context.cc](#context.cc)
-  - [gui.cc](#gui.cc)
-  - [toggl_api.cc](#toggl_api.cc)
-  - [toggl_api_private.cc](#toggl_api_private.cc)
+  - [context.cc](#contextcc)
+  - [gui.cc](#guicc)
+  - [toggl_api.cc](#toggl_apicc)
+  - [toggl_api_private.cc](#toggl_api_privatecc)
 - [Connectivity](#connectivity)
-  - [https_client.cc](#https_client.cc)
-  - [netconf.cc](#netconf.cc)
-  - [proxy.cc](#proxy.cc)
-  - [websocket_client.cc](#websocket_client.cc)
+  - [https_client.cc](#https_clientcc)
+  - [netconf.cc](#netconfcc)
+  - [proxy.cc](#proxycc)
+  - [websocket_client.cc](#websocket_clientcc)
 - [Timeline](#timeline) 
-  - [window_change_recorder.cc](#window_change_recorder.cc)
-  - [get_focused_window_linux.cc](#get_focused_window_linux.cc)
-  - [get_focused_window_mac.cc](#get_focused_window_mac.cc)
-  - [get_focused_window_windows.cc](#get_focused_window_windows.cc)
-  - [timeline_uploader.cc](#timeline_uploader.cc)
-  - [timeline_event.cc](#timeline_event.cc)
+  - [window_change_recorder.cc](#window_change_recordercc)
+  - [get_focused_window_linux.cc](#get_focused_window_linuxcc)
+  - [get_focused_window_mac.cc](#get_focused_window_maccc)
+  - [get_focused_window_windows.cc](#get_focused_window_windowscc)
+  - [timeline_uploader.cc](#timeline_uploadercc)
+  - [timeline_event.cc](#timeline_eventcc)
 - [Utilities](#utilities)
-  - [error.cc](#error.cc)
-  - [custom_error_handler.cc](#custom_error_handler.cc)
-  - [formatter.cc](#formatter.cc)
-  - [analytics.cc](#.cc)
-  - [urls.cc](#urls.cc)
+  - [error.cc](#errorcc)
+  - [custom_error_handler.cc](#custom_error_handlercc)
+  - [formatter.cc](#formattercc)
+  - [analytics.cc](#cc)
+  - [urls.cc](#urlscc)
 - [Features](#features)
-  - [obm_action.cc](#obm_action.cc)
-  - [autotracker.cc](#autotracker.cc)
-  - [help_article.cc](#help_article.cc)
-  - [feedback.cc](#feedback.cc)
-  - [idle.cc](#idle.cc)
+  - [obm_action.cc](#obm_actioncc)
+  - [autotracker.cc](#autotrackercc)
+  - [help_article.cc](#help_articlecc)
+  - [feedback.cc](#feedbackcc)
+  - [idle.cc](#idlecc)
 
 
 ## User Models
@@ -63,7 +63,7 @@ Base model has the base methods needed by all the models used in library. Most o
     Note that if a model has a validation error previously received and attached from the backend, the model won't be pushed again unless the error is somehow fixed by user. We will assume that if user modifies the model, the error will go away. But until then, don't push the errored data.
 
 #### bool BaseModel::NeedsPOST() const
-    No server side ID yet, meaning it has not been POSTed to the server yet.
+    No server side ID yet, meaning model has not been POSTed to the server yet.
 
 #### bool BaseModel::NeedsPUT() const
     Model has been updated and is not deleted, needs a PUT
@@ -105,9 +105,63 @@ Base model has the base methods needed by all the models used in library. Most o
 - SetUnsynced()
 
 ### workspace.cc
+
+#### std::string Workspace::String() const
+    Return workspace data in a string format
+#### void Workspace::SetName(const std::string value)
+    Setter for workspace name
+#### void Workspace::SetPremium(const bool value)
+    Set workspace to be premium (business)
+#### void Workspace::SetOnlyAdminsMayCreateProjects(const bool value)
+    Setter for workspace setting "Admins may create projects"
+#### void Workspace::SetAdmin(const bool value)
+    Setter for workspace setting is admin. Mean that user is admin of the workspace or not
+#### void Workspace::LoadFromJSON(Json::Value n)
+    Load workspace data from JSON to local database
+#### std::string Workspace::ModelName() const
+    Returns model name in a string
+#### std::string Workspace::ModelURL() const
+    Returns model update url
+
 ### user.cc
 ### time_entry.cc
 ### project.cc
+
+#### std::vector<std::string> Project::ColorCodes(known_colors, end(known_colors));
+    Color codes for projects
+#### std::string Project::String() const
+    Return project data in a string format
+#### void Project::LoadFromJSON(Json::Value data)
+    Load project data from JSON to local database
+#### Json::Value Project::SaveToJSON() const
+    Convert model data to JSON
+
+#### bool Project::DuplicateResource(const toggl::error err) const
+    Returns true if there is a duplicate name error
+#### bool Project::ResourceCannotBeCreated(const toggl::error err) const
+
+#### bool Project::clientIsInAnotherWorkspace(const toggl::error err) const
+
+#### bool Project::onlyAdminsCanChangeProjectVisibility(
+
+#### bool Project::ResolveError(const toggl::error err)
+
+#### std::string Project::ModelName() const
+    Returns model name in a string
+#### std::string Project::ModelURL() const
+    Returns model update url
+
+#### etters as follows:
+- void Project::SetClientGUID(const std::string value)
+- void Project::SetActive(const #### bool value)
+- void Project::SetPrivate(const #### bool value)
+- void Project::SetName(const std::string value)
+- void Project::SetBillable(const #### bool value)
+- void Project::SetColor(const std::string value)
+- error Project::SetColorCode(const std::string color_code)
+- void Project::SetWID(const Poco::UInt64 value)
+- void Project::SetCID(const Poco::UInt64 value)
+
 ### client.cc
 ### tag.cc    
 ### task.cc       
