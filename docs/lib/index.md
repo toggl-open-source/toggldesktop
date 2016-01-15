@@ -17,6 +17,10 @@ _Will add flow charts here to describe the usual event flows_
 
 ### Saving and Syncing flow
 
+## Files in the library
+
+Files in the library are described in depth in the following page [Files in the library](files.md)
+
 ## Third party libraries used
 
 ### Poco
@@ -73,71 +77,3 @@ JsonCpp is a C++ library that allows manipulating JSON values, including seriali
 ```
 
 JsonCpp is used under licence described in [https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE](https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE)
-
-
-## User Models
-**base_model.cc**
-workspace.cc
-user.cc
-time_entry.cc
-project.cc
-client.cc
-tag.cc    
-task.cc       
-
-settings.cc
-related_data.cc   
-batch_update_result.cc
-model_change.cc
-
-## Database
-
-Toggl Desktop Library uses LiteSQL C++ framework for the local database.
-
-migrations.cc
-database.cc
-
-## Core API
-
-context.cc
-gui.cc
-toggl_api.cc
-toggl_api_private.cc
-
-## Connectivity
-
-https_client.cc
-netconf.cc
-proxy.cc
-websocket_client.cc
-
-## Timeline 
-
-window_change_recorder.cc
-get_focused_window_linux.cc
-get_focused_window_mac.cc
-get_focused_window_windows.cc
-timeline_uploader.cc
-timeline_event.cc
-
-## Utilities
-
-error.cc
-custom_error_handler.cc
-formatter.cc
-analytics.cc
-urls.cc
-
-## Features
-
-obm_action.cc
-autotracker.cc
-help_article.cc
-feedback.cc
-idle.cc
-
-
-
-                
-
-   
