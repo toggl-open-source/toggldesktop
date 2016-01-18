@@ -346,6 +346,9 @@ TogglSettingsView *settings_view_item_init(
     view->RemindStarts = copy_string(settings.remind_starts);
     view->RemindEnds = copy_string(settings.remind_ends);
 
+    view->Pomodoro = settings.pomodoro;
+    view->PomodoroMinutes = settings.pomodoro_minutes;
+
     return view;
 }
 
