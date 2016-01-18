@@ -176,13 +176,32 @@ Base model has the base methods needed by all the models used in library. Most o
 Toggl Desktop Library uses LiteSQL C++ framework for the local database.
 
 ### migrations.cc
+
+Migrations create all the tables and logic of the local database. If anything needs to be changed in the database a new migration should be created to the migrations file.
+
+Example cases:
+    - Adding new setting/preference to the app
+    - Stroring new user data ( new workspace setting or such )
+
 ### database.cc
+
+Database file has all the logic of communicating with the local database. All queries that need to be made in to the local database are described here.
+
+Example cases:
+    - Getting user settings
+    - Clearing local data (deletes all data connected to the current user ID)
 
 # Core API
 
 ### context.cc
 ### gui.cc
+
+GUI triggers UI actions based on the events triggered either by api itself or the user from the UI. The main aim of the GUI is to keep as much functionality in the library as possible. With GUI we control the UI form the library.
+
 ### toggl_api.cc
+
+Toggl Api is the pipe between the UI and the other parts of the library. When UI calls some action `toggl_api` executes the proper method in the `context.cc`.
+
 ### toggl_api_private.cc
 
 # Connectivity
@@ -209,26 +228,56 @@ Toggl Desktop Library uses LiteSQL C++ framework for the local database.
 ### analytics.cc
 ### urls.cc
 
+Url object keeps all the proper urls for requests. Also changes the url between production and staging addresses.
+
+#### void SetUseStagingAsBackend(const bool value)
+    Setting a flag so use the stagins urls for requests
+
+#### std::string API()
+    Returns API url
+
+#### std::string TimelineUpload()
+    Returns timeline url
+
+#### std::string WebSocket()
+    Returns websocket url
+
 # Features
 
 ### obm_action.cc
+
+Obm actions object. Keeps track of obm experiments. Sets experiment number and keeps track if user has seen an experiment.
+
 ### autotracker.cc
+
+Autotracker rule object.
+Autotracker has the following parameters:
+    - Term (std:string)
+    - PID (Poco::UInt64) // project id
+    - TID (Poco::UInt64) // task id
+
+#### bool AutotrackerRule::Matches(const TimelineEvent event) const
+    Autotracker searches the timeline events for matching the term with event filename or event title.
+
 ### help_article.cc
 
 Has collection of all articles in the Toggl Knowlegebase. !This is subject to change in near future.
 
 #### std::vector<HelpArticle> HelpDatabase::GetArticles(const std::string keywords)
     Gets article by seraching the help articles collection by keywords
+
 ### feedback.cc
 
 #### const std::string Feedback::filename() const
     Get attached filename
+
 #### toggl::error Feedback::Validate() const
     Validate the that all feedback requirements are met
 
 ### idle.cc
 
 #### void Idle::SetIdleSeconds(const Poco::UInt64 idle_seconds, User *current_user)
-    Sets idle seconds for user
+    Sets idle seconds for user. Is triggered when user changes idle time in preferences.
+
 #### void Idle::computeIdleState(const Poco::UInt64 idle_seconds, User *current_user)
     Compute idle state. If we have been idle for the amount defined in the settings trigger idle notification.
