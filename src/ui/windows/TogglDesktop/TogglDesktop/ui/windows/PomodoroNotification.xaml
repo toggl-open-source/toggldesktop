@@ -18,12 +18,13 @@
         <StackPanel Grid.Row="0" Margin="10">
             <TextBlock Text="You have been working for 25 minutes."
                        Name="timeText" x:FieldModifier="private"/>
-            <TextBlock Text="Take a break?"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="8" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Content="STOP" Style="{StaticResource FlatButton}"/>
-            <Button Content="RESET TIMER" Style="{StaticResource FlatButton}"/>
+            <Button Content="STOP" Style="{StaticResource FlatButton}"
+                    Click="onStopClicked"/>
+            <Button Content="RESET TIMER" Style="{StaticResource FlatButton}"
+                    Click="onResetClick"/>
         </StackPanel>
         
     </Grid>
