@@ -6,6 +6,7 @@
     xmlns:toggl="clr-namespace:TogglDesktop"
     mc:Ignorable="d" Width="280" Height="200"
     Title="Pomodoro Timer" IsToolWindow="True"
+    Topmost="True"
     >
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>
