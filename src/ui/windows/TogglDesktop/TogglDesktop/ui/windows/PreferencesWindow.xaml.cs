@@ -116,6 +116,9 @@ namespace TogglDesktop
             this.idleDetectionCheckBox.IsChecked = settings.UseIdleDetection;
             this.idleDetectionDurationTextBox.Text = settings.IdleMinutes.ToString();
 
+            this.enablePomodoroCheckBox.IsChecked = settings.Pomodoro;
+            this.pomodoroTimerDuration.Text = settings.PomodoroMinutes.ToString();
+
             this.recordTimelineCheckBox.IsChecked = settings.RecordTimeline;
             this.onTopCheckBox.IsChecked = settings.OnTop;
 
@@ -313,6 +316,9 @@ namespace TogglDesktop
 
                 RecordTimeline = isChecked(this.recordTimelineCheckBox),
                 OnTop = isChecked(this.onTopCheckBox),
+
+                Pomodoro = isChecked(this.enablePomodoroCheckBox),
+                PomodoroMinutes = toULong(this.pomodoroTimerDuration.Text),
 
                 #endregion
 

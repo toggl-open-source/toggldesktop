@@ -38,6 +38,7 @@ namespace TogglDesktop
         private FeedbackWindow feedbackWindow;
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
+        private PomodoroNotification pomodoroNotificationWindow;
         private SyncingIndicator syncingIndicator;
         private ExperimentManager experimentManager;
 
@@ -135,6 +136,7 @@ namespace TogglDesktop
                 new PreferencesWindow(),
             };
             this.idleNotificationWindow = new IdleNotificationWindow();
+            this.pomodoroNotificationWindow = new PomodoroNotification();
 
             this.editPopup.EditView.SetTimer(this.timerEntryListView.Timer);
             this.timerEntryListView.Timer.RunningTimeEntrySecondPulse += this.updateTaskbarTooltip;

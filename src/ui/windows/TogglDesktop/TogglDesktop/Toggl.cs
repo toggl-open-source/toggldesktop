@@ -138,6 +138,9 @@ public static partial class Toggl
     public delegate void DisplayObmExperiment(
         ulong id, bool included, bool seenBefore);
 
+    public delegate void DisplayPomodoro(
+        string title, string informativeText);
+
     #endregion
 
     #region api calls
@@ -400,6 +403,16 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_pomodoro(ctx, settings.Pomodoro))
+        {
+            return false;
+        }
+
+        if (!toggl_set_settings_pomodoro_minutes(ctx, settings.PomodoroMinutes))
+        {
+            return false;
+        }
+
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 
@@ -599,6 +612,7 @@ public static partial class Toggl
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
     public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
+    public static event DisplayPomodoro OnDisplayPomodoro = delegate { }; 
 
     private static void listenToLibEvents()
     {
@@ -808,6 +822,13 @@ public static partial class Toggl
                 id, included, seenBefore))
             {
                 OnDisplayObmExperiment(id, included, seenBefore);
+            }
+        });
+        toggl_on_pomodoro(ctx, (title, text) =>
+        {
+            using (Performance.Measure("Calling OnDisplayPomodoro"))
+            {
+                OnDisplayPomodoro(title, text);
             }
         });
     }
