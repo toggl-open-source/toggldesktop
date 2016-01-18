@@ -151,7 +151,7 @@ Base model has the base methods needed by all the models used in library. Most o
 #### std::string Project::ModelURL() const
     Returns model update url
 
-#### etters as follows:
+#### Setters as follows:
 - void Project::SetClientGUID(const std::string value)
 - void Project::SetActive(const #### bool value)
 - void Project::SetPrivate(const #### bool value)
@@ -225,7 +225,15 @@ Toggl Api is the pipe between the UI and the other parts of the library. When UI
 ### error.cc
 ### custom_error_handler.cc
 ### formatter.cc
+
+Formatter object. Used to format time entry texts, dates and more.
+
 ### analytics.cc
+
+Analytics object. Formats the analytics data and sends it to google analytics. Currently two different event types are present:
+    - GoogleAnalyticsEvent (Simple event)
+    - GoogleAnalyticsSettingsEvent (Preferences event, sends preferences values one by once once a day.)
+
 ### urls.cc
 
 Url object keeps all the proper urls for requests. Also changes the url between production and staging addresses.
