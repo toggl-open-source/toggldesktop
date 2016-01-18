@@ -240,6 +240,9 @@
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
+    <Compile Include="ui\windows\PomodoroNotification.xaml.cs">
+      <DependentUpon>PomodoroNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
@@ -711,6 +714,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\windows\MessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\windows\PomodoroNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
