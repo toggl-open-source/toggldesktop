@@ -228,6 +228,9 @@ error GUI::findMissingCallbacks() {
     if (!on_display_mini_timer_autocomplete_) {
         return error("!on_display_mini_timer_autocomplete_");
     }
+    if (!on_display_pomodoro_) {
+        return error("!on_display_pomodoro_");
+    }
     return noError;
 }
 
@@ -237,6 +240,15 @@ void GUI::DisplayReminder() {
     char_t *s1 = copy_string("Reminder from Toggl Desktop");
     char_t *s2 = copy_string("Don't forget to track your time!");
     on_display_reminder_(s1, s2);
+    free(s1);
+    free(s2);
+}
+
+void GUI::DisplayPomodoro() {
+    logger().debug("DisplayPomodoro");
+    char_t *s1 = copy_string("Toggl Desktop Pomodoro Timer");
+    char_t *s2 = copy_string("It's time to take a break!");
+    on_display_pomodoro_(s1,s2);
     free(s1);
     free(s2);
 }

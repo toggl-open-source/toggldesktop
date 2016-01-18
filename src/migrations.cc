@@ -1196,6 +1196,22 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.pomodoro",
+        "ALTER TABLE settings "
+        "ADD COLUMN pomodoro INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.pomodoro_minutes",
+        "ALTER TABLE settings "
+        "ADD COLUMN pomodoro_minutes INTEGER NOT NULL DEFAULT 60;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

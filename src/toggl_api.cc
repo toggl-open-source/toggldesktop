@@ -140,6 +140,12 @@ bool_t toggl_set_settings_reminder(
     return toggl::noError == app(context)->SetSettingsReminder(reminder);
 }
 
+bool_t toggl_set_settings_pomodoro(
+    void *context,
+    const bool_t pomodoro) {
+    return toggl::noError == app(context)->SetSettingsPomodoro(pomodoro);
+}
+
 bool_t toggl_set_settings_idle_minutes(
     void *context,
     const uint64_t idle_minutes) {
@@ -164,6 +170,13 @@ bool_t toggl_set_settings_reminder_minutes(
     const uint64_t reminder_minutes) {
     return toggl::noError == app(context)->
            SetSettingsReminderMinutes(reminder_minutes);
+}
+
+bool_t toggl_set_settings_pomodoro_minutes(
+    void *context,
+    const uint64_t pomodoro_minutes) {
+    return toggl::noError == app(context)->
+           SetSettingsPomodoroMinutes(pomodoro_minutes);
 }
 
 bool_t toggl_set_window_settings(
@@ -891,6 +904,12 @@ void toggl_on_reminder(
     void *context,
     TogglDisplayReminder cb) {
     app(context)->UI()->OnDisplayReminder(cb);
+}
+
+void toggl_on_pomodoro(
+    void *context,
+    TogglDisplayPomodoro cb) {
+    app(context)->UI()->OnDisplayPomodoro(cb);
 }
 
 void toggl_on_autotracker_notification(
