@@ -21,6 +21,7 @@ namespace TogglDesktop
             this.Title = title;
 
             this.Show();
+            this.Activate();
         }
 
         protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
