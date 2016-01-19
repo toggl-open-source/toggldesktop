@@ -447,8 +447,7 @@ Json::Value TimeEntry::SaveToJSON() const {
     return n;
 }
 
-Poco::Int64 TimeEntry::RealDurationInSeconds() const
-{
+Poco::Int64 TimeEntry::RealDurationInSeconds() const {
     auto now = time(0);
 
     return now + DurationInSeconds();
