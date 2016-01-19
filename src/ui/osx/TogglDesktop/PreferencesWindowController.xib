@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A279b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
@@ -24,6 +24,7 @@
                 <outlet property="ontopCheckbox" destination="n4h-zi-TcC" id="ZIf-sx-04h"/>
                 <outlet property="openEditorOnShortcut" destination="DRh-rC-B0a" id="U3h-ir-axL"/>
                 <outlet property="passwordTextField" destination="bcT-3P-lAf" id="hcg-zO-nf5"/>
+                <outlet property="pomodoroMinutesTextField" destination="bCE-Cp-Ipc" id="AdG-PZ-xvz"/>
                 <outlet property="portTextField" destination="0tH-DP-xDu" id="Opz-2O-YYS"/>
                 <outlet property="proxyRadio" destination="CE1-H6-4lx" id="roW-Cb-dcV"/>
                 <outlet property="recordTimelineCheckbox" destination="V28-KN-5Vi" id="76u-Eg-Kf1"/>
@@ -41,6 +42,7 @@
                 <outlet property="showHideShortcutView" destination="DLB-Fw-7tX" id="T2o-mF-KXG"/>
                 <outlet property="startStopShortcutView" destination="Ft4-tk-xRA" id="5tb-G5-s2R"/>
                 <outlet property="useIdleDetectionButton" destination="Lgk-gZ-8Ha" id="Erp-FO-vcw"/>
+                <outlet property="usePomodoroButton" destination="Rmf-uW-sZP" id="fZa-h4-WjK"/>
                 <outlet property="usernameTextField" destination="hml-tw-LUI" id="1nT-Y3-g6A"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -50,24 +52,24 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="450" height="364"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="contentRect" x="196" y="240" width="450" height="400"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="450" height="364"/>
+                <rect key="frame" x="0.0" y="0.0" width="450" height="400"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <tabView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZDX-gA-MBn">
-                        <rect key="frame" x="-8" y="-10" width="466" height="372"/>
+                        <rect key="frame" x="-8" y="-8" width="466" height="406"/>
                         <animations/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
                             <tabViewItem label="General" identifier="1" id="3dj-rq-0aF">
-                                <view key="view" ambiguous="YES" id="7qY-5d-VHf">
-                                    <rect key="frame" x="10" y="33" width="446" height="326"/>
+                                <view key="view" id="7qY-5d-VHf">
+                                    <rect key="frame" x="10" y="33" width="446" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lgk-gZ-8Ha">
-                                            <rect key="frame" x="16" y="248" width="140" height="18"/>
+                                            <rect key="frame" x="16" y="282" width="140" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Idle detection" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Z6U-JU-oVS">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -78,109 +80,8 @@
                                                 <outlet property="nextKeyView" destination="nRj-Zh-L5m" id="NfN-u1-qG2"/>
                                             </connections>
                                         </button>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K6B-0p-RS0">
-                                            <rect key="frame" x="15" y="306" width="136" height="17"/>
-                                            <animations/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show/Hide Toggl" id="ZgR-r3-20o">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DLB-Fw-7tX" customClass="MASShortcutView">
-                                            <rect key="frame" x="288" y="306" width="140" height="19"/>
-                                            <animations/>
-                                            <connections>
-                                                <outlet property="nextKeyView" destination="Ft4-tk-xRA" id="Fi4-jZ-hCB"/>
-                                            </connections>
-                                        </customView>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h4c-1q-AeO">
-                                            <rect key="frame" x="15" y="281" width="136" height="17"/>
-                                            <animations/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Continue/Stop timer" id="SH4-aB-XUn">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ft4-tk-xRA" customClass="MASShortcutView">
-                                            <rect key="frame" x="288" y="281" width="140" height="19"/>
-                                            <animations/>
-                                        </customView>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUE-Lr-nId">
-                                            <rect key="frame" x="16" y="197" width="286" height="18"/>
-                                            <animations/>
-                                            <buttonCell key="cell" type="check" title="Show timer on menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="d1o-e3-Xs6">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="menubarTimerCheckboxChanged:" target="-2" id="EP1-N2-8ue"/>
-                                                <outlet property="nextKeyView" destination="jRq-Fm-A6k" id="vmR-eT-ZuL"/>
-                                            </connections>
-                                        </button>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V28-KN-5Vi">
-                                            <rect key="frame" x="16" y="228" width="286" height="18"/>
-                                            <animations/>
-                                            <buttonCell key="cell" type="check" title="Record timeline" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="yIY-fe-UHc">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="recordTimelineCheckboxChanged:" target="-2" id="shF-cM-Bvx"/>
-                                                <outlet property="nextKeyView" destination="lUE-Lr-nId" id="ABE-oe-FHH"/>
-                                            </connections>
-                                        </button>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRq-Fm-A6k">
-                                            <rect key="frame" x="16" y="177" width="286" height="18"/>
-                                            <animations/>
-                                            <buttonCell key="cell" type="check" title="Show project on menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CM9-BW-DQq">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="menubarProjectCheckboxChanged:" target="-2" id="H5i-0g-x5W"/>
-                                                <outlet property="nextKeyView" destination="kR2-Ee-viZ" id="wgz-Iq-3B1"/>
-                                            </connections>
-                                        </button>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kR2-Ee-viZ">
-                                            <rect key="frame" x="16" y="157" width="286" height="18"/>
-                                            <animations/>
-                                            <buttonCell key="cell" type="check" title="Show dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="L9v-Ys-EtJ">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="dockIconCheckboxChanged:" target="-2" id="7av-HG-YKn"/>
-                                                <outlet property="nextKeyView" destination="n4h-zi-TcC" id="bcD-S1-o0a"/>
-                                            </connections>
-                                        </button>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n4h-zi-TcC">
-                                            <rect key="frame" x="16" y="137" width="286" height="18"/>
-                                            <animations/>
-                                            <buttonCell key="cell" type="check" title="On top of other windows" bezelStyle="regularSquare" imagePosition="left" inset="2" id="shd-cT-4Jq">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="ontopCheckboxChanged:" target="-2" id="nUW-Em-4oo"/>
-                                                <outlet property="nextKeyView" destination="yWA-BY-OMt" id="fhP-6v-d4m"/>
-                                            </connections>
-                                        </button>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWA-BY-OMt">
-                                            <rect key="frame" x="16" y="106" width="286" height="18"/>
-                                            <animations/>
-                                            <buttonCell key="cell" type="check" title="Focus app on global shortcut" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="U1R-lf-nkl">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="focusOnShortcutCheckboxChanged:" target="-2" id="Gge-Jq-zME"/>
-                                                <outlet property="nextKeyView" destination="DRh-rC-B0a" id="SKd-Vx-jhY"/>
-                                            </connections>
-                                        </button>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nRj-Zh-L5m">
-                                            <rect key="frame" x="288" y="246" width="38" height="22"/>
+                                            <rect key="frame" x="288" y="280" width="38" height="22"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="5" placeholderString="5" drawsBackground="YES" id="t4a-oR-CHq">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="56T-Iz-8EG"/>
@@ -194,7 +95,7 @@
                                             </connections>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Khj-es-fgU">
-                                            <rect key="frame" x="334" y="249" width="69" height="17"/>
+                                            <rect key="frame" x="334" y="283" width="69" height="17"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="minutes" id="Zfu-jF-pu2">
                                                 <font key="font" metaFont="system"/>
@@ -202,8 +103,144 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rmf-uW-sZP" userLabel="pomodoro timer">
+                                            <rect key="frame" x="16" y="257" width="140" height="18"/>
+                                            <animations/>
+                                            <buttonCell key="cell" type="check" title="Pomodoro timer" bezelStyle="regularSquare" imagePosition="left" inset="2" id="2eM-Mq-Qkk">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="usePomodoroButtonChanged:" target="-2" id="J2S-oN-Ckf"/>
+                                                <outlet property="nextKeyView" destination="nRj-Zh-L5m" id="esE-c0-b44"/>
+                                            </connections>
+                                        </button>
+                                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bCE-Cp-Ipc">
+                                            <rect key="frame" x="288" y="255" width="38" height="22"/>
+                                            <animations/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="5" placeholderString="5" drawsBackground="YES" id="LwU-Pp-l5T">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="0K0-Wa-L43"/>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="pomodoroMinutesChange:" target="-2" id="xcK-cL-Az3"/>
+                                                <outlet property="nextKeyView" destination="V28-KN-5Vi" id="TrM-tc-y6T"/>
+                                            </connections>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ufH-RC-hfd">
+                                            <rect key="frame" x="334" y="258" width="69" height="17"/>
+                                            <animations/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="minutes" id="uD2-dD-ZQE">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K6B-0p-RS0">
+                                            <rect key="frame" x="15" y="340" width="136" height="17"/>
+                                            <animations/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show/Hide Toggl" id="ZgR-r3-20o">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DLB-Fw-7tX" customClass="MASShortcutView">
+                                            <rect key="frame" x="288" y="340" width="140" height="19"/>
+                                            <animations/>
+                                            <connections>
+                                                <outlet property="nextKeyView" destination="Ft4-tk-xRA" id="Fi4-jZ-hCB"/>
+                                            </connections>
+                                        </customView>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h4c-1q-AeO">
+                                            <rect key="frame" x="15" y="315" width="136" height="17"/>
+                                            <animations/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Continue/Stop timer" id="SH4-aB-XUn">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ft4-tk-xRA" customClass="MASShortcutView">
+                                            <rect key="frame" x="288" y="315" width="140" height="19"/>
+                                            <animations/>
+                                        </customView>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUE-Lr-nId">
+                                            <rect key="frame" x="16" y="201" width="286" height="18"/>
+                                            <animations/>
+                                            <buttonCell key="cell" type="check" title="Show timer on menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="d1o-e3-Xs6">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="menubarTimerCheckboxChanged:" target="-2" id="EP1-N2-8ue"/>
+                                                <outlet property="nextKeyView" destination="jRq-Fm-A6k" id="vmR-eT-ZuL"/>
+                                            </connections>
+                                        </button>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V28-KN-5Vi">
+                                            <rect key="frame" x="16" y="232" width="286" height="18"/>
+                                            <animations/>
+                                            <buttonCell key="cell" type="check" title="Record timeline" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="yIY-fe-UHc">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="recordTimelineCheckboxChanged:" target="-2" id="shF-cM-Bvx"/>
+                                                <outlet property="nextKeyView" destination="lUE-Lr-nId" id="ABE-oe-FHH"/>
+                                            </connections>
+                                        </button>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRq-Fm-A6k">
+                                            <rect key="frame" x="16" y="181" width="286" height="18"/>
+                                            <animations/>
+                                            <buttonCell key="cell" type="check" title="Show project on menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CM9-BW-DQq">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="menubarProjectCheckboxChanged:" target="-2" id="H5i-0g-x5W"/>
+                                                <outlet property="nextKeyView" destination="kR2-Ee-viZ" id="wgz-Iq-3B1"/>
+                                            </connections>
+                                        </button>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kR2-Ee-viZ">
+                                            <rect key="frame" x="16" y="161" width="286" height="18"/>
+                                            <animations/>
+                                            <buttonCell key="cell" type="check" title="Show dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="L9v-Ys-EtJ">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="dockIconCheckboxChanged:" target="-2" id="7av-HG-YKn"/>
+                                                <outlet property="nextKeyView" destination="n4h-zi-TcC" id="bcD-S1-o0a"/>
+                                            </connections>
+                                        </button>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n4h-zi-TcC">
+                                            <rect key="frame" x="16" y="141" width="286" height="18"/>
+                                            <animations/>
+                                            <buttonCell key="cell" type="check" title="On top of other windows" bezelStyle="regularSquare" imagePosition="left" inset="2" id="shd-cT-4Jq">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="ontopCheckboxChanged:" target="-2" id="nUW-Em-4oo"/>
+                                                <outlet property="nextKeyView" destination="yWA-BY-OMt" id="fhP-6v-d4m"/>
+                                            </connections>
+                                        </button>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWA-BY-OMt">
+                                            <rect key="frame" x="16" y="110" width="286" height="18"/>
+                                            <animations/>
+                                            <buttonCell key="cell" type="check" title="Focus app on global shortcut" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="U1R-lf-nkl">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="focusOnShortcutCheckboxChanged:" target="-2" id="Gge-Jq-zME"/>
+                                                <outlet property="nextKeyView" destination="DRh-rC-B0a" id="SKd-Vx-jhY"/>
+                                            </connections>
+                                        </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DRh-rC-B0a">
-                                            <rect key="frame" x="16" y="86" width="414" height="18"/>
+                                            <rect key="frame" x="16" y="90" width="414" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Open edit view when starting entry with shortcut" bezelStyle="regularSquare" imagePosition="left" inset="2" id="LFN-fL-iJI">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -215,28 +252,28 @@
                                             </connections>
                                         </button>
                                         <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="poP-TW-xtx">
-                                            <rect key="frame" x="17" y="219" width="411" height="5"/>
+                                            <rect key="frame" x="17" y="223" width="411" height="5"/>
                                             <animations/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
                                         <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="9TR-Ue-Rqe">
-                                            <rect key="frame" x="17" y="128" width="411" height="5"/>
+                                            <rect key="frame" x="17" y="132" width="411" height="5"/>
                                             <animations/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
                                         <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="H8P-uU-DzS">
-                                            <rect key="frame" x="18" y="77" width="411" height="5"/>
+                                            <rect key="frame" x="18" y="81" width="411" height="5"/>
                                             <animations/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hsE-xm-XAM">
-                                            <rect key="frame" x="16" y="54" width="112" height="17"/>
+                                            <rect key="frame" x="16" y="58" width="112" height="17"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Default project" id="bIw-0T-jhz">
                                                 <font key="font" metaFont="system"/>
@@ -245,7 +282,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AQZ-NT-Pr8" customClass="NSCustomComboBox">
-                                            <rect key="frame" x="120" y="48" width="311" height="26"/>
+                                            <rect key="frame" x="120" y="52" width="311" height="26"/>
                                             <animations/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="50Z-Du-hTu">
                                                 <font key="font" metaFont="system"/>
@@ -261,14 +298,14 @@
                                             </connections>
                                         </comboBox>
                                         <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ZVg-RV-v6T">
-                                            <rect key="frame" x="18" y="41" width="411" height="5"/>
+                                            <rect key="frame" x="18" y="45" width="411" height="5"/>
                                             <animations/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TkJ-tA-lDK">
-                                            <rect key="frame" x="16" y="19" width="414" height="18"/>
+                                            <rect key="frame" x="16" y="23" width="414" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Change duration when changing start time" bezelStyle="regularSquare" imagePosition="left" inset="2" id="I1Q-IJ-dNX">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -429,17 +466,17 @@
                             </tabViewItem>
                             <tabViewItem label="Autotracker" identifier="" id="L4T-cB-5tT">
                                 <view key="view" id="Z2O-u3-FHM">
-                                    <rect key="frame" x="10" y="33" width="446" height="326"/>
+                                    <rect key="frame" x="10" y="33" width="446" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PL2-PA-tEh">
-                                            <rect key="frame" x="4" y="17" width="439" height="254"/>
-                                            <clipView key="contentView" ambiguous="YES" id="anG-U7-QUu">
+                                            <rect key="frame" x="4" y="51" width="439" height="254"/>
+                                            <clipView key="contentView" misplaced="YES" id="anG-U7-QUu">
                                                 <rect key="frame" x="1" y="0.0" width="437" height="253"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="SWk-HQ-4y3" id="aw6-zQ-ZW8">
-                                                        <rect key="frame" x="0.0" y="0.0" width="437" height="230"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="437" height="19"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <animations/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -484,12 +521,10 @@
                                             </clipView>
                                             <animations/>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="IeY-iL-Hc8">
-                                                <rect key="frame" x="1" y="7" width="0.0" height="16"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <animations/>
                                             </scroller>
                                             <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="iu5-rr-uYb">
-                                                <rect key="frame" x="-15" y="23" width="16" height="0.0"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <animations/>
                                             </scroller>
@@ -503,7 +538,7 @@
                                             </connections>
                                         </scrollView>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jHx-ps-PhJ">
-                                            <rect key="frame" x="3" y="307" width="442" height="18"/>
+                                            <rect key="frame" x="3" y="341" width="442" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Enable autotracker" bezelStyle="regularSquare" imagePosition="left" inset="2" id="iNP-sg-BCr">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -515,7 +550,7 @@
                                             </connections>
                                         </button>
                                         <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TN9-Mx-4gf" customClass="NSCustomComboBox">
-                                            <rect key="frame" x="252" y="275" width="131" height="26"/>
+                                            <rect key="frame" x="252" y="309" width="131" height="26"/>
                                             <animations/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="wm4-2s-Yxd">
                                                 <font key="font" metaFont="system"/>
@@ -528,7 +563,7 @@
                                             </connections>
                                         </comboBox>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hCm-WD-AX4">
-                                            <rect key="frame" x="382" y="273" width="66" height="32"/>
+                                            <rect key="frame" x="382" y="307" width="66" height="32"/>
                                             <animations/>
                                             <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pQ9-Tf-Kue">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -540,7 +575,7 @@
                                             </connections>
                                         </button>
                                         <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="afg-Ty-RcE">
-                                            <rect key="frame" x="4" y="276" width="243" height="26"/>
+                                            <rect key="frame" x="4" y="310" width="243" height="26"/>
                                             <animations/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="5" id="Dep-yZ-GW4">
                                                 <font key="font" metaFont="system"/>
@@ -559,11 +594,11 @@
                             </tabViewItem>
                             <tabViewItem label="Reminder" identifier="" id="BnX-Iu-Map">
                                 <view key="view" id="g4Y-c9-6hQ">
-                                    <rect key="frame" x="10" y="33" width="446" height="326"/>
+                                    <rect key="frame" x="10" y="33" width="446" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Spu-c6-dBl">
-                                            <rect key="frame" x="12" y="303" width="172" height="18"/>
+                                            <rect key="frame" x="12" y="337" width="172" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Remind to track time" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="kRx-0D-K8X">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -575,7 +610,7 @@
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9TN-or-dpG">
-                                            <rect key="frame" x="12" y="280" width="172" height="17"/>
+                                            <rect key="frame" x="12" y="314" width="172" height="17"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Reminder start time" id="7rS-yr-ohN">
                                                 <font key="font" metaFont="system"/>
@@ -584,7 +619,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOd-HM-bZN">
-                                            <rect key="frame" x="12" y="255" width="172" height="17"/>
+                                            <rect key="frame" x="12" y="289" width="172" height="17"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Reminder end time" id="sJf-LA-jhB">
                                                 <font key="font" metaFont="system"/>
@@ -593,7 +628,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oCh-IL-u0y">
-                                            <rect key="frame" x="12" y="230" width="170" height="17"/>
+                                            <rect key="frame" x="12" y="264" width="170" height="17"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Reminder days" id="tgu-cW-ZXH">
                                                 <font key="font" metaFont="system"/>
@@ -602,7 +637,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R9v-BZ-yhR">
-                                            <rect key="frame" x="316" y="301" width="38" height="22"/>
+                                            <rect key="frame" x="316" y="335" width="38" height="22"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="5" placeholderString="5" drawsBackground="YES" id="s5o-s9-cll">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="tNN-PT-Zx3"/>
@@ -616,7 +651,7 @@
                                             </connections>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JK4-nq-3q2">
-                                            <rect key="frame" x="362" y="304" width="69" height="17"/>
+                                            <rect key="frame" x="362" y="338" width="69" height="17"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="minutes" id="A65-xb-c7i">
                                                 <font key="font" metaFont="system"/>
@@ -625,7 +660,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="duI-RG-4BI">
-                                            <rect key="frame" x="316" y="275" width="57" height="22"/>
+                                            <rect key="frame" x="316" y="309" width="57" height="22"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="08:30" drawsBackground="YES" id="b4B-zj-fDl">
                                                 <font key="font" metaFont="system"/>
@@ -638,7 +673,7 @@
                                             </connections>
                                         </textField>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4pc-oy-DHZ">
-                                            <rect key="frame" x="316" y="250" width="57" height="22"/>
+                                            <rect key="frame" x="316" y="284" width="57" height="22"/>
                                             <animations/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="16:30" drawsBackground="YES" id="tjn-vP-RNk">
                                                 <font key="font" metaFont="system"/>
@@ -651,7 +686,7 @@
                                             </connections>
                                         </textField>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6g9-yq-5Jx">
-                                            <rect key="frame" x="314" y="226" width="61" height="18"/>
+                                            <rect key="frame" x="314" y="260" width="61" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Mon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="gk2-Pe-QUv">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -663,7 +698,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3eX-Ii-xEk">
-                                            <rect key="frame" x="314" y="206" width="61" height="18"/>
+                                            <rect key="frame" x="314" y="240" width="61" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Tue" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Yhs-tg-jM7">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -675,7 +710,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E0j-Uw-3Nz">
-                                            <rect key="frame" x="314" y="186" width="61" height="18"/>
+                                            <rect key="frame" x="314" y="220" width="61" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Wed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VZo-nO-jt9">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -687,7 +722,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8CS-Zo-NjZ">
-                                            <rect key="frame" x="314" y="166" width="61" height="18"/>
+                                            <rect key="frame" x="314" y="200" width="61" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Thu" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="WOQ-Jp-i3I">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -699,7 +734,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ab-YA-eHT">
-                                            <rect key="frame" x="314" y="146" width="61" height="18"/>
+                                            <rect key="frame" x="314" y="180" width="61" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Fri" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="rer-DS-UYY">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -711,7 +746,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XGa-Js-NNU">
-                                            <rect key="frame" x="314" y="126" width="61" height="18"/>
+                                            <rect key="frame" x="314" y="160" width="61" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Sat" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="xoZ-94-06p">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -723,7 +758,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ch0-q0-4Lr">
-                                            <rect key="frame" x="314" y="104" width="61" height="18"/>
+                                            <rect key="frame" x="314" y="138" width="61" height="18"/>
                                             <animations/>
                                             <buttonCell key="cell" type="check" title="Sun" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="RxS-4a-hX9">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>

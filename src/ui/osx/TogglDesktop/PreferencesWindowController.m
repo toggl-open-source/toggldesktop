@@ -94,6 +94,7 @@ extern void *ctx;
 	[self displayAutotrackerRules:autotrackerData];
 
 	[self.idleMinutesTextField setDelegate:self];
+	[self.pomodoroMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
 
 	self.renderTimeline.hidden = YES;
@@ -142,6 +143,12 @@ extern void *ctx;
 {
 	toggl_set_settings_use_idle_detection(ctx,
 										  [Utils stateToBool:[self.useIdleDetectionButton state]]);
+}
+
+- (IBAction)usePomodoroButtonChanged:(id)sender
+{
+	toggl_set_settings_pomodoro(ctx,
+								[Utils stateToBool:[self.usePomodoroButton state]]);
 }
 
 - (IBAction)ontopCheckboxChanged:(id)sender
@@ -315,6 +322,7 @@ const int kUseProxyToConnectToToggl = 2;
 	Settings *settings = cmd.settings;
 
 	[self.useIdleDetectionButton setState:[Utils boolToState:settings.idle_detection]];
+	[self.usePomodoroButton setState:[Utils boolToState:settings.pomodoro]];
 	[self.menubarTimerCheckbox setState:[Utils boolToState:settings.menubar_timer]];
 	[self.menubarProjectCheckbox setState:[Utils boolToState:settings.menubar_project]];
 	[self.dockIconCheckbox setState:[Utils boolToState:settings.dock_icon]];
@@ -347,6 +355,9 @@ const int kUseProxyToConnectToToggl = 2;
 
 	self.idleMinutesTextField.intValue = settings.idle_minutes;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
+
+	self.pomodoroMinutesTextField.intValue = settings.pomodoro_minutes;
+	self.pomodoroMinutesTextField.enabled = settings.pomodoro;
 
 	self.reminderMinutesTextField.intValue = settings.reminder_minutes;
 	self.reminderMinutesTextField.enabled = settings.reminder;
@@ -389,6 +400,12 @@ const int kUseProxyToConnectToToggl = 2;
 {
 	toggl_set_settings_idle_minutes(ctx,
 									[self.idleMinutesTextField.stringValue intValue]);
+}
+
+- (IBAction)pomodoroMinutesChange:(id)sender
+{
+	toggl_set_settings_pomodoro_minutes(ctx,
+										[self.pomodoroMinutesTextField.stringValue intValue]);
 }
 
 - (IBAction)reminderMinutesChanged:(id)sender
@@ -482,6 +499,12 @@ const int kUseProxyToConnectToToggl = 2;
 	{
 		toggl_set_settings_idle_minutes(ctx,
 										[self.idleMinutesTextField.stringValue intValue]);
+	}
+
+	if ([aNotification object] == self.pomodoroMinutesTextField)
+	{
+		toggl_set_settings_pomodoro_minutes(ctx,
+											[self.pomodoroMinutesTextField.stringValue intValue]);
 	}
 
 	if ([aNotification object] == self.reminderMinutesTextField)
