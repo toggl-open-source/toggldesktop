@@ -240,7 +240,7 @@
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
-    <Compile Include="ui\windows\PomodoroNotification.xaml.cs">
+    <Compile Include="ui\controls\PomodoroNotification.xaml.cs">
       <DependentUpon>PomodoroNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="utilities\GlobalShortcuts.cs" />
@@ -717,7 +717,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\windows\PomodoroNotification.xaml">
+    <Page Include="ui\controls\PomodoroNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
