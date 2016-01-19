@@ -30,7 +30,7 @@ namespace TogglDesktop
 
             this.RemoveFromParent();
 
-            this.icon.ShowCustomBalloon(this, PopupAnimation.Slide, 6000);
+            this.icon.ShowCustomBalloon(this, PopupAnimation.Slide, null);
         }
 
         private void onNotificationMouseDown(object sender, MouseButtonEventArgs e)
