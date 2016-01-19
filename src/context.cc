@@ -110,7 +110,7 @@ Context::Context(const std::string app_name, const std::string app_version)
         reminder_.start();
     }
 
-	last_tracking_reminder_time_ = time(0);
+    last_tracking_reminder_time_ = time(0);
 }
 
 Context::~Context() {
@@ -2282,7 +2282,7 @@ TimeEntry *Context::Start(
                           project_guid,
                           tags);
 
-		last_pomodoro_reminder_time_ = time(0);
+        last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2383,7 +2383,7 @@ TimeEntry *Context::ContinueLatest() {
             latest->GUID(),
             settings_.manual_mode);
 
-		last_pomodoro_reminder_time_ = time(0);
+        last_pomodoro_reminder_time_ = time(0);
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2436,7 +2436,7 @@ TimeEntry *Context::Continue(
             GUID,
             settings_.manual_mode);
 
-		last_pomodoro_reminder_time_ = time(0);
+        last_pomodoro_reminder_time_ = time(0);
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2836,7 +2836,7 @@ error Context::Stop() {
         }
         user_->Stop(&stopped);
 
-		last_tracking_reminder_time_ = time(0);
+        last_tracking_reminder_time_ = time(0);
     }
 
     if (stopped.empty()) {
@@ -3619,9 +3619,9 @@ void Context::displayReminder() {
             return;
         }
 
-		if (time(0) - last_tracking_reminder_time_ < settings_.reminder_minutes * 60) {
-			return;
-		}
+        if (time(0) - last_tracking_reminder_time_ < settings_.reminder_minutes * 60) {
+            return;
+        }
     }
 
     // Check if allowed to display reminder on this weekday
@@ -3666,7 +3666,7 @@ void Context::displayReminder() {
         }
     }
 
-	last_tracking_reminder_time_ = time(0);
+    last_tracking_reminder_time_ = time(0);
 
     UI()->DisplayReminder();
 }
@@ -3685,14 +3685,14 @@ void Context::displayPomodoro() {
             return;
         }
 
-		if (time(0) - last_pomodoro_reminder_time_ < settings_.pomodoro_minutes * 60) {
-			return;
-		}
+        if (time(0) - last_pomodoro_reminder_time_ < settings_.pomodoro_minutes * 60) {
+            return;
+        }
 
-		last_pomodoro_reminder_time_ = time(0);
+        last_pomodoro_reminder_time_ = time(0);
     }
 
-	UI()->DisplayPomodoro(settings_.pomodoro_minutes);
+    UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent event) {
@@ -3876,13 +3876,13 @@ void Context::uiUpdaterActivity() {
 
 void Context::checkReminders()
 {
-	displayReminder();
-	displayPomodoro();
+    displayReminder();
+    displayPomodoro();
 }
 
 void Context::reminderActivity() {
     while (true) {
-       
+
         // Sleep in increments for faster shutdown.
         for (int i = 0; i < 4; i++) {
             if (reminder_.isStopped()) {
@@ -3891,7 +3891,7 @@ void Context::reminderActivity() {
             Poco::Thread::sleep(250);
         }
 
-		checkReminders();
+        checkReminders();
     }
 }
 
