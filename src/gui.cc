@@ -252,7 +252,7 @@ void GUI::DisplayPomodoro(const Poco::UInt64 minutes) {
     ss << "You've been working for " << minutes << " minutes.";
 
     char_t *s2 = copy_string(ss.str());
-    on_display_pomodoro_(s1,s2);
+    on_display_pomodoro_(s1, s2);
     free(s1);
     free(s2);
 }

@@ -154,7 +154,6 @@ Context::~Context() {
 }
 
 void Context::stopActivities() {
-
     {
         Poco::Mutex::ScopedLock lock(reminder_m_);
         if (reminder_.isRunning()) {
@@ -3619,7 +3618,8 @@ void Context::displayReminder() {
             return;
         }
 
-        if (time(0) - last_tracking_reminder_time_ < settings_.reminder_minutes * 60) {
+        if (time(0) - last_tracking_reminder_time_
+            < settings_.reminder_minutes * 60) {
             return;
         }
     }
@@ -3685,7 +3685,8 @@ void Context::displayPomodoro() {
             return;
         }
 
-        if (time(0) - last_pomodoro_reminder_time_ < settings_.pomodoro_minutes * 60) {
+        if (time(0) - last_pomodoro_reminder_time_
+            < settings_.pomodoro_minutes * 60) {
             return;
         }
 
@@ -3874,15 +3875,13 @@ void Context::uiUpdaterActivity() {
     }
 }
 
-void Context::checkReminders()
-{
+void Context::checkReminders() {
     displayReminder();
     displayPomodoro();
 }
 
 void Context::reminderActivity() {
     while (true) {
-
         // Sleep in increments for faster shutdown.
         for (int i = 0; i < 4; i++) {
             if (reminder_.isStopped()) {
