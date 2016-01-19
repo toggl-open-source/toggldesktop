@@ -244,10 +244,14 @@ void GUI::DisplayReminder() {
     free(s2);
 }
 
-void GUI::DisplayPomodoro() {
+void GUI::DisplayPomodoro(const Poco::UInt64 minutes) {
     logger().debug("DisplayPomodoro");
     char_t *s1 = copy_string("Toggl Desktop Pomodoro Timer");
-    char_t *s2 = copy_string("It's time to take a break!");
+
+	std::stringstream ss;
+	ss << "It's time to take a break! You've been working for " << minutes << " minutes.";
+
+	char_t *s2 = copy_string(ss.str());
     on_display_pomodoro_(s1,s2);
     free(s1);
     free(s2);

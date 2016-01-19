@@ -348,7 +348,7 @@ class GUI : public SyncStateMonitor {
 
     void DisplayReminder();
 
-    void DisplayPomodoro();
+    void DisplayPomodoro(const Poco::UInt64 minutes);
 
     void DisplayAutotrackerNotification(
         toggl::Project *const p,
