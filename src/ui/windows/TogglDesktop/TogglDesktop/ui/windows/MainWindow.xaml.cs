@@ -105,6 +105,7 @@ namespace TogglDesktop
         private void initializeCustomNotifications()
         {
             new AutotrackerNotification(this.taskbarIcon, this);
+            new PomodoroNotification(this.taskbarIcon, this);
         }
 
         private void initializeContextMenu()
