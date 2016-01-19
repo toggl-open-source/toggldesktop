@@ -38,7 +38,7 @@ namespace TogglDesktop
 
         private void onResetClick(object sender, RoutedEventArgs e)
         {
-            //TODO: call api
+            this.Hide();
         }
     }
 }

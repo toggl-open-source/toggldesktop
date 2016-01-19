@@ -109,6 +109,8 @@ Context::Context(const std::string app_name, const std::string app_version)
     if (!reminder_.isRunning()) {
         reminder_.start();
     }
+
+	last_tracking_reminder_time_ = time(0);
 }
 
 Context::~Context() {
@@ -2244,6 +2246,8 @@ TimeEntry *Context::Start(
                           pid,
                           project_guid,
                           tags);
+
+		last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2343,6 +2347,8 @@ TimeEntry *Context::ContinueLatest() {
         result = user_->Continue(
             latest->GUID(),
             settings_.manual_mode);
+
+		last_pomodoro_reminder_time_ = time(0);
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2394,6 +2400,8 @@ TimeEntry *Context::Continue(
         result = user_->Continue(
             GUID,
             settings_.manual_mode);
+
+		last_pomodoro_reminder_time_ = time(0);
     }
 
     if (settings_.focus_on_shortcut) {
@@ -2792,6 +2800,8 @@ error Context::Stop() {
             return noError;
         }
         user_->Stop(&stopped);
+
+		last_tracking_reminder_time_ = time(0);
     }
 
     if (stopped.empty()) {
@@ -3574,7 +3584,9 @@ void Context::displayReminder() {
             return;
         }
 
-		// TODO: keep track of last relevant activity (stopping time entry, app start), and return if too soon
+		if (time(0) - last_tracking_reminder_time_ < settings_.reminder_minutes * 60) {
+			return;
+		}
     }
 
     // Check if allowed to display reminder on this weekday
@@ -3619,6 +3631,8 @@ void Context::displayReminder() {
         }
     }
 
+	last_tracking_reminder_time_ = time(0);
+
     UI()->DisplayReminder();
 }
 
@@ -3635,13 +3649,15 @@ void Context::displayPomodoro() {
         if (!user_->RunningTimeEntry()) {
             return;
         }
-		if (user_->RunningTimeEntry()->RealDurationInSeconds() < settings_.pomodoro_minutes * 60) {
+
+		if (time(0) - last_pomodoro_reminder_time_ < settings_.pomodoro_minutes * 60) {
 			return;
 		}
 
+		last_pomodoro_reminder_time_ = time(0);
     }
 
-    UI()->DisplayPomodoro();
+	UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent event) {
@@ -3823,13 +3839,13 @@ void Context::uiUpdaterActivity() {
     }
 }
 
-	void Context::checkReminders()
-	{
-		//displayReminder(); // todo: fix method! (see comment there)
-		displayPomodoro();
-	}
+void Context::checkReminders()
+{
+	displayReminder();
+	displayPomodoro();
+}
 
-	void Context::reminderActivity() {
+void Context::reminderActivity() {
     while (true) {
        
         // Sleep in increments for faster shutdown.

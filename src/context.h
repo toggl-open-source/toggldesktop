@@ -558,6 +558,8 @@ class Context : public TimelineDatasource {
 
     Poco::UInt64 last_sync_started_;
     Poco::Int64 sync_interval_seconds_;
+	Poco::UInt64 last_tracking_reminder_time_;
+	Poco::UInt64 last_pomodoro_reminder_time_;
 
     bool update_check_disabled_;
 
