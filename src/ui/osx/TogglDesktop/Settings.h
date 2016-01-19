@@ -39,4 +39,6 @@
 @property BOOL autotrack;
 @property BOOL open_editor_on_shortcut;
 @property BOOL render_timeline;
+@property BOOL pomodoro;
+@property int pomodoro_minutes;
 @end

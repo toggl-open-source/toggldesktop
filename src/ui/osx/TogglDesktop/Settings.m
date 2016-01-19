@@ -22,6 +22,8 @@
 	self.idle_minutes = (int)data->IdleMinutes;
 	self.focus_on_shortcut = data->FocusOnShortcut;
 	self.reminder_minutes = (int)data->ReminderMinutes;
+	self.pomodoro = data->Pomodoro;
+	self.pomodoro_minutes = (int)data->PomodoroMinutes;
 	self.manual_mode = data->ManualMode;
 
 	self.use_proxy = data->UseProxy;
