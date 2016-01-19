@@ -421,8 +421,8 @@ class Context : public TimelineDatasource {
 
  protected:
     void uiUpdaterActivity();
-    void reminderActivity();
-    void pomodoroActivity();
+	void checkReminders();
+	void reminderActivity();
 
  private:
     error updateURL(std::string *result);
@@ -586,9 +586,6 @@ class Context : public TimelineDatasource {
 
     Poco::Mutex reminder_m_;
     Poco::Activity<Context> reminder_;
-
-    Poco::Mutex pomodoro_m_;
-    Poco::Activity<Context> pomodoro_;
 
     Analytics analytics_;
 

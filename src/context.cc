@@ -79,7 +79,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
-, pomodoro_(this, &Context::pomodoroActivity)
 , update_path_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
@@ -153,13 +152,6 @@ Context::~Context() {
 }
 
 void Context::stopActivities() {
-    {
-        Poco::Mutex::ScopedLock lock(pomodoro_m_);
-        if (pomodoro_.isRunning()) {
-            pomodoro_.stop();
-            pomodoro_.wait();
-        }
-    }
 
     {
         Poco::Mutex::ScopedLock lock(reminder_m_);
@@ -2305,15 +2297,6 @@ TimeEntry *Context::Start(
 
     OpenTimeEntryList();
 
-    // Start Pomodoro Timer tracking
-    if (pomodoro_.isRunning()) {
-        pomodoro_.stop();
-        pomodoro_.wait();
-    }
-    if (!pomodoro_.isRunning()) {
-        pomodoro_.start();
-    }
-
     return te;
 }
 
@@ -2415,15 +2398,6 @@ TimeEntry *Context::ContinueLatest() {
         updateUI(render);
     }
 
-    // Start Pomodoro Timer tracking
-    if (pomodoro_.isRunning()) {
-        pomodoro_.stop();
-        pomodoro_.wait();
-    }
-    if (!pomodoro_.isRunning()) {
-        pomodoro_.start();
-    }
-
     return result;
 }
 
@@ -2475,15 +2449,6 @@ TimeEntry *Context::Continue(
         updateUI(render);
     } else {
         OpenTimeEntryList();
-    }
-
-    // Start Pomodoro Timer tracking
-    if (pomodoro_.isRunning()) {
-        pomodoro_.stop();
-        pomodoro_.wait();
-    }
-    if (!pomodoro_.isRunning()) {
-        pomodoro_.start();
     }
 
     return result;
@@ -2879,11 +2844,6 @@ error Context::Stop() {
     }
 
     OpenTimeEntryList();
-
-    if (pomodoro_.isRunning()) {
-        pomodoro_.stop();
-        pomodoro_.wait();
-    }
 
     return noError;
 }
@@ -3636,21 +3596,20 @@ void Context::SetOnline() {
 
 void Context::displayReminder() {
     if (!settings_.reminder) {
-        logger().debug("Reminder is not enabled by user");
         return;
     }
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
-            logger().warning("User logged out, cannot remind");
             return;
         }
 
         if (user_ && user_->RunningTimeEntry()) {
-            logger().debug("User is already tracking time, no need to remind");
             return;
         }
+
+		// TODO: keep track of last relevant activity (stopping time entry, app start), and return if too soon
     }
 
     // Check if allowed to display reminder on this weekday
@@ -3700,22 +3659,21 @@ void Context::displayReminder() {
 
 void Context::displayPomodoro() {
     if (!settings_.pomodoro) {
-        logger().debug("Pomodoro timer is not enabled by user");
         return;
     }
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
-            logger().warning("User logged out, cannot remind");
             return;
         }
-        /*
-                if (user_ && user_->RunningTimeEntry()) {
-                    logger().debug("User is already tracking time, no need to remind");
-                    return;
-                }
-                */
+        if (!user_->RunningTimeEntry()) {
+            return;
+        }
+		if (user_->RunningTimeEntry()->RealDurationInSeconds() < settings_.pomodoro_minutes * 60) {
+			return;
+		}
+
     }
 
     UI()->DisplayPomodoro();
@@ -3900,43 +3858,24 @@ void Context::uiUpdaterActivity() {
     }
 }
 
-void Context::reminderActivity() {
-    while (!reminder_.isStopped()) {
-        int sleep_minutes = settings_.reminder_minutes;
-        if (sleep_minutes < 1) {
-            sleep_minutes = 1;
-        }
-        int sleep_seconds = sleep_minutes * 60;
+	void Context::checkReminders()
+	{
+		//displayReminder(); // todo: fix method! (see comment there)
+		displayPomodoro();
+	}
 
+	void Context::reminderActivity() {
+    while (true) {
+       
         // Sleep in increments for faster shutdown.
-        for (int i = 0; i < 4 * sleep_seconds; i++) {
+        for (int i = 0; i < 4; i++) {
             if (reminder_.isStopped()) {
                 return;
             }
             Poco::Thread::sleep(250);
         }
 
-        displayReminder();
-    }
-}
-
-void Context::pomodoroActivity() {
-    while (!pomodoro_.isStopped()) {
-        int sleep_minutes = settings_.pomodoro_minutes;
-        if (sleep_minutes < 1) {
-            sleep_minutes = 1;
-        }
-        int sleep_seconds = sleep_minutes * 60;
-
-        // Sleep in increments for faster shutdown.
-        for (int i = 0; i < 4 * sleep_seconds; i++) {
-            if (pomodoro_.isStopped()) {
-                return;
-            }
-            Poco::Thread::sleep(250);
-        }
-
-        displayPomodoro();
+		checkReminders();
     }
 }
 
