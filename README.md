@@ -28,6 +28,8 @@ Table of Contents
 
 Please check OS specific requirements below.
 
+_By default the app builds for testing server. To use the compiled app with live server see this guide [https://github.com/toggl/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers](https://github.com/toggl/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers)_
+
 ## Build using Makefile
 
 First, build dependencies:
