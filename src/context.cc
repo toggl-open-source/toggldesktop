@@ -2521,6 +2521,7 @@ error Context::SetTimeEntryDuration(
     }
     te->SetDurationUserInput(duration);
 
+    last_pomodoro_reminder_time_ = te->Start();
     return displayError(save());
 }
 
@@ -2666,6 +2667,7 @@ error Context::SetTimeEntryStart(
 
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
+    last_pomodoro_reminder_time_ = te->Start();
     return displayError(save());
 }
 
