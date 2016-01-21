@@ -1428,6 +1428,7 @@ void on_pomodoro(const char *title, const char *informative_text)
 
 	notification.hasActionButton = YES;
 	notification.actionButtonTitle = @"Stop";
+	notification.otherButtonTitle = @"Close";
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
