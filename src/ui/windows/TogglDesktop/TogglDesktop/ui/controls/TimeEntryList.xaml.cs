@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace TogglDesktop
@@ -12,6 +13,8 @@ namespace TogglDesktop
     {
         public event EventHandler FocusTimer;
         public event EventHandler CloseEditPopup;
+
+        private readonly Storyboard loadMoreSpinnerAnimation;
 
         private TimeEntryCell highlightedCell;
 
@@ -39,6 +42,8 @@ namespace TogglDesktop
         public TimeEntryList()
         {
             this.InitializeComponent();
+
+            this.loadMoreSpinnerAnimation = (Storyboard)this.Resources["RotateLoadMoreSpinner"];
 
             this.resizeBackground.Width = SystemParameters.VerticalScrollBarWidth;
             this.resizeBackground.Height = SystemParameters.VerticalScrollBarWidth;
@@ -426,5 +431,41 @@ namespace TogglDesktop
         #endregion
 
         #endregion
+
+        #region load more
+        
+        private void onLoadMoreButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.loadMore();
+        }
+
+        private void loadMore()
+        {
+            this.loadMoreButton.Visibility = Visibility.Visible;
+            this.loadMoreButton.IsEnabled = false;
+            this.loadMoreButtonText.Visibility = Visibility.Collapsed;
+            this.loadMoreSpinnerAnimation.Begin();
+            this.loadMoreSpinner.Visibility = Visibility.Visible;
+
+            // Todo: Toggl.LoadMore(); // call async if call takes too long
+        }
+
+        private void showLoadMoreButton()
+        {
+            this.loadMoreButton.Visibility = Visibility.Visible;
+            this.loadMoreButtonText.Visibility = Visibility.Visible;
+            this.loadMoreSpinner.Visibility = Visibility.Collapsed;
+            this.loadMoreSpinnerAnimation.Stop();
+            this.loadMoreButton.IsEnabled = true;
+        }
+
+        private void hideLoadMoreButton()
+        {
+            this.loadMoreButton.Visibility = Visibility.Collapsed;
+            this.loadMoreSpinnerAnimation.Stop();
+        }
+
+        #endregion
+
     }
 }

@@ -10,6 +10,14 @@
 
     <UserControl.Resources>
 
+        <!-- ReSharper disable once Xaml.RedundantResource -->
+        <Storyboard x:Key="RotateLoadMoreSpinner" BeginTime="00:00:00.000"
+                        Duration="00:00:1.000" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="loadMoreSpinner"
+                Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(RotateTransform.Angle)" 
+                From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
+        </Storyboard>
+
         <RoutedUICommand x:Key="HighlightDown" />
         <RoutedUICommand x:Key="HighlightUp" />
         <RoutedUICommand x:Key="HighlightEdit" />
@@ -57,19 +65,23 @@
                       Background="#f7f7f7"
                       Style="{StaticResource CustomSrollViewer}"
                       >
-            <Grid>
-                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch"
-                                        Background="{StaticResource ViewBackgroundLight}">
+            <Grid Background="{StaticResource ViewBackgroundLight}"> 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="0 0 0 10">
 
                 </VirtualizingStackPanel>
-                <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private"
+                <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private" Grid.Row="0"
                            Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0"
                            IsHitTestVisible="False"/>
-                <Rectangle x:Name="highlightRectangleBottom" x:FieldModifier="private"
+                <Rectangle x:Name="highlightRectangleBottom" x:FieldModifier="private" Grid.Row="0"
                            Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
                            IsHitTestVisible="False"/>
 
-                <Border x:Name="keyboardHighlight" x:FieldModifier="private" Visibility="Visible"
+                <Border x:Name="keyboardHighlight" x:FieldModifier="private" Grid.Row="0" Visibility="Visible"
                         HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="59" Margin="-10 20"
                         Background="White">
                     <Border.Effect>
@@ -84,6 +96,28 @@
                         />
                 </Border>
 
+                
+                <Button Grid.Row="1" Style="{StaticResource FlatButton}"
+                        Margin="10" HorizontalAlignment="Center" Focusable="False"
+                        Name="loadMoreButton" x:FieldModifier="private"
+                        Click="onLoadMoreButtonClick">
+                    <Grid Height="24" Width="120">
+                        <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
+                            Name="loadMoreSpinner" x:FieldModifier="private"
+                            Stretch="Fill" Width="16" Height="16"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Visibility="Collapsed" Opacity="0.5"
+                            UseLayoutRounding="False">
+                            <Image.LayoutTransform>
+                                <RotateTransform Angle="00"/>
+                            </Image.LayoutTransform>
+                        </Image>
+                        <TextBlock Name="loadMoreButtonText" x:FieldModifier="private"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Foreground="#333333"
+                            Text="LOAD MORE"/>
+                    </Grid>
+                </Button>
             </Grid>
         </ScrollViewer>
         <Rectangle Name="resizeBackground" x:FieldModifier="private"
