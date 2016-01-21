@@ -2290,15 +2290,26 @@ TimeEntry *Context::Start(
         return nullptr;
     }
 
-    // just show the app
-    UI()->DisplayApp();
-
     if ("production" == environment_) {
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
                                           task_id || project_id);
     }
 
     OpenTimeEntryList();
+
+    if (settings_.focus_on_shortcut) {
+        // Show app
+        UI()->DisplayApp();
+    }
+
+    if (te && settings_.open_editor_on_shortcut) {
+        if (!settings_.focus_on_shortcut) {
+            // Show app
+            UI()->DisplayApp();
+        }
+        // Open time entry in editor
+        OpenTimeEntryEditor(te->GUID(), true, "");
+    }
 
     return te;
 }
@@ -2385,9 +2396,7 @@ TimeEntry *Context::ContinueLatest() {
         last_pomodoro_reminder_time_ = time(0);
     }
 
-    if (settings_.focus_on_shortcut) {
-        UI()->DisplayApp();
-    }
+
 
     error err = save();
     if (noError != err) {
@@ -2401,6 +2410,20 @@ TimeEntry *Context::ContinueLatest() {
         render.display_time_entry_editor = true;
         render.time_entry_editor_guid = result->GUID();
         updateUI(render);
+    }
+
+    if (settings_.focus_on_shortcut) {
+        // Show app
+        UI()->DisplayApp();
+    }
+
+    if (result && settings_.open_editor_on_shortcut) {
+        if (!settings_.focus_on_shortcut) {
+            // Show app
+            UI()->DisplayApp();
+        }
+        // Open time entry in editor
+        OpenTimeEntryEditor(result->GUID(), true, "");
     }
 
     return result;
@@ -2436,10 +2459,6 @@ TimeEntry *Context::Continue(
             settings_.manual_mode);
 
         last_pomodoro_reminder_time_ = time(0);
-    }
-
-    if (settings_.focus_on_shortcut) {
-        UI()->DisplayApp();
     }
 
     error err = save();
