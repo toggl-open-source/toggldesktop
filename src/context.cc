@@ -3605,7 +3605,7 @@ void Context::displayReminder() {
         }
 
         if (time(0) - last_tracking_reminder_time_
-            < settings_.reminder_minutes * 60) {
+                < settings_.reminder_minutes * 60) {
             return;
         }
     }
@@ -3672,7 +3672,7 @@ void Context::displayPomodoro() {
         }
 
         if (time(0) - last_pomodoro_reminder_time_
-            < settings_.pomodoro_minutes * 60) {
+                < settings_.pomodoro_minutes * 60) {
             return;
         }
 

@@ -339,24 +339,24 @@ BOOL manualMode = NO;
 
 	// handle autotracker notification
 	if (notification && notification.userInfo)
-    {
-        if(notification.userInfo[@"autotracker"] != nil)
-        {
-            NSNumber *project_id = notification.userInfo[@"project_id"];
-            NSNumber *task_id = notification.userInfo[@"task_id"];
-            NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
-            char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "");
-            free(guid);
-            return;
-        }
+	{
+		if (notification.userInfo[@"autotracker"] != nil)
+		{
+			NSNumber *project_id = notification.userInfo[@"project_id"];
+			NSNumber *task_id = notification.userInfo[@"task_id"];
+			NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
+			char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "");
+			free(guid);
+			return;
+		}
 
-        // handle pomodoro timer
-        if (notification.userInfo[@"pomodoro"] != nil)
-        {
-            toggl_stop(ctx);
-            return;
-        }
-    }
+		// handle pomodoro timer
+		if (notification.userInfo[@"pomodoro"] != nil)
+		{
+			toggl_stop(ctx);
+			return;
+		}
+	}
 
 	// handle other notifications; we only have reminder at the moment
 	[self onShowMenuItem:self];

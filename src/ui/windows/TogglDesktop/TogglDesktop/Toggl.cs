@@ -612,7 +612,7 @@ public static partial class Toggl
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
     public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
-    public static event DisplayPomodoro OnDisplayPomodoro = delegate { }; 
+    public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -971,7 +971,7 @@ public static partial class Toggl
 
         if (update == null)
             return;
-        
+
         update();
 
         Debug("Failed to start updater process");
