@@ -194,17 +194,13 @@
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="DurationBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="DdV-RE-Kny">
-                    <rect key="frame" x="258" y="19" width="58" height="16"/>
+                    <rect key="frame" x="255" y="19" width="63" height="16"/>
                     <view key="contentView">
-                        <rect key="frame" x="0.0" y="0.0" width="58" height="16"/>
+                        <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
-                                <rect key="frame" x="0.0" y="0.0" width="60" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="16" id="cJd-Ab-C5y"/>
-                                    <constraint firstAttribute="width" constant="56" id="p4K-2C-iZl"/>
-                                </constraints>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
+                                <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                                 <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="03:21:30" id="P10-iS-flR">
                                     <font key="font" metaFont="cellTitle"/>
@@ -216,10 +212,8 @@
                         <animations/>
                     </view>
                     <constraints>
-                        <constraint firstItem="chv-we-eud" firstAttribute="centerY" secondItem="DdV-RE-Kny" secondAttribute="centerY" id="exj-Tx-LIL"/>
                         <constraint firstAttribute="height" constant="16" id="f7F-x8-Fmy"/>
-                        <constraint firstItem="chv-we-eud" firstAttribute="leading" secondItem="DdV-RE-Kny" secondAttribute="leading" constant="2" id="jfj-Wn-dJ0"/>
-                        <constraint firstAttribute="width" constant="58" id="kOR-ex-wFu"/>
+                        <constraint firstAttribute="width" constant="63" id="kOR-ex-wFu"/>
                     </constraints>
                     <animations/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -233,7 +227,7 @@
                 <constraint firstAttribute="bottom" secondItem="vMk-19-ANF" secondAttribute="bottom" constant="23" id="8Xs-bM-gBR"/>
                 <constraint firstItem="HvF-1T-7Z3" firstAttribute="top" secondItem="WaA-ag-4kh" secondAttribute="top" constant="45" id="8zg-d8-7UK"/>
                 <constraint firstAttribute="bottom" secondItem="zIj-LV-eXy" secondAttribute="bottom" constant="22" id="HTd-JR-OEj"/>
-                <constraint firstAttribute="trailing" secondItem="DdV-RE-Kny" secondAttribute="trailing" constant="14" id="J3u-Qq-L42"/>
+                <constraint firstAttribute="trailing" secondItem="DdV-RE-Kny" secondAttribute="trailing" constant="12" id="J3u-Qq-L42"/>
                 <constraint firstAttribute="trailing" secondItem="HvF-1T-7Z3" secondAttribute="trailing" id="XBL-sD-Uwu"/>
                 <constraint firstItem="63N-7j-264" firstAttribute="top" secondItem="PuG-98-30a" secondAttribute="bottom" constant="15" id="YgR-g8-rKb"/>
                 <constraint firstAttribute="trailing" secondItem="vMk-19-ANF" secondAttribute="trailing" constant="120" id="Zhq-z7-x7C"/>
