@@ -423,7 +423,6 @@ BOOL manualMode = NO;
 							 new_time_entry.ProjectID,
 							 0,
 							 0);
-	toggl_edit(ctx, guid, true, "");
 	free(guid);
 }
 
