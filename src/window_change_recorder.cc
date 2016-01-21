@@ -59,13 +59,13 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         }
     }
 
-	bool idleChanged = hasIdlenessChanged(idle);
+    bool idleChanged = hasIdlenessChanged(idle);
 
-	if (idleChanged) {
-		last_autotracker_title_ = "";
-	}
+    if (idleChanged) {
+        last_autotracker_title_ = "";
+    }
 
-	if (!idleChanged && !hasWindowChanged(title, filename)) {
+    if (!idleChanged && !hasWindowChanged(title, filename)) {
         return;
     }
 
