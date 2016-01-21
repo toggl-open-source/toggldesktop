@@ -89,8 +89,10 @@
         <KeyBinding Key="E" Modifiers="Control" Command="{StaticResource EditRunningCommand}" />
 
         <KeyBinding Key="D" Modifiers="Control" Command="{StaticResource ToggleManualModeCommand}" />
-        
+
         <KeyBinding Key="V" Modifiers="Control" Command="{StaticResource NewFromPasteCommand}" />
+        
+        <KeyBinding Key="F4" Modifiers="Control" Command="{StaticResource HideCommand}" />
 
         <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
