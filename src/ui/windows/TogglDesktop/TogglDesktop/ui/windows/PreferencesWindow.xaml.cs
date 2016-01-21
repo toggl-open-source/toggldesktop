@@ -605,7 +605,7 @@ namespace TogglDesktop
 
         private void defaultProjectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
-            var asProjectItem = e as ProjectItem;
+            var asProjectItem = e as IProjectItem;
             if (asProjectItem == null)
                 return;
 
