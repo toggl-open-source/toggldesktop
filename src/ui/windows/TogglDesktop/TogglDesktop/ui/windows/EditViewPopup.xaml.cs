@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -94,6 +95,12 @@ namespace TogglDesktop
             {
                 this.endResizing();
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            this.ClosePopup();
+            e.Cancel = true;
         }
 
         #endregion
@@ -263,6 +270,7 @@ namespace TogglDesktop
             this.ResizeMode = ResizeMode.NoResize;
             this.isResizing = false;
         }
+
 
         #endregion
 
