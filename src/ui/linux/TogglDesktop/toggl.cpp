@@ -153,6 +153,10 @@ void on_display_idle_notification(
         QString(description));
 }
 
+void on_display_pomodoro() {
+    TogglApi::instance->displayPomodoro();
+}
+
 TogglApi::TogglApi(
     QObject *parent,
     QString logPathOverride,

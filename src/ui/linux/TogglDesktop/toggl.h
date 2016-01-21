@@ -295,7 +295,7 @@ void on_display_idle_notification(
     const char *since,
     const char *duration,
     const uint64_t started);
-
+void on_display_pomodoro();
 
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_
