@@ -8,22 +8,22 @@ namespace TogglDesktop.Diagnostics
     {
         public static IPerformanceToken Measure(string activity)
         {
-            return new PerformanceToken(activity);
+            return null;//new PerformanceToken(activity);
         }
 
         #region Measure() overloads
 
         public static IPerformanceToken Measure(string template, object p0)
         {
-            return Measure(string.Format(template, p0));
+            return null;//Measure(string.Format(template, p0));
         }
         public static IPerformanceToken Measure(string template, object p0, object p1)
         {
-            return Measure(string.Format(template, p0, p1));
+            return null;//Measure(string.Format(template, p0, p1));
         }
         public static IPerformanceToken Measure(string template, object p0, object p1, object p2)
         {
-            return Measure(string.Format(template, p0, p1, p2));
+            return null;//Measure(string.Format(template, p0, p1, p2));
         }
 
         #endregion
@@ -62,7 +62,7 @@ namespace TogglDesktop.Diagnostics
                     this.timer.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)));
             }
 
-            public IPerformanceToken WithInfo(string additionalInfo)
+            public IPerformanceToken WithInfoNotNull(string additionalInfo)
             {
                 this.additionalInformation = this.additionalInformation + ", " + additionalInfo;
                 return this;

@@ -1058,45 +1058,27 @@ public static partial class Toggl
 
     private static List<TogglGenericView> convertToViewItemList(IntPtr first)
     {
-        return marshalList<TogglGenericView>(
-            first, n => n.Next, "marshalling view item list");
+        return marshalList<TogglGenericView>(first, n => n.Next);
     }
 
     private static List<TogglAutocompleteView> convertToAutocompleteList(IntPtr first)
     {
-        return marshalList<TogglAutocompleteView>(
-            first, n => n.Next, "marshalling auto complete list");
+        return marshalList<TogglAutocompleteView>(first, n => n.Next);
     }
 
     private static List<TogglTimeEntryView> convertToTimeEntryList(IntPtr first)
     {
-        return marshalList<TogglTimeEntryView>(
-            first, n => n.Next, "marshalling time entry list");
+        return marshalList<TogglTimeEntryView>(first, n => n.Next);
     }
 
     private static List<TogglAutotrackerRuleView> convertToAutotrackerEntryList(IntPtr first)
     {
-        return marshalList<TogglAutotrackerRuleView>(
-            first, n => n.Next, "marshalling time entry list");
+        return marshalList<TogglAutotrackerRuleView>(first, n => n.Next);
     }
 
     #endregion
 
     #region low level
-
-    private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext, string performanceMessage)
-    where T : struct
-    {
-        if (performanceMessage == null)
-            return marshalList(node, getNext);
-
-        using (var token = Performance.Measure(performanceMessage))
-        {
-            var list = marshalList(node, getNext);
-            token.WithInfo("count: " + list.Count);
-            return list;
-        }
-    }
 
     private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext)
     where T : struct
