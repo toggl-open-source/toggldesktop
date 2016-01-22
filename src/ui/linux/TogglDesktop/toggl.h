@@ -238,6 +238,8 @@ class TogglApi : public QObject {
     void displayWorkspaceSelect(
         QVector<GenericView *> list);
 
+    void displayPomodoro();
+
  private:
     void *ctx;
 
