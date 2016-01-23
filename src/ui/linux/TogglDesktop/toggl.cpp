@@ -58,6 +58,14 @@ void on_display_login(
     Bugsnag::user.id = user_id;
 }
 
+void on_display_pomodoro(
+    const char *title,
+    const char *informative_text) {
+    TogglApi::instance->displayPomodoro(
+        QString(title),
+        QString(informative_text));
+}
+
 void on_display_reminder(
     const char *title,
     const char *informative_text) {
@@ -153,10 +161,6 @@ void on_display_idle_notification(
         QString(description));
 }
 
-void on_display_pomodoro() {
-    TogglApi::instance->displayPomodoro();
-}
-
 TogglApi::TogglApi(
     QObject *parent,
     QString logPathOverride,
@@ -207,6 +211,7 @@ TogglApi::TogglApi(
     toggl_on_online_state(ctx, on_display_online_state);
     toggl_on_url(ctx, on_display_url);
     toggl_on_login(ctx, on_display_login);
+    toggl_on_pomodoro(ctx, on_display_pomodoro);
     toggl_on_reminder(ctx, on_display_reminder);
     toggl_on_time_entry_list(ctx, on_display_time_entry_list);
     toggl_on_time_entry_autocomplete(ctx, on_display_time_entry_autocomplete);

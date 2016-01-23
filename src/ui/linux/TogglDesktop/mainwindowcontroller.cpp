@@ -137,6 +137,24 @@ void MainWindowController::displayOnlineState(
     }
 }
 
+void MainWindowController::displayPomodoro(
+    const QString title,
+    const QString informative_text) {
+
+    if (pomodoro) {
+        return;
+    }
+    pomodoro = true;
+
+    QMessageBox(
+        QMessageBox::Information,
+        title,
+        informative_text,
+        QMessageBox::Ok).exec();
+
+    pomodoro = false;
+}
+
 void MainWindowController::displayReminder(
     const QString title,
     const QString informative_text) {
