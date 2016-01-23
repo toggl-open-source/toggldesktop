@@ -191,6 +191,10 @@ class TogglApi : public QObject {
         const bool open,
         const uint64_t user_id);
 
+    void displayPomodoro(
+        const QString title,
+        const QString informative_text);
+
     void displayReminder(
         const QString title,
         const QString informative_text);
@@ -237,8 +241,6 @@ class TogglApi : public QObject {
 
     void displayWorkspaceSelect(
         QVector<GenericView *> list);
-
-    void displayPomodoro();
 
  private:
     void *ctx;
