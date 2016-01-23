@@ -106,6 +106,7 @@ class MainWindowController : public QMainWindow {
     QIcon iconDisabled;
     QSystemTrayIcon *trayIcon;
 
+    bool pomodoro;
     bool reminder;
 
     QString script;

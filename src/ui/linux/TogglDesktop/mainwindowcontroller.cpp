@@ -49,6 +49,7 @@ MainWindowController::MainWindowController(
   idleNotificationDialog(new IdleNotificationDialog(this)),
   trayIcon(0),
   reminder(false),
+  pomodoro(false),
   script(scriptPath),
   ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
