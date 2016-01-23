@@ -53,6 +53,10 @@ class MainWindowController : public QMainWindow {
         const bool open,
         const uint64_t user_id);
 
+    void displayPomodoro(
+        const QString title,
+        const QString informative_text);
+
     void displayReminder(
         const QString title,
         const QString informative_text);
