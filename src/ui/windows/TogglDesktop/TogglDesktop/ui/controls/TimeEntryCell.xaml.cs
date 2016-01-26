@@ -266,6 +266,11 @@ namespace TogglDesktop
             Toggl.SetTimeEntryDate(this.guid, date);
         }
 
+        public void DeleteTimeEntry()
+        {
+            Toggl.AskToDeleteEntry(this.guid);
+        }
+
         private void tryStartDrag(MouseEventArgs e, bool ignoreDistance = false)
         {
             if (this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
