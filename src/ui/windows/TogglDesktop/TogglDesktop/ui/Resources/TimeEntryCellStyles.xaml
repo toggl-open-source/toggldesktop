@@ -1,10 +1,22 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:toggl="clr-namespace:TogglDesktop">
 
     <sys:Double x:Key="TimeEntryHeight">53</sys:Double>
     <sys:Double x:Key="TimeEntryDayHeaderHeight">45</sys:Double>
+
+    <ContextMenu x:Key="TimeEntryContextMenu">
+        <MenuItem Header="Delete time entry"
+                  Command="{x:Static toggl:TimeEntryCellContextMenuCommands.DeleteCommand}"
+                  CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type ContextMenu}}}"/>
+        <Separator />
+        <MenuItem Header="Collapse all days"
+                  Command="{x:Static toggl:TimeEntryCellContextMenuCommands.CollapseAllDaysCommand}"/>
+        <MenuItem Header="Expand all days"
+                  Command="{x:Static toggl:TimeEntryCellContextMenuCommands.ExpandAllDaysCommand}"/>
+    </ContextMenu>
     
     <Style x:Key="TimeEntryCell">
 

@@ -217,12 +217,12 @@ namespace TogglDesktop
 
         private void onExpandAllDays(object sender, ExecutedRoutedEventArgs e)
         {
-            this.expandAllDays();
+            this.ExpandAllDays();
         }
 
         private void onCollapseAllDays(object sender, ExecutedRoutedEventArgs e)
         {
-            this.collapseAllDays();
+            this.CollapseAllDays();
         }
 
         private void onHighlightContinue(object sender, ExecutedRoutedEventArgs e)
@@ -278,7 +278,7 @@ namespace TogglDesktop
             return true;
         }
 
-        private void collapseAllDays()
+        public void CollapseAllDays()
         {
             foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
             {
@@ -288,7 +288,7 @@ namespace TogglDesktop
             Toggl.ViewTimeEntryList();
         }
 
-        private void expandAllDays()
+        public void ExpandAllDays()
         {
             foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
             {

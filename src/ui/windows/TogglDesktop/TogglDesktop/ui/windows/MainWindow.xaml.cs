@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -1052,6 +1053,11 @@ namespace TogglDesktop
 
 
         #endregion
+
+        public T GetView<T>()
+        {
+            return (T)this.views.FirstOrDefault(v => v is T);
+        }
 
         private void changeThemeTest(object sender, RoutedEventArgs e)
         {
