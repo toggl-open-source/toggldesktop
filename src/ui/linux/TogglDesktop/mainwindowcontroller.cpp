@@ -49,6 +49,7 @@ MainWindowController::MainWindowController(
   idleNotificationDialog(new IdleNotificationDialog(this)),
   trayIcon(0),
   reminder(false),
+  pomodoro(false),
   script(scriptPath),
   ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
@@ -135,6 +136,24 @@ void MainWindowController::displayOnlineState(
         qDebug() << "Unknown online state " << state;
         break;
     }
+}
+
+void MainWindowController::displayPomodoro(
+    const QString title,
+    const QString informative_text) {
+
+    if (pomodoro) {
+        return;
+    }
+    pomodoro = true;
+
+    QMessageBox(
+        QMessageBox::Information,
+        title,
+        informative_text,
+        QMessageBox::Ok).exec();
+
+    pomodoro = false;
 }
 
 void MainWindowController::displayReminder(
