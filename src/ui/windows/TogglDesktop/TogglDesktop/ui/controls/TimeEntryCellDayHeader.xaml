@@ -27,6 +27,29 @@
                     <TextBlock Name="labelDateDuration" x:FieldModifier="private"
                                    Foreground="#6F6F6F">2 h 12 min</TextBlock>
                 </StackPanel>
+                
+                
+                <Grid Height="14" VerticalAlignment="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                           FontSize="8" Foreground="#6F6F6F" Margin="4 0" Text="08:30 AM" Grid.Column="0"
+                               Name="timelineStartTime" x:FieldModifier="private"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                           FontSize="8" Foreground="#6F6F6F" Margin="4 0" Text="16:30 AM" Grid.Column="2"
+                               Name="timelineEndTime" x:FieldModifier="private"/>
+                    
+                    <Viewbox VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                         Height="3" Stretch="Fill" Margin="0" Grid.Column="1"
+                         Name="timelineViewbox" x:FieldModifier="private">
+                        <Grid Name="timelinePanel" x:FieldModifier="private">
+                        </Grid>
+                    </Viewbox>
+                </Grid>
             </Grid>
         </Button>
         <StackPanel Name="panel" x:FieldModifier="private">
@@ -35,3 +58,10 @@
     </StackPanel>
 
 </UserControl>
+
+
+
+
+
+
+
