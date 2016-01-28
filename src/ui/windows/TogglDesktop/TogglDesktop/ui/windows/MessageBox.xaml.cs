@@ -61,6 +61,11 @@ namespace TogglDesktop
 
             this.okButton.Content = okButtonText;
 
+            if (owner != null)
+            {
+                this.Topmost = owner.Topmost;
+            }
+
             this.refreshSize();
         }
 
