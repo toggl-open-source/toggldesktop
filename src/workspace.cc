@@ -3,7 +3,6 @@
 #include "../src/workspace.h"
 
 #include <sstream>
-#include <cstring>
 
 namespace toggl {
 
@@ -43,6 +42,13 @@ void Workspace::SetAdmin(const bool value) {
     }
 }
 
+void Workspace::SetBusiness(const bool value) {
+	if (is_business_ != value) {
+		is_business_ = value;
+		SetDirty();
+	}
+}
+
 void Workspace::LoadFromJSON(Json::Value n) {
     SetID(n["id"].asUInt64());
     SetName(n["name"].asString());
@@ -50,6 +56,9 @@ void Workspace::LoadFromJSON(Json::Value n) {
     SetOnlyAdminsMayCreateProjects(
         n["only_admins_may_create_projects"].asBool());
     SetAdmin(n["admin"].asBool());
+
+	auto profile = n["profile"].asUInt64();
+	SetBusiness(profile > 13);
 }
 
 std::string Workspace::ModelName() const {

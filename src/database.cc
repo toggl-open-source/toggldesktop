@@ -1143,6 +1143,7 @@ error Database::loadWorkspaces(
         select <<
                "SELECT local_id, id, uid, name, premium, "
                "only_admins_may_create_projects, admin "
+			   "is_business"
                "FROM workspaces "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -1164,6 +1165,7 @@ error Database::loadWorkspaces(
                 model->SetPremium(rs[4].convert<bool>());
                 model->SetOnlyAdminsMayCreateProjects(rs[5].convert<bool>());
                 model->SetAdmin(rs[6].convert<bool>());
+				model->SetBusiness(rs[7].convert<bool>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -2480,13 +2482,15 @@ error Database::saveModel(
                       "id = :id, uid = :uid, name = :name, premium = :premium, "
                       "only_admins_may_create_projects = "
                       ":only_admins_may_create_projects, admin = :admin "
+					  "is_business = :is_business"
                       "where local_id = :local_id",
                       useRef(model->ID()),
                       useRef(model->UID()),
                       useRef(model->Name()),
                       useRef(model->Premium()),
-                      useRef(model->OnlyAdminsMayCreateProjects()),
-                      useRef(model->Admin()),
+					  useRef(model->OnlyAdminsMayCreateProjects()),
+					  useRef(model->Admin()),
+					  useRef(model->IsBusiness()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveWorkspace");
@@ -2505,13 +2509,15 @@ error Database::saveModel(
                       "insert into workspaces(id, uid, name, premium, "
                       "only_admins_may_create_projects, admin) "
                       "values(:id, :uid, :name, :premium, "
-                      ":only_admins_may_create_projects, :admin)",
+					  ":only_admins_may_create_projects, :admin)"
+					  "is_business = :is_business",
                       useRef(model->ID()),
                       useRef(model->UID()),
                       useRef(model->Name()),
                       useRef(model->Premium()),
-                      useRef(model->OnlyAdminsMayCreateProjects()),
-                      useRef(model->Admin()),
+					  useRef(model->OnlyAdminsMayCreateProjects()),
+					  useRef(model->Admin()),
+					  useRef(model->IsBusiness()),
                       now;
             error err = last_error("saveWorkspace");
             if (err != noError) {
