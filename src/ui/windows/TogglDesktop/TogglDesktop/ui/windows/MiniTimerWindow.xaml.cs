@@ -12,7 +12,6 @@ namespace TogglDesktop
 {
     public partial class MiniTimerWindow
     {
-        private readonly MainWindow mainWindow;
         private readonly ContextMenu contextMenu;
         private readonly WindowInteropHelper interopHelper;
 
@@ -22,7 +21,6 @@ namespace TogglDesktop
 
         public MiniTimerWindow(MainWindow mainWindow)
         {
-            this.mainWindow = mainWindow;
             this.contextMenu = mainWindow.ContextMenu;
             this.InitializeComponent();
             this.WindowStyle = WindowStyle.SingleBorderWindow;
