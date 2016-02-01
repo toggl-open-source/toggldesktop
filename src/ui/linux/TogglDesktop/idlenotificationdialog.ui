@@ -69,6 +69,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="discardTimeAndContinueButton">
+     <property name="text">
+      <string>Discard time and continue</string>
+     </property>
+    </widget>
+   </item>   
+   <item>
     <widget class="QPushButton" name="pushButton">
      <property name="text">
       <string>Add idle time as a new time entry</string>

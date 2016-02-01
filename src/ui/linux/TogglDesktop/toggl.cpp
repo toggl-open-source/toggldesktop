@@ -324,6 +324,11 @@ bool TogglApi::discardTimeAt(const QString guid,
                                  split_into_new_time_entry);
 }
 
+bool TogglApi::discardTimeAndContinue(const QString guid,
+                                      const uint64_t at) {
+    return toggl_discard_time_and_continue(ctx, guid.toStdString().c_str(), at);
+}
+
 // Returns true if script file was successfully
 // executed. If returns false, check log.
 bool TogglApi::runScriptFile(const QString filename) {
