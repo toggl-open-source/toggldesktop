@@ -58,6 +58,11 @@ void IdleNotificationDialog::on_discardTimeButton_clicked() {
     hide();
 }
 
+void IdleNotificationDialog::on_discardTimeAndContinueButton_clicked() {
+    TogglApi::instance->discardTimeAndContinue(timeEntryGUID, idleStarted);
+    hide();
+}
+
 void IdleNotificationDialog::displaySettings(
     const bool open,
     SettingsView *settings) {
