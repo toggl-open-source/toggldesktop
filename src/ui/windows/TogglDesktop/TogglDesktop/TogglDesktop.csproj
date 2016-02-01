@@ -214,6 +214,7 @@
       <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
+    <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Theme.cs" />
     <Compile Include="ui\ThemeResourceDictionary.cs" />
     <Compile Include="ui\ThemeTypes.cs" />

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +16,6 @@ using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
 using TogglDesktop.Tutorial;
-using Clipboard = System.Windows.Clipboard;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -34,8 +34,6 @@ namespace TogglDesktop
         private readonly IMainView[] views;
         private Window[] childWindows;
 
-        private AboutWindow aboutWindow;
-        private FeedbackWindow feedbackWindow;
         private EditViewPopup editPopup;
         private IdleNotificationWindow idleNotificationWindow;
         private SyncingIndicator syncingIndicator;
@@ -57,6 +55,8 @@ namespace TogglDesktop
         {
             this.DataContext = this;
             this.InitializeComponent();
+
+            KeyboardShortcuts.SetMainWindow(this);
 
             this.interopHelper = new WindowInteropHelper(this);
 
@@ -82,7 +82,16 @@ namespace TogglDesktop
 
         #region properties
 
+        public bool IsTracking { get { return this.isTracking; } }
+        public bool IsInManualMode { get { return this.isInManualMode; } }
+        public bool IsMiniTimerVisible { get { return this.isMiniTimerVisible; } }
+
         public TutorialManager TutorialManager { get; private set; }
+
+        public bool CanBeShown
+        {
+            get { return !this.IsVisible || this.WindowState == WindowState.Minimized; }
+        }
 
         #endregion
 
@@ -132,8 +141,8 @@ namespace TogglDesktop
         {
             this.childWindows = new Window[]{
                 this.editPopup = new EditViewPopup(),
-                this.aboutWindow = new AboutWindow(),
-                this.feedbackWindow = new FeedbackWindow(),
+                new AboutWindow(),
+                new FeedbackWindow(),
                 new PreferencesWindow(),
             };
             this.idleNotificationWindow = new IdleNotificationWindow();
@@ -149,7 +158,7 @@ namespace TogglDesktop
 
             this.idleNotificationWindow.AddedIdleTimeAsNewEntry += (o, e) => this.ShowOnTop();
 
-            this.miniTimer = new MiniTimerWindow(this.ContextMenu);
+            this.miniTimer = new MiniTimerWindow(this);
 
             this.IsVisibleChanged += this.ownChildWindows;
         }
@@ -200,7 +209,7 @@ namespace TogglDesktop
             Utils.LoadWindowLocation(this, this.editPopup, this.miniTimer);
 
 
-            this.aboutWindow.UpdateReleaseChannel();
+            this.GetWindow<AboutWindow>().UpdateReleaseChannel();
 
             this.errorBar.Hide();
             this.statusBar.Hide();
@@ -208,7 +217,7 @@ namespace TogglDesktop
 
             this.runScriptAsync();
 
-            this.setMiniTimerVisible(Toggl.GetMiniTimerVisible(), true);
+            this.SetMiniTimerVisible(Toggl.GetMiniTimerVisible(), true);
         }
 
         private async void runScriptAsync()
@@ -356,7 +365,7 @@ namespace TogglDesktop
             this.setGlobalShortcutsFromSettings();
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.Topmost = settings.OnTop;
-            this.setManualMode(settings.ManualMode, true);
+            this.SetManualMode(settings.ManualMode, true);
         }
 
         #endregion
@@ -365,7 +374,7 @@ namespace TogglDesktop
 
         protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
-            this.minimizeToTray();
+            this.MinimizeToTray();
         }
 
         protected override void onCogButtonClick(object sender, RoutedEventArgs e)
@@ -450,7 +459,7 @@ namespace TogglDesktop
             {
                 using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.isInManualMode))
                 {
-                    this.startTimeEntry(true);
+                    KeyboardShortcuts.StartTimeEntry(true);
                 }
             }
         }
@@ -526,228 +535,21 @@ namespace TogglDesktop
 
         #endregion
 
-        #region command events
+        #region commands
 
-        private void onNewCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("starting time entry from menu, manual mode: {0}", this.isInManualMode))
-            {
-                this.startTimeEntry();
-            }
-        }
-
-        private void onContinueCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("continuing time entry from menu"))
-            {
-                Toggl.ContinueLatest();
-            }
-        }
-
-        private void onStopCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("stopping time entry from menu"))
-            {
-                Toggl.Stop();
-            }
-        }
-
-        private void onShowCommand(object sender, RoutedEventArgs e)
-        {
-            this.ShowOnTop();
-        }
-
-        private void onSyncCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("syncing from menu"))
-            {
-                Toggl.Sync();
-            }
-        }
-
-        private void onReportsCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("opening reports from menu"))
-            {
-                Toggl.OpenInBrowser();
-            }
-        }
-
-        private void onPreferencesCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("opening preferences from menu"))
-            {
-                Toggl.EditPreferences();
-            }
-        }
-
-        private void onToggleManualModeCommand(object sender, RoutedEventArgs e)
-        {
-            this.setManualMode(!this.isInManualMode);
-        }
-
-        private void onClearCacheCommand(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBox.Show(this,
-                "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
-                "Any unsynced data will be lost.\n\nDo you want to continue?", "Clear Cache",
-                MessageBoxButton.OKCancel, "CLEAR CACHE");
-
-            if (result == MessageBoxResult.OK)
-            {
-                using (Performance.Measure("clearing cache from menu"))
-                {
-                    Toggl.ClearCache();
-                }
-            }
-        }
-
-        private void onSendFeedbackCommand(object sender, RoutedEventArgs e)
-        {
-            this.feedbackWindow.Show();
-            this.feedbackWindow.Activate();
-        }
-
-        private void onAboutCommand(object sender, RoutedEventArgs e)
-        {
-            this.aboutWindow.Show();
-            this.feedbackWindow.Activate();
-        }
-
-        private void onLogoutCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("logging out from menu"))
-            {
-                Toggl.Logout();
-            }
-        }
-
-        private void onQuitCommand(object sender, RoutedEventArgs e)
-        {
-            this.shutdown(0);
-        }
-
-        private void onEditRunningCommand(object sender, RoutedEventArgs e)
-        {
-            using (Performance.Measure("edit running entry with shortcut"))
-            {
-                if (this.isInManualMode)
-                {
-                    this.startTimeEntry();
-                }
-                else
-                {
-                    Toggl.Edit(null, true, null);
-                }
-            }
-        }
-
-        private void onHideCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.minimizeToTray();
-        }
+        #region Escape
 
         private void onEscapeCommand(object sender, ExecutedRoutedEventArgs e)
         {
             this.closeEditPopup();
         }
-
-        private void onBasicTutorialCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.TutorialManager.ActivateScreen<BasicTutorialScreen1>();
-        }
-
-        private void onNewFromPasteCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            using (Performance.Measure("starting time entry from paste, manual mode: {0}", this.isInManualMode))
-            {
-                this.startTimeEntry(description:
-                    Clipboard.GetText().Replace(Environment.NewLine, " ")
-                    );
-            }
-        }
-
-        private void togglMiniTimerVisibilityCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.setMiniTimerVisible(!this.isMiniTimerVisible);
-        }
-
         #endregion
-
-        #region canExecutes
-
-        private void canExecuteShowCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = this.canBeShown();
-        }
-        private void canExecuteHideCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = !this.canBeShown();
-        }
-        private void canExecuteNewCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn;
-        }
-        private void canExecuteContinueCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn && !this.isTracking;
-        }
-        private void canExecuteStopCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn && this.isTracking;
-        }
-        private void canExecuteSyncCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn;
-        }
-        private void canExecuteReportsCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn;
-        }
-        private void canExecuteToggleManualModeCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn && (this.isInManualMode || !this.isTracking);
-        }
-        private void canExecuteClearCacheCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn;
-        }
-        private void canExecuteLogoutCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn;
-        }
-        private void canExecuteEditRunningCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn && (this.isTracking || this.isInManualMode);
-        }
-
-        private void canExecuteBasicTutorialCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn;
-        }
-
-        private bool canBeShown()
-        {
-            return !this.IsVisible
-                || this.WindowState == WindowState.Minimized;
-        }
-
-
-        private void canExecuteNewFromPasteCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn && !this.isTracking;
-        }
-
-        private void canExecutetogglMiniTimerVisibilityCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = Program.IsLoggedIn;
-        }
 
         #endregion
 
         #region ui controlling
 
-        private void setMiniTimerVisible(bool visible, bool fromApi = false)
+        public void SetMiniTimerVisible(bool visible, bool fromApi = false)
         {
             this.isMiniTimerVisible = visible;
 
@@ -761,7 +563,7 @@ namespace TogglDesktop
             }
         }
 
-        private void setManualMode(bool manualMode, bool fromApi = false)
+        public void SetManualMode(bool manualMode, bool fromApi = false)
         {
             this.isInManualMode = manualMode;
 
@@ -778,17 +580,17 @@ namespace TogglDesktop
 
         private void togglVisibility()
         {
-            if (this.canBeShown())
+            if (this.CanBeShown)
             {
                 this.ShowOnTop();
             }
             else
             {
-                this.minimizeToTray();
+                this.MinimizeToTray();
             }
         }
 
-        private void minimizeToTray()
+        public void MinimizeToTray()
         {
             this.Hide();
             this.closeEditPopup(skipAnimation: true);
@@ -816,26 +618,6 @@ namespace TogglDesktop
             catch (Exception e)
             {
                 Toggl.Debug("Could not register show hotkey: " + e);
-            }
-        }
-
-        private void startTimeEntry(bool continueIfNotInManualMode = false, string description = "")
-        {
-            if (this.isInManualMode)
-            {
-                var guid = Toggl.Start(description, "0", 0, 0, "", "");
-                Toggl.Edit(guid, false, Toggl.Duration);
-            }
-            else
-            {
-                if (continueIfNotInManualMode)
-                {
-                    Toggl.ContinueLatest();
-                }
-                else
-                {
-                    Toggl.Start(description, "", 0, 0, "", "");
-                }
             }
         }
 
@@ -945,7 +727,7 @@ namespace TogglDesktop
 
 
                 if (this.isInManualMode)
-                    this.setManualMode(false);
+                    this.SetManualMode(false);
             }
             else
             {
@@ -1086,6 +868,12 @@ namespace TogglDesktop
 
 
         #endregion
+
+        public T GetWindow<T>()
+            where T : Window
+        {
+            return (T)this.childWindows.First(w => w is T);
+        }
 
         private void changeThemeTest(object sender, RoutedEventArgs e)
         {

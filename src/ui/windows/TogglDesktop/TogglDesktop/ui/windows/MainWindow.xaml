@@ -12,85 +12,28 @@
              MouseMove="onWindowMouseMove">
 
     <Window.Resources>
-        <RoutedUICommand x:Key="NewCommand" />
-        <RoutedUICommand x:Key="ContinueCommand" />
-        <RoutedUICommand x:Key="StopCommand" />
-        <RoutedUICommand x:Key="ShowCommand" />
-        <RoutedUICommand x:Key="HideCommand" />
-        <RoutedUICommand x:Key="SyncCommand" />
-        <RoutedUICommand x:Key="ReportsCommand" />
-        <RoutedUICommand x:Key="PreferencesCommand" />
-        <RoutedUICommand x:Key="ToggleManualModeCommand" />
-        <RoutedUICommand x:Key="ClearCacheCommand" />
-        <RoutedUICommand x:Key="SendFeedbackCommand" />
-        <RoutedUICommand x:Key="AboutCommand" />
-        <RoutedUICommand x:Key="LogoutCommand" />
-        <RoutedUICommand x:Key="QuitCommand" />
-
-        <RoutedUICommand x:Key="EditRunningCommand" />
-
         <RoutedUICommand x:Key="EscapeCommand" />
-        <RoutedUICommand x:Key="BasicTutorialCommand" />
-        <RoutedUICommand x:Key="NewFromPasteCommand" />
-        <RoutedUICommand x:Key="ToggleMiniTimerVisibilityCommand" />
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
 
     <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource PreferencesCommand}" Executed="onPreferencesCommand"/>
-        <CommandBinding Command="{StaticResource SendFeedbackCommand}" Executed="onSendFeedbackCommand"/>
-        <CommandBinding Command="{StaticResource AboutCommand}" Executed="onAboutCommand"/>
-        <CommandBinding Command="{StaticResource QuitCommand}" Executed="onQuitCommand"/>
-
-        <CommandBinding Command="{StaticResource ShowCommand}"
-                        Executed="onShowCommand" CanExecute="canExecuteShowCommand"/>
-        <CommandBinding Command="{StaticResource HideCommand}"
-                        Executed="onHideCommand" CanExecute="canExecuteHideCommand"/>
-
-        <CommandBinding Command="{StaticResource NewCommand}"
-                        Executed="onNewCommand" CanExecute="canExecuteNewCommand"/>
-        <CommandBinding Command="{StaticResource ContinueCommand}"
-                        Executed="onContinueCommand" CanExecute="canExecuteContinueCommand"/>
-        <CommandBinding Command="{StaticResource StopCommand}"
-                        Executed="onStopCommand" CanExecute="canExecuteStopCommand"/>
-        <CommandBinding Command="{StaticResource SyncCommand}"
-                        Executed="onSyncCommand" CanExecute="canExecuteSyncCommand"/>
-        <CommandBinding Command="{StaticResource ReportsCommand}"
-                        Executed="onReportsCommand" CanExecute="canExecuteReportsCommand"/>
-        <CommandBinding Command="{StaticResource ToggleManualModeCommand}"
-                        Executed="onToggleManualModeCommand" CanExecute="canExecuteToggleManualModeCommand"/>
-        <CommandBinding Command="{StaticResource ClearCacheCommand}"
-                        Executed="onClearCacheCommand" CanExecute="canExecuteClearCacheCommand"/>
-        <CommandBinding Command="{StaticResource LogoutCommand}"
-                        Executed="onLogoutCommand" CanExecute="canExecuteLogoutCommand"/>
-
-        <CommandBinding Command="{StaticResource EditRunningCommand}"
-                        Executed="onEditRunningCommand" CanExecute="canExecuteEditRunningCommand"/>
-
-        <CommandBinding Command="{StaticResource EscapeCommand}"
-                        Executed="onEscapeCommand"/>
-        <CommandBinding Command="{StaticResource BasicTutorialCommand}"
-                        Executed="onBasicTutorialCommand" CanExecute="canExecuteBasicTutorialCommand"/>
-        <CommandBinding Command="{StaticResource NewFromPasteCommand}"
-                        Executed="onNewFromPasteCommand" CanExecute="canExecuteNewFromPasteCommand"/>
-        <CommandBinding Command="{StaticResource ToggleMiniTimerVisibilityCommand}"
-                        Executed="togglMiniTimerVisibilityCommand" CanExecute="canExecutetogglMiniTimerVisibilityCommand"/>
+        <CommandBinding Command="{StaticResource EscapeCommand}" Executed="onEscapeCommand"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>
-        <KeyBinding Key="N" Modifiers="Control" Command="{StaticResource NewCommand}" />
-        <KeyBinding Key="O" Modifiers="Control" Command="{StaticResource ContinueCommand}" />
-        <KeyBinding Key="S" Modifiers="Control" Command="{StaticResource StopCommand}" />
+        <KeyBinding Key="N" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.New}" />
+        <KeyBinding Key="O" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Continue}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Stop}" />
         
-        <KeyBinding Key="W" Modifiers="Control" Command="{StaticResource HideCommand}" />
-        <KeyBinding Key="R" Modifiers="Control" Command="{StaticResource SyncCommand}" />
+        <KeyBinding Key="W" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
+        <KeyBinding Key="R" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />
         
-        <KeyBinding Key="E" Modifiers="Control" Command="{StaticResource EditRunningCommand}" />
+        <KeyBinding Key="E" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.EditRunning}" />
 
-        <KeyBinding Key="D" Modifiers="Control" Command="{StaticResource ToggleManualModeCommand}" />
+        <KeyBinding Key="D" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}" />
         
-        <KeyBinding Key="V" Modifiers="Control" Command="{StaticResource NewFromPasteCommand}" />
+        <KeyBinding Key="V" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.NewFromPaste}" />
 
         <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
@@ -124,50 +67,50 @@
             </MenuItem>
             <Separator />
             <MenuItem Header="New" InputGestureText="Ctrl+N"
-                      Command="{StaticResource NewCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.New}"/>
             <MenuItem Header="Continue" InputGestureText="Ctrl+O"
-                      Command="{StaticResource ContinueCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.Continue}"/>
             <MenuItem Header="Stop" InputGestureText="Ctrl+S"
-                      Command="{StaticResource StopCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.Stop}"/>
             <Separator />
             <MenuItem Header="Show"
-                      Command="{StaticResource ShowCommand}"
+                      Command="{x:Static toggl:KeyboardShortcuts.Show}"
                       Visibility=
 "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
                       />
             <MenuItem Header="Hide" InputGestureText="Ctrl+W"
-                      Command="{StaticResource HideCommand}"
+                      Command="{x:Static toggl:KeyboardShortcuts.Hide}"
                       Visibility=
 "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
                       />
             <Separator />
             <MenuItem Header="Sync" InputGestureText="Ctrl+R"
-                      Command="{StaticResource SyncCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
             <MenuItem Header="Reports"
-                      Command="{StaticResource ReportsCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.Reports}"/>
             <MenuItem Header="Preferences"
-                      Command="{StaticResource PreferencesCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.Preferences}"/>
             <MenuItem Header="Use manual mode" InputGestureText="Ctrl+D"
                       Name="togglManualModeMenuItem" x:FieldModifier="private"
-                      Command="{StaticResource ToggleManualModeCommand}"
+                      Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}"
                       IsCheckable="True"/>
             <MenuItem Header="Use mini timer"
                       Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
-                      Command="{StaticResource ToggleMiniTimerVisibilityCommand}"
+                      Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
                       IsCheckable="True"/>
             <Separator />
             <MenuItem Header="Clear Cache"
-                      Command="{StaticResource ClearCacheCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.ClearCache}"/>
             <MenuItem Header="Toggl Desktop Tutorial"
-                      Command="{StaticResource BasicTutorialCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"/>
             <MenuItem Header="Send Feedback"
-                      Command="{StaticResource SendFeedbackCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.SendFeedback}"/>
             <MenuItem Header="About"
-                      Command="{StaticResource AboutCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.About}"/>
             <MenuItem Header="Logout"
-                      Command="{StaticResource LogoutCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.Logout}"/>
             <MenuItem Header="Quit"
-                      Command="{StaticResource QuitCommand}"/>
+                      Command="{x:Static toggl:KeyboardShortcuts.Quit}"/>
         </ContextMenu>
     </Window.ContextMenu>
     

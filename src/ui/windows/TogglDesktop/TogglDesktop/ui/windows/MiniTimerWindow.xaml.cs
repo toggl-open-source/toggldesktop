@@ -12,6 +12,7 @@ namespace TogglDesktop
 {
     public partial class MiniTimerWindow
     {
+        private readonly MainWindow mainWindow;
         private readonly ContextMenu contextMenu;
         private readonly WindowInteropHelper interopHelper;
 
@@ -19,13 +20,16 @@ namespace TogglDesktop
         private Point mouseDownPosition;
         private bool isResizing;
 
-        public MiniTimerWindow(ContextMenu contextMenu)
+        public MiniTimerWindow(MainWindow mainWindow)
         {
-            this.contextMenu = contextMenu;
+            this.mainWindow = mainWindow;
+            this.contextMenu = mainWindow.ContextMenu;
             this.InitializeComponent();
             this.WindowStyle = WindowStyle.SingleBorderWindow;
 
             this.interopHelper = new WindowInteropHelper(this);
+
+            KeyboardShortcuts.RegisterShortcuts(this);
         }
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)

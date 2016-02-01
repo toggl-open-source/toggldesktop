@@ -13,6 +13,12 @@
         WindowStartupLocation="Manual"
         MouseMove="onWindowMouseMove"
         >
+    
+    <Window.InputBindings>
+
+        <!--<KeyBinding Key="R" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />-->
+    </Window.InputBindings>
+    
     <Grid>
         <toggl:Timer x:Name="timer" x:FieldModifier="private" />
         <Rectangle Width="10"  HorizontalAlignment="Left" Fill="Transparent"
