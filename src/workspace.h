@@ -19,7 +19,7 @@ class Workspace : public BaseModel {
     , premium_(false)
     , only_admins_may_create_projects_(false)
     , admin_(false)
-    , is_business_(false) {}
+    , business_(false) {}
 
     const std::string &Name() const {
         return name_;
@@ -41,8 +41,8 @@ class Workspace : public BaseModel {
     }
     void SetAdmin(const bool);
 
-    const bool &IsBusiness() const {
-        return is_business_;
+    const bool &Business() const {
+        return business_;
     }
     void SetBusiness(const bool value);
 
@@ -57,7 +57,7 @@ class Workspace : public BaseModel {
     bool premium_;
     bool only_admins_may_create_projects_;
     bool admin_;
-    bool is_business_;
+    bool business_;
 };
 
 }  // namespace toggl
