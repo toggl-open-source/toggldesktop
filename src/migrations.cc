@@ -287,21 +287,21 @@ error Migrations::migrateWorkspaces() {
         return err;
     }
 
-	err = db_->Migrate(
-		"workspaces.admin",
-		"alter table workspaces add column "
-		"   admin integer not null default 0; ");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "workspaces.admin",
+        "alter table workspaces add column "
+        "   admin integer not null default 0; ");
+    if (err != noError) {
+        return err;
+    }
 
-	err = db_->Migrate(
-		"workspaces.is_business",
-		"alter table workspaces add column "
-		"   is_business integer not null default 0; ");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "workspaces.is_business",
+        "alter table workspaces add column "
+        "   is_business integer not null default 0; ");
+    if (err != noError) {
+        return err;
+    }
 
     return err;
 }
