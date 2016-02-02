@@ -43,8 +43,8 @@ void Workspace::SetAdmin(const bool value) {
 }
 
 void Workspace::SetBusiness(const bool value) {
-    if (is_business_ != value) {
-        is_business_ = value;
+    if (business_ != value) {
+        business_ = value;
         SetDirty();
     }
 }
