@@ -19,7 +19,7 @@ class Workspace : public BaseModel {
     , premium_(false)
     , only_admins_may_create_projects_(false)
     , admin_(false)
-	, is_business_(false) {}
+    , is_business_(false) {}
 
     const std::string &Name() const {
         return name_;
@@ -41,23 +41,23 @@ class Workspace : public BaseModel {
     }
     void SetAdmin(const bool);
 
-	const bool &IsBusiness() const {
-		return is_business_;
-	}
-	void SetBusiness(const bool value);
+    const bool &IsBusiness() const {
+        return is_business_;
+    }
+    void SetBusiness(const bool value);
 
     // Override BaseModel
     std::string String() const;
     std::string ModelName() const;
     std::string ModelURL() const;
-	void LoadFromJSON(Json::Value value);
+    void LoadFromJSON(Json::Value value);
 
  private:
     std::string name_;
     bool premium_;
     bool only_admins_may_create_projects_;
     bool admin_;
-	bool is_business_;
+    bool is_business_;
 };
 
 }  // namespace toggl
