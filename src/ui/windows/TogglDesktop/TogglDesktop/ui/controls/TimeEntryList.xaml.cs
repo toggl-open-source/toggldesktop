@@ -84,7 +84,7 @@ namespace TogglDesktop
                 // y will be 0 if the time entry list hasnt rendered yet
                 var y = cell.TransformToAncestor(this.panel).Transform(new Point(0, 0)).Y + cell.ActualHeight;
                 this.highlightRectangleTop.Height = Math.Max(0, y - 53);
-                this.highlightRectangleBottom.Height = this.panel.ActualHeight - y;
+                this.highlightRectangleBottom.Height = Math.Max(0, this.panel.ActualHeight - y);
                 this.highlightRectangleTop.Visibility = Visibility.Visible;
                 this.highlightRectangleBottom.Visibility = Visibility.Visible;
             }
