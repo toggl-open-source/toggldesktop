@@ -1113,7 +1113,7 @@ error Database::loadWorkspaces(
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT local_id, id, uid, name, premium, "
-               "only_admins_may_create_projects, admin "
+               "only_admins_may_create_projects, admin, "
                "is_business"
                "FROM workspaces "
                "WHERE uid = :uid "
@@ -2452,7 +2452,7 @@ error Database::saveModel(
                       "update workspaces set "
                       "id = :id, uid = :uid, name = :name, premium = :premium, "
                       "only_admins_may_create_projects = "
-                      ":only_admins_may_create_projects, admin = :admin "
+                      ":only_admins_may_create_projects, admin = :admin, "
                       "is_business = :is_business"
                       "where local_id = :local_id",
                       useRef(model->ID()),
@@ -2478,10 +2478,11 @@ error Database::saveModel(
             logger().trace(ss.str());
             *session_ <<
                       "insert into workspaces(id, uid, name, premium, "
-                      "only_admins_may_create_projects, admin) "
+                      "only_admins_may_create_projects, admin, "
+                      "is_business) "
                       "values(:id, :uid, :name, :premium, "
-                      ":only_admins_may_create_projects, :admin)"
-                      "is_business = :is_business",
+                      ":only_admins_may_create_projects, :admin, "
+                      ":is_business)",
                       useRef(model->ID()),
                       useRef(model->UID()),
                       useRef(model->Name()),
