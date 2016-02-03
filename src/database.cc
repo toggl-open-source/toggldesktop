@@ -1114,7 +1114,7 @@ error Database::loadWorkspaces(
         select <<
                "SELECT local_id, id, uid, name, premium, "
                "only_admins_may_create_projects, admin, "
-               "is_business"
+               "is_business "
                "FROM workspaces "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -2453,7 +2453,7 @@ error Database::saveModel(
                       "id = :id, uid = :uid, name = :name, premium = :premium, "
                       "only_admins_may_create_projects = "
                       ":only_admins_may_create_projects, admin = :admin, "
-                      "is_business = :is_business"
+                      "is_business = :is_business "
                       "where local_id = :local_id",
                       useRef(model->ID()),
                       useRef(model->UID()),
@@ -2461,7 +2461,7 @@ error Database::saveModel(
                       useRef(model->Premium()),
                       useRef(model->OnlyAdminsMayCreateProjects()),
                       useRef(model->Admin()),
-                      useRef(model->IsBusiness()),
+                      useRef(model->Business()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveWorkspace");
@@ -2489,7 +2489,7 @@ error Database::saveModel(
                       useRef(model->Premium()),
                       useRef(model->OnlyAdminsMayCreateProjects()),
                       useRef(model->Admin()),
-                      useRef(model->IsBusiness()),
+                      useRef(model->Business()),
                       now;
             error err = last_error("saveWorkspace");
             if (err != noError) {
