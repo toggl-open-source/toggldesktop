@@ -84,6 +84,9 @@
 // Manual mode
 @property NSMenuItem *manualModeMenuItem;
 
+// Fixes statusItem text cutoff
+@property BOOL enabledStatusItem;
+
 @end
 
 @implementation AppDelegate
@@ -97,6 +100,7 @@ BOOL manualMode = NO;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
+	self.enabledStatusItem = NO;
 
 	if ([self updateCheckEnabled])
 	{
@@ -496,7 +500,6 @@ BOOL manualMode = NO;
 		}
 	}
 
-
 	// Start menubar timer if its enabled
 	self.showMenuBarTimer = cmd.settings.menubar_timer;
 	if (cmd.settings.menubar_timer)
@@ -521,6 +524,7 @@ BOOL manualMode = NO;
 			self.menubarTimer = nil;
 		}
 		[self updateStatusItem];
+		self.enabledStatusItem = NO;
 	}
 
 	if (self.showMenuBarProject != cmd.settings.menubar_project)
@@ -528,6 +532,11 @@ BOOL manualMode = NO;
 		// Show/Hide project in menubar
 		self.showMenuBarProject = cmd.settings.menubar_project;
 		[self updateStatusItem];
+
+		if (!cmd.settings.menubar_project)
+		{
+			self.enabledStatusItem = NO;
+		}
 	}
 
 
@@ -755,6 +764,11 @@ BOOL manualMode = NO;
 
 	if (![title isEqualToString:self.statusItem.title])
 	{
+		if (self.enabledStatusItem == NO  && title.length != 0)
+		{
+			[self.statusItem setTitle:title];
+			self.enabledStatusItem = YES;
+		}
 		[self.statusItem setTitle:title];
 	}
 
