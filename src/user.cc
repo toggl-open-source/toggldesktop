@@ -1235,9 +1235,11 @@ std::vector<TimelineEvent> User::CompressedTimeline(
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
-        if (!event->VisibleToUser()) {
+
+        if (event->DeletedAt() > 0 || !event->Chunked()) {
             continue;
         }
+
         if (date) {
             // Check if timeline event occured on the
             // required date:
