@@ -730,7 +730,9 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_continue_latest(
-        IntPtr context);
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool prevent_on_app);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -816,7 +818,9 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_stop(
-        IntPtr context);
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool prevent_on_app);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
@@ -1092,7 +1096,9 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string project_guid,
         [MarshalAs(UnmanagedType.LPWStr)]
-        string tags);
+        string tags,
+        [MarshalAs(UnmanagedType.I1)]
+        bool prevent_on_app);
 
     // returns GUID of the new project. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

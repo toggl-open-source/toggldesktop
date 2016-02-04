@@ -272,9 +272,10 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
         const std::string project_guid,
-        const std::string tags);
+		const std::string tags,
+		const bool prevent_on_app);
 
-    TimeEntry *ContinueLatest();
+	TimeEntry *ContinueLatest(const bool prevent_on_app);
 
     TimeEntry *Continue(
         const std::string GUID);
@@ -324,7 +325,7 @@ class Context : public TimelineDatasource {
         const std::string GUID,
         const std::string value);
 
-    error Stop();
+	error Stop(const bool prevent_on_app);
 
     error DiscardTimeAt(
         const std::string GUID,
