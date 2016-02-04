@@ -901,12 +901,19 @@ extern "C" {
     TOGGL_EXPORT int64_t toggl_get_mini_timer_x(
         void *context);
 
-    TOGGL_EXPORT void toggl_set_mini_timer_y(
-        void *context,
-        const int64_t value);
+	TOGGL_EXPORT void toggl_set_mini_timer_y(
+		void *context,
+		const int64_t value);
 
-    TOGGL_EXPORT int64_t toggl_get_mini_timer_y(
-        void *context);
+	TOGGL_EXPORT int64_t toggl_get_mini_timer_y(
+		void *context);
+
+	TOGGL_EXPORT void toggl_set_mini_timer_w(
+		void *context,
+		const int64_t value);
+
+	TOGGL_EXPORT int64_t toggl_get_mini_timer_w(
+		void *context);
 
     TOGGL_EXPORT void toggl_set_mini_timer_visible(
         void *context,

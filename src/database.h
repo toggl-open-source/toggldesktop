@@ -80,9 +80,11 @@ class Database {
         const Poco::Int64 window_width);
 
     error SetMiniTimerX(const Poco::Int64 x);
-    error GetMiniTimerX(Poco::Int64 *x);
-    error SetMiniTimerY(const Poco::Int64 y);
-    error GetMiniTimerY(Poco::Int64 *y);
+	error GetMiniTimerX(Poco::Int64 *x);
+	error SetMiniTimerY(const Poco::Int64 y);
+	error GetMiniTimerY(Poco::Int64 *y);
+	error SetMiniTimerW(const Poco::Int64 w);
+	error GetMiniTimerW(Poco::Int64 *w);
 
     error SetSettingsHasSeenBetaOffering(const bool &value);
 

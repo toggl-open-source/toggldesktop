@@ -54,9 +54,11 @@ public static class Utils
         {
             x = Toggl.GetMiniTimerX();
             y = Toggl.GetMiniTimerY();
+            w = Toggl.GetMiniTimerW();
             miniTimer.Left = x;
             miniTimer.Top = y;
-            Toggl.Debug("Retrieved mini timer location ({0}x{1})", x, y);
+            miniTimer.Width = w;
+            Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
 
             if (!visibleOnAnyScreen(miniTimer))
             {
@@ -119,9 +121,11 @@ public static class Utils
         {
             x = (long)miniTimer.Left;
             y = (long)miniTimer.Top;
+            w = (long)miniTimer.Width;
             Toggl.SetMiniTimerX(x);
             Toggl.SetMiniTimerY(y);
-            Toggl.Debug("Saved mini timer location ({0}x{1})", x, y);
+            Toggl.SetMiniTimerW(w);
+            Toggl.Debug("Saved mini timer location ({0}x{1} by {2})", x, y, w);
         }
     }
 

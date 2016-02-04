@@ -1228,6 +1228,19 @@ int64_t toggl_get_mini_timer_y(
     return app(context)->GetMiniTimerY();
 }
 
+void toggl_set_mini_timer_w(
+	void *context,
+	const int64_t value)
+{
+	app(context)->SetMiniTimerW(value);
+}
+
+int64_t toggl_get_mini_timer_w(
+	void *context)
+{
+	return app(context)->GetMiniTimerW();
+}
+
 void toggl_set_mini_timer_visible(
     void *context,
     const bool_t value)
