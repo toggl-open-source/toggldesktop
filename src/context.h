@@ -244,10 +244,15 @@ class Context : public TimelineDatasource {
     void SetMiniTimerX(
         const int64_t x);
 
-    int64_t GetMiniTimerY();
+	int64_t GetMiniTimerY();
 
-    void SetMiniTimerY(
-        const int64_t y);
+	void SetMiniTimerY(
+		const int64_t y);
+
+	int64_t GetMiniTimerW();
+
+	void SetMiniTimerW(
+		const int64_t w);
 
 
     error Login(

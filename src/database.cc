@@ -453,12 +453,22 @@ error Database::GetMiniTimerX(Poco::Int64* x)
 
 error Database::SetMiniTimerY(const Poco::Int64 y)
 {
-    return setSettingsValue("mini_timer_y", y);
+	return setSettingsValue("mini_timer_y", y);
 }
 
 error Database::GetMiniTimerY(Poco::Int64* y)
 {
-    return getSettingsValue("mini_timer_y", y);
+	return getSettingsValue("mini_timer_y", y);
+}
+
+error Database::SetMiniTimerW(const Poco::Int64 w)
+{
+	return setSettingsValue("mini_timer_w", w);
+}
+
+error Database::GetMiniTimerW(Poco::Int64* w)
+{
+	return getSettingsValue("mini_timer_w", w);
 }
 
 error Database::LoadWindowSettings(

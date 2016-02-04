@@ -586,6 +586,16 @@ public static partial class Toggl
         return toggl_get_mini_timer_y(ctx);
     }
 
+    public static void SetMiniTimerW(long w)
+    {
+        toggl_set_mini_timer_w(ctx, w);
+    }
+
+    public static long GetMiniTimerW()
+    {
+        return toggl_get_mini_timer_w(ctx);
+    }
+
     public static void SetMiniTimerVisible(bool visible)
     {
         toggl_set_mini_timer_visible(ctx, visible);

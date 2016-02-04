@@ -1337,6 +1337,15 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_mini_timer_w(
+        IntPtr context,
+        Int64 value);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern Int64 toggl_get_mini_timer_w(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_mini_timer_visible(
         IntPtr context,
         [MarshalAs(UnmanagedType.I1)]
