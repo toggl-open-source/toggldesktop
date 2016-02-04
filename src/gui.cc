@@ -419,7 +419,14 @@ void GUI::DisplayTimeline(
         for (std::vector<TimelineEvent>::const_iterator it = list.begin();
                 it != list.end(); it++) {
             const TimelineEvent event = *it;
-            if (epoch_time != event.Start()) {
+
+            // Calculate the start time of the chunk
+            // that fits this timeline event
+            time_t chunk_start_time =
+                (event.Start() / kTimelineChunkSeconds)
+                * kTimelineChunkSeconds;
+
+            if (epoch_time != chunk_start_time) {
                 // Skip event if does not match chunk
                 continue;
             }
