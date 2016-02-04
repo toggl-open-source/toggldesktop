@@ -516,13 +516,16 @@ class Context : public TimelineDatasource {
         TogglClient *https_client,
         const std::string email,
         const std::string password,
-        std::string *user_data_json);
-    static error me(
-        TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data,
-        const Poco::UInt64 since);
+		std::string *user_data_json);
+	static error me(
+		TogglClient *https_client,
+		const std::string email,
+		const std::string password,
+		std::string *user_data,
+		const Poco::UInt64 since);
+
+	error pullWorkspacePreferences(TogglClient* https_client);
+	error pullWorkspacePreferences(TogglClient* https_client, Workspace *workspace, std::string* json);
 
     error pushObmAction();
 

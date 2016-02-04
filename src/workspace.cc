@@ -3,6 +3,7 @@
 #include "../src/workspace.h"
 
 #include <sstream>
+#include "formatter.h"
 
 namespace toggl {
 
@@ -49,6 +50,13 @@ void Workspace::SetBusiness(const bool value) {
     }
 }
 
+void Workspace::SetLockedTime(const time_t value) {
+	if (locked_time_ != value) {
+		locked_time_ = value;
+		SetDirty();
+	}
+}
+
 void Workspace::LoadFromJSON(Json::Value n) {
     SetID(n["id"].asUInt64());
     SetName(n["name"].asString());
@@ -59,6 +67,14 @@ void Workspace::LoadFromJSON(Json::Value n) {
 
     auto profile = n["profile"].asUInt64();
     SetBusiness(profile > 13);
+}
+
+void Workspace::LoadSettingsFromJson(Json::Value n) {
+	auto lockDateString = n["report_locked_at"].asString();
+	if (!lockDateString.empty()) {
+		auto time = Formatter::Parse8601(lockDateString);
+		SetLockedTime(time);
+	}
 }
 
 std::string Workspace::ModelName() const {

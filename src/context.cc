@@ -55,6 +55,7 @@
 #include "Poco/URIStreamOpener.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
+#include <mutex>
 
 namespace toggl {
 
@@ -1989,8 +1990,15 @@ error Context::Login(
             return displayError(err);
         }
 
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
+		// TODO: get workspace lock date and constraints
+
+		err = pullWorkspacePreferences(&client);
+		if (err != noError) {
+			return displayError(err);
+		}
+
+		{
+			Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().error("cannot enable offline login, no user");
                 return noError;
@@ -4294,6 +4302,83 @@ error Context::me(
         return ex;
     }
     return noError;
+}
+
+error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
+	Poco::Mutex::ScopedLock lock(user_m_);
+
+	std::vector<Workspace*> workspaces;
+	user_->related.WorkspaceList(&workspaces);
+
+	for (std::vector<Workspace*>::const_iterator
+		it = workspaces.begin();
+		it != workspaces.end();
+		it++) {
+
+		Workspace* ws = *it;
+
+		std::string json("");
+
+		error err = pullWorkspacePreferences(toggl_client, ws, &json);
+		if (err != noError) {
+			return err;
+		}
+
+		if (json.empty())
+			continue;
+
+		Json::Value root;
+		Json::Reader reader;
+		if (!reader.parse(json, root)) {
+			return error("Failed to load workspace preferences");
+		}
+
+		ws->LoadSettingsFromJson(root);
+	}
+
+	return noError;
+}
+
+error Context::pullWorkspacePreferences(
+	TogglClient* toggl_client,
+	Workspace* workspace,
+	std::string* json) {
+
+	std::string api_token = user_->APIToken();
+
+	if (api_token.empty()) {
+		return error("cannot pull user data without API token");
+	}
+
+	try {
+		std::stringstream ss;
+		ss << "/api/v9/workspaces/"
+			<< workspace->ID()
+			<< "/preferences";
+
+		HTTPSRequest req;
+		req.host = urls::API();
+		req.relative_url = ss.str();
+		req.basic_auth_username = api_token;
+		req.basic_auth_password = "api_token";
+
+		HTTPSResponse resp = toggl_client->Get(req);
+		if (resp.err != noError) {
+			return resp.err;
+		}
+
+		*json = resp.body;
+	}
+	catch (const Poco::Exception& exc) {
+		return exc.displayText();
+	}
+	catch (const std::exception& ex) {
+		return ex.what();
+	}
+	catch (const std::string& ex) {
+		return ex;
+	}
+	return noError;
 }
 
 error Context::signup(
