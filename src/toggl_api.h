@@ -858,12 +858,12 @@ extern "C" {
         void *context,
         const char *json);
 
-	TOGGL_EXPORT void toggl_set_compact_mode(
-		void *context,
-		const bool_t value);
+    TOGGL_EXPORT void toggl_set_compact_mode(
+        void *context,
+        const bool_t value);
 
-	TOGGL_EXPORT bool_t toggl_get_compact_mode(
-		void *context);
+    TOGGL_EXPORT bool_t toggl_get_compact_mode(
+        void *context);
 
     TOGGL_EXPORT void toggl_set_keep_end_time_fixed(
         void *context,
@@ -873,26 +873,26 @@ extern "C" {
         void *context);
 
 
-	TOGGL_EXPORT void toggl_set_mini_timer_x(
-		void *context,
-		const int64_t value);
+    TOGGL_EXPORT void toggl_set_mini_timer_x(
+        void *context,
+        const int64_t value);
 
-	TOGGL_EXPORT int64_t toggl_get_mini_timer_x(
-		void *context);
+    TOGGL_EXPORT int64_t toggl_get_mini_timer_x(
+        void *context);
 
-	TOGGL_EXPORT void toggl_set_mini_timer_y(
-		void *context,
-		const int64_t value);
+    TOGGL_EXPORT void toggl_set_mini_timer_y(
+        void *context,
+        const int64_t value);
 
-	TOGGL_EXPORT int64_t toggl_get_mini_timer_y(
-		void *context);
+    TOGGL_EXPORT int64_t toggl_get_mini_timer_y(
+        void *context);
 
-	TOGGL_EXPORT void toggl_set_mini_timer_visible(
-		void *context,
-		const bool_t value);
+    TOGGL_EXPORT void toggl_set_mini_timer_visible(
+        void *context,
+        const bool_t value);
 
-	TOGGL_EXPORT bool_t toggl_get_mini_timer_visible(
-		void *context);
+    TOGGL_EXPORT bool_t toggl_get_mini_timer_visible(
+        void *context);
 
 #undef TOGGL_EXPORT
 

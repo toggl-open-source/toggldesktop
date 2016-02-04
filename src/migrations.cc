@@ -1197,29 +1197,29 @@ error Migrations::migrateSettings() {
     }
 
 
-	err = db_->Migrate(
-		"settings.mini_timer_x",
-		"ALTER TABLE settings "
-		"ADD COLUMN mini_timer_x INTEGER NOT NULL DEFAULT 0;");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "settings.mini_timer_x",
+        "ALTER TABLE settings "
+        "ADD COLUMN mini_timer_x INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
 
-	err = db_->Migrate(
-		"settings.mini_timer_y",
-		"ALTER TABLE settings "
-		"ADD COLUMN mini_timer_y INTEGER NOT NULL DEFAULT 0;");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "settings.mini_timer_y",
+        "ALTER TABLE settings "
+        "ADD COLUMN mini_timer_y INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
 
-	err = db_->Migrate(
-		"settings.mini_timer_visible",
-		"ALTER TABLE settings "
-		"ADD COLUMN mini_timer_visible INTEGER NOT NULL DEFAULT 0;");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "settings.mini_timer_visible",
+        "ALTER TABLE settings "
+        "ADD COLUMN mini_timer_visible INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
 
     return noError;
 }
