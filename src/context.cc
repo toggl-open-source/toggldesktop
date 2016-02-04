@@ -1676,26 +1676,26 @@ error Context::SaveWindowSettings(
 
 int64_t Context::GetMiniTimerX()
 {
-	int64_t value(0);
-	displayError(db()->GetMiniTimerX(&value));
-	return value;
+    int64_t value(0);
+    displayError(db()->GetMiniTimerX(&value));
+    return value;
 }
 
 void Context::SetMiniTimerX(const int64_t x)
 {
-	displayError(db()->SetMiniTimerX(x));
+    displayError(db()->SetMiniTimerX(x));
 }
 
 int64_t Context::GetMiniTimerY()
 {
-	int64_t value(0);
-	displayError(db()->GetMiniTimerY(&value));
-	return value;
+    int64_t value(0);
+    displayError(db()->GetMiniTimerY(&value));
+    return value;
 }
 
 void Context::SetMiniTimerY(const int64_t y)
 {
-	displayError(db()->SetMiniTimerY(y));
+    displayError(db()->SetMiniTimerY(y));
 }
 
 void Context::SetCompactMode(
@@ -1710,14 +1710,14 @@ bool Context::GetCompactMode() {
 }
 
 void Context::SetMiniTimerVisible(
-	const bool value) {
-	displayError(db()->SetMiniTimerVisible(value));
+    const bool value) {
+    displayError(db()->SetMiniTimerVisible(value));
 }
 
 bool Context::GetMiniTimerVisible() {
-	bool value(false);
-	displayError(db()->GetMiniTimerVisible(&value));
-	return value;
+    bool value(false);
+    displayError(db()->GetMiniTimerVisible(&value));
+    return value;
 }
 
 void Context::SetKeepEndTimeFixed

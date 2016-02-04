@@ -443,22 +443,22 @@ error Database::SaveWindowSettings(
 
 error Database::SetMiniTimerX(const Poco::Int64 x)
 {
-	return setSettingsValue("mini_timer_x", x);
+    return setSettingsValue("mini_timer_x", x);
 }
 
 error Database::GetMiniTimerX(Poco::Int64* x)
 {
-	return getSettingsValue("mini_timer_x", x);
+    return getSettingsValue("mini_timer_x", x);
 }
 
 error Database::SetMiniTimerY(const Poco::Int64 y)
 {
-	return setSettingsValue("mini_timer_y", y);
+    return setSettingsValue("mini_timer_y", y);
 }
 
 error Database::GetMiniTimerY(Poco::Int64* y)
 {
-	return getSettingsValue("mini_timer_y", y);
+    return getSettingsValue("mini_timer_y", y);
 }
 
 error Database::LoadWindowSettings(
@@ -546,12 +546,12 @@ error Database::GetCompactMode(bool *result) {
 }
 
 error Database::SetMiniTimerVisible(
-	const bool value) {
-	return setSettingsValue("mini_timer_visible", value);
+    const bool value) {
+    return setSettingsValue("mini_timer_visible", value);
 }
 
 error Database::GetMiniTimerVisible(bool* result) {
-	return getSettingsValue("mini_timer_visible", result);
+    return getSettingsValue("mini_timer_visible", result);
 }
 
 error Database::SetKeepEndTimeFixed(

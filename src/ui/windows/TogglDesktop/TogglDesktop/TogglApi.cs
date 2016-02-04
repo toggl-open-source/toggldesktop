@@ -286,176 +286,176 @@ public static partial class Toggl
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayApp(
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool open);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplaySyncState(
-            Int64 state);
+        Int64 state);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayUnsyncedItems(
-            Int64 count);
+        Int64 count);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayError(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string errmsg,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool user_error);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayOnlineState(
-            Int64 state);
+        Int64 state);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayURL(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string url);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayLogin(
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool open,
-            UInt64 user_id);
+        UInt64 user_id);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayReminder(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string title,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string informative_text);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayAutotrackerNotification(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string project_name,
-            UInt64 project_id,
-            UInt64 task_id);
+        UInt64 project_id,
+        UInt64 task_id);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayPromotion(
-            Int64 promotion_type);
+        Int64 promotion_type);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayObmExperiment(
-            UInt64 nr,
-    [MarshalAs(UnmanagedType.I1)]
+        UInt64 nr,
+        [MarshalAs(UnmanagedType.I1)]
         bool included,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool seen);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayTimeEntryList(
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool open,
-            IntPtr first);
+        IntPtr first);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayAutocomplete(
-            IntPtr first);
+        IntPtr first);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayHelpArticles(
-            IntPtr first);
+        IntPtr first);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayViewItems(
-            IntPtr first);
+        IntPtr first);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayTimeEntryEditor(
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool open,
-    IntPtr te,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr te,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string focused_field_name);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplaySettings(
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool open,
-    IntPtr settings);
+        IntPtr settings);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayTimerState(
-    IntPtr te);
+        IntPtr te);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayIdleNotification(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string since,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string duration,
-            UInt64 started,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        UInt64 started,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string description);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayUpdate(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string url);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayUpdateDownloadState(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string version,
-            int download_state);
+        int download_state);
 
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayAutotrackerRules(
-            IntPtr first,
-            UInt64 title_count,
-    [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)]
+        IntPtr first,
+        UInt64 title_count,
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)]
         string[] title_list);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayProjectColors(
-    [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)]
+        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)]
         string[] color_list,
-            UInt64 color_count);
+        UInt64 color_count);
 
     // Initialize/destroy an instance of the app
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern IntPtr toggl_context_init(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string app_name,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string app_version);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_context_clear(
-            IntPtr context);
+        IntPtr context);
 
     // Set environment. By default, production is assumed. Optional.
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_environment(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string environment);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_environment(
-            IntPtr context);
+        IntPtr context);
 
     // Optionally, disable update check
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_disable_update_check(
-            IntPtr context);
+        IntPtr context);
 
     // CA cert bundle must be configured from UI
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_cacert_path(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string path);
 
     // DB path must be configured from UI
@@ -463,8 +463,8 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_db_path(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string path);
 
     // Configure update download path for silent updates
@@ -473,774 +473,774 @@ public static partial class Toggl
     // display update callback
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_update_path(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string path);
 
     // you must free the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_update_path(
-            IntPtr context);
+        IntPtr context);
 
     // Log path must be configured from UI
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_log_path(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string path);
 
     // Log level is optional
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_log_level(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string level);
 
     // Various parts of UI can tell the app to show itself.
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_show_app(
-            IntPtr context);
+        IntPtr context);
 
     // Configure the UI callbacks. Required.
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_show_app(
-            IntPtr context,
-            TogglDisplayApp cb);
+        IntPtr context,
+        TogglDisplayApp cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_sync_state(
-            IntPtr context,
-            TogglDisplaySyncState cb);
+        IntPtr context,
+        TogglDisplaySyncState cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_unsynced_items(
-            IntPtr context,
-            TogglDisplayUnsyncedItems cb);
+        IntPtr context,
+        TogglDisplayUnsyncedItems cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_error(
-            IntPtr context,
-            TogglDisplayError cb);
+        IntPtr context,
+        TogglDisplayError cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_update(
-            IntPtr context,
-            TogglDisplayUpdate cb);
+        IntPtr context,
+        TogglDisplayUpdate cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_update_download_state(
-            IntPtr context,
-            TogglDisplayUpdateDownloadState cb);
+        IntPtr context,
+        TogglDisplayUpdateDownloadState cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_online_state(
-            IntPtr context,
-            TogglDisplayOnlineState cb);
+        IntPtr context,
+        TogglDisplayOnlineState cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_url(
-            IntPtr context,
-            TogglDisplayURL cb);
+        IntPtr context,
+        TogglDisplayURL cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_login(
-            IntPtr context,
-            TogglDisplayLogin cb);
+        IntPtr context,
+        TogglDisplayLogin cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_reminder(
-            IntPtr context,
-            TogglDisplayReminder cb);
+        IntPtr context,
+        TogglDisplayReminder cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_autotracker_notification(
-            IntPtr context,
-            TogglDisplayAutotrackerNotification cb);
+        IntPtr context,
+        TogglDisplayAutotrackerNotification cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_time_entry_list(
-            IntPtr context,
-            TogglDisplayTimeEntryList cb);
+        IntPtr context,
+        TogglDisplayTimeEntryList cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_mini_timer_autocomplete(
-            IntPtr context,
-            TogglDisplayAutocomplete cb);
+        IntPtr context,
+        TogglDisplayAutocomplete cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_help_articles(
-            IntPtr context,
-            TogglDisplayHelpArticles cb);
+        IntPtr context,
+        TogglDisplayHelpArticles cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_time_entry_autocomplete(
-            IntPtr context,
-            TogglDisplayAutocomplete cb);
+        IntPtr context,
+        TogglDisplayAutocomplete cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_project_autocomplete(
-            IntPtr context,
-            TogglDisplayAutocomplete cb);
+        IntPtr context,
+        TogglDisplayAutocomplete cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_workspace_select(
-            IntPtr context,
-            TogglDisplayViewItems cb);
+        IntPtr context,
+        TogglDisplayViewItems cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_client_select(
-            IntPtr context,
-            TogglDisplayViewItems cb);
+        IntPtr context,
+        TogglDisplayViewItems cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_tags(
-            IntPtr context,
-            TogglDisplayViewItems cb);
+        IntPtr context,
+        TogglDisplayViewItems cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_time_entry_editor(
-            IntPtr context,
-            TogglDisplayTimeEntryEditor cb);
+        IntPtr context,
+        TogglDisplayTimeEntryEditor cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_settings(
-            IntPtr context,
-            TogglDisplaySettings cb);
+        IntPtr context,
+        TogglDisplaySettings cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_timer_state(
-            IntPtr context,
-            TogglDisplayTimerState cb);
+        IntPtr context,
+        TogglDisplayTimerState cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_idle_notification(
-            IntPtr context,
-            TogglDisplayIdleNotification cb);
+        IntPtr context,
+        TogglDisplayIdleNotification cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_autotracker_rules(
-            IntPtr context,
-            TogglDisplayAutotrackerRules cb);
+        IntPtr context,
+        TogglDisplayAutotrackerRules cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_project_colors(
-            IntPtr context,
-            TogglDisplayProjectColors cb);
+        IntPtr context,
+        TogglDisplayProjectColors cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_promotion(
-            IntPtr context,
-            TogglDisplayPromotion cb);
+        IntPtr context,
+        TogglDisplayPromotion cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_obm_experiment(
-            IntPtr context,
-            TogglDisplayObmExperiment cb);
+        IntPtr context,
+        TogglDisplayObmExperiment cb);
 
     // After UI callbacks are configured, start pumping UI events
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_ui_start(
-            IntPtr context);
+        IntPtr context);
 
     // User interaction with the app
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_login(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string email,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string password);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_signup(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string email,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string password);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_google_login(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string access_token);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_password_forgot(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_open_in_browser(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_get_support(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_feedback_send(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string topic,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string details,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string filename);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_search_help_articles(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string keywords);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_view_time_entry_list(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_edit(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool edit_running_time_entry,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string focused_field_name);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_edit_preferences(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_continue(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_continue_latest(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_delete_time_entry(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_duration(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_project(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-            UInt64 task_id,
-            UInt64 project_id,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        UInt64 task_id,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string project_guid);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_date(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-            Int64 unix_timestamp);
+        Int64 unix_timestamp);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_start(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_end(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     // value is '\t' separated tag list
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_tags(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_billable(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_description(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_stop(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_discard_time_at(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-            UInt64 at,
-    [MarshalAs(UnmanagedType.I1)]
+        UInt64 at,
+        [MarshalAs(UnmanagedType.I1)]
         bool split_into_new_entry);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_discard_time_and_continue(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-            UInt64 at);
+        UInt64 at);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_remind_days(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool remind_mon,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool remind_tue,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool remind_wed,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool remind_thu,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool remind_fri,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool remind_sat,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool remind_sun);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_remind_times(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string remind_starts,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string remind_ends);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_use_idle_detection(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool use_idle_detection);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_autotrack(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_open_editor_on_shortcut(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_autodetect_proxy(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool autodetect_proxy);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_menubar_timer(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool menubar_timer);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_menubar_project(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool menubar_project);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_dock_icon(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool dock_icon);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_on_top(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool on_top);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_reminder(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool reminder);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_idle_minutes(
-            IntPtr context,
-            UInt64 idle_minutes);
+        IntPtr context,
+        UInt64 idle_minutes);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_focus_on_shortcut(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool focus_on_shortcut);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_reminder_minutes(
-            IntPtr context,
-            UInt64 reminder_minutes);
+        IntPtr context,
+        UInt64 reminder_minutes);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_manual_mode(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool manual_mode);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_proxy_settings(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool use_proxy,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string proxy_host,
-            UInt64 proxy_port,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        UInt64 proxy_port,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string proxy_username,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string proxy_password);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_window_settings(
-            IntPtr context,
-            Int64 window_x,
-            Int64 window_y,
-            Int64 window_height,
-            Int64 window_width);
+        IntPtr context,
+        Int64 window_x,
+        Int64 window_y,
+        Int64 window_height,
+        Int64 window_width);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_window_settings(
-            IntPtr context,
-            ref Int64 window_x,
-            ref Int64 window_y,
-            ref Int64 window_height,
-            ref Int64 window_width);
+        IntPtr context,
+        ref Int64 window_x,
+        ref Int64 window_y,
+        ref Int64 window_height,
+        ref Int64 window_width);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_window_maximized(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_get_window_maximized(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_window_minimized(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_get_window_minimized(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_window_edit_size_height(
-            IntPtr context,
-            Int64 value);
+        IntPtr context,
+        Int64 value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_get_window_edit_size_height(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_window_edit_size_width(
-            IntPtr context,
-            Int64 value);
+        IntPtr context,
+        Int64 value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_get_window_edit_size_width(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_key_start(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_key_start(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_key_show(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_key_show(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_key_modifier_show(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_key_modifier_show(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_key_modifier_start(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_key_modifier_start(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_logout(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_clear_cache(
-            IntPtr context);
+        IntPtr context);
 
     // returns GUID of the started time entry. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_start(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string description,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string duration,
-            UInt64 task_id,
-            UInt64 project_id,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        UInt64 task_id,
+        UInt64 project_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string project_guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string tags);
 
     // returns GUID of the new project. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_add_project(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string time_entry_guid,
-            UInt64 workspace_id,
-            UInt64 client_id,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        UInt64 workspace_id,
+        UInt64 client_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string client_guid,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string project_name,
-    [MarshalAs(UnmanagedType.I1)]
+        [MarshalAs(UnmanagedType.I1)]
         bool is_private,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string project_color);
 
     // returns GUID of the new client. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_create_client(
-            IntPtr context,
-            UInt64 workspace_id,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        UInt64 workspace_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string client_name);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_add_obm_action(
-            IntPtr context,
-            UInt64 experiment_id,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        UInt64 experiment_id,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string key,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_obm_experiment_nr(
-            UInt64 nr);
+        UInt64 nr);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_default_project(
-            IntPtr context,
-            UInt64 pid,
-            UInt64 tid);
+        IntPtr context,
+        UInt64 pid,
+        UInt64 tid);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_get_project_colors(
-            IntPtr context);
+        IntPtr context);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_default_project_name(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern UInt64 toggl_get_default_project_id(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern UInt64 toggl_get_default_task_id(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_update_channel(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string update_channel);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_update_channel(
-            IntPtr context);
+        IntPtr context);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_user_fullname(
-            IntPtr context);
+        IntPtr context);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_user_email(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_sync(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_timeline_toggle_recording(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool record_timeline);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_timeline_is_recording_enabled(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_sleep(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_wake(
-            IntPtr context);
+        IntPtr context);
 
     // Notify lib that client is online again.
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_online(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_idle_seconds(
-            IntPtr context,
-            UInt64 idle_seconds);
+        IntPtr context,
+        UInt64 idle_seconds);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_promotion_response(
-            IntPtr context,
-            Int64 promotion_type,
-            Int64 promotion_response);
+        IntPtr context,
+        Int64 promotion_type,
+        Int64 promotion_response);
 
     // Shared helpers
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_format_tracking_time_duration(
-            Int64 duration_in_seconds);
+        Int64 duration_in_seconds);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_format_tracked_time_duration(
-            Int64 duration_in_seconds);
+        Int64 duration_in_seconds);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_parse_duration_string_into_seconds(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string duration_string);
 
     // Write to the lib logger
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_debug(
-    [MarshalAs(UnmanagedType.LPWStr)]
+        [MarshalAs(UnmanagedType.LPWStr)]
         string text);
 
     // Check if sizeof view struct matches those in UI
@@ -1248,98 +1248,98 @@ public static partial class Toggl
     // you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_check_view_struct_size(
-            int time_entry_view_item_size,
-            int autocomplete_view_item_size,
-            int view_item_size,
-            int settings_size,
-            int autotracker_view_item_size);
+        int time_entry_view_item_size,
+        int autocomplete_view_item_size,
+        int view_item_size,
+        int settings_size,
+        int autotracker_view_item_size);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_run_script(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string script,
-            ref Int64 err);
+        ref Int64 err);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_autotracker_add_rule(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPWStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
         string term,
-            UInt64 project_id,
-            UInt64 task_id);
+        UInt64 project_id,
+        UInt64 task_id);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_autotracker_delete_rule(
-            IntPtr context,
-            Int64 id);
+        IntPtr context,
+        Int64 id);
 
     // Testing helpers. May change any time
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void testing_sleep(
-            int seconds);
+        int seconds);
 
     // For testing only
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool testing_set_logged_in_user(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.LPStr)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPStr)]
         string json);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_compact_mode(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
-		bool value);
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_get_compact_mode(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_keep_end_time_fixed(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
         bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_get_keep_end_time_fixed(
-            IntPtr context);
+        IntPtr context);
 
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_mini_timer_x(
-            IntPtr context,
-            Int64 value);
+        IntPtr context,
+        Int64 value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_get_mini_timer_x(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_mini_timer_y(
-            IntPtr context,
-            Int64 value);
+        IntPtr context,
+        Int64 value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_get_mini_timer_y(
-            IntPtr context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_mini_timer_visible(
-            IntPtr context,
-    [MarshalAs(UnmanagedType.I1)]
-		bool value);
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_get_mini_timer_visible(
-            IntPtr context);
+        IntPtr context);
 
 }
 

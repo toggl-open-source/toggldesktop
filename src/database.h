@@ -67,22 +67,22 @@ class Database {
 
     error LoadSettings(Settings *settings);
 
-	error LoadWindowSettings(
-		Poco::Int64 *window_x,
-		Poco::Int64 *window_y,
-		Poco::Int64 *window_height,
-		Poco::Int64 *window_width);
+    error LoadWindowSettings(
+        Poco::Int64 *window_x,
+        Poco::Int64 *window_y,
+        Poco::Int64 *window_height,
+        Poco::Int64 *window_width);
 
-	error SaveWindowSettings(
-		const Poco::Int64 window_x,
-		const Poco::Int64 window_y,
-		const Poco::Int64 window_height,
-		const Poco::Int64 window_width);
+    error SaveWindowSettings(
+        const Poco::Int64 window_x,
+        const Poco::Int64 window_y,
+        const Poco::Int64 window_height,
+        const Poco::Int64 window_width);
 
-	error SetMiniTimerX(const Poco::Int64 x);
-	error GetMiniTimerX(Poco::Int64 *x);
-	error SetMiniTimerY(const Poco::Int64 y);
-	error GetMiniTimerY(Poco::Int64 *y);
+    error SetMiniTimerX(const Poco::Int64 x);
+    error GetMiniTimerX(Poco::Int64 *x);
+    error SetMiniTimerY(const Poco::Int64 y);
+    error GetMiniTimerY(Poco::Int64 *y);
 
     error SetSettingsHasSeenBetaOffering(const bool &value);
 
@@ -132,17 +132,17 @@ class Database {
     error LoadMigrations(
         std::vector<std::string> *);
 
-	error SetCompactMode(
-		const bool);
+    error SetCompactMode(
+        const bool);
 
-	error GetCompactMode(
-		bool *);
+    error GetCompactMode(
+        bool *);
 
-	error SetMiniTimerVisible(
-		const bool);
+    error SetMiniTimerVisible(
+        const bool);
 
-	error GetMiniTimerVisible(
-		bool *);
+    error GetMiniTimerVisible(
+        bool *);
 
     error SetKeepEndTimeFixed(
         const bool);
