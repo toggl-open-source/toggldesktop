@@ -23,10 +23,10 @@
 	while (it)
 	{
 		TimelineEventView *event = [[TimelineEventView alloc] init];
-		[event load:view->FirstEvent];
+		[event load:it];
 		[self.Events addObject:event];
 		NSLog(@"Timeline event loaded: %@", event);
-		it = view->Next;
+		it = it->Next;
 	}
 }
 
