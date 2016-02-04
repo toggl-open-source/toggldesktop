@@ -2243,7 +2243,8 @@ TimeEntry *Context::Start(
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
     const std::string project_guid,
-    const std::string tags) {
+    const std::string tags,
+	const bool prevent_on_app) {
 
     // Do not even allow to add new time entries,
     // else they will linger around in the app
@@ -2297,13 +2298,13 @@ TimeEntry *Context::Start(
 
     OpenTimeEntryList();
 
-    if (settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut) {
         // Show app
         UI()->DisplayApp();
     }
 
     if (te && settings_.open_editor_on_shortcut) {
-        if (!settings_.focus_on_shortcut) {
+		if (!prevent_on_app && !settings_.focus_on_shortcut) {
             // Show app
             UI()->DisplayApp();
         }
@@ -2365,7 +2366,7 @@ void Context::OpenTimeEntryEditor(
     updateUI(render);
 }
 
-TimeEntry *Context::ContinueLatest() {
+TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
@@ -2412,13 +2413,13 @@ TimeEntry *Context::ContinueLatest() {
         updateUI(render);
     }
 
-    if (settings_.focus_on_shortcut) {
+	if (!prevent_on_app && settings_.focus_on_shortcut) {
         // Show app
         UI()->DisplayApp();
     }
 
     if (result && settings_.open_editor_on_shortcut) {
-        if (!settings_.focus_on_shortcut) {
+		if (!prevent_on_app && !settings_.focus_on_shortcut) {
             // Show app
             UI()->DisplayApp();
         }
@@ -2511,7 +2512,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
         return displayError(kCannotDeleteDeletedTimeEntry);
     }
     if (te->IsTracking()) {
-        error err = Stop();
+        error err = Stop(false);
         if (err != noError) {
             return displayError(err);
         }
@@ -2845,7 +2846,7 @@ error Context::SetTimeEntryDescription(
     return displayError(save());
 }
 
-error Context::Stop() {
+error Context::Stop(const bool prevent_on_app) {
     std::vector<TimeEntry *> stopped;
 
     {
@@ -2864,7 +2865,7 @@ error Context::Stop() {
         return noError;
     }
 
-    if (settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut) {
         UI()->DisplayApp();
     }
 

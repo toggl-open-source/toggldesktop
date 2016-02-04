@@ -498,7 +498,8 @@ extern "C" {
         const char_t *guid);
 
     TOGGL_EXPORT bool_t toggl_continue_latest(
-        void *context);
+		void *context,
+		const bool_t prevent_on_app);
 
     TOGGL_EXPORT bool_t toggl_delete_time_entry(
         void *context,
@@ -548,7 +549,8 @@ extern "C" {
         const char_t *value);
 
     TOGGL_EXPORT bool_t toggl_stop(
-        void *context);
+		void *context,
+		const bool_t prevent_on_app);
 
     TOGGL_EXPORT bool_t toggl_discard_time_at(
         void *context,
@@ -732,7 +734,8 @@ extern "C" {
         const uint64_t task_id,
         const uint64_t project_id,
         const char_t *project_guid,
-        const char_t *tags);
+        const char_t *tags,
+		const bool_t prevent_on_app);
 
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_add_project(

@@ -70,7 +70,7 @@ namespace TogglDesktop
 
         private static void onNew(object sender, RoutedEventArgs e)
         {
-            StartTimeEntry();
+            StartTimeEntry(preventOnApp: sender is MiniTimerWindow);
         }
 
         #endregion
@@ -86,7 +86,8 @@ namespace TogglDesktop
 
         private static void onNewFromPaste(object sender, ExecutedRoutedEventArgs e)
         {
-            StartTimeEntry(description:Clipboard.GetText().Replace(Environment.NewLine, " "));
+            StartTimeEntry(description:Clipboard.GetText().Replace(Environment.NewLine, " "),
+                preventOnApp: sender is MiniTimerWindow);
         }
 
         #endregion
@@ -102,7 +103,7 @@ namespace TogglDesktop
 
         private static void onContinue(object sender, RoutedEventArgs e)
         {
-            Toggl.ContinueLatest();
+            Toggl.ContinueLatest(sender is MiniTimerWindow);
         }
 
         #endregion
@@ -118,7 +119,7 @@ namespace TogglDesktop
 
         private static void onStop(object sender, RoutedEventArgs e)
         {
-            Toggl.Stop();
+            Toggl.Stop(sender is MiniTimerWindow);
         }
 
         #endregion
@@ -346,7 +347,8 @@ namespace TogglDesktop
 
         #region implementations
 
-        public static void StartTimeEntry(bool continueIfNotInManualMode = false, string description = "")
+        public static void StartTimeEntry(bool continueIfNotInManualMode = false,
+            string description = "", bool preventOnApp = false)
         {
             if (isInManualMode)
             {
@@ -357,11 +359,11 @@ namespace TogglDesktop
             {
                 if (continueIfNotInManualMode)
                 {
-                    Toggl.ContinueLatest();
+                    Toggl.ContinueLatest(preventOnApp);
                 }
                 else
                 {
-                    Toggl.Start(description, "", 0, 0, "", "");
+                    Toggl.Start(description, "", 0, 0, "", "", preventOnApp);
                 }
             }
         }

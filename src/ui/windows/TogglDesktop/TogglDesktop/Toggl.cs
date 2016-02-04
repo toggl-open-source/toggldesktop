@@ -234,9 +234,9 @@ public static partial class Toggl
         return toggl_continue(ctx, guid);
     }
 
-    public static bool ContinueLatest()
+    public static bool ContinueLatest(bool preventOnApp = false)
     {
-        return toggl_continue_latest(ctx);
+        return toggl_continue_latest(ctx, preventOnApp);
     }
 
     public static bool DeleteTimeEntry(string guid)
@@ -318,9 +318,9 @@ public static partial class Toggl
 
     #endregion
 
-    public static bool Stop()
+    public static bool Stop(bool preventOnApp = false)
     {
-        return toggl_stop(ctx);
+        return toggl_stop(ctx, preventOnApp);
     }
 
     public static bool DiscardTimeAt(string guid, UInt64 at, bool split)
@@ -441,7 +441,8 @@ public static partial class Toggl
         UInt64 task_id,
         UInt64 project_id,
         string project_guid,
-        string tags)
+        string tags,
+        bool preventOnApp = false)
     {
         return toggl_start(ctx,
                            description,
@@ -449,7 +450,8 @@ public static partial class Toggl
                            task_id,
                            project_id,
                            project_guid,
-                           tags);
+                           tags,
+                           preventOnApp);
     }
 
     public static string AddProject(

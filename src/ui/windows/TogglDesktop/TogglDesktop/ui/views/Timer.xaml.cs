@@ -39,6 +39,8 @@ namespace TogglDesktop
             this.setUIToStoppedState();
         }
 
+        public bool PreventOnApp { get; set; }
+
         private void setupSecondsTimer()
         {
             this.secondsTimer.Interval = TimeSpan.FromSeconds(1);
@@ -193,7 +195,7 @@ namespace TogglDesktop
 
         private void onManualAddButtonClick(object sender, RoutedEventArgs e)
         {
-            var guid = Toggl.Start("", "0", 0, 0, "", "");
+            var guid = Toggl.Start("", "0", 0, 0, "", "", this.PreventOnApp);
             Toggl.Edit(guid, false, Toggl.Duration);
         }
 
@@ -273,7 +275,8 @@ namespace TogglDesktop
                     this.completedProject.TaskId,
                     this.completedProject.ProjectId,
                     "",
-                    ""
+                    "",
+                    this.PreventOnApp
                     );
 
                 if (!string.IsNullOrEmpty(guid))
@@ -287,7 +290,7 @@ namespace TogglDesktop
         {
             using (Performance.Measure("stopping time entry from timer"))
             {
-                Toggl.Stop();
+                Toggl.Stop(this.PreventOnApp);
             }
         }
 
