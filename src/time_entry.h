@@ -129,6 +129,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
         return DurationInSeconds();
     }
 
+    Poco::Int64 RealDurationInSeconds() const;
+
  private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;

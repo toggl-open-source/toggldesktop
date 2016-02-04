@@ -102,11 +102,15 @@ class Database {
 
     error SetSettingsReminder(const bool &reminder);
 
+    error SetSettingsPomodoro(const bool &pomodoro);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool &focus_on_shortcut);
 
     error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
+
+    error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
 
     error SetSettingsManualMode(const bool &manual_mode);
 

@@ -138,6 +138,9 @@ public static partial class Toggl
     public delegate void DisplayObmExperiment(
         ulong id, bool included, bool seenBefore);
 
+    public delegate void DisplayPomodoro(
+        string title, string informativeText);
+
     #endregion
 
     #region api calls
@@ -400,6 +403,16 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_pomodoro(ctx, settings.Pomodoro))
+        {
+            return false;
+        }
+
+        if (!toggl_set_settings_pomodoro_minutes(ctx, settings.PomodoroMinutes))
+        {
+            return false;
+        }
+
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 
@@ -624,6 +637,7 @@ public static partial class Toggl
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
     public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
+    public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -835,6 +849,13 @@ public static partial class Toggl
                 OnDisplayObmExperiment(id, included, seenBefore);
             }
         });
+        toggl_on_pomodoro(ctx, (title, text) =>
+        {
+            using (Performance.Measure("Calling OnDisplayPomodoro"))
+            {
+                OnDisplayPomodoro(title, text);
+            }
+        });
     }
 
     #endregion
@@ -875,6 +896,19 @@ public static partial class Toggl
                 Console.WriteLine("Environment = {0}", Env);
             }
         }
+    }
+
+    public static void InitialiseLog()
+    {
+        string path = Path.Combine(Environment.GetFolderPath(
+            Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+
+        if (null == LogPath)
+        {
+            LogPath = Path.Combine(path, "toggldesktop.log");
+        }
+        toggl_set_log_path(LogPath);
+        toggl_set_log_level("debug");
     }
 
     public static bool StartUI(string version, ulong? experimentId)
@@ -931,13 +965,6 @@ public static partial class Toggl
         // Configure log, db path
         Directory.CreateDirectory(path);
 
-        if (null == LogPath)
-        {
-            LogPath = Path.Combine(path, "toggldesktop.log");
-        }
-        toggl_set_log_path(LogPath);
-        toggl_set_log_level("debug");
-
         if (null == DatabasePath)
         {
             DatabasePath = Path.Combine(path, "toggldesktop.db");
@@ -967,8 +994,10 @@ public static partial class Toggl
     {
         var update = createUpdateAction();
 
-        if (update != null)
-            update();
+        if (update == null)
+            return;
+
+        update();
 
         Debug("Failed to start updater process");
     }
@@ -1050,45 +1079,27 @@ public static partial class Toggl
 
     private static List<TogglGenericView> convertToViewItemList(IntPtr first)
     {
-        return marshalList<TogglGenericView>(
-            first, n => n.Next, "marshalling view item list");
+        return marshalList<TogglGenericView>(first, n => n.Next);
     }
 
     private static List<TogglAutocompleteView> convertToAutocompleteList(IntPtr first)
     {
-        return marshalList<TogglAutocompleteView>(
-            first, n => n.Next, "marshalling auto complete list");
+        return marshalList<TogglAutocompleteView>(first, n => n.Next);
     }
 
     private static List<TogglTimeEntryView> convertToTimeEntryList(IntPtr first)
     {
-        return marshalList<TogglTimeEntryView>(
-            first, n => n.Next, "marshalling time entry list");
+        return marshalList<TogglTimeEntryView>(first, n => n.Next);
     }
 
     private static List<TogglAutotrackerRuleView> convertToAutotrackerEntryList(IntPtr first)
     {
-        return marshalList<TogglAutotrackerRuleView>(
-            first, n => n.Next, "marshalling time entry list");
+        return marshalList<TogglAutotrackerRuleView>(first, n => n.Next);
     }
 
     #endregion
 
     #region low level
-
-    private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext, string performanceMessage)
-    where T : struct
-    {
-        if (performanceMessage == null)
-            return marshalList(node, getNext);
-
-        using (var token = Performance.Measure(performanceMessage))
-        {
-            var list = marshalList(node, getNext);
-            token.WithInfo("count: " + list.Count);
-            return list;
-        }
-    }
 
     private static List<T> marshalList<T>(IntPtr node, Func<T, IntPtr> getNext)
     where T : struct

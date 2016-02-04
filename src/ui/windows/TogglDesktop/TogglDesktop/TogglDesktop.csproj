@@ -123,10 +123,6 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="ServiceStack.Text, Version=4.0.40.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.4.0.40\lib\net40\ServiceStack.Text.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
@@ -200,13 +196,14 @@
       <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\Experiments\Experiment87.cs" />
-    <Compile Include="ui\Experiments\Experiment80.cs" />
-    <Compile Include="ui\Experiments\Experiment87WelcomeScreen.xaml.cs">
-      <DependentUpon>Experiment87WelcomeScreen.xaml</DependentUpon>
+    <Compile Include="ui\Experiments\ExperimentSimpleWelcomeScreen.cs" />
+    <Compile Include="ui\Experiments\ExperimentBasicOverviewScreen.cs" />
+    <Compile Include="ui\Experiments\SimpleWelcomeScreen.xaml.cs">
+      <DependentUpon>SimpleWelcomeScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentBase.cs" />
     <Compile Include="ui\Experiments\IExperiment.cs" />
@@ -248,6 +245,9 @@
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
     <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
       <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\PomodoroNotification.xaml.cs">
+      <DependentUpon>PomodoroNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
@@ -571,7 +571,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ui\Experiments\Experiment87WelcomeScreen.xaml">
+    <Page Include="ui\Experiments\SimpleWelcomeScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -724,6 +724,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\windows\MiniTimerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\PomodoroNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -109,6 +109,8 @@ Context::Context(const std::string app_name, const std::string app_version)
     if (!reminder_.isRunning()) {
         reminder_.start();
     }
+
+    last_tracking_reminder_time_ = time(0);
 }
 
 Context::~Context() {
@@ -1609,6 +1611,11 @@ error Context::SetSettingsReminder(const bool reminder) {
         db()->SetSettingsReminder(reminder));
 }
 
+error Context::SetSettingsPomodoro(const bool pomodoro) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsPomodoro(pomodoro));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -1627,6 +1634,11 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsReminderMinutes(reminder_minutes));
+}
+
+error Context::SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsPomodoroMinutes(pomodoro_minutes));
 }
 
 error Context::LoadWindowSettings(
@@ -2268,6 +2280,8 @@ TimeEntry *Context::Start(
                           pid,
                           project_guid,
                           tags);
+
+        last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2276,15 +2290,26 @@ TimeEntry *Context::Start(
         return nullptr;
     }
 
-    // just show the app
-    UI()->DisplayApp();
-
     if ("production" == environment_) {
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
                                           task_id || project_id);
     }
 
     OpenTimeEntryList();
+
+    if (settings_.focus_on_shortcut) {
+        // Show app
+        UI()->DisplayApp();
+    }
+
+    if (te && settings_.open_editor_on_shortcut) {
+        if (!settings_.focus_on_shortcut) {
+            // Show app
+            UI()->DisplayApp();
+        }
+        // Open time entry in editor
+        OpenTimeEntryEditor(te->GUID(), true, "");
+    }
 
     return te;
 }
@@ -2367,11 +2392,11 @@ TimeEntry *Context::ContinueLatest() {
         result = user_->Continue(
             latest->GUID(),
             settings_.manual_mode);
+
+        last_pomodoro_reminder_time_ = time(0);
     }
 
-    if (settings_.focus_on_shortcut) {
-        UI()->DisplayApp();
-    }
+
 
     error err = save();
     if (noError != err) {
@@ -2385,6 +2410,20 @@ TimeEntry *Context::ContinueLatest() {
         render.display_time_entry_editor = true;
         render.time_entry_editor_guid = result->GUID();
         updateUI(render);
+    }
+
+    if (settings_.focus_on_shortcut) {
+        // Show app
+        UI()->DisplayApp();
+    }
+
+    if (result && settings_.open_editor_on_shortcut) {
+        if (!settings_.focus_on_shortcut) {
+            // Show app
+            UI()->DisplayApp();
+        }
+        // Open time entry in editor
+        OpenTimeEntryEditor(result->GUID(), true, "");
     }
 
     return result;
@@ -2418,10 +2457,8 @@ TimeEntry *Context::Continue(
         result = user_->Continue(
             GUID,
             settings_.manual_mode);
-    }
 
-    if (settings_.focus_on_shortcut) {
-        UI()->DisplayApp();
+        last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2503,6 +2540,7 @@ error Context::SetTimeEntryDuration(
     }
     te->SetDurationUserInput(duration);
 
+    last_pomodoro_reminder_time_ = te->Start();
     return displayError(save());
 }
 
@@ -2648,6 +2686,7 @@ error Context::SetTimeEntryStart(
 
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
+    last_pomodoro_reminder_time_ = te->Start();
     return displayError(save());
 }
 
@@ -2816,6 +2855,8 @@ error Context::Stop() {
             return noError;
         }
         user_->Stop(&stopped);
+
+        last_tracking_reminder_time_ = time(0);
     }
 
     if (stopped.empty()) {
@@ -3585,19 +3626,21 @@ void Context::SetOnline() {
 
 void Context::displayReminder() {
     if (!settings_.reminder) {
-        logger().debug("Reminder is not enabled by user");
         return;
     }
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
-            logger().warning("User logged out, cannot remind");
             return;
         }
 
         if (user_ && user_->RunningTimeEntry()) {
-            logger().debug("User is already tracking time, no need to remind");
+            return;
+        }
+
+        if (time(0) - last_tracking_reminder_time_
+                < settings_.reminder_minutes * 60) {
             return;
         }
     }
@@ -3644,7 +3687,34 @@ void Context::displayReminder() {
         }
     }
 
+    last_tracking_reminder_time_ = time(0);
+
     UI()->DisplayReminder();
+}
+
+void Context::displayPomodoro() {
+    if (!settings_.pomodoro) {
+        return;
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            return;
+        }
+        if (!user_->RunningTimeEntry()) {
+            return;
+        }
+
+        if (time(0) - last_pomodoro_reminder_time_
+                < settings_.pomodoro_minutes * 60) {
+            return;
+        }
+
+        last_pomodoro_reminder_time_ = time(0);
+    }
+
+    UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent event) {
@@ -3826,23 +3896,22 @@ void Context::uiUpdaterActivity() {
     }
 }
 
-void Context::reminderActivity() {
-    while (!reminder_.isStopped()) {
-        int sleep_minutes = settings_.reminder_minutes;
-        if (sleep_minutes < 1) {
-            sleep_minutes = 1;
-        }
-        int sleep_seconds = sleep_minutes * 60;
+void Context::checkReminders() {
+    displayReminder();
+    displayPomodoro();
+}
 
+void Context::reminderActivity() {
+    while (true) {
         // Sleep in increments for faster shutdown.
-        for (int i = 0; i < 4 * sleep_seconds; i++) {
+        for (int i = 0; i < 4; i++) {
             if (reminder_.isStopped()) {
                 return;
             }
             Poco::Thread::sleep(250);
         }
 
-        displayReminder();
+        checkReminders();
     }
 }
 

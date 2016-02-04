@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ServiceStack;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -77,6 +77,9 @@ namespace TogglDesktop
         private readonly ToolTip durationToolTip = new ToolTip();
         private readonly ToolTip tagsToolTip = new ToolTip();
         private bool selected;
+        private Point mouseDownPosition;
+        private bool isMouseDown;
+        private bool dragging;
 
         public TimeEntryCell()
         {
@@ -214,22 +217,22 @@ namespace TogglDesktop
 
         #region open edit window event handlers
 
-        private void labelDuration_MouseDown(object sender, MouseButtonEventArgs e)
+        private void labelDuration_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Duration);
         }
 
-        private void labelDescription_MouseDown(object sender, MouseButtonEventArgs e)
+        private void labelDescription_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Description);
         }
 
-        private void labelProject_MouseDown(object sender, MouseButtonEventArgs e)
+        private void labelProject_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Project);
         }
 
-        private void entry_MouseDown(object sender, MouseButtonEventArgs e)
+        private void entry_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, "");
         }
@@ -245,6 +248,56 @@ namespace TogglDesktop
 
         #endregion
 
+        #region drag drop
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            this.mouseDownPosition = e.GetPosition(null);
+            this.isMouseDown = true;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            this.tryStartDrag(e);
+        }
+
+        public void MoveToDay(DateTime date)
+        {
+            Toggl.SetTimeEntryDate(this.guid, date);
+        }
+
+        public void DeleteTimeEntry()
+        {
+            Toggl.AskToDeleteEntry(this.guid);
+        }
+
+        private void tryStartDrag(MouseEventArgs e, bool ignoreDistance = false)
+        {
+            if (this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
+            {
+                var d = e.GetPosition(null) - this.mouseDownPosition;
+
+                if (!ignoreDistance)
+                {
+                    if (Math.Abs(d.X) < SystemParameters.MinimumHorizontalDragDistance ||
+                        Math.Abs(d.Y) < SystemParameters.MinimumVerticalDragDistance)
+                        return;
+                }
+
+                this.EntryBackColor = this.entryHoverColor;
+                this.dragging = true;
+                DragDrop.DoDragDrop(this, new DataObject("time-entry-cell", this), DragDropEffects.Move);
+                this.dragging = false;
+                this.EntryBackColor = idleBackColor;
+
+                e.Handled = true;
+            }
+
+            this.isMouseDown = false;
+        }
+
+        #endregion
+
         private void buttonContinue_Click(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("continuing time entry from cell"))
@@ -253,7 +306,6 @@ namespace TogglDesktop
             }
         }
 
-
         private void entryMouseEnter(object sender, MouseEventArgs e)
         {
             this.EntryBackColor = this.entryHoverColor;
@@ -261,7 +313,12 @@ namespace TogglDesktop
 
         private void entryMouseLeave(object sender, MouseEventArgs e)
         {
+            if (this.dragging)
+                return;
+
+            this.tryStartDrag(e, true);
             this.EntryBackColor = idleBackColor;
+            this.isMouseDown = false;
         }
 
     }

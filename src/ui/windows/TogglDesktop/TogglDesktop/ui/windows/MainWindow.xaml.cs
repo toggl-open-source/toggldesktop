@@ -115,6 +115,7 @@ namespace TogglDesktop
         private void initializeCustomNotifications()
         {
             new AutotrackerNotification(this.taskbarIcon, this);
+            new PomodoroNotification(this.taskbarIcon, this);
         }
 
         private void initializeContextMenu()
@@ -873,6 +874,11 @@ namespace TogglDesktop
             where T : Window
         {
             return (T)this.childWindows.First(w => w is T);
+        }
+
+        public T GetView<T>()
+        {
+            return (T)this.views.FirstOrDefault(v => v is T);
         }
 
         private void changeThemeTest(object sender, RoutedEventArgs e)

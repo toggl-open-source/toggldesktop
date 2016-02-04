@@ -109,6 +109,7 @@ BOOL manualMode = NO;
 		free(str);
 		[Utils setUpdaterChannel:channel];
 	}
+	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -337,14 +338,24 @@ BOOL manualMode = NO;
 	}
 
 	// handle autotracker notification
-	if (notification && notification.userInfo && notification.userInfo[@"autotracker"] != nil)
+	if (notification && notification.userInfo)
 	{
-		NSNumber *project_id = notification.userInfo[@"project_id"];
-		NSNumber *task_id = notification.userInfo[@"task_id"];
-		NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
-		char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "");
-		free(guid);
-		return;
+		if (notification.userInfo[@"autotracker"] != nil)
+		{
+			NSNumber *project_id = notification.userInfo[@"project_id"];
+			NSNumber *task_id = notification.userInfo[@"task_id"];
+			NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
+			char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "");
+			free(guid);
+			return;
+		}
+
+		// handle pomodoro timer
+		if (notification.userInfo[@"pomodoro"] != nil)
+		{
+			toggl_stop(ctx);
+			return;
+		}
 	}
 
 	// handle other notifications; we only have reminder at the moment
@@ -412,7 +423,6 @@ BOOL manualMode = NO;
 							 new_time_entry.ProjectID,
 							 0,
 							 0);
-	toggl_edit(ctx, guid, true, "");
 	free(guid);
 }
 
@@ -1141,6 +1151,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_login(ctx, on_login);
 	toggl_on_url(ctx, on_url);
 	toggl_on_reminder(ctx, on_reminder);
+	toggl_on_pomodoro(ctx, on_pomodoro);
 	toggl_on_time_entry_list(ctx, on_time_entry_list);
 	toggl_on_time_entry_autocomplete(ctx, on_time_entry_autocomplete);
 	toggl_on_mini_timer_autocomplete(ctx, on_mini_timer_autocomplete);
@@ -1430,6 +1441,27 @@ void on_reminder(const char *title, const char *informative_text)
 
 	notification.hasActionButton = YES;
 	notification.actionButtonTitle = @"Track";
+	notification.otherButtonTitle = @"Close";
+
+	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
+	[center scheduleNotification:notification];
+}
+
+void on_pomodoro(const char *title, const char *informative_text)
+{
+	NSUserNotification *notification = [[NSUserNotification alloc] init];
+
+	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
+	[notification setValue:@YES forKey:@"_showsButtons"];
+
+	[notification setTitle:[NSString stringWithUTF8String:title]];
+	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
+	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+
+	notification.userInfo = @{ @"pomodoro": @"YES" };
+
+	notification.hasActionButton = YES;
+	notification.actionButtonTitle = @"Stop";
 	notification.otherButtonTitle = @"Close";
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];

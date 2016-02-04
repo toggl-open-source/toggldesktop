@@ -139,11 +139,15 @@ class Context : public TimelineDatasource {
 
     error SetSettingsReminder(const bool reminder);
 
+    error SetSettingsPomodoro(const bool reminder);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
 
     error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
+
+    error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
 
     error SetSettingsManualMode(const bool manual_mode);
 
@@ -417,6 +421,7 @@ class Context : public TimelineDatasource {
 
  protected:
     void uiUpdaterActivity();
+    void checkReminders();
     void reminderActivity();
 
  private:
@@ -466,6 +471,8 @@ class Context : public TimelineDatasource {
                                 TimeEntry *te,
                                 const std::string focused_field_name);
     void displayReminder();
+
+    void displayPomodoro();
 
     void updateUI(const UIElements &elements);
 
@@ -567,6 +574,8 @@ class Context : public TimelineDatasource {
 
     Poco::UInt64 last_sync_started_;
     Poco::Int64 sync_interval_seconds_;
+    Poco::UInt64 last_tracking_reminder_time_;
+    Poco::UInt64 last_pomodoro_reminder_time_;
 
     bool update_check_disabled_;
 

@@ -39,7 +39,9 @@ class Settings : public BaseModel {
     , remind_ends("")
     , autotrack(false)
     , open_editor_on_shortcut(false)
-    , has_seen_beta_offering(false) {}
+    , has_seen_beta_offering(false)
+    , pomodoro(false)
+    , pomodoro_minutes(0) {}
 
     virtual ~Settings() {}
 
@@ -66,6 +68,8 @@ class Settings : public BaseModel {
     bool autotrack;
     bool open_editor_on_shortcut;
     bool has_seen_beta_offering;
+    bool pomodoro;
+    Poco::UInt64 pomodoro_minutes;
 
     bool IsSame(const Settings &other) const;
 

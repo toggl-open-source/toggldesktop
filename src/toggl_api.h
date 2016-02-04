@@ -147,6 +147,8 @@ extern "C" {
         char_t *RemindEnds;
         bool_t Autotrack;
         bool_t OpenEditorOnShortcut;
+        bool_t Pomodoro;
+        uint64_t PomodoroMinutes;
     } TogglSettingsView;
 
     typedef struct {
@@ -192,6 +194,10 @@ extern "C" {
         const uint64_t user_id);
 
     typedef void (*TogglDisplayReminder)(
+        const char_t *title,
+        const char_t *informative_text);
+
+    typedef void (*TogglDisplayPomodoro)(
         const char_t *title,
         const char_t *informative_text);
 
@@ -362,6 +368,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_reminder(
         void *context,
         TogglDisplayReminder cb);
+
+    TOGGL_EXPORT void toggl_on_pomodoro(
+        void *context,
+        TogglDisplayPomodoro cb);
 
     TOGGL_EXPORT void toggl_on_autotracker_notification(
         void *context,
@@ -602,6 +612,10 @@ extern "C" {
         void *context,
         const bool_t reminder);
 
+    TOGGL_EXPORT bool_t toggl_set_settings_pomodoro(
+        void *context,
+        const bool_t pomodoro);
+
     TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,
         const uint64_t idle_minutes);
@@ -613,6 +627,10 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_set_settings_reminder_minutes(
         void *context,
         const uint64_t reminder_minutes);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_pomodoro_minutes(
+        void *context,
+        const uint64_t pomodoro_minutes);
 
     TOGGL_EXPORT bool_t toggl_set_settings_manual_mode(
         void *context,

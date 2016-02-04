@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignWidth="300"
-             Background="#F7F7F7">
+             Background="#F7F7F7"
+             AllowDrop="True">
 
     <StackPanel>
         <Button Height="{StaticResource TimeEntryDayHeaderHeight}"

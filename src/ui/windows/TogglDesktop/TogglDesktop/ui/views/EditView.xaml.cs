@@ -25,6 +25,7 @@ namespace TogglDesktop
         private string selectedClientGUID;
         private ulong selectedClientId;
         private string selectedClientName;
+        private bool isCreatingProject;
 
         public EditView()
         {
@@ -33,7 +34,7 @@ namespace TogglDesktop
 
             Toggl.OnLogin += this.onLogin;
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
-            Toggl.OnTimeEntryAutocomplete += this.onTimeEntryAutocomplete;
+            Toggl.OnMinitimerAutocomplete += this.onMinitimerAutocomplete;
             Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
             Toggl.OnClientSelect += this.onClientSelect;
             Toggl.OnTags += this.onTags;
@@ -215,14 +216,14 @@ namespace TogglDesktop
 
         #region auto completion
 
-        private void onTimeEntryAutocomplete(List<Toggl.TogglAutocompleteView> list)
+        private void onMinitimerAutocomplete(List<Toggl.TogglAutocompleteView> list)
         {
-            if (this.TryBeginInvoke(this.onTimeEntryAutocomplete, list))
+            if (this.TryBeginInvoke(this.onMinitimerAutocomplete, list))
                 return;
 
             using (Performance.Measure("building edit view entry auto complete controller, {0} items", list.Count))
             {
-                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForDescriptions(list));
+                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
             }
         }
 
@@ -404,7 +405,11 @@ namespace TogglDesktop
             this.descriptionTextBox.SetText(item.Description);
 
             Toggl.SetTimeEntryDescription(this.timeEntry.GUID, item.Description);
-            Toggl.SetTimeEntryProject(this.timeEntry.GUID, item.TaskID, item.ProjectID, "");
+
+            if (item.ProjectID != 0)
+            {
+                Toggl.SetTimeEntryProject(this.timeEntry.GUID, item.TaskID, item.ProjectID, "");
+            }
         }
 
         private void descriptionAutoComplete_OnConfirmWithoutCompletion(object sender, string text)
@@ -575,6 +580,9 @@ namespace TogglDesktop
 
         private void confirmNewProject()
         {
+            if (this.isCreatingProject)
+                return;
+
             if (this.isInNewClientMode)
             {
                 this.tryCreatingNewClient(this.clientTextBox.Text);
@@ -594,11 +602,16 @@ namespace TogglDesktop
                 return false;
             }
 
-            return Toggl.AddProject(
+            this.isCreatingProject = true;
+
+            var ret = Toggl.AddProject(
                 this.timeEntry.GUID, this.selectedWorkspaceId,
                 this.selectedClientId, this.selectedClientGUID,
                 text, false, color) != null;
 
+            this.isCreatingProject = false;
+
+            return ret;
         }
 
         private void projectSaveButton_Click(object sender, RoutedEventArgs e)

@@ -28,6 +28,8 @@ Table of Contents
 
 Please check OS specific requirements below.
 
+_By default the app builds for testing server. To use the compiled app with live server see this guide [https://github.com/toggl/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers](https://github.com/toggl/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers)_
+
 ## Build using Makefile
 
 First, build dependencies:
@@ -123,9 +125,11 @@ If you have Cygwin installed, you can also build the app from from Cygwin termin
 
 Toggl built and signed app for OSX is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). You need at least OSX 10.8.
 
-## Windows
+## Windows (64 bit only)
 
-Toggl built and signed app for Windows is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=stable). App has been tested on Windows 7, 8 and 8.1
+Toggl built and signed app for Windows is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=stable). App has been tested on Windows 7, 8, 8.1 and 10.
+
+Toggl Desktop Windows app has not been tested on Surface type touchscreen environments.
 
 ## Linux (64 bit only)
 

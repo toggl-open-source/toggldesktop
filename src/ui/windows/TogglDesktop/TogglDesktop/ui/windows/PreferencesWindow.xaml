@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="430" Width="500"
+        Height="470" Width="500"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Preferences"
@@ -35,27 +35,40 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <CheckBox Grid.Column="0" Grid.Row="0"
                             Name="idleDetectionCheckBox" x:FieldModifier="private"
                             HorizontalContentAlignment="Stretch"
                             Margin="5">Idle Detection</CheckBox>
-                        <Grid Margin="5" Grid.Column="1" Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Margin="5" Grid.Column="1" Grid.Row="0"
+                                    Orientation="Horizontal">
                             <TextBox Name="idleDetectionDurationTextBox" x:FieldModifier="private"
-                                    Grid.Column="0" HorizontalContentAlignment="Right"
+                                    Width="30"  HorizontalContentAlignment="Right" 
                                   IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">5</TextBox>
-                            <TextBlock Grid.Column="1" Margin="4 0 0 0"
+                            <TextBlock Margin="4 0 0 0"
                                   IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">minutes</TextBlock>
-                        </Grid>
+                        </StackPanel>
+
                         <CheckBox Grid.Column="0" Grid.Row="1"
+                            Name="enablePomodoroCheckBox" x:FieldModifier="private"
+                            HorizontalContentAlignment="Stretch"
+                            Margin="5">Pomodoro Timer</CheckBox>
+                        <StackPanel Margin="5" Grid.Column="1" Grid.Row="1"
+                                    Orientation="Horizontal">
+                            <TextBox Name="pomodoroTimerDuration" x:FieldModifier="private"
+                                    Width="30"  HorizontalContentAlignment="Right" 
+                                  IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">5</TextBox>
+                            <TextBlock Margin="4 0 0 0"
+                                  IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">minutes</TextBlock>
+                        </StackPanel>
+
+
+                        <CheckBox Grid.Column="0" Grid.Row="2"
                             Name="recordTimelineCheckBox" x:FieldModifier="private"
                             Margin="5">Record timeline</CheckBox>
-                        <CheckBox Grid.Column="0" Grid.Row="2"
+                        <CheckBox Grid.Column="0" Grid.Row="3"
                             Name="onTopCheckBox" x:FieldModifier="private"
                             Margin="5">On top of other windows</CheckBox>
 

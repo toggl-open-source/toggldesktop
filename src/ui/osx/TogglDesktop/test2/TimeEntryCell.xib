@@ -153,13 +153,13 @@
                     <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="DurationBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="lUV-Fj-IYJ">
-                    <rect key="frame" x="183" y="16" width="58" height="16"/>
+                    <rect key="frame" x="177" y="16" width="63" height="16"/>
                     <view key="contentView">
-                        <rect key="frame" x="0.0" y="0.0" width="58" height="16"/>
+                        <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
-                                <rect key="frame" x="0.0" y="0.0" width="57" height="16"/>
+                                <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                                 <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="03:21:30" id="Ten-lK-6RR">
                                     <font key="font" metaFont="cellTitle"/>
@@ -172,7 +172,7 @@
                     </view>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="Nob-mi-BiS"/>
-                        <constraint firstAttribute="width" constant="58" id="iL1-tt-qe0"/>
+                        <constraint firstAttribute="width" constant="63" id="iL1-tt-qe0"/>
                     </constraints>
                     <animations/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -185,7 +185,7 @@
                 <constraint firstItem="ar8-w3-mLZ" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="BO9-BK-fhw"/>
                 <constraint firstItem="lUV-Fj-IYJ" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" constant="19" id="ExC-NY-ev5"/>
                 <constraint firstItem="A8h-uh-nk3" firstAttribute="centerY" secondItem="6v5-Qq-QVS" secondAttribute="centerY" id="PXQ-QR-ZJY"/>
-                <constraint firstAttribute="trailing" secondItem="lUV-Fj-IYJ" secondAttribute="trailing" constant="11" id="XlK-29-Fjr"/>
+                <constraint firstAttribute="trailing" secondItem="lUV-Fj-IYJ" secondAttribute="trailing" constant="12" id="XlK-29-Fjr"/>
                 <constraint firstItem="pUA-1d-pGg" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" constant="15" id="Z4p-5J-fs2"/>
                 <constraint firstAttribute="trailing" secondItem="ar8-w3-mLZ" secondAttribute="trailing" id="fix-Va-WqO"/>
                 <constraint firstAttribute="trailing" secondItem="pUA-1d-pGg" secondAttribute="trailing" constant="77" id="hEJ-0H-grM"/>

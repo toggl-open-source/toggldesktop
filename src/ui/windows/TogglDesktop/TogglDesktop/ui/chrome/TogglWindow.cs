@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+
 namespace TogglDesktop
 {
     public class TogglWindow : ChromelessWindow
@@ -103,6 +104,7 @@ namespace TogglDesktop
         }
 
         #endregion
+
 
     }
 }

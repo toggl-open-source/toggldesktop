@@ -447,6 +447,12 @@ Json::Value TimeEntry::SaveToJSON() const {
     return n;
 }
 
+Poco::Int64 TimeEntry::RealDurationInSeconds() const {
+    auto now = time(0);
+
+    return now + DurationInSeconds();
+}
+
 void TimeEntry::loadTagsFromJSON(Json::Value list) {
     TagNames.clear();
 
