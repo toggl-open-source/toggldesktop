@@ -7,8 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "toggl_api.h"
+#import "NSUnstripedTableView.h"
 
-@interface TimelineViewController : NSViewController {
+@interface TimelineViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource> {
 	@private
 	NSMutableArray *timelineChunks;
 }
@@ -18,7 +20,10 @@
 @property IBOutlet NSButton *prevButton;
 @property IBOutlet NSButton *nextButton;
 @property IBOutlet NSButton *createButton;
-@property IBOutlet NSScrollView *scrollView;
+@property (strong) IBOutlet NSUnstripedTableView *eventsTableView;
+@property (strong) IBOutlet NSScrollView *eventsBox;
+@property (strong) IBOutlet NSBox *headerBox;
+@property (strong) IBOutlet NSBox *footerBox;
 - (IBAction)prevButtonClicked:(id)sender;
 - (IBAction)nextButtonClicked:(id)sender;
 - (IBAction)createButtonClicked:(id)sender;

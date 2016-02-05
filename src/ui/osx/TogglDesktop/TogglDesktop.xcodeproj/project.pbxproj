@@ -25,6 +25,8 @@
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A41A2F2AE0007DC17F /* start_button.pdf */; };
 		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
+		3C3C75841C64FE4C000AA889 /* TimelineEventsListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3C75831C64FE4C000AA889 /* TimelineEventsListItem.m */; };
+		3C3C75951C64FE7A000AA889 /* TimelineEventsListItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C3C75941C64FE7A000AA889 /* TimelineEventsListItem.xib */; };
 		3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237151A9F612E00643059 /* toggl-logo-white.pdf */; };
 		3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237161A9F612E00643059 /* toggl-desktop-bg.png */; };
 		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -68,10 +70,10 @@
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
-		742B29821BDEA4DB005102B8 /* TimelineEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29811BDEA4DB005102B8 /* TimelineEventView.m */; settings = {ASSET_TAGS = (); }; };
-		742B29941BDEA4FF005102B8 /* TimelineChunkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29931BDEA4FF005102B8 /* TimelineChunkView.m */; settings = {ASSET_TAGS = (); }; };
-		742B29981BDEAA74005102B8 /* TimelineChunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29961BDEAA74005102B8 /* TimelineChunkViewController.m */; settings = {ASSET_TAGS = (); }; };
-		742B29991BDEAA74005102B8 /* TimelineChunkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 742B29971BDEAA74005102B8 /* TimelineChunkViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		742B29821BDEA4DB005102B8 /* TimelineEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29811BDEA4DB005102B8 /* TimelineEventView.m */; };
+		742B29941BDEA4FF005102B8 /* TimelineChunkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29931BDEA4FF005102B8 /* TimelineChunkView.m */; };
+		742B29981BDEAA74005102B8 /* TimelineChunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 742B29961BDEAA74005102B8 /* TimelineChunkViewController.m */; };
+		742B29991BDEAA74005102B8 /* TimelineChunkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 742B29971BDEAA74005102B8 /* TimelineChunkViewController.xib */; };
 		7430750418204EFB009019CB /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
 		7430750518204EFB009019CB /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
 		7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 7438B3D218253CD2002AE43C /* MenuItemTags.m */; };
@@ -82,8 +84,8 @@
 		743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 743E584F1A775BB300F17CB0 /* Localizable.strings */; };
 		74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; };
 		74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		7448D1411BD93511003109EA /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7448D13F1BD93511003109EA /* TimelineViewController.m */; settings = {ASSET_TAGS = (); }; };
-		7448D1421BD93511003109EA /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7448D1401BD93511003109EA /* TimelineViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		7448D1411BD93511003109EA /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7448D13F1BD93511003109EA /* TimelineViewController.m */; };
+		7448D1421BD93511003109EA /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7448D1401BD93511003109EA /* TimelineViewController.xib */; };
 		744E126717F22AB900ABE72A /* app.icns in Resources */ = {isa = PBXBuildFile; fileRef = 744E126617F22AB900ABE72A /* app.icns */; };
 		745126B619A28AA600390F47 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
 		74664DB118AA860800AAD282 /* on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DAF18AA860800AAD282 /* on.pdf */; };
@@ -327,6 +329,9 @@
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2645A41A2F2AE0007DC17F /* start_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = start_button.pdf; sourceTree = "<group>"; };
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
+		3C3C75821C64FE4C000AA889 /* TimelineEventsListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineEventsListItem.h; sourceTree = "<group>"; };
+		3C3C75831C64FE4C000AA889 /* TimelineEventsListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineEventsListItem.m; sourceTree = "<group>"; };
+		3C3C75941C64FE7A000AA889 /* TimelineEventsListItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineEventsListItem.xib; sourceTree = "<group>"; };
 		3C4237151A9F612E00643059 /* toggl-logo-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "toggl-logo-white.pdf"; sourceTree = "<group>"; };
 		3C4237161A9F612E00643059 /* toggl-desktop-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggl-desktop-bg.png"; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
@@ -766,6 +771,9 @@
 				742B29951BDEAA74005102B8 /* TimelineChunkViewController.h */,
 				742B29961BDEAA74005102B8 /* TimelineChunkViewController.m */,
 				742B29971BDEAA74005102B8 /* TimelineChunkViewController.xib */,
+				3C3C75821C64FE4C000AA889 /* TimelineEventsListItem.h */,
+				3C3C75831C64FE4C000AA889 /* TimelineEventsListItem.m */,
+				3C3C75941C64FE7A000AA889 /* TimelineEventsListItem.xib */,
 			);
 			name = ui;
 			path = test2;
@@ -1224,6 +1232,7 @@
 				74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */,
 				3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
+				3C3C75951C64FE7A000AA889 /* TimelineEventsListItem.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 				3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
@@ -1365,6 +1374,7 @@
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
+				3C3C75841C64FE4C000AA889 /* TimelineEventsListItem.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				742B29821BDEA4DB005102B8 /* TimelineEventView.m in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,

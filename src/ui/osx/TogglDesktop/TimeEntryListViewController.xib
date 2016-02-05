@@ -110,8 +110,8 @@
                                 </tableColumns>
                                 <connections>
                                     <action selector="performClick:" target="-2" id="uPF-SU-Gir"/>
-                                    <outlet property="dataSource" destination="-2" id="mvS-oR-OON"/>
-                                    <outlet property="delegate" destination="-2" id="cq5-Ff-bG3"/>
+                                    <outlet property="dataSource" destination="-2" id="zE2-4q-DqD"/>
+                                    <outlet property="delegate" destination="-2" id="pqG-5d-1oY"/>
                                 </connections>
                             </tableView>
                         </subviews>
