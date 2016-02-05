@@ -108,6 +108,7 @@ namespace TogglDesktop
             this.EntryBackColor = cell.EntryBackColor;
 
             this.unsyncedIcon.Visibility = cell.unsyncedIcon.Visibility;
+            this.lockedIcon.Visibility = cell.lockedIcon.Visibility;
 
             this.imitateTooltips(cell);
         }
@@ -147,6 +148,7 @@ namespace TogglDesktop
             this.EntryBackColor = idleBackColor;
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
+            this.lockedIcon.ShowOnlyIf(item.Locked);
 
             this.updateToolTips(item);
         }

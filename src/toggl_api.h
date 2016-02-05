@@ -74,6 +74,7 @@ extern "C" {
         // If syncing a time entry ended with an error,
         // the error is attached to the time entry
         char_t *Error;
+		bool_t Locked;
         // Indicates if time entry is not synced to server
         bool_t Unsynced;
         // Next in list
