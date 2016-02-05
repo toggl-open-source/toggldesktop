@@ -7,28 +7,44 @@
 //
 
 #import "TimelineViewController.h"
-
+#import "TimelineChunkView.h"
 #import "DisplayCommand.h"
+#import "TimelineEventsListItem.h"
+#import "TimeEntryCell.h"
 #import "UIEvents.h"
 
 @interface TimelineViewController ()
-
+@property NSNib *nibTimelineEventsListItem;
 @end
 
 @implementation TimelineViewController
 
 extern void *ctx;
 
-- (void)viewDidLoad
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-	[super viewDidLoad];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self)
+    {
+        self.nibTimelineEventsListItem = [[NSNib alloc] initWithNibNamed:@"TimelineEventsListItem"
+                                                                                        bundle:nil];
+        timelineChunks = [NSMutableArray array];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(startDisplayTimeline:)
+                                                     name:kDisplayTimeline
+                                                   object:nil];
+    }
+    return self;
+}
 
-	timelineChunks = [NSMutableArray array];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startDisplayTimeline:)
-												 name:kDisplayTimeline
-											   object:nil];
+- (void)loadView
+{
+    [super loadView];
+    [self.eventsTableView registerNib:self.nibTimelineEventsListItem
+                       forIdentifier :@"TimelineEventsListItem"];
+    self.eventsTableView.delegate = self;
+    self.eventsTableView.dataSource = self;
 }
 
 - (IBAction)prevButtonClicked:(id)sender
@@ -64,8 +80,77 @@ extern void *ctx;
 		[timelineChunks removeAllObjects];
 		[timelineChunks addObjectsFromArray:cmd.timelineChunks];
 	}
-
+    
+    [self.eventsTableView reloadData];
+    
+    NSLog(@"CMD Chunks size: %lu", (unsigned long)[cmd.timelineChunks count]);
+    NSLog(@"Chunks size: %lu", (unsigned long)[timelineChunks count]);
 	// FIXME: reload view
+
 }
+
+- (long)numberOfRowsInTableView:(NSTableView *)tv
+{
+    long result = 0;
+    
+    @synchronized(timelineChunks)
+    {
+        result = (long)[timelineChunks count];
+    }
+    return result;
+}
+
+
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+    if(aTableView == self.eventsTableView)
+    {
+        if([[aTableColumn identifier] isEqualToString:@"first"])
+        {
+            return [timelineChunks objectAtIndex:rowIndex];
+        }
+    }
+    return nil;
+}
+
+- (NSView *) tableView:(NSTableView *)tableView
+    viewForTableColumn:(NSTableColumn *)tableColumn
+                   row:(NSInteger)row
+{
+    TimelineChunkView *item = nil;
+    
+    @synchronized(timelineChunks)
+    {
+        item = [timelineChunks objectAtIndex:row];
+    }
+    NSAssert(item != nil, @"view item from timelineChunks array is nil");
+
+    TimelineEventsListItem *cell = [tableView makeViewWithIdentifier:@"TimelineEventsListItem"
+                                                      owner:self];
+    [cell render:item];
+    return cell;
+}
+    /*
+- (CGFloat)tableView:(NSTableView *)tableView
+         heightOfRow:(NSInteger)row
+{
+
+    TimeEntryViewItem *item = nil;
+    
+    @synchronized(viewitems)
+    {
+        if (row < viewitems.count)
+        {
+            item = viewitems[row];
+        }
+    }
+    if (item && item.isHeader)
+    {
+        return 102;
+    }
+    return 56;
+  
+}
+*/
 
 @end

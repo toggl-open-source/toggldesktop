@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
@@ -32,6 +32,7 @@
         <customView id="ozl-58-bBU" customClass="NSViewEscapable">
             <rect key="frame" x="0.0" y="0.0" width="346" height="356"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <animations/>
         </customView>
         <customView id="3">
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
@@ -42,12 +43,14 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="56" id="OHB-YG-OkN"/>
                     </constraints>
+                    <animations/>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
                     <rect key="frame" x="15" y="60" width="122" height="100"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="250" id="XeO-lf-n0a"/>
                     </constraints>
+                    <animations/>
                     <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Welcome back! Your previous entries are available in the web under reports" id="kLq-fS-jvh">
                         <font key="font" metaFont="system" size="15"/>
                         <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -65,6 +68,7 @@
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1" customClass="NSUnstripedTableView">
                                 <autoresizingMask key="autoresizingMask"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.96078437566757202" green="0.96078437566757202" blue="0.96078437566757202" alpha="1" colorSpace="deviceRGB"/>
                                 <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                 <color key="gridColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -88,6 +92,7 @@
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEi-4M-qbG">
                                                         <rect key="frame" x="0.0" y="-153" width="6" height="17"/>
+                                                        <animations/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="eTT-uV-85C">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -95,6 +100,7 @@
                                                         </textFieldCell>
                                                     </textField>
                                                 </subviews>
+                                                <animations/>
                                                 <connections>
                                                     <outlet property="textField" destination="MEi-4M-qbG" id="XQc-ff-Yvq"/>
                                                 </connections>
@@ -104,20 +110,24 @@
                                 </tableColumns>
                                 <connections>
                                     <action selector="performClick:" target="-2" id="uPF-SU-Gir"/>
-                                    <outlet property="dataSource" destination="-2" id="mvS-oR-OON"/>
-                                    <outlet property="delegate" destination="-2" id="cq5-Ff-bG3"/>
+                                    <outlet property="dataSource" destination="-2" id="zE2-4q-DqD"/>
+                                    <outlet property="delegate" destination="-2" id="pqG-5d-1oY"/>
                                 </connections>
                             </tableView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" red="0.89803928136825562" green="0.89803928136825562" blue="0.89803928136825562" alpha="1" colorSpace="deviceRGB"/>
                     </clipView>
+                    <animations/>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="RWC-Ro-rhd">
                         <rect key="frame" x="0.0" y="314" width="255" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="mPP-6U-WOC">
                         <rect key="frame" x="236" y="0.0" width="16" height="95"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </scroller>
                 </scrollView>
             </subviews>
@@ -133,6 +143,7 @@
                 <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
             </constraints>
+            <animations/>
         </customView>
     </objects>
 </document>
