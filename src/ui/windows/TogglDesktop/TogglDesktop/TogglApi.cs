@@ -89,7 +89,9 @@ public static partial class Toggl
         // If syncing a time entry ended with an error,
         // the error is attached to the time entry
         [MarshalAs(UnmanagedType.LPWStr)]
-        public         string Error;
+        public string Error;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool Locked;
         // Indicates if time entry is not synced to server
         [MarshalAs(UnmanagedType.I1)]
         public         bool Unsynced;

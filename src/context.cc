@@ -646,6 +646,13 @@ void Context::updateUI(const UIElements &what) {
                 user_->related.ProjectLabelAndColorCode(
                     te,
                     &view);
+
+				auto workspace = user_->related.WorkspaceByID(te->WID());
+				if (view.Started < workspace->LockedTime())
+				{
+					view.Locked = true;
+				}
+
                 time_entry_views.push_back(view);
             }
             // Assign the date durations we calculated previously
