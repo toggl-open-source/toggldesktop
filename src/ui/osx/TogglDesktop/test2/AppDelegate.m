@@ -1492,15 +1492,16 @@ void on_timeline(const bool_t open,
 	{
 		TimelineChunkView *chunk = [[TimelineChunkView alloc] init];
 		[chunk load:it];
-        if([chunk.Events count] > 0) {
-            [timelineChunks addObject:chunk];
-        }
+		if ([chunk.Events count] > 0)
+		{
+			[timelineChunks addObject:chunk];
+		}
 
 		it = it->Next;
 	}
-    NSArray* reversed = [[timelineChunks reverseObjectEnumerator] allObjects];
-    NSMutableArray *reversedTimelineChunks = [NSMutableArray arrayWithArray:reversed];
-    
+	NSArray *reversed = [[timelineChunks reverseObjectEnumerator] allObjects];
+	NSMutableArray *reversedTimelineChunks = [NSMutableArray arrayWithArray:reversed];
+
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.timelineChunks = reversedTimelineChunks;
