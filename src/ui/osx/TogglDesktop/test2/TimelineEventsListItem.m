@@ -11,30 +11,33 @@
 
 @implementation TimelineEventsListItem
 
-- (void)drawRect:(NSRect)dirtyRect {
-    [super drawRect:dirtyRect];
-    
-    // Drawing code here.
+- (void)drawRect:(NSRect)dirtyRect
+{
+	[super drawRect:dirtyRect];
+
+	// Drawing code here.
 }
 
 - (void)render:(TimelineChunkView *)view_item
 {
-    NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-    NSString *events = @"";
+	NSString *events = @"";
 
-    self.timeLabel.stringValue = view_item.StartTimeString;
-    for (TimelineEventView *event in view_item.Events) {
-        events = [events stringByAppendingString:event.Title];
-        events = [events stringByAppendingString:@" - "];
-        events = [events stringByAppendingString:event.Filename];
-        events = [events stringByAppendingString:@"\n"];
-    }
-    NSAttributedString *cr = [[NSAttributedString alloc] initWithString:events];
-    NSMutableAttributedString *muAtrStr = [[NSMutableAttributedString alloc]initWithString:events];
-    [muAtrStr appendAttributedString:cr];
-    [[self.appTitlesTextView textStorage] setAttributedString:muAtrStr];
+	self.timeLabel.stringValue = view_item.StartTimeString;
+	for (TimelineEventView *event in view_item.Events)
+	{
+		events = [events stringByAppendingString:event.Title];
+		events = [events stringByAppendingString:@" - "];
+		events = [events stringByAppendingString:event.Filename];
+		events = [events stringByAppendingString:@"\n"];
+	}
+	NSAttributedString *cr = [[NSAttributedString alloc] initWithString:events];
+	NSMutableAttributedString *muAtrStr = [[NSMutableAttributedString alloc]initWithString:events];
+	[muAtrStr appendAttributedString:cr];
+	[[self.appTitlesTextView textStorage] setAttributedString:muAtrStr];
 
-    [self.appsBox setHidden:[events length] == 0];
+	[self.appsBox setHidden:[events length] == 0];
 }
+
 @end
