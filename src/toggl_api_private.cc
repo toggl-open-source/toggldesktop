@@ -449,6 +449,7 @@ TogglTimelineEventView *timeline_event_view_init(
     TogglTimelineEventView *event_view = new TogglTimelineEventView();
     event_view->Title = copy_string(event.Title());
     event_view->Filename = copy_string(event.Filename());
+    event_view->Duration = event.EndTime() - event.Start();
     event_view->Next = nullptr;
     return event_view;
 }
