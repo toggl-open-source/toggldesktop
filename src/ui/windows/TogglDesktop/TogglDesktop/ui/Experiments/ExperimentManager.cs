@@ -11,6 +11,7 @@ namespace TogglDesktop.Experiments
         private readonly IExperiment[] experiments =
             {
                 new Experiment87(),
+                new Experiment98(),
                 new Experiment99(),
             };
 

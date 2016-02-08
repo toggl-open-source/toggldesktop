@@ -3,9 +3,9 @@ using System.Windows;
 
 namespace TogglDesktop.Experiments
 {
-    public partial class Experiment99Screen
+    public partial class Experiment98Screen1
     {
-        public Experiment99Screen()
+        public Experiment98Screen1()
         {
             this.InitializeComponent();
         }
@@ -16,6 +16,8 @@ namespace TogglDesktop.Experiments
             Toggl.ViewTimeEntryList();
 
             Toggl.OnRunningTimerState += this.onRunningTimerState;
+
+            Toggl.SendObmAction(98, "seen_1");
         }
 
         protected override void cleanup()
@@ -25,12 +27,21 @@ namespace TogglDesktop.Experiments
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
         {
-            this.quitTutorial();
+            this.activateScreen<Experiment98Screen2>();
         }
 
         private void closeButtonClick(object sender, RoutedEventArgs e)
         {
             this.quitTutorial();
+
+            Toggl.OnRunningTimerState += this.openSecondScreenDelayed;
+        }
+
+        private void openSecondScreenDelayed(Toggl.TogglTimeEntryView te)
+        {
+            this.activateScreen<Experiment98Screen2>();
+
+            Toggl.OnRunningTimerState -= this.openSecondScreenDelayed;
         }
     }
 }
