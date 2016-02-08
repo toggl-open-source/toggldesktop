@@ -7,7 +7,6 @@
 //
 
 #import "TimelineChunkView.h"
-
 #import "TimelineEventView.h"
 
 @implementation TimelineChunkView
