@@ -577,11 +577,6 @@ public static partial class Toggl
         return toggl_get_keep_end_time_fixed(ctx);
     }
 
-    public static void SetObmExperimentId(ulong id)
-    {
-        toggl_set_obm_experiment_nr(id);
-    }
-
     #endregion
 
     #region callback events
@@ -886,13 +881,13 @@ public static partial class Toggl
         toggl_set_log_level("debug");
     }
 
-    public static bool StartUI(string version, ulong? experimentId)
+    public static bool StartUI(string version, IEnumerable<ulong> experimentIds)
     {
         parseCommandlineParams();
 
-        if (experimentId.HasValue)
+        foreach (var id in experimentIds)
         {
-            toggl_set_obm_experiment_nr(experimentId.Value);
+            toggl_add_obm_experiment_nr(id);
         }
 
         ctx = toggl_context_init("windows_native_app", version);

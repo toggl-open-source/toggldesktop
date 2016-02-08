@@ -199,14 +199,14 @@
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\Experiments\ExperimentSimpleWelcomeScreen.cs" />
-    <Compile Include="ui\Experiments\ExperimentBasicOverviewScreen.cs" />
-    <Compile Include="ui\Experiments\SimpleWelcomeScreen.xaml.cs">
+    <Compile Include="ui\Experiments\implementations\ExperimentSimpleWelcomeScreen.cs" />
+    <Compile Include="ui\Experiments\implementations\ExperimentBasicOverviewScreen.cs" />
+    <Compile Include="ui\Experiments\implementations\SimpleWelcomeScreen.xaml.cs">
       <DependentUpon>SimpleWelcomeScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentBase.cs" />
     <Compile Include="ui\Experiments\IExperiment.cs" />
-    <Compile Include="ui\Experiments\BasicOverviewScreen.xaml.cs">
+    <Compile Include="ui\Experiments\implementations\BasicOverviewScreen.xaml.cs">
       <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
@@ -562,11 +562,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Experiments\BasicOverviewScreen.xaml">
+    <Page Include="ui\Experiments\implementations\BasicOverviewScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ui\Experiments\SimpleWelcomeScreen.xaml">
+    <Page Include="ui\Experiments\implementations\SimpleWelcomeScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -833,6 +833,7 @@
   <ItemGroup>
     <Resource Include="Resources\warning-icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

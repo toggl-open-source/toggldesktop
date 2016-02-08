@@ -4086,7 +4086,7 @@ error Context::pushChanges(
 
 error Context::pullObmExperiments() {
     try {
-        if (!HTTPSClient::Config.OBMExperimentNr) {
+        if (!HTTPSClient::Config.OBMExperimentNrs.empty()) {
             logger().debug("No OBM experiment enabled by UI");
             return noError;
         }
