@@ -130,27 +130,22 @@ extern void *ctx;
     [cell render:item];
     return cell;
 }
-    /*
+
 - (CGFloat)tableView:(NSTableView *)tableView
          heightOfRow:(NSInteger)row
 {
 
-    TimeEntryViewItem *item = nil;
+    TimelineChunkView *item = nil;
     
-    @synchronized(viewitems)
+    @synchronized(timelineChunks)
     {
-        if (row < viewitems.count)
+        if (row < timelineChunks.count)
         {
-            item = viewitems[row];
+            item = timelineChunks[row];
         }
     }
-    if (item && item.isHeader)
-    {
-        return 102;
-    }
-    return 56;
-  
+    
+    return 60 +([item.Events count] * 20);
 }
-*/
 
 @end
