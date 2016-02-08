@@ -1,12 +1,17 @@
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TogglDesktop.Experiments
 {
     sealed class ExperimentManager
     {
-        // this is where the currently supported experiment is defined
-        private readonly IExperiment experiment = new ExperimentBasicOverviewScreen();
+        // this is where the currently supported experiments are defined
+        private readonly IExperiment[] experiments =
+            {
+                new ExperimentBasicOverviewScreen()
+            };
 
         private readonly MainWindow mainWindow;
 
@@ -16,15 +21,20 @@ namespace TogglDesktop.Experiments
 
             Toggl.OnDisplayObmExperiment += this.onDisplayObmExperiment;
 
-            if (this.experiment != null && this.experiment.Id == 0)
+            if (this.experiments.Any(e => e.Id == 0))
             {
                 throw new Exception("Experiment with id 0 is invalid.");
             }
+
+            if (this.experiments.GroupBy(e => e.Id).Any(g => g.Count() != 1))
+            {
+                throw new Exception("Multiple experiments with the same id are invalid.");
+            }
         }
 
-        public ulong? CurrentExperumentId
+        public IEnumerable<ulong> CurrentExperumentIds
         {
-            get { return this.experiment == null ? (ulong?)null : this.experiment.Id; }
+            get { return this.experiments.Select(e => e.Id); }
         }
 
         private void onDisplayObmExperiment(ulong id, bool included, bool seenBefore)
@@ -32,23 +42,22 @@ namespace TogglDesktop.Experiments
             if (this.mainWindow.TryBeginInvoke(this.onDisplayObmExperiment, id, included, seenBefore))
                 return;
 
-            if (this.experiment == null)
-                return;
+            var experiment = this.experiments.FirstOrDefault(e => e.Id == id);
 
-            if (this.experiment.Id != id)
+            if (experiment == null)
             {
                 Toggl.Debug("Unknown experiment: {0}", id);
                 return;
             }
 
-            if (seenBefore && this.experiment.OnlyRunOnce)
+            if (seenBefore && experiment.OnlyRunOnce)
             {
                 Toggl.Debug("Already ran experiment: {0}", id);
                 return;
             }
 
             Toggl.Debug("Running experiment: {0} (included: {1})", id, included);
-            this.experiment.Run(
+            experiment.Run(
                 new ExperimentParameters(included, this.mainWindow.TutorialManager)
                 );
         }

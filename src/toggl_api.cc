@@ -423,10 +423,10 @@ bool_t toggl_add_obm_action(
         to_string(value));
 }
 
-void toggl_set_obm_experiment_nr(
+void toggl_add_obm_experiment_nr(
     const uint64_t nr) {
 
-    toggl::HTTPSClient::Config.OBMExperimentNr = nr;
+    toggl::HTTPSClient::Config.OBMExperimentNrs.push_back(nr);
 }
 
 char_t *toggl_create_client(
