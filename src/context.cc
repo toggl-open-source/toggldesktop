@@ -73,8 +73,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , update_path_("") {
-//    urls::SetUseStagingAsBackend(
-//        app_version.find("7.0.0") != std::string::npos);
+    urls::SetUseStagingAsBackend(
+        app_version.find("7.0.0") != std::string::npos);
 
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
