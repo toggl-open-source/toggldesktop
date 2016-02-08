@@ -15,18 +15,19 @@ namespace TogglDesktop.Experiments
             Toggl.SetManualMode(false);
             Toggl.ViewTimeEntryList();
 
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
+            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
         }
 
         protected override void cleanup()
         {
-            Toggl.OnRunningTimerState -= this.onRunningTimerState;
+            Toggl.OnStoppedTimerState -= this.onStoppedTimerState;
         }
 
-        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
+        private void onStoppedTimerState()
         {
             this.quitTutorial();
         }
+
 
         private void closeButtonClick(object sender, RoutedEventArgs e)
         {
