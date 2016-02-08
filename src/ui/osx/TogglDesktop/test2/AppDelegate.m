@@ -1498,9 +1498,12 @@ void on_timeline(const bool_t open,
 
 		it = it->Next;
 	}
+    NSArray* reversed = [[timelineChunks reverseObjectEnumerator] allObjects];
+    NSMutableArray *reversedTimelineChunks = [NSMutableArray arrayWithArray:reversed];
+    
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
-	cmd.timelineChunks = timelineChunks;
+	cmd.timelineChunks = reversedTimelineChunks;
 	cmd.timelineDate = [NSString stringWithUTF8String:date];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
 														object:cmd];
