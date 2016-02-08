@@ -1492,7 +1492,9 @@ void on_timeline(const bool_t open,
 	{
 		TimelineChunkView *chunk = [[TimelineChunkView alloc] init];
 		[chunk load:it];
-		[timelineChunks addObject:chunk];
+        if([chunk.Events count] > 0) {
+            [timelineChunks addObject:chunk];
+        }
 
 		it = it->Next;
 	}
