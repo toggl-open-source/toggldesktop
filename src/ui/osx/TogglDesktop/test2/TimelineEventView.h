@@ -14,4 +14,5 @@
 - (void)load:(TogglTimelineEventView *)data;
 @property (strong) NSString *Title;
 @property (strong) NSString *Filename;
+@property int64_t Duration;
 @end

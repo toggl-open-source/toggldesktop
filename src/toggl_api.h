@@ -84,6 +84,7 @@ extern "C" {
     typedef struct {
         char_t *Title;
         char_t *Filename;
+        int64_t Duration;
         // Next in list
         void *Next;
     } TogglTimelineEventView;

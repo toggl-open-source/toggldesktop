@@ -14,12 +14,13 @@
 {
 	self.Title = [NSString stringWithUTF8String:view->Title];
 	self.Filename = [NSString stringWithUTF8String:view->Filename];
+    self.Duration = view->Duration;
 }
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"Title: %@, Filename: %@",
-			self.Title, self.Filename];
+	return [NSString stringWithFormat:@"Title: %@, Filename: %@, Duration: %lld",
+			self.Title, self.Filename, self.Duration];
 }
 
 @end

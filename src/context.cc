@@ -80,6 +80,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
 , update_path_("") {
+
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
