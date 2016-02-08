@@ -1,15 +1,15 @@
 ﻿namespace TogglDesktop.Experiments
 {
-    sealed class ExperimentBasicOverviewScreen : ExperimentBase
+    sealed class Experiment87 : ExperimentBase
     {
-        public ExperimentBasicOverviewScreen()
+        public Experiment87()
             : base(87)
         {
         }
 
         protected override void runIncluded(ExperimentParameters parameters)
         {
-            parameters.TutorialManager.ActivateScreen<BasicOverviewScreen>();
+            parameters.TutorialManager.ActivateScreen<Experiment87Screen>();
         }
     }
 }

@@ -10,7 +10,8 @@ namespace TogglDesktop.Experiments
         // this is where the currently supported experiments are defined
         private readonly IExperiment[] experiments =
             {
-                new ExperimentBasicOverviewScreen()
+                new Experiment87(),
+                new Experiment99(),
             };
 
         private readonly MainWindow mainWindow;
@@ -58,7 +59,7 @@ namespace TogglDesktop.Experiments
 
             Toggl.Debug("Running experiment: {0} (included: {1})", id, included);
             experiment.Run(
-                new ExperimentParameters(included, this.mainWindow.TutorialManager)
+                new ExperimentParameters(included, this.mainWindow.TutorialManager, !seenBefore)
                 );
         }
     }

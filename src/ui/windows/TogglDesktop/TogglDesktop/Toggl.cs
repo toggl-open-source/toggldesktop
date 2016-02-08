@@ -145,6 +145,11 @@ public static partial class Toggl
 
     #region api calls
 
+    public static void SendObmAction(ulong experiment, string key)
+    {
+        toggl_add_obm_action(ctx, experiment, key, "1");
+    }
+
     public static void Clear()
     {
         toggl_context_clear(ctx);
@@ -231,11 +236,13 @@ public static partial class Toggl
 
     public static bool Continue(string guid)
     {
+        OnUserTimeEntryStart();
         return toggl_continue(ctx, guid);
     }
 
     public static bool ContinueLatest()
     {
+        OnUserTimeEntryStart();
         return toggl_continue_latest(ctx);
     }
 
@@ -443,6 +450,8 @@ public static partial class Toggl
         string project_guid,
         string tags)
     {
+        OnUserTimeEntryStart();
+
         return toggl_start(ctx,
                            description,
                            duration,
@@ -835,6 +844,10 @@ public static partial class Toggl
     public delegate void ManualSync();
 
     public static event ManualSync OnManualSync = delegate { };
+
+    public delegate void UserTimeEntryStart();
+
+    public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { }; 
 
     #endregion
 
