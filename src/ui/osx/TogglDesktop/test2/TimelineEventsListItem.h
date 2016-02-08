@@ -11,5 +11,7 @@
 
 @interface TimelineEventsListItem : NSTableCellView
 - (void)render:(TimelineChunkView *)view_item;
-- (void)tester;
+@property (weak) IBOutlet NSTextField *timeLabel;
+@property (weak) IBOutlet NSBox *appsBox;
+@property (unsafe_unretained) IBOutlet NSTextView *appTitlesTextView;
 @end
