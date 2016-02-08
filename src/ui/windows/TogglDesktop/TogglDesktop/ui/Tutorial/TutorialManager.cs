@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media.Animation;
 
 namespace TogglDesktop.Tutorial
@@ -23,7 +22,9 @@ namespace TogglDesktop.Tutorial
             this.tutorialPanel = tutorialPanel;
         }
 
+        public MainWindow MainWindow { get { return this.mainWindow; } }
         public Timer Timer { get { return this.timer; } }
+
 
         public void QuitTutorial()
         {
