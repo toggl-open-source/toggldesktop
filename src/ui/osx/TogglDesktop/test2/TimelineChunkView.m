@@ -23,7 +23,10 @@
 	{
 		TimelineEventView *event = [[TimelineEventView alloc] init];
 		[event load:it];
-		[self.Events addObject:event];
+		if (![self contains:event])
+		{
+			[self.Events addObject:event];
+		}
 		NSLog(@"Timeline event loaded: %@", event);
 		it = it->Next;
 	}
@@ -32,6 +35,23 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"Started: %@", self.StartTimeString];
+}
+
+- (BOOL)contains:(TimelineEventView *)event
+{
+	int counter = 0;
+
+	for (TimelineEventView *ev in self.Events)
+	{
+		if ([event.Title isEqualToString:ev.Title] && [event.Filename isEqualToString:ev.Filename])
+		{
+			ev.Duration += event.Duration;
+			[self.Events replaceObjectAtIndex:counter withObject:ev];
+			return YES;
+		}
+		counter++;
+	}
+	return NO;
 }
 
 @end

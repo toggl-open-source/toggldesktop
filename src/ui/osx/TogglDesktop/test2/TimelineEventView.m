@@ -14,7 +14,7 @@
 {
 	self.Title = [NSString stringWithUTF8String:view->Title];
 	self.Filename = [NSString stringWithUTF8String:view->Filename];
-    self.Duration = view->Duration;
+	self.Duration = view->Duration;
 }
 
 - (NSString *)description
