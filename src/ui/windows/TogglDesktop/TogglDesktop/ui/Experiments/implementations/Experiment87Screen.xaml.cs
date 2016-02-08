@@ -3,9 +3,9 @@ using System.Windows;
 
 namespace TogglDesktop.Experiments
 {
-    public partial class BasicOverviewScreen
+    public partial class Experiment87Screen
     {
-        public BasicOverviewScreen()
+        public Experiment87Screen()
         {
             this.InitializeComponent();
         }

@@ -200,15 +200,22 @@
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\Experiments\implementations\ExperimentSimpleWelcomeScreen.cs" />
-    <Compile Include="ui\Experiments\implementations\ExperimentBasicOverviewScreen.cs" />
-    <Compile Include="ui\Experiments\implementations\SimpleWelcomeScreen.xaml.cs">
-      <DependentUpon>SimpleWelcomeScreen.xaml</DependentUpon>
+    <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
+    <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
+      <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment99.cs" />
+    <Compile Include="ui\Experiments\implementations\Experiment87.cs" />
+    <Compile Include="ui\Experiments\implementations\Experiment98Screen1.xaml.cs">
+      <DependentUpon>Experiment98Screen1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment99Screen.xaml.cs">
+      <DependentUpon>Experiment99Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentBase.cs" />
     <Compile Include="ui\Experiments\IExperiment.cs" />
-    <Compile Include="ui\Experiments\implementations\BasicOverviewScreen.xaml.cs">
-      <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
+    <Compile Include="ui\Experiments\implementations\Experiment87Screen.xaml.cs">
+      <DependentUpon>Experiment87Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
@@ -564,11 +571,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Experiments\implementations\BasicOverviewScreen.xaml">
+    <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ui\Experiments\implementations\SimpleWelcomeScreen.xaml">
+    <Page Include="ui\Experiments\implementations\Experiment98Screen2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Experiments\implementations\Experiment98Screen1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Experiments\implementations\Experiment99Screen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
