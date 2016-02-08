@@ -12,9 +12,6 @@ namespace TogglDesktop.Experiments
 
         protected override void initialise()
         {
-            Toggl.SetManualMode(false);
-            Toggl.ViewTimeEntryList();
-
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
 
