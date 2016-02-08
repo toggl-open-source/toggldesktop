@@ -1,4 +1,4 @@
-﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Experiments.Experiment99Screen"
+﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Experiments.Experiment98Screen2"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -24,7 +24,15 @@
                 <Image Source="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png" />
             </Button>
 
-            <StackPanel VerticalAlignment="Top" Margin="0 20 0 50">
+            <Image Source="/TogglDesktop;component/Resources/arrow-up.png"
+                   Height="90" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 10 280 0"
+                   Opacity="0.7" RenderOptions.BitmapScalingMode="HighQuality">
+                <Image.LayoutTransform>
+                    <ScaleTransform ScaleX="-1"/>
+                </Image.LayoutTransform>
+            </Image>
+
+            <StackPanel VerticalAlignment="Top" Margin="0 80 0 50">
                 <StackPanel.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -37,19 +45,10 @@
                     </ResourceDictionary>
                 </StackPanel.Resources>
 
-                <TextBlock FontSize="30" Text="WELCOME!" FontWeight="Light"/>
-                
                 <TextBlock TextAlignment="Center" FontSize="16">
-                    First, describe what you're working on,
+                    To add a project or tags,
                     <LineBreak />
-                    then start your timer.
-                </TextBlock>
-                
-                <TextBlock FontSize="12" Foreground="Gray"
-                           TextAlignment="Center" >
-                    PS - edit or add projects and tags
-                    <LineBreak />
-                    by clicking the running timer
+                    click anywhere on the timer.
                 </TextBlock>
 
             </StackPanel>
