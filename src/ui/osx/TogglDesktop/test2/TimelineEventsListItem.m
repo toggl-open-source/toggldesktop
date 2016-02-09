@@ -22,20 +22,14 @@
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	NSString *events = @"";
+	NSMutableAttributedString *events = [[NSMutableAttributedString alloc] initWithString:@""];
 
 	self.timeLabel.stringValue = view_item.StartTimeString;
 	for (TimelineEventView *event in view_item.Events)
 	{
-		events = [events stringByAppendingString:event.Filename];
-		events = [events stringByAppendingString:@" - "];
-		events = [events stringByAppendingString:event.Title];
-		events = [events stringByAppendingString:@" - "];
-		events = [events stringByAppendingString:[NSString stringWithFormat:@"%lld", event.Duration]];
-		events = [events stringByAppendingString:@"\n"];
+		[events appendAttributedString:[event descriptionString]];
 	}
-	NSMutableAttributedString *muAtrStr = [[NSMutableAttributedString alloc]initWithString:events];
-	[[self.appTitlesTextView textStorage] setAttributedString:muAtrStr];
+	[[self.appTitlesTextView textStorage] setAttributedString:events];
 
 	[self.appsBox setHidden:[events length] == 0];
 }

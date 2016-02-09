@@ -17,6 +17,26 @@
 	self.Duration = view->Duration;
 }
 
+- (NSMutableAttributedString *)descriptionString
+{
+	NSString *str;
+	NSMutableAttributedString *strm;
+
+	if ([self.Title length] > 0)
+	{
+		str = [NSString stringWithFormat:@"ITEM | %@ -- %@ %lld\n", self.Filename, self.Title, self.Duration];
+		strm = [[NSMutableAttributedString alloc] initWithString:str];
+	}
+	else
+	{
+		str = [NSString stringWithFormat:@"CATEGORY | %@ -- %@ %lld\n", self.Filename, self.Title, self.Duration];
+		strm = [[NSMutableAttributedString alloc] initWithString:str];
+		[strm setAttributes:@{ NSFontAttributeName : [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] } range:NSMakeRange(0, [str length])];
+	}
+
+	return strm;
+}
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"Title: %@, Filename: %@, Duration: %lld",
