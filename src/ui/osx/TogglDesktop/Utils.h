@@ -21,6 +21,7 @@
 + (NSString *)applicationSupportDirectory:(NSString *)environment;
 + (bool)isNumeric:(NSString *)checkText;
 + (void)addUnderlineToTextField:(NSTextField *)field;
++ (NSString *)formatTimeFromSeconds:(int)numberOfSeconds;
 + (void)setUpdaterChannel:(NSString *)channel;
 + (ScriptResult *)runScript:(NSString *)script;
 + (void)runClearCommand;

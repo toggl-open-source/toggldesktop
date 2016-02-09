@@ -7,6 +7,7 @@
 //
 
 #import "TimelineEventView.h"
+#import "Utils.h"
 
 @implementation TimelineEventView
 
@@ -14,7 +15,17 @@
 {
 	self.Title = [NSString stringWithUTF8String:view->Title];
 	self.Filename = [NSString stringWithUTF8String:view->Filename];
-	self.Duration = view->Duration;
+	self.Duration = (int)view->Duration;
+}
+
+- (void)updateSorter
+{
+	self.Sorter = [NSString stringWithFormat:@"%@%@", [self.Filename lowercaseString], [self.Title lowercaseString]];
+}
+
+- (NSString *)prettyDuration
+{
+	return [Utils formatTimeFromSeconds:self.Duration];
 }
 
 - (NSMutableAttributedString *)descriptionString
@@ -24,12 +35,12 @@
 
 	if ([self.Title length] > 0)
 	{
-		str = [NSString stringWithFormat:@"ITEM | %@ -- %@ %lld\n", self.Filename, self.Title, self.Duration];
+		str = [NSString stringWithFormat:@"\t%@\t%@\n", self.Title, [self prettyDuration]];
 		strm = [[NSMutableAttributedString alloc] initWithString:str];
 	}
 	else
 	{
-		str = [NSString stringWithFormat:@"CATEGORY | %@ -- %@ %lld\n", self.Filename, self.Title, self.Duration];
+		str = [NSString stringWithFormat:@"%@\t%@\n", self.Filename, [self prettyDuration]];
 		strm = [[NSMutableAttributedString alloc] initWithString:str];
 		[strm setAttributes:@{ NSFontAttributeName : [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] } range:NSMakeRange(0, [str length])];
 	}
@@ -39,7 +50,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"Title: %@, Filename: %@, Duration: %lld",
+	return [NSString stringWithFormat:@"Title: %@, Filename: %@, Duration: %d",
 			self.Title, self.Filename, self.Duration];
 }
 

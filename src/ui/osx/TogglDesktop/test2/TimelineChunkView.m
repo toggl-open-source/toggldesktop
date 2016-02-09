@@ -35,6 +35,19 @@
 	}
 
 	[self.Events addObjectsFromArray:self.Apps];
+	[self sortEvents];
+}
+
+- (void)sortEvents
+{
+	NSSortDescriptor *sortDescriptor;
+
+	sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Sorter"
+												 ascending:YES];
+	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+	[sortDescriptors arrayByAddingObject:sortDescriptor];
+	NSArray *sorted = [self.Events sortedArrayUsingDescriptors:sortDescriptors];
+	self.Events = [sorted mutableCopy];
 }
 
 - (NSString *)description
@@ -59,7 +72,7 @@
 
 	event.Title = @"";
 	[self.Apps addObject:event];
-	NSLog(@"ADD: [%@] --- title ( %@ ), Filename:[%@] -> Duration: %lldd ", event.Filename, event.Title, event.Filename, event.Duration);
+	[event updateSorter];
 }
 
 - (void)needsAdd:(TimelineEventView *)event
@@ -76,6 +89,7 @@
 		counter++;
 	}
 	[self.Events addObject:event];
+	[event updateSorter];
 }
 
 @end

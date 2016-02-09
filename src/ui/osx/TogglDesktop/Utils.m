@@ -167,6 +167,26 @@ extern void *ctx;
 	[field setAttributedStringValue:forgot];
 }
 
++ (NSString *)formatTimeFromSeconds:(int)numberOfSeconds
+{
+	int seconds = numberOfSeconds % 60;
+	int minutes = (numberOfSeconds / 60) % 60;
+	int hours = numberOfSeconds / 3600;
+
+	// we have >=1 hour => example : 3h:25m
+	if (hours)
+	{
+		return [NSString stringWithFormat:@"%dh:%02dm", hours, minutes];
+	}
+	// we have 0 hours and >=1 minutes => example : 3m:25s
+	if (minutes)
+	{
+		return [NSString stringWithFormat:@"%dm:%02ds", minutes, seconds];
+	}
+	// we have only seconds example : 25s
+	return [NSString stringWithFormat:@"%ds", seconds];
+}
+
 @end
 
 // See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
