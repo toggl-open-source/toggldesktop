@@ -4165,12 +4165,31 @@ error Context::pushObmAction() {
                 return error("cannot push OBM actions without API token");
             }
 
-            // Upload first OBM action available.
-            ObmAction *for_upload = user_->related.ObmActions[0];
+			// find action that has not been uploaded yet
+			ObmAction *for_upload(0);
+			for (std::vector<ObmAction *>::iterator it =
+				user_->related.ObmActions.begin();
+				it != user_->related.ObmActions.end();
+				it++) {
+				ObmAction *model = *it;
+				if (!model->IsMarkedAsDeletedOnServer()) {
+					for_upload = model;
+					break;
+				}
+			}
+
+			if (!for_upload)
+			{
+				return noError;
+			}
+
             Json::Value root = for_upload->SaveToJSON();
             req.relative_url = for_upload->ModelURL();
             req.payload = Json::StyledWriter().write(root);
-            local_id = for_upload->LocalID();
+
+			// mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
+			for_upload->MarkAsDeletedOnServer();
+			for_upload->Delete();
         }
 
         logger().debug(req.payload);
@@ -4179,26 +4198,6 @@ error Context::pushObmAction() {
         HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
             return resp.err;
-        }
-
-        // Delete the uploaded OBM action
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger().warning("cannot push changes when logged out");
-                return noError;
-            }
-
-            for (std::vector<ObmAction *>::iterator it =
-                user_->related.ObmActions.begin();
-                    it != user_->related.ObmActions.end();
-                    it++) {
-                ObmAction *model = *it;
-                if (model->LocalID() == local_id) {
-                    model->MarkAsDeletedOnServer();
-                    model->Delete();
-                }
-            }
         }
 
         return noError;
