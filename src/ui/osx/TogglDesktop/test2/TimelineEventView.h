@@ -12,6 +12,7 @@
 
 @interface TimelineEventView : NSObject
 - (void)load:(TogglTimelineEventView *)data;
+- (NSMutableAttributedString *)descriptionString;
 @property (strong) NSString *Title;
 @property (strong) NSString *Filename;
 @property int64_t Duration;
