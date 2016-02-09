@@ -12,6 +12,7 @@
             if (parameters.IsFirstRun)
             {
                 parameters.TutorialManager.ActivateScreen<Experiment99Screen>();
+                ExperimentHacks.RemoveEmptyStateFirstLine(this, parameters);
             }
 
             Toggl.OnUserTimeEntryStart += this.sendStartAction;
