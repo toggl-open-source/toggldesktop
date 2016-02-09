@@ -4205,8 +4205,8 @@ error Context::pullObmExperiments() {
 }
 
 error Context::pushObmAction() {
-    try {
-        Poco::Int64 local_id(0);
+	try {
+		ObmAction *for_upload = nullptr;
         HTTPSRequest req;
         req.host = urls::API();
         req.basic_auth_password = "api_token";
@@ -4229,7 +4229,6 @@ error Context::pushObmAction() {
             }
 
 			// find action that has not been uploaded yet
-			ObmAction *for_upload(0);
 			for (std::vector<ObmAction *>::iterator it =
 				user_->related.ObmActions.begin();
 				it != user_->related.ObmActions.end();
@@ -4250,9 +4249,6 @@ error Context::pushObmAction() {
             req.relative_url = for_upload->ModelURL();
             req.payload = Json::StyledWriter().write(root);
 
-			// mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
-			for_upload->MarkAsDeletedOnServer();
-			for_upload->Delete();
         }
 
         logger().debug(req.payload);
@@ -4263,15 +4259,18 @@ error Context::pushObmAction() {
             return resp.err;
         }
 
-        return noError;
+		// mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
+		for_upload->MarkAsDeletedOnServer();
+		for_upload->Delete();
+
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
     } catch(const std::string& ex) {
         return ex;
-    }
-    return noError;
+	}
+	return noError;
 }
 
 error Context::me(
