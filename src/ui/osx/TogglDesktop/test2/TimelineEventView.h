@@ -13,7 +13,10 @@
 @interface TimelineEventView : NSObject
 - (void)load:(TogglTimelineEventView *)data;
 - (NSMutableAttributedString *)descriptionString;
+- (void)updateSorter;
+- (NSString *)prettyDuration;
 @property (strong) NSString *Title;
 @property (strong) NSString *Filename;
-@property int64_t Duration;
+@property (strong) NSString *Sorter;
+@property int Duration;
 @end
