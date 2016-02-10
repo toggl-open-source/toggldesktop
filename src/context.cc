@@ -4193,7 +4193,11 @@ error Context::pushObmAction() {
         TogglClient toggl_client;
         HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
-            return resp.err;
+			// backend responds 204 on success
+			if (resp.status_code != 204)
+			{
+				return resp.err;
+			}
         }
 
 		// mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
