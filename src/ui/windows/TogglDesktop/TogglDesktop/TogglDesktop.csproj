@@ -199,17 +199,25 @@
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\Experiments\ExperimentSimpleWelcomeScreen.cs" />
-    <Compile Include="ui\Experiments\ExperimentBasicOverviewScreen.cs" />
-    <Compile Include="ui\Experiments\SimpleWelcomeScreen.xaml.cs">
-      <DependentUpon>SimpleWelcomeScreen.xaml</DependentUpon>
+    <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
+    <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
+      <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment99.cs" />
+    <Compile Include="ui\Experiments\implementations\Experiment87.cs" />
+    <Compile Include="ui\Experiments\implementations\Experiment98Screen1.xaml.cs">
+      <DependentUpon>Experiment98Screen1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment99Screen.xaml.cs">
+      <DependentUpon>Experiment99Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentBase.cs" />
     <Compile Include="ui\Experiments\IExperiment.cs" />
-    <Compile Include="ui\Experiments\BasicOverviewScreen.xaml.cs">
-      <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
+    <Compile Include="ui\Experiments\implementations\Experiment87Screen.xaml.cs">
+      <DependentUpon>Experiment87Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
+    <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
     <Compile Include="ui\Theme.cs" />
     <Compile Include="ui\ThemeResourceDictionary.cs" />
     <Compile Include="ui\ThemeTypes.cs" />
@@ -562,11 +570,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Experiments\BasicOverviewScreen.xaml">
+    <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ui\Experiments\SimpleWelcomeScreen.xaml">
+    <Page Include="ui\Experiments\implementations\Experiment98Screen2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Experiments\implementations\Experiment98Screen1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\Experiments\implementations\Experiment99Screen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -833,6 +849,7 @@
   <ItemGroup>
     <Resource Include="Resources\warning-icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

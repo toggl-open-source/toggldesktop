@@ -1,0 +1,74 @@
+﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Experiments.Experiment99Screen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" d:DesignWidth="387">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+
+        <Grid Grid.Row="1" Background="{StaticResource ViewBackgroundLight}">
+            
+            <Button Style="{StaticResource FlatButton}"
+                    MinWidth="0" Width="32" Height="32"
+                    Padding="4" Margin="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="closeButtonClick">
+                <Image Source="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png" />
+            </Button>
+
+            <StackPanel VerticalAlignment="Top" Margin="0 20 0 50">
+                <StackPanel.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="10" />
+                            <Setter Property="Foreground" Value="#333333" />
+
+                        </Style>
+                    </ResourceDictionary>
+                </StackPanel.Resources>
+
+                <TextBlock FontSize="30" Text="WELCOME!" FontWeight="Light"/>
+                
+                <TextBlock TextAlignment="Center" FontSize="16">
+                    First, describe what you're working on,
+                    <LineBreak />
+                    then start your timer.
+                </TextBlock>
+                
+                <TextBlock FontSize="12" Foreground="Gray"
+                           TextAlignment="Center" >
+                    PS - edit or add projects and tags
+                    <LineBreak />
+                    by clicking the running timer
+                </TextBlock>
+
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</tutorial:TutorialScreen>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

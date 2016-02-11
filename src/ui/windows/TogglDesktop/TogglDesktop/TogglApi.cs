@@ -1160,7 +1160,7 @@ public static partial class Toggl
         string value);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void toggl_set_obm_experiment_nr(
+    private static extern void toggl_add_obm_experiment_nr(
         UInt64 nr);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

@@ -4101,7 +4101,7 @@ error Context::pushChanges(
 
 error Context::pullObmExperiments() {
     try {
-        if (!HTTPSClient::Config.OBMExperimentNr) {
+        if (HTTPSClient::Config.OBMExperimentNrs.empty()) {
             logger().debug("No OBM experiment enabled by UI");
             return noError;
         }
@@ -4157,8 +4157,8 @@ error Context::pullObmExperiments() {
 }
 
 error Context::pushObmAction() {
-    try {
-        Poco::Int64 local_id(0);
+	try {
+		ObmAction *for_upload = nullptr;
         HTTPSRequest req;
         req.host = urls::API();
         req.basic_auth_password = "api_token";
@@ -4180,12 +4180,27 @@ error Context::pushObmAction() {
                 return error("cannot push OBM actions without API token");
             }
 
-            // Upload first OBM action available.
-            ObmAction *for_upload = user_->related.ObmActions[0];
+			// find action that has not been uploaded yet
+			for (std::vector<ObmAction *>::iterator it =
+				user_->related.ObmActions.begin();
+				it != user_->related.ObmActions.end();
+				it++) {
+				ObmAction *model = *it;
+				if (!model->IsMarkedAsDeletedOnServer()) {
+					for_upload = model;
+					break;
+				}
+			}
+
+			if (!for_upload)
+			{
+				return noError;
+			}
+
             Json::Value root = for_upload->SaveToJSON();
             req.relative_url = for_upload->ModelURL();
             req.payload = Json::StyledWriter().write(root);
-            local_id = for_upload->LocalID();
+
         }
 
         logger().debug(req.payload);
@@ -4193,38 +4208,25 @@ error Context::pushObmAction() {
         TogglClient toggl_client;
         HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
-            return resp.err;
+			// backend responds 204 on success
+			if (resp.status_code != 204)
+			{
+				return resp.err;
+			}
         }
 
-        // Delete the uploaded OBM action
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger().warning("cannot push changes when logged out");
-                return noError;
-            }
+		// mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
+		for_upload->MarkAsDeletedOnServer();
+		for_upload->Delete();
 
-            for (std::vector<ObmAction *>::iterator it =
-                user_->related.ObmActions.begin();
-                    it != user_->related.ObmActions.end();
-                    it++) {
-                ObmAction *model = *it;
-                if (model->LocalID() == local_id) {
-                    model->MarkAsDeletedOnServer();
-                    model->Delete();
-                }
-            }
-        }
-
-        return noError;
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
     } catch(const std::string& ex) {
         return ex;
-    }
-    return noError;
+	}
+	return noError;
 }
 
 error Context::me(
