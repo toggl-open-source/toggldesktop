@@ -678,7 +678,7 @@ void Context::updateUI(const UIElements &what) {
             idle_.SetSettings(settings_);
 
             HTTPSClient::Config.UseProxy = use_proxy;
-            HTTPSClient::Config.IgnoreCert = false;
+            HTTPSClient::Config.IgnoreCert = ("development" == environment_);
             HTTPSClient::Config.ProxySettings = proxy;
             HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
         }
