@@ -19,4 +19,5 @@
 @property (strong) NSString *Filename;
 @property (strong) NSString *Sorter;
 @property int Duration;
+@property BOOL Header;
 @end

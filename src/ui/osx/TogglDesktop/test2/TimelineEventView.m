@@ -13,14 +13,16 @@
 
 - (void)load:(TogglTimelineEventView *)view
 {
+	self.Header = view->Header;
 	self.Title = [NSString stringWithUTF8String:view->Title];
 	self.Filename = [NSString stringWithUTF8String:view->Filename];
 	self.Duration = (int)view->Duration;
+	[self updateSorter];
 }
 
 - (void)updateSorter
 {
-	self.Sorter = [NSString stringWithFormat:@"%@%@", [self.Filename lowercaseString], [self.Title lowercaseString]];
+	self.Sorter = [NSString stringWithFormat:@"%@%@%d", [self.Filename lowercaseString], [self.Title lowercaseString], self.Duration];
 }
 
 - (NSString *)prettyDuration
@@ -33,16 +35,17 @@
 	NSString *str;
 	NSMutableAttributedString *strm;
 
-	if ([self.Title length] > 0)
-	{
-		str = [NSString stringWithFormat:@"\t%@\t%@\n", self.Title, [self prettyDuration]];
-		strm = [[NSMutableAttributedString alloc] initWithString:str];
-	}
-	else
+	NSLog(@"Title length: %lu", (unsigned long)[self.Title length]);
+	if (self.Header)
 	{
 		str = [NSString stringWithFormat:@"%@\t%@\n", self.Filename, [self prettyDuration]];
 		strm = [[NSMutableAttributedString alloc] initWithString:str];
 		[strm setAttributes:@{ NSFontAttributeName : [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] } range:NSMakeRange(0, [str length])];
+	}
+	else
+	{
+		str = [NSString stringWithFormat:@"\t%@\t%@\n", self.Title, [self prettyDuration]];
+		strm = [[NSMutableAttributedString alloc] initWithString:str];
 	}
 
 	return strm;

@@ -430,10 +430,41 @@ void GUI::DisplayTimeline(
                 // Skip event if does not match chunk
                 continue;
             }
-            TogglTimelineEventView *event_view =
-                timeline_event_view_init(event);
-            event_view->Next = first_event;
-            first_event = event_view;
+
+            // Grouping the items
+            bool app_present = false;
+            bool item_present = false;
+            TogglTimelineEventView *ev = first_event;
+            while (ev)
+            {
+                if(compare_string(ev->Filename, event.Filename().c_str()) == 0) {
+                    if (ev->Header) {
+                        ev->Duration = ev->Duration + event.Duration();
+                        app_present = true;
+                    } else if(compare_string(ev->Title, event.Title().c_str()) == 0) {
+                        ev->Duration = ev->Duration + event.Duration();
+                        app_present = true;
+                        item_present = true;
+                    }
+                }
+                ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
+            }
+
+            if(!app_present) {
+                TogglTimelineEventView *app_event_view =
+                    timeline_event_view_init(event);
+                app_event_view->Header = true;
+                app_event_view->Title = copy_string("");
+                app_event_view->Next = first_event;
+                first_event = app_event_view;
+            }
+
+            if(!item_present) {
+                TogglTimelineEventView *event_view =
+                    timeline_event_view_init(event);
+                event_view->Next = first_event;
+                first_event = event_view;
+            }
         }
         chunk_view->FirstEvent = first_event;
 
