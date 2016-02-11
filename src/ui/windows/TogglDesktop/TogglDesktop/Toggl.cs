@@ -145,6 +145,11 @@ public static partial class Toggl
 
     #region api calls
 
+    public static void SendObmAction(ulong experiment, string key)
+    {
+        toggl_add_obm_action(ctx, experiment, key, "1");
+    }
+
     public static void Clear()
     {
         toggl_context_clear(ctx);
@@ -231,11 +236,13 @@ public static partial class Toggl
 
     public static bool Continue(string guid)
     {
+        OnUserTimeEntryStart();
         return toggl_continue(ctx, guid);
     }
 
     public static bool ContinueLatest()
     {
+        OnUserTimeEntryStart();
         return toggl_continue_latest(ctx);
     }
 
@@ -443,6 +450,8 @@ public static partial class Toggl
         string project_guid,
         string tags)
     {
+        OnUserTimeEntryStart();
+
         return toggl_start(ctx,
                            description,
                            duration,
@@ -575,11 +584,6 @@ public static partial class Toggl
     public static bool GetKeepEndTimeFixed()
     {
         return toggl_get_keep_end_time_fixed(ctx);
-    }
-
-    public static void SetObmExperimentId(ulong id)
-    {
-        toggl_set_obm_experiment_nr(id);
     }
 
     #endregion
@@ -841,6 +845,10 @@ public static partial class Toggl
 
     public static event ManualSync OnManualSync = delegate { };
 
+    public delegate void UserTimeEntryStart();
+
+    public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { }; 
+
     #endregion
 
     #region startup
@@ -886,13 +894,13 @@ public static partial class Toggl
         toggl_set_log_level("debug");
     }
 
-    public static bool StartUI(string version, ulong? experimentId)
+    public static bool StartUI(string version, IEnumerable<ulong> experimentIds)
     {
         parseCommandlineParams();
 
-        if (experimentId.HasValue)
+        foreach (var id in experimentIds)
         {
-            toggl_set_obm_experiment_nr(experimentId.Value);
+            toggl_add_obm_experiment_nr(id);
         }
 
         ctx = toggl_context_init("windows_native_app", version);
