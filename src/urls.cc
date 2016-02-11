@@ -16,14 +16,14 @@ void SetUseStagingAsBackend(const bool value) {
 
 std::string API() {
     if (use_staging_as_backend) {
-        return "https://dapi.toggl.space";
+        return "https://toggl.space";
     }
     return "https://www.toggl.com";
 }
 
 std::string TimelineUpload() {
     if (use_staging_as_backend) {
-        return "https://dapi.toggl.space";
+        return "https://toggl.space";
     }
     return "https://timeline.toggl.com";
 }
