@@ -24,13 +24,9 @@
 	{
 		TimelineEventView *event = [[TimelineEventView alloc] init];
 		[event load:it];
-		[self needsAdd:event];
+		[self.Events addObject:event];
 
-		TimelineEventView *appEvent = [[TimelineEventView alloc] init];
-		[appEvent load:it];
-		[self needsAppAdd:appEvent];
-
-		// NSLog(@"Timeline event loaded: %@", event);
+		NSLog(@"Timeline event loaded: %@", event);
 		it = it->Next;
 	}
 
@@ -53,43 +49,6 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"Started: %@", self.StartTimeString];
-}
-
-- (void)needsAppAdd:(TimelineEventView *)event
-{
-	int counter = 0;
-
-	for (TimelineEventView *ev in self.Apps)
-	{
-		if ([event.Filename isEqualToString:ev.Filename])
-		{
-			ev.Duration += event.Duration;
-			return;
-		}
-		counter++;
-	}
-
-
-	event.Title = @"";
-	[self.Apps addObject:event];
-	[event updateSorter];
-}
-
-- (void)needsAdd:(TimelineEventView *)event
-{
-	int counter = 0;
-
-	for (TimelineEventView *ev in self.Events)
-	{
-		if ([event.Title isEqualToString:ev.Title] && [event.Filename isEqualToString:ev.Filename])
-		{
-			ev.Duration += event.Duration;
-			return;
-		}
-		counter++;
-	}
-	[self.Events addObject:event];
-	[event updateSorter];
 }
 
 @end

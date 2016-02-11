@@ -85,6 +85,7 @@ extern "C" {
         char_t *Title;
         char_t *Filename;
         int64_t Duration;
+        bool Header;
         // Next in list
         void *Next;
     } TogglTimelineEventView;
