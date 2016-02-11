@@ -648,6 +648,7 @@ void Context::updateUI(const UIElements &what) {
                     &view);
 
 				auto workspace = user_->related.WorkspaceByID(te->WID());
+
 				if (view.Started < workspace->LockedTime())
 				{
 					view.Locked = true;

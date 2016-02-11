@@ -19,7 +19,8 @@ class Workspace : public BaseModel {
     , premium_(false)
     , only_admins_may_create_projects_(false)
     , admin_(false)
-    , business_(false) {}
+    , business_(false)
+	, locked_time_(0) {}
 
     const std::string &Name() const {
         return name_;
