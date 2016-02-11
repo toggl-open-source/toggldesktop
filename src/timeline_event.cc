@@ -49,6 +49,12 @@ void TimelineEvent::SetEndTime(const Poco::UInt64 value) {
     }
 }
 
+void TimelineEvent::SetDuration(const Poco::UInt64 value) {
+    if (duration_ != value) {
+        duration_ = value;
+    }
+}
+
 void TimelineEvent::SetIdle(const bool value) {
     if (idle_ != value) {
         idle_ = value;
