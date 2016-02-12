@@ -2010,8 +2010,6 @@ error Context::Login(
             return displayError(err);
         }
 
-		// TODO: get workspace lock date and constraints
-
 		err = pullWorkspacePreferences(&client);
 		if (err != noError) {
 			return displayError(err);
@@ -4339,6 +4337,9 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
 		it++) {
 
 		Workspace* ws = *it;
+
+		if (!ws->Business())
+			continue;
 
 		std::string json("");
 
