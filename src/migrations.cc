@@ -295,13 +295,21 @@ error Migrations::migrateWorkspaces() {
         return err;
     }
 
-    err = db_->Migrate(
-        "workspaces.is_business",
-        "alter table workspaces add column "
-        "   is_business integer not null default 0; ");
-    if (err != noError) {
-        return err;
-    }
+	err = db_->Migrate(
+		"workspaces.is_business",
+		"alter table workspaces add column "
+		"   is_business integer not null default 0; ");
+	if (err != noError) {
+		return err;
+	}
+
+	err = db_->Migrate(
+		"workspaces.locked_date",
+		"alter table workspaces add column "
+		"   locked_time integer not null default 0; ");
+	if (err != noError) {
+		return err;
+	}
 
     return err;
 }
