@@ -508,6 +508,10 @@ class Context : public TimelineDatasource {
 		std::string *user_data,
 		const Poco::UInt64 since);
 
+	bool isTimeEntryLocked(TimeEntry* te);
+	bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
+	bool canChangeStartTimeTo(TimeEntry* te, time_t t);
+
 	error pullWorkspacePreferences(TogglClient* https_client);
 	error pullWorkspacePreferences(TogglClient* https_client, Workspace *workspace, std::string* json);
 
