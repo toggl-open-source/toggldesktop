@@ -4011,6 +4011,8 @@ error Context::pullAllUserData(
             user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
         }
 
+		pullWorkspacePreferences(toggl_client);
+
         stopwatch.stop();
         std::stringstream ss;
         ss << "User with related data JSON fetched and parsed in "
