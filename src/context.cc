@@ -647,12 +647,7 @@ void Context::updateUI(const UIElements &what) {
                     te,
                     &view);
 
-				auto workspace = user_->related.WorkspaceByID(te->WID());
-
-				if (view.Started < workspace->LockedTime())
-				{
-					view.Locked = true;
-				}
+				view.Locked = isTimeEntryLocked(te);
 
                 time_entry_views.push_back(view);
             }
@@ -2636,34 +2631,41 @@ error Context::SetTimeEntryDate(
         return displayError("Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    TimeEntry *te;
+	Poco::LocalDateTime dt;
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot change date, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-    }
+	{
+		Poco::Mutex::ScopedLock lock(user_m_);
+		if (!user_) {
+			logger().warning("Cannot change date, user logged out");
+			return noError;
+		}
+		te = user_->related.TimeEntryByGUID(GUID);
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
 
-    Poco::LocalDateTime loco(
-        Poco::Timestamp::fromEpochTime(unix_timestamp));
+		if (isTimeEntryLocked(te)) {
+			return displayError(error("Cannot change locked time entry."));
+		}
 
-    Poco::LocalDateTime date_part(
-        Poco::Timestamp::fromEpochTime(unix_timestamp));
+		Poco::LocalDateTime date_part(
+			Poco::Timestamp::fromEpochTime(unix_timestamp));
 
-    Poco::LocalDateTime time_part(
-        Poco::Timestamp::fromEpochTime(te->Start()));
+		Poco::LocalDateTime time_part(
+			Poco::Timestamp::fromEpochTime(te->Start()));
 
-    Poco::LocalDateTime dt(
-        date_part.year(), date_part.month(), date_part.day(),
-        time_part.hour(), time_part.minute(), time_part.second());
+		dt = Poco::LocalDateTime(
+			date_part.year(), date_part.month(), date_part.day(),
+			time_part.hour(), time_part.minute(), time_part.second());
+
+		if (!canChangeStartTimeTo(te, dt.timestamp().epochTime())) {
+			return displayError(error("Failed to change time entry date: workspace is locked."));
+		}
+
+	}
 
     std::string s = Poco::DateTimeFormatter::format(
         dt,
@@ -2673,6 +2675,7 @@ error Context::SetTimeEntryDate(
 
     return displayError(save());
 }
+
 
 error Context::SetTimeEntryStart(
     const std::string GUID,
@@ -4326,6 +4329,24 @@ error Context::me(
     }
     return noError;
 }
+
+bool Context::isTimeEntryLocked(TimeEntry* te) {
+	return isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(te->WID()));
+}
+
+bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
+	return !isTimeLockedInWorkspace(t, user_->related.WorkspaceByID(te->WID()));
+}
+
+bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
+	if (!ws->Business())
+		return false;
+	auto lockedTime = ws->LockedTime();
+	if (lockedTime == 0)
+		return false;
+	return t < lockedTime;
+}
+
 
 error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
 	Poco::Mutex::ScopedLock lock(user_m_);
