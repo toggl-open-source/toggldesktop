@@ -360,6 +360,8 @@ class GUI : public SyncStateMonitor {
         const bool open,
         const std::vector<TimelineEvent> list);
 
+    TogglTimelineEventView* SortList(TogglTimelineEventView *head);
+
     void DisplayWorkspaceSelect(std::vector<toggl::Workspace *> *list);
 
     void DisplayClientSelect(

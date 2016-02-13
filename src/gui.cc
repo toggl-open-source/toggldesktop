@@ -416,6 +416,7 @@ void GUI::DisplayTimeline(
 
         // Attach matching events to chunk
         TogglTimelineEventView *first_event = nullptr;
+        TogglTimelineEventView *ev = nullptr;
         for (std::vector<TimelineEvent>::const_iterator it = list.begin();
                 it != list.end(); it++) {
             const TimelineEvent event = *it;
@@ -431,42 +432,58 @@ void GUI::DisplayTimeline(
                 continue;
             }
 
-            // Grouping the items
+            // Grouping the items to parent-event and sub-events
+
             bool app_present = false;
             bool item_present = false;
-            TogglTimelineEventView *ev = first_event;
-            while (ev)
-            {
-                if(compare_string(ev->Filename, event.Filename().c_str()) == 0) {
-                    if (ev->Header) {
-                        ev->Duration = ev->Duration + event.Duration();
-                        app_present = true;
-                    } else if(compare_string(ev->Title, event.Title().c_str()) == 0) {
-                        ev->Duration = ev->Duration + event.Duration();
-                        app_present = true;
-                        item_present = true;
+            TogglTimelineEventView *event_app = first_event;
+            while (event_app) {
+                if (compare_string(event_app->Filename,
+                                  event.Filename().c_str()) == 0) {
+                    event_app->Duration = event_app->Duration + event.Duration();
+                    app_present = true;
+                    item_present = false;
+                    ev = reinterpret_cast<TogglTimelineEventView *>(event_app->event);
+                    while (ev) {
+                        if (compare_string(ev->Title, event.Title().c_str()) == 0) {
+                            ev->Duration = ev->Duration + event.Duration();
+                            item_present = true;
+                        }
+                        ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
+                    }
+
+                    if (!item_present) {
+                        TogglTimelineEventView *event_view =
+                            timeline_event_view_init(event);
+                        event_view->Next = event_app->event;
+                        event_app->event = event_view;
                     }
                 }
-                ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
+                event_app = reinterpret_cast<TogglTimelineEventView *>(event_app->Next);
             }
 
-            if(!app_present) {
+            if (!app_present) {
                 TogglTimelineEventView *app_event_view =
                     timeline_event_view_init(event);
-                app_event_view->Header = true;
-                app_event_view->Title = copy_string("");
-                app_event_view->Next = first_event;
-                first_event = app_event_view;
-            }
+                if (event.Duration() > 0) {
+                    app_event_view->Header = true;
+                    app_event_view->Title = copy_string("");
 
-            if(!item_present) {
-                TogglTimelineEventView *event_view =
-                    timeline_event_view_init(event);
-                event_view->Next = first_event;
-                first_event = event_view;
+                    TogglTimelineEventView *event_view =
+                        timeline_event_view_init(event);
+//                app_event_view->event = first_event->event;
+                    app_event_view->event = event_view;
+
+                    app_event_view->Next = first_event;
+                    first_event = app_event_view;
+                }
             }
         }
-        chunk_view->FirstEvent = first_event;
+
+        // Sort the list by duration descending
+        if (first_event != NULL) {
+            chunk_view->FirstEvent = SortList(first_event);
+        }
 
         chunk_view->Next = first_chunk;
         first_chunk = chunk_view;
@@ -477,6 +494,54 @@ void GUI::DisplayTimeline(
     on_display_timeline_(open, formatted_date.c_str(), first_chunk);
 
     timeline_chunk_view_clear(first_chunk);
+}
+
+TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {
+    TogglTimelineEventView *top = nullptr;  // first Node we will return this value
+    TogglTimelineEventView *current = nullptr;
+    bool sorted = false;
+    while (sorted == false) {
+        // we are going to look for the lowest value in the list
+        TogglTimelineEventView *parent = head;
+        TogglTimelineEventView *lowparent = head;  // we need this because list is only linked forward
+        TogglTimelineEventView *low = head;  // this will end up with the lowest Node
+        sorted = true;
+        while (parent->Next != nullptr) {
+            // Sort sub events
+            if (parent->event != nullptr) {
+                parent->event = SortList(reinterpret_cast<TogglTimelineEventView *>(parent->event));
+            }
+            // find the lowest valued event
+            TogglTimelineEventView *next = reinterpret_cast<TogglTimelineEventView *>(parent->Next);
+            if (parent->Duration < next->Duration) {
+                lowparent = parent;
+                low = next;
+                sorted = false;
+            }
+            parent = reinterpret_cast<TogglTimelineEventView *>(parent->Next);
+        }
+        // Sort sub events
+        if (parent->event != nullptr) {
+            parent->event = SortList(reinterpret_cast<TogglTimelineEventView *>(parent->event));
+        }
+        if (current != nullptr) {  // first time current == nullptr
+            current->Next = low;
+        }
+        // remove the lowest item from the list and reconnect the list
+        // we keep two lists, one with the sorted Nodes
+        // and one with the remaining unsorted Nodes
+        current = low;
+        if (current == head) {
+            head = reinterpret_cast<TogglTimelineEventView *>(current->Next);
+        }
+        lowparent->Next = low->Next;
+        current->Next = nullptr;
+        if (top == nullptr) {
+            top = current;
+        }
+    }
+    current->Next = head;
+    return top;
 }
 
 void GUI::DisplayTags(std::vector<std::string> *tags) {
