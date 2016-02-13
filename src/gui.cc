@@ -480,6 +480,7 @@ void GUI::DisplayTimeEntryList(const bool open,
                             event_view->Next = event_app->event;
                             event_app->event = event_view;
                         }
+
                     }
                     event_app = reinterpret_cast<TogglTimelineEventView *>(event_app->Next);
                 }
@@ -505,6 +506,7 @@ void GUI::DisplayTimeEntryList(const bool open,
             // Sort the list by duration descending
             if (first_event != NULL) {
                 chunk_view->FirstEvent = SortList(first_event);
+
             }
             
             chunk_view->Next = first_chunk;
@@ -567,6 +569,7 @@ void GUI::DisplayTimeEntryList(const bool open,
     }
 
 void GUI::DisplayTags(const std::vector<view::Generic> list) {
+
     logger().debug("DisplayTags");
 
     TogglGenericView *first = generic_to_view_item_list(list);

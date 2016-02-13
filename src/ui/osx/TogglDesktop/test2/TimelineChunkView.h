@@ -12,9 +12,7 @@
 
 @interface TimelineChunkView : NSObject
 - (void)load:(TogglTimelineChunkView *)data;
-- (void)sortEvents;
 @property uint64_t Started;
 @property (strong) NSString *StartTimeString;
 @property (strong) NSMutableArray *Events;
-@property (strong) NSMutableArray *Apps;
 @end
