@@ -158,6 +158,9 @@ namespace TogglDesktop
 
         public void SelectRandom()
         {
+            if (!this.ensureProjectColors())
+                return;
+
             this.SelectedColor = this.colors.RandomElement(this.random);
         }
     }
