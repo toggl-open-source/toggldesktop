@@ -533,6 +533,8 @@ void Context::updateUI(const UIElements &what) {
                     user_->CanSeeBillable(ws);
                 editor_time_entry_view.DefaultWID = user_->DefaultWID();
 
+				editor_time_entry_view.Locked = isTimeEntryLocked(editor_time_entry);
+
                 // Display tags also when time entry is being edited,
                 // because tags are filtered by TE WID
                 std::vector<std::string> tags;
