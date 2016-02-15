@@ -591,7 +591,11 @@ namespace TogglDesktop
 
         private void defaultProjectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.selectedDefaultProject.ProjectLabel))
+            if (this.defaultProjectTextBox.Text == "")
+            {
+                this.selectDefaultProject(null);
+            }
+            else if (!string.IsNullOrEmpty(this.selectedDefaultProject.ProjectLabel))
             {
                 this.selectDefaultProject(this.selectedDefaultProject);
             }
