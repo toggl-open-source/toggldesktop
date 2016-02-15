@@ -332,7 +332,8 @@ BOOL manualMode = NO;
 	NSLog(@"didActivateNotification %@", notification);
 
 	// ignore close button
-	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType &&
+		notification.userInfo[@"pomodoro"] == nil)
 	{
 		return;
 	}
@@ -353,7 +354,20 @@ BOOL manualMode = NO;
 		// handle pomodoro timer
 		if (notification.userInfo[@"pomodoro"] != nil)
 		{
-			toggl_stop(ctx);
+			if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+			{
+				toggl_continue_latest(ctx);
+			}
+			else
+			{
+				toggl_start(ctx,
+							"",
+							nil,
+							0,
+							0,
+							0,
+							0);
+			}
 			return;
 		}
 	}
@@ -1465,8 +1479,8 @@ void on_pomodoro(const char *title, const char *informative_text)
 	notification.userInfo = @{ @"pomodoro": @"YES" };
 
 	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Stop";
-	notification.otherButtonTitle = @"Close";
+	notification.actionButtonTitle = @"Start New";
+	notification.otherButtonTitle = @"Continue";
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
