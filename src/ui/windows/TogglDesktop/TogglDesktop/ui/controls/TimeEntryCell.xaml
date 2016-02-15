@@ -27,7 +27,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="*" MaxWidth="100" MinWidth="65"/>
+                <ColumnDefinition Width="*" MaxWidth="105" MinWidth="65"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
@@ -113,7 +113,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="60"
+            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="65"
                         HorizontalAlignment="Left" FontSize="14.7" TextAlignment="Right"
                             Margin="0, 1, 0, 0" MouseLeftButtonUp="labelDuration_MouseUp">03:21:30</TextBlock>
 
