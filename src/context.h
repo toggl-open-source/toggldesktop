@@ -512,6 +512,8 @@ class Context : public TimelineDatasource {
 	bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
 	bool canChangeStartTimeTo(TimeEntry* te, time_t t);
 
+	error logAndDisplayUserTriedEditingLockedEntry();
+
 	error pullWorkspacePreferences(TogglClient* https_client);
 	error pullWorkspacePreferences(TogglClient* https_client, Workspace *workspace, std::string* json);
 
