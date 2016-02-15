@@ -2613,6 +2613,10 @@ error Context::SetTimeEntryProject(
             p = user_->related.ProjectByGUID(project_guid);
         }
 
+		if (!canChangeProjectTo(te, p)) {
+			return displayError(error("Cannot change project: would end up with locked time entry"));
+		}
+
         if (p) {
             // If user re-assigns project, don't mess with the billable
             // flag any more. (User selected billable project, unchecked
@@ -4376,6 +4380,10 @@ bool Context::isTimeEntryLocked(TimeEntry* te) {
 
 bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
 	return !isTimeLockedInWorkspace(t, user_->related.WorkspaceByID(te->WID()));
+}
+
+bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
+	return !isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(p->WID()));
 }
 
 error Context::logAndDisplayUserTriedEditingLockedEntry() {

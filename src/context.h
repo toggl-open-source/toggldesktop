@@ -533,6 +533,7 @@ class Context : public TimelineDatasource {
 	bool isTimeEntryLocked(TimeEntry* te);
 	bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
 	bool canChangeStartTimeTo(TimeEntry* te, time_t t);
+	bool canChangeProjectTo(TimeEntry* te, Project* p);
 
 	error logAndDisplayUserTriedEditingLockedEntry();
 
