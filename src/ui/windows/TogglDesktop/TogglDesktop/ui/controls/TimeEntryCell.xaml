@@ -43,7 +43,7 @@
                 <Image Name="lockedIcon" x:FieldModifier="private" 
                        ToolTip="Time entry locked."
                        Width="16" Height="16"
-                       Source="/TogglDesktop;component/Resources/warning-icon.png"
+                       Source="/TogglDesktop;component/Resources/locked-icon.png"
                        Stretch="UniformToFill"/>
             </StackPanel>
 
