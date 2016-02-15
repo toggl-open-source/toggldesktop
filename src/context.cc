@@ -4346,6 +4346,8 @@ error Context::logAndDisplayUserTriedEditingLockedEntry() {
 bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
 	if (!ws->Business())
 		return false;
+	if (ws->Admin())
+		return false;
 	auto lockedTime = ws->LockedTime();
 	if (lockedTime == 0)
 		return false;
