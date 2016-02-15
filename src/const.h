@@ -23,7 +23,7 @@
 #define kTimelineUploadMaxBackoffSeconds (kTimelineUploadIntervalSeconds * 10)  // NOLINT
 
 #define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
-#define kSupportURL "http://support.toggl.com/toggl-on-my-desktop/"
+#define kMacSupportURL "https://support.toggl.com/toggl-desktop-for-mac-osx/"
 
 #define kContentTypeMultipartFormData "multipart/form-data"
 #define kContentTypeApplicationJSON "application/json"

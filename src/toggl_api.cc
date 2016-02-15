@@ -957,7 +957,7 @@ void toggl_open_in_browser(void *context) {
 }
 
 void toggl_get_support(void *context) {
-    app(context)->UI()->DisplayURL(kSupportURL);
+    app(context)->UI()->DisplayURL(kMacSupportURL);
 }
 
 void toggl_on_workspace_select(
