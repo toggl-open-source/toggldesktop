@@ -401,7 +401,7 @@ BOOL manualMode = NO;
 							 new_time_entry.ProjectID,
 							 0,
 							 tag_list,
-                             false);
+							 false);
 	free(guid);
 }
 
@@ -424,7 +424,7 @@ BOOL manualMode = NO;
 							 new_time_entry.ProjectID,
 							 0,
 							 0,
-                             false);
+							 false);
 	free(guid);
 }
 
@@ -1223,7 +1223,7 @@ const NSString *appName = @"osx_native_app";
 								 0,
 								 0,
 								 0,
-                                 false);
+								 false);
 				 }
 			 }
 		 }

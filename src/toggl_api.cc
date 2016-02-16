@@ -510,8 +510,8 @@ char_t *toggl_start(
     const uint64_t task_id,
     const uint64_t project_id,
     const char_t *project_guid,
-	const char_t *tags,
-	const bool_t prevent_on_app) {
+    const char_t *tags,
+    const bool_t prevent_on_app) {
 
     logger().debug("toggl_start");
 
@@ -542,7 +542,7 @@ char_t *toggl_start(
         project_id,
         p_guid,
         tag_list,
-		prevent_on_app);
+        prevent_on_app);
     if (te) {
         return copy_string(te->GUID());
     }
@@ -592,8 +592,8 @@ void toggl_edit_preferences(void *context) {
 }
 
 bool_t toggl_continue_latest(
-	void *context,
-	const bool_t prevent_on_app) {
+    void *context,
+    const bool_t prevent_on_app) {
 
     logger().debug("toggl_continue_latest");
 
@@ -693,8 +693,8 @@ bool_t toggl_set_time_entry_description(
 }
 
 bool_t toggl_stop(
-	void *context,
-	const bool_t prevent_on_app) {
+    void *context,
+    const bool_t prevent_on_app) {
     return toggl::noError == app(context)->Stop(prevent_on_app);
 }
 
@@ -1229,16 +1229,16 @@ int64_t toggl_get_mini_timer_y(
 }
 
 void toggl_set_mini_timer_w(
-	void *context,
-	const int64_t value)
+    void *context,
+    const int64_t value)
 {
-	app(context)->SetMiniTimerW(value);
+    app(context)->SetMiniTimerW(value);
 }
 
 int64_t toggl_get_mini_timer_w(
-	void *context)
+    void *context)
 {
-	return app(context)->GetMiniTimerW();
+    return app(context)->GetMiniTimerW();
 }
 
 void toggl_set_mini_timer_visible(

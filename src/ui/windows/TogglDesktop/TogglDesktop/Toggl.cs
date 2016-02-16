@@ -892,7 +892,7 @@ public static partial class Toggl
 
     public delegate void UserTimeEntryStart();
 
-    public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { }; 
+    public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { };
 
     #endregion
 

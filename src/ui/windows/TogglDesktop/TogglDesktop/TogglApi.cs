@@ -334,12 +334,12 @@ public static partial class Toggl
         IntPtr first,
         UInt64 title_count,
         [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[]
-            title_list);
+        title_list);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayProjectColors(
         [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[]
-            color_list,
+        color_list,
         UInt64 color_count);
 
     // Initialize/destroy an instance of the app

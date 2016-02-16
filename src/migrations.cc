@@ -295,21 +295,21 @@ error Migrations::migrateWorkspaces() {
         return err;
     }
 
-	err = db_->Migrate(
-		"workspaces.is_business",
-		"alter table workspaces add column "
-		"   is_business integer not null default 0; ");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "workspaces.is_business",
+        "alter table workspaces add column "
+        "   is_business integer not null default 0; ");
+    if (err != noError) {
+        return err;
+    }
 
-	err = db_->Migrate(
-		"workspaces.locked_date",
-		"alter table workspaces add column "
-		"   locked_time integer not null default 0; ");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "workspaces.locked_date",
+        "alter table workspaces add column "
+        "   locked_time integer not null default 0; ");
+    if (err != noError) {
+        return err;
+    }
 
     return err;
 }
@@ -1220,21 +1220,21 @@ error Migrations::migrateSettings() {
         return err;
     }
 
-	err = db_->Migrate(
-		"settings.mini_timer_y",
-		"ALTER TABLE settings "
-		"ADD COLUMN mini_timer_y INTEGER NOT NULL DEFAULT 0;");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "settings.mini_timer_y",
+        "ALTER TABLE settings "
+        "ADD COLUMN mini_timer_y INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
 
-	err = db_->Migrate(
-		"settings.mini_timer_w",
-		"ALTER TABLE settings "
-		"ADD COLUMN mini_timer_w INTEGER NOT NULL DEFAULT 0;");
-	if (err != noError) {
-		return err;
-	}
+    err = db_->Migrate(
+        "settings.mini_timer_w",
+        "ALTER TABLE settings "
+        "ADD COLUMN mini_timer_w INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
 
     err = db_->Migrate(
         "settings.pomodoro",
@@ -1247,12 +1247,12 @@ error Migrations::migrateSettings() {
     err = db_->Migrate(
         "settings.mini_timer_visible",
         "ALTER TABLE settings "
-		"ADD COLUMN mini_timer_visible INTEGER NOT NULL DEFAULT 0;");
-	if (err != noError) {
-		return err;
-	}
+        "ADD COLUMN mini_timer_visible INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
 
-	err = db_->Migrate(
+    err = db_->Migrate(
         "settings.pomodoro_minutes",
         "ALTER TABLE settings "
         "ADD COLUMN pomodoro_minutes INTEGER NOT NULL DEFAULT 60;");
