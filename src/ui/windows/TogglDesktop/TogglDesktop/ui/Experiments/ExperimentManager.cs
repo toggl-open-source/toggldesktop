@@ -13,6 +13,7 @@ namespace TogglDesktop.Experiments
                 new Experiment87(),
                 new Experiment98(),
                 new Experiment99(),
+                new Experiment101(),
             };
 
         private readonly MainWindow mainWindow;
