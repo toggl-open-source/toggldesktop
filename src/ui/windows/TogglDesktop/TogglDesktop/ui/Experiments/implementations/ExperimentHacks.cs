@@ -7,6 +7,9 @@ namespace TogglDesktop.Experiments
     {
         public static void RemoveEmptyStateFirstLine(IExperiment experiment, ExperimentParameters parameters)
         {
+            if (parameters.TutorialManager.MainWindow.TryBeginInvoke(RemoveEmptyStateFirstLine, experiment, parameters))
+                return;
+
             var emptyStateButton = parameters.TutorialManager
                 .MainWindow
                 .GetView<TimerEntryListView>()

@@ -1,10 +1,9 @@
-﻿using TogglDesktop.Tutorial;
-
+﻿
 namespace TogglDesktop.Experiments
 {
     sealed class Experiment101 : ExperimentBase
     {
-        private TutorialManager tutorialManager;
+        private ExperimentParameters parameters;
 
         public Experiment101()
             : base(101)
@@ -13,13 +12,14 @@ namespace TogglDesktop.Experiments
 
         protected override void runIncluded(ExperimentParameters parameters)
         {
-            this.tutorialManager = parameters.TutorialManager;
+            this.parameters = parameters;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
         {
-            this.tutorialManager.ActivateScreen<Experiment101Screen>();
+            ExperimentHacks.RemoveEmptyStateFirstLine(this, this.parameters);
+            this.parameters.TutorialManager.ActivateScreen<Experiment101Screen>();
             Toggl.SendObmAction(this.Id, "seen");
 
             Toggl.OnRunningTimerState -= this.onRunningTimerState;
