@@ -54,7 +54,7 @@ class TimeEntry {
     , WorkspaceName("")
     , Unsynced(false)
     , Error(noError)
-	, Locked(false) {}
+    , Locked(false) {}
 
     int64_t DurationInSeconds;
     std::string Description;
@@ -88,7 +88,7 @@ class TimeEntry {
     // If syncing a time entry ended with an error,
     // the error is attached to the time entry
     std::string Error;
-	bool Locked;
+    bool Locked;
 
     void Fill(toggl::TimeEntry * const model);
 

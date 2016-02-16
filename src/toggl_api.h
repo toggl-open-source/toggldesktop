@@ -74,7 +74,7 @@ extern "C" {
         // If syncing a time entry ended with an error,
         // the error is attached to the time entry
         char_t *Error;
-		bool_t Locked;
+        bool_t Locked;
         // Indicates if time entry is not synced to server
         bool_t Unsynced;
         // Next in list
@@ -499,8 +499,8 @@ extern "C" {
         const char_t *guid);
 
     TOGGL_EXPORT bool_t toggl_continue_latest(
-		void *context,
-		const bool_t prevent_on_app);
+        void *context,
+        const bool_t prevent_on_app);
 
     TOGGL_EXPORT bool_t toggl_delete_time_entry(
         void *context,
@@ -550,8 +550,8 @@ extern "C" {
         const char_t *value);
 
     TOGGL_EXPORT bool_t toggl_stop(
-		void *context,
-		const bool_t prevent_on_app);
+        void *context,
+        const bool_t prevent_on_app);
 
     TOGGL_EXPORT bool_t toggl_discard_time_at(
         void *context,
@@ -736,7 +736,7 @@ extern "C" {
         const uint64_t project_id,
         const char_t *project_guid,
         const char_t *tags,
-		const bool_t prevent_on_app);
+        const bool_t prevent_on_app);
 
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_add_project(
@@ -902,19 +902,19 @@ extern "C" {
     TOGGL_EXPORT int64_t toggl_get_mini_timer_x(
         void *context);
 
-	TOGGL_EXPORT void toggl_set_mini_timer_y(
-		void *context,
-		const int64_t value);
+    TOGGL_EXPORT void toggl_set_mini_timer_y(
+        void *context,
+        const int64_t value);
 
-	TOGGL_EXPORT int64_t toggl_get_mini_timer_y(
-		void *context);
+    TOGGL_EXPORT int64_t toggl_get_mini_timer_y(
+        void *context);
 
-	TOGGL_EXPORT void toggl_set_mini_timer_w(
-		void *context,
-		const int64_t value);
+    TOGGL_EXPORT void toggl_set_mini_timer_w(
+        void *context,
+        const int64_t value);
 
-	TOGGL_EXPORT int64_t toggl_get_mini_timer_w(
-		void *context);
+    TOGGL_EXPORT int64_t toggl_get_mini_timer_w(
+        void *context);
 
     TOGGL_EXPORT void toggl_set_mini_timer_visible(
         void *context,

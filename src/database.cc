@@ -453,22 +453,22 @@ error Database::GetMiniTimerX(Poco::Int64* x)
 
 error Database::SetMiniTimerY(const Poco::Int64 y)
 {
-	return setSettingsValue("mini_timer_y", y);
+    return setSettingsValue("mini_timer_y", y);
 }
 
 error Database::GetMiniTimerY(Poco::Int64* y)
 {
-	return getSettingsValue("mini_timer_y", y);
+    return getSettingsValue("mini_timer_y", y);
 }
 
 error Database::SetMiniTimerW(const Poco::Int64 w)
 {
-	return setSettingsValue("mini_timer_w", w);
+    return setSettingsValue("mini_timer_w", w);
 }
 
 error Database::GetMiniTimerW(Poco::Int64* w)
 {
-	return getSettingsValue("mini_timer_w", w);
+    return getSettingsValue("mini_timer_w", w);
 }
 
 error Database::LoadWindowSettings(
@@ -1176,7 +1176,7 @@ error Database::loadWorkspaces(
                 model->SetOnlyAdminsMayCreateProjects(rs[5].convert<bool>());
                 model->SetAdmin(rs[6].convert<bool>());
                 model->SetBusiness(rs[7].convert<bool>());
-				model->SetLockedTime(rs[8].convert<time_t>());
+                model->SetLockedTime(rs[8].convert<time_t>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -2494,7 +2494,7 @@ error Database::saveModel(
                       "only_admins_may_create_projects = "
                       ":only_admins_may_create_projects, admin = :admin, "
                       "is_business = :is_business, "
-					  "locked_time = :locked_time "
+                      "locked_time = :locked_time "
                       "where local_id = :local_id",
                       useRef(model->ID()),
                       useRef(model->UID()),
@@ -2503,7 +2503,7 @@ error Database::saveModel(
                       useRef(model->OnlyAdminsMayCreateProjects()),
                       useRef(model->Admin()),
                       useRef(model->Business()),
-					  useRef(model->LockedTime()),
+                      useRef(model->LockedTime()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveWorkspace");
@@ -2532,7 +2532,7 @@ error Database::saveModel(
                       useRef(model->OnlyAdminsMayCreateProjects()),
                       useRef(model->Admin()),
                       useRef(model->Business()),
-					  useRef(model->LockedTime()),
+                      useRef(model->LockedTime()),
                       now;
             error err = last_error("saveWorkspace");
             if (err != noError) {

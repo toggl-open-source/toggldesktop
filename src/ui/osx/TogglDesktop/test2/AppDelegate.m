@@ -345,7 +345,7 @@ BOOL manualMode = NO;
 			NSNumber *project_id = notification.userInfo[@"project_id"];
 			NSNumber *task_id = notification.userInfo[@"task_id"];
 			NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
-			char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "");
+			char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false);
 			free(guid);
 			return;
 		}
@@ -353,7 +353,7 @@ BOOL manualMode = NO;
 		// handle pomodoro timer
 		if (notification.userInfo[@"pomodoro"] != nil)
 		{
-			toggl_stop(ctx);
+			toggl_stop(ctx, false);
 			return;
 		}
 	}
@@ -400,7 +400,8 @@ BOOL manualMode = NO;
 							 new_time_entry.TaskID,
 							 new_time_entry.ProjectID,
 							 0,
-							 tag_list);
+							 tag_list,
+							 false);
 	free(guid);
 }
 
@@ -422,7 +423,8 @@ BOOL manualMode = NO;
 							 new_time_entry.TaskID,
 							 new_time_entry.ProjectID,
 							 0,
-							 0);
+							 0,
+							 false);
 	free(guid);
 }
 
@@ -439,7 +441,7 @@ BOOL manualMode = NO;
 
 	if (guid == nil)
 	{
-		toggl_continue_latest(ctx);
+		toggl_continue_latest(ctx, false);
 	}
 	else
 	{
@@ -458,7 +460,7 @@ BOOL manualMode = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	toggl_stop(ctx);
+	toggl_stop(ctx, false);
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
@@ -1220,7 +1222,8 @@ const NSString *appName = @"osx_native_app";
 								 0,
 								 0,
 								 0,
-								 0);
+								 0,
+								 false);
 				 }
 			 }
 		 }

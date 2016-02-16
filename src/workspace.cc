@@ -51,10 +51,10 @@ void Workspace::SetBusiness(const bool value) {
 }
 
 void Workspace::SetLockedTime(const time_t value) {
-	if (locked_time_ != value) {
-		locked_time_ = value;
-		SetDirty();
-	}
+    if (locked_time_ != value) {
+        locked_time_ = value;
+        SetDirty();
+    }
 }
 
 void Workspace::LoadFromJSON(Json::Value n) {
@@ -70,11 +70,11 @@ void Workspace::LoadFromJSON(Json::Value n) {
 }
 
 void Workspace::LoadSettingsFromJson(Json::Value n) {
-	auto lockDateString = n["report_locked_at"].asString();
-	if (!lockDateString.empty()) {
-		auto time = Formatter::Parse8601(lockDateString);
-		SetLockedTime(time);
-	}
+    auto lockDateString = n["report_locked_at"].asString();
+    if (!lockDateString.empty()) {
+        auto time = Formatter::Parse8601(lockDateString);
+        SetLockedTime(time);
+    }
 }
 
 std::string Workspace::ModelName() const {
