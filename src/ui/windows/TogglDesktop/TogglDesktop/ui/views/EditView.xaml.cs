@@ -526,7 +526,7 @@ namespace TogglDesktop
             this.projectTextBox.Focus();
             this.showWorkspaceArea();
 
-            this.projectColorSelector.SelectedColor = null;
+            this.projectColorSelector.SelectRandom();
             this.projectColorSelector.IsEnabled = true;
             this.emptyProjectText.Text = "Add project";
 

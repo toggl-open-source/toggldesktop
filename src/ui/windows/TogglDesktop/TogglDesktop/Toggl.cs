@@ -145,6 +145,11 @@ public static partial class Toggl
 
     #region api calls
 
+    public static void SendObmAction(ulong experiment, string key)
+    {
+        toggl_add_obm_action(ctx, experiment, key, "1");
+    }
+
     public static void Clear()
     {
         toggl_context_clear(ctx);
@@ -231,11 +236,13 @@ public static partial class Toggl
 
     public static bool Continue(string guid)
     {
+        OnUserTimeEntryStart();
         return toggl_continue(ctx, guid);
     }
 
     public static bool ContinueLatest(bool preventOnApp = false)
     {
+        OnUserTimeEntryStart();
         return toggl_continue_latest(ctx, preventOnApp);
     }
 
@@ -444,6 +451,8 @@ public static partial class Toggl
         string tags,
         bool preventOnApp = false)
     {
+        OnUserTimeEntryStart();
+
         return toggl_start(ctx,
                            description,
                            duration,
@@ -618,7 +627,6 @@ public static partial class Toggl
     {
         return toggl_get_mini_timer_visible(ctx);
     }
-
     #endregion
 
     #region callback events
@@ -878,6 +886,10 @@ public static partial class Toggl
 
     public static event ManualSync OnManualSync = delegate { };
 
+    public delegate void UserTimeEntryStart();
+
+    public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { }; 
+
     #endregion
 
     #region startup
@@ -923,13 +935,13 @@ public static partial class Toggl
         toggl_set_log_level("debug");
     }
 
-    public static bool StartUI(string version, ulong? experimentId)
+    public static bool StartUI(string version, IEnumerable<ulong> experimentIds)
     {
         parseCommandlineParams();
 
-        if (experimentId.HasValue)
+        foreach (var id in experimentIds)
         {
-            toggl_set_obm_experiment_nr(experimentId.Value);
+            toggl_add_obm_experiment_nr(id);
         }
 
         ctx = toggl_context_init("windows_native_app", version);

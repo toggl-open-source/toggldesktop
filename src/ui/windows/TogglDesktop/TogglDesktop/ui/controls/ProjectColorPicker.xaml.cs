@@ -24,6 +24,8 @@ namespace TogglDesktop
 
     public partial class ProjectColorPicker
     {
+        private readonly Random random = new Random();
+
         private string selectedColor;
         private string[] colors;
 
@@ -152,6 +154,14 @@ namespace TogglDesktop
             {
                 this.close();
             }
+        }
+
+        public void SelectRandom()
+        {
+            if (!this.ensureProjectColors())
+                return;
+
+            this.SelectedColor = this.colors.RandomElement(this.random);
         }
     }
 }

@@ -496,7 +496,6 @@ BOOL manualMode = NO;
 		}
 	}
 
-
 	// Start menubar timer if its enabled
 	self.showMenuBarTimer = cmd.settings.menubar_timer;
 	if (cmd.settings.menubar_timer)
@@ -755,6 +754,11 @@ BOOL manualMode = NO;
 
 	if (![title isEqualToString:self.statusItem.title])
 	{
+		if (self.statusItem.title.length == 0)
+		{
+			// If previous value was empty set title twice to fix cut off issue
+			[self.statusItem setTitle:title];
+		}
 		[self.statusItem setTitle:title];
 	}
 

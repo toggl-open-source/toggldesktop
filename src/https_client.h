@@ -73,8 +73,7 @@ class HTTPSClientConfig {
     , ProxySettings(Proxy())
     , IgnoreCert(false)
     , CACertPath("")
-    , AutodetectProxy(true)
-    , OBMExperimentNr(0) {}
+    , AutodetectProxy(true) {}
     ~HTTPSClientConfig() {}
 
     std::string AppName;
@@ -85,14 +84,15 @@ class HTTPSClientConfig {
     std::string CACertPath;
     bool AutodetectProxy;
 
-    Poco::UInt64 OBMExperimentNr;
+    std::vector<Poco::UInt64> OBMExperimentNrs;
 
     std::string UserAgent() const {
         std::stringstream ss;
         ss << AppName + "/" + AppVersion;
-        if (OBMExperimentNr) {
-            ss << "-obm-" << OBMExperimentNr;
-        }
+		for (auto it = OBMExperimentNrs.begin(); it != OBMExperimentNrs.end(); ++it)
+		{
+			ss << "-obm-" << *it;
+		}
         return ss.str();
     }
 };
