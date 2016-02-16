@@ -231,7 +231,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->DefaultWID = te.DefaultWID;
 
     view_item->Unsynced = te.Unsynced;
-	view_item->Locked = te.Locked;
+    view_item->Locked = te.Locked;
 
     if (te.Error != toggl::noError) {
         view_item->Error = copy_string(te.Error);
