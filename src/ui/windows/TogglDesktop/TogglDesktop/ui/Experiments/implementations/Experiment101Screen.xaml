@@ -1,0 +1,127 @@
+﻿<tutorial:TutorialScreen x:Class="TogglDesktop.Experiments.Experiment101Screen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:tutorial="clr-namespace:TogglDesktop.Tutorial"
+             mc:Ignorable="d" 
+             d:DesignHeight="485" d:DesignWidth="387">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
+
+        <Grid Grid.Row="1" Background="White">
+            <Grid Background="{StaticResource ViewBackgroundDark}" Opacity="0.75" />
+        </Grid>
+        <Grid Grid.Row="1" >
+            
+            <Button Style="{StaticResource FlatButton}"
+                    MinWidth="0" Width="32" Height="32"
+                    Padding="4" Margin="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="closeButtonClick">
+                <Image Source="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png" />
+            </Button>
+            
+            <Image Source="/TogglDesktop;component/Resources/arrow-up-white.png" Height="65"
+                   VerticalAlignment="Top"
+                   Margin="0 5 205 0"
+                   RenderOptions.BitmapScalingMode="HighQuality">
+                <Image.RenderTransform>
+                    <ScaleTransform ScaleX="-1"/>
+                </Image.RenderTransform>
+                <Image.LayoutTransform>
+                    <RotateTransform Angle="10"></RotateTransform>
+                </Image.LayoutTransform>
+            </Image>
+
+            <StackPanel VerticalAlignment="Top" Margin="0 20 0 50">
+                <StackPanel.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="10" />
+                            <Setter Property="Foreground" Value="#eee" />
+
+                        </Style>
+                    </ResourceDictionary>
+                </StackPanel.Resources>
+
+                <TextBlock TextAlignment="Center" FontSize="18">
+                    Add details or edit this entry
+                    <LineBreak />
+                    by clicking the timer
+                </TextBlock>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</tutorial:TutorialScreen>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

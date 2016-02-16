@@ -204,10 +204,14 @@
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
       <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment101.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment99.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment87.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen1.xaml.cs">
       <DependentUpon>Experiment98Screen1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment101Screen.xaml.cs">
+      <DependentUpon>Experiment101Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\implementations\Experiment99Screen.xaml.cs">
       <DependentUpon>Experiment99Screen.xaml</DependentUpon>
@@ -587,6 +591,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ui\Experiments\implementations\Experiment101Screen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ui\Experiments\implementations\Experiment99Screen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -860,6 +868,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\locked-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow-up-white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
