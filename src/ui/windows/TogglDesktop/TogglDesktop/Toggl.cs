@@ -32,7 +32,11 @@ public static partial class Toggl
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
+#if INVS
+    public static string Env = "development";
+#else
     public static string Env = "production";
+#endif
 
 
     #endregion

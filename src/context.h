@@ -522,13 +522,23 @@ class Context : public TimelineDatasource {
         TogglClient *https_client,
         const std::string email,
         const std::string password,
-        std::string *user_data_json);
-    static error me(
-        TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data,
-        const Poco::UInt64 since);
+		std::string *user_data_json);
+	static error me(
+		TogglClient *https_client,
+		const std::string email,
+		const std::string password,
+		std::string *user_data,
+		const Poco::UInt64 since);
+
+	bool isTimeEntryLocked(TimeEntry* te);
+	bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
+	bool canChangeStartTimeTo(TimeEntry* te, time_t t);
+	bool canChangeProjectTo(TimeEntry* te, Project* p);
+
+	error logAndDisplayUserTriedEditingLockedEntry();
+
+	error pullWorkspacePreferences(TogglClient* https_client);
+	error pullWorkspacePreferences(TogglClient* https_client, Workspace *workspace, std::string* json);
 
     error pushObmAction();
 

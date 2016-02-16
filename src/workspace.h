@@ -18,7 +18,9 @@ class Workspace : public BaseModel {
     , name_("")
     , premium_(false)
     , only_admins_may_create_projects_(false)
-    , admin_(false) {}
+    , admin_(false)
+    , business_(false)
+	, locked_time_(0) {}
 
     const std::string &Name() const {
         return name_;
@@ -40,17 +42,29 @@ class Workspace : public BaseModel {
     }
     void SetAdmin(const bool);
 
+    const bool &Business() const {
+        return business_;
+    }
+    void SetBusiness(const bool value);
+
+	const time_t &LockedTime() const {
+		return locked_time_;
+	}
+	void SetLockedTime(const time_t value);
+
     // Override BaseModel
     std::string String() const;
     std::string ModelName() const;
     std::string ModelURL() const;
     void LoadFromJSON(Json::Value value);
-
- private:
+	void LoadSettingsFromJson(Json::Value value);
+private:
     std::string name_;
     bool premium_;
     bool only_admins_may_create_projects_;
     bool admin_;
+    bool business_;
+	time_t locked_time_;
 };
 
 }  // namespace toggl

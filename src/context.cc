@@ -55,6 +55,7 @@
 #include "Poco/URIStreamOpener.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
+#include <mutex>
 
 namespace toggl {
 
@@ -532,6 +533,8 @@ void Context::updateUI(const UIElements &what) {
                     user_->CanSeeBillable(ws);
                 editor_time_entry_view.DefaultWID = user_->DefaultWID();
 
+				editor_time_entry_view.Locked = isTimeEntryLocked(editor_time_entry);
+
                 // Display tags also when time entry is being edited,
                 // because tags are filtered by TE WID
                 std::vector<std::string> tags;
@@ -645,6 +648,9 @@ void Context::updateUI(const UIElements &what) {
                 user_->related.ProjectLabelAndColorCode(
                     te,
                     &view);
+
+				view.Locked = isTimeEntryLocked(te);
+
                 time_entry_views.push_back(view);
             }
             // Assign the date durations we calculated previously
@@ -2001,8 +2007,13 @@ error Context::Login(
             return displayError(err);
         }
 
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
+		err = pullWorkspacePreferences(&client);
+		if (err != noError) {
+			return displayError(err);
+		}
+
+		{
+			Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().error("cannot enable offline login, no user");
                 return noError;
@@ -2505,24 +2516,30 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
         return displayError("Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+	TimeEntry *te = nullptr;
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot delete time entry, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-    }
+	{
+		Poco::Mutex::ScopedLock lock(user_m_);
+		if (!user_) {
+			logger().warning("Cannot delete time entry, user logged out");
+			return noError;
+		}
+		te = user_->related.TimeEntryByGUID(GUID);
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
-    if (te->DeletedAt()) {
-        return displayError(kCannotDeleteDeletedTimeEntry);
-    }
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
+
+		if (te->DeletedAt()) {
+			return displayError(kCannotDeleteDeletedTimeEntry);
+		}
+
+		if (isTimeEntryLocked(te)) {
+			return logAndDisplayUserTriedEditingLockedEntry();
+		}
+	}
+
     if (te->IsTracking()) {
         error err = Stop(false);
         if (err != noError) {
@@ -2551,6 +2568,11 @@ error Context::SetTimeEntryDuration(
         logger().warning("Time entry not found: " + GUID);
         return noError;
     }
+
+	if (isTimeEntryLocked(te)) {
+		return logAndDisplayUserTriedEditingLockedEntry();
+	}
+
     te->SetDurationUserInput(duration);
 
     last_pomodoro_reminder_time_ = te->Start();
@@ -2579,6 +2601,10 @@ error Context::SetTimeEntryProject(
             return noError;
         }
 
+		if (isTimeEntryLocked(te)) {
+			return logAndDisplayUserTriedEditingLockedEntry();
+		}
+
         Project *p = nullptr;
         if (project_id) {
             p = user_->related.ProjectByID(project_id);
@@ -2586,6 +2612,10 @@ error Context::SetTimeEntryProject(
         if (!project_guid.empty()) {
             p = user_->related.ProjectByGUID(project_guid);
         }
+
+		if (!canChangeProjectTo(te, p)) {
+			return displayError(error("Cannot change project: would end up with locked time entry"));
+		}
 
         if (p) {
             // If user re-assigns project, don't mess with the billable
@@ -2622,34 +2652,41 @@ error Context::SetTimeEntryDate(
         return displayError("Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    TimeEntry *te;
+	Poco::LocalDateTime dt;
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot change date, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-    }
+	{
+		Poco::Mutex::ScopedLock lock(user_m_);
+		if (!user_) {
+			logger().warning("Cannot change date, user logged out");
+			return noError;
+		}
+		te = user_->related.TimeEntryByGUID(GUID);
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
 
-    Poco::LocalDateTime loco(
-        Poco::Timestamp::fromEpochTime(unix_timestamp));
+		if (isTimeEntryLocked(te)) {
+			return displayError(error("Cannot change locked time entry."));
+		}
 
-    Poco::LocalDateTime date_part(
-        Poco::Timestamp::fromEpochTime(unix_timestamp));
+		Poco::LocalDateTime date_part(
+			Poco::Timestamp::fromEpochTime(unix_timestamp));
 
-    Poco::LocalDateTime time_part(
-        Poco::Timestamp::fromEpochTime(te->Start()));
+		Poco::LocalDateTime time_part(
+			Poco::Timestamp::fromEpochTime(te->Start()));
 
-    Poco::LocalDateTime dt(
-        date_part.year(), date_part.month(), date_part.day(),
-        time_part.hour(), time_part.minute(), time_part.second());
+		dt = Poco::LocalDateTime(
+			date_part.year(), date_part.month(), date_part.day(),
+			time_part.hour(), time_part.minute(), time_part.second());
+
+		if (!canChangeStartTimeTo(te, dt.timestamp().epochTime())) {
+			return displayError(error("Failed to change time entry date: workspace is locked."));
+		}
+
+	}
 
     std::string s = Poco::DateTimeFormatter::format(
         dt,
@@ -2660,6 +2697,7 @@ error Context::SetTimeEntryDate(
     return displayError(save());
 }
 
+
 error Context::SetTimeEntryStart(
     const std::string GUID,
     const std::string value) {
@@ -2667,21 +2705,25 @@ error Context::SetTimeEntryStart(
         return displayError("Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+	TimeEntry *te = nullptr;
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot change start time, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-    }
+	{
+		Poco::Mutex::ScopedLock lock(user_m_);
+		if (!user_) {
+			logger().warning("Cannot change start time, user logged out");
+			return noError;
+		}
+		te = user_->related.TimeEntryByGUID(GUID);
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
+
+		if (isTimeEntryLocked(te)) {
+			return logAndDisplayUserTriedEditingLockedEntry();
+		}
+	}
 
     Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Start()));
 
@@ -2719,12 +2761,16 @@ error Context::SetTimeEntryStop(
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
-    }
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
+
+		if (isTimeEntryLocked(te)) {
+			return logAndDisplayUserTriedEditingLockedEntry();
+		}
+	}
 
     Poco::LocalDateTime stop(
         Poco::Timestamp::fromEpochTime(te->Stop()));
@@ -2769,21 +2815,26 @@ error Context::SetTimeEntryTags(
         return displayError("Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+	TimeEntry *te = nullptr;
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot set tags, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-    }
+	{
+		Poco::Mutex::ScopedLock lock(user_m_);
+		if (!user_) {
+			logger().warning("Cannot set tags, user logged out");
+			return noError;
+		}
+		te = user_->related.TimeEntryByGUID(GUID);
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
+
+		if (isTimeEntryLocked(te)) {
+			return logAndDisplayUserTriedEditingLockedEntry();
+		}
+	}
+
     te->SetTags(value);
 
     if (te->Dirty()) {
@@ -2795,27 +2846,32 @@ error Context::SetTimeEntryTags(
 }
 
 error Context::SetTimeEntryBillable(
-    const std::string GUID,
-    const bool value) {
-    if (GUID.empty()) {
-        return displayError("Missing GUID");
-    }
+	const std::string GUID,
+	const bool value) {
+	if (GUID.empty()) {
+		return displayError("Missing GUID");
+	}
 
-    TimeEntry *te = nullptr;
+	TimeEntry *te = nullptr;
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot set billable, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-    }
+	{
+		Poco::Mutex::ScopedLock lock(user_m_);
+		if (!user_) {
+			logger().warning("Cannot set billable, user logged out");
+			return noError;
+		}
+		te = user_->related.TimeEntryByGUID(GUID);
+	
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
+		if (isTimeEntryLocked(te)) {
+			return logAndDisplayUserTriedEditingLockedEntry();
+		}
+	}
+
     te->SetBillable(value);
 
     if (te->Dirty()) {
@@ -2833,21 +2889,26 @@ error Context::SetTimeEntryDescription(
         return displayError("Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+	TimeEntry *te = nullptr;
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot set description, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-    }
+	{
+		Poco::Mutex::ScopedLock lock(user_m_);
+		if (!user_) {
+			logger().warning("Cannot set description, user logged out");
+			return noError;
+		}
+		te = user_->related.TimeEntryByGUID(GUID);
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
+		if (!te) {
+			logger().warning("Time entry not found: " + GUID);
+			return noError;
+		}
+
+		if (isTimeEntryLocked(te)) {
+			return logAndDisplayUserTriedEditingLockedEntry();
+		}
+	}
+
     te->SetDescription(value);
 
     if (te->Dirty()) {
@@ -3997,6 +4058,8 @@ error Context::pullAllUserData(
             user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
         }
 
+		pullWorkspacePreferences(toggl_client);
+
         stopwatch.stop();
         std::stringstream ss;
         ss << "User with related data JSON fetched and parsed in "
@@ -4309,6 +4372,115 @@ error Context::me(
         return ex;
     }
     return noError;
+}
+
+bool Context::isTimeEntryLocked(TimeEntry* te) {
+	return isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(te->WID()));
+}
+
+bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
+	return !isTimeLockedInWorkspace(t, user_->related.WorkspaceByID(te->WID()));
+}
+
+bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
+	return !isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(p->WID()));
+}
+
+error Context::logAndDisplayUserTriedEditingLockedEntry() {
+	logger().warning("User tried editing locked time entry");
+	return displayError(error("Cannot change locked time entry"));
+}
+
+bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
+	if (!ws->Business())
+		return false;
+	if (ws->Admin())
+		return false;
+	auto lockedTime = ws->LockedTime();
+	if (lockedTime == 0)
+		return false;
+	return t < lockedTime;
+}
+
+
+error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
+	Poco::Mutex::ScopedLock lock(user_m_);
+
+	std::vector<Workspace*> workspaces;
+	user_->related.WorkspaceList(&workspaces);
+
+	for (std::vector<Workspace*>::const_iterator
+		it = workspaces.begin();
+		it != workspaces.end();
+		it++) {
+
+		Workspace* ws = *it;
+
+		if (!ws->Business())
+			continue;
+
+		std::string json("");
+
+		error err = pullWorkspacePreferences(toggl_client, ws, &json);
+		if (err != noError) {
+			return err;
+		}
+
+		if (json.empty())
+			continue;
+
+		Json::Value root;
+		Json::Reader reader;
+		if (!reader.parse(json, root)) {
+			return error("Failed to load workspace preferences");
+		}
+
+		ws->LoadSettingsFromJson(root);
+	}
+
+	return noError;
+}
+
+error Context::pullWorkspacePreferences(
+	TogglClient* toggl_client,
+	Workspace* workspace,
+	std::string* json) {
+
+	std::string api_token = user_->APIToken();
+
+	if (api_token.empty()) {
+		return error("cannot pull user data without API token");
+	}
+
+	try {
+		std::stringstream ss;
+		ss << "/api/v9/workspaces/"
+			<< workspace->ID()
+			<< "/preferences";
+
+		HTTPSRequest req;
+		req.host = urls::API();
+		req.relative_url = ss.str();
+		req.basic_auth_username = api_token;
+		req.basic_auth_password = "api_token";
+
+		HTTPSResponse resp = toggl_client->Get(req);
+		if (resp.err != noError) {
+			return resp.err;
+		}
+
+		*json = resp.body;
+	}
+	catch (const Poco::Exception& exc) {
+		return exc.displayText();
+	}
+	catch (const std::exception& ex) {
+		return ex.what();
+	}
+	catch (const std::string& ex) {
+		return ex;
+	}
+	return noError;
 }
 
 error Context::signup(
