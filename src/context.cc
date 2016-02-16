@@ -1679,9 +1679,9 @@ error Context::SaveWindowSettings(
     return displayError(err);
 }
 
-int64_t Context::GetMiniTimerX()
+Poco::Int64 Context::GetMiniTimerX()
 {
-    int64_t value(0);
+    Poco::Int64 value(0);
     displayError(db()->GetMiniTimerX(&value));
     return value;
 }
@@ -1691,9 +1691,9 @@ void Context::SetMiniTimerX(const int64_t x)
     displayError(db()->SetMiniTimerX(x));
 }
 
-int64_t Context::GetMiniTimerY()
+Poco::Int64 Context::GetMiniTimerY()
 {
-    int64_t value(0);
+    Poco::Int64 value(0);
     displayError(db()->GetMiniTimerY(&value));
     return value;
 }
@@ -1703,9 +1703,9 @@ void Context::SetMiniTimerY(const int64_t y)
     displayError(db()->SetMiniTimerY(y));
 }
 
-int64_t Context::GetMiniTimerW()
+Poco::Int64 Context::GetMiniTimerW()
 {
-	int64_t value(0);
+	Poco::Int64 value(0);
 	displayError(db()->GetMiniTimerW(&value));
 	return value;
 }

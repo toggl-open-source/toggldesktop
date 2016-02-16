@@ -239,17 +239,17 @@ class Context : public TimelineDatasource {
         const int64_t window_height,
         const int64_t window_width);
 
-    int64_t GetMiniTimerX();
+    Poco::Int64 GetMiniTimerX();
 
     void SetMiniTimerX(
         const int64_t x);
 
-	int64_t GetMiniTimerY();
+	Poco::Int64 GetMiniTimerY();
 
 	void SetMiniTimerY(
 		const int64_t y);
 
-	int64_t GetMiniTimerW();
+	Poco::Int64 GetMiniTimerW();
 
 	void SetMiniTimerW(
 		const int64_t w);
