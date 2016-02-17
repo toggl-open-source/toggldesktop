@@ -509,10 +509,6 @@ void Context::updateUI(const UIElements &what) {
             TimeEntry *editor_time_entry =
                 user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
             if (editor_time_entry) {
-                if (what.open_time_entry_editor) {
-                    time_entry_editor_guid_ = editor_time_entry->GUID();
-                }
-
                 editor_time_entry_view.Fill(editor_time_entry);
                 if (editor_time_entry->IsTracking()) {
                     editor_time_entry_view.Duration =
@@ -635,10 +631,6 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_time_entries && user_) {
-            if (what.open_time_entry_list) {
-                time_entry_editor_guid_ = "";
-            }
-
             // Get a sorted list of time entries
             std::vector<TimeEntry *> time_entries =
                 user_->related.VisibleTimeEntries();

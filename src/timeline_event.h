@@ -47,7 +47,7 @@ class TimelineEvent : public BaseModel, public TimedEvent {
         return duration_;
     }
     void SetDuration(const Poco::UInt64 value);
-
+    
     const bool &Idle() const {
         return idle_;
     }
