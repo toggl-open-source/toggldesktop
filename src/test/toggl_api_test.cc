@@ -298,7 +298,7 @@ void on_display_timer_state(TogglTimeEntryView *te) {
 }
 
 void on_pomodoro(
-    const char *title, 
+    const char *title,
     const char *informative_text)
 {
     testing::testresult::pomodoro_title = std::string(title);
