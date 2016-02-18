@@ -923,6 +923,8 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_get_mini_timer_visible(
         void *context);
 
+	TOGGL_EXPORT void toggl_load_more(void* context);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

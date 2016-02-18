@@ -149,6 +149,11 @@ public static partial class Toggl
 
     #region api calls
 
+    public static void LoadMore()
+    {
+        toggl_load_more(ctx);
+    }
+
     public static void SendObmAction(ulong experiment, string key)
     {
         toggl_add_obm_action(ctx, experiment, key, "1");

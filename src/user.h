@@ -34,7 +34,8 @@ class User : public BaseModel {
     , duration_format_("")
     , offline_data_("")
     , default_pid_(0)
-    , default_tid_(0) {}
+    , default_tid_(0)
+	, has_loaded_more_(false) {}
 
     ~User();
 
@@ -171,6 +172,8 @@ class User : public BaseModel {
         const std::string &json,
         const bool &including_related_data);
 
+	error LoadTimeEntriesFromJSONString(const std::string &json);
+
     error SetAPITokenFromOfflineData(const std::string password);
 
     void MarkTimelineBatchAsUploaded(
@@ -220,6 +223,10 @@ class User : public BaseModel {
         const std::string email,
         const std::string password,
         std::string *result);
+
+	bool HasLoadedMore() {
+		return has_loaded_more_;
+	}
 
  private:
     void loadUserTagFromJSON(
@@ -287,7 +294,9 @@ class User : public BaseModel {
     std::string duration_format_;
     std::string offline_data_;
     Poco::UInt64 default_pid_;
-    Poco::UInt64 default_tid_;
+	Poco::UInt64 default_tid_;
+
+	bool has_loaded_more_;
 };
 
 template<class T>
