@@ -1356,6 +1356,10 @@ public static partial class Toggl
     private static extern bool toggl_get_mini_timer_visible(
         IntPtr context);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_load_more(
+        IntPtr context);
+
 }
 
 }

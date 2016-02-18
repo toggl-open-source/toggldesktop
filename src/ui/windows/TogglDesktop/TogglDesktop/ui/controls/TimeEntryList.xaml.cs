@@ -447,7 +447,7 @@ namespace TogglDesktop
             this.loadMoreSpinnerAnimation.Begin();
             this.loadMoreSpinner.Visibility = Visibility.Visible;
 
-            // Todo: Toggl.LoadMore(); // call async if call takes too long
+            Toggl.LoadMore();
         }
 
         private void showLoadMoreButton()
