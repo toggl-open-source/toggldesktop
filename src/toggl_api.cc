@@ -1273,3 +1273,7 @@ bool_t toggl_get_mini_timer_visible(
 {
     return app(context)->GetMiniTimerVisible();
 }
+
+void toggl_load_more(void* context) {
+	app(context)->LoadMore();
+}
