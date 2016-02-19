@@ -218,7 +218,7 @@ extern "C" {
     typedef void (*TogglDisplayTimeEntryList)(
         const bool_t open,
         TogglTimeEntryView *first,
-		const bool_t show_load_more_button);
+        const bool_t show_load_more_button);
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
@@ -924,7 +924,7 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_get_mini_timer_visible(
         void *context);
 
-	TOGGL_EXPORT void toggl_load_more(void* context);
+    TOGGL_EXPORT void toggl_load_more(void* context);
 
 #undef TOGGL_EXPORT
 

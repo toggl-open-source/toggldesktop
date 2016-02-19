@@ -1255,5 +1255,5 @@ bool_t toggl_get_mini_timer_visible(
 }
 
 void toggl_load_more(void* context) {
-	app(context)->LoadMore();
+    app(context)->LoadMore();
 }

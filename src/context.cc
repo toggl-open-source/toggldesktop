@@ -742,7 +742,7 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             time_entry_views,
-			!user_->HasLoadedMore());
+            !user_->HasLoadedMore());
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
     }
 
@@ -3991,84 +3991,84 @@ void Context::reminderActivity() {
 }
 
 void Context::LoadMore() {
-	{
-		Poco::Mutex::ScopedLock lock(user_m_);
-		if(!user_ || user_->HasLoadedMore()) {
-			return;
-		}
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if(!user_ || user_->HasLoadedMore()) {
+            return;
+        }
     }
-	{
-		Poco::Util::TimerTask::Ptr task =
-			new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onLoadMore);
-		Poco::Mutex::ScopedLock lock(timer_m_);
-		timer_.schedule(task, postpone(0));
+    {
+        Poco::Util::TimerTask::Ptr task =
+            new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onLoadMore);
+        Poco::Mutex::ScopedLock lock(timer_m_);
+        timer_.schedule(task, postpone(0));
     }
 }
 
 void Context::onLoadMore(Poco::Util::TimerTask& task) {
 
-	std::string api_token;
-	{
-		Poco::Mutex::ScopedLock lock(user_m_);
-		if (!user_ || user_->HasLoadedMore()) {
-			return;
-		}
-		api_token = user_->APIToken();
-	}
+    std::string api_token;
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_ || user_->HasLoadedMore()) {
+            return;
+        }
+        api_token = user_->APIToken();
+    }
 
-	if (api_token.empty()) {
-		return logger().warning("cannot load more time entries without API token");
-	}
+    if (api_token.empty()) {
+        return logger().warning("cannot load more time entries without API token");
+    }
 
-	try {
-		std::stringstream ss;
-		ss << "/api/v9/me/time_entries?since="
-			<< (Poco::Timestamp() - Poco::Timespan(30, 0, 0, 0, 0)).epochTime();
+    try {
+        std::stringstream ss;
+        ss << "/api/v9/me/time_entries?since="
+           << (Poco::Timestamp() - Poco::Timespan(30, 0, 0, 0, 0)).epochTime();
 
-		std::stringstream l;
-		l << "loading more: " << ss.str();
-		logger().debug(l.str());
+        std::stringstream l;
+        l << "loading more: " << ss.str();
+        logger().debug(l.str());
 
-		TogglClient client(UI());
-		HTTPSRequest req;
-		req.host = urls::API();
-		req.relative_url = ss.str();
-		req.basic_auth_username = api_token;
-		req.basic_auth_password = "api_token";
+        TogglClient client(UI());
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
 
-		HTTPSResponse resp = client.Get(req);
-		if (resp.err != noError) {
-			logger().warning(resp.err);
-			return;
-		}
+        HTTPSResponse resp = client.Get(req);
+        if (resp.err != noError) {
+            logger().warning(resp.err);
+            return;
+        }
 
-		std::string json = resp.body;
+        std::string json = resp.body;
 
-		{
-			Poco::Mutex::ScopedLock lock(user_m_);
-			if (!user_)
-				return;
-			error err = user_->LoadTimeEntriesFromJSONString(json);
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_)
+                return;
+            error err = user_->LoadTimeEntriesFromJSONString(json);
 
-			if (err != noError) {
-				logger().error(err);
-				return;
-			}
+            if (err != noError) {
+                logger().error(err);
+                return;
+            }
 
-			user_->ConfirmLoadedMore();
-		}
+            user_->ConfirmLoadedMore();
+        }
 
-		displayError(save(false));
-	}
-	catch (const Poco::Exception& exc) {
-		logger().warning(exc.displayText());
-	}
-	catch (const std::exception& ex) {
-		logger().warning(ex.what());
-	}
-	catch (const std::string& ex) {
-		logger().warning(ex);
-	}
+        displayError(save(false));
+    }
+    catch (const Poco::Exception& exc) {
+        logger().warning(exc.displayText());
+    }
+    catch (const std::exception& ex) {
+        logger().warning(ex.what());
+    }
+    catch (const std::string& ex) {
+        logger().warning(ex);
+    }
 }
 
 
