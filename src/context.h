@@ -405,9 +405,9 @@ class Context : public TimelineDatasource {
         idle_.SetIdleSeconds(idle_seconds, user_);
     }
 
-	void LoadMore();
+    void LoadMore();
 
-	static void SetLogPath(const std::string path);
+    static void SetLogPath(const std::string path);
 
     void SetQuit() {
         quit_ = true;
@@ -470,7 +470,7 @@ class Context : public TimelineDatasource {
     void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
     void onTrackSettingsUsage(Poco::Util::TimerTask& task);  // NOLINT
     void onWake(Poco::Util::TimerTask& task);  // NOLINT
-	void onLoadMore(Poco::Util::TimerTask& task);
+    void onLoadMore(Poco::Util::TimerTask& task);
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();

@@ -624,25 +624,25 @@ error User::LoadUserAndRelatedDataFromJSONString(
 
 error User::LoadTimeEntriesFromJSONString(const std::string& json) {
 
-	if (json.empty()) {
-		return noError;
-	}
+    if (json.empty()) {
+        return noError;
+    }
 
-	Json::Value root;
-	Json::Reader reader;
-	if (!reader.parse(json, root)) {
-		return error("Failed to LoadTimeEntriesFromJSONString");
-	}
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(json, root)) {
+        return error("Failed to LoadTimeEntriesFromJSONString");
+    }
 
-	std::set<Poco::UInt64> alive;
-	
-	for (unsigned int i = 0; i < root.size(); i++) {
-		loadUserTimeEntryFromJSON(root[i], &alive);
-	}
+    std::set<Poco::UInt64> alive;
 
-	deleteZombies(related.TimeEntries, alive);
+    for (unsigned int i = 0; i < root.size(); i++) {
+        loadUserTimeEntryFromJSON(root[i], &alive);
+    }
 
-	return noError;
+    deleteZombies(related.TimeEntries, alive);
+
+    return noError;
 }
 
 void User::LoadObmExperiments(Json::Value const &obm) {
