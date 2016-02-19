@@ -306,9 +306,9 @@ namespace TogglDesktop
             this.updateStatusIcons(state == Toggl.OnlineState.Online);
         }
 
-        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
+        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
         {
-            if (this.TryBeginInvoke(this.onTimeEntryList, open, list))
+            if (this.TryBeginInvoke(this.onTimeEntryList, open, list, showLoadMoreButton))
                 return;
 
             if (open)
