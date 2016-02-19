@@ -35,7 +35,7 @@ class User : public BaseModel {
     , offline_data_("")
     , default_pid_(0)
     , default_tid_(0)
-	, has_loaded_more_(false) {}
+    , has_loaded_more_(false) {}
 
     ~User();
 
@@ -172,7 +172,7 @@ class User : public BaseModel {
         const std::string &json,
         const bool &including_related_data);
 
-	error LoadTimeEntriesFromJSONString(const std::string &json);
+    error LoadTimeEntriesFromJSONString(const std::string &json);
 
     error SetAPITokenFromOfflineData(const std::string password);
 
@@ -224,13 +224,13 @@ class User : public BaseModel {
         const std::string password,
         std::string *result);
 
-	bool HasLoadedMore() {
-		return has_loaded_more_;
-	}
+    bool HasLoadedMore() {
+        return has_loaded_more_;
+    }
 
-	void ConfirmLoadedMore() {
-		has_loaded_more_ = true;
-	}
+    void ConfirmLoadedMore() {
+        has_loaded_more_ = true;
+    }
 
  private:
     void loadUserTagFromJSON(
@@ -298,9 +298,9 @@ class User : public BaseModel {
     std::string duration_format_;
     std::string offline_data_;
     Poco::UInt64 default_pid_;
-	Poco::UInt64 default_tid_;
+    Poco::UInt64 default_tid_;
 
-	bool has_loaded_more_;
+    bool has_loaded_more_;
 };
 
 template<class T>
