@@ -95,7 +95,8 @@ public static partial class Toggl
 
     public delegate void DisplayTimeEntryList(
         bool open,
-        List<TogglTimeEntryView> list);
+        List<TogglTimeEntryView> list,
+        bool show_load_more_button);
 
     public delegate void DisplayAutocomplete(
         List<TogglAutocompleteView> list);
@@ -725,11 +726,11 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_time_entry_list(ctx, (open, first) =>
+        toggl_on_time_entry_list(ctx, (open, first, show_load_more_button) =>
         {
             using (Performance.Measure("Calling OnTimeEntryList, open: {0}", open))
             {
-                OnTimeEntryList(open, convertToTimeEntryList(first));
+                OnTimeEntryList(open, convertToTimeEntryList(first), show_load_more_button);
             }
         });
 
