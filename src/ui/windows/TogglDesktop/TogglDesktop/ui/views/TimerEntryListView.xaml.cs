@@ -44,9 +44,9 @@ namespace TogglDesktop
             }
         }
 
-        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
+        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
         {
-            if (this.TryBeginInvoke(this.onTimeEntryList, open, list))
+            if (this.TryBeginInvoke(this.onTimeEntryList, open, list, showLoadMoreButton))
                 return;
 
             this.fillTimeEntryList(list);
@@ -56,6 +56,8 @@ namespace TogglDesktop
                 this.Entries.Focus(false);
                 this.DisableHighlight();
             }
+
+            this.Entries.SetLoadMoreButtonVisibility(showLoadMoreButton);
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)

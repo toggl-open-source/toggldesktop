@@ -228,6 +228,10 @@ class User : public BaseModel {
 		return has_loaded_more_;
 	}
 
+	void ConfirmLoadedMore() {
+		has_loaded_more_ = true;
+	}
+
  private:
     void loadUserTagFromJSON(
         Json::Value data,

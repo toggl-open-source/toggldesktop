@@ -371,7 +371,8 @@ void GUI::DisplayProjectAutocomplete(
 }
 
 void GUI::DisplayTimeEntryList(const bool open,
-                               const std::vector<view::TimeEntry> list) {
+                               const std::vector<view::TimeEntry> list,
+							   const bool show_load_more_button) {
     Poco::Stopwatch stopwatch;
     stopwatch.start();
     {
@@ -397,7 +398,7 @@ void GUI::DisplayTimeEntryList(const bool open,
         first->IsHeader = true;
     }
 
-    on_display_time_entry_list_(open, first);
+    on_display_time_entry_list_(open, first, show_load_more_button);
 
     time_entry_view_item_clear(first);
 
