@@ -393,12 +393,6 @@ bool User::HasValidSinceDate() const {
         return false;
     }
 
-    // too new
-    Poco::UInt64 now = time(0);
-    if (Since() > now) {
-        return false;
-    }
-
     return true;
 }
 
