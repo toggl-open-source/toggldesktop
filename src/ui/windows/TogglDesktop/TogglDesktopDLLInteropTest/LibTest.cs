@@ -88,7 +88,7 @@ public class LibTest
         focusedFieldName = focused_field_name;
     }
 
-    static void Toggl_OnTimeEntryList(bool open, List<TogglDesktop.Toggl.TogglTimeEntryView> list)
+    static void Toggl_OnTimeEntryList(bool open, List<TogglDesktop.Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
     {
         openTimeEntryList = open;
         timeentries = list;

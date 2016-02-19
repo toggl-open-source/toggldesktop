@@ -282,7 +282,8 @@ public static partial class Toggl
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayTimeEntryList(
         [MarshalAs(UnmanagedType.I1)] bool open,
-        IntPtr first);
+        IntPtr first,
+        [MarshalAs(UnmanagedType.I1)] bool show_load_more_button);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayAutocomplete(

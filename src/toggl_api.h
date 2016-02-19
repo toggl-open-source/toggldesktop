@@ -225,7 +225,8 @@ extern "C" {
 
     typedef void (*TogglDisplayTimeEntryList)(
         const bool_t open,
-        TogglTimeEntryView *first);
+        TogglTimeEntryView *first,
+		const bool_t show_load_more_button);
 
     typedef void (*TogglDisplayTimeline)(
         const bool_t open,

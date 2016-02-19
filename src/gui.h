@@ -369,7 +369,8 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTimeEntryList(
         const bool open,
-        const std::vector<view::TimeEntry> list);
+        const std::vector<view::TimeEntry> list,
+		const bool show_load_more_button);
 
     void DisplayProjectColors();
 

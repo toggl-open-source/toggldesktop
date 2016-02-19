@@ -757,7 +757,8 @@ void Context::updateUI(const UIElements &what) {
     if (what.display_time_entries) {
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
-            time_entry_views);
+            time_entry_views,
+			!user_->HasLoadedMore());
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
     }
 
@@ -4073,9 +4074,11 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
 				logger().error(err);
 				return;
 			}
+
+			user_->ConfirmLoadedMore();
 		}
 
-		logger().debug(json);
+		displayError(save(false));
 	}
 	catch (const Poco::Exception& exc) {
 		logger().warning(exc.displayText());

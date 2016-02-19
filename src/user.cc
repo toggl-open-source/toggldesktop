@@ -647,7 +647,7 @@ error User::LoadTimeEntriesFromJSONString(const std::string& json) {
 	}
 
 	// TODO: is this call needed?
-	deleteZombies(related.Tags, alive);
+	//deleteZombies(related.TimeEntries, alive);
 
 	return noError;
 }

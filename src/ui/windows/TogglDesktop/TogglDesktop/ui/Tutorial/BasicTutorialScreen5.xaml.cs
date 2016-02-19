@@ -22,7 +22,7 @@ namespace TogglDesktop.Tutorial
             Toggl.OnStoppedTimerState -= this.onStoppedTimerState;
         }
 
-        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list)
+        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
         {
             if (!open)
                 return;

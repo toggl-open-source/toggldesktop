@@ -370,7 +370,7 @@ BOOL manualMode = NO;
 		{
 			if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
 			{
-				toggl_continue_latest(ctx);
+				toggl_continue_latest(ctx, false);
 			}
 			else
 			{
@@ -380,7 +380,8 @@ BOOL manualMode = NO;
 							0,
 							0,
 							0,
-							0);
+							0,
+                            false);
 			}
 			return;
 		}
