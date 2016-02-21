@@ -1558,6 +1558,9 @@ void on_pomodoro(const char *title, const char *informative_text)
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
+
+	// Play sound
+	[[NSSound soundNamed:@"Glass"] play];
 }
 
 void on_url(const char *url)
