@@ -17,6 +17,13 @@
         <MenuItem Header="Expand all days"
                   Command="{x:Static toggl:TimeEntryCellContextMenuCommands.ExpandAllDaysCommand}"/>
     </ContextMenu>
+
+    <ContextMenu x:Key="TimeEntryHeaderContextMenu">
+        <MenuItem Header="Collapse all days"
+                  Command="{x:Static toggl:TimeEntryCellContextMenuCommands.CollapseAllDaysCommand}"/>
+        <MenuItem Header="Expand all days"
+                  Command="{x:Static toggl:TimeEntryCellContextMenuCommands.ExpandAllDaysCommand}"/>
+    </ContextMenu>
     
     <Style x:Key="TimeEntryCell">
 
