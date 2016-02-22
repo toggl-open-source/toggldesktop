@@ -200,6 +200,7 @@
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
       <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
