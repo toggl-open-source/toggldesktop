@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -31,6 +32,8 @@ namespace TogglDesktop
             this.RemoveFromParent();
 
             this.icon.ShowCustomBalloon(this, PopupAnimation.Slide, null);
+
+            System.Media.SystemSounds.Asterisk.Play();
         }
 
         private void onNotificationMouseDown(object sender, MouseButtonEventArgs e)
@@ -38,11 +41,19 @@ namespace TogglDesktop
             this.icon.CloseBalloon();
         }
 
-        private void onStopButtonClick(object sender, RoutedEventArgs e)
+        private void onContinueButtonClick(object sender, RoutedEventArgs e)
         {
             this.icon.CloseBalloon();
-            Toggl.Stop();
+            Toggl.ContinueLatest();
+        }
+
+        private void onStartNewButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.icon.CloseBalloon();
+            var guid = Toggl.Start("", "", 0, 0, "", "");
             this.mainWindow.ShowOnTop();
+            if (guid != null)
+                Toggl.Edit(guid, true, Toggl.Description);
         }
     }
 }
