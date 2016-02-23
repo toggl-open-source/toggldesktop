@@ -284,6 +284,7 @@ extern void *ctx;
 	{
 		LoadMoreCell *cell = [tableView makeViewWithIdentifier:@"LoadMoreCell"
 														 owner:self];
+		[cell initCell];
 		return cell;
 	}
 
@@ -341,7 +342,6 @@ extern void *ctx;
 	// Load more cell clicked
 	if ([cell isKindOfClass:[LoadMoreCell class]])
 	{
-		toggl_load_more(ctx);
 		return;
 	}
 
