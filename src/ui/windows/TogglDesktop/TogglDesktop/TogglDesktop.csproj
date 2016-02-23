@@ -188,6 +188,7 @@
     <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\chrome\ChromelessWindow.cs" />
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
@@ -199,14 +200,19 @@
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
       <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment101.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment99.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment87.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen1.xaml.cs">
       <DependentUpon>Experiment98Screen1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\implementations\Experiment101Screen.xaml.cs">
+      <DependentUpon>Experiment101Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\implementations\Experiment99Screen.xaml.cs">
       <DependentUpon>Experiment99Screen.xaml</DependentUpon>
@@ -217,6 +223,7 @@
       <DependentUpon>Experiment87Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
+    <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
     <Compile Include="ui\Theme.cs" />
     <Compile Include="ui\ThemeResourceDictionary.cs" />
@@ -249,6 +256,9 @@
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
+    <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
+      <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\PomodoroNotification.xaml.cs">
       <DependentUpon>PomodoroNotification.xaml</DependentUpon>
     </Compile>
@@ -582,6 +592,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ui\Experiments\implementations\Experiment101Screen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ui\Experiments\implementations\Experiment99Screen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -734,6 +748,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\windows\MiniTimerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\controls\PomodoroNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -849,7 +867,12 @@
   <ItemGroup>
     <Resource Include="Resources\warning-icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\locked-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow-up-white.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

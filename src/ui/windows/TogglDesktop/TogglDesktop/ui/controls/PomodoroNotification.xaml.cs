@@ -44,13 +44,13 @@ namespace TogglDesktop
         private void onContinueButtonClick(object sender, RoutedEventArgs e)
         {
             this.icon.CloseBalloon();
-            Toggl.ContinueLatest();
+            Toggl.ContinueLatest(true);
         }
 
         private void onStartNewButtonClick(object sender, RoutedEventArgs e)
         {
             this.icon.CloseBalloon();
-            var guid = Toggl.Start("", "", 0, 0, "", "");
+            var guid = Toggl.Start("", "", 0, 0, "", "", true);
             this.mainWindow.ShowOnTop();
             if (guid != null)
                 Toggl.Edit(guid, true, Toggl.Description);

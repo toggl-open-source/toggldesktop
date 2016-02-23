@@ -441,6 +441,36 @@ error Database::SaveWindowSettings(
     return last_error("SaveWindowSettings");
 }
 
+error Database::SetMiniTimerX(const Poco::Int64 x)
+{
+    return setSettingsValue("mini_timer_x", x);
+}
+
+error Database::GetMiniTimerX(Poco::Int64* x)
+{
+    return getSettingsValue("mini_timer_x", x);
+}
+
+error Database::SetMiniTimerY(const Poco::Int64 y)
+{
+    return setSettingsValue("mini_timer_y", y);
+}
+
+error Database::GetMiniTimerY(Poco::Int64* y)
+{
+    return getSettingsValue("mini_timer_y", y);
+}
+
+error Database::SetMiniTimerW(const Poco::Int64 w)
+{
+    return setSettingsValue("mini_timer_w", w);
+}
+
+error Database::GetMiniTimerW(Poco::Int64* w)
+{
+    return getSettingsValue("mini_timer_w", w);
+}
+
 error Database::LoadWindowSettings(
     Poco::Int64 *window_x,
     Poco::Int64 *window_y,
@@ -523,6 +553,15 @@ error Database::SetCompactMode(
 
 error Database::GetCompactMode(bool *result) {
     return getSettingsValue("compact_mode", result);
+}
+
+error Database::SetMiniTimerVisible(
+    const bool value) {
+    return setSettingsValue("mini_timer_visible", value);
+}
+
+error Database::GetMiniTimerVisible(bool* result) {
+    return getSettingsValue("mini_timer_visible", result);
 }
 
 error Database::SetKeepEndTimeFixed(
@@ -1113,7 +1152,8 @@ error Database::loadWorkspaces(
         Poco::Data::Statement select(*session_);
         select <<
                "SELECT local_id, id, uid, name, premium, "
-               "only_admins_may_create_projects, admin "
+               "only_admins_may_create_projects, admin, "
+               "is_business, locked_time "
                "FROM workspaces "
                "WHERE uid = :uid "
                "ORDER BY name",
@@ -1135,6 +1175,8 @@ error Database::loadWorkspaces(
                 model->SetPremium(rs[4].convert<bool>());
                 model->SetOnlyAdminsMayCreateProjects(rs[5].convert<bool>());
                 model->SetAdmin(rs[6].convert<bool>());
+                model->SetBusiness(rs[7].convert<bool>());
+                model->SetLockedTime(rs[8].convert<time_t>());
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
@@ -2450,7 +2492,9 @@ error Database::saveModel(
                       "update workspaces set "
                       "id = :id, uid = :uid, name = :name, premium = :premium, "
                       "only_admins_may_create_projects = "
-                      ":only_admins_may_create_projects, admin = :admin "
+                      ":only_admins_may_create_projects, admin = :admin, "
+                      "is_business = :is_business, "
+                      "locked_time = :locked_time "
                       "where local_id = :local_id",
                       useRef(model->ID()),
                       useRef(model->UID()),
@@ -2458,6 +2502,8 @@ error Database::saveModel(
                       useRef(model->Premium()),
                       useRef(model->OnlyAdminsMayCreateProjects()),
                       useRef(model->Admin()),
+                      useRef(model->Business()),
+                      useRef(model->LockedTime()),
                       useRef(model->LocalID()),
                       now;
             error err = last_error("saveWorkspace");
@@ -2474,15 +2520,19 @@ error Database::saveModel(
             logger().trace(ss.str());
             *session_ <<
                       "insert into workspaces(id, uid, name, premium, "
-                      "only_admins_may_create_projects, admin) "
+                      "only_admins_may_create_projects, admin, "
+                      "is_business, locked_time) "
                       "values(:id, :uid, :name, :premium, "
-                      ":only_admins_may_create_projects, :admin)",
+                      ":only_admins_may_create_projects, :admin, "
+                      ":is_business, :locked_time)",
                       useRef(model->ID()),
                       useRef(model->UID()),
                       useRef(model->Name()),
                       useRef(model->Premium()),
                       useRef(model->OnlyAdminsMayCreateProjects()),
                       useRef(model->Admin()),
+                      useRef(model->Business()),
+                      useRef(model->LockedTime()),
                       now;
             error err = last_error("saveWorkspace");
             if (err != noError) {

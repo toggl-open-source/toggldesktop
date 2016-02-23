@@ -510,7 +510,8 @@ char_t *toggl_start(
     const uint64_t task_id,
     const uint64_t project_id,
     const char_t *project_guid,
-    const char_t *tags) {
+    const char_t *tags,
+    const bool_t prevent_on_app) {
 
     logger().debug("toggl_start");
 
@@ -540,7 +541,8 @@ char_t *toggl_start(
         task_id,
         project_id,
         p_guid,
-        tag_list);
+        tag_list,
+        prevent_on_app);
     if (te) {
         return copy_string(te->GUID());
     }
@@ -590,11 +592,12 @@ void toggl_edit_preferences(void *context) {
 }
 
 bool_t toggl_continue_latest(
-    void *context) {
+    void *context,
+    const bool_t prevent_on_app) {
 
     logger().debug("toggl_continue_latest");
 
-    toggl::TimeEntry *result = app(context)->ContinueLatest();
+    toggl::TimeEntry *result = app(context)->ContinueLatest(prevent_on_app);
     if (!result) {
         return false;
     }
@@ -690,8 +693,9 @@ bool_t toggl_set_time_entry_description(
 }
 
 bool_t toggl_stop(
-    void *context) {
-    return toggl::noError == app(context)->Stop();
+    void *context,
+    const bool_t prevent_on_app) {
+    return toggl::noError == app(context)->Stop(prevent_on_app);
 }
 
 bool_t toggl_discard_time_at(
@@ -953,7 +957,7 @@ void toggl_open_in_browser(void *context) {
 }
 
 void toggl_get_support(void *context) {
-    app(context)->UI()->DisplayURL(kSupportURL);
+    app(context)->UI()->DisplayURL(kMacSupportURL);
 }
 
 void toggl_on_workspace_select(
@@ -1195,4 +1199,57 @@ void toggl_set_keep_end_time_fixed(
 bool_t toggl_get_keep_end_time_fixed(
     void *context) {
     return app(context)->GetKeepEndTimeFixed();
+}
+
+
+void toggl_set_mini_timer_x(
+    void *context,
+    const int64_t value)
+{
+    app(context)->SetMiniTimerX(value);
+}
+
+int64_t toggl_get_mini_timer_x(
+    void *context)
+{
+    return app(context)->GetMiniTimerX();
+}
+
+void toggl_set_mini_timer_y(
+    void *context,
+    const int64_t value)
+{
+    app(context)->SetMiniTimerY(value);
+}
+
+int64_t toggl_get_mini_timer_y(
+    void *context)
+{
+    return app(context)->GetMiniTimerY();
+}
+
+void toggl_set_mini_timer_w(
+    void *context,
+    const int64_t value)
+{
+    app(context)->SetMiniTimerW(value);
+}
+
+int64_t toggl_get_mini_timer_w(
+    void *context)
+{
+    return app(context)->GetMiniTimerW();
+}
+
+void toggl_set_mini_timer_visible(
+    void *context,
+    const bool_t value)
+{
+    app(context)->SetMiniTimerVisible(value);
+}
+
+bool_t toggl_get_mini_timer_visible(
+    void *context)
+{
+    return app(context)->GetMiniTimerVisible();
 }

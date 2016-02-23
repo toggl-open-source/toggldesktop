@@ -79,6 +79,13 @@ class Database {
         const Poco::Int64 window_height,
         const Poco::Int64 window_width);
 
+    error SetMiniTimerX(const Poco::Int64 x);
+    error GetMiniTimerX(Poco::Int64 *x);
+    error SetMiniTimerY(const Poco::Int64 y);
+    error GetMiniTimerY(Poco::Int64 *y);
+    error SetMiniTimerW(const Poco::Int64 w);
+    error GetMiniTimerW(Poco::Int64 *w);
+
     error SetSettingsHasSeenBetaOffering(const bool &value);
 
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
@@ -131,6 +138,12 @@ class Database {
         const bool);
 
     error GetCompactMode(
+        bool *);
+
+    error SetMiniTimerVisible(
+        const bool);
+
+    error GetMiniTimerVisible(
         bool *);
 
     error SetKeepEndTimeFixed(

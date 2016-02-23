@@ -32,7 +32,11 @@ public static partial class Toggl
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
+#if INVS
+    public static string Env = "development";
+#else
     public static string Env = "production";
+#endif
 
 
     #endregion
@@ -240,10 +244,10 @@ public static partial class Toggl
         return toggl_continue(ctx, guid);
     }
 
-    public static bool ContinueLatest()
+    public static bool ContinueLatest(bool preventOnApp = false)
     {
         OnUserTimeEntryStart();
-        return toggl_continue_latest(ctx);
+        return toggl_continue_latest(ctx, preventOnApp);
     }
 
     public static bool DeleteTimeEntry(string guid)
@@ -325,9 +329,9 @@ public static partial class Toggl
 
     #endregion
 
-    public static bool Stop()
+    public static bool Stop(bool preventOnApp = false)
     {
-        return toggl_stop(ctx);
+        return toggl_stop(ctx, preventOnApp);
     }
 
     public static bool DiscardTimeAt(string guid, UInt64 at, bool split)
@@ -448,7 +452,8 @@ public static partial class Toggl
         UInt64 task_id,
         UInt64 project_id,
         string project_guid,
-        string tags)
+        string tags,
+        bool preventOnApp = false)
     {
         OnUserTimeEntryStart();
 
@@ -458,7 +463,8 @@ public static partial class Toggl
                            task_id,
                            project_id,
                            project_guid,
-                           tags);
+                           tags,
+                           preventOnApp);
     }
 
     public static string AddProject(
@@ -586,6 +592,45 @@ public static partial class Toggl
         return toggl_get_keep_end_time_fixed(ctx);
     }
 
+    public static void SetMiniTimerX(long x)
+    {
+        toggl_set_mini_timer_x(ctx, x);
+    }
+
+    public static long GetMiniTimerX()
+    {
+        return toggl_get_mini_timer_x(ctx);
+    }
+
+    public static void SetMiniTimerY(long y)
+    {
+        toggl_set_mini_timer_y(ctx, y);
+    }
+
+    public static long GetMiniTimerY()
+    {
+        return toggl_get_mini_timer_y(ctx);
+    }
+
+    public static void SetMiniTimerW(long w)
+    {
+        toggl_set_mini_timer_w(ctx, w);
+    }
+
+    public static long GetMiniTimerW()
+    {
+        return toggl_get_mini_timer_w(ctx);
+    }
+
+    public static void SetMiniTimerVisible(bool visible)
+    {
+        toggl_set_mini_timer_visible(ctx, visible);
+    }
+
+    public static bool GetMiniTimerVisible()
+    {
+        return toggl_get_mini_timer_visible(ctx);
+    }
     #endregion
 
     #region callback events
@@ -847,7 +892,7 @@ public static partial class Toggl
 
     public delegate void UserTimeEntryStart();
 
-    public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { }; 
+    public static event UserTimeEntryStart OnUserTimeEntryStart = delegate { };
 
     #endregion
 

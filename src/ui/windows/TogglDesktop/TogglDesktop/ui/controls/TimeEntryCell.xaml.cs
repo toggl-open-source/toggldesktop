@@ -108,6 +108,7 @@ namespace TogglDesktop
             this.EntryBackColor = cell.EntryBackColor;
 
             this.unsyncedIcon.Visibility = cell.unsyncedIcon.Visibility;
+            this.lockedIcon.Visibility = cell.lockedIcon.Visibility;
 
             this.imitateTooltips(cell);
         }
@@ -147,6 +148,7 @@ namespace TogglDesktop
             this.EntryBackColor = idleBackColor;
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
+            this.lockedIcon.ShowOnlyIf(item.Locked);
 
             this.updateToolTips(item);
         }
@@ -273,7 +275,7 @@ namespace TogglDesktop
 
         private void tryStartDrag(MouseEventArgs e, bool ignoreDistance = false)
         {
-            if (this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
+            if (this.IsEnabled && this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
             {
                 var d = e.GetPosition(null) - this.mouseDownPosition;
 
@@ -286,7 +288,9 @@ namespace TogglDesktop
 
                 this.EntryBackColor = this.entryHoverColor;
                 this.dragging = true;
+                TimeEntryCellDragImposter.Start(this);
                 DragDrop.DoDragDrop(this, new DataObject("time-entry-cell", this), DragDropEffects.Move);
+                TimeEntryCellDragImposter.Stop();
                 this.dragging = false;
                 this.EntryBackColor = idleBackColor;
 
@@ -294,6 +298,11 @@ namespace TogglDesktop
             }
 
             this.isMouseDown = false;
+        }
+
+        protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
+        {
+            TimeEntryCellDragImposter.Update();
         }
 
         #endregion

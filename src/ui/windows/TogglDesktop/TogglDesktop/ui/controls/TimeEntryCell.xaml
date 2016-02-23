@@ -27,19 +27,25 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="*" MaxWidth="100" MinWidth="65"/>
+                <ColumnDefinition Width="*" MaxWidth="105" MinWidth="65"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
             <Rectangle Name="projectColor" x:FieldModifier="private" Grid.Column="0"
                        Fill="#999999"/>
-            
-            <Image Name="unsyncedIcon" x:FieldModifier="private" Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   ToolTip="Unsynced time entry."
-                   Width="16" Height="16"
-                   Source="/TogglDesktop;component/Resources/warning-icon.png"
-                   Stretch="UniformToFill"/>
+
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
+                <Image Name="unsyncedIcon" x:FieldModifier="private" 
+                       ToolTip="Unsynced time entry."
+                       Width="16" Height="16"
+                       Source="/TogglDesktop;component/Resources/warning-icon.png"
+                       Stretch="UniformToFill"/>
+                <Image Name="lockedIcon" x:FieldModifier="private" 
+                       ToolTip="Time entry locked."
+                       Width="16" Height="16"
+                       Source="/TogglDesktop;component/Resources/locked-icon.png"
+                       Stretch="UniformToFill"/>
+            </StackPanel>
 
             <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
 
@@ -84,7 +90,7 @@
                         <SolidColorBrush Color="{Binding EntryBackColor}"/>
                     </StackPanel.Background>
 
-                    <Canvas Width="26" Height="26" Name="tagsIcon" x:FieldModifier="private">
+                    <Canvas Width="26" Height="26" Name="tagsIcon" x:FieldModifier="private" UseLayoutRounding="false">
                         <Image Source="/TogglDesktop;component/Resources/icon-tags.png"
                                Stretch="UniformToFill" Margin="3, 5, 3, 5" Height="16"/>
                         <Border Width="12" Height="12" Background="#ddd"
@@ -102,12 +108,12 @@
                         </Border>
                     </Canvas>
                     <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
-                           Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
+                           Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20" UseLayoutRounding="false"/>
 
                 </StackPanel>
             </StackPanel>
 
-            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="60"
+            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="65"
                         HorizontalAlignment="Left" FontSize="14.7" TextAlignment="Right"
                             Margin="0, 1, 0, 0" MouseLeftButtonUp="labelDuration_MouseUp">03:21:30</TextBlock>
 

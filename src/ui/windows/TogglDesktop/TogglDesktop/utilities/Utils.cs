@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -12,7 +13,7 @@ public static class Utils
 {
     #region window position loading and saving
 
-    public static void LoadWindowLocation(Window mainWindow, EditViewPopup editPopup)
+    public static void LoadWindowLocation(Window mainWindow, EditViewPopup editPopup, MiniTimerWindow miniTimer)
     {
         if (editPopup != null)
         {
@@ -48,6 +49,25 @@ public static class Utils
             mainWindow.Top = location.Y;
             Toggl.Debug("Force moved window to primary screen");
         }
+
+        if (miniTimer != null)
+        {
+            x = Toggl.GetMiniTimerX();
+            y = Toggl.GetMiniTimerY();
+            w = Toggl.GetMiniTimerW();
+            miniTimer.Left = x;
+            miniTimer.Top = y;
+            miniTimer.Width = w;
+            Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
+
+            if (!visibleOnAnyScreen(miniTimer))
+            {
+                var location = Screen.PrimaryScreen.WorkingArea.Location;
+                miniTimer.Left = location.X;
+                miniTimer.Top = location.Y;
+                Toggl.Debug("Force moved mini timer to primary screen");
+            }
+        }
     }
 
     private static bool visibleOnAnyScreen(Window f)
@@ -60,7 +80,7 @@ public static class Utils
                .Any(s => s.WorkingArea.IntersectsWith(windowBounds));
     }
 
-    public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit)
+    public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit, MiniTimerWindow miniTimer)
     {
         long x, y, w, h;
 
@@ -95,6 +115,17 @@ public static class Utils
         if (edit != null)
         {
             Toggl.SetEditViewWidth((long)edit.Width);
+        }
+
+        if (miniTimer != null)
+        {
+            x = (long)miniTimer.Left;
+            y = (long)miniTimer.Top;
+            w = (long)miniTimer.Width;
+            Toggl.SetMiniTimerX(x);
+            Toggl.SetMiniTimerY(y);
+            Toggl.SetMiniTimerW(w);
+            Toggl.Debug("Saved mini timer location ({0}x{1} by {2})", x, y, w);
         }
     }
 

@@ -151,7 +151,7 @@ static int l_toggl_continue(lua_State *L) {
 }
 
 static int l_toggl_continue_latest(lua_State *L) {
-    bool_t res = toggl_continue_latest(toggl_app_instance_);
+    bool_t res = toggl_continue_latest(toggl_app_instance_, false);
     lua_pushboolean(L, res);
     return 1;
 }
@@ -230,7 +230,7 @@ static int l_toggl_set_time_entry_description(lua_State *L) {
 }
 
 static int l_toggl_stop(lua_State *L) {
-    bool_t res = toggl_stop(toggl_app_instance_);
+    bool_t res = toggl_stop(toggl_app_instance_, false);
     lua_pushboolean(L, res);
     return 1;
 }
@@ -330,7 +330,8 @@ static int l_toggl_start(lua_State *L) {
                                lua_tointeger(L, 3),
                                lua_tointeger(L, 4),
                                checkstring(L, 5),
-                               checkstring(L, 6));
+                               checkstring(L, 6),
+                               false);
     pushstring(L, guid);
     free(guid);
     return 1;

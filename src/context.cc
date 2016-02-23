@@ -55,6 +55,7 @@
 #include "Poco/URIStreamOpener.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
+#include <mutex>
 
 namespace toggl {
 
@@ -532,6 +533,8 @@ void Context::updateUI(const UIElements &what) {
                     user_->CanSeeBillable(ws);
                 editor_time_entry_view.DefaultWID = user_->DefaultWID();
 
+                editor_time_entry_view.Locked = isTimeEntryLocked(editor_time_entry);
+
                 // Display tags also when time entry is being edited,
                 // because tags are filtered by TE WID
                 std::vector<std::string> tags;
@@ -645,6 +648,9 @@ void Context::updateUI(const UIElements &what) {
                 user_->related.ProjectLabelAndColorCode(
                     te,
                     &view);
+
+                view.Locked = isTimeEntryLocked(te);
+
                 time_entry_views.push_back(view);
             }
             // Assign the date durations we calculated previously
@@ -1673,6 +1679,42 @@ error Context::SaveWindowSettings(
     return displayError(err);
 }
 
+Poco::Int64 Context::GetMiniTimerX()
+{
+    Poco::Int64 value(0);
+    displayError(db()->GetMiniTimerX(&value));
+    return value;
+}
+
+void Context::SetMiniTimerX(const int64_t x)
+{
+    displayError(db()->SetMiniTimerX(x));
+}
+
+Poco::Int64 Context::GetMiniTimerY()
+{
+    Poco::Int64 value(0);
+    displayError(db()->GetMiniTimerY(&value));
+    return value;
+}
+
+void Context::SetMiniTimerY(const int64_t y)
+{
+    displayError(db()->SetMiniTimerY(y));
+}
+
+Poco::Int64 Context::GetMiniTimerW()
+{
+    Poco::Int64 value(0);
+    displayError(db()->GetMiniTimerW(&value));
+    return value;
+}
+
+void Context::SetMiniTimerW(const int64_t y)
+{
+    displayError(db()->SetMiniTimerW(y));
+}
+
 void Context::SetCompactMode(
     const bool value) {
     displayError(db()->SetCompactMode(value));
@@ -1681,6 +1723,17 @@ void Context::SetCompactMode(
 bool Context::GetCompactMode() {
     bool value(false);
     displayError(db()->GetCompactMode(&value));
+    return value;
+}
+
+void Context::SetMiniTimerVisible(
+    const bool value) {
+    displayError(db()->SetMiniTimerVisible(value));
+}
+
+bool Context::GetMiniTimerVisible() {
+    bool value(false);
+    displayError(db()->GetMiniTimerVisible(&value));
     return value;
 }
 
@@ -1954,6 +2007,11 @@ error Context::Login(
             return displayError(err);
         }
 
+        err = pullWorkspacePreferences(&client);
+        if (err != noError) {
+            return displayError(err);
+        }
+
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
@@ -2208,7 +2266,8 @@ TimeEntry *Context::Start(
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
     const std::string project_guid,
-    const std::string tags) {
+    const std::string tags,
+    const bool prevent_on_app) {
 
     // Do not even allow to add new time entries,
     // else they will linger around in the app
@@ -2262,13 +2321,13 @@ TimeEntry *Context::Start(
 
     OpenTimeEntryList();
 
-    if (settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut) {
         // Show app
         UI()->DisplayApp();
     }
 
     if (te && settings_.open_editor_on_shortcut) {
-        if (!settings_.focus_on_shortcut) {
+        if (!prevent_on_app && !settings_.focus_on_shortcut) {
             // Show app
             UI()->DisplayApp();
         }
@@ -2330,7 +2389,7 @@ void Context::OpenTimeEntryEditor(
     updateUI(render);
 }
 
-TimeEntry *Context::ContinueLatest() {
+TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
@@ -2377,13 +2436,13 @@ TimeEntry *Context::ContinueLatest() {
         updateUI(render);
     }
 
-    if (settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut) {
         // Show app
         UI()->DisplayApp();
     }
 
     if (result && settings_.open_editor_on_shortcut) {
-        if (!settings_.focus_on_shortcut) {
+        if (!prevent_on_app && !settings_.focus_on_shortcut) {
             // Show app
             UI()->DisplayApp();
         }
@@ -2466,17 +2525,23 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (te->DeletedAt()) {
+            return displayError(kCannotDeleteDeletedTimeEntry);
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
     }
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
-    if (te->DeletedAt()) {
-        return displayError(kCannotDeleteDeletedTimeEntry);
-    }
     if (te->IsTracking()) {
-        error err = Stop();
+        error err = Stop(false);
         if (err != noError) {
             return displayError(err);
         }
@@ -2503,6 +2568,11 @@ error Context::SetTimeEntryDuration(
         logger().warning("Time entry not found: " + GUID);
         return noError;
     }
+
+    if (isTimeEntryLocked(te)) {
+        return logAndDisplayUserTriedEditingLockedEntry();
+    }
+
     te->SetDurationUserInput(duration);
 
     last_pomodoro_reminder_time_ = te->Start();
@@ -2531,12 +2601,20 @@ error Context::SetTimeEntryProject(
             return noError;
         }
 
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
         Project *p = nullptr;
         if (project_id) {
             p = user_->related.ProjectByID(project_id);
         }
         if (!project_guid.empty()) {
             p = user_->related.ProjectByGUID(project_guid);
+        }
+
+        if (!canChangeProjectTo(te, p)) {
+            return displayError(error("Cannot change project: would end up with locked time entry"));
         }
 
         if (p) {
@@ -2574,7 +2652,8 @@ error Context::SetTimeEntryDate(
         return displayError("Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    TimeEntry *te;
+    Poco::LocalDateTime dt;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2583,25 +2662,31 @@ error Context::SetTimeEntryDate(
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return displayError(error("Cannot change locked time entry."));
+        }
+
+        Poco::LocalDateTime date_part(
+            Poco::Timestamp::fromEpochTime(unix_timestamp));
+
+        Poco::LocalDateTime time_part(
+            Poco::Timestamp::fromEpochTime(te->Start()));
+
+        dt = Poco::LocalDateTime(
+            date_part.year(), date_part.month(), date_part.day(),
+            time_part.hour(), time_part.minute(), time_part.second());
+
+        if (!canChangeStartTimeTo(te, dt.timestamp().epochTime())) {
+            return displayError(error("Failed to change time entry date: workspace is locked."));
+        }
+
     }
-
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
-
-    Poco::LocalDateTime loco(
-        Poco::Timestamp::fromEpochTime(unix_timestamp));
-
-    Poco::LocalDateTime date_part(
-        Poco::Timestamp::fromEpochTime(unix_timestamp));
-
-    Poco::LocalDateTime time_part(
-        Poco::Timestamp::fromEpochTime(te->Start()));
-
-    Poco::LocalDateTime dt(
-        date_part.year(), date_part.month(), date_part.day(),
-        time_part.hour(), time_part.minute(), time_part.second());
 
     std::string s = Poco::DateTimeFormatter::format(
         dt,
@@ -2611,6 +2696,7 @@ error Context::SetTimeEntryDate(
 
     return displayError(save());
 }
+
 
 error Context::SetTimeEntryStart(
     const std::string GUID,
@@ -2628,11 +2714,15 @@ error Context::SetTimeEntryStart(
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
-    }
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
     }
 
     Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Start()));
@@ -2671,11 +2761,15 @@ error Context::SetTimeEntryStop(
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
-    }
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
     }
 
     Poco::LocalDateTime stop(
@@ -2730,12 +2824,17 @@ error Context::SetTimeEntryTags(
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
     }
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
     te->SetTags(value);
 
     if (te->Dirty()) {
@@ -2762,12 +2861,17 @@ error Context::SetTimeEntryBillable(
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
     }
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
     te->SetBillable(value);
 
     if (te->Dirty()) {
@@ -2794,12 +2898,17 @@ error Context::SetTimeEntryDescription(
             return noError;
         }
         te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
     }
 
-    if (!te) {
-        logger().warning("Time entry not found: " + GUID);
-        return noError;
-    }
     te->SetDescription(value);
 
     if (te->Dirty()) {
@@ -2810,7 +2919,7 @@ error Context::SetTimeEntryDescription(
     return displayError(save());
 }
 
-error Context::Stop() {
+error Context::Stop(const bool prevent_on_app) {
     std::vector<TimeEntry *> stopped;
 
     {
@@ -2829,7 +2938,7 @@ error Context::Stop() {
         return noError;
     }
 
-    if (settings_.focus_on_shortcut) {
+    if (!prevent_on_app && settings_.focus_on_shortcut) {
         UI()->DisplayApp();
     }
 
@@ -3949,6 +4058,8 @@ error Context::pullAllUserData(
             user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
         }
 
+        pullWorkspacePreferences(toggl_client);
+
         stopwatch.stop();
         std::stringstream ss;
         ss << "User with related data JSON fetched and parsed in "
@@ -4142,8 +4253,8 @@ error Context::pullObmExperiments() {
 }
 
 error Context::pushObmAction() {
-	try {
-		ObmAction *for_upload = nullptr;
+    try {
+        ObmAction *for_upload = nullptr;
         HTTPSRequest req;
         req.host = urls::API();
         req.basic_auth_password = "api_token";
@@ -4165,22 +4276,22 @@ error Context::pushObmAction() {
                 return error("cannot push OBM actions without API token");
             }
 
-			// find action that has not been uploaded yet
-			for (std::vector<ObmAction *>::iterator it =
-				user_->related.ObmActions.begin();
-				it != user_->related.ObmActions.end();
-				it++) {
-				ObmAction *model = *it;
-				if (!model->IsMarkedAsDeletedOnServer()) {
-					for_upload = model;
-					break;
-				}
-			}
+            // find action that has not been uploaded yet
+            for (std::vector<ObmAction *>::iterator it =
+                user_->related.ObmActions.begin();
+                    it != user_->related.ObmActions.end();
+                    it++) {
+                ObmAction *model = *it;
+                if (!model->IsMarkedAsDeletedOnServer()) {
+                    for_upload = model;
+                    break;
+                }
+            }
 
-			if (!for_upload)
-			{
-				return noError;
-			}
+            if (!for_upload)
+            {
+                return noError;
+            }
 
             Json::Value root = for_upload->SaveToJSON();
             req.relative_url = for_upload->ModelURL();
@@ -4193,16 +4304,16 @@ error Context::pushObmAction() {
         TogglClient toggl_client;
         HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
-			// backend responds 204 on success
-			if (resp.status_code != 204)
-			{
-				return resp.err;
-			}
+            // backend responds 204 on success
+            if (resp.status_code != 204)
+            {
+                return resp.err;
+            }
         }
 
-		// mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
-		for_upload->MarkAsDeletedOnServer();
-		for_upload->Delete();
+        // mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
+        for_upload->MarkAsDeletedOnServer();
+        for_upload->Delete();
 
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -4210,8 +4321,8 @@ error Context::pushObmAction() {
         return ex.what();
     } catch(const std::string& ex) {
         return ex;
-	}
-	return noError;
+    }
+    return noError;
 }
 
 error Context::me(
@@ -4258,6 +4369,115 @@ error Context::me(
     } catch(const std::exception& ex) {
         return ex.what();
     } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+bool Context::isTimeEntryLocked(TimeEntry* te) {
+    return isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(te->WID()));
+}
+
+bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
+    return !isTimeLockedInWorkspace(t, user_->related.WorkspaceByID(te->WID()));
+}
+
+bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
+    return !isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(p->WID()));
+}
+
+error Context::logAndDisplayUserTriedEditingLockedEntry() {
+    logger().warning("User tried editing locked time entry");
+    return displayError(error("Cannot change locked time entry"));
+}
+
+bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
+    if (!ws->Business())
+        return false;
+    if (ws->Admin())
+        return false;
+    auto lockedTime = ws->LockedTime();
+    if (lockedTime == 0)
+        return false;
+    return t < lockedTime;
+}
+
+
+error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
+    Poco::Mutex::ScopedLock lock(user_m_);
+
+    std::vector<Workspace*> workspaces;
+    user_->related.WorkspaceList(&workspaces);
+
+    for (std::vector<Workspace*>::const_iterator
+            it = workspaces.begin();
+            it != workspaces.end();
+            it++) {
+
+        Workspace* ws = *it;
+
+        if (!ws->Business())
+            continue;
+
+        std::string json("");
+
+        error err = pullWorkspacePreferences(toggl_client, ws, &json);
+        if (err != noError) {
+            return err;
+        }
+
+        if (json.empty())
+            continue;
+
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(json, root)) {
+            return error("Failed to load workspace preferences");
+        }
+
+        ws->LoadSettingsFromJson(root);
+    }
+
+    return noError;
+}
+
+error Context::pullWorkspacePreferences(
+    TogglClient* toggl_client,
+    Workspace* workspace,
+    std::string* json) {
+
+    std::string api_token = user_->APIToken();
+
+    if (api_token.empty()) {
+        return error("cannot pull user data without API token");
+    }
+
+    try {
+        std::stringstream ss;
+        ss << "/api/v9/workspaces/"
+           << workspace->ID()
+           << "/preferences";
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client->Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        *json = resp.body;
+    }
+    catch (const Poco::Exception& exc) {
+        return exc.displayText();
+    }
+    catch (const std::exception& ex) {
+        return ex.what();
+    }
+    catch (const std::string& ex) {
         return ex;
     }
     return noError;

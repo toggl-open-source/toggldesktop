@@ -556,7 +556,8 @@ NSString *kInactiveTimerColor = @"#999999";
 							 self.time_entry.TaskID,
 							 self.time_entry.ProjectID,
 							 0,
-							 tag_list);
+							 tag_list,
+							 false);
 
 	[self clear];
 	self.time_entry = [[TimeEntryViewItem alloc] init];

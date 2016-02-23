@@ -11,7 +11,9 @@
         <Button Height="{StaticResource TimeEntryDayHeaderHeight}"
                 Style="{StaticResource FlatButton}" Padding="0" Margin="0"
                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                Click="onHeaderClick" Focusable="False">
+                Click="onHeaderClick" Focusable="False"
+                ContextMenu="{StaticResource TimeEntryHeaderContextMenu}"
+                >
             <Grid Style="{StaticResource TimeEntryCell}">
                 <Rectangle Height="4" VerticalAlignment="Top">
                     <Rectangle.Fill>

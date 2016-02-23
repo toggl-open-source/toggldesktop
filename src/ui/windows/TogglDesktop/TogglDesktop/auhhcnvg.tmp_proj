@@ -1,0 +1,615 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{27AC6261-3916-4683-B692-DC57E2FE0ABD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TogglDesktop</RootNamespace>
+    <AssemblyName>TogglDesktop</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>8fb27a70</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>TogglDesktop.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\toggl.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_VS|AnyCPU'">
+    <OutputPath>bin\Release_VS\</OutputPath>
+    <DefineConstants>TRACE;INVS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AutoCompletion\AutoCompleteController.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\ICollapsable.cs" />
+    <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
+    <Compile Include="AutoCompletion\AutoCompleteItemCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\ClientCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\NestedCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\ProjectCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\TaskItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleItemCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleNoncompletingCategory.cs" />
+    <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
+    <Compile Include="AutoCompletion\Implementation\ProjectItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
+    <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
+    <Compile Include="Diagnostics\IPerformanceToken.cs" />
+    <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="ui\AutoCompleteControls\ProjectCategory.xaml.cs">
+      <DependentUpon>ProjectCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
+      <DependentUpon>TaskEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\chrome\ChromelessWindow.cs" />
+    <Compile Include="ui\controls\ProgressBar.xaml.cs">
+      <DependentUpon>ProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ProjectColorPicker.xaml.cs">
+      <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\Experiments\Experiment87.cs" />
+    <Compile Include="ui\Experiments\Experiment80.cs" />
+    <Compile Include="ui\Experiments\Experiment87WelcomeScreen.xaml.cs">
+      <DependentUpon>Experiment87WelcomeScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\ExperimentBase.cs" />
+    <Compile Include="ui\Experiments\IExperiment.cs" />
+    <Compile Include="ui\Experiments\BasicOverviewScreen.xaml.cs">
+      <DependentUpon>BasicOverviewScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Experiments\ExperimentParameters.cs" />
+    <Compile Include="ui\Theme.cs" />
+    <Compile Include="ui\ThemeResourceDictionary.cs" />
+    <Compile Include="ui\ThemeTypes.cs" />
+    <Compile Include="ui\Tutorial\BasicTutorialScreen7.xaml.cs">
+      <DependentUpon>BasicTutorialScreen7.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen6.xaml.cs">
+      <DependentUpon>BasicTutorialScreen6.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen5.xaml.cs">
+      <DependentUpon>BasicTutorialScreen5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen4.xaml.cs">
+      <DependentUpon>BasicTutorialScreen4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen3.xaml.cs">
+      <DependentUpon>BasicTutorialScreen3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen2.xaml.cs">
+      <DependentUpon>BasicTutorialScreen2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\BasicTutorialScreen1.xaml.cs">
+      <DependentUpon>BasicTutorialScreen1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\NewUserWelcomeScreen.xaml.cs">
+      <DependentUpon>NewUserWelcomeScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Tutorial\TutorialManager.cs" />
+    <Compile Include="ui\Tutorial\TutorialScreen.cs" />
+    <Compile Include="ui\views\IMainView.cs" />
+    <Compile Include="ui\Experiments\ExperimentManager.cs" />
+    <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
+      <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="utilities\GlobalShortcuts.cs" />
+    <Compile Include="utilities\LinqExtensions.cs" />
+    <Compile Include="utilities\StaticObjectPool.cs" />
+    <Compile Include="TogglApi.cs" />
+    <Compile Include="ui\UIExtensions.cs" />
+    <Compile Include="ui\BooleanToVisibilityConverter.cs" />
+    <Compile Include="ui\controls\AutotrackerNotification.xaml.cs">
+      <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\AutotrackerRuleItem.xaml.cs">
+      <DependentUpon>AutotrackerRuleItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\AutotrackerSettings.xaml.cs">
+      <DependentUpon>AutotrackerSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ErrorBar.xaml.cs">
+      <DependentUpon>ErrorBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\SyncingIndicator.xaml.cs">
+      <DependentUpon>SyncingIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\TimerEntryListView.xaml.cs">
+      <DependentUpon>TimerEntryListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\IdleNotificationWindow.xaml.cs">
+      <DependentUpon>IdleNotificationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\GrayTextCategory.xaml.cs">
+      <DependentUpon>GrayTextCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\EntryBase.cs" />
+    <Compile Include="ui\AutoCompleteControls\ClientCategory.xaml.cs">
+      <DependentUpon>ClientCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\IRecyclable.cs" />
+    <Compile Include="ui\AutoCompleteControls\TimerEntry.xaml.cs">
+      <DependentUpon>TimerEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\WorkspaceCategory.xaml.cs">
+      <DependentUpon>WorkspaceCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\AutoCompletionPopup.xaml.cs">
+      <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\ModelEntry.xaml.cs">
+      <DependentUpon>ModelEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\ProjectEntry.xaml.cs">
+      <DependentUpon>ProjectEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\EditViewPopup.xaml.cs">
+      <DependentUpon>EditViewPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ExtendedTextBox.cs" />
+    <Compile Include="ui\controls\LoginConfirmButton.xaml.cs">
+      <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\LoginPasswordBox.xaml.cs">
+      <DependentUpon>LoginPasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\LoginTextBox.xaml.cs">
+      <DependentUpon>LoginTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Toggl.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="utilities\Utils.cs" />
+    <Compile Include="utilities\Win32.cs" />
+    <Compile Include="ui\windows\FeedbackWindow.xaml.cs">
+      <DependentUpon>FeedbackWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\OpacityExtension.cs" />
+    <Compile Include="ui\windows\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\windows\PreferencesWindow.xaml.cs">
+      <DependentUpon>PreferencesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\AutoCompleteControls\StringEntry.xaml.cs">
+      <DependentUpon>StringEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\Tag.xaml.cs">
+      <DependentUpon>Tag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TagList.xaml.cs">
+      <DependentUpon>TagList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryCell.xaml.cs">
+      <DependentUpon>TimeEntryCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\EditView.xaml.cs">
+      <DependentUpon>EditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryList.xaml.cs">
+      <DependentUpon>TimeEntryList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\views\Timer.xaml.cs">
+      <DependentUpon>Timer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\chrome\TogglChrome.xaml.cs">
+      <DependentUpon>TogglChrome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\chrome\TogglWindow.cs" />
+    <Compile Include="ui\chrome\TogglChromeDesignTimeConverter.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="cacert.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Border.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClosePressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Maximize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MaximizeDisabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MaximizeHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MaximizePressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizeDisabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizeHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizePressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\popup_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\popup_back_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\trash_can.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cogDisabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cogHot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cogPressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\darkBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_arrow_back_grey600_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shadow.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY $(SolutionDir)..\..\..\..\src\ui\windows\TogglDesktop\Release\TogglDesktopDLL.dll $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\src\ui\windows\TogglDesktop\TogglDesktopUpdater\bin\Release\TogglDesktopUpdater.exe $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\third_party\poco\bin\*.dll $(TargetDir) /Y
+XCOPY $(SolutionDir)..\..\..\..\third_party\openssl\out32dll\*eay32.dll $(TargetDir) /Y
+</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Bugsnag.1.2.0.0\lib\Net45\Bugsnag.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Google.Apis.Auth.1.9.1\lib\net40\Google.Apis.Auth.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Google.Apis.Auth.1.9.1\lib\net40\Google.Apis.Auth.PlatformServices.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Google.Apis.Core.1.9.1\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Core.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Google.Apis.1.9.1\lib\net40\Google.Apis.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Google.Apis.Oauth2.v2.1.9.0.910\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Oauth2.v2.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Google.Apis.1.9.1\lib\net40\Google.Apis.PlatformServices.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\log4net.2.0.3\lib\net40-full\log4net.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\ServiceStack.Text.4.0.40\lib\net40\ServiceStack.Text.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Deployment.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Net.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Net.Http.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Net.Http.WebRequest.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\UIAutomationProvider.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\WindowsBase.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\WindowsFormsIntegration.dll" />
+    <ReferencePath Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\packages\Zlib.Portable.1.10.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Collections.Concurrent.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Collections.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ComponentModel.Annotations.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ComponentModel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ComponentModel.EventBasedAsync.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Diagnostics.Contracts.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Diagnostics.Debug.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Diagnostics.Tools.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Diagnostics.Tracing.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Dynamic.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Globalization.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.IO.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Linq.Expressions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Linq.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Linq.Queryable.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Net.NetworkInformation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Net.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Net.Requests.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ObjectModel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Reflection.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Reflection.Emit.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Reflection.Emit.ILGeneration.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Reflection.Emit.Lightweight.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Reflection.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Reflection.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Resources.ResourceManager.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.InteropServices.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.Serialization.Json.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.Serialization.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Runtime.Serialization.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Security.Principal.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ServiceModel.Duplex.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ServiceModel.Http.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ServiceModel.NetTcp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ServiceModel.Primitives.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.ServiceModel.Security.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Text.Encoding.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Text.Encoding.Extensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Text.RegularExpressions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Threading.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Threading.Tasks.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Threading.Tasks.Parallel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Xml.ReaderWriter.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Xml.XDocument.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\System.Xml.XmlSerializer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\ProjectCategory.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\TaskEntry.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\AutotrackerNotification.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\AutotrackerRuleItem.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\AutotrackerSettings.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\ErrorBar.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\ProgressBar.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\ProjectColorPicker.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\SyncingIndicator.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Experiments\BasicOverviewScreen.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Experiments\Experiment87WelcomeScreen.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\StatusBar.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\BasicTutorialScreen7.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\BasicTutorialScreen6.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\BasicTutorialScreen5.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\BasicTutorialScreen4.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\BasicTutorialScreen3.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\BasicTutorialScreen2.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\BasicTutorialScreen1.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\Tutorial\NewUserWelcomeScreen.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\views\LoginView.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\views\TimerEntryListView.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\IdleNotificationWindow.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\AboutWindow.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\GrayTextCategory.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\ClientCategory.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\TimerEntry.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\WorkspaceCategory.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\AutoCompletionPopup.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\ModelEntry.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\ProjectEntry.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\EditViewPopup.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\LoginConfirmButton.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\LoginPasswordBox.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\LoginTextBox.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\FeedbackWindow.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\MainWindow.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\MessageBox.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\MiniTimerWindow.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\windows\PreferencesWindow.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\AutoCompleteControls\StringEntry.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\Tag.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\TagList.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\TimeEntryCell.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\views\EditView.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\controls\TimeEntryList.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\views\Timer.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\ui\chrome\TogglChrome.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\App.g.cs" />
+    <Compile Include="C:\Users\amulware\git\toggldesktop\src\ui\windows\TogglDesktop\TogglDesktop\obj\Release_VS\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>

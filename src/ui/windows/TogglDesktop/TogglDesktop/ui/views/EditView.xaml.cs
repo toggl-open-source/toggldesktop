@@ -72,6 +72,18 @@ namespace TogglDesktop
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
+                if (timeEntry.Locked)
+                {
+                    open = true;
+                    this.contentGrid.IsEnabled = false;
+                    this.contentGrid.Opacity = 0.75;
+                }
+                else
+                {
+                    this.contentGrid.IsEnabled = true;
+                    this.contentGrid.Opacity = 1;
+                }
+
                 var keepNewProjectModeOpen =
                     !open
                     && this.isInNewProjectMode

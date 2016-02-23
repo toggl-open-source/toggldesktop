@@ -171,6 +171,11 @@ class Context : public TimelineDatasource {
 
     bool GetCompactMode();
 
+    void SetMiniTimerVisible(
+        const bool);
+
+    bool GetMiniTimerVisible();
+
     void SetKeepEndTimeFixed(
         const bool);
 
@@ -234,6 +239,22 @@ class Context : public TimelineDatasource {
         const int64_t window_height,
         const int64_t window_width);
 
+    Poco::Int64 GetMiniTimerX();
+
+    void SetMiniTimerX(
+        const int64_t x);
+
+    Poco::Int64 GetMiniTimerY();
+
+    void SetMiniTimerY(
+        const int64_t y);
+
+    Poco::Int64 GetMiniTimerW();
+
+    void SetMiniTimerW(
+        const int64_t w);
+
+
     error Login(
         const std::string email,
         const std::string password);
@@ -256,9 +277,10 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
         const std::string project_guid,
-        const std::string tags);
+        const std::string tags,
+        const bool prevent_on_app);
 
-    TimeEntry *ContinueLatest();
+    TimeEntry *ContinueLatest(const bool prevent_on_app);
 
     TimeEntry *Continue(
         const std::string GUID);
@@ -308,7 +330,7 @@ class Context : public TimelineDatasource {
         const std::string GUID,
         const std::string value);
 
-    error Stop();
+    error Stop(const bool prevent_on_app);
 
     error DiscardTimeAt(
         const std::string GUID,
@@ -507,6 +529,16 @@ class Context : public TimelineDatasource {
         const std::string password,
         std::string *user_data,
         const Poco::UInt64 since);
+
+    bool isTimeEntryLocked(TimeEntry* te);
+    bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
+    bool canChangeStartTimeTo(TimeEntry* te, time_t t);
+    bool canChangeProjectTo(TimeEntry* te, Project* p);
+
+    error logAndDisplayUserTriedEditingLockedEntry();
+
+    error pullWorkspacePreferences(TogglClient* https_client);
+    error pullWorkspacePreferences(TogglClient* https_client, Workspace *workspace, std::string* json);
 
     error pushObmAction();
 
