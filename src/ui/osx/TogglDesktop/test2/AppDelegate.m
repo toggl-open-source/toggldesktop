@@ -1457,7 +1457,8 @@ void on_url(const char *url)
 }
 
 void on_time_entry_list(const bool_t open,
-						TogglTimeEntryView *first)
+						TogglTimeEntryView *first,
+						const bool_t show_load_more)
 {
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
 	TogglTimeEntryView *it = first;
@@ -1469,9 +1470,11 @@ void on_time_entry_list(const bool_t open,
 		[viewitems addObject:model];
 		it = it->Next;
 	}
+
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.timeEntries = viewitems;
+	cmd.show_load_more = show_load_more;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryList
 														object:cmd];
 }

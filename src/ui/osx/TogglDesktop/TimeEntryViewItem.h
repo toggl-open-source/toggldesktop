@@ -46,4 +46,6 @@
 @property BOOL CanAddProjects;
 @property (strong) NSString *WorkspaceName;
 @property (strong) NSString *Error;
+// if the item is load more row
+@property BOOL loadMore;
 @end
