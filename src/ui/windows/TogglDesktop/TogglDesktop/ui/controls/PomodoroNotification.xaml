@@ -24,7 +24,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition />
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="85"/>
             </Grid.ColumnDefinitions>
 
             <Image Grid.Column="0"
@@ -49,9 +49,20 @@
 
             </Grid>
 
-            <Button Grid.Column="2"
-                Content="STOP"
-                Click="onStopButtonClick"/>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="1"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"
+                    Content="CONTINUE"
+                    Click="onContinueButtonClick"/>
+                <Rectangle Grid.Row="1" Fill="#22000000" />
+                <Button Grid.Row="2"
+                    Content="START NEW"
+                    Click="onStartNewButtonClick"/>
+            </Grid>
         </Grid>
 
     </Border>
