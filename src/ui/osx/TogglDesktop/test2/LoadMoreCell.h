@@ -10,5 +10,8 @@
 
 @interface LoadMoreCell : TimeEntryCell
 @property BOOL isHeader;
+@property (weak) IBOutlet NSProgressIndicator *loader;
+- (void)initCell;
+- (IBAction)loadMoreClicked:(id)sender;
 @property (weak) IBOutlet NSButton *loadButton;
 @end
