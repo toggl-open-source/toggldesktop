@@ -142,6 +142,11 @@
 	}
 }
 
+- (void)setLoadMore
+{
+	self.loadMore = YES;
+}
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"GUID: %@, description: %@, started: %@, ended: %@, project: %@, seconds: %lld, duration: %@, color: %@, billable: %i, tags: %@",

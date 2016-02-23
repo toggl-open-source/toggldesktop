@@ -11,6 +11,7 @@
 #import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "toggl_api.h"
+#import "LoadMoreCell.h"
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
 #import "UIEvents.h"
@@ -24,6 +25,7 @@
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryCellWithHeader;
 @property NSNib *nibTimeEntryEditViewController;
+@property NSNib *nibLoadMoreCell;
 @property NSInteger defaultPopupHeight;
 @property NSInteger defaultPopupWidth;
 @property NSInteger addedHeight;
@@ -58,6 +60,8 @@ extern void *ctx;
 																   bundle:nil];
 		self.nibTimeEntryEditViewController = [[NSNib alloc] initWithNibNamed:@"TimeEntryEditViewController"
 																	   bundle:nil];
+		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
+														bundle:nil];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
@@ -114,6 +118,8 @@ extern void *ctx;
 							 forIdentifier :@"TimeEntryCell"];
 	[self.timeEntriesTableView registerNib:self.nibTimeEntryCellWithHeader
 							 forIdentifier :@"TimeEntryCellWithHeader"];
+	[self.timeEntriesTableView registerNib:self.nibLoadMoreCell
+							 forIdentifier :@"LoadMoreCell"];
 
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
@@ -167,6 +173,15 @@ extern void *ctx;
 	{
 		[viewitems removeAllObjects];
 		[viewitems addObjectsFromArray:cmd.timeEntries];
+
+		// Add Load more button
+
+		if (cmd.show_load_more)
+		{
+			TimeEntryViewItem *it = [TimeEntryViewItem alloc];
+			[it setLoadMore:YES];
+			[viewitems addObject:it];
+		}
 	}
 
 	[self.timeEntriesTableView reloadData];
@@ -265,6 +280,13 @@ extern void *ctx;
 	}
 	NSAssert(item != nil, @"view item from viewitems array is nil");
 
+	if (item.loadMore == YES)
+	{
+		LoadMoreCell *cell = [tableView makeViewWithIdentifier:@"LoadMoreCell"
+														 owner:self];
+		return cell;
+	}
+
 	if (item.isHeader)
 	{
 		TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier:@"TimeEntryCellWithHeader"
@@ -315,6 +337,14 @@ extern void *ctx;
 	}
 
 	TimeEntryCell *cell = [self getSelectedEntryCell:row];
+
+	// Load more cell clicked
+	if ([cell isKindOfClass:[LoadMoreCell class]])
+	{
+		toggl_load_more(ctx);
+		return;
+	}
+
 	if (cell != nil)
 	{
 		[cell focusFieldName];
