@@ -479,8 +479,6 @@ void Context::updateUI(const UIElements &what) {
 
     std::vector<TimelineEvent> timeline;
 
-    Poco::Int64 total_duration_for_date(0);
-
     bool use_proxy(false);
     bool record_timeline(false);
     Poco::Int64 unsynced_item_count(0);
