@@ -4006,7 +4006,7 @@ void Context::LoadMore() {
 }
 
 void Context::onLoadMore(Poco::Util::TimerTask& task) {
-
+    bool needs_render = !user_->HasLoadedMore();
     std::string api_token;
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -4056,6 +4056,13 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
             }
 
             user_->ConfirmLoadedMore();
+
+            // Removes load more button if nothing is to be loaded
+            if (needs_render) {
+                UIElements render;
+                render.display_time_entries = true;
+                updateUI(render);
+            }
         }
 
         displayError(save(false));
