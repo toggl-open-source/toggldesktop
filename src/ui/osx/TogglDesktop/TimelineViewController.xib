@@ -11,12 +11,14 @@
                 <outlet property="createButton" destination="Fnx-La-4vG" id="7KA-tK-R79"/>
                 <outlet property="dateLabel" destination="pze-Zr-H2B" id="Pw3-qv-S5I"/>
                 <outlet property="descriptionText" destination="iGf-Px-Lk2" id="uKR-Tr-MsV"/>
+                <outlet property="endTimeLabel" destination="jWc-zM-cfR" id="Bs5-mQ-noJ"/>
                 <outlet property="eventsBox" destination="G2Q-EB-hA7" id="exK-Ma-bSE"/>
                 <outlet property="eventsTableView" destination="Phf-XD-bMF" id="HUO-a8-whh"/>
                 <outlet property="footerBox" destination="VsO-Dk-yB3" id="n2D-OK-mJ7"/>
                 <outlet property="headerBox" destination="oyV-oQ-Ct1" id="32a-HX-Dzd"/>
                 <outlet property="nextButton" destination="Maz-tC-VOn" id="kbR-4O-UBR"/>
                 <outlet property="prevButton" destination="mjb-UT-6JL" id="r4G-ac-Nu3"/>
+                <outlet property="startTimeLabel" destination="J4C-HK-urX" id="6vH-wh-Ezd"/>
                 <outlet property="timeLabel" destination="NgM-mH-tQ2" id="c2b-cI-bxf"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -47,8 +49,8 @@
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pze-Zr-H2B" userLabel="DateLabel">
                                 <rect key="frame" x="36" y="17" width="402" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Timeline Fri, 24 July" id="R44-6v-K7H">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <font key="font" metaFont="system" size="15"/>
+                                    <color key="textColor" red="0.37647058823529411" green="0.37647058823529411" blue="0.37647058823529411" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
@@ -121,6 +123,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
+                                    <action selector="performClick:" target="-2" id="Sa4-Z6-Rme"/>
                                     <outlet property="dataSource" destination="-2" id="3c9-OC-cTz"/>
                                     <outlet property="delegate" destination="-2" id="tDU-6w-NkA"/>
                                 </connections>
@@ -154,8 +157,8 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NgM-mH-tQ2">
-                                <rect key="frame" x="14" y="37" width="367" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="From 14:00 - 14:30" id="QTa-ZJ-zeJ">
+                                <rect key="frame" x="14" y="37" width="40" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="From" id="QTa-ZJ-zeJ">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -172,7 +175,38 @@
                                     <outlet property="nextKeyView" destination="Fnx-La-4vG" id="opN-t2-m1T"/>
                                 </connections>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J4C-HK-urX" userLabel="startTimeLabel">
+                                <rect key="frame" x="57" y="37" width="40" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="14:00" id="JFn-xy-CTZ">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rOM-jN-acu" userLabel="dashLabel">
+                                <rect key="frame" x="97" y="37" width="14" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="-" id="SFv-s1-p5Q">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jWc-zM-cfR" userLabel="endTimeLabel">
+                                <rect key="frame" x="111" y="37" width="40" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="14:30" id="WSa-CU-KJm">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="rOM-jN-acu" firstAttribute="top" secondItem="45F-F3-gNF" secondAttribute="top" constant="6" id="Ibq-TK-9KE"/>
+                            <constraint firstItem="rOM-jN-acu" firstAttribute="leading" secondItem="J4C-HK-urX" secondAttribute="trailing" id="V5p-9a-qbs"/>
+                            <constraint firstItem="J4C-HK-urX" firstAttribute="leading" secondItem="NgM-mH-tQ2" secondAttribute="trailing" constant="3" id="XgK-hA-qCM"/>
+                            <constraint firstItem="jWc-zM-cfR" firstAttribute="leading" secondItem="rOM-jN-acu" secondAttribute="trailing" id="tni-In-Zij"/>
+                            <constraint firstItem="J4C-HK-urX" firstAttribute="top" secondItem="45F-F3-gNF" secondAttribute="top" constant="6" id="uB9-qt-6eL"/>
+                        </constraints>
                     </view>
                     <constraints>
                         <constraint firstItem="Fnx-La-4vG" firstAttribute="centerY" secondItem="iGf-Px-Lk2" secondAttribute="centerY" id="9bw-eY-gDp"/>

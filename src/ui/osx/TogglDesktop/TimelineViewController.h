@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "toggl_api.h"
 #import "NSUnstripedTableView.h"
+#import "TimelineEventsListItem.h"
 
 @interface TimelineViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource> {
 	@private
@@ -24,7 +25,13 @@
 @property (strong) IBOutlet NSScrollView *eventsBox;
 @property (strong) IBOutlet NSBox *headerBox;
 @property (strong) IBOutlet NSBox *footerBox;
+@property BOOL startTimeSet;
+@property NSInteger lastRow;
+@property TimelineEventsListItem *startItem;
+@property TimelineEventsListItem *endItem;
 - (IBAction)prevButtonClicked:(id)sender;
 - (IBAction)nextButtonClicked:(id)sender;
 - (IBAction)createButtonClicked:(id)sender;
+@property (weak) IBOutlet NSTextField *startTimeLabel;
+@property (weak) IBOutlet NSTextField *endTimeLabel;
 @end

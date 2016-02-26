@@ -45,6 +45,7 @@ extern void *ctx;
 						forIdentifier :@"TimelineEventsListItem"];
 	self.eventsTableView.delegate = self;
 	self.eventsTableView.dataSource = self;
+	self.startTimeSet = NO;
 }
 
 - (IBAction)prevButtonClicked:(id)sender
@@ -59,7 +60,27 @@ extern void *ctx;
 
 - (IBAction)createButtonClicked:(id)sender
 {
-	// FIXME: create time entry from the given timeline event range
+	NSInteger durationSeconds = (self.endItem.Started - self.startItem.Started) / 60;
+	NSString *duration = [[NSString alloc] initWithFormat:@"%ld", (long)durationSeconds];
+
+	char_t *guid = toggl_start(ctx,
+							   [self.descriptionText.stringValue UTF8String],
+							   [duration UTF8String],
+							   0,
+							   0,
+							   0,
+							   0,
+							   false);
+
+	NSString *GUID = [NSString stringWithUTF8String:guid];
+
+	free(guid);
+
+	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+
+	toggl_set_time_entry_start(ctx,
+							   [GUID UTF8String],
+							   [self.startTimeLabel.stringValue UTF8String]);
 }
 
 - (void)startDisplayTimeline:(NSNotification *)notification
@@ -143,6 +164,68 @@ extern void *ctx;
 	}
 
 	return 60 + ([item.Events count] * 20);
+}
+
+- (IBAction)performClick:(id)sender
+{
+	NSInteger row = [self.eventsTableView clickedRow];
+
+	if (row < 0 || (self.startTimeSet && row < self.lastRow))
+	{
+		return;
+	}
+	self.lastRow = row;
+	TimelineChunkView *item = 0;
+	@synchronized(timelineChunks)
+	{
+		item = timelineChunks[row];
+	}
+
+	TimelineEventsListItem *cell = [self getCellByRow:row];
+	[cell setSelected:self.startTimeSet];
+
+	// save start or stop time cell items
+	if (self.startTimeSet)
+	{
+		self.endItem = cell;
+		self.startTimeSet = NO;
+		self.endTimeLabel.stringValue = cell.timeLabel.stringValue;
+	}
+	else
+	{
+		self.startItem = cell;
+		self.startTimeSet = YES;
+		self.startTimeLabel.stringValue = cell.timeLabel.stringValue;
+	}
+}
+
+- (TimelineEventsListItem *)getCellByRow:(NSInteger)row
+{
+	NSView *latestView = [self.eventsTableView rowViewAtRow:row
+											makeIfNecessary  :NO];
+
+	if (latestView == nil)
+	{
+		return nil;
+	}
+
+	for (NSView *subview in [latestView subviews])
+	{
+		if ([subview isKindOfClass:[TimelineEventsListItem class]])
+		{
+			if (self.startTimeSet)
+			{
+				[self.endItem setUnSelected];
+			}
+			else
+			{
+				[self.startItem setUnSelected];
+			}
+
+			return (TimelineEventsListItem *)subview;
+		}
+	}
+	return nil;
 }
 
 @end

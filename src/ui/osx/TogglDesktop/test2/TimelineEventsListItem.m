@@ -32,6 +32,25 @@
 	[[self.appTitlesTextView textStorage] setAttributedString:events];
 
 	[self.appsBox setHidden:[events length] == 0];
+	self.Started = view_item.Started;
+}
+
+- (void)setSelected:(BOOL)endTime
+{
+	if (endTime)
+	{
+		self.selectedLabel.stringValue = @"End time";
+	}
+	else
+	{
+		self.selectedLabel.stringValue = @"Start time";
+	}
+	[self.selectedLabel setHidden:NO];
+}
+
+- (void)setUnSelected
+{
+	[self.selectedLabel setHidden:YES];
 }
 
 @end

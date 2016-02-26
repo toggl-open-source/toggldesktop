@@ -35,7 +35,6 @@
 	NSString *str;
 	NSMutableAttributedString *strm;
 
-	NSLog(@"Title length: %lu", (unsigned long)[self.Title length]);
 	if (self.Header)
 	{
 		str = [NSString stringWithFormat:@"%@\t%@\n", self.Filename, [self prettyDuration]];
