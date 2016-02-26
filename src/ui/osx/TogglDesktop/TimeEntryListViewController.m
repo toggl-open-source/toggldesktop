@@ -133,6 +133,11 @@ extern void *ctx;
 	self.runningEdit = NO;
 
 	[self setupEmptyLabel];
+
+	// Drag and drop
+	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
+	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
+	[self.timeEntriesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
 }
 
 - (void)setupEmptyLabel
@@ -546,6 +551,113 @@ extern void *ctx;
 													  userInfo:nil];
 	[self clearLastSelectedEntry];
 	self.selectedEntryCell = nil;
+}
+
+#pragma mark Drag & Drop Delegates
+
+- (BOOL)       tableView:(NSTableView *)aTableView
+	writeRowsWithIndexes:(NSIndexSet *)rowIndexes
+			toPasteboard:(NSPasteboard *)pboard
+{
+	if (aTableView == self.timeEntriesTableView)
+	{
+		// Disable drag and drop for load more row
+		TimeEntryViewItem *model = [viewitems objectAtIndex:[rowIndexes firstIndex]];
+		if ([model loadMore])
+		{
+			return NO;
+		}
+		NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+		[pboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:self];
+		[pboard setData:data forType:NSStringPboardType];
+		return YES;
+	}
+	else
+	{
+		return NO;
+	}
+}
+
+- (NSDragOperation)tableView:(NSTableView *)tv
+				validateDrop:(id )info
+				 proposedRow:(NSInteger)row
+	   proposedDropOperation:(NSTableViewDropOperation)op
+{
+	return NSDragOperationMove;
+}
+
+- (BOOL)tableView:(NSTableView *)tv
+	   acceptDrop:(id )info
+			  row:(NSInteger)row
+	dropOperation:(NSTableViewDropOperation)op
+{
+	NSPasteboard *pboard = [info draggingPasteboard];
+	NSData *rowData = [pboard dataForType:NSStringPboardType];
+	NSIndexSet *rowIndexes =
+		[NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+	NSInteger dragRow = [rowIndexes firstIndex];
+	int dateIndex = (int)row - 1;
+
+	if (([info draggingSource] == self.timeEntriesTableView) & (tv == self.timeEntriesTableView) && row != dragRow)
+	{
+		if (row == 0)
+		{
+			dateIndex = (int)row + 1;
+		}
+
+		// Updating the dropped item date
+		TimeEntryViewItem *dateModel = [viewitems objectAtIndex:dateIndex];
+		TimeEntryViewItem *currentModel = [viewitems objectAtIndex:dragRow];
+
+		if ([dateModel loadMore])
+		{
+			dateModel = [viewitems objectAtIndex:dateIndex - 1];
+		}
+
+		NSCalendar *calendar = [NSCalendar currentCalendar];
+		NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
+		NSInteger hours = [components hour];
+		NSInteger minutes = [components minute];
+		NSInteger seconds = [components second];
+
+		unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
+		NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
+		comps.hour   = hours;
+		comps.minute = minutes;
+		comps.second = seconds;
+		NSDate *newDate = [calendar dateFromComponents:comps];
+
+		toggl_set_time_entry_date(ctx,
+								  [currentModel.GUID UTF8String],
+								  [newDate timeIntervalSince1970]);
+	}
+	return YES;
+}
+
+- (void)tableView:(NSTableView *)tableView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forRowIndexes:(NSIndexSet *)rowIndexes
+{
+	/*
+	 * // configure the drag image
+	 * // we are only dragging one item - changes will be required to handle multiple drag items
+	 * BPPopupButtonTableCellView *cellView = [self.columnsTableView viewAtColumn:0 row:rowIndexes.firstIndex makeIfNecessary:NO];
+	 * if (cellView) {
+	 *
+	 *  [session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
+	 *                                     forView:tableView
+	 *                                     classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
+	 *                               searchOptions:nil
+	 *                                  usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
+	 *   {
+	 *       // we can set the drag image directly
+	 *       //[draggingItem setDraggingFrame:NSMakeRect(0, 0, myWidth, myHeight) contents:myFunkyDragImage];
+	 *
+	 *       // the tableview will grab the entire table cell view bounds as its image by default.
+	 *       // we can override NSTableCellView -draggingImageComponents
+	 *       // which defaults to only including the image and text fields
+	 *       draggingItem.imageComponentsProvider = ^NSArray*(void) { return cellView.draggingImageComponents;};
+	 *   }];
+	 * }
+	 */
 }
 
 @end
