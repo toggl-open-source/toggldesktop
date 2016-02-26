@@ -636,28 +636,75 @@ extern void *ctx;
 
 - (void)tableView:(NSTableView *)tableView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forRowIndexes:(NSIndexSet *)rowIndexes
 {
-	/*
-	 * // configure the drag image
-	 * // we are only dragging one item - changes will be required to handle multiple drag items
-	 * BPPopupButtonTableCellView *cellView = [self.columnsTableView viewAtColumn:0 row:rowIndexes.firstIndex makeIfNecessary:NO];
-	 * if (cellView) {
-	 *
-	 *  [session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
-	 *                                     forView:tableView
-	 *                                     classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
-	 *                               searchOptions:nil
-	 *                                  usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
-	 *   {
-	 *       // we can set the drag image directly
-	 *       //[draggingItem setDraggingFrame:NSMakeRect(0, 0, myWidth, myHeight) contents:myFunkyDragImage];
-	 *
-	 *       // the tableview will grab the entire table cell view bounds as its image by default.
-	 *       // we can override NSTableCellView -draggingImageComponents
-	 *       // which defaults to only including the image and text fields
-	 *       draggingItem.imageComponentsProvider = ^NSArray*(void) { return cellView.draggingImageComponents;};
-	 *   }];
-	 * }
-	 */
+	TimeEntryCell *cellView = [self.timeEntriesTableView viewAtColumn:0 row:rowIndexes.firstIndex makeIfNecessary:NO];
+
+	if (cellView)
+	{
+		[session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
+										   forView:tableView
+										   classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
+									 searchOptions:nil
+										usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
+		 {
+		     // prepare context
+			 NSGraphicsContext *theContext = [NSGraphicsContext currentContext];
+			 [theContext saveGraphicsState];
+
+		     // drag image needs to be larger than the content in order to encapsulate the drop shadow
+			 CGFloat imageOffset = 5;
+
+		     // supply a drag background image
+			 NSSize contentSize = draggingItem.draggingFrame.size;
+			 contentSize.height = 56;
+			 NSSize imageSize = NSMakeSize(contentSize.width + imageOffset, contentSize.height + imageOffset);
+			 NSImage *image = [[NSImage alloc] initWithSize:imageSize];
+			 [image lockFocus];
+
+		     // define a shadow
+			 NSShadow *shadow = [NSShadow new];
+			 shadow.shadowColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.2];
+			 shadow.shadowOffset = NSMakeSize(imageOffset, -imageOffset);
+			 shadow.shadowBlurRadius = 3;
+			 [shadow set];
+
+		     // define content frame
+			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
+			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:contentFrame];
+
+		     // draw content border and shadow
+			 [[[NSColor lightGrayColor] colorWithAlphaComponent:0.6] set];
+			 [contentPath stroke];
+			 [theContext restoreGraphicsState];
+
+		     // fill content
+			 [[NSColor whiteColor] set];
+			 contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
+			 [contentPath fill];
+
+			 [image unlockFocus];
+
+		     // update the dragging item frame to accomodate larger image
+			 draggingItem.draggingFrame = NSMakeRect(draggingItem.draggingFrame.origin.x, draggingItem.draggingFrame.origin.y, imageSize.width, imageSize.height);
+
+		     // define additional image component for drag
+			 NSDraggingImageComponent *backgroundImageComponent = [NSDraggingImageComponent draggingImageComponentWithKey:@"background"];
+			 backgroundImageComponent.contents = image;
+			 backgroundImageComponent.frame = NSMakeRect(0, 0, imageSize.width, imageSize.height);
+
+		     // we can provide custom content by overridding NSTableViewCell -draggingImageComponents
+		     // which defaults to only including the image and text fields
+			 draggingItem.imageComponentsProvider = ^NSArray *(void) {
+				 NSMutableArray *components = [NSMutableArray arrayWithArray:@[backgroundImageComponent]];
+				 NSArray *cellViewComponents = cellView.draggingImageComponents;
+				 [cellViewComponents enumerateObjectsUsingBlock:^(NSDraggingImageComponent *component, NSUInteger idx, BOOL *stop) {
+					  component.frame = NSMakeRect(component.frame.origin.x, component.frame.origin.y + imageOffset, component.frame.size.width, component.frame.size.height);
+				  }];
+
+				 [components addObjectsFromArray:cellViewComponents];
+				 return components;
+			 };
+		 }];
+	}
 }
 
 @end
