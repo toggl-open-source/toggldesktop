@@ -8,6 +8,7 @@
 
 #import "TimelineEventsListItem.h"
 #import "TimelineEventView.h"
+#import "ConvertHexColor.h"
 
 @implementation TimelineEventsListItem
 
@@ -29,28 +30,65 @@
 	{
 		[events appendAttributedString:[event descriptionString]];
 	}
-	[[self.appTitlesTextView textStorage] setAttributedString:events];
+	[[self.appTitleTextView textStorage] setAttributedString:events];
 
 	[self.appsBox setHidden:[events length] == 0];
 	self.Started = view_item.Started;
+	self.activityCircle.value = MIN(view_item.activeDuration, 900);
 }
 
-- (void)setSelected:(BOOL)endTime
+- (void)setSelected:(BOOL)endTime row:(NSInteger)rowIndex;
 {
+	self.rowIndex = rowIndex;
+	NSString *aString;
+	[self setActive:YES];
+
+	NSImage *aImage = [NSImage imageNamed:@"NSAutosaveTriangle.pdf"];
 	if (endTime)
 	{
-		self.selectedLabel.stringValue = @"End time";
+		// Flip the down arrow image vertically
+		NSAffineTransform *flipper = [NSAffineTransform transform];
+		NSSize dimensions = aImage.size;
+		[aImage lockFocus];
+
+		[flipper scaleXBy:1.0 yBy:-1.0];
+		[flipper set];
+
+		[aImage drawAtPoint:NSMakePoint(0, -dimensions.height)
+				   fromRect:NSMakeRect(0, 0, dimensions.width, dimensions.height)
+				  operation:NSCompositeCopy fraction:1.0];
+
+		[aImage unlockFocus];
+
+		aString = @"End time";
 	}
 	else
 	{
-		self.selectedLabel.stringValue = @"Start time";
+		aString = @"Start time";
 	}
+
+	self.selectedLabel.stringValue = aString;
 	[self.selectedLabel setHidden:NO];
+
+	[self.arrowImage setImage:aImage];
+}
+
+- (void)setActive:(BOOL)edge
+{
+	if (!edge)
+	{
+		[self.arrowImage setHidden:YES];
+	}
+	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#F0F0F0"];
+	[self.backgroundBox setFillColor:color];
 }
 
 - (void)setUnSelected
 {
 	[self.selectedLabel setHidden:YES];
+	[self.arrowImage setHidden:NO];
+	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#F7F7F7"]];
+	[self.arrowImage setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate.pdf"]];
 }
 
 @end

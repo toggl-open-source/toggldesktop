@@ -13,6 +13,7 @@
 
 - (void)load:(TogglTimelineChunkView *)view
 {
+	self.activeDuration = 0;
 	self.Started = view->Started;
 	self.StartTimeString = [NSString stringWithUTF8String:view->StartTimeString];
 	self.Events = [[NSMutableArray alloc] init];
@@ -24,6 +25,7 @@
 		TimelineEventView *event = [[TimelineEventView alloc] init];
 		[event load:it];
 		[self.Events addObject:event];
+		self.activeDuration += event.Duration;
 
 		// Load app subevents
 		TogglTimelineEventView *sub_it = it->event;

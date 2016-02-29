@@ -182,7 +182,7 @@ extern void *ctx;
 	}
 
 	TimelineEventsListItem *cell = [self getCellByRow:row];
-	[cell setSelected:self.startTimeSet];
+	[cell setSelected:self.startTimeSet row:row];
 
 	// save start or stop time cell items
 	if (self.startTimeSet)

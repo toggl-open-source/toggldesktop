@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
@@ -27,26 +27,26 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <box misplaced="YES" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XCB-EZ-PYh" userLabel="AppsBox">
-                                <rect key="frame" x="90" y="17" width="362" height="238"/>
+                            <box misplaced="YES" boxType="custom" borderType="bezel" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XCB-EZ-PYh" userLabel="AppsBox">
+                                <rect key="frame" x="100" y="17" width="365" height="238"/>
                                 <view key="contentView" id="Y2P-6p-9B7">
-                                    <rect key="frame" x="1" y="1" width="360" height="236"/>
+                                    <rect key="frame" x="1" y="1" width="363" height="236"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VM2-bd-nGd">
-                                            <rect key="frame" x="10" y="10" width="340" height="220"/>
-                                            <clipView key="contentView" id="5zs-73-94s">
-                                                <rect key="frame" x="0.0" y="0.0" width="340" height="220"/>
+                                        <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VM2-bd-nGd">
+                                            <rect key="frame" x="0.0" y="-2" width="360" height="240"/>
+                                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="5zs-73-94s">
+                                                <rect key="frame" x="0.0" y="0.0" width="360" height="240"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textView editable="NO" drawsBackground="NO" importsGraphics="NO" findStyle="panel" verticallyResizable="YES" id="xwX-pJ-I7b">
-                                                        <rect key="frame" x="0.0" y="0.0" width="340" height="220"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="358" height="240"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <size key="minSize" width="340" height="220"/>
+                                                        <size key="minSize" width="358" height="240"/>
                                                         <size key="maxSize" width="463" height="10000000"/>
                                                         <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="minSize" width="340" height="220"/>
+                                                        <size key="minSize" width="358" height="240"/>
                                                         <size key="maxSize" width="463" height="10000000"/>
                                                     </textView>
                                                 </subviews>
@@ -57,16 +57,16 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="ubU-Yl-VkX">
-                                                <rect key="frame" x="324" y="0.0" width="16" height="220"/>
+                                                <rect key="frame" x="344" y="0.0" width="16" height="240"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                         </scrollView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="VM2-bd-nGd" secondAttribute="trailing" constant="10" id="M1F-1A-lgY"/>
-                                        <constraint firstItem="VM2-bd-nGd" firstAttribute="top" secondItem="Y2P-6p-9B7" secondAttribute="top" constant="10" id="Rag-an-aQe"/>
-                                        <constraint firstItem="VM2-bd-nGd" firstAttribute="leading" secondItem="Y2P-6p-9B7" secondAttribute="leading" constant="10" id="icS-tD-jUH"/>
-                                        <constraint firstAttribute="bottom" secondItem="VM2-bd-nGd" secondAttribute="bottom" constant="10" id="r0m-nO-rJb"/>
+                                        <constraint firstAttribute="trailing" secondItem="VM2-bd-nGd" secondAttribute="trailing" id="M1F-1A-lgY"/>
+                                        <constraint firstItem="VM2-bd-nGd" firstAttribute="top" secondItem="Y2P-6p-9B7" secondAttribute="top" id="Rag-an-aQe"/>
+                                        <constraint firstItem="VM2-bd-nGd" firstAttribute="leading" secondItem="Y2P-6p-9B7" secondAttribute="leading" id="icS-tD-jUH"/>
+                                        <constraint firstAttribute="bottom" secondItem="VM2-bd-nGd" secondAttribute="bottom" id="r0m-nO-rJb"/>
                                     </constraints>
                                 </view>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -80,20 +80,42 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mrZ-On-bPk" userLabel="ArrowImage">
+                                <rect key="frame" x="17" y="159" width="20" height="19"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSRightFacingTriangleTemplate" id="ktb-PS-FCV"/>
+                            </imageView>
+                            <box misplaced="YES" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="U4M-Gg-9pp" userLabel="TimelineLine">
+                                <rect key="frame" x="72" y="0.0" width="2" height="272"/>
+                                <view key="contentView" id="Sdp-1X-Vuu">
+                                    <rect key="frame" x="0.0" y="0.0" width="2" height="272"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="2" id="sUQ-Zu-Krt"/>
+                                </constraints>
+                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                <color key="fillColor" red="0.77742355122677331" green="0.77742355122677331" blue="0.77742355122677331" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sgt-Os-F6F" customClass="TimelineChunkCircle">
+                                <rect key="frame" x="58" y="227" width="30" height="30"/>
+                            </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="U4M-Gg-9pp" secondAttribute="bottom" id="0gp-6M-ow2"/>
                             <constraint firstItem="XCB-EZ-PYh" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" constant="15" id="2Cp-5F-Rp1"/>
-                            <constraint firstItem="XCB-EZ-PYh" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="90" id="E2n-o3-g61"/>
+                            <constraint firstItem="XCB-EZ-PYh" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="100" id="E2n-o3-g61"/>
+                            <constraint firstItem="XCB-EZ-PYh" firstAttribute="leading" secondItem="U4M-Gg-9pp" secondAttribute="trailing" constant="25" id="Fym-TY-wol"/>
                             <constraint firstItem="Oqd-bG-i6V" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="15" id="H9d-Aw-eD0"/>
                             <constraint firstItem="bhE-PG-oMX" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" constant="21" id="TSn-GN-3Yy"/>
-                            <constraint firstAttribute="trailing" secondItem="XCB-EZ-PYh" secondAttribute="trailing" constant="28" id="Wgj-iH-HaS"/>
+                            <constraint firstAttribute="trailing" secondItem="XCB-EZ-PYh" secondAttribute="trailing" constant="15" id="Wgj-iH-HaS"/>
                             <constraint firstItem="bhE-PG-oMX" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="15" id="XED-mD-T7c"/>
                             <constraint firstItem="Oqd-bG-i6V" firstAttribute="top" secondItem="bhE-PG-oMX" secondAttribute="bottom" constant="10" id="d8x-DG-OtG"/>
+                            <constraint firstItem="U4M-Gg-9pp" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" id="elG-Ad-AyK"/>
                             <constraint firstAttribute="bottom" secondItem="XCB-EZ-PYh" secondAttribute="bottom" constant="15" id="zs3-Pg-8Br"/>
                         </constraints>
                     </view>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="fillColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
             </subviews>
             <constraints>
@@ -103,12 +125,20 @@
                 <constraint firstAttribute="bottom" secondItem="kL9-mf-C1L" secondAttribute="bottom" id="h8q-RW-wvr"/>
             </constraints>
             <connections>
-                <outlet property="appTitles" destination="VM2-bd-nGd" id="o9E-aA-9R6"/>
-                <outlet property="appTitlesTextView" destination="xwX-pJ-I7b" id="6MR-gV-vWx"/>
+                <outlet property="ArrowImage" destination="mrZ-On-bPk" id="Tii-U3-wIf"/>
+                <outlet property="activityCircle" destination="Sgt-Os-F6F" id="rcR-6y-LIn"/>
+                <outlet property="appTextView" destination="xwX-pJ-I7b" id="iIN-4p-mES"/>
+                <outlet property="appTitleTextView" destination="xwX-pJ-I7b" id="tPB-l0-e9p"/>
+                <outlet property="appTitlesTextView" destination="VM2-bd-nGd" id="d4G-Mg-Su0"/>
                 <outlet property="appsBox" destination="XCB-EZ-PYh" id="yGC-pH-o4o"/>
+                <outlet property="arrowImage" destination="mrZ-On-bPk" id="Vp6-rK-8z5"/>
+                <outlet property="backgroundBox" destination="kL9-mf-C1L" id="Bit-QJ-wFg"/>
                 <outlet property="selectedLabel" destination="Oqd-bG-i6V" id="onR-3l-TNs"/>
                 <outlet property="timeLabel" destination="bhE-PG-oMX" id="dEB-Yk-92Y"/>
             </connections>
         </customView>
     </objects>
+    <resources>
+        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
+    </resources>
 </document>

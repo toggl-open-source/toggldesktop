@@ -28,6 +28,8 @@
 		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
 		3C33D2F61C842E1300186973 /* NSSkipAheadRoundedTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C33D2F41C842E1300186973 /* NSSkipAheadRoundedTemplate.pdf */; };
 		3C33D2F71C842E1300186973 /* NSSkipBackRoundedTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C33D2F51C842E1300186973 /* NSSkipBackRoundedTemplate.pdf */; };
+		3C33D3081C8439DA00186973 /* NSAutosaveTriangle.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C33D3071C8439DA00186973 /* NSAutosaveTriangle.pdf */; };
+		3C33D30E1C845C3B00186973 /* TimelineChunkCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C33D30D1C845C3B00186973 /* TimelineChunkCircle.m */; };
 		3C3C75841C64FE4C000AA889 /* TimelineEventsListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3C75831C64FE4C000AA889 /* TimelineEventsListItem.m */; };
 		3C3C75951C64FE7A000AA889 /* TimelineEventsListItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C3C75941C64FE7A000AA889 /* TimelineEventsListItem.xib */; };
 		3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237151A9F612E00643059 /* toggl-logo-white.pdf */; };
@@ -336,6 +338,9 @@
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
 		3C33D2F41C842E1300186973 /* NSSkipAheadRoundedTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSSkipAheadRoundedTemplate.pdf; sourceTree = "<group>"; };
 		3C33D2F51C842E1300186973 /* NSSkipBackRoundedTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSSkipBackRoundedTemplate.pdf; sourceTree = "<group>"; };
+		3C33D3071C8439DA00186973 /* NSAutosaveTriangle.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSAutosaveTriangle.pdf; sourceTree = "<group>"; };
+		3C33D30C1C845C3B00186973 /* TimelineChunkCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineChunkCircle.h; sourceTree = "<group>"; };
+		3C33D30D1C845C3B00186973 /* TimelineChunkCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkCircle.m; sourceTree = "<group>"; };
 		3C3C75821C64FE4C000AA889 /* TimelineEventsListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineEventsListItem.h; sourceTree = "<group>"; };
 		3C3C75831C64FE4C000AA889 /* TimelineEventsListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineEventsListItem.m; sourceTree = "<group>"; };
 		3C3C75941C64FE7A000AA889 /* TimelineEventsListItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineEventsListItem.xib; sourceTree = "<group>"; };
@@ -786,6 +791,8 @@
 				3CE1CABF1C774F2B00D0ADD5 /* LoadMoreCell.h */,
 				3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */,
 				3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */,
+				3C33D30C1C845C3B00186973 /* TimelineChunkCircle.h */,
+				3C33D30D1C845C3B00186973 /* TimelineChunkCircle.m */,
 			);
 			name = ui;
 			path = test2;
@@ -850,6 +857,7 @@
 		745E7FC1192D247300747C18 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3C33D3071C8439DA00186973 /* NSAutosaveTriangle.pdf */,
 				3C33D2F41C842E1300186973 /* NSSkipAheadRoundedTemplate.pdf */,
 				3C33D2F51C842E1300186973 /* NSSkipBackRoundedTemplate.pdf */,
 				3C1C09C41C298ABA00BF9B6C /* warning-icon.png */,
@@ -1251,6 +1259,7 @@
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				3C3C75951C64FE7A000AA889 /* TimelineEventsListItem.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
+				3C33D3081C8439DA00186973 /* NSAutosaveTriangle.pdf in Resources */,
 				3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
 			);
@@ -1346,6 +1355,7 @@
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				3C0A571F1C22E12E00301D77 /* README.md in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
+				3C33D30E1C845C3B00186973 /* TimelineChunkCircle.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,

@@ -13,6 +13,7 @@
 @interface TimelineChunkView : NSObject
 - (void)load:(TogglTimelineChunkView *)data;
 @property uint64_t Started;
+@property int activeDuration;
 @property (strong) NSString *StartTimeString;
 @property (strong) NSMutableArray *Events;
 @end
