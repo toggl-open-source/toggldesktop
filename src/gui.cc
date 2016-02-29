@@ -372,7 +372,7 @@ void GUI::DisplayProjectAutocomplete(
 
 void GUI::DisplayTimeEntryList(const bool open,
                                const std::vector<view::TimeEntry> list,
-							   const bool show_load_more_button) {
+                               const bool show_load_more_button) {
     time_entry_editor_guid_ = "";
     Poco::Stopwatch stopwatch;
     stopwatch.start();
