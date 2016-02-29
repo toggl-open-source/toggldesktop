@@ -47,6 +47,21 @@ extern void *ctx;
 	self.eventsTableView.delegate = self;
 	self.eventsTableView.dataSource = self;
 	self.startTimeSet = NO;
+
+	[NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent * (NSEvent *theEvent) {
+		 switch ([theEvent keyCode])
+		 {
+			 case 123 :
+				 [self prevButtonClicked:nil];
+				 break;
+			 case 124 :
+				 [self nextButtonClicked:nil];
+				 break;
+			 default :
+				 break;
+		 }
+		 return theEvent;
+	 }];
 }
 
 - (IBAction)prevButtonClicked:(id)sender
