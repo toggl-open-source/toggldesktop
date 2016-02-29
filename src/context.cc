@@ -4483,6 +4483,8 @@ error Context::logAndDisplayUserTriedEditingLockedEntry() {
 }
 
 bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
+	if (!ws)
+		return false;
     if (!ws->Business())
         return false;
     if (ws->Admin())

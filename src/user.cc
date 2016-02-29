@@ -360,6 +360,7 @@ TimeEntry *User::DiscardTimeAt(
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
+		split->SetWID(te->WID());
         related.TimeEntries.push_back(split);
         return split;
     }
