@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
@@ -35,9 +35,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="46"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mjb-UT-6JL" userLabel="PreviousDay">
-                                <rect key="frame" x="15" y="16" width="13" height="19"/>
-                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSLeftFacingTriangleTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="OrL-XV-bZm">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mjb-UT-6JL" userLabel="PreviousDay">
+                                <rect key="frame" x="0.0" y="0.0" width="40" height="46"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="MBl-L2-2YE"/>
+                                    <constraint firstAttribute="height" constant="46" id="SB7-Dy-99F"/>
+                                </constraints>
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSSkipBackRoundedTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="OrL-XV-bZm">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -54,9 +58,13 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Maz-tC-VOn" userLabel="NextDay">
-                                <rect key="frame" x="459" y="15" width="13" height="21"/>
-                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRightFacingTriangleTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="uKa-Mf-9oZ">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Maz-tC-VOn" userLabel="NextDay">
+                                <rect key="frame" x="440" y="0.0" width="40" height="46"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="4bN-Q0-ztI"/>
+                                    <constraint firstAttribute="height" constant="46" id="eTk-6u-xuy"/>
+                                </constraints>
+                                <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSSkipAheadRoundedTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="uKa-Mf-9oZ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -69,10 +77,10 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="1Mi-dm-bEu"/>
                         <constraint firstAttribute="centerX" secondItem="pze-Zr-H2B" secondAttribute="centerX" id="8YN-9S-lld"/>
-                        <constraint firstItem="Maz-tC-VOn" firstAttribute="top" secondItem="oyV-oQ-Ct1" secondAttribute="top" constant="16" id="X2A-Pz-oU3"/>
-                        <constraint firstAttribute="trailing" secondItem="Maz-tC-VOn" secondAttribute="trailing" constant="15" id="gFI-Qe-PQI"/>
-                        <constraint firstItem="mjb-UT-6JL" firstAttribute="leading" secondItem="oyV-oQ-Ct1" secondAttribute="leading" constant="15" id="iij-XW-OlQ"/>
-                        <constraint firstItem="mjb-UT-6JL" firstAttribute="top" secondItem="oyV-oQ-Ct1" secondAttribute="top" constant="16" id="yeb-JR-DEN"/>
+                        <constraint firstItem="Maz-tC-VOn" firstAttribute="top" secondItem="oyV-oQ-Ct1" secondAttribute="top" id="X2A-Pz-oU3"/>
+                        <constraint firstAttribute="trailing" secondItem="Maz-tC-VOn" secondAttribute="trailing" id="gFI-Qe-PQI"/>
+                        <constraint firstItem="mjb-UT-6JL" firstAttribute="leading" secondItem="oyV-oQ-Ct1" secondAttribute="leading" id="iij-XW-OlQ"/>
+                        <constraint firstItem="mjb-UT-6JL" firstAttribute="top" secondItem="oyV-oQ-Ct1" secondAttribute="top" id="yeb-JR-DEN"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
@@ -240,7 +248,7 @@
         </customView>
     </objects>
     <resources>
-        <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>
-        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
+        <image name="NSSkipAheadRoundedTemplate" width="12" height="9"/>
+        <image name="NSSkipBackRoundedTemplate" width="12" height="9"/>
     </resources>
 </document>
