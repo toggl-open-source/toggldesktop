@@ -29,6 +29,7 @@ extern void *ctx;
 		self.nibTimelineEventsListItem = [[NSNib alloc] initWithNibNamed:@"TimelineEventsListItem"
 																  bundle:nil];
 		timelineChunks = [NSMutableArray array];
+		highlightedRows = [NSMutableArray array];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeline:)
@@ -182,28 +183,62 @@ extern void *ctx;
 	}
 
 	TimelineEventsListItem *cell = [self getCellByRow:row];
-	[cell setSelected:self.startTimeSet row:row];
 
 	// save start or stop time cell items
 	if (self.startTimeSet)
 	{
-        if (row < self.startItem.rowIndex) {
-            [self.startItem setUnSelected];
-            [cell setSelected:NO row:row];
-            self.startItem = cell;
-            self.startTimeLabel.stringValue = cell.timeLabel.stringValue;
-        } else {
-            self.endItem = cell;
-            self.startTimeSet = NO;
-            self.endTimeLabel.stringValue = cell.timeLabel.stringValue;
-        }
+		if (row < self.startItem.rowIndex)
+		{
+			[self clearHighlights];
+			[self.startItem setUnSelected];
+			[cell setSelected:NO row:row];
+			self.startItem = cell;
+			self.startTimeLabel.stringValue = cell.timeLabel.stringValue;
+		}
+		else
+		{
+			[self.endItem setUnSelected];
+			[cell setSelected:self.startTimeSet row:row];
+			self.endItem = cell;
+			self.startTimeSet = NO;
+			self.endTimeLabel.stringValue = cell.timeLabel.stringValue;
+			[self setHighlights];
+		}
 	}
 	else
 	{
+		[self clearHighlights];
+		[cell setSelected:self.startTimeSet row:row];
 		self.startItem = cell;
 		self.startTimeSet = YES;
 		self.startTimeLabel.stringValue = cell.timeLabel.stringValue;
 	}
+}
+
+- (void)clearHighlights
+{
+	while ([highlightedRows count] != 0)
+	{
+		[highlightedRows.lastObject setUnSelected];
+		[highlightedRows removeLastObject];
+	}
+}
+
+- (void)setHighlights
+{
+	NSInteger currentRow = self.endItem.rowIndex - 1;
+	TimelineEventsListItem *item;
+
+	[highlightedRows addObject:self.endItem];
+
+	while (currentRow > self.startItem.rowIndex)
+	{
+		item = [self getCellByRow:currentRow];
+		[item setActive:NO];
+		[highlightedRows addObject:item];
+		currentRow--;
+	}
+	[highlightedRows addObject:self.startItem];
 }
 
 - (TimelineEventsListItem *)getCellByRow:(NSInteger)row
@@ -220,15 +255,6 @@ extern void *ctx;
 	{
 		if ([subview isKindOfClass:[TimelineEventsListItem class]])
 		{
-			if (self.startTimeSet)
-			{
-				[self.endItem setUnSelected];
-			}
-			else
-			{
-				[self.startItem setUnSelected];
-			}
-
 			return (TimelineEventsListItem *)subview;
 		}
 	}

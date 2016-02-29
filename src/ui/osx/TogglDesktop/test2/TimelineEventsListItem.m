@@ -43,23 +43,8 @@
 	NSString *aString;
 	[self setActive:YES];
 
-	NSImage *aImage = [NSImage imageNamed:@"NSAutosaveTriangle.pdf"];
 	if (endTime)
 	{
-		// Flip the down arrow image vertically
-		NSAffineTransform *flipper = [NSAffineTransform transform];
-		NSSize dimensions = aImage.size;
-		[aImage lockFocus];
-
-		[flipper scaleXBy:1.0 yBy:-1.0];
-		[flipper set];
-
-		[aImage drawAtPoint:NSMakePoint(0, -dimensions.height)
-				   fromRect:NSMakeRect(0, 0, dimensions.width, dimensions.height)
-				  operation:NSCompositeCopy fraction:1.0];
-
-		[aImage unlockFocus];
-
 		aString = @"End time";
 	}
 	else
@@ -69,26 +54,17 @@
 
 	self.selectedLabel.stringValue = aString;
 	[self.selectedLabel setHidden:NO];
-
-	[self.arrowImage setImage:aImage];
 }
 
 - (void)setActive:(BOOL)edge
 {
-	if (!edge)
-	{
-		[self.arrowImage setHidden:YES];
-	}
-	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#F0F0F0"];
-	[self.backgroundBox setFillColor:color];
+	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#F0F0F0"]];
 }
 
 - (void)setUnSelected
 {
+	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#FFFFFF"]];
 	[self.selectedLabel setHidden:YES];
-	[self.arrowImage setHidden:NO];
-	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#EBEBEB"]];
-	[self.arrowImage setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate.pdf"]];
 }
 
 @end

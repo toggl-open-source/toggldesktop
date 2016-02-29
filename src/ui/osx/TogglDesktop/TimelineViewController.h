@@ -14,6 +14,7 @@
 @interface TimelineViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource> {
 	@private
 	NSMutableArray *timelineChunks;
+	NSMutableArray *highlightedRows;
 }
 @property IBOutlet NSTextField *dateLabel;
 @property IBOutlet NSTextField *timeLabel;
@@ -32,6 +33,8 @@
 - (IBAction)prevButtonClicked:(id)sender;
 - (IBAction)nextButtonClicked:(id)sender;
 - (IBAction)createButtonClicked:(id)sender;
+- (void)setHighlights;
 @property (weak) IBOutlet NSTextField *startTimeLabel;
 @property (weak) IBOutlet NSTextField *endTimeLabel;
+
 @end

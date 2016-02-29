@@ -33,7 +33,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="365" height="238"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="VM2-bd-nGd">
+                                        <scrollView focusRingType="none" misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="VM2-bd-nGd">
                                             <rect key="frame" x="0.0" y="0.0" width="360" height="240"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="5zs-73-94s">
                                                 <rect key="frame" x="0.0" y="0.0" width="360" height="240"/>
@@ -43,10 +43,10 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="358" height="240"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <size key="minSize" width="360" height="240"/>
+                                                        <size key="minSize" width="358" height="240"/>
                                                         <size key="maxSize" width="463" height="10000000"/>
                                                         <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="minSize" width="360" height="240"/>
+                                                        <size key="minSize" width="358" height="240"/>
                                                         <size key="maxSize" width="463" height="10000000"/>
                                                     </textView>
                                                 </subviews>
@@ -72,18 +72,6 @@
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </box>
-                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oqd-bG-i6V" userLabel="SelectedLabel">
-                                <rect key="frame" x="15" y="207" width="37" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="From" id="LPK-tB-234">
-                                    <font key="font" metaFont="systemBold"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mrZ-On-bPk" userLabel="ArrowImage">
-                                <rect key="frame" x="17" y="159" width="20" height="19"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSRightFacingTriangleTemplate" id="ktb-PS-FCV"/>
-                            </imageView>
                             <box misplaced="YES" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="U4M-Gg-9pp" userLabel="TimelineLine">
                                 <rect key="frame" x="72" y="0.0" width="2" height="272"/>
                                 <view key="contentView" id="Sdp-1X-Vuu">
@@ -99,13 +87,21 @@
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sgt-Os-F6F" customClass="TimelineChunkCircle">
                                 <rect key="frame" x="58" y="227" width="30" height="30"/>
                             </customView>
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Oqd-bG-i6V" userLabel="SelectedLabel">
+                                <rect key="frame" x="10" y="200" width="50" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" title="From" bezelStyle="round" id="LPK-tB-234">
+                                    <font key="font" metaFont="systemBold" size="11"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="U4M-Gg-9pp" secondAttribute="bottom" id="0gp-6M-ow2"/>
                             <constraint firstItem="XCB-EZ-PYh" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" constant="15" id="2Cp-5F-Rp1"/>
                             <constraint firstItem="XCB-EZ-PYh" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="100" id="E2n-o3-g61"/>
                             <constraint firstItem="XCB-EZ-PYh" firstAttribute="leading" secondItem="U4M-Gg-9pp" secondAttribute="trailing" constant="25" id="Fym-TY-wol"/>
-                            <constraint firstItem="Oqd-bG-i6V" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="15" id="H9d-Aw-eD0"/>
+                            <constraint firstItem="Oqd-bG-i6V" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="10" id="H9d-Aw-eD0"/>
                             <constraint firstItem="bhE-PG-oMX" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" constant="21" id="TSn-GN-3Yy"/>
                             <constraint firstAttribute="trailing" secondItem="XCB-EZ-PYh" secondAttribute="trailing" constant="15" id="Wgj-iH-HaS"/>
                             <constraint firstItem="bhE-PG-oMX" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="15" id="XED-mD-T7c"/>
@@ -125,20 +121,15 @@
                 <constraint firstAttribute="bottom" secondItem="kL9-mf-C1L" secondAttribute="bottom" id="h8q-RW-wvr"/>
             </constraints>
             <connections>
-                <outlet property="ArrowImage" destination="mrZ-On-bPk" id="Tii-U3-wIf"/>
                 <outlet property="activityCircle" destination="Sgt-Os-F6F" id="rcR-6y-LIn"/>
                 <outlet property="appTextView" destination="xwX-pJ-I7b" id="iIN-4p-mES"/>
                 <outlet property="appTitleTextView" destination="xwX-pJ-I7b" id="tPB-l0-e9p"/>
                 <outlet property="appTitlesTextView" destination="VM2-bd-nGd" id="d4G-Mg-Su0"/>
                 <outlet property="appsBox" destination="XCB-EZ-PYh" id="yGC-pH-o4o"/>
-                <outlet property="arrowImage" destination="mrZ-On-bPk" id="Vp6-rK-8z5"/>
                 <outlet property="backgroundBox" destination="kL9-mf-C1L" id="Bit-QJ-wFg"/>
                 <outlet property="selectedLabel" destination="Oqd-bG-i6V" id="onR-3l-TNs"/>
                 <outlet property="timeLabel" destination="bhE-PG-oMX" id="dEB-Yk-92Y"/>
             </connections>
         </customView>
     </objects>
-    <resources>
-        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
-    </resources>
 </document>

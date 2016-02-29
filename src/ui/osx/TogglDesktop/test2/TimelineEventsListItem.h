@@ -14,13 +14,13 @@
 - (void)render:(TimelineChunkView *)view_item;
 - (void)setSelected:(BOOL)endTime row:(NSInteger)rowIndex;
 - (void)setUnSelected;
+- (void)setActive:(BOOL)edge;
 @property uint64_t Started;
+@property NSInteger rowIndex;
 @property (weak) IBOutlet NSTextField *timeLabel;
 @property (weak) IBOutlet NSBox *appsBox;
 @property (weak) IBOutlet NSTextField *selectedLabel;
 @property (weak) IBOutlet NSBox *backgroundBox;
-@property (weak) IBOutlet NSImageView *arrowImage;
 @property (unsafe_unretained) IBOutlet NSTextView *appTitleTextView;
-@property NSInteger rowIndex;
 @property (weak) IBOutlet TimelineChunkCircle *activityCircle;
 @end
