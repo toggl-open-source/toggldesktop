@@ -2614,7 +2614,7 @@ error Context::SetTimeEntryProject(
             p = user_->related.ProjectByGUID(project_guid);
         }
 
-        if (!canChangeProjectTo(te, p)) {
+        if (p && !canChangeProjectTo(te, p)) {
             return displayError(error("Cannot change project: would end up with locked time entry"));
         }
 
