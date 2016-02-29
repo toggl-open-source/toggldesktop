@@ -26,7 +26,8 @@ class WindowChangeRecorder {
     , timeline_datasource_(datasource)
     , recording_(this, &WindowChangeRecorder::recordLoop)
     , last_autotracker_title_("")
-    , shutdown_(false) {
+    , shutdown_(false)
+	, timeline_errors_() {
         recording_.start();
     }
 
@@ -64,6 +65,8 @@ class WindowChangeRecorder {
 
     Poco::Mutex shutdown_m_;
     bool shutdown_;
+
+	std::map<const int, int> timeline_errors_;
 };
 
 }  // namespace toggl
