@@ -170,7 +170,7 @@ extern void *ctx;
 {
 	NSInteger row = [self.eventsTableView clickedRow];
 
-	if (row < 0 || (self.startTimeSet && row < self.lastRow))
+	if (row < 0)
 	{
 		return;
 	}
@@ -187,9 +187,16 @@ extern void *ctx;
 	// save start or stop time cell items
 	if (self.startTimeSet)
 	{
-		self.endItem = cell;
-		self.startTimeSet = NO;
-		self.endTimeLabel.stringValue = cell.timeLabel.stringValue;
+        if (row < self.startItem.rowIndex) {
+            [self.startItem setUnSelected];
+            [cell setSelected:NO row:row];
+            self.startItem = cell;
+            self.startTimeLabel.stringValue = cell.timeLabel.stringValue;
+        } else {
+            self.endItem = cell;
+            self.startTimeSet = NO;
+            self.endTimeLabel.stringValue = cell.timeLabel.stringValue;
+        }
 	}
 	else
 	{
