@@ -3353,9 +3353,13 @@ Project *Context::CreateProject(
             user_->related.Projects.begin();
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
-            if ((p->Name() == trimmed_project_name)
-                    && (workspace_id == p->WID())
-                    && (client_id == p->CID())) {
+
+			auto clientIsSame = client_guid == p->ClientGUID();
+			if (client_id != 0 && p->CID() != 0) {
+				clientIsSame = clientIsSame || client_id == p->CID();
+			}
+
+			if (clientIsSame && p->Name() == trimmed_project_name) {
                 displayError(kProjectNameAlreadyExists);
                 return nullptr;
             }
@@ -3451,7 +3455,7 @@ Client *Context::CreateClient(
             user_->related.Clients.begin();
                 it != user_->related.Clients.end(); it++) {
             Client *c = *it;
-            if (c->Name() == trimmed_client_name) {
+            if (c->WID() == workspace_id && c->Name() == trimmed_client_name) {
                 displayError(kClientNameAlreadyExists);
                 return nullptr;
             }
