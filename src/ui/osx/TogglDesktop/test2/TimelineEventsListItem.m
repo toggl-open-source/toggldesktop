@@ -87,7 +87,7 @@
 {
 	[self.selectedLabel setHidden:YES];
 	[self.arrowImage setHidden:NO];
-	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#F7F7F7"]];
+	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#EBEBEB"]];
 	[self.arrowImage setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate.pdf"]];
 }
 
