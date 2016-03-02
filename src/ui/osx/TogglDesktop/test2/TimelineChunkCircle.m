@@ -42,10 +42,10 @@
 		[path setLineWidth:2.0];
 		[path stroke];
 
-		// pie chart
+		// pie chart radius and degrees
 		double radius = self.bounds.size.height / 2;
-		double start = 90.0;                                     // degrees
-		double end = start - ((self.value * 360) / 900);         // degrees
+		double start = 90.0;
+		double end = start - ((self.value * 360) / 900);
 
 		NSPoint center = NSMakePoint(radius, radius);
 
