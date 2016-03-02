@@ -27,6 +27,7 @@
 @property (strong) IBOutlet NSBox *headerBox;
 @property (strong) IBOutlet NSBox *footerBox;
 @property BOOL startTimeSet;
+@property BOOL today;
 @property NSInteger lastRow;
 @property TimelineEventsListItem *startItem;
 @property TimelineEventsListItem *endItem;

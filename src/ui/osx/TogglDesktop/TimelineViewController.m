@@ -47,6 +47,7 @@ extern void *ctx;
 	self.eventsTableView.delegate = self;
 	self.eventsTableView.dataSource = self;
 	self.startTimeSet = NO;
+	self.today = true;
 
 	[NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent * (NSEvent *theEvent) {
 		 switch ([theEvent keyCode])
@@ -73,7 +74,10 @@ extern void *ctx;
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-	toggl_view_timeline_next_day(ctx);
+	if (!self.today)
+	{
+		toggl_view_timeline_next_day(ctx);
+	}
 }
 
 - (IBAction)createButtonClicked:(id)sender
@@ -113,6 +117,9 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	self.dateLabel.stringValue = [NSString stringWithFormat:@"Timeline %@", cmd.timelineDate];
+	self.today = [cmd.timelineDate isEqualToString:@"Today"];
+
+	[self.nextButton setHidden:self.today];
 
 	@synchronized(timelineChunks)
 	{
