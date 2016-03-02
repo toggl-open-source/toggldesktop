@@ -53,10 +53,12 @@ extern void *ctx;
 		 {
 			 case 123 :
 				 [self prevButtonClicked:nil];
-				 break;
+				 return nil;
+
 			 case 124 :
 				 [self nextButtonClicked:nil];
-				 break;
+				 return nil;
+
 			 default :
 				 break;
 		 }
