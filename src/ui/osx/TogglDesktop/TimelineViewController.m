@@ -132,8 +132,7 @@ extern void *ctx;
 
 	[self.eventsTableView reloadData];
 
-	NSLog(@"CMD Chunks size: %lu", (unsigned long)[cmd.timelineChunks count]);
-	NSLog(@"Chunks size: %lu", (unsigned long)[timelineChunks count]);
+	// NSLog(@"Chunks size: %lu", (unsigned long)[timelineChunks count]);
 	// FIXME: reload view
 }
 
