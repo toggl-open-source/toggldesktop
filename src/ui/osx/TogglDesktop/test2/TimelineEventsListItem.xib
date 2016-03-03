@@ -135,9 +135,7 @@
             </constraints>
             <connections>
                 <outlet property="activityCircle" destination="Sgt-Os-F6F" id="rcR-6y-LIn"/>
-                <outlet property="appTextView" destination="xwX-pJ-I7b" id="iIN-4p-mES"/>
                 <outlet property="appTitleTextView" destination="xwX-pJ-I7b" id="tPB-l0-e9p"/>
-                <outlet property="appTitlesTextView" destination="VM2-bd-nGd" id="d4G-Mg-Su0"/>
                 <outlet property="appsBox" destination="XCB-EZ-PYh" id="yGC-pH-o4o"/>
                 <outlet property="backgroundBox" destination="kL9-mf-C1L" id="Bit-QJ-wFg"/>
                 <outlet property="entryLine" destination="Gzs-4f-aHi" id="u7b-Jz-tej"/>
