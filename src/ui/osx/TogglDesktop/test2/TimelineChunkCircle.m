@@ -61,8 +61,8 @@
 	}
 
 	// Circle on top to make pie chart a donut
-	NSBezierPath *topCirclePath = [NSBezierPath bezierPathWithOvalInRect:NSInsetRect(NSMakeRect(3, 3, 24, 24), 0, 0)];
-	[[ConvertHexColor hexCodeToNSColor:@"#F0F0F0"] set];
+	NSBezierPath *topCirclePath = [NSBezierPath bezierPathWithOvalInRect:NSInsetRect(NSMakeRect(5, 5, 20, 20), 0, 0)];
+	[[ConvertHexColor hexCodeToNSColor:@"#FFFFFF"] set];
 	[topCirclePath fill];
 }
 
