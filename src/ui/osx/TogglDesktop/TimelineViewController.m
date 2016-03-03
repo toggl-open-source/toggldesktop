@@ -50,18 +50,21 @@ extern void *ctx;
 	self.today = true;
 
 	[NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent * (NSEvent *theEvent) {
-		 switch ([theEvent keyCode])
+		 if (self.isViewLoaded && self.view.window)
 		 {
-			 case 123 :
-				 [self prevButtonClicked:nil];
-				 return nil;
+			 switch ([theEvent keyCode])
+			 {
+				 case 123 :
+					 [self prevButtonClicked:nil];
+					 return nil;
 
-			 case 124 :
-				 [self nextButtonClicked:nil];
-				 return nil;
+				 case 124 :
+					 [self nextButtonClicked:nil];
+					 return nil;
 
-			 default :
-				 break;
+				 default :
+					 break;
+			 }
 		 }
 		 return theEvent;
 	 }];
