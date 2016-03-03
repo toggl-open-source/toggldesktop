@@ -34,7 +34,7 @@
 
 	[self.appsBox setHidden:[events length] == 0];
 	self.Started = view_item.Started;
-	self.activityCircle.value = MIN(view_item.activeDuration, 900);
+	[self.activityCircle setNewValue:view_item.activeDuration];
 
 	if (view_item.EntryEnd != 0)
 	{

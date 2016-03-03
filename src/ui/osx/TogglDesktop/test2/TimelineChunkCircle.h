@@ -10,4 +10,5 @@
 
 @interface TimelineChunkCircle : NSView
 @property int value;
+- (void)setNewValue:(int)newValue;
 @end

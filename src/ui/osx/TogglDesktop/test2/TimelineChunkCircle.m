@@ -66,4 +66,10 @@
 	[topCirclePath fill];
 }
 
+- (void)setNewValue:(int)newValue
+{
+	self.value = MIN(newValue, 900);
+	[self setNeedsDisplay:YES];
+}
+
 @end
