@@ -241,6 +241,9 @@ TogglTimeEntryView *time_entry_view_item_init(
 
     view_item->Next = nullptr;
 
+    view_item->RoundedStart = te.RoundedStart;
+    view_item->RoundedEnd = te.RoundedEnd;
+
     return view_item;
 }
 

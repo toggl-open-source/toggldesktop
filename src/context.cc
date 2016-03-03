@@ -731,10 +731,35 @@ void Context::updateUI(const UIElements &what) {
             }
         }
 
-        if (what.display_timeline) {
-            if (user_) {
-                Poco::LocalDateTime date(UI()->TimelineDateAt());
-                timeline = user_->CompressedTimeline(&date);
+        if (what.display_timeline && user_) {
+            // Get Timeline data
+            Poco::LocalDateTime date(UI()->TimelineDateAt());
+            timeline = user_->CompressedTimeline(&date);
+
+            // Get a sorted list of time entries
+            std::vector<TimeEntry *> time_entries =
+                user_->related.VisibleTimeEntries();
+            std::sort(time_entries.begin(), time_entries.end(),
+                      CompareByStart);
+
+            // Collect the time entries into a list
+            for (unsigned int i = 0; i < time_entries.size(); i++) {
+                TimeEntry *te = time_entries[i];
+                if (te->Duration() < 0) {
+                    // Don't account running entries
+                    continue;
+                }
+
+                Poco::LocalDateTime te_date(Poco::Timestamp::fromEpochTime(te->Start()));
+                if (te_date.year() == UI()->TimelineDateAt().year()
+                        && te_date.month() == UI()->TimelineDateAt().month()
+                        && te_date.day() == UI()->TimelineDateAt().day()) {
+
+                    view::TimeEntry view;
+                    view.Fill(te);
+                    view.GenerateRoundedTimes();
+                    time_entry_views.push_back(view);
+                }
             }
         }
     }
@@ -761,7 +786,7 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_timeline) {
-        UI()->DisplayTimeline(what.open_timeline, timeline);
+        UI()->DisplayTimeline(what.open_timeline, timeline, time_entry_views);
     }
 
     if (what.display_time_entry_autocomplete) {

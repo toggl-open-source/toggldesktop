@@ -35,6 +35,39 @@
 	[self.appsBox setHidden:[events length] == 0];
 	self.Started = view_item.Started;
 	self.activityCircle.value = MIN(view_item.activeDuration, 900);
+
+	if (view_item.EntryEnd != 0)
+	{
+		// set time entry line location
+		uint64_t top = view_item.EntryStart * view_item.CalculatedHeight / 100;
+		uint64_t bottom = ((100 - view_item.EntryEnd) / 100) * view_item.CalculatedHeight;
+
+		[self.backgroundBox removeConstraint:self.topConstraint];
+		self.topConstraint = [NSLayoutConstraint constraintWithItem:self.entryLine
+														  attribute:NSLayoutAttributeTop
+														  relatedBy:NSLayoutRelationEqual
+															 toItem:self.backgroundBox
+														  attribute:NSLayoutAttributeTop
+														 multiplier:1
+														   constant:top];
+		[self.backgroundBox addConstraint:self.topConstraint];
+
+
+		[self.backgroundBox removeConstraint:self.bottomConstraint];
+
+		self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.entryLine
+															 attribute:NSLayoutAttributeBottom
+															 relatedBy:NSLayoutRelationEqual
+																toItem:self.backgroundBox
+															 attribute:NSLayoutAttributeBottom
+															multiplier:1
+															  constant:bottom];
+		[self.backgroundBox addConstraint:self.bottomConstraint];
+
+
+		[self.entryLine setToolTip:view_item.EntryDescription];
+	}
+	[self.entryLine setHidden:!(view_item.EntryEnd != 0)];
 }
 
 - (void)setSelected:(BOOL)endTime row:(NSInteger)rowIndex;

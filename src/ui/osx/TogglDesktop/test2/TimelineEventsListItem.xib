@@ -84,13 +84,25 @@
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" red="0.77742355122677331" green="0.77742355122677331" blue="0.77742355122677331" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sgt-Os-F6F" customClass="TimelineChunkCircle">
+                            <box hidden="YES" ambiguous="YES" misplaced="YES" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Gzs-4f-aHi" userLabel="EntryLine">
+                                <rect key="frame" x="90" y="0.0" width="2" height="272"/>
+                                <view key="contentView" ambiguous="YES" id="FMU-DK-Avw">
+                                    <rect key="frame" x="0.0" y="0.0" width="2" height="272"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="2" id="2Lg-l8-jz3"/>
+                                </constraints>
+                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                <color key="fillColor" red="0.17254901960784313" green="0.75686274509803919" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sgt-Os-F6F" customClass="TimelineChunkCircle">
                                 <rect key="frame" x="58" y="227" width="30" height="30"/>
                             </customView>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Oqd-bG-i6V" userLabel="SelectedLabel">
                                 <rect key="frame" x="10" y="200" width="50" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" title="From" bezelStyle="round" id="LPK-tB-234">
-                                    <font key="font" metaFont="systemBold" size="11"/>
+                                    <font key="font" metaFont="smallSystemBold"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -105,6 +117,7 @@
                             <constraint firstItem="bhE-PG-oMX" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" constant="21" id="TSn-GN-3Yy"/>
                             <constraint firstAttribute="trailing" secondItem="XCB-EZ-PYh" secondAttribute="trailing" constant="15" id="Wgj-iH-HaS"/>
                             <constraint firstItem="bhE-PG-oMX" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="15" id="XED-mD-T7c"/>
+                            <constraint firstItem="Gzs-4f-aHi" firstAttribute="leading" secondItem="Sgt-Os-F6F" secondAttribute="trailing" constant="2" id="b96-u1-T4J"/>
                             <constraint firstItem="Oqd-bG-i6V" firstAttribute="top" secondItem="bhE-PG-oMX" secondAttribute="bottom" constant="10" id="d8x-DG-OtG"/>
                             <constraint firstItem="U4M-Gg-9pp" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" id="elG-Ad-AyK"/>
                             <constraint firstAttribute="bottom" secondItem="XCB-EZ-PYh" secondAttribute="bottom" constant="15" id="zs3-Pg-8Br"/>
@@ -127,6 +140,7 @@
                 <outlet property="appTitlesTextView" destination="VM2-bd-nGd" id="d4G-Mg-Su0"/>
                 <outlet property="appsBox" destination="XCB-EZ-PYh" id="yGC-pH-o4o"/>
                 <outlet property="backgroundBox" destination="kL9-mf-C1L" id="Bit-QJ-wFg"/>
+                <outlet property="entryLine" destination="Gzs-4f-aHi" id="u7b-Jz-tej"/>
                 <outlet property="selectedLabel" destination="Oqd-bG-i6V" id="onR-3l-TNs"/>
                 <outlet property="timeLabel" destination="bhE-PG-oMX" id="dEB-Yk-92Y"/>
             </connections>

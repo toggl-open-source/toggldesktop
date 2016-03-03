@@ -56,7 +56,9 @@ class TimeEntry {
     , WorkspaceName("")
     , Unsynced(false)
     , Error(noError)
-    , Locked(false) {}
+    , Locked(false)
+    , RoundedStart(0)
+    , RoundedEnd(0) {}
 
     int64_t DurationInSeconds;
     std::string Description;
@@ -92,7 +94,15 @@ class TimeEntry {
     std::string Error;
     bool Locked;
 
+    // To show time entry properly in timeline view
+    uint64_t RoundedStart;
+    uint64_t RoundedEnd;
+
+    void GenerateRoundedTimes();
+
     void Fill(toggl::TimeEntry * const model);
+
+
 
     bool operator == (const TimeEntry& other) const;
 };
@@ -376,7 +386,8 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTimeline(
         const bool open,
-        const std::vector<TimelineEvent> list);
+        const std::vector<TimelineEvent> list,
+        const std::vector<view::TimeEntry> entries_list);
 
     TogglTimelineEventView* SortList(TogglTimelineEventView *head);
 

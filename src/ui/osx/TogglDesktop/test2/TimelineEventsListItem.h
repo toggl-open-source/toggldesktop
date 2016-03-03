@@ -23,4 +23,7 @@
 @property (weak) IBOutlet NSBox *backgroundBox;
 @property (unsafe_unretained) IBOutlet NSTextView *appTitleTextView;
 @property (weak) IBOutlet TimelineChunkCircle *activityCircle;
+@property (weak) IBOutlet NSBox *entryLine;
+@property NSLayoutConstraint *topConstraint;
+@property NSLayoutConstraint *bottomConstraint;
 @end

@@ -77,6 +77,8 @@ extern "C" {
         bool_t Locked;
         // Indicates if time entry is not synced to server
         bool_t Unsynced;
+        uint64_t RoundedStart;
+        uint64_t RoundedEnd;
         // Next in list
         void *Next;
     } TogglTimeEntryView;
@@ -87,7 +89,7 @@ extern "C" {
         int64_t Duration;
         bool Header;
         // references subevents
-        void *event;
+        void *Event;
         // Next in list
         void *Next;
     } TogglTimelineEventView;
@@ -97,6 +99,8 @@ extern "C" {
         char_t *StartTimeString;
         void *Next;
         TogglTimelineEventView *FirstEvent;
+        // Reference to Time entries in this Chunk
+        void *Entry;
     } TogglTimelineChunkView;
 
     typedef struct {

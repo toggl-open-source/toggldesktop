@@ -187,8 +187,8 @@ extern void *ctx;
 			item = timelineChunks[row];
 		}
 	}
-
-	return 60 + ([item.Events count] * 20);
+	item.CalculatedHeight = (60 + ([item.Events count] * 20));
+	return item.CalculatedHeight;
 }
 
 - (IBAction)performClick:(id)sender
