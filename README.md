@@ -17,7 +17,7 @@ Table of Contents
       * [Build the app](#build-the-app)
   * [Downloads](#downloads)
     * [OSX](#osx)
-    * [Windows](#windows-1)
+    * [Windows (64 bit only)](#windows-64-bit-only)
     * [Linux (64 bit only)](#linux-64-bit-only)
   * [Change log](#change-log)
   * [Documentation](#documentation)
