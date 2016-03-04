@@ -3354,12 +3354,12 @@ Project *Context::CreateProject(
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
 
-			auto clientIsSame = client_guid == p->ClientGUID();
-			if (client_id != 0 && p->CID() != 0) {
-				clientIsSame = clientIsSame || client_id == p->CID();
-			}
+            auto clientIsSame = client_guid == p->ClientGUID();
+            if (client_id != 0 && p->CID() != 0) {
+                clientIsSame = clientIsSame || client_id == p->CID();
+            }
 
-			if (clientIsSame && p->Name() == trimmed_project_name) {
+            if (clientIsSame && p->Name() == trimmed_project_name) {
                 displayError(kProjectNameAlreadyExists);
                 return nullptr;
             }
@@ -4487,8 +4487,8 @@ error Context::logAndDisplayUserTriedEditingLockedEntry() {
 }
 
 bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
-	if (!ws)
-		return false;
+    if (!ws)
+        return false;
     if (!ws->Business())
         return false;
     if (ws->Admin())
