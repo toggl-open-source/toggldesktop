@@ -20,26 +20,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bhE-PG-oMX" userLabel="TimeLabel">
-                                <rect key="frame" x="15" y="232" width="43" height="19"/>
+                                <rect key="frame" x="15" y="253" width="43" height="19"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="14:00" id="el0-Xq-wnj">
-                                    <font key="font" metaFont="system" size="15"/>
+                                    <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.39215686274509803" green="0.39215686274509803" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <box misplaced="YES" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XCB-EZ-PYh" userLabel="AppsBox">
+                            <box hidden="YES" fixedFrame="YES" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XCB-EZ-PYh" userLabel="AppsBox">
                                 <rect key="frame" x="100" y="17" width="365" height="238"/>
-                                <view key="contentView" id="Y2P-6p-9B7">
+                                <view key="contentView" ambiguous="YES" id="Y2P-6p-9B7">
                                     <rect key="frame" x="0.0" y="0.0" width="365" height="238"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <scrollView focusRingType="none" misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="VM2-bd-nGd">
+                                        <scrollView hidden="YES" focusRingType="none" ambiguous="YES" misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="VM2-bd-nGd">
                                             <rect key="frame" x="0.0" y="0.0" width="360" height="240"/>
-                                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="5zs-73-94s">
+                                            <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="5zs-73-94s">
                                                 <rect key="frame" x="0.0" y="0.0" width="360" height="240"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textView editable="NO" drawsBackground="NO" importsGraphics="NO" findStyle="panel" verticallyResizable="YES" id="xwX-pJ-I7b">
+                                                    <textView ambiguous="YES" editable="NO" drawsBackground="NO" importsGraphics="NO" findStyle="panel" verticallyResizable="YES" id="xwX-pJ-I7b">
                                                         <rect key="frame" x="0.0" y="0.0" width="358" height="240"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -72,55 +72,31 @@
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </box>
-                            <box misplaced="YES" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="U4M-Gg-9pp" userLabel="TimelineLine">
-                                <rect key="frame" x="72" y="0.0" width="2" height="272"/>
-                                <view key="contentView" id="Sdp-1X-Vuu">
-                                    <rect key="frame" x="0.0" y="0.0" width="2" height="272"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="2" id="sUQ-Zu-Krt"/>
-                                </constraints>
-                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                <color key="fillColor" red="0.77742355122677331" green="0.77742355122677331" blue="0.77742355122677331" alpha="1" colorSpace="calibratedRGB"/>
-                            </box>
-                            <box hidden="YES" ambiguous="YES" misplaced="YES" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Gzs-4f-aHi" userLabel="EntryLine">
-                                <rect key="frame" x="90" y="0.0" width="2" height="272"/>
-                                <view key="contentView" ambiguous="YES" id="FMU-DK-Avw">
-                                    <rect key="frame" x="0.0" y="0.0" width="2" height="272"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="2" id="2Lg-l8-jz3"/>
-                                </constraints>
-                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                <color key="fillColor" red="0.17254901960784313" green="0.75686274509803919" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
-                            </box>
-                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sgt-Os-F6F" customClass="TimelineChunkCircle">
-                                <rect key="frame" x="58" y="227" width="30" height="30"/>
-                            </customView>
-                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Oqd-bG-i6V" userLabel="SelectedLabel">
-                                <rect key="frame" x="10" y="200" width="50" height="22"/>
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oqd-bG-i6V" userLabel="SelectedLabel">
+                                <rect key="frame" x="10" y="221" width="50" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" title="From" bezelStyle="round" id="LPK-tB-234">
                                     <font key="font" metaFont="smallSystemBold"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pN8-3H-VXG" userLabel="BarChart" customClass="TDBarChart">
+                                <rect key="frame" x="110" y="252" width="350" height="20"/>
+                            </customView>
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="79t-MD-Xrd" userLabel="Lines" customClass="TimelineLines">
+                                <rect key="frame" x="60" y="0.0" width="30" height="271"/>
+                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="U4M-Gg-9pp" secondAttribute="bottom" id="0gp-6M-ow2"/>
-                            <constraint firstItem="XCB-EZ-PYh" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" constant="15" id="2Cp-5F-Rp1"/>
-                            <constraint firstItem="XCB-EZ-PYh" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="100" id="E2n-o3-g61"/>
-                            <constraint firstItem="XCB-EZ-PYh" firstAttribute="leading" secondItem="U4M-Gg-9pp" secondAttribute="trailing" constant="25" id="Fym-TY-wol"/>
+                            <constraint firstItem="79t-MD-Xrd" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" id="Aoa-Z3-5iX"/>
+                            <constraint firstItem="pN8-3H-VXG" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" id="G2p-Dk-PFZ"/>
                             <constraint firstItem="Oqd-bG-i6V" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="10" id="H9d-Aw-eD0"/>
-                            <constraint firstItem="bhE-PG-oMX" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" constant="21" id="TSn-GN-3Yy"/>
-                            <constraint firstAttribute="trailing" secondItem="XCB-EZ-PYh" secondAttribute="trailing" constant="15" id="Wgj-iH-HaS"/>
+                            <constraint firstItem="pN8-3H-VXG" firstAttribute="leading" secondItem="79t-MD-Xrd" secondAttribute="trailing" constant="20" id="Lve-Rh-fyj"/>
+                            <constraint firstItem="bhE-PG-oMX" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" id="TSn-GN-3Yy"/>
                             <constraint firstItem="bhE-PG-oMX" firstAttribute="leading" secondItem="Uhc-lG-UPh" secondAttribute="leading" constant="15" id="XED-mD-T7c"/>
-                            <constraint firstItem="Gzs-4f-aHi" firstAttribute="leading" secondItem="Sgt-Os-F6F" secondAttribute="trailing" constant="2" id="b96-u1-T4J"/>
                             <constraint firstItem="Oqd-bG-i6V" firstAttribute="top" secondItem="bhE-PG-oMX" secondAttribute="bottom" constant="10" id="d8x-DG-OtG"/>
-                            <constraint firstItem="U4M-Gg-9pp" firstAttribute="top" secondItem="Uhc-lG-UPh" secondAttribute="top" id="elG-Ad-AyK"/>
-                            <constraint firstAttribute="bottom" secondItem="XCB-EZ-PYh" secondAttribute="bottom" constant="15" id="zs3-Pg-8Br"/>
+                            <constraint firstAttribute="trailing" secondItem="pN8-3H-VXG" secondAttribute="trailing" constant="20" id="ebH-IW-Hgo"/>
+                            <constraint firstAttribute="bottom" secondItem="79t-MD-Xrd" secondAttribute="bottom" id="lVu-ws-a7B"/>
                         </constraints>
                     </view>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -134,11 +110,11 @@
                 <constraint firstAttribute="bottom" secondItem="kL9-mf-C1L" secondAttribute="bottom" id="h8q-RW-wvr"/>
             </constraints>
             <connections>
-                <outlet property="activityCircle" destination="Sgt-Os-F6F" id="rcR-6y-LIn"/>
                 <outlet property="appTitleTextView" destination="xwX-pJ-I7b" id="tPB-l0-e9p"/>
                 <outlet property="appsBox" destination="XCB-EZ-PYh" id="yGC-pH-o4o"/>
                 <outlet property="backgroundBox" destination="kL9-mf-C1L" id="Bit-QJ-wFg"/>
-                <outlet property="entryLine" destination="Gzs-4f-aHi" id="u7b-Jz-tej"/>
+                <outlet property="barChart" destination="pN8-3H-VXG" id="Q3n-IQ-wXU"/>
+                <outlet property="lines" destination="79t-MD-Xrd" id="alc-dq-bo9"/>
                 <outlet property="selectedLabel" destination="Oqd-bG-i6V" id="onR-3l-TNs"/>
                 <outlet property="timeLabel" destination="bhE-PG-oMX" id="dEB-Yk-92Y"/>
             </connections>

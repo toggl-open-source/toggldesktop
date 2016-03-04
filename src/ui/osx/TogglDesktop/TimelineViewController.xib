@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineViewController">
             <connections>
+                <outlet property="barChart" destination="ct1-RJ-SlG" id="j4b-AD-EUc"/>
                 <outlet property="createButton" destination="Fnx-La-4vG" id="7KA-tK-R79"/>
                 <outlet property="dateLabel" destination="pze-Zr-H2B" id="Pw3-qv-S5I"/>
                 <outlet property="descriptionText" destination="iGf-Px-Lk2" id="uKR-Tr-MsV"/>
@@ -148,6 +149,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <customView hidden="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ct1-RJ-SlG" userLabel="BarChart" customClass="TDBarChart">
+                    <rect key="frame" x="0.0" y="61" width="480" height="280"/>
+                </customView>
                 <box autoresizesSubviews="NO" borderWidth="0.0" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="VsO-Dk-yB3" userLabel="FooterBox">
                     <rect key="frame" x="-1" y="0.0" width="482" height="60"/>
                     <view key="contentView" id="45F-F3-gNF">
@@ -183,7 +187,7 @@
                                     <outlet property="nextKeyView" destination="Fnx-La-4vG" id="opN-t2-m1T"/>
                                 </connections>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J4C-HK-urX" userLabel="startTimeLabel">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J4C-HK-urX" userLabel="startTimeLabel">
                                 <rect key="frame" x="57" y="37" width="40" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="14:00" id="JFn-xy-CTZ">
                                     <font key="font" metaFont="system"/>
@@ -191,7 +195,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rOM-jN-acu" userLabel="dashLabel">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rOM-jN-acu" userLabel="dashLabel">
                                 <rect key="frame" x="97" y="37" width="14" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="-" id="SFv-s1-p5Q">
                                     <font key="font" metaFont="system"/>
@@ -211,7 +215,6 @@
                         <constraints>
                             <constraint firstItem="rOM-jN-acu" firstAttribute="top" secondItem="45F-F3-gNF" secondAttribute="top" constant="6" id="Ibq-TK-9KE"/>
                             <constraint firstItem="rOM-jN-acu" firstAttribute="leading" secondItem="J4C-HK-urX" secondAttribute="trailing" id="V5p-9a-qbs"/>
-                            <constraint firstItem="J4C-HK-urX" firstAttribute="leading" secondItem="NgM-mH-tQ2" secondAttribute="trailing" constant="3" id="XgK-hA-qCM"/>
                             <constraint firstItem="jWc-zM-cfR" firstAttribute="leading" secondItem="rOM-jN-acu" secondAttribute="trailing" id="tni-In-Zij"/>
                             <constraint firstItem="J4C-HK-urX" firstAttribute="top" secondItem="45F-F3-gNF" secondAttribute="top" constant="6" id="uB9-qt-6eL"/>
                         </constraints>
@@ -232,15 +235,19 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="G2Q-EB-hA7" secondAttribute="trailing" id="3iK-LP-PaT"/>
+                <constraint firstAttribute="trailing" secondItem="ct1-RJ-SlG" secondAttribute="trailing" id="4GI-kT-cRP"/>
                 <constraint firstItem="VsO-Dk-yB3" firstAttribute="top" secondItem="G2Q-EB-hA7" secondAttribute="bottom" id="5ie-gu-cTE"/>
                 <constraint firstItem="G2Q-EB-hA7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="AHj-Ku-DIs"/>
                 <constraint firstItem="oyV-oQ-Ct1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="FAp-f6-Fv9"/>
+                <constraint firstItem="VsO-Dk-yB3" firstAttribute="top" secondItem="ct1-RJ-SlG" secondAttribute="bottom" id="IE5-z4-Dlo"/>
                 <constraint firstItem="VsO-Dk-yB3" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="-1" id="IvT-Od-Xu5"/>
                 <constraint firstItem="oyV-oQ-Ct1" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="QDR-dM-9sn"/>
                 <constraint firstAttribute="trailing" secondItem="oyV-oQ-Ct1" secondAttribute="trailing" id="XbU-0a-Nn1"/>
                 <constraint firstAttribute="trailing" secondItem="oyV-oQ-Ct1" secondAttribute="trailing" id="YyY-Gv-b9X"/>
                 <constraint firstItem="oyV-oQ-Ct1" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="aXH-rY-nc3"/>
                 <constraint firstAttribute="bottom" secondItem="VsO-Dk-yB3" secondAttribute="bottom" id="ssq-Mo-5xW"/>
+                <constraint firstItem="ct1-RJ-SlG" firstAttribute="top" secondItem="oyV-oQ-Ct1" secondAttribute="bottom" id="uXy-zQ-iRZ"/>
+                <constraint firstItem="ct1-RJ-SlG" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="vKn-5N-ZDP"/>
                 <constraint firstItem="G2Q-EB-hA7" firstAttribute="top" secondItem="oyV-oQ-Ct1" secondAttribute="bottom" id="w0q-gq-AVm"/>
                 <constraint firstAttribute="trailing" secondItem="VsO-Dk-yB3" secondAttribute="trailing" constant="-1" id="yWS-1f-2gt"/>
             </constraints>

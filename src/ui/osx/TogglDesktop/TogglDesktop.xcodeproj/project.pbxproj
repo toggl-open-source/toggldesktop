@@ -34,12 +34,14 @@
 		3C3C75951C64FE7A000AA889 /* TimelineEventsListItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C3C75941C64FE7A000AA889 /* TimelineEventsListItem.xib */; };
 		3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237151A9F612E00643059 /* toggl-logo-white.pdf */; };
 		3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237161A9F612E00643059 /* toggl-desktop-bg.png */; };
+		3C4C1BB91C8984A400BDE64A /* TimelineLines.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C1BB81C8984A400BDE64A /* TimelineLines.m */; };
 		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
 		3C8979B71920B7B7007061E0 /* continue.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8979B61920B7B7007061E0 /* continue.pdf */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
+		3C8C56F31C8864FF006B9DFC /* TDBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8C56F21C8864FF006B9DFC /* TDBarChart.m */; };
 		3C9D53AD1A1CD99D00966170 /* app_icon_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9D53AC1A1CD99D00966170 /* app_icon_pdf.pdf */; };
 		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
@@ -346,6 +348,8 @@
 		3C3C75941C64FE7A000AA889 /* TimelineEventsListItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineEventsListItem.xib; sourceTree = "<group>"; };
 		3C4237151A9F612E00643059 /* toggl-logo-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "toggl-logo-white.pdf"; sourceTree = "<group>"; };
 		3C4237161A9F612E00643059 /* toggl-desktop-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggl-desktop-bg.png"; sourceTree = "<group>"; };
+		3C4C1BB71C8984A400BDE64A /* TimelineLines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineLines.h; sourceTree = "<group>"; };
+		3C4C1BB81C8984A400BDE64A /* TimelineLines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineLines.m; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
@@ -354,6 +358,8 @@
 		3C8979B61920B7B7007061E0 /* continue.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue.pdf; sourceTree = "<group>"; };
 		3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickablePointer.h; sourceTree = "<group>"; };
 		3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickablePointer.m; sourceTree = "<group>"; };
+		3C8C56F11C8864FF006B9DFC /* TDBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDBarChart.h; sourceTree = "<group>"; };
+		3C8C56F21C8864FF006B9DFC /* TDBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDBarChart.m; sourceTree = "<group>"; };
 		3C9D53AC1A1CD99D00966170 /* app_icon_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = app_icon_pdf.pdf; sourceTree = "<group>"; };
 		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
 		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
@@ -793,6 +799,10 @@
 				3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */,
 				3C33D30C1C845C3B00186973 /* TimelineChunkCircle.h */,
 				3C33D30D1C845C3B00186973 /* TimelineChunkCircle.m */,
+				3C8C56F11C8864FF006B9DFC /* TDBarChart.h */,
+				3C8C56F21C8864FF006B9DFC /* TDBarChart.m */,
+				3C4C1BB71C8984A400BDE64A /* TimelineLines.h */,
+				3C4C1BB81C8984A400BDE64A /* TimelineLines.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1381,6 +1391,7 @@
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
+				3C8C56F31C8864FF006B9DFC /* TDBarChart.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
@@ -1409,6 +1420,7 @@
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,
+				3C4C1BB91C8984A400BDE64A /* TimelineLines.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

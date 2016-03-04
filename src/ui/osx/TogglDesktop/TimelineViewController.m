@@ -189,7 +189,7 @@ extern void *ctx;
 			item = timelineChunks[row];
 		}
 	}
-	item.CalculatedHeight = (60 + ([item.Events count] * 20));
+
 	return item.CalculatedHeight;
 }
 

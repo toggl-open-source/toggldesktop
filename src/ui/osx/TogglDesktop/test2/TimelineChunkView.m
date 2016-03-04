@@ -92,9 +92,11 @@
 			sub_it = sub_it->Next;
 		}
 
-		// NSLog(@"Timeline event loaded: %@", event);
+		NSLog(@"Timeline event loaded: %@", event);
 		it = it->Next;
 	}
+	self.CalculatedHeight = MAX(20, ([self.Events count] * 20));
+//    self.CalculatedHeight = (60 + ([self.Events count] * 20));
 }
 
 - (NSString *)description

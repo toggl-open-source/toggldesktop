@@ -9,6 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import "TimelineChunkView.h"
 #import "TimelineChunkCircle.h"
+#import "TDBarChart.h"
+#import "TimelineLines.h"
 
 @interface TimelineEventsListItem : NSTableCellView
 - (void)render:(TimelineChunkView *)view_item;
@@ -26,4 +28,6 @@
 @property (weak) IBOutlet NSBox *entryLine;
 @property NSLayoutConstraint *topConstraint;
 @property NSLayoutConstraint *bottomConstraint;
+@property (weak) IBOutlet TDBarChart *barChart;
+@property (weak) IBOutlet TimelineLines *lines;
 @end

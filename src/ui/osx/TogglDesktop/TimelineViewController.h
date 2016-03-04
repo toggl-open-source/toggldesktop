@@ -10,12 +10,14 @@
 #import "toggl_api.h"
 #import "NSUnstripedTableView.h"
 #import "TimelineEventsListItem.h"
+#import "TDBarChart.h"
 
 @interface TimelineViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource> {
 	@private
 	NSMutableArray *timelineChunks;
 	NSMutableArray *highlightedRows;
 }
+@property (weak) IBOutlet TDBarChart *barChart;
 @property IBOutlet NSTextField *dateLabel;
 @property IBOutlet NSTextField *timeLabel;
 @property IBOutlet NSTextField *descriptionText;
