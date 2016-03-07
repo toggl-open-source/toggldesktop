@@ -356,18 +356,11 @@ BOOL manualMode = NO;
 		{
 			if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
 			{
-				toggl_continue_latest(ctx, false);
+				toggl_show_app(ctx);
 			}
 			else
 			{
-				toggl_start(ctx,
-							"",
-							nil,
-							0,
-							0,
-							0,
-							0,
-							false);
+				toggl_continue_latest(ctx, false);
 			}
 			return;
 		}
@@ -1483,8 +1476,8 @@ void on_pomodoro(const char *title, const char *informative_text)
 	notification.userInfo = @{ @"pomodoro": @"YES" };
 
 	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Start New";
-	notification.otherButtonTitle = @"Continue";
+	notification.actionButtonTitle = @"Continue";
+	notification.otherButtonTitle = @"Close";
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
