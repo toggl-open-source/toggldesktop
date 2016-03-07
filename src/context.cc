@@ -3792,7 +3792,7 @@ void Context::displayPomodoro() {
 
         last_pomodoro_reminder_time_ = time(0);
     }
-    Stop(false);
+    Stop(true);
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 }
 
