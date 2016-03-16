@@ -4601,6 +4601,8 @@ error Context::signup(
         Json::Value user;
         user["email"] = email;
         user["password"] = password;
+        user["created_with"] = Formatter::EscapeJSONString(HTTPSClient::Config.UserAgent());
+
 
         Json::Value root;
         root["user"] = user;
