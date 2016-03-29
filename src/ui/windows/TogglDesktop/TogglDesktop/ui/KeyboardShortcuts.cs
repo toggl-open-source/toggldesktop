@@ -285,7 +285,7 @@ namespace TogglDesktop
 
         private static void onQuit(object sender, RoutedEventArgs e)
         {
-            mainWindow.Close();
+            Environment.Exit(0);
         }
 
         #endregion
