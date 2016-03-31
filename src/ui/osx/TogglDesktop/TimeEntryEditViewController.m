@@ -165,7 +165,6 @@ extern void *ctx;
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
 	{
 		[self.view.window setInitialFirstResponder:self.durationTextField];
-		[self.durationTextField becomeFirstResponder];
 		return;
 	}
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
