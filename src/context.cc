@@ -3785,6 +3785,10 @@ void Context::displayPomodoro() {
             return;
         }
 
+        if (last_pomodoro_reminder_time_ == 0 || last_pomodoro_reminder_time_ > time(0)) {
+            last_pomodoro_reminder_time_ = user_->RunningTimeEntry()->Start();
+        }
+
         if (time(0) - last_pomodoro_reminder_time_
                 < settings_.pomodoro_minutes * 60) {
             return;
