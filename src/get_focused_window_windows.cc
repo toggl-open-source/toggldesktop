@@ -63,7 +63,7 @@ int getFocusedWindowInfo(
     int length = GetWindowTextLengthW(window_handle);
     DWORD err = GetLastError();
     if (err) {
-        return 6;
+        return err;
     }
     if (length) {
         wchar_t buf[kTitleBufSize];
