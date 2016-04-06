@@ -18,7 +18,7 @@ std::string API() {
     if (use_staging_as_backend) {
         return "https://toggl.space";
     }
-    return "https://www.toggl.com";
+    return "https://desktop.toggl.com";
 }
 
 std::string TimelineUpload() {
