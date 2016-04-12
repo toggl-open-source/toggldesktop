@@ -438,7 +438,8 @@ QString TogglApi::start(
                              task_id,
                              project_id,
                              0 /* project guid */,
-                             0 /* tags */);
+                             0 /* tags */,
+                             false);
     QString res("");
     if (guid) {
         res = QString(guid);
@@ -448,7 +449,7 @@ QString TogglApi::start(
 }
 
 bool TogglApi::stop() {
-    return toggl_stop(ctx);
+    return toggl_stop(ctx, false);
 }
 
 const QString TogglApi::formatDurationInSecondsHHMMSS(
@@ -464,7 +465,7 @@ bool TogglApi::continueTimeEntry(const QString guid) {
 }
 
 bool TogglApi::continueLatestTimeEntry() {
-    return toggl_continue_latest(ctx);
+    return toggl_continue_latest(ctx, false);
 }
 
 void TogglApi::sync() {
