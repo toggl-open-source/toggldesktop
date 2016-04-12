@@ -76,11 +76,12 @@ void on_display_reminder(
 
 void on_display_time_entry_list(
     const bool_t open,
-    TogglTimeEntryView *first) {
+    TogglTimeEntryView *first,
+    const bool_t show_load_more_button) {
     TogglApi::instance->displayTimeEntryList(
         open,
         TimeEntryView::importAll(first),
-        false);
+        show_load_more_button);
 }
 
 void on_display_time_entry_autocomplete(
