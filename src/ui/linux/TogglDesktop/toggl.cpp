@@ -79,7 +79,8 @@ void on_display_time_entry_list(
     TogglTimeEntryView *first) {
     TogglApi::instance->displayTimeEntryList(
         open,
-        TimeEntryView::importAll(first));
+        TimeEntryView::importAll(first),
+        false);
 }
 
 void on_display_time_entry_autocomplete(
