@@ -1204,53 +1204,45 @@ bool_t toggl_get_keep_end_time_fixed(
 
 void toggl_set_mini_timer_x(
     void *context,
-    const int64_t value)
-{
+    const int64_t value) {
     app(context)->SetMiniTimerX(value);
 }
 
 int64_t toggl_get_mini_timer_x(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerX();
 }
 
 void toggl_set_mini_timer_y(
     void *context,
-    const int64_t value)
-{
+    const int64_t value) {
     app(context)->SetMiniTimerY(value);
 }
 
 int64_t toggl_get_mini_timer_y(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerY();
 }
 
 void toggl_set_mini_timer_w(
     void *context,
-    const int64_t value)
-{
+    const int64_t value) {
     app(context)->SetMiniTimerW(value);
 }
 
 int64_t toggl_get_mini_timer_w(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerW();
 }
 
 void toggl_set_mini_timer_visible(
     void *context,
-    const bool_t value)
-{
+    const bool_t value) {
     app(context)->SetMiniTimerVisible(value);
 }
 
 bool_t toggl_get_mini_timer_visible(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerVisible();
 }
 

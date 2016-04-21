@@ -441,33 +441,27 @@ error Database::SaveWindowSettings(
     return last_error("SaveWindowSettings");
 }
 
-error Database::SetMiniTimerX(const Poco::Int64 x)
-{
+error Database::SetMiniTimerX(const Poco::Int64 x) {
     return setSettingsValue("mini_timer_x", x);
 }
 
-error Database::GetMiniTimerX(Poco::Int64* x)
-{
+error Database::GetMiniTimerX(Poco::Int64* x) {
     return getSettingsValue("mini_timer_x", x);
 }
 
-error Database::SetMiniTimerY(const Poco::Int64 y)
-{
+error Database::SetMiniTimerY(const Poco::Int64 y) {
     return setSettingsValue("mini_timer_y", y);
 }
 
-error Database::GetMiniTimerY(Poco::Int64* y)
-{
+error Database::GetMiniTimerY(Poco::Int64* y) {
     return getSettingsValue("mini_timer_y", y);
 }
 
-error Database::SetMiniTimerW(const Poco::Int64 w)
-{
+error Database::SetMiniTimerW(const Poco::Int64 w) {
     return setSettingsValue("mini_timer_w", w);
 }
 
-error Database::GetMiniTimerW(Poco::Int64* w)
-{
+error Database::GetMiniTimerW(Poco::Int64* w) {
     return getSettingsValue("mini_timer_w", w);
 }
 

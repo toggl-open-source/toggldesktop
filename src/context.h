@@ -460,7 +460,7 @@ class Context : public TimelineDatasource {
     void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
     void onTrackSettingsUsage(Poco::Util::TimerTask& task);  // NOLINT
     void onWake(Poco::Util::TimerTask& task);  // NOLINT
-    void onLoadMore(Poco::Util::TimerTask& task);
+    void onLoadMore(Poco::Util::TimerTask& task); // NOLINT
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
@@ -541,7 +541,8 @@ class Context : public TimelineDatasource {
     error logAndDisplayUserTriedEditingLockedEntry();
 
     error pullWorkspacePreferences(TogglClient* https_client);
-    error pullWorkspacePreferences(TogglClient* https_client, Workspace *workspace, std::string* json);
+    error pullWorkspacePreferences(TogglClient* https_client,
+                                      Workspace *workspace, std::string* json);
 
     error pushObmAction();
 
