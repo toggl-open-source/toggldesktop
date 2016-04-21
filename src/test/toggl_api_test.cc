@@ -159,7 +159,8 @@ void on_help_articles(TogglHelpArticleView *first) {
 
 void on_time_entry_list(
     const bool_t open,
-    TogglTimeEntryView *first) {
+    TogglTimeEntryView *first,
+    const bool_t show_load_more) {
     testing::testresult::time_entries.clear();
     TogglTimeEntryView *it = first;
     while (it) {
@@ -374,10 +375,10 @@ class ApiClient : public Poco::Runnable {
         std::cout << "runnable " << name_ << " running" << std::endl;
 
         for (int i = 0; i < 100; i++) {
-            char_t *guid = toggl_start(app_->ctx(), "test", "", 0, 0, 0, 0);
+            char_t *guid = toggl_start(app_->ctx(), "test", "", 0, 0, 0, 0, false);
             ASSERT_TRUE(guid);
 
-            ASSERT_TRUE(toggl_stop(app_->ctx()));
+            ASSERT_TRUE(toggl_stop(app_->ctx(), false));
 
             toggl_edit(app_->ctx(), guid, true, "");
 
@@ -432,13 +433,13 @@ TEST(toggl_api, toggl_run_script_with_invalid_script) {
     ASSERT_EQ("[string \"foo bar\"]:1: syntax error near 'bar'", res);
 }
 
-TEST(toggl_api, toggl_set_obm_experiment_nr) {
+TEST(toggl_api, toggl_add_obm_experiment_nr) {
     testing::App app;
 
-    toggl_set_obm_experiment_nr(123);
+    toggl_add_obm_experiment_nr(123);
     ASSERT_EQ("tests/0.1-obm-123", toggl::HTTPSClient::Config.UserAgent());
 
-    toggl_set_obm_experiment_nr(0);
+    toggl_add_obm_experiment_nr(0);
     ASSERT_EQ("tests/0.1", toggl::HTTPSClient::Config.UserAgent());
 }
 
@@ -839,7 +840,7 @@ TEST(toggl_api, toggl_set_idle_seconds) {
     ASSERT_EQ("", testing::testresult::idle_duration);
     ASSERT_EQ("", testing::testresult::idle_guid);
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1167,7 +1168,7 @@ TEST(toggl_api, toggl_continue_latest) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     testing::testresult::error = noError;
-    bool res = toggl_continue_latest(app.ctx());
+    bool res = toggl_continue_latest(app.ctx(), false);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     ASSERT_EQ("arendus käib", testing::testresult::timer_state.Description());
@@ -1185,7 +1186,7 @@ TEST(toggl_api, toggl_continue_latest_with_manual_mode) {
     testing::testresult::editor_state = TimeEntry();
     testing::testresult::timer_state = TimeEntry();
 
-    ASSERT_TRUE(toggl_continue_latest(app.ctx()));
+    ASSERT_TRUE(toggl_continue_latest(app.ctx(), false));
 
     ASSERT_EQ(noError, testing::testresult::error);
 
@@ -1263,13 +1264,13 @@ TEST(toggl_api, toggl_stop) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
 
-    ASSERT_TRUE(toggl_stop(app.ctx()));
+    ASSERT_TRUE(toggl_stop(app.ctx(), false));
     ASSERT_TRUE(testing::testresult::timer_state.GUID().empty());
 }
 
@@ -1290,7 +1291,7 @@ TEST(toggl_api, toggl_with_default_project) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1313,7 +1314,7 @@ TEST(toggl_api, toggl_with_default_project) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1334,7 +1335,7 @@ TEST(toggl_api, toggl_with_default_project) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    guid = toggl_start(app.ctx(), "more testing", "", 0, 0, 0, 0);
+    guid = toggl_start(app.ctx(), "more testing", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1380,7 +1381,7 @@ TEST(toggl_api, toggl_start) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1543,7 +1544,7 @@ TEST(toggl_api, toggl_start_with_tags) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, "a\tb\tc");
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, "a\tb\tc", false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1560,7 +1561,7 @@ TEST(toggl_api, toggl_start_with_open_editor_on_shortcut_setting) {
 
     testing::testresult::editor_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1570,7 +1571,7 @@ TEST(toggl_api, toggl_start_with_open_editor_on_shortcut_setting) {
 
     testing::testresult::editor_state = TimeEntry();
 
-    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     // It should *not* open the editor, unless a shortcut was used
     // in the app, but this logic is driven from the UI instead of the lib.
@@ -1585,7 +1586,7 @@ TEST(toggl_api, toggl_set_time_entry_billable) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
@@ -1606,7 +1607,7 @@ TEST(toggl_api, toggl_set_time_entry_tags) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
@@ -1655,7 +1656,7 @@ TEST(toggl_api, toggl_discard_time_at) {
 
     // Start a time entry
 
-    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0);
+    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
@@ -1684,7 +1685,7 @@ TEST(toggl_api, toggl_discard_time_at) {
 
     // Start another time entry
 
-    res = toggl_start(app.ctx(), "test 2", "", 0, 0, 0, 0);
+    res = toggl_start(app.ctx(), "test 2", "", 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
