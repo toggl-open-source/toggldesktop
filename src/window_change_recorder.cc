@@ -49,7 +49,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         if (count % 100 == 0) {
             std::stringstream ss;
             ss << "Failed to get focused window info, error code: "
-                << err << " [" << count << " times]";
+               << err << " [" << count << " times]";
             logger().error(ss.str());
         }
 

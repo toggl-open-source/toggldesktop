@@ -534,7 +534,7 @@ void Context::updateUI(const UIElements &what) {
                 editor_time_entry_view.DefaultWID = user_->DefaultWID();
 
                 editor_time_entry_view.Locked = isTimeEntryLocked(
-                                                  editor_time_entry);
+                    editor_time_entry);
 
                 // Display tags also when time entry is being edited,
                 // because tags are filtered by TE WID
@@ -2612,8 +2612,7 @@ error Context::SetTimeEntryProject(
         }
 
         if (p && !canChangeProjectTo(te, p)) {
-            return displayError(
-              error(
+            return displayError(error(
                 "Cannot change project: would end up with locked time entry"));
         }
 
@@ -2684,7 +2683,8 @@ error Context::SetTimeEntryDate(
 
         if (!canChangeStartTimeTo(te, dt.timestamp().epochTime())) {
             return displayError(
-              error("Failed to change time entry date: workspace is locked."));
+                error(
+                    "Failed to change time entry date: workspace is locked."));
         }
     }
 
@@ -3785,7 +3785,7 @@ void Context::displayPomodoro() {
         }
 
         if (last_pomodoro_reminder_time_ == 0 ||
-            last_pomodoro_reminder_time_ > time(0)) {
+                last_pomodoro_reminder_time_ > time(0)) {
             last_pomodoro_reminder_time_ = user_->RunningTimeEntry()->Start();
         }
 
@@ -4008,7 +4008,7 @@ void Context::LoadMore() {
     {
         Poco::Util::TimerTask::Ptr task =
             new Poco::Util::TimerTaskAdapter<Context>(*this,
-                                                        &Context::onLoadMore);
+                    &Context::onLoadMore);
         Poco::Mutex::ScopedLock lock(timer_m_);
         timer_.schedule(task, postpone(0));
     }
@@ -4027,7 +4027,7 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
 
     if (api_token.empty()) {
         return logger().warning(
-                          "cannot load more time entries without API token");
+            "cannot load more time entries without API token");
     }
 
     try {
@@ -4474,7 +4474,7 @@ error Context::me(
 
 bool Context::isTimeEntryLocked(TimeEntry* te) {
     return isTimeLockedInWorkspace(te->Start(),
-                                    user_->related.WorkspaceByID(te->WID()));
+                                   user_->related.WorkspaceByID(te->WID()));
 }
 
 bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
@@ -4483,7 +4483,7 @@ bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
 
 bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
     return !isTimeLockedInWorkspace(te->Start(),
-                                      user_->related.WorkspaceByID(p->WID()));
+                                    user_->related.WorkspaceByID(p->WID()));
 }
 
 error Context::logAndDisplayUserTriedEditingLockedEntry() {
@@ -4605,7 +4605,7 @@ error Context::signup(
         user["email"] = email;
         user["password"] = password;
         user["created_with"] = Formatter::EscapeJSONString(
-                                              HTTPSClient::Config.UserAgent());
+            HTTPSClient::Config.UserAgent());
 
         Json::Value root;
         root["user"] = user;

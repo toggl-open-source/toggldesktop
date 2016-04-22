@@ -90,8 +90,8 @@ class HTTPSClientConfig {
         std::stringstream ss;
         ss << AppName + "/" + AppVersion;
         for (auto it = OBMExperimentNrs.begin();
-              it != OBMExperimentNrs.end();
-              ++it) {
+                it != OBMExperimentNrs.end();
+                ++it) {
             ss << "-obm-" << *it;
         }
         return ss.str();

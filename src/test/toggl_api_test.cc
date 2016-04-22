@@ -376,7 +376,7 @@ class ApiClient : public Poco::Runnable {
 
         for (int i = 0; i < 100; i++) {
             char_t *guid = toggl_start(app_->ctx(), "test", "", 0, 0, 0, 0,
-                                        false);
+                                       false);
             ASSERT_TRUE(guid);
 
             ASSERT_TRUE(toggl_stop(app_->ctx(), false));
@@ -1546,7 +1546,7 @@ TEST(toggl_api, toggl_start_with_tags) {
     testing::testresult::timer_state = TimeEntry();
 
     char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, "a\tb\tc",
-                                false);
+                               false);
     ASSERT_TRUE(guid);
     free(guid);
 

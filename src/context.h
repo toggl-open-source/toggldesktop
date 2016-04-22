@@ -542,7 +542,7 @@ class Context : public TimelineDatasource {
 
     error pullWorkspacePreferences(TogglClient* https_client);
     error pullWorkspacePreferences(TogglClient* https_client,
-                                      Workspace *workspace, std::string* json);
+                                   Workspace *workspace, std::string* json);
 
     error pushObmAction();
 
