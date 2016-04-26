@@ -89,8 +89,9 @@ class HTTPSClientConfig {
     std::string UserAgent() const {
         std::stringstream ss;
         ss << AppName + "/" + AppVersion;
-        for (auto it = OBMExperimentNrs.begin(); it != OBMExperimentNrs.end(); ++it)
-        {
+        for (auto it = OBMExperimentNrs.begin();
+                it != OBMExperimentNrs.end();
+                ++it) {
             ss << "-obm-" << *it;
         }
         return ss.str();

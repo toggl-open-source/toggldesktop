@@ -33,18 +33,14 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 
     int err = getFocusedWindowInfo(&title, &filename, &idle);
     if (err != 0) {
-
         auto it = timeline_errors_.find(err);
         int count = 1;
 
-        if (it == timeline_errors_.end())
-        {
+        if (it == timeline_errors_.end()) {
             std::stringstream ss;
             ss << "Failed to get focused window info, error code: " << err;
             logger().error(ss.str());
-        }
-        else
-        {
+        } else {
             count += timeline_errors_[err];
         }
 
@@ -52,11 +48,13 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 
         if (count % 100 == 0) {
             std::stringstream ss;
-            ss << "Failed to get focused window info, error code: " << err << " [" << count << " times]";
+            ss << "Failed to get focused window info, error code: "
+               << err << " [" << count << " times]";
             logger().error(ss.str());
         }
 
-        // Allow erroneous timeline event in Windows to test windows empty title apps
+        // Allow erroneous timeline event in Windows
+        // to test windows empty title apps
 #if !defined(_WIN32) && !defined(WIN32)
         return;
 #endif

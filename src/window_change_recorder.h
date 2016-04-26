@@ -4,6 +4,7 @@
 #define SRC_WINDOW_CHANGE_RECORDER_H_
 
 #include <string>
+#include <map>
 
 #include "./timeline_notifications.h"
 #include "./types.h"

@@ -624,7 +624,6 @@ error User::LoadUserAndRelatedDataFromJSONString(
 }
 
 error User::LoadTimeEntriesFromJSONString(const std::string& json) {
-
     if (json.empty()) {
         return noError;
     }
