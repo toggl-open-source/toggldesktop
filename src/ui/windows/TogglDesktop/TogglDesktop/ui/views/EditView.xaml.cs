@@ -371,12 +371,7 @@ namespace TogglDesktop
             apiCall(this.timeEntry.GUID, now);
         }
 
-        private void startDatePicker_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            this.applyDateChangeOrReset();
-        }
-
-        private void startDatePicker_OnLostFocus(object sender, RoutedEventArgs e)
+        private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             this.applyDateChangeOrReset();
         }
