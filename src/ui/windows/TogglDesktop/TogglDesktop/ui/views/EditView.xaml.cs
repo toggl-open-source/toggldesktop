@@ -26,7 +26,7 @@ namespace TogglDesktop
         private ulong selectedClientId;
         private string selectedClientName;
         private bool isCreatingProject;
-
+        private bool dateSet = false;
         public EditView()
         {
             this.DataContext = this;
@@ -72,6 +72,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
+                this.dateSet = false;
                 if (timeEntry.Locked)
                 {
                     open = true;
@@ -165,6 +166,7 @@ namespace TogglDesktop
                         this.projectAddButtonColumn.SharedSizeGroup = null;
                     }
                 }
+                this.dateSet = true;
             }
         }
 
@@ -395,17 +397,11 @@ namespace TogglDesktop
             }
         }
 
-        private void startDatePicker_LostFocus(object sender, RoutedEventArgs e)
+        private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.saveDate();
-        }
-
-        private void startDatePicker_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
+            if (this.dateSet)
             {
                 this.saveDate();
-                e.Handled = true;
             }
         }
 
