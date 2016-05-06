@@ -227,7 +227,7 @@
                              KeyDown="endTimeTextBox_OnKeyDown">12:55</toggl:ExtendedTextBox>
 
                     <DatePicker Name="startDatePicker" x:FieldModifier="private" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                             Height="20" VerticalAlignment="Bottom" SelectedDate="05.01.2015" SelectedDateChanged="startDatePicker_SelectedDateChanged"/>
+                             Height="20" VerticalAlignment="Bottom" SelectedDate="05.01.2015" LostFocus="startDatePicker_LostFocus" PreviewKeyDown="startDatePicker_PreviewKeyDown"/>
                 </Grid>
             
                 <!-- tags -->
