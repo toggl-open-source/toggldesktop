@@ -371,12 +371,9 @@ namespace TogglDesktop
             apiCall(this.timeEntry.GUID, now);
         }
 
-        private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            this.applyDateChangeOrReset();
-        }
+        #region datepicker
 
-        private void applyDateChangeOrReset()
+        private void saveDate()
         {
             if (!this.hasTimeEntry())
             {
@@ -388,8 +385,31 @@ namespace TogglDesktop
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(this.timeEntry.Started);
                 return;
             }
-            Toggl.SetTimeEntryDate(this.timeEntry.GUID, this.startDatePicker.SelectedDate.Value);
+
+            DateTime currentDate = Toggl.DateTimeFromUnix(timeEntry.Started);
+            DateTime selected = Convert.ToDateTime(this.startDatePicker.Text);
+            if (!currentDate.Date.Equals(selected.Date))
+            {
+                currentDate = selected;
+                Toggl.SetTimeEntryDate(this.timeEntry.GUID, selected);
+            }
         }
+
+        private void startDatePicker_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.saveDate();
+        }
+
+        private void startDatePicker_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.saveDate();
+                e.Handled = true;
+            }
+        }
+
+        #endregion
 
         #endregion
 
