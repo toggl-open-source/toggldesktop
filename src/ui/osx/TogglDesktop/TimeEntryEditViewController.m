@@ -290,7 +290,17 @@ extern void *ctx;
 		[self.workspaceSelect becomeFirstResponder];
 		return NO;
 	}
-	uint64_t clientID = [self selectedClientID];
+
+	uint64_t clientID = 0;
+	NSString *clientGUID = 0;
+
+	ViewItem *client = [self selectedClient];
+	if (client != nil)
+	{
+		clientID = client.ID;
+		clientGUID = client.GUID;
+	}
+
 	bool_t isBillable = self.timeEntry.billable;
 
 	char *color = (char *)[[self.colorPicker getSelectedColor] UTF8String];
@@ -301,7 +311,7 @@ extern void *ctx;
 											 [self.timeEntry.GUID UTF8String],
 											 workspaceID,
 											 clientID,
-											 0,
+											 [clientGUID UTF8String],
 											 [projectName UTF8String],
 											 !is_public,
 											 color);
@@ -635,17 +645,17 @@ extern void *ctx;
 	return 0;
 }
 
-- (uint64_t)selectedClientID
+- (ViewItem *)selectedClient
 {
 	for (int i = 0; i < self.workspaceClientList.count; i++)
 	{
 		ViewItem *client = self.workspaceClientList[i];
 		if ([client.Name isEqualToString:self.clientSelect.stringValue])
 		{
-			return client.ID;
+			return client;
 		}
 	}
-	return 0;
+	return nil;
 }
 
 - (void)setDragHandle:(BOOL)onLeft
