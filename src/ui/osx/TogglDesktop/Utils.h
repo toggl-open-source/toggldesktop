@@ -22,7 +22,6 @@
 + (bool)isNumeric:(NSString *)checkText;
 + (void)addUnderlineToTextField:(NSTextField *)field;
 + (ScriptResult *)runScript:(NSString *)script;
-+ (void)runClearCommand;
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem();
