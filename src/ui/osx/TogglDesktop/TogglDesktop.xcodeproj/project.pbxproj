@@ -16,14 +16,8 @@
 		3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */; };
 		3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */; };
 		3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57171C22E12E00301D77 /* MKColorWell.m */; };
-		3C0A571F1C22E12E00301D77 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57181C22E12E00301D77 /* README.md */; };
-		3C0A572F1C22E16B00301D77 /* MKColorPickerView.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */; };
-		3C0A57301C22E16B00301D77 /* MKColorSwatchCell.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */; };
-		3C0A57311C22E16B00301D77 /* MKColorSwatchMatrix.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */; };
-		3C0A57321C22E16B00301D77 /* MKColorWell+Bindings.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */; };
-		3C0A57331C22E16B00301D77 /* MKColorWell.h in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57161C22E12E00301D77 /* MKColorWell.h */; };
-		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
 		3C10E3A11A88FAE2001D431B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C10E3A01A88FAE1001D431B /* Images.xcassets */; };
+		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A41A2F2AE0007DC17F /* start_button.pdf */; };
 		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
@@ -318,8 +312,8 @@
 		3C0A57161C22E12E00301D77 /* MKColorWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWell.h; sourceTree = "<group>"; };
 		3C0A57171C22E12E00301D77 /* MKColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWell.m; sourceTree = "<group>"; };
 		3C0A57181C22E12E00301D77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
 		3C10E3A01A88FAE1001D431B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
+		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2645A41A2F2AE0007DC17F /* start_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = start_button.pdf; sourceTree = "<group>"; };
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
@@ -1288,11 +1282,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C0A572F1C22E16B00301D77 /* MKColorPickerView.h in Sources */,
-				3C0A57301C22E16B00301D77 /* MKColorSwatchCell.h in Sources */,
-				3C0A57311C22E16B00301D77 /* MKColorSwatchMatrix.h in Sources */,
-				3C0A57321C22E16B00301D77 /* MKColorWell+Bindings.h in Sources */,
-				3C0A57331C22E16B00301D77 /* MKColorWell.h in Sources */,
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
 				74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */,
 				7484F622191D92C30038885C /* Settings.m in Sources */,
@@ -1310,7 +1299,6 @@
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
-				3C0A571F1C22E12E00301D77 /* README.md in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
