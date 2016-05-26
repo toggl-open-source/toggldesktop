@@ -326,6 +326,10 @@ class Database {
         std::vector<T *> *list,
         std::vector<ModelChange> *changes);
 
+    error deleteAllFromTableByDate(
+        const std::string table_name,
+        const Poco::Timestamp &time);
+
     error deleteAllFromTableByUID(
         const std::string table_name,
         const Poco::Int64 &UID);

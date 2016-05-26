@@ -87,6 +87,20 @@ Database::Database(const std::string db_path)
         return;
     }
 
+    // Remove Time Entries older than 9 days from local db
+    Poco::LocalDateTime today;
+
+    Poco::LocalDateTime start =
+        today - Poco::Timespan(9 * Poco::Timespan::DAYS);
+
+    err = deleteAllFromTableByDate(
+        "time_entries", start.timestamp());
+
+    if (err != noError) {
+        logger().error("failed to clean Up Data: " + err);
+        // but will continue, its not vital
+    }
+
     err = vacuum();
     if (err != noError) {
         logger().error("failed to vacuum: " + err);
@@ -210,6 +224,35 @@ error Database::deleteAllFromTableByUID(
         return ex;
     }
     return last_error("deleteAllFromTableByUID");
+}
+
+error Database::deleteAllFromTableByDate(
+    const std::string table_name,
+    const Poco::Timestamp &time) {
+
+    if (table_name.empty()) {
+        return error("Cannot delete from table without table name");
+    }
+
+    const Poco::Int64 stopTime = time.epochTime();
+
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "delete from " + table_name + " where id NOT NULL and stop < :stop",
+                  useRef(stopTime),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("deleteAllFromTableByDate");
 }
 
 error Database::journalMode(std::string *mode) {
