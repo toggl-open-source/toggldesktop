@@ -2300,8 +2300,6 @@ TimeEntry *Context::Start(
                           pid,
                           project_guid,
                           tags);
-
-        last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2412,8 +2410,6 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
         result = user_->Continue(
             latest->GUID(),
             settings_.manual_mode);
-
-        last_pomodoro_reminder_time_ = time(0);
     }
 
 
@@ -2477,8 +2473,6 @@ TimeEntry *Context::Continue(
         result = user_->Continue(
             GUID,
             settings_.manual_mode);
-
-        last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2570,10 +2564,6 @@ error Context::SetTimeEntryDuration(
     }
 
     te->SetDurationUserInput(duration);
-
-    if (te->IsTracking()) {
-        last_pomodoro_reminder_time_ = te->Start();
-    }
     return displayError(save());
 }
 
@@ -2741,7 +2731,6 @@ error Context::SetTimeEntryStart(
 
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
-    last_pomodoro_reminder_time_ = te->Start();
     return displayError(save());
 }
 
@@ -3784,17 +3773,10 @@ void Context::displayPomodoro() {
             return;
         }
 
-        if (last_pomodoro_reminder_time_ == 0 ||
-                last_pomodoro_reminder_time_ > time(0)) {
-            last_pomodoro_reminder_time_ = user_->RunningTimeEntry()->Start();
-        }
-
-        if (time(0) - last_pomodoro_reminder_time_
+        if (time(0) - user_->RunningTimeEntry()->Start()
                 < settings_.pomodoro_minutes * 60) {
             return;
         }
-
-        last_pomodoro_reminder_time_ = time(0);
     }
     Stop(true);
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
