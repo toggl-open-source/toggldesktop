@@ -242,7 +242,8 @@ error Database::deleteAllFromTableByDate(
         poco_check_ptr(session_);
 
         *session_ <<
-                  "delete from " + table_name + " where id NOT NULL and stop < :stop",
+                  "delete from " + table_name + " where "
+                  "id NOT NULL and stop < :stop",
                   useRef(stopTime),
                   now;
     } catch(const Poco::Exception& exc) {
