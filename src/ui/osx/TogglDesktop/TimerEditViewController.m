@@ -481,8 +481,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.time_entry.ProjectLabel = item.ProjectLabel;
 	self.time_entry.ClientLabel = item.ClientLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
-	self.time_entry.Description = item.Description;
 	self.time_entry.tags = [[NSMutableArray alloc] initWithArray:item.tags copyItems:YES];
+	self.time_entry.Description = ([item.Description length] != 0) ? item.Description : item.TaskLabel;
 
 	self.descriptionComboBox.stringValue = self.time_entry.Description;
 	if (item.ProjectID)
