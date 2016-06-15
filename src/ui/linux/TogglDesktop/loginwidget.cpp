@@ -17,8 +17,8 @@ oauth2(new OAuth2(this)) {
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),  // NOLINT
-            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
+            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
     oauth2->setScope("profile email");
     oauth2->setAppName("Toggl Desktop");
@@ -57,7 +57,8 @@ void LoginWidget::displayLogin(
 
 void LoginWidget::displayTimeEntryList(
     const bool open,
-    QVector<TimeEntryView *> list) {
+    QVector<TimeEntryView *> list,
+    const bool) {
     if (open) {
         setVisible(false);
     }
