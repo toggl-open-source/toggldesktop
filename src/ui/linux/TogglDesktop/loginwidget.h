@@ -35,7 +35,8 @@ class LoginWidget : public QWidget {
 
     void displayTimeEntryList(
         const bool open,
-        QVector<TimeEntryView *> list);
+        QVector<TimeEntryView *> list,
+        const bool show_load_more_button);
 
     void on_googleLogin_linkActivated(const QString &link);
 
