@@ -24,6 +24,7 @@
 @property TimeEntryViewItem *time_entry;
 @property NSTimer *timer;
 @property BOOL constraintsAdded;
+@property BOOL disableChange;
 @end
 
 @implementation TimerEditViewController
@@ -78,6 +79,7 @@ NSString *kInactiveTimerColor = @"#999999";
 													userInfo:nil
 													 repeats:YES];
 		self.constraintsAdded = NO;
+		self.disableChange = NO;
 	}
 
 	return self;
@@ -424,8 +426,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
 														object:nil];
 
+	self.disableChange = YES;
 	// resign current firstResponder
 	[self.durationTextField.window makeFirstResponder:[self.durationTextField superview]];
+	self.disableChange = NO;
 	self.time_entry.duration = self.durationTextField.stringValue;
 	self.time_entry.Description = self.descriptionComboBox.stringValue;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNew
@@ -461,6 +465,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (IBAction)descriptionComboBoxChanged:(id)sender
 {
+	if (self.disableChange == YES)
+	{
+		return;
+	}
 	NSString *key = [self.descriptionComboBox stringValue];
 	AutocompleteItem *item = [self.autocompleteDataSource get:key];
 
