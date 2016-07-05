@@ -151,6 +151,8 @@ class TogglApi : public QObject {
     bool setSettingsReminder(const bool reminder);
     bool setSettingsIdleMinutes(const uint64_t idle_minutes);
     bool setSettingsReminderMinutes(const uint64_t reminder_minutes);
+    bool setSettingsPomodoro(const bool pomodoro);
+    bool setSettingsPomodoroMinutes(const uint64_t pomodoro_minutes);
 
     void toggleTimelineRecording(
         const bool recordTimeline);

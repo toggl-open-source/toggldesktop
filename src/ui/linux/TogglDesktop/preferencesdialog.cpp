@@ -45,6 +45,10 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->reminderMinutes->setText(QString::number(settings->ReminderMinutes));
     ui->reminderMinutes->setEnabled(ui->remindToTrackTime->isChecked());
 
+    ui->pomodoroTimer->setChecked(settings->Pomodoro);
+    ui->pomodoroMinutes->setText(QString::number(settings->PomodoroMinutes));
+    ui->pomodoroMinutes->setEnabled(ui->pomodoroTimer->isChecked());
+
     ui->focusAppOnShortcut->setChecked((settings->FocusOnShortcut));
 }
 
@@ -81,6 +85,10 @@ void PreferencesDialog::on_remindToTrackTime_clicked(bool checked) {
     TogglApi::instance->setSettingsReminder(checked);
 }
 
+void PreferencesDialog::on_pomodoroTimer_clicked(bool checked) {
+    TogglApi::instance->setSettingsPomodoro(checked);
+}
+
 bool PreferencesDialog::setProxySettings() {
     return TogglApi::instance->setProxySettings(ui->useProxy->isChecked(),
             ui->proxyHost->text(),
@@ -101,6 +109,11 @@ void PreferencesDialog::on_idleMinutes_editingFinished() {
 void PreferencesDialog::on_reminderMinutes_editingFinished() {
     TogglApi::instance->setSettingsReminderMinutes(
         ui->reminderMinutes->text().toInt());
+}
+
+void PreferencesDialog::on_pomodoroMinutes_editingFinished() {
+    TogglApi::instance->setSettingsPomodoroMinutes(
+        ui->pomodoroMinutes->text().toInt());
 }
 
 void PreferencesDialog::on_useSystemProxySettings_clicked(bool checked) {

@@ -17,6 +17,7 @@
 #include <QSettings>  // NOLINT
 #include <QVBoxLayout>  // NOLINT
 #include <QStatusBar>  // NOLINT
+#include <QPushButton>  // NOLINT
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
@@ -84,6 +85,9 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayPomodoro(QString,QString)),  // NOLINT
+            this, SLOT(displayPomodoro(QString,QString)));  // NOLINT
+
     connect(TogglApi::instance, SIGNAL(displayUpdate(QString)),  // NOLINT
             this, SLOT(displayUpdate(QString)));  // NOLINT
 
@@ -147,11 +151,22 @@ void MainWindowController::displayPomodoro(
     }
     pomodoro = true;
 
-    QMessageBox(
-        QMessageBox::Information,
-        title,
-        informative_text,
-        QMessageBox::Ok).exec();
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Toggl Desktop");
+    msgBox.setText(title);
+    msgBox.setInformativeText(informative_text);
+    QPushButton *continueButton =
+        msgBox.addButton(tr("Continue"), QMessageBox::YesRole);
+    QPushButton *closeButton =
+        msgBox.addButton(tr("Close"), QMessageBox::NoRole);
+    msgBox.setDefaultButton(closeButton);
+    msgBox.setEscapeButton(closeButton);
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == continueButton) {
+        TogglApi::instance->continueLatestTimeEntry();
+    }
 
     pomodoro = false;
 }
