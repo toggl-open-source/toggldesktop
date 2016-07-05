@@ -162,6 +162,12 @@ class TogglApi : public QObject {
 
     QString userEmail();
 
+    // keyboard shortcut saving
+    void setShowHideKey(const QString keys);
+    void setContinueStopKey(const QString keys);
+    QString getShowHideKey();
+    QString getContinueStopKey();
+
     bool sendFeedback(const QString topic,
                       const QString details,
                       const QString filename);
@@ -244,6 +250,10 @@ class TogglApi : public QObject {
 
     void displayWorkspaceSelect(
         QVector<GenericView *> list);
+
+    void updateShowHideShortcut();
+
+    void updateContinueStopShortcut();
 
  private:
     void *ctx;

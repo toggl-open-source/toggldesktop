@@ -7,13 +7,130 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>389</height>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="ShowHideHFrame">
+     <layout class="QHBoxLayout" name="showHideShortcuts">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="showHideLabel">
+        <property name="text">
+         <string>Show/Hide Toggl</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="showHIdeHSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="showHideButton">
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Record Shortcut</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="showHideClear">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Clear Shortcut</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>x</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="ContinueStopHFrame">
+     <layout class="QHBoxLayout" name="continueStopShortcuts">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="continueStopLabel">
+        <property name="text">
+         <string>Continue/Stop timer</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="continueStopHSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="continueStopButton">
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Record Shortcut</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="continueStopClear">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>x</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item>
     <widget class="QCheckBox" name="useSystemProxySettings">
      <property name="text">
@@ -37,7 +154,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="hostLabel">
         <property name="text">
          <string>Host</string>
         </property>
@@ -50,7 +167,7 @@
        <widget class="QLineEdit" name="proxyHost"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="portLabel">
         <property name="text">
          <string>Port</string>
         </property>
@@ -60,7 +177,7 @@
        <widget class="QLineEdit" name="proxyPort"/>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="useranameLabel">
         <property name="text">
          <string>Username</string>
         </property>
@@ -70,7 +187,7 @@
        <widget class="QLineEdit" name="proxyUsername"/>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="password_label">
         <property name="text">
          <string>Password</string>
         </property>
@@ -132,7 +249,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="idleMinutesLabel">
         <property name="text">
          <string>minutes</string>
         </property>
@@ -152,7 +269,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="horizontalFrame">
+    <widget class="QFrame" name="TrackingReminderHFrame">
      <layout class="QHBoxLayout" name="reminderSettings">
       <property name="leftMargin">
        <number>0</number>
@@ -165,7 +282,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <spacer name="reminderHSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -197,7 +314,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="reminderMinutesLabel">
         <property name="text">
          <string>minutes</string>
         </property>
@@ -207,7 +324,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="horizontalFrame">
+    <widget class="QFrame" name="PomodoroHFrame">
      <layout class="QHBoxLayout" name="pomodoroSettings">
       <property name="leftMargin">
        <number>0</number>
@@ -220,7 +337,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <spacer name="pomodoroHSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -252,7 +369,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="pomodoroMinutesLabel">
         <property name="text">
          <string>minutes</string>
         </property>

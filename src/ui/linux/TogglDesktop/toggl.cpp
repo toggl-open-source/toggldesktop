@@ -618,3 +618,27 @@ bool TogglApi::sendFeedback(const QString topic,
                                details.toStdString().c_str(),
                                filename.toStdString().c_str());
 }
+
+void TogglApi::setShowHideKey(const QString keys) {
+    toggl_set_key_show(ctx, keys.toStdString().c_str());
+    TogglApi::instance->updateShowHideShortcut();
+}
+
+void TogglApi::setContinueStopKey(const QString keys) {
+    toggl_set_key_start(ctx, keys.toStdString().c_str());
+    TogglApi::instance->updateContinueStopShortcut();
+}
+
+QString TogglApi::getShowHideKey() {
+    char *buf = toggl_get_key_show(ctx);
+    QString res = QString(buf);
+    free(buf);
+    return res;
+}
+
+QString TogglApi::getContinueStopKey() {
+    char *buf = toggl_get_key_start(ctx);
+    QString res = QString(buf);
+    free(buf);
+    return res;
+}

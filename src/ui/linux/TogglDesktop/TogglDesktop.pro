@@ -3,7 +3,7 @@
 # Project created by QtCreator 2014-06-15T00:08:05
 #
 #-------------------------------------------------
-
+include(../../../../third_party/qxtglobalshortcut5/qxt.pri)
 VERSION = 7.0.0
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"

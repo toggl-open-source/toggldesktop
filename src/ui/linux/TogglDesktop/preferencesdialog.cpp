@@ -1,4 +1,5 @@
 // Copyright 2014 Toggl Desktop developers.
+#include <QDebug>  // NOLINT
 
 #include "./preferencesdialog.h"
 #include "./ui_preferencesdialog.h"
@@ -15,6 +16,14 @@ ui(new Ui::PreferencesDialog) {
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(updateShowHideShortcut()),  // NOLINT
+            this, SLOT(updateShowHideShortcut()));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
+            this, SLOT(updateContinueStopShortcut()));  // NOLINT
+
+    keyId = 0;
 }
 
 PreferencesDialog::~PreferencesDialog() {
@@ -50,6 +59,18 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->pomodoroMinutes->setEnabled(ui->pomodoroTimer->isChecked());
 
     ui->focusAppOnShortcut->setChecked((settings->FocusOnShortcut));
+
+    QString sh(TogglApi::instance->getShowHideKey());
+    if (sh.length() == 0) {
+        sh = "Record shortcut";
+    }
+    ui->showHideButton->setText(sh);
+
+    QString cs(TogglApi::instance->getContinueStopKey());
+    if (cs.length() == 0) {
+        cs = "Record shortcut";
+    }
+    ui->continueStopButton->setText(cs);
 }
 
 void PreferencesDialog::displayLogin(const bool open,
@@ -87,6 +108,113 @@ void PreferencesDialog::on_remindToTrackTime_clicked(bool checked) {
 
 void PreferencesDialog::on_pomodoroTimer_clicked(bool checked) {
     TogglApi::instance->setSettingsPomodoro(checked);
+}
+
+void PreferencesDialog::updateShowHideShortcut() {
+    QString text(TogglApi::instance->getShowHideKey());
+    if (text.length() == 0) {
+        text = "Record shortcut";
+    }
+    ui->showHideButton->setText(text);
+}
+
+void PreferencesDialog::updateContinueStopShortcut() {
+    QString text(TogglApi::instance->getContinueStopKey());
+    if (text.length() == 0) {
+        text = "Record shortcut";
+    }
+    ui->continueStopButton->setText(text);
+}
+
+void PreferencesDialog::on_showHideClear_clicked() {
+    keySequence = "";
+    keyId = 1;
+    saveCurrentShortcut();
+}
+
+void PreferencesDialog::on_continueStopClear_clicked() {
+    keySequence = "";
+    keyId = 2;
+    saveCurrentShortcut();
+}
+
+void PreferencesDialog::on_showHideButton_clicked() {
+    ui->showHideButton->setText("Type shortcut");
+    keyId = 1;
+}
+
+void PreferencesDialog::on_continueStopButton_clicked() {
+    ui->continueStopButton->setText("Type shortcut");
+    keyId = 2;
+}
+
+void PreferencesDialog::keyPressEvent(QKeyEvent *event) {
+    if (keyId) {
+        keySequence = "";
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+
+        int keyInt = keyEvent->key();
+        Qt::Key key = static_cast<Qt::Key>(keyInt);
+        if (key == Qt::Key_unknown) {
+            return;
+        }
+
+        // Reset to previous values
+        if (key == Qt::Key_Escape) {
+            if (keyId == 1) {
+                TogglApi::instance->updateShowHideShortcut();
+            }
+            if (keyId == 2) {
+                TogglApi::instance->updateContinueStopShortcut();
+            }
+            keyId = 0;
+            return;
+        }
+
+        // the user have clicked just and
+        // only the special keys Ctrl, Shift, Alt, Meta.
+        if (key == Qt::Key_Control ||
+                key == Qt::Key_Shift ||
+                key == Qt::Key_Alt ||
+                key == Qt::Key_Meta) {
+            return;
+        }
+
+        // check for a combination of user clicks
+        Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
+
+        if (modifiers & Qt::ShiftModifier)
+            keyInt += Qt::SHIFT;
+        if (modifiers & Qt::ControlModifier)
+            keyInt += Qt::CTRL;
+        if (modifiers & Qt::AltModifier)
+            keyInt += Qt::ALT;
+        if (modifiers & Qt::MetaModifier)
+            keyInt += Qt::META;
+
+        keySequence = QKeySequence(keyInt).toString(QKeySequence::NativeText);
+
+        if (keyId == 1) {
+            ui->showHideButton->setText(keySequence);
+        } else if (keyId == 2) {
+            ui->continueStopButton->setText(keySequence);
+        }
+    }
+}
+
+void PreferencesDialog::keyReleaseEvent(QKeyEvent *event) {
+    saveCurrentShortcut();
+}
+
+void PreferencesDialog::saveCurrentShortcut() {
+    if (keyId == 1) {
+        TogglApi::instance->setShowHideKey(keySequence);
+    } else if (keyId == 2) {
+        TogglApi::instance->setContinueStopKey(keySequence);
+    }
+
+    keyId = 0;
+    keySequence = "";
 }
 
 bool PreferencesDialog::setProxySettings() {

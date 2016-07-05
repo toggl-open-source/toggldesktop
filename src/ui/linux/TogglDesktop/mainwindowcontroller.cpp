@@ -94,6 +94,12 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(displayOnlineState(int64_t)),  // NOLINT
             this, SLOT(displayOnlineState(int64_t)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(updateShowHideShortcut()),  // NOLINT
+            this, SLOT(updateShowHideShortcut()));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
+            this, SLOT(updateContinueStopShortcut()));  // NOLINT
+
 
     hasTrayIconCached = hasTrayIcon();
     if (hasTrayIconCached) {
@@ -105,6 +111,7 @@ MainWindowController::MainWindowController(
         trayIcon = new QSystemTrayIcon(this);
     }
 
+    setShortcuts();
     connectMenuActions();
     enableMenuActions();
 
@@ -227,6 +234,51 @@ void MainWindowController::enableMenuActions() {
             setWindowIcon(iconDisabled);
         }
     }
+}
+
+void MainWindowController::showHideHotkeyPressed() {
+    if (this->isVisible()) {
+        if (this->isActiveWindow()) {
+            hide();
+        } else {
+            activateWindow();
+        }
+    } else {
+        onActionShow();
+        activateWindow();
+    }
+}
+
+void MainWindowController::continueStopHotkeyPressed() {
+    if (tracking) {
+        onActionStop();
+    } else {
+        onActionContinue();
+    }
+}
+
+void MainWindowController::updateShowHideShortcut() {
+    showHide->setShortcut(
+        QKeySequence(TogglApi::instance->getShowHideKey()));
+}
+
+void MainWindowController::updateContinueStopShortcut() {
+    continueStop->setShortcut(
+        QKeySequence(TogglApi::instance->getContinueStopKey()));
+}
+
+void MainWindowController::setShortcuts() {
+    showHide = new QxtGlobalShortcut(this);
+    connect(showHide, SIGNAL(activated()),
+            this, SLOT(showHideHotkeyPressed()));
+
+    updateShowHideShortcut();
+
+    continueStop = new QxtGlobalShortcut(this);
+    connect(continueStop, SIGNAL(activated()),
+            this, SLOT(continueStopHotkeyPressed()));
+
+    updateContinueStopShortcut();
 }
 
 void MainWindowController::connectMenuActions() {

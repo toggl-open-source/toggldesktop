@@ -4,7 +4,7 @@
 #define SRC_UI_LINUX_TOGGLDESKTOP_PREFERENCESDIALOG_H_
 
 #include <QDialog>
-
+#include <QKeyEvent>
 #include "./settingsview.h"
 
 namespace Ui {
@@ -20,6 +20,8 @@ class PreferencesDialog : public QDialog {
 
  private:
     Ui::PreferencesDialog *ui;
+    int keyId;
+    QString keySequence;
 
     bool setSettings();
     bool setProxySettings();
@@ -45,6 +47,16 @@ class PreferencesDialog : public QDialog {
     void on_pomodoroMinutes_editingFinished();
     void on_useSystemProxySettings_clicked(bool checked);
     void on_focusAppOnShortcut_clicked(bool checked);
+    void on_continueStopClear_clicked();
+    void on_showHideClear_clicked();
+    void on_continueStopButton_clicked();
+    void on_showHideButton_clicked();
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+    void saveCurrentShortcut();
+
+    void updateShowHideShortcut();
+    void updateContinueStopShortcut();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_PREFERENCESDIALOG_H_
