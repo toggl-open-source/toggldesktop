@@ -120,6 +120,9 @@
           <height>25</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Clear shortcut</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
