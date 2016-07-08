@@ -1,0 +1,192 @@
+{
+    "versions": [{
+        "version": "7.3.247",
+        "date": "January 21st 2016",
+        "rows": [
+            "Added time entry description to idle notification",
+            "Disabled workspace items in projects dropdown",
+            "Show start time when hovering running duration",
+            "Update startup script to run app in background",
+            "Fixed removing project from time entry",
+            "Fixed app closing when closing any window without main window opened"
+        ]
+    }, {
+        "version": "7.3.119",
+        "date": "November 3rd 2015",
+        "rows": [
+            "App should now be started with ./TogglDesktop.sh",
+            "Hide app when tray icon is present",
+            "Added tray icon to menu bar",
+            "Upgraded Qt version to 5.5",
+            "Added Tags and Billable icon to timer",
+            "Added logged in user to menubar menu",
+            "Fixed app close popup behaviour",
+            "Added 'Focus on shortcut' to preferences",
+            "Added 'show' item into tray menu"
+        ]
+    }, {
+        "version": "7.2.64",
+        "date": "April 27th 2015",
+        "rows": [
+            "Improved separation of Deb package and tar.gz",
+            "Added tooltip to error message",
+            "Fixes for About dialog",
+            "Workspace dropdown is not visible if user has only one workspace, fixes #1256",
+            "Down show workspace name in project dropdown when there are no projects",
+            "Better signup error text",
+            "Show start/end time in duration tooltip"
+        ]
+    }, {
+        "version": "7.1.264",
+        "date": "April 10th 2015",
+        "rows": [
+            "Fixed tag ToolTip colors"
+        ]
+    }, {
+        "version": "7.1.260",
+        "date": "March 31st 2015",
+        "rows": [
+            "Don't show start/end tooltip if there are no start/end times",
+            "Added Start Stop time tooltip to duration label",
+            "Show '(no description)' placeholder when description is empty",
+            "Added tooltips to timer",
+            "Fixed tooltip showing and colors",
+            "Fixed timer project name positioning",
+            "Fixed timer project name alignment",
+            "Fixed tab order in edit view",
+            "Fixed gray line under error message",
+            "Fixes for login view elements and positioning",
+            "Fixed checkbox alignment",
+            "Fixed start stop time field size with big font",
+            "Fixed edit form for Hi DPI"
+        ]
+    }, {
+
+        "version": "7.1.253",
+        "date": "March 31st 2015",
+        "rows": [
+            "Fixed timer duration cutoff",
+            "Fixed entry cell duration cutoff in Hi DPI",
+            "Fixed entry cell background color in HiDPI",
+            "Fixed entry cell description in Hi DPI",
+            "Fixed timer duration cutoff with high DPI",
+            "Fixed record timeline left margin in preferences",
+            "Fixed window resizing after entry edit",
+            "Fixed timer project text wordwrap",
+            "Fixed resizing issues for listing elements",
+            "Fixed entry cell hidden duration issue",
+            "Resources file typo fix",
+            "Linux non-silent in app updates",
+            "Enable non-silent updater callbacks for linux app",
+            "Enable update check without download",
+            "Online state",
+            "Use Roboto font",
+            "Fix update callback",
+            "Update callback",
+            "Disable self updater in linux app",
+            "Set app font to Helvetica 10",
+            "Add description to linux app idle notification",
+            "Run uitests from linux, too",
+            "Parse command line params",
+            "Enable uitests on linux too",
+            "Fixed lib loading"
+        ]
+    }, {
+        "version": "7.1.198",
+        "date": "February 4th 2015",
+        "rows": [
+            "Added missing libraries"
+        ]
+    }, {
+        "version": "7.1.192",
+        "date": "February 1st 2015",
+        "rows": [
+            "New JSON library",
+            "Handle umlauts in timeline uploader",
+            "Fixed Websocket updates",
+            "Time calculations use local timezone",
+            "Fix missing project colors",
+            "Format time duration according to user settings",
+            "Use user configured idle minutes setting",
+            "Cleanup on shutdown",
+            "App icons as resources, with scaling",
+            "Fixed memory leaks",
+            "Include OpenSSL libraries",
+            "Embed Lua for UI scripting",
+            "Duration change did not always propagate",
+            "Exceptions are tracked using Bugsnag",
+            "Use a less common character as tag separator",
+            "UTF8 aware sorting in autocompletes",
+            "Continue most recently stopped time entry",
+            "User can add clients",
+            "Use 2 places for decimal rounding",
+            "Fix login dialog layout",
+            "Confirm quit",
+            "Fix error dialog",
+            "Allow narrower window",
+            "Group autocomplete items by workspace",
+            "Append '1' to client name when its already taken",
+            "Dont crash when asking data with 0 ID",
+            "Check error uniqueness after massaging it",
+            "Forward user to support upon receiving 410",
+            "Open editor after starting a new time entry",
+            "Dont delay initial sync",
+            "Use sleep/wake for idle detection too",
+            "Randomize retry intervals",
+            "Auto update total duration",
+            "Remove time overview label and separate detail view",
+            "Added Signup",
+            "Only show TE history in TE autocomplete",
+            "Show workspace name under tags",
+            "Use user configured reminder minutes setting",
+            "Fixed dropdown size",
+            "POCO libraries version 1.6",
+            "Moved timeline shutdown after ui rendering in Logout",
+            "Show split time entry after idle dialog",
+            "OpenSSL 1.0.2",
+            "Improved project autocomplete item format",
+            "Prefer same date when editing end time",
+            "Disallow starting very short time entries from UI",
+            "Dont attempt to push model until its validation error is cleared",
+            "Track autocomplete usage via Google Analytics",
+            "toggl_desktop.log as log file name",
+            "Dont display non-active tasks",
+            "Handle server 5xx errors with retries"
+        ]
+    }, {
+        "version": "7.1.115",
+        "date": "October 22nd 2014",
+        "rows": [
+            "Include running time entry in daily total",
+            "Fixed Autocomplete dropdown",
+            "Support czech AM/PM symbols",
+            "Always change stop time when duration changes",
+            "'Certificate validation error' is a network error",
+            "Use UTC to calculate date when using last date",
+            "Stop timeline uploader faster",
+            "Stop websocket client faster",
+            "Dont use observers for timeline",
+            "Fix race conditions",
+            "OpenSSL 1.0.1j",
+            "Start tracking on return",
+            "Build shared, not static OpenSSL library on Linux",
+            "Fix crash on Fedora when starting Google login"
+        ]
+    }, {
+        "version": "7.1.73",
+        "date": "September 24th 2014",
+        "rows": [
+            "Remove min size constraint",
+            "Remove error widget from tab order",
+            "Hide error window if login succeeds",
+            "Linux app shortcuts",
+            "Parse '1h 25min' as '01:25:00', not '01:00:00'"
+        ]
+    }, {
+        "version": "7.1.71",
+        "date": "September 18th 2014",
+        "rows": [
+            "Initial release"
+        ]
+    }]
+}

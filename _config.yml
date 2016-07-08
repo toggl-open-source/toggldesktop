@@ -1,0 +1,26 @@
+# Site settings
+title: "Changelog for Toggl Desktop"
+#email: 
+url: http://toggl.com
+description: "Toggl Desktop is a desktop app for online time tracking tool Toggl.com."
+
+# Color settings (hex-codes without the leading hash-tag)
+color:
+  primary-dark: '#000000'
+  links: '#219ab3'
+
+# Footer settings
+footer: "Toggl"
+
+# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
+social:
+  - title: twitter
+    url: https://twitter.com/toggl
+  - title: facebook
+    url: toggl
+  - title: github
+    url: https://github.com/toggl
+
+# Build settings
+markdown: kramdown
+permalink: pretty

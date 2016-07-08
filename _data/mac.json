@@ -1,0 +1,199 @@
+  {
+      "versions": [{
+          "version": "7.3.319",
+          "date": "May 16th 2016",
+          "rows": [
+              "Fixed creating same project under new client error",
+              "Fixed pomodoro stop on app start issue",
+              "Fixed Pomodoro notfication triggering when editing older entries",
+              "Fixed duration saving issue when pressing TAB"
+          ]
+      }, {
+          "version": "7.3.309",
+          "date": "March 10th 2016",
+          "rows": [
+              "Fixed bug with duplicate project and client creation",
+              "Fixed app crash issue when selecting no project",
+              "Fixed timeline empty event collection issue",
+              "Added Pomodoro Timer",
+              "Improved auto tracker and tracking reminder notifications to be consistent and reliable",
+              "Added time entries drag and drop between days",
+              "Added load-more button, loading the last month of time entries into the list",
+              "Fixed duration cut off in time entry list",
+              "Fixed menubar text cut off issue"
+          ],
+          "screenshots": [{
+              "text": "Pomodoro timer notfication shown when timer runs out",
+              "img": "assets/images/osx_7.3.308_pomodoro.png"
+          }, {
+              "text": "Change time entry date by drag and dropping them to another day",
+              "img": "assets/images/osx_7.3.303_drag.gif"
+          }, {
+              "text": "Load up to 1 month of past time entries for better overview",
+              "img": "assets/images/osx_7.3.303_more.gif"
+          }]
+      }, {
+          "version": "7.3.254",
+          "date": "February 2nd 2016",
+          "rows": [
+              "Fixed menubar 'project name' setting changing issue",
+              "Added unsynced flag to Time Entries",
+              "Added Color selection to 'Add project form'",
+              "Remove all older installers when update is found",
+              "Fixed the frozen menubar issue after app start"
+          ],
+          "screenshots": [{
+              "text": "Not synced icon in the time entries list view",
+              "img": "assets/images/osx_7.3.254_not_synced_icon.png"
+          }, {
+              "text": "Color selection popup in the add project form",
+              "img": "assets/images/osx_7.3.254_color_selection.png"
+          }]
+      }, {
+          "version": "7.3.197",
+          "date": "December 10th 2015",
+          "rows": [
+              "Write less data to log file",
+              "Fixed pasting also starting timer when in edit view",
+              "Fixed autotracker loading issues",
+              "Fixed `Abort due to constraint violation` error appearing when using multiple accounts"
+          ]
+      }, {
+          "version": "7.3.177",
+          "date": "November 25th 2015",
+          "rows": [
+              "Allow sending feedback when not logged in",
+              "Improved duplicate project names check",
+              "Added Change log link to menu",
+              "Added Default project setting",
+              "Show app when user selects 'Add idle time as new entry'",
+              "Fixed timer duration font size in El Capitan",
+              "Show restart button in About view when download is finished",
+              "Changed the Autoupdater name to TogglDesktopAutoUpdater",
+              "Fixed tab order in edit popup",
+              "Pasting text starts new time entry"
+          ]
+      }, {
+          "version": "7.2.302",
+          "date": "September 24th 2015",
+          "rows": [
+              "Use system default setting for idle notification sound",
+              "Use system default setting for Auto tracker notification sound",
+              "Added close button to Auto tracker notification",
+              "Assign tags when autocompleting from timer",
+              "Better grouping of settings checkboxes",
+              "Turned proxy selection into radio group",
+              "Uploaded poco to version 1.6.1"
+          ]
+      }, {
+          "version": "7.2.199",
+          "date": "July 17th 2015",
+          "rows": [
+              "Fixed timeline events issue",
+              "User setting for cmd+n also opening edit view",
+              "Added analytics",
+              "Added 'Discard idle time and continue' option to idle notification popup",
+              "Added logged in user email to menubar icon menu",
+              "Added Tags and Billable icon to timer",
+              "Added Beta promotion notification",
+              "Fixes for syncing issues"
+          ]
+      }, {
+          "version": "7.2.150",
+          "date": "June 19th 2015",
+          "rows": [
+              "Added Auto tracker",
+              "'Remind me to track' additional settings",
+              "Tabbed preferences view",
+              "Don't close edit popup when selecting autocomplete with enter"
+          ]
+      }, {
+          "version": "7.2.70",
+          "date": "May 22nd 2015",
+          "rows": [
+              "Better implementation of ENTER closing edit popup",
+              "Syncing improvements",
+              "Added automatic system proxy detection",
+              "Added start/end time tooltip to time entries",
+              "More clear error messages",
+              "New preferences window design with tabs",
+              "Added first version of Autotracker",
+              "More detailed Reminder preferences"
+          ]
+      }, {
+          "version": "7.1.224",
+          "date": "March 11th 2015",
+          "rows": [
+              "New design for Login and About view",
+              "Improved syncing",
+              "More informative error messages",
+              "Possibility to show project name in menubar"
+          ]
+      }, {
+          "version": "7.1.218",
+          "date": "March 5th 2015",
+          "rows": [
+              "Clearer error messages",
+              "Bottom network status bar is hidden when online",
+              "New design for Login view",
+              "New design for About view",
+              "Enter saves and closes edit view",
+              "Other bug fixes"
+          ]
+      }, {
+          "version": "7.1.203",
+          "date": "February 13th 2015",
+          "rows": [
+              "Remove 'time entry too short' message",
+              "Don't crash on invalid data from Toggl backend",
+              "Clear input fields on logout",
+              "Handle 'Too many requests' from Toggl backend",
+              "Increase HTTP timeout to 15 seconds (was 10)",
+              "Improved offline handling",
+              "Timeline could not be enabled (or disabled)",
+              "Handle 'Only admins can change project visibility' error from Toggl backend",
+              "Enable offline login"
+          ]
+      }, {
+          "version": "7.1.188",
+          "date": "February 4th 2015",
+          "rows": [
+              "Don't display non-active tasks",
+              "Handle server 5xx errors with retries",
+              "Better offline handling"
+          ]
+      }, {
+          "version": "7.1.179",
+          "date": "January 21st 2015",
+          "rows": [
+              "Fixed show menubar timer preference",
+              "Added manual mode and timer mode logic. More info <a href='http://blog.toggl.com/2015/01/toggl-desktop-7-past-present-and-future'/>here</a>",
+              "Fixed project items in autocomplete",
+              "Timer redesign"
+          ]
+      }, {
+          "version": "7.1.161",
+          "date": "December 19th 2014",
+          "rows": [
+              "Fixed start button size for Yosemite",
+              "Smoother, faster focusing animation",
+              "Added back possibility to TAB into duration field in Timer",
+              "Added 'focus on shortcut' preference",
+              "Added signup functionality",
+              "Added automatic update",
+              "Fixed resize handle when popup is on left",
+              "Added Keyboard shortcuts to move in listing. Read more: <a href='http://support.toggl.com/toggl-desktop-for-mac-osx/#shortcuts'>Keyboard shortcuts</a>",
+              "Minor UI tweaks",
+              "Added workspace name to edit view"
+          ]
+      }, {
+          "version": "7.1.139",
+          "date": "November 27th 2014",
+          "rows": [
+              "Added possibility to add new clients",
+              "Fixed Toggl logo in About view",
+              "Minor UI tweaks",
+              "Added changelog displaying on updates"
+          ]
+      }]
+  }

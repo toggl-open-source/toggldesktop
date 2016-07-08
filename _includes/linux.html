@@ -1,0 +1,30 @@
+          <div class="os linux">
+            {% for item in site.data.linux.versions %}
+            <div class="version">
+              <h3>
+                <a id="{{ item.version }}" class="anchor" href="#{{ item.version }}" aria-hidden="true">
+                  <span class="octicon octicon-link"></span>
+                </a>{{ item.version }}
+                {% if item.beta %}
+                <span class="beta"></span>
+                {% endif %}
+                <span class="date">{{ item.date }}</span>
+              </h3>
+              <ul>
+                {% for row in item.rows %}
+                  <li>{{ row }}</li>
+                {% endfor %}
+              </ul>
+              {% if item.screenshots %}
+              <div class="screenshots">
+                {% for img in item.screenshots %}
+                  <p>{{ img.text }}</p>
+                  <img src="{{ img.img }}"/>
+                  </br>
+                  </br>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
