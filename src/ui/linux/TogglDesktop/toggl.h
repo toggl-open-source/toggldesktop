@@ -176,6 +176,9 @@ class TogglApi : public QObject {
                        const uint64_t at,
                        const bool split_into_new_time_entry);
 
+    bool discardTimeAndContinue(const QString guid,
+                                const uint64_t at);
+
     bool runScriptFile(const QString filename);
 
     static const QString formatDurationInSecondsHHMMSS(
