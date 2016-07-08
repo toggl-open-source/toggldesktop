@@ -247,6 +247,10 @@ error Context::StartEvents() {
             setUser(nullptr);
             return noError;
         }
+        // Clear since param to force full sync on app start
+        user->SetSince(0);
+        logger().debug("fullSyncOnAppStart");
+
         setUser(user);
 
         updateUI(UIElements::Reset());
