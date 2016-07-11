@@ -81,6 +81,7 @@ h3 {
 }
 
 .screenshots {
+  display: none;
   margin-bottom: 20px;
   margin-left: 22px;
 }
@@ -92,4 +93,8 @@ h3 {
 
 .screenshots img {
   max-width: 350px;
+}
+
+.active .screenshots {
+  display: block;
 }
