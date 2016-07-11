@@ -8,7 +8,7 @@
         "Added Pomodoro Timer",
         "Added Global shortcuts for show/hide and continue/stop",
         "Fixes for icon docking issues",
-        "Added upport for using symbolic link for Toggl Desktop start"
+        "Added support for using symbolic link for Toggl Desktop start"
       ]
     }, {
         "version": "7.3.247",
