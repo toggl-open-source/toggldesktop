@@ -1,5 +1,15 @@
 {
     "versions": [{
+      "version": "7.3.325",
+        "date": "July 11th 2016",
+        "rows": [
+          "Added 'Discard and continue' button to idle popup",
+          "Added Pomodoro Timer",
+          "Added Global shortcuts for show/hide and continue/stop",
+          "Fixes for icon docking issues",
+          "Added upport for using symbolic link for Toggl Desktop start"
+        ]
+    }, {
         "version": "7.3.247",
         "date": "January 21st 2016",
         "rows": [
