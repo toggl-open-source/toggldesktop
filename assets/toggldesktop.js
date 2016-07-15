@@ -1,9 +1,18 @@
+var loadImg = function(tab) {
+  var imgs = tab.querySelectorAll("img");
+  for (var i = imgs.length - 1; i >= 0; i--) {
+    imgs[i].src = imgs[i].getAttribute("data-src");
+  }
+}
+
 var showOs = function(os) {
+  var tab = document.querySelector(".pages ." + os);
+  loadImg(tab);
   if (!!document.querySelector(".pages .active")) {
     document.querySelector(".pages .active").classList.remove("active");
   }
     
-  document.querySelector(".pages ." + os).classList.add("active");
+  tab.classList.add("active");
 
   if (!!document.querySelector(".platform-links .current")) {
     document.querySelector(".platform-links .current").classList.remove("current");
