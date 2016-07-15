@@ -1,6 +1,9 @@
 var loadImg = function(tab) {
   var imgs = tab.querySelectorAll("img");
   for (var i = imgs.length - 1; i >= 0; i--) {
+    if (!!imgs[i].src) {
+      return;
+    }
     imgs[i].src = imgs[i].getAttribute("data-src");
   }
 }
