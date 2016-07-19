@@ -1,14 +1,15 @@
 {
     "versions": [
         {
-            "version": "7.3.325",
+            "version": "7.3.326",
             "rows": [
                 "Fixed issue with pomodoro stopping timer on app start",
                 "Added old data cleanup to keep app light and fast",
                 "Fixed position and size saving when minimizing and closin the app",
-                "Fixed pomodoro setting disabled issue when idle detection was disabled"
+                "Fixed pomodoro setting disabled issue when idle detection was disabled",
+                "Fixed default project task overwriting issue"
             ],
-            "date": "July 13rd 2016",
+            "date": "July 19th 2016",
             "beta": "true"
         },
         {
@@ -143,7 +144,7 @@
         },
         {
             "version": "7.3.199",
-            "date": "December 07th 2015",
+            "date": "December 7th 2015",
             "rows": [
                 "Fixed autotracker loading issues",
                 "Fixed `Abort due to constraint violation` when using multilpe accounts",
