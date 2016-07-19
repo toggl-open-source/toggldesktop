@@ -2286,16 +2286,14 @@ TimeEntry *Context::Start(
             return nullptr;
         }
 
-        // Check if there's a default TID set
         Poco::UInt64 tid(task_id);
-        if (!tid) {
-            tid = user_->DefaultTID();
-        }
 
         // Check if there's a default PID set
         Poco::UInt64 pid(project_id);
         if (!pid && project_guid.empty()) {
             pid = user_->DefaultPID();
+            // Check if there's a default TID set
+            tid = user_->DefaultTID();
         }
 
         te = user_->Start(description,
