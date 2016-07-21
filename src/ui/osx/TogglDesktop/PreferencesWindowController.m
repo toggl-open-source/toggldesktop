@@ -148,12 +148,14 @@ extern void *ctx;
 
 - (IBAction)usePomodoroButtonChanged:(id)sender
 {
+	NSLog(@"Changing pomodoro mode");
 	toggl_set_settings_pomodoro(ctx,
 								[Utils stateToBool:[self.usePomodoroButton state]]);
 }
 
 - (IBAction)usePomodoroBreakButtonChanged:(id)sender
 {
+	NSLog(@"Changing pomodoro_break mode");
 	toggl_set_settings_pomodoro_break(ctx,
 								[Utils stateToBool:[self.usePomodoroBreakButton state]]);
 }
@@ -365,8 +367,8 @@ const int kUseProxyToConnectToToggl = 2;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
 
 	self.pomodoroMinutesTextField.intValue = settings.pomodoro_minutes;
-	self.pomodoroBreakMinutesTextField.intValue = settings.pomodoro_break_minutes;
 	self.pomodoroMinutesTextField.enabled = settings.pomodoro;
+	self.pomodoroBreakMinutesTextField.intValue = settings.pomodoro_break_minutes;
 	self.pomodoroBreakMinutesTextField.enabled = settings.pomodoro_break;
 
 	self.reminderMinutesTextField.intValue = settings.reminder_minutes;
@@ -414,12 +416,14 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (IBAction)pomodoroMinutesChange:(id)sender
 {
+	NSLog(@"Changing pomodoro minutes");
 	toggl_set_settings_pomodoro_minutes(ctx,
 										[self.pomodoroMinutesTextField.stringValue intValue]);
 }
 
 - (IBAction)pomodoroBreakMinutesChange:(id)sender
 {
+	NSLog(@"Changing pomodoro_break minutes");
 	toggl_set_settings_pomodoro_break_minutes(ctx,
 										[self.pomodoroBreakMinutesTextField.stringValue intValue]);
 }

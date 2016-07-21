@@ -122,7 +122,6 @@
                                             </textFieldCell>
                                             <connections>
                                                 <action selector="pomodoroMinutesChange:" target="-2" id="xcK-cL-Az3"/>
-                                                <outlet property="nextKeyView" destination="BzK-d8-1HF" id="YnN-Du-X7X"/>
                                             </connections>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ufH-RC-hfd">
@@ -133,7 +132,7 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BzK-d8-1HF" userLabel="pomodoro timer">
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BzK-d8-1HF" userLabel="pomodoro break timer">
                                             <rect key="frame" x="16" y="233" width="140" height="18"/>
                                             <buttonCell key="cell" type="check" title="Pomodoro break" bezelStyle="regularSquare" imagePosition="left" inset="2" id="fa3-Br-Doo">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -154,7 +153,6 @@
                                             </textFieldCell>
                                             <connections>
                                                 <action selector="pomodoroBreakMinutesChange:" target="-2" id="vRr-ta-ob2"/>
-                                                <outlet property="nextKeyView" destination="V28-KN-5Vi" id="YWJ-93-ae6"/>
                                             </connections>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vM4-Nq-b4v">
