@@ -338,6 +338,13 @@ BOOL manualMode = NO;
 		return;
 	}
 
+	// ignore close button
+	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType &&
+		notification.userInfo[@"pomodoro_break"] == nil)
+	{
+		return;
+	}
+
 	// handle autotracker notification
 	if (notification && notification.userInfo)
 	{
@@ -353,6 +360,20 @@ BOOL manualMode = NO;
 
 		// handle pomodoro timer
 		if (notification.userInfo[@"pomodoro"] != nil)
+		{
+			if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+			{
+				toggl_show_app(ctx);
+			}
+			else
+			{
+				toggl_continue_latest(ctx, false);
+			}
+			return;
+		}
+
+		// handle pomodoro_break timer
+		if (notification.userInfo[@"pomodoro_break"] != nil)
 		{
 			if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
 			{
@@ -1166,6 +1187,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_url(ctx, on_url);
 	toggl_on_reminder(ctx, on_reminder);
 	toggl_on_pomodoro(ctx, on_pomodoro);
+	toggl_on_pomodoro_break(ctx, on_pomodoro_break);
 	toggl_on_time_entry_list(ctx, on_time_entry_list);
 	toggl_on_time_entry_autocomplete(ctx, on_time_entry_autocomplete);
 	toggl_on_mini_timer_autocomplete(ctx, on_mini_timer_autocomplete);
@@ -1474,6 +1496,30 @@ void on_pomodoro(const char *title, const char *informative_text)
 	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
 
 	notification.userInfo = @{ @"pomodoro": @"YES" };
+
+	notification.hasActionButton = YES;
+	notification.actionButtonTitle = @"Continue";
+	notification.otherButtonTitle = @"Close";
+
+	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
+	[center scheduleNotification:notification];
+
+	// Play sound
+	[[NSSound soundNamed:@"Glass"] play];
+}
+
+void on_pomodoro_break(const char *title, const char *informative_text)
+{
+	NSUserNotification *notification = [[NSUserNotification alloc] init];
+
+	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
+	[notification setValue:@YES forKey:@"_showsButtons"];
+
+	[notification setTitle:[NSString stringWithUTF8String:title]];
+	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
+	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
+
+	notification.userInfo = @{ @"pomodoro_break": @"YES" };
 
 	notification.hasActionButton = YES;
 	notification.actionButtonTitle = @"Continue";
