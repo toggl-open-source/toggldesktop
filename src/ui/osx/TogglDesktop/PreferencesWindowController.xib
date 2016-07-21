@@ -24,6 +24,7 @@
                 <outlet property="ontopCheckbox" destination="n4h-zi-TcC" id="ZIf-sx-04h"/>
                 <outlet property="openEditorOnShortcut" destination="DRh-rC-B0a" id="U3h-ir-axL"/>
                 <outlet property="passwordTextField" destination="bcT-3P-lAf" id="hcg-zO-nf5"/>
+                <outlet property="pomodoroBreakMinutesTextField" destination="rmD-4u-Dda" id="a9h-nS-WAI"/>
                 <outlet property="pomodoroMinutesTextField" destination="bCE-Cp-Ipc" id="AdG-PZ-xvz"/>
                 <outlet property="portTextField" destination="0tH-DP-xDu" id="Opz-2O-YYS"/>
                 <outlet property="proxyRadio" destination="CE1-H6-4lx" id="roW-Cb-dcV"/>
@@ -42,6 +43,7 @@
                 <outlet property="showHideShortcutView" destination="DLB-Fw-7tX" id="T2o-mF-KXG"/>
                 <outlet property="startStopShortcutView" destination="Ft4-tk-xRA" id="5tb-G5-s2R"/>
                 <outlet property="useIdleDetectionButton" destination="Lgk-gZ-8Ha" id="Erp-FO-vcw"/>
+                <outlet property="usePomodoroBreakButton" destination="BzK-d8-1HF" id="nWi-xj-Mxm"/>
                 <outlet property="usePomodoroButton" destination="Rmf-uW-sZP" id="fZa-h4-WjK"/>
                 <outlet property="usernameTextField" destination="hml-tw-LUI" id="1nT-Y3-g6A"/>
                 <outlet property="window" destination="1" id="3"/>
@@ -107,7 +109,7 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="usePomodoroButtonChanged:" target="-2" id="J2S-oN-Ckf"/>
-                                                <outlet property="nextKeyView" destination="nRj-Zh-L5m" id="esE-c0-b44"/>
+                                                <outlet property="nextKeyView" destination="bCE-Cp-Ipc" id="br9-VY-U0h"/>
                                             </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bCE-Cp-Ipc">
@@ -120,7 +122,7 @@
                                             </textFieldCell>
                                             <connections>
                                                 <action selector="pomodoroMinutesChange:" target="-2" id="xcK-cL-Az3"/>
-                                                <outlet property="nextKeyView" destination="V28-KN-5Vi" id="TrM-tc-y6T"/>
+                                                <outlet property="nextKeyView" destination="BzK-d8-1HF" id="YnN-Du-X7X"/>
                                             </connections>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ufH-RC-hfd">
@@ -138,8 +140,8 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="usePomodoroButtonChanged:" target="-2" id="4MZ-Qv-X4u"/>
-                                                <outlet property="nextKeyView" destination="nRj-Zh-L5m" id="q3X-9e-igL"/>
+                                                <action selector="usePomodoroBreakButtonChanged:" target="-2" id="7ya-Zn-h8h"/>
+                                                <outlet property="nextKeyView" destination="rmD-4u-Dda" id="yu4-H9-X6P"/>
                                             </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rmD-4u-Dda">
@@ -151,7 +153,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <action selector="pomodoroMinutesChange:" target="-2" id="Swt-GS-7ZE"/>
+                                                <action selector="pomodoroBreakMinutesChange:" target="-2" id="vRr-ta-ob2"/>
                                                 <outlet property="nextKeyView" destination="V28-KN-5Vi" id="YWJ-93-ae6"/>
                                             </connections>
                                         </textField>
