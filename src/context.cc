@@ -1628,6 +1628,11 @@ error Context::SetSettingsPomodoro(const bool pomodoro) {
         db()->SetSettingsPomodoro(pomodoro));
 }
 
+error Context::SetSettingsPomodoroBreak(const bool pomodoro_break) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsPomodoroBreak(pomodoro_break));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -1651,6 +1656,11 @@ error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
 error Context::SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsPomodoroMinutes(pomodoro_minutes));
+}
+
+error Context::SetSettingsPomodoroBreakMinutes(const Poco::UInt64 pomodoro_break_minutes) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsPomodoroBreakMinutes(pomodoro_break_minutes));
 }
 
 error Context::LoadWindowSettings(
@@ -3784,6 +3794,29 @@ void Context::displayPomodoro() {
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 }
 
+void Context::displayPomodoroBreak() {
+    if (!settings_.pomodoro_break) {
+        return;
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            return;
+        }
+        if (!user_->RunningTimeEntry()) {
+            return;
+        }
+
+        if (time(0) - user_->RunningTimeEntry()->Start()
+                < settings_.pomodoro_break_minutes * 60) {
+            return;
+        }
+    }
+    Stop(true);
+    UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes);
+}
+
 error Context::StartAutotrackerEvent(const TimelineEvent event) {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
@@ -3966,6 +3999,7 @@ void Context::uiUpdaterActivity() {
 void Context::checkReminders() {
     displayReminder();
     displayPomodoro();
+    displayPomodoroBreak();
 }
 
 void Context::reminderActivity() {

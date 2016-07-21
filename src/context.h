@@ -141,6 +141,8 @@ class Context : public TimelineDatasource {
 
     error SetSettingsPomodoro(const bool reminder);
 
+    error SetSettingsPomodoroBreak(const bool reminder);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
@@ -148,6 +150,8 @@ class Context : public TimelineDatasource {
     error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
     error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
+
+    error SetSettingsPomodoroBreakMinutes(const Poco::UInt64 pomodoro_break_minutes);
 
     error SetSettingsManualMode(const bool manual_mode);
 
@@ -483,6 +487,8 @@ class Context : public TimelineDatasource {
 
     void displayPomodoro();
 
+    void displayPomodoroBreak();
+
     void updateUI(const UIElements &elements);
 
     error displayError(const error err);
@@ -596,6 +602,7 @@ class Context : public TimelineDatasource {
     Poco::Int64 sync_interval_seconds_;
     Poco::UInt64 last_tracking_reminder_time_;
     Poco::UInt64 last_pomodoro_reminder_time_;
+    Poco::UInt64 last_pomodoro_break_reminder_time_;
 
     bool update_check_disabled_;
 

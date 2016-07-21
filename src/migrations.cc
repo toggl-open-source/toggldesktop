@@ -1245,6 +1245,14 @@ error Migrations::migrateSettings() {
     }
 
     err = db_->Migrate(
+        "settings.pomodoro_break",
+        "ALTER TABLE settings "
+        "ADD COLUMN pomodoro_break INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
         "settings.mini_timer_visible",
         "ALTER TABLE settings "
         "ADD COLUMN mini_timer_visible INTEGER NOT NULL DEFAULT 0;");
@@ -1256,6 +1264,14 @@ error Migrations::migrateSettings() {
         "settings.pomodoro_minutes",
         "ALTER TABLE settings "
         "ADD COLUMN pomodoro_minutes INTEGER NOT NULL DEFAULT 60;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "settings.pomodoro_break_minutes",
+        "ALTER TABLE settings "
+        "ADD COLUMN pomodoro_break_minutes INTEGER NOT NULL DEFAULT 5;");
     if (err != noError) {
         return err;
     }

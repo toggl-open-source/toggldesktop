@@ -149,7 +149,9 @@ extern "C" {
         bool_t Autotrack;
         bool_t OpenEditorOnShortcut;
         bool_t Pomodoro;
+        bool_t PomodoroBreak;
         uint64_t PomodoroMinutes;
+        uint64_t PomodoroBreakMinutes;
     } TogglSettingsView;
 
     typedef struct {
@@ -199,6 +201,10 @@ extern "C" {
         const char_t *informative_text);
 
     typedef void (*TogglDisplayPomodoro)(
+        const char_t *title,
+        const char_t *informative_text);
+
+    typedef void (*TogglDisplayPomodoroBreak)(
         const char_t *title,
         const char_t *informative_text);
 
@@ -374,6 +380,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_pomodoro(
         void *context,
         TogglDisplayPomodoro cb);
+
+    TOGGL_EXPORT void toggl_on_pomodoro_break(
+        void *context,
+        TogglDisplayPomodoroBreak cb);
 
     TOGGL_EXPORT void toggl_on_autotracker_notification(
         void *context,
@@ -620,6 +630,10 @@ extern "C" {
         void *context,
         const bool_t pomodoro);
 
+    TOGGL_EXPORT bool_t toggl_set_settings_pomodoro_break(
+        void *context,
+        const bool_t pomodoro_break);
+
     TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,
         const uint64_t idle_minutes);
@@ -635,6 +649,10 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_set_settings_pomodoro_minutes(
         void *context,
         const uint64_t pomodoro_minutes);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_pomodoro_break_minutes(
+        void *context,
+        const uint64_t pomodoro_break_minutes);
 
     TOGGL_EXPORT bool_t toggl_set_settings_manual_mode(
         void *context,

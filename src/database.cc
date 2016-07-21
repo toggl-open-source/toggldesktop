@@ -413,6 +413,7 @@ error Database::LoadSettings(Settings *settings) {
                   "remind_fri, remind_sat, remind_sun, autotrack, "
                   "open_editor_on_shortcut, has_seen_beta_offering, "
                   "pomodoro, pomodoro_minutes "
+                  "pomodoro_break, pomodoro_break_minutes "
                   "from settings "
                   "limit 1",
                   into(settings->use_idle_detection),
@@ -439,7 +440,9 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->open_editor_on_shortcut),
                   into(settings->has_seen_beta_offering),
                   into(settings->pomodoro),
+                  into(settings->pomodoro_break),
                   into(settings->pomodoro_minutes),
+                  into(settings->pomodoro_break_minutes),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -795,6 +798,10 @@ error Database::SetSettingsPomodoro(const bool &pomodoro) {
     return setSettingsValue("pomodoro", pomodoro);
 }
 
+error Database::SetSettingsPomodoroBreak(const bool &pomodoro_break) {
+    return setSettingsValue("pomodoro_break", pomodoro_break);
+}
+
 error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     Poco::UInt64 new_value = idle_minutes;
     if (new_value < 1) {
@@ -881,6 +888,15 @@ error Database::SetSettingsPomodoroMinutes(
         new_value = 1;
     }
     return setSettingsValue("pomodoro_minutes", new_value);
+}
+
+error Database::SetSettingsPomodoroBreakMinutes(
+    const Poco::UInt64 pomodoro_break_minutes) {
+    Poco::UInt64 new_value = pomodoro_break_minutes;
+    if (new_value < 1) {
+        new_value = 1;
+    }
+    return setSettingsValue("pomodoro_break_minutes", new_value);
 }
 
 error Database::SaveProxySettings(
