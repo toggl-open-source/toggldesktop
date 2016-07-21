@@ -65,7 +65,7 @@ std::string Settings::String() const {
        << " open_editor_on_shortcut=" << open_editor_on_shortcut
        << " has_seen_beta_offering=" << has_seen_beta_offering
        << " pomodoro=" << pomodoro
-       << " pomodoro_minutes=" << pomodoro_minutes;
+       << " pomodoro_minutes=" << pomodoro_minutes
        << " pomodoro_break=" << pomodoro_break
        << " pomodoro_break_minutes=" << pomodoro_break_minutes;
     return ss.str();
@@ -96,7 +96,7 @@ bool Settings::IsSame(const Settings &other) const {
             && (open_editor_on_shortcut == other.open_editor_on_shortcut)
             && (has_seen_beta_offering == other.has_seen_beta_offering)
             && (pomodoro == other.pomodoro)
-            && (pomodoro_minutes == other.pomodoro_minutes));
+            && (pomodoro_minutes == other.pomodoro_minutes)
             && (pomodoro_break == other.pomodoro_break)
             && (pomodoro_break_minutes == other.pomodoro_break_minutes));
 }

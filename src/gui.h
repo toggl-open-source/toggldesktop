@@ -217,7 +217,7 @@ class Settings {
     , Autotrack(false)
     , OpenEditorOnShortcut(false)
     , Pomodoro(false)
-    , PomodoroMinutes(0) {}
+    , PomodoroMinutes(0)
     , PomodoroBreak(false)
     , PomodoroBreakMinutes(0) {}
 
