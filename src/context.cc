@@ -3795,7 +3795,6 @@ void Context::displayPomodoro() {
 
     if (settings_.pomodoro_break) {
       // start a new task with the tag "pomodoro-break"
-      logger().warning("going to create break TimeEntry");
       TimeEntry *pb_te = user_->Start("Pomodoro Break", //description
                                       "", //duration
                                       0, //task_id
@@ -3821,7 +3820,6 @@ void Context::displayPomodoroBreak() {
             return;
         } else if (current_te->Tags().find("pomodoro-break") == std::string::npos) {
             // If doesn't have the tag "pomodoro-break", also return
-            logger().warning("skipping pomodoro-break because current task doesn't have tag pomodoro-break");
             return;
         }
 
