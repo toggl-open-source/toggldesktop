@@ -204,7 +204,7 @@ void GoogleAnalyticsSettingsEvent::runTask() {
         makeReq();
     }
 
-    setActionBool("pomodoro-break-", settings.pomodoro_break);
+    setActionBool("pomodoro_break-", settings.pomodoro_break);
     makeReq();
 
     if (settings.pomodoro_break) {

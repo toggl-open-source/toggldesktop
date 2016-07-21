@@ -440,8 +440,8 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->open_editor_on_shortcut),
                   into(settings->has_seen_beta_offering),
                   into(settings->pomodoro),
-                  into(settings->pomodoro_break),
                   into(settings->pomodoro_minutes),
+                  into(settings->pomodoro_break),
                   into(settings->pomodoro_break_minutes),
                   limit(1),
                   now;

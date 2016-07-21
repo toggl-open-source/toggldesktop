@@ -139,9 +139,9 @@ class Context : public TimelineDatasource {
 
     error SetSettingsReminder(const bool reminder);
 
-    error SetSettingsPomodoro(const bool reminder);
+    error SetSettingsPomodoro(const bool pomodoro);
 
-    error SetSettingsPomodoroBreak(const bool reminder);
+    error SetSettingsPomodoroBreak(const bool pomodoro_break);
 
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 

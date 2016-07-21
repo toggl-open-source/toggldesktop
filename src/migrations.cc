@@ -1263,7 +1263,7 @@ error Migrations::migrateSettings() {
     err = db_->Migrate(
         "settings.pomodoro_minutes",
         "ALTER TABLE settings "
-        "ADD COLUMN pomodoro_minutes INTEGER NOT NULL DEFAULT 60;");
+        "ADD COLUMN pomodoro_minutes INTEGER NOT NULL DEFAULT 25;");
     if (err != noError) {
         return err;
     }

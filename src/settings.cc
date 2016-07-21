@@ -32,8 +32,8 @@ Json::Value Settings::SaveToJSON() const {
     json["open_editor_on_shortcut"] = open_editor_on_shortcut;
     json["has_seen_beta_offering"] = has_seen_beta_offering;
     json["pomodoro"] = pomodoro;
-    json["pomodoro_break"] = pomodoro_break;
     json["pomodoro_minutes"] = Json::UInt64(pomodoro_minutes);
+    json["pomodoro_break"] = pomodoro_break;
     json["pomodoro_break_minutes"] = Json::UInt64(pomodoro_break_minutes);
     return json;
 }
@@ -65,8 +65,8 @@ std::string Settings::String() const {
        << " open_editor_on_shortcut=" << open_editor_on_shortcut
        << " has_seen_beta_offering=" << has_seen_beta_offering
        << " pomodoro=" << pomodoro
-       << " pomodoro_break=" << pomodoro_break
        << " pomodoro_minutes=" << pomodoro_minutes;
+       << " pomodoro_break=" << pomodoro_break
        << " pomodoro_break_minutes=" << pomodoro_break_minutes;
     return ss.str();
 }
@@ -96,8 +96,8 @@ bool Settings::IsSame(const Settings &other) const {
             && (open_editor_on_shortcut == other.open_editor_on_shortcut)
             && (has_seen_beta_offering == other.has_seen_beta_offering)
             && (pomodoro == other.pomodoro)
-            && (pomodoro_break == other.pomodoro_break)
             && (pomodoro_minutes == other.pomodoro_minutes));
+            && (pomodoro_break == other.pomodoro_break)
             && (pomodoro_break_minutes == other.pomodoro_break_minutes));
 }
 

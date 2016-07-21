@@ -41,8 +41,8 @@ class Settings : public BaseModel {
     , open_editor_on_shortcut(false)
     , has_seen_beta_offering(false)
     , pomodoro(false)
-    , pomodoro_break(false)
     , pomodoro_minutes(0) {}
+    , pomodoro_break(false)
     , pomodoro_break_minutes(0) {}
 
     virtual ~Settings() {}
