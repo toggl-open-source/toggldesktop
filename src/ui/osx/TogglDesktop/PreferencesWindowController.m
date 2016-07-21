@@ -95,6 +95,7 @@ extern void *ctx;
 
 	[self.idleMinutesTextField setDelegate:self];
 	[self.pomodoroMinutesTextField setDelegate:self];
+	[self.pomodoroBreakMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
 
 	self.renderTimeline.hidden = YES;
@@ -149,6 +150,12 @@ extern void *ctx;
 {
 	toggl_set_settings_pomodoro(ctx,
 								[Utils stateToBool:[self.usePomodoroButton state]]);
+}
+
+- (IBAction)usePomodoroBreakButtonChanged:(id)sender
+{
+	toggl_set_settings_pomodoro_break(ctx,
+								[Utils stateToBool:[self.usePomodoroBreakButton state]]);
 }
 
 - (IBAction)ontopCheckboxChanged:(id)sender
@@ -323,6 +330,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 	[self.useIdleDetectionButton setState:[Utils boolToState:settings.idle_detection]];
 	[self.usePomodoroButton setState:[Utils boolToState:settings.pomodoro]];
+	[self.usePomodoroBreakButton setState:[Utils boolToState:settings.pomodoro_break]];
 	[self.menubarTimerCheckbox setState:[Utils boolToState:settings.menubar_timer]];
 	[self.menubarProjectCheckbox setState:[Utils boolToState:settings.menubar_project]];
 	[self.dockIconCheckbox setState:[Utils boolToState:settings.dock_icon]];
@@ -357,7 +365,9 @@ const int kUseProxyToConnectToToggl = 2;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
 
 	self.pomodoroMinutesTextField.intValue = settings.pomodoro_minutes;
+	self.pomodoroBreakMinutesTextField.intValue = settings.pomodoro_break_minutes;
 	self.pomodoroMinutesTextField.enabled = settings.pomodoro;
+	self.pomodoroBreakMinutesTextField.enabled = settings.pomodoro_break;
 
 	self.reminderMinutesTextField.intValue = settings.reminder_minutes;
 	self.reminderMinutesTextField.enabled = settings.reminder;
@@ -406,6 +416,12 @@ const int kUseProxyToConnectToToggl = 2;
 {
 	toggl_set_settings_pomodoro_minutes(ctx,
 										[self.pomodoroMinutesTextField.stringValue intValue]);
+}
+
+- (IBAction)pomodoroBreakMinutesChange:(id)sender
+{
+	toggl_set_settings_pomodoro_break_minutes(ctx,
+										[self.pomodoroBreakMinutesTextField.stringValue intValue]);
 }
 
 - (IBAction)reminderMinutesChanged:(id)sender
@@ -505,6 +521,12 @@ const int kUseProxyToConnectToToggl = 2;
 	{
 		toggl_set_settings_pomodoro_minutes(ctx,
 											[self.pomodoroMinutesTextField.stringValue intValue]);
+	}
+
+	if ([aNotification object] == self.pomodoroBreakMinutesTextField)
+	{
+		toggl_set_settings_pomodoro_break_minutes(ctx,
+											[self.pomodoroBreakMinutesTextField.stringValue intValue]);
 	}
 
 	if ([aNotification object] == self.reminderMinutesTextField)
