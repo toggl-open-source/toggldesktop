@@ -66,6 +66,7 @@ std::string Settings::String() const {
        << " has_seen_beta_offering=" << has_seen_beta_offering
        << " pomodoro=" << pomodoro
        << " pomodoro_break=" << pomodoro_break
+       << " pomodoro_minutes=" << pomodoro_minutes;
        << " pomodoro_break_minutes=" << pomodoro_break_minutes;
     return ss.str();
 }
