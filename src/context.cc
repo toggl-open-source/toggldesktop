@@ -3792,6 +3792,17 @@ void Context::displayPomodoro() {
     }
     Stop(true);
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
+
+    if (settings_.pomodoro_break) {
+      // start a new task with the tag "pomodoro-break"
+      logger().warning("going to create break TimeEntry");
+      TimeEntry *pb_te = user_->Start("Pomodoro Break", //description
+                                      "", //duration
+                                      0, //task_id
+                                      0, //project_id
+                                      "", //project_guid
+                                      "pomodoro-break"); //tags
+    }
 }
 
 void Context::displayPomodoroBreak() {
@@ -3804,11 +3815,17 @@ void Context::displayPomodoroBreak() {
         if (!user_) {
             return;
         }
-        if (!user_->RunningTimeEntry()) {
+
+        TimeEntry *current_te = user_->RunningTimeEntry();
+        if (!current_te) {
+            return;
+        } else if (current_te->Tags().find("pomodoro-break") == std::string::npos) {
+            // If doesn't have the tag "pomodoro-break", also return
+            logger().warning("skipping pomodoro-break because current task doesn't have tag pomodoro-break");
             return;
         }
 
-        if (time(0) - user_->RunningTimeEntry()->Start()
+        if (time(0) - current_te->Start()
                 < settings_.pomodoro_break_minutes * 60) {
             return;
         }
