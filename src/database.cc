@@ -412,7 +412,7 @@ error Database::LoadSettings(Settings *settings) {
                   "remind_mon, remind_tue, remind_wed, remind_thu, "
                   "remind_fri, remind_sat, remind_sun, autotrack, "
                   "open_editor_on_shortcut, has_seen_beta_offering, "
-                  "pomodoro, pomodoro_minutes "
+                  "pomodoro, pomodoro_minutes, "
                   "pomodoro_break, pomodoro_break_minutes "
                   "from settings "
                   "limit 1",
