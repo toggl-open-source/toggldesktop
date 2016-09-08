@@ -9,8 +9,7 @@
                 "Fixed pomodoro setting disabled issue when idle detection was disabled",
                 "Fixed default project task overwriting issue"
             ],
-            "date": "July 19th 2016",
-            "beta": "true"
+            "date": "September 8th 2016",
         },
         {
             "version": "7.3.318",

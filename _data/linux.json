@@ -1,8 +1,7 @@
 {
     "versions": [{
       "version": "7.3.325",
-      "beta": "true",
-      "date": "July 11th 2016",
+      "date": "September 8th 2016",
       "rows": [
         "Added 'Discard and continue' button to idle popup",
         "Added Pomodoro Timer",

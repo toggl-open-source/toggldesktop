@@ -1,15 +1,14 @@
 {
     "versions": [
         {
-            "version": "7.3.325",
+            "version": "7.3.326",
             "rows": [
                 "Fixed issue with pomodoro stopping timer on app start",
                 "Added old data cleanup to keep app light and fast",
                 "Fixed empty description issue when selecting task from autocomplete",
                 "Fixed project overwriting issue when selecting item from autocomplete"
             ],
-            "date": "July 13rd 2016",
-            "beta": "true"
+            "date": "September 8th 2016",
         },
         {
             "version": "7.3.319",
