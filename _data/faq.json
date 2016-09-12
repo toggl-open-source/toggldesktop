@@ -15,5 +15,13 @@
         "To fix this issue please clear the local cache of the app. See this article for reference: ",
         "<a href='https://support.toggl.com/clearing-the-local-data-from-toggl-desktop/'>Clearing Cache</a>"
       ]
+    }, {
+      "question": "Toggl Desktop is not starting after update",
+      "answer":
+      [
+        "This can be caused by corrupt local database. ",
+        "Manually deleting local data will fix this issue. See this article: ",
+        "<a href='https://support.toggl.com/clearing-the-local-data-from-toggl-desktop/#manual'>Clear local data</a> "
+      ]
     }]
 }
