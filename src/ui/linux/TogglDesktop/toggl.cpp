@@ -66,6 +66,14 @@ void on_display_pomodoro(
         QString(informative_text));
 }
 
+void on_display_pomodoro_break(
+    const char *title,
+    const char *informative_text) {
+    TogglApi::instance->displayPomodoroBreak(
+        QString(title),
+        QString(informative_text));
+}
+
 void on_display_reminder(
     const char *title,
     const char *informative_text) {
@@ -214,6 +222,7 @@ TogglApi::TogglApi(
     toggl_on_url(ctx, on_display_url);
     toggl_on_login(ctx, on_display_login);
     toggl_on_pomodoro(ctx, on_display_pomodoro);
+    toggl_on_pomodoro_break(ctx, on_display_pomodoro_break);
     toggl_on_reminder(ctx, on_display_reminder);
     toggl_on_time_entry_list(ctx, on_display_time_entry_list);
     toggl_on_time_entry_autocomplete(ctx, on_display_time_entry_autocomplete);

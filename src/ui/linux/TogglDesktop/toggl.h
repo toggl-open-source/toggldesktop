@@ -206,6 +206,10 @@ class TogglApi : public QObject {
         const QString title,
         const QString informative_text);
 
+    void displayPomodoroBreak(
+        const QString title,
+        const QString informative_text);
+
     void displayReminder(
         const QString title,
         const QString informative_text);
@@ -284,6 +288,9 @@ void on_display_login(
     const bool_t open,
     const uint64_t user_id);
 void on_display_pomodoro(
+    const char *title,
+    const char *informative_text);
+void on_display_pomodoro_break(
     const char *title,
     const char *informative_text);
 void on_display_reminder(

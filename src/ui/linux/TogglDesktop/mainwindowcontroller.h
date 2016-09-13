@@ -59,6 +59,10 @@ class MainWindowController : public QMainWindow {
         const QString title,
         const QString informative_text);
 
+    void displayPomodoroBreak(
+        const QString title,
+        const QString informative_text);
+
     void displayReminder(
         const QString title,
         const QString informative_text);

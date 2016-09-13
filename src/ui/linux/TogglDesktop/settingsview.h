@@ -33,6 +33,8 @@ class SettingsView : public QObject {
         result->FocusOnShortcut = view->FocusOnShortcut;
         result->Pomodoro = view->Pomodoro;
         result->PomodoroMinutes = view->PomodoroMinutes;
+        result->PomodoroBreak = view->PomodoroBreak;
+        result->PomodoroBreakMinutes = view->PomodoroBreakMinutes;
         return result;
     }
 
@@ -54,6 +56,8 @@ class SettingsView : public QObject {
     bool FocusOnShortcut;
     bool Pomodoro;
     uint64_t PomodoroMinutes;
+    bool PomodoroBreak;
+    uint64_t PomodoroBreakMinutes;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_
