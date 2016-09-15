@@ -409,6 +409,11 @@ bool TogglApi::setSettingsPomodoro(const bool pomodoro) {
                                        pomodoro);
 }
 
+bool TogglApi::setSettingsPomodoroBreak(const bool pomodoro_break) {
+    return toggl_set_settings_pomodoro_break(ctx,
+                                       pomodoro_break);
+}
+
 bool TogglApi::setSettingsIdleMinutes(const uint64_t idleMinutes) {
     return toggl_set_settings_idle_minutes(ctx,
                                            idleMinutes);
@@ -422,6 +427,11 @@ bool TogglApi::setSettingsReminderMinutes(const uint64_t reminderMinutes) {
 bool TogglApi::setSettingsPomodoroMinutes(const uint64_t pomodoroMinutes) {
     return toggl_set_settings_pomodoro_minutes(ctx,
             pomodoroMinutes);
+}
+
+bool TogglApi::setSettingsPomodoroBreakMinutes(const uint64_t pomodoro_break_minutes) {
+    return toggl_set_settings_pomodoro_break_minutes(ctx,
+            pomodoro_break_minutes);
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {

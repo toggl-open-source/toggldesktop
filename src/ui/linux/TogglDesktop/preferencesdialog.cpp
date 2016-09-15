@@ -58,6 +58,10 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->pomodoroMinutes->setText(QString::number(settings->PomodoroMinutes));
     ui->pomodoroMinutes->setEnabled(ui->pomodoroTimer->isChecked());
 
+    ui->pomodoroBreakTimer->setChecked(settings->PomodoroBreak);
+    ui->pomodoroBreakMinutes->setText(QString::number(settings->PomodoroBreakMinutes));
+    ui->pomodoroBreakMinutes->setEnabled(ui->pomodoroTimer->isChecked() && ui->pomodoroBreakTimer->isChecked());
+
     ui->focusAppOnShortcut->setChecked((settings->FocusOnShortcut));
 
     QString sh(TogglApi::instance->getShowHideKey());
@@ -108,6 +112,10 @@ void PreferencesDialog::on_remindToTrackTime_clicked(bool checked) {
 
 void PreferencesDialog::on_pomodoroTimer_clicked(bool checked) {
     TogglApi::instance->setSettingsPomodoro(checked);
+}
+
+void PreferencesDialog::on_pomodoroBreakTimer_clicked(bool checked) {
+    TogglApi::instance->setSettingsPomodoroBreak(checked);
 }
 
 void PreferencesDialog::updateShowHideShortcut() {
@@ -242,6 +250,11 @@ void PreferencesDialog::on_reminderMinutes_editingFinished() {
 void PreferencesDialog::on_pomodoroMinutes_editingFinished() {
     TogglApi::instance->setSettingsPomodoroMinutes(
         ui->pomodoroMinutes->text().toInt());
+}
+
+void PreferencesDialog::on_pomodoroBreakMinutes_editingFinished() {
+    TogglApi::instance->setSettingsPomodoroBreakMinutes(
+        ui->pomodoroBreakMinutes->text().toInt());
 }
 
 void PreferencesDialog::on_useSystemProxySettings_clicked(bool checked) {

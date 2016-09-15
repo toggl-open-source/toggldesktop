@@ -382,6 +382,61 @@
     </widget>
    </item>
    <item>
+    <widget class="QFrame" name="PomodoroBreakHFrame">
+     <layout class="QHBoxLayout" name="pomodoroBreakSettings">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="pomodoroBreakTimer">
+        <property name="text">
+         <string>Pomodoro break timer</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="pomodoroBreakHSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="pomodoroBreakMinutes">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>25</string>
+        </property>
+        <property name="maxLength">
+         <number>3</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="pomodoroBreakMinutesLabel">
+        <property name="text">
+         <string>minutes</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="focusAppOnShortcut">
      <property name="text">
       <string>Focus app on shortcut</string>

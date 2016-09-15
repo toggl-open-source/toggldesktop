@@ -41,10 +41,12 @@ class PreferencesDialog : public QDialog {
     void on_recordTimeline_clicked(bool checked);
     void on_remindToTrackTime_clicked(bool checked);
     void on_pomodoroTimer_clicked(bool checked);
+    void on_pomodoroBreakTimer_clicked(bool checked);
     void on_useProxy_clicked(bool checked);
     void on_idleMinutes_editingFinished();
     void on_reminderMinutes_editingFinished();
     void on_pomodoroMinutes_editingFinished();
+    void on_pomodoroBreakMinutes_editingFinished();
     void on_useSystemProxySettings_clicked(bool checked);
     void on_focusAppOnShortcut_clicked(bool checked);
     void on_continueStopClear_clicked();
