@@ -87,11 +87,11 @@ Database::Database(const std::string db_path)
         return;
     }
 
-    // Remove Time Entries older than 9 days from local db
+    // Remove Time Entries older than 30 days from local db
     Poco::LocalDateTime today;
 
     Poco::LocalDateTime start =
-        today - Poco::Timespan(9 * Poco::Timespan::DAYS);
+        today - Poco::Timespan(30 * Poco::Timespan::DAYS);
 
     err = deleteAllFromTableByDate(
         "time_entries", start.timestamp());
