@@ -146,6 +146,9 @@ public static partial class Toggl
     public delegate void DisplayPomodoro(
         string title, string informativeText);
 
+    public delegate void DisplayPomodoroBreak(
+        string title, string informativeText);
+
     #endregion
 
     #region api calls
@@ -430,6 +433,16 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_pomodoro_break(ctx, settings.PomodoroBreak))
+        {
+            return false;
+        }
+
+        if (!toggl_set_settings_pomodoro_break_minutes(ctx, settings.PomodoroBreakMinutes))
+        {
+            return false;
+        }
+
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 
@@ -668,6 +681,7 @@ public static partial class Toggl
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
     public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
     public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
+    public static event DisplayPomodoroBreak OnDisplayPomodoroBreak = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -884,6 +898,13 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnDisplayPomodoro"))
             {
                 OnDisplayPomodoro(title, text);
+            }
+        });
+        toggl_on_pomodoro_break(ctx, (title, text) =>
+        {
+            using (Performance.Measure("Calling OnDisplayPomodoroBreak"))
+            {
+                OnDisplayPomodoroBreak(title, text);
             }
         });
     }

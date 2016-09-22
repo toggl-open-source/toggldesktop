@@ -19,11 +19,27 @@ namespace TogglDesktop
             this.InitializeComponent();
 
             Toggl.OnDisplayPomodoro += this.onDisplayPomodoro;
+            Toggl.OnDisplayPomodoroBreak += this.onDisplayPomodoroBreak;
         }
 
         private void onDisplayPomodoro(string title, string informativetext)
         {
             if (this.TryBeginInvoke(onDisplayPomodoro, title, informativetext))
+                return;
+
+            this.reminderText.Text = informativetext;
+            this.titleText.Text = title;
+
+            this.RemoveFromParent();
+
+            this.icon.ShowCustomBalloon(this, PopupAnimation.Slide, null);
+
+            System.Media.SystemSounds.Asterisk.Play();
+        }
+
+        private void onDisplayPomodoroBreak(string title, string informativetext)
+        {
+            if (this.TryBeginInvoke(onDisplayPomodoroBreak, title, informativetext))
                 return;
 
             this.reminderText.Text = informativetext;
