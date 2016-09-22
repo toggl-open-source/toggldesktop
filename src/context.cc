@@ -4066,7 +4066,7 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
     try {
         std::stringstream ss;
         ss << "/api/v9/me/time_entries?since="
-           << (Poco::Timestamp() - Poco::Timespan(30, 0, 0, 0, 0)).epochTime();
+           << (Poco::Timestamp() - Poco::Timespan(60, 0, 0, 0, 0)).epochTime();
 
         std::stringstream l;
         l << "loading more: " << ss.str();
