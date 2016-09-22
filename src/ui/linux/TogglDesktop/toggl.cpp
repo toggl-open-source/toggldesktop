@@ -411,7 +411,7 @@ bool TogglApi::setSettingsPomodoro(const bool pomodoro) {
 
 bool TogglApi::setSettingsPomodoroBreak(const bool pomodoro_break) {
     return toggl_set_settings_pomodoro_break(ctx,
-                                       pomodoro_break);
+            pomodoro_break);
 }
 
 bool TogglApi::setSettingsIdleMinutes(const uint64_t idleMinutes) {

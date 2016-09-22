@@ -157,7 +157,7 @@ extern void *ctx;
 {
 	NSLog(@"Changing pomodoro_break mode");
 	toggl_set_settings_pomodoro_break(ctx,
-								[Utils stateToBool:[self.usePomodoroBreakButton state]]);
+									  [Utils stateToBool:[self.usePomodoroBreakButton state]]);
 }
 
 - (IBAction)ontopCheckboxChanged:(id)sender
@@ -425,7 +425,7 @@ const int kUseProxyToConnectToToggl = 2;
 {
 	NSLog(@"Changing pomodoro_break minutes");
 	toggl_set_settings_pomodoro_break_minutes(ctx,
-										[self.pomodoroBreakMinutesTextField.stringValue intValue]);
+											  [self.pomodoroBreakMinutesTextField.stringValue intValue]);
 }
 
 - (IBAction)reminderMinutesChanged:(id)sender
@@ -530,7 +530,7 @@ const int kUseProxyToConnectToToggl = 2;
 	if ([aNotification object] == self.pomodoroBreakMinutesTextField)
 	{
 		toggl_set_settings_pomodoro_break_minutes(ctx,
-											[self.pomodoroBreakMinutesTextField.stringValue intValue]);
+												  [self.pomodoroBreakMinutesTextField.stringValue intValue]);
 	}
 
 	if ([aNotification object] == self.reminderMinutesTextField)

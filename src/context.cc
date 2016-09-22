@@ -3794,13 +3794,13 @@ void Context::displayPomodoro() {
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 
     if (settings_.pomodoro_break) {
-      // start a new task with the tag "pomodoro-break"
-      TimeEntry *pb_te = user_->Start("Pomodoro Break", //description
-                                      "", //duration
-                                      0, //task_id
-                                      0, //project_id
-                                      "", //project_guid
-                                      "pomodoro-break"); //tags
+        // start a new task with the tag "pomodoro-break"
+        TimeEntry *pb_te = user_->Start("Pomodoro Break", //description
+                                        "", //duration
+                                        0, //task_id
+                                        0, //project_id
+                                        "", //project_guid
+                                        "pomodoro-break"); //tags
     }
 }
 
