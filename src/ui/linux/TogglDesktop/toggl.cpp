@@ -429,7 +429,8 @@ bool TogglApi::setSettingsPomodoroMinutes(const uint64_t pomodoroMinutes) {
             pomodoroMinutes);
 }
 
-bool TogglApi::setSettingsPomodoroBreakMinutes(const uint64_t pomodoro_break_minutes) {
+bool TogglApi::setSettingsPomodoroBreakMinutes(
+        const uint64_t pomodoro_break_minutes) {
     return toggl_set_settings_pomodoro_break_minutes(ctx,
             pomodoro_break_minutes);
 }

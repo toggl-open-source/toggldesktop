@@ -36,7 +36,9 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->DefaultWID = view->DefaultWID;
     result->WorkspaceName = QString(view->WorkspaceName);
     result->Error = QString(view->Error);
-    result->ConfirmlessDelete = (view->DurationInSeconds < 15 && result->Description.length() == 0 && !view->PID);
+    result->ConfirmlessDelete = (view->DurationInSeconds < 15
+                                 && result->Description.length() == 0
+                                 && !view->PID);
     return result;
 }
 
