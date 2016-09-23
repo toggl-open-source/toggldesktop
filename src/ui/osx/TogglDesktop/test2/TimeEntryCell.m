@@ -27,8 +27,7 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	self.entry_duration = view_item.duration_in_seconds;
-	self.entry_description = view_item.Description;
+	self.confrimless_delete = view_item.confirmlessDelete;
 
 	self.GUID = view_item.GUID;
 	self.durationTextField.stringValue = view_item.duration;

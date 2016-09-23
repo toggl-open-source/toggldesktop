@@ -19,8 +19,7 @@
 @property (strong) IBOutlet NSBox *durationBox;
 @property (strong) IBOutlet NSBox *backgroundBox;
 @property (strong) IBOutlet NSImageView *unsyncedIcon;
-@property (strong) NSString *entry_description;
-@property double entry_duration;
+@property BOOL confrimless_delete;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 - (void)focusFieldName;

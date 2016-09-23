@@ -871,7 +871,7 @@ extern void *ctx;
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
 	// If description is empty and duration is less than 15 seconds delete without confirmation
-	if ([self.timeEntry.Description length] == 0 && self.timeEntry.duration_in_seconds < 15)
+	if (self.timeEntry.confirmlessDelete)
 	{
 		toggl_delete_time_entry(ctx, [self.timeEntry.GUID UTF8String]);
 		return;

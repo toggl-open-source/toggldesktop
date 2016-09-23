@@ -48,4 +48,6 @@
 @property (strong) NSString *Error;
 // if the item is load more row
 @property BOOL loadMore;
+// if item can be deleted without confirm
+@property BOOL confirmlessDelete;
 @end
