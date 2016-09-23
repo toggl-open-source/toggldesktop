@@ -48,6 +48,8 @@ class TimeEntryEditorWidget : public QWidget {
 
     QString previousTagList;
 
+    bool confirmlessDelete;
+
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
     void toggleNewClientMode(const bool visible);

@@ -46,6 +46,7 @@ class TimeEntryView : public QObject {
     uint64_t DefaultWID;
     QString WorkspaceName;
     QString Error;
+    bool ConfirmlessDelete;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_
