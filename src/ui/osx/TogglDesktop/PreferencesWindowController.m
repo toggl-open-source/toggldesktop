@@ -366,6 +366,7 @@ const int kUseProxyToConnectToToggl = 2;
 	self.idleMinutesTextField.intValue = settings.idle_minutes;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
 
+	self.usePomodoroBreakButton.enabled = settings.pomodoro;
 	self.pomodoroMinutesTextField.intValue = settings.pomodoro_minutes;
 	self.pomodoroMinutesTextField.enabled = settings.pomodoro;
 	self.pomodoroBreakMinutesTextField.intValue = settings.pomodoro_break_minutes;
