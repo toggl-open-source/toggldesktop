@@ -153,7 +153,8 @@ bool_t toggl_set_settings_pomodoro(
 bool_t toggl_set_settings_pomodoro_break(
     void *context,
     const bool_t pomodoro_break) {
-    return toggl::noError == app(context)->SetSettingsPomodoroBreak(pomodoro_break);
+    return toggl::noError == app(context)->
+            SetSettingsPomodoroBreak(pomodoro_break);
 }
 
 bool_t toggl_set_settings_idle_minutes(

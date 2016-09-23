@@ -217,6 +217,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
     guid = view->GUID;
     duration = view->DurationInSeconds;
+    confirmlessDelete = view->ConfirmlessDelete;
 
     if (duration < 0) {
         timer->start(1000);
@@ -316,7 +317,7 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
 }
 
 void TimeEntryEditorWidget::on_deleteButton_clicked() {
-    if (QMessageBox::Ok == QMessageBox(
+    if (confirmlessDelete || QMessageBox::Ok == QMessageBox(
         QMessageBox::Question,
         "Delete this time entry?",
         "Deleted time entries cannot be restored.",

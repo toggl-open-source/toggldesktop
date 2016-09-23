@@ -116,7 +116,8 @@ class Database {
 
     error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
 
-    error SetSettingsPomodoroBreakMinutes(const Poco::UInt64 pomodoro_break_minutes);
+    error SetSettingsPomodoroBreakMinutes(
+            const Poco::UInt64 pomodoro_break_minutes);
 
     error SetSettingsManualMode(const bool &manual_mode);
 

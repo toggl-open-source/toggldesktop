@@ -208,7 +208,8 @@ void GoogleAnalyticsSettingsEvent::runTask() {
     makeReq();
 
     if (settings.pomodoro_break) {
-        setActionInt("pomodoro_break_minutes-", settings.pomodoro_break_minutes);
+        setActionInt("pomodoro_break_minutes-",
+                     settings.pomodoro_break_minutes);
         makeReq();
     }
 }
