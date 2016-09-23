@@ -164,6 +164,7 @@ TimeEntry *User::Continue(
         existing->SetDurationInSeconds(
             -time(0) + existing->DurationInSeconds());
         existing->SetUIModified();
+        existing->SetLastStartAt(time(0));
         return existing;
     }
 

@@ -3785,10 +3785,18 @@ void Context::displayPomodoro() {
         if (!user_->RunningTimeEntry()) {
             return;
         }
+        TimeEntry *current_te = user_->RunningTimeEntry();
 
-        if (time(0) - user_->RunningTimeEntry()->Start()
-                < settings_.pomodoro_minutes * 60) {
-            return;
+        if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
+            if (time(0) - current_te->LastStartAt()
+                    < settings_.pomodoro_minutes * 60) {
+                return;
+            }
+        } else {
+            if (time(0) - current_te->Start()
+                    < settings_.pomodoro_minutes * 60) {
+                return;
+            }
         }
     }
     Stop(true);

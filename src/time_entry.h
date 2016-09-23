@@ -29,9 +29,15 @@ class TimeEntry : public BaseModel, public TimedEvent {
     , duronly_(false)
     , created_with_("")
     , project_guid_("")
-    , unsynced_(false) {}
+    , unsynced_(false)
+    , last_start_at_(0) {}
 
     virtual ~TimeEntry() {}
+
+    const Poco::UInt64 &LastStartAt() const {
+        return last_start_at_;
+    }
+    void SetLastStartAt(const Poco::UInt64 value);
 
     std::vector<std::string> TagNames;
 
@@ -144,6 +150,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     std::string created_with_;
     std::string project_guid_;
     bool unsynced_;
+    Poco::UInt64 last_start_at_;
 
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);
