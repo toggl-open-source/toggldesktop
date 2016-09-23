@@ -71,6 +71,7 @@ namespace TogglDesktop
             .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
         public TimeEntryCellDayHeader DayHeader { get; private set; }
+        public bool confirmlessDelete = false;
 
         private readonly ToolTip descriptionToolTip = new ToolTip();
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
@@ -129,6 +130,9 @@ namespace TogglDesktop
             setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
             this.billabeIcon.ShowOnlyIf(item.Billable);
+
+            this.confirmlessDelete = (item.Description.Length == 0
+                    && item.DurationInSeconds < 15 && item.PID == 0);
 
             if (string.IsNullOrEmpty(item.Tags))
             {
@@ -270,6 +274,11 @@ namespace TogglDesktop
 
         public void DeleteTimeEntry()
         {
+            if (this.confirmlessDelete)
+            {
+                Toggl.DeleteTimeEntry(this.guid);
+                return;
+            }
             Toggl.AskToDeleteEntry(this.guid);
         }
 
