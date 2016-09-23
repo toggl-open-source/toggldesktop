@@ -13,12 +13,6 @@ public static partial class Toggl
     private const CallingConvention convention = CallingConvention.Cdecl;
     private const int structPackingBytes = 8;
 
-
-
-
-
-
-
 // Constants
 
     private const int kOnlineStateOnline = 0;
