@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>About</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color:rgb(85, 85, 85);</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="logo">

@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>491</height>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Preferences</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">color:rgb(85, 85, 85);</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -136,6 +139,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="useSystemProxySettings">
+     <property name="styleSheet">
+      <string notr="true">color:rgb(85, 85, 85);</string>
+     </property>
      <property name="text">
       <string>Use system proxy settings</string>
      </property>
@@ -214,6 +220,9 @@
       </property>
       <item>
        <widget class="QCheckBox" name="idleDetection">
+        <property name="styleSheet">
+         <string notr="true">color:rgb(85, 85, 85);</string>
+        </property>
         <property name="text">
          <string>Idle detection</string>
         </property>
@@ -264,7 +273,7 @@
    <item>
     <widget class="QCheckBox" name="recordTimeline">
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">color:rgb(85, 85, 85);</string>
      </property>
      <property name="text">
       <string>Record timeline</string>
@@ -279,6 +288,9 @@
       </property>
       <item>
        <widget class="QCheckBox" name="remindToTrackTime">
+        <property name="styleSheet">
+         <string notr="true">color:rgb(85, 85, 85);</string>
+        </property>
         <property name="text">
          <string>Remind to track time</string>
         </property>
@@ -334,6 +346,9 @@
       </property>
       <item>
        <widget class="QCheckBox" name="pomodoroTimer">
+        <property name="styleSheet">
+         <string notr="true">color:rgb(85, 85, 85);</string>
+        </property>
         <property name="text">
          <string>Pomodoro timer</string>
         </property>
@@ -389,6 +404,9 @@
       </property>
       <item>
        <widget class="QCheckBox" name="pomodoroBreakTimer">
+        <property name="styleSheet">
+         <string notr="true">color:rgb(85, 85, 85);</string>
+        </property>
         <property name="text">
          <string>Pomodoro break timer</string>
         </property>
@@ -438,6 +456,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="focusAppOnShortcut">
+     <property name="styleSheet">
+      <string notr="true">color:rgb(85, 85, 85);</string>
+     </property>
      <property name="text">
       <string>Focus app on shortcut</string>
      </property>

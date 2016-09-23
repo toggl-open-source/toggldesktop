@@ -50,6 +50,9 @@
    </item>
    <item>
     <widget class="QLabel" name="blankView">
+     <property name="styleSheet">
+      <string notr="true">color:rgb(85, 85, 85);</string>
+     </property>
      <property name="text">
       <string>Welcome back! Your previous entries are available in the web under &lt;a href=&quot;#reports&quot;&gt;Reports&lt;/a&gt;</string>
      </property>
