@@ -122,6 +122,7 @@ void TimerWidget::displayStoppedTimerState() {
         ui->description->setEditText(descriptionPlaceholder);
     }
     ui->description->setEnabled(true);
+    ui->description->setToolTip(QString(""));
 
     if (!ui->duration->hasFocus()) {
         ui->duration->setText("");
