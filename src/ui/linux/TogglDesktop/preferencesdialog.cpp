@@ -59,6 +59,7 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->pomodoroMinutes->setEnabled(ui->pomodoroTimer->isChecked());
 
     ui->pomodoroBreakTimer->setChecked(settings->PomodoroBreak);
+    ui->pomodoroBreakTimer->setEnabled(settings->Pomodoro);
     ui->pomodoroBreakMinutes->setText(
                 QString::number(settings->PomodoroBreakMinutes));
     ui->pomodoroBreakMinutes->setEnabled(
