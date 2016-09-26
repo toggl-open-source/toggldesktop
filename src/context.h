@@ -628,6 +628,8 @@ class Context : public TimelineDatasource {
     std::set<std::string> autotracker_titles_;
 
     HelpDatabase help_database_;
+
+    TimeEntry *pomodoro_break_entry_;
 };
 
 void on_websocket_message(

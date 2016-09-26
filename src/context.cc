@@ -112,6 +112,7 @@ Context::Context(const std::string app_name, const std::string app_version)
     }
 
     last_tracking_reminder_time_ = time(0);
+    pomodoro_break_entry_ = nullptr;
 }
 
 Context::~Context() {
@@ -3782,10 +3783,16 @@ void Context::displayPomodoro() {
         if (!user_) {
             return;
         }
-        if (!user_->RunningTimeEntry()) {
+
+        TimeEntry *current_te = user_->RunningTimeEntry();
+        if (!current_te) {
             return;
         }
-        TimeEntry *current_te = user_->RunningTimeEntry();
+        if (pomodoro_break_entry_ != nullptr
+                && current_te->GUID().compare(
+                    pomodoro_break_entry_->GUID()) == 0) {
+            return;
+        }
 
         if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
             if (time(0) - current_te->LastStartAt()
@@ -3804,12 +3811,12 @@ void Context::displayPomodoro() {
 
     if (settings_.pomodoro_break) {
         //  Start a new task with the tag "pomodoro-break"
-        TimeEntry *pb_te = user_->Start("Pomodoro Break",  // description
-                                        "",  // duration
-                                        0,  // task_id
-                                        0,  // project_id
-                                        "",  // project_guid
-                                        "pomodoro-break");  // tags
+        pomodoro_break_entry_ = user_->Start("Pomodoro Break",  // description
+                                             "",  // duration
+                                             0,  // task_id
+                                             0,  // project_id
+                                             "",  // project_guid
+                                             "pomodoro-break");  // tags
     }
 }
 
@@ -3825,11 +3832,14 @@ void Context::displayPomodoroBreak() {
         }
 
         TimeEntry *current_te = user_->RunningTimeEntry();
+
         if (!current_te) {
             return;
-        } else if (current_te->Tags().find("pomodoro-break")
-                   == std::string::npos) {
-            // If it doesn't have the tag "pomodoro-break", also return
+        }
+
+        if (pomodoro_break_entry_ == nullptr
+                || current_te->GUID().compare(
+                    pomodoro_break_entry_->GUID()) != 0) {
             return;
         }
 
@@ -3838,6 +3848,7 @@ void Context::displayPomodoroBreak() {
             return;
         }
     }
+    pomodoro_break_entry_ = nullptr;
     Stop(true);
     UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes);
 }
