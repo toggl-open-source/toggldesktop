@@ -145,8 +145,8 @@ bool_t toggl_set_settings_pomodoro(
     const bool_t pomodoro) {
     if (!pomodoro) {
         return (toggl::noError == app(context)->SetSettingsPomodoro(pomodoro)
-            && toggl::noError ==
-            app(context)->SetSettingsPomodoroBreak(pomodoro));
+                && toggl::noError ==
+                app(context)->SetSettingsPomodoroBreak(pomodoro));
     }
     return toggl::noError == app(context)->SetSettingsPomodoro(pomodoro);
 }
