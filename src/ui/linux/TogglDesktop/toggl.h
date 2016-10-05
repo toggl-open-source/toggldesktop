@@ -151,6 +151,10 @@ class TogglApi : public QObject {
     bool setSettingsReminder(const bool reminder);
     bool setSettingsIdleMinutes(const uint64_t idle_minutes);
     bool setSettingsReminderMinutes(const uint64_t reminder_minutes);
+    bool setSettingsPomodoro(const bool pomodoro);
+    bool setSettingsPomodoroMinutes(const uint64_t pomodoro_minutes);
+    bool setSettingsPomodoroBreak(const bool pomodoro_break);
+    bool setSettingsPomodoroBreakMinutes(const uint64_t pomodoro_break_minutes);
 
     void toggleTimelineRecording(
         const bool recordTimeline);
@@ -160,6 +164,12 @@ class TogglApi : public QObject {
 
     QString userEmail();
 
+    // keyboard shortcut saving
+    void setShowHideKey(const QString keys);
+    void setContinueStopKey(const QString keys);
+    QString getShowHideKey();
+    QString getContinueStopKey();
+
     bool sendFeedback(const QString topic,
                       const QString details,
                       const QString filename);
@@ -167,6 +177,9 @@ class TogglApi : public QObject {
     bool discardTimeAt(const QString guid,
                        const uint64_t at,
                        const bool split_into_new_time_entry);
+
+    bool discardTimeAndContinue(const QString guid,
+                                const uint64_t at);
 
     bool runScriptFile(const QString filename);
 
@@ -195,13 +208,18 @@ class TogglApi : public QObject {
         const QString title,
         const QString informative_text);
 
+    void displayPomodoroBreak(
+        const QString title,
+        const QString informative_text);
+
     void displayReminder(
         const QString title,
         const QString informative_text);
 
     void displayTimeEntryList(
         const bool open,
-        QVector<TimeEntryView *> list);
+        QVector<TimeEntryView *> list,
+        const bool show_load_more_button);
 
     void displayTimeEntryEditor(
         const bool open,
@@ -242,6 +260,10 @@ class TogglApi : public QObject {
     void displayWorkspaceSelect(
         QVector<GenericView *> list);
 
+    void updateShowHideShortcut();
+
+    void updateContinueStopShortcut();
+
  private:
     void *ctx;
 
@@ -268,6 +290,9 @@ void on_display_login(
     const bool_t open,
     const uint64_t user_id);
 void on_display_pomodoro(
+    const char *title,
+    const char *informative_text);
+void on_display_pomodoro_break(
     const char *title,
     const char *informative_text);
 void on_display_reminder(

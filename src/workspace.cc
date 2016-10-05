@@ -3,7 +3,7 @@
 #include "../src/workspace.h"
 
 #include <sstream>
-#include "formatter.h"
+#include "./formatter.h"
 
 namespace toggl {
 

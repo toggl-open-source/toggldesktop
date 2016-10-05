@@ -143,7 +143,19 @@ bool_t toggl_set_settings_reminder(
 bool_t toggl_set_settings_pomodoro(
     void *context,
     const bool_t pomodoro) {
+    if (!pomodoro) {
+        return (toggl::noError == app(context)->SetSettingsPomodoro(pomodoro)
+                && toggl::noError ==
+                app(context)->SetSettingsPomodoroBreak(pomodoro));
+    }
     return toggl::noError == app(context)->SetSettingsPomodoro(pomodoro);
+}
+
+bool_t toggl_set_settings_pomodoro_break(
+    void *context,
+    const bool_t pomodoro_break) {
+    return toggl::noError == app(context)->
+           SetSettingsPomodoroBreak(pomodoro_break);
 }
 
 bool_t toggl_set_settings_idle_minutes(
@@ -177,6 +189,13 @@ bool_t toggl_set_settings_pomodoro_minutes(
     const uint64_t pomodoro_minutes) {
     return toggl::noError == app(context)->
            SetSettingsPomodoroMinutes(pomodoro_minutes);
+}
+
+bool_t toggl_set_settings_pomodoro_break_minutes(
+    void *context,
+    const uint64_t pomodoro_break_minutes) {
+    return toggl::noError == app(context)->
+           SetSettingsPomodoroBreakMinutes(pomodoro_break_minutes);
 }
 
 bool_t toggl_set_window_settings(
@@ -930,6 +949,12 @@ void toggl_on_pomodoro(
     app(context)->UI()->OnDisplayPomodoro(cb);
 }
 
+void toggl_on_pomodoro_break(
+    void *context,
+    TogglDisplayPomodoroBreak cb) {
+    app(context)->UI()->OnDisplayPomodoroBreak(cb);
+}
+
 void toggl_on_autotracker_notification(
     void *context,
     TogglDisplayAutotrackerNotification cb) {
@@ -1224,53 +1249,45 @@ bool_t toggl_get_keep_end_time_fixed(
 
 void toggl_set_mini_timer_x(
     void *context,
-    const int64_t value)
-{
+    const int64_t value) {
     app(context)->SetMiniTimerX(value);
 }
 
 int64_t toggl_get_mini_timer_x(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerX();
 }
 
 void toggl_set_mini_timer_y(
     void *context,
-    const int64_t value)
-{
+    const int64_t value) {
     app(context)->SetMiniTimerY(value);
 }
 
 int64_t toggl_get_mini_timer_y(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerY();
 }
 
 void toggl_set_mini_timer_w(
     void *context,
-    const int64_t value)
-{
+    const int64_t value) {
     app(context)->SetMiniTimerW(value);
 }
 
 int64_t toggl_get_mini_timer_w(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerW();
 }
 
 void toggl_set_mini_timer_visible(
     void *context,
-    const bool_t value)
-{
+    const bool_t value) {
     app(context)->SetMiniTimerVisible(value);
 }
 
 bool_t toggl_get_mini_timer_visible(
-    void *context)
-{
+    void *context) {
     return app(context)->GetMiniTimerVisible();
 }
 

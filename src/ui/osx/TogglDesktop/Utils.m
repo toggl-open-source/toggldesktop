@@ -230,7 +230,7 @@ BOOL wasLaunchedAsHiddenLoginItem()
 	{
 		LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(login_items_array, i);
 		CFURLRef item_url_ref = NULL;
-		if (!LSSharedFileListItemResolve(item, 0, &item_url_ref, NULL) == noErr)
+		if (!(LSSharedFileListItemResolve(item, 0, &item_url_ref, NULL) == noErr))
 		{
 			continue;
 		}

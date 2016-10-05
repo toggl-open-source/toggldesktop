@@ -24,6 +24,8 @@
 	self.reminder_minutes = (int)data->ReminderMinutes;
 	self.pomodoro = data->Pomodoro;
 	self.pomodoro_minutes = (int)data->PomodoroMinutes;
+	self.pomodoro_break = data->PomodoroBreak;
+	self.pomodoro_break_minutes = (int)data->PomodoroBreakMinutes;
 	self.manual_mode = data->ManualMode;
 
 	self.use_proxy = data->UseProxy;

@@ -106,6 +106,8 @@ class Database {
 
     error SetSettingsPomodoro(const bool &pomodoro);
 
+    error SetSettingsPomodoroBreak(const bool &pomodoro_break);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool &focus_on_shortcut);
@@ -113,6 +115,9 @@ class Database {
     error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
     error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
+
+    error SetSettingsPomodoroBreakMinutes(
+        const Poco::UInt64 pomodoro_break_minutes);
 
     error SetSettingsManualMode(const bool &manual_mode);
 
@@ -325,6 +330,10 @@ class Database {
         const std::string table_name,
         std::vector<T *> *list,
         std::vector<ModelChange> *changes);
+
+    error deleteAllFromTableByDate(
+        const std::string table_name,
+        const Poco::Timestamp &time);
 
     error deleteAllFromTableByUID(
         const std::string table_name,

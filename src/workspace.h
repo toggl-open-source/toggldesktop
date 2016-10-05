@@ -58,6 +58,7 @@ class Workspace : public BaseModel {
     std::string ModelURL() const;
     void LoadFromJSON(Json::Value value);
     void LoadSettingsFromJson(Json::Value value);
+
  private:
     std::string name_;
     bool premium_;

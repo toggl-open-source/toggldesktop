@@ -43,6 +43,8 @@ class IdleNotificationDialog : public QDialog {
 
     void on_discardTimeButton_clicked();
 
+    void on_discardTimeAndContinueButton_clicked();
+
     void timeout();
 
     void on_pushButton_clicked();

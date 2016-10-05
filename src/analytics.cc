@@ -203,6 +203,15 @@ void GoogleAnalyticsSettingsEvent::runTask() {
         setActionInt("pomodoro_minutes-", settings.pomodoro_minutes);
         makeReq();
     }
+
+    setActionBool("pomodoro_break-", settings.pomodoro_break);
+    makeReq();
+
+    if (settings.pomodoro_break) {
+        setActionInt("pomodoro_break_minutes-",
+                     settings.pomodoro_break_minutes);
+        makeReq();
+    }
 }
 
 void GoogleAnalyticsSettingsEvent::setActionBool(std::string type, bool value) {

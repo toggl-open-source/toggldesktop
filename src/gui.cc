@@ -244,6 +244,9 @@ error GUI::findMissingCallbacks() {
     if (!on_display_pomodoro_) {
         return error("!on_display_pomodoro_");
     }
+    if (!on_display_pomodoro_break_) {
+        return error("!on_display_pomodoro_break_");
+    }
     return noError;
 }
 
@@ -266,6 +269,19 @@ void GUI::DisplayPomodoro(const Poco::UInt64 minutes) {
 
     char_t *s2 = copy_string(ss.str());
     on_display_pomodoro_(s1, s2);
+    free(s1);
+    free(s2);
+}
+
+void GUI::DisplayPomodoroBreak(const Poco::UInt64 minutes) {
+    logger().debug("DisplayPomodoroBreak");
+    char_t *s1 = copy_string("Pomodoro Break Timer");
+
+    std::stringstream ss;
+    ss << "Hope you enjoyed your " << minutes << "-minutes break.";
+
+    char_t *s2 = copy_string(ss.str());
+    on_display_pomodoro_break_(s1, s2);
     free(s1);
     free(s2);
 }
@@ -386,7 +402,7 @@ void GUI::DisplayProjectAutocomplete(
 void GUI::DisplayTimeEntryList(const bool open,
                                const std::vector<view::TimeEntry> list,
                                const bool show_load_more_button) {
-    time_entry_editor_guid_ = "";
+
     Poco::Stopwatch stopwatch;
     stopwatch.start();
     {

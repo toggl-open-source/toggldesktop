@@ -87,6 +87,20 @@ Database::Database(const std::string db_path)
         return;
     }
 
+    // Remove Time Entries older than 30 days from local db
+    Poco::LocalDateTime today;
+
+    Poco::LocalDateTime start =
+        today - Poco::Timespan(30 * Poco::Timespan::DAYS);
+
+    err = deleteAllFromTableByDate(
+        "time_entries", start.timestamp());
+
+    if (err != noError) {
+        logger().error("failed to clean Up Data: " + err);
+        // but will continue, its not vital
+    }
+
     err = vacuum();
     if (err != noError) {
         logger().error("failed to vacuum: " + err);
@@ -210,6 +224,36 @@ error Database::deleteAllFromTableByUID(
         return ex;
     }
     return last_error("deleteAllFromTableByUID");
+}
+
+error Database::deleteAllFromTableByDate(
+    const std::string table_name,
+    const Poco::Timestamp &time) {
+
+    if (table_name.empty()) {
+        return error("Cannot delete from table without table name");
+    }
+
+    const Poco::Int64 stopTime = time.epochTime();
+
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "delete from " + table_name + " where "
+                  "id NOT NULL and stop < :stop",
+                  useRef(stopTime),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("deleteAllFromTableByDate");
 }
 
 error Database::journalMode(std::string *mode) {
@@ -368,7 +412,8 @@ error Database::LoadSettings(Settings *settings) {
                   "remind_mon, remind_tue, remind_wed, remind_thu, "
                   "remind_fri, remind_sat, remind_sun, autotrack, "
                   "open_editor_on_shortcut, has_seen_beta_offering, "
-                  "pomodoro, pomodoro_minutes "
+                  "pomodoro, pomodoro_minutes, "
+                  "pomodoro_break, pomodoro_break_minutes "
                   "from settings "
                   "limit 1",
                   into(settings->use_idle_detection),
@@ -396,6 +441,8 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->has_seen_beta_offering),
                   into(settings->pomodoro),
                   into(settings->pomodoro_minutes),
+                  into(settings->pomodoro_break),
+                  into(settings->pomodoro_break_minutes),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -441,33 +488,27 @@ error Database::SaveWindowSettings(
     return last_error("SaveWindowSettings");
 }
 
-error Database::SetMiniTimerX(const Poco::Int64 x)
-{
+error Database::SetMiniTimerX(const Poco::Int64 x) {
     return setSettingsValue("mini_timer_x", x);
 }
 
-error Database::GetMiniTimerX(Poco::Int64* x)
-{
+error Database::GetMiniTimerX(Poco::Int64* x) {
     return getSettingsValue("mini_timer_x", x);
 }
 
-error Database::SetMiniTimerY(const Poco::Int64 y)
-{
+error Database::SetMiniTimerY(const Poco::Int64 y) {
     return setSettingsValue("mini_timer_y", y);
 }
 
-error Database::GetMiniTimerY(Poco::Int64* y)
-{
+error Database::GetMiniTimerY(Poco::Int64* y) {
     return getSettingsValue("mini_timer_y", y);
 }
 
-error Database::SetMiniTimerW(const Poco::Int64 w)
-{
+error Database::SetMiniTimerW(const Poco::Int64 w) {
     return setSettingsValue("mini_timer_w", w);
 }
 
-error Database::GetMiniTimerW(Poco::Int64* w)
-{
+error Database::GetMiniTimerW(Poco::Int64* w) {
     return getSettingsValue("mini_timer_w", w);
 }
 
@@ -757,6 +798,10 @@ error Database::SetSettingsPomodoro(const bool &pomodoro) {
     return setSettingsValue("pomodoro", pomodoro);
 }
 
+error Database::SetSettingsPomodoroBreak(const bool &pomodoro_break) {
+    return setSettingsValue("pomodoro_break", pomodoro_break);
+}
+
 error Database::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     Poco::UInt64 new_value = idle_minutes;
     if (new_value < 1) {
@@ -843,6 +888,15 @@ error Database::SetSettingsPomodoroMinutes(
         new_value = 1;
     }
     return setSettingsValue("pomodoro_minutes", new_value);
+}
+
+error Database::SetSettingsPomodoroBreakMinutes(
+    const Poco::UInt64 pomodoro_break_minutes) {
+    Poco::UInt64 new_value = pomodoro_break_minutes;
+    if (new_value < 1) {
+        new_value = 1;
+    }
+    return setSettingsValue("pomodoro_break_minutes", new_value);
 }
 
 error Database::SaveProxySettings(

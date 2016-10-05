@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="470" Width="500"
+        Height="500" Width="500"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Preferences"
@@ -36,6 +36,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <CheckBox Grid.Column="0" Grid.Row="0"
@@ -59,16 +60,29 @@
                                     Orientation="Horizontal">
                             <TextBox Name="pomodoroTimerDuration" x:FieldModifier="private"
                                     Width="30"  HorizontalContentAlignment="Right" 
-                                  IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">5</TextBox>
+                                  IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">25</TextBox>
                             <TextBlock Margin="4 0 0 0"
-                                  IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">minutes</TextBlock>
+                                  IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">minutes</TextBlock>
                         </StackPanel>
 
-
                         <CheckBox Grid.Column="0" Grid.Row="2"
+                            Name="enablePomodoroBreakCheckBox" x:FieldModifier="private"
+                            HorizontalContentAlignment="Stretch"
+                            Margin="5"
+                            IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">Pomodoro Break Timer</CheckBox>
+                        <StackPanel Margin="5" Grid.Column="1" Grid.Row="2"
+                                    Orientation="Horizontal">
+                            <TextBox Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
+                                    Width="30"  HorizontalContentAlignment="Right" 
+                                  IsEnabled="{Binding ElementName=enableBreakPomodoroCheckBox, Path=IsChecked}">5</TextBox>
+                            <TextBlock Margin="4 0 0 0"
+                                  IsEnabled="{Binding ElementName=enableBreakPomodoroCheckBox, Path=IsChecked}">minutes</TextBlock>
+                        </StackPanel>
+
+                        <CheckBox Grid.Column="0" Grid.Row="3"
                             Name="recordTimelineCheckBox" x:FieldModifier="private"
                             Margin="5">Record timeline</CheckBox>
-                        <CheckBox Grid.Column="0" Grid.Row="3"
+                        <CheckBox Grid.Column="0" Grid.Row="4"
                             Name="onTopCheckBox" x:FieldModifier="private"
                             Margin="5">On top of other windows</CheckBox>
 

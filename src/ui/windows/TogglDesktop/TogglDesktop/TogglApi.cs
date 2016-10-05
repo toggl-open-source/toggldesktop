@@ -13,12 +13,6 @@ public static partial class Toggl
     private const CallingConvention convention = CallingConvention.Cdecl;
     private const int structPackingBytes = 8;
 
-
-
-
-
-
-
 // Constants
 
     private const int kOnlineStateOnline = 0;
@@ -179,7 +173,9 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.I1)] public bool Autotrack;
         [MarshalAs(UnmanagedType.I1)] public bool OpenEditorOnShortcut;
         [MarshalAs(UnmanagedType.I1)] public bool Pomodoro;
+        [MarshalAs(UnmanagedType.I1)] public bool PomodoroBreak;
         public UInt64 PomodoroMinutes;
+        public UInt64 PomodoroBreakMinutes;
 
         public override string ToString()
         {
@@ -260,6 +256,11 @@ public static partial class Toggl
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void TogglDisplayPomodoro(
+        [MarshalAs(UnmanagedType.LPWStr)] string title,
+        [MarshalAs(UnmanagedType.LPWStr)] string informative_text);
+
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void TogglDisplayPomodoroBreak(
         [MarshalAs(UnmanagedType.LPWStr)] string title,
         [MarshalAs(UnmanagedType.LPWStr)] string informative_text);
 
@@ -475,6 +476,11 @@ public static partial class Toggl
     private static extern void toggl_on_pomodoro(
         IntPtr context,
         TogglDisplayPomodoro cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_pomodoro_break(
+        IntPtr context,
+        TogglDisplayPomodoroBreak cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_autotracker_notification(
@@ -809,6 +815,12 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_pomodoro_break(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)] bool pomodoro_break);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return: MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_idle_minutes(
         IntPtr context,
         UInt64 idle_minutes);
@@ -830,6 +842,12 @@ public static partial class Toggl
     private static extern bool toggl_set_settings_pomodoro_minutes(
         IntPtr context,
         UInt64 pomodoro_minutes);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_pomodoro_break_minutes(
+        IntPtr context,
+        UInt64 pomodoro_break_minutes);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return: MarshalAs(UnmanagedType.I1)]

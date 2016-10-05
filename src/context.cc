@@ -55,7 +55,7 @@
 #include "Poco/URIStreamOpener.h"
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
-#include <mutex>
+#include <mutex> // NOLINT
 
 namespace toggl {
 
@@ -112,6 +112,7 @@ Context::Context(const std::string app_name, const std::string app_version)
     }
 
     last_tracking_reminder_time_ = time(0);
+    pomodoro_break_entry_ = nullptr;
 }
 
 Context::~Context() {
@@ -544,7 +545,8 @@ void Context::updateUI(const UIElements &what) {
                     user_->CanSeeBillable(ws);
                 editor_time_entry_view.DefaultWID = user_->DefaultWID();
 
-                editor_time_entry_view.Locked = isTimeEntryLocked(editor_time_entry);
+                editor_time_entry_view.Locked = isTimeEntryLocked(
+                    editor_time_entry);
 
                 // Display tags also when time entry is being edited,
                 // because tags are filtered by TE WID
@@ -1666,6 +1668,11 @@ error Context::SetSettingsPomodoro(const bool pomodoro) {
         db()->SetSettingsPomodoro(pomodoro));
 }
 
+error Context::SetSettingsPomodoroBreak(const bool pomodoro_break) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsPomodoroBreak(pomodoro_break));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -1689,6 +1696,12 @@ error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
 error Context::SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsPomodoroMinutes(pomodoro_minutes));
+}
+
+error Context::SetSettingsPomodoroBreakMinutes(
+    const Poco::UInt64 pomodoro_break_minutes) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsPomodoroBreakMinutes(pomodoro_break_minutes));
 }
 
 error Context::LoadWindowSettings(
@@ -1723,39 +1736,33 @@ error Context::SaveWindowSettings(
     return displayError(err);
 }
 
-Poco::Int64 Context::GetMiniTimerX()
-{
+Poco::Int64 Context::GetMiniTimerX() {
     Poco::Int64 value(0);
     displayError(db()->GetMiniTimerX(&value));
     return value;
 }
 
-void Context::SetMiniTimerX(const int64_t x)
-{
+void Context::SetMiniTimerX(const int64_t x) {
     displayError(db()->SetMiniTimerX(x));
 }
 
-Poco::Int64 Context::GetMiniTimerY()
-{
+Poco::Int64 Context::GetMiniTimerY() {
     Poco::Int64 value(0);
     displayError(db()->GetMiniTimerY(&value));
     return value;
 }
 
-void Context::SetMiniTimerY(const int64_t y)
-{
+void Context::SetMiniTimerY(const int64_t y) {
     displayError(db()->SetMiniTimerY(y));
 }
 
-Poco::Int64 Context::GetMiniTimerW()
-{
+Poco::Int64 Context::GetMiniTimerW() {
     Poco::Int64 value(0);
     displayError(db()->GetMiniTimerW(&value));
     return value;
 }
 
-void Context::SetMiniTimerW(const int64_t y)
-{
+void Context::SetMiniTimerW(const int64_t y) {
     displayError(db()->SetMiniTimerW(y));
 }
 
@@ -2330,16 +2337,14 @@ TimeEntry *Context::Start(
             return nullptr;
         }
 
-        // Check if there's a default TID set
         Poco::UInt64 tid(task_id);
-        if (!tid) {
-            tid = user_->DefaultTID();
-        }
 
         // Check if there's a default PID set
         Poco::UInt64 pid(project_id);
         if (!pid && project_guid.empty()) {
             pid = user_->DefaultPID();
+            // Check if there's a default TID set
+            tid = user_->DefaultTID();
         }
 
         te = user_->Start(description,
@@ -2348,8 +2353,6 @@ TimeEntry *Context::Start(
                           pid,
                           project_guid,
                           tags);
-
-        last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2460,8 +2463,6 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
         result = user_->Continue(
             latest->GUID(),
             settings_.manual_mode);
-
-        last_pomodoro_reminder_time_ = time(0);
     }
 
 
@@ -2525,8 +2526,6 @@ TimeEntry *Context::Continue(
         result = user_->Continue(
             GUID,
             settings_.manual_mode);
-
-        last_pomodoro_reminder_time_ = time(0);
     }
 
     error err = save();
@@ -2618,8 +2617,6 @@ error Context::SetTimeEntryDuration(
     }
 
     te->SetDurationUserInput(duration);
-
-    last_pomodoro_reminder_time_ = te->Start();
     return displayError(save());
 }
 
@@ -2657,8 +2654,9 @@ error Context::SetTimeEntryProject(
             p = user_->related.ProjectByGUID(project_guid);
         }
 
-        if (!canChangeProjectTo(te, p)) {
-            return displayError(error("Cannot change project: would end up with locked time entry"));
+        if (p && !canChangeProjectTo(te, p)) {
+            return displayError(error(
+                "Cannot change project: would end up with locked time entry"));
         }
 
         if (p) {
@@ -2727,9 +2725,10 @@ error Context::SetTimeEntryDate(
             time_part.hour(), time_part.minute(), time_part.second());
 
         if (!canChangeStartTimeTo(te, dt.timestamp().epochTime())) {
-            return displayError(error("Failed to change time entry date: workspace is locked."));
+            return displayError(
+                error(
+                    "Failed to change time entry date: workspace is locked."));
         }
-
     }
 
     std::string s = Poco::DateTimeFormatter::format(
@@ -2785,7 +2784,6 @@ error Context::SetTimeEntryStart(
 
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
-    last_pomodoro_reminder_time_ = te->Start();
     return displayError(save());
 }
 
@@ -3396,9 +3394,13 @@ Project *Context::CreateProject(
             user_->related.Projects.begin();
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
-            if ((p->Name() == trimmed_project_name)
-                    && (workspace_id == p->WID())
-                    && (client_id == p->CID())) {
+
+            auto clientIsSame = client_guid == p->ClientGUID();
+            if (client_id != 0 && p->CID() != 0) {
+                clientIsSame = clientIsSame || client_id == p->CID();
+            }
+
+            if (clientIsSame && p->Name() == trimmed_project_name) {
                 displayError(kProjectNameAlreadyExists);
                 return nullptr;
             }
@@ -3494,7 +3496,7 @@ Client *Context::CreateClient(
             user_->related.Clients.begin();
                 it != user_->related.Clients.end(); it++) {
             Client *c = *it;
-            if (c->Name() == trimmed_client_name) {
+            if (c->WID() == workspace_id && c->Name() == trimmed_client_name) {
                 displayError(kClientNameAlreadyExists);
                 return nullptr;
             }
@@ -3820,19 +3822,76 @@ void Context::displayPomodoro() {
         if (!user_) {
             return;
         }
-        if (!user_->RunningTimeEntry()) {
+
+        TimeEntry *current_te = user_->RunningTimeEntry();
+        if (!current_te) {
+            return;
+        }
+        if (pomodoro_break_entry_ != nullptr
+                && current_te->GUID().compare(
+                    pomodoro_break_entry_->GUID()) == 0) {
             return;
         }
 
-        if (time(0) - last_pomodoro_reminder_time_
-                < settings_.pomodoro_minutes * 60) {
-            return;
+        if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
+            if (time(0) - current_te->LastStartAt()
+                    < settings_.pomodoro_minutes * 60) {
+                return;
+            }
+        } else {
+            if (time(0) - current_te->Start()
+                    < settings_.pomodoro_minutes * 60) {
+                return;
+            }
         }
-
-        last_pomodoro_reminder_time_ = time(0);
     }
-    Stop(false);
+
+    Stop(true);
+
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
+
+    if (settings_.pomodoro_break) {
+        //  Start a new task with the tag "pomodoro-break"
+        pomodoro_break_entry_ = user_->Start("Pomodoro Break",  // description
+                                             "",  // duration
+                                             0,  // task_id
+                                             0,  // project_id
+                                             "",  // project_guid
+                                             "pomodoro-break");  // tags
+    }
+}
+
+void Context::displayPomodoroBreak() {
+    if (!settings_.pomodoro_break) {
+        return;
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            return;
+        }
+
+        TimeEntry *current_te = user_->RunningTimeEntry();
+
+        if (!current_te) {
+            return;
+        }
+
+        if (pomodoro_break_entry_ == nullptr
+                || current_te->GUID().compare(
+                    pomodoro_break_entry_->GUID()) != 0) {
+            return;
+        }
+
+        if (time(0) - current_te->Start()
+                < settings_.pomodoro_break_minutes * 60) {
+            return;
+        }
+    }
+    pomodoro_break_entry_ = nullptr;
+    Stop(true);
+    UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes);
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent event) {
@@ -4017,6 +4076,7 @@ void Context::uiUpdaterActivity() {
 void Context::checkReminders() {
     displayReminder();
     displayPomodoro();
+    displayPomodoroBreak();
 }
 
 void Context::reminderActivity() {
@@ -4036,19 +4096,22 @@ void Context::reminderActivity() {
 void Context::LoadMore() {
     {
         Poco::Mutex::ScopedLock lock(user_m_);
-        if(!user_ || user_->HasLoadedMore()) {
+
+        if (!user_ || user_->HasLoadedMore()) {
             return;
         }
     }
     {
         Poco::Util::TimerTask::Ptr task =
-            new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onLoadMore);
+            new Poco::Util::TimerTaskAdapter<Context>(*this,
+                    &Context::onLoadMore);
         Poco::Mutex::ScopedLock lock(timer_m_);
         timer_.schedule(task, postpone(0));
     }
 }
 
 void Context::onLoadMore(Poco::Util::TimerTask& task) {
+    bool needs_render = !user_->HasLoadedMore();
 
     std::string api_token;
     {
@@ -4060,13 +4123,14 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
     }
 
     if (api_token.empty()) {
-        return logger().warning("cannot load more time entries without API token");
+        return logger().warning(
+            "cannot load more time entries without API token");
     }
 
     try {
         std::stringstream ss;
         ss << "/api/v9/me/time_entries?since="
-           << (Poco::Timestamp() - Poco::Timespan(30, 0, 0, 0, 0)).epochTime();
+           << (Poco::Timestamp() - Poco::Timespan(60, 0, 0, 0, 0)).epochTime();
 
         std::stringstream l;
         l << "loading more: " << ss.str();
@@ -4099,6 +4163,13 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
             }
 
             user_->ConfirmLoadedMore();
+
+            // Removes load more button if nothing is to be loaded
+            if (needs_render) {
+                UIElements render;
+                render.display_time_entries = true;
+                updateUI(render);
+            }
         }
 
         displayError(save(false));
@@ -4415,15 +4486,13 @@ error Context::pushObmAction() {
                 }
             }
 
-            if (!for_upload)
-            {
+            if (!for_upload) {
                 return noError;
             }
 
             Json::Value root = for_upload->SaveToJSON();
             req.relative_url = for_upload->ModelURL();
             req.payload = Json::StyledWriter().write(root);
-
         }
 
         logger().debug(req.payload);
@@ -4432,16 +4501,15 @@ error Context::pushObmAction() {
         HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
             // backend responds 204 on success
-            if (resp.status_code != 204)
-            {
+            if (resp.status_code != 204) {
                 return resp.err;
             }
         }
 
-        // mark as deleted to prevent duplicate uploading (and make sure all other actions are uploaded)
+        // mark as deleted to prevent duplicate uploading
+        // (and make sure all other actions are uploaded)
         for_upload->MarkAsDeletedOnServer();
         for_upload->Delete();
-
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -4502,7 +4570,8 @@ error Context::me(
 }
 
 bool Context::isTimeEntryLocked(TimeEntry* te) {
-    return isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(te->WID()));
+    return isTimeLockedInWorkspace(te->Start(),
+                                   user_->related.WorkspaceByID(te->WID()));
 }
 
 bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
@@ -4510,7 +4579,8 @@ bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
 }
 
 bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
-    return !isTimeLockedInWorkspace(te->Start(), user_->related.WorkspaceByID(p->WID()));
+    return !isTimeLockedInWorkspace(te->Start(),
+                                    user_->related.WorkspaceByID(p->WID()));
 }
 
 error Context::logAndDisplayUserTriedEditingLockedEntry() {
@@ -4519,6 +4589,8 @@ error Context::logAndDisplayUserTriedEditingLockedEntry() {
 }
 
 bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
+    if (!ws)
+        return false;
     if (!ws->Business())
         return false;
     if (ws->Admin())
@@ -4528,7 +4600,6 @@ bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
         return false;
     return t < lockedTime;
 }
-
 
 error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
     Poco::Mutex::ScopedLock lock(user_m_);
@@ -4540,7 +4611,6 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
             it = workspaces.begin();
             it != workspaces.end();
             it++) {
-
         Workspace* ws = *it;
 
         if (!ws->Business())
@@ -4631,6 +4701,8 @@ error Context::signup(
         Json::Value user;
         user["email"] = email;
         user["password"] = password;
+        user["created_with"] = Formatter::EscapeJSONString(
+            HTTPSClient::Config.UserAgent());
 
         Json::Value root;
         root["user"] = user;

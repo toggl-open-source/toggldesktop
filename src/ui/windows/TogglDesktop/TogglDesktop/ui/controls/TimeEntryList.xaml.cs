@@ -243,6 +243,14 @@ namespace TogglDesktop
             if (!this.hasKeyboardSelection)
                 return;
 
+            TimeEntryCell item = this.cells[this.keyboardSelectedId].Item2;
+
+            if (item.confirmlessDelete)
+            {
+                Toggl.DeleteTimeEntry(this.keyboardHighlightedGUID);
+                return;
+            }
+
             Toggl.AskToDeleteEntry(this.keyboardHighlightedGUID);
         }
 

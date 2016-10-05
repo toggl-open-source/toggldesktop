@@ -17,6 +17,7 @@
 #include <QSettings>  // NOLINT
 #include <QVBoxLayout>  // NOLINT
 #include <QStatusBar>  // NOLINT
+#include <QPushButton>  // NOLINT
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
@@ -84,11 +85,23 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayPomodoro(QString,QString)),  // NOLINT
+            this, SLOT(displayPomodoro(QString,QString)));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(displayPomodoroBreak(QString,QString)),  // NOLINT
+            this, SLOT(displayPomodoroBreak(QString,QString)));  // NOLINT
+
     connect(TogglApi::instance, SIGNAL(displayUpdate(QString)),  // NOLINT
             this, SLOT(displayUpdate(QString)));  // NOLINT
 
     connect(TogglApi::instance, SIGNAL(displayOnlineState(int64_t)),  // NOLINT
             this, SLOT(displayOnlineState(int64_t)));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(updateShowHideShortcut()),  // NOLINT
+            this, SLOT(updateShowHideShortcut()));  // NOLINT
+
+    connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
+            this, SLOT(updateContinueStopShortcut()));  // NOLINT
 
 
     hasTrayIconCached = hasTrayIcon();
@@ -101,6 +114,7 @@ MainWindowController::MainWindowController(
         trayIcon = new QSystemTrayIcon(this);
     }
 
+    setShortcuts();
     connectMenuActions();
     enableMenuActions();
 
@@ -147,11 +161,51 @@ void MainWindowController::displayPomodoro(
     }
     pomodoro = true;
 
-    QMessageBox(
-        QMessageBox::Information,
-        title,
-        informative_text,
-        QMessageBox::Ok).exec();
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Toggl Desktop");
+    msgBox.setText(title);
+    msgBox.setInformativeText(informative_text);
+    QPushButton *continueButton =
+        msgBox.addButton(tr("Continue"), QMessageBox::YesRole);
+    QPushButton *closeButton =
+        msgBox.addButton(tr("Close"), QMessageBox::NoRole);
+    msgBox.setDefaultButton(closeButton);
+    msgBox.setEscapeButton(closeButton);
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == continueButton) {
+        TogglApi::instance->continueLatestTimeEntry();
+    }
+
+    pomodoro = false;
+}
+
+void MainWindowController::displayPomodoroBreak(
+    const QString title,
+    const QString informative_text) {
+
+    if (pomodoro) {
+        return;
+    }
+    pomodoro = true;
+
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Toggl Desktop");
+    msgBox.setText(title);
+    msgBox.setInformativeText(informative_text);
+    QPushButton *continueButton =
+        msgBox.addButton(tr("Continue"), QMessageBox::YesRole);
+    QPushButton *closeButton =
+        msgBox.addButton(tr("Close"), QMessageBox::NoRole);
+    msgBox.setDefaultButton(closeButton);
+    msgBox.setEscapeButton(closeButton);
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == continueButton) {
+        TogglApi::instance->continueLatestTimeEntry();
+    }
 
     pomodoro = false;
 }
@@ -212,6 +266,51 @@ void MainWindowController::enableMenuActions() {
             setWindowIcon(iconDisabled);
         }
     }
+}
+
+void MainWindowController::showHideHotkeyPressed() {
+    if (this->isVisible()) {
+        if (this->isActiveWindow()) {
+            hide();
+        } else {
+            activateWindow();
+        }
+    } else {
+        onActionShow();
+        activateWindow();
+    }
+}
+
+void MainWindowController::continueStopHotkeyPressed() {
+    if (tracking) {
+        onActionStop();
+    } else {
+        onActionContinue();
+    }
+}
+
+void MainWindowController::updateShowHideShortcut() {
+    showHide->setShortcut(
+        QKeySequence(TogglApi::instance->getShowHideKey()));
+}
+
+void MainWindowController::updateContinueStopShortcut() {
+    continueStop->setShortcut(
+        QKeySequence(TogglApi::instance->getContinueStopKey()));
+}
+
+void MainWindowController::setShortcuts() {
+    showHide = new QxtGlobalShortcut(this);
+    connect(showHide, SIGNAL(activated()),
+            this, SLOT(showHideHotkeyPressed()));
+
+    updateShowHideShortcut();
+
+    continueStop = new QxtGlobalShortcut(this);
+    connect(continueStop, SIGNAL(activated()),
+            this, SLOT(continueStopHotkeyPressed()));
+
+    updateContinueStopShortcut();
 }
 
 void MainWindowController::connectMenuActions() {

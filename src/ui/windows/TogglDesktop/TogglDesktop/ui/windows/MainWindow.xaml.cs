@@ -593,6 +593,7 @@ namespace TogglDesktop
 
         public void MinimizeToTray()
         {
+            Utils.SaveWindowLocation(this, this.editPopup, this.miniTimer);
             this.Hide();
             this.closeEditPopup(skipAnimation: true);
         }

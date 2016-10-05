@@ -41,7 +41,9 @@ class Settings : public BaseModel {
     , open_editor_on_shortcut(false)
     , has_seen_beta_offering(false)
     , pomodoro(false)
-    , pomodoro_minutes(0) {}
+    , pomodoro_minutes(0)
+    , pomodoro_break(false)
+    , pomodoro_break_minutes(0) {}
 
     virtual ~Settings() {}
 
@@ -69,7 +71,9 @@ class Settings : public BaseModel {
     bool open_editor_on_shortcut;
     bool has_seen_beta_offering;
     bool pomodoro;
+    bool pomodoro_break;
     Poco::UInt64 pomodoro_minutes;
+    Poco::UInt64 pomodoro_break_minutes;
 
     bool IsSame(const Settings &other) const;
 

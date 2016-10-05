@@ -26,7 +26,8 @@ namespace TogglDesktop
         private ulong selectedClientId;
         private string selectedClientName;
         private bool isCreatingProject;
-
+        private bool dateSet = false;
+        private bool confirmlessDelete = false;
         public EditView()
         {
             this.DataContext = this;
@@ -72,6 +73,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("filling edit view from OnTimeEntryEditor"))
             {
+                this.dateSet = false;
                 if (timeEntry.Locked)
                 {
                     open = true;
@@ -99,6 +101,9 @@ namespace TogglDesktop
                 }
 
                 this.timeEntry = timeEntry;
+
+                this.confirmlessDelete = (timeEntry.Description.Length == 0
+                    && timeEntry.DurationInSeconds < 15 && timeEntry.PID == 0);
 
                 var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
 
@@ -165,6 +170,7 @@ namespace TogglDesktop
                         this.projectAddButtonColumn.SharedSizeGroup = null;
                     }
                 }
+                this.dateSet = true;
             }
         }
 
@@ -371,17 +377,9 @@ namespace TogglDesktop
             apiCall(this.timeEntry.GUID, now);
         }
 
-        private void startDatePicker_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            this.applyDateChangeOrReset();
-        }
+        #region datepicker
 
-        private void startDatePicker_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            this.applyDateChangeOrReset();
-        }
-
-        private void applyDateChangeOrReset()
+        private void saveDate()
         {
             if (!this.hasTimeEntry())
             {
@@ -393,8 +391,25 @@ namespace TogglDesktop
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(this.timeEntry.Started);
                 return;
             }
-            Toggl.SetTimeEntryDate(this.timeEntry.GUID, this.startDatePicker.SelectedDate.Value);
+
+            DateTime currentDate = Toggl.DateTimeFromUnix(timeEntry.Started);
+            DateTime selected = Convert.ToDateTime(this.startDatePicker.Text);
+            if (!currentDate.Date.Equals(selected.Date))
+            {
+                currentDate = selected;
+                Toggl.SetTimeEntryDate(this.timeEntry.GUID, selected);
+            }
         }
+
+        private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.dateSet)
+            {
+                this.saveDate();
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -991,6 +1006,11 @@ namespace TogglDesktop
 
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (this.confirmlessDelete)
+            {
+                Toggl.DeleteTimeEntry(this.timeEntry.GUID);
+                return;
+            }
             Toggl.AskToDeleteEntry(this.timeEntry.GUID);
         }
 

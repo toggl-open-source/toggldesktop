@@ -145,6 +145,12 @@ std::string TimeEntry::String() const {
     return ss.str();
 }
 
+void TimeEntry::SetLastStartAt(const Poco::UInt64 value) {
+    if (last_start_at_ != value) {
+        last_start_at_ = value;
+    }
+}
+
 void TimeEntry::SetDurOnly(const bool value) {
     if (duronly_ != value) {
         duronly_ = value;

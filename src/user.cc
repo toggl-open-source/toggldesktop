@@ -164,6 +164,7 @@ TimeEntry *User::Continue(
         existing->SetDurationInSeconds(
             -time(0) + existing->DurationInSeconds());
         existing->SetUIModified();
+        existing->SetLastStartAt(time(0));
         return existing;
     }
 
@@ -360,6 +361,7 @@ TimeEntry *User::DiscardTimeAt(
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
+        split->SetWID(te->WID());
         related.TimeEntries.push_back(split);
         return split;
     }

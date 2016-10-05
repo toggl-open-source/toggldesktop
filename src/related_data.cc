@@ -155,6 +155,8 @@ Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
 
 TimeEntry *RelatedData::LatestTimeEntry() const {
     TimeEntry *latest = nullptr;
+    std::string pomodoro_decription("Pomodoro Break");
+    std::string pomodoro_tag("pomodoro-break");
 
     // Find the time entry that was stopped most recently
     for (std::vector<TimeEntry *>::const_iterator it =
@@ -169,6 +171,12 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
             continue;
         }
         if (te->DeletedAt() > 0) {
+            continue;
+        }
+        if (te->Description().compare(pomodoro_decription) == 0) {
+            continue;
+        }
+        if (te->Tags().find(pomodoro_tag) == 0) {
             continue;
         }
 

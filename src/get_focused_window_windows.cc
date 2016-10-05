@@ -25,31 +25,31 @@ int getFocusedWindowInfo(
     HWND window_handle = GetForegroundWindow();
     if (!window_handle) {
         *idle = true;
-        return 0;
+        return 1;
     }
 
     // get process by window handle
     DWORD process_id;
     GetWindowThreadProcessId(window_handle, &process_id);
     if (!process_id) {
-        return 0;
+        return 2;
     }
 
     DWORD current_pid = GetCurrentProcessId();
     if (!current_pid) {
-        return 0;
+        return 3;
     }
 
     // We are not interested in our own app windows
     if (current_pid == process_id) {
-        return 0;
+        return 4;
     }
 
     // get the filename of another process
     HANDLE ps = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE,
                             process_id);
     if (!ps) {
-        return 0;
+        return 5;
     }
 
     CHAR filename_buffer[kFilenameBufferSize];
@@ -63,7 +63,7 @@ int getFocusedWindowInfo(
     int length = GetWindowTextLengthW(window_handle);
     DWORD err = GetLastError();
     if (err) {
-        return 0;
+        return err;
     }
     if (length) {
         wchar_t buf[kTitleBufSize];

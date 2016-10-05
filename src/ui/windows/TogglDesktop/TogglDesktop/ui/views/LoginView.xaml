@@ -64,9 +64,9 @@
 
                 <Button Name="googleLoginButton" x:FieldModifier="private"
                     Click="onGoogleLoginClick">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Background="Transparent">
                         <Image Source="/TogglDesktop;component/Resources/icon-google.png"
-                               Width="18" Height="27" Margin="0 0 5 0"/>
+                               Width="18" Height="18" Margin="0 4 8 4"/>
                         <TextBlock Text="LOG IN WITH GOOGLE"
                                    VerticalAlignment="Center"/>
                     </StackPanel>

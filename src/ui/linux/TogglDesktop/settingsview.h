@@ -31,11 +31,15 @@ class SettingsView : public QObject {
         result->ReminderMinutes = view->ReminderMinutes;
         result->ManualMode = view->ManualMode;
         result->FocusOnShortcut = view->FocusOnShortcut;
+        result->Pomodoro = view->Pomodoro;
+        result->PomodoroMinutes = view->PomodoroMinutes;
+        result->PomodoroBreak = view->PomodoroBreak;
+        result->PomodoroBreakMinutes = view->PomodoroBreakMinutes;
         return result;
     }
 
     bool UseProxy;
-    QString ProxyHost;;
+    QString ProxyHost;
     uint64_t ProxyPort;
     QString ProxyUsername;
     QString ProxyPassword;
@@ -50,6 +54,10 @@ class SettingsView : public QObject {
     bool ManualMode;
     bool AutodetectProxy;
     bool FocusOnShortcut;
+    bool Pomodoro;
+    uint64_t PomodoroMinutes;
+    bool PomodoroBreak;
+    uint64_t PomodoroBreakMinutes;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_

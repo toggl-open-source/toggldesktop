@@ -143,7 +143,9 @@ class Context : public TimelineDatasource {
 
     error SetSettingsReminder(const bool reminder);
 
-    error SetSettingsPomodoro(const bool reminder);
+    error SetSettingsPomodoro(const bool pomodoro);
+
+    error SetSettingsPomodoroBreak(const bool pomodoro_break);
 
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
@@ -152,6 +154,9 @@ class Context : public TimelineDatasource {
     error SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes);
 
     error SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes);
+
+    error SetSettingsPomodoroBreakMinutes(
+        const Poco::UInt64 pomodoro_break_minutes);
 
     error SetSettingsManualMode(const bool manual_mode);
 
@@ -470,7 +475,7 @@ class Context : public TimelineDatasource {
     void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
     void onTrackSettingsUsage(Poco::Util::TimerTask& task);  // NOLINT
     void onWake(Poco::Util::TimerTask& task);  // NOLINT
-    void onLoadMore(Poco::Util::TimerTask& task);
+    void onLoadMore(Poco::Util::TimerTask& task); // NOLINT
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
@@ -492,6 +497,8 @@ class Context : public TimelineDatasource {
     void displayReminder();
 
     void displayPomodoro();
+
+    void displayPomodoroBreak();
 
     void updateUI(const UIElements &elements);
 
@@ -551,7 +558,8 @@ class Context : public TimelineDatasource {
     error logAndDisplayUserTriedEditingLockedEntry();
 
     error pullWorkspacePreferences(TogglClient* https_client);
-    error pullWorkspacePreferences(TogglClient* https_client, Workspace *workspace, std::string* json);
+    error pullWorkspacePreferences(TogglClient* https_client,
+                                   Workspace *workspace, std::string* json);
 
     error pushObmAction();
 
@@ -603,6 +611,7 @@ class Context : public TimelineDatasource {
     Poco::Int64 sync_interval_seconds_;
     Poco::UInt64 last_tracking_reminder_time_;
     Poco::UInt64 last_pomodoro_reminder_time_;
+    Poco::UInt64 last_pomodoro_break_reminder_time_;
 
     bool update_check_disabled_;
 
@@ -627,6 +636,8 @@ class Context : public TimelineDatasource {
     std::set<std::string> autotracker_titles_;
 
     HelpDatabase help_database_;
+
+    TimeEntry *pomodoro_break_entry_;
 };
 
 void on_websocket_message(

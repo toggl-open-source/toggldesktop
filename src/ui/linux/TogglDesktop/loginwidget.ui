@@ -140,7 +140,7 @@
             <bool>false</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);</string>
+            <string notr="true">background-color: rgb(255, 255, 255);color:rgb(85, 85, 85);</string>
            </property>
            <property name="placeholderText">
             <string>Your e-mail address</string>
@@ -165,7 +165,7 @@
             <bool>false</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);</string>
+            <string notr="true">background-color: rgb(255, 255, 255);color:rgb(85, 85, 85);</string>
            </property>
            <property name="text">
             <string/>
@@ -220,7 +220,7 @@
              <bool>false</bool>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(255, 255, 255);</string>
+             <string notr="true">background-color: rgb(255, 255, 255);color:rgb(85, 85, 85);</string>
             </property>
             <property name="text">
              <string>Log in</string>
@@ -251,7 +251,7 @@
              <bool>false</bool>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(255, 255, 255);</string>
+             <string notr="true">background-color: rgb(255, 255, 255);color:rgb(85, 85, 85);</string>
             </property>
             <property name="text">
              <string>Sign up</string>

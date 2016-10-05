@@ -48,6 +48,8 @@ class TimeEntryEditorWidget : public QWidget {
 
     QString previousTagList;
 
+    bool confirmlessDelete;
+
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
     void toggleNewClientMode(const bool visible);
@@ -59,7 +61,8 @@ class TimeEntryEditorWidget : public QWidget {
 
     void displayTimeEntryList(
         const bool open,
-        QVector<TimeEntryView *> list);
+        QVector<TimeEntryView *> list,
+        const bool show_load_more_button);
 
     void displayTimeEntryEditor(
         const bool open,

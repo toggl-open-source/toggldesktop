@@ -66,6 +66,14 @@ void on_display_pomodoro(
         QString(informative_text));
 }
 
+void on_display_pomodoro_break(
+    const char *title,
+    const char *informative_text) {
+    TogglApi::instance->displayPomodoroBreak(
+        QString(title),
+        QString(informative_text));
+}
+
 void on_display_reminder(
     const char *title,
     const char *informative_text) {
@@ -76,10 +84,12 @@ void on_display_reminder(
 
 void on_display_time_entry_list(
     const bool_t open,
-    TogglTimeEntryView *first) {
+    TogglTimeEntryView *first,
+    const bool_t show_load_more_button) {
     TogglApi::instance->displayTimeEntryList(
         open,
-        TimeEntryView::importAll(first));
+        TimeEntryView::importAll(first),
+        show_load_more_button);
 }
 
 void on_display_time_entry_autocomplete(
@@ -212,6 +222,7 @@ TogglApi::TogglApi(
     toggl_on_url(ctx, on_display_url);
     toggl_on_login(ctx, on_display_login);
     toggl_on_pomodoro(ctx, on_display_pomodoro);
+    toggl_on_pomodoro_break(ctx, on_display_pomodoro_break);
     toggl_on_reminder(ctx, on_display_reminder);
     toggl_on_time_entry_list(ctx, on_display_time_entry_list);
     toggl_on_time_entry_autocomplete(ctx, on_display_time_entry_autocomplete);
@@ -324,6 +335,11 @@ bool TogglApi::discardTimeAt(const QString guid,
                                  split_into_new_time_entry);
 }
 
+bool TogglApi::discardTimeAndContinue(const QString guid,
+                                      const uint64_t at) {
+    return toggl_discard_time_and_continue(ctx, guid.toStdString().c_str(), at);
+}
+
 // Returns true if script file was successfully
 // executed. If returns false, check log.
 bool TogglApi::runScriptFile(const QString filename) {
@@ -388,6 +404,16 @@ bool TogglApi::setSettingsReminder(const bool reminder) {
                                        reminder);
 }
 
+bool TogglApi::setSettingsPomodoro(const bool pomodoro) {
+    return toggl_set_settings_pomodoro(ctx,
+                                       pomodoro);
+}
+
+bool TogglApi::setSettingsPomodoroBreak(const bool pomodoro_break) {
+    return toggl_set_settings_pomodoro_break(ctx,
+            pomodoro_break);
+}
+
 bool TogglApi::setSettingsIdleMinutes(const uint64_t idleMinutes) {
     return toggl_set_settings_idle_minutes(ctx,
                                            idleMinutes);
@@ -396,6 +422,17 @@ bool TogglApi::setSettingsIdleMinutes(const uint64_t idleMinutes) {
 bool TogglApi::setSettingsReminderMinutes(const uint64_t reminderMinutes) {
     return toggl_set_settings_reminder_minutes(ctx,
             reminderMinutes);
+}
+
+bool TogglApi::setSettingsPomodoroMinutes(const uint64_t pomodoroMinutes) {
+    return toggl_set_settings_pomodoro_minutes(ctx,
+            pomodoroMinutes);
+}
+
+bool TogglApi::setSettingsPomodoroBreakMinutes(
+    const uint64_t pomodoro_break_minutes) {
+    return toggl_set_settings_pomodoro_break_minutes(ctx,
+            pomodoro_break_minutes);
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
@@ -437,7 +474,8 @@ QString TogglApi::start(
                              task_id,
                              project_id,
                              0 /* project guid */,
-                             0 /* tags */);
+                             0 /* tags */,
+                             false);
     QString res("");
     if (guid) {
         res = QString(guid);
@@ -447,7 +485,7 @@ QString TogglApi::start(
 }
 
 bool TogglApi::stop() {
-    return toggl_stop(ctx);
+    return toggl_stop(ctx, false);
 }
 
 const QString TogglApi::formatDurationInSecondsHHMMSS(
@@ -463,7 +501,7 @@ bool TogglApi::continueTimeEntry(const QString guid) {
 }
 
 bool TogglApi::continueLatestTimeEntry() {
-    return toggl_continue_latest(ctx);
+    return toggl_continue_latest(ctx, false);
 }
 
 void TogglApi::sync() {
@@ -604,4 +642,28 @@ bool TogglApi::sendFeedback(const QString topic,
                                topic.toStdString().c_str(),
                                details.toStdString().c_str(),
                                filename.toStdString().c_str());
+}
+
+void TogglApi::setShowHideKey(const QString keys) {
+    toggl_set_key_show(ctx, keys.toStdString().c_str());
+    TogglApi::instance->updateShowHideShortcut();
+}
+
+void TogglApi::setContinueStopKey(const QString keys) {
+    toggl_set_key_start(ctx, keys.toStdString().c_str());
+    TogglApi::instance->updateContinueStopShortcut();
+}
+
+QString TogglApi::getShowHideKey() {
+    char *buf = toggl_get_key_show(ctx);
+    QString res = QString(buf);
+    free(buf);
+    return res;
+}
+
+QString TogglApi::getContinueStopKey() {
+    char *buf = toggl_get_key_start(ctx);
+    QString res = QString(buf);
+    free(buf);
+    return res;
 }

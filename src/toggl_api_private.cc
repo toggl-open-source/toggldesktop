@@ -352,6 +352,8 @@ TogglSettingsView *settings_view_item_init(
 
     view->Pomodoro = settings.pomodoro;
     view->PomodoroMinutes = settings.pomodoro_minutes;
+    view->PomodoroBreak = settings.pomodoro_break;
+    view->PomodoroBreakMinutes = settings.pomodoro_break_minutes;
 
     return view;
 }

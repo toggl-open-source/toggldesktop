@@ -229,7 +229,9 @@ class Settings {
     , Autotrack(false)
     , OpenEditorOnShortcut(false)
     , Pomodoro(false)
-    , PomodoroMinutes(0) {}
+    , PomodoroMinutes(0)
+    , PomodoroBreak(false)
+    , PomodoroBreakMinutes(0) {}
 
     bool UseProxy;
     std::string ProxyHost;
@@ -260,7 +262,9 @@ class Settings {
     bool Autotrack;
     bool OpenEditorOnShortcut;
     bool Pomodoro;
+    bool PomodoroBreak;
     uint64_t PomodoroMinutes;
+    uint64_t PomodoroBreakMinutes;
 
     bool operator == (const Settings& other) const;
 };
@@ -317,6 +321,7 @@ class GUI : public SyncStateMonitor {
     , on_display_url_(nullptr)
     , on_display_reminder_(nullptr)
     , on_display_pomodoro_(nullptr)
+    , on_display_pomodoro_break_(nullptr)
     , on_display_time_entry_list_(nullptr)
     , on_display_time_entry_autocomplete_(nullptr)
     , on_display_project_autocomplete_(nullptr)
@@ -366,6 +371,8 @@ class GUI : public SyncStateMonitor {
     void DisplayReminder();
 
     void DisplayPomodoro(const Poco::UInt64 minutes);
+
+    void DisplayPomodoroBreak(const Poco::UInt64 minutes);
 
     void DisplayAutotrackerNotification(
         toggl::Project *const p,
@@ -481,6 +488,10 @@ class GUI : public SyncStateMonitor {
 
     void OnDisplayPomodoro(TogglDisplayPomodoro cb) {
         on_display_pomodoro_ = cb;
+    }
+
+    void OnDisplayPomodoroBreak(TogglDisplayPomodoroBreak cb) {
+        on_display_pomodoro_break_ = cb;
     }
 
     void OnDisplayAutotrackerNotification(
@@ -609,6 +620,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayURL on_display_url_;
     TogglDisplayReminder on_display_reminder_;
     TogglDisplayPomodoro on_display_pomodoro_;
+    TogglDisplayPomodoroBreak on_display_pomodoro_break_;
     TogglDisplayTimeEntryList on_display_time_entry_list_;
     TogglDisplayAutocomplete on_display_time_entry_autocomplete_;
     TogglDisplayAutocomplete on_display_project_autocomplete_;

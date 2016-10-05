@@ -40,5 +40,7 @@
 @property BOOL open_editor_on_shortcut;
 @property BOOL render_timeline;
 @property BOOL pomodoro;
+@property BOOL pomodoro_break;
 @property int pomodoro_minutes;
+@property int pomodoro_break_minutes;
 @end

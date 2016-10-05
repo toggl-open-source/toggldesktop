@@ -60,6 +60,7 @@ cp $QLIBPATH/libicudata.so.54 $out/lib
 cp $QLIBPATH/libQt5Quick.so.5 $out/lib
 cp $QLIBPATH/libQt5Qml.so.5 $out/lib
 cp $QLIBPATH/libQt5WebChannel.so.5 $out/lib
+cp $QLIBPATH/libQt5X11Extras.so.5 $out/lib
 
 # Copy Qt plugins
 cp $QPATH/plugins/imageformats/libqsvg.so $out/imageformats

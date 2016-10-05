@@ -16,6 +16,7 @@
 #include "./aboutdialog.h"
 #include "./feedbackdialog.h"
 #include "./idlenotificationdialog.h"
+#include "./qxtglobalshortcut.h"
 
 namespace Ui {
 class MainWindowController;
@@ -35,6 +36,7 @@ class MainWindowController : public QMainWindow {
     static MainWindowController *Instance;
 
     void quitApp();
+    void setShortcuts();
 
  protected:
     void closeEvent(QCloseEvent *event);
@@ -57,6 +59,10 @@ class MainWindowController : public QMainWindow {
         const QString title,
         const QString informative_text);
 
+    void displayPomodoroBreak(
+        const QString title,
+        const QString informative_text);
+
     void displayReminder(
         const QString title,
         const QString informative_text);
@@ -64,6 +70,8 @@ class MainWindowController : public QMainWindow {
     void displayUpdate(const QString url);
 
     void displayOnlineState(int64_t);
+    void showHideHotkeyPressed();
+    void continueStopHotkeyPressed();
 
     void onActionNew();
     void onActionContinue();
@@ -79,6 +87,9 @@ class MainWindowController : public QMainWindow {
     void onActionClear_Cache();
     void onActionHelp();
 
+    void updateShowHideShortcut();
+    void updateContinueStopShortcut();
+
  private:
     Ui::MainWindowController *ui;
 
@@ -86,6 +97,9 @@ class MainWindowController : public QMainWindow {
 
     bool tracking;
     bool loggedIn;
+
+    QxtGlobalShortcut* showHide;
+    QxtGlobalShortcut* continueStop;
 
     QAction *actionEmail;
     QAction *actionNew;

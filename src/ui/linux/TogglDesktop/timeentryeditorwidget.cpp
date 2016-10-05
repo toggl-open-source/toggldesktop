@@ -46,8 +46,8 @@ previousTagList("") {
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>)),  // NOLINT
-            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
+            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
     connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),  // NOLINT
             this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));  // NOLINT
@@ -169,7 +169,8 @@ void TimeEntryEditorWidget::displayLogin(
 
 void TimeEntryEditorWidget::displayTimeEntryList(
     const bool open,
-    QVector<TimeEntryView *> list) {
+    QVector<TimeEntryView *> list,
+    const bool) {
     if (open) {
         setVisible(false);
         timer->stop();
@@ -216,6 +217,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
     guid = view->GUID;
     duration = view->DurationInSeconds;
+    confirmlessDelete = view->ConfirmlessDelete;
 
     if (duration < 0) {
         timer->start(1000);
@@ -315,7 +317,7 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
 }
 
 void TimeEntryEditorWidget::on_deleteButton_clicked() {
-    if (QMessageBox::Ok == QMessageBox(
+    if (confirmlessDelete || QMessageBox::Ok == QMessageBox(
         QMessageBox::Question,
         "Delete this time entry?",
         "Deleted time entries cannot be restored.",
