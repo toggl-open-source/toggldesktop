@@ -14,7 +14,7 @@
    <string>About</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color:rgb(220, 220, 220);background-color: rgb(45, 45, 45);</string>
+   <string notr="true">color:rgb(220, 220, 220);background-color: rgb(45, 45, 45);font-size:13px;</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -59,8 +59,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Abyssinica SIL</family>
-       <pointsize>9</pointsize>
+       <pointsize>-1</pointsize>
       </font>
      </property>
      <property name="text">

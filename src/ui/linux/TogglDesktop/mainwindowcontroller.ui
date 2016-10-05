@@ -35,12 +35,15 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font-size:14px;</string>
+   </property>
    <property name="nativeMenuBar">
     <bool>false</bool>
    </property>
    <widget class="QMenu" name="menuToggl_Desktop">
     <property name="title">
-     <string>Toggl Desktop</string>
+     <string>To&amp;ggl Desktop</string>
     </property>
     <addaction name="actionEmail"/>
     <addaction name="separator"/>
@@ -65,7 +68,7 @@
   </widget>
   <action name="actionNew">
    <property name="text">
-    <string>New</string>
+    <string>&amp;New</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
@@ -73,7 +76,7 @@
   </action>
   <action name="actionContinue">
    <property name="text">
-    <string>Continue</string>
+    <string>&amp;Continue</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -81,7 +84,7 @@
   </action>
   <action name="actionStop">
    <property name="text">
-    <string>Stop</string>
+    <string>&amp;Stop</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -89,7 +92,7 @@
   </action>
   <action name="actionSync">
    <property name="text">
-    <string>Sync</string>
+    <string>S&amp;ync</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
@@ -97,32 +100,32 @@
   </action>
   <action name="actionReports">
    <property name="text">
-    <string>Reports</string>
+    <string>&amp;Reports</string>
    </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences</string>
+    <string>&amp;Preferences</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
    </property>
   </action>
   <action name="actionSend_Feedback">
    <property name="text">
-    <string>Send Feedback</string>
+    <string>Send &amp;Feedback</string>
    </property>
   </action>
   <action name="actionLogout">
    <property name="text">
-    <string>Logout</string>
+    <string>&amp;Logout</string>
    </property>
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
   </action>
   <action name="actionClear_Cache">
@@ -132,7 +135,7 @@
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>Help</string>
+    <string>&amp;Help</string>
    </property>
   </action>
   <action name="actionEmail">
@@ -140,12 +143,12 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>email</string>
+    <string>&amp;email</string>
    </property>
   </action>
   <action name="actionShow">
    <property name="text">
-    <string>Show</string>
+    <string>Sh&amp;ow</string>
    </property>
   </action>
  </widget>
