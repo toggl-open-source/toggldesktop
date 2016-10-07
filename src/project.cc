@@ -86,21 +86,14 @@ void Project::SetColor(const std::string value) {
 std::string Project::ColorCode() const {
     int index(0);
     if (!Poco::NumberParser::tryParse(Color(), index)) {
-        return ColorCodes.back();
+        return Color();
     }
     return ColorCodes[index % ColorCodes.size()];
 }
 
 error Project::SetColorCode(const std::string color_code) {
-    for (std::size_t i = 0; i < Project::ColorCodes.size(); i++) {
-        if (Project::ColorCodes[i] == color_code) {
-            std::stringstream ss;
-            ss << i;
-            SetColor(ss.str());
-            return noError;
-        }
-    }
-    return error("invalid color code");
+    SetColor(color_code);
+    return noError;
 }
 
 void Project::SetWID(const Poco::UInt64 value) {
@@ -126,7 +119,7 @@ void Project::LoadFromJSON(Json::Value data) {
     SetName(data["name"].asString());
     SetWID(data["wid"].asUInt64());
     SetCID(data["cid"].asUInt64());
-    SetColor(data["color"].asString());
+    SetColor(data["hex_color"].asString());
     SetActive(data["active"].asBool());
     SetBillable(data["billable"].asBool());
 }
