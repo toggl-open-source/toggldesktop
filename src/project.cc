@@ -92,8 +92,15 @@ std::string Project::ColorCode() const {
 }
 
 error Project::SetColorCode(const std::string color_code) {
-    SetColor(color_code);
-    return noError;
+    for (std::size_t i = 0; i < Project::ColorCodes.size(); i++) {
+        if (Project::ColorCodes[i] == color_code) {
+            std::stringstream ss;
+            ss << i;
+            SetColor(ss.str());
+            return noError;
+        }
+    }
+    return error("invalid color code");
 }
 
 void Project::SetWID(const Poco::UInt64 value) {
