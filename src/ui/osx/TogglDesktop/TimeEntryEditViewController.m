@@ -634,6 +634,11 @@ extern void *ctx;
 
 - (uint64_t)selectedWorkspaceID
 {
+	if (self.workspaceList.count == 1)
+	{
+		ViewItem *workspace = self.workspaceList[0];
+		return workspace.ID;
+	}
 	for (int i = 0; i < self.workspaceList.count; i++)
 	{
 		ViewItem *workspace = self.workspaceList[i];
