@@ -66,7 +66,7 @@
 - (MKColorPickerView *)createPopoverView
 {
 	NSArray *colors = [self colorsForPopover];
-	uint rows = 4;
+	uint rows = 5;
 	NSSize swatchSize = NSMakeSize(20, 20);
 
 	MKColorPickerView *aPopoverView;
