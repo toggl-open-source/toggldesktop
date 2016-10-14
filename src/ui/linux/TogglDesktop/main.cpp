@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) try {
         QFont font(family);
         QApplication::setFont(font);
     }
-    qDebug() << "Application font: " << QApplication::font().toString();
+    // qDebug() << "Application font: " << QApplication::font().toString();
 
     QCommandLineParser parser;
     parser.setApplicationDescription("Toggl Desktop");

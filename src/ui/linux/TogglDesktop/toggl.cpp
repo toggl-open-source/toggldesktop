@@ -359,7 +359,7 @@ bool TogglApi::discardTimeAndContinue(const QString guid,
 // executed. If returns false, check log.
 bool TogglApi::runScriptFile(const QString filename) {
     if (filename.isEmpty()) {
-        qDebug() << "no script to run";
+        // qDebug() << "no script to run";
         return false;
     }
 

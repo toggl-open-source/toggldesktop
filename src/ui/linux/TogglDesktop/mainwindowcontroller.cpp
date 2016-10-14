@@ -498,7 +498,7 @@ void MainWindowController::showEvent(QShowEvent *event) {
         return;
     }
     if (script.isEmpty()) {
-        qDebug() << "no script to run";
+        // qDebug() << "no script to run";
         return;
     }
     qDebug() << "will run script: " << script;
