@@ -9,6 +9,7 @@
 #include <QListWidgetItem>
 
 #include <stdint.h>
+#include "./colorpicker.h"
 
 namespace Ui {
 class TimeEntryEditorWidget;
@@ -24,6 +25,7 @@ class TimeEntryEditorWidget : public QWidget {
  public:
     explicit TimeEntryEditorWidget(QWidget *parent = 0);
     ~TimeEntryEditorWidget();
+    void setSelectedColor(QString color);
 
  private:
     Ui::TimeEntryEditorWidget *ui;
@@ -41,6 +43,8 @@ class TimeEntryEditorWidget : public QWidget {
 
     QVector<GenericView *> clientSelectUpdate;
     bool clientSelectNeedsUpdate;
+
+    ColorPicker *colorPicker;
 
     QTimer *timer;
 
@@ -84,6 +88,8 @@ class TimeEntryEditorWidget : public QWidget {
     void displayProjectAutocomplete(
         QVector<AutocompleteView *> list);
 
+    void setProjectColors(QVector<char *> list);
+
     void timeout();
 
     void on_doneButton_clicked();
@@ -102,6 +108,7 @@ class TimeEntryEditorWidget : public QWidget {
     void on_addNewClientLabel_linkActivated(const QString &link);
     void on_addClientButton_clicked();
     void on_cancelNewClientLabel_linkActivated(const QString &link);
+    void on_colorButton_clicked();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_

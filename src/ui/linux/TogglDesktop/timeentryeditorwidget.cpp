@@ -20,6 +20,7 @@ projectAutocompleteNeedsUpdate(false),
 workspaceSelectNeedsUpdate(false),
 clientSelectNeedsUpdate(false),
 timer(new QTimer(this)),
+colorPicker(new ColorPicker(this)),
 duration(0),
 previousTagList("") {
     ui->setupUi(this);
@@ -67,11 +68,21 @@ previousTagList("") {
     connect(TogglApi::instance, SIGNAL(displayClientSelect(QVector<GenericView*>)),  // NOLINT
             this, SLOT(displayClientSelect(QVector<GenericView*>)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(setProjectColors(QVector<char*>)),  // NOLINT
+            this, SLOT(setProjectColors(QVector<char*>)));  // NOLINT
+
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+
+    TogglApi::instance->getProjectColors();
 }
 
 TimeEntryEditorWidget::~TimeEntryEditorWidget() {
     delete ui;
+}
+
+void TimeEntryEditorWidget::setSelectedColor(QString color) {
+    QString style = "font-size:72px;" + color;
+    ui->colorButton->setStyleSheet(style);
 }
 
 void TimeEntryEditorWidget::displayClientSelect(
@@ -288,13 +299,17 @@ bool TimeEntryEditorWidget::applyNewProject() {
         clientID = client.value<GenericView *>()->ID;
     }
 
+    // Get the selected project color from stylesheet
+    QStringList pieces = ui->colorButton->styleSheet().split("color:");
+    QString colorCode = pieces.value(1).replace(";", "");
+
     QString projectGUID = TogglApi::instance->addProject(guid,
                           workspaceID,
                           clientID,
                           "",
                           ui->newProjectName->text(),
                           !ui->publicProject->isChecked(),
-                          "");
+                          colorCode);
     return !projectGUID.isEmpty();
 }
 
@@ -484,3 +499,17 @@ void TimeEntryEditorWidget::on_cancelNewClientLabel_linkActivated(
     const QString &link) {
     toggleNewClientMode(false);
 }
+
+void TimeEntryEditorWidget::on_colorButton_clicked()
+{
+    int newX = window()->pos().x() + window()->width() - colorPicker->width() + 5;
+    int newY = window()->pos().y() + ui->newProject->pos().y()+80;
+
+    colorPicker->move(newX, newY);
+    colorPicker->show();
+}
+
+void TimeEntryEditorWidget::setProjectColors(QVector<char *> list) {
+    colorPicker->setColors(list);
+}
+

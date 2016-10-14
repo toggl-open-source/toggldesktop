@@ -170,6 +170,8 @@ class TogglApi : public QObject {
     QString getShowHideKey();
     QString getContinueStopKey();
 
+    void getProjectColors();
+
     bool sendFeedback(const QString topic,
                       const QString details,
                       const QString filename);
@@ -264,6 +266,9 @@ class TogglApi : public QObject {
 
     void updateContinueStopShortcut();
 
+    void setProjectColors(
+        QVector<char *> list);
+
  private:
     void *ctx;
 
@@ -327,6 +332,8 @@ void on_display_idle_notification(
     const char *since,
     const char *duration,
     const uint64_t started);
-
+void on_project_colors(
+    const char_t *list[],
+    const uint64_t count);
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_

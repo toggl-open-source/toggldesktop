@@ -122,10 +122,64 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLineEdit" name="newProjectName">
-        <property name="placeholderText">
-         <string>Project name</string>
+       <widget class="QWidget" name="projectNameAndColor" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
         </property>
+        <layout class="QHBoxLayout" name="projectNameAndColor_2">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="newProjectName">
+           <property name="toolTip">
+            <string>Select project color</string>
+           </property>
+           <property name="placeholderText">
+            <string>Project name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="colorButton">
+           <property name="maximumSize">
+            <size>
+             <width>23</width>
+             <height>23</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>-1</pointsize>
+            </font>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:#06aaf5;font-size:72px;</string>
+           </property>
+           <property name="text">
+            <string>■</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -708,7 +762,6 @@
  <tabstops>
   <tabstop>description</tabstop>
   <tabstop>project</tabstop>
-  <tabstop>newProjectName</tabstop>
   <tabstop>publicProject</tabstop>
   <tabstop>duration</tabstop>
   <tabstop>start</tabstop>
