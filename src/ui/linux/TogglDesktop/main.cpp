@@ -46,8 +46,8 @@ int main(int argc, char *argv[]) try {
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<bool_t>("bool_t");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
-    qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*");
-    qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*");
+    qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*>");
+    qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*>");
 
     QApplication::setApplicationName("Toggl Desktop");
     QApplication::setOrganizationName("Toggl");
