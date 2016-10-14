@@ -1,5 +1,24 @@
 {
-    "versions": [{
+    "versions": [
+    {
+      "version": "7.3.345",
+      "date": "October 14th 2016",
+      "rows": [
+        "Added Pomodoro Break functionality",
+         "Increased local data kept to 30 days",
+         "Load more gets last 60 days of data",
+         "Added fast delete for entries without data",
+         "Added duration only mode support to Pomodoro timer",
+         "Fixed issue with entries being removed from list on app start",
+         "Fixed defualt project task overwriting issue",
+         "Updated About view design",
+         "Fixed font color issue with darker themes",
+         "Fixed font issues wiht HiDPI screens",
+         "Added support for new colors",
+         "Added color select to Add project form"
+      ]
+    },
+    {
       "version": "7.3.326",
       "date": "September 8th 2016",
       "rows": [
