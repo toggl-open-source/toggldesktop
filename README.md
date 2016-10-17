@@ -13,7 +13,6 @@ Table of Contents
     * [Windows](#windows)
       * [Install dev tools](#install-dev-tools)
       * [Build OpenSSL](#build-openssl)
-      * [Install NuGet packages](#install-nuget-packages)
       * [Build the app](#build-the-app)
   * [Downloads](#downloads)
     * [macOS](#macos)
