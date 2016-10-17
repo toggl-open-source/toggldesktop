@@ -71,6 +71,9 @@ Below are some distribution specific package requirements:
 ## Debian
 
 * qt5-default
+* libxss-dev
+* libqt5x11extras5-dev
+* libqt5webkit5-dev
 
 ## Ubuntu
 
