@@ -16,7 +16,7 @@ Table of Contents
       * [Install NuGet packages](#install-nuget-packages)
       * [Build the app](#build-the-app)
   * [Downloads](#downloads)
-    * [macOS](#macOS)
+    * [macOS](#macos)
     * [Windows (64 bit only)](#windows-64-bit-only)
     * [Linux (64 bit only)](#linux-64-bit-only)
   * [Change log](#change-log)
