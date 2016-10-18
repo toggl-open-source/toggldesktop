@@ -13,9 +13,9 @@
 namespace toggl {
 
 const char *known_colors[] = {
-    "#4dc3ff", "#bc85e6", "#df7baa", "#f68d38", "#b27636",
-    "#8ab734", "#14a88e", "#268bb5", "#6668b4", "#a4506c",
-    "#67412c", "#3c6526", "#094558", "#bc2d07", "#999999"
+    "#06aaf5", "#c56bff", "#ea468d", "#fb8b14", "#c7741c",
+    "#4bc800", "#04bb9b", "#e19a86", "#3750b5", "#a01aa5",
+    "#f1c33f", "#205500", "#890000", "#e20505", "#000000"
 };
 
 template<typename T, size_t N> T *end(T (&ra)[N]) {
