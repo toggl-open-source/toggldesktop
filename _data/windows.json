@@ -2,7 +2,6 @@
   "versions": [
     {
       "version": "7.3.337",
-      "beta": "true",
       "rows": [
         "Added Pomodoro Break functionality",
         "Increased local data kept to 30 days",
@@ -11,7 +10,7 @@
         "Added duration only mode support to Pomodoro timer",
         "Fixed issue with entries being removed from list on app start"
       ],
-      "date": "October 3rd 2016"
+      "date": "October 26th 2016"
     },
     {
       "version": "7.3.326",
