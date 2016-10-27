@@ -1,8 +1,8 @@
 {
   "versions": [
     {
-      "version": "7.3.345",
-      "date": "October 14th 2016",
+      "version": "7.3.346",
+      "date": "October 27th 2016",
       "rows": [
         "Added Pomodoro Break functionality",
         "Increased local data kept to 30 days",
@@ -10,12 +10,15 @@
         "Added fast delete for entries without data",
         "Added duration only mode support to Pomodoro timer",
         "Fixed issue with entries being removed from list on app start",
-        "Fixed defualt project task overwriting issue",
+        "Fixed default project task overwriting issue",
         "Updated About view design",
         "Fixed font color issue with darker themes",
-        "Fixed font issues wiht HiDPI screens",
+        "Fixed font issues with HiDPI screens",
         "Added support for new colors",
-        "Added color select to Add project form"
+        "Added color select to Add project form",
+        "Fixed tray icon issues in Cinnamon and XFCE",
+        "Fixed background color issues in dark themes",
+        "Updated project color select with new color selection"
       ],
       "screenshots": [
         {
