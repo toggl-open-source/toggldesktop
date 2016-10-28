@@ -935,26 +935,12 @@ error User::LoginToken(
 }
 
 error User::UpdateJSON(
-    std::vector<Client *> * const clients,
     std::vector<TimeEntry *> * const time_entries,
     std::string *result) const {
 
-    poco_check_ptr(clients);
     poco_check_ptr(time_entries);
 
     Json::Value c;
-
-    // First, clients, because projects depend on clients
-    for (std::vector<Client *>::const_iterator it =
-        clients->begin();
-            it != clients->end(); it++) {
-        Json::Value update;
-        error err = (*it)->BatchUpdateJSON(&update);
-        if (err != noError) {
-            return err;
-        }
-        c.append(update);
-    }
 
     // Time entries go last
     for (std::vector<TimeEntry *>::const_iterator it =

@@ -182,7 +182,6 @@ class User : public BaseModel {
     std::vector<TimelineEvent> CompressedTimeline() const;
 
     error UpdateJSON(
-        std::vector<Client *> * const,
         std::vector<TimeEntry *> * const,
         std::string *result) const;
 

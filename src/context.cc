@@ -4279,7 +4279,6 @@ error Context::pushChanges(
             }
 
             error err = user_->UpdateJSON(
-                &clients,
                 &time_entries,
                 &json);
             if (err != noError) {
@@ -4287,8 +4286,17 @@ error Context::pushChanges(
             }
         }
 
+        // Clients first as projects may depend on clients
+        if (clients.size() > 0) {
+            error err = pushClients(clients, api_token, *toggl_client);
+            if (err != noError) {
+                return err;
+            }
+        }
+
+        // Projects second as time entries may depend on projects
         if (projects.size() > 0) {
-            error err = pushProjects(projects, api_token, *toggl_client);
+            error err = pushProjects(projects, clients, api_token, *toggl_client);
             if (err != noError) {
                 return err;
             }
@@ -4352,14 +4360,71 @@ error Context::pushChanges(
     return noError;
 }
 
+error Context::pushClients(
+    std::vector<Client *> clients,
+    std::string api_token,
+    TogglClient toggl_client) {
+    std::string client_json("");
+    for (std::vector<Client *>::const_iterator it =
+        clients.begin();
+            it != clients.end(); it++) {
+        Json::Value clientJson = (*it)->SaveToJSON();
+
+        std::stringstream relative_url;
+        relative_url << "/api/v9/workspaces/"
+                     << (*it)->WID() << "/clients";
+
+        Json::StyledWriter writer;
+        client_json = writer.write(clientJson);
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = relative_url.str();
+        req.payload = client_json;
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client.Post(req);
+
+        if (resp.err != noError) {
+            return resp.body;
+        }
+
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(resp.body, root)) {
+            return error("error parsing client POST response");
+        }
+
+        (*it)->LoadFromJSON(root);
+    }
+
+    return noError;
+}
+
+
 error Context::pushProjects(
     std::vector<Project *> projects,
+    std::vector<Client *> clients,
     std::string api_token,
     TogglClient toggl_client) {
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
         projects.begin();
             it != projects.end(); it++) {
+
+        if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
+            // Find client id
+            for (std::vector<Client *>::const_iterator itc =
+                clients.begin();
+                    itc != clients.end(); itc++) {
+                if ((*itc)->GUID().compare((*it)->ClientGUID()) == 0) {
+                    (*it)->SetCID((*itc)->ID());
+                    break;
+                }
+            }
+        }
+
         Json::Value projectJson = (*it)->SaveToJSON();
 
         std::stringstream relative_url;
