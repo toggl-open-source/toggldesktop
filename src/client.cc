@@ -14,7 +14,11 @@ std::string Client::ModelName() const {
 }
 
 std::string Client::ModelURL() const {
-    return "/api/v8/clients";
+    std::stringstream relative_url;
+    relative_url << "/api/v9/workspaces/"
+                 << WID() << "/clients";
+
+    return relative_url.str();
 }
 
 std::string Client::String() const {

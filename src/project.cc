@@ -191,7 +191,11 @@ std::string Project::ModelName() const {
 }
 
 std::string Project::ModelURL() const {
-    return "/api/v8/projects";
+    std::stringstream relative_url;
+    relative_url << "/api/v9/workspaces/"
+                 << WID() << "/projects";
+
+    return relative_url.str();
 }
 
 }   // namespace toggl

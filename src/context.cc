@@ -4374,16 +4374,12 @@ error Context::pushClients(
             it != clients.end(); it++) {
         Json::Value clientJson = (*it)->SaveToJSON();
 
-        std::stringstream relative_url;
-        relative_url << "/api/v9/workspaces/"
-                     << (*it)->WID() << "/clients";
-
         Json::StyledWriter writer;
         client_json = writer.write(clientJson);
 
         HTTPSRequest req;
         req.host = urls::API();
-        req.relative_url = relative_url.str();
+        req.relative_url = (*it)->ModelURL();
         req.payload = client_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
@@ -4430,16 +4426,12 @@ error Context::pushProjects(
 
         Json::Value projectJson = (*it)->SaveToJSON();
 
-        std::stringstream relative_url;
-        relative_url << "/api/v9/workspaces/"
-                     << (*it)->WID() << "/projects";
-
         Json::StyledWriter writer;
         project_json = writer.write(projectJson);
 
         HTTPSRequest req;
         req.host = urls::API();
-        req.relative_url = relative_url.str();
+        req.relative_url = (*it)->ModelURL();
         req.payload = project_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
