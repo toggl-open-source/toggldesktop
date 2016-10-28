@@ -528,6 +528,10 @@ class Context : public TimelineDatasource {
     error pushChanges(
         TogglClient *https_client,
         bool *had_something_to_push);
+    error pushProjects(
+        std::vector<Project *> projects,
+        std::string api_token,
+        TogglClient toggl_client);
     static error signup(
         TogglClient *https_client,
         const std::string email,

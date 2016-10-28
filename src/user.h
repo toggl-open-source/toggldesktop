@@ -183,7 +183,6 @@ class User : public BaseModel {
 
     error UpdateJSON(
         std::vector<Client *> * const,
-        std::vector<Project *> * const,
         std::vector<TimeEntry *> * const,
         std::string *result) const;
 

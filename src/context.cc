@@ -4280,9 +4280,15 @@ error Context::pushChanges(
 
             error err = user_->UpdateJSON(
                 &clients,
-                &projects,
                 &time_entries,
                 &json);
+            if (err != noError) {
+                return err;
+            }
+        }
+
+        if (projects.size() > 0) {
+            error err = pushProjects(projects, api_token, *toggl_client);
             if (err != noError) {
                 return err;
             }
@@ -4343,6 +4349,48 @@ error Context::pushChanges(
     } catch(const std::string& ex) {
         return ex;
     }
+    return noError;
+}
+
+error Context::pushProjects(
+    std::vector<Project *> projects,
+    std::string api_token,
+    TogglClient toggl_client) {
+    std::string project_json("");
+    for (std::vector<Project *>::const_iterator it =
+        projects.begin();
+            it != projects.end(); it++) {
+        Json::Value projectJson = (*it)->SaveToJSON();
+
+        std::stringstream relative_url;
+        relative_url << "/api/v9/workspaces/"
+                     << (*it)->WID() << "/projects";
+
+        Json::StyledWriter writer;
+        project_json = writer.write(projectJson);
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = relative_url.str();
+        req.payload = project_json;
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client.Post(req);
+
+        if (resp.err != noError) {
+            return resp.body;
+        }
+
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(resp.body, root)) {
+            return error("error parsing project POST response");
+        }
+
+        (*it)->LoadFromJSON(root);
+    }
+
     return noError;
 }
 
