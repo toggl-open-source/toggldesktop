@@ -1417,15 +1417,8 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void context);
-
-#undef TOGGL_EXPORT
-
-#ifdef __cplusplus
-}
-#endif
-
-
+    private static extern void toggl_load_more(
+        IntPtr context);
 }
 
 }
