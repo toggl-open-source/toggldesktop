@@ -98,7 +98,7 @@
                                 BorderThickness="1">
 
                             <Border.BorderBrush>
-                                <SolidColorBrush Color="{Binding EntryBackColor}"/>
+                                <SolidColorBrush Color="White"/>
                             </Border.BorderBrush>
                             
                             <TextBlock Text="9" FontSize="8" HorizontalAlignment="Stretch" VerticalAlignment="Center"
