@@ -135,7 +135,10 @@ TimeEntry *User::Start(
 
     EnsureWID(te);
 
-    te->SetDurOnly(!StoreStartAndStopTime());
+    // Duration only mode is disabled since Snowball
+    bool duronly = !Snowball() && !StoreStartAndStopTime();
+
+    te->SetDurOnly(duronly);
     te->SetUIModified();
 
     related.TimeEntries.push_back(te);
@@ -160,7 +163,10 @@ TimeEntry *User::Continue(
 
     Stop();
 
-    if (existing->DurOnly() && existing->IsToday()) {
+    // Duration only mode is disabled since Snowball
+    bool duronly = !Snowball() && existing->DurOnly();
+
+    if (duronly && existing->IsToday()) {
         existing->SetDurationInSeconds(
             -time(0) + existing->DurationInSeconds());
         existing->SetUIModified();
@@ -171,7 +177,7 @@ TimeEntry *User::Continue(
     TimeEntry *result = new TimeEntry();
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
     result->SetDescription(existing->Description());
-    result->SetDurOnly(existing->DurOnly());
+    result->SetDurOnly(duronly);
     result->SetWID(existing->WID());
     result->SetPID(existing->PID());
     result->SetTID(existing->TID());
@@ -368,9 +374,12 @@ TimeEntry *User::DiscardTimeAt(
     }
 
     if (te && split_into_new_entry) {
+        // Duration only mode is disabled since Snowball
+        bool duronly = !Snowball() && te->DurOnly();
+
         TimeEntry *split = new TimeEntry();
         split->SetCreatedWith(HTTPSClient::Config.UserAgent());
-        split->SetDurOnly(te->DurOnly());
+        split->SetDurOnly(duronly);
         split->SetUID(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
