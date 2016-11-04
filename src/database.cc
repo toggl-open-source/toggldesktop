@@ -3231,7 +3231,9 @@ error Database::SaveUser(
                           "duration_format = :duration_format, "
                           "offline_data = :offline_data, "
                           "default_pid = :default_pid, "
-                          "default_tid = :default_tid "
+                          "default_tid = :default_tid, "
+                          "collapse_entries = :collapse_entries, "
+                          "snowball = :snowball "
                           "where local_id = :local_id",
                           useRef(user->DefaultWID()),
                           useRef(user->Since()),
@@ -3245,6 +3247,8 @@ error Database::SaveUser(
                           useRef(user->OfflineData()),
                           useRef(user->DefaultPID()),
                           useRef(user->DefaultTID()),
+                          useRef(user->CollapseEntries()),
+                          useRef(user->Snowball()),
                           useRef(user->LocalID()),
                           now;
                 error err = last_error("SaveUser");

@@ -320,6 +320,20 @@ void User::SetDefaultTID(const Poco::UInt64 value) {
     }
 }
 
+void User::SetCollapseEntries(const bool value) {
+    if (collapse_entries_ != value) {
+        collapse_entries_ = value;
+        SetDirty();
+    }
+}
+
+void User::SetSnowball(const bool value) {
+    if (snowball_ != value) {
+        snowball_ = value;
+        SetDirty();
+    }
+}
+
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
@@ -905,6 +919,17 @@ void User::loadUserTimeEntryFromJSON(
     model->LoadFromJSON(data);
     model->EnsureGUID();
 }
+
+void User::LoadUserPreferencesFromJSON(
+    Json::Value data) {
+    if (data.isMember("CollapseTimeEntries")) {
+        SetCollapseEntries(data["CollapseTimeEntries"].asBool());
+    }
+    if (data.isMember("Snowball")) {
+        SetSnowball(data["Snowball"].asBool());
+    }
+}
+
 
 error User::UserID(
     const std::string json_data_string,
