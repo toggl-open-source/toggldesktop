@@ -2020,6 +2020,11 @@ error Context::Login(
             return displayError(err);
         }
 
+        err = pullUserPreferences(&client);
+        if (err != noError) {
+            return displayError(err);
+        }
+
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
@@ -4211,6 +4216,8 @@ error Context::pullAllUserData(
 
         pullWorkspacePreferences(toggl_client);
 
+        pullUserPreferences(toggl_client);
+
         stopwatch.stop();
         std::stringstream ss;
         ss << "User with related data JSON fetched and parsed in "
@@ -4620,6 +4627,55 @@ error Context::pullWorkspacePreferences(
         }
 
         *json = resp.body;
+    }
+    catch (const Poco::Exception& exc) {
+        return exc.displayText();
+    }
+    catch (const std::exception& ex) {
+        return ex.what();
+    }
+    catch (const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::pullUserPreferences(
+    TogglClient* toggl_client) {
+    std::string api_token = user_->APIToken();
+
+    if (api_token.empty()) {
+        return error("cannot pull user data without API token");
+    }
+
+    try {
+        std::string json("");
+        std::stringstream ss;
+        ss << "/api/v9/me/preferences";
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client->Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        json = resp.body;
+
+        if (json.empty())
+            return noError;
+
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(json, root)) {
+            return error("Failed to load user preferences");
+        }
+
+        user_->LoadUserPreferencesFromJSON(root);
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();
