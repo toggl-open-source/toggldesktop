@@ -463,14 +463,20 @@ namespace TogglDesktop
             this.loadMoreButton.Visibility = Visibility.Visible;
             this.loadMoreButtonText.Visibility = Visibility.Visible;
             this.loadMoreSpinner.Visibility = Visibility.Collapsed;
-            this.loadMoreSpinnerAnimation.Stop();
+            if (!this.loadMoreButton.IsEnabled)
+            {
+                this.loadMoreSpinnerAnimation.Stop();
+            }
             this.loadMoreButton.IsEnabled = true;
         }
 
         private void hideLoadMoreButton()
         {
             this.loadMoreButton.Visibility = Visibility.Collapsed;
-            this.loadMoreSpinnerAnimation.Stop();
+            if (!this.loadMoreButton.IsEnabled)
+            {
+                this.loadMoreSpinnerAnimation.Stop();
+            }
         }
 
         #endregion
