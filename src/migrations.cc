@@ -650,6 +650,22 @@ error Migrations::migrateUsers() {
         return err;
     }
 
+    err = db_->Migrate(
+        "users.collapse_entries",
+        "alter table users"
+        " add column collapse_entries integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
+    err = db_->Migrate(
+        "users.snowball",
+        "alter table users"
+        " add column snowball integer not null default 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 

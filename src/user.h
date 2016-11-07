@@ -35,7 +35,9 @@ class User : public BaseModel {
     , offline_data_("")
     , default_pid_(0)
     , default_tid_(0)
-    , has_loaded_more_(false) {}
+    , has_loaded_more_(false)
+    , collapse_entries_(false)
+    , snowball_(false) {}
 
     ~User();
 
@@ -153,6 +155,16 @@ class User : public BaseModel {
     }
     void SetDefaultTID(const Poco::UInt64);
 
+    const bool &CollapseEntries() const {
+        return collapse_entries_;
+    }
+    void SetCollapseEntries(const bool value);
+
+    const bool &Snowball() const {
+        return snowball_;
+    }
+    void SetSnowball(const bool value);
+
     RelatedData related;
 
     // Override BaseModel
@@ -188,6 +200,9 @@ class User : public BaseModel {
         std::string *result) const;
 
     void LoadObmExperiments(Json::Value const &obm);
+
+    void LoadUserPreferencesFromJSON(
+        Json::Value data);
 
     template<typename T>
     void EnsureWID(T *model) const {
@@ -301,6 +316,8 @@ class User : public BaseModel {
     Poco::UInt64 default_tid_;
 
     bool has_loaded_more_;
+    bool collapse_entries_;
+    bool snowball_;
 };
 
 template<class T>
