@@ -13,7 +13,7 @@ export LD_LIBRARY_PATH
 # Xubuntu and Cinnamon tray icon fix
 XDG=$XDG_CURRENT_DESKTOP
 
-if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" ]]; then
+if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" ]]; then
   DBUS_SESSION_BUS_ADDRESS=""
 fi;
 
