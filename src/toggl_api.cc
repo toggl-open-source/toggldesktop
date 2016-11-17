@@ -807,6 +807,12 @@ void toggl_get_project_colors(
     app(context)->UI()->DisplayProjectColors();
 }
 
+// Close/Open Entries Group
+void toggl_toggle_entries_group(void *context,
+                                const char_t *name) {
+    app(context)->ToggleEntriesGroup(to_string(name));
+}
+
 char_t *toggl_get_default_project_name(
     void *context) {
     std::string name("");

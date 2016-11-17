@@ -632,38 +632,129 @@ void Context::updateUI(const UIElements &what) {
 
             // Collect the time entries into a list
             std::map<std::string, Poco::Int64> date_durations;
+
+            // Group data maps
+            std::map<std::string, Poco::Int64> group_durations;
+            std::map<std::string, Poco::Int64> group_header_id;
+            std::map<std::string, std::vector<Poco::Int64> > group_items;
+
             for (unsigned int i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
-                view::TimeEntry view;
-                view.Fill(te);
-                // Calculate total duration for each date:
-                // will be displayed in date header
-                Poco::Int64 duration = date_durations[view.DateHeader];
-                duration += Formatter::AbsDuration(te->Duration());
-                date_durations[view.DateHeader] = duration;
+
                 // Dont render running entry in list,
                 // although its calculated into totals per date.
                 if (te->Duration() < 0) {
                     // Don't display running entries
                     continue;
                 }
+
+                std::string date_header = toggl::Formatter::FormatDateHeader(te->Start());
+
+                // Calculate total duration for each date:
+                // will be displayed in date header
+                Poco::Int64 duration = date_durations[date_header];
+                duration += Formatter::AbsDuration(te->Duration());
+                date_durations[date_header] = duration;
+
+                // Calculate total duration of group
+                if (user_->CollapseEntries()) {
+                    std::stringstream ss;
+                    ss << date_header << te->Description()
+                       << te->PID() << te->TID() << te->Billable() << te->Tags();
+                    std::string group_name = ss.str();
+
+                    group_header_id[group_name] = i;
+                    duration = group_durations[group_name];
+                    duration += Formatter::AbsDuration(te->Duration());
+                    group_durations[group_name] = duration;
+                    group_items[group_name].push_back(i);
+
+                }
+            }
+
+            // Assign the date durations we calculated previously
+            for (unsigned int i = 0; i < time_entries.size(); i++) {
+                TimeEntry *te = time_entries[i];
+
+                // Dont render running entry in list,
+                // although its calculated into totals per date.
+                if (te->Duration() < 0) {
+                    // Don't display running entries
+                    continue;
+                }
+
+                view::TimeEntry view;
+                view.Fill(te);
+
+                // Assign group info
+                if (user_->CollapseEntries()) {
+
+                    if (group_items[view.GroupName].size() > 1) {
+
+                        if (group_header_id[view.GroupName] == i) {
+                            // If Group open add all entries in group
+                            if(entry_groups[view.GroupName]) {
+
+                                for (unsigned int j = 0; j < group_items[view.GroupName].size(); j++) {
+                                    TimeEntry *group_entry = time_entries[group_items[view.GroupName][j]];
+
+                                    view::TimeEntry group_entry_view;
+                                    group_entry_view.Fill(group_entry);
+
+                                    group_entry_view.GroupOpen = entry_groups[view.GroupName];
+
+                                    user_->related.ProjectLabelAndColorCode(
+                                        group_entry,
+                                        &group_entry_view);
+
+                                    group_entry_view.Locked = isTimeEntryLocked(group_entry);
+
+                                    group_entry_view.Duration = toggl::Formatter::FormatDuration(
+                                        group_entry_view.DurationInSeconds,
+                                        Formatter::DurationFormat);
+                                    group_entry_view.DateDuration =
+                                        Formatter::FormatDurationForDateHeader(
+                                            date_durations[group_entry_view.DateHeader]);
+                                    time_entry_views.push_back(group_entry_view);
+                                }
+                            }
+
+                            // Add Group header
+                            view::TimeEntry group_view;
+                            group_view.Fill(te);
+                            user_->related.ProjectLabelAndColorCode(
+                                te,
+                                &group_view);
+                            group_view.Group = true;
+                            group_view.GroupOpen = entry_groups[group_view.GroupName];
+                            group_view.Duration =
+                                Formatter::FormatDurationForDateHeader(
+                                    group_durations[view.GroupName]);
+                            group_view.DateDuration =
+                                Formatter::FormatDurationForDateHeader(
+                                    date_durations[view.DateHeader]);
+                            group_view.GroupItemCount = group_items[group_view.GroupName].size();
+                            time_entry_views.push_back(group_view);
+                        }
+                        continue;
+                    }
+
+                }
                 user_->related.ProjectLabelAndColorCode(
                     te,
                     &view);
 
                 view.Locked = isTimeEntryLocked(te);
+                view.GroupOpen = false;
 
-                time_entry_views.push_back(view);
-            }
-            // Assign the date durations we calculated previously
-            for (unsigned int i = 0; i < time_entry_views.size(); i++) {
-                view::TimeEntry &view = time_entry_views[i];
                 view.Duration = toggl::Formatter::FormatDuration(
                     view.DurationInSeconds,
                     Formatter::DurationFormat);
                 view.DateDuration =
                     Formatter::FormatDurationForDateHeader(
                         date_durations[view.DateHeader]);
+                time_entry_views.push_back(view);
+
             }
         }
 
@@ -4842,6 +4933,12 @@ error Context::signup(
     } catch(const std::string& ex) {
         return ex;
     }
+    return noError;
+}
+
+error Context::ToggleEntriesGroup(std::string name) {
+    entry_groups[name] = !entry_groups[name];
+    OpenTimeEntryList();
     return noError;
 }
 

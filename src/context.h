@@ -432,6 +432,9 @@ class Context : public TimelineDatasource {
         const int64_t promotion_type,
         const int64_t promotion_response);
 
+    error ToggleEntriesGroup(
+        std::string name);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -641,6 +644,9 @@ class Context : public TimelineDatasource {
     HelpDatabase help_database_;
 
     TimeEntry *pomodoro_break_entry_;
+
+    // To cache grouped entries open/close status
+    std::map<std::string, bool_t> entry_groups;
 };
 
 void on_websocket_message(
