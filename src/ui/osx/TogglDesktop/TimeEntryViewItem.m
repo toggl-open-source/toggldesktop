@@ -151,6 +151,23 @@
 	{
 		self.confirmlessDelete = NO;
 	}
+
+	// Grouped mode
+
+	// If this entry is group header
+	self.Group = NO;
+	if (te->Group)
+	{
+		self.Group = YES;
+	}
+	self.GroupOpen = NO;
+	if (te->GroupOpen)
+	{
+		self.GroupOpen = YES;
+	}
+	self.GroupName = [NSString stringWithUTF8String:te->GroupName];
+	self.GroupDuration = [NSString stringWithUTF8String:te->GroupDuration];
+	self.GroupItemCount = te->GroupItemCount;
 }
 
 - (void)setLoadMore
