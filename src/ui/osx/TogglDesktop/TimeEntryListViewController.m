@@ -359,7 +359,7 @@ extern void *ctx;
 - (TimeEntryCell *)getSelectedEntryCell:(NSInteger)row
 {
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary  :NO];
+												 makeIfNecessary  :YES];
 
 	if (latestView == nil)
 	{
