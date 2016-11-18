@@ -194,8 +194,8 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
-		[self focusListing:nil];
 	}
+	[self focusListing:nil];
 
 	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;
 	[self.emptyLabel setEnabled:noItems];
@@ -516,20 +516,23 @@ extern void *ctx;
 		return;
 	}
 
+	// If list is focused with keyboard shortcut
 	if (notification != nil && !self.timeEntrypopover.shown)
 	{
 		[self clearLastSelectedEntry];
 		self.lastSelectedRowIndex = 0;
 	}
 
+	if ([self.timeEntriesTableView numberOfRows] < self.lastSelectedRowIndex)
+	{
+		return;
+	}
+
 	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.lastSelectedRowIndex];
 
 	[[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
 	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
-	if ([self.timeEntriesTableView numberOfRows] >= self.lastSelectedRowIndex)
-	{
-		return;
-	}
+
 	TimeEntryCell *cell = [self getSelectedEntryCell:self.lastSelectedRowIndex];
 	if (cell != nil)
 	{
