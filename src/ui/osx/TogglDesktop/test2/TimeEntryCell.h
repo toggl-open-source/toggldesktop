@@ -16,6 +16,10 @@
 @property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
 @property (strong) NSString *GUID;
+@property (strong) NSString *GroupName;
+@property BOOL Group;
+@property BOOL GroupOpen;
+@property long long GroupItemCount;
 @property (strong) IBOutlet NSBox *durationBox;
 @property (strong) IBOutlet NSBox *backgroundBox;
 @property (strong) IBOutlet NSImageView *unsyncedIcon;

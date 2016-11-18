@@ -31,6 +31,10 @@ extern void *ctx;
 
 	self.GUID = view_item.GUID;
 	self.durationTextField.stringValue = view_item.duration;
+	self.Group = view_item.Group;
+	self.GroupName = view_item.GroupName;
+	self.GroupOpen = view_item.GroupOpen;
+	self.GroupItemCount = view_item.GroupItemCount;
 	if (NO == view_item.durOnly)
 	{
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"%@ - %@", view_item.startTimeString, view_item.endTimeString];
@@ -73,20 +77,8 @@ extern void *ctx;
 	// Time entry not synced icon
 	[self.unsyncedIcon setHidden:!view_item.unsynced];
 
-	// Grouped mode background update
-	if (view_item.GroupItemCount)
-	{
-		if (view_item.GroupOpen && !view_item.Group)
-		{
-			// Subitems to darker gray
-			[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#efefef"]];
-		}
-		else
-		{
-			// Group header to lighter gray
-			[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#FAFAFA"]];
-		}
-	}
+	// Set background color
+	[self resetToDefault];
 
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
@@ -142,7 +134,17 @@ extern void *ctx;
 
 - (void)resetToDefault
 {
-	[self.backgroundBox.layer setBackgroundColor:[[ConvertHexColor hexCodeToNSColor:@"#FAFAFA"] CGColor]];
+	// Default color of light gray
+	NSString *fillColor = @"#FAFAFA";
+
+	// Grouped mode background update
+	if (self.GroupItemCount && self.GroupOpen && !self.Group)
+	{
+		// Subitems to darker gray
+		fillColor = @"#efefef";
+	}
+
+	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:fillColor]];
 }
 
 - (void)focusFieldName
@@ -176,7 +178,7 @@ extern void *ctx;
 
 - (void)setFocused
 {
-	[self.backgroundBox.layer setBackgroundColor:[[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"] CGColor]];
+	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"]];
 }
 
 - (void)openEdit
