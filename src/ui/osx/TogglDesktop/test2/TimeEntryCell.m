@@ -73,6 +73,21 @@ extern void *ctx;
 	// Time entry not synced icon
 	[self.unsyncedIcon setHidden:!view_item.unsynced];
 
+	// Grouped mode background update
+	if (view_item.GroupItemCount)
+	{
+		if (view_item.GroupOpen && !view_item.Group)
+		{
+			// Subitems to darker gray
+			[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#efefef"]];
+		}
+		else
+		{
+			// Group header to lighter gray
+			[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#FAFAFA"]];
+		}
+	}
+
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
 	{
