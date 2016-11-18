@@ -229,13 +229,30 @@ extern void *ctx;
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 	if (cmd.open)
 	{
-		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
-		NSRect positionRect = [self.view bounds];
+		NSView *selectedRowView;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
+		if (self.runningEdit)
+		{
+			selectedRowView = self.headerView;
+		}
+		else
+		{
+			selectedRowView = [self getSelectedEntryCell:self.lastSelectedRowIndex];
+		}
+
+		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
+		NSRect positionRect = [selectedRowView bounds];
+		if (selectedRowView.frame.size.height > 56)
+		{
+			positionRect.origin.y += 46;
+			positionRect.size.height -= 46;
+		}
 		[self.timeEntrypopover showRelativeToRect:positionRect
-										   ofView:self.view
+										   ofView:selectedRowView
 									preferredEdge:NSMaxXEdge];
+
+
 		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 		[self.timeEntryEditViewController setDragHandle:onLeft];
 		[self.timeEntryEditViewController setInsertionPointColor];
