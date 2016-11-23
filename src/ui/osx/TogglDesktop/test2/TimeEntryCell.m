@@ -156,7 +156,7 @@ extern void *ctx;
 	if (self.GroupItemCount && self.GroupOpen && !self.Group)
 	{
 		// Subitems to darker gray
-		fillColor = @"#efefef";
+		fillColor = @"#f0f0f0";
 		lead = 10;
 
 		// Gray color for subitem
