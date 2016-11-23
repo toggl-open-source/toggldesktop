@@ -63,13 +63,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Nab-h7-r4H" userLabel="DescriptionProject Box">
-                                <rect key="frame" x="0.0" y="-10" width="179" height="56"/>
+                                <rect key="frame" x="0.0" y="-10" width="190" height="56"/>
                                 <view key="contentView">
-                                    <rect key="frame" x="0.0" y="10" width="179" height="36"/>
+                                    <rect key="frame" x="0.0" y="10" width="190" height="36"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI" customClass="NSTextFieldWithBackground">
-                                            <rect key="frame" x="12" y="0.0" width="169" height="17"/>
+                                            <rect key="frame" x="12" y="0.0" width="180" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="iQU-pZ-Vow"/>
                                             </constraints>
@@ -140,7 +140,7 @@
                                     <subviews>
                                         <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9cY-Vq-vDS" customClass="NSHoverButton">
                                             <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
+                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue_regular" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -205,6 +205,31 @@
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
+                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" transparent="YES" borderWidth="0.0" title="ContinueBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XKl-Hx-jZr" userLabel="GroupBox">
+                                <rect key="frame" x="162" y="7" width="24" height="24"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button hidden="YES" toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ypE-as-Dxj" customClass="NSHoverButton">
+                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                            <buttonCell key="cell" type="bevel" title="3" bezelStyle="regularSquare" image="group_icon_closed" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="lJ8-Ud-IWe">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="toggleGroup:" target="WaA-ag-4kh" id="Z9I-ez-Fdg"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="h59-Ul-7YD"/>
+                                    <constraint firstAttribute="height" constant="24" id="qNx-MI-cQR"/>
+                                </constraints>
+                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
                         </subviews>
                     </view>
                     <constraints>
@@ -212,6 +237,7 @@
                         <constraint firstAttribute="bottom" secondItem="zIj-LV-eXy" secondAttribute="bottom" constant="21" id="6F2-qP-jLh"/>
                         <constraint firstAttribute="trailing" secondItem="DdV-RE-Kny" secondAttribute="trailing" constant="12" id="8KD-Ji-ORV"/>
                         <constraint firstAttribute="height" constant="56" id="9D9-zv-Fzd"/>
+                        <constraint firstAttribute="trailing" secondItem="XKl-Hx-jZr" secondAttribute="trailing" constant="150" id="CED-Ux-ecX"/>
                         <constraint firstAttribute="trailing" secondItem="63N-7j-264" secondAttribute="trailing" constant="77" id="HnI-V9-YUV"/>
                         <constraint firstAttribute="trailing" secondItem="zIj-LV-eXy" secondAttribute="trailing" constant="106" id="KXu-0N-OHJ"/>
                         <constraint firstAttribute="bottom" secondItem="Nab-h7-r4H" secondAttribute="bottom" id="NbG-aZ-Vwx"/>
@@ -236,14 +262,18 @@
                 <constraint firstItem="PuG-98-30a" firstAttribute="leading" secondItem="WaA-ag-4kh" secondAttribute="leading" id="wAO-Q7-Nn4"/>
             </constraints>
             <connections>
-                <outlet property="DescriptionProjectBox" destination="Nab-h7-r4H" id="lnN-LL-sbG"/>
+                <outlet property="DescriptionProjectBox" destination="Nab-h7-r4H" id="xgm-aK-78c"/>
                 <outlet property="backgroundBox" destination="HvF-1T-7Z3" id="OwT-rX-MgQ"/>
                 <outlet property="billableFlag" destination="HgZ-sm-ajS" id="Jhz-7e-GVO"/>
+                <outlet property="continueButton" destination="9cY-Vq-vDS" id="LiK-Of-XI4"/>
                 <outlet property="dateDurationTextField" destination="A9Z-Z5-Qzd" id="Pb9-ly-e1l"/>
+                <outlet property="descriptionBoxLead" destination="tnk-RG-oPT" id="aw8-h1-Mo3"/>
+                <outlet property="descriptionBoxTrail" destination="pqg-b4-Wc3" id="5eD-kU-YbC"/>
                 <outlet property="descriptionTextField" destination="IPX-6P-J70" id="zcg-pi-ncm"/>
                 <outlet property="durationBox" destination="DdV-RE-Kny" id="6HJ-J4-BPL"/>
                 <outlet property="durationTextField" destination="chv-we-eud" id="qWe-PN-bgP"/>
                 <outlet property="formattedDateTextField" destination="Eux-yk-8iS" id="Nua-0p-xmm"/>
+                <outlet property="groupToggleButton" destination="ypE-as-Dxj" id="mFf-41-y31"/>
                 <outlet property="projectTextField" destination="4mY-N2-UMI" id="Kpb-Es-Ieo"/>
                 <outlet property="tagFlag" destination="Uzs-Rq-HN0" id="l8n-70-vhC"/>
                 <outlet property="unsyncedIcon" destination="m2D-dM-ygH" id="jqo-q2-2Lx"/>
@@ -251,7 +281,8 @@
         </customView>
     </objects>
     <resources>
-        <image name="continue" width="23" height="23"/>
+        <image name="continue_regular" width="23" height="23"/>
+        <image name="group_icon_closed" width="23" height="23"/>
         <image name="icon-billable" width="6.5" height="12.5"/>
         <image name="icon-tags" width="13" height="10.5"/>
         <image name="warning-icon" width="32" height="32"/>

@@ -23,6 +23,14 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandContinue object:self.GUID];
 }
 
+- (IBAction)toggleGroup:(id)sender
+{
+	if (self.Group)
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:self.GroupName];
+	}
+}
+
 - (void)render:(TimeEntryViewItem *)view_item
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
@@ -77,8 +85,8 @@ extern void *ctx;
 	// Time entry not synced icon
 	[self.unsyncedIcon setHidden:!view_item.unsynced];
 
-	// Set background color
-	[self resetToDefault];
+	// Setup Grouped mode
+	[self setupGroupMode];
 
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
@@ -132,8 +140,15 @@ extern void *ctx;
 	return string;
 }
 
-- (void)resetToDefault
+- (void)setupGroupMode
 {
+	// Default descriptionbox trail (no group icon)
+	int trail = 140;
+	int lead = 0;
+	NSString *continueIcon = @"continue_light.pdf";
+	NSString *toggleGroupIcon = @"group_icon_closed.pdf";
+	NSString *toggleGroupText = [NSString stringWithFormat:@"%lld", self.GroupItemCount];
+
 	// Default color of light gray
 	NSString *fillColor = @"#FAFAFA";
 
@@ -142,7 +157,54 @@ extern void *ctx;
 	{
 		// Subitems to darker gray
 		fillColor = @"#efefef";
+		lead = 10;
+
+		// Gray color for subitem
+		NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:self.descriptionTextField.stringValue];
+		[description setAttributes:
+		 @{
+			 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:@"#696969"]
+		 }
+							 range:NSMakeRange(0, [description length])];
+
+		[self.descriptionTextField setAttributedStringValue:description];
 	}
+
+	if (self.Group)
+	{
+		// Group icon visible
+		trail = 175;
+		if (self.GroupOpen)
+		{
+			toggleGroupIcon = @"group_icon_open.pdf";
+			self.groupToggleButton.title = @"";
+		}
+		else
+		{
+			// Gray color to grouped button text
+			NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+			paragrapStyle.alignment = kCTTextAlignmentCenter;
+
+			NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:toggleGroupText];
+			[string setAttributes:
+			 @{
+				 NSFontAttributeName : [NSFont systemFontOfSize:9.0],
+				 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:@"#a4a4a4"],
+				 NSParagraphStyleAttributeName:paragrapStyle
+			 }
+							range:NSMakeRange(0, [string length])];
+
+			[self.groupToggleButton setAttributedTitle:string];
+		}
+		[self.groupToggleButton setImage:[NSImage imageNamed:toggleGroupIcon]];
+
+		continueIcon = @"continue_regular.pdf";
+	}
+
+	[self.continueButton setImage:[NSImage imageNamed:continueIcon]];
+	[self.groupToggleButton setHidden:!self.Group];
+	self.descriptionBoxLead.constant = lead;
+	self.descriptionBoxTrail.constant = trail;
 
 	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:fillColor]];
 }

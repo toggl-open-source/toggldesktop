@@ -20,13 +20,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="dt4-Zf-56t" userLabel="DescriptionProject Box">
-                                <rect key="frame" x="0.0" y="0.0" width="110" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="112" height="50"/>
                                 <view key="contentView">
-                                    <rect key="frame" x="0.0" y="0.0" width="110" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="112" height="50"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
-                                            <rect key="frame" x="12" y="31" width="100" height="17"/>
+                                            <rect key="frame" x="12" y="31" width="102" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="QDn-DF-0mF"/>
                                             </constraints>
@@ -37,7 +37,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                                            <rect key="frame" x="12" y="11" width="100" height="17"/>
+                                            <rect key="frame" x="12" y="11" width="102" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="ffb-Ge-3EA"/>
                                             </constraints>
@@ -65,12 +65,44 @@
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
+                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" transparent="YES" borderWidth="0.0" title="ContinueBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
+                                <rect key="frame" x="90" y="12" width="24" height="24"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button hidden="YES" toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yV9-eP-fCj" customClass="NSHoverButton">
+                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="eLk-IC-Day"/>
+                                                <constraint firstAttribute="width" constant="24" id="yQN-Bj-uEa"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="bevel" title="3" bezelStyle="regularSquare" image="group_icon_closed" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="pfD-5t-Pma">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system" size="11"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="toggleGroup:" target="jHy-af-Yta" id="9U3-S1-h8h"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="38I-d0-HVN"/>
+                                    <constraint firstItem="yV9-eP-fCj" firstAttribute="top" secondItem="7lc-zN-Cm5" secondAttribute="top" id="D3z-Sk-5Rn"/>
+                                    <constraint firstItem="yV9-eP-fCj" firstAttribute="leading" secondItem="7lc-zN-Cm5" secondAttribute="leading" id="cuw-v9-2FB"/>
+                                    <constraint firstAttribute="width" constant="24" id="g2X-HK-drE"/>
+                                </constraints>
+                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
                         </subviews>
                     </view>
                     <constraints>
                         <constraint firstItem="dt4-Zf-56t" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" id="Xtm-i3-cra"/>
                         <constraint firstAttribute="bottom" secondItem="dt4-Zf-56t" secondAttribute="bottom" id="a15-Ry-eDK"/>
                         <constraint firstAttribute="trailing" secondItem="dt4-Zf-56t" secondAttribute="trailing" constant="140" id="atZ-Bs-ORI"/>
+                        <constraint firstAttribute="trailing" secondItem="7lc-zN-Cm5" secondAttribute="trailing" constant="150" id="snW-bP-o0L"/>
                         <constraint firstItem="dt4-Zf-56t" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" id="xP7-4v-kHh"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -88,7 +120,7 @@
                                     <constraint firstAttribute="height" constant="24" id="FfV-9g-8jU"/>
                                     <constraint firstAttribute="width" constant="24" id="pmZ-g5-uge"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
+                                <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue_regular" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -199,9 +231,13 @@
                 <outlet property="DescriptionProjectBox" destination="dt4-Zf-56t" id="Bor-QJ-kLd"/>
                 <outlet property="backgroundBox" destination="ar8-w3-mLZ" id="zbJ-rM-sF4"/>
                 <outlet property="billableFlag" destination="QS9-7g-WQN" id="ftI-OL-nFL"/>
+                <outlet property="continueButton" destination="Gcj-ki-Hus" id="VjD-9r-ZQS"/>
+                <outlet property="descriptionBoxLead" destination="xP7-4v-kHh" id="A22-4P-DL1"/>
+                <outlet property="descriptionBoxTrail" destination="atZ-Bs-ORI" id="eiU-7u-94N"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
                 <outlet property="durationBox" destination="lUV-Fj-IYJ" id="Dc1-m5-YCs"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="utn-4y-DUw"/>
+                <outlet property="groupToggleButton" destination="yV9-eP-fCj" id="glf-6p-jyw"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="pIu-QV-GCm"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="LV9-V1-NQ1"/>
                 <outlet property="unsyncedIcon" destination="Kef-8A-XnH" id="giG-pJ-b11"/>
@@ -209,7 +245,8 @@
         </customView>
     </objects>
     <resources>
-        <image name="continue" width="23" height="23"/>
+        <image name="continue_regular" width="23" height="23"/>
+        <image name="group_icon_closed" width="23" height="23"/>
         <image name="icon-billable" width="6.5" height="12.5"/>
         <image name="icon-tags" width="13" height="10.5"/>
         <image name="warning-icon" width="32" height="32"/>

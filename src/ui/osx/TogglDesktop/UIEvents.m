@@ -46,6 +46,7 @@ NSString *const kEscapeListing = @"kEscapeListing";
 NSString *const kToggleManualMode = @"kToggleManualMode";
 NSString *const kToggleTimerMode = @"kToggleTimerMode";
 NSString *const kSetProjectColors = @"kSetProjectColors";
+NSString *const kToggleGroup = @"ToggleGroup";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";

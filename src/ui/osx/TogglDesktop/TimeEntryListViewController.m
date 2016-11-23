@@ -398,7 +398,7 @@ extern void *ctx;
 
 - (void)clearLastSelectedEntry
 {
-	[self.selectedEntryCell resetToDefault];
+	[self.selectedEntryCell setupGroupMode];
 }
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
