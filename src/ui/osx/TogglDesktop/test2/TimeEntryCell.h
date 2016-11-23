@@ -24,6 +24,7 @@
 @property (strong) IBOutlet NSBox *backgroundBox;
 @property (strong) IBOutlet NSImageView *unsyncedIcon;
 @property BOOL confrimless_delete;
+@property (weak) IBOutlet NSBox *DescriptionProjectBox;
 - (void)render:(TimeEntryViewItem *)view_item;
 - (IBAction)continueTimeEntry:(id)sender;
 - (void)focusFieldName;

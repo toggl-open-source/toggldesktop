@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1108" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -19,41 +19,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="252" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
-                                <rect key="frame" x="12" y="31" width="102" height="17"/>
+                            <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="dt4-Zf-56t" userLabel="DescriptionProject Box">
+                                <rect key="frame" x="0.0" y="0.0" width="110" height="50"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="110" height="50"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
+                                            <rect key="frame" x="12" y="31" width="100" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="17" id="QDn-DF-0mF"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about ne..." id="KGe-cR-NlL">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
+                                            <rect key="frame" x="12" y="11" width="100" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="17" id="ffb-Ge-3EA"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL" id="apI-Za-Hk2">
+                                                <font key="font" metaFont="systemBold"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-8A-XnH" userLabel="Unsynced_icon">
+                                            <rect key="frame" x="1" y="27" width="12" height="12"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning-icon" id="1cv-nG-4ev"/>
+                                        </imageView>
+                                    </subviews>
+                                </view>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="QDn-DF-0mF"/>
+                                    <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="dt4-Zf-56t" secondAttribute="leading" constant="14" id="RPL-wT-1ZR"/>
+                                    <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" id="Zeb-HL-e9J"/>
+                                    <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="3" id="fMe-Cj-Qfi"/>
+                                    <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" id="gbx-U8-mP7"/>
+                                    <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="dt4-Zf-56t" secondAttribute="leading" constant="14" id="uOc-Ti-Fyo"/>
+                                    <constraint firstItem="Kef-8A-XnH" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" id="vKO-IK-XQN"/>
+                                    <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="11" id="wJt-Fj-aU2"/>
                                 </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about ne..." id="KGe-cR-NlL">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                                <rect key="frame" x="12" y="11" width="102" height="17"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="ffb-Ge-3EA"/>
-                                </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL" id="apI-Za-Hk2">
-                                    <font key="font" metaFont="systemBold"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                                </textFieldCell>
-                            </textField>
-                            <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-8A-XnH" userLabel="Unsynced_icon">
-                                <rect key="frame" x="1" y="27" width="12" height="12"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning-icon" id="1cv-nG-4ev"/>
-                            </imageView>
+                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </box>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" priority="900" constant="140" id="Cjx-Uq-ege"/>
-                        <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="14" id="FOo-PQ-AK1"/>
-                        <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="3" id="GPd-NV-pv0"/>
-                        <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" constant="14" id="KZ4-JV-5xD"/>
-                        <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="11" id="Yh1-Ch-CaZ"/>
-                        <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" priority="750" constant="140" id="mbW-Id-47h"/>
+                        <constraint firstItem="dt4-Zf-56t" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" id="Xtm-i3-cra"/>
+                        <constraint firstAttribute="bottom" secondItem="dt4-Zf-56t" secondAttribute="bottom" id="a15-Ry-eDK"/>
+                        <constraint firstAttribute="trailing" secondItem="dt4-Zf-56t" secondAttribute="trailing" constant="140" id="atZ-Bs-ORI"/>
+                        <constraint firstItem="dt4-Zf-56t" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" id="xP7-4v-kHh"/>
                     </constraints>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -178,6 +196,7 @@
                 <constraint firstAttribute="trailing" secondItem="6v5-Qq-QVS" secondAttribute="trailing" constant="120" id="tlo-sU-7ao"/>
             </constraints>
             <connections>
+                <outlet property="DescriptionProjectBox" destination="dt4-Zf-56t" id="Bor-QJ-kLd"/>
                 <outlet property="backgroundBox" destination="ar8-w3-mLZ" id="zbJ-rM-sF4"/>
                 <outlet property="billableFlag" destination="QS9-7g-WQN" id="ftI-OL-nFL"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
