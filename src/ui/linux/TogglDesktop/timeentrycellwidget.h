@@ -28,12 +28,16 @@ class TimeEntryCellWidget : public QWidget {
 
  private slots:  // NOLINT
     void on_continueButton_clicked();
+    void on_groupButton_clicked();
 
  private:
     Ui::TimeEntryCellWidget *ui;
 
     QString guid;
+    QString groupName;
     QString getProjectColor(QString color);
+
+    void setupGroupedMode(TimeEntryView *view);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYCELLWIDGET_H_

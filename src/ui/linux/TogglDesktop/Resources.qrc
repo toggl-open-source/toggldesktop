@@ -33,5 +33,9 @@
         <file>fonts/RobotoTTF/Roboto-ThinItalic.ttf</file>
         <file>icons/1024x1024/toggldesktop_gray.png</file>
         <file>images/toggl-white-icon.png</file>
+        <file>images/continue_regular.svg</file>
+        <file>images/continue_light.svg</file>
+        <file>images/group_icon_closed.svg</file>
+        <file>images/group_icon_open.svg</file>
     </qresource>
 </RCC>

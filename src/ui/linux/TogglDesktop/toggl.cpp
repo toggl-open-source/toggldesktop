@@ -543,6 +543,10 @@ void TogglApi::editPreferences() {
     toggl_edit_preferences(ctx);
 }
 
+void TogglApi::toggleEntriesGroup(const QString groupName) {
+    toggl_toggle_entries_group(ctx, groupName.toStdString().c_str());
+}
+
 void TogglApi::editTimeEntry(const QString guid,
                              const QString focusedFieldName) {
     toggl_edit(ctx,

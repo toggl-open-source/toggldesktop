@@ -77,6 +77,8 @@ class TogglApi : public QObject {
 
     void editPreferences();
 
+    void toggleEntriesGroup(const QString groupName);
+
     void editTimeEntry(const QString guid,
                        const QString focusedFieldName);
 
