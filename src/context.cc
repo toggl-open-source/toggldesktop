@@ -4396,10 +4396,10 @@ error Context::pushChanges(
         // Projects second as time entries may depend on projects
         if (projects.size() > 0) {
             error err = pushProjects(
-                    projects,
-                    clients,
-                    api_token,
-                    *toggl_client);
+                projects,
+                clients,
+                api_token,
+                *toggl_client);
             if (err != noError) {
                 return err;
             }
