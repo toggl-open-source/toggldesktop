@@ -35,7 +35,7 @@
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">combobox-popup: 0;</string>
+      <string notr="true">combobox-popup: 0;background-color:#ffffff;</string>
      </property>
      <property name="editable">
       <bool>true</bool>
@@ -54,7 +54,7 @@
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">combobox-popup: 0;</string>
+      <string notr="true">combobox-popup: 0;background-color:#ffffff;</string>
      </property>
      <property name="editable">
       <bool>true</bool>
@@ -150,6 +150,9 @@
            <property name="toolTip">
             <string>Select project color</string>
            </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:#ffffff;</string>
+           </property>
            <property name="placeholderText">
             <string>Project name</string>
            </property>
@@ -215,6 +218,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:#ffffff;</string>
+           </property>
           </widget>
          </item>
          <item row="0" column="0">
@@ -260,10 +266,17 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="styleSheet">
+               <string notr="true">background-color:#ffffff;</string>
+              </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="newClientName"/>
+             <widget class="QLineEdit" name="newClientName">
+              <property name="styleSheet">
+               <string notr="true">background-color:#ffffff;</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QPushButton" name="addClientButton">
@@ -419,6 +432,9 @@
          </item>
          <item>
           <widget class="QLineEdit" name="start">
+           <property name="styleSheet">
+            <string notr="true">background-color:#ffffff;</string>
+           </property>
            <property name="text">
             <string>08:57 PM</string>
            </property>
@@ -442,6 +458,9 @@
          </item>
          <item>
           <widget class="QLineEdit" name="stop">
+           <property name="styleSheet">
+            <string notr="true">background-color:#ffffff;</string>
+           </property>
            <property name="text">
             <string>09:01 PM</string>
            </property>
@@ -495,6 +514,9 @@
          </item>
          <item>
           <widget class="QDateEdit" name="dateEdit">
+           <property name="styleSheet">
+            <string notr="true">background-color:#ffffff;</string>
+           </property>
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -548,6 +570,9 @@
          </item>
          <item>
           <widget class="QLineEdit" name="duration">
+           <property name="styleSheet">
+            <string notr="true">background-color:#ffffff;</string>
+           </property>
            <property name="text">
             <string>00:03:05</string>
            </property>
@@ -591,7 +616,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="tags"/>
+       <widget class="QListWidget" name="tags">
+        <property name="styleSheet">
+         <string notr="true">background-color:#ffffff;</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
