@@ -25,6 +25,7 @@ class TimeEntryCellWidget : public QWidget {
 
  protected:
     virtual void mousePressEvent(QMouseEvent *event);
+    virtual void resizeEvent(QResizeEvent *);
 
  private slots:  // NOLINT
     void on_continueButton_clicked();
@@ -33,12 +34,15 @@ class TimeEntryCellWidget : public QWidget {
  private:
     Ui::TimeEntryCellWidget *ui;
 
+    QString description;
+    QString project;
     QString guid;
     bool group;
     QString groupName;
     QString getProjectColor(QString color);
 
     void setupGroupedMode(TimeEntryView *view);
+    void setEllipsisTextToLabel(ClickableLabel *label, QString text);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYCELLWIDGET_H_

@@ -8,6 +8,8 @@
 TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(0),
 ui(new Ui::TimeEntryCellWidget),
 guid(""),
+description(""),
+project(""),
 groupName(""),
 group(false) {
     ui->setupUi(this);
@@ -16,11 +18,13 @@ group(false) {
 void TimeEntryCellWidget::display(TimeEntryView *view) {
     guid = view->GUID;
     groupName = view->GroupName;
-    QString description =
+    description =
         (view->Description.length() > 0) ?
         view->Description : "(no description)";
-    ui->description->setText(description);
-    ui->project->setText(view->ProjectAndTaskLabel);
+    project = view->ProjectAndTaskLabel;
+
+    setEllipsisTextToLabel(ui->description, description);
+    setEllipsisTextToLabel(ui->project, project);
     ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
     ui->duration->setText(view->Duration);
 
@@ -88,6 +92,14 @@ void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     ui->groupFrame->setVisible(view->Group);
 }
 
+void TimeEntryCellWidget::setEllipsisTextToLabel(ClickableLabel *label, QString text)
+{
+    QFontMetrics metrix(label->font());
+    int width = label->width() - 2;
+    QString clippedText = metrix.elidedText(text, Qt::ElideRight, width);
+    label->setText(clippedText);
+}
+
 void TimeEntryCellWidget::labelClicked(QString field_name) {
     if (group) {
         on_groupButton_clicked();
@@ -130,4 +142,11 @@ QString TimeEntryCellWidget::getProjectColor(QString color) {
 void TimeEntryCellWidget::on_groupButton_clicked()
 {
     TogglApi::instance->toggleEntriesGroup(groupName);
+}
+
+void TimeEntryCellWidget::resizeEvent(QResizeEvent* event)
+{
+    setEllipsisTextToLabel(ui->description, description);
+    setEllipsisTextToLabel(ui->project, project);
+    QWidget::resizeEvent(event);
 }
