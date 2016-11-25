@@ -194,8 +194,8 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
-		[self focusListing:nil];
 	}
+	[self focusListing:nil];
 
 	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;
 	[self.emptyLabel setEnabled:noItems];
@@ -229,13 +229,30 @@ extern void *ctx;
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 	if (cmd.open)
 	{
-		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
-		NSRect positionRect = [self.view bounds];
+		NSView *selectedRowView;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
+		if (self.runningEdit)
+		{
+			selectedRowView = self.headerView;
+		}
+		else
+		{
+			selectedRowView = [self getSelectedEntryCell:self.lastSelectedRowIndex];
+		}
+
+		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
+		NSRect positionRect = [selectedRowView bounds];
+		if (selectedRowView.frame.size.height > 56)
+		{
+			positionRect.origin.y += 46;
+			positionRect.size.height -= 46;
+		}
 		[self.timeEntrypopover showRelativeToRect:positionRect
-										   ofView:self.view
+										   ofView:selectedRowView
 									preferredEdge:NSMaxXEdge];
+
+
 		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 		[self.timeEntryEditViewController setDragHandle:onLeft];
 		[self.timeEntryEditViewController setInsertionPointColor];
@@ -344,6 +361,12 @@ extern void *ctx;
 
 	TimeEntryCell *cell = [self getSelectedEntryCell:row];
 
+    // Group header clicked, toggle group open/closed
+    if (cell.Group) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:cell.GroupName];
+        return;
+    }
+
 	// Load more cell clicked
 	if ([cell isKindOfClass:[LoadMoreCell class]])
 	{
@@ -359,7 +382,7 @@ extern void *ctx;
 - (TimeEntryCell *)getSelectedEntryCell:(NSInteger)row
 {
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary  :NO];
+												 makeIfNecessary  :YES];
 
 	if (latestView == nil)
 	{
@@ -381,7 +404,7 @@ extern void *ctx;
 
 - (void)clearLastSelectedEntry
 {
-	[self.selectedEntryCell resetToDefault];
+	[self.selectedEntryCell setupGroupMode];
 }
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
@@ -516,20 +539,23 @@ extern void *ctx;
 		return;
 	}
 
+	// If list is focused with keyboard shortcut
 	if (notification != nil && !self.timeEntrypopover.shown)
 	{
 		[self clearLastSelectedEntry];
 		self.lastSelectedRowIndex = 0;
 	}
 
+	if ([self.timeEntriesTableView numberOfRows] < self.lastSelectedRowIndex)
+	{
+		return;
+	}
+
 	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.lastSelectedRowIndex];
 
 	[[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
 	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
-	if ([self.timeEntriesTableView numberOfRows] >= self.lastSelectedRowIndex)
-	{
-		return;
-	}
+
 	TimeEntryCell *cell = [self getSelectedEntryCell:self.lastSelectedRowIndex];
 	if (cell != nil)
 	{

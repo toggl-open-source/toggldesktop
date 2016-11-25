@@ -47,6 +47,22 @@ extern void *ctx;
 	{
 		[self deleteEntry];
 	}
+	else if (event.keyCode == kVK_RightArrow)
+	{
+		TimeEntryCell *cell = [self getSelectedEntryCell];
+		if (cell != nil && cell.GroupName.length && !cell.GroupOpen)
+		{
+			toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+		}
+	}
+	else if (event.keyCode == kVK_LeftArrow)
+	{
+		TimeEntryCell *cell = [self getSelectedEntryCell];
+		if (cell != nil && cell.GroupName.length && cell.GroupOpen)
+		{
+			toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+		}
+	}
 	else
 	{
 		[super keyDown:event];

@@ -220,6 +220,10 @@ BOOL manualMode = NO;
 											 selector:@selector(startDisplayPromotion:)
 												 name:kDisplayPromotion
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startToggleGroup:)
+												 name:kToggleGroup
+											   object:nil];
 
 	toggl_set_environment(ctx, [self.environment UTF8String]);
 
@@ -490,6 +494,20 @@ BOOL manualMode = NO;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	toggl_stop(ctx, false);
+}
+
+- (void)startToggleGroup:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(toggleGroup:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)toggleGroup:(NSString *)key
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	toggl_toggle_entries_group(ctx, [key UTF8String]);
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification

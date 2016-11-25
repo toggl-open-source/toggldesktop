@@ -23,6 +23,10 @@
 		3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237151A9F612E00643059 /* toggl-logo-white.pdf */; };
 		3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237161A9F612E00643059 /* toggl-desktop-bg.png */; };
 		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
+		3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7CE1DE574E7005586B4 /* continue_light.pdf */; };
+		3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */; };
+		3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */; };
+		3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7E41DE5757A005586B4 /* continue_regular.pdf */; };
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
@@ -320,6 +324,10 @@
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
 		3C4237151A9F612E00643059 /* toggl-logo-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "toggl-logo-white.pdf"; sourceTree = "<group>"; };
 		3C4237161A9F612E00643059 /* toggl-desktop-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggl-desktop-bg.png"; sourceTree = "<group>"; };
+		3C65A7CE1DE574E7005586B4 /* continue_light.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue_light.pdf; sourceTree = "<group>"; };
+		3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_closed.pdf; sourceTree = "<group>"; };
+		3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_open.pdf; sourceTree = "<group>"; };
+		3C65A7E41DE5757A005586B4 /* continue_regular.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue_regular.pdf; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
@@ -806,6 +814,10 @@
 		745E7FC1192D247300747C18 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3C65A7CE1DE574E7005586B4 /* continue_light.pdf */,
+				3C65A7E41DE5757A005586B4 /* continue_regular.pdf */,
+				3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */,
+				3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */,
 				3C1C09C41C298ABA00BF9B6C /* warning-icon.png */,
 				3CAFDFF41AA713830022CD40 /* icon-google.pdf */,
 				3C4237151A9F612E00643059 /* toggl-logo-white.pdf */,
@@ -1161,6 +1173,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */,
+				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
+				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
@@ -1182,6 +1196,7 @@
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
+				3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
@@ -1190,6 +1205,7 @@
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */,
+				3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
 				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
 				3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */,

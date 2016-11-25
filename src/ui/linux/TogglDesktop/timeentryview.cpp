@@ -39,6 +39,13 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->ConfirmlessDelete = (view->DurationInSeconds < 15
                                  && result->Description.length() == 0
                                  && !view->PID);
+    // Grouped entries mode
+    result->Group = view->Group;
+    result->GroupOpen = view->GroupOpen;
+    result->GroupName = QString(view->GroupName);
+    result->GroupDuration = QString(view->GroupDuration);
+    result->GroupItemCount = view->GroupItemCount;
+
     return result;
 }
 

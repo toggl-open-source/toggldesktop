@@ -77,6 +77,12 @@ extern "C" {
         bool_t Locked;
         // Indicates if time entry is not synced to server
         bool_t Unsynced;
+        // Group attributes
+        bool_t Group;
+        bool_t GroupOpen;
+        char_t *GroupName;
+        char_t *GroupDuration;
+        uint64_t GroupItemCount;
         // Next in list
         void *Next;
     } TogglTimeEntryView;
@@ -392,6 +398,9 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_time_entry_list(
         void *context,
         TogglDisplayTimeEntryList cb);
+
+    TOGGL_EXPORT void toggl_toggle_entries_group(void *context,
+            const char_t *name);
 
     TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
         void *context,

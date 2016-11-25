@@ -47,6 +47,12 @@ class TimeEntryView : public QObject {
     QString WorkspaceName;
     QString Error;
     bool ConfirmlessDelete;
+    // Group mode items
+    bool Group;
+    bool GroupOpen;
+    QString GroupName;
+    QString GroupDuration;
+    u_int64_t GroupItemCount;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_

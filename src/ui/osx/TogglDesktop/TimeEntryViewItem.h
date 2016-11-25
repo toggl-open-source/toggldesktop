@@ -50,4 +50,15 @@
 @property BOOL loadMore;
 // if item can be deleted without confirm
 @property BOOL confirmlessDelete;
+// Grouped Mode attributes
+// If entry is group header
+@property BOOL Group;
+// Group Open state
+@property BOOL GroupOpen;
+// Group Name
+@property (strong) NSString *GroupName;
+// Group Duration
+@property (strong) NSString *GroupDuration;
+// Group Item Count
+@property uint64_t GroupItemCount;
 @end

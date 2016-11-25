@@ -239,6 +239,12 @@ TogglTimeEntryView *time_entry_view_item_init(
         view_item->Error = nullptr;
     }
 
+    view_item->Group = te.Group;
+    view_item->GroupOpen = te.GroupOpen;
+    view_item->GroupName = copy_string(te.GroupName);
+    view_item->GroupDuration = copy_string(te.GroupDuration);
+    view_item->GroupItemCount = te.GroupItemCount;
+
     view_item->Next = nullptr;
 
     return view_item;
@@ -302,6 +308,12 @@ void time_entry_view_item_clear(
         time_entry_view_item_clear(next);
         item->Next = nullptr;
     }
+
+    free(item->GroupName);
+    item->GroupName = nullptr;
+
+    free(item->GroupDuration);
+    item->GroupDuration = nullptr;
 
     delete item;
 }

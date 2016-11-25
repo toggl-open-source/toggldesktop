@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1108" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -62,32 +62,53 @@
                         <rect key="frame" x="0.0" y="10" width="330" height="36"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI" customClass="NSTextFieldWithBackground">
-                                <rect key="frame" x="12" y="0.0" width="180" height="17"/>
+                            <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="Box" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Nab-h7-r4H" userLabel="DescriptionProject Box">
+                                <rect key="frame" x="0.0" y="-10" width="190" height="56"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="10" width="190" height="36"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI" customClass="NSTextFieldWithBackground">
+                                            <rect key="frame" x="12" y="0.0" width="180" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="17" id="iQU-pZ-Vow"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="PROJECT NAME - CLIENT" id="YKk-bz-65B">
+                                                <font key="font" metaFont="systemBold"/>
+                                                <color key="textColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" preferredMaxLayoutWidth="175" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
+                                            <rect key="frame" x="13" y="21" width="179" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="17" id="bVb-c6-mrF"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="This is a time entry" id="bKB-0i-C0M">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m2D-dM-ygH" userLabel="Unsynced_icon">
+                                            <rect key="frame" x="1" y="22" width="12" height="12"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning-icon" id="yL1-f1-EjG"/>
+                                        </imageView>
+                                    </subviews>
+                                </view>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="iQU-pZ-Vow"/>
+                                    <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="Nab-h7-r4H" secondAttribute="leading" constant="14" id="3AE-mU-7Jw"/>
+                                    <constraint firstItem="IPX-6P-J70" firstAttribute="top" secondItem="Nab-h7-r4H" secondAttribute="top" constant="8" id="A64-mu-R2p"/>
+                                    <constraint firstAttribute="trailing" secondItem="4mY-N2-UMI" secondAttribute="trailing" id="DoN-ax-7FK"/>
+                                    <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" id="PF0-VD-SYA"/>
+                                    <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="Nab-h7-r4H" secondAttribute="leading" constant="14" id="SUy-uD-2Z1"/>
+                                    <constraint firstAttribute="height" constant="56" id="SwF-bP-bqh"/>
+                                    <constraint firstAttribute="bottom" secondItem="4mY-N2-UMI" secondAttribute="bottom" constant="10" id="lv5-aG-MzM"/>
                                 </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="PROJECT NAME - CLIENT" id="YKk-bz-65B">
-                                    <font key="font" metaFont="systemBold"/>
-                                    <color key="textColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" preferredMaxLayoutWidth="175" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
-                                <rect key="frame" x="13" y="21" width="179" height="17"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="bVb-c6-mrF"/>
-                                </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="This is a time entry" id="bKB-0i-C0M">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m2D-dM-ygH" userLabel="Unsynced_icon">
-                                <rect key="frame" x="1" y="22" width="12" height="12"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning-icon" id="yL1-f1-EjG"/>
-                            </imageView>
+                                <size key="contentViewMargins" width="0.0" height="10"/>
+                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
                             <box autoresizesSubviews="NO" transparent="YES" borderWidth="0.0" title="DurationBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="DdV-RE-Kny">
                                 <rect key="frame" x="255" y="11" width="63" height="16"/>
                                 <view key="contentView">
@@ -119,7 +140,7 @@
                                     <subviews>
                                         <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9cY-Vq-vDS" customClass="NSHoverButton">
                                             <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
+                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue_regular" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="yOr-J1-pTl">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -184,24 +205,48 @@
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
+                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" transparent="YES" borderWidth="0.0" title="ContinueBox" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XKl-Hx-jZr" userLabel="GroupBox">
+                                <rect key="frame" x="162" y="7" width="24" height="24"/>
+                                <view key="contentView">
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button hidden="YES" toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ypE-as-Dxj" customClass="NSHoverButton">
+                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                            <buttonCell key="cell" type="bevel" title="3" bezelStyle="regularSquare" image="group_icon_closed" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="lJ8-Ud-IWe">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="toggleGroup:" target="WaA-ag-4kh" id="Z9I-ez-Fdg"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="h59-Ul-7YD"/>
+                                    <constraint firstAttribute="height" constant="24" id="qNx-MI-cQR"/>
+                                </constraints>
+                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </box>
                         </subviews>
                     </view>
                     <constraints>
+                        <constraint firstItem="Nab-h7-r4H" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" id="3eQ-xU-x5a"/>
                         <constraint firstAttribute="bottom" secondItem="zIj-LV-eXy" secondAttribute="bottom" constant="21" id="6F2-qP-jLh"/>
-                        <constraint firstItem="4mY-N2-UMI" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="7ce-Fx-HQZ"/>
                         <constraint firstAttribute="trailing" secondItem="DdV-RE-Kny" secondAttribute="trailing" constant="12" id="8KD-Ji-ORV"/>
                         <constraint firstAttribute="height" constant="56" id="9D9-zv-Fzd"/>
-                        <constraint firstAttribute="bottom" secondItem="4mY-N2-UMI" secondAttribute="bottom" constant="10" id="9gS-5E-dWg"/>
-                        <constraint firstAttribute="trailing" secondItem="4mY-N2-UMI" secondAttribute="trailing" priority="900" constant="140" id="G9A-kY-BaJ"/>
+                        <constraint firstAttribute="trailing" secondItem="XKl-Hx-jZr" secondAttribute="trailing" constant="150" id="CED-Ux-ecX"/>
                         <constraint firstAttribute="trailing" secondItem="63N-7j-264" secondAttribute="trailing" constant="77" id="HnI-V9-YUV"/>
                         <constraint firstAttribute="trailing" secondItem="zIj-LV-eXy" secondAttribute="trailing" constant="106" id="KXu-0N-OHJ"/>
-                        <constraint firstItem="IPX-6P-J70" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" constant="14" id="LMV-jW-9Cu"/>
+                        <constraint firstAttribute="bottom" secondItem="Nab-h7-r4H" secondAttribute="bottom" id="NbG-aZ-Vwx"/>
                         <constraint firstAttribute="bottom" secondItem="vMk-19-ANF" secondAttribute="bottom" constant="22" id="Qdz-Zi-xU5"/>
                         <constraint firstItem="DdV-RE-Kny" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="19" id="Rr4-Ij-Dga"/>
                         <constraint firstItem="63N-7j-264" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="15" id="UTs-X2-3rC"/>
-                        <constraint firstItem="IPX-6P-J70" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="8" id="Wy7-b1-IjE"/>
+                        <constraint firstAttribute="trailing" secondItem="Nab-h7-r4H" secondAttribute="trailing" constant="140" id="pqg-b4-Wc3"/>
+                        <constraint firstItem="Nab-h7-r4H" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" id="tnk-RG-oPT"/>
                         <constraint firstAttribute="trailing" secondItem="vMk-19-ANF" secondAttribute="trailing" constant="120" id="uyF-7w-yYw"/>
-                        <constraint firstAttribute="trailing" secondItem="IPX-6P-J70" secondAttribute="trailing" priority="750" constant="140" id="yhX-Il-fGP"/>
                     </constraints>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                     <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
@@ -217,13 +262,18 @@
                 <constraint firstItem="PuG-98-30a" firstAttribute="leading" secondItem="WaA-ag-4kh" secondAttribute="leading" id="wAO-Q7-Nn4"/>
             </constraints>
             <connections>
+                <outlet property="DescriptionProjectBox" destination="Nab-h7-r4H" id="xgm-aK-78c"/>
                 <outlet property="backgroundBox" destination="HvF-1T-7Z3" id="OwT-rX-MgQ"/>
                 <outlet property="billableFlag" destination="HgZ-sm-ajS" id="Jhz-7e-GVO"/>
+                <outlet property="continueButton" destination="9cY-Vq-vDS" id="LiK-Of-XI4"/>
                 <outlet property="dateDurationTextField" destination="A9Z-Z5-Qzd" id="Pb9-ly-e1l"/>
+                <outlet property="descriptionBoxLead" destination="tnk-RG-oPT" id="aw8-h1-Mo3"/>
+                <outlet property="descriptionBoxTrail" destination="pqg-b4-Wc3" id="5eD-kU-YbC"/>
                 <outlet property="descriptionTextField" destination="IPX-6P-J70" id="zcg-pi-ncm"/>
                 <outlet property="durationBox" destination="DdV-RE-Kny" id="6HJ-J4-BPL"/>
                 <outlet property="durationTextField" destination="chv-we-eud" id="qWe-PN-bgP"/>
                 <outlet property="formattedDateTextField" destination="Eux-yk-8iS" id="Nua-0p-xmm"/>
+                <outlet property="groupToggleButton" destination="ypE-as-Dxj" id="mFf-41-y31"/>
                 <outlet property="projectTextField" destination="4mY-N2-UMI" id="Kpb-Es-Ieo"/>
                 <outlet property="tagFlag" destination="Uzs-Rq-HN0" id="l8n-70-vhC"/>
                 <outlet property="unsyncedIcon" destination="m2D-dM-ygH" id="jqo-q2-2Lx"/>
@@ -231,7 +281,8 @@
         </customView>
     </objects>
     <resources>
-        <image name="continue" width="23" height="23"/>
+        <image name="continue_regular" width="23" height="23"/>
+        <image name="group_icon_closed" width="23" height="23"/>
         <image name="icon-billable" width="6.5" height="12.5"/>
         <image name="icon-tags" width="13" height="10.5"/>
         <image name="warning-icon" width="32" height="32"/>

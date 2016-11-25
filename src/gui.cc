@@ -51,6 +51,11 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     DurOnly = model->DurOnly();
     Error = model->ValidationError();
     Unsynced = model->Unsynced();
+
+    std::stringstream ss;
+    ss << DateHeader << model->Description() << model->PID()
+       << model->TID() << model->Billable() << model->Tags();
+    GroupName = ss.str();
 }
 
 bool Autocomplete::operator == (const Autocomplete& a) const {

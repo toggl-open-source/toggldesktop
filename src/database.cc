@@ -1121,12 +1121,14 @@ error Database::LoadUserByID(
         std::string offline_data("");
         Poco::UInt64 default_pid(0);
         Poco::UInt64 default_tid(0);
+        bool snowball(false);
+        bool collapse_entries(false);
         *session_ <<
                   "select local_id, id, default_wid, since, "
                   "fullname, "
                   "email, record_timeline, store_start_and_stop_time, "
                   "timeofday_format, duration_format, offline_data, "
-                  "default_pid, default_tid "
+                  "default_pid, default_tid, snowball, collapse_entries "
                   "from users where id = :id limit 1",
                   into(local_id),
                   into(id),
@@ -1141,6 +1143,8 @@ error Database::LoadUserByID(
                   into(offline_data),
                   into(default_pid),
                   into(default_tid),
+                  into(snowball),
+                  into(collapse_entries),
                   useRef(UID),
                   limit(1),
                   now;
@@ -1168,6 +1172,8 @@ error Database::LoadUserByID(
         user->SetOfflineData(offline_data);
         user->SetDefaultPID(default_pid);
         user->SetDefaultTID(default_tid);
+        user->SetSnowball(snowball);
+        user->SetCollapseEntries(collapse_entries);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {

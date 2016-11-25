@@ -54,7 +54,12 @@ class TimeEntry {
     , WorkspaceName("")
     , Unsynced(false)
     , Error(noError)
-    , Locked(false) {}
+    , Locked(false)
+    , Group(false)
+    , GroupOpen(false)
+    , GroupName("")
+    , GroupDuration("")
+    , GroupItemCount(0) {}
 
     int64_t DurationInSeconds;
     std::string Description;
@@ -89,6 +94,12 @@ class TimeEntry {
     // the error is attached to the time entry
     std::string Error;
     bool Locked;
+    bool Group;
+    bool GroupOpen;
+    // date + description + pid
+    std::string GroupName;
+    std::string GroupDuration;
+    uint64_t GroupItemCount;
 
     void Fill(toggl::TimeEntry * const model);
 

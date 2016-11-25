@@ -7,17 +7,24 @@
 
 TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(0),
 ui(new Ui::TimeEntryCellWidget),
-guid("") {
+guid(""),
+description(""),
+project(""),
+groupName(""),
+group(false) {
     ui->setupUi(this);
 }
 
 void TimeEntryCellWidget::display(TimeEntryView *view) {
     guid = view->GUID;
-    QString description =
+    groupName = view->GroupName;
+    description =
         (view->Description.length() > 0) ?
         view->Description : "(no description)";
-    ui->description->setText(description);
-    ui->project->setText(view->ProjectAndTaskLabel);
+    project = view->ProjectAndTaskLabel;
+
+    setEllipsisTextToLabel(ui->description, description);
+    setEllipsisTextToLabel(ui->project, project);
     ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
     ui->duration->setText(view->Duration);
 
@@ -49,9 +56,55 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
             QString("<p style='color:white;background-color:black;'>" +
                     view->ProjectAndTaskLabel + "</p>"));
     }
+
+    setupGroupedMode(view);
+}
+
+void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
+    // Grouped Mode Setup
+    group = view->Group;
+    QString style = "border-bottom:1px solid #cacaca;background-color: #FAFAFA;";
+    QString count = "";
+    QString continueIcon = ":/images/continue_light.svg";
+    QString descriptionStyle = "border:none;";
+    int left = 0;
+    if (view->GroupItemCount && view->GroupOpen && !view->Group) {
+        style = "border-bottom:1px solid #cacaca;background-color: #EFEFEF;";
+        left = 10;
+        descriptionStyle = "border:none;color:#878787";
+    }
+    ui->description->setStyleSheet(descriptionStyle);
+    ui->descProjFrame->layout()->setContentsMargins(left, 9, 9, 9);
+    ui->dataFrame->setStyleSheet(style);
+
+    if (view->Group) {
+        QString buttonStyle = "outline:none;border:none;font-size:11px;color:#a4a4a4;background: url(:/images/group_icon_open.svg) no-repeat;";
+
+        if (!view->GroupOpen) {
+            count = QString::number(view->GroupItemCount);
+            buttonStyle = "outline:none;border:none;font-size:11px;color:#a4a4a4;background: url(:/images/group_icon_closed.svg) no-repeat;";
+        }
+        ui->groupButton->setStyleSheet(buttonStyle);
+        continueIcon = ":/images/continue_regular.svg";
+    }
+    ui->groupButton->setText(count);
+    ui->continueButton->setIcon(QIcon(continueIcon));
+    ui->groupFrame->setVisible(view->Group);
+}
+
+void TimeEntryCellWidget::setEllipsisTextToLabel(ClickableLabel *label, QString text)
+{
+    QFontMetrics metrix(label->font());
+    int width = label->width() - 2;
+    QString clippedText = metrix.elidedText(text, Qt::ElideRight, width);
+    label->setText(clippedText);
 }
 
 void TimeEntryCellWidget::labelClicked(QString field_name) {
+    if (group) {
+        on_groupButton_clicked();
+        return;
+    }
     TogglApi::instance->editTimeEntry(guid, field_name);
 }
 
@@ -67,6 +120,10 @@ QSize TimeEntryCellWidget::getSizeHint(bool is_header) {
 }
 
 void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event) {
+    if (group) {
+        on_groupButton_clicked();
+        return;
+    }
     TogglApi::instance->editTimeEntry(guid, "");
     QWidget::mousePressEvent(event);
 }
@@ -80,4 +137,16 @@ QString TimeEntryCellWidget::getProjectColor(QString color) {
         return QString("#9d9d9d");
     }
     return color;
+}
+
+void TimeEntryCellWidget::on_groupButton_clicked()
+{
+    TogglApi::instance->toggleEntriesGroup(groupName);
+}
+
+void TimeEntryCellWidget::resizeEvent(QResizeEvent* event)
+{
+    setEllipsisTextToLabel(ui->description, description);
+    setEllipsisTextToLabel(ui->project, project);
+    QWidget::resizeEvent(event);
 }
