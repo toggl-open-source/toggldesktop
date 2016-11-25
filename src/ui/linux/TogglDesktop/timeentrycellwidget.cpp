@@ -62,10 +62,15 @@ void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     QString style = "border-bottom:1px solid #cacaca;background-color: #FAFAFA;";
     QString count = "";
     QString continueIcon = ":/images/continue_light.svg";
+    QString descriptionStyle = "border:none;";
+    int left = 0;
     if (view->GroupItemCount && view->GroupOpen && !view->Group) {
         style = "border-bottom:1px solid #cacaca;background-color: #EFEFEF;";
+        left = 10;
+        descriptionStyle = "border:none;color:#878787";
     }
-
+    ui->description->setStyleSheet(descriptionStyle);
+    ui->descProjFrame->layout()->setContentsMargins(left, 9, 9, 9);
     ui->dataFrame->setStyleSheet(style);
 
     if (view->Group) {
