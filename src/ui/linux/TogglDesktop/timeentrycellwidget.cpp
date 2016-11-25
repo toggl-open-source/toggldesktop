@@ -7,7 +7,9 @@
 
 TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(0),
 ui(new Ui::TimeEntryCellWidget),
-guid("") {
+guid(""),
+groupName(""),
+group(false) {
     ui->setupUi(this);
 }
 
@@ -56,6 +58,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
 
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     // Grouped Mode Setup
+    group = view->Group;
     QString style = "border-bottom:1px solid #cacaca;background-color: #FAFAFA;";
     QString count = "";
     QString continueIcon = ":/images/continue_light.svg";
@@ -81,6 +84,10 @@ void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
 }
 
 void TimeEntryCellWidget::labelClicked(QString field_name) {
+    if (group) {
+        on_groupButton_clicked();
+        return;
+    }
     TogglApi::instance->editTimeEntry(guid, field_name);
 }
 
@@ -96,6 +103,10 @@ QSize TimeEntryCellWidget::getSizeHint(bool is_header) {
 }
 
 void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event) {
+    if (group) {
+        on_groupButton_clicked();
+        return;
+    }
     TogglApi::instance->editTimeEntry(guid, "");
     QWidget::mousePressEvent(event);
 }

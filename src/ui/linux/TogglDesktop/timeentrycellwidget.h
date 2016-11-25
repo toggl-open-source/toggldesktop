@@ -34,6 +34,7 @@ class TimeEntryCellWidget : public QWidget {
     Ui::TimeEntryCellWidget *ui;
 
     QString guid;
+    bool group;
     QString groupName;
     QString getProjectColor(QString color);
 
