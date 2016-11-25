@@ -320,7 +320,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="Resources.qrc">:/images/icon-tags.png</pixmap>
+            <pixmap>:/images/icon-tags.png</pixmap>
            </property>
           </widget>
          </item>
@@ -345,7 +345,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="Resources.qrc">:/images/icon-billable.png</pixmap>
+            <pixmap>:/images/icon-billable.png</pixmap>
            </property>
           </widget>
          </item>
@@ -370,7 +370,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="Resources.qrc">
+            <iconset>
              <normaloff>:/images/continue_regular.svg</normaloff>:/images/continue_regular.svg</iconset>
            </property>
            <property name="iconSize">
@@ -424,8 +424,6 @@
    <header>clickablelabel.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
