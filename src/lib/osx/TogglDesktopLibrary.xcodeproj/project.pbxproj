@@ -651,6 +651,7 @@
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/lua/install/lib,
+					../../../third_party/openssl,
 				);
 				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -682,6 +683,7 @@
 					"$(inherited)",
 					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/lua/install/lib,
+					../../../third_party/openssl,
 				);
 				PRODUCT_NAME = TogglDesktopLibrary;
 				STRIP_INSTALLED_PRODUCT = NO;
