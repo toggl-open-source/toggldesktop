@@ -1,6 +1,23 @@
 {
   "versions": [
     {
+      "version": "7.3.353",
+      "date": "November 29th 2016",
+      "rows": [
+        "Added grouped entries mode",
+        "Set input backgrounds to always be white",
+        "Added text overflow ellipsis to description and project texts",
+        "Tray icon fix for Elementary OS",
+        "Tray icon script fixes"
+      ],
+      "screenshots": [
+        {
+          "text": "Grouping similar time entries",
+          "img": "assets/images/linux_7.3.353_grouped_entries.gif"
+        }
+      ]
+    },
+    {
       "version": "7.3.346",
       "date": "October 27th 2016",
       "rows": [
