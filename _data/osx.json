@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.3.353",
+            "rows": [
+                "Added time entry grouping",
+                "Added keyboard support for time entry grouping",
+                "Edit popover points to proper entry"
+            ],
+            "date": "November 29th 2016",
+            "beta": "true"
+        },
+        {
             "version": "7.3.349",
             "rows": [
                 "Fixed duration mode issue with new web UI users",
