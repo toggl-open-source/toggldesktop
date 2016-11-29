@@ -115,6 +115,13 @@ NSString *kInactiveTimerColor = @"#999999";
 	[[self.descriptionComboBox cell] setPlaceholderAttributedString:descriptionLightString];
 
 	[self.startButton setHoverAlpha:0.75];
+
+    int osxMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"AppleAquaColorVariant"] intValue];
+    int trail = 40;
+    if (osxMode == 6) {
+        trail = 60;
+    }
+    self.descriptionTrailing.constant = trail;
 }
 
 - (void)loadView

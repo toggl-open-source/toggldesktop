@@ -20,6 +20,7 @@
 @property (strong) IBOutlet NSBoxClickable *mainBox;
 @property IBOutlet NSTextFieldDuration *durationTextField;
 @property IBOutlet NSCustomTimerComboBox *descriptionComboBox;
+@property (weak) IBOutlet NSLayoutConstraint *descriptionTrailing;
 @property IBOutlet NSHoverButton *startButton;
 @property IBOutlet NSTextField *projectTextField;
 @property IBOutlet NSTextFieldClickable *descriptionLabel;
