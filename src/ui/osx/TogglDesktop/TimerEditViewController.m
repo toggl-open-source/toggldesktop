@@ -116,12 +116,13 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	[self.startButton setHoverAlpha:0.75];
 
-    int osxMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"AppleAquaColorVariant"] intValue];
-    int trail = 40;
-    if (osxMode == 6) {
-        trail = 60;
-    }
-    self.descriptionTrailing.constant = trail;
+	int osxMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"AppleAquaColorVariant"] intValue];
+	int trail = 40;
+	if (osxMode == 6)
+	{
+		trail = 60;
+	}
+	self.descriptionTrailing.constant = trail;
 }
 
 - (void)loadView

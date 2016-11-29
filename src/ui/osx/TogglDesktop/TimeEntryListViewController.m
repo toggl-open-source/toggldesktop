@@ -367,11 +367,12 @@ extern void *ctx;
 
 	TimeEntryCell *cell = [self getSelectedEntryCell:row];
 
-    // Group header clicked, toggle group open/closed
-    if (cell.Group) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:cell.GroupName];
-        return;
-    }
+	// Group header clicked, toggle group open/closed
+	if (cell.Group)
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:cell.GroupName];
+		return;
+	}
 
 	// Load more cell clicked
 	if ([cell isKindOfClass:[LoadMoreCell class]])
