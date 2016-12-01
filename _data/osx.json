@@ -1,13 +1,15 @@
 {
     "versions": [
         {
-            "version": "7.3.353",
+            "version": "7.3.361",
             "rows": [
+                "Keep cell always visible when toggling entries group",
+                "Fixed ui glitch with graphite Appearance",
+                "Trigger full sync on app start",
                 "Added time entry grouping",
-                "Added keyboard support for time entry grouping",
-                "Edit popover points to proper entry"
+                "Added keyboard support for time entry grouping"
             ],
-            "date": "November 29th 2016",
+            "date": "December 01st 2016",
             "beta": "true"
         },
         {
