@@ -3,7 +3,6 @@
         {
             "version": "7.3.361",
             "rows": [
-                "Keep cell always visible when toggling entries group",
                 "Fixed ui glitch with graphite Appearance",
                 "Trigger full sync on app start",
                 "Added time entry grouping",
