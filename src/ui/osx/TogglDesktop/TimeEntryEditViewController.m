@@ -452,8 +452,6 @@ extern void *ctx;
 
 	[self.endTime setHidden:!running];
 
-	[self.startEndTimeBox setHidden:self.timeEntry.durOnly];
-
 	// Overwrite tags only if user is not editing them right now
 	if (cmd.open || [self.tagsTokenField currentEditor] == nil)
 	{

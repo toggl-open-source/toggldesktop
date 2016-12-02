@@ -115,12 +115,6 @@
 		self.isHeader = YES;
 	}
 
-	self.durOnly = NO;
-	if (te->DurOnly)
-	{
-		self.durOnly = YES;
-	}
-
 	self.CanAddProjects = te->CanAddProjects;
 	self.DefaultWID = te->DefaultWID;
 	self.CanSeeBillable = te->CanSeeBillable;

@@ -43,10 +43,7 @@ extern void *ctx;
 	self.GroupName = view_item.GroupName;
 	self.GroupOpen = view_item.GroupOpen;
 	self.GroupItemCount = view_item.GroupItemCount;
-	if (NO == view_item.durOnly)
-	{
-		self.durationTextField.toolTip = [NSString stringWithFormat:@"%@ - %@", view_item.startTimeString, view_item.endTimeString];
-	}
+	self.durationTextField.toolTip = [NSString stringWithFormat:@"%@ - %@", view_item.startTimeString, view_item.endTimeString];
 
 	// Time entry has a description
 	if (view_item.Description && [view_item.Description length] > 0)
