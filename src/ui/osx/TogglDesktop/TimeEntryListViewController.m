@@ -599,9 +599,9 @@ extern void *ctx;
 {
 	if (aTableView == self.timeEntriesTableView)
 	{
-		// Disable drag and drop for load more row
+		// Disable drag and drop for load more and group row
 		TimeEntryViewItem *model = [viewitems objectAtIndex:[rowIndexes firstIndex]];
-		if ([model loadMore])
+		if ([model loadMore] || model.Group)
 		{
 			return NO;
 		}
