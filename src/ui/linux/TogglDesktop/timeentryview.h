@@ -39,7 +39,6 @@ class TimeEntryView : public QObject {
     uint64_t UpdatedAt;
     QString DateHeader;
     QString DateDuration;
-    bool DurOnly;
     bool IsHeader;
     bool CanAddProjects;
     bool CanSeeBillable;

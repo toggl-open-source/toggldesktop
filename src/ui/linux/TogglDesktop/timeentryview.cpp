@@ -29,7 +29,6 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->UpdatedAt = view->UpdatedAt;
     result->DateHeader = QString(view->DateHeader);
     result->DateDuration = QString(view->DateDuration);
-    result->DurOnly = view->DurOnly;
     result->IsHeader = view->IsHeader;
     result->CanSeeBillable = view->CanSeeBillable;
     result->CanAddProjects = view->CanAddProjects;
