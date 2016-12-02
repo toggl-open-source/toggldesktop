@@ -16,6 +16,7 @@ group(false) {
 }
 
 void TimeEntryCellWidget::display(TimeEntryView *view) {
+    setLoadMore(false);
     guid = view->GUID;
     groupName = view->GroupName;
     description =
@@ -56,8 +57,15 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
             QString("<p style='color:white;background-color:black;'>" +
                     view->ProjectAndTaskLabel + "</p>"));
     }
-
     setupGroupedMode(view);
+}
+
+void TimeEntryCellWidget::setLoadMore(bool load_more) {
+    ui->headerFrame->setVisible(false);
+    ui->loadMoreButton->setVisible(load_more);
+    ui->descProjFrame->setVisible(!load_more);
+    ui->groupFrame->setVisible(!load_more);
+    ui->frame->setVisible(!load_more);
 }
 
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
@@ -149,4 +157,10 @@ void TimeEntryCellWidget::resizeEvent(QResizeEvent* event)
     setEllipsisTextToLabel(ui->description, description);
     setEllipsisTextToLabel(ui->project, project);
     QWidget::resizeEvent(event);
+}
+
+void TimeEntryCellWidget::on_loadMoreButton_clicked()
+{
+    TogglApi::instance->loadMore();
+    ui->loadMoreButton->setStyleSheet("color:#dedede;");
 }

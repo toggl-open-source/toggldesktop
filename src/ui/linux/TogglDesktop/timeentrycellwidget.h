@@ -22,6 +22,7 @@ class TimeEntryCellWidget : public QWidget {
     void display(TimeEntryView *view);
     QSize getSizeHint(bool is_header);
     void labelClicked(QString field_name);
+    void setLoadMore(bool load_more);
 
  protected:
     virtual void mousePressEvent(QMouseEvent *event);
@@ -30,6 +31,7 @@ class TimeEntryCellWidget : public QWidget {
  private slots:  // NOLINT
     void on_continueButton_clicked();
     void on_groupButton_clicked();
+    void on_loadMoreButton_clicked();
 
  private:
     Ui::TimeEntryCellWidget *ui;

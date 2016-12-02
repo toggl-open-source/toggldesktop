@@ -173,6 +173,7 @@ class TogglApi : public QObject {
     QString getContinueStopKey();
 
     void getProjectColors();
+    void loadMore();
 
     bool sendFeedback(const QString topic,
                       const QString details,

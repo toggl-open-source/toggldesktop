@@ -690,3 +690,7 @@ QString TogglApi::getContinueStopKey() {
 void TogglApi::getProjectColors() {
     toggl_get_project_colors(ctx);
 }
+
+void TogglApi::loadMore() {
+    toggl_load_more(ctx);
+}

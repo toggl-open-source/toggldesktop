@@ -42,15 +42,16 @@ void TimeEntryListWidget::displayLogin(
 void TimeEntryListWidget::displayTimeEntryList(
     const bool open,
     QVector<TimeEntryView *> list,
-    const bool) {
+    const bool show_load_more_button) {
 
+    int size = list.size();
     if (open) {
         setVisible(true);
     }
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     render_m_.lock();
 
-    for (int i = 0; i < list.size(); i++) {
+    for (int i = 0; i < size; i++) {
         TimeEntryView *te = list.at(i);
 
         QListWidgetItem *item = 0;
@@ -76,8 +77,13 @@ void TimeEntryListWidget::displayTimeEntryList(
         item->setSizeHint(sizeHint);
     }
 
-    while (ui->list->count() > list.size()) {
-        ui->list->model()->removeRow(list.size());
+    if (show_load_more_button) {
+        showLoadMoreButton(size);
+        size++;
+    }
+
+    while (ui->list->count() > size) {
+        ui->list->model()->removeRow(size);
     }
 
     ui->list->setVisible(!list.isEmpty());
@@ -94,6 +100,30 @@ void TimeEntryListWidget::displayTimeEntryEditor(
     if (open) {
         setVisible(false);
     }
+}
+
+void TimeEntryListWidget::showLoadMoreButton(int size) {
+    QListWidgetItem *item = 0;
+    TimeEntryCellWidget *cell = 0;
+
+    if (ui->list->count() > size) {
+        item = ui->list->item(size);
+        cell = static_cast<TimeEntryCellWidget *>(
+            ui->list->itemWidget(item));
+    }
+
+    if (!item) {
+        item = new QListWidgetItem();
+        cell = new TimeEntryCellWidget();
+
+        ui->list->addItem(item);
+        ui->list->setItemWidget(item, cell);
+    }
+
+    cell->setLoadMore(true);
+
+    QSize sizeHint = cell->getSizeHint(false);
+    item->setSizeHint(sizeHint);
 }
 
 void TimeEntryListWidget::on_blankView_linkActivated(const QString &link) {

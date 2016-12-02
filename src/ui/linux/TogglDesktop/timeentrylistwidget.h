@@ -37,6 +37,8 @@ class TimeEntryListWidget : public QWidget {
         TimeEntryView *view,
         const QString focused_field_name);
 
+    void showLoadMoreButton(int size);
+
     void on_blankView_linkActivated(const QString &link);
 
  private:
