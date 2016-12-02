@@ -175,7 +175,7 @@
             <bool>false</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true">color:#06aaf5;font-size:72px;</string>
+            <string notr="true">font-size:72px;color:#06aaf5;</string>
            </property>
            <property name="text">
             <string>■</string>
