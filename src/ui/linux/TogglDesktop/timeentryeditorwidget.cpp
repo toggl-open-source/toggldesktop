@@ -300,8 +300,9 @@ bool TimeEntryEditorWidget::applyNewProject() {
     }
 
     // Get the selected project color from stylesheet
-    QStringList pieces = ui->colorButton->styleSheet().split("color:");
-    QString colorCode = pieces.value(1).replace(";", "");
+    QString colorCode = ui->colorButton->styleSheet()
+            .replace("font-size:72px;color:", "")
+            .replace(";", "");
 
     QString projectGUID = TogglApi::instance->addProject(guid,
                           workspaceID,
