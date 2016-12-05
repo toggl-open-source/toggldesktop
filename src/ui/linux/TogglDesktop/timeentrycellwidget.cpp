@@ -66,6 +66,9 @@ void TimeEntryCellWidget::setLoadMore(bool load_more) {
     ui->descProjFrame->setVisible(!load_more);
     ui->groupFrame->setVisible(!load_more);
     ui->frame->setVisible(!load_more);
+    if (load_more) {
+        ui->dataFrame->setStyleSheet("background-color: rgb(229,229,229);");
+    }
 }
 
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
@@ -162,5 +165,6 @@ void TimeEntryCellWidget::resizeEvent(QResizeEvent* event)
 void TimeEntryCellWidget::on_loadMoreButton_clicked()
 {
     TogglApi::instance->loadMore();
-    ui->loadMoreButton->setStyleSheet("color:#dedede;");
+    ui->loadMoreButton->setStyleSheet("color:#8c8c8c;");
+    ui->loadMoreButton->setText("Loading ...");
 }
