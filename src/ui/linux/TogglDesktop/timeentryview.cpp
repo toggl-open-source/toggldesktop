@@ -38,6 +38,7 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->ConfirmlessDelete = (view->DurationInSeconds < 15
                                  && result->Description.length() == 0
                                  && !view->PID);
+    result->Unsynced = view->Unsynced;
     // Grouped entries mode
     result->Group = view->Group;
     result->GroupOpen = view->GroupOpen;

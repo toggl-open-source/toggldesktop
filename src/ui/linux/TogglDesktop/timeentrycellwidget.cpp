@@ -36,6 +36,8 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     ui->date->setText(view->DateHeader);
     ui->dateDuration->setText(view->DateDuration);
 
+    ui->unsyncedicon->setVisible(view->Unsynced);
+
     if (view->StartTimeString.length() > 0 &&
             view->EndTimeString.length() > 0) {
         ui->duration->setToolTip(
@@ -68,6 +70,7 @@ void TimeEntryCellWidget::setLoadMore(bool load_more) {
     ui->frame->setVisible(!load_more);
     if (load_more) {
         ui->dataFrame->setStyleSheet("background-color: rgb(229,229,229);");
+        ui->unsyncedicon->setVisible(false);
     }
 }
 

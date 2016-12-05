@@ -46,6 +46,7 @@ class TimeEntryView : public QObject {
     QString WorkspaceName;
     QString Error;
     bool ConfirmlessDelete;
+    bool Unsynced;
     // Group mode items
     bool Group;
     bool GroupOpen;

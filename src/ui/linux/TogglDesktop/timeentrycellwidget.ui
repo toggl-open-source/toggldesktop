@@ -135,6 +135,40 @@
        <number>0</number>
       </property>
       <item>
+       <widget class="QLabel" name="unsyncedicon">
+        <property name="minimumSize">
+         <size>
+          <width>12</width>
+          <height>12</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>12</width>
+          <height>12</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Time Entry has not been synced to the server</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border:none;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="Resources.qrc">:/windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="loadMoreButton">
         <property name="minimumSize">
          <size>
