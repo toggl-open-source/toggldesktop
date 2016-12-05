@@ -4383,18 +4383,14 @@ error Context::pushChanges(
                 *had_something_to_push = false;
                 return noError;
             }
-
-            error err = user_->UpdateJSON(
-                &time_entries,
-                &json);
-            if (err != noError) {
-                return err;
-            }
         }
 
         // Clients first as projects may depend on clients
         if (clients.size() > 0) {
-            error err = pushClients(clients, api_token, *toggl_client);
+            error err = pushClients(
+                clients,
+                api_token,
+                *toggl_client);
             if (err != noError) {
                 return err;
             }
@@ -4407,6 +4403,25 @@ error Context::pushChanges(
                 clients,
                 api_token,
                 *toggl_client);
+            if (err != noError) {
+                return err;
+            }
+
+            // Update project id on time entries if needed
+            err = updateEntryProjects(
+                projects,
+                time_entries);
+            if (err != noError) {
+                return err;
+            }
+        }
+
+        // Create time entries json for batch_updates
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            error err = user_->UpdateJSON(
+                &time_entries,
+                &json);
             if (err != noError) {
                 return err;
             }
@@ -4475,6 +4490,7 @@ error Context::pushClients(
     std::string api_token,
     TogglClient toggl_client) {
     std::string client_json("");
+    error err = noError;
     for (std::vector<Client *>::const_iterator it =
         clients.begin();
             it != clients.end(); it++) {
@@ -4493,19 +4509,21 @@ error Context::pushClients(
         HTTPSResponse resp = toggl_client.Post(req);
 
         if (resp.err != noError) {
-            return resp.body;
+            err = resp.body;
+            continue;
         }
 
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(resp.body, root)) {
-            return error("error parsing client POST response");
+            err = error("error parsing client POST response");
+            continue;
         }
 
         (*it)->LoadFromJSON(root);
     }
 
-    return noError;
+    return err;
 }
 
 
@@ -4514,6 +4532,7 @@ error Context::pushProjects(
     std::vector<Client *> clients,
     std::string api_token,
     TogglClient toggl_client) {
+    error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
         projects.begin();
@@ -4545,16 +4564,40 @@ error Context::pushProjects(
         HTTPSResponse resp = toggl_client.Post(req);
 
         if (resp.err != noError) {
-            return resp.body;
+            err = resp.body;
+            continue;
         }
 
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(resp.body, root)) {
-            return error("error parsing project POST response");
+            err = error("error parsing project POST response");
+            continue;
         }
 
         (*it)->LoadFromJSON(root);
+    }
+
+    return err;
+}
+
+error Context::updateEntryProjects(
+    std::vector<Project *> projects,
+    std::vector<TimeEntry *> time_entries) {
+    for (std::vector<TimeEntry *>::const_iterator it =
+        time_entries.begin();
+            it != time_entries.end(); it++) {
+        if (!(*it)->PID() && !(*it)->ProjectGUID().empty()) {
+            // Find project id
+            for (std::vector<Project *>::const_iterator itc =
+                projects.begin();
+                    itc != projects.end(); itc++) {
+                if ((*itc)->GUID().compare((*it)->ProjectGUID()) == 0) {
+                    (*it)->SetPID((*itc)->ID());
+                    break;
+                }
+            }
+        }
     }
 
     return noError;

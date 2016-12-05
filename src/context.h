@@ -542,6 +542,9 @@ class Context : public TimelineDatasource {
         std::vector<Client *> clients,
         std::string api_token,
         TogglClient toggl_client);
+    error updateEntryProjects(
+        std::vector<Project *> projects,
+        std::vector<TimeEntry *> time_entries);
     static error signup(
         TogglClient *https_client,
         const std::string email,
