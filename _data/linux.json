@@ -1,8 +1,21 @@
 {
   "versions": [
     {
+      "version": "7.3.366",
+      "date": "December 6th 2016",
+      "beta": "true",
+      "rows": [
+        "Fixed project color select issue",
+        "Removed all traces of duration only mode",
+        "Added Load more button",
+        "Added unsyned icon for entries in the list",
+        "Fixed project creation time entry save"
+      ]
+    },
+    {
       "version": "7.3.353",
       "date": "November 29th 2016",
+      "beta": "true",
       "rows": [
         "Added grouped entries mode",
         "Set input backgrounds to always be white",
