@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.3.367",
+            "rows": [
+                "Fixed old duration only mode hiding start stop fields",
+                "Disabled drag and drop for entry group header",
+                "Fixed project creation time entry save"
+            ],
+            "date": "December 6th 2016",
+            "beta": "true"
+        },
+        {
             "version": "7.3.361",
             "rows": [
                 "Fixed ui glitch with graphite Appearance",
