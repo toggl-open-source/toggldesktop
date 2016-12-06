@@ -89,6 +89,9 @@ void Idle::computeIdleState(
             }
             duration << ")";
 
+            logger().debug(since.str());
+            logger().debug(duration.str());
+
             poco_check_ptr(ui_);
             ui_->DisplayIdleNotification(te->GUID(),
                                          since.str(),
