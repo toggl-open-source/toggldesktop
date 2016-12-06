@@ -272,6 +272,9 @@ class TogglApi : public QObject {
     void setProjectColors(
         QVector<char *> list);
 
+    void setUnsyncedItems(
+        const int64_t count);
+
  private:
     void *ctx;
 
@@ -338,5 +341,6 @@ void on_display_idle_notification(
 void on_project_colors(
     const char_t *list[],
     const uint64_t count);
-
+void on_display_unsynced_items(
+    const int64_t count);
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_

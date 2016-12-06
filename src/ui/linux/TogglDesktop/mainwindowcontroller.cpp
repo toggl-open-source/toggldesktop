@@ -35,6 +35,7 @@ MainWindowController::MainWindowController(
   togglApi(new TogglApi(0, logPathOverride, dbPathOverride)),
   tracking(false),
   loggedIn(false),
+  unsynced(0),
   actionEmail(0),
   actionNew(0),
   actionContinue(0),
@@ -103,6 +104,8 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
             this, SLOT(updateContinueStopShortcut()));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(setUnsyncedItems(int64_t)),  // NOLINT
+            this, SLOT(setUnsyncedItems(int64_t)));  // NOLINT
 
     hasTrayIconCached = hasTrayIcon();
     if (hasTrayIconCached) {
@@ -135,21 +138,34 @@ MainWindowController::~MainWindowController() {
 
 void MainWindowController::displayOnlineState(
     int64_t state) {
-
+    QString msg;
     switch (state) {
     case 0:  // online
         statusBar()->clearMessage();
         break;
     case 1:  // no network
-        statusBar()->showMessage("Status: Offline, no network");
+        msg = "Offline (no network)";
+        if (unsynced > 0) {
+            msg.append(QString(", Unsynced (%1)").arg(unsynced));
+        }
+        statusBar()->showMessage(msg);
         break;
     case 2:  // backend down
-        statusBar()->showMessage("Status: Offline, Toggl not responding");
+        msg = "Offline (Toggl not responding)";
+        if (unsynced > 0) {
+            msg.append(QString(", Unsynced (%1)").arg(unsynced));
+        }
+        statusBar()->showMessage(msg);
         break;
     default:
         qDebug() << "Unknown online state " << state;
         break;
     }
+}
+
+void MainWindowController::setUnsyncedItems(
+        const int64_t count) {
+    unsynced = count;
 }
 
 void MainWindowController::displayPomodoro(

@@ -70,6 +70,7 @@ class MainWindowController : public QMainWindow {
     void displayUpdate(const QString url);
 
     void displayOnlineState(int64_t);
+    void setUnsyncedItems(const int64_t count);
     void showHideHotkeyPressed();
     void continueStopHotkeyPressed();
 
@@ -97,6 +98,7 @@ class MainWindowController : public QMainWindow {
 
     bool tracking;
     bool loggedIn;
+    int unsynced;
 
     QxtGlobalShortcut* showHide;
     QxtGlobalShortcut* continueStop;
