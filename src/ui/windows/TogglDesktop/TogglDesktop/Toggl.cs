@@ -1328,5 +1328,10 @@ public static partial class Toggl
 
     #endregion
 
+
+    public static void ToggleEntriesGroup(string groupName)
+    {
+        toggl_toggle_entries_group(ctx, groupName);
+    }
 }
 }

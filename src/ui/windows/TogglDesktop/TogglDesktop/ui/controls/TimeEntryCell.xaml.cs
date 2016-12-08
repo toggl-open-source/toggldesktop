@@ -1,8 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -12,15 +16,47 @@ namespace TogglDesktop
         public Color EntryBackColor { get { return Color.FromRgb(255, 255, 255); } }
     }
 
-    public partial class TimeEntryCell
+    public partial class TimeEntryCell : INotifyPropertyChanged
     {
         private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
         private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
+        private static readonly Color subItemBackColor = Color.FromRgb(240, 240, 240);
 
         private Color entryHoverColor = hoverColor;
 
         private string guid { get; set; }
+        private string groupName { get; set; }
+        private Boolean group = false;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+
+        public bool SubItem
+        {
+            get { return _subItem; }
+            set
+            {
+                if (_subItem == value)
+                    return;
+
+                _subItem = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private bool _subItem;
+
 
         public bool Selected
         {
@@ -61,6 +97,8 @@ namespace TogglDesktop
                 this.IsEnabled = false;
             }
         }
+
+        public Color GroupIconPath { get; set; }
 
         public Color EntryBackColor
         {
@@ -110,6 +148,7 @@ namespace TogglDesktop
 
             this.unsyncedIcon.Visibility = cell.unsyncedIcon.Visibility;
             this.lockedIcon.Visibility = cell.lockedIcon.Visibility;
+            this.groupItemsBack.Visibility = cell.groupItemsBack.Visibility;
 
             this.imitateTooltips(cell);
         }
@@ -155,8 +194,49 @@ namespace TogglDesktop
             this.lockedIcon.ShowOnlyIf(item.Locked);
 
             this.updateToolTips(item);
+
+            this.setupGroupedMode(item);
         }
 
+        private void setupGroupedMode(Toggl.TogglTimeEntryView item)
+        {
+            String groupItemsText = "";
+            String groupIcon = "group_icon_closed.png";
+            Color backColor = idleBackColor;
+            int lead = 16;
+            Visibility visibility = Visibility.Hidden;
+            group = item.Group;
+            groupName = item.GroupName;
+            SubItem = (item.GroupItemCount > 0 && item.GroupOpen && !item.Group);
+            // subitem that is open
+            if (SubItem)
+            {
+                lead = 26;
+                backColor = subItemBackColor;
+            }
+
+            if (item.Group)
+            {
+                if (item.GroupOpen)
+                {
+                    // Change group icon to green arrow
+                     groupIcon = "group_icon_open.png";
+                }
+                else
+                {
+                    // Show count
+                    groupItemsText = Convert.ToString(item.GroupItemCount);
+                }
+                visibility = Visibility.Visible;
+            }
+            this.EntryBackColor = backColor;
+            this.groupItemsBack.Visibility = visibility;
+            groupItems.Text = groupItemsText;
+            this.groupItemsBack.Background = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + groupIcon)));
+
+            // leading margin
+            descriptionGrid.Margin = new Thickness(lead, 0, 0, 0);
+        }
 
         private void imitateTooltips(TimeEntryCell cell)
         {
@@ -245,6 +325,12 @@ namespace TogglDesktop
 
         private void openEditView(MouseButtonEventArgs e, string focusedField)
         {
+            if (group)
+            {
+                Toggl.ToggleEntriesGroup(groupName);
+                e.Handled = true;
+                return;
+            }
             using (Performance.Measure("opening edit view from cell, focussing " + focusedField))
             {
                 Toggl.Edit(this.guid, false, focusedField);
@@ -284,7 +370,7 @@ namespace TogglDesktop
 
         private void tryStartDrag(MouseEventArgs e, bool ignoreDistance = false)
         {
-            if (this.IsEnabled && this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
+            if (!this.group && this.IsEnabled && this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
             {
                 var d = e.GetPosition(null) - this.mouseDownPosition;
 
@@ -335,7 +421,14 @@ namespace TogglDesktop
                 return;
 
             this.tryStartDrag(e, true);
-            this.EntryBackColor = idleBackColor;
+            if (SubItem)
+            {
+                this.EntryBackColor = subItemBackColor;
+            }
+            else
+            {
+                this.EntryBackColor = idleBackColor;
+            }
             this.isMouseDown = false;
         }
 

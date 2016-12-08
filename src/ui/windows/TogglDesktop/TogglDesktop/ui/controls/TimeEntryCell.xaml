@@ -11,7 +11,7 @@
              >
     
     <StackPanel Style="{StaticResource TimeEntryCell}"
-                Background="White">
+                Background="White" x:Name="MainBack">
         
         <!-- seperator -->
         <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
@@ -47,7 +47,7 @@
                        Stretch="UniformToFill"/>
             </StackPanel>
 
-            <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37">
+            <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37" x:Name="descriptionGrid">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -83,7 +83,12 @@
                         </LinearGradientBrush>
                     </Rectangle.Fill>
                 </Rectangle>
-
+                <StackPanel Orientation="Horizontal" Width="36" Height="36" x:Name="groupItemsBack" Margin="0,0,4,1">
+                    <StackPanel.Background>
+                        <ImageBrush ImageSource="/TogglDesktop;component/Resources/group_icon_closed.png" Stretch="Fill"/>
+                    </StackPanel.Background>
+                    <TextBlock x:Name="groupItems" x:FieldModifier="private" Width="36" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="11" Foreground="#FFA4A4A4" Margin="0"/>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
 
                     <StackPanel.Background>

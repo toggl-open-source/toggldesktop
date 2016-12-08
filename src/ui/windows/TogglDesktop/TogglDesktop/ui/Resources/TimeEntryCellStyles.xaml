@@ -33,6 +33,11 @@
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="0, 0, 4, 0"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding SubItem}" Value="True">
+                        <Setter Property="Foreground" Value="#FF696969"/>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
 
             <!-- continue button -->
@@ -53,6 +58,13 @@
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
+                    <DataTrigger Binding="{Binding SubItem}" Value="True">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <ImageBrush ImageSource="/TogglDesktop;component/Resources/continue_light.png" Stretch="Fill"/>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Background">
                             <Setter.Value>

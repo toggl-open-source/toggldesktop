@@ -873,6 +873,11 @@
   <ItemGroup>
     <Resource Include="Resources\arrow-up-white.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\continue_light.png" />
+    <Resource Include="Resources\group_icon_closed.png" />
+    <Resource Include="Resources\group_icon_open.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

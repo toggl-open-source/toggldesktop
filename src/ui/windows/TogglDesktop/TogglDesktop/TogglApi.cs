@@ -1429,6 +1429,13 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_load_more(
         IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_toggle_entries_group(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string name);
 }
 
 }

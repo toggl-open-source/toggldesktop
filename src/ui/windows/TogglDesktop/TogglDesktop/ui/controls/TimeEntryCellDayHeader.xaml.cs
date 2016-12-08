@@ -77,6 +77,7 @@ namespace TogglDesktop
         private void fillCells(List<Toggl.TogglTimeEntryView> list, Action<string, TimeEntryCell> registerCellByGUID)
         {
             var children = this.panel.Children;
+            string guidString;
 
             // remove superfluous cells
             if (children.Count > list.Count)
@@ -92,8 +93,12 @@ namespace TogglDesktop
 
                 var cell = (TimeEntryCell)children[i];
                 cell.Display(entry, this);
-
-                registerCellByGUID(entry.GUID, cell);
+                guidString = entry.GUID;
+                if (entry.Group)
+                {
+                    guidString += entry.Group.ToString();
+                }
+                registerCellByGUID(guidString, cell);
             }
 
             // add additional cells
@@ -104,7 +109,12 @@ namespace TogglDesktop
                 var cell = new TimeEntryCell();
                 cell.Display(entry, this);
 
-                registerCellByGUID(entry.GUID, cell);
+                guidString = entry.GUID;
+                if (entry.Group)
+                {
+                    guidString += entry.Group.ToString();
+                }
+                registerCellByGUID(guidString, cell);
 
                 children.Add(cell);
             }
