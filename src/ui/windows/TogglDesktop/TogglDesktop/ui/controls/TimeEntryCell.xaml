@@ -118,9 +118,9 @@
                 </StackPanel>
             </StackPanel>
 
-            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="65"
+            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="68"
                         HorizontalAlignment="Left" FontSize="14.7" TextAlignment="Right"
-                            Margin="0, 1, 0, 0" MouseLeftButtonUp="labelDuration_MouseUp">03:21:30</TextBlock>
+                            Margin="0, 1, 0, 0" MouseLeftButtonUp="labelDuration_MouseUp">0 h 23 min</TextBlock>
 
             <Button Grid.Column="3" Width="36" Height="36" Margin="0, 0, 4, 1"
                     Focusable="False" Click="buttonContinue_Click"/>
