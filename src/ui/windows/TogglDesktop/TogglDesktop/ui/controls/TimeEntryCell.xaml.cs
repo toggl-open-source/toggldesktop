@@ -148,7 +148,9 @@ namespace TogglDesktop
 
             this.unsyncedIcon.Visibility = cell.unsyncedIcon.Visibility;
             this.lockedIcon.Visibility = cell.lockedIcon.Visibility;
+            this.groupItemsBack.Background = cell.groupItemsBack.Background;
             this.groupItemsBack.Visibility = cell.groupItemsBack.Visibility;
+            this.groupItems.Text = cell.groupItems.Text;
 
             this.imitateTooltips(cell);
         }
