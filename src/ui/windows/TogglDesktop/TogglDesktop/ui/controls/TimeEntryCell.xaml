@@ -83,7 +83,7 @@
                         </LinearGradientBrush>
                     </Rectangle.Fill>
                 </Rectangle>
-                <StackPanel Orientation="Horizontal" Width="36" Height="36" x:Name="groupItemsBack" Margin="0,0,4,1">
+                <StackPanel Orientation="Horizontal" Width="36" Height="36" x:Name="groupItemsBack" Margin="0,0,6,1">
                     <StackPanel.Background>
                         <ImageBrush ImageSource="/TogglDesktop;component/Resources/group_icon_closed.png" Stretch="Fill"/>
                     </StackPanel.Background>
