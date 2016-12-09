@@ -74,9 +74,9 @@
                                     Orientation="Horizontal">
                             <TextBox Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
                                     Width="30"  HorizontalContentAlignment="Right" 
-                                  IsEnabled="{Binding ElementName=enableBreakPomodoroCheckBox, Path=IsChecked}">5</TextBox>
+                                  IsEnabled="{Binding ElementName=enablePomodoroBreakCheckBox, Path=IsChecked}">5</TextBox>
                             <TextBlock Margin="4 0 0 0"
-                                  IsEnabled="{Binding ElementName=enableBreakPomodoroCheckBox, Path=IsChecked}">minutes</TextBlock>
+                                  IsEnabled="{Binding ElementName=enablePomodoroBreakCheckBox, Path=IsChecked}">minutes</TextBlock>
                         </StackPanel>
 
                         <CheckBox Grid.Column="0" Grid.Row="3"
