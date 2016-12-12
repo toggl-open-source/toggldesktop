@@ -16,7 +16,7 @@ namespace TogglDesktop
         public Color EntryBackColor { get { return Color.FromRgb(255, 255, 255); } }
     }
 
-    public partial class TimeEntryCell : INotifyPropertyChanged
+    public partial class TimeEntryCell
     {
         private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
@@ -28,35 +28,6 @@ namespace TogglDesktop
         private string guid { get; set; }
         private string groupName { get; set; }
         private Boolean group = false;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // This method is called by the Set accessor of each property.
-        // The CallerMemberName attribute that is applied to the optional propertyName
-        // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-
-        public bool SubItem
-        {
-            get { return _subItem; }
-            set
-            {
-                if (_subItem == value)
-                    return;
-
-                _subItem = value;
-                NotifyPropertyChanged();
-            }
-        }
-        private bool _subItem;
-
 
         public bool Selected
         {
@@ -99,6 +70,14 @@ namespace TogglDesktop
         }
 
         public Color GroupIconPath { get; set; }
+
+        public bool SubItem
+        {
+            get { return (bool)this.GetValue(SubItemProperty); }
+            set { this.SetValue(SubItemProperty, value); }
+        }
+        public static readonly DependencyProperty SubItemProperty = DependencyProperty
+            .Register("SubItem", typeof(bool), typeof(TimeEntryCell), new FrameworkPropertyMetadata(false));
 
         public Color EntryBackColor
         {
@@ -215,6 +194,10 @@ namespace TogglDesktop
             {
                 lead = 26;
                 backColor = subItemBackColor;
+                Color color = (Color)ColorConverter.ConvertFromString("#FF696969");
+
+                labelDescription.Foreground = new System.Windows.Media.SolidColorBrush(color);
+                labelDuration.Foreground = new System.Windows.Media.SolidColorBrush(color);
             }
 
             if (item.Group)
