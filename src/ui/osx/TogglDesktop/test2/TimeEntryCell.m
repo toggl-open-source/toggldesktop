@@ -81,6 +81,7 @@ extern void *ctx;
 
 	// Time entry not synced icon
 	[self.unsyncedIcon setHidden:!view_item.unsynced];
+	self.unsyncedIcon.toolTip = view_item.Error;
 
 	// Setup Grouped mode
 	[self setupGroupMode];
