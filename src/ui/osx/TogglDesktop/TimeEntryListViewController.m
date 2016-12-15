@@ -198,12 +198,15 @@ extern void *ctx;
 	}
 
 	[self.timeEntriesTableView reloadData];
-	if (cmd.open && self.timeEntrypopover.shown)
+	if (cmd.open)
 	{
-		[self.timeEntrypopover close];
-		[self setDefaultPopupSize];
+		if (self.timeEntrypopover.shown)
+		{
+			[self.timeEntrypopover close];
+			[self setDefaultPopupSize];
+		}
+		[self focusListing:nil];
 	}
-	[self focusListing:nil];
 
 	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;
 	[self.emptyLabel setEnabled:noItems];
