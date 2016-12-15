@@ -135,10 +135,6 @@ TimeEntry *User::Start(
 
     EnsureWID(te);
 
-    // Duration only mode is disabled since Snowball
-    bool duronly = !Snowball() && !StoreStartAndStopTime();
-
-    te->SetDurOnly(duronly);
     te->SetUIModified();
 
     related.TimeEntries.push_back(te);
@@ -163,21 +159,9 @@ TimeEntry *User::Continue(
 
     Stop();
 
-    // Duration only mode is disabled since Snowball
-    bool duronly = !Snowball() && existing->DurOnly();
-
-    if (duronly && existing->IsToday()) {
-        existing->SetDurationInSeconds(
-            -time(0) + existing->DurationInSeconds());
-        existing->SetUIModified();
-        existing->SetLastStartAt(time(0));
-        return existing;
-    }
-
     TimeEntry *result = new TimeEntry();
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
     result->SetDescription(existing->Description());
-    result->SetDurOnly(duronly);
     result->SetWID(existing->WID());
     result->SetPID(existing->PID());
     result->SetTID(existing->TID());
@@ -333,13 +317,6 @@ void User::SetCollapseEntries(const bool value) {
     }
 }
 
-void User::SetSnowball(const bool value) {
-    if (snowball_ != value) {
-        snowball_ = value;
-        SetDirty();
-    }
-}
-
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
@@ -374,12 +351,8 @@ TimeEntry *User::DiscardTimeAt(
     }
 
     if (te && split_into_new_entry) {
-        // Duration only mode is disabled since Snowball
-        bool duronly = !Snowball() && te->DurOnly();
-
         TimeEntry *split = new TimeEntry();
         split->SetCreatedWith(HTTPSClient::Config.UserAgent());
-        split->SetDurOnly(duronly);
         split->SetUID(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
@@ -933,9 +906,6 @@ void User::LoadUserPreferencesFromJSON(
     Json::Value data) {
     if (data.isMember("CollapseTimeEntries")) {
         SetCollapseEntries(data["CollapseTimeEntries"].asBool());
-    }
-    if (data.isMember("Snowball")) {
-        SetSnowball(data["Snowball"].asBool());
     }
 }
 
