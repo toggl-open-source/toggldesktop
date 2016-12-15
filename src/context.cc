@@ -1596,6 +1596,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     UpdateChannel(&update_channel);
 
     Poco::Net::HTMLForm form;
+    Json::Value settings_json;
 
     form.setEncoding(Poco::Net::HTMLForm::ENCODING_MULTIPART);
 
@@ -1614,9 +1615,14 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     form.addPart("files",
                  new Poco::Net::FilePartSource(log_path_));
 
+    settings_json = settings_.SaveToJSON();
+    if (user_) {
+        settings_json["record_timeline"] = user_->RecordTimeline();
+    }
+
     form.addPart("files",
                  new Poco::Net::StringPartSource(
-                     Json::StyledWriter().write(settings_.SaveToJSON()),
+                     Json::StyledWriter().write(settings_json),
                      "application/json",
                      "settings.json"));
 
