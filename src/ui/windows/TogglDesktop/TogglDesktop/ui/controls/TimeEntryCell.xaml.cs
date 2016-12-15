@@ -127,8 +127,8 @@ namespace TogglDesktop
 
             this.unsyncedIcon.Visibility = cell.unsyncedIcon.Visibility;
             this.lockedIcon.Visibility = cell.lockedIcon.Visibility;
-            this.groupItemsBack.Background = cell.groupItemsBack.Background;
             this.groupItemsBack.Visibility = cell.groupItemsBack.Visibility;
+            this.groupImage.Source = cell.groupImage.Source;
             this.groupItems.Text = cell.groupItems.Text;
 
             this.imitateTooltips(cell);
@@ -185,7 +185,7 @@ namespace TogglDesktop
             String groupIcon = "group_icon_closed.png";
             Color backColor = idleBackColor;
             int lead = 16;
-            Visibility visibility = Visibility.Hidden;
+            Visibility visibility = Visibility.Collapsed;
             group = item.Group;
             groupName = item.GroupName;
             SubItem = (item.GroupItemCount > 0 && item.GroupOpen && !item.Group);
@@ -217,8 +217,7 @@ namespace TogglDesktop
             this.EntryBackColor = backColor;
             this.groupItemsBack.Visibility = visibility;
             groupItems.Text = groupItemsText;
-            this.groupItemsBack.Background = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + groupIcon)));
-
+            this.groupImage.Source = new BitmapImage(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + groupIcon));
             // leading margin
             descriptionGrid.Margin = new Thickness(lead, 0, 0, 0);
         }
