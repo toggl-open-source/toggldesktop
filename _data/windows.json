@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.4.0",
+            "rows": [
+                "Added time entry grouping",
+                "Trigger full sync on app start",
+                "Fixed project creation time entry save"
+            ],
+            "date": "December 15th 2016",
+            "beta": "true"
+        },
+        {
             "version": "7.3.349",
             "rows": [
                 "Fixed duration mode issue with new web UI users",
