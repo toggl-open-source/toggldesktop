@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.4.4",
+            "rows": [
+                "Fixes for UI issues"
+            ],
+            "date": "December 16th 2016",
+            "beta": "true"
+        },
+        {
             "version": "7.4.0",
             "rows": [
                 "Added time entry grouping",
