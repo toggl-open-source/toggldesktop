@@ -9,14 +9,6 @@
             "beta": "true"
         },
         {
-            "version": "7.4.0",
-            "rows": [
-                "Fixed focus jumping issue"
-            ],
-            "date": "December 15th 2016",
-            "beta": "true"
-        },
-        {
             "version": "7.3.367",
             "rows": [
                 "Fixed old duration only mode hiding start stop fields",
