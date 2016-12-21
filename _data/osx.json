@@ -1,7 +1,7 @@
 {
     "versions": [
         {
-            "version": "7.4.6",
+            "version": "7.4.7",
             "rows": [
                 "Fixed project creation issue at time entry save",
                 "Fixed ui glitch with graphite Appearance",
