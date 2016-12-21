@@ -1,44 +1,24 @@
 {
     "versions": [
         {
-            "version": "7.4.4",
+            "version": "7.4.6",
             "rows": [
-                "Fixed focus jumping issue"
-            ],
-            "date": "December 16th 2016",
-            "beta": "true"
-        },
-        {
-            "version": "7.3.367",
-            "rows": [
-                "Fixed old duration only mode hiding start stop fields",
-                "Disabled drag and drop for entry group header",
-                "Fixed project creation time entry save"
-            ],
-            "date": "December 6th 2016",
-            "beta": "true"
-        },
-        {
-            "version": "7.3.361",
-            "rows": [
+                "Fixed project creation issue at time entry save",
                 "Fixed ui glitch with graphite Appearance",
                 "Trigger full sync on app start",
                 "Added time entry grouping",
-                "Added keyboard support for time entry grouping"
-            ],
-            "date": "December 1st 2016",
-            "beta": "true"
-        },
-        {
-            "version": "7.3.349",
-            "rows": [
-                "Fixed duration mode issue with new web UI users",
+                "Added keyboard support for time entry grouping LEFT/RIGHT to toggle group",
                 "Show unsynced icon if entry fails to sync because of restrictions",
                 "Added support for new project color logic",
                 "New color selection to project color select"
             ],
-            "date": "November 08th 2016",
-            "beta": "true"
+            "screenshots": [
+                {
+                    "text": "Grouping similar time entries",
+                    "img": "assets/images/osx_7.4.6_grouped.gif"
+                }
+            ],
+            "date": "December 21st 2016"
         },
         {
             "version": "7.3.337",
