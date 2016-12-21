@@ -8,6 +8,7 @@
                 {% if item.beta %}
                 <span class="beta"></span>
                 {% endif %}
+                <a class="download-link" href="https://github.com/toggl/toggldesktop/releases/download/v{{ item.version }}/TogglDesktopInstaller-{{ item.version }}.exe" title="Download windows version {{ item.version }}">download</a>
                 <span class="date">{{ item.date }}</span>
               </h3>
               <ul>

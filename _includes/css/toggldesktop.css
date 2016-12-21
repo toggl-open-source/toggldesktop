@@ -45,7 +45,8 @@ h3 {
   display: block!important;
 }
 
-.current {
+.current,
+.platform-links li a:hover {
   background-color: #39c;
   color: white;
   border-radius: 5px;
@@ -97,4 +98,21 @@ h3 {
 
 .active .screenshots {
   display: block;
+}
+
+.download-link {
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
+  padding: 5px;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+}
+
+.anchor {
+  color: #000;
+  font-weight: 500;
 }
