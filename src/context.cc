@@ -4931,7 +4931,13 @@ error Context::pullUserPreferences(
             return error("Failed to load user preferences");
         }
 
-        user_->LoadUserPreferencesFromJSON(root);
+        if(user_->LoadUserPreferencesFromJSON(root)) {
+            // Reload list if user preferences have changed (collapse time entries)
+            UIElements render;
+            render.display_time_entries = true;
+            updateUI(render);
+        }
+
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();

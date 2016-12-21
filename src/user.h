@@ -193,7 +193,7 @@ class User : public BaseModel {
 
     void LoadObmExperiments(Json::Value const &obm);
 
-    void LoadUserPreferencesFromJSON(
+    bool LoadUserPreferencesFromJSON(
         Json::Value data);
 
     template<typename T>

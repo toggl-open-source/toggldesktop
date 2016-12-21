@@ -902,11 +902,13 @@ void User::loadUserTimeEntryFromJSON(
     model->EnsureGUID();
 }
 
-void User::LoadUserPreferencesFromJSON(
+bool User::LoadUserPreferencesFromJSON(
     Json::Value data) {
-    if (data.isMember("CollapseTimeEntries")) {
+    if (data.isMember("CollapseTimeEntries") && data["CollapseTimeEntries"].asBool() != CollapseEntries()) {
         SetCollapseEntries(data["CollapseTimeEntries"].asBool());
+        return true;
     }
+    return false;
 }
 
 
