@@ -1,35 +1,25 @@
 {
     "versions": [
         {
-            "version": "7.4.4",
+            "version": "7.4.6",
+            "date": "December 21st 2016",
             "rows": [
-                "Fixes for UI issues"
-            ],
-            "date": "December 16th 2016",
-            "beta": "true"
-        },
-        {
-            "version": "7.4.0",
-            "rows": [
+                "Fixes for UI issues",
                 "Added time entry grouping",
                 "Trigger full sync on app start",
-                "Fixed project creation time entry save"
-            ],
-            "date": "December 15th 2016",
-            "beta": "true"
-        },
-        {
-            "version": "7.3.349",
-            "rows": [
-                "Fixed duration mode issue with new web UI users",
+                "Fixed project creation time entry save",
                 "Show unsynced icon if entry fails to sync because of restrictions",
                 "Added support for new project color logic",
                 "New color selection to project color select",
                 "Fixed app loading issues",
                 "Style fixes"
             ],
-            "date": "November 08th 2016",
-            "beta": "true"
+            "screenshots": [
+                {
+                    "text": "Grouping similar time entries",
+                    "img": "assets/images/win_7.4.6_grouped.gif"
+                }
+            ]
         },
         {
             "version": "7.3.337",
