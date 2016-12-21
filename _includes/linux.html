@@ -2,9 +2,9 @@
             {% for item in site.data.linux.versions %}
             <div class="version">
               <h3>
-                <a id="{{ item.version }}" class="anchor" href="#{{ item.version }}" aria-hidden="true">
-                  <span class="octicon octicon-link"></span>
-                </a>{{ item.version }}
+                <a id="linux-{{ item.version | replace:'.','-' }}" class="anchor" href="#linux/{{ item.version }}" aria-hidden="true">
+                  <span class="octicon octicon-link">{{ item.version }}</span>
+                </a>
                 {% if item.beta %}
                 <span class="beta"></span>
                 {% endif %}

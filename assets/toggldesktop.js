@@ -9,7 +9,17 @@ var loadImg = function(tab) {
 }
 
 var showOs = function(os) {
-  var tab = document.querySelector(".pages ." + os);
+  var hash = os.split("/"),
+    tab,
+    osname,
+    item;
+
+  osname = hash[0];
+  tab = document.querySelector(".pages ." + hash[0]);
+
+  if (!tab) {
+    return;
+  }
   loadImg(tab);
   if (!!document.querySelector(".pages .active")) {
     document.querySelector(".pages .active").classList.remove("active");
@@ -20,7 +30,14 @@ var showOs = function(os) {
   if (!!document.querySelector(".platform-links .current")) {
     document.querySelector(".platform-links .current").classList.remove("current");
   }
-  document.querySelector(".platform-links ." + os).classList.add("current");
+  document.querySelector(".platform-links ." + osname).classList.add("current");
+
+  if (hash.length > 1) {
+    item = document.querySelector("#" + osname + "-" + hash[1].replace(/\./g,'-'));
+    if (!!item) {
+      item.scrollIntoView();
+    }
+  }
 }
 
 var detectOs = function() {
