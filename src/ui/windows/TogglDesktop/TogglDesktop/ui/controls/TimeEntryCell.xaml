@@ -88,10 +88,10 @@
                         <SolidColorBrush Color="{Binding EntryBackColor}"/>
                     </StackPanel.Background>
 
-                    <Canvas Width="36" Height="36" UseLayoutRounding="false">
+                    <Canvas Width="42" Height="36" UseLayoutRounding="false">
                         <Image x:Name="groupImage" x:FieldModifier="private" Source="/TogglDesktop;component/Resources/group_icon_closed.png"
-                               Stretch="UniformToFill" Height="36"/>
-                        <TextBlock x:Name="groupItems" x:FieldModifier="private" Width="36" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="11" Foreground="#FFA4A4A4" Margin="0,11,0,0"/>
+                               Stretch="UniformToFill" Height="36" Margin="3,0"/>
+                        <TextBlock x:Name="groupItems" x:FieldModifier="private" Width="36" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Foreground="#FFA4A4A4" Margin="3,9,3,0"/>
                     </Canvas>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
