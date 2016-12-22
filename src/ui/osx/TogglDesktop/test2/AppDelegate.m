@@ -1256,8 +1256,11 @@ const NSString *appName = @"osx_native_app";
 		 if ([theEvent modifierFlags] & NSCommandKeyMask)
 		 {
 			 NSString *character = [theEvent charactersIgnoringModifiers];
-	         // Execute only if edit view is not opened
-			 if ([character isEqualToString:@"v"] && ![self.mainWindowController isEditOpened])
+			 NSString *windowName = [NSApp orderedWindows][0].frameAutosaveName;
+	         // Execute only if edit view is not opened and focus is on main window
+			 if ([character isEqualToString:@"v"]
+				 && ![self.mainWindowController isEditOpened]
+				 && [windowName isEqualToString:@"MainWindow"])
 			 {
 				 if (self.lastKnownRunningTimeEntry == nil || self.lastKnownRunningTimeEntry.duration_in_seconds < 0)
 				 {
