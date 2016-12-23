@@ -124,6 +124,8 @@ MainWindowController::MainWindowController(
     } else {
         setWindowIcon(icon);
     }
+
+    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
 }
 
 MainWindowController::~MainWindowController() {
@@ -131,6 +133,18 @@ MainWindowController::~MainWindowController() {
     togglApi = 0;
 
     delete ui;
+}
+
+void MainWindowController::toggleWindow(QSystemTrayIcon::ActivationReason r)
+{
+    if (r == QSystemTrayIcon::Trigger)
+    {
+        if (!this->isVisible()) {
+            this->show();
+        } else {
+            this->hide();
+        }
+    }
 }
 
 void MainWindowController::displayOnlineState(

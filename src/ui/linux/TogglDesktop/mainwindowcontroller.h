@@ -45,6 +45,8 @@ class MainWindowController : public QMainWindow {
     void runScript();
 
  private slots:  // NOLINT
+    void toggleWindow(QSystemTrayIcon::ActivationReason r);
+
     void displayApp(const bool open);
 
     void displayRunningTimerState(TimeEntryView *te);
