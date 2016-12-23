@@ -532,7 +532,7 @@ bool TogglApi::clearCache() {
 }
 
 void TogglApi::getSupport() {
-    toggl_get_support(ctx);
+    toggl_get_support(ctx, 2);
 }
 
 void TogglApi::logout() {

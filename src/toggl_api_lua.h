@@ -112,7 +112,7 @@ static int l_toggl_open_in_browser(lua_State *L) {
 }
 
 static int l_toggl_get_support(lua_State *L) {
-    toggl_get_support(toggl_app_instance_);
+    toggl_get_support(toggl_app_instance_, 0);
     return 0;
 }
 

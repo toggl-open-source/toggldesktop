@@ -490,7 +490,9 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT void toggl_get_support(
-        void *context);
+        void *context,
+        const int type);
+
 
     TOGGL_EXPORT bool_t toggl_feedback_send(
         void *context,

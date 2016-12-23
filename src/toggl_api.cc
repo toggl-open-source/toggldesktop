@@ -987,8 +987,15 @@ void toggl_open_in_browser(void *context) {
     app(context)->OpenReportsInBrowser();
 }
 
-void toggl_get_support(void *context) {
-    app(context)->UI()->DisplayURL(kMacSupportURL);
+void toggl_get_support(void *context, const int type) {
+    if (type == 1) {
+        app(context)->UI()->DisplayURL(kMacSupportURL);
+    } else if (type == 2) {
+        app(context)->UI()->DisplayURL(kLinuxSupportURL);
+    } else {
+        app(context)->UI()->DisplayURL(kGeneralSupportURL);
+    }
+
 }
 
 void toggl_on_workspace_select(

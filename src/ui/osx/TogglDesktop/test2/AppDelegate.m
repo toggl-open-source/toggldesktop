@@ -1019,7 +1019,7 @@ BOOL manualMode = NO;
 
 - (IBAction)onHelpMenuItem:(id)sender
 {
-	toggl_get_support(ctx);
+	toggl_get_support(ctx, 1);
 }
 
 - (IBAction)onLogoutMenuItem:(id)sender
