@@ -36,6 +36,8 @@
 @property NSString *selectedGroupName;
 @property TimeEntryCell *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
+@property int tutorialStep;
+@property BOOL seenTutorial;
 @end
 
 @implementation TimeEntryListViewController
@@ -64,7 +66,10 @@ extern void *ctx;
 																	   bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
 														bundle:nil];
-
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayTimerState:)
+													 name:kDisplayTimerState
+												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
 													 name:kDisplayTimeEntryList
@@ -139,6 +144,8 @@ extern void *ctx;
 	self.runningEdit = NO;
 	self.groupToggleRow = -1;
 	self.selectedGroupName = @"";
+	self.tutorialStep = 0;
+	self.seenTutorial = NO;
 
 	[self setupEmptyLabel];
 
@@ -182,6 +189,7 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
 
+	BOOL noItems = [cmd.timeEntries count] == 0;
 	@synchronized(viewitems)
 	{
 		[viewitems removeAllObjects];
@@ -208,20 +216,63 @@ extern void *ctx;
 		[self focusListing:nil];
 	}
 
-	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;
-	[self.emptyLabel setEnabled:noItems];
 	[self.timeEntryListScrollView setHidden:noItems];
 	// This seems to work for hiding the list when there are no items
 	if (noItems)
 	{
 		[self.timeEntryListScrollView setHidden:noItems];
 	}
-
-	if (self.groupToggleRow > -1)
+	else
 	{
-		[self.timeEntriesTableView scrollRowToVisible:self.groupToggleRow];
-		self.groupToggleRow = -1;
-		self.selectedGroupName = @"";
+		self.seenTutorial = YES;
+		// Scroll view only when list is visible
+		if (self.groupToggleRow > -1)
+		{
+			[self.timeEntriesTableView scrollRowToVisible:self.groupToggleRow];
+			self.groupToggleRow = -1;
+			self.selectedGroupName = @"";
+		}
+
+		self.tutorialStep = 0;
+		[self showTutorial];
+	}
+
+	if (self.tutorialStep == 0 && !self.seenTutorial)
+	{
+		self.tutorialStep = 1;
+		[self showTutorial];
+		return;
+	}
+	[self.emptyLabel setEnabled:noItems];
+}
+
+- (void)showTutorial
+{
+	if (self.tutorialStep == 1)
+	{
+		[self.arrowImage setHidden:NO];
+		[self.tutorialScreenOne setHidden:NO];
+		[self.tutorialScreenTwo setHidden:YES];
+		[self.timeEntryListScrollView setHidden:YES];
+		[self.timeEntryListScrollView setHidden:YES];
+		self.seenTutorial = YES;
+		[self.emptyLabel setHidden:YES];
+	}
+	else if (self.tutorialStep == 2)
+	{
+		[self.arrowImage setHidden:NO];
+		[self.tutorialScreenOne setHidden:YES];
+		[self.tutorialScreenTwo setHidden:NO];
+	}
+	else
+	{
+		[self.arrowImage setHidden:YES];
+		[self.tutorialScreenOne setHidden:YES];
+		[self.tutorialScreenTwo setHidden:YES];
+		[self.timeEntryListScrollView setHidden:NO];
+		[self.timeEntryListScrollView setHidden:NO];
+		self.tutorialStep = 0;
+		[self.emptyLabel setHidden:NO];
 	}
 }
 
@@ -238,6 +289,34 @@ extern void *ctx;
 - (void)popoverWillClose:(NSNotification *)notification
 {
 	NSLog(@"%@", notification.userInfo);
+}
+
+- (void)startDisplayTimerState:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayTimerState:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayTimerState:(TimeEntryViewItem *)te
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	if (self.tutorialStep == 0)
+	{
+		return;
+	}
+
+	if (!te)
+	{
+		te = [[TimeEntryViewItem alloc] init];
+	}
+
+	if (te.duration_in_seconds < 0 && self.tutorialStep == 1)
+	{
+		self.tutorialStep++;
+		[self showTutorial];
+	}
 }
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
@@ -531,6 +610,7 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
+		self.seenTutorial = NO;
 	}
 }
 

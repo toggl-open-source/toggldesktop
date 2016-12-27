@@ -1,19 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
+                <outlet property="arrowImage" destination="KHw-0M-bI9" id="7Gw-ou-Y6D"/>
                 <outlet property="emptyLabel" destination="6qy-lU-tSK" id="gDu-GF-iBp"/>
+                <outlet property="emptyView" destination="jXg-Kt-WV6" id="qZs-g9-xDa"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntriesTableView" destination="kSc-tv-Cw1" id="W2U-dC-rBu"/>
                 <outlet property="timeEntryListScrollView" destination="fu8-w4-kYq" id="V9k-N4-LGk"/>
                 <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
                 <outlet property="timeEntrypopover" destination="dIa-oe-UAP" id="CwJ-50-ejV"/>
                 <outlet property="timeEntrypopoverViewController" destination="U32-F3-bea" id="AQr-DI-TYB"/>
+                <outlet property="tutorialScreenOne" destination="abR-gY-Voi" id="Jgp-9x-fwC"/>
+                <outlet property="tutorialScreenTwo" destination="PYM-PT-n4G" id="Dc1-vu-tO8"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>
         </customObject>
@@ -32,43 +36,90 @@
         <customView id="ozl-58-bBU" customClass="NSViewEscapable">
             <rect key="frame" x="0.0" y="0.0" width="346" height="356"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <animations/>
         </customView>
         <customView id="3">
-            <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
+            <rect key="frame" x="0.0" y="0.0" width="252" height="229"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz" userLabel="Header View">
-                    <rect key="frame" x="13" y="185" width="225" height="56"/>
+                    <rect key="frame" x="13" y="154" width="225" height="56"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="56" id="OHB-YG-OkN"/>
                     </constraints>
-                    <animations/>
                 </customView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
-                    <rect key="frame" x="15" y="60" width="122" height="100"/>
+                <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jXg-Kt-WV6" userLabel="Empty View">
+                    <rect key="frame" x="0.0" y="-31" width="252" height="185"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
+                            <rect key="frame" x="-1" y="55" width="254" height="76"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="250" id="XeO-lf-n0a"/>
+                            </constraints>
+                            <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Welcome back! Your previous entries are available in the web under reports" id="kLq-fS-jvh">
+                                <font key="font" metaFont="system" size="15"/>
+                                <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
+                            </connections>
+                        </textField>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHw-0M-bI9" userLabel="Arrow Image">
+                            <rect key="frame" x="-17" y="80" width="38" height="75"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="75" id="MoO-tU-mtP"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="arrow-up-white" id="uep-B9-n8S"/>
+                        </imageView>
+                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abR-gY-Voi" userLabel="Tutorial 1" customClass="NSTextFieldClickable">
+                            <rect key="frame" x="-1" y="10" width="254" height="85"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="250" id="917-JV-e1D"/>
+                            </constraints>
+                            <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Hey, welcome! Add a description and start tracking!" id="iqM-cP-916">
+                                <font key="font" metaFont="system" size="15"/>
+                                <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="Ptn-L1-oGT"/>
+                            </connections>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PYM-PT-n4G" userLabel="Tutorial 2" customClass="NSTextFieldClickable">
+                            <rect key="frame" x="-1" y="10" width="254" height="85"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="250" id="fQi-WC-2rT"/>
+                            </constraints>
+                            <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="To add a project or tags, click anywhere on the timer" id="Ac5-Tc-DCm">
+                                <font key="font" metaFont="system" size="15"/>
+                                <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="xpf-tt-Y1e"/>
+                            </connections>
+                        </textField>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="250" id="XeO-lf-n0a"/>
+                        <constraint firstItem="6qy-lU-tSK" firstAttribute="centerY" secondItem="jXg-Kt-WV6" secondAttribute="centerY" id="0Yx-Vu-1KV"/>
+                        <constraint firstItem="abR-gY-Voi" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="1ov-Jt-xjk"/>
+                        <constraint firstItem="PYM-PT-n4G" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2Jj-Ct-lV2"/>
+                        <constraint firstItem="6qy-lU-tSK" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2ic-Ou-hfP"/>
+                        <constraint firstItem="abR-gY-Voi" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="OOM-31-BIv"/>
+                        <constraint firstItem="KHw-0M-bI9" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="10" id="WxI-YZ-41q"/>
+                        <constraint firstItem="PYM-PT-n4G" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="lWL-34-BCV"/>
+                        <constraint firstItem="abR-gY-Voi" firstAttribute="leading" secondItem="KHw-0M-bI9" secondAttribute="trailing" id="uDY-pM-CEg"/>
                     </constraints>
-                    <animations/>
-                    <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Welcome back! Your previous entries are available in the web under reports" id="kLq-fS-jvh">
-                        <font key="font" metaFont="system" size="15"/>
-                        <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
-                    </connections>
-                </textField>
+                </customView>
                 <scrollView wantsLayer="YES" misplaced="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
-                    <rect key="frame" x="0.0" y="0.0" width="252" height="170"/>
-                    <clipView key="contentView" misplaced="YES" id="TQQ-db-grk">
+                    <rect key="frame" x="0.0" y="-31" width="252" height="170"/>
+                    <clipView key="contentView" id="TQQ-db-grk">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="170"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1" customClass="NSUnstripedTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="170"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <animations/>
                                 <color key="backgroundColor" red="0.96078437566757202" green="0.96078437566757202" blue="0.96078437566757202" alpha="1" colorSpace="deviceRGB"/>
                                 <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                 <color key="gridColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -92,7 +143,7 @@
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEi-4M-qbG">
                                                         <rect key="frame" x="0.0" y="-153" width="6" height="17"/>
-                                                        <animations/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="eTT-uV-85C">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -100,7 +151,6 @@
                                                         </textFieldCell>
                                                     </textField>
                                                 </subviews>
-                                                <animations/>
                                                 <connections>
                                                     <outlet property="textField" destination="MEi-4M-qbG" id="XQc-ff-Yvq"/>
                                                 </connections>
@@ -115,35 +165,35 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" red="0.89803928136825562" green="0.89803928136825562" blue="0.89803928136825562" alpha="1" colorSpace="deviceRGB"/>
                     </clipView>
-                    <animations/>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="RWC-Ro-rhd">
                         <rect key="frame" x="0.0" y="314" width="255" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="mPP-6U-WOC">
                         <rect key="frame" x="236" y="0.0" width="16" height="95"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                     </scroller>
                 </scrollView>
             </subviews>
             <constraints>
-                <constraint firstItem="6qy-lU-tSK" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" constant="25" id="1aS-BJ-Gna"/>
+                <constraint firstItem="jXg-Kt-WV6" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="0MN-4h-aSK"/>
+                <constraint firstItem="jXg-Kt-WV6" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="HUC-YY-3fT"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Kzp-8f-L6N"/>
+                <constraint firstAttribute="bottom" secondItem="jXg-Kt-WV6" secondAttribute="bottom" id="LWX-sW-wrI"/>
                 <constraint firstAttribute="trailing" secondItem="fu8-w4-kYq" secondAttribute="trailing" id="Mw2-Bk-0wN"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="3" secondAttribute="top" constant="55" id="Wwe-Qg-cEG"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-1" id="cFn-Dr-igO"/>
                 <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" constant="-1" id="dob-uI-NdT"/>
                 <constraint firstItem="fu8-w4-kYq" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="ihN-op-Ey5"/>
-                <constraint firstAttribute="centerX" secondItem="6qy-lU-tSK" secondAttribute="centerX" id="oe5-9e-iNd"/>
                 <constraint firstAttribute="bottom" secondItem="fu8-w4-kYq" secondAttribute="bottom" id="tZR-YL-cvO"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
+                <constraint firstAttribute="trailing" secondItem="jXg-Kt-WV6" secondAttribute="trailing" id="wxX-Tw-Srf"/>
             </constraints>
-            <animations/>
         </customView>
     </objects>
+    <resources>
+        <image name="arrow-up-white" width="30" height="158"/>
+    </resources>
 </document>

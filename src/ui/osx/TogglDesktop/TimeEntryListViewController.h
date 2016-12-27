@@ -23,5 +23,9 @@
 @property (strong) IBOutlet NSViewEscapable *timeEntryPopupEditView;
 @property (strong) IBOutlet NSScrollView *timeEntryListScrollView;
 @property (strong) IBOutlet NSTextFieldClickable *emptyLabel;
+@property (weak) IBOutlet NSView *emptyView;
 - (IBAction)performClick:(id)sender;
+@property (weak) IBOutlet NSImageView *arrowImage;
+@property (weak) IBOutlet NSTextFieldClickable *tutorialScreenOne;
+@property (weak) IBOutlet NSTextFieldClickable *tutorialScreenTwo;
 @end
