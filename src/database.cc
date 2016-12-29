@@ -97,7 +97,19 @@ Database::Database(const std::string db_path)
         "time_entries", start.timestamp());
 
     if (err != noError) {
-        logger().error("failed to clean Up Data: " + err);
+        logger().error("failed to clean Up Time Entries Data: " + err);
+        // but will continue, its not vital
+    }
+
+    // Remove Synced Timeline Events older than 9 days from local db
+    Poco::LocalDateTime timeline_start =
+        today - Poco::Timespan(9 * Poco::Timespan::DAYS);
+
+    err = deleteAllSyncedTimelineEventsByDate(
+        timeline_start.timestamp());
+
+    if (err != noError) {
+        logger().error("failed to clean Up Timeline Events Data: " + err);
         // but will continue, its not vital
     }
 
@@ -255,6 +267,31 @@ error Database::deleteAllFromTableByDate(
     }
     return last_error("deleteAllFromTableByDate");
 }
+
+error Database::deleteAllSyncedTimelineEventsByDate(
+    const Poco::Timestamp &time) {
+    const Poco::Int64 endTime = time.epochTime();
+
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "delete from timeline_events where "
+                  "end_time < :end_time",
+                  useRef(endTime),
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("deleteAllSyncedTimelineEventsByDate");
+}
+
 
 error Database::journalMode(std::string *mode) {
     try {

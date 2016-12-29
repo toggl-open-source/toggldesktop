@@ -335,6 +335,9 @@ class Database {
         const std::string table_name,
         const Poco::Timestamp &time);
 
+    error deleteAllSyncedTimelineEventsByDate(
+        const Poco::Timestamp &time);
+
     error deleteAllFromTableByUID(
         const std::string table_name,
         const Poco::Int64 &UID);
