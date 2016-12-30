@@ -81,7 +81,7 @@
                                 <outlet property="delegate" destination="-2" id="C76-rc-iDl"/>
                             </connections>
                         </textField>
-                        <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="qga-M4-dwV" userLabel="Empty Loader">
+                        <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="qga-M4-dwV" userLabel="Empty Loader">
                             <rect key="frame" x="118" y="85" width="16" height="16"/>
                         </progressIndicator>
                         <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHw-0M-bI9" userLabel="Arrow Image">
