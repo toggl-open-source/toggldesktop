@@ -125,7 +125,8 @@ MainWindowController::MainWindowController(
         setWindowIcon(icon);
     }
 
-    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
 }
 
 MainWindowController::~MainWindowController() {
@@ -135,10 +136,8 @@ MainWindowController::~MainWindowController() {
     delete ui;
 }
 
-void MainWindowController::toggleWindow(QSystemTrayIcon::ActivationReason r)
-{
-    if (r == QSystemTrayIcon::Trigger)
-    {
+void MainWindowController::toggleWindow(QSystemTrayIcon::ActivationReason r) {
+    if (r == QSystemTrayIcon::Trigger) {
         if (!this->isVisible()) {
             this->show();
         } else {
