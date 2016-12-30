@@ -582,6 +582,11 @@ public static partial class Toggl
         TogglDisplayURL cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_tutorial(
+        IntPtr context,
+        TogglDisplayTutorial cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_login(
         IntPtr context,
         TogglDisplayLogin cb);
