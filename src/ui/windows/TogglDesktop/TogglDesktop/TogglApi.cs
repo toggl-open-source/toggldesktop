@@ -332,6 +332,9 @@ public static partial class Toggl
         string url);
 
     [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayTutorial();
+
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayLogin(
         [MarshalAs(UnmanagedType.I1)]
         bool open,
