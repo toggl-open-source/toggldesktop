@@ -318,6 +318,7 @@ class GUI : public SyncStateMonitor {
     , on_display_online_state_(nullptr)
     , on_display_login_(nullptr)
     , on_display_url_(nullptr)
+    , on_display_tutorial_(nullptr)
     , on_display_reminder_(nullptr)
     , on_display_pomodoro_(nullptr)
     , on_display_pomodoro_break_(nullptr)
@@ -407,6 +408,8 @@ class GUI : public SyncStateMonitor {
 
     void DisplayURL(const std::string);
 
+    void DisplayTutorial();
+
     void DisplayLogin(const bool open, const uint64_t user_id);
 
     void DisplaySettings(
@@ -467,8 +470,16 @@ class GUI : public SyncStateMonitor {
         on_display_login_ = cb;
     }
 
+    void DisplayTutorial(TogglDisplayTutorial cb) {
+        on_display_tutorial_ = cb;
+    }
+
     void OnDisplayURL(TogglDisplayURL cb) {
         on_display_url_ = cb;
+    }
+
+    void OnDisplayTutorial(TogglDisplayTutorial cb) {
+        on_display_tutorial_ = cb;
     }
 
     void OnDisplayReminder(TogglDisplayReminder cb) {
@@ -591,6 +602,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayOnlineState on_display_online_state_;
     TogglDisplayLogin on_display_login_;
     TogglDisplayURL on_display_url_;
+    TogglDisplayTutorial on_display_tutorial_;
     TogglDisplayReminder on_display_reminder_;
     TogglDisplayPomodoro on_display_pomodoro_;
     TogglDisplayPomodoroBreak on_display_pomodoro_break_;

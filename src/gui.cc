@@ -239,6 +239,9 @@ error GUI::findMissingCallbacks() {
     if (!on_display_pomodoro_break_) {
         return error("!on_display_pomodoro_break_");
     }
+    if (!on_display_tutorial_) {
+        return error("!on_display_tutorial_");
+    }
     return noError;
 }
 
@@ -506,6 +509,10 @@ void GUI::DisplayTimeEntryEditor(
     free(field_s);
 
     time_entry_view_item_clear(view);
+}
+
+void GUI::DisplayTutorial() {
+    on_display_tutorial_();
 }
 
 void GUI::DisplayURL(const std::string URL) {

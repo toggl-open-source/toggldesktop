@@ -796,6 +796,14 @@ error Database::SetSettingsHasSeenBetaOffering(const bool &value) {
     return setSettingsValue("has_seen_beta_offering", value);
 }
 
+error Database::SetSettingsHasSeenTutorial(const bool &value) {
+    return setSettingsValue("has_seen_tutorial", value);
+}
+
+error Database::GetHasSeenTutorial(bool *result) {
+    return getSettingsValue("has_seen_tutorial", result);
+}
+
 error Database::SetSettingsUseIdleDetection(
     const bool &use_idle_detection) {
     return setSettingsValue("use_idle_detection", use_idle_detection);

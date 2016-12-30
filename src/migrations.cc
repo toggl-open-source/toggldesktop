@@ -1284,6 +1284,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.has_seen_tutorial",
+        "ALTER TABLE settings "
+        "ADD COLUMN has_seen_tutorial INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

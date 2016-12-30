@@ -244,6 +244,11 @@ class Context : public TimelineDatasource {
         const int64_t window_height,
         const int64_t window_width);
 
+    bool GetHasSeenTutorial();
+
+    void SetHasSeenTutorial(
+        const bool);
+
     Poco::Int64 GetMiniTimerX();
 
     void SetMiniTimerX(

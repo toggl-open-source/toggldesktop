@@ -846,6 +846,11 @@ void Context::updateUI(const UIElements &what) {
             time_entry_views,
             !user_->HasLoadedMore());
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
+        if (time_entry_views.size() == 0
+                && !GetHasSeenTutorial()) {
+            UI()->DisplayTutorial();
+            SetHasSeenTutorial(true);
+        }
     }
 
     if (what.display_time_entry_autocomplete) {
@@ -1797,6 +1802,17 @@ error Context::SaveWindowSettings(
         window_height,
         window_width);
     return displayError(err);
+}
+
+bool Context::GetHasSeenTutorial() {
+    bool value(false);
+    displayError(db()->GetHasSeenTutorial(&value));
+    return value;
+}
+
+void Context::SetHasSeenTutorial(
+    const bool value) {
+    displayError(db()->SetSettingsHasSeenTutorial(value));
 }
 
 Poco::Int64 Context::GetMiniTimerX() {

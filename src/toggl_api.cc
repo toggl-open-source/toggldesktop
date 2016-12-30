@@ -923,6 +923,12 @@ void toggl_on_url(
     app(context)->UI()->OnDisplayURL(cb);
 }
 
+void toggl_on_tutorial(
+    void *context,
+    TogglDisplayTutorial cb) {
+    app(context)->UI()->OnDisplayTutorial(cb);
+}
+
 void toggl_on_login(
     void *context,
     TogglDisplayLogin cb) {

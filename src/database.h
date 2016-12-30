@@ -88,6 +88,10 @@ class Database {
 
     error SetSettingsHasSeenBetaOffering(const bool &value);
 
+    error SetSettingsHasSeenTutorial(const bool &value);
+
+    error GetHasSeenTutorial(bool *);
+
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
     error SetSettingsAutotrack(const bool &value);

@@ -198,6 +198,8 @@ extern "C" {
     typedef void (*TogglDisplayURL)(
         const char_t *url);
 
+    typedef void (*TogglDisplayTutorial)();
+
     typedef void (*TogglDisplayLogin)(
         const bool_t open,
         const uint64_t user_id);
@@ -374,6 +376,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_url(
         void *context,
         TogglDisplayURL cb);
+
+    TOGGL_EXPORT void toggl_on_tutorial(
+        void *context,
+        TogglDisplayTutorial cb);
 
     TOGGL_EXPORT void toggl_on_login(
         void *context,
