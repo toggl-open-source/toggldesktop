@@ -85,6 +85,8 @@ public static partial class Toggl
     public delegate void DisplayURL(
         string url);
 
+    public delegate void DisplayTutorial();
+
     public delegate void DisplayLogin(
         bool open,
         UInt64 user_id);
