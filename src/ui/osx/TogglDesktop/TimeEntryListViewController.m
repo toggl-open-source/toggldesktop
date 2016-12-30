@@ -244,6 +244,7 @@ extern void *ctx;
 		return;
 	}
 	[self.emptyLabel setEnabled:noItems];
+	[self.emptyLoadMore setEnabled:noItems];
 }
 
 - (void)showTutorial
@@ -251,12 +252,14 @@ extern void *ctx;
 	if (self.tutorialStep == 1)
 	{
 		[self.arrowImage setHidden:NO];
+		[self.tutorialClose setHidden:NO];
 		[self.tutorialScreenOne setHidden:NO];
 		[self.tutorialScreenTwo setHidden:YES];
 		[self.timeEntryListScrollView setHidden:YES];
 		[self.timeEntryListScrollView setHidden:YES];
 		self.seenTutorial = YES;
 		[self.emptyLabel setHidden:YES];
+		[self.emptyLoadMore setHidden:YES];
 	}
 	else if (self.tutorialStep == 2)
 	{
@@ -264,15 +267,33 @@ extern void *ctx;
 		[self.tutorialScreenOne setHidden:YES];
 		[self.tutorialScreenTwo setHidden:NO];
 	}
-	else
+	else if (self.tutorialStep == 0)
 	{
+		// Hide tutorial items
 		[self.arrowImage setHidden:YES];
+		[self.tutorialClose setHidden:YES];
 		[self.tutorialScreenOne setHidden:YES];
 		[self.tutorialScreenTwo setHidden:YES];
-		[self.timeEntryListScrollView setHidden:NO];
-		[self.timeEntryListScrollView setHidden:NO];
-		self.tutorialStep = 0;
+		self.seenTutorial = YES;
+
+		// Show empty state
 		[self.emptyLabel setHidden:NO];
+		[self.emptyLoadMore setHidden:NO];
+	}
+	else
+	{
+		// Hide tutorial items
+		[self.arrowImage setHidden:YES];
+		[self.tutorialClose setHidden:YES];
+		[self.tutorialScreenOne setHidden:YES];
+		[self.tutorialScreenTwo setHidden:YES];
+		self.seenTutorial = YES;
+		self.tutorialStep = 0;
+
+		[self.timeEntryListScrollView setHidden:NO];
+		[self.timeEntryListScrollView setHidden:NO];
+		[self.emptyLabel setHidden:NO];
+		[self.emptyLoadMore setHidden:NO];
 	}
 }
 
@@ -616,9 +637,21 @@ extern void *ctx;
 
 - (void)textFieldClicked:(id)sender
 {
+	// Empty label clicked
 	if (sender == self.emptyLabel && [self.emptyLabel isEnabled])
 	{
 		toggl_open_in_browser(ctx);
+	}
+	// Load more clicked on emptystate page
+	if (sender == self.emptyLoadMore && [self.emptyLoadMore isEnabled])
+	{
+		toggl_load_more(ctx);
+	}
+	// Tutorial close clicked on tutorial page
+	if (sender == self.tutorialClose)
+	{
+		self.tutorialStep = 0;
+		[self showTutorial];
 	}
 }
 

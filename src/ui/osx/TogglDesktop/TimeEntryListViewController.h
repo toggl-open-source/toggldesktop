@@ -28,4 +28,6 @@
 @property (weak) IBOutlet NSImageView *arrowImage;
 @property (weak) IBOutlet NSTextFieldClickable *tutorialScreenOne;
 @property (weak) IBOutlet NSTextFieldClickable *tutorialScreenTwo;
+@property (weak) IBOutlet NSTextFieldClickable *tutorialClose;
+@property (weak) IBOutlet NSTextFieldClickable *emptyLoadMore;
 @end

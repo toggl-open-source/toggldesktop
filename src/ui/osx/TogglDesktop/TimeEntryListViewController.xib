@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="arrowImage" destination="KHw-0M-bI9" id="7Gw-ou-Y6D"/>
                 <outlet property="emptyLabel" destination="6qy-lU-tSK" id="gDu-GF-iBp"/>
+                <outlet property="emptyLoadMore" destination="kd7-ee-POB" id="zsd-xU-AAL"/>
                 <outlet property="emptyView" destination="jXg-Kt-WV6" id="qZs-g9-xDa"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntriesTableView" destination="kSc-tv-Cw1" id="W2U-dC-rBu"/>
@@ -16,6 +17,7 @@
                 <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
                 <outlet property="timeEntrypopover" destination="dIa-oe-UAP" id="CwJ-50-ejV"/>
                 <outlet property="timeEntrypopoverViewController" destination="U32-F3-bea" id="AQr-DI-TYB"/>
+                <outlet property="tutorialClose" destination="9ZT-uz-F8q" id="mn9-S9-nKl"/>
                 <outlet property="tutorialScreenOne" destination="abR-gY-Voi" id="Jgp-9x-fwC"/>
                 <outlet property="tutorialScreenTwo" destination="PYM-PT-n4G" id="Dc1-vu-tO8"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
@@ -64,7 +66,21 @@
                                 <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
                             </connections>
                         </textField>
-                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHw-0M-bI9" userLabel="Arrow Image">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kd7-ee-POB" userLabel="Load old" customClass="NSTextFieldClickable">
+                            <rect key="frame" x="-1" y="55" width="254" height="76"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="250" id="tkX-cK-aek"/>
+                            </constraints>
+                            <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Load old entries" id="rHR-uE-k4B">
+                                <font key="font" metaFont="system" size="15"/>
+                                <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="C76-rc-iDl"/>
+                            </connections>
+                        </textField>
+                        <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHw-0M-bI9" userLabel="Arrow Image">
                             <rect key="frame" x="-17" y="80" width="38" height="75"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="75" id="MoO-tU-mtP"/>
@@ -85,7 +101,7 @@
                                 <outlet property="delegate" destination="-2" id="Ptn-L1-oGT"/>
                             </connections>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PYM-PT-n4G" userLabel="Tutorial 2" customClass="NSTextFieldClickable">
+                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PYM-PT-n4G" userLabel="Tutorial 2" customClass="NSTextFieldClickable">
                             <rect key="frame" x="-1" y="10" width="254" height="85"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="fQi-WC-2rT"/>
@@ -99,16 +115,34 @@
                                 <outlet property="delegate" destination="-2" id="xpf-tt-Y1e"/>
                             </connections>
                         </textField>
+                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ZT-uz-F8q" userLabel="Tutorial Close" customClass="NSTextFieldClickable">
+                            <rect key="frame" x="-1" y="55" width="254" height="76"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="250" id="tCe-nd-Pgx"/>
+                            </constraints>
+                            <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Close tutorial" id="aBm-FW-3fP">
+                                <font key="font" metaFont="system" size="15"/>
+                                <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <outlet property="delegate" destination="-2" id="v8g-CM-jeD"/>
+                            </connections>
+                        </textField>
                     </subviews>
                     <constraints>
                         <constraint firstItem="6qy-lU-tSK" firstAttribute="centerY" secondItem="jXg-Kt-WV6" secondAttribute="centerY" id="0Yx-Vu-1KV"/>
                         <constraint firstItem="abR-gY-Voi" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="1ov-Jt-xjk"/>
                         <constraint firstItem="PYM-PT-n4G" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2Jj-Ct-lV2"/>
                         <constraint firstItem="6qy-lU-tSK" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2ic-Ou-hfP"/>
+                        <constraint firstItem="kd7-ee-POB" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="5Pl-p9-aqC"/>
+                        <constraint firstAttribute="bottom" secondItem="9ZT-uz-F8q" secondAttribute="bottom" constant="20" id="Jzr-l6-Lhn"/>
                         <constraint firstItem="abR-gY-Voi" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="OOM-31-BIv"/>
+                        <constraint firstAttribute="bottom" secondItem="kd7-ee-POB" secondAttribute="bottom" constant="20" id="Qi1-24-8wE"/>
                         <constraint firstItem="KHw-0M-bI9" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="10" id="WxI-YZ-41q"/>
                         <constraint firstItem="PYM-PT-n4G" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="lWL-34-BCV"/>
                         <constraint firstItem="abR-gY-Voi" firstAttribute="leading" secondItem="KHw-0M-bI9" secondAttribute="trailing" id="uDY-pM-CEg"/>
+                        <constraint firstItem="9ZT-uz-F8q" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="w8U-uK-I9n"/>
                     </constraints>
                 </customView>
                 <scrollView wantsLayer="YES" misplaced="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
