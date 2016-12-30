@@ -131,7 +131,6 @@
                         </textField>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="6qy-lU-tSK" firstAttribute="centerY" secondItem="jXg-Kt-WV6" secondAttribute="centerY" id="0Yx-Vu-1KV"/>
                         <constraint firstItem="abR-gY-Voi" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="1ov-Jt-xjk"/>
                         <constraint firstItem="PYM-PT-n4G" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2Jj-Ct-lV2"/>
                         <constraint firstItem="6qy-lU-tSK" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2ic-Ou-hfP"/>
@@ -140,6 +139,7 @@
                         <constraint firstItem="abR-gY-Voi" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="60" id="OOM-31-BIv"/>
                         <constraint firstAttribute="bottom" secondItem="kd7-ee-POB" secondAttribute="bottom" constant="20" id="Qi1-24-8wE"/>
                         <constraint firstItem="KHw-0M-bI9" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="10" id="WxI-YZ-41q"/>
+                        <constraint firstItem="6qy-lU-tSK" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="60" id="dqR-z4-QFw"/>
                         <constraint firstItem="PYM-PT-n4G" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="lWL-34-BCV"/>
                         <constraint firstItem="abR-gY-Voi" firstAttribute="leading" secondItem="KHw-0M-bI9" secondAttribute="trailing" constant="-15" id="uDY-pM-CEg"/>
                         <constraint firstItem="9ZT-uz-F8q" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="w8U-uK-I9n"/>
