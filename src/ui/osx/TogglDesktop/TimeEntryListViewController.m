@@ -164,17 +164,31 @@ extern void *ctx;
 
 	paragrapStyle.alignment                = kCTTextAlignmentCenter;
 
-	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@" reports"];
+	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"No recent entries to show"];
 
-	[string setAttributes:
+	[text setAttributes:
+	 @{
+		 NSFontAttributeName : [NSFont systemFontOfSize:20.0],
+		 NSForegroundColorAttributeName:[NSColor highlightColor],
+		 NSParagraphStyleAttributeName:paragrapStyle
+	 }
+				  range:NSMakeRange(0, [text length])];
+
+	NSMutableAttributedString *link = [[NSMutableAttributedString alloc] initWithString:@" reports"];
+
+	[link setAttributes:
 	 @{
 		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
 		 NSForegroundColorAttributeName:[NSColor alternateSelectedControlColor]
 	 }
-					range:NSMakeRange(0, [string length])];
-	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Welcome back!\nLoad older entries or check out the full histroy from web" attributes:
-									   @{ NSParagraphStyleAttributeName:paragrapStyle }];
-	[text appendAttributedString:string];
+				  range:NSMakeRange(0, [link length])];
+
+	NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:@"\nLoad older entries or check out the full histroy from web" attributes:
+											  @{ NSParagraphStyleAttributeName:paragrapStyle }];
+
+	[text appendAttributedString:description];
+	[text appendAttributedString:link];
+
 	[self.emptyLabel setAttributedStringValue:text];
 	[self.emptyLabel setAlignment:NSCenterTextAlignment];
 }
