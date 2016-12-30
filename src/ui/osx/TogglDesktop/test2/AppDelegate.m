@@ -966,6 +966,11 @@ BOOL manualMode = NO;
 	[self.consoleWindowController showWindow:self];
 }
 
+- (IBAction)onShowTutorial:(id)sender
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTutorial object:nil];
+}
+
 - (void)onNewMenuItem:(id)sender
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNewShortcut
@@ -1221,6 +1226,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_autotracker_notification(ctx, on_autotracker_notification);
 	toggl_on_promotion(ctx, on_promotion);
 	toggl_on_project_colors(ctx, on_project_colors);
+	toggl_on_tutorial(ctx, on_tutorial);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1760,6 +1766,11 @@ void on_project_colors(
 		[colors addObject:[NSString stringWithUTF8String:list[i]]];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSetProjectColors object:colors];
+}
+
+void on_tutorial()
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTutorial object:nil];
 }
 
 @end

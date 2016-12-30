@@ -37,7 +37,6 @@
 @property TimeEntryCell *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @property int tutorialStep;
-@property BOOL seenTutorial;
 @end
 
 @implementation TimeEntryListViewController
@@ -118,6 +117,10 @@ extern void *ctx;
 												 selector:@selector(toggleGroupNotification:)
 													 name:kToggleGroup
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(displayTutorial:)
+													 name:kDisplayTutorial
+												   object:nil];
 	}
 	return self;
 }
@@ -145,7 +148,6 @@ extern void *ctx;
 	self.groupToggleRow = -1;
 	self.selectedGroupName = @"";
 	self.tutorialStep = 0;
-	self.seenTutorial = NO;
 
 	[self setupEmptyLabel];
 	[self setupTutorialTexts];
@@ -251,7 +253,6 @@ extern void *ctx;
 	}
 	else
 	{
-		self.seenTutorial = YES;
 		// Scroll view only when list is visible
 		if (self.groupToggleRow > -1)
 		{
@@ -264,14 +265,17 @@ extern void *ctx;
 		[self showTutorial];
 	}
 
-	if (self.tutorialStep == 0 && !self.seenTutorial)
+	[self.emptyLabel setEnabled:noItems];
+	[self.emptyLoadMore setEnabled:noItems];
+}
+
+- (void)displayTutorial:(NSNotification *)notification
+{
+	if (self.tutorialStep == 0)
 	{
 		self.tutorialStep = 1;
 		[self showTutorial];
-		return;
 	}
-	[self.emptyLabel setEnabled:noItems];
-	[self.emptyLoadMore setEnabled:noItems];
 }
 
 - (void)showTutorial
@@ -284,7 +288,6 @@ extern void *ctx;
 		[self.tutorialScreenTwo setHidden:YES];
 		[self.timeEntryListScrollView setHidden:YES];
 		[self.timeEntryListScrollView setHidden:YES];
-		self.seenTutorial = YES;
 
 		// Hide empty state
 		[self.emptyLabel setHidden:YES];
@@ -304,7 +307,6 @@ extern void *ctx;
 		[self.tutorialClose setHidden:YES];
 		[self.tutorialScreenOne setHidden:YES];
 		[self.tutorialScreenTwo setHidden:YES];
-		self.seenTutorial = YES;
 
 		// Show empty state
 		[self.emptyLabel setHidden:NO];
@@ -318,7 +320,6 @@ extern void *ctx;
 		[self.tutorialClose setHidden:YES];
 		[self.tutorialScreenOne setHidden:YES];
 		[self.tutorialScreenTwo setHidden:YES];
-		self.seenTutorial = YES;
 		self.tutorialStep = 0;
 
 		[self.timeEntryListScrollView setHidden:NO];
@@ -662,7 +663,6 @@ extern void *ctx;
 	{
 		[self.timeEntrypopover close];
 		[self setDefaultPopupSize];
-		self.seenTutorial = NO;
 	}
 }
 

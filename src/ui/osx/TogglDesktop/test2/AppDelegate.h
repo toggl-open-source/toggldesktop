@@ -27,4 +27,5 @@
 - (IBAction)onHideMenuItem:(id)sender;
 - (IBAction)onSendFeedbackMainMenuItem:(id)sender;
 - (IBAction)onConsoleMenuItem:(id)sender;
+- (IBAction)onShowTutorial:(id)sender;
 @end
