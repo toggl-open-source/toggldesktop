@@ -11,6 +11,7 @@
 #import "NSUnstripedTableView.h"
 #import "NSViewEscapable.h"
 #import "NSTextFieldClickable.h"
+#import "NSTextFieldClickablePointer.h"
 
 @interface TimeEntryListViewController : NSViewController {
 	@private
@@ -28,6 +29,7 @@
 @property (weak) IBOutlet NSImageView *arrowImage;
 @property (weak) IBOutlet NSTextFieldClickable *tutorialScreenOne;
 @property (weak) IBOutlet NSTextFieldClickable *tutorialScreenTwo;
-@property (weak) IBOutlet NSTextFieldClickable *tutorialClose;
-@property (weak) IBOutlet NSTextFieldClickable *emptyLoadMore;
+@property (weak) IBOutlet NSTextFieldClickablePointer *tutorialClose;
+@property (weak) IBOutlet NSTextFieldClickablePointer *emptyLoadMore;
+@property (weak) IBOutlet NSProgressIndicator *emptyLoader;
 @end

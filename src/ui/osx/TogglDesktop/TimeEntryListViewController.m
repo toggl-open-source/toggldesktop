@@ -285,8 +285,11 @@ extern void *ctx;
 		[self.timeEntryListScrollView setHidden:YES];
 		[self.timeEntryListScrollView setHidden:YES];
 		self.seenTutorial = YES;
+
+		// Hide empty state
 		[self.emptyLabel setHidden:YES];
 		[self.emptyLoadMore setHidden:YES];
+		[self.emptyLoader setHidden:YES];
 	}
 	else if (self.tutorialStep == 2)
 	{
@@ -306,6 +309,7 @@ extern void *ctx;
 		// Show empty state
 		[self.emptyLabel setHidden:NO];
 		[self.emptyLoadMore setHidden:NO];
+		[self.emptyLoader setHidden:YES];
 	}
 	else
 	{
@@ -672,6 +676,9 @@ extern void *ctx;
 	// Load more clicked on emptystate page
 	if (sender == self.emptyLoadMore && [self.emptyLoadMore isEnabled])
 	{
+		[self.emptyLoadMore setHidden:YES];
+		[self.emptyLoader startAnimation:sender];
+		[self.emptyLoader setHidden:NO];
 		toggl_load_more(ctx);
 	}
 	// Tutorial close clicked on tutorial page

@@ -10,6 +10,7 @@
                 <outlet property="arrowImage" destination="KHw-0M-bI9" id="7Gw-ou-Y6D"/>
                 <outlet property="emptyLabel" destination="6qy-lU-tSK" id="gDu-GF-iBp"/>
                 <outlet property="emptyLoadMore" destination="kd7-ee-POB" id="zsd-xU-AAL"/>
+                <outlet property="emptyLoader" destination="qga-M4-dwV" id="j2U-0h-L6c"/>
                 <outlet property="emptyView" destination="jXg-Kt-WV6" id="qZs-g9-xDa"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntriesTableView" destination="kSc-tv-Cw1" id="W2U-dC-rBu"/>
@@ -66,7 +67,7 @@
                                 <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
                             </connections>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kd7-ee-POB" userLabel="Load old" customClass="NSTextFieldClickable">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kd7-ee-POB" userLabel="Load old" customClass="NSTextFieldClickablePointer">
                             <rect key="frame" x="-1" y="55" width="254" height="76"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="tkX-cK-aek"/>
@@ -80,6 +81,9 @@
                                 <outlet property="delegate" destination="-2" id="C76-rc-iDl"/>
                             </connections>
                         </textField>
+                        <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="qga-M4-dwV" userLabel="Empty Loader">
+                            <rect key="frame" x="118" y="85" width="16" height="16"/>
+                        </progressIndicator>
                         <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHw-0M-bI9" userLabel="Arrow Image">
                             <rect key="frame" x="-17" y="80" width="38" height="75"/>
                             <constraints>
@@ -115,7 +119,7 @@
                                 <outlet property="delegate" destination="-2" id="xpf-tt-Y1e"/>
                             </connections>
                         </textField>
-                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ZT-uz-F8q" userLabel="Tutorial Close" customClass="NSTextFieldClickable">
+                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ZT-uz-F8q" userLabel="Tutorial Close" customClass="NSTextFieldClickablePointer">
                             <rect key="frame" x="-1" y="55" width="254" height="76"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="250" id="tCe-nd-Pgx"/>
@@ -136,10 +140,12 @@
                         <constraint firstItem="6qy-lU-tSK" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2ic-Ou-hfP"/>
                         <constraint firstItem="kd7-ee-POB" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="5Pl-p9-aqC"/>
                         <constraint firstAttribute="bottom" secondItem="9ZT-uz-F8q" secondAttribute="bottom" constant="20" id="Jzr-l6-Lhn"/>
+                        <constraint firstItem="qga-M4-dwV" firstAttribute="centerY" secondItem="kd7-ee-POB" secondAttribute="centerY" id="NuF-TO-Xrh"/>
                         <constraint firstItem="abR-gY-Voi" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="60" id="OOM-31-BIv"/>
                         <constraint firstAttribute="bottom" secondItem="kd7-ee-POB" secondAttribute="bottom" constant="20" id="Qi1-24-8wE"/>
                         <constraint firstItem="KHw-0M-bI9" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="10" id="WxI-YZ-41q"/>
                         <constraint firstItem="6qy-lU-tSK" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="60" id="dqR-z4-QFw"/>
+                        <constraint firstItem="qga-M4-dwV" firstAttribute="centerX" secondItem="kd7-ee-POB" secondAttribute="centerX" id="iNm-hS-ybk"/>
                         <constraint firstItem="PYM-PT-n4G" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="lWL-34-BCV"/>
                         <constraint firstItem="abR-gY-Voi" firstAttribute="leading" secondItem="KHw-0M-bI9" secondAttribute="trailing" constant="-15" id="uDY-pM-CEg"/>
                         <constraint firstItem="9ZT-uz-F8q" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="w8U-uK-I9n"/>
