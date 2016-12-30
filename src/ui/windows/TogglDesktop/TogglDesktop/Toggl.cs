@@ -839,7 +839,7 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_tutorial(ctx, url =>
+        toggl_on_tutorial(ctx, () =>
         {
             using (Performance.Measure("Calling OnTutorial"))
             {
