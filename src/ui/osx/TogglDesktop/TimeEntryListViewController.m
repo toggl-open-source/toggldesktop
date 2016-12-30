@@ -170,7 +170,7 @@ extern void *ctx;
 		 NSForegroundColorAttributeName:[NSColor alternateSelectedControlColor]
 	 }
 					range:NSMakeRange(0, [string length])];
-	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Welcome back!\nYour previous entries are available in the web under" attributes:
+	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Welcome back!\nLoad older entries or check out the full histroy from web" attributes:
 									   @{ NSParagraphStyleAttributeName:paragrapStyle }];
 	[text appendAttributedString:string];
 	[self.emptyLabel setAttributedStringValue:text];
