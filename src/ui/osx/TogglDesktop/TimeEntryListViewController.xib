@@ -90,7 +90,7 @@
                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abR-gY-Voi" userLabel="Tutorial 1" customClass="NSTextFieldClickable">
                             <rect key="frame" x="-1" y="10" width="254" height="85"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="250" id="917-JV-e1D"/>
+                                <constraint firstAttribute="width" constant="280" id="917-JV-e1D"/>
                             </constraints>
                             <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Hey, welcome! Add a description and start tracking!" id="iqM-cP-916">
                                 <font key="font" metaFont="system" size="15"/>
@@ -104,7 +104,7 @@
                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PYM-PT-n4G" userLabel="Tutorial 2" customClass="NSTextFieldClickable">
                             <rect key="frame" x="-1" y="10" width="254" height="85"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="250" id="fQi-WC-2rT"/>
+                                <constraint firstAttribute="width" constant="280" id="fQi-WC-2rT"/>
                             </constraints>
                             <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="To add a project or tags, click anywhere on the timer" id="Ac5-Tc-DCm">
                                 <font key="font" metaFont="system" size="15"/>
@@ -137,11 +137,11 @@
                         <constraint firstItem="6qy-lU-tSK" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="2ic-Ou-hfP"/>
                         <constraint firstItem="kd7-ee-POB" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="5Pl-p9-aqC"/>
                         <constraint firstAttribute="bottom" secondItem="9ZT-uz-F8q" secondAttribute="bottom" constant="20" id="Jzr-l6-Lhn"/>
-                        <constraint firstItem="abR-gY-Voi" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="OOM-31-BIv"/>
+                        <constraint firstItem="abR-gY-Voi" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="60" id="OOM-31-BIv"/>
                         <constraint firstAttribute="bottom" secondItem="kd7-ee-POB" secondAttribute="bottom" constant="20" id="Qi1-24-8wE"/>
                         <constraint firstItem="KHw-0M-bI9" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="10" id="WxI-YZ-41q"/>
                         <constraint firstItem="PYM-PT-n4G" firstAttribute="top" secondItem="jXg-Kt-WV6" secondAttribute="top" constant="90" id="lWL-34-BCV"/>
-                        <constraint firstItem="abR-gY-Voi" firstAttribute="leading" secondItem="KHw-0M-bI9" secondAttribute="trailing" id="uDY-pM-CEg"/>
+                        <constraint firstItem="abR-gY-Voi" firstAttribute="leading" secondItem="KHw-0M-bI9" secondAttribute="trailing" constant="-15" id="uDY-pM-CEg"/>
                         <constraint firstItem="9ZT-uz-F8q" firstAttribute="centerX" secondItem="jXg-Kt-WV6" secondAttribute="centerX" id="w8U-uK-I9n"/>
                     </constraints>
                 </customView>

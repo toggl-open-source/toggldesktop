@@ -148,6 +148,7 @@ extern void *ctx;
 	self.seenTutorial = NO;
 
 	[self setupEmptyLabel];
+	[self setupTutorialTexts];
 
 	// Drag and drop
 	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
@@ -169,11 +170,37 @@ extern void *ctx;
 		 NSForegroundColorAttributeName:[NSColor alternateSelectedControlColor]
 	 }
 					range:NSMakeRange(0, [string length])];
-	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Welcome back! Your previous entries are available in the web under" attributes:
+	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Welcome back!\nYour previous entries are available in the web under" attributes:
 									   @{ NSParagraphStyleAttributeName:paragrapStyle }];
 	[text appendAttributedString:string];
 	[self.emptyLabel setAttributedStringValue:text];
 	[self.emptyLabel setAlignment:NSCenterTextAlignment];
+}
+
+- (void)setupTutorialTexts
+{
+	// Screen 1
+
+	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+
+	paragrapStyle.alignment                = kCTTextAlignmentCenter;
+
+	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Hey welcome!"];
+
+	[text setAttributes:
+	 @{
+		 NSFontAttributeName : [NSFont systemFontOfSize:22.0],
+		 NSForegroundColorAttributeName:[NSColor highlightColor],
+		 NSParagraphStyleAttributeName:paragrapStyle
+	 }
+				  range:NSMakeRange(0, [text length])];
+
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"\nAdd a description and start tracking!" attributes:
+										 @{ NSParagraphStyleAttributeName:paragrapStyle }];
+
+	[text appendAttributedString:string];
+	[self.tutorialScreenOne setAttributedStringValue:text];
+	[self.tutorialScreenOne setAlignment:NSCenterTextAlignment];
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
