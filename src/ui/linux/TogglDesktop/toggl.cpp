@@ -185,6 +185,11 @@ void on_project_colors(
     TogglApi::instance->setProjectColors(result);
 }
 
+void on_tutorial()
+{
+
+}
+
 TogglApi::TogglApi(
     QObject *parent,
     QString logPathOverride,
@@ -250,6 +255,7 @@ TogglApi::TogglApi(
     toggl_on_timer_state(ctx, on_display_timer_state);
     toggl_on_idle_notification(ctx, on_display_idle_notification);
     toggl_on_project_colors(ctx, on_project_colors);
+    toggl_on_tutorial(ctx, on_tutorial);
 
     char *env = toggl_environment(ctx);
     if (env) {
