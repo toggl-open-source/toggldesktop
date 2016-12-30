@@ -191,6 +191,7 @@ namespace TogglDesktop
             Toggl.OnOnlineState += this.onOnlineState;
             Toggl.OnReminder += this.onReminder;
             Toggl.OnURL += this.onURL;
+            Toggl.OnTutorial += this.onTutorial;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
             Toggl.OnSettings += this.onSettings;
@@ -288,6 +289,11 @@ namespace TogglDesktop
         private void onURL(string url)
         {
             Process.Start(url);
+        }
+
+        private void onTutorial()
+        {
+            // Not implemented
         }
 
         private void onReminder(string title, string informativeText)

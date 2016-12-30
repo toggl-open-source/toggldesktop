@@ -671,6 +671,7 @@ public static partial class Toggl
     public static event DisplayRunningTimerState OnRunningTimerState = delegate { };
     public static event DisplayStoppedTimerState OnStoppedTimerState = delegate { };
     public static event DisplayURL OnURL = delegate { };
+    public static event DisplayTutorial OnTutorial = delegate { };
     public static event DisplayIdleNotification OnIdleNotification = delegate { };
     public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
     public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
@@ -833,6 +834,14 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnURL"))
             {
                 OnURL(url);
+            }
+        });
+
+        toggl_on_tutorial(ctx, url =>
+        {
+            using (Performance.Measure("Calling OnTutorial"))
+            {
+                OnTutorial();
             }
         });
 
