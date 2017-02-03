@@ -316,8 +316,9 @@ extern void *ctx;
 		TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier:@"TimeEntryCellWithHeader"
 																	owner:self];
 		[cell render:item];
-		if (cell.Group && [self.selectedGroupName isEqualToString:cell.GroupName])
+		if (cell.Group != cell.GroupOpen && [self.selectedGroupName isEqualToString:cell.GroupName])
 		{
+			// Select row to scroll to
 			self.groupToggleRow = row;
 		}
 		return cell;
@@ -326,8 +327,9 @@ extern void *ctx;
 	TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell"
 													  owner:self];
 	[cell render:item];
-	if (cell.Group && [self.selectedGroupName isEqualToString:cell.GroupName])
+	if (cell.Group != cell.GroupOpen && [self.selectedGroupName isEqualToString:cell.GroupName])
 	{
+		// Select row to scroll to
 		self.groupToggleRow = row;
 	}
 	return cell;
