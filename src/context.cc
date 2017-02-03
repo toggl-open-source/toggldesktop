@@ -648,13 +648,6 @@ void Context::updateUI(const UIElements &what) {
             for (unsigned int i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
 
-                // Dont render running entry in list,
-                // although its calculated into totals per date.
-                if (te->Duration() < 0) {
-                    // Don't display running entries
-                    continue;
-                }
-
                 std::string date_header = toggl::Formatter::FormatDateHeader(te->Start());
 
                 // Calculate total duration for each date:
@@ -662,6 +655,13 @@ void Context::updateUI(const UIElements &what) {
                 Poco::Int64 duration = date_durations[date_header];
                 duration += Formatter::AbsDuration(te->Duration());
                 date_durations[date_header] = duration;
+
+                // Dont render running entry in list,
+                // although its calculated into totals per date.
+                if (te->Duration() < 0) {
+                    // Don't display running entries
+                    continue;
+                }
 
                 // Calculate total duration of group
                 if (user_->CollapseEntries()) {
