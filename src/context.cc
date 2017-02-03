@@ -4398,7 +4398,8 @@ error Context::pushChanges(
                 clients,
                 api_token,
                 *toggl_client);
-            if (err != noError) {
+            if (err != noError &&
+                    err.find(kClientNameAlreadyExists) == std::string::npos) {
                 return err;
             }
         }
@@ -4410,7 +4411,8 @@ error Context::pushChanges(
                 clients,
                 api_token,
                 *toggl_client);
-            if (err != noError) {
+            if (err != noError &&
+                    err.find(kProjectNameAlready) == std::string::npos) {
                 return err;
             }
 
@@ -4517,6 +4519,11 @@ error Context::pushClients(
 
         if (resp.err != noError) {
             err = resp.body;
+            if (err.find(kClientNameAlreadyExists) != std::string::npos) {
+                // remove duplicate from db
+                (*it)->MarkAsDeletedOnServer();
+                displayError(save());
+            }
             continue;
         }
 
@@ -4572,6 +4579,11 @@ error Context::pushProjects(
 
         if (resp.err != noError) {
             err = resp.body;
+            if (err.find(kProjectNameAlready) != std::string::npos) {
+                // remove duplicate from db
+                (*it)->MarkAsDeletedOnServer();
+                displayError(save());
+            }
             continue;
         }
 

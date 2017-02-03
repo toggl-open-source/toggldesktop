@@ -63,6 +63,7 @@
 #define kPleaseSelectAWorkspace "Please select a workspace"
 #define kClientNameMustNotBeEmpty "Client name must not be empty"
 #define kProjectNameMustNotBeEmpty "Project name must not be empty"
+#define kProjectNameAlready "Project name already"
 #define kProjectNameAlreadyExists "Project name already exists"
 #define kClientNameAlreadyExists "Client name already exists"
 
