@@ -22,6 +22,7 @@ namespace TogglDesktop
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
         private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
         private static readonly Color subItemBackColor = Color.FromRgb(240, 240, 240);
+        private static readonly Color defaultForegroundColor = Color.FromRgb(0, 0, 0);
 
         private Color entryHoverColor = hoverColor;
 
@@ -184,6 +185,7 @@ namespace TogglDesktop
             String groupItemsText = "";
             String groupIcon = "group_icon_closed.png";
             Color backColor = idleBackColor;
+            Color color = defaultForegroundColor;
             int lead = 16;
             Visibility visibility = Visibility.Collapsed;
             group = item.Group;
@@ -194,10 +196,7 @@ namespace TogglDesktop
             {
                 lead = 26;
                 backColor = subItemBackColor;
-                Color color = (Color)ColorConverter.ConvertFromString("#FF696969");
-
-                labelDescription.Foreground = new System.Windows.Media.SolidColorBrush(color);
-                labelDuration.Foreground = new System.Windows.Media.SolidColorBrush(color);
+                color = (Color)ColorConverter.ConvertFromString("#FF696969");
             }
 
             if (item.Group)
@@ -214,6 +213,8 @@ namespace TogglDesktop
                 }
                 visibility = Visibility.Visible;
             }
+            labelDescription.Foreground = new System.Windows.Media.SolidColorBrush(color);
+            labelDuration.Foreground = new System.Windows.Media.SolidColorBrush(color);
             this.EntryBackColor = backColor;
             this.groupItemsBack.Visibility = visibility;
             groupItems.Text = groupItemsText;
