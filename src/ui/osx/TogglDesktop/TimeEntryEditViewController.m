@@ -867,6 +867,9 @@ extern void *ctx;
 
 	self.descriptionCombobox.stringValue = autocomplete.Description;
 	toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
+
+	const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
+	toggl_set_time_entry_tags(ctx, GUID, value);
 }
 
 - (IBAction)deleteButtonClicked:(id)sender
