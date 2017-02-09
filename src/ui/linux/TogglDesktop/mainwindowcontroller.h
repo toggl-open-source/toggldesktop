@@ -30,7 +30,8 @@ class MainWindowController : public QMainWindow {
         QWidget *parent = 0,
         QString logPathOverride = "",
         QString dbPathOverride = "",
-        QString scriptPath = "");
+        QString scriptPath = "",
+        bool background = false);
     ~MainWindowController();
 
     static MainWindowController *Instance;
@@ -41,7 +42,7 @@ class MainWindowController : public QMainWindow {
  protected:
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
-
+    void changeEvent(QEvent *event);
     void runScript();
 
  private slots:  // NOLINT
@@ -99,6 +100,7 @@ class MainWindowController : public QMainWindow {
 
     bool tracking;
     bool loggedIn;
+    bool startInBackground;
 
     QxtGlobalShortcut* showHide;
     QxtGlobalShortcut* continueStop;
