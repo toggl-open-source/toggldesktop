@@ -96,12 +96,18 @@ int main(int argc, char *argv[]) try {
         "path");
     parser.addOption(scriptPathOption);
 
+    // A boolean option with multiple names (-b, --background)
+    QCommandLineOption forceOption(QStringList() << "b" << "background",
+                                   QCoreApplication::translate("main", "Start app in background."));
+    parser.addOption(forceOption);
+
     parser.process(a);
 
     MainWindowController w(0,
                            parser.value(logPathOption),
                            parser.value(dbPathOption),
-                           parser.value(scriptPathOption));
+                           parser.value(scriptPathOption),
+                           parser.isSet(forceOption));
 
     a.w = &w;
 
