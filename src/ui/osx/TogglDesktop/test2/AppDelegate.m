@@ -1154,7 +1154,7 @@ const NSString *appName = @"osx_native_app";
 			([argument rangeOfString:@"path"].location != NSNotFound))
 		{
 			self.scriptPath = arguments[i + 1];
-			NSLog(@"script path '%@'", self.log_level);
+			NSLog(@"script path '%@'", self.scriptPath);
 			continue;
 		}
 	}
