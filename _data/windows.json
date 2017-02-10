@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.4.18",
+            "rows": [
+                "Use user profile time format in group total time",
+                "Clear old/synced timeline data on app start",
+                "Fixed entries syncing issue when clients or projects fail to sync",
+                "Account running timer to todays total time",
+                "Fixed text color issue with grouping mode subitems"
+            ],
+            "date": "February 10th 2017",
+            "beta": "true"
+        },
+        {
             "version": "7.4.7",
             "date": "December 21st 2016",
             "rows": [

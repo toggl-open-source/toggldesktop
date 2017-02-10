@@ -1,6 +1,20 @@
 {
     "versions": [
         {
+            "version": "7.4.18",
+            "rows": [
+                "Use user profile time format in group total time",
+                "Clear old/synced timeline data on app start",
+                "Fixed entries syncing issue when clients or projects fail to sync",
+                "Account running timer to todays total time",
+                "Paste starts timer only when in main window",
+                "Fixed autocomplete selection to also set tags",
+                "Fixed group open/close list scrolling issues"
+            ],
+            "date": "February 10th 2017",
+            "beta": "true"
+        },
+        {
             "version": "7.4.7",
             "rows": [
                 "Fixed project creation issue at time entry save",
