@@ -19,6 +19,7 @@ class Workspace : public BaseModel {
     , premium_(false)
     , only_admins_may_create_projects_(false)
     , admin_(false)
+    , projects_billable_by_default_(false)
     , business_(false)
     , locked_time_(0) {}
 
@@ -42,6 +43,11 @@ class Workspace : public BaseModel {
     }
     void SetAdmin(const bool);
 
+    const bool &ProjectsBillableByDefault() const {
+        return projects_billable_by_default_;
+    }
+    void SetProjectsBillableByDefault(const bool);
+
     const bool &Business() const {
         return business_;
     }
@@ -64,6 +70,7 @@ class Workspace : public BaseModel {
     bool premium_;
     bool only_admins_may_create_projects_;
     bool admin_;
+    bool projects_billable_by_default_;
     bool business_;
     time_t locked_time_;
 };

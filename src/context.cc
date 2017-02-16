@@ -3473,13 +3473,23 @@ Project *Context::CreateProject(
                 return nullptr;
             }
         }
+        // Check if projects are billable by default
+        Workspace *ws = nullptr;
+        bool billable = false;
+
+        ws = user_->related.WorkspaceByID(workspace_id);
+        if (ws) {
+            billable = ws->ProjectsBillableByDefault();
+        }
+
         result = user_->CreateProject(
             workspace_id,
             client_id,
             client_guid,
             trimmed_project_name,
             is_private,
-            project_color);
+            project_color,
+            billable);
     }
 
     err = save();

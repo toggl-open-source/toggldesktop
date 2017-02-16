@@ -311,6 +311,14 @@ error Migrations::migrateWorkspaces() {
         return err;
     }
 
+    err = db_->Migrate(
+        "workspaces.projects_billable_by_default",
+        "alter table workspaces add column "
+        "   projects_billable_by_default integer not null default 0; ");
+    if (err != noError) {
+        return err;
+    }
+
     return err;
 }
 

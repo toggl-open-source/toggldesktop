@@ -43,6 +43,13 @@ void Workspace::SetAdmin(const bool value) {
     }
 }
 
+void Workspace::SetProjectsBillableByDefault(const bool value) {
+    if (projects_billable_by_default_ != value) {
+        projects_billable_by_default_ = value;
+        SetDirty();
+    }
+}
+
 void Workspace::SetBusiness(const bool value) {
     if (business_ != value) {
         business_ = value;
@@ -64,6 +71,7 @@ void Workspace::LoadFromJSON(Json::Value n) {
     SetOnlyAdminsMayCreateProjects(
         n["only_admins_may_create_projects"].asBool());
     SetAdmin(n["admin"].asBool());
+    SetProjectsBillableByDefault(n["projects_billable_by_default"].asBool());
 
     auto profile = n["profile"].asUInt64();
     SetBusiness(profile > 13);

@@ -46,7 +46,8 @@ Project *User::CreateProject(
     const std::string client_guid,
     const std::string project_name,
     const bool is_private,
-    const std::string project_color) {
+    const std::string project_color,
+    const bool billable) {
 
     Project *p = new Project();
     p->SetWID(workspace_id);
@@ -56,6 +57,7 @@ Project *User::CreateProject(
     p->SetUID(ID());
     p->SetActive(true);
     p->SetPrivate(is_private);
+    p->SetBillable(billable);
     if (!project_color.empty()) {
         p->SetColorCode(project_color);
     }
