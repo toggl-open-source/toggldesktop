@@ -322,13 +322,13 @@ extern void *ctx;
 	}
 	free(project_guid);
 
-	if (projectAdded && isBillable)
-	{
-		toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
-	}
-
 	if (projectAdded)
 	{
+		if (isBillable)
+		{
+			toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], isBillable);
+		}
+
 		[self.addProjectBox setHidden:YES];
 	}
 

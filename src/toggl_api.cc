@@ -501,6 +501,14 @@ char_t *toggl_add_project(
         p->ID(),
         guid);
 
+    // Update billable if new project is billable
+    if (p->Billable()) {
+        toggl_set_time_entry_billable(
+            context,
+            time_entry_guid,
+            p->Billable());
+    }
+
     return guid;
 }
 
