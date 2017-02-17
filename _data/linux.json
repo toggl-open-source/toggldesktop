@@ -1,6 +1,21 @@
 {
   "versions": [
     {
+      "version": "7.4.19",
+      "beta": "true",
+      "date": "February 17th 2017",
+      "rows": [
+        "Use user profile time format in group total time",
+        "Clear old/synced timeline data on app start",
+        "Open/Close app window when left clicking on tray icon",
+        "Fixed support link to direct to linux article",
+        "Fixed entries syncing issue when clients or projects fail to sync",
+        "Account running timer to todays total time",
+        "Added '-b, --background' command line argument to start the app minimized to tray",
+        "Added support for workspace setting 'Project Billable by Default'"
+      ]
+    },
+    {
       "version": "7.4.7",
       "date": "December 21st 2016",
       "rows": [
