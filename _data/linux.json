@@ -1,7 +1,7 @@
 {
   "versions": [
     {
-      "version": "7.4.19",
+      "version": "7.4.20",
       "beta": "true",
       "date": "February 17th 2017",
       "rows": [
@@ -12,7 +12,9 @@
         "Fixed entries syncing issue when clients or projects fail to sync",
         "Account running timer to todays total time",
         "Added '-b, --background' command line argument to start the app minimized to tray",
-        "Added support for workspace setting 'Project Billable by Default'"
+        "Added support for workspace setting 'Project Billable by Default'",
+        "Fixed tray icon issue in Xubuntu"
+
       ]
     },
     {
