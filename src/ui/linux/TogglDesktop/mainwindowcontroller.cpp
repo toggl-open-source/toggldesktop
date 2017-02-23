@@ -29,8 +29,7 @@ MainWindowController::MainWindowController(
     QWidget *parent,
     QString logPathOverride,
     QString dbPathOverride,
-    QString scriptPath,
-    bool background)
+    QString scriptPath)
     : QMainWindow(parent),
   ui(new Ui::MainWindowController),
   togglApi(new TogglApi(0, logPathOverride, dbPathOverride)),
@@ -53,7 +52,6 @@ MainWindowController::MainWindowController(
   reminder(false),
   pomodoro(false),
   script(scriptPath),
-  startInBackground(background),
   ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
@@ -129,10 +127,6 @@ MainWindowController::MainWindowController(
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
-
-    if (startInBackground) {
-        QWidget::showMinimized();
-    }
 }
 
 MainWindowController::~MainWindowController() {
@@ -465,20 +459,6 @@ void MainWindowController::writeSettings() {
     QSettings settings("Toggl", "TogglDesktop");
     settings.setValue("geometry", saveGeometry());
     settings.setValue("windowState", saveState());
-}
-
-void MainWindowController::changeEvent(QEvent *event) {
-    QWidget::changeEvent(event);
-    if (event->type() == QEvent::WindowStateChange)
-    {
-        if (startInBackground && isMinimized())
-        {
-            qApp->processEvents();
-            hide();
-            event->ignore();
-            startInBackground = false;
-        }
-    }
 }
 
 void MainWindowController::closeEvent(QCloseEvent *event) {

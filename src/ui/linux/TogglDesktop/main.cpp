@@ -106,12 +106,15 @@ int main(int argc, char *argv[]) try {
     MainWindowController w(0,
                            parser.value(logPathOption),
                            parser.value(dbPathOption),
-                           parser.value(scriptPathOption),
-                           parser.isSet(forceOption));
+                           parser.value(scriptPathOption));
 
     a.w = &w;
 
-    w.show();
+    if (parser.isSet(forceOption)) {
+        w.hide();
+    } else {
+        w.show();
+    }
 
     return a.exec();
 } catch (std::exception &e) {  // NOLINT

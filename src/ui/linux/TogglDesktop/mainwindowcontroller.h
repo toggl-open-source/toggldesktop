@@ -30,8 +30,7 @@ class MainWindowController : public QMainWindow {
         QWidget *parent = 0,
         QString logPathOverride = "",
         QString dbPathOverride = "",
-        QString scriptPath = "",
-        bool background = false);
+        QString scriptPath = "");
     ~MainWindowController();
 
     static MainWindowController *Instance;
@@ -42,7 +41,6 @@ class MainWindowController : public QMainWindow {
  protected:
     void closeEvent(QCloseEvent *event);
     void showEvent(QShowEvent *event);
-    void changeEvent(QEvent *event);
     void runScript();
 
  private slots:  // NOLINT
