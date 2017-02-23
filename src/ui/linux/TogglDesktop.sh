@@ -10,10 +10,10 @@ fi
 LD_LIBRARY_PATH=$dirname/lib
 export LD_LIBRARY_PATH
 
-# Pantheon and Cinnamon tray icon fix
+# Xubuntu and Cinnamon tray icon fix
 XDG=$XDG_CURRENT_DESKTOP
 
-if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "Pantheon" ]]; then
+if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" ]]; then
   DBUS_SESSION_BUS_ADDRESS=""
 fi;
 
