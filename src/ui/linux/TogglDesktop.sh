@@ -10,11 +10,11 @@ fi
 LD_LIBRARY_PATH=$dirname/lib
 export LD_LIBRARY_PATH
 
+# Xubuntu, i3 and Cinnamon tray icon fix
 XDG=$XDG_CURRENT_DESKTOP
 
-if [[ "$XDG" = "Unity" ]]; then
-  $dirname/$appname "$@" &
-else
-  # Xubuntu, i3 and Cinnamon tray icon fix
+if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" || "$XDG" = "i3" ]]; then
   dbus-launch $dirname/$appname "$@" &
+else
+  $dirname/$appname "$@" &
 fi;
