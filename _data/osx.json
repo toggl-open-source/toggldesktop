@@ -11,8 +11,7 @@
                 "Fixed autocomplete selection to also set tags",
                 "Fixed group open/close list scrolling issues"
             ],
-            "date": "February 10th 2017",
-            "beta": "true"
+            "date": "March 3rd 2017"
         },
         {
             "version": "7.4.7",

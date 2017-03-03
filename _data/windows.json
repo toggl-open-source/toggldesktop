@@ -9,8 +9,7 @@
                 "Account running timer to todays total time",
                 "Fixed text color issue with grouping mode subitems"
             ],
-            "date": "February 10th 2017",
-            "beta": "true"
+            "date": "March 3rd 2017"
         },
         {
             "version": "7.4.7",
