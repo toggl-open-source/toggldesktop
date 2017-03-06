@@ -1025,6 +1025,7 @@
 				ORGANIZATIONNAME = Alari;
 				TargetAttributes = {
 					69FC17F017E6534400B96425 = {
+						DevelopmentTeam = G56V5LY6SL;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -1499,6 +1500,7 @@
 				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = G56V5LY6SL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1543,6 +1545,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = G56V5LY6SL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
