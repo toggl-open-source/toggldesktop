@@ -870,6 +870,13 @@ extern void *ctx;
 
 	const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
 	toggl_set_time_entry_tags(ctx, GUID, value);
+
+	bool_t isBillable = autocomplete.Billable;
+
+	if (isBillable)
+	{
+		toggl_set_time_entry_billable(ctx, GUID, isBillable);
+	}
 }
 
 - (IBAction)deleteButtonClicked:(id)sender

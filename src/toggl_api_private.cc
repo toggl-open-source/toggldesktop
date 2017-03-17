@@ -32,6 +32,7 @@ TogglAutocompleteView *autocomplete_item_init(
     result->Tags = copy_string(item.Tags);
     result->WorkspaceName = copy_string(item.WorkspaceName);
     result->ClientID = static_cast<unsigned int>(item.ClientID);
+    result->Billable = item.Billable;
     result->Next = nullptr;
     return result;
 }

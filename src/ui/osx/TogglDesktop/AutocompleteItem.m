@@ -71,6 +71,11 @@
 	{
 		self.tags = nil;
 	}
+
+	if (data->Billable)
+	{
+		self.Billable = data->Billable;
+	}
 }
 
 - (void)save:(TogglAutocompleteView *)data

@@ -120,6 +120,7 @@ class Autocomplete {
     , ProjectID(0)
     , WorkspaceID(0)
     , Type(0)
+    , Billable(false)
     , Tags("")
     , WorkspaceName("")
     , ClientID(0) {}
@@ -151,6 +152,7 @@ class Autocomplete {
            << " ProjectID=" << ProjectID
            << " WorkspaceID=" << WorkspaceID
            << " Type=" << Type
+           << " Billable=" << Billable
            << " WorkspaceName=" << WorkspaceName
            << " Tags=" << Tags;
         return ss.str();
@@ -170,6 +172,8 @@ class Autocomplete {
     uint64_t ProjectID;
     uint64_t WorkspaceID;
     uint64_t Type;
+    // If its a time entry or project, it can be billable
+    bool Billable;
     // If its a time entry, it has tags
     std::string Tags;
     std::string WorkspaceName;

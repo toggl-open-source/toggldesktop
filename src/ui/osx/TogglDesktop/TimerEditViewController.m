@@ -507,6 +507,8 @@ NSString *kInactiveTimerColor = @"#999999";
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
 	}
 	[self checkProjectConstraints];
+
+	self.time_entry.billable = item.Billable;
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification

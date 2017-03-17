@@ -435,6 +435,11 @@ BOOL manualMode = NO;
 							 0,
 							 tag_list,
 							 false);
+
+	if (new_time_entry.billable)
+	{
+		toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
+	}
 	free(guid);
 }
 
