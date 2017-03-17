@@ -437,6 +437,19 @@ namespace TogglDesktop
             {
                 Toggl.SetTimeEntryProject(this.timeEntry.GUID, item.TaskID, item.ProjectID, "");
             }
+
+            this.billableCheckBox.IsChecked = item.Billable;
+            this.billableCheckBox_OnClick(null, null);
+
+            if (!string.IsNullOrEmpty(item.Tags) && this.tagList.TagCount == 0)
+            {
+                this.tagList.Clear(true);
+                if (item.Tags != null)
+                    this.tagList.AddTags(item.Tags.Split(new[] { Toggl.TagSeparator },
+                        StringSplitOptions.RemoveEmptyEntries));
+                this.updateTagListEmptyText();
+                this.saveTags();
+            }
         }
 
         private void descriptionAutoComplete_OnConfirmWithoutCompletion(object sender, string text)

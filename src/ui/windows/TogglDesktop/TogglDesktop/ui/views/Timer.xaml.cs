@@ -179,6 +179,10 @@ namespace TogglDesktop
             {
                 this.clearSelectedProject();
             }
+
+            this.billabeIcon.ShowOnlyIf(item.Billable);
+            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
+            this.tagsIcon.Tag = item.Tags;
         }
 
         private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)
@@ -268,6 +272,8 @@ namespace TogglDesktop
             using (Performance.Measure("starting time entry from timer"))
             {
                 var durationText = this.durationTextBox.Text;
+                var billable = (this.billabeIcon.Visibility == Visibility.Visible);
+                var tagsString = (this.tagsIcon.Tag != null) ? this.tagsIcon.Tag.ToString() : "";
 
                 var guid = Toggl.Start(
                     this.descriptionTextBox.Text,
@@ -275,13 +281,18 @@ namespace TogglDesktop
                     this.completedProject.TaskId,
                     this.completedProject.ProjectId,
                     "",
-                    "",
+                    tagsString,
                     this.PreventOnApp
                     );
 
                 if (!string.IsNullOrEmpty(guid))
                 {
                     Toggl.SetTimeEntryDuration(guid, durationText);
+                }
+
+                if (billable)
+                {
+                    Toggl.SetTimeEntryBillable(guid, billable);
                 }
             }
         }
