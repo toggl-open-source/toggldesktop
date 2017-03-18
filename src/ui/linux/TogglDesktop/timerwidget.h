@@ -57,6 +57,7 @@ class TimerWidget : public QWidget {
     int64_t duration;
 
     QString descriptionPlaceholder;
+    QString tagsHolder;
 
     bool timeEntryAutocompleteNeedsUpdate;
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;

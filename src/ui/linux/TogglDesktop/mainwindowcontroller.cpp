@@ -380,7 +380,7 @@ void MainWindowController::connectMenuAction(
 }
 
 void MainWindowController::onActionNew() {
-    TogglApi::instance->start("", "", 0, 0);
+    TogglApi::instance->start("", "", 0, 0, 0, false);
 }
 
 void MainWindowController::onActionContinue() {

@@ -374,6 +374,23 @@ void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
                                                 view->TaskID,
                                                 view->ProjectID,
                                                 "");
+        if (view->Billable) {
+            TogglApi::instance->setTimeEntryBillable(guid, view->Billable);
+        }
+
+        if (!view->Tags.isEmpty() && ui->tags->count() > 0) {
+            bool tagsSet = false;
+            for (int i = 0; i < ui->tags->count(); i++) {
+                QListWidgetItem *widgetItem = ui->tags->item(i);
+                if (widgetItem->checkState() == Qt::Checked) {
+                    tagsSet = true;
+                    break;
+                }
+            }
+            if (!tagsSet) {
+                TogglApi::instance->setTimeEntryTags(guid, view->Tags);
+            }
+        }
     }
 }
 

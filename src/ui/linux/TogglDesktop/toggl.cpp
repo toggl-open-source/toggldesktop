@@ -482,19 +482,26 @@ QString TogglApi::start(
     const QString description,
     const QString duration,
     const uint64_t task_id,
-    const uint64_t project_id) {
+    const uint64_t project_id,
+    const char_t *tags,
+    const bool_t billable) {
     char *guid = toggl_start(ctx,
                              description.toStdString().c_str(),
                              duration.toStdString().c_str(),
                              task_id,
                              project_id,
                              0 /* project guid */,
-                             0 /* tags */,
+                             tags /* tags */,
                              false);
     QString res("");
     if (guid) {
         res = QString(guid);
         free(guid);
+        if (billable) {
+            toggl_set_time_entry_billable(ctx,
+                                          res.toStdString().c_str(),
+                                          billable);
+        }
     }
     return res;
 }

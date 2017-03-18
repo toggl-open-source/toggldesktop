@@ -55,7 +55,9 @@ class TogglApi : public QObject {
         const QString description,
         const QString duration,
         const uint64_t task_id,
-        const uint64_t project_id);
+        const uint64_t project_id,
+        const char_t *tags,
+        const bool_t billable);
 
     bool stop();
 

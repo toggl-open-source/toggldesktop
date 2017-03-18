@@ -14,7 +14,8 @@ TimerWidget::TimerWidget(QWidget *parent) : QWidget(parent),
 ui(new Ui::TimerWidget),
 timer(new QTimer(this)),
 duration(0),
-timeEntryAutocompleteNeedsUpdate(false) {
+timeEntryAutocompleteNeedsUpdate(false),
+tagsHolder("") {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -42,6 +43,7 @@ timeEntryAutocompleteNeedsUpdate(false) {
     ui->tags->setVisible(false);
 
     descriptionPlaceholder = "What are you doing?";
+    tagsHolder = "";
 }
 
 TimerWidget::~TimerWidget() {
@@ -134,6 +136,8 @@ void TimerWidget::displayStoppedTimerState() {
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
 
+    tagsHolder = "";
+
     duration = 0;
 
     disconnect(this, SLOT(start()));
@@ -167,7 +171,10 @@ void TimerWidget::start() {
     TogglApi::instance->start(description,
                               ui->duration->text(),
                               task_id,
-                              project_id);
+                              project_id,
+                              tagsHolder.toStdString().c_str(),
+                              ui->billable->isVisible());
+    tagsHolder = "";
 }
 
 void TimerWidget::stop() {
@@ -207,6 +214,14 @@ void TimerWidget::on_description_currentIndexChanged(int index) {
         AutocompleteView *view = data.value<AutocompleteView *>();
         ui->description->setEditText(view->Description);
         ui->project->setText(view->ProjectAndTaskLabel);
+        ui->billable->setVisible(view->Billable);
+        ui->tags->setVisible(!view->Tags.isEmpty());
+        if (!view->Tags.isEmpty()) {
+            tagsHolder = view->Tags;
+        } else {
+            tagsHolder = "";
+        }
+
     }
 }
 

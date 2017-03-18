@@ -30,6 +30,8 @@ class AutocompleteView : public QObject {
             view->ProjectID = it->ProjectID;
             view->WorkspaceID = it->WorkspaceID;
             view->Type = it->Type;
+            view->Billable = it->Billable;
+            view->Tags = QString(it->Tags);
             result.push_back(view);
             it = static_cast<TogglAutocompleteView *>(it->Next);
         }
@@ -46,6 +48,8 @@ class AutocompleteView : public QObject {
     uint64_t ProjectID;
     uint64_t WorkspaceID;
     uint64_t Type;
+    bool Billable;
+    QString Tags;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_AUTOCOMPLETEVIEW_H_
