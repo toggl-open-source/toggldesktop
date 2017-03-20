@@ -4368,8 +4368,6 @@ error Context::pushChanges(
 
         std::string api_token("");
 
-        std::string json("");
-
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
@@ -4435,58 +4433,16 @@ error Context::pushChanges(
             }
         }
 
-        // Create time entries json for batch_updates
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            error err = user_->UpdateJSON(
-                &time_entries,
-                &json);
+        // Time entries last to be sure projects are synced
+        if (time_entries.size() > 0) {
+            error err = pushEntries(
+                models,
+                time_entries,
+                api_token,
+                *toggl_client);
             if (err != noError) {
                 return err;
             }
-        }
-
-        logger().debug(json);
-
-        HTTPSRequest req;
-        req.host = urls::API();
-        req.relative_url = "/api/v8/batch_updates";
-        req.payload = json;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp = toggl_client->Post(req);
-        if (resp.err != noError) {
-            // Mark the time entries as unsynced now
-            {
-                Poco::Mutex::ScopedLock lock(user_m_);
-                if (user_) {
-                    for (std::vector<TimeEntry *>::iterator
-                            it = time_entries.begin();
-                            it != time_entries.end();
-                            it++) {
-                        (*it)->SetUnsynced();
-                    }
-                }
-            }
-            return resp.err;
-        }
-
-        std::vector<BatchUpdateResult> results;
-        error err = BatchUpdateResult::ParseResponseArray(resp.body, &results);
-        if (err != noError) {
-            return err;
-        }
-
-        std::vector<error> errors;
-
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            BatchUpdateResult::ProcessResponseArray(&results, &models, &errors);
-        }
-
-        if (!errors.empty()) {
-            return Formatter::CollectErrors(&errors);
         }
 
         stopwatch.stop();
@@ -4549,7 +4505,6 @@ error Context::pushClients(
 
     return err;
 }
-
 
 error Context::pushProjects(
     std::vector<Project *> projects,
@@ -4627,6 +4582,73 @@ error Context::updateEntryProjects(
                 }
             }
         }
+    }
+
+    return noError;
+}
+
+error Context::pushEntries(
+    std::map<std::string, BaseModel *> models,
+    std::vector<TimeEntry *> time_entries,
+    std::string api_token,
+    TogglClient toggl_client) {
+
+    std::string json("");
+    std::string entry_json("");
+    std::string error_message("");
+
+
+    // Create time entries json for batch_updates
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        error err = user_->UpdateJSON(
+            &time_entries,
+            &json);
+        if (err != noError) {
+            return err;
+        }
+        logger().debug(json);
+    }
+
+    HTTPSRequest req;
+    req.host = urls::API();
+    req.relative_url = "/api/v8/batch_updates";
+    req.payload = json;
+    req.basic_auth_username = api_token;
+    req.basic_auth_password = "api_token";
+
+    HTTPSResponse resp = toggl_client.Post(req);
+    if (resp.err != noError) {
+        // Mark the time entries as unsynced now
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (user_) {
+                for (std::vector<TimeEntry *>::iterator
+                        it = time_entries.begin();
+                        it != time_entries.end();
+                        it++) {
+                    (*it)->SetUnsynced();
+                }
+            }
+        }
+        return resp.err;
+    }
+
+    std::vector<BatchUpdateResult> results;
+    error err = BatchUpdateResult::ParseResponseArray(resp.body, &results);
+    if (err != noError) {
+        return err;
+    }
+
+    std::vector<error> errors;
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        BatchUpdateResult::ProcessResponseArray(&results, &models, &errors);
+    }
+
+    if (!errors.empty()) {
+        return Formatter::CollectErrors(&errors);
     }
 
     return noError;

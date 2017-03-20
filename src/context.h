@@ -542,6 +542,11 @@ class Context : public TimelineDatasource {
         std::vector<Client *> clients,
         std::string api_token,
         TogglClient toggl_client);
+    error pushEntries(
+        std::map<std::string, BaseModel *> models,
+        std::vector<TimeEntry *> time_entries,
+        std::string api_token,
+        TogglClient toggl_client);
     error updateEntryProjects(
         std::vector<Project *> projects,
         std::vector<TimeEntry *> time_entries);
