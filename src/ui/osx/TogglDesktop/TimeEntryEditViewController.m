@@ -407,6 +407,8 @@ extern void *ctx;
 		self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
 	}
 
+	self.projectSelectPreviousStringValue = self.projectSelect.stringValue;
+
 	// Overwrite project only if user is not editing it
 	if (cmd.open || [self.projectSelect currentEditor] == nil)
 	{
