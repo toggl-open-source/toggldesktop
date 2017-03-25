@@ -1099,9 +1099,18 @@ error Context::LoadUpdateFromJSONString(const std::string json) {
         return noError;
     }
 
+    TimeEntry *running_entry = user_->RunningTimeEntry();
+
     error err = user_->LoadUserUpdateFromJSONString(json);
     if (err != noError) {
         return displayError(err);
+    }
+
+    TimeEntry *new_running_entry = user_->RunningTimeEntry();
+
+    // Reset reminder time when entry stopped by websocket
+    if (running_entry && !new_running_entry) {
+        last_tracking_reminder_time_ = time(0);
     }
 
     return displayError(save());
@@ -4327,7 +4336,16 @@ error Context::pullAllUserData(
             if (!user_) {
                 return error("cannot load user data when logged out");
             }
+            TimeEntry *running_entry = user_->RunningTimeEntry();
+
             user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
+
+            TimeEntry *new_running_entry = user_->RunningTimeEntry();
+
+            // Reset reminder time when entry stopped by sync
+            if (running_entry && !new_running_entry) {
+                last_tracking_reminder_time_ = time(0);
+            }
         }
 
         pullWorkspacePreferences(toggl_client);
