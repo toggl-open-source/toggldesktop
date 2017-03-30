@@ -372,6 +372,10 @@ namespace TogglDesktop
             this.completedProject = new ProjectInfo();
             this.cancelProjectSelectionButton.Visibility = Visibility.Collapsed;
             this.taskLabel.Visibility = Visibility.Collapsed;
+
+            this.billabeIcon.Visibility = Visibility.Collapsed;
+            this.tagsIcon.Visibility = Visibility.Collapsed;
+            this.tagsIcon.Tag = "";
         }
 
         #region display helpers
