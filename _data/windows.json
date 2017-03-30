@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.4.31",
+            "rows": [
+                "Fixed autocomplete not setting tags and billable flag",
+                "Avoid showing tracking reminder if entry is stopped elsewhere"
+            ],
+            "date": "March 30th 2017",
+            "beta": "true"
+        },
+        {
             "version": "7.4.18",
             "rows": [
                 "Use user profile time format in group total time",

@@ -1,6 +1,15 @@
 {
   "versions": [
     {
+      "version": "7.4.31",
+      "date": "March 30th 2017",
+      "rows": [
+        "Avoid showing tracking reminder if entry is stopped elsewhere",
+        "Fixed autocomplete not copying tags and billable"
+      ],
+      "beta": "true"
+    },
+    {
       "version": "7.4.24",
       "date": "March 3rd 2017",
       "rows": [
