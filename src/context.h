@@ -439,6 +439,7 @@ class Context : public TimelineDatasource {
     void uiUpdaterActivity();
     void checkReminders();
     void reminderActivity();
+    void syncerActivity();
 
  private:
     error updateURL(std::string *result);
@@ -629,6 +630,8 @@ class Context : public TimelineDatasource {
 
     bool update_check_disabled_;
 
+    bool had_something_to_push_;
+
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
     bool quit_;
@@ -638,6 +641,9 @@ class Context : public TimelineDatasource {
 
     Poco::Mutex reminder_m_;
     Poco::Activity<Context> reminder_;
+
+    Poco::Mutex syncer_m_;
+    Poco::Activity<Context> syncer_;
 
     Analytics analytics_;
 

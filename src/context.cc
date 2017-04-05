@@ -77,9 +77,11 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_sync_started_(0)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
+, had_something_to_push_(false)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
+, syncer_(this, &Context::syncerActivity)
 , update_path_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
@@ -109,6 +111,10 @@ Context::Context(const std::string app_name, const std::string app_version)
 
     if (!reminder_.isRunning()) {
         reminder_.start();
+    }
+
+    if (!syncer_.isRunning()) {
+        syncer_.start();
     }
 
     last_tracking_reminder_time_ = time(0);
@@ -188,6 +194,14 @@ void Context::stopActivities() {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             timeline_uploader_->Shutdown();
+        }
+    }
+
+    {
+        Poco::Mutex::ScopedLock lock(syncer_m_);
+        if (syncer_.isRunning()) {
+            syncer_.stop();
+            syncer_.wait();
         }
     }
 
@@ -1011,15 +1025,8 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 
     setOnline("Data pulled");
 
-    bool had_something_to_push(true);
-    err = pushChanges(&client, &had_something_to_push);
-    if (err != noError) {
-        displayError(err);
-    }
-
-    if (err != noError && had_something_to_push) {
-        setOnline("Data pushed");
-    }
+    // Real sync is done in asyncronously in syncerActivity
+    had_something_to_push_ = true;
 
     // Push cached OBM action
     err = pushObmAction();
@@ -1052,17 +1059,11 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onPushChanges executing");
 
-    TogglClient client(UI());
-    bool had_something_to_push(true);
-    error err = pushChanges(&client, &had_something_to_push);
-    if (err != noError) {
-        displayError(err);
-    } else if (had_something_to_push) {
-        setOnline("Changes pushed");
-    }
+    // Real sync is done in asyncronously in syncerActivity
+    had_something_to_push_ = true;
 
     // Push cached OBM action
-    err = pushObmAction();
+    error err = pushObmAction();
     if (err != noError) {
         logger().error("Error pushing OBM action: " + err);
     }
@@ -4175,6 +4176,34 @@ void Context::reminderActivity() {
         }
 
         checkReminders();
+    }
+}
+
+void Context::syncerActivity() {
+    while (true) {
+        // Sleep in increments for faster shutdown.
+        for (int i = 0; i < 4; i++) {
+            if (syncer_.isStopped()) {
+                return;
+            }
+            Poco::Thread::sleep(250);
+        }
+
+        {
+            Poco::Mutex::ScopedLock lock(syncer_m_);
+
+            if (had_something_to_push_) {
+                TogglClient client(UI());
+
+                error err = pushChanges(&client, &had_something_to_push_);
+                if (err != noError) {
+                    displayError(err);
+                } else if (!had_something_to_push_) {
+                    setOnline("Data pushed");
+                }
+                displayError(save(false));
+            }
+        }
     }
 }
 
