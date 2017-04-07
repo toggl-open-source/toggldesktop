@@ -363,7 +363,7 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         SetID(data["id"].asUInt64());
     }
 
-    if (UIModifiedAt() > ui_modified_at) {
+    if (ui_modified_at != 0 && UIModifiedAt() > ui_modified_at) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "
             << String()
@@ -430,7 +430,19 @@ Json::Value TimeEntry::SaveToJSON() const {
     } else {
         n["pid"] = Json::UInt64(PID());
     }
-    n["tid"] = Json::UInt64(TID());
+
+    if (PID()) {
+        n["pid"] = Json::UInt64(PID());
+    } else {
+        n["pid"] = Json::nullValue;
+    }
+
+    if (TID()) {
+        n["tid"] = Json::UInt64(TID());
+    } else {
+        n["tid"] = Json::nullValue;
+    }
+
     n["start"] = StartString();
     if (Stop()) {
         n["stop"] = StopString();
@@ -475,7 +487,11 @@ std::string TimeEntry::ModelName() const {
 }
 
 std::string TimeEntry::ModelURL() const {
-    return "/api/v8/time_entries";
+    std::stringstream relative_url;
+    relative_url << "/api/v9/workspaces/"
+                 << WID() << "/time_entries";
+
+    return relative_url.str();
 }
 
 }   // namespace toggl

@@ -4447,8 +4447,13 @@ error Context::pushChanges(
             }
         }
 
+        std::stringstream ss;
+        ss << "Sync success (";
+
         // Clients first as projects may depend on clients
         if (clients.size() > 0) {
+            Poco::Stopwatch client_stopwatch;
+            client_stopwatch.start();
             error err = pushClients(
                 clients,
                 api_token,
@@ -4457,10 +4462,16 @@ error Context::pushChanges(
                     err.find(kClientNameAlreadyExists) == std::string::npos) {
                 return err;
             }
+            client_stopwatch.stop();
+            ss << clients.size() << " clients in "
+               << client_stopwatch.elapsed() / 1000 << " ms";
+
         }
 
         // Projects second as time entries may depend on projects
         if (projects.size() > 0) {
+            Poco::Stopwatch project_stopwatch;
+            project_stopwatch.start();
             error err = pushProjects(
                 projects,
                 clients,
@@ -4478,10 +4489,15 @@ error Context::pushChanges(
             if (err != noError) {
                 return err;
             }
+            project_stopwatch.stop();
+            ss << " | " << projects.size() << " projects in "
+               << project_stopwatch.elapsed() / 1000 << " ms";
         }
 
-        // Time entries last to be sure projects are synced
+        // Time entries last to be sure clients and projects are synced
         if (time_entries.size() > 0) {
+            Poco::Stopwatch entry_stopwatch;
+            entry_stopwatch.start();
             error err = pushEntries(
                 models,
                 time_entries,
@@ -4490,12 +4506,14 @@ error Context::pushChanges(
             if (err != noError) {
                 return err;
             }
+
+            entry_stopwatch.stop();
+            ss << " | " << time_entries.size() << " time entries in "
+               << entry_stopwatch.elapsed() / 1000 << " ms";
         }
 
         stopwatch.stop();
-        std::stringstream ss;
-        ss << "Changes data JSON pushed and responses parsed in "
-           << stopwatch.elapsed() / 1000 << " ms";
+        ss << ") Total = " << stopwatch.elapsed() / 1000 << " ms";
         logger().debug(ss.str());
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -4640,64 +4658,70 @@ error Context::pushEntries(
     std::string api_token,
     TogglClient toggl_client) {
 
-    std::string json("");
     std::string entry_json("");
     std::string error_message("");
-
-
-    // Create time entries json for batch_updates
+    bool error_found = false;
+    bool offline = false;
     {
         Poco::Mutex::ScopedLock lock(user_m_);
-        error err = user_->UpdateJSON(
-            &time_entries,
-            &json);
-        if (err != noError) {
-            return err;
-        }
-        logger().debug(json);
-    }
+        for (std::vector<TimeEntry *>::const_iterator it =
+            time_entries.begin();
+                it != time_entries.end(); it++) {
 
-    HTTPSRequest req;
-    req.host = urls::API();
-    req.relative_url = "/api/v8/batch_updates";
-    req.payload = json;
-    req.basic_auth_username = api_token;
-    req.basic_auth_password = "api_token";
-
-    HTTPSResponse resp = toggl_client.Post(req);
-    if (resp.err != noError) {
-        // Mark the time entries as unsynced now
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (user_) {
-                for (std::vector<TimeEntry *>::iterator
-                        it = time_entries.begin();
-                        it != time_entries.end();
-                        it++) {
-                    (*it)->SetUnsynced();
-                }
+            // Avoid trying to POST when we're offline
+            if (offline) {
+                // Mark the time entry as unsynced now
+                (*it)->SetUnsynced();
+                continue;
             }
+
+            Json::Value entryJson = (*it)->SaveToJSON();
+
+            Json::StyledWriter writer;
+            entry_json = writer.write(entryJson);
+
+            //std::cout << entry_json;
+
+            HTTPSRequest req;
+            req.host = urls::API();
+            req.relative_url = (*it)->ModelURL();
+            req.payload = entry_json;
+            req.basic_auth_username = api_token;
+            req.basic_auth_password = "api_token";
+
+            HTTPSResponse resp = toggl_client.Post(req);
+
+            if (resp.err != noError || resp.status_code == 0) {
+                error_found = true;
+                error_message = resp.body;
+                if (error_message == noError) {
+                    error_message = resp.err;
+                }
+                // Mark the time entry as unsynced now
+                (*it)->SetUnsynced();
+
+                offline = (resp.status_code == 0);
+
+                if(offline) {
+                    had_something_to_push_ = false;
+                }
+
+                continue;
+            }
+
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(resp.body, root)) {
+                return error("error parsing time entry POST response");
+            }
+
+            (*it)->LoadFromJSON(root);
         }
-        return resp.err;
     }
 
-    std::vector<BatchUpdateResult> results;
-    error err = BatchUpdateResult::ParseResponseArray(resp.body, &results);
-    if (err != noError) {
-        return err;
+    if (error_found) {
+        return error_message;
     }
-
-    std::vector<error> errors;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        BatchUpdateResult::ProcessResponseArray(&results, &models, &errors);
-    }
-
-    if (!errors.empty()) {
-        return Formatter::CollectErrors(&errors);
-    }
-
     return noError;
 }
 
