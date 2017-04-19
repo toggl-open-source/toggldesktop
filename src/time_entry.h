@@ -137,6 +137,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     Poco::Int64 RealDurationInSeconds() const;
 
+    bool isNotFound(const error err) const;
+
  private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;

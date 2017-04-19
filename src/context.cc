@@ -4689,9 +4689,23 @@ error Context::pushEntries(
             req.basic_auth_username = api_token;
             req.basic_auth_password = "api_token";
 
-            HTTPSResponse resp = toggl_client.Post(req);
+            HTTPSResponse resp;
+
+            if ((*it)->NeedsDELETE()) {
+                req.payload = "";
+                resp = toggl_client.Delete(req);
+            } else if ((*it)->ID()) {
+                resp = toggl_client.Put(req);
+            } else {
+                resp = toggl_client.Post(req);
+            }
 
             if (resp.err != noError) {
+                // Not found on server. Probably deleted already.
+                if ((*it)->isNotFound(resp.body)) {
+                    (*it)->MarkAsDeletedOnServer();
+                    continue;
+                }
                 error_found = true;
                 error_message = resp.body;
                 if (error_message == noError) {
@@ -4706,6 +4720,12 @@ error Context::pushEntries(
                     had_something_to_push_ = false;
                 }
 
+                continue;
+            }
+
+            if ((*it)->NeedsDELETE()) {
+                // Successfully deleted entry
+                (*it)->MarkAsDeletedOnServer();
                 continue;
             }
 

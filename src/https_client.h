@@ -148,6 +148,12 @@ class HTTPSClient {
     HTTPSResponse GetFile(
         HTTPSRequest req);
 
+    HTTPSResponse Delete(
+        HTTPSRequest req);
+
+    HTTPSResponse Put(
+        HTTPSRequest req);
+
     static HTTPSClientConfig Config;
 
  protected:

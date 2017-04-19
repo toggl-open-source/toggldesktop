@@ -243,6 +243,18 @@ HTTPSResponse HTTPSClient::GetFile(
     return request(req);
 }
 
+HTTPSResponse HTTPSClient::Delete(
+    HTTPSRequest req) {
+    req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
+    return request(req);
+}
+
+HTTPSResponse HTTPSClient::Put(
+    HTTPSRequest req) {
+    req.method = Poco::Net::HTTPRequest::HTTP_PUT;
+    return request(req);
+}
+
 HTTPSResponse HTTPSClient::request(
     HTTPSRequest req) {
     HTTPSResponse resp = makeHttpRequest(req);
