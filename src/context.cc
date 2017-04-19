@@ -4691,7 +4691,7 @@ error Context::pushEntries(
 
             HTTPSResponse resp = toggl_client.Post(req);
 
-            if (resp.err != noError || resp.status_code == 0) {
+            if (resp.err != noError) {
                 error_found = true;
                 error_message = resp.body;
                 if (error_message == noError) {
@@ -4700,7 +4700,7 @@ error Context::pushEntries(
                 // Mark the time entry as unsynced now
                 (*it)->SetUnsynced();
 
-                offline = (resp.status_code == 0);
+                offline = IsNetworkingError(resp.err);
 
                 if(offline) {
                     had_something_to_push_ = false;
