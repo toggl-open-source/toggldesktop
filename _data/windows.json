@@ -6,8 +6,7 @@
                 "Fixed autocomplete not setting tags and billable flag",
                 "Avoid showing tracking reminder if entry is stopped elsewhere"
             ],
-            "date": "March 30th 2017",
-            "beta": "true"
+            "date": "April 27th 2017"
         },
         {
             "version": "7.4.18",

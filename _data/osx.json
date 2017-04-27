@@ -8,8 +8,7 @@
                 "Avoid showing tracking reminder if entry is stopped elsewhere",
                 "Fixed issues with changing project in edit view"
             ],
-            "date": "March 30th 2017",
-            "beta": "true"
+            "date": "April 27th 2017"
         },
         {
             "version": "7.4.18",
