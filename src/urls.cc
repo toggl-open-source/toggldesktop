@@ -30,7 +30,7 @@ std::string TimelineUpload() {
 
 std::string WebSocket() {
     if (use_staging_as_backend) {
-        return "https://fubar-ws.toggl.com";
+        return "https://stream.toggl.space";
     }
     return "https://stream.toggl.com";
 }
