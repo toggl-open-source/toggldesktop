@@ -13,7 +13,7 @@ export LD_LIBRARY_PATH
 # Xubuntu, i3 and Cinnamon tray icon fix
 XDG=$XDG_CURRENT_DESKTOP
 
-if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" || "$XDG" = "i3" ]]; then
+if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" || "$XDG" = "i3" || "$XDG" = "LXDE" ]]; then
   dbus-launch $dirname/$appname "$@" &
 else
   $dirname/$appname "$@" &
