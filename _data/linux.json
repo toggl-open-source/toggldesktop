@@ -1,5 +1,14 @@
 {
   "versions": [
+   {
+      "version": "7.4.38",
+      "rows": [
+          "Updated syncing logic to use api v9 in background",
+          "Added dbus-launch support for LXDE"
+      ],
+      "date": "May 12th 2017",
+      "beta": "true"
+    },
     {
       "version": "7.4.31",
       "date": "April 27th 2017",
