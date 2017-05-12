@@ -57,7 +57,7 @@ std::string Task::ModelName() const {
 }
 
 std::string Task::ModelURL() const {
-    return "/api/v8/tasks";
+    return "/api/v9/tasks";
 }
 
 }   // namespace toggl

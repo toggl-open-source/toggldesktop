@@ -46,7 +46,7 @@ std::string Tag::ModelName() const {
 }
 
 std::string Tag::ModelURL() const {
-    return "/api/v8/tags";
+    return "/api/v9/tags";
 }
 
 }   // namespace toggl

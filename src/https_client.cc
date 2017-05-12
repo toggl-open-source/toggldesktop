@@ -103,7 +103,7 @@ void ServerStatus::runActivity() {
         HTTPSClient client;
         HTTPSRequest req;
         req.host = urls::API();
-        req.relative_url = "/api/v8/status";
+        req.relative_url = "/api/v9/status";
 
         HTTPSResponse resp = client.Get(req);
         if (noError != resp.err) {

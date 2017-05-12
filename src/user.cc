@@ -1245,7 +1245,7 @@ std::string User::ModelName() const {
 }
 
 std::string User::ModelURL() const {
-    return "/api/v8/me";
+    return "/api/v9/me";
 }
 
 template<class T>

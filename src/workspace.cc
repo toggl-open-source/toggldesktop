@@ -90,7 +90,7 @@ std::string Workspace::ModelName() const {
 }
 
 std::string Workspace::ModelURL() const {
-    return "/api/v8/workspaces";
+    return "/api/v9/workspaces";
 }
 
 
