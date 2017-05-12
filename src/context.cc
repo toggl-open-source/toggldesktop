@@ -1469,6 +1469,7 @@ error Context::updateURL(std::string *result) {
         return error("Cannot check for updates without app version");
     }
 
+    // Not implemented in v9 as of 12.05.2017
     std::stringstream relative_url;
     relative_url << "/api/v8/updates?app=td"
                  << "&channel=" << update_channel
@@ -1548,6 +1549,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
         apitoken = user_->APIToken();
     }
 
+    // Not implemented in v9 as of 12.05.2017
     HTTPSRequest req;
     req.host = urls::TimelineUpload();
     req.relative_url = "/api/v8/timeline_settings";
@@ -1637,6 +1639,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
                      "application/json",
                      "settings.json"));
 
+    // Not implemented in v9 as of 12.05.2017
     HTTPSRequest req;
     req.host = urls::API();
     req.relative_url ="/api/v8/feedback/web";
@@ -3624,6 +3627,7 @@ error Context::OpenReportsInBrowser() {
         apitoken = user_->APIToken();
     }
 
+    // Not implemented in v9 as of 12.05.2017
     HTTPSRequest req;
     req.host = urls::API();
     req.relative_url = "/api/v8/desktop_login_tokens";
@@ -3650,6 +3654,7 @@ error Context::OpenReportsInBrowser() {
         return displayError("Could not extract login token from JSON");
     }
 
+    // Not implemented in v9 as of 12.05.2017
     std::stringstream ss;
     ss  << urls::API() << "/api/v8/desktop_login"
         << "?login_token=" << login_token
@@ -5114,6 +5119,7 @@ error Context::signup(
         Json::Value root;
         root["user"] = user;
 
+        // Not implemented in v9 as of 12.05.2017
         HTTPSRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v8/signups";

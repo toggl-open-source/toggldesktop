@@ -99,6 +99,7 @@ error TimelineUploader::upload(TimelineBatch *batch) {
         batch->DesktopID());
     logger().trace(json);
 
+    // Not implemented in v9 as of 12.05.2017
     HTTPSRequest req;
     req.host = urls::TimelineUpload();
     req.relative_url = "/api/v8/timeline";
