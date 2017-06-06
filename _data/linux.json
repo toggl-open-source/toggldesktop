@@ -6,8 +6,7 @@
           "Updated syncing logic to use api v9 in background",
           "Added dbus-launch support for LXDE"
       ],
-      "date": "May 12th 2017",
-      "beta": "true"
+      "date": "May 12th 2017"
     },
     {
       "version": "7.4.31",

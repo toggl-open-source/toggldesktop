@@ -6,8 +6,7 @@
                 "Updated syncing logic to use api v9 in background",
                 "Fixed issue with faulty date input crashing app"
             ],
-            "date": "May 12nd 2017",
-            "beta": "true"
+            "date": "June 6th 2017"
         },
         {
             "version": "7.4.31",

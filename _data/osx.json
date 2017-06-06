@@ -5,8 +5,7 @@
             "rows": [
                 "Updated syncing logic to use api v9 in background"
             ],
-            "date": "May 12th 2017",
-            "beta": "true"
+            "date": "June 6th 2017"
         },
         {
             "version": "7.4.31",
