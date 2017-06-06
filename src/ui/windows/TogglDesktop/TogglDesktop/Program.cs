@@ -99,16 +99,8 @@ static class Program
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Try to improve performances
-            int renderingTier = (RenderCapability.Tier >> 16);
-            if (renderingTier < 2)
-            {
-                RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
-            }
-            else
-            {
-                RenderOptions.ProcessRenderMode = RenderMode.Default;
-            }
+            RenderOptions.ProcessRenderMode = RenderMode.Default;
+
             new App().Run();
         }
     }
