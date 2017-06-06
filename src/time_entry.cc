@@ -376,10 +376,6 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         return;
     }
 
-    if (data.isMember("guid")) {
-        SetGUID(data["guid"].asString());
-    }
-
     if (data.isMember("tags")) {
         loadTagsFromJSON(data["tags"]);
     }

@@ -46,11 +46,6 @@ void Client::SetWID(const Poco::UInt64 value) {
 }
 
 void Client::LoadFromJSON(Json::Value data) {
-    std::string guid = data["guid"].asString();
-    if (!guid.empty()) {
-        SetGUID(guid);
-    }
-
     SetID(data["id"].asUInt64());
     SetName(data["name"].asString());
     SetWID(data["wid"].asUInt64());
