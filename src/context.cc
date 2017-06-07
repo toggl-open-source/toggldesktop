@@ -2266,6 +2266,10 @@ void Context::setUser(User *value, const bool logged_in) {
         reminder_.start();
     }
 
+    if (!syncer_.isRunning()) {
+        syncer_.start();
+    }
+
     // Offer beta channel, if not offered yet
     bool did_offer_beta_channel(false);
     error err = offerBetaChannel(&did_offer_beta_channel);
