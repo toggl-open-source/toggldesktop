@@ -454,11 +454,17 @@ Json::Value TimeEntry::SaveToJSON() const {
     n["created_with"] = Formatter::EscapeJSONString(CreatedWith());
 
     Json::Value tag_nodes;
-    for (std::vector<std::string>::const_iterator it = TagNames.begin();
-            it != TagNames.end();
-            it++) {
-        std::string tag_name = Formatter::EscapeJSONString(*it);
-        tag_nodes.append(Json::Value(tag_name));
+    if (TagNames.size() > 0) {
+
+        for (std::vector<std::string>::const_iterator it = TagNames.begin();
+                it != TagNames.end();
+                it++) {
+            std::string tag_name = Formatter::EscapeJSONString(*it);
+            tag_nodes.append(Json::Value(tag_name));
+        }
+    } else {
+        Json::Reader reader;
+        reader.parse("[]", tag_nodes);
     }
     n["tags"] = tag_nodes;
 
