@@ -354,25 +354,25 @@ bool TimeEntry::IsToday() const {
 }
 
 void TimeEntry::LoadFromJSON(Json::Value data) {
-    Json::Value modified = data["ui_modified_at"];
-    Poco::UInt64 ui_modified_at(0);
-    if (modified.isString()) {
-        ui_modified_at = Poco::NumberParser::parseUnsigned64(
-            modified.asString());
+    // No ui_modified_at in server responses.
+    // Compare updated_at with ui_modified_at to see if ui has been changed
+    Json::Value at = data["at"];
+    Poco::UInt64 updated_at(0);
+    if (at.isString()) {
+        updated_at = Formatter::Parse8601(at.asString());
     } else {
-        ui_modified_at = modified.asUInt64();
+        updated_at = at.asUInt64();
     }
 
     if (data.isMember("id")) {
         SetID(data["id"].asUInt64());
     }
-    // FIXIT: This does not work anymore as no ui_modified_at is present in server response/websocket messages
-    // If this is fixed the kRequestThrottleSeconds can be decreased back to 2
-    if (ui_modified_at != 0 && UIModifiedAt() > ui_modified_at) {
+
+    if (updated_at != 0 && UIModifiedAt() >= updated_at) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "
             << String()
-            << " with server data because we have a newer ui_modified_at";
+            << " with server data because we have a newer or same updated_at";
         logger().debug(ss.str());
         return;
     }
