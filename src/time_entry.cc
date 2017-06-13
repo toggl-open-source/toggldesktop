@@ -366,7 +366,8 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     if (data.isMember("id")) {
         SetID(data["id"].asUInt64());
     }
-
+    // FIXIT: This does not work anymore as no ui_modified_at is present in server response/websocket messages
+    // If this is fixed the kRequestThrottleSeconds can be decreased back to 2
     if (ui_modified_at != 0 && UIModifiedAt() > ui_modified_at) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "
