@@ -368,7 +368,9 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         SetID(data["id"].asUInt64());
     }
 
-    if (updated_at != 0 && UIModifiedAt() >= updated_at) {
+    if (updated_at != 0 &&
+            (UIModifiedAt() >= updated_at ||
+             UpdatedAt() >= updated_at)) {
         std::stringstream ss;
         ss  << "Will not overwrite time entry "
             << String()
