@@ -1025,8 +1025,18 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 
     setOnline("Data pulled");
 
-    // Real sync is done in asyncronously in syncerActivity
-    had_something_to_push_ = true;
+    if(user_->related.NumberOfUnsyncedTimeEntries() < 10) {
+        bool something_to_push(true);
+        err = pushChanges(&client, &something_to_push);
+        if (err != noError) {
+            displayError(err);
+        } else if (something_to_push) {
+            setOnline("Changes pushed");
+        }
+    } else {
+        // Sync asyncronously with syncerActivity if there is a lot of unsynced data
+        had_something_to_push_ = true;
+    }
 
     // Push cached OBM action
     err = pushObmAction();
@@ -1058,12 +1068,25 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
     logger().debug("onPushChanges executing");
+    error err;
+    if(user_->related.NumberOfUnsyncedTimeEntries() < 10) {
 
-    // Real sync is done in asyncronously in syncerActivity
-    had_something_to_push_ = true;
+
+        TogglClient client(UI());
+        bool something_to_push(true);
+        err = pushChanges(&client, &something_to_push);
+        if (err != noError) {
+            displayError(err);
+        } else if (something_to_push) {
+            setOnline("Changes pushed");
+        }
+    } else {
+        // Sync asyncronously with syncerActivity if there is a lot of unsynced data
+        had_something_to_push_ = true;
+    }
 
     // Push cached OBM action
-    error err = pushObmAction();
+    err = pushObmAction();
     if (err != noError) {
         logger().error("Error pushing OBM action: " + err);
     }
