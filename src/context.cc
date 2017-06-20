@@ -800,7 +800,6 @@ void Context::updateUI(const UIElements &what) {
             idle_.SetSettings(settings_);
 
             HTTPSClient::Config.UseProxy = use_proxy;
-            HTTPSClient::Config.IgnoreCert = ("development" == environment_);
             HTTPSClient::Config.ProxySettings = proxy;
             HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
         }
@@ -2064,6 +2063,7 @@ void Context::SetEnvironment(const std::string value) {
     logger().debug("SetEnvironment " + value);
     environment_ = value;
 
+    HTTPSClient::Config.IgnoreCert = ("development" == environment_);
     urls::SetRequestsAllowed("test" != environment_);
 }
 
