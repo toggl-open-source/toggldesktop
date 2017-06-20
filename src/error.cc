@@ -244,6 +244,9 @@ std::string MakeErrorActionable(const error err) {
     if (err.find(kMissingWorkspaceID) != std::string::npos) {
         return "Please select a project";
     }
+    if (err.find(kDatabaseDiskMalformed) != std::string::npos) {
+        return "Local database is corrupt. Please clear local data to recreate local database.";
+    }
     return err;
 }
 

@@ -66,6 +66,7 @@
 #define kProjectNameAlready "Project name already"
 #define kProjectNameAlreadyExists "Project name already exists"
 #define kClientNameAlreadyExists "Client name already exists"
+#define kDatabaseDiskMalformed "The database disk image is malformed"
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"
