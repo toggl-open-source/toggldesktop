@@ -1324,6 +1324,10 @@ error Context::UpdateChannel(
     poco_check_ptr(update_channel);
 
     error err = db()->LoadUpdateChannel(update_channel);
+
+    if (err.find(kDatabaseDiskMalformed) != std::string::npos) {
+        err = noError;
+    }
     return displayError(err);
 }
 
