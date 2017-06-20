@@ -1013,6 +1013,10 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onFullSync executing");
 
+    if (!user_) {
+        return;
+    }
+
     last_sync_started_ = time(0);
 
     TogglClient client(UI());
