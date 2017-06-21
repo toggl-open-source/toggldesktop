@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.4.52",
+            "rows": [
+                "Fixes for syncing issues that caused user inputs to be overwritten"
+            ],
+            "date": "June 21st 2017",
+            "beta": "true"
+        },
+        {
             "version": "7.4.47",
             "rows": [
                 "Fixed syncing issues that caused user inputs to be discarded",
