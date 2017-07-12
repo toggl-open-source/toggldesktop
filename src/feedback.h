@@ -4,6 +4,7 @@
 #define SRC_FEEDBACK_H_
 
 #include <string>
+#include <sstream>  // NOLINT
 
 #include "./types.h"
 
@@ -34,7 +35,9 @@ class Feedback {
     }
 
     void SetSubject(const std::string value) {
-        subject_ = value;
+        std::stringstream ss;
+        ss << "Toggl Desktop - " << value;
+        subject_ = ss.str();
     }
     const std::string Subject() const {
         return subject_;
