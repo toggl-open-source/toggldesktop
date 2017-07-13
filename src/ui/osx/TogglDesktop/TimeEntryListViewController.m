@@ -182,6 +182,21 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
 
+	// Save the current scroll position of entries list
+	NSPoint scrollOrigin;
+	NSRect rowRect = [self.timeEntriesTableView rectOfRow:0];
+	BOOL adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.timeEntriesTableView.visibleRect, rowRect);
+	if (adjustScroll)
+	{
+		// get scroll position from the bottom: get bottom left of the visible part of the table view
+		scrollOrigin = self.timeEntriesTableView.visibleRect.origin;
+		if (self.timeEntriesTableView.isFlipped)
+		{
+			// scrollOrigin is top left, calculate unflipped coordinates
+			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
+		}
+	}
+	long delta = (cmd.timeEntries.count + 1 - viewitems.count) * 56;
 	@synchronized(viewitems)
 	{
 		[viewitems removeAllObjects];
@@ -217,11 +232,16 @@ extern void *ctx;
 		[self.timeEntryListScrollView setHidden:noItems];
 	}
 
-	if (self.groupToggleRow > -1)
+	// Restore scroll position after list reload
+	if (adjustScroll)
 	{
-		[self.timeEntriesTableView scrollRowToVisible:self.groupToggleRow];
-		self.groupToggleRow = -1;
-		self.selectedGroupName = @"";
+		// restore scroll position from the bottom
+		if (self.timeEntriesTableView.isFlipped)
+		{
+			// calculate new flipped coordinates, height includes the new row
+			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y - delta;
+		}
+		[self.timeEntriesTableView scrollPoint:scrollOrigin];
 	}
 }
 
