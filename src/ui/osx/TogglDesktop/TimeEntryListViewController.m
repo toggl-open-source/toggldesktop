@@ -32,8 +32,6 @@
 @property NSInteger minimumEditFormWidth;
 @property NSInteger lastSelectedRowIndex;
 @property BOOL runningEdit;
-@property NSInteger groupToggleRow;
-@property NSString *selectedGroupName;
 @property TimeEntryCell *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
@@ -109,10 +107,6 @@ extern void *ctx;
 												 selector:@selector(escapeListing:)
 													 name:kEscapeListing
 												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(toggleGroupNotification:)
-													 name:kToggleGroup
-												   object:nil];
 	}
 	return self;
 }
@@ -137,8 +131,6 @@ extern void *ctx;
 	self.lastSelectedRowIndex = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 	self.runningEdit = NO;
-	self.groupToggleRow = -1;
-	self.selectedGroupName = @"";
 
 	[self setupEmptyLabel];
 
@@ -336,22 +328,12 @@ extern void *ctx;
 		TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier:@"TimeEntryCellWithHeader"
 																	owner:self];
 		[cell render:item];
-		if (cell.Group != cell.GroupOpen && [self.selectedGroupName isEqualToString:cell.GroupName])
-		{
-			// Select row to scroll to
-			self.groupToggleRow = row;
-		}
 		return cell;
 	}
 
 	TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell"
 													  owner:self];
 	[cell render:item];
-	if (cell.Group != cell.GroupOpen && [self.selectedGroupName isEqualToString:cell.GroupName])
-	{
-		// Select row to scroll to
-		self.groupToggleRow = row;
-	}
 	return cell;
 }
 
@@ -609,11 +591,6 @@ extern void *ctx;
 													  userInfo:nil];
 	[self clearLastSelectedEntry];
 	self.selectedEntryCell = nil;
-}
-
-- (void)toggleGroupNotification:(NSNotification *)notification
-{
-	self.selectedGroupName = notification.object;
 }
 
 #pragma mark Drag & Drop Delegates
