@@ -39,6 +39,8 @@ tagsHolder("") {
     ui->description->completer()->setCompletionMode(
         QCompleter::PopupCompletion);
     ui->description->completer()->setMaxVisibleItems(20);
+    ui->description->completer()->setFilterMode(Qt::MatchContains);
+
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
 

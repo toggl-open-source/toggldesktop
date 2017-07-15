@@ -29,10 +29,12 @@ previousTagList("") {
     ui->description->completer()->setCompletionMode(
         QCompleter::PopupCompletion);
     ui->description->completer()->setMaxVisibleItems(20);
+    ui->description->completer()->setFilterMode(Qt::MatchContains);
 
     ui->project->completer()->setCaseSensitivity(Qt::CaseInsensitive);
     ui->project->completer()->setCompletionMode(QCompleter::PopupCompletion);
     ui->project->completer()->setMaxVisibleItems(20);
+    ui->project->completer()->setFilterMode(Qt::MatchContains);
 
     ui->description->installEventFilter(this);
     ui->project->installEventFilter(this);
