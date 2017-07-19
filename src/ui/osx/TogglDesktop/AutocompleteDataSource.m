@@ -148,13 +148,42 @@ extern void *ctx;
 		for (int i = 0; i < self.orderedKeys.count; i++)
 		{
 			NSString *key = self.orderedKeys[i];
-			if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
+
+			NSArray *stringArray = [filter componentsSeparatedByString:@" "];
+			if (stringArray.count > 1)
 			{
-				if ([key length] > self.textLength)
+				// Filter is more than 1 word. Let's search for all the words entered.
+				int foundCount = 0;
+				for (int j = 0; j < stringArray.count; j++)
 				{
-					self.textLength = [key length];
+					NSString *splitFilter = stringArray[j];
+
+					if ([key rangeOfString:splitFilter options:NSCaseInsensitiveSearch].location != NSNotFound)
+					{
+						foundCount++;
+						if ([key length] > self.textLength)
+						{
+							self.textLength = [key length];
+						}
+
+						if (foundCount == stringArray.count)
+						{
+							[filtered addObject:key];
+						}
+					}
 				}
-				[filtered addObject:key];
+			}
+			else
+			{
+				// Single word filter
+				if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
+				{
+					if ([key length] > self.textLength)
+					{
+						self.textLength = [key length];
+					}
+					[filtered addObject:key];
+				}
 			}
 		}
 		self.filteredOrderedKeys = filtered;
