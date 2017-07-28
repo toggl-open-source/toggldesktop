@@ -113,10 +113,6 @@ Context::Context(const std::string app_name, const std::string app_version)
         reminder_.start();
     }
 
-    if (!syncer_.isRunning()) {
-        syncer_.start();
-    }
-
     last_tracking_reminder_time_ = time(0);
     pomodoro_break_entry_ = nullptr;
 }
@@ -162,20 +158,37 @@ Context::~Context() {
 }
 
 void Context::stopActivities() {
-    {
-        Poco::Mutex::ScopedLock lock(reminder_m_);
-        if (reminder_.isRunning()) {
-            reminder_.stop();
-            reminder_.wait();
+    try {
+        {
+            Poco::Mutex::ScopedLock lock(reminder_m_);
+            if (reminder_.isRunning()) {
+                reminder_.stop();
+                reminder_.wait(5);
+            }
         }
-    }
 
-    {
-        Poco::Mutex::ScopedLock lock(ui_updater_m_);
-        if (ui_updater_.isRunning()) {
-            ui_updater_.stop();
-            ui_updater_.wait();
+        {
+            Poco::Mutex::ScopedLock lock(ui_updater_m_);
+            if (ui_updater_.isRunning()) {
+                ui_updater_.stop();
+                ui_updater_.wait(5);
+            }
         }
+
+
+        {
+            Poco::Mutex::ScopedLock lock(syncer_m_);
+            if (syncer_.isRunning()) {
+                syncer_.stop();
+                syncer_.wait(5);
+            }
+        }
+    } catch(const Poco::Exception& exc) {
+        logger().debug(exc.displayText());
+    } catch(const std::exception& ex) {
+        logger().debug(ex.what());
+    } catch(const std::string& ex) {
+        logger().debug(ex);
     }
 
     {
@@ -194,14 +207,6 @@ void Context::stopActivities() {
         Poco::Mutex::ScopedLock lock(timeline_uploader_m_);
         if (timeline_uploader_) {
             timeline_uploader_->Shutdown();
-        }
-    }
-
-    {
-        Poco::Mutex::ScopedLock lock(syncer_m_);
-        if (syncer_.isRunning()) {
-            syncer_.stop();
-            syncer_.wait();
         }
     }
 
@@ -1039,6 +1044,9 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
     } else {
         // Sync asyncronously with syncerActivity if there is a lot of unsynced data
         had_something_to_push_ = true;
+        if (!syncer_.isRunning()) {
+            syncer_.start();
+        }
     }
 
     // Push cached OBM action
@@ -1073,8 +1081,6 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onPushChanges executing");
     error err;
     if(user_->related.NumberOfUnsyncedTimeEntries() < 10) {
-
-
         TogglClient client(UI());
         bool something_to_push(true);
         err = pushChanges(&client, &something_to_push);
@@ -2295,10 +2301,6 @@ void Context::setUser(User *value, const bool logged_in) {
 
     if (!reminder_.isRunning()) {
         reminder_.start();
-    }
-
-    if (!syncer_.isRunning()) {
-        syncer_.start();
     }
 
     // Offer beta channel, if not offered yet
@@ -4242,6 +4244,23 @@ void Context::syncerActivity() {
                     setOnline("Data pushed");
                 }
                 displayError(save(false));
+
+                // Stop Activity when we are done syncing
+                try {
+                    {
+                        Poco::Mutex::ScopedLock lock(syncer_m_);
+                        if (syncer_.isRunning()) {
+                            syncer_.stop();
+                            syncer_.wait(5);
+                        }
+                    }
+                } catch(const Poco::Exception& exc) {
+                    logger().debug(exc.displayText());
+                } catch(const std::exception& ex) {
+                    logger().debug(ex.what());
+                } catch(const std::string& ex) {
+                    logger().debug(ex);
+                }
             }
         }
     }
