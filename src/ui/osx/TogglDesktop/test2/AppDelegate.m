@@ -1508,6 +1508,11 @@ void on_reminder(const char *title, const char *informative_text)
 
 	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 	[center scheduleNotification:notification];
+
+	// Remove reminder after 45 seconds
+	[center performSelector:@selector(removeDeliveredNotification:)
+				 withObject:notification
+				 afterDelay:45];
 }
 
 void on_pomodoro(const char *title, const char *informative_text)
