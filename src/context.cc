@@ -219,7 +219,7 @@ void Context::Shutdown() {
     // cancel tasks but allow them finish
     {
         Poco::Mutex::ScopedLock lock(timer_m_);
-        timer_.cancel(true);
+        timer_.cancel(false);
     }
 
     // Stops all running threads and waits for their completion.
