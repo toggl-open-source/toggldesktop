@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.4.58",
+            "rows": [
+                "Fixed list scrolling issue when continuing items",
+                "Upgraded autocomplete filtering to work with multi phrase search",
+                "Fixed issue with app freezing on quit",
+                "Fixed issue with multiple tracking reminder popups visible at once"
+            ],
+            "date": "August 10th 2017",
+            "beta": "true"
+        },
+        {
             "version": "7.4.52",
             "rows": [
                 "Fixes for syncing issues that caused user inputs to be overwritten"
