@@ -16,8 +16,7 @@
             "rows": [
                 "Fixes for syncing issues that caused user inputs to be overwritten"
             ],
-            "date": "June 21st 2017",
-            "beta": "true"
+            "date": "June 21st 2017"
         },
         {
             "version": "7.4.47",
@@ -25,8 +24,7 @@
                 "Fixed syncing issues that caused user inputs to be discarded",
                 "Fixed issue with not being able to remove all tags from entry"
             ],
-            "date": "June 14th 2017",
-            "beta": "true"
+            "date": "June 14th 2017"
         },
         {
             "version": "7.4.38",
