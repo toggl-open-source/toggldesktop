@@ -434,7 +434,7 @@ namespace TogglDesktop
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
-            this.shutdown(0);
+            this.MinimizeToTray();
         }
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
