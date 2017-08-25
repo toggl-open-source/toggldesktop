@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TogglDesktop.AutoCompletion.Implementation;
@@ -33,6 +34,14 @@ namespace TogglDesktop.AutoCompleteControls
             this.MouseEnter += (sender, args) => this.updateBackgroundColor();
             this.MouseLeave += (sender, args) => this.updateBackgroundColor();
             this.MouseDown += (sender, args) => this.mouseDown();
+            this.PreviewMouseDown += (sender, args) => this.previewMouseDown(sender, args);
+        }
+
+        // Prevent mouse click triggerning entry edit under the autocomplete dropdown
+        private void previewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            this.mouseDown();
         }
 
         private void mouseDown()

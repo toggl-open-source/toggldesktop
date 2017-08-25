@@ -288,22 +288,22 @@ namespace TogglDesktop
 
         #region open edit window event handlers
 
-        private void labelDuration_MouseUp(object sender, MouseButtonEventArgs e)
+        private void labelDuration_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Duration);
         }
 
-        private void labelDescription_MouseUp(object sender, MouseButtonEventArgs e)
+        private void labelDescription_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Description);
         }
 
-        private void labelProject_MouseUp(object sender, MouseButtonEventArgs e)
+        private void labelProject_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, Toggl.Project);
         }
 
-        private void entry_MouseUp(object sender, MouseButtonEventArgs e)
+        private void entry_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.openEditView(e, "");
         }
