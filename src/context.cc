@@ -1078,6 +1078,11 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         logger().debug("onPushChanges postponed");
         return;
     }
+
+    if (!user_) {
+        logger().debug("onPushChanges cancelled, user not logged in");
+        return;
+    }
     logger().debug("onPushChanges executing");
     error err;
     if(user_->related.NumberOfUnsyncedTimeEntries() < 10) {
