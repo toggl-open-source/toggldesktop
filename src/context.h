@@ -96,6 +96,7 @@ class Context : public TimelineDatasource {
     // Close connections and wait for tasks to finish
     void Shutdown();
 
+    void FullSync();
     void Sync();
     void TimelineUpdateServerSettings();
     error SendFeedback(Feedback);
