@@ -612,7 +612,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
 
     // Handle missing workspace issue
 
-    if (!root["data"].isMember("workspaces") || root["data"]["workspaces"].size() == 1) {
+    if (!root["data"].isMember("workspaces") || root["data"]["workspaces"].size() == 0) {
         return error("You no longer have access to your last workspace"); // NOLINT
     }
 
