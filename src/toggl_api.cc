@@ -912,6 +912,12 @@ void toggl_on_error(
     app(context)->UI()->OnDisplayError(cb);
 }
 
+void toggl_on_ws_error(
+    void *context,
+    TogglDisplayWSError cb) {
+    app(context)->UI()->OnDisplayWSError(cb);
+}
+
 void toggl_on_online_state(
     void *context,
     TogglDisplayOnlineState cb) {

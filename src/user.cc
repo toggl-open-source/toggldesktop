@@ -610,6 +610,12 @@ error User::LoadUserAndRelatedDataFromJSONString(
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
+    // Handle missing workspace issue
+
+    if (!root["data"].isMember("workspaces") || root["data"]["workspaces"].size() == 1) {
+        return error("You no longer have access to your last workspace"); // NOLINT
+    }
+
     SetSince(root["since"].asUInt64());
 
     Poco::Logger &logger = Poco::Logger::get("json");

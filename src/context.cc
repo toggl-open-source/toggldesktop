@@ -82,7 +82,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
 , syncer_(this, &Context::syncerActivity)
-, update_path_("") {
+, update_path_("")
+, ws_missing_(false) {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -953,6 +954,14 @@ error Context::displayError(const error err) {
     if (err.find(kUnsupportedAppError) != std::string::npos) {
         urls::SetImATeapot(true);
     }
+
+    // Check for missing WS error and
+    if (err.find(kMissingWS) != std::string::npos) {
+        ws_missing_ = true;
+        UI()->DisplayWSError();
+        return noError;
+    }
+
     return UI()->DisplayError(err);
 }
 
@@ -1024,6 +1033,7 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
+    ws_missing_ = false;
     last_sync_started_ = time(0);
 
     TogglClient client(UI());
@@ -2453,6 +2463,11 @@ TimeEntry *Context::Start(
         return nullptr;
     }
 
+    // Discard Start if WS missing error is present
+    if (ws_missing_) {
+        return nullptr;
+    }
+
     TimeEntry *te = nullptr;
 
     {
@@ -2570,6 +2585,11 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
         return nullptr;
     }
 
+    // Discard Start if WS missing error is present
+    if (ws_missing_) {
+        return nullptr;
+    }
+
     TimeEntry *result = nullptr;
 
     {
@@ -2631,6 +2651,11 @@ TimeEntry *Context::Continue(
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
         displayError(kUnsupportedAppError);
+        return nullptr;
+    }
+
+    // Discard Start if WS missing error is present
+    if (ws_missing_) {
         return nullptr;
     }
 
@@ -4440,7 +4465,11 @@ error Context::pullAllUserData(
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
-            user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
+            error err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
+
+            if (err != noError) {
+                return err;
+            }
 
             TimeEntry *new_running_entry = user_->RunningTimeEntry();
 

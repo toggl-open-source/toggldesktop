@@ -358,6 +358,7 @@ class GUI : public SyncStateMonitor {
     void DisplayApp();
 
     error DisplayError(const error);
+    error DisplayWSError();
 
     void DisplayHelpArticles(
         const std::vector<HelpArticle> articles);
@@ -461,6 +462,10 @@ class GUI : public SyncStateMonitor {
 
     void OnDisplayError(TogglDisplayError cb) {
         on_display_error_ = cb;
+    }
+
+    void OnDisplayWSError(TogglDisplayWSError cb) {
+        on_display_ws_error_ = cb;
     }
 
     void OnDisplayOnlineState(TogglDisplayOnlineState cb) {
@@ -592,6 +597,7 @@ class GUI : public SyncStateMonitor {
 
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;
+    TogglDisplayWSError on_display_ws_error_;
     TogglDisplayOnlineState on_display_online_state_;
     TogglDisplayLogin on_display_login_;
     TogglDisplayURL on_display_url_;
