@@ -269,11 +269,8 @@ error Context::StartEvents() {
         }
         setUser(user);
 
-        // Set since param to 9 days ago to force full sync on app start
-        Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(time(0))
-                             - (9 * Poco::Timespan::DAYS);
-        Poco::UInt64 min = ts.epochTime();
-        user->SetSince(min);
+        // Set since param to 0 to force full sync on app start
+        user->SetSince(0);
         logger().debug("fullSyncOnAppStart");
 
         updateUI(UIElements::Reset());
