@@ -833,6 +833,9 @@ extern "C" {
     TOGGL_EXPORT void toggl_sync(
         void *context);
 
+    TOGGL_EXPORT void toggl_fullsync(
+        void *context);
+
     TOGGL_EXPORT bool_t toggl_timeline_toggle_recording(
         void *context,
         const bool_t record_timeline);

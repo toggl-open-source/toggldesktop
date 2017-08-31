@@ -430,6 +430,11 @@ void toggl_sync(void *context) {
     app(context)->Sync();
 }
 
+void toggl_fullsync(void *context) {
+    logger().debug("toggl_sync");
+    app(context)->FullSync();
+}
+
 bool_t toggl_add_obm_action(
     void *context,
     const uint64_t experiment_id,

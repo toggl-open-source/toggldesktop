@@ -986,6 +986,11 @@ void Context::scheduleSync() {
     Sync();
 }
 
+void Context::FullSync() {
+    user_->SetSince(0);
+    Sync();
+}
+
 void Context::Sync() {
     logger().debug("Sync");
 
