@@ -4470,7 +4470,7 @@ error Context::pullAllUserData(
             if (err != noError) {
                 return err;
             }
-
+            ws_missing_ = false;
             TimeEntry *new_running_entry = user_->RunningTimeEntry();
 
             // Reset reminder time when entry stopped by sync
