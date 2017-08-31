@@ -172,6 +172,11 @@ error GUI::DisplayError(const error err) {
     return err;
 }
 
+error GUI::DisplayWSError() {
+    on_display_ws_error_();
+    return noError;
+}
+
 error GUI::VerifyCallbacks() {
     logger().debug("VerifyCallbacks");
     error err = findMissingCallbacks();
