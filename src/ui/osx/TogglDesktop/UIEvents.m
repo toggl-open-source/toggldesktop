@@ -15,6 +15,7 @@ NSString *const kCommandContinue = @"Continue";
 
 NSString *const kDisplayApp = @"kDisplayApp";
 NSString *const kDisplayTimeEntryList = @"kDisplayTimeEntryList";
+NSString *const kDisplayMissingWSView = @"kDisplayMissingWSView";
 NSString *const kDisplayTimeEntryAutocomplete = @"kDisplayTimeEntryAutocomplete";
 NSString *const kDisplayMinitimerAutocomplete = @"kDisplayMinitimerAutocomplete";
 NSString *const kDisplayProjectAutocomplete = @"kDisplayProjectAutocomplete";
