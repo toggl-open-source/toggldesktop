@@ -53,7 +53,7 @@ DQ
                         <constraint firstAttribute="width" constant="225" id="nbx-aC-5Pr"/>
                     </constraints>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" allowsEditingTextAttributes="YES" id="qvS-Hv-mvP">
-                        <font key="font" metaFont="systemBold"/>
+                        <font key="font" metaFont="system"/>
                         <string key="title">Created your new workspace? Force sync
 </string>
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
