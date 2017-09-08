@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     feedbackdialog.cpp \
     idlenotificationdialog.cpp \
     clickablelabel.cpp \
-    colorpicker.cpp
+    colorpicker.cpp \
+    missingwswidget.cpp
 
 HEADERS  += \
     timeentryview.h \
@@ -67,7 +68,8 @@ HEADERS  += \
     feedbackdialog.h \
     idlenotificationdialog.h \
     clickablelabel.h \
-    colorpicker.h
+    colorpicker.h \
+    missingwswidget.h
 
 FORMS    += \
     mainwindowcontroller.ui \
@@ -82,7 +84,8 @@ FORMS    += \
     aboutdialog.ui \
     feedbackdialog.ui \
     idlenotificationdialog.ui \
-    colorpicker.ui
+    colorpicker.ui \
+    missingwswidget.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../lib/linux/TogglDesktopLibrary/build/release
 QMAKE_RPATHDIR += $$PWD/../../../../third_party/bugsnag-qt/build/release

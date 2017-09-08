@@ -29,6 +29,8 @@ class LoginWidget : public QWidget {
  private slots:  // NOLINT
     void on_login_clicked();
 
+    void displayWSError();
+
     void displayLogin(
         const bool open,
         const uint64_t user_id);
