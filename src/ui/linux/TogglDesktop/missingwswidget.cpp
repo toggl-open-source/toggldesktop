@@ -9,6 +9,8 @@ MissingWSWidget::MissingWSWidget(QWidget *parent) :
     ui->setupUi(this);
     setVisible(false);
 
+    ui->bottomText->setCursor(Qt::PointingHandCursor);
+
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
@@ -49,11 +51,9 @@ void MissingWSWidget::displayTimeEntryList(
 void MissingWSWidget::on_loginButton_clicked()
 {
     TogglApi::instance->openInBrowser();
-
 }
 
 void MissingWSWidget::on_bottomText_linkActivated(const QString &link)
 {
     TogglApi::instance->fullSync();
-
 }
