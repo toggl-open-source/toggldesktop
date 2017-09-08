@@ -23,6 +23,9 @@ class TimeEntryListWidget : public QWidget {
     ~TimeEntryListWidget();
 
  private slots:  // NOLINT
+
+    void displayWSError();
+
     void displayLogin(
         const bool open,
         const uint64_t user_id);
