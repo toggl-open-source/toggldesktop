@@ -57,7 +57,7 @@
     <widget class="QLabel" name="topText">
      <property name="maximumSize">
       <size>
-       <width>400</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
