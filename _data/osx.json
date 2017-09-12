@@ -8,8 +8,7 @@
                 "Fixed issue with app freezing on quit",
                 "Fixed issue with multiple tracking reminder popups visible at once"
             ],
-            "date": "August 10th 2017",
-            "beta": "true"
+            "date": "September 12th 2017"
         },
         {
             "version": "7.4.52",
