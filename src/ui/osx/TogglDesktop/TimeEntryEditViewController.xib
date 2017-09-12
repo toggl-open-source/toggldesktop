@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryEditViewController">
@@ -133,7 +135,7 @@
                                     <rect key="frame" x="1" y="1" width="344" height="79"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nJ-ND-RNO">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nJ-ND-RNO">
                                             <rect key="frame" x="0.0" y="55" width="87" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="87" id="7gC-Hn-Svg"/>
@@ -144,7 +146,7 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-WE-b3h">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-WE-b3h">
                                             <rect key="frame" x="114" y="45" width="144" height="26"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="bkz-aO-Chr">
                                                 <font key="font" metaFont="system"/>
@@ -449,10 +451,9 @@
                                                         </constraints>
                                                         <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="textField" id="GUE-OB-dMZ">
                                                             <font key="font" metaFont="system"/>
-                                                            <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                                                                <!--1982-02-12 08:00:00 -0800-->
-                                                                <timeZone key="timeZone" name="US/Pacific"/>
-                                                            </calendarDate>
+                                                            <date key="date" timeIntervalSinceReferenceDate="-595929600">
+                                                                <!--1982-02-12 16:00:00 +0000-->
+                                                            </date>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         </datePickerCell>
@@ -487,7 +488,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="346" height="110"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aj8-1w-aCw">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aj8-1w-aCw">
                                             <rect key="frame" x="11" y="82" width="101" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="97" id="M3F-TS-Re7"/>
