@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginViewController">
@@ -30,7 +32,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="250" height="417"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-rJ-O83">
+                            <textField focusRingType="none" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oP1-rJ-O83">
                                 <rect key="frame" x="15" y="241" width="218" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="FQH-VE-Gcc"/>
@@ -44,7 +46,7 @@
                                     <outlet property="nextKeyView" destination="Sok-9q-fwV" id="9ri-zq-zcl"/>
                                 </connections>
                             </textField>
-                            <textField focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sok-9q-fwV">
+                            <textField focusRingType="none" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sok-9q-fwV">
                                 <rect key="frame" x="15" y="196" width="218" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="c1m-OY-oBi"/>
@@ -68,7 +70,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="223" height="200"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickablePointer">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-yW-T0s" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="10" y="78" width="223" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="223" id="eFb-g5-Dlf"/>
@@ -109,7 +111,7 @@ DQ
                                                 <outlet property="nextKeyView" destination="3Xk-yW-T0s" id="i3c-UK-kwT"/>
                                             </connections>
                                         </button>
-                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eG-O6-U2n">
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eG-O6-U2n">
                                             <rect key="frame" x="39" y="33" width="145" height="17"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" focusRingType="none" alignment="center" title="or you can" id="fy5-tT-J9u">
                                                 <font key="font" metaFont="system"/>
@@ -117,7 +119,7 @@ DQ
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pac-Wf-TBM" customClass="NSTextFieldClickablePointer">
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pac-Wf-TBM" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="49" y="10" width="124" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="120" id="1Hy-Bp-ffG"/>
@@ -133,7 +135,7 @@ DQ
                                                 <outlet property="nextKeyView" destination="oP1-rJ-O83" id="6EJ-3c-MTD"/>
                                             </connections>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="0.0" y="180" width="223" height="17"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Forgot password?" id="sue-36-IQg">
                                                 <font key="font" metaFont="cellTitle"/>
@@ -191,7 +193,7 @@ DQ
                                                 <outlet property="nextKeyView" destination="oP1-rJ-O83" id="vME-1x-bai"/>
                                             </connections>
                                         </button>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sef-d6-OO0" customClass="NSTextFieldClickablePointer">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sef-d6-OO0" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="71" y="6" width="81" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="HwR-my-4BL"/>
