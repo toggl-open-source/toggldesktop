@@ -1078,6 +1078,11 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         logger().debug("onPushChanges postponed");
         return;
     }
+
+    if (!user_) {
+        logger().debug("onPushChanges cancelled, user not logged in");
+        return;
+    }
     logger().debug("onPushChanges executing");
     error err;
     if(user_->related.NumberOfUnsyncedTimeEntries() < 10) {
@@ -3947,6 +3952,8 @@ void Context::displayPomodoro() {
         return;
     }
 
+    Poco::UInt64 wid(0);
+
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
@@ -3974,6 +3981,8 @@ void Context::displayPomodoro() {
                 return;
             }
         }
+
+        wid = current_te->WID();
     }
     Stop(true);
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
@@ -3986,6 +3995,9 @@ void Context::displayPomodoro() {
                                              0,  // project_id
                                              "",  // project_guid
                                              "pomodoro-break");  // tags
+
+        // Set workspace id to same as the previous entry
+        pomodoro_break_entry_->SetWID(wid);
     }
 }
 
