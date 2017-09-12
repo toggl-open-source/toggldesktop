@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
@@ -65,7 +67,7 @@ DQ
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
-                            <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
+                            <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
                                 <rect key="frame" x="4" y="29" width="215" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="WR0-PJ-917"/>
@@ -92,7 +94,7 @@ DQ
                                 </constraints>
                                 <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="4" y="29" width="142" height="8"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="6EN-7v-jSX"/>
@@ -156,7 +158,7 @@ DQ
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
+                            <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
                                 <rect key="frame" x="132" y="24" width="75" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="x2K-5w-zfF"/>
@@ -172,7 +174,7 @@ DQ
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>
                             </textField>
-                            <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" preferredMaxLayoutWidth="196" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr" customClass="NSTextFieldClickable">
+                            <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="196" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="3" y="19" width="200" height="11"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="wqt-c9-CBt"/>
@@ -223,7 +225,7 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Pm5-UM-PRp" customClass="NSTextFieldClickable">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Pm5-UM-PRp" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="57" y="24" width="142" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="jI3-Oy-ic9"/>
