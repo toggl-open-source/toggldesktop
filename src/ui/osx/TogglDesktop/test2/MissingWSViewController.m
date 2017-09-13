@@ -19,7 +19,26 @@ extern void *ctx;
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	// Do view setup here.
+	// Setup up text underline for "Force sync" link
+
+	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+
+	paragrapStyle.alignment                = kCTTextAlignmentCenter;
+
+
+	NSMutableAttributedString *string =
+		[[NSMutableAttributedString alloc] initWithString:self.syncLink.stringValue];
+
+
+	NSMutableAttributedString *sync =
+		[[NSMutableAttributedString alloc] initWithString:@"Force sync"];
+
+	[sync addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, sync.length)];
+
+	[string appendAttributedString:sync];
+	[string addAttribute:NSParagraphStyleAttributeName value:paragrapStyle range:NSMakeRange(0, string.length)];
+
+	[self.syncLink setAttributedStringValue:string];
 }
 
 - (IBAction)loginClicked:(id)sender
