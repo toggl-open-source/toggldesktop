@@ -7,8 +7,8 @@
              mc:Ignorable="d"  
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Background="{StaticResource ViewBackgroundLight}">
-        <TextBlock
-                           Margin="20,40,20,0" Height="113" VerticalAlignment="Center"><Run Text="You no longer have access to"/><LineBreak/><Run Text="your last Workspace."/><LineBreak/><Run Text="Create a new workspace on Toggl.com to"/><LineBreak/><Run Text="continue tracking"/></TextBlock>
+        <TextBlock TextWrapping="Wrap"
+                           Margin="20,40,20,0" Height="113" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"><Run Text="You no longer have access to"/><Run Text=" "/><Run Text="your last Workspace."/><Run Text=" "/><Run Text="Create a new workspace on Toggl.com to"/><Run Text=" "/><Run Text="continue tracking"/></TextBlock>
         <Button
                     Style="{StaticResource RaisedButton}"
                     Margin="0 10" HorizontalAlignment="Center"
@@ -31,7 +31,7 @@
             </Grid>
         </Button>
         <TextBlock
-                           Margin="20,40,20,0" MouseDown="TextBlock_MouseDown"><Run Text="Created your new workspace? "/><Run Text="Force sync" TextDecorations="Underline"/></TextBlock>
+                           Margin="20,40,20,0" MouseDown="TextBlock_MouseDown" TextAlignment="Center"><Run Text="Created your new workspace?"/><LineBreak/><Run/><Run Text="Force sync" TextDecorations="Underline"/></TextBlock>
 
     </StackPanel>
 </UserControl>
