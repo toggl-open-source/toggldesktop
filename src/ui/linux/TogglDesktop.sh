@@ -14,6 +14,7 @@ export LD_LIBRARY_PATH
 XDG=$XDG_CURRENT_DESKTOP
 
 if [[ "$XDG" = "X-Cinnamon" || "$XDG" = "XFCE" || "$XDG" = "Pantheon" || "$XDG" = "i3" || "$XDG" = "LXDE" || "$XDG" = "MATE" ]]; then
+  DBUS_SESSION_BUS_ADDRESS=""
   dbus-launch $dirname/$appname "$@" &
 else
   $dirname/$appname "$@" &
