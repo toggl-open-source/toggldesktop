@@ -81,6 +81,8 @@ Below are some distribution specific package requirements:
 * qtcreator
 * libxss-dev
 * libqt5webkit5-dev
+* libqt5x11extras5-dev
+* qtbase5-private-dev
 
 ## Fedora
 
