@@ -431,7 +431,7 @@ void toggl_sync(void *context) {
 }
 
 void toggl_fullsync(void *context) {
-    logger().debug("toggl_sync");
+    logger().debug("toggl_fullsync");
     app(context)->FullSync();
 }
 
