@@ -9,6 +9,7 @@
 #import "MainWindowController.h"
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
+#import "MissingWSViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "MenuItemTags.h"
@@ -18,9 +19,9 @@
 @interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
+@property (nonatomic, strong) IBOutlet MissingWSViewController *missingWSViewController;
 @property NSLayoutConstraint *contentViewTop;
 @property NSLayoutConstraint *contentViewBottom;
-
 @end
 
 @implementation MainWindowController
@@ -36,10 +37,13 @@ extern void *ctx;
 									initWithNibName:@"LoginViewController" bundle:nil];
 		self.timeEntryListViewController = [[TimeEntryListViewController alloc]
 											initWithNibName:@"TimeEntryListViewController" bundle:nil];
+		self.missingWSViewController = [[MissingWSViewController alloc]
+										initWithNibName:@"MissingWSViewController" bundle:nil];
 
 
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+		[self.missingWSViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayLogin:)
@@ -48,6 +52,10 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
 													 name:kDisplayTimeEntryList
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayMissingWSView:)
+													 name:kDisplayMissingWSView
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayError:)
@@ -113,6 +121,7 @@ extern void *ctx;
 		[self.loginViewController.email becomeFirstResponder];
 
 		[self.timeEntryListViewController.view removeFromSuperview];
+		[self.missingWSViewController.view removeFromSuperview];
 	}
 }
 
@@ -138,7 +147,26 @@ extern void *ctx;
 		[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
 		[self.loginViewController.view removeFromSuperview];
+		[self.missingWSViewController.view removeFromSuperview];
 	}
+}
+
+- (void)startDisplayMissingWSView:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(displayMissingWSView:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)displayMissingWSView:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	[self.contentView addSubview:self.missingWSViewController.view];
+	[self.missingWSViewController.view setFrame:self.contentView.bounds];
+
+	[self.loginViewController.view removeFromSuperview];
+	[self.timeEntryListViewController.view removeFromSuperview];
 }
 
 - (void)startDisplayError:(NSNotification *)notification

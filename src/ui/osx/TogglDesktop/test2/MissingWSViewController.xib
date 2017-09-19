@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MissingWSViewController">
+            <connections>
+                <outlet property="loginButton" destination="iQo-bT-Stg" id="TPA-gk-uV8"/>
+                <outlet property="syncLink" destination="TLa-uM-3fx" id="zZL-iz-ewy"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="252" height="459"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSA-bR-Avx">
+                    <rect key="frame" x="11" y="308" width="229" height="72"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="225" id="lPk-hV-sfD"/>
+                    </constraints>
+                    <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="justified" title="You no longer have access to your last Workspace. Create a new workspace on Toggl.com to continue tracking" id="yoZ-Fm-Q9v">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iQo-bT-Stg">
+                    <rect key="frame" x="31" y="208" width="189" height="42"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="185" id="EzF-pq-qMV"/>
+                        <constraint firstAttribute="height" constant="37" id="bp4-Os-3rU"/>
+                    </constraints>
+                    <buttonCell key="cell" type="bevel" title="Log in to Toggl.com" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HG2-Ic-fiP">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="loginClicked:" target="-2" id="rrn-QV-UOy"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TLa-uM-3fx" customClass="NSTextFieldClickablePointer">
+                    <rect key="frame" x="12" y="117" width="229" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="225" id="nbx-aC-5Pr"/>
+                    </constraints>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" allowsEditingTextAttributes="YES" id="qvS-Hv-mvP">
+                        <font key="font" metaFont="system"/>
+                        <string key="title">Created your new workspace? 
+</string>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <outlet property="delegate" destination="-2" id="zzZ-uy-jKZ"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="dSA-bR-Avx" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="2eI-wd-J9d"/>
+                <constraint firstItem="iQo-bT-Stg" firstAttribute="top" secondItem="dSA-bR-Avx" secondAttribute="bottom" constant="60" id="3La-OU-987"/>
+                <constraint firstItem="iQo-bT-Stg" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="Z7L-D6-vsH"/>
+                <constraint firstItem="iQo-bT-Stg" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="cfA-K1-yfO"/>
+                <constraint firstItem="TLa-uM-3fx" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="gS9-bp-FeC"/>
+                <constraint firstItem="TLa-uM-3fx" firstAttribute="top" secondItem="iQo-bT-Stg" secondAttribute="bottom" constant="60" id="nhy-gn-hI5"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="167.5"/>
+        </customView>
+    </objects>
+</document>

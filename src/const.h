@@ -67,6 +67,7 @@
 #define kProjectNameAlreadyExists "Project name already exists"
 #define kClientNameAlreadyExists "Client name already exists"
 #define kDatabaseDiskMalformed "The database disk image is malformed"
+#define kMissingWS "You no longer have access to your last workspace"
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"

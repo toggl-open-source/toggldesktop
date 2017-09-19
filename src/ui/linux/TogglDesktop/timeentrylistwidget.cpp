@@ -22,11 +22,18 @@ ui(new Ui::TimeEntryListWidget) {
     connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),  // NOLINT
             this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayWSError()),  // NOLINT
+            this, SLOT(displayWSError()));  // NOLINT
+
     ui->blankView->setVisible(false);
 }
 
 TimeEntryListWidget::~TimeEntryListWidget() {
     delete ui;
+}
+
+void TimeEntryListWidget::displayWSError() {
+    setVisible(false);
 }
 
 void TimeEntryListWidget::displayLogin(

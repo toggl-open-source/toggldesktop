@@ -17,6 +17,7 @@ extern NSString *const kCommandContinue;
 // Display events, UI <- backend
 extern NSString *const kDisplayApp;
 extern NSString *const kDisplayTimeEntryList;
+extern NSString *const kDisplayMissingWSView;
 extern NSString *const kDisplayTimeEntryAutocomplete;
 extern NSString *const kDisplayMinitimerAutocomplete;
 extern NSString *const kDisplayProjectAutocomplete;
