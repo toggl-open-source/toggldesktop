@@ -69,6 +69,8 @@ public static partial class Toggl
     public delegate void DisplayApp(
         bool open);
 
+    public delegate void DisplayWSError();
+
     public delegate void DisplayError(
         string errmsg,
         bool user_error);
@@ -535,10 +537,15 @@ public static partial class Toggl
         return toggl_get_user_email(ctx);
     }
 
+    public static void FullSync()
+    {
+        toggl_fullsync(ctx);
+    }
+
     public static void Sync()
     {
         OnManualSync();
-        toggl_sync(ctx);
+        toggl_fullsync(ctx);
     }
 
     public static void SetSleep()
@@ -655,6 +662,7 @@ public static partial class Toggl
     #region callback events
 
     public static event DisplayApp OnApp = delegate { };
+    public static event DisplayWSError OnWSError = delegate { };
     public static event DisplayError OnError = delegate { };
     public static event DisplayOnlineState OnOnlineState = delegate { };
     public static event DisplayLogin OnLogin = delegate { };
@@ -690,6 +698,14 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnApp"))
             {
                 OnApp(open);
+            }
+        });
+
+        toggl_on_ws_error(ctx, () =>
+        {
+            using (Performance.Measure("Calling OnWSError"))
+            {
+                OnWSError();
             }
         });
 

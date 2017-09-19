@@ -69,6 +69,8 @@ class TogglApi : public QObject {
 
     void openInBrowser();
 
+    void fullSync();
+
     void sync();
 
     bool clearCache();
@@ -201,6 +203,8 @@ class TogglApi : public QObject {
         const QString errmsg,
         const bool user_error);
 
+    void displayWSError();
+
     void displayUpdate(
         const QString url);
 
@@ -289,6 +293,7 @@ void on_display_app(const bool_t open);
 void on_display_error(
     const char *errmsg,
     const bool_t user_error);
+void on_display_ws_error();
 void on_display_update(
     const char *url);
 void on_display_online_state(

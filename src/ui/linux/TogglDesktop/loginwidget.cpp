@@ -20,6 +20,9 @@ oauth2(new OAuth2(this)) {
     connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayWSError()),  // NOLINT
+            this, SLOT(displayWSError()));  // NOLINT
+
     oauth2->setScope("profile email");
     oauth2->setAppName("Toggl Desktop");
     oauth2->setClientID("426090949585.apps.googleusercontent.com");
@@ -40,6 +43,10 @@ void LoginWidget::keyPressEvent(QKeyEvent* event) {
 
 void LoginWidget::mousePressEvent(QMouseEvent* event) {
     setFocus();
+}
+
+void LoginWidget::displayWSError() {
+    setVisible(false);
 }
 
 void LoginWidget::displayLogin(

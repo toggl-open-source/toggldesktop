@@ -96,6 +96,7 @@ class Context : public TimelineDatasource {
     // Close connections and wait for tasks to finish
     void Shutdown();
 
+    void FullSync();
     void Sync();
     void TimelineUpdateServerSettings();
     error SendFeedback(Feedback);
@@ -661,6 +662,8 @@ class Context : public TimelineDatasource {
 
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;
+
+    bool ws_missing_;
 };
 
 void on_websocket_message(

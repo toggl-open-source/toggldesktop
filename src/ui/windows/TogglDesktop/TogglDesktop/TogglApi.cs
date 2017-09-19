@@ -318,6 +318,9 @@ public static partial class Toggl
         Int64 count);
 
     [UnmanagedFunctionPointer(convention)]
+    private delegate void TogglDisplayWSError();
+
+    [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayError(
         [MarshalAs(UnmanagedType.LPWStr)]
         string errmsg,
@@ -554,6 +557,11 @@ public static partial class Toggl
     private static extern void toggl_on_unsynced_items(
         IntPtr context,
         TogglDisplayUnsyncedItems cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_ws_error(
+        IntPtr context,
+        TogglDisplayWSError cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_error(
@@ -1255,6 +1263,10 @@ public static partial class Toggl
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern string toggl_get_user_email(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_fullsync(
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

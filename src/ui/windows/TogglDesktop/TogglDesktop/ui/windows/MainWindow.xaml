@@ -127,7 +127,9 @@
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
 
         <Grid Name="tutorialPanel" x:FieldModifier="private" />
-        
+
+        <toggl:MissingWSView x:Name="missingWSView" x:FieldModifier="private"/>
+
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
 
         <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"

@@ -430,6 +430,11 @@ void toggl_sync(void *context) {
     app(context)->Sync();
 }
 
+void toggl_fullsync(void *context) {
+    logger().debug("toggl_fullsync");
+    app(context)->FullSync();
+}
+
 bool_t toggl_add_obm_action(
     void *context,
     const uint64_t experiment_id,
@@ -905,6 +910,12 @@ void toggl_on_error(
     void *context,
     TogglDisplayError cb) {
     app(context)->UI()->OnDisplayError(cb);
+}
+
+void toggl_on_ws_error(
+    void *context,
+    TogglDisplayWSError cb) {
+    app(context)->UI()->OnDisplayWSError(cb);
 }
 
 void toggl_on_online_state(

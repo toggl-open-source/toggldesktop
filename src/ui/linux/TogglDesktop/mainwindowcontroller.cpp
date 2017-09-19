@@ -21,6 +21,7 @@
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
+#include "./missingwswidget.h"
 #include "./loginwidget.h"
 #include "./timeentrylistwidget.h"
 #include "./timeentryeditorwidget.h"
@@ -61,6 +62,7 @@ MainWindowController::MainWindowController(
 
     QVBoxLayout *verticalLayout = new QVBoxLayout();
     verticalLayout->addWidget(new ErrorViewController());
+    verticalLayout->addWidget(new MissingWSWidget());
     verticalLayout->addWidget(new LoginWidget());
     verticalLayout->addWidget(new TimeEntryListWidget());
     verticalLayout->addWidget(new TimeEntryEditorWidget());
@@ -84,7 +86,6 @@ MainWindowController::MainWindowController(
 
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
-
     connect(TogglApi::instance, SIGNAL(displayPomodoro(QString,QString)),  // NOLINT
             this, SLOT(displayPomodoro(QString,QString)));  // NOLINT
 
@@ -102,7 +103,6 @@ MainWindowController::MainWindowController(
 
     connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
             this, SLOT(updateContinueStopShortcut()));  // NOLINT
-
 
     hasTrayIconCached = hasTrayIcon();
     if (hasTrayIconCached) {

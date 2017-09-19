@@ -194,6 +194,8 @@ extern "C" {
         const char_t *errmsg,
         const bool_t user_error);
 
+    typedef void (*TogglDisplayWSError)();
+
     typedef void (*TogglDisplayOnlineState)(
         const int64_t state);
 
@@ -360,6 +362,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_error(
         void *context,
         TogglDisplayError cb);
+
+    TOGGL_EXPORT void toggl_on_ws_error(
+        void *context,
+        TogglDisplayWSError cb);
 
     TOGGL_EXPORT void toggl_on_update(
         void *context,
@@ -831,6 +837,9 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT void toggl_sync(
+        void *context);
+
+    TOGGL_EXPORT void toggl_fullsync(
         void *context);
 
     TOGGL_EXPORT bool_t toggl_timeline_toggle_recording(
