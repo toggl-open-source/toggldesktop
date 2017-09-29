@@ -374,7 +374,6 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             poco_req.setContentType(kContentTypeApplicationJSON);
         }
         poco_req.set("User-Agent", HTTPSClient::Config.UserAgent());
-        poco_req.setChunkedTransferEncoding(true);
 
         Poco::Net::HTTPBasicCredentials cred(
             req.basic_auth_username, req.basic_auth_password);
@@ -398,6 +397,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             if (req.method != Poco::Net::HTTPRequest::HTTP_GET){
                 poco_req.setContentLength(size);
                 poco_req.set("Content-Encoding", "gzip");
+                poco_req.setChunkedTransferEncoding(true);
             }
 
             session.sendRequest(poco_req) << pBuff << std::flush;
