@@ -64,12 +64,11 @@ If qmake is not on your PATH, set this first, before running make:
 export QMAKE=/usr/bin/qmake-qt5
 ```
 
-You also need libreadline-dev to build.
-
 Below are some distribution specific package requirements:
 
 ## Debian
 
+* libreadline-dev
 * qt5-default
 * libxss-dev
 * libqt5x11extras5-dev
@@ -77,6 +76,7 @@ Below are some distribution specific package requirements:
 
 ## Ubuntu
 
+* libreadline-dev
 * xorg-dev
 * qtcreator
 * libxss-dev
@@ -86,6 +86,7 @@ Below are some distribution specific package requirements:
 
 ## Fedora
 
+* readline-devel
 * qt5-qtwebkit-devel
 * libXScrnSaver-devel
 * qt5-qtsvg
