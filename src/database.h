@@ -252,6 +252,8 @@ class Database {
 
     error Trim(const std::string text, std::string *result);
 
+    error ResetWindow();
+
  private:
     error vacuum();
 
