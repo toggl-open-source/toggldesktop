@@ -394,7 +394,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                 pBuff->pubseekoff(0, std::ios::end, std::ios::in);
             pBuff->pubseekpos(0, std::ios::in);
 
-            if (req.method != Poco::Net::HTTPRequest::HTTP_GET){
+            if (req.method != Poco::Net::HTTPRequest::HTTP_GET) {
                 poco_req.setContentLength(size);
                 poco_req.set("Content-Encoding", "gzip");
                 poco_req.setChunkedTransferEncoding(true);
