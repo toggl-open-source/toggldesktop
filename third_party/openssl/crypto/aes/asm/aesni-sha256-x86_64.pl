@@ -59,7 +59,7 @@ if (!$avx && $win64 && ($flavour =~ /masm/ || $ENV{ASM} =~ /ml64/) &&
 	$avx = ($1>=10) + ($1>=12);
 }
 
-if (!$avx && `$ENV{CC} -v 2>&1` =~ /((?:^clang|LLVM) version|based on LLVM) ([3-9]\.[0-9]+)/) {
+if (!$avx && `$ENV{CC} -v 2>&1` =~ /((?:^clang|LLVM) version|.*based on LLVM) ([3-9]\.[0-9]+)/) {
 	$avx = ($2>=3.0) + ($2>3.0);
 }
 
@@ -1299,6 +1299,7 @@ $code.=<<___;
 	mov		240($key),$rounds
 	sub		$in0,$out
 	movups		($key),$rndkey0		# $key[0]
+	movups		($ivp),$iv		# load IV
 	movups		16($key),$rndkey[0]	# forward reference
 	lea		112($key),$key		# size optimization
 

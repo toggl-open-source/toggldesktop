@@ -66,6 +66,7 @@ EXE_EXT=
 ARFLAGS=
 AR=ar $(ARFLAGS) r
 RANLIB= ranlib
+RC= windres
 NM= nm
 PERL= perl
 TAR= tar
@@ -180,8 +181,7 @@ SHARED_LDFLAGS=
 GENERAL=        Makefile
 BASENAME=       openssl
 NAME=           $(BASENAME)-$(VERSION)
-TARFILE=        $(NAME).tar
-WTARFILE=       $(NAME)-win.tar
+TARFILE=        ../$(NAME).tar
 EXHEADER=       e_os2.h
 HEADER=         e_os.h
 
@@ -201,7 +201,8 @@ CLEARENV=	TOP= && unset TOP $${LIB+LIB} $${LIBS+LIBS}	\
 		$${ASFLAGS+ASFLAGS} $${AFLAGS+AFLAGS}		\
 		$${LDCMD+LDCMD} $${LDFLAGS+LDFLAGS} $${SCRIPTS+SCRIPTS}	\
 		$${SHAREDCMD+SHAREDCMD} $${SHAREDFLAGS+SHAREDFLAGS}	\
-		$${SHARED_LIB+SHARED_LIB} $${LIBEXTRAS+LIBEXTRAS}
+		$${SHARED_LIB+SHARED_LIB} $${LIBEXTRAS+LIBEXTRAS}	\
+		$${APPS+APPS}
 
 # LC_ALL=C ensures that error [and other] messages are delivered in
 # same language for uniform treatment.
@@ -209,6 +210,7 @@ BUILDENV=	LC_ALL=C PLATFORM='$(PLATFORM)' PROCESSOR='$(PROCESSOR)'\
 		CC='$(CC)' CFLAG='$(CFLAG)' 			\
 		AS='$(CC)' ASFLAG='$(CFLAG) -c'			\
 		AR='$(AR)' NM='$(NM)' RANLIB='$(RANLIB)'	\
+		RC='$(RC)'              			\
 		CROSS_COMPILE='$(CROSS_COMPILE)'	\
 		PERL='$(PERL)' ENGDIRS='$(ENGDIRS)'		\
 		SDIRS='$(SDIRS)' LIBRPATH='$(INSTALLTOP)/$(LIBDIR)'	\
@@ -367,6 +369,7 @@ libcrypto.pc: Makefile
 	    echo 'exec_prefix=$${prefix}'; \
 	    echo 'libdir=$${exec_prefix}/$(LIBDIR)'; \
 	    echo 'includedir=$${prefix}/include'; \
+	    echo 'enginesdir=$${libdir}/engines'; \
 	    echo ''; \
 	    echo 'Name: OpenSSL-libcrypto'; \
 	    echo 'Description: OpenSSL cryptography library'; \
@@ -420,6 +423,14 @@ clean:	libclean
 	do \
 	rm -fr $$i/*; \
 	done
+
+distclean: clean
+	-$(RM) `find . -name .git -prune -o -type l -print`
+	$(RM) apps/CA.pl
+	$(RM) test/evptests.txt test/newkey.pem test/testkey.pem test/testreq.pem
+	$(RM) tools/c_rehash
+	$(RM) crypto/opensslconf.h
+	$(RM) Makefile Makefile.bak
 
 makefile.one: files
 	$(PERL) util/mk1mf.pl >makefile.one; \
@@ -499,38 +510,35 @@ TABLE: Configure
 # would occur. Therefore the list of files is temporarily stored into a file
 # and read directly, requiring GNU-Tar. Call "make TAR=gtar dist" if the normal
 # tar does not support the --files-from option.
-TAR_COMMAND=$(TAR) $(TARFLAGS) --files-from ../$(TARFILE).list \
-	                       --owner openssl:0 --group openssl:0 \
-			       --transform 's|^|openssl-$(VERSION)/|' \
+TAR_COMMAND=$(TAR) $(TARFLAGS) --files-from $(TARFILE).list \
+	                       --owner 0 --group 0 \
+			       --transform 's|^|$(NAME)/|' \
 			       -cvf -
 
-../$(TARFILE).list:
+$(TARFILE).list:
 	find * \! -name STATUS \! -name TABLE \! -name '*.o' \! -name '*.a' \
 	       \! -name '*.so' \! -name '*.so.*'  \! -name 'openssl' \
-	       \! -name '*test' \! -name '.#*' \! -name '*~' \
-	    | sort > ../$(TARFILE).list
+	       \( \! -name '*test' -o -name bctest -o -name pod2mantest \) \
+	       \! -name '.#*' \! -name '*~' \! -type l \
+	    | sort > $(TARFILE).list
 
-tar: ../$(TARFILE).list
+tar: $(TARFILE).list
 	find . -type d -print | xargs chmod 755
 	find . -type f -print | xargs chmod a+r
 	find . -type f -perm -0100 -print | xargs chmod a+x
-	$(TAR_COMMAND) | gzip --best >../$(TARFILE).gz
-	rm -f ../$(TARFILE).list
-	ls -l ../$(TARFILE).gz
+	$(TAR_COMMAND) | gzip --best > $(TARFILE).gz
+	rm -f $(TARFILE).list
+	ls -l $(TARFILE).gz
 
-tar-snap: ../$(TARFILE).list
-	$(TAR_COMMAND) > ../$(TARFILE)
-	rm -f ../$(TARFILE).list
-	ls -l ../$(TARFILE)
+tar-snap: $(TARFILE).list
+	$(TAR_COMMAND) > $(TARFILE)
+	rm -f $(TARFILE).list
+	ls -l $(TARFILE)
 
 dist:   
 	$(PERL) Configure dist
-	@$(MAKE) dist_pem_h
 	@$(MAKE) SDIRS='$(SDIRS)' clean
-	@$(MAKE) TAR='$(TAR)' TARFLAGS='$(TARFLAGS)' tar
-
-dist_pem_h:
-	(cd crypto/pem; $(MAKE) -e $(BUILDENV) pem.h; $(MAKE) clean)
+	@$(MAKE) TAR='$(TAR)' TARFLAGS='$(TARFLAGS)' $(DISTTARVARS) tar
 
 install: all install_docs install_sw
 
