@@ -2422,6 +2422,12 @@ error Context::ClearCache() {
     try {
         error err = noError;
 
+        err = db()->ResetWindow();
+
+        if (err != noError) {
+            return displayError(err);
+        }
+
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
