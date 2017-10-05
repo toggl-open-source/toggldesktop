@@ -60,6 +60,7 @@
 # include <openssl/sha.h>
 # include <openssl/rand.h>
 # include "modes_lcl.h"
+# include "constant_time_locl.h"
 
 # ifndef EVP_CIPH_FLAG_AEAD_CIPHER
 #  define EVP_CIPH_FLAG_AEAD_CIPHER       0x200000
@@ -578,6 +579,8 @@ static int aesni_cbc_hmac_sha1_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
             maxpad |= (255 - maxpad) >> (sizeof(maxpad) * 8 - 8);
             maxpad &= 255;
 
+            ret &= constant_time_ge(maxpad, pad);
+
             inp_len = len - (SHA_DIGEST_LENGTH + pad + 1);
             mask = (0 - ((inp_len - len) >> (sizeof(inp_len) * 8 - 1)));
             inp_len &= mask;
@@ -856,6 +859,8 @@ static int aesni_cbc_hmac_sha1_ctrl(EVP_CIPHER_CTX *ctx, int type, int arg,
                 key->payload_length = len;
                 if ((key->aux.tls_ver =
                      p[arg - 4] << 8 | p[arg - 3]) >= TLS1_1_VERSION) {
+                    if (len < AES_BLOCK_SIZE)
+                        return 0;
                     len -= AES_BLOCK_SIZE;
                     p[arg - 2] = len >> 8;
                     p[arg - 1] = len;

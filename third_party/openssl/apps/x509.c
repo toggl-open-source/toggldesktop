@@ -218,9 +218,7 @@ int MAIN(int argc, char **argv)
     char *checkhost = NULL;
     char *checkemail = NULL;
     char *checkip = NULL;
-#ifndef OPENSSL_NO_ENGINE
     char *engine = NULL;
-#endif
 
     reqfile = 0;
 
@@ -501,9 +499,7 @@ int MAIN(int argc, char **argv)
             BIO_printf(bio_err, "%s", *pp);
         goto end;
     }
-#ifndef OPENSSL_NO_ENGINE
     e = setup_engine(bio_err, engine, 0);
-#endif
 
     if (need_rand)
         app_RAND_load_file(NULL, bio_err, 0);
@@ -1040,6 +1036,7 @@ int MAIN(int argc, char **argv)
     ASN1_INTEGER_free(sno);
     sk_ASN1_OBJECT_pop_free(trust, ASN1_OBJECT_free);
     sk_ASN1_OBJECT_pop_free(reject, ASN1_OBJECT_free);
+    release_engine(e);
     if (passin)
         OPENSSL_free(passin);
     apps_shutdown();
@@ -1105,6 +1102,10 @@ static int x509_certify(X509_STORE *ctx, char *CAfile, const EVP_MD *digest,
     EVP_PKEY *upkey;
 
     upkey = X509_get_pubkey(xca);
+    if (upkey == NULL)  {
+        BIO_printf(bio_err, "Error obtaining CA X509 public key\n");
+        goto end;
+    }
     EVP_PKEY_copy_parameters(upkey, pkey);
     EVP_PKEY_free(upkey);
 
@@ -1217,6 +1218,8 @@ static int sign(X509 *x, EVP_PKEY *pkey, int days, int clrext,
     EVP_PKEY *pktmp;
 
     pktmp = X509_get_pubkey(x);
+    if (pktmp == NULL)
+        goto err;
     EVP_PKEY_copy_parameters(pktmp, pkey);
     EVP_PKEY_save_parameters(pktmp, 1);
     EVP_PKEY_free(pktmp);
@@ -1226,12 +1229,7 @@ static int sign(X509 *x, EVP_PKEY *pkey, int days, int clrext,
     if (X509_gmtime_adj(X509_get_notBefore(x), 0) == NULL)
         goto err;
 
-    /* Lets just make it 12:00am GMT, Jan 1 1970 */
-    /* memcpy(x->cert_info->validity->notBefore,"700101120000Z",13); */
-    /* 28 days to be certified */
-
-    if (X509_gmtime_adj(X509_get_notAfter(x), (long)60 * 60 * 24 * days) ==
-        NULL)
+    if (X509_time_adj_ex(X509_get_notAfter(x), days, 0, NULL) == NULL)
         goto err;
 
     if (!X509_set_pubkey(x, pkey))
