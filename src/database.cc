@@ -993,6 +993,36 @@ error Database::Trim(const std::string text, std::string *result) {
     return last_error("Trim");
 }
 
+error Database::ResetWindow() {
+    try {
+        Poco::Mutex::ScopedLock lock(session_m_);
+
+        poco_check_ptr(session_);
+
+        *session_ <<
+                  "update settings set "
+                  "window_x = 0, "
+                  "window_y = 0, "
+                  "window_height = 0, "
+                  "window_width = 0, "
+                  "window_maximized = 0, "
+                  "window_minimized = 0, "
+                  "window_edit_size_height = 0, "
+                  "window_edit_size_width = 0, "
+                  "mini_timer_x = 0, "
+                  "mini_timer_y = 0, "
+                  "mini_timer_w = 0",
+                  now;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return last_error("ResetWindow");
+}
+
 error Database::LoadUpdateChannel(
     std::string *update_channel) {
 

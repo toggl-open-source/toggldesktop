@@ -1,6 +1,6 @@
 /* ssl/ssl_err.c */
 /* ====================================================================
- * Copyright (c) 1999-2015 The OpenSSL Project.  All rights reserved.
+ * Copyright (c) 1999-2016 The OpenSSL Project.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -93,6 +93,8 @@ static ERR_STRING_DATA SSL_str_functs[] = {
     {ERR_FUNC(SSL_F_DTLS1_HEARTBEAT), "dtls1_heartbeat"},
     {ERR_FUNC(SSL_F_DTLS1_OUTPUT_CERT_CHAIN), "dtls1_output_cert_chain"},
     {ERR_FUNC(SSL_F_DTLS1_PREPROCESS_FRAGMENT), "DTLS1_PREPROCESS_FRAGMENT"},
+    {ERR_FUNC(SSL_F_DTLS1_PROCESS_BUFFERED_RECORDS),
+     "DTLS1_PROCESS_BUFFERED_RECORDS"},
     {ERR_FUNC(SSL_F_DTLS1_PROCESS_OUT_OF_SEQ_MESSAGE),
      "DTLS1_PROCESS_OUT_OF_SEQ_MESSAGE"},
     {ERR_FUNC(SSL_F_DTLS1_PROCESS_RECORD), "DTLS1_PROCESS_RECORD"},
@@ -647,6 +649,7 @@ static ERR_STRING_DATA SSL_str_reasons[] = {
     {ERR_REASON(SSL_R_SESSION_ID_CONTEXT_UNINITIALIZED),
      "session id context uninitialized"},
     {ERR_REASON(SSL_R_SHORT_READ), "short read"},
+    {ERR_REASON(SSL_R_SHUTDOWN_WHILE_IN_INIT), "shutdown while in init"},
     {ERR_REASON(SSL_R_SIGNATURE_ALGORITHMS_ERROR),
      "signature algorithms error"},
     {ERR_REASON(SSL_R_SIGNATURE_FOR_NON_SIGNING_CERTIFICATE),
@@ -750,6 +753,7 @@ static ERR_STRING_DATA SSL_str_reasons[] = {
      "tls illegal exporter label"},
     {ERR_REASON(SSL_R_TLS_INVALID_ECPOINTFORMAT_LIST),
      "tls invalid ecpointformat list"},
+    {ERR_REASON(SSL_R_TOO_MANY_WARN_ALERTS), "too many warn alerts"},
     {ERR_REASON(SSL_R_TLS_PEER_DID_NOT_RESPOND_WITH_CERTIFICATE_LIST),
      "tls peer did not respond with certificate list"},
     {ERR_REASON(SSL_R_TLS_RSA_ENCRYPTED_VALUE_LENGTH_IS_WRONG),

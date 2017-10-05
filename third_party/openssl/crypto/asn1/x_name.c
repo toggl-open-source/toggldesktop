@@ -66,6 +66,13 @@
 typedef STACK_OF(X509_NAME_ENTRY) STACK_OF_X509_NAME_ENTRY;
 DECLARE_STACK_OF(STACK_OF_X509_NAME_ENTRY)
 
+/*
+ * Maximum length of X509_NAME: much larger than anything we should
+ * ever see in practice.
+ */
+
+#define X509_NAME_MAX (1024 * 1024)
+
 static int x509_name_ex_d2i(ASN1_VALUE **val,
                             const unsigned char **in, long len,
                             const ASN1_ITEM *it,
@@ -171,6 +178,16 @@ static void x509_name_ex_free(ASN1_VALUE **pval, const ASN1_ITEM *it)
     *pval = NULL;
 }
 
+static void local_sk_X509_NAME_ENTRY_free(STACK_OF(X509_NAME_ENTRY) *ne)
+{
+    sk_X509_NAME_ENTRY_free(ne);
+}
+
+static void local_sk_X509_NAME_ENTRY_pop_free(STACK_OF(X509_NAME_ENTRY) *ne)
+{
+    sk_X509_NAME_ENTRY_pop_free(ne, X509_NAME_ENTRY_free);
+}
+
 static int x509_name_ex_d2i(ASN1_VALUE **val,
                             const unsigned char **in, long len,
                             const ASN1_ITEM *it, int tag, int aclass,
@@ -192,6 +209,8 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
     int i, j, ret;
     STACK_OF(X509_NAME_ENTRY) *entries;
     X509_NAME_ENTRY *entry;
+    if (len > X509_NAME_MAX)
+        len = X509_NAME_MAX;
     q = p;
 
     /* Get internal representation of Name */
@@ -219,13 +238,14 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
             entry->set = i;
             if (!sk_X509_NAME_ENTRY_push(nm.x->entries, entry))
                 goto err;
+            sk_X509_NAME_ENTRY_set(entries, j, NULL);
         }
-        sk_X509_NAME_ENTRY_free(entries);
     }
-    sk_STACK_OF_X509_NAME_ENTRY_free(intname.s);
     ret = x509_name_canon(nm.x);
     if (!ret)
         goto err;
+    sk_STACK_OF_X509_NAME_ENTRY_pop_free(intname.s,
+                                         local_sk_X509_NAME_ENTRY_free);
     nm.x->modified = 0;
     *val = nm.a;
     *in = p;
@@ -233,6 +253,8 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
  err:
     if (nm.x != NULL)
         X509_NAME_free(nm.x);
+    sk_STACK_OF_X509_NAME_ENTRY_pop_free(intname.s,
+                                         local_sk_X509_NAME_ENTRY_pop_free);
     ASN1err(ASN1_F_X509_NAME_EX_D2I, ERR_R_NESTED_ASN1_ERROR);
     return 0;
 }
@@ -258,16 +280,6 @@ static int x509_name_ex_i2d(ASN1_VALUE **val, unsigned char **out,
     return ret;
 }
 
-static void local_sk_X509_NAME_ENTRY_free(STACK_OF(X509_NAME_ENTRY) *ne)
-{
-    sk_X509_NAME_ENTRY_free(ne);
-}
-
-static void local_sk_X509_NAME_ENTRY_pop_free(STACK_OF(X509_NAME_ENTRY) *ne)
-{
-    sk_X509_NAME_ENTRY_pop_free(ne, X509_NAME_ENTRY_free);
-}
-
 static int x509_name_encode(X509_NAME *a)
 {
     union {
@@ -290,8 +302,10 @@ static int x509_name_encode(X509_NAME *a)
             entries = sk_X509_NAME_ENTRY_new_null();
             if (!entries)
                 goto memerr;
-            if (!sk_STACK_OF_X509_NAME_ENTRY_push(intname.s, entries))
+            if (!sk_STACK_OF_X509_NAME_ENTRY_push(intname.s, entries)) {
+                sk_X509_NAME_ENTRY_free(entries);
                 goto memerr;
+            }
             set = entry->set;
         }
         if (!sk_X509_NAME_ENTRY_push(entries, entry))
@@ -361,8 +375,10 @@ static int x509_name_canon(X509_NAME *a)
             entries = sk_X509_NAME_ENTRY_new_null();
             if (!entries)
                 goto err;
-            if (!sk_STACK_OF_X509_NAME_ENTRY_push(intname, entries))
+            if (!sk_STACK_OF_X509_NAME_ENTRY_push(intname, entries)) {
+                sk_X509_NAME_ENTRY_free(entries);
                 goto err;
+            }
             set = entry->set;
         }
         tmpentry = X509_NAME_ENTRY_new();

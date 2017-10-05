@@ -1,4 +1,4 @@
-/* apps/engine.c -*- mode: C; c-file-style: "eay" -*- */
+/* apps/engine.c */
 /*
  * Written by Richard Levitte <richard@levitte.org> for the OpenSSL project
  * 2000.
@@ -108,12 +108,15 @@ static int append_buf(char **buf, const char *s, int *size, int step)
     }
 
     if (strlen(*buf) + strlen(s) >= (unsigned int)*size) {
+        char *p = *buf;
+
         *size += step;
         *buf = OPENSSL_realloc(*buf, *size);
+        if (*buf == NULL) {
+            OPENSSL_free(p);
+            return 0;
+        }
     }
-
-    if (*buf == NULL)
-        return 0;
 
     if (**buf != '\0')
         BUF_strlcat(*buf, ", ", *size);

@@ -208,8 +208,7 @@ namespace TogglDesktop
                 return;
             }
 
-            Utils.LoadWindowLocation(this, this.editPopup, this.miniTimer);
-
+            this.loadPositions();
 
             this.GetWindow<AboutWindow>().UpdateReleaseChannel();
 
@@ -220,6 +219,11 @@ namespace TogglDesktop
             this.runScriptAsync();
 
             this.SetMiniTimerVisible(Toggl.GetMiniTimerVisible(), true);
+        }
+
+        public void loadPositions()
+        {
+            Utils.LoadWindowLocation(this, this.editPopup, this.miniTimer);
         }
 
         private async void runScriptAsync()
@@ -567,6 +571,12 @@ namespace TogglDesktop
             this.togglMiniTimerVisibilityMenuItem.IsChecked = visible;
 
             this.miniTimer.SetVisible(visible);
+
+            if (visible)
+            {
+                // Make sure minitimer is not off screen
+                Utils.checkMinitimerVisibility(this.miniTimer);
+            }
 
             if (!fromApi)
             {

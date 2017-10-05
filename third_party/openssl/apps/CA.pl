@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/local/bin/perl
 #
 # CA - wrapper around ca to make it easier to use ... basically ca requires
 #      some setup stuff to be done before you can use it and this makes
@@ -64,7 +64,7 @@ $RET = 0;
 
 foreach (@ARGV) {
 	if ( /^(-\?|-h|-help)$/ ) {
-	    print STDERR "usage: CA -newcert|-newreq|-newreq-nodes|-newca|-sign|-verify\n";
+	    print STDERR "usage: CA -newcert|-newreq|-newreq-nodes|-newca|-sign|-signcert|-verify\n";
 	    exit 0;
 	} elsif (/^-newcert$/) {
 	    # create a certificate
@@ -186,4 +186,3 @@ while (<IN>) {
 	}
 }
 }
-

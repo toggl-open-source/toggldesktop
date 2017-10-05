@@ -1,4 +1,4 @@
-/* crypto/o_dir.c -*- mode:C; c-file-style: "eay" -*- */
+/* crypto/o_dir.c */
 /*
  * Written by Richard Levitte (richard@levitte.org) for the OpenSSL project
  * 2004.
@@ -73,7 +73,8 @@
 #include "o_dir.h"
 
 #define LPDIR_H
-#if defined OPENSSL_SYS_UNIX || defined DJGPP
+#if defined OPENSSL_SYS_UNIX || defined DJGPP \
+    || (defined __VMS_VER && __VMS_VER >= 70000000)
 # include "LPdir_unix.c"
 #elif defined OPENSSL_SYS_VMS
 # include "LPdir_vms.c"
