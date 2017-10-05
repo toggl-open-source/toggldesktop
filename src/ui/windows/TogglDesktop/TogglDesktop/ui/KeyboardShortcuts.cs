@@ -234,6 +234,7 @@ namespace TogglDesktop
             if (result == MessageBoxResult.OK)
             {
                 Toggl.ClearCache();
+                mainWindow.loadPositions();
             }
         }
 

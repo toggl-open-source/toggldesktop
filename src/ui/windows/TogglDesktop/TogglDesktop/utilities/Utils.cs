@@ -60,13 +60,17 @@ public static class Utils
             miniTimer.Width = w;
             Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
 
-            if (!visibleOnAnyScreen(miniTimer))
-            {
-                var location = Screen.PrimaryScreen.WorkingArea.Location;
-                miniTimer.Left = location.X;
-                miniTimer.Top = location.Y;
-                Toggl.Debug("Force moved mini timer to primary screen");
-            }
+            checkMinitimerVisibility(miniTimer);
+        }
+    }
+
+    public static void checkMinitimerVisibility(MiniTimerWindow miniTimer) {
+        if (!visibleOnAnyScreen(miniTimer))
+        {
+            var location = Screen.PrimaryScreen.WorkingArea.Location;
+            miniTimer.Left = location.X;
+            miniTimer.Top = location.Y;
+            Toggl.Debug("Force moved mini timer to primary screen");
         }
     }
 
