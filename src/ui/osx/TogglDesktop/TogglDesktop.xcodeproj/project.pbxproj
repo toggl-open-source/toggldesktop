@@ -343,7 +343,6 @@
 		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
 		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
 		3CAFDFF41AA713830022CD40 /* icon-google.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "icon-google.pdf"; sourceTree = "<group>"; };
-		3CBF851B1B81E62C00DD3B55 /* libPocoJSON.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.31.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.31.dylib; sourceTree = "<group>"; };
 		3CBF852C1B81E72700DD3B55 /* libPocoCrypto.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.31.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.31.dylib; sourceTree = "<group>"; };
 		3CBF852D1B81E72700DD3B55 /* libPocoData.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.31.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoData.31.dylib; sourceTree = "<group>"; };
 		3CBF852E1B81E72700DD3B55 /* libPocoFoundation.31.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.31.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.31.dylib; sourceTree = "<group>"; };
@@ -580,6 +579,14 @@
 			path = ../../../../third_party/MKPopoverColorWell;
 			sourceTree = "<group>";
 		};
+		3D7BBAB21F8800E200F3C3AE /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				3CBF85331B81E72700DD3B55 /* libPocoJSON.31.dylib */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
@@ -590,7 +597,6 @@
 				3CBF85301B81E72700DD3B55 /* libPocoDataSQLite.31.dylib */,
 				3CBF85311B81E72700DD3B55 /* libPocoXML.31.dylib */,
 				3CBF85321B81E72700DD3B55 /* libPocoUtil.31.dylib */,
-				3CBF85331B81E72700DD3B55 /* libPocoJSON.31.dylib */,
 				3CBF851B1B81E62C00DD3B55 /* libPocoJSON.31.dylib */,
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
@@ -609,6 +615,7 @@
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
+				3D7BBAB21F8800E200F3C3AE /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
