@@ -193,12 +193,7 @@ DQ
                                                 <outlet property="nextKeyView" destination="oP1-rJ-O83" id="vME-1x-bai"/>
                                             </connections>
                                         </button>
-<<<<<<< HEAD
-
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sef-d6-OO0" customClass="NSTextFieldClickablePointer">
-=======
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sef-d6-OO0" customClass="NSTextFieldClickablePointer">
->>>>>>> f571ab9... Updated xib files to deployment target 10.8 (macos)
                                             <rect key="frame" x="71" y="6" width="81" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="HwR-my-4BL"/>
