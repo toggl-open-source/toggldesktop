@@ -499,7 +499,7 @@ extern void *ctx;
 
 	[self.tagsList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		 ViewItem *tag = obj;
-		 if ([[tag.Name lowercaseString] hasPrefix:[substring lowercaseString]])
+		 if ([tag.Name rangeOfString:substring options:NSCaseInsensitiveSearch].location != NSNotFound)
 		 {
 			 [filteredCompletions addObject:tag.Name];
 		 }
