@@ -71,7 +71,7 @@
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
                             <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
-                                <rect key="frame" x="90" y="12" width="24" height="24"/>
+                                <rect key="frame" x="90" y="16" width="24" height="24"/>
                                 <view key="contentView" id="CDR-O1-RXk">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
