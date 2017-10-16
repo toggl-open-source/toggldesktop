@@ -88,8 +88,7 @@ namespace TogglDesktop
 
         private void onDiscardContinueClick(object sender, RoutedEventArgs e)
         {
-            Toggl.DiscardTimeAt(this.guid, this.started, false);
-            Toggl.ContinueLatest();
+            Toggl.DiscardTimeAndContinue(this.guid, this.started, false);
             this.Hide();
         }
     }

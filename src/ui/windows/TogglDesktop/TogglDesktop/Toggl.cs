@@ -350,6 +350,11 @@ public static partial class Toggl
         return toggl_discard_time_at(ctx, guid, at, split);
     }
 
+    public static bool DiscardTimeAndContinue(string guid, UInt64 at, bool split)
+    {
+        return toggl_discard_time_and_continue(ctx, guid, at);
+    }
+
     public static bool SetSettings(TogglSettingsView settings)
     {
         if (!toggl_set_settings_use_idle_detection(ctx,
