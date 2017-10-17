@@ -1258,7 +1258,7 @@ const NSString *appName = @"osx_native_app";
 		freopen([logPath fileSystemRepresentation], "a+", stderr);
 	}
 
-    // Start time entry when user pastes text into the app
+	// Start time entry when user pastes text into the app
 	[NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:^NSEvent * (NSEvent *theEvent) {
 		 if ([theEvent modifierFlags] & NSCommandKeyMask)
 		 {

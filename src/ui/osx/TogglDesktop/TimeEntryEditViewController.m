@@ -505,6 +505,8 @@ extern void *ctx;
 		 }
 	 }];
 
+	*selectedIndex = -1;
+
 	return filteredCompletions;
 }
 
