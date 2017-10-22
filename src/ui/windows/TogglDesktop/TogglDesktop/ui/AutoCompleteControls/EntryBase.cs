@@ -40,7 +40,10 @@ namespace TogglDesktop.AutoCompleteControls
         // Prevent mouse click triggerning entry edit under the autocomplete dropdown
         private void previewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            if (sender.GetType() != typeof(TogglDesktop.AutoCompleteControls.ProjectCategory))
+            {
+                e.Handled = true;
+            }
             this.mouseDown();
         }
 
