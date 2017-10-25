@@ -286,14 +286,7 @@ namespace TogglDesktop
 
         private static void onQuit(object sender, RoutedEventArgs e)
         {
-            if (mainWindow.IsVisible)
-            {
-                mainWindow.Close();
-            }
-            else
-            {
-                Environment.Exit(0);
-            }
+            mainWindow.shutdown(0);
         }
 
         #endregion

@@ -653,7 +653,7 @@ namespace TogglDesktop
             this.Activate();
         }
 
-        private void shutdown(int exitCode)
+        public void shutdown(int exitCode)
         {
             if (this.closing)
                 return;
