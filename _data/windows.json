@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.4.73",
+            "rows": [
+                "Fixed workspace assignment with Pomodoro Break entry",
+                "Fixed app freezing issue on logout",
+                "Fixed 'data not valid' issue",
+                "Fixed issue with autocomplete item click opening edit view",
+                "Fixed issue with context menu close quitting the app",
+                "Reset windows position on 'clear cache' to avoid missing windows issue",
+                "Fixed issue with idle tracker continuing a future entry"
+            ],
+            "date": "November 2nd 2017"
+        },
+        {
             "version": "7.4.58",
             "rows": [
                 "Fixed issue with app freezing on quit"

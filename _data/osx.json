@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.4.71",
+            "rows": [
+                "Improved tags autocomplete to do matching search",
+                "SPACE key always continues selected entry",
+                "Small design tweaks",
+                "Fixed workspace assignment with Pomodoro Break entry",
+                "Fixed app freezing issue on logout",
+                "Fixed 'data not valid' issue"
+            ],
+            "date": "November 2nd 2017"
+        },
+        {
             "version": "7.4.58",
             "rows": [
                 "Fixed list scrolling issue when continuing items",

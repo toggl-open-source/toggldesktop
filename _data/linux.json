@@ -1,6 +1,17 @@
 {
   "versions": [
     {
+        "version": "7.4.71",
+        "rows": [
+            "Fixed workspace assignment with Pomodoro Break entry",
+            "Fixed app freezing issue on logout",
+            "Fixed 'data not valid' issue",
+            "Added DBUS_SESSION_BUS_ADDRESS param to improve tray icon support",
+            "Tray icon support for Budgie Desktop"
+        ],
+        "date": "November 2nd 2017"
+    },
+    {
         "version": "7.4.58",
         "rows": [
             "Improved autcomplete to do contains matching",
