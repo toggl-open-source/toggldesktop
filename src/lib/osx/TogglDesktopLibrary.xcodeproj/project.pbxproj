@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3CBF850A1B81E5D000DD3B55 /* libPocoJSON.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF85091B81E5D000DD3B55 /* libPocoJSON.31.dylib */; };
+		3C863D611FAD3A1700F3C95B /* libPocoJSON.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF85091B81E5D000DD3B55 /* libPocoJSON.31.dylib */; };
 		3CBF850C1B81E5D600DD3B55 /* libPocoUtil.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF850B1B81E5D600DD3B55 /* libPocoUtil.31.dylib */; };
 		3CBF850E1B81E5DA00DD3B55 /* libPocoData.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF850D1B81E5DA00DD3B55 /* libPocoData.31.dylib */; };
 		3CBF85101B81E5E400DD3B55 /* libPocoNetSSL.31.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CBF850F1B81E5E400DD3B55 /* libPocoNetSSL.31.dylib */; };
@@ -212,9 +212,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3CBF850A1B81E5D000DD3B55 /* libPocoJSON.31.dylib in Frameworks */,
-				3CBF850C1B81E5D600DD3B55 /* libPocoUtil.31.dylib in Frameworks */,
 				3CBF850E1B81E5DA00DD3B55 /* libPocoData.31.dylib in Frameworks */,
+				3CBF850C1B81E5D600DD3B55 /* libPocoUtil.31.dylib in Frameworks */,
+				3C863D611FAD3A1700F3C95B /* libPocoJSON.31.dylib in Frameworks */,
 				3CBF85101B81E5E400DD3B55 /* libPocoNetSSL.31.dylib in Frameworks */,
 				3CBF85121B81E5EC00DD3B55 /* libPocoXML.31.dylib in Frameworks */,
 				3CBF85141B81E5F300DD3B55 /* libPocoDataSQLite.31.dylib in Frameworks */,
@@ -662,6 +662,7 @@
 					../../../third_party/lua/install/lib,
 					../../../third_party/openssl,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = TogglDesktopLibrary;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -698,6 +699,7 @@
 					../../../third_party/lua/install/lib,
 					../../../third_party/openssl,
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = TogglDesktopLibrary;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
