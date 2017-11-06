@@ -83,6 +83,10 @@ else
 pococonfigure = --cflags=-fPIC --sqlite-thread-safe=1
 endif
 
+ifeq ($(osname), mac)
+pococonfigure = --cflags=-fPIC --sqlite-thread-safe=1 --mmacosx-version-min=10.9
+endif
+
 pocolibs += \
 	-lPocoDataSQLite \
 	-lPocoData \
