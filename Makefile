@@ -237,7 +237,7 @@ app: lib ui
 
 ifeq ($(osname), mac)
 lib:
-	xcodebuild MACOSX_DEPLOYMENT_TARGET=10.8 SDKROOT=macosx10.11 -project src/lib/osx/TogglDesktopLibrary.xcodeproj
+	xcodebuild -sdk macosx10.11 -project src/lib/osx/TogglDesktopLibrary.xcodeproj
 endif
 
 ifeq ($(osname), linux)
