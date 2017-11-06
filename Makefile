@@ -108,7 +108,7 @@ endif
 
 ifeq ($(osname), mac)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
-	-mmacosx-version-min=10.11 \
+	-mmacosx-version-min=10.9 \
 	$(pococflags) $(opensslcflags) \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
@@ -238,7 +238,7 @@ app: lib ui
 
 ifeq ($(osname), mac)
 lib:
-	xcodebuild -sdk macosx10.11 -project src/lib/osx/TogglDesktopLibrary.xcodeproj
+	xcodebuild -sdk macosx10.9 -project src/lib/osx/TogglDesktopLibrary.xcodeproj
 endif
 
 ifeq ($(osname), linux)
@@ -267,7 +267,7 @@ endif
 
 ifeq ($(osname), mac)
 ui:
-	xcodebuild -sdk macosx10.11 -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
+	xcodebuild -sdk macosx10.9 -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
 	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 endif
 
