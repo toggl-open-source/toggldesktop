@@ -108,6 +108,7 @@ endif
 
 ifeq ($(osname), mac)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
+	-mmacosx-version-min=10.11 \
 	$(pococflags) $(opensslcflags) \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
