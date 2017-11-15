@@ -84,7 +84,7 @@ pococonfigure = --cflags=-fPIC --sqlite-thread-safe=1
 endif
 
 ifeq ($(osname), mac)
-pococonfigure = --cflags=-fPIC --sqlite-thread-safe=1 -isysroot ~/SDKs/MacOSX10.9.sdk -mmacosx-version-min=10.9
+pococonfigure = --cflags=-fPIC --sqlite-thread-safe=1
 endif
 
 pocolibs += \
