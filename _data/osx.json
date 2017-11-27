@@ -1,7 +1,8 @@
 {
     "versions": [
         {
-            "version": "7.4.71",
+            "version": "7.4.84",
+            "beta": "true",
             "rows": [
                 "Improved tags autocomplete to do matching search",
                 "SPACE key always continues selected entry",
@@ -10,7 +11,7 @@
                 "Fixed app freezing issue on logout",
                 "Fixed 'data not valid' issue"
             ],
-            "date": "November 2nd 2017"
+            "date": "November 27th 2017"
         },
         {
             "version": "7.4.58",
