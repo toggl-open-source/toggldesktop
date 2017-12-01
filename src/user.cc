@@ -161,6 +161,8 @@ TimeEntry *User::Continue(
 
     Stop();
 
+    time_t now = time(0);
+
     TimeEntry *result = new TimeEntry();
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
     result->SetDescription(existing->Description());
@@ -170,10 +172,10 @@ TimeEntry *User::Continue(
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
     result->SetUID(ID());
-    result->SetStart(time(0));
+    result->SetStart(now);
 
     if (!manual_mode) {
-        result->SetDurationInSeconds(-time(0));
+        result->SetDurationInSeconds(-now);
     }
 
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
