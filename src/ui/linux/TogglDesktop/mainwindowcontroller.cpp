@@ -176,7 +176,7 @@ void MainWindowController::displayPomodoro(
     pomodoro = true;
 
     QMessageBox msgBox;
-    msgBox.setWindowTitle("Toggl Desktop");
+    msgBox.setWindowTitle("Pomodoro Timer");
     msgBox.setText(title);
     msgBox.setInformativeText(informative_text);
     QPushButton *continueButton =
@@ -205,7 +205,7 @@ void MainWindowController::displayPomodoroBreak(
     pomodoro = true;
 
     QMessageBox msgBox;
-    msgBox.setWindowTitle("Toggl Desktop");
+    msgBox.setWindowTitle("Pomodoro Break Timer");
     msgBox.setText(title);
     msgBox.setInformativeText(informative_text);
     QPushButton *continueButton =
@@ -235,7 +235,7 @@ void MainWindowController::displayReminder(
 
     reminderPopup = new QMessageBox(this);
     reminderPopup->setIcon(QMessageBox::Information);
-    reminderPopup->setWindowTitle("Toggl Desktop - Reminder");
+    reminderPopup->setWindowTitle("Tracking Reminder");
     reminderPopup->setText(title);
     reminderPopup->setInformativeText(informative_text);
     reminderPopup->exec();
@@ -475,7 +475,7 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 
     QMessageBox::StandardButton dialog;
     dialog = QMessageBox::question(this,
-                                   "Toggl Desktop",
+                                   "Quit Toggl Desktop",
                                    "Really quit the app?",
                                    QMessageBox::Ok | QMessageBox::Cancel);
     if (QMessageBox::Ok == dialog) {
