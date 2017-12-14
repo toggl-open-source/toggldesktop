@@ -53,7 +53,8 @@ MainWindowController::MainWindowController(
   reminder(false),
   pomodoro(false),
   script(scriptPath),
-  ui_started(false) {
+  ui_started(false),
+  reminderPopup(0) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
     ui->setupUi(this);
@@ -232,11 +233,12 @@ void MainWindowController::displayReminder(
     }
     reminder = true;
 
-    QMessageBox(
-        QMessageBox::Information,
-        title,
-        informative_text,
-        QMessageBox::Ok).exec();
+    reminderPopup = new QMessageBox(this);
+    reminderPopup->setIcon(QMessageBox::Information);
+    reminderPopup->setWindowTitle("Toggl Desktop - Reminder");
+    reminderPopup->setText(title);
+    reminderPopup->setInformativeText(informative_text);
+    reminderPopup->exec();
 
     reminder = false;
 }
@@ -253,6 +255,9 @@ void MainWindowController::displayRunningTimerState(
     TimeEntryView *te) {
     tracking = true;
     enableMenuActions();
+    if (reminder) {
+        reminderPopup->close();
+    }
 }
 
 void MainWindowController::displayStoppedTimerState() {

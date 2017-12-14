@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
+#include <QMessageBox>  // NOLINT
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -121,6 +122,7 @@ class MainWindowController : public QMainWindow {
     QIcon icon;
     QIcon iconDisabled;
     QSystemTrayIcon *trayIcon;
+    QMessageBox *reminderPopup;
 
     bool pomodoro;
     bool reminder;
