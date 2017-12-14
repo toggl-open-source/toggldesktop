@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QVector>
 #include <QTimer>
+#include <QLabel>
 
 namespace Ui {
 class TimerWidget;
@@ -26,6 +27,7 @@ class TimerWidget : public QWidget {
 
  protected:
     void mousePressEvent(QMouseEvent *event);
+    virtual void resizeEvent(QResizeEvent *);
 
  private slots:  // NOLINT
     void displayStoppedTimerState();
@@ -56,11 +58,13 @@ class TimerWidget : public QWidget {
 
     int64_t duration;
 
+    QString project;
     QString descriptionPlaceholder;
     QString tagsHolder;
 
     bool timeEntryAutocompleteNeedsUpdate;
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
+    void setEllipsisTextToLabel(QLabel *label, QString text);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMERWIDGET_H_
