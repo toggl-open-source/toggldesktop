@@ -15,7 +15,8 @@ ui(new Ui::TimerWidget),
 timer(new QTimer(this)),
 duration(0),
 timeEntryAutocompleteNeedsUpdate(false),
-tagsHolder("") {
+tagsHolder(""),
+project("") {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -91,7 +92,8 @@ void TimerWidget::displayRunningTimerState(
         QString("<p style='color:white;background-color:black;'>Started: " +
                 te->StartTimeString+"</p>"));
 
-    ui->project->setText(te->ProjectAndTaskLabel);
+    project = te->ProjectAndTaskLabel;
+    setEllipsisTextToLabel(ui->project, project);
 
     ui->billable->setVisible(te->Billable);
     ui->tags->setVisible(!te->Tags.isEmpty());
@@ -234,4 +236,18 @@ void TimerWidget::mousePressEvent(QMouseEvent *event) {
 
 void TimerWidget::on_duration_returnPressed() {
     start();
+}
+
+void TimerWidget::resizeEvent(QResizeEvent* event)
+{
+    setEllipsisTextToLabel(ui->project, project);
+    QWidget::resizeEvent(event);
+}
+
+void TimerWidget::setEllipsisTextToLabel(QLabel *label, QString text)
+{
+    QFontMetrics metrix(label->font());
+    int width = label->width() - 4;
+    QString clippedText = metrix.elidedText(text, Qt::ElideRight, width);
+    label->setText(clippedText);
 }

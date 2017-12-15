@@ -53,7 +53,8 @@ MainWindowController::MainWindowController(
   reminder(false),
   pomodoro(false),
   script(scriptPath),
-  ui_started(false) {
+  ui_started(false),
+  reminderPopup(0) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
     ui->setupUi(this);
@@ -175,7 +176,7 @@ void MainWindowController::displayPomodoro(
     pomodoro = true;
 
     QMessageBox msgBox;
-    msgBox.setWindowTitle("Toggl Desktop");
+    msgBox.setWindowTitle("Pomodoro Timer");
     msgBox.setText(title);
     msgBox.setInformativeText(informative_text);
     QPushButton *continueButton =
@@ -204,7 +205,7 @@ void MainWindowController::displayPomodoroBreak(
     pomodoro = true;
 
     QMessageBox msgBox;
-    msgBox.setWindowTitle("Toggl Desktop");
+    msgBox.setWindowTitle("Pomodoro Break Timer");
     msgBox.setText(title);
     msgBox.setInformativeText(informative_text);
     QPushButton *continueButton =
@@ -232,11 +233,12 @@ void MainWindowController::displayReminder(
     }
     reminder = true;
 
-    QMessageBox(
-        QMessageBox::Information,
-        title,
-        informative_text,
-        QMessageBox::Ok).exec();
+    reminderPopup = new QMessageBox(this);
+    reminderPopup->setIcon(QMessageBox::Information);
+    reminderPopup->setWindowTitle("Tracking Reminder");
+    reminderPopup->setText(title);
+    reminderPopup->setInformativeText(informative_text);
+    reminderPopup->exec();
 
     reminder = false;
 }
@@ -253,6 +255,9 @@ void MainWindowController::displayRunningTimerState(
     TimeEntryView *te) {
     tracking = true;
     enableMenuActions();
+    if (reminder) {
+        reminderPopup->close();
+    }
 }
 
 void MainWindowController::displayStoppedTimerState() {
@@ -470,7 +475,7 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 
     QMessageBox::StandardButton dialog;
     dialog = QMessageBox::question(this,
-                                   "Toggl Desktop",
+                                   "Quit Toggl Desktop",
                                    "Really quit the app?",
                                    QMessageBox::Ok | QMessageBox::Cancel);
     if (QMessageBox::Ok == dialog) {

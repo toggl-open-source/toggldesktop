@@ -32,6 +32,8 @@ IdleNotificationDialog::IdleNotificationDialog(QWidget *parent)
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
+
+    setWindowTitle("Idle Detection");
 }
 
 IdleNotificationDialog::~IdleNotificationDialog() {
