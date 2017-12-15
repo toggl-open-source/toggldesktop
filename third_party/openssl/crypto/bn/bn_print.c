@@ -58,7 +58,6 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#include <limits.h>
 #include "cryptlib.h"
 #include <openssl/buffer.h>
 #include "bn_lcl.h"
@@ -72,9 +71,12 @@ char *BN_bn2hex(const BIGNUM *a)
     char *buf;
     char *p;
 
-    if (BN_is_zero(a))
-        return OPENSSL_strdup("0");
-    buf = OPENSSL_malloc(a->top * BN_BYTES * 2 + 2);
+    if (a->neg && BN_is_zero(a)) {
+        /* "-0" == 3 bytes including NULL terminator */
+        buf = OPENSSL_malloc(3);
+    } else {
+        buf = OPENSSL_malloc(a->top * BN_BYTES * 2 + 2);
+    }
     if (buf == NULL) {
         BNerr(BN_F_BN_BN2HEX, ERR_R_MALLOC_FAILURE);
         goto err;
@@ -82,6 +84,8 @@ char *BN_bn2hex(const BIGNUM *a)
     p = buf;
     if (a->neg)
         *(p++) = '-';
+    if (BN_is_zero(a))
+        *(p++) = '0';
     for (i = a->top - 1; i >= 0; i--) {
         for (j = BN_BITS2 - 8; j >= 0; j -= 8) {
             /* strip leading zeros */
@@ -106,7 +110,6 @@ char *BN_bn2dec(const BIGNUM *a)
     char *p;
     BIGNUM *t = NULL;
     BN_ULONG *bn_data = NULL, *lp;
-    int bn_data_num;
 
     /*-
      * get an upper bound for the length of the decimal integer
@@ -116,9 +119,9 @@ char *BN_bn2dec(const BIGNUM *a)
      */
     i = BN_num_bits(a) * 3;
     num = (i / 10 + i / 1000 + 1) + 1;
-    bn_data_num = num / BN_DEC_NUM + 1;
-    bn_data = OPENSSL_malloc(bn_data_num * sizeof(BN_ULONG));
-    buf = OPENSSL_malloc(num + 3);
+    bn_data =
+        (BN_ULONG *)OPENSSL_malloc((num / BN_DEC_NUM + 1) * sizeof(BN_ULONG));
+    buf = (char *)OPENSSL_malloc(num + 3);
     if ((buf == NULL) || (bn_data == NULL)) {
         BNerr(BN_F_BN_BN2DEC, ERR_R_MALLOC_FAILURE);
         goto err;
@@ -136,12 +139,9 @@ char *BN_bn2dec(const BIGNUM *a)
         if (BN_is_negative(t))
             *p++ = '-';
 
+        i = 0;
         while (!BN_is_zero(t)) {
-            if (lp - bn_data >= bn_data_num)
-                goto err;
             *lp = BN_div_word(t, BN_DEC_CONV);
-            if (*lp == (BN_ULONG)-1)
-                goto err;
             lp++;
         }
         lp--;
@@ -189,11 +189,7 @@ int BN_hex2bn(BIGNUM **bn, const char *a)
         a++;
     }
 
-    for (i = 0; i <= (INT_MAX/4) && isxdigit((unsigned char)a[i]); i++)
-        continue;
-
-    if (i > INT_MAX/4)
-        goto err;
+    for (i = 0; isxdigit((unsigned char)a[i]); i++) ;
 
     num = i + neg;
     if (bn == NULL)
@@ -208,7 +204,7 @@ int BN_hex2bn(BIGNUM **bn, const char *a)
         BN_zero(ret);
     }
 
-    /* i is the number of hex digits */
+    /* i is the number of hex digests; */
     if (bn_expand(ret, i * 4) == NULL)
         goto err;
 
@@ -239,12 +235,10 @@ int BN_hex2bn(BIGNUM **bn, const char *a)
     }
     ret->top = h;
     bn_correct_top(ret);
+    ret->neg = neg;
 
     *bn = ret;
     bn_check_top(ret);
-    /* Don't set the negative flag if it's zero. */
-    if (ret->top != 0)
-        ret->neg = neg;
     return (num);
  err:
     if (*bn == NULL)
@@ -266,11 +260,7 @@ int BN_dec2bn(BIGNUM **bn, const char *a)
         a++;
     }
 
-    for (i = 0; i <= (INT_MAX/4) && isdigit((unsigned char)a[i]); i++)
-        continue;
-
-    if (i > INT_MAX/4)
-        goto err;
+    for (i = 0; isdigit((unsigned char)a[i]); i++) ;
 
     num = i + neg;
     if (bn == NULL)
@@ -288,7 +278,7 @@ int BN_dec2bn(BIGNUM **bn, const char *a)
         BN_zero(ret);
     }
 
-    /* i is the number of digits, a bit of an over expand */
+    /* i is the number of digests, a bit of an over expand; */
     if (bn_expand(ret, i * 4) == NULL)
         goto err;
 
@@ -296,7 +286,7 @@ int BN_dec2bn(BIGNUM **bn, const char *a)
     if (j == BN_DEC_NUM)
         j = 0;
     l = 0;
-    while (--i >= 0) {
+    while (*a) {
         l *= 10;
         l += *a - '0';
         a++;
@@ -307,13 +297,11 @@ int BN_dec2bn(BIGNUM **bn, const char *a)
             j = 0;
         }
     }
+    ret->neg = neg;
 
     bn_correct_top(ret);
     *bn = ret;
     bn_check_top(ret);
-    /* Don't set the negative flag if it's zero. */
-    if (ret->top != 0)
-        ret->neg = neg;
     return (num);
  err:
     if (*bn == NULL)
@@ -324,7 +312,6 @@ int BN_dec2bn(BIGNUM **bn, const char *a)
 int BN_asc2bn(BIGNUM **bn, const char *a)
 {
     const char *p = a;
-
     if (*p == '-')
         p++;
 
@@ -335,8 +322,7 @@ int BN_asc2bn(BIGNUM **bn, const char *a)
         if (!BN_dec2bn(bn, p))
             return 0;
     }
-    /* Don't set the negative flag if it's zero. */
-    if (*a == '-' && (*bn)->top != 0)
+    if (*a == '-')
         (*bn)->neg = 1;
     return 1;
 }

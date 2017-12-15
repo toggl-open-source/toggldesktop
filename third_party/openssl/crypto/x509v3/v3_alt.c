@@ -119,39 +119,32 @@ STACK_OF(CONF_VALUE) *i2v_GENERAL_NAME(X509V3_EXT_METHOD *method,
     int i;
     switch (gen->type) {
     case GEN_OTHERNAME:
-        if (!X509V3_add_value("othername", "<unsupported>", &ret))
-            return NULL;
+        X509V3_add_value("othername", "<unsupported>", &ret);
         break;
 
     case GEN_X400:
-        if (!X509V3_add_value("X400Name", "<unsupported>", &ret))
-            return NULL;
+        X509V3_add_value("X400Name", "<unsupported>", &ret);
         break;
 
     case GEN_EDIPARTY:
-        if (!X509V3_add_value("EdiPartyName", "<unsupported>", &ret))
-            return NULL;
+        X509V3_add_value("EdiPartyName", "<unsupported>", &ret);
         break;
 
     case GEN_EMAIL:
-        if (!X509V3_add_value_uchar("email", gen->d.ia5->data, &ret))
-            return NULL;
+        X509V3_add_value_uchar("email", gen->d.ia5->data, &ret);
         break;
 
     case GEN_DNS:
-        if (!X509V3_add_value_uchar("DNS", gen->d.ia5->data, &ret))
-            return NULL;
+        X509V3_add_value_uchar("DNS", gen->d.ia5->data, &ret);
         break;
 
     case GEN_URI:
-        if (!X509V3_add_value_uchar("URI", gen->d.ia5->data, &ret))
-            return NULL;
+        X509V3_add_value_uchar("URI", gen->d.ia5->data, &ret);
         break;
 
     case GEN_DIRNAME:
-        if (X509_NAME_oneline(gen->d.dirn, oline, 256) == NULL
-                || !X509V3_add_value("DirName", oline, &ret))
-            return NULL;
+        X509_NAME_oneline(gen->d.dirn, oline, 256);
+        X509V3_add_value("DirName", oline, &ret);
         break;
 
     case GEN_IPADD:
@@ -169,18 +162,15 @@ STACK_OF(CONF_VALUE) *i2v_GENERAL_NAME(X509V3_EXT_METHOD *method,
                     strcat(oline, ":");
             }
         } else {
-            if (!X509V3_add_value("IP Address", "<invalid>", &ret))
-                return NULL;
+            X509V3_add_value("IP Address", "<invalid>", &ret);
             break;
         }
-        if (!X509V3_add_value("IP Address", oline, &ret))
-            return NULL;
+        X509V3_add_value("IP Address", oline, &ret);
         break;
 
     case GEN_RID:
         i2t_ASN1_OBJECT(oline, 256, gen->d.rid);
-        if (!X509V3_add_value("Registered ID", oline, &ret))
-            return NULL;
+        X509V3_add_value("Registered ID", oline, &ret);
         break;
     }
     return ret;
@@ -583,8 +573,6 @@ static int do_othername(GENERAL_NAME *gen, char *value, X509V3_CTX *ctx)
         return 0;
     objlen = p - value;
     objtmp = OPENSSL_malloc(objlen + 1);
-    if (objtmp == NULL)
-        return 0;
     strncpy(objtmp, value, objlen);
     objtmp[objlen] = 0;
     gen->d.otherName->type_id = OBJ_txt2obj(objtmp, 0);

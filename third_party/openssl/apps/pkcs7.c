@@ -90,8 +90,9 @@ int MAIN(int argc, char **argv)
     char *infile, *outfile, *prog;
     int print_certs = 0, text = 0, noout = 0, p7_print = 0;
     int ret = 1;
+#ifndef OPENSSL_NO_ENGINE
     char *engine = NULL;
-    ENGINE *e = NULL;
+#endif
 
     apps_startup();
 
@@ -174,7 +175,9 @@ int MAIN(int argc, char **argv)
 
     ERR_load_crypto_strings();
 
-    e = setup_engine(bio_err, engine, 0);
+#ifndef OPENSSL_NO_ENGINE
+    setup_engine(bio_err, engine, 0);
+#endif
 
     in = BIO_new(BIO_s_file());
     out = BIO_new(BIO_s_file());
@@ -232,16 +235,12 @@ int MAIN(int argc, char **argv)
         i = OBJ_obj2nid(p7->type);
         switch (i) {
         case NID_pkcs7_signed:
-            if (p7->d.sign != NULL) {
-                certs = p7->d.sign->cert;
-                crls = p7->d.sign->crl;
-            }
+            certs = p7->d.sign->cert;
+            crls = p7->d.sign->crl;
             break;
         case NID_pkcs7_signedAndEnveloped:
-            if (p7->d.signed_and_enveloped != NULL) {
-                certs = p7->d.signed_and_enveloped->cert;
-                crls = p7->d.signed_and_enveloped->crl;
-            }
+            certs = p7->d.signed_and_enveloped->cert;
+            crls = p7->d.signed_and_enveloped->crl;
             break;
         default:
             break;
@@ -300,7 +299,6 @@ int MAIN(int argc, char **argv)
  end:
     if (p7 != NULL)
         PKCS7_free(p7);
-    release_engine(e);
     if (in != NULL)
         BIO_free(in);
     if (out != NULL)

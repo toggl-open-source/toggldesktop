@@ -114,11 +114,10 @@ int i2c_ASN1_BIT_STRING(ASN1_BIT_STRING *a, unsigned char **pp)
 
     *(p++) = (unsigned char)bits;
     d = a->data;
-    if (len > 0) {
-        memcpy(p, d, len);
-        p += len;
+    memcpy(p, d, len);
+    p += len;
+    if (len > 0)
         p[-1] &= (0xff << bits);
-    }
     *pp = p;
     return (ret);
 }

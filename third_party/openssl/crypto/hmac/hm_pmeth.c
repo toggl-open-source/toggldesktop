@@ -99,18 +99,15 @@ static int pkey_hmac_copy(EVP_PKEY_CTX *dst, EVP_PKEY_CTX *src)
     sctx = src->data;
     dctx = dst->data;
     dctx->md = sctx->md;
+    HMAC_CTX_init(&dctx->ctx);
     if (!HMAC_CTX_copy(&dctx->ctx, &sctx->ctx))
-        goto err;
-    if (sctx->ktmp.data != NULL) {
+        return 0;
+    if (sctx->ktmp.data) {
         if (!ASN1_OCTET_STRING_set(&dctx->ktmp,
                                    sctx->ktmp.data, sctx->ktmp.length))
-            goto err;
+            return 0;
     }
     return 1;
- err:
-    HMAC_CTX_cleanup(&dctx->ctx);
-    OPENSSL_free(dctx);
-    return 0;
 }
 
 static void pkey_hmac_cleanup(EVP_PKEY_CTX *ctx)

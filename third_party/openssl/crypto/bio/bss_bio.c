@@ -1,4 +1,4 @@
-/* crypto/bio/bss_bio.c  */
+/* crypto/bio/bss_bio.c  -*- Mode: C; c-file-style: "eay" -*- */
 /* ====================================================================
  * Copyright (c) 1998-2003 The OpenSSL Project.  All rights reserved.
  *
@@ -149,13 +149,9 @@ static int bio_new(BIO *bio)
         return 0;
 
     b->peer = NULL;
-    b->closed = 0;
-    b->len = 0;
-    b->offset = 0;
     /* enough for one TLS record (just a default) */
     b->size = 17 * 1024;
     b->buf = NULL;
-    b->request = 0;
 
     bio->ptr = b;
     return 1;
@@ -659,15 +655,16 @@ static long bio_ctrl(BIO *bio, int cmd, long num, void *ptr)
         break;
 
     case BIO_CTRL_EOF:
-        if (b->peer != NULL) {
-            struct bio_bio_st *peer_b = b->peer->ptr;
+        {
+            BIO *other_bio = ptr;
 
-            if (peer_b->len == 0 && peer_b->closed)
+            if (other_bio) {
+                struct bio_bio_st *other_b = other_bio->ptr;
+
+                assert(other_b != NULL);
+                ret = other_b->len == 0 && other_b->closed;
+            } else
                 ret = 1;
-            else
-                ret = 0;
-        } else {
-            ret = 1;
         }
         break;
 

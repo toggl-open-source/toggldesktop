@@ -63,9 +63,6 @@
 #include <openssl/evp.h>
 #include <openssl/buffer.h>
 
-/*
- * Return values are as per SSL_write()
- */
 int ssl23_write_bytes(SSL *s)
 {
     int i, num, tot;
@@ -80,7 +77,7 @@ int ssl23_write_bytes(SSL *s)
         if (i <= 0) {
             s->init_off = tot;
             s->init_num = num;
-            return i;
+            return (i);
         }
         s->rwstate = SSL_NOTHING;
         if (i == num)
@@ -91,10 +88,7 @@ int ssl23_write_bytes(SSL *s)
     }
 }
 
-/* return regularly only when we have read (at least) 'n' bytes
- *
- * Return values are as per SSL_read()
- */
+/* return regularly only when we have read (at least) 'n' bytes */
 int ssl23_read_bytes(SSL *s, int n)
 {
     unsigned char *p;
@@ -108,7 +102,7 @@ int ssl23_read_bytes(SSL *s, int n)
             j = BIO_read(s->rbio, (char *)&(p[s->packet_length]),
                          n - s->packet_length);
             if (j <= 0)
-                return j;
+                return (j);
             s->rwstate = SSL_NOTHING;
             s->packet_length += j;
             if (s->packet_length >= (unsigned int)n)

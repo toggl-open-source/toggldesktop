@@ -159,8 +159,9 @@ int MAIN(int argc, char **argv)
     int informat, outformat, check = 0, noout = 0, C = 0, ret = 1;
     char *infile, *outfile, *prog;
     char *inrand = NULL;
+# ifndef OPENSSL_NO_ENGINE
     char *engine = NULL;
-    ENGINE *e = NULL;
+# endif
     int num = 0, g = 0;
 
     apps_startup();
@@ -269,7 +270,9 @@ int MAIN(int argc, char **argv)
 
     ERR_load_crypto_strings();
 
-    e = setup_engine(bio_err, engine, 0);
+# ifndef OPENSSL_NO_ENGINE
+    setup_engine(bio_err, engine, 0);
+# endif
 
     if (g && !num)
         num = DEFBITS;
@@ -381,19 +384,10 @@ int MAIN(int argc, char **argv)
         } else
 # endif
         {
-            if (informat == FORMAT_ASN1) {
-                /*
-                 * We have no PEM header to determine what type of DH params it
-                 * is. We'll just try both.
-                 */
+            if (informat == FORMAT_ASN1)
                 dh = d2i_DHparams_bio(in, NULL);
-                /* BIO_reset() returns 0 for success for file BIOs only!!! */
-                if (dh == NULL && BIO_reset(in) == 0)
-                    dh = d2i_DHxparams_bio(in, NULL);
-            } else {
-                /* informat == FORMAT_PEM */
+            else                /* informat == FORMAT_PEM */
                 dh = PEM_read_bio_DHparams(in, NULL, NULL, NULL);
-            }
 
             if (dh == NULL) {
                 BIO_printf(bio_err, "unable to load DH parameters\n");
@@ -493,13 +487,10 @@ int MAIN(int argc, char **argv)
     }
 
     if (!noout) {
-        if (outformat == FORMAT_ASN1) {
-            if (dh->q != NULL)
-                i = i2d_DHxparams_bio(out, dh);
-            else
-                i = i2d_DHparams_bio(out, dh);
-        } else if (outformat == FORMAT_PEM) {
-            if (dh->q != NULL)
+        if (outformat == FORMAT_ASN1)
+            i = i2d_DHparams_bio(out, dh);
+        else if (outformat == FORMAT_PEM) {
+            if (dh->q)
                 i = PEM_write_bio_DHxparams(out, dh);
             else
                 i = PEM_write_bio_DHparams(out, dh);
@@ -521,7 +512,6 @@ int MAIN(int argc, char **argv)
         BIO_free_all(out);
     if (dh != NULL)
         DH_free(dh);
-    release_engine(e);
     apps_shutdown();
     OPENSSL_EXIT(ret);
 }

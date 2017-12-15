@@ -235,7 +235,7 @@ int RAND_poll(void)
         rnd >>= 8;
     }
     RAND_add(buf, sizeof(buf), ENTROPY_NEEDED);
-    OPENSSL_cleanse(buf, sizeof(buf));
+    memset(buf, 0, sizeof(buf));
 
     return 1;
 }

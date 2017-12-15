@@ -315,7 +315,7 @@ CERT *ssl_cert_dup(CERT *cert)
                 OPENSSL_malloc(cert->pkeys[i].serverinfo_length);
             if (ret->pkeys[i].serverinfo == NULL) {
                 SSLerr(SSL_F_SSL_CERT_DUP, ERR_R_MALLOC_FAILURE);
-                goto err;
+                return NULL;
             }
             ret->pkeys[i].serverinfo_length =
                 cert->pkeys[i].serverinfo_length;
@@ -392,7 +392,9 @@ CERT *ssl_cert_dup(CERT *cert)
 
     return (ret);
 
+#if !defined(OPENSSL_NO_DH) || !defined(OPENSSL_NO_ECDH)
  err:
+#endif
 #ifndef OPENSSL_NO_RSA
     if (ret->rsa_tmp != NULL)
         RSA_free(ret->rsa_tmp);
@@ -412,7 +414,6 @@ CERT *ssl_cert_dup(CERT *cert)
 #endif
 
     ssl_cert_clear_certs(ret);
-    OPENSSL_free(ret);
 
     return NULL;
 }
@@ -503,8 +504,6 @@ void ssl_cert_free(CERT *c)
 #ifndef OPENSSL_NO_TLSEXT
     custom_exts_free(&c->cli_ext);
     custom_exts_free(&c->srv_ext);
-    if (c->alpn_proposed)
-        OPENSSL_free(c->alpn_proposed);
 #endif
     OPENSSL_free(c);
 }
@@ -1058,18 +1057,13 @@ static int ssl_add_cert_to_buf(BUF_MEM *buf, unsigned long *l, X509 *x)
     unsigned char *p;
 
     n = i2d_X509(x, NULL);
-    if (n < 0 || !BUF_MEM_grow_clean(buf, (int)(n + (*l) + 3))) {
+    if (!BUF_MEM_grow_clean(buf, (int)(n + (*l) + 3))) {
         SSLerr(SSL_F_SSL_ADD_CERT_TO_BUF, ERR_R_BUF_LIB);
         return 0;
     }
     p = (unsigned char *)&(buf->data[*l]);
     l2n3(n, p);
-    n = i2d_X509(x, &p);
-    if (n < 0) {
-        /* Shouldn't happen */
-        SSLerr(SSL_F_SSL_ADD_CERT_TO_BUF, ERR_R_BUF_LIB);
-        return 0;
-    }
+    i2d_X509(x, &p);
     *l += n + 3;
 
     return 1;

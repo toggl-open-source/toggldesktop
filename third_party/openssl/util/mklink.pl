@@ -55,11 +55,9 @@ if ($^O eq "msys") { $symlink_exists=0 };
 foreach $file (@files) {
     my $err = "";
     if ($symlink_exists) {
-        if (!-l "$from/$file") {
-	    unlink "$from/$file";
-	    symlink("$to/$file", "$from/$file") or $err = " [$!]";
-	}
-    } elsif (-d "$from" && (!-f "$from/$file" || ((stat("$file"))[9] > (stat("$from/$file"))[9]))) {
+	unlink "$from/$file";
+	symlink("$to/$file", "$from/$file") or $err = " [$!]";
+    } else {
 	unlink "$from/$file"; 
 	open (OLD, "<$file") or die "Can't open $file: $!";
 	open (NEW, ">$from/$file") or die "Can't open $from/$file: $!";

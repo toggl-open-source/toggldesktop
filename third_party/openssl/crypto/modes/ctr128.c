@@ -67,20 +67,23 @@
 /* increment counter (128-bit int) by 1 */
 static void ctr128_inc(unsigned char *counter)
 {
-    u32 n = 16, c = 1;
+    u32 n = 16;
+    u8 c;
 
     do {
         --n;
-        c += counter[n];
-        counter[n] = (u8)c;
-        c >>= 8;
+        c = counter[n];
+        ++c;
+        counter[n] = c;
+        if (c)
+            return;
     } while (n);
 }
 
 #if !defined(OPENSSL_SMALL_FOOTPRINT)
 static void ctr128_inc_aligned(unsigned char *counter)
 {
-    size_t *data, c, d, n;
+    size_t *data, c, n;
     const union {
         long one;
         char little;
@@ -88,19 +91,20 @@ static void ctr128_inc_aligned(unsigned char *counter)
         1
     };
 
-    if (is_endian.little || ((size_t)counter % sizeof(size_t)) != 0) {
+    if (is_endian.little) {
         ctr128_inc(counter);
         return;
     }
 
     data = (size_t *)counter;
-    c = 1;
     n = 16 / sizeof(size_t);
     do {
         --n;
-        d = data[n] += c;
-        /* did addition carry? */
-        c = ((d - c) & ~d) >> (sizeof(size_t) * 8 - 1);
+        c = data[n];
+        ++c;
+        data[n] = c;
+        if (c)
+            return;
     } while (n);
 }
 #endif
@@ -140,14 +144,14 @@ void CRYPTO_ctr128_encrypt(const unsigned char *in, unsigned char *out,
             }
 
 # if defined(STRICT_ALIGNMENT)
-            if (((size_t)in | (size_t)out | (size_t)ecount_buf)
-                % sizeof(size_t) != 0)
+            if (((size_t)in | (size_t)out | (size_t)ivec) % sizeof(size_t) !=
+                0)
                 break;
 # endif
             while (len >= 16) {
                 (*block) (ivec, ecount_buf, key);
                 ctr128_inc_aligned(ivec);
-                for (n = 0; n < 16; n += sizeof(size_t))
+                for (; n < 16; n += sizeof(size_t))
                     *(size_t *)(out + n) =
                         *(size_t *)(in + n) ^ *(size_t *)(ecount_buf + n);
                 len -= 16;
@@ -185,13 +189,16 @@ void CRYPTO_ctr128_encrypt(const unsigned char *in, unsigned char *out,
 /* increment upper 96 bits of 128-bit counter by 1 */
 static void ctr96_inc(unsigned char *counter)
 {
-    u32 n = 12, c = 1;
+    u32 n = 12;
+    u8 c;
 
     do {
         --n;
-        c += counter[n];
-        counter[n] = (u8)c;
-        c >>= 8;
+        c = counter[n];
+        ++c;
+        counter[n] = c;
+        if (c)
+            return;
     } while (n);
 }
 

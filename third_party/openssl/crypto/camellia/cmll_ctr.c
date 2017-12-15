@@ -1,4 +1,4 @@
-/* crypto/camellia/camellia_ctr.c */
+/* crypto/camellia/camellia_ctr.c -*- mode:C; c-file-style: "eay" -*- */
 /* ====================================================================
  * Copyright (c) 2006 The OpenSSL Project.  All rights reserved.
  *

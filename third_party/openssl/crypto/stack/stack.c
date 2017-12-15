@@ -360,7 +360,7 @@ void *sk_set(_STACK *st, int i, void *value)
 
 void sk_sort(_STACK *st)
 {
-    if (st && !st->sorted && st->comp != NULL) {
+    if (st && !st->sorted) {
         int (*comp_func) (const void *, const void *);
 
         /*

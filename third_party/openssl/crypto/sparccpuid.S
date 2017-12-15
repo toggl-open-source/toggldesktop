@@ -429,7 +429,6 @@ OPENSSL_cleanse:
 .size	OPENSSL_cleanse,.-OPENSSL_cleanse
 
 .global	_sparcv9_vis1_instrument_bus
-.weak	_sparcv9_vis1_instrument_bus
 .align	8
 _sparcv9_vis1_instrument_bus:
 	mov	%o1,%o3					! save cnt
@@ -468,7 +467,6 @@ _sparcv9_vis1_instrument_bus:
 .size	_sparcv9_vis1_instrument_bus,.-_sparcv9_vis1_instrument_bus
 
 .global	_sparcv9_vis1_instrument_bus2
-.weak	_sparcv9_vis1_instrument_bus2
 .align	8
 _sparcv9_vis1_instrument_bus2:
 	mov	%o1,%o3					! save cnt

@@ -271,18 +271,12 @@ int OCSP_parse_url(const char *url, char **phost, char **pport, char **ppath,
  err:
     if (buf)
         OPENSSL_free(buf);
-    if (*ppath) {
+    if (*ppath)
         OPENSSL_free(*ppath);
-        *ppath = NULL;
-    }
-    if (*pport) {
+    if (*pport)
         OPENSSL_free(*pport);
-        *pport = NULL;
-    }
-    if (*phost) {
+    if (*phost)
         OPENSSL_free(*phost);
-        *phost = NULL;
-    }
     return 0;
 
 }

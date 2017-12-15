@@ -137,7 +137,7 @@ int ASN1_TIME_check(ASN1_TIME *t)
 ASN1_GENERALIZEDTIME *ASN1_TIME_to_generalizedtime(ASN1_TIME *t,
                                                    ASN1_GENERALIZEDTIME **out)
 {
-    ASN1_GENERALIZEDTIME *ret = NULL;
+    ASN1_GENERALIZEDTIME *ret;
     char *str;
     int newlen;
 
@@ -146,21 +146,22 @@ ASN1_GENERALIZEDTIME *ASN1_TIME_to_generalizedtime(ASN1_TIME *t,
 
     if (!out || !*out) {
         if (!(ret = ASN1_GENERALIZEDTIME_new()))
-            goto err;
-    } else {
+            return NULL;
+        if (out)
+            *out = ret;
+    } else
         ret = *out;
-    }
 
     /* If already GeneralizedTime just copy across */
     if (t->type == V_ASN1_GENERALIZEDTIME) {
         if (!ASN1_STRING_set(ret, t->data, t->length))
-            goto err;
-        goto done;
+            return NULL;
+        return ret;
     }
 
     /* grow the string */
     if (!ASN1_STRING_set(ret, NULL, t->length + 2))
-        goto err;
+        return NULL;
     /* ASN1_STRING_set() allocated 'len + 1' bytes. */
     newlen = t->length + 2 + 1;
     str = (char *)ret->data;
@@ -172,17 +173,8 @@ ASN1_GENERALIZEDTIME *ASN1_TIME_to_generalizedtime(ASN1_TIME *t,
 
     BUF_strlcat(str, (char *)t->data, newlen);
 
- done:
-   if (out != NULL && *out == NULL)
-       *out = ret;
-   return ret;
-
- err:
-    if (out == NULL || *out != ret)
-        ASN1_GENERALIZEDTIME_free(ret);
-    return NULL;
+    return ret;
 }
-
 
 int ASN1_TIME_set_string(ASN1_TIME *s, const char *str)
 {

@@ -142,8 +142,7 @@ static int rsa_builtin_keygen(RSA *rsa, int bits, BIGNUM *e_value,
     if (!rsa->iqmp && ((rsa->iqmp = BN_new()) == NULL))
         goto err;
 
-    if (BN_copy(rsa->e, e_value) == NULL)
-        goto err;
+    BN_copy(rsa->e, e_value);
 
     /* generate p and q */
     for (;;) {

@@ -71,13 +71,12 @@ typedef struct {
         DES_key_schedule ks;
     } ks;
     union {
-        void (*cbc) (const void *, void *, size_t,
-                     const DES_key_schedule *, unsigned char *);
+        void (*cbc) (const void *, void *, size_t, const void *, void *);
     } stream;
 } EVP_DES_KEY;
 
 # if defined(AES_ASM) && (defined(__sparc) || defined(__sparc__))
-/* ----------^^^ this is not a typo, just a way to detect that
+/* ---------^^^ this is not a typo, just a way to detect that
  * assembler support was in general requested... */
 #  include "sparc_arch.h"
 
@@ -87,9 +86,9 @@ extern unsigned int OPENSSL_sparcv9cap_P[];
 
 void des_t4_key_expand(const void *key, DES_key_schedule *ks);
 void des_t4_cbc_encrypt(const void *inp, void *out, size_t len,
-                        const DES_key_schedule *ks, unsigned char iv[8]);
+                        DES_key_schedule *ks, unsigned char iv[8]);
 void des_t4_cbc_decrypt(const void *inp, void *out, size_t len,
-                        const DES_key_schedule *ks, unsigned char iv[8]);
+                        DES_key_schedule *ks, unsigned char iv[8]);
 # endif
 
 static int des_init_key(EVP_CIPHER_CTX *ctx, const unsigned char *key,
@@ -131,7 +130,7 @@ static int des_cbc_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
 {
     EVP_DES_KEY *dat = (EVP_DES_KEY *) ctx->cipher_data;
 
-    if (dat->stream.cbc != NULL) {
+    if (dat->stream.cbc) {
         (*dat->stream.cbc) (in, out, inl, &dat->ks.ks, ctx->iv);
         return 1;
     }

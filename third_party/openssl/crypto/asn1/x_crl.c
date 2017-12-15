@@ -254,7 +254,6 @@ static int crl_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
 
         for (idx = 0; idx < sk_X509_EXTENSION_num(exts); idx++) {
             int nid;
-
             ext = sk_X509_EXTENSION_value(exts, idx);
             nid = OBJ_obj2nid(ext->object);
             if (nid == NID_freshest_crl)
@@ -264,7 +263,7 @@ static int crl_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
                 if ((nid == NID_issuing_distribution_point)
                     || (nid == NID_authority_key_identifier)
                     || (nid == NID_delta_crl))
-                    continue;
+                    break;;
                 crl->flags |= EXFLAG_CRITICAL;
                 break;
             }

@@ -1,4 +1,4 @@
-/* crypto/ui/ui_lib.c */
+/* crypto/ui/ui_lib.c -*- mode:C; c-file-style: "eay" -*- */
 /*
  * Written by Richard Levitte (richard@levitte.org) for the OpenSSL project
  * 2001.
@@ -164,7 +164,7 @@ static int general_allocate_string(UI *ui, const char *prompt,
     UI_STRING *s = general_allocate_prompt(ui, prompt, prompt_freeable,
                                            type, input_flags, result_buf);
 
-    if (s != NULL) {
+    if (s) {
         if (allocate_string_stack(ui) >= 0) {
             s->_.string_data.result_minsize = minsize;
             s->_.string_data.result_maxsize = maxsize;
@@ -197,8 +197,8 @@ static int general_allocate_boolean(UI *ui,
     } else if (cancel_chars == NULL) {
         UIerr(UI_F_GENERAL_ALLOCATE_BOOLEAN, ERR_R_PASSED_NULL_PARAMETER);
     } else {
-        for (p = ok_chars; *p != '\0'; p++) {
-            if (strchr(cancel_chars, *p) != NULL) {
+        for (p = ok_chars; *p; p++) {
+            if (strchr(cancel_chars, *p)) {
                 UIerr(UI_F_GENERAL_ALLOCATE_BOOLEAN,
                       UI_R_COMMON_OK_AND_CANCEL_CHARACTERS);
             }
@@ -207,7 +207,7 @@ static int general_allocate_boolean(UI *ui,
         s = general_allocate_prompt(ui, prompt, prompt_freeable,
                                     type, input_flags, result_buf);
 
-        if (s != NULL) {
+        if (s) {
             if (allocate_string_stack(ui) >= 0) {
                 s->_.boolean_data.action_desc = action_desc;
                 s->_.boolean_data.ok_chars = ok_chars;
@@ -243,7 +243,7 @@ int UI_dup_input_string(UI *ui, const char *prompt, int flags,
 {
     char *prompt_copy = NULL;
 
-    if (prompt != NULL) {
+    if (prompt) {
         prompt_copy = BUF_strdup(prompt);
         if (prompt_copy == NULL) {
             UIerr(UI_F_UI_DUP_INPUT_STRING, ERR_R_MALLOC_FAILURE);
@@ -271,7 +271,7 @@ int UI_dup_verify_string(UI *ui, const char *prompt, int flags,
 {
     char *prompt_copy = NULL;
 
-    if (prompt != NULL) {
+    if (prompt) {
         prompt_copy = BUF_strdup(prompt);
         if (prompt_copy == NULL) {
             UIerr(UI_F_UI_DUP_VERIFY_STRING, ERR_R_MALLOC_FAILURE);
@@ -302,7 +302,7 @@ int UI_dup_input_boolean(UI *ui, const char *prompt, const char *action_desc,
     char *ok_chars_copy = NULL;
     char *cancel_chars_copy = NULL;
 
-    if (prompt != NULL) {
+    if (prompt) {
         prompt_copy = BUF_strdup(prompt);
         if (prompt_copy == NULL) {
             UIerr(UI_F_UI_DUP_INPUT_BOOLEAN, ERR_R_MALLOC_FAILURE);
@@ -310,7 +310,7 @@ int UI_dup_input_boolean(UI *ui, const char *prompt, const char *action_desc,
         }
     }
 
-    if (action_desc != NULL) {
+    if (action_desc) {
         action_desc_copy = BUF_strdup(action_desc);
         if (action_desc_copy == NULL) {
             UIerr(UI_F_UI_DUP_INPUT_BOOLEAN, ERR_R_MALLOC_FAILURE);
@@ -318,7 +318,7 @@ int UI_dup_input_boolean(UI *ui, const char *prompt, const char *action_desc,
         }
     }
 
-    if (ok_chars != NULL) {
+    if (ok_chars) {
         ok_chars_copy = BUF_strdup(ok_chars);
         if (ok_chars_copy == NULL) {
             UIerr(UI_F_UI_DUP_INPUT_BOOLEAN, ERR_R_MALLOC_FAILURE);
@@ -326,7 +326,7 @@ int UI_dup_input_boolean(UI *ui, const char *prompt, const char *action_desc,
         }
     }
 
-    if (cancel_chars != NULL) {
+    if (cancel_chars) {
         cancel_chars_copy = BUF_strdup(cancel_chars);
         if (cancel_chars_copy == NULL) {
             UIerr(UI_F_UI_DUP_INPUT_BOOLEAN, ERR_R_MALLOC_FAILURE);
@@ -359,7 +359,7 @@ int UI_dup_info_string(UI *ui, const char *text)
 {
     char *text_copy = NULL;
 
-    if (text != NULL) {
+    if (text) {
         text_copy = BUF_strdup(text);
         if (text_copy == NULL) {
             UIerr(UI_F_UI_DUP_INFO_STRING, ERR_R_MALLOC_FAILURE);
@@ -381,7 +381,7 @@ int UI_dup_error_string(UI *ui, const char *text)
 {
     char *text_copy = NULL;
 
-    if (text != NULL) {
+    if (text) {
         text_copy = BUF_strdup(text);
         if (text_copy == NULL) {
             UIerr(UI_F_UI_DUP_ERROR_STRING, ERR_R_MALLOC_FAILURE);
@@ -397,7 +397,7 @@ char *UI_construct_prompt(UI *ui, const char *object_desc,
 {
     char *prompt = NULL;
 
-    if (ui->meth->ui_construct_prompt != NULL)
+    if (ui->meth->ui_construct_prompt)
         prompt = ui->meth->ui_construct_prompt(ui, object_desc, object_name);
     else {
         char prompt1[] = "Enter ";
@@ -408,16 +408,14 @@ char *UI_construct_prompt(UI *ui, const char *object_desc,
         if (object_desc == NULL)
             return NULL;
         len = sizeof(prompt1) - 1 + strlen(object_desc);
-        if (object_name != NULL)
+        if (object_name)
             len += sizeof(prompt2) - 1 + strlen(object_name);
         len += sizeof(prompt3) - 1;
 
         prompt = (char *)OPENSSL_malloc(len + 1);
-        if (prompt == NULL)
-            return NULL;
         BUF_strlcpy(prompt, prompt1, len + 1);
         BUF_strlcat(prompt, object_desc, len + 1);
-        if (object_name != NULL) {
+        if (object_name) {
             BUF_strlcat(prompt, prompt2, len + 1);
             BUF_strlcat(prompt, object_name, len + 1);
         }
@@ -459,8 +457,7 @@ static int print_error(const char *str, size_t len, UI *ui)
     uis.type = UIT_ERROR;
     uis.out_string = str;
 
-    if (ui->meth->ui_write_string != NULL
-        && ui->meth->ui_write_string(ui, &uis) <= 0)
+    if (ui->meth->ui_write_string && !ui->meth->ui_write_string(ui, &uis))
         return -1;
     return 0;
 }
@@ -469,28 +466,24 @@ int UI_process(UI *ui)
 {
     int i, ok = 0;
 
-    if (ui->meth->ui_open_session != NULL
-        && ui->meth->ui_open_session(ui) <= 0) {
-        ok = -1;
-        goto err;
-    }
+    if (ui->meth->ui_open_session && !ui->meth->ui_open_session(ui))
+        return -1;
 
     if (ui->flags & UI_FLAG_PRINT_ERRORS)
         ERR_print_errors_cb((int (*)(const char *, size_t, void *))
                             print_error, (void *)ui);
 
     for (i = 0; i < sk_UI_STRING_num(ui->strings); i++) {
-        if (ui->meth->ui_write_string != NULL
-            && (ui->meth->ui_write_string(ui,
-                                          sk_UI_STRING_value(ui->strings, i))
-                <= 0))
+        if (ui->meth->ui_write_string
+            && !ui->meth->ui_write_string(ui,
+                                          sk_UI_STRING_value(ui->strings, i)))
         {
             ok = -1;
             goto err;
         }
     }
 
-    if (ui->meth->ui_flush != NULL)
+    if (ui->meth->ui_flush)
         switch (ui->meth->ui_flush(ui)) {
         case -1:               /* Interrupt/Cancel/something... */
             ok = -2;
@@ -504,7 +497,7 @@ int UI_process(UI *ui)
         }
 
     for (i = 0; i < sk_UI_STRING_num(ui->strings); i++) {
-        if (ui->meth->ui_read_string != NULL) {
+        if (ui->meth->ui_read_string) {
             switch (ui->meth->ui_read_string(ui,
                                              sk_UI_STRING_value(ui->strings,
                                                                 i))) {
@@ -521,8 +514,7 @@ int UI_process(UI *ui)
         }
     }
  err:
-    if (ui->meth->ui_close_session != NULL
-        && ui->meth->ui_close_session(ui) <= 0)
+    if (ui->meth->ui_close_session && !ui->meth->ui_close_session(ui))
         return -1;
     return ok;
 }
@@ -618,49 +610,49 @@ void UI_destroy_method(UI_METHOD *ui_method)
 
 int UI_method_set_opener(UI_METHOD *method, int (*opener) (UI *ui))
 {
-    if (method != NULL) {
+    if (method) {
         method->ui_open_session = opener;
         return 0;
-    }
-    return -1;
+    } else
+        return -1;
 }
 
 int UI_method_set_writer(UI_METHOD *method,
                          int (*writer) (UI *ui, UI_STRING *uis))
 {
-    if (method != NULL) {
+    if (method) {
         method->ui_write_string = writer;
         return 0;
-    }
-    return -1;
+    } else
+        return -1;
 }
 
 int UI_method_set_flusher(UI_METHOD *method, int (*flusher) (UI *ui))
 {
-    if (method != NULL) {
+    if (method) {
         method->ui_flush = flusher;
         return 0;
-    }
-    return -1;
+    } else
+        return -1;
 }
 
 int UI_method_set_reader(UI_METHOD *method,
                          int (*reader) (UI *ui, UI_STRING *uis))
 {
-    if (method != NULL) {
+    if (method) {
         method->ui_read_string = reader;
         return 0;
-    }
-    return -1;
+    } else
+        return -1;
 }
 
 int UI_method_set_closer(UI_METHOD *method, int (*closer) (UI *ui))
 {
-    if (method != NULL) {
+    if (method) {
         method->ui_close_session = closer;
         return 0;
-    }
-    return -1;
+    } else
+        return -1;
 }
 
 int UI_method_set_prompt_constructor(UI_METHOD *method,
@@ -670,55 +662,55 @@ int UI_method_set_prompt_constructor(UI_METHOD *method,
                                                                   const char
                                                                   *object_name))
 {
-    if (method != NULL) {
+    if (method) {
         method->ui_construct_prompt = prompt_constructor;
         return 0;
-    }
-    return -1;
+    } else
+        return -1;
 }
 
-int (*UI_method_get_opener(UI_METHOD *method)) (UI *)
-{
-    if (method != NULL)
+int (*UI_method_get_opener(UI_METHOD *method)) (UI *) {
+    if (method)
         return method->ui_open_session;
-    return NULL;
+    else
+        return NULL;
 }
 
-int (*UI_method_get_writer(UI_METHOD *method)) (UI *, UI_STRING *)
-{
-    if (method != NULL)
+int (*UI_method_get_writer(UI_METHOD *method)) (UI *, UI_STRING *) {
+    if (method)
         return method->ui_write_string;
-    return NULL;
+    else
+        return NULL;
 }
 
-int (*UI_method_get_flusher(UI_METHOD *method)) (UI *)
-{
-    if (method != NULL)
+int (*UI_method_get_flusher(UI_METHOD *method)) (UI *) {
+    if (method)
         return method->ui_flush;
-    return NULL;
+    else
+        return NULL;
 }
 
-int (*UI_method_get_reader(UI_METHOD *method)) (UI *, UI_STRING *)
-{
-    if (method != NULL)
+int (*UI_method_get_reader(UI_METHOD *method)) (UI *, UI_STRING *) {
+    if (method)
         return method->ui_read_string;
-    return NULL;
+    else
+        return NULL;
 }
 
-int (*UI_method_get_closer(UI_METHOD *method)) (UI *)
-{
-    if (method != NULL)
+int (*UI_method_get_closer(UI_METHOD *method)) (UI *) {
+    if (method)
         return method->ui_close_session;
-    return NULL;
+    else
+        return NULL;
 }
 
 char *(*UI_method_get_prompt_constructor(UI_METHOD *method)) (UI *,
                                                               const char *,
-                                                              const char *)
-{
-    if (method != NULL)
+                                                              const char *) {
+    if (method)
         return method->ui_construct_prompt;
-    return NULL;
+    else
+        return NULL;
 }
 
 enum UI_string_types UI_get_string_type(UI_STRING *uis)
@@ -747,6 +739,7 @@ const char *UI_get0_action_string(UI_STRING *uis)
     if (!uis)
         return NULL;
     switch (uis->type) {
+    case UIT_PROMPT:
     case UIT_BOOLEAN:
         return uis->_.boolean_data.action_desc;
     default:

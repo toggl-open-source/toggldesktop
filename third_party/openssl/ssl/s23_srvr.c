@@ -195,10 +195,7 @@ int ssl23_accept(SSL *s)
                 s->init_buf = buf;
             }
 
-            if (!ssl3_init_finished_mac(s)) {
-                ret = -1;
-                goto end;
-            }
+            ssl3_init_finished_mac(s);
 
             s->state = SSL23_ST_SR_CLNT_HELLO_A;
             s->ctx->stats.sess_accept++;

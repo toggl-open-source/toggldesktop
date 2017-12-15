@@ -1,4 +1,4 @@
-/* crypto/o_dir.h */
+/* crypto/o_dir.h -*- mode:C; c-file-style: "eay" -*- */
 /*
  * Copied from Richard Levitte's (richard@levitte.org) LP library.  All
  * symbol names have been changed, with permission from the author.

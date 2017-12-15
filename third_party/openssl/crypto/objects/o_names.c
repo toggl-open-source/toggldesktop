@@ -191,7 +191,7 @@ int OBJ_NAME_add(const char *name, int type, const char *data)
     onp = (OBJ_NAME *)OPENSSL_malloc(sizeof(OBJ_NAME));
     if (onp == NULL) {
         /* ERROR */
-        return 0;
+        return (0);
     }
 
     onp->name = name;
@@ -216,11 +216,10 @@ int OBJ_NAME_add(const char *name, int type, const char *data)
     } else {
         if (lh_OBJ_NAME_error(names_lh)) {
             /* ERROR */
-            OPENSSL_free(onp);
-            return 0;
+            return (0);
         }
     }
-    return 1;
+    return (1);
 }
 
 int OBJ_NAME_remove(const char *name, int type)

@@ -63,7 +63,7 @@
 #include <openssl/asn1_mac.h>
 
 static int asn1_get_length(const unsigned char **pp, int *inf, long *rl,
-                           long max);
+                           int max);
 static void asn1_put_length(unsigned char **pp, int length);
 const char ASN1_version[] = "ASN.1" OPENSSL_VERSION_PTEXT;
 
@@ -131,7 +131,7 @@ int ASN1_get_object(const unsigned char **pp, long *plength, int *ptag,
     }
     *ptag = tag;
     *pclass = xclass;
-    if (!asn1_get_length(&p, &inf, plength, max))
+    if (!asn1_get_length(&p, &inf, plength, (int)max))
         goto err;
 
     if (inf && !(ret & V_ASN1_CONSTRUCTED))
@@ -159,14 +159,14 @@ int ASN1_get_object(const unsigned char **pp, long *plength, int *ptag,
 }
 
 static int asn1_get_length(const unsigned char **pp, int *inf, long *rl,
-                           long max)
+                           int max)
 {
     const unsigned char *p = *pp;
     unsigned long ret = 0;
-    unsigned long i;
+    unsigned int i;
 
     if (max-- < 1)
-        return 0;
+        return (0);
     if (*p == 0x80) {
         *inf = 1;
         ret = 0;
@@ -175,11 +175,15 @@ static int asn1_get_length(const unsigned char **pp, int *inf, long *rl,
         *inf = 0;
         i = *p & 0x7f;
         if (*(p++) & 0x80) {
-            if (i > sizeof(ret) || max < (long)i)
+            if (i > sizeof(long))
                 return 0;
+            if (max-- == 0)
+                return (0);
             while (i-- > 0) {
                 ret <<= 8L;
                 ret |= *(p++);
+                if (max-- == 0)
+                    return (0);
             }
         } else
             ret = i;
@@ -188,7 +192,7 @@ static int asn1_get_length(const unsigned char **pp, int *inf, long *rl,
         return 0;
     *pp = p;
     *rl = (long)ret;
-    return 1;
+    return (1);
 }
 
 /*
@@ -256,30 +260,26 @@ static void asn1_put_length(unsigned char **pp, int length)
 
 int ASN1_object_size(int constructed, int length, int tag)
 {
-    int ret = 1;
-    if (length < 0)
-        return -1;
+    int ret;
+
+    ret = length;
+    ret++;
     if (tag >= 31) {
         while (tag > 0) {
             tag >>= 7;
             ret++;
         }
     }
-    if (constructed == 2) {
-        ret += 3;
-    } else {
-        ret++;
-        if (length > 127) {
-            int tmplen = length;
-            while (tmplen > 0) {
-                tmplen >>= 8;
-                ret++;
-            }
+    if (constructed == 2)
+        return ret + 3;
+    ret++;
+    if (length > 127) {
+        while (length > 0) {
+            length >>= 8;
+            ret++;
         }
     }
-    if (ret >= INT_MAX - length)
-        return -1;
-    return ret + length;
+    return (ret);
 }
 
 static int _asn1_Finish(ASN1_const_CTX *c)
@@ -328,7 +328,7 @@ int asn1_GetSequence(ASN1_const_CTX *c, long *length)
         return (0);
     }
     if (c->inf == (1 | V_ASN1_CONSTRUCTED))
-        c->slen = *length;
+        c->slen = *length + *(c->pp) - c->p;
     c->eos = 0;
     return (1);
 }
@@ -370,7 +370,7 @@ int ASN1_STRING_set(ASN1_STRING *str, const void *_data, int len)
         else
             len = strlen(data);
     }
-    if ((str->length <= len) || (str->data == NULL)) {
+    if ((str->length < len) || (str->data == NULL)) {
         c = str->data;
         if (c == NULL)
             str->data = OPENSSL_malloc(len + 1);

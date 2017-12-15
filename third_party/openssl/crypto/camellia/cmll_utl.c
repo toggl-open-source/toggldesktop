@@ -1,4 +1,4 @@
-/* crypto/camellia/cmll_utl.c */
+/* crypto/camellia/cmll_utl.c -*- mode:C; c-file-style: "eay" -*- */
 /* ====================================================================
  * Copyright (c) 2011 The OpenSSL Project.  All rights reserved.
  *

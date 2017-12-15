@@ -91,7 +91,7 @@ int MDC2_Update(MDC2_CTX *c, const unsigned char *in, size_t len)
 
     i = c->num;
     if (i != 0) {
-        if (len < MDC2_BLOCK - i) {
+        if (i + len < MDC2_BLOCK) {
             /* partial block */
             memcpy(&(c->data[i]), in, len);
             c->num += (int)len;

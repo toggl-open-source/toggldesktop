@@ -243,10 +243,8 @@ static int dynamic_set_data_ctx(ENGINE *e, dynamic_data_ctx **ctx)
      * If we lost the race to set the context, c is non-NULL and *ctx is the
      * context of the thread that won.
      */
-    if (c) {
-        sk_OPENSSL_STRING_free(c->dirs);
+    if (c)
         OPENSSL_free(c);
-    }
     return 1;
 }
 

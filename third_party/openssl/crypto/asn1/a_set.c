@@ -57,7 +57,6 @@
  */
 
 #include <stdio.h>
-#include <limits.h>
 #include "cryptlib.h"
 #include <openssl/asn1_mac.h>
 
@@ -99,14 +98,10 @@ int i2d_ASN1_SET(STACK_OF(OPENSSL_BLOCK) *a, unsigned char **pp,
 
     if (a == NULL)
         return (0);
-    for (i = sk_OPENSSL_BLOCK_num(a) - 1; i >= 0; i--) {
-        int tmplen = i2d(sk_OPENSSL_BLOCK_value(a, i), NULL);
-        if (tmplen > INT_MAX - ret)
-            return -1;
+    for (i = sk_OPENSSL_BLOCK_num(a) - 1; i >= 0; i--)
         ret += i2d(sk_OPENSSL_BLOCK_value(a, i), NULL);
-    }
     r = ASN1_object_size(1, ret, ex_tag);
-    if (pp == NULL || r == -1)
+    if (pp == NULL)
         return (r);
 
     p = *pp;

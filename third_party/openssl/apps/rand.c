@@ -86,8 +86,9 @@ int MAIN(int argc, char **argv)
     int hex = 0;
     BIO *out = NULL;
     int num = -1;
-    ENGINE *e = NULL;
+#ifndef OPENSSL_NO_ENGINE
     char *engine = NULL;
+#endif
 
     apps_startup();
 
@@ -161,7 +162,9 @@ int MAIN(int argc, char **argv)
         BIO_printf(bio_err, "-hex                  - hex encode output\n");
         goto err;
     }
-    e = setup_engine(bio_err, engine, 0);
+#ifndef OPENSSL_NO_ENGINE
+    setup_engine(bio_err, engine, 0);
+#endif
 
     app_RAND_load_file(NULL, bio_err, (inrand != NULL));
     if (inrand != NULL)
@@ -219,7 +222,6 @@ int MAIN(int argc, char **argv)
 
  err:
     ERR_print_errors(bio_err);
-    release_engine(e);
     if (out)
         BIO_free_all(out);
     apps_shutdown();

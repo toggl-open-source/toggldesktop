@@ -91,11 +91,12 @@ X509_ALGOR *PKCS5_pbe2_set_iv(const EVP_CIPHER *cipher, int iter,
                               unsigned char *salt, int saltlen,
                               unsigned char *aiv, int prf_nid)
 {
-    X509_ALGOR *scheme = NULL, *ret = NULL;
+    X509_ALGOR *scheme = NULL, *kalg = NULL, *ret = NULL;
     int alg_nid, keylen;
     EVP_CIPHER_CTX ctx;
     unsigned char iv[EVP_MAX_IV_LENGTH];
     PBE2PARAM *pbe2 = NULL;
+    ASN1_OBJECT *obj;
 
     alg_nid = EVP_CIPHER_type(cipher);
     if (alg_nid == NID_undef) {
@@ -103,6 +104,7 @@ X509_ALGOR *PKCS5_pbe2_set_iv(const EVP_CIPHER *cipher, int iter,
                 ASN1_R_CIPHER_HAS_NO_OBJECT_IDENTIFIER);
         goto err;
     }
+    obj = OBJ_nid2obj(alg_nid);
 
     if (!(pbe2 = PBE2PARAM_new()))
         goto merr;
@@ -110,7 +112,7 @@ X509_ALGOR *PKCS5_pbe2_set_iv(const EVP_CIPHER *cipher, int iter,
     /* Setup the AlgorithmIdentifier for the encryption scheme */
     scheme = pbe2->encryption;
 
-    scheme->algorithm = OBJ_nid2obj(alg_nid);
+    scheme->algorithm = obj;
     if (!(scheme->parameter = ASN1_TYPE_new()))
         goto merr;
 
@@ -118,7 +120,7 @@ X509_ALGOR *PKCS5_pbe2_set_iv(const EVP_CIPHER *cipher, int iter,
     if (EVP_CIPHER_iv_length(cipher)) {
         if (aiv)
             memcpy(iv, aiv, EVP_CIPHER_iv_length(cipher));
-        else if (RAND_bytes(iv, EVP_CIPHER_iv_length(cipher)) <= 0)
+        else if (RAND_pseudo_bytes(iv, EVP_CIPHER_iv_length(cipher)) < 0)
             goto err;
     }
 
@@ -186,9 +188,11 @@ X509_ALGOR *PKCS5_pbe2_set_iv(const EVP_CIPHER *cipher, int iter,
  err:
     PBE2PARAM_free(pbe2);
     /* Note 'scheme' is freed as part of pbe2 */
+    X509_ALGOR_free(kalg);
     X509_ALGOR_free(ret);
 
     return NULL;
+
 }
 
 X509_ALGOR *PKCS5_pbe2_set(const EVP_CIPHER *cipher, int iter,
@@ -221,7 +225,7 @@ X509_ALGOR *PKCS5_pbkdf2_set(int iter, unsigned char *salt, int saltlen,
 
     if (salt)
         memcpy(osalt->data, salt, saltlen);
-    else if (RAND_bytes(osalt->data, saltlen) <= 0)
+    else if (RAND_pseudo_bytes(osalt->data, saltlen) < 0)
         goto merr;
 
     if (iter <= 0)

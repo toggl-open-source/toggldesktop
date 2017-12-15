@@ -1,4 +1,4 @@
-/* crypto/engine/e_chil.c */
+/* crypto/engine/e_chil.c -*- mode: C; c-file-style: "eay" -*- */
 /*
  * Written by Richard Levitte (richard@levitte.org), Geoff Thorpe
  * (geoff@geoffthorpe.net) and Dr Stephen N Henson (steve@openssl.org) for
@@ -810,17 +810,9 @@ static EVP_PKEY *hwcrhk_load_privkey(ENGINE *eng, const char *key_id,
 #  endif
 #  ifndef OPENSSL_NO_RSA
     rtmp = RSA_new_method(eng);
-    if (rtmp == NULL) {
-        HWCRHKerr(HWCRHK_F_HWCRHK_LOAD_PRIVKEY, ERR_R_MALLOC_FAILURE);
-        goto err;
-    }
     RSA_set_ex_data(rtmp, hndidx_rsa, (char *)hptr);
     rtmp->e = BN_new();
     rtmp->n = BN_new();
-    if (rtmp->e == NULL || rtmp->n == NULL) {
-        HWCRHKerr(HWCRHK_F_HWCRHK_LOAD_PRIVKEY, ERR_R_MALLOC_FAILURE);
-        goto err;
-    }
     rtmp->flags |= RSA_FLAG_EXT_PKEY;
     MPI2BN(rtmp->e, e);
     MPI2BN(rtmp->n, n);
@@ -831,14 +823,8 @@ static EVP_PKEY *hwcrhk_load_privkey(ENGINE *eng, const char *key_id,
         goto err;
     }
 
-    if (bn_expand2(rtmp->e, e.size / sizeof(BN_ULONG)) == NULL) {
-        HWCRHKerr(HWCRHK_F_HWCRHK_LOAD_PRIVKEY, ERR_R_MALLOC_FAILURE);
-        goto err;
-    }
-    if (bn_expand2(rtmp->n, n.size / sizeof(BN_ULONG)) == NULL) {
-        HWCRHKerr(HWCRHK_F_HWCRHK_LOAD_PRIVKEY, ERR_R_MALLOC_FAILURE);
-        goto err;
-    }
+    bn_expand2(rtmp->e, e.size / sizeof(BN_ULONG));
+    bn_expand2(rtmp->n, n.size / sizeof(BN_ULONG));
     MPI2BN(rtmp->e, e);
     MPI2BN(rtmp->n, n);
 
@@ -937,10 +923,7 @@ static int hwcrhk_mod_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
         goto err;
     }
     /* Prepare the params */
-    if (bn_expand2(r, m->top) == NULL) {     /* Check for error !! */
-        HWCRHKerr(HWCRHK_F_HWCRHK_MOD_EXP, ERR_R_MALLOC_FAILURE);
-        goto err;
-    }
+    bn_expand2(r, m->top);      /* Check for error !! */
     BN2MPI(m_a, a);
     BN2MPI(m_p, p);
     BN2MPI(m_n, m);
@@ -1006,10 +989,7 @@ static int hwcrhk_rsa_mod_exp(BIGNUM *r, const BIGNUM *I, RSA *rsa,
         }
 
         /* Prepare the params */
-        if (bn_expand2(r, rsa->n->top) == NULL) { /* Check for error !! */
-            HWCRHKerr(HWCRHK_F_HWCRHK_RSA_MOD_EXP, ERR_R_MALLOC_FAILURE);
-            goto err;
-        }
+        bn_expand2(r, rsa->n->top); /* Check for error !! */
         BN2MPI(m_a, I);
         MPI2BN(r, m_r);
 
@@ -1046,10 +1026,7 @@ static int hwcrhk_rsa_mod_exp(BIGNUM *r, const BIGNUM *I, RSA *rsa,
         }
 
         /* Prepare the params */
-        if (bn_expand2(r, rsa->n->top) == NULL) { /* Check for error !! */
-            HWCRHKerr(HWCRHK_F_HWCRHK_RSA_MOD_EXP, ERR_R_MALLOC_FAILURE);
-            goto err;
-        }
+        bn_expand2(r, rsa->n->top); /* Check for error !! */
         BN2MPI(m_a, I);
         BN2MPI(m_p, rsa->p);
         BN2MPI(m_q, rsa->q);
@@ -1295,7 +1272,7 @@ static int hwcrhk_insert_card(const char *prompt_info,
     ui = UI_new_method(ui_method);
 
     if (ui) {
-        char answer = '\0';
+        char answer;
         char buf[BUFSIZ];
         /*
          * Despite what the documentation says wrong_info can be an empty

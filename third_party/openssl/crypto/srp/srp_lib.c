@@ -159,7 +159,8 @@ BIGNUM *SRP_Calc_server_key(BIGNUM *A, BIGNUM *v, BIGNUM *u, BIGNUM *b,
     if (u == NULL || A == NULL || v == NULL || b == NULL || N == NULL)
         return NULL;
 
-    if ((bn_ctx = BN_CTX_new()) == NULL || (tmp = BN_new()) == NULL)
+    if ((bn_ctx = BN_CTX_new()) == NULL ||
+        (tmp = BN_new()) == NULL || (S = BN_new()) == NULL)
         goto err;
 
     /* S = (A*v**u) ** b */
@@ -168,12 +169,8 @@ BIGNUM *SRP_Calc_server_key(BIGNUM *A, BIGNUM *v, BIGNUM *u, BIGNUM *b,
         goto err;
     if (!BN_mod_mul(tmp, A, tmp, N, bn_ctx))
         goto err;
-
-    S = BN_new();
-    if (S != NULL && !BN_mod_exp(S, tmp, b, N, bn_ctx)) {
-        BN_free(S);
-        S = NULL;
-    }
+    if (!BN_mod_exp(S, tmp, b, N, bn_ctx))
+        goto err;
  err:
     BN_CTX_free(bn_ctx);
     BN_clear_free(tmp);
@@ -270,7 +267,7 @@ BIGNUM *SRP_Calc_client_key(BIGNUM *N, BIGNUM *B, BIGNUM *g, BIGNUM *x,
 
     if ((tmp = BN_new()) == NULL ||
         (tmp2 = BN_new()) == NULL ||
-        (tmp3 = BN_new()) == NULL)
+        (tmp3 = BN_new()) == NULL || (K = BN_new()) == NULL)
         goto err;
 
     if (!BN_mod_exp(tmp, g, x, N, bn_ctx))
@@ -282,15 +279,12 @@ BIGNUM *SRP_Calc_client_key(BIGNUM *N, BIGNUM *B, BIGNUM *g, BIGNUM *x,
     if (!BN_mod_sub(tmp, B, tmp2, N, bn_ctx))
         goto err;
 
-    if (!BN_mul(tmp3, u, x, bn_ctx))
+    if (!BN_mod_mul(tmp3, u, x, N, bn_ctx))
         goto err;
-    if (!BN_add(tmp2, a, tmp3))
+    if (!BN_mod_add(tmp2, a, tmp3, N, bn_ctx))
         goto err;
-    K = BN_new();
-    if (K != NULL && !BN_mod_exp(K, tmp, tmp2, N, bn_ctx)) {
-        BN_free(K);
-        K = NULL;
-    }
+    if (!BN_mod_exp(K, tmp, tmp2, N, bn_ctx))
+        goto err;
 
  err:
     BN_CTX_free(bn_ctx);
