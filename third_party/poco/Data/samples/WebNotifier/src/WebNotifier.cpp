@@ -1,8 +1,6 @@
 //
 // WebNotifier.cpp
 //
-// $Id: //poco/Main/Data/samples/WebNotifier/src/WebNotifier.cpp#2 $
-//
 // This sample demonstrates a combination of Data and Net libraries by
 // creating a database, registering callbacks for insert/update events 
 // and sending database modifications to the web client through web socket.
@@ -37,7 +35,9 @@
 #include "Poco/Data/RowFormatter.h"
 #include "Poco/Data/RecordSet.h"
 #include "Poco/Data/SQLite/Notifier.h"
+#include "Poco/Data/SQLite/Connector.h"
 #include <iostream>
+
 
 using Poco::delegate;
 using Poco::Timespan;
@@ -368,6 +368,9 @@ void doShell(DBEventHandler& dbEventHandler)
 
 int main(int argc, char** argv)
 {
+	// register SQLite connector
+	Poco::Data::SQLite::Connector::registerConnector();
+
 	// HTTPServer instance
 	RequestHandlerFactory* pFactory = new RequestHandlerFactory;
 	HTTPServer srv(pFactory, 9980);

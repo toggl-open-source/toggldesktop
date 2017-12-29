@@ -1,8 +1,6 @@
 //
 // AnyTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/AnyTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -18,10 +16,11 @@
 #include "Poco/Bugcheck.h"
 #include <vector>
 
-GCC_DIAG_OFF(unused-but-set-variable)
+
 #if defined(_MSC_VER) && _MSC_VER < 1400
 	#pragma warning(disable:4800)//forcing value to bool 'true' or 'false'
 #endif
+
 
 using namespace Poco;
 
@@ -228,7 +227,7 @@ void AnyTest::testInt()
 	std::string* s = AnyCast<std::string>(&a);
 	assert (s == NULL);
 
-	int tmp = AnyCast<int>(a);
+	int POCO_UNUSED tmp = AnyCast<int>(a);
 	const Any c = a;
 	tmp = AnyCast<int>(a);
 }

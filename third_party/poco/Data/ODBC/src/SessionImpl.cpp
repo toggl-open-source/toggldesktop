@@ -1,9 +1,7 @@
 //
 // SessionImpl.cpp
 //
-// $Id: //poco/Main/Data/ODBC/src/SessionImpl.cpp#3 $
-//
-// Library: ODBC
+// Library: Data/ODBC
 // Package: ODBC
 // Module:  SessionImpl
 //
@@ -224,7 +222,11 @@ bool SessionImpl::canTransact()
 
 void SessionImpl::setTransactionIsolation(Poco::UInt32 ti)
 {
+#if POCO_PTR_IS_64_BIT
+	Poco::UInt64 isolation = 0;
+#else
 	Poco::UInt32 isolation = 0;
+#endif
 
 	if (ti & Session::TRANSACTION_READ_UNCOMMITTED)
 		isolation |= SQL_TXN_READ_UNCOMMITTED;
@@ -386,7 +388,10 @@ void SessionImpl::close()
 	try
 	{
 		commit();
-	}catch (ConnectionException&) { }
+	}
+	catch (ConnectionException&) 
+	{
+	}
 
 	SQLDisconnect(_db);
 }

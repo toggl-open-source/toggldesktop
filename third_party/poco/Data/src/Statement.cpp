@@ -1,8 +1,6 @@
 //
 // Statement.cpp
 //
-// $Id: //poco/Main/Data/src/Statement.cpp#11 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Statement
@@ -111,8 +109,8 @@ std::size_t Statement::execute(bool reset)
 			doAsyncExec();
 			return 0;
 		}
-	} else
-		throw InvalidAccessException("Statement still executing.");
+	} 
+	else throw InvalidAccessException("Statement still executing.");
 }
 
 

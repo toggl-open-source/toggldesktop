@@ -1,8 +1,6 @@
 //
 // Platform.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Platform.h#5 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  Platform
@@ -39,6 +37,7 @@
 #define POCO_OS_QNX           0x000b
 #define POCO_OS_VXWORKS       0x000c
 #define POCO_OS_CYGWIN        0x000d
+#define POCO_OS_NACL	      0x000e
 #define POCO_OS_UNKNOWN_UNIX  0x00ff
 #define POCO_OS_WINDOWS_NT    0x1001
 #define POCO_OS_WINDOWS_CE    0x1011
@@ -58,6 +57,9 @@
 #elif defined(__digital__) || defined(__osf__)
 	#define POCO_OS_FAMILY_UNIX 1
 	#define POCO_OS POCO_OS_TRU64
+#elif defined(__NACL__)
+	#define POCO_OS_FAMILY_UNIX 1
+	#define POCO_OS POCO_OS_NACL
 #elif defined(linux) || defined(__linux) || defined(__linux__) || defined(__TOS_LINUX__) || defined(EMSCRIPTEN)
 	#define POCO_OS_FAMILY_UNIX 1
 	#define POCO_OS POCO_OS_LINUX
@@ -108,11 +110,6 @@
 #endif
 
 
-#ifndef POCO_OS_FAMILY_UNIX
-	#define GCC_DIAG_OFF(x)
-	#define GCC_DIAG_ON(x)
-#endif
-
 //
 // Hardware Architecture and Byte Order
 //
@@ -131,6 +128,7 @@
 #define POCO_ARCH_SH      0x0d
 #define POCO_ARCH_NIOS2   0x0e
 #define POCO_ARCH_AARCH64 0x0f
+#define POCO_ARCH_ARM64   0x0f // same as POCO_ARCH_AARCH64
 
 
 #if defined(__ALPHA) || defined(__alpha) || defined(__alpha__) || defined(_M_ALPHA)
@@ -161,14 +159,17 @@
 	#else
 		#error "MIPS but neither MIPSEL nor MIPSEB?"
 	#endif
-
 #elif defined(__hppa) || defined(__hppa__)
 	#define POCO_ARCH POCO_ARCH_HPPA
 	#define POCO_ARCH_BIG_ENDIAN 1
 #elif defined(__PPC) || defined(__POWERPC__) || defined(__powerpc) || defined(__PPC__) || \
       defined(__powerpc__) || defined(__ppc__) || defined(__ppc) || defined(_ARCH_PPC) || defined(_M_PPC)
 	#define POCO_ARCH POCO_ARCH_PPC
-	#define POCO_ARCH_BIG_ENDIAN 1
+	#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+		#define POCO_ARCH_LITTLE_ENDIAN 1
+	#else
+		#define POCO_ARCH_BIG_ENDIAN 1
+	#endif
 #elif defined(_POWER) || defined(_ARCH_PWR) || defined(_ARCH_PWR2) || defined(_ARCH_PWR3) || \
       defined(_ARCH_PWR4) || defined(__THW_RS6000)
 	#define POCO_ARCH POCO_ARCH_POWER
@@ -183,7 +184,7 @@
 	#else
 		#define POCO_ARCH_LITTLE_ENDIAN 1
 	#endif
-#elif defined(__arm64__) || defined(__arm64) 
+#elif defined(__arm64__) || defined(__arm64)
 	#define POCO_ARCH POCO_ARCH_ARM64
 	#if defined(__ARMEB__)
 		#define POCO_ARCH_BIG_ENDIAN 1
@@ -243,13 +244,20 @@
 	#define POCO_COMPILER_CBUILDER
 #elif defined (__DMC__)
 	#define POCO_COMPILER_DMARS
-#elif defined (__HP_aCC)
-	#define POCO_COMPILER_HP_ACC
+#elif defined (__DECCXX)
+	#define POCO_COMPILER_COMPAC
 #elif (defined (__xlc__) || defined (__xlC__)) && defined(__IBMCPP__)
 	#define POCO_COMPILER_IBM_XLC // IBM XL C++
 #elif defined (__IBMCPP__) && defined(__COMPILER_VER__)
 	#define POCO_COMPILER_IBM_XLC_ZOS // IBM z/OS C++
 #endif
+
+
+#ifdef __GNUC__
+#define POCO_UNUSED __attribute__((unused))
+#else
+#define POCO_UNUSED
+#endif // __GNUC__
 
 
 #if !defined(POCO_ARCH)

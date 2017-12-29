@@ -1,8 +1,6 @@
 //
 // BulkExtraction.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/BulkExtraction.h#9 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  BulkExtraction
@@ -88,7 +86,8 @@ public:
 		try
 		{
 			return _nulls.at(row);
-		}catch (std::out_of_range& ex)
+		}
+		catch (std::out_of_range& ex)
 		{ 
 			throw RangeException(ex.what()); 
 		}

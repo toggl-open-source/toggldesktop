@@ -1,8 +1,6 @@
 //
 // File_WIN32.cpp
 //
-// $Id: //poco/1.4/Foundation/src/File_WIN32.cpp#1 $
-//
 // Library: Foundation
 // Package: Filesystem
 // Module:  File
@@ -297,7 +295,7 @@ void FileImpl::renameToImpl(const std::string& path)
 {
 	poco_assert (!_path.empty());
 
-	if (MoveFileA(_path.c_str(), path.c_str()) == 0)
+	if (MoveFileExA(_path.c_str(), path.c_str(), MOVEFILE_REPLACE_EXISTING) == 0)
 		handleLastErrorImpl(_path);
 }
 
@@ -376,7 +374,7 @@ void FileImpl::handleLastErrorImpl(const std::string& path)
 	case ERROR_CANNOT_MAKE:
 		throw CreateFileException(path, err);
 	case ERROR_DIR_NOT_EMPTY:
-		throw FileException("directory not empty", path, err);
+		throw DirectoryNotEmptyException(path, err);
 	case ERROR_WRITE_FAULT:
 		throw WriteFileException(path, err);
 	case ERROR_READ_FAULT:

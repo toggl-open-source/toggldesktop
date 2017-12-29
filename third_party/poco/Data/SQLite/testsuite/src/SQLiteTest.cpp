@@ -1,8 +1,6 @@
 //
 // SQLiteTest.cpp
 //
-// $Id: //poco/Main/Data/SQLite/testsuite/src/SQLiteTest.cpp#7 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -23,6 +21,7 @@
 #include "Poco/Data/SQLite/Connector.h"
 #include "Poco/Data/SQLite/Utility.h"
 #include "Poco/Data/SQLite/Notifier.h"
+#include "Poco/Data/SQLite/Connector.h"
 #include "Poco/Dynamic/Var.h"
 #include "Poco/Data/TypeHandler.h"
 #include "Poco/Nullable.h"
@@ -241,17 +240,22 @@ int SQLiteTest::_deleteCounter;
 
 SQLiteTest::SQLiteTest(const std::string& name): CppUnit::TestCase(name)
 {
+	Poco::Data::SQLite::Connector::registerConnector();
 }
 
 
 SQLiteTest::~SQLiteTest()
 {
+	Poco::Data::SQLite::Connector::unregisterConnector();
 }
 
 
 void SQLiteTest::testBinding()
 {
 	Session tmp (Poco::Data::SQLite::Connector::KEY, "dummy.db");
+	assert (tmp.getConnectionTimeout() == Session::LOGIN_TIMEOUT_DEFAULT);
+	tmp.setConnectionTimeout(5);
+	assert (tmp.getConnectionTimeout() == 5);
 	assert (tmp.isConnected());
 	std::string tableName("Simpsons");
 	std::string lastName("Simpson");

@@ -11,13 +11,71 @@ ifndef POCO_BASE
 $(warning WARNING: POCO_BASE is not defined. Assuming current directory.)
 export POCO_BASE=$(shell pwd)
 endif
-
-ifndef POCO_PREFIX
-export POCO_PREFIX=/usr/local
+ifdef POCO_VERBOSE
+$(info POCO_BASE           = $(POCO_BASE))
 endif
 
 ifndef POCO_BUILD
 export POCO_BUILD=$(POCO_BASE)
+endif
+ifdef POCO_VERBOSE
+$(info POCO_BUILD          = $(POCO_BUILD))
+endif
+
+#
+# Determine OS
+#
+POCO_HOST_OSNAME = $(shell uname)
+ifeq ($(findstring CYGWIN,$(POCO_HOST_OSNAME)),CYGWIN)
+POCO_HOST_OSNAME = CYGWIN
+endif
+
+ifeq ($(findstring MINGW,$(POCO_HOST_OSNAME)),MINGW)
+POCO_HOST_OSNAME = MinGW
+endif
+ifdef POCO_VERBOSE
+$(info POCO_HOST_OSNAME    = $(POCO_HOST_OSNAME))
+endif
+
+POCO_HOST_OSARCH ?= $(subst /,-,$(shell uname -m | tr ' ' _))
+ifdef POCO_VERBOSE
+$(info POCO_HOST_OSARCH    = $(POCO_HOST_OSARCH))
+endif
+
+#
+# If POCO_CONFIG is not set, use the OS name as configuration name
+#
+ifndef POCO_CONFIG
+POCO_CONFIG = $(POCO_HOST_OSNAME)
+endif
+ifdef POCO_VERBOSE
+$(info POCO_CONFIG         = $(POCO_CONFIG))
+endif
+
+#
+# Include System Specific Settings
+#
+include $(POCO_BASE)/build/config/$(POCO_CONFIG)
+
+#
+# Determine operating system
+#
+ifndef POCO_TARGET_OSNAME
+OSNAME   := $(POCO_HOST_OSNAME)
+else
+OSNAME   := $(POCO_TARGET_OSNAME)
+endif
+ifdef POCO_VERBOSE
+$(info OSNAME              = $(OSNAME))
+endif
+
+ifndef POCO_TARGET_OSARCH
+OSARCH   := $(POCO_HOST_OSARCH)
+else
+OSARCH   := $(POCO_TARGET_OSARCH)
+endif
+ifdef POCO_VERBOSE
+$(info OSARCH              = $(OSARCH))
 endif
 
 .PHONY: poco all libexecs cppunit tests samples cleans clean distclean install
@@ -27,19 +85,19 @@ poco: libexecs $(if $(TESTS),tests) $(if $(SAMPLES),samples)
 all: libexecs tests samples
 
 INSTALLDIR = $(DESTDIR)$(POCO_PREFIX)
-COMPONENTS = Foundation XML JSON Util Net Crypto NetSSL_OpenSSL Data Data/SQLite Data/ODBC Data/MySQL MongoDB Zip PageCompiler PageCompiler/File2Page
+COMPONENTS = Foundation XML JSON Util Net Crypto NetSSL_OpenSSL Data Data/SQLite Data/ODBC Data/MySQL Zip PageCompiler PageCompiler/File2Page MongoDB Redis
 
 cppunit:
 	$(MAKE) -C $(POCO_BASE)/CppUnit 
 
 CppUnit-clean:
-	\$(MAKE) -C \$(POCO_BASE)/CppUnit clean
+	$(MAKE) -C $(POCO_BASE)/CppUnit clean
 
 install: libexecs
 	mkdir -p $(INSTALLDIR)/include/Poco
 	mkdir -p $(INSTALLDIR)/lib
 	mkdir -p $(INSTALLDIR)/bin
-	for comp in $(COMPONENTS) ; do \
+	for comp in $(filter-out $(foreach f,$(OMIT),$f%),$(COMPONENTS)) ; do \
 		if [ -d "$(POCO_BASE)/$$comp/include" ] ; then \
 			cp -Rf $(POCO_BASE)/$$comp/include/* $(INSTALLDIR)/include/ ; \
 		fi ; \
@@ -47,13 +105,17 @@ install: libexecs
 			find $(POCO_BUILD)/$$comp/bin -perm -700 -type f -exec cp -f {} $(INSTALLDIR)/bin \; ; \
 		fi ; \
 	done
-	find $(POCO_BUILD)/lib -name "libPoco*" -type f -exec cp -f {} $(INSTALLDIR)/lib \;
-	find $(POCO_BUILD)/lib -name "libPoco*" -type l -exec cp -Rf {} $(INSTALLDIR)/lib \;
+ifeq ($(OSNAME), CYGWIN)
+	find $(POCO_BUILD)/lib/$(OSNAME)/$(OSARCH) -name "cygPoco*" -type f -exec cp -f  {} $(INSTALLDIR)/bin \;
+	find $(POCO_BUILD)/lib/$(OSNAME)/$(OSARCH) -name "cygPoco*" -type l -exec cp -Rf {} $(INSTALLDIR)/bin \;
+endif
+	find $(POCO_BUILD)/lib/$(OSNAME)/$(OSARCH) -name "libPoco*" -type f -exec cp -f  {} $(INSTALLDIR)/lib \;
+	find $(POCO_BUILD)/lib/$(OSNAME)/$(OSARCH) -name "libPoco*" -type l -exec cp -Rf {} $(INSTALLDIR)/lib \;
 
-libexecs =  Foundation-libexec XML-libexec JSON-libexec Util-libexec Net-libexec Crypto-libexec NetSSL_OpenSSL-libexec Data-libexec Data/SQLite-libexec Data/ODBC-libexec Data/MySQL-libexec MongoDB-libexec Zip-libexec PageCompiler-libexec PageCompiler/File2Page-libexec
-tests    =  Foundation-tests XML-tests JSON-tests Util-tests Net-tests Crypto-tests NetSSL_OpenSSL-tests Data-tests Data/SQLite-tests Data/ODBC-tests Data/MySQL-tests MongoDB-tests Zip-tests
-samples  =  Foundation-samples XML-samples JSON-samples Util-samples Net-samples Crypto-samples NetSSL_OpenSSL-samples Data-samples MongoDB-samples Zip-samples PageCompiler-samples
-cleans   =  Foundation-clean XML-clean JSON-clean Util-clean Net-clean Crypto-clean NetSSL_OpenSSL-clean Data-clean Data/SQLite-clean Data/ODBC-clean Data/MySQL-clean MongoDB-clean Zip-clean PageCompiler-clean PageCompiler/File2Page-clean
+libexecs =  Foundation-libexec XML-libexec JSON-libexec Util-libexec Net-libexec Crypto-libexec NetSSL_OpenSSL-libexec Data-libexec Data/SQLite-libexec Data/ODBC-libexec Data/MySQL-libexec Zip-libexec PageCompiler-libexec PageCompiler/File2Page-libexec MongoDB-libexec Redis-libexec
+tests    =  Foundation-tests XML-tests JSON-tests Util-tests Net-tests Crypto-tests NetSSL_OpenSSL-tests Data-tests Data/SQLite-tests Data/ODBC-tests Data/MySQL-tests Zip-tests MongoDB-tests Redis-tests
+samples  =  Foundation-samples XML-samples JSON-samples Util-samples Net-samples Crypto-samples NetSSL_OpenSSL-samples Data-samples Zip-samples PageCompiler-samples MongoDB-samples
+cleans   =  Foundation-clean XML-clean JSON-clean Util-clean Net-clean Crypto-clean NetSSL_OpenSSL-clean Data-clean Data/SQLite-clean Data/ODBC-clean Data/MySQL-clean Zip-clean PageCompiler-clean PageCompiler/File2Page-clean MongoDB-clean Redis-clean
 
 .PHONY: $(libexecs)
 .PHONY: $(tests)
@@ -127,7 +189,7 @@ Net-libexec:  Foundation-libexec
 Net-tests: Net-libexec cppunit
 	$(MAKE) -C $(POCO_BASE)/Net/testsuite
 	
-Net-samples: Net-libexec  Foundation-libexec XML-libexec Util-libexec
+Net-samples: Net-libexec  Foundation-libexec XML-libexec JSON-libexec Util-libexec
 	$(MAKE) -C $(POCO_BASE)/Net/samples
 
 Net-clean:
@@ -207,6 +269,36 @@ Data/MySQL-clean:
 	$(MAKE) -C $(POCO_BASE)/Data/MySQL clean
 	$(MAKE) -C $(POCO_BASE)/Data/MySQL/testsuite clean
 
+Zip-libexec:  Foundation-libexec Net-libexec Util-libexec XML-libexec JSON-libexec
+	$(MAKE) -C $(POCO_BASE)/Zip
+
+Zip-tests: Zip-libexec cppunit
+	$(MAKE) -C $(POCO_BASE)/Zip/testsuite
+	
+Zip-samples: Zip-libexec 
+	$(MAKE) -C $(POCO_BASE)/Zip/samples
+
+Zip-clean:
+	$(MAKE) -C $(POCO_BASE)/Zip clean
+	$(MAKE) -C $(POCO_BASE)/Zip/testsuite clean
+	$(MAKE) -C $(POCO_BASE)/Zip/samples clean
+
+PageCompiler-libexec:  Net-libexec Util-libexec XML-libexec JSON-libexec Foundation-libexec
+	$(MAKE) -C $(POCO_BASE)/PageCompiler
+	
+PageCompiler-samples: PageCompiler-libexec  Foundation-libexec Net-libexec Util-libexec PageCompiler-libexec
+	$(MAKE) -C $(POCO_BASE)/PageCompiler/samples
+
+PageCompiler-clean:
+	$(MAKE) -C $(POCO_BASE)/PageCompiler clean
+	$(MAKE) -C $(POCO_BASE)/PageCompiler/samples clean
+
+PageCompiler/File2Page-libexec:  Net-libexec Util-libexec XML-libexec JSON-libexec Foundation-libexec
+	$(MAKE) -C $(POCO_BASE)/PageCompiler/File2Page
+
+PageCompiler/File2Page-clean:
+	$(MAKE) -C $(POCO_BASE)/PageCompiler/File2Page clean
+
 MongoDB-libexec:  Foundation-libexec Net-libexec
 	$(MAKE) -C $(POCO_BASE)/MongoDB
 
@@ -221,35 +313,15 @@ MongoDB-clean:
 	$(MAKE) -C $(POCO_BASE)/MongoDB/testsuite clean
 	$(MAKE) -C $(POCO_BASE)/MongoDB/samples clean
 
-Zip-libexec:  Foundation-libexec Net-libexec Util-libexec XML-libexec
-	$(MAKE) -C $(POCO_BASE)/Zip
+Redis-libexec:  Foundation-libexec Net-libexec
+	$(MAKE) -C $(POCO_BASE)/Redis
 
-Zip-tests: Zip-libexec cppunit
-	$(MAKE) -C $(POCO_BASE)/Zip/testsuite
-	
-Zip-samples: Zip-libexec 
-	$(MAKE) -C $(POCO_BASE)/Zip/samples
+Redis-tests: Redis-libexec cppunit
+	$(MAKE) -C $(POCO_BASE)/Redis/testsuite
 
-Zip-clean:
-	$(MAKE) -C $(POCO_BASE)/Zip clean
-	$(MAKE) -C $(POCO_BASE)/Zip/testsuite clean
-	$(MAKE) -C $(POCO_BASE)/Zip/samples clean
-
-PageCompiler-libexec:  Net-libexec Util-libexec XML-libexec Foundation-libexec
-	$(MAKE) -C $(POCO_BASE)/PageCompiler
-	
-PageCompiler-samples: PageCompiler-libexec 
-	$(MAKE) -C $(POCO_BASE)/PageCompiler/samples
-
-PageCompiler-clean:
-	$(MAKE) -C $(POCO_BASE)/PageCompiler clean
-	$(MAKE) -C $(POCO_BASE)/PageCompiler/samples clean
-
-PageCompiler/File2Page-libexec:  Net-libexec Util-libexec XML-libexec Foundation-libexec
-	$(MAKE) -C $(POCO_BASE)/PageCompiler/File2Page
-
-PageCompiler/File2Page-clean:
-	$(MAKE) -C $(POCO_BASE)/PageCompiler/File2Page clean
+Redis-clean:
+	$(MAKE) -C $(POCO_BASE)/Redis clean
+	$(MAKE) -C $(POCO_BASE)/Redis/testsuite clean
 
 clean: cleans CppUnit-clean
 

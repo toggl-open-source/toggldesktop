@@ -2,8 +2,11 @@
 build
 build/config
 build/config/AIX
+build/config/Alpine
 build/config/Android
 build/config/Angstrom
+build/config/AppleTV
+build/config/AppleTVSimulator
 build/config/ARM-Linux
 build/config/BeagleBoard
 build/config/CEGCCARM
@@ -12,15 +15,12 @@ build/config/CYGWIN
 build/config/Darwin
 build/config/Darwin-clang
 build/config/Darwin-clang-libc++
-build/config/Darwin-gcc
 build/config/Darwin32
 build/config/Darwin32-clang
 build/config/Darwin32-clang-libc++
-build/config/Darwin32-gcc
 build/config/Darwin64
 build/config/Darwin64-clang
 build/config/Darwin64-clang-libc++
-build/config/Darwin64-gcc
 build/config/DigiEL
 build/config/ELDK
 build/config/FreeBSD
@@ -34,6 +34,8 @@ build/config/iPhoneSimulator
 build/config/iPhoneSimulator-clang
 build/config/iPhoneSimulator-clang-libc++
 build/config/Linux
+build/config/Linux-clang
+build/config/Linux-SolarisStudio
 build/config/MinGW
 build/config/MinGW-CrossEnv
 build/config/NIOS2-Linux
@@ -50,6 +52,9 @@ build/config/SunOS-stdcxx-x86_64
 build/config/SunOS-SunForte
 build/config/SunOS-SunStudio
 build/config/SunOS-SunStudio11
+build/config/WatchOS
+build/config/WatchSimulator
+build/config/Yocto
 build/rules
 build/rules/compile
 build/rules/dylib
@@ -67,23 +72,26 @@ build/script/makedepend.SunCC
 build/script/makedepend.xlC
 build/script/makeldpath
 build/script/projname
+build/script/runtests.cmd
+build/script/runtests.sh
+build/script/runtests2.cmd
 build/script/shlibln
 build/script/vxprogen
-build/vms
-build/vxconfig
-build/vxconfig/PPC440diab_debug
-build/vxconfig/PPC440diab_release
 build_CE_vs90.cmd
 build_vcexpress2008.cmd
 build_vcexpress2010.cmd
 build_vs100.cmd
 build_vs110.cmd
 build_vs120.cmd
+build_vs140.cmd
+build_vs150.cmd
 build_vs90.cmd
 buildwin.cmd
 CHANGELOG
 cmake
 cmake/cmake_uninstall.cmake.in
+cmake/CXX1x.cmake
+cmake/DefinePlatformSpecifc.cmake
 cmake/FindApache2.cmake
 cmake/FindAPR.cmake
 cmake/FindMySQL.cmake
@@ -95,6 +103,7 @@ cmake/PocoConfig.cmake.in
 cmake/PocoConfigVersion.cmake.in
 cmake/PocoMacros.cmake
 cmake/README
+cmake/test_compiler.cpp
 CMakeLists.txt
 components
 configure
@@ -102,7 +111,7 @@ contrib
 contrib/poco-doc.pl
 CONTRIBUTORS
 CppUnit
-CppUnit/CppUnit.vxbuild
+CppUnit/CMakeLists.txt
 CppUnit/CppUnit_CE_vs90.sln
 CppUnit/CppUnit_CE_vs90.vcproj
 CppUnit/CppUnit_vs100.sln
@@ -117,6 +126,9 @@ CppUnit/CppUnit_vs120.vcxproj.filters
 CppUnit/CppUnit_vs140.sln
 CppUnit/CppUnit_vs140.vcxproj
 CppUnit/CppUnit_vs140.vcxproj.filters
+CppUnit/CppUnit_vs150.sln
+CppUnit/CppUnit_vs150.vcxproj
+CppUnit/CppUnit_vs150.vcxproj.filters
 CppUnit/CppUnit_vs90.sln
 CppUnit/CppUnit_vs90.vcproj
 CppUnit/CppUnit_WEC2013_vs110.sln
@@ -137,6 +149,9 @@ CppUnit/CppUnit_x64_vs120.vcxproj.filters
 CppUnit/CppUnit_x64_vs140.sln
 CppUnit/CppUnit_x64_vs140.vcxproj
 CppUnit/CppUnit_x64_vs140.vcxproj.filters
+CppUnit/CppUnit_x64_vs150.sln
+CppUnit/CppUnit_x64_vs150.vcxproj
+CppUnit/CppUnit_x64_vs150.vcxproj.filters
 CppUnit/CppUnit_x64_vs90.sln
 CppUnit/CppUnit_x64_vs90.vcproj
 CppUnit/doc
@@ -173,6 +188,7 @@ CppUnit/src/TestRunner.cpp
 CppUnit/src/TestSuite.cpp
 CppUnit/src/TextTestResult.cpp
 CppUnit/WinTestRunner
+CppUnit/WinTestRunner/CMakeLists.txt
 CppUnit/WinTestRunner/include
 CppUnit/WinTestRunner/include/WinTestRunner
 CppUnit/WinTestRunner/include/WinTestRunner/WinTestRunner.h
@@ -221,8 +237,12 @@ Crypto/Crypto_vs120.vcxproj.filters
 Crypto/Crypto_vs140.sln
 Crypto/Crypto_vs140.vcxproj
 Crypto/Crypto_vs140.vcxproj.filters
+Crypto/Crypto_vs150.sln
+Crypto/Crypto_vs150.vcxproj
+Crypto/Crypto_vs150.vcxproj.filters
 Crypto/Crypto_VS90.sln
 Crypto/Crypto_VS90.vcproj
+Crypto/Crypto_WEC2013_vs110.sln
 Crypto/Crypto_WEC2013_vs110.vcxproj
 Crypto/Crypto_WEC2013_vs110.vcxproj.filters
 Crypto/Crypto_WEC2013_vs120.sln
@@ -240,6 +260,9 @@ Crypto/Crypto_x64_vs120.vcxproj.filters
 Crypto/Crypto_x64_vs140.sln
 Crypto/Crypto_x64_vs140.vcxproj
 Crypto/Crypto_x64_vs140.vcxproj.filters
+Crypto/Crypto_x64_vs150.sln
+Crypto/Crypto_x64_vs150.vcxproj
+Crypto/Crypto_x64_vs150.vcxproj.filters
 Crypto/Crypto_x64_vs90.sln
 Crypto/Crypto_x64_vs90.vcproj
 Crypto/include
@@ -251,10 +274,18 @@ Crypto/include/Poco/Crypto/CipherImpl.h
 Crypto/include/Poco/Crypto/CipherKey.h
 Crypto/include/Poco/Crypto/CipherKeyImpl.h
 Crypto/include/Poco/Crypto/Crypto.h
+Crypto/include/Poco/Crypto/CryptoException.h
 Crypto/include/Poco/Crypto/CryptoStream.h
 Crypto/include/Poco/Crypto/CryptoTransform.h
 Crypto/include/Poco/Crypto/DigestEngine.h
+Crypto/include/Poco/Crypto/ECDSADigestEngine.h
+Crypto/include/Poco/Crypto/ECKey.h
+Crypto/include/Poco/Crypto/ECKeyImpl.h
+Crypto/include/Poco/Crypto/EVPPKey.h
+Crypto/include/Poco/Crypto/KeyPair.h
+Crypto/include/Poco/Crypto/KeyPairImpl.h
 Crypto/include/Poco/Crypto/OpenSSLInitializer.h
+Crypto/include/Poco/Crypto/PKCS12Container.h
 Crypto/include/Poco/Crypto/RSACipherImpl.h
 Crypto/include/Poco/Crypto/RSADigestEngine.h
 Crypto/include/Poco/Crypto/RSAKey.h
@@ -275,6 +306,8 @@ Crypto/samples/genrsakey/genrsakey_vs120.vcxproj
 Crypto/samples/genrsakey/genrsakey_vs120.vcxproj.filters
 Crypto/samples/genrsakey/genrsakey_vs140.vcxproj
 Crypto/samples/genrsakey/genrsakey_vs140.vcxproj.filters
+Crypto/samples/genrsakey/genrsakey_vs150.vcxproj
+Crypto/samples/genrsakey/genrsakey_vs150.vcxproj.filters
 Crypto/samples/genrsakey/genrsakey_VS90.vcproj
 Crypto/samples/genrsakey/genrsakey_WEC2013_vs110.vcxproj
 Crypto/samples/genrsakey/genrsakey_WEC2013_vs110.vcxproj.filters
@@ -288,6 +321,8 @@ Crypto/samples/genrsakey/genrsakey_x64_vs120.vcxproj
 Crypto/samples/genrsakey/genrsakey_x64_vs120.vcxproj.filters
 Crypto/samples/genrsakey/genrsakey_x64_vs140.vcxproj
 Crypto/samples/genrsakey/genrsakey_x64_vs140.vcxproj.filters
+Crypto/samples/genrsakey/genrsakey_x64_vs150.vcxproj
+Crypto/samples/genrsakey/genrsakey_x64_vs150.vcxproj.filters
 Crypto/samples/genrsakey/genrsakey_x64_vs90.vcproj
 Crypto/samples/genrsakey/Makefile
 Crypto/samples/genrsakey/src
@@ -299,12 +334,14 @@ Crypto/samples/samples_vs100.sln
 Crypto/samples/samples_vs110.sln
 Crypto/samples/samples_vs120.sln
 Crypto/samples/samples_vs140.sln
+Crypto/samples/samples_vs150.sln
 Crypto/samples/samples_VS90.sln
 Crypto/samples/samples_WEC2013_vs120.sln
 Crypto/samples/samples_x64_vs100.sln
 Crypto/samples/samples_x64_vs110.sln
 Crypto/samples/samples_x64_vs120.sln
 Crypto/samples/samples_x64_vs140.sln
+Crypto/samples/samples_x64_vs150.sln
 Crypto/samples/samples_x64_vs90.sln
 Crypto/src
 Crypto/src/Cipher.cpp
@@ -312,10 +349,18 @@ Crypto/src/CipherFactory.cpp
 Crypto/src/CipherImpl.cpp
 Crypto/src/CipherKey.cpp
 Crypto/src/CipherKeyImpl.cpp
+Crypto/src/CryptoException.cpp
 Crypto/src/CryptoStream.cpp
 Crypto/src/CryptoTransform.cpp
 Crypto/src/DigestEngine.cpp
+Crypto/src/ECDSADigestEngine.cpp
+Crypto/src/ECKey.cpp
+Crypto/src/ECKeyImpl.cpp
+Crypto/src/EVPPKey.cpp
+Crypto/src/KeyPair.cpp
+Crypto/src/KeyPairImpl.cpp
 Crypto/src/OpenSSLInitializer.cpp
+Crypto/src/PKCS12Container.cpp
 Crypto/src/RSACipherImpl.cpp
 Crypto/src/RSADigestEngine.cpp
 Crypto/src/RSAKey.cpp
@@ -323,6 +368,11 @@ Crypto/src/RSAKeyImpl.cpp
 Crypto/src/X509Certificate.cpp
 Crypto/testsuite
 Crypto/testsuite/CMakeLists.txt
+Crypto/testsuite/data
+Crypto/testsuite/data/certs-only.p12
+Crypto/testsuite/data/certs-only.pem
+Crypto/testsuite/data/full.p12
+Crypto/testsuite/data/full.pem
 Crypto/testsuite/Makefile
 Crypto/testsuite/src
 Crypto/testsuite/src/CryptoTest.cpp
@@ -332,6 +382,12 @@ Crypto/testsuite/src/CryptoTestSuite.h
 Crypto/testsuite/src/DigestEngineTest.cpp
 Crypto/testsuite/src/DigestEngineTest.h
 Crypto/testsuite/src/Driver.cpp
+Crypto/testsuite/src/ECTest.cpp
+Crypto/testsuite/src/ECTest.h
+Crypto/testsuite/src/EVPTest.cpp
+Crypto/testsuite/src/EVPTest.h
+Crypto/testsuite/src/PKCS12ContainerTest.cpp
+Crypto/testsuite/src/PKCS12ContainerTest.h
 Crypto/testsuite/src/RSATest.cpp
 Crypto/testsuite/src/RSATest.h
 Crypto/testsuite/src/WinCEDriver.cpp
@@ -346,6 +402,8 @@ Crypto/testsuite/TestSuite_vs120.vcxproj
 Crypto/testsuite/TestSuite_vs120.vcxproj.filters
 Crypto/testsuite/TestSuite_vs140.vcxproj
 Crypto/testsuite/TestSuite_vs140.vcxproj.filters
+Crypto/testsuite/TestSuite_vs150.vcxproj
+Crypto/testsuite/TestSuite_vs150.vcxproj.filters
 Crypto/testsuite/TestSuite_VS90.vcproj
 Crypto/testsuite/TestSuite_WEC2013_vs110.vcxproj
 Crypto/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -359,6 +417,8 @@ Crypto/testsuite/TestSuite_x64_vs120.vcxproj
 Crypto/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Crypto/testsuite/TestSuite_x64_vs140.vcxproj
 Crypto/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Crypto/testsuite/TestSuite_x64_vs150.vcxproj
+Crypto/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Crypto/testsuite/TestSuite_x64_vs90.vcproj
 Data
 Data/cmake
@@ -379,6 +439,9 @@ Data/Data_vs120.vcxproj.filters
 Data/Data_vs140.sln
 Data/Data_vs140.vcxproj
 Data/Data_vs140.vcxproj.filters
+Data/Data_vs150.sln
+Data/Data_vs150.vcxproj
+Data/Data_vs150.vcxproj.filters
 Data/Data_VS90.sln
 Data/Data_VS90.vcproj
 Data/Data_WEC2013_vs110.sln
@@ -399,6 +462,9 @@ Data/Data_x64_vs120.vcxproj.filters
 Data/Data_x64_vs140.sln
 Data/Data_x64_vs140.vcxproj
 Data/Data_x64_vs140.vcxproj.filters
+Data/Data_x64_vs150.sln
+Data/Data_x64_vs150.vcxproj
+Data/Data_x64_vs150.vcxproj.filters
 Data/Data_x64_vs90.sln
 Data/Data_x64_vs90.vcproj
 Data/doc
@@ -491,6 +557,9 @@ Data/MySQL/MySQL_vs120.vcxproj.filters
 Data/MySQL/MySQL_vs140.sln
 Data/MySQL/MySQL_vs140.vcxproj
 Data/MySQL/MySQL_vs140.vcxproj.filters
+Data/MySQL/MySQL_vs150.sln
+Data/MySQL/MySQL_vs150.vcxproj
+Data/MySQL/MySQL_vs150.vcxproj.filters
 Data/MySQL/MySQL_VS90.sln
 Data/MySQL/MySQL_VS90.vcproj
 Data/MySQL/MySQL_x64_vs100.sln
@@ -505,6 +574,9 @@ Data/MySQL/MySQL_x64_vs120.vcxproj.filters
 Data/MySQL/MySQL_x64_vs140.sln
 Data/MySQL/MySQL_x64_vs140.vcxproj
 Data/MySQL/MySQL_x64_vs140.vcxproj.filters
+Data/MySQL/MySQL_x64_vs150.sln
+Data/MySQL/MySQL_x64_vs150.vcxproj
+Data/MySQL/MySQL_x64_vs150.vcxproj.filters
 Data/MySQL/MySQL_x64_vs90.sln
 Data/MySQL/MySQL_x64_vs90.vcproj
 Data/MySQL/src
@@ -539,6 +611,8 @@ Data/MySQL/testsuite/TestSuite_vs120.vcxproj
 Data/MySQL/testsuite/TestSuite_vs120.vcxproj.filters
 Data/MySQL/testsuite/TestSuite_vs140.vcxproj
 Data/MySQL/testsuite/TestSuite_vs140.vcxproj.filters
+Data/MySQL/testsuite/TestSuite_vs150.vcxproj
+Data/MySQL/testsuite/TestSuite_vs150.vcxproj.filters
 Data/MySQL/testsuite/TestSuite_VS90.vcproj
 Data/MySQL/testsuite/TestSuite_x64_vs100.vcxproj
 Data/MySQL/testsuite/TestSuite_x64_vs100.vcxproj.filters
@@ -548,6 +622,8 @@ Data/MySQL/testsuite/TestSuite_x64_vs120.vcxproj
 Data/MySQL/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Data/MySQL/testsuite/TestSuite_x64_vs140.vcxproj
 Data/MySQL/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Data/MySQL/testsuite/TestSuite_x64_vs150.vcxproj
+Data/MySQL/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Data/MySQL/testsuite/TestSuite_x64_vs90.vcproj
 Data/ODBC
 Data/ODBC/cmake
@@ -592,6 +668,9 @@ Data/ODBC/ODBC_vs120.vcxproj.filters
 Data/ODBC/ODBC_vs140.sln
 Data/ODBC/ODBC_vs140.vcxproj
 Data/ODBC/ODBC_vs140.vcxproj.filters
+Data/ODBC/ODBC_vs150.sln
+Data/ODBC/ODBC_vs150.vcxproj
+Data/ODBC/ODBC_vs150.vcxproj.filters
 Data/ODBC/ODBC_VS90.sln
 Data/ODBC/ODBC_VS90.vcproj
 Data/ODBC/ODBC_x64_vs100.sln
@@ -606,6 +685,9 @@ Data/ODBC/ODBC_x64_vs120.vcxproj.filters
 Data/ODBC/ODBC_x64_vs140.sln
 Data/ODBC/ODBC_x64_vs140.vcxproj
 Data/ODBC/ODBC_x64_vs140.vcxproj.filters
+Data/ODBC/ODBC_x64_vs150.sln
+Data/ODBC/ODBC_x64_vs150.vcxproj
+Data/ODBC/ODBC_x64_vs150.vcxproj.filters
 Data/ODBC/ODBC_x64_vs90.sln
 Data/ODBC/ODBC_x64_vs90.vcproj
 Data/ODBC/src
@@ -660,6 +742,8 @@ Data/ODBC/testsuite/TestSuite_vs120.vcxproj
 Data/ODBC/testsuite/TestSuite_vs120.vcxproj.filters
 Data/ODBC/testsuite/TestSuite_vs140.vcxproj
 Data/ODBC/testsuite/TestSuite_vs140.vcxproj.filters
+Data/ODBC/testsuite/TestSuite_vs150.vcxproj
+Data/ODBC/testsuite/TestSuite_vs150.vcxproj.filters
 Data/ODBC/testsuite/TestSuite_VS90.vcproj
 Data/ODBC/testsuite/TestSuite_x64_vs100.vcxproj
 Data/ODBC/testsuite/TestSuite_x64_vs100.vcxproj.filters
@@ -669,6 +753,8 @@ Data/ODBC/testsuite/TestSuite_x64_vs120.vcxproj
 Data/ODBC/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Data/ODBC/testsuite/TestSuite_x64_vs140.vcxproj
 Data/ODBC/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Data/ODBC/testsuite/TestSuite_x64_vs150.vcxproj
+Data/ODBC/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Data/ODBC/testsuite/TestSuite_x64_vs90.vcproj
 Data/samples
 Data/samples/Binding
@@ -682,6 +768,8 @@ Data/samples/Binding/Binding_vs120.vcxproj
 Data/samples/Binding/Binding_vs120.vcxproj.filters
 Data/samples/Binding/Binding_vs140.vcxproj
 Data/samples/Binding/Binding_vs140.vcxproj.filters
+Data/samples/Binding/Binding_vs150.vcxproj
+Data/samples/Binding/Binding_vs150.vcxproj.filters
 Data/samples/Binding/Binding_vs90.vcproj
 Data/samples/Binding/Binding_WEC2013_vs110.vcxproj
 Data/samples/Binding/Binding_WEC2013_vs110.vcxproj.filters
@@ -695,6 +783,8 @@ Data/samples/Binding/Binding_x64_vs120.vcxproj
 Data/samples/Binding/Binding_x64_vs120.vcxproj.filters
 Data/samples/Binding/Binding_x64_vs140.vcxproj
 Data/samples/Binding/Binding_x64_vs140.vcxproj.filters
+Data/samples/Binding/Binding_x64_vs150.vcxproj
+Data/samples/Binding/Binding_x64_vs150.vcxproj.filters
 Data/samples/Binding/Binding_x64_vs90.vcproj
 Data/samples/Binding/CMakeLists.txt
 Data/samples/Binding/Makefile
@@ -715,6 +805,8 @@ Data/samples/RecordSet/RecordSet_vs120.vcxproj
 Data/samples/RecordSet/RecordSet_vs120.vcxproj.filters
 Data/samples/RecordSet/RecordSet_vs140.vcxproj
 Data/samples/RecordSet/RecordSet_vs140.vcxproj.filters
+Data/samples/RecordSet/RecordSet_vs150.vcxproj
+Data/samples/RecordSet/RecordSet_vs150.vcxproj.filters
 Data/samples/RecordSet/RecordSet_vs90.vcproj
 Data/samples/RecordSet/RecordSet_WEC2013_vs110.vcxproj
 Data/samples/RecordSet/RecordSet_WEC2013_vs110.vcxproj.filters
@@ -728,6 +820,8 @@ Data/samples/RecordSet/RecordSet_x64_vs120.vcxproj
 Data/samples/RecordSet/RecordSet_x64_vs120.vcxproj.filters
 Data/samples/RecordSet/RecordSet_x64_vs140.vcxproj
 Data/samples/RecordSet/RecordSet_x64_vs140.vcxproj.filters
+Data/samples/RecordSet/RecordSet_x64_vs150.vcxproj
+Data/samples/RecordSet/RecordSet_x64_vs150.vcxproj.filters
 Data/samples/RecordSet/RecordSet_x64_vs90.vcproj
 Data/samples/RecordSet/src
 Data/samples/RecordSet/src/RecordSet.cpp
@@ -744,6 +838,8 @@ Data/samples/RowFormatter/RowFormatter_vs120.vcxproj
 Data/samples/RowFormatter/RowFormatter_vs120.vcxproj.filters
 Data/samples/RowFormatter/RowFormatter_vs140.vcxproj
 Data/samples/RowFormatter/RowFormatter_vs140.vcxproj.filters
+Data/samples/RowFormatter/RowFormatter_vs150.vcxproj
+Data/samples/RowFormatter/RowFormatter_vs150.vcxproj.filters
 Data/samples/RowFormatter/RowFormatter_vs90.vcproj
 Data/samples/RowFormatter/RowFormatter_WEC2013_vs110.vcxproj
 Data/samples/RowFormatter/RowFormatter_WEC2013_vs110.vcxproj.filters
@@ -757,6 +853,8 @@ Data/samples/RowFormatter/RowFormatter_x64_vs120.vcxproj
 Data/samples/RowFormatter/RowFormatter_x64_vs120.vcxproj.filters
 Data/samples/RowFormatter/RowFormatter_x64_vs140.vcxproj
 Data/samples/RowFormatter/RowFormatter_x64_vs140.vcxproj.filters
+Data/samples/RowFormatter/RowFormatter_x64_vs150.vcxproj
+Data/samples/RowFormatter/RowFormatter_x64_vs150.vcxproj.filters
 Data/samples/RowFormatter/RowFormatter_x64_vs90.vcproj
 Data/samples/RowFormatter/src
 Data/samples/RowFormatter/src/RowFormatter.cpp
@@ -766,6 +864,7 @@ Data/samples/samples_vs100.sln
 Data/samples/samples_vs110.sln
 Data/samples/samples_vs120.sln
 Data/samples/samples_vs140.sln
+Data/samples/samples_vs150.sln
 Data/samples/samples_vs90.sln
 Data/samples/samples_WEC2013_vs110.sln
 Data/samples/samples_WEC2013_vs120.sln
@@ -773,6 +872,7 @@ Data/samples/samples_x64_vs100.sln
 Data/samples/samples_x64_vs110.sln
 Data/samples/samples_x64_vs120.sln
 Data/samples/samples_x64_vs140.sln
+Data/samples/samples_x64_vs150.sln
 Data/samples/samples_x64_vs90.sln
 Data/samples/Tuple
 Data/samples/Tuple/CMakeLists.txt
@@ -789,6 +889,8 @@ Data/samples/Tuple/Tuple_vs120.vcxproj
 Data/samples/Tuple/Tuple_vs120.vcxproj.filters
 Data/samples/Tuple/Tuple_vs140.vcxproj
 Data/samples/Tuple/Tuple_vs140.vcxproj.filters
+Data/samples/Tuple/Tuple_vs150.vcxproj
+Data/samples/Tuple/Tuple_vs150.vcxproj.filters
 Data/samples/Tuple/Tuple_vs90.vcproj
 Data/samples/Tuple/Tuple_WEC2013_vs110.vcxproj
 Data/samples/Tuple/Tuple_WEC2013_vs110.vcxproj.filters
@@ -802,6 +904,8 @@ Data/samples/Tuple/Tuple_x64_vs120.vcxproj
 Data/samples/Tuple/Tuple_x64_vs120.vcxproj.filters
 Data/samples/Tuple/Tuple_x64_vs140.vcxproj
 Data/samples/Tuple/Tuple_x64_vs140.vcxproj.filters
+Data/samples/Tuple/Tuple_x64_vs150.vcxproj
+Data/samples/Tuple/Tuple_x64_vs150.vcxproj.filters
 Data/samples/Tuple/Tuple_x64_vs90.vcproj
 Data/samples/TypeHandler
 Data/samples/TypeHandler/CMakeLists.txt
@@ -818,6 +922,8 @@ Data/samples/TypeHandler/TypeHandler_vs120.vcxproj
 Data/samples/TypeHandler/TypeHandler_vs120.vcxproj.filters
 Data/samples/TypeHandler/TypeHandler_vs140.vcxproj
 Data/samples/TypeHandler/TypeHandler_vs140.vcxproj.filters
+Data/samples/TypeHandler/TypeHandler_vs150.vcxproj
+Data/samples/TypeHandler/TypeHandler_vs150.vcxproj.filters
 Data/samples/TypeHandler/TypeHandler_vs90.vcproj
 Data/samples/TypeHandler/TypeHandler_WEC2013_vs110.vcxproj
 Data/samples/TypeHandler/TypeHandler_WEC2013_vs110.vcxproj.filters
@@ -831,6 +937,8 @@ Data/samples/TypeHandler/TypeHandler_x64_vs120.vcxproj
 Data/samples/TypeHandler/TypeHandler_x64_vs120.vcxproj.filters
 Data/samples/TypeHandler/TypeHandler_x64_vs140.vcxproj
 Data/samples/TypeHandler/TypeHandler_x64_vs140.vcxproj.filters
+Data/samples/TypeHandler/TypeHandler_x64_vs150.vcxproj
+Data/samples/TypeHandler/TypeHandler_x64_vs150.vcxproj.filters
 Data/samples/TypeHandler/TypeHandler_x64_vs90.vcproj
 Data/samples/WebNotifier
 Data/samples/WebNotifier/CMakeLists.txt
@@ -847,6 +955,8 @@ Data/samples/WebNotifier/WebNotifier_vs120.vcxproj
 Data/samples/WebNotifier/WebNotifier_vs120.vcxproj.filters
 Data/samples/WebNotifier/WebNotifier_vs140.vcxproj
 Data/samples/WebNotifier/WebNotifier_vs140.vcxproj.filters
+Data/samples/WebNotifier/WebNotifier_vs150.vcxproj
+Data/samples/WebNotifier/WebNotifier_vs150.vcxproj.filters
 Data/samples/WebNotifier/WebNotifier_vs90.vcproj
 Data/samples/WebNotifier/WebNotifier_WEC2013_vs110.vcxproj
 Data/samples/WebNotifier/WebNotifier_WEC2013_vs110.vcxproj.filters
@@ -860,6 +970,8 @@ Data/samples/WebNotifier/WebNotifier_x64_vs120.vcxproj
 Data/samples/WebNotifier/WebNotifier_x64_vs120.vcxproj.filters
 Data/samples/WebNotifier/WebNotifier_x64_vs140.vcxproj
 Data/samples/WebNotifier/WebNotifier_x64_vs140.vcxproj.filters
+Data/samples/WebNotifier/WebNotifier_x64_vs150.vcxproj
+Data/samples/WebNotifier/WebNotifier_x64_vs150.vcxproj.filters
 Data/samples/WebNotifier/WebNotifier_x64_vs90.vcproj
 Data/SQLite
 Data/SQLite/cmake
@@ -894,6 +1006,9 @@ Data/SQLite/SQLite_vs120.vcxproj.filters
 Data/SQLite/SQLite_vs140.sln
 Data/SQLite/SQLite_vs140.vcxproj
 Data/SQLite/SQLite_vs140.vcxproj.filters
+Data/SQLite/SQLite_vs150.sln
+Data/SQLite/SQLite_vs150.vcxproj
+Data/SQLite/SQLite_vs150.vcxproj.filters
 Data/SQLite/SQLite_VS90.sln
 Data/SQLite/SQLite_VS90.vcproj
 Data/SQLite/SQLite_WEC2013_vs110.sln
@@ -914,6 +1029,9 @@ Data/SQLite/SQLite_x64_vs120.vcxproj.filters
 Data/SQLite/SQLite_x64_vs140.sln
 Data/SQLite/SQLite_x64_vs140.vcxproj
 Data/SQLite/SQLite_x64_vs140.vcxproj.filters
+Data/SQLite/SQLite_x64_vs150.sln
+Data/SQLite/SQLite_x64_vs150.vcxproj
+Data/SQLite/SQLite_x64_vs150.vcxproj.filters
 Data/SQLite/SQLite_x64_vs90.sln
 Data/SQLite/SQLite_x64_vs90.vcproj
 Data/SQLite/src
@@ -948,6 +1066,8 @@ Data/SQLite/testsuite/TestSuite_vs120.vcxproj
 Data/SQLite/testsuite/TestSuite_vs120.vcxproj.filters
 Data/SQLite/testsuite/TestSuite_vs140.vcxproj
 Data/SQLite/testsuite/TestSuite_vs140.vcxproj.filters
+Data/SQLite/testsuite/TestSuite_vs150.vcxproj
+Data/SQLite/testsuite/TestSuite_vs150.vcxproj.filters
 Data/SQLite/testsuite/TestSuite_VS90.vcproj
 Data/SQLite/testsuite/TestSuite_WEC2013_vs110.vcxproj
 Data/SQLite/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -961,6 +1081,8 @@ Data/SQLite/testsuite/TestSuite_x64_vs120.vcxproj
 Data/SQLite/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Data/SQLite/testsuite/TestSuite_x64_vs140.vcxproj
 Data/SQLite/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Data/SQLite/testsuite/TestSuite_x64_vs150.vcxproj
+Data/SQLite/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Data/SQLite/testsuite/TestSuite_x64_vs90.vcproj
 Data/src
 Data/src/AbstractBinder.cpp
@@ -1035,6 +1157,8 @@ Data/testsuite/TestSuite_vs120.vcxproj
 Data/testsuite/TestSuite_vs120.vcxproj.filters
 Data/testsuite/TestSuite_vs140.vcxproj
 Data/testsuite/TestSuite_vs140.vcxproj.filters
+Data/testsuite/TestSuite_vs150.vcxproj
+Data/testsuite/TestSuite_vs150.vcxproj.filters
 Data/testsuite/TestSuite_VS90.vcproj
 Data/testsuite/TestSuite_WEC2013_vs110.vcxproj
 Data/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -1048,6 +1172,8 @@ Data/testsuite/TestSuite_x64_vs120.vcxproj
 Data/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Data/testsuite/TestSuite_x64_vs140.vcxproj
 Data/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Data/testsuite/TestSuite_x64_vs150.vcxproj
+Data/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Data/testsuite/TestSuite_x64_vs90.vcproj
 DLLVersion.rc
 doc
@@ -1066,7 +1192,7 @@ Foundation
 Foundation/cmake
 Foundation/cmake/PocoFoundationConfig.cmake
 Foundation/CMakeLists.txt
-Foundation/Foundation.vxbuild
+Foundation/Foundation.progen
 Foundation/Foundation_CE_vs90.sln
 Foundation/Foundation_CE_vs90.vcproj
 Foundation/Foundation_vs100.sln
@@ -1081,6 +1207,9 @@ Foundation/Foundation_vs120.vcxproj.filters
 Foundation/Foundation_vs140.sln
 Foundation/Foundation_vs140.vcxproj
 Foundation/Foundation_vs140.vcxproj.filters
+Foundation/Foundation_vs150.sln
+Foundation/Foundation_vs150.vcxproj
+Foundation/Foundation_vs150.vcxproj.filters
 Foundation/Foundation_vs90.sln
 Foundation/Foundation_vs90.vcproj
 Foundation/Foundation_WEC2013_vs110.sln
@@ -1101,6 +1230,9 @@ Foundation/Foundation_x64_vs120.vcxproj.filters
 Foundation/Foundation_x64_vs140.sln
 Foundation/Foundation_x64_vs140.vcxproj
 Foundation/Foundation_x64_vs140.vcxproj.filters
+Foundation/Foundation_x64_vs150.sln
+Foundation/Foundation_x64_vs150.vcxproj
+Foundation/Foundation_x64_vs150.vcxproj.filters
 Foundation/Foundation_x64_vs90.sln
 Foundation/Foundation_x64_vs90.vcproj
 Foundation/include
@@ -1166,7 +1298,6 @@ Foundation/include/Poco/DigestEngine.h
 Foundation/include/Poco/DigestStream.h
 Foundation/include/Poco/DirectoryIterator.h
 Foundation/include/Poco/DirectoryIterator_UNIX.h
-Foundation/include/Poco/DirectoryIterator_VMS.h
 Foundation/include/Poco/DirectoryIterator_WIN32.h
 Foundation/include/Poco/DirectoryIterator_WIN32U.h
 Foundation/include/Poco/DirectoryIteratorStrategy.h
@@ -1183,7 +1314,6 @@ Foundation/include/Poco/DynamicFactory.h
 Foundation/include/Poco/DynamicStruct.h
 Foundation/include/Poco/Environment.h
 Foundation/include/Poco/Environment_UNIX.h
-Foundation/include/Poco/Environment_VMS.h
 Foundation/include/Poco/Environment_VX.h
 Foundation/include/Poco/Environment_WIN32.h
 Foundation/include/Poco/Environment_WIN32U.h
@@ -1195,6 +1325,7 @@ Foundation/include/Poco/Event_POSIX.h
 Foundation/include/Poco/Event_VX.h
 Foundation/include/Poco/Event_WIN32.h
 Foundation/include/Poco/EventArgs.h
+Foundation/include/Poco/EventChannel.h
 Foundation/include/Poco/EventLogChannel.h
 Foundation/include/Poco/Exception.h
 Foundation/include/Poco/ExpirationDecorator.h
@@ -1208,7 +1339,6 @@ Foundation/include/Poco/FIFOEvent.h
 Foundation/include/Poco/FIFOStrategy.h
 Foundation/include/Poco/File.h
 Foundation/include/Poco/File_UNIX.h
-Foundation/include/Poco/File_VMS.h
 Foundation/include/Poco/File_VX.h
 Foundation/include/Poco/File_WIN32.h
 Foundation/include/Poco/File_WIN32U.h
@@ -1226,6 +1356,7 @@ Foundation/include/Poco/FPEnvironment.h
 Foundation/include/Poco/FPEnvironment_C99.h
 Foundation/include/Poco/FPEnvironment_DEC.h
 Foundation/include/Poco/FPEnvironment_DUMMY.h
+Foundation/include/Poco/FPEnvironment_QNX.h
 Foundation/include/Poco/FPEnvironment_SUN.h
 Foundation/include/Poco/FPEnvironment_WIN32.h
 Foundation/include/Poco/FunctionDelegate.h
@@ -1242,6 +1373,7 @@ Foundation/include/Poco/HexBinaryEncoder.h
 Foundation/include/Poco/HMACEngine.h
 Foundation/include/Poco/InflatingStream.h
 Foundation/include/Poco/Instantiator.h
+Foundation/include/Poco/JSONString.h
 Foundation/include/Poco/KeyValueArgs.h
 Foundation/include/Poco/Latin1Encoding.h
 Foundation/include/Poco/Latin2Encoding.h
@@ -1252,7 +1384,6 @@ Foundation/include/Poco/ListMap.h
 Foundation/include/Poco/LocalDateTime.h
 Foundation/include/Poco/LogFile.h
 Foundation/include/Poco/LogFile_STD.h
-Foundation/include/Poco/LogFile_VMS.h
 Foundation/include/Poco/LogFile_WIN32.h
 Foundation/include/Poco/LogFile_WIN32U.h
 Foundation/include/Poco/Logger.h
@@ -1277,13 +1408,11 @@ Foundation/include/Poco/Mutex_WINCE.h
 Foundation/include/Poco/NamedEvent.h
 Foundation/include/Poco/NamedEvent_Android.h
 Foundation/include/Poco/NamedEvent_UNIX.h
-Foundation/include/Poco/NamedEvent_VMS.h
 Foundation/include/Poco/NamedEvent_WIN32.h
 Foundation/include/Poco/NamedEvent_WIN32U.h
 Foundation/include/Poco/NamedMutex.h
 Foundation/include/Poco/NamedMutex_Android.h
 Foundation/include/Poco/NamedMutex_UNIX.h
-Foundation/include/Poco/NamedMutex_VMS.h
 Foundation/include/Poco/NamedMutex_WIN32.h
 Foundation/include/Poco/NamedMutex_WIN32U.h
 Foundation/include/Poco/NamedTuple.h
@@ -1301,11 +1430,9 @@ Foundation/include/Poco/NumberParser.h
 Foundation/include/Poco/NumericString.h
 Foundation/include/Poco/ObjectPool.h
 Foundation/include/Poco/Observer.h
-Foundation/include/Poco/OpcomChannel.h
 Foundation/include/Poco/Optional.h
 Foundation/include/Poco/Path.h
 Foundation/include/Poco/Path_UNIX.h
-Foundation/include/Poco/Path_VMS.h
 Foundation/include/Poco/Path_WIN32.h
 Foundation/include/Poco/Path_WIN32U.h
 Foundation/include/Poco/Path_WINCE.h
@@ -1319,7 +1446,6 @@ Foundation/include/Poco/PipeImpl_WIN32.h
 Foundation/include/Poco/PipeStream.h
 Foundation/include/Poco/Platform.h
 Foundation/include/Poco/Platform_POSIX.h
-Foundation/include/Poco/Platform_VMS.h
 Foundation/include/Poco/Platform_VX.h
 Foundation/include/Poco/Platform_WIN32.h
 Foundation/include/Poco/Poco.h
@@ -1330,7 +1456,6 @@ Foundation/include/Poco/PriorityNotificationQueue.h
 Foundation/include/Poco/PriorityStrategy.h
 Foundation/include/Poco/Process.h
 Foundation/include/Poco/Process_UNIX.h
-Foundation/include/Poco/Process_VMS.h
 Foundation/include/Poco/Process_VX.h
 Foundation/include/Poco/Process_WIN32.h
 Foundation/include/Poco/Process_WIN32U.h
@@ -1361,7 +1486,6 @@ Foundation/include/Poco/SHA1Engine.h
 Foundation/include/Poco/SharedLibrary.h
 Foundation/include/Poco/SharedLibrary_HPUX.h
 Foundation/include/Poco/SharedLibrary_UNIX.h
-Foundation/include/Poco/SharedLibrary_VMS.h
 Foundation/include/Poco/SharedLibrary_VX.h
 Foundation/include/Poco/SharedLibrary_WIN32.h
 Foundation/include/Poco/SharedLibrary_WIN32U.h
@@ -1455,6 +1579,8 @@ Foundation/samples/ActiveMethod/ActiveMethod_vs120.vcxproj
 Foundation/samples/ActiveMethod/ActiveMethod_vs120.vcxproj.filters
 Foundation/samples/ActiveMethod/ActiveMethod_vs140.vcxproj
 Foundation/samples/ActiveMethod/ActiveMethod_vs140.vcxproj.filters
+Foundation/samples/ActiveMethod/ActiveMethod_vs150.vcxproj
+Foundation/samples/ActiveMethod/ActiveMethod_vs150.vcxproj.filters
 Foundation/samples/ActiveMethod/ActiveMethod_vs90.vcproj
 Foundation/samples/ActiveMethod/ActiveMethod_WEC2013_vs110.vcxproj
 Foundation/samples/ActiveMethod/ActiveMethod_WEC2013_vs110.vcxproj.filters
@@ -1468,6 +1594,8 @@ Foundation/samples/ActiveMethod/ActiveMethod_x64_vs120.vcxproj
 Foundation/samples/ActiveMethod/ActiveMethod_x64_vs120.vcxproj.filters
 Foundation/samples/ActiveMethod/ActiveMethod_x64_vs140.vcxproj
 Foundation/samples/ActiveMethod/ActiveMethod_x64_vs140.vcxproj.filters
+Foundation/samples/ActiveMethod/ActiveMethod_x64_vs150.vcxproj
+Foundation/samples/ActiveMethod/ActiveMethod_x64_vs150.vcxproj.filters
 Foundation/samples/ActiveMethod/ActiveMethod_x64_vs90.vcproj
 Foundation/samples/ActiveMethod/CMakeLists.txt
 Foundation/samples/ActiveMethod/Makefile
@@ -1484,6 +1612,8 @@ Foundation/samples/Activity/Activity_vs120.vcxproj
 Foundation/samples/Activity/Activity_vs120.vcxproj.filters
 Foundation/samples/Activity/Activity_vs140.vcxproj
 Foundation/samples/Activity/Activity_vs140.vcxproj.filters
+Foundation/samples/Activity/Activity_vs150.vcxproj
+Foundation/samples/Activity/Activity_vs150.vcxproj.filters
 Foundation/samples/Activity/Activity_vs90.vcproj
 Foundation/samples/Activity/Activity_WEC2013_vs110.vcxproj
 Foundation/samples/Activity/Activity_WEC2013_vs110.vcxproj.filters
@@ -1497,6 +1627,8 @@ Foundation/samples/Activity/Activity_x64_vs120.vcxproj
 Foundation/samples/Activity/Activity_x64_vs120.vcxproj.filters
 Foundation/samples/Activity/Activity_x64_vs140.vcxproj
 Foundation/samples/Activity/Activity_x64_vs140.vcxproj.filters
+Foundation/samples/Activity/Activity_x64_vs150.vcxproj
+Foundation/samples/Activity/Activity_x64_vs150.vcxproj.filters
 Foundation/samples/Activity/Activity_x64_vs90.vcproj
 Foundation/samples/Activity/CMakeLists.txt
 Foundation/samples/Activity/Makefile
@@ -1513,6 +1645,8 @@ Foundation/samples/base64decode/base64decode_vs120.vcxproj
 Foundation/samples/base64decode/base64decode_vs120.vcxproj.filters
 Foundation/samples/base64decode/base64decode_vs140.vcxproj
 Foundation/samples/base64decode/base64decode_vs140.vcxproj.filters
+Foundation/samples/base64decode/base64decode_vs150.vcxproj
+Foundation/samples/base64decode/base64decode_vs150.vcxproj.filters
 Foundation/samples/base64decode/base64decode_vs90.vcproj
 Foundation/samples/base64decode/base64decode_WEC2013_vs110.vcxproj
 Foundation/samples/base64decode/base64decode_WEC2013_vs110.vcxproj.filters
@@ -1526,6 +1660,8 @@ Foundation/samples/base64decode/base64decode_x64_vs120.vcxproj
 Foundation/samples/base64decode/base64decode_x64_vs120.vcxproj.filters
 Foundation/samples/base64decode/base64decode_x64_vs140.vcxproj
 Foundation/samples/base64decode/base64decode_x64_vs140.vcxproj.filters
+Foundation/samples/base64decode/base64decode_x64_vs150.vcxproj
+Foundation/samples/base64decode/base64decode_x64_vs150.vcxproj.filters
 Foundation/samples/base64decode/base64decode_x64_vs90.vcproj
 Foundation/samples/base64decode/CMakeLists.txt
 Foundation/samples/base64decode/Makefile
@@ -1542,6 +1678,8 @@ Foundation/samples/base64encode/base64encode_vs120.vcxproj
 Foundation/samples/base64encode/base64encode_vs120.vcxproj.filters
 Foundation/samples/base64encode/base64encode_vs140.vcxproj
 Foundation/samples/base64encode/base64encode_vs140.vcxproj.filters
+Foundation/samples/base64encode/base64encode_vs150.vcxproj
+Foundation/samples/base64encode/base64encode_vs150.vcxproj.filters
 Foundation/samples/base64encode/base64encode_vs90.vcproj
 Foundation/samples/base64encode/base64encode_WEC2013_vs110.vcxproj
 Foundation/samples/base64encode/base64encode_WEC2013_vs110.vcxproj.filters
@@ -1555,6 +1693,8 @@ Foundation/samples/base64encode/base64encode_x64_vs120.vcxproj
 Foundation/samples/base64encode/base64encode_x64_vs120.vcxproj.filters
 Foundation/samples/base64encode/base64encode_x64_vs140.vcxproj
 Foundation/samples/base64encode/base64encode_x64_vs140.vcxproj.filters
+Foundation/samples/base64encode/base64encode_x64_vs150.vcxproj
+Foundation/samples/base64encode/base64encode_x64_vs150.vcxproj.filters
 Foundation/samples/base64encode/base64encode_x64_vs90.vcproj
 Foundation/samples/base64encode/CMakeLists.txt
 Foundation/samples/base64encode/Makefile
@@ -1571,6 +1711,8 @@ Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_vs120.vcxproj
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_vs120.vcxproj.filters
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_vs140.vcxproj
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_vs140.vcxproj.filters
+Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_vs150.vcxproj
+Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_vs150.vcxproj.filters
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_vs90.vcproj
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_WEC2013_vs110.vcxproj
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_WEC2013_vs110.vcxproj.filters
@@ -1584,6 +1726,8 @@ Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_x64_vs120.vcxproj
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_x64_vs120.vcxproj.filters
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_x64_vs140.vcxproj
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_x64_vs140.vcxproj.filters
+Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_x64_vs150.vcxproj
+Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_x64_vs150.vcxproj.filters
 Foundation/samples/BinaryReaderWriter/BinaryReaderWriter_x64_vs90.vcproj
 Foundation/samples/BinaryReaderWriter/CMakeLists.txt
 Foundation/samples/BinaryReaderWriter/Makefile
@@ -1602,6 +1746,8 @@ Foundation/samples/DateTime/DateTime_vs120.vcxproj
 Foundation/samples/DateTime/DateTime_vs120.vcxproj.filters
 Foundation/samples/DateTime/DateTime_vs140.vcxproj
 Foundation/samples/DateTime/DateTime_vs140.vcxproj.filters
+Foundation/samples/DateTime/DateTime_vs150.vcxproj
+Foundation/samples/DateTime/DateTime_vs150.vcxproj.filters
 Foundation/samples/DateTime/DateTime_vs90.vcproj
 Foundation/samples/DateTime/DateTime_WEC2013_vs110.vcxproj
 Foundation/samples/DateTime/DateTime_WEC2013_vs110.vcxproj.filters
@@ -1615,6 +1761,8 @@ Foundation/samples/DateTime/DateTime_x64_vs120.vcxproj
 Foundation/samples/DateTime/DateTime_x64_vs120.vcxproj.filters
 Foundation/samples/DateTime/DateTime_x64_vs140.vcxproj
 Foundation/samples/DateTime/DateTime_x64_vs140.vcxproj.filters
+Foundation/samples/DateTime/DateTime_x64_vs150.vcxproj
+Foundation/samples/DateTime/DateTime_x64_vs150.vcxproj.filters
 Foundation/samples/DateTime/DateTime_x64_vs90.vcproj
 Foundation/samples/DateTime/Makefile
 Foundation/samples/DateTime/src
@@ -1631,6 +1779,8 @@ Foundation/samples/deflate/deflate_vs120.vcxproj
 Foundation/samples/deflate/deflate_vs120.vcxproj.filters
 Foundation/samples/deflate/deflate_vs140.vcxproj
 Foundation/samples/deflate/deflate_vs140.vcxproj.filters
+Foundation/samples/deflate/deflate_vs150.vcxproj
+Foundation/samples/deflate/deflate_vs150.vcxproj.filters
 Foundation/samples/deflate/deflate_vs90.vcproj
 Foundation/samples/deflate/deflate_WEC2013_vs110.vcxproj
 Foundation/samples/deflate/deflate_WEC2013_vs110.vcxproj.filters
@@ -1644,6 +1794,8 @@ Foundation/samples/deflate/deflate_x64_vs120.vcxproj
 Foundation/samples/deflate/deflate_x64_vs120.vcxproj.filters
 Foundation/samples/deflate/deflate_x64_vs140.vcxproj
 Foundation/samples/deflate/deflate_x64_vs140.vcxproj.filters
+Foundation/samples/deflate/deflate_x64_vs150.vcxproj
+Foundation/samples/deflate/deflate_x64_vs150.vcxproj.filters
 Foundation/samples/deflate/deflate_x64_vs90.vcproj
 Foundation/samples/deflate/Makefile
 Foundation/samples/deflate/src
@@ -1660,6 +1812,8 @@ Foundation/samples/dir/dir_vs120.vcxproj
 Foundation/samples/dir/dir_vs120.vcxproj.filters
 Foundation/samples/dir/dir_vs140.vcxproj
 Foundation/samples/dir/dir_vs140.vcxproj.filters
+Foundation/samples/dir/dir_vs150.vcxproj
+Foundation/samples/dir/dir_vs150.vcxproj.filters
 Foundation/samples/dir/dir_vs90.vcproj
 Foundation/samples/dir/dir_WEC2013_vs110.vcxproj
 Foundation/samples/dir/dir_WEC2013_vs110.vcxproj.filters
@@ -1673,6 +1827,8 @@ Foundation/samples/dir/dir_x64_vs120.vcxproj
 Foundation/samples/dir/dir_x64_vs120.vcxproj.filters
 Foundation/samples/dir/dir_x64_vs140.vcxproj
 Foundation/samples/dir/dir_x64_vs140.vcxproj.filters
+Foundation/samples/dir/dir_x64_vs150.vcxproj
+Foundation/samples/dir/dir_x64_vs150.vcxproj.filters
 Foundation/samples/dir/dir_x64_vs90.vcproj
 Foundation/samples/dir/Makefile
 Foundation/samples/dir/src
@@ -1689,6 +1845,8 @@ Foundation/samples/grep/grep_vs120.vcxproj
 Foundation/samples/grep/grep_vs120.vcxproj.filters
 Foundation/samples/grep/grep_vs140.vcxproj
 Foundation/samples/grep/grep_vs140.vcxproj.filters
+Foundation/samples/grep/grep_vs150.vcxproj
+Foundation/samples/grep/grep_vs150.vcxproj.filters
 Foundation/samples/grep/grep_vs90.vcproj
 Foundation/samples/grep/grep_WEC2013_vs110.vcxproj
 Foundation/samples/grep/grep_WEC2013_vs110.vcxproj.filters
@@ -1702,6 +1860,8 @@ Foundation/samples/grep/grep_x64_vs120.vcxproj
 Foundation/samples/grep/grep_x64_vs120.vcxproj.filters
 Foundation/samples/grep/grep_x64_vs140.vcxproj
 Foundation/samples/grep/grep_x64_vs140.vcxproj.filters
+Foundation/samples/grep/grep_x64_vs150.vcxproj
+Foundation/samples/grep/grep_x64_vs150.vcxproj.filters
 Foundation/samples/grep/grep_x64_vs90.vcproj
 Foundation/samples/grep/Makefile
 Foundation/samples/grep/src
@@ -1718,6 +1878,8 @@ Foundation/samples/hmacmd5/hmacmd5_vs120.vcxproj
 Foundation/samples/hmacmd5/hmacmd5_vs120.vcxproj.filters
 Foundation/samples/hmacmd5/hmacmd5_vs140.vcxproj
 Foundation/samples/hmacmd5/hmacmd5_vs140.vcxproj.filters
+Foundation/samples/hmacmd5/hmacmd5_vs150.vcxproj
+Foundation/samples/hmacmd5/hmacmd5_vs150.vcxproj.filters
 Foundation/samples/hmacmd5/hmacmd5_vs90.vcproj
 Foundation/samples/hmacmd5/hmacmd5_WEC2013_vs110.vcxproj
 Foundation/samples/hmacmd5/hmacmd5_WEC2013_vs110.vcxproj.filters
@@ -1731,6 +1893,8 @@ Foundation/samples/hmacmd5/hmacmd5_x64_vs120.vcxproj
 Foundation/samples/hmacmd5/hmacmd5_x64_vs120.vcxproj.filters
 Foundation/samples/hmacmd5/hmacmd5_x64_vs140.vcxproj
 Foundation/samples/hmacmd5/hmacmd5_x64_vs140.vcxproj.filters
+Foundation/samples/hmacmd5/hmacmd5_x64_vs150.vcxproj
+Foundation/samples/hmacmd5/hmacmd5_x64_vs150.vcxproj.filters
 Foundation/samples/hmacmd5/hmacmd5_x64_vs90.vcproj
 Foundation/samples/hmacmd5/Makefile
 Foundation/samples/hmacmd5/src
@@ -1747,6 +1911,8 @@ Foundation/samples/inflate/inflate_vs120.vcxproj
 Foundation/samples/inflate/inflate_vs120.vcxproj.filters
 Foundation/samples/inflate/inflate_vs140.vcxproj
 Foundation/samples/inflate/inflate_vs140.vcxproj.filters
+Foundation/samples/inflate/inflate_vs150.vcxproj
+Foundation/samples/inflate/inflate_vs150.vcxproj.filters
 Foundation/samples/inflate/inflate_vs90.vcproj
 Foundation/samples/inflate/inflate_WEC2013_vs110.vcxproj
 Foundation/samples/inflate/inflate_WEC2013_vs110.vcxproj.filters
@@ -1760,6 +1926,8 @@ Foundation/samples/inflate/inflate_x64_vs120.vcxproj
 Foundation/samples/inflate/inflate_x64_vs120.vcxproj.filters
 Foundation/samples/inflate/inflate_x64_vs140.vcxproj
 Foundation/samples/inflate/inflate_x64_vs140.vcxproj.filters
+Foundation/samples/inflate/inflate_x64_vs150.vcxproj
+Foundation/samples/inflate/inflate_x64_vs150.vcxproj.filters
 Foundation/samples/inflate/inflate_x64_vs90.vcproj
 Foundation/samples/inflate/Makefile
 Foundation/samples/inflate/src
@@ -1775,6 +1943,8 @@ Foundation/samples/LineEndingConverter/LineEndingConverter_vs120.vcxproj
 Foundation/samples/LineEndingConverter/LineEndingConverter_vs120.vcxproj.filters
 Foundation/samples/LineEndingConverter/LineEndingConverter_vs140.vcxproj
 Foundation/samples/LineEndingConverter/LineEndingConverter_vs140.vcxproj.filters
+Foundation/samples/LineEndingConverter/LineEndingConverter_vs150.vcxproj
+Foundation/samples/LineEndingConverter/LineEndingConverter_vs150.vcxproj.filters
 Foundation/samples/LineEndingConverter/LineEndingConverter_vs90.vcproj
 Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs100.vcxproj
 Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs100.vcxproj.filters
@@ -1784,6 +1954,8 @@ Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs120.vcxproj
 Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs120.vcxproj.filters
 Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs140.vcxproj
 Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs140.vcxproj.filters
+Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs150.vcxproj
+Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs150.vcxproj.filters
 Foundation/samples/LineEndingConverter/LineEndingConverter_x64_vs90.vcproj
 Foundation/samples/LineEndingConverter/Makefile
 Foundation/samples/LineEndingConverter/src
@@ -1800,6 +1972,8 @@ Foundation/samples/Logger/Logger_vs120.vcxproj
 Foundation/samples/Logger/Logger_vs120.vcxproj.filters
 Foundation/samples/Logger/Logger_vs140.vcxproj
 Foundation/samples/Logger/Logger_vs140.vcxproj.filters
+Foundation/samples/Logger/Logger_vs150.vcxproj
+Foundation/samples/Logger/Logger_vs150.vcxproj.filters
 Foundation/samples/Logger/Logger_vs90.vcproj
 Foundation/samples/Logger/Logger_WEC2013_vs110.vcxproj
 Foundation/samples/Logger/Logger_WEC2013_vs110.vcxproj.filters
@@ -1813,6 +1987,8 @@ Foundation/samples/Logger/Logger_x64_vs120.vcxproj
 Foundation/samples/Logger/Logger_x64_vs120.vcxproj.filters
 Foundation/samples/Logger/Logger_x64_vs140.vcxproj
 Foundation/samples/Logger/Logger_x64_vs140.vcxproj.filters
+Foundation/samples/Logger/Logger_x64_vs150.vcxproj
+Foundation/samples/Logger/Logger_x64_vs150.vcxproj.filters
 Foundation/samples/Logger/Logger_x64_vs90.vcproj
 Foundation/samples/Logger/Makefile
 Foundation/samples/Logger/src
@@ -1829,6 +2005,8 @@ Foundation/samples/LogRotation/LogRotation_vs120.vcxproj
 Foundation/samples/LogRotation/LogRotation_vs120.vcxproj.filters
 Foundation/samples/LogRotation/LogRotation_vs140.vcxproj
 Foundation/samples/LogRotation/LogRotation_vs140.vcxproj.filters
+Foundation/samples/LogRotation/LogRotation_vs150.vcxproj
+Foundation/samples/LogRotation/LogRotation_vs150.vcxproj.filters
 Foundation/samples/LogRotation/LogRotation_vs90.vcproj
 Foundation/samples/LogRotation/LogRotation_WEC2013_vs110.vcxproj
 Foundation/samples/LogRotation/LogRotation_WEC2013_vs110.vcxproj.filters
@@ -1842,6 +2020,8 @@ Foundation/samples/LogRotation/LogRotation_x64_vs120.vcxproj
 Foundation/samples/LogRotation/LogRotation_x64_vs120.vcxproj.filters
 Foundation/samples/LogRotation/LogRotation_x64_vs140.vcxproj
 Foundation/samples/LogRotation/LogRotation_x64_vs140.vcxproj.filters
+Foundation/samples/LogRotation/LogRotation_x64_vs150.vcxproj
+Foundation/samples/LogRotation/LogRotation_x64_vs150.vcxproj.filters
 Foundation/samples/LogRotation/LogRotation_x64_vs90.vcproj
 Foundation/samples/LogRotation/Makefile
 Foundation/samples/LogRotation/src
@@ -1860,6 +2040,8 @@ Foundation/samples/md5/md5_vs120.vcxproj
 Foundation/samples/md5/md5_vs120.vcxproj.filters
 Foundation/samples/md5/md5_vs140.vcxproj
 Foundation/samples/md5/md5_vs140.vcxproj.filters
+Foundation/samples/md5/md5_vs150.vcxproj
+Foundation/samples/md5/md5_vs150.vcxproj.filters
 Foundation/samples/md5/md5_vs90.vcproj
 Foundation/samples/md5/md5_WEC2013_vs110.vcxproj
 Foundation/samples/md5/md5_WEC2013_vs110.vcxproj.filters
@@ -1873,6 +2055,8 @@ Foundation/samples/md5/md5_x64_vs120.vcxproj
 Foundation/samples/md5/md5_x64_vs120.vcxproj.filters
 Foundation/samples/md5/md5_x64_vs140.vcxproj
 Foundation/samples/md5/md5_x64_vs140.vcxproj.filters
+Foundation/samples/md5/md5_x64_vs150.vcxproj
+Foundation/samples/md5/md5_x64_vs150.vcxproj.filters
 Foundation/samples/md5/md5_x64_vs90.vcproj
 Foundation/samples/md5/src
 Foundation/samples/md5/src/md5.cpp
@@ -1889,6 +2073,8 @@ Foundation/samples/NotificationQueue/NotificationQueue_vs120.vcxproj
 Foundation/samples/NotificationQueue/NotificationQueue_vs120.vcxproj.filters
 Foundation/samples/NotificationQueue/NotificationQueue_vs140.vcxproj
 Foundation/samples/NotificationQueue/NotificationQueue_vs140.vcxproj.filters
+Foundation/samples/NotificationQueue/NotificationQueue_vs150.vcxproj
+Foundation/samples/NotificationQueue/NotificationQueue_vs150.vcxproj.filters
 Foundation/samples/NotificationQueue/NotificationQueue_vs90.vcproj
 Foundation/samples/NotificationQueue/NotificationQueue_WEC2013_vs110.vcxproj
 Foundation/samples/NotificationQueue/NotificationQueue_WEC2013_vs110.vcxproj.filters
@@ -1902,6 +2088,8 @@ Foundation/samples/NotificationQueue/NotificationQueue_x64_vs120.vcxproj
 Foundation/samples/NotificationQueue/NotificationQueue_x64_vs120.vcxproj.filters
 Foundation/samples/NotificationQueue/NotificationQueue_x64_vs140.vcxproj
 Foundation/samples/NotificationQueue/NotificationQueue_x64_vs140.vcxproj.filters
+Foundation/samples/NotificationQueue/NotificationQueue_x64_vs150.vcxproj
+Foundation/samples/NotificationQueue/NotificationQueue_x64_vs150.vcxproj.filters
 Foundation/samples/NotificationQueue/NotificationQueue_x64_vs90.vcproj
 Foundation/samples/NotificationQueue/src
 Foundation/samples/NotificationQueue/src/NotificationQueue.cpp
@@ -1911,6 +2099,7 @@ Foundation/samples/samples_vs100.sln
 Foundation/samples/samples_vs110.sln
 Foundation/samples/samples_vs120.sln
 Foundation/samples/samples_vs140.sln
+Foundation/samples/samples_vs150.sln
 Foundation/samples/samples_vs90.sln
 Foundation/samples/samples_WEC2013_vs110.sln
 Foundation/samples/samples_WEC2013_vs120.sln
@@ -1918,6 +2107,7 @@ Foundation/samples/samples_x64_vs100.sln
 Foundation/samples/samples_x64_vs110.sln
 Foundation/samples/samples_x64_vs120.sln
 Foundation/samples/samples_x64_vs140.sln
+Foundation/samples/samples_x64_vs150.sln
 Foundation/samples/samples_x64_vs90.sln
 Foundation/samples/StringTokenizer
 Foundation/samples/StringTokenizer/CMakeLists.txt
@@ -1934,6 +2124,8 @@ Foundation/samples/StringTokenizer/StringTokenizer_vs120.vcxproj
 Foundation/samples/StringTokenizer/StringTokenizer_vs120.vcxproj.filters
 Foundation/samples/StringTokenizer/StringTokenizer_vs140.vcxproj
 Foundation/samples/StringTokenizer/StringTokenizer_vs140.vcxproj.filters
+Foundation/samples/StringTokenizer/StringTokenizer_vs150.vcxproj
+Foundation/samples/StringTokenizer/StringTokenizer_vs150.vcxproj.filters
 Foundation/samples/StringTokenizer/StringTokenizer_vs90.vcproj
 Foundation/samples/StringTokenizer/StringTokenizer_WEC2013_vs110.vcxproj
 Foundation/samples/StringTokenizer/StringTokenizer_WEC2013_vs110.vcxproj.filters
@@ -1947,6 +2139,8 @@ Foundation/samples/StringTokenizer/StringTokenizer_x64_vs120.vcxproj
 Foundation/samples/StringTokenizer/StringTokenizer_x64_vs120.vcxproj.filters
 Foundation/samples/StringTokenizer/StringTokenizer_x64_vs140.vcxproj
 Foundation/samples/StringTokenizer/StringTokenizer_x64_vs140.vcxproj.filters
+Foundation/samples/StringTokenizer/StringTokenizer_x64_vs150.vcxproj
+Foundation/samples/StringTokenizer/StringTokenizer_x64_vs150.vcxproj.filters
 Foundation/samples/StringTokenizer/StringTokenizer_x64_vs90.vcproj
 Foundation/samples/Timer
 Foundation/samples/Timer/CMakeLists.txt
@@ -1963,6 +2157,8 @@ Foundation/samples/Timer/Timer_vs120.vcxproj
 Foundation/samples/Timer/Timer_vs120.vcxproj.filters
 Foundation/samples/Timer/Timer_vs140.vcxproj
 Foundation/samples/Timer/Timer_vs140.vcxproj.filters
+Foundation/samples/Timer/Timer_vs150.vcxproj
+Foundation/samples/Timer/Timer_vs150.vcxproj.filters
 Foundation/samples/Timer/Timer_vs90.vcproj
 Foundation/samples/Timer/Timer_WEC2013_vs110.vcxproj
 Foundation/samples/Timer/Timer_WEC2013_vs110.vcxproj.filters
@@ -1976,6 +2172,8 @@ Foundation/samples/Timer/Timer_x64_vs120.vcxproj
 Foundation/samples/Timer/Timer_x64_vs120.vcxproj.filters
 Foundation/samples/Timer/Timer_x64_vs140.vcxproj
 Foundation/samples/Timer/Timer_x64_vs140.vcxproj.filters
+Foundation/samples/Timer/Timer_x64_vs150.vcxproj
+Foundation/samples/Timer/Timer_x64_vs150.vcxproj.filters
 Foundation/samples/Timer/Timer_x64_vs90.vcproj
 Foundation/samples/URI
 Foundation/samples/URI/CMakeLists.txt
@@ -1992,6 +2190,8 @@ Foundation/samples/URI/URI_vs120.vcxproj
 Foundation/samples/URI/URI_vs120.vcxproj.filters
 Foundation/samples/URI/URI_vs140.vcxproj
 Foundation/samples/URI/URI_vs140.vcxproj.filters
+Foundation/samples/URI/URI_vs150.vcxproj
+Foundation/samples/URI/URI_vs150.vcxproj.filters
 Foundation/samples/URI/URI_vs90.vcproj
 Foundation/samples/URI/URI_WEC2013_vs110.vcxproj
 Foundation/samples/URI/URI_WEC2013_vs110.vcxproj.filters
@@ -2005,6 +2205,8 @@ Foundation/samples/URI/URI_x64_vs120.vcxproj
 Foundation/samples/URI/URI_x64_vs120.vcxproj.filters
 Foundation/samples/URI/URI_x64_vs140.vcxproj
 Foundation/samples/URI/URI_x64_vs140.vcxproj.filters
+Foundation/samples/URI/URI_x64_vs150.vcxproj
+Foundation/samples/URI/URI_x64_vs150.vcxproj.filters
 Foundation/samples/URI/URI_x64_vs90.vcproj
 Foundation/samples/uuidgen
 Foundation/samples/uuidgen/CMakeLists.txt
@@ -2021,6 +2223,8 @@ Foundation/samples/uuidgen/uuidgen_vs120.vcxproj
 Foundation/samples/uuidgen/uuidgen_vs120.vcxproj.filters
 Foundation/samples/uuidgen/uuidgen_vs140.vcxproj
 Foundation/samples/uuidgen/uuidgen_vs140.vcxproj.filters
+Foundation/samples/uuidgen/uuidgen_vs150.vcxproj
+Foundation/samples/uuidgen/uuidgen_vs150.vcxproj.filters
 Foundation/samples/uuidgen/uuidgen_vs90.vcproj
 Foundation/samples/uuidgen/uuidgen_WEC2013_vs110.vcxproj
 Foundation/samples/uuidgen/uuidgen_WEC2013_vs110.vcxproj.filters
@@ -2034,6 +2238,8 @@ Foundation/samples/uuidgen/uuidgen_x64_vs120.vcxproj
 Foundation/samples/uuidgen/uuidgen_x64_vs120.vcxproj.filters
 Foundation/samples/uuidgen/uuidgen_x64_vs140.vcxproj
 Foundation/samples/uuidgen/uuidgen_x64_vs140.vcxproj.filters
+Foundation/samples/uuidgen/uuidgen_x64_vs150.vcxproj
+Foundation/samples/uuidgen/uuidgen_x64_vs150.vcxproj.filters
 Foundation/samples/uuidgen/uuidgen_x64_vs90.vcproj
 Foundation/src
 Foundation/src/AbstractObserver.cpp
@@ -2080,7 +2286,6 @@ Foundation/src/DigestEngine.cpp
 Foundation/src/DigestStream.cpp
 Foundation/src/DirectoryIterator.cpp
 Foundation/src/DirectoryIterator_UNIX.cpp
-Foundation/src/DirectoryIterator_VMS.cpp
 Foundation/src/DirectoryIterator_WIN32.cpp
 Foundation/src/DirectoryIterator_WIN32U.cpp
 Foundation/src/DirectoryIteratorStrategy.cpp
@@ -2091,7 +2296,6 @@ Foundation/src/double-conversion.cc
 Foundation/src/double-conversion.h
 Foundation/src/Environment.cpp
 Foundation/src/Environment_UNIX.cpp
-Foundation/src/Environment_VMS.cpp
 Foundation/src/Environment_VX.cpp
 Foundation/src/Environment_WIN32.cpp
 Foundation/src/Environment_WIN32U.cpp
@@ -2103,6 +2307,7 @@ Foundation/src/Event_POSIX.cpp
 Foundation/src/Event_VX.cpp
 Foundation/src/Event_WIN32.cpp
 Foundation/src/EventArgs.cpp
+Foundation/src/EventChannel.cpp
 Foundation/src/EventLogChannel.cpp
 Foundation/src/Exception.cpp
 Foundation/src/fast-dtoa.cc
@@ -2110,7 +2315,6 @@ Foundation/src/fast-dtoa.h
 Foundation/src/FIFOBufferStream.cpp
 Foundation/src/File.cpp
 Foundation/src/File_UNIX.cpp
-Foundation/src/File_VMS.cpp
 Foundation/src/File_VX.cpp
 Foundation/src/File_WIN32.cpp
 Foundation/src/File_WIN32U.cpp
@@ -2129,6 +2333,7 @@ Foundation/src/FPEnvironment.cpp
 Foundation/src/FPEnvironment_C99.cpp
 Foundation/src/FPEnvironment_DEC.cpp
 Foundation/src/FPEnvironment_DUMMY.cpp
+Foundation/src/FPEnvironment_QNX.cpp
 Foundation/src/FPEnvironment_SUN.cpp
 Foundation/src/FPEnvironment_WIN32.cpp
 Foundation/src/Glob.cpp
@@ -2147,6 +2352,7 @@ Foundation/src/inflate.h
 Foundation/src/InflatingStream.cpp
 Foundation/src/inftrees.c
 Foundation/src/inftrees.h
+Foundation/src/JSONString.cpp
 Foundation/src/Latin1Encoding.cpp
 Foundation/src/Latin2Encoding.cpp
 Foundation/src/Latin9Encoding.cpp
@@ -2154,7 +2360,6 @@ Foundation/src/LineEndingConverter.cpp
 Foundation/src/LocalDateTime.cpp
 Foundation/src/LogFile.cpp
 Foundation/src/LogFile_STD.cpp
-Foundation/src/LogFile_VMS.cpp
 Foundation/src/LogFile_WIN32.cpp
 Foundation/src/LogFile_WIN32U.cpp
 Foundation/src/Logger.cpp
@@ -2176,13 +2381,11 @@ Foundation/src/Mutex_WINCE.cpp
 Foundation/src/NamedEvent.cpp
 Foundation/src/NamedEvent_Android.cpp
 Foundation/src/NamedEvent_UNIX.cpp
-Foundation/src/NamedEvent_VMS.cpp
 Foundation/src/NamedEvent_WIN32.cpp
 Foundation/src/NamedEvent_WIN32U.cpp
 Foundation/src/NamedMutex.cpp
 Foundation/src/NamedMutex_Android.cpp
 Foundation/src/NamedMutex_UNIX.cpp
-Foundation/src/NamedMutex_VMS.cpp
 Foundation/src/NamedMutex_WIN32.cpp
 Foundation/src/NamedMutex_WIN32U.cpp
 Foundation/src/NestedDiagnosticContext.cpp
@@ -2194,10 +2397,8 @@ Foundation/src/NullStream.cpp
 Foundation/src/NumberFormatter.cpp
 Foundation/src/NumberParser.cpp
 Foundation/src/NumericString.cpp
-Foundation/src/OpcomChannel.cpp
 Foundation/src/Path.cpp
 Foundation/src/Path_UNIX.cpp
-Foundation/src/Path_VMS.cpp
 Foundation/src/Path_WIN32.cpp
 Foundation/src/Path_WIN32U.cpp
 Foundation/src/Path_WINCE.cpp
@@ -2236,7 +2437,6 @@ Foundation/src/pocomsg.mc
 Foundation/src/PriorityNotificationQueue.cpp
 Foundation/src/Process.cpp
 Foundation/src/Process_UNIX.cpp
-Foundation/src/Process_VMS.cpp
 Foundation/src/Process_VX.cpp
 Foundation/src/Process_WIN32.cpp
 Foundation/src/Process_WIN32U.cpp
@@ -2262,7 +2462,6 @@ Foundation/src/SHA1Engine.cpp
 Foundation/src/SharedLibrary.cpp
 Foundation/src/SharedLibrary_HPUX.cpp
 Foundation/src/SharedLibrary_UNIX.cpp
-Foundation/src/SharedLibrary_VMS.cpp
 Foundation/src/SharedLibrary_VX.cpp
 Foundation/src/SharedLibrary_WIN32.cpp
 Foundation/src/SharedLibrary_WIN32U.cpp
@@ -2635,6 +2834,8 @@ Foundation/testsuite/TestApp_vs120.vcxproj
 Foundation/testsuite/TestApp_vs120.vcxproj.filters
 Foundation/testsuite/TestApp_vs140.vcxproj
 Foundation/testsuite/TestApp_vs140.vcxproj.filters
+Foundation/testsuite/TestApp_vs150.vcxproj
+Foundation/testsuite/TestApp_vs150.vcxproj.filters
 Foundation/testsuite/TestApp_vs90.vcproj
 Foundation/testsuite/TestApp_WEC2013_vs110.vcxproj
 Foundation/testsuite/TestApp_WEC2013_vs110.vcxproj.filters
@@ -2648,6 +2849,8 @@ Foundation/testsuite/TestApp_x64_vs120.vcxproj
 Foundation/testsuite/TestApp_x64_vs120.vcxproj.filters
 Foundation/testsuite/TestApp_x64_vs140.vcxproj
 Foundation/testsuite/TestApp_x64_vs140.vcxproj.filters
+Foundation/testsuite/TestApp_x64_vs150.vcxproj
+Foundation/testsuite/TestApp_x64_vs150.vcxproj.filters
 Foundation/testsuite/TestApp_x64_vs90.vcproj
 Foundation/testsuite/testlibrary.opt
 Foundation/testsuite/TestLibrary_CE_vs90.vcproj
@@ -2659,6 +2862,8 @@ Foundation/testsuite/TestLibrary_vs120.vcxproj
 Foundation/testsuite/TestLibrary_vs120.vcxproj.filters
 Foundation/testsuite/TestLibrary_vs140.vcxproj
 Foundation/testsuite/TestLibrary_vs140.vcxproj.filters
+Foundation/testsuite/TestLibrary_vs150.vcxproj
+Foundation/testsuite/TestLibrary_vs150.vcxproj.filters
 Foundation/testsuite/TestLibrary_vs90.vcproj
 Foundation/testsuite/TestLibrary_WEC2013_vs110.vcxproj
 Foundation/testsuite/TestLibrary_WEC2013_vs110.vcxproj.filters
@@ -2672,8 +2877,10 @@ Foundation/testsuite/TestLibrary_x64_vs120.vcxproj
 Foundation/testsuite/TestLibrary_x64_vs120.vcxproj.filters
 Foundation/testsuite/TestLibrary_x64_vs140.vcxproj
 Foundation/testsuite/TestLibrary_x64_vs140.vcxproj.filters
+Foundation/testsuite/TestLibrary_x64_vs150.vcxproj
+Foundation/testsuite/TestLibrary_x64_vs150.vcxproj.filters
 Foundation/testsuite/TestLibrary_x64_vs90.vcproj
-Foundation/testsuite/TestSuite.vxbuild
+Foundation/testsuite/TestSuite.progen
 Foundation/testsuite/TestSuite_CE_vs90.vcproj
 Foundation/testsuite/TestSuite_vs100.vcxproj
 Foundation/testsuite/TestSuite_vs100.vcxproj.filters
@@ -2683,6 +2890,8 @@ Foundation/testsuite/TestSuite_vs120.vcxproj
 Foundation/testsuite/TestSuite_vs120.vcxproj.filters
 Foundation/testsuite/TestSuite_vs140.vcxproj
 Foundation/testsuite/TestSuite_vs140.vcxproj.filters
+Foundation/testsuite/TestSuite_vs150.vcxproj
+Foundation/testsuite/TestSuite_vs150.vcxproj.filters
 Foundation/testsuite/TestSuite_vs90.vcproj
 Foundation/testsuite/TestSuite_WEC2013_vs110.vcxproj
 Foundation/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -2696,6 +2905,8 @@ Foundation/testsuite/TestSuite_x64_vs120.vcxproj
 Foundation/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Foundation/testsuite/TestSuite_x64_vs140.vcxproj
 Foundation/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Foundation/testsuite/TestSuite_x64_vs150.vcxproj
+Foundation/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Foundation/testsuite/TestSuite_x64_vs90.vcproj
 Foundation/wcelibcex-1.0
 Foundation/wcelibcex-1.0/AUTHORS.txt
@@ -2764,6 +2975,7 @@ JSON/include/Poco/JSON/JSONException.h
 JSON/include/Poco/JSON/Object.h
 JSON/include/Poco/JSON/ParseHandler.h
 JSON/include/Poco/JSON/Parser.h
+JSON/include/Poco/JSON/ParserImpl.h
 JSON/include/Poco/JSON/PrintHandler.h
 JSON/include/Poco/JSON/Query.h
 JSON/include/Poco/JSON/Stringifier.h
@@ -2784,6 +2996,9 @@ JSON/JSON_vs120.vcxproj.filters
 JSON/JSON_vs140.sln
 JSON/JSON_vs140.vcxproj
 JSON/JSON_vs140.vcxproj.filters
+JSON/JSON_vs150.sln
+JSON/JSON_vs150.vcxproj
+JSON/JSON_vs150.vcxproj.filters
 JSON/JSON_vs90.sln
 JSON/JSON_vs90.vcproj
 JSON/JSON_WEC2013_vs110.sln
@@ -2804,6 +3019,9 @@ JSON/JSON_x64_vs120.vcxproj.filters
 JSON/JSON_x64_vs140.sln
 JSON/JSON_x64_vs140.vcxproj
 JSON/JSON_x64_vs140.vcxproj.filters
+JSON/JSON_x64_vs150.sln
+JSON/JSON_x64_vs150.vcxproj
+JSON/JSON_x64_vs150.vcxproj.filters
 JSON/JSON_x64_vs90.sln
 JSON/JSON_x64_vs90.vcproj
 JSON/Makefile
@@ -2819,6 +3037,8 @@ JSON/samples/Benchmark/Benchmark_vs120.vcxproj
 JSON/samples/Benchmark/Benchmark_vs120.vcxproj.filters
 JSON/samples/Benchmark/Benchmark_vs140.vcxproj
 JSON/samples/Benchmark/Benchmark_vs140.vcxproj.filters
+JSON/samples/Benchmark/Benchmark_vs150.vcxproj
+JSON/samples/Benchmark/Benchmark_vs150.vcxproj.filters
 JSON/samples/Benchmark/Benchmark_vs90.vcproj
 JSON/samples/Benchmark/Benchmark_WEC2013_vs110.vcxproj
 JSON/samples/Benchmark/Benchmark_WEC2013_vs110.vcxproj.filters
@@ -2832,6 +3052,8 @@ JSON/samples/Benchmark/Benchmark_x64_vs120.vcxproj
 JSON/samples/Benchmark/Benchmark_x64_vs120.vcxproj.filters
 JSON/samples/Benchmark/Benchmark_x64_vs140.vcxproj
 JSON/samples/Benchmark/Benchmark_x64_vs140.vcxproj.filters
+JSON/samples/Benchmark/Benchmark_x64_vs150.vcxproj
+JSON/samples/Benchmark/Benchmark_x64_vs150.vcxproj.filters
 JSON/samples/Benchmark/Benchmark_x64_vs90.vcproj
 JSON/samples/Benchmark/CMakeLists.txt
 JSON/samples/Benchmark/Makefile
@@ -2845,6 +3067,7 @@ JSON/samples/samples_vs100.sln
 JSON/samples/samples_vs110.sln
 JSON/samples/samples_vs120.sln
 JSON/samples/samples_vs140.sln
+JSON/samples/samples_vs150.sln
 JSON/samples/samples_vs90.sln
 JSON/samples/samples_WEC2013_vs110.sln
 JSON/samples/samples_WEC2013_vs120.sln
@@ -2852,6 +3075,7 @@ JSON/samples/samples_x64_vs100.sln
 JSON/samples/samples_x64_vs110.sln
 JSON/samples/samples_x64_vs120.sln
 JSON/samples/samples_x64_vs140.sln
+JSON/samples/samples_x64_vs150.sln
 JSON/samples/samples_x64_vs90.sln
 JSON/src
 JSON/src/Array.cpp
@@ -2860,6 +3084,10 @@ JSON/src/JSONException.cpp
 JSON/src/Object.cpp
 JSON/src/ParseHandler.cpp
 JSON/src/Parser.cpp
+JSON/src/ParserImpl.cpp
+JSON/src/pd_json.c
+JSON/src/pd_json.h
+JSON/src/pd_json_private.h
 JSON/src/PrintHandler.cpp
 JSON/src/Query.cpp
 JSON/src/Stringifier.cpp
@@ -3092,6 +3320,8 @@ JSON/testsuite/TestSuite_vs120.vcxproj
 JSON/testsuite/TestSuite_vs120.vcxproj.filters
 JSON/testsuite/TestSuite_vs140.vcxproj
 JSON/testsuite/TestSuite_vs140.vcxproj.filters
+JSON/testsuite/TestSuite_vs150.vcxproj
+JSON/testsuite/TestSuite_vs150.vcxproj.filters
 JSON/testsuite/TestSuite_vs90.vcproj
 JSON/testsuite/TestSuite_WEC2013_vs110.vcxproj
 JSON/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -3105,6 +3335,8 @@ JSON/testsuite/TestSuite_x64_vs120.vcxproj
 JSON/testsuite/TestSuite_x64_vs120.vcxproj.filters
 JSON/testsuite/TestSuite_x64_vs140.vcxproj
 JSON/testsuite/TestSuite_x64_vs140.vcxproj.filters
+JSON/testsuite/TestSuite_x64_vs150.vcxproj
+JSON/testsuite/TestSuite_x64_vs150.vcxproj.filters
 JSON/testsuite/TestSuite_x64_vs90.vcproj
 libversion
 LICENSE
@@ -3158,6 +3390,9 @@ MongoDB/MongoDB_vs120.vcxproj.filters
 MongoDB/MongoDB_vs140.sln
 MongoDB/MongoDB_vs140.vcxproj
 MongoDB/MongoDB_vs140.vcxproj.filters
+MongoDB/MongoDB_vs150.sln
+MongoDB/MongoDB_vs150.vcxproj
+MongoDB/MongoDB_vs150.vcxproj.filters
 MongoDB/MongoDB_vs90.sln
 MongoDB/MongoDB_vs90.vcproj
 MongoDB/MongoDB_x64_vs100.sln
@@ -3172,6 +3407,9 @@ MongoDB/MongoDB_x64_vs120.vcxproj.filters
 MongoDB/MongoDB_x64_vs140.sln
 MongoDB/MongoDB_x64_vs140.vcxproj
 MongoDB/MongoDB_x64_vs140.vcxproj.filters
+MongoDB/MongoDB_x64_vs150.sln
+MongoDB/MongoDB_x64_vs150.vcxproj
+MongoDB/MongoDB_x64_vs150.vcxproj.filters
 MongoDB/MongoDB_x64_vs90.sln
 MongoDB/MongoDB_x64_vs90.vcproj
 MongoDB/samples
@@ -3183,11 +3421,13 @@ MongoDB/samples/samples_vs100.sln
 MongoDB/samples/samples_vs110.sln
 MongoDB/samples/samples_vs120.sln
 MongoDB/samples/samples_vs140.sln
+MongoDB/samples/samples_vs150.sln
 MongoDB/samples/samples_vs90.sln
 MongoDB/samples/samples_x64_vs100.sln
 MongoDB/samples/samples_x64_vs110.sln
 MongoDB/samples/samples_x64_vs120.sln
 MongoDB/samples/samples_x64_vs140.sln
+MongoDB/samples/samples_x64_vs150.sln
 MongoDB/samples/samples_x64_vs90.sln
 MongoDB/samples/SQLToMongo
 MongoDB/samples/SQLToMongo/CMakeLists.txt
@@ -3202,6 +3442,8 @@ MongoDB/samples/SQLToMongo/SQLToMongo_vs120.vcxproj
 MongoDB/samples/SQLToMongo/SQLToMongo_vs120.vcxproj.filters
 MongoDB/samples/SQLToMongo/SQLToMongo_vs140.vcxproj
 MongoDB/samples/SQLToMongo/SQLToMongo_vs140.vcxproj.filters
+MongoDB/samples/SQLToMongo/SQLToMongo_vs150.vcxproj
+MongoDB/samples/SQLToMongo/SQLToMongo_vs150.vcxproj.filters
 MongoDB/samples/SQLToMongo/SQLToMongo_vs90.vcproj
 MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs100.vcxproj
 MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs100.vcxproj.filters
@@ -3211,6 +3453,8 @@ MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs120.vcxproj
 MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs120.vcxproj.filters
 MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs140.vcxproj
 MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs140.vcxproj.filters
+MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs150.vcxproj
+MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs150.vcxproj.filters
 MongoDB/samples/SQLToMongo/SQLToMongo_x64_vs90.vcproj
 MongoDB/samples/SQLToMongo/src
 MongoDB/samples/SQLToMongo/src/SQLToMongo.cpp
@@ -3257,6 +3501,8 @@ MongoDB/testsuite/TestSuite_vs120.vcxproj
 MongoDB/testsuite/TestSuite_vs120.vcxproj.filters
 MongoDB/testsuite/TestSuite_vs140.vcxproj
 MongoDB/testsuite/TestSuite_vs140.vcxproj.filters
+MongoDB/testsuite/TestSuite_vs150.vcxproj
+MongoDB/testsuite/TestSuite_vs150.vcxproj.filters
 MongoDB/testsuite/TestSuite_vs90.vcproj
 MongoDB/testsuite/TestSuite_x64_vs100.vcxproj
 MongoDB/testsuite/TestSuite_x64_vs100.vcxproj.filters
@@ -3266,6 +3512,8 @@ MongoDB/testsuite/TestSuite_x64_vs120.vcxproj
 MongoDB/testsuite/TestSuite_x64_vs120.vcxproj.filters
 MongoDB/testsuite/TestSuite_x64_vs140.vcxproj
 MongoDB/testsuite/TestSuite_x64_vs140.vcxproj.filters
+MongoDB/testsuite/TestSuite_x64_vs150.vcxproj
+MongoDB/testsuite/TestSuite_x64_vs150.vcxproj.filters
 MongoDB/testsuite/TestSuite_x64_vs90.vcproj
 Net
 Net/cmake
@@ -3347,6 +3595,7 @@ Net/include/Poco/Net/ParallelSocketReactor.h
 Net/include/Poco/Net/PartHandler.h
 Net/include/Poco/Net/PartSource.h
 Net/include/Poco/Net/PartStore.h
+Net/include/Poco/Net/PollSet.h
 Net/include/Poco/Net/POP3ClientSession.h
 Net/include/Poco/Net/QuotedPrintableDecoder.h
 Net/include/Poco/Net/QuotedPrintableEncoder.h
@@ -3381,7 +3630,6 @@ Net/include/Poco/Net/WebSocket.h
 Net/include/Poco/Net/WebSocketImpl.h
 Net/Makefile
 Net/Net.progen
-Net/Net.vxbuild
 Net/Net_CE_vs90.sln
 Net/Net_CE_vs90.vcproj
 Net/Net_vs100.sln
@@ -3396,6 +3644,9 @@ Net/Net_vs120.vcxproj.filters
 Net/Net_vs140.sln
 Net/Net_vs140.vcxproj
 Net/Net_vs140.vcxproj.filters
+Net/Net_vs150.sln
+Net/Net_vs150.vcxproj
+Net/Net_vs150.vcxproj.filters
 Net/Net_vs90.sln
 Net/Net_vs90.vcproj
 Net/Net_WEC2013_vs110.sln
@@ -3416,6 +3667,9 @@ Net/Net_x64_vs120.vcxproj.filters
 Net/Net_x64_vs140.sln
 Net/Net_x64_vs140.vcxproj
 Net/Net_x64_vs140.vcxproj.filters
+Net/Net_x64_vs150.sln
+Net/Net_x64_vs150.vcxproj
+Net/Net_x64_vs150.vcxproj.filters
 Net/Net_x64_vs90.sln
 Net/Net_x64_vs90.vcproj
 Net/samples
@@ -3432,6 +3686,8 @@ Net/samples/dict/dict_vs120.vcxproj
 Net/samples/dict/dict_vs120.vcxproj.filters
 Net/samples/dict/dict_vs140.vcxproj
 Net/samples/dict/dict_vs140.vcxproj.filters
+Net/samples/dict/dict_vs150.vcxproj
+Net/samples/dict/dict_vs150.vcxproj.filters
 Net/samples/dict/dict_vs90.vcproj
 Net/samples/dict/dict_WEC2013_vs110.vcxproj
 Net/samples/dict/dict_WEC2013_vs110.vcxproj.filters
@@ -3445,6 +3701,8 @@ Net/samples/dict/dict_x64_vs120.vcxproj
 Net/samples/dict/dict_x64_vs120.vcxproj.filters
 Net/samples/dict/dict_x64_vs140.vcxproj
 Net/samples/dict/dict_x64_vs140.vcxproj.filters
+Net/samples/dict/dict_x64_vs150.vcxproj
+Net/samples/dict/dict_x64_vs150.vcxproj.filters
 Net/samples/dict/dict_x64_vs90.vcproj
 Net/samples/dict/Makefile
 Net/samples/dict/src
@@ -3461,6 +3719,8 @@ Net/samples/download/download_vs120.vcxproj
 Net/samples/download/download_vs120.vcxproj.filters
 Net/samples/download/download_vs140.vcxproj
 Net/samples/download/download_vs140.vcxproj.filters
+Net/samples/download/download_vs150.vcxproj
+Net/samples/download/download_vs150.vcxproj.filters
 Net/samples/download/download_vs90.vcproj
 Net/samples/download/download_WEC2013_vs110.vcxproj
 Net/samples/download/download_WEC2013_vs110.vcxproj.filters
@@ -3474,6 +3734,8 @@ Net/samples/download/download_x64_vs120.vcxproj
 Net/samples/download/download_x64_vs120.vcxproj.filters
 Net/samples/download/download_x64_vs140.vcxproj
 Net/samples/download/download_x64_vs140.vcxproj.filters
+Net/samples/download/download_x64_vs150.vcxproj
+Net/samples/download/download_x64_vs150.vcxproj.filters
 Net/samples/download/download_x64_vs90.vcproj
 Net/samples/download/Makefile
 Net/samples/download/src
@@ -3491,6 +3753,8 @@ Net/samples/EchoServer/EchoServer_vs120.vcxproj
 Net/samples/EchoServer/EchoServer_vs120.vcxproj.filters
 Net/samples/EchoServer/EchoServer_vs140.vcxproj
 Net/samples/EchoServer/EchoServer_vs140.vcxproj.filters
+Net/samples/EchoServer/EchoServer_vs150.vcxproj
+Net/samples/EchoServer/EchoServer_vs150.vcxproj.filters
 Net/samples/EchoServer/EchoServer_vs90.vcproj
 Net/samples/EchoServer/EchoServer_WEC2013_vs110.vcxproj
 Net/samples/EchoServer/EchoServer_WEC2013_vs110.vcxproj.filters
@@ -3504,6 +3768,8 @@ Net/samples/EchoServer/EchoServer_x64_vs120.vcxproj
 Net/samples/EchoServer/EchoServer_x64_vs120.vcxproj.filters
 Net/samples/EchoServer/EchoServer_x64_vs140.vcxproj
 Net/samples/EchoServer/EchoServer_x64_vs140.vcxproj.filters
+Net/samples/EchoServer/EchoServer_x64_vs150.vcxproj
+Net/samples/EchoServer/EchoServer_x64_vs150.vcxproj.filters
 Net/samples/EchoServer/EchoServer_x64_vs90.vcproj
 Net/samples/EchoServer/Makefile
 Net/samples/EchoServer/src
@@ -3521,6 +3787,8 @@ Net/samples/HTTPFormServer/HTTPFormServer_vs120.vcxproj
 Net/samples/HTTPFormServer/HTTPFormServer_vs120.vcxproj.filters
 Net/samples/HTTPFormServer/HTTPFormServer_vs140.vcxproj
 Net/samples/HTTPFormServer/HTTPFormServer_vs140.vcxproj.filters
+Net/samples/HTTPFormServer/HTTPFormServer_vs150.vcxproj
+Net/samples/HTTPFormServer/HTTPFormServer_vs150.vcxproj.filters
 Net/samples/HTTPFormServer/HTTPFormServer_vs90.vcproj
 Net/samples/HTTPFormServer/HTTPFormServer_WEC2013_vs110.vcxproj
 Net/samples/HTTPFormServer/HTTPFormServer_WEC2013_vs110.vcxproj.filters
@@ -3534,6 +3802,8 @@ Net/samples/HTTPFormServer/HTTPFormServer_x64_vs120.vcxproj
 Net/samples/HTTPFormServer/HTTPFormServer_x64_vs120.vcxproj.filters
 Net/samples/HTTPFormServer/HTTPFormServer_x64_vs140.vcxproj
 Net/samples/HTTPFormServer/HTTPFormServer_x64_vs140.vcxproj.filters
+Net/samples/HTTPFormServer/HTTPFormServer_x64_vs150.vcxproj
+Net/samples/HTTPFormServer/HTTPFormServer_x64_vs150.vcxproj.filters
 Net/samples/HTTPFormServer/HTTPFormServer_x64_vs90.vcproj
 Net/samples/HTTPFormServer/Makefile
 Net/samples/HTTPFormServer/src
@@ -3550,6 +3820,8 @@ Net/samples/httpget/httpget_vs120.vcxproj
 Net/samples/httpget/httpget_vs120.vcxproj.filters
 Net/samples/httpget/httpget_vs140.vcxproj
 Net/samples/httpget/httpget_vs140.vcxproj.filters
+Net/samples/httpget/httpget_vs150.vcxproj
+Net/samples/httpget/httpget_vs150.vcxproj.filters
 Net/samples/httpget/httpget_vs90.vcproj
 Net/samples/httpget/httpget_WEC2013_vs110.vcxproj
 Net/samples/httpget/httpget_WEC2013_vs110.vcxproj.filters
@@ -3563,6 +3835,8 @@ Net/samples/httpget/httpget_x64_vs120.vcxproj
 Net/samples/httpget/httpget_x64_vs120.vcxproj.filters
 Net/samples/httpget/httpget_x64_vs140.vcxproj
 Net/samples/httpget/httpget_x64_vs140.vcxproj.filters
+Net/samples/httpget/httpget_x64_vs150.vcxproj
+Net/samples/httpget/httpget_x64_vs150.vcxproj.filters
 Net/samples/httpget/httpget_x64_vs90.vcproj
 Net/samples/httpget/Makefile
 Net/samples/httpget/src
@@ -3579,6 +3853,8 @@ Net/samples/HTTPLoadTest/HTTPLoadTest_vs120.vcxproj
 Net/samples/HTTPLoadTest/HTTPLoadTest_vs120.vcxproj.filters
 Net/samples/HTTPLoadTest/HTTPLoadTest_vs140.vcxproj
 Net/samples/HTTPLoadTest/HTTPLoadTest_vs140.vcxproj.filters
+Net/samples/HTTPLoadTest/HTTPLoadTest_vs150.vcxproj
+Net/samples/HTTPLoadTest/HTTPLoadTest_vs150.vcxproj.filters
 Net/samples/HTTPLoadTest/HTTPLoadTest_vs90.vcproj
 Net/samples/HTTPLoadTest/HTTPLoadTest_WEC2013_vs110.vcxproj
 Net/samples/HTTPLoadTest/HTTPLoadTest_WEC2013_vs110.vcxproj.filters
@@ -3592,6 +3868,8 @@ Net/samples/HTTPLoadTest/HTTPLoadTest_x64_vs120.vcxproj
 Net/samples/HTTPLoadTest/HTTPLoadTest_x64_vs120.vcxproj.filters
 Net/samples/HTTPLoadTest/HTTPLoadTest_x64_vs140.vcxproj
 Net/samples/HTTPLoadTest/HTTPLoadTest_x64_vs140.vcxproj.filters
+Net/samples/HTTPLoadTest/HTTPLoadTest_x64_vs150.vcxproj
+Net/samples/HTTPLoadTest/HTTPLoadTest_x64_vs150.vcxproj.filters
 Net/samples/HTTPLoadTest/HTTPLoadTest_x64_vs90.vcproj
 Net/samples/HTTPLoadTest/Makefile
 Net/samples/HTTPLoadTest/src
@@ -3609,6 +3887,8 @@ Net/samples/HTTPTimeServer/HTTPTimeServer_vs120.vcxproj
 Net/samples/HTTPTimeServer/HTTPTimeServer_vs120.vcxproj.filters
 Net/samples/HTTPTimeServer/HTTPTimeServer_vs140.vcxproj
 Net/samples/HTTPTimeServer/HTTPTimeServer_vs140.vcxproj.filters
+Net/samples/HTTPTimeServer/HTTPTimeServer_vs150.vcxproj
+Net/samples/HTTPTimeServer/HTTPTimeServer_vs150.vcxproj.filters
 Net/samples/HTTPTimeServer/HTTPTimeServer_vs90.vcproj
 Net/samples/HTTPTimeServer/HTTPTimeServer_WEC2013_vs110.vcxproj
 Net/samples/HTTPTimeServer/HTTPTimeServer_WEC2013_vs110.vcxproj.filters
@@ -3622,6 +3902,8 @@ Net/samples/HTTPTimeServer/HTTPTimeServer_x64_vs120.vcxproj
 Net/samples/HTTPTimeServer/HTTPTimeServer_x64_vs120.vcxproj.filters
 Net/samples/HTTPTimeServer/HTTPTimeServer_x64_vs140.vcxproj
 Net/samples/HTTPTimeServer/HTTPTimeServer_x64_vs140.vcxproj.filters
+Net/samples/HTTPTimeServer/HTTPTimeServer_x64_vs150.vcxproj
+Net/samples/HTTPTimeServer/HTTPTimeServer_x64_vs150.vcxproj.filters
 Net/samples/HTTPTimeServer/HTTPTimeServer_x64_vs90.vcproj
 Net/samples/HTTPTimeServer/Makefile
 Net/samples/HTTPTimeServer/src
@@ -3638,6 +3920,8 @@ Net/samples/ifconfig/ifconfig_vs120.vcxproj
 Net/samples/ifconfig/ifconfig_vs120.vcxproj.filters
 Net/samples/ifconfig/ifconfig_vs140.vcxproj
 Net/samples/ifconfig/ifconfig_vs140.vcxproj.filters
+Net/samples/ifconfig/ifconfig_vs150.vcxproj
+Net/samples/ifconfig/ifconfig_vs150.vcxproj.filters
 Net/samples/ifconfig/ifconfig_vs90.vcproj
 Net/samples/ifconfig/ifconfig_WEC2013_vs110.vcxproj
 Net/samples/ifconfig/ifconfig_WEC2013_vs110.vcxproj.filters
@@ -3651,6 +3935,8 @@ Net/samples/ifconfig/ifconfig_x64_vs120.vcxproj
 Net/samples/ifconfig/ifconfig_x64_vs120.vcxproj.filters
 Net/samples/ifconfig/ifconfig_x64_vs140.vcxproj
 Net/samples/ifconfig/ifconfig_x64_vs140.vcxproj.filters
+Net/samples/ifconfig/ifconfig_x64_vs150.vcxproj
+Net/samples/ifconfig/ifconfig_x64_vs150.vcxproj.filters
 Net/samples/ifconfig/ifconfig_x64_vs90.vcproj
 Net/samples/ifconfig/Makefile
 Net/samples/ifconfig/src
@@ -3667,6 +3953,8 @@ Net/samples/Mail/Mail_vs120.vcxproj
 Net/samples/Mail/Mail_vs120.vcxproj.filters
 Net/samples/Mail/Mail_vs140.vcxproj
 Net/samples/Mail/Mail_vs140.vcxproj.filters
+Net/samples/Mail/Mail_vs150.vcxproj
+Net/samples/Mail/Mail_vs150.vcxproj.filters
 Net/samples/Mail/Mail_vs90.vcproj
 Net/samples/Mail/Mail_WEC2013_vs110.vcxproj
 Net/samples/Mail/Mail_WEC2013_vs110.vcxproj.filters
@@ -3680,6 +3968,8 @@ Net/samples/Mail/Mail_x64_vs120.vcxproj
 Net/samples/Mail/Mail_x64_vs120.vcxproj.filters
 Net/samples/Mail/Mail_x64_vs140.vcxproj
 Net/samples/Mail/Mail_x64_vs140.vcxproj.filters
+Net/samples/Mail/Mail_x64_vs150.vcxproj
+Net/samples/Mail/Mail_x64_vs150.vcxproj.filters
 Net/samples/Mail/Mail_x64_vs90.vcproj
 Net/samples/Mail/Makefile
 Net/samples/Mail/src
@@ -3700,6 +3990,8 @@ Net/samples/Ping/Ping_vs120.vcxproj
 Net/samples/Ping/Ping_vs120.vcxproj.filters
 Net/samples/Ping/Ping_vs140.vcxproj
 Net/samples/Ping/Ping_vs140.vcxproj.filters
+Net/samples/Ping/Ping_vs150.vcxproj
+Net/samples/Ping/Ping_vs150.vcxproj.filters
 Net/samples/Ping/Ping_vs90.vcproj
 Net/samples/Ping/Ping_WEC2013_vs110.vcxproj
 Net/samples/Ping/Ping_WEC2013_vs110.vcxproj.filters
@@ -3713,6 +4005,8 @@ Net/samples/Ping/Ping_x64_vs120.vcxproj
 Net/samples/Ping/Ping_x64_vs120.vcxproj.filters
 Net/samples/Ping/Ping_x64_vs140.vcxproj
 Net/samples/Ping/Ping_x64_vs140.vcxproj.filters
+Net/samples/Ping/Ping_x64_vs150.vcxproj
+Net/samples/Ping/Ping_x64_vs150.vcxproj.filters
 Net/samples/Ping/Ping_x64_vs90.vcproj
 Net/samples/Ping/src
 Net/samples/Ping/src/Ping.cpp
@@ -3722,6 +4016,7 @@ Net/samples/samples_vs100.sln
 Net/samples/samples_vs110.sln
 Net/samples/samples_vs120.sln
 Net/samples/samples_vs140.sln
+Net/samples/samples_vs150.sln
 Net/samples/samples_vs90.sln
 Net/samples/samples_WEC2013_vs110.sln
 Net/samples/samples_WEC2013_vs120.sln
@@ -3729,6 +4024,7 @@ Net/samples/samples_x64_vs100.sln
 Net/samples/samples_x64_vs110.sln
 Net/samples/samples_x64_vs120.sln
 Net/samples/samples_x64_vs140.sln
+Net/samples/samples_x64_vs150.sln
 Net/samples/samples_x64_vs90.sln
 Net/samples/SMTPLogger
 Net/samples/SMTPLogger/CMakeLists.txt
@@ -3745,6 +4041,8 @@ Net/samples/SMTPLogger/SMTPLogger_vs120.vcxproj
 Net/samples/SMTPLogger/SMTPLogger_vs120.vcxproj.filters
 Net/samples/SMTPLogger/SMTPLogger_vs140.vcxproj
 Net/samples/SMTPLogger/SMTPLogger_vs140.vcxproj.filters
+Net/samples/SMTPLogger/SMTPLogger_vs150.vcxproj
+Net/samples/SMTPLogger/SMTPLogger_vs150.vcxproj.filters
 Net/samples/SMTPLogger/SMTPLogger_vs90.vcproj
 Net/samples/SMTPLogger/SMTPLogger_WEC2013_vs110.vcxproj
 Net/samples/SMTPLogger/SMTPLogger_WEC2013_vs110.vcxproj.filters
@@ -3758,6 +4056,8 @@ Net/samples/SMTPLogger/SMTPLogger_x64_vs120.vcxproj
 Net/samples/SMTPLogger/SMTPLogger_x64_vs120.vcxproj.filters
 Net/samples/SMTPLogger/SMTPLogger_x64_vs140.vcxproj
 Net/samples/SMTPLogger/SMTPLogger_x64_vs140.vcxproj.filters
+Net/samples/SMTPLogger/SMTPLogger_x64_vs150.vcxproj
+Net/samples/SMTPLogger/SMTPLogger_x64_vs150.vcxproj.filters
 Net/samples/SMTPLogger/SMTPLogger_x64_vs90.vcproj
 Net/samples/SMTPLogger/src
 Net/samples/SMTPLogger/src/SMTPLogger.cpp
@@ -3777,6 +4077,8 @@ Net/samples/TimeServer/TimeServer_vs120.vcxproj
 Net/samples/TimeServer/TimeServer_vs120.vcxproj.filters
 Net/samples/TimeServer/TimeServer_vs140.vcxproj
 Net/samples/TimeServer/TimeServer_vs140.vcxproj.filters
+Net/samples/TimeServer/TimeServer_vs150.vcxproj
+Net/samples/TimeServer/TimeServer_vs150.vcxproj.filters
 Net/samples/TimeServer/TimeServer_vs90.vcproj
 Net/samples/TimeServer/TimeServer_WEC2013_vs110.vcxproj
 Net/samples/TimeServer/TimeServer_WEC2013_vs110.vcxproj.filters
@@ -3790,6 +4092,8 @@ Net/samples/TimeServer/TimeServer_x64_vs120.vcxproj
 Net/samples/TimeServer/TimeServer_x64_vs120.vcxproj.filters
 Net/samples/TimeServer/TimeServer_x64_vs140.vcxproj
 Net/samples/TimeServer/TimeServer_x64_vs140.vcxproj.filters
+Net/samples/TimeServer/TimeServer_x64_vs150.vcxproj
+Net/samples/TimeServer/TimeServer_x64_vs150.vcxproj.filters
 Net/samples/TimeServer/TimeServer_x64_vs90.vcproj
 Net/samples/WebSocketServer
 Net/samples/WebSocketServer/CMakeLists.txt
@@ -3806,6 +4110,8 @@ Net/samples/WebSocketServer/WebSocketServer_vs120.vcxproj
 Net/samples/WebSocketServer/WebSocketServer_vs120.vcxproj.filters
 Net/samples/WebSocketServer/WebSocketServer_vs140.vcxproj
 Net/samples/WebSocketServer/WebSocketServer_vs140.vcxproj.filters
+Net/samples/WebSocketServer/WebSocketServer_vs150.vcxproj
+Net/samples/WebSocketServer/WebSocketServer_vs150.vcxproj.filters
 Net/samples/WebSocketServer/WebSocketServer_vs90.vcproj
 Net/samples/WebSocketServer/WebSocketServer_WEC2013_vs110.vcxproj
 Net/samples/WebSocketServer/WebSocketServer_WEC2013_vs110.vcxproj.filters
@@ -3819,6 +4125,8 @@ Net/samples/WebSocketServer/WebSocketServer_x64_vs120.vcxproj
 Net/samples/WebSocketServer/WebSocketServer_x64_vs120.vcxproj.filters
 Net/samples/WebSocketServer/WebSocketServer_x64_vs140.vcxproj
 Net/samples/WebSocketServer/WebSocketServer_x64_vs140.vcxproj.filters
+Net/samples/WebSocketServer/WebSocketServer_x64_vs150.vcxproj
+Net/samples/WebSocketServer/WebSocketServer_x64_vs150.vcxproj.filters
 Net/samples/WebSocketServer/WebSocketServer_x64_vs90.vcproj
 Net/src
 Net/src/AbstractHTTPRequestHandler.cpp
@@ -3891,6 +4199,7 @@ Net/src/OAuth20Credentials.cpp
 Net/src/PartHandler.cpp
 Net/src/PartSource.cpp
 Net/src/PartStore.cpp
+Net/src/PollSet.cpp
 Net/src/POP3ClientSession.cpp
 Net/src/QuotedPrintableDecoder.cpp
 Net/src/QuotedPrintableEncoder.cpp
@@ -4013,6 +4322,8 @@ Net/testsuite/src/OAuth20CredentialsTest.cpp
 Net/testsuite/src/OAuth20CredentialsTest.h
 Net/testsuite/src/OAuthTestSuite.cpp
 Net/testsuite/src/OAuthTestSuite.h
+Net/testsuite/src/PollSetTest.cpp
+Net/testsuite/src/PollSetTest.h
 Net/testsuite/src/POP3ClientSessionTest.cpp
 Net/testsuite/src/POP3ClientSessionTest.h
 Net/testsuite/src/QuotedPrintableTest.cpp
@@ -4048,7 +4359,6 @@ Net/testsuite/src/WebSocketTestSuite.h
 Net/testsuite/src/WinCEDriver.cpp
 Net/testsuite/src/WinDriver.cpp
 Net/testsuite/TestSuite.progen
-Net/testsuite/TestSuite.vxbuild
 Net/testsuite/TestSuite_CE_vs90.vcproj
 Net/testsuite/TestSuite_vs100.vcxproj
 Net/testsuite/TestSuite_vs100.vcxproj.filters
@@ -4058,6 +4368,8 @@ Net/testsuite/TestSuite_vs120.vcxproj
 Net/testsuite/TestSuite_vs120.vcxproj.filters
 Net/testsuite/TestSuite_vs140.vcxproj
 Net/testsuite/TestSuite_vs140.vcxproj.filters
+Net/testsuite/TestSuite_vs150.vcxproj
+Net/testsuite/TestSuite_vs150.vcxproj.filters
 Net/testsuite/TestSuite_vs90.vcproj
 Net/testsuite/TestSuite_WEC2013_vs110.vcxproj
 Net/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -4071,6 +4383,8 @@ Net/testsuite/TestSuite_x64_vs120.vcxproj
 Net/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Net/testsuite/TestSuite_x64_vs140.vcxproj
 Net/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Net/testsuite/TestSuite_x64_vs150.vcxproj
+Net/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Net/testsuite/TestSuite_x64_vs90.vcproj
 NetSSL_OpenSSL
 NetSSL_OpenSSL/cmake
@@ -4125,8 +4439,12 @@ NetSSL_OpenSSL/NetSSL_OpenSSL_vs120.vcxproj.filters
 NetSSL_OpenSSL/NetSSL_OpenSSL_vs140.sln
 NetSSL_OpenSSL/NetSSL_OpenSSL_vs140.vcxproj
 NetSSL_OpenSSL/NetSSL_OpenSSL_vs140.vcxproj.filters
+NetSSL_OpenSSL/NetSSL_OpenSSL_vs150.sln
+NetSSL_OpenSSL/NetSSL_OpenSSL_vs150.vcxproj
+NetSSL_OpenSSL/NetSSL_OpenSSL_vs150.vcxproj.filters
 NetSSL_OpenSSL/NetSSL_OpenSSL_vs90.sln
 NetSSL_OpenSSL/NetSSL_OpenSSL_vs90.vcproj
+NetSSL_OpenSSL/NetSSL_OpenSSL_WEC2013_vs110.sln
 NetSSL_OpenSSL/NetSSL_OpenSSL_WEC2013_vs110.vcxproj
 NetSSL_OpenSSL/NetSSL_OpenSSL_WEC2013_vs110.vcxproj.filters
 NetSSL_OpenSSL/NetSSL_OpenSSL_WEC2013_vs120.sln
@@ -4144,6 +4462,9 @@ NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs120.vcxproj.filters
 NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs140.sln
 NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs140.vcxproj
 NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs140.vcxproj.filters
+NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs150.sln
+NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs150.vcxproj
+NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs150.vcxproj.filters
 NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs90.sln
 NetSSL_OpenSSL/NetSSL_OpenSSL_x64_vs90.vcproj
 NetSSL_OpenSSL/samples
@@ -4160,6 +4481,8 @@ NetSSL_OpenSSL/samples/download/download_vs120.vcxproj
 NetSSL_OpenSSL/samples/download/download_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/download/download_vs140.vcxproj
 NetSSL_OpenSSL/samples/download/download_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/download/download_vs150.vcxproj
+NetSSL_OpenSSL/samples/download/download_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/download/download_vs90.vcproj
 NetSSL_OpenSSL/samples/download/download_WEC2013_vs110.vcxproj
 NetSSL_OpenSSL/samples/download/download_WEC2013_vs110.vcxproj.filters
@@ -4173,6 +4496,8 @@ NetSSL_OpenSSL/samples/download/download_x64_vs120.vcxproj
 NetSSL_OpenSSL/samples/download/download_x64_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/download/download_x64_vs140.vcxproj
 NetSSL_OpenSSL/samples/download/download_x64_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/download/download_x64_vs150.vcxproj
+NetSSL_OpenSSL/samples/download/download_x64_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/download/download_x64_vs90.vcproj
 NetSSL_OpenSSL/samples/download/Makefile
 NetSSL_OpenSSL/samples/download/rootcert.pem
@@ -4192,6 +4517,8 @@ NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_vs120.vcxproj
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_vs140.vcxproj
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_vs150.vcxproj
+NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_vs90.vcproj
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_WEC2013_vs110.vcxproj
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_WEC2013_vs110.vcxproj.filters
@@ -4205,6 +4532,8 @@ NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_x64_vs120.vcxproj
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_x64_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_x64_vs140.vcxproj
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_x64_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_x64_vs150.vcxproj
+NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_x64_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/HTTPSTimeServer/HTTPSTimeServer_x64_vs90.vcproj
 NetSSL_OpenSSL/samples/HTTPSTimeServer/Makefile
 NetSSL_OpenSSL/samples/HTTPSTimeServer/rootcert.pem
@@ -4222,6 +4551,8 @@ NetSSL_OpenSSL/samples/Mail/Mail_vs120.vcxproj
 NetSSL_OpenSSL/samples/Mail/Mail_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/Mail/Mail_vs140.vcxproj
 NetSSL_OpenSSL/samples/Mail/Mail_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/Mail/Mail_vs150.vcxproj
+NetSSL_OpenSSL/samples/Mail/Mail_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/Mail/Mail_vs90.vcproj
 NetSSL_OpenSSL/samples/Mail/Mail_WEC2013_vs110.vcxproj
 NetSSL_OpenSSL/samples/Mail/Mail_WEC2013_vs110.vcxproj.filters
@@ -4235,6 +4566,8 @@ NetSSL_OpenSSL/samples/Mail/Mail_x64_vs120.vcxproj
 NetSSL_OpenSSL/samples/Mail/Mail_x64_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/Mail/Mail_x64_vs140.vcxproj
 NetSSL_OpenSSL/samples/Mail/Mail_x64_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/Mail/Mail_x64_vs150.vcxproj
+NetSSL_OpenSSL/samples/Mail/Mail_x64_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/Mail/Mail_x64_vs90.vcproj
 NetSSL_OpenSSL/samples/Mail/Makefile
 NetSSL_OpenSSL/samples/Mail/src
@@ -4247,6 +4580,7 @@ NetSSL_OpenSSL/samples/samples_vs100.sln
 NetSSL_OpenSSL/samples/samples_vs110.sln
 NetSSL_OpenSSL/samples/samples_vs120.sln
 NetSSL_OpenSSL/samples/samples_vs140.sln
+NetSSL_OpenSSL/samples/samples_vs150.sln
 NetSSL_OpenSSL/samples/samples_vs90.sln
 NetSSL_OpenSSL/samples/samples_WEC2013_vs110.sln
 NetSSL_OpenSSL/samples/samples_WEC2013_vs120.sln
@@ -4254,6 +4588,7 @@ NetSSL_OpenSSL/samples/samples_x64_vs100.sln
 NetSSL_OpenSSL/samples/samples_x64_vs110.sln
 NetSSL_OpenSSL/samples/samples_x64_vs120.sln
 NetSSL_OpenSSL/samples/samples_x64_vs140.sln
+NetSSL_OpenSSL/samples/samples_x64_vs150.sln
 NetSSL_OpenSSL/samples/samples_x64_vs90.sln
 NetSSL_OpenSSL/samples/TwitterClient
 NetSSL_OpenSSL/samples/TwitterClient/CMakeLists.txt
@@ -4272,6 +4607,8 @@ NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_vs120.vcxproj
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_vs140.vcxproj
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_vs150.vcxproj
+NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_vs90.vcproj
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_WEC2013_vs110.vcxproj
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_WEC2013_vs110.vcxproj.filters
@@ -4285,6 +4622,8 @@ NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_x64_vs120.vcxproj
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_x64_vs120.vcxproj.filters
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_x64_vs140.vcxproj
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_x64_vs140.vcxproj.filters
+NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_x64_vs150.vcxproj
+NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_x64_vs150.vcxproj.filters
 NetSSL_OpenSSL/samples/TwitterClient/TwitterClient_x64_vs90.vcproj
 NetSSL_OpenSSL/src
 NetSSL_OpenSSL/src/AcceptCertificateHandler.cpp
@@ -4353,6 +4692,8 @@ NetSSL_OpenSSL/testsuite/TestSuite_vs120.vcxproj
 NetSSL_OpenSSL/testsuite/TestSuite_vs120.vcxproj.filters
 NetSSL_OpenSSL/testsuite/TestSuite_vs140.vcxproj
 NetSSL_OpenSSL/testsuite/TestSuite_vs140.vcxproj.filters
+NetSSL_OpenSSL/testsuite/TestSuite_vs150.vcxproj
+NetSSL_OpenSSL/testsuite/TestSuite_vs150.vcxproj.filters
 NetSSL_OpenSSL/testsuite/TestSuite_vs90.vcproj
 NetSSL_OpenSSL/testsuite/TestSuite_WEC2013_vs110.vcxproj
 NetSSL_OpenSSL/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -4366,6 +4707,8 @@ NetSSL_OpenSSL/testsuite/TestSuite_x64_vs120.vcxproj
 NetSSL_OpenSSL/testsuite/TestSuite_x64_vs120.vcxproj.filters
 NetSSL_OpenSSL/testsuite/TestSuite_x64_vs140.vcxproj
 NetSSL_OpenSSL/testsuite/TestSuite_x64_vs140.vcxproj.filters
+NetSSL_OpenSSL/testsuite/TestSuite_x64_vs150.vcxproj
+NetSSL_OpenSSL/testsuite/TestSuite_x64_vs150.vcxproj.filters
 NetSSL_OpenSSL/testsuite/TestSuite_x64_vs90.vcproj
 NetSSL_OpenSSL/testsuite/TestSuitemt.xml
 NEWS
@@ -4388,6 +4731,9 @@ PageCompiler/File2Page/File2Page_vs120.vcxproj.filters
 PageCompiler/File2Page/File2Page_vs140.sln
 PageCompiler/File2Page/File2Page_vs140.vcxproj
 PageCompiler/File2Page/File2Page_vs140.vcxproj.filters
+PageCompiler/File2Page/File2Page_vs150.sln
+PageCompiler/File2Page/File2Page_vs150.vcxproj
+PageCompiler/File2Page/File2Page_vs150.vcxproj.filters
 PageCompiler/File2Page/File2Page_vs90.sln
 PageCompiler/File2Page/File2Page_vs90.vcproj
 PageCompiler/File2Page/File2Page_x64_vs100.sln
@@ -4402,6 +4748,9 @@ PageCompiler/File2Page/File2Page_x64_vs120.vcxproj.filters
 PageCompiler/File2Page/File2Page_x64_vs140.sln
 PageCompiler/File2Page/File2Page_x64_vs140.vcxproj
 PageCompiler/File2Page/File2Page_x64_vs140.vcxproj.filters
+PageCompiler/File2Page/File2Page_x64_vs150.sln
+PageCompiler/File2Page/File2Page_x64_vs150.vcxproj
+PageCompiler/File2Page/File2Page_x64_vs150.vcxproj.filters
 PageCompiler/File2Page/File2Page_x64_vs90.sln
 PageCompiler/File2Page/File2Page_x64_vs90.vcproj
 PageCompiler/File2Page/Makefile
@@ -4421,6 +4770,9 @@ PageCompiler/PageCompiler_vs120.vcxproj.filters
 PageCompiler/PageCompiler_vs140.sln
 PageCompiler/PageCompiler_vs140.vcxproj
 PageCompiler/PageCompiler_vs140.vcxproj.filters
+PageCompiler/PageCompiler_vs150.sln
+PageCompiler/PageCompiler_vs150.vcxproj
+PageCompiler/PageCompiler_vs150.vcxproj.filters
 PageCompiler/PageCompiler_vs90.sln
 PageCompiler/PageCompiler_vs90.vcproj
 PageCompiler/PageCompiler_x64_vs100.sln
@@ -4435,6 +4787,9 @@ PageCompiler/PageCompiler_x64_vs120.vcxproj.filters
 PageCompiler/PageCompiler_x64_vs140.sln
 PageCompiler/PageCompiler_x64_vs140.vcxproj
 PageCompiler/PageCompiler_x64_vs140.vcxproj.filters
+PageCompiler/PageCompiler_x64_vs150.sln
+PageCompiler/PageCompiler_x64_vs150.vcxproj
+PageCompiler/PageCompiler_x64_vs150.vcxproj.filters
 PageCompiler/PageCompiler_x64_vs90.sln
 PageCompiler/PageCompiler_x64_vs90.vcproj
 PageCompiler/samples
@@ -4449,6 +4804,8 @@ PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_vs120.vcxproj
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_vs120.vcxproj.filters
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_vs140.vcxproj
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_vs140.vcxproj.filters
+PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_vs150.vcxproj
+PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_vs150.vcxproj.filters
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_vs90.vcproj
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs100.vcxproj
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs100.vcxproj.filters
@@ -4458,6 +4815,8 @@ PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs120.vcxproj
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs120.vcxproj.filters
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs140.vcxproj
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs140.vcxproj.filters
+PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs150.vcxproj
+PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs150.vcxproj.filters
 PageCompiler/samples/HTTPTimeServer/HTTPTimeServer_x64_vs90.vcproj
 PageCompiler/samples/HTTPTimeServer/Makefile
 PageCompiler/samples/HTTPTimeServer/src
@@ -4472,11 +4831,13 @@ PageCompiler/samples/samples_vs100.sln
 PageCompiler/samples/samples_vs110.sln
 PageCompiler/samples/samples_vs120.sln
 PageCompiler/samples/samples_vs140.sln
+PageCompiler/samples/samples_vs150.sln
 PageCompiler/samples/samples_vs90.sln
 PageCompiler/samples/samples_x64_vs100.sln
 PageCompiler/samples/samples_x64_vs110.sln
 PageCompiler/samples/samples_x64_vs120.sln
 PageCompiler/samples/samples_x64_vs140.sln
+PageCompiler/samples/samples_x64_vs150.sln
 PageCompiler/samples/samples_x64_vs90.sln
 PageCompiler/src
 PageCompiler/src/ApacheCodeWriter.cpp
@@ -4494,6 +4855,104 @@ patches
 patches/AIX
 patches/AIX/xlC8.diff
 README
+Redis
+Redis/cmake
+Redis/cmake/PocoRedisConfig.cmake
+Redis/CMakeLists.txt
+Redis/include
+Redis/include/Poco
+Redis/include/Poco/Redis
+Redis/include/Poco/Redis/Array.h
+Redis/include/Poco/Redis/AsyncReader.h
+Redis/include/Poco/Redis/Client.h
+Redis/include/Poco/Redis/Command.h
+Redis/include/Poco/Redis/Error.h
+Redis/include/Poco/Redis/Exception.h
+Redis/include/Poco/Redis/PoolableConnectionFactory.h
+Redis/include/Poco/Redis/Redis.h
+Redis/include/Poco/Redis/RedisEventArgs.h
+Redis/include/Poco/Redis/RedisStream.h
+Redis/include/Poco/Redis/Type.h
+Redis/Makefile
+Redis/Redis.progen
+Redis/Redis_vs100.sln
+Redis/Redis_vs100.vcxproj
+Redis/Redis_vs100.vcxproj.filters
+Redis/Redis_vs110.sln
+Redis/Redis_vs110.vcxproj
+Redis/Redis_vs110.vcxproj.filters
+Redis/Redis_vs120.sln
+Redis/Redis_vs120.vcxproj
+Redis/Redis_vs120.vcxproj.filters
+Redis/Redis_vs140.sln
+Redis/Redis_vs140.vcxproj
+Redis/Redis_vs140.vcxproj.filters
+Redis/Redis_vs150.sln
+Redis/Redis_vs150.vcxproj
+Redis/Redis_vs150.vcxproj.filters
+Redis/Redis_vs90.sln
+Redis/Redis_vs90.vcproj
+Redis/Redis_x64_vs100.sln
+Redis/Redis_x64_vs100.vcxproj
+Redis/Redis_x64_vs100.vcxproj.filters
+Redis/Redis_x64_vs110.sln
+Redis/Redis_x64_vs110.vcxproj
+Redis/Redis_x64_vs110.vcxproj.filters
+Redis/Redis_x64_vs120.sln
+Redis/Redis_x64_vs120.vcxproj
+Redis/Redis_x64_vs120.vcxproj.filters
+Redis/Redis_x64_vs140.sln
+Redis/Redis_x64_vs140.vcxproj
+Redis/Redis_x64_vs140.vcxproj.filters
+Redis/Redis_x64_vs150.sln
+Redis/Redis_x64_vs150.vcxproj
+Redis/Redis_x64_vs150.vcxproj.filters
+Redis/Redis_x64_vs90.sln
+Redis/Redis_x64_vs90.vcproj
+Redis/src
+Redis/src/Array.cpp
+Redis/src/AsyncReader.cpp
+Redis/src/Client.cpp
+Redis/src/Command.cpp
+Redis/src/Error.cpp
+Redis/src/Exception.cpp
+Redis/src/RedisEventArgs.cpp
+Redis/src/RedisStream.cpp
+Redis/src/Type.cpp
+Redis/testsuite
+Redis/testsuite/CMakeLists.txt
+Redis/testsuite/Makefile
+Redis/testsuite/src
+Redis/testsuite/src/Driver.cpp
+Redis/testsuite/src/RedisTest.cpp
+Redis/testsuite/src/RedisTest.h
+Redis/testsuite/src/RedisTestSuite.cpp
+Redis/testsuite/src/RedisTestSuite.h
+Redis/testsuite/src/WinCEDriver.cpp
+Redis/testsuite/src/WinDriver.cpp
+Redis/testsuite/TestSuite.progen
+Redis/testsuite/TestSuite_vs100.vcxproj
+Redis/testsuite/TestSuite_vs100.vcxproj.filters
+Redis/testsuite/TestSuite_vs110.vcxproj
+Redis/testsuite/TestSuite_vs110.vcxproj.filters
+Redis/testsuite/TestSuite_vs120.vcxproj
+Redis/testsuite/TestSuite_vs120.vcxproj.filters
+Redis/testsuite/TestSuite_vs140.vcxproj
+Redis/testsuite/TestSuite_vs140.vcxproj.filters
+Redis/testsuite/TestSuite_vs150.vcxproj
+Redis/testsuite/TestSuite_vs150.vcxproj.filters
+Redis/testsuite/TestSuite_vs90.vcproj
+Redis/testsuite/TestSuite_x64_vs100.vcxproj
+Redis/testsuite/TestSuite_x64_vs100.vcxproj.filters
+Redis/testsuite/TestSuite_x64_vs110.vcxproj
+Redis/testsuite/TestSuite_x64_vs110.vcxproj.filters
+Redis/testsuite/TestSuite_x64_vs120.vcxproj
+Redis/testsuite/TestSuite_x64_vs120.vcxproj.filters
+Redis/testsuite/TestSuite_x64_vs140.vcxproj
+Redis/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Redis/testsuite/TestSuite_x64_vs150.vcxproj
+Redis/testsuite/TestSuite_x64_vs150.vcxproj.filters
+Redis/testsuite/TestSuite_x64_vs90.vcproj
 Util
 Util/cmake
 Util/cmake/PocoUtilConfig.cmake
@@ -4551,6 +5010,8 @@ Util/samples/pkill/pkill_vs120.vcxproj
 Util/samples/pkill/pkill_vs120.vcxproj.filters
 Util/samples/pkill/pkill_vs140.vcxproj
 Util/samples/pkill/pkill_vs140.vcxproj.filters
+Util/samples/pkill/pkill_vs150.vcxproj
+Util/samples/pkill/pkill_vs150.vcxproj.filters
 Util/samples/pkill/pkill_vs90.vcproj
 Util/samples/pkill/pkill_WEC2013_vs110.vcxproj
 Util/samples/pkill/pkill_WEC2013_vs110.vcxproj.filters
@@ -4564,6 +5025,8 @@ Util/samples/pkill/pkill_x64_vs120.vcxproj
 Util/samples/pkill/pkill_x64_vs120.vcxproj.filters
 Util/samples/pkill/pkill_x64_vs140.vcxproj
 Util/samples/pkill/pkill_x64_vs140.vcxproj.filters
+Util/samples/pkill/pkill_x64_vs150.vcxproj
+Util/samples/pkill/pkill_x64_vs150.vcxproj.filters
 Util/samples/pkill/pkill_x64_vs90.vcproj
 Util/samples/pkill/src
 Util/samples/pkill/src/pkill.cpp
@@ -4581,6 +5044,8 @@ Util/samples/SampleApp/SampleApp_vs120.vcxproj
 Util/samples/SampleApp/SampleApp_vs120.vcxproj.filters
 Util/samples/SampleApp/SampleApp_vs140.vcxproj
 Util/samples/SampleApp/SampleApp_vs140.vcxproj.filters
+Util/samples/SampleApp/SampleApp_vs150.vcxproj
+Util/samples/SampleApp/SampleApp_vs150.vcxproj.filters
 Util/samples/SampleApp/SampleApp_vs90.vcproj
 Util/samples/SampleApp/SampleApp_WEC2013_vs110.vcxproj
 Util/samples/SampleApp/SampleApp_WEC2013_vs110.vcxproj.filters
@@ -4594,6 +5059,8 @@ Util/samples/SampleApp/SampleApp_x64_vs120.vcxproj
 Util/samples/SampleApp/SampleApp_x64_vs120.vcxproj.filters
 Util/samples/SampleApp/SampleApp_x64_vs140.vcxproj
 Util/samples/SampleApp/SampleApp_x64_vs140.vcxproj.filters
+Util/samples/SampleApp/SampleApp_x64_vs150.vcxproj
+Util/samples/SampleApp/SampleApp_x64_vs150.vcxproj.filters
 Util/samples/SampleApp/SampleApp_x64_vs90.vcproj
 Util/samples/SampleApp/src
 Util/samples/SampleApp/src/SampleApp.cpp
@@ -4603,6 +5070,7 @@ Util/samples/samples_vs100.sln
 Util/samples/samples_vs110.sln
 Util/samples/samples_vs120.sln
 Util/samples/samples_vs140.sln
+Util/samples/samples_vs150.sln
 Util/samples/samples_vs90.sln
 Util/samples/samples_WEC2013_vs110.sln
 Util/samples/samples_WEC2013_vs120.sln
@@ -4610,6 +5078,7 @@ Util/samples/samples_x64_vs100.sln
 Util/samples/samples_x64_vs110.sln
 Util/samples/samples_x64_vs120.sln
 Util/samples/samples_x64_vs140.sln
+Util/samples/samples_x64_vs150.sln
 Util/samples/samples_x64_vs90.sln
 Util/samples/SampleServer
 Util/samples/SampleServer/CMakeLists.txt
@@ -4625,6 +5094,8 @@ Util/samples/SampleServer/SampleServer_vs120.vcxproj
 Util/samples/SampleServer/SampleServer_vs120.vcxproj.filters
 Util/samples/SampleServer/SampleServer_vs140.vcxproj
 Util/samples/SampleServer/SampleServer_vs140.vcxproj.filters
+Util/samples/SampleServer/SampleServer_vs150.vcxproj
+Util/samples/SampleServer/SampleServer_vs150.vcxproj.filters
 Util/samples/SampleServer/SampleServer_vs90.vcproj
 Util/samples/SampleServer/SampleServer_WEC2013_vs110.vcxproj
 Util/samples/SampleServer/SampleServer_WEC2013_vs110.vcxproj.filters
@@ -4638,6 +5109,8 @@ Util/samples/SampleServer/SampleServer_x64_vs120.vcxproj
 Util/samples/SampleServer/SampleServer_x64_vs120.vcxproj.filters
 Util/samples/SampleServer/SampleServer_x64_vs140.vcxproj
 Util/samples/SampleServer/SampleServer_x64_vs140.vcxproj.filters
+Util/samples/SampleServer/SampleServer_x64_vs150.vcxproj
+Util/samples/SampleServer/SampleServer_x64_vs150.vcxproj.filters
 Util/samples/SampleServer/SampleServer_x64_vs90.vcproj
 Util/samples/SampleServer/src
 Util/samples/SampleServer/src/SampleServer.cpp
@@ -4656,6 +5129,8 @@ Util/samples/Units/Units_vs120.vcxproj
 Util/samples/Units/Units_vs120.vcxproj.filters
 Util/samples/Units/Units_vs140.vcxproj
 Util/samples/Units/Units_vs140.vcxproj.filters
+Util/samples/Units/Units_vs150.vcxproj
+Util/samples/Units/Units_vs150.vcxproj.filters
 Util/samples/Units/Units_vs90.vcproj
 Util/samples/Units/Units_WEC2013_vs110.vcxproj
 Util/samples/Units/Units_WEC2013_vs110.vcxproj.filters
@@ -4669,6 +5144,8 @@ Util/samples/Units/Units_x64_vs120.vcxproj
 Util/samples/Units/Units_x64_vs120.vcxproj.filters
 Util/samples/Units/Units_x64_vs140.vcxproj
 Util/samples/Units/Units_x64_vs140.vcxproj.filters
+Util/samples/Units/Units_x64_vs150.vcxproj
+Util/samples/Units/Units_x64_vs150.vcxproj.filters
 Util/samples/Units/Units_x64_vs90.vcproj
 Util/src
 Util/src/AbstractConfiguration.cpp
@@ -4759,7 +5236,6 @@ Util/testsuite/src/WinRegistryTest.h
 Util/testsuite/src/XMLConfigurationTest.cpp
 Util/testsuite/src/XMLConfigurationTest.h
 Util/testsuite/TestSuite.progen
-Util/testsuite/TestSuite.vxbuild
 Util/testsuite/TestSuite_CE_vs90.vcproj
 Util/testsuite/TestSuite_vs100.vcxproj
 Util/testsuite/TestSuite_vs100.vcxproj.filters
@@ -4769,6 +5245,8 @@ Util/testsuite/TestSuite_vs120.vcxproj
 Util/testsuite/TestSuite_vs120.vcxproj.filters
 Util/testsuite/TestSuite_vs140.vcxproj
 Util/testsuite/TestSuite_vs140.vcxproj.filters
+Util/testsuite/TestSuite_vs150.vcxproj
+Util/testsuite/TestSuite_vs150.vcxproj.filters
 Util/testsuite/TestSuite_vs90.vcproj
 Util/testsuite/TestSuite_WEC2013_vs110.vcxproj
 Util/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -4782,9 +5260,10 @@ Util/testsuite/TestSuite_x64_vs120.vcxproj
 Util/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Util/testsuite/TestSuite_x64_vs140.vcxproj
 Util/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Util/testsuite/TestSuite_x64_vs150.vcxproj
+Util/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Util/testsuite/TestSuite_x64_vs90.vcproj
 Util/Util.progen
-Util/Util.vxbuild
 Util/Util_CE_vs90.sln
 Util/Util_CE_vs90.vcproj
 Util/Util_vs100.sln
@@ -4799,6 +5278,9 @@ Util/Util_vs120.vcxproj.filters
 Util/Util_vs140.sln
 Util/Util_vs140.vcxproj
 Util/Util_vs140.vcxproj.filters
+Util/Util_vs150.sln
+Util/Util_vs150.vcxproj
+Util/Util_vs150.vcxproj.filters
 Util/Util_vs90.sln
 Util/Util_vs90.vcproj
 Util/Util_WEC2013_vs110.sln
@@ -4819,6 +5301,9 @@ Util/Util_x64_vs120.vcxproj.filters
 Util/Util_x64_vs140.sln
 Util/Util_x64_vs140.vcxproj
 Util/Util_x64_vs140.vcxproj.filters
+Util/Util_x64_vs150.sln
+Util/Util_x64_vs150.vcxproj
+Util/Util_x64_vs150.vcxproj.filters
 Util/Util_x64_vs90.sln
 Util/Util_x64_vs90.vcproj
 VERSION
@@ -4892,15 +5377,20 @@ XML/include/Poco/SAX/XMLFilter.h
 XML/include/Poco/SAX/XMLFilterImpl.h
 XML/include/Poco/SAX/XMLReader.h
 XML/include/Poco/XML
+XML/include/Poco/XML/Content.h
 XML/include/Poco/XML/expat.h
 XML/include/Poco/XML/expat_external.h
 XML/include/Poco/XML/Name.h
 XML/include/Poco/XML/NamePool.h
 XML/include/Poco/XML/NamespaceStrategy.h
 XML/include/Poco/XML/ParserEngine.h
+XML/include/Poco/XML/QName.h
+XML/include/Poco/XML/ValueTraits.h
 XML/include/Poco/XML/XML.h
 XML/include/Poco/XML/XMLException.h
 XML/include/Poco/XML/XMLStream.h
+XML/include/Poco/XML/XMLStreamParser.h
+XML/include/Poco/XML/XMLStreamParserException.h
 XML/include/Poco/XML/XMLString.h
 XML/include/Poco/XML/XMLWriter.h
 XML/Makefile
@@ -4920,6 +5410,8 @@ XML/samples/DOMParser/DOMParser_vs120.vcxproj
 XML/samples/DOMParser/DOMParser_vs120.vcxproj.filters
 XML/samples/DOMParser/DOMParser_vs140.vcxproj
 XML/samples/DOMParser/DOMParser_vs140.vcxproj.filters
+XML/samples/DOMParser/DOMParser_vs150.vcxproj
+XML/samples/DOMParser/DOMParser_vs150.vcxproj.filters
 XML/samples/DOMParser/DOMParser_vs90.vcproj
 XML/samples/DOMParser/DOMParser_WEC2013_vs110.vcxproj
 XML/samples/DOMParser/DOMParser_WEC2013_vs110.vcxproj.filters
@@ -4933,6 +5425,8 @@ XML/samples/DOMParser/DOMParser_x64_vs120.vcxproj
 XML/samples/DOMParser/DOMParser_x64_vs120.vcxproj.filters
 XML/samples/DOMParser/DOMParser_x64_vs140.vcxproj
 XML/samples/DOMParser/DOMParser_x64_vs140.vcxproj.filters
+XML/samples/DOMParser/DOMParser_x64_vs150.vcxproj
+XML/samples/DOMParser/DOMParser_x64_vs150.vcxproj.filters
 XML/samples/DOMParser/DOMParser_x64_vs90.vcproj
 XML/samples/DOMParser/Makefile
 XML/samples/DOMParser/src
@@ -4949,6 +5443,8 @@ XML/samples/DOMWriter/DOMWriter_vs120.vcxproj
 XML/samples/DOMWriter/DOMWriter_vs120.vcxproj.filters
 XML/samples/DOMWriter/DOMWriter_vs140.vcxproj
 XML/samples/DOMWriter/DOMWriter_vs140.vcxproj.filters
+XML/samples/DOMWriter/DOMWriter_vs150.vcxproj
+XML/samples/DOMWriter/DOMWriter_vs150.vcxproj.filters
 XML/samples/DOMWriter/DOMWriter_vs90.vcproj
 XML/samples/DOMWriter/DOMWriter_WEC2013_vs110.vcxproj
 XML/samples/DOMWriter/DOMWriter_WEC2013_vs110.vcxproj.filters
@@ -4962,6 +5458,8 @@ XML/samples/DOMWriter/DOMWriter_x64_vs120.vcxproj
 XML/samples/DOMWriter/DOMWriter_x64_vs120.vcxproj.filters
 XML/samples/DOMWriter/DOMWriter_x64_vs140.vcxproj
 XML/samples/DOMWriter/DOMWriter_x64_vs140.vcxproj.filters
+XML/samples/DOMWriter/DOMWriter_x64_vs150.vcxproj
+XML/samples/DOMWriter/DOMWriter_x64_vs150.vcxproj.filters
 XML/samples/DOMWriter/DOMWriter_x64_vs90.vcproj
 XML/samples/DOMWriter/Makefile
 XML/samples/DOMWriter/src
@@ -4980,6 +5478,8 @@ XML/samples/PrettyPrint/PrettyPrint_vs120.vcxproj
 XML/samples/PrettyPrint/PrettyPrint_vs120.vcxproj.filters
 XML/samples/PrettyPrint/PrettyPrint_vs140.vcxproj
 XML/samples/PrettyPrint/PrettyPrint_vs140.vcxproj.filters
+XML/samples/PrettyPrint/PrettyPrint_vs150.vcxproj
+XML/samples/PrettyPrint/PrettyPrint_vs150.vcxproj.filters
 XML/samples/PrettyPrint/PrettyPrint_vs90.vcproj
 XML/samples/PrettyPrint/PrettyPrint_WEC2013_vs110.vcxproj
 XML/samples/PrettyPrint/PrettyPrint_WEC2013_vs110.vcxproj.filters
@@ -4993,6 +5493,8 @@ XML/samples/PrettyPrint/PrettyPrint_x64_vs120.vcxproj
 XML/samples/PrettyPrint/PrettyPrint_x64_vs120.vcxproj.filters
 XML/samples/PrettyPrint/PrettyPrint_x64_vs140.vcxproj
 XML/samples/PrettyPrint/PrettyPrint_x64_vs140.vcxproj.filters
+XML/samples/PrettyPrint/PrettyPrint_x64_vs150.vcxproj
+XML/samples/PrettyPrint/PrettyPrint_x64_vs150.vcxproj.filters
 XML/samples/PrettyPrint/PrettyPrint_x64_vs90.vcproj
 XML/samples/PrettyPrint/src
 XML/samples/PrettyPrint/src/PrettyPrint.cpp
@@ -5002,6 +5504,7 @@ XML/samples/samples_vs100.sln
 XML/samples/samples_vs110.sln
 XML/samples/samples_vs120.sln
 XML/samples/samples_vs140.sln
+XML/samples/samples_vs150.sln
 XML/samples/samples_vs90.sln
 XML/samples/samples_WEC2013_vs110.sln
 XML/samples/samples_WEC2013_vs120.sln
@@ -5009,6 +5512,7 @@ XML/samples/samples_x64_vs100.sln
 XML/samples/samples_x64_vs110.sln
 XML/samples/samples_x64_vs120.sln
 XML/samples/samples_x64_vs140.sln
+XML/samples/samples_x64_vs150.sln
 XML/samples/samples_x64_vs90.sln
 XML/samples/SAXParser
 XML/samples/SAXParser/CMakeLists.txt
@@ -5023,6 +5527,8 @@ XML/samples/SAXParser/SAXParser_vs120.vcxproj
 XML/samples/SAXParser/SAXParser_vs120.vcxproj.filters
 XML/samples/SAXParser/SAXParser_vs140.vcxproj
 XML/samples/SAXParser/SAXParser_vs140.vcxproj.filters
+XML/samples/SAXParser/SAXParser_vs150.vcxproj
+XML/samples/SAXParser/SAXParser_vs150.vcxproj.filters
 XML/samples/SAXParser/SAXParser_vs90.vcproj
 XML/samples/SAXParser/SAXParser_WEC2013_vs110.vcxproj
 XML/samples/SAXParser/SAXParser_WEC2013_vs110.vcxproj.filters
@@ -5036,6 +5542,8 @@ XML/samples/SAXParser/SAXParser_x64_vs120.vcxproj
 XML/samples/SAXParser/SAXParser_x64_vs120.vcxproj.filters
 XML/samples/SAXParser/SAXParser_x64_vs140.vcxproj
 XML/samples/SAXParser/SAXParser_x64_vs140.vcxproj.filters
+XML/samples/SAXParser/SAXParser_x64_vs150.vcxproj
+XML/samples/SAXParser/SAXParser_x64_vs150.vcxproj.filters
 XML/samples/SAXParser/SAXParser_x64_vs90.vcproj
 XML/samples/SAXParser/src
 XML/samples/SAXParser/src/SAXParser.cpp
@@ -5103,11 +5611,14 @@ XML/src/NodeList.cpp
 XML/src/Notation.cpp
 XML/src/ParserEngine.cpp
 XML/src/ProcessingInstruction.cpp
+XML/src/QName.cpp
 XML/src/SAXException.cpp
 XML/src/SAXParser.cpp
+XML/src/siphash.h
 XML/src/Text.cpp
 XML/src/TreeWalker.cpp
 XML/src/utf8tab.h
+XML/src/ValueTraits.cpp
 XML/src/WhitespaceFilter.cpp
 XML/src/XMLException.cpp
 XML/src/XMLFilter.cpp
@@ -5116,6 +5627,8 @@ XML/src/xmlparse.cpp
 XML/src/XMLReader.cpp
 XML/src/xmlrole.c
 XML/src/xmlrole.h
+XML/src/XMLStreamParser.cpp
+XML/src/XMLStreamParserException.cpp
 XML/src/XMLString.cpp
 XML/src/xmltok.c
 XML/src/xmltok.h
@@ -5166,12 +5679,13 @@ XML/testsuite/src/TreeWalkerTest.cpp
 XML/testsuite/src/TreeWalkerTest.h
 XML/testsuite/src/WinCEDriver.cpp
 XML/testsuite/src/WinDriver.cpp
+XML/testsuite/src/XMLStreamParserTest.cpp
+XML/testsuite/src/XMLStreamParserTest.h
 XML/testsuite/src/XMLTestSuite.cpp
 XML/testsuite/src/XMLTestSuite.h
 XML/testsuite/src/XMLWriterTest.cpp
 XML/testsuite/src/XMLWriterTest.h
 XML/testsuite/TestSuite.progen
-XML/testsuite/TestSuite.vxbuild
 XML/testsuite/TestSuite_CE_vs90.vcproj
 XML/testsuite/TestSuite_vs100.vcxproj
 XML/testsuite/TestSuite_vs100.vcxproj.filters
@@ -5181,6 +5695,8 @@ XML/testsuite/TestSuite_vs120.vcxproj
 XML/testsuite/TestSuite_vs120.vcxproj.filters
 XML/testsuite/TestSuite_vs140.vcxproj
 XML/testsuite/TestSuite_vs140.vcxproj.filters
+XML/testsuite/TestSuite_vs150.vcxproj
+XML/testsuite/TestSuite_vs150.vcxproj.filters
 XML/testsuite/TestSuite_vs90.vcproj
 XML/testsuite/TestSuite_WEC2013_vs110.vcxproj
 XML/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -5194,9 +5710,10 @@ XML/testsuite/TestSuite_x64_vs120.vcxproj
 XML/testsuite/TestSuite_x64_vs120.vcxproj.filters
 XML/testsuite/TestSuite_x64_vs140.vcxproj
 XML/testsuite/TestSuite_x64_vs140.vcxproj.filters
+XML/testsuite/TestSuite_x64_vs150.vcxproj
+XML/testsuite/TestSuite_x64_vs150.vcxproj.filters
 XML/testsuite/TestSuite_x64_vs90.vcproj
 XML/XML.progen
-XML/XML.vxbuild
 XML/XML_CE_vs90.sln
 XML/XML_CE_vs90.vcproj
 XML/XML_vs100.sln
@@ -5211,6 +5728,9 @@ XML/XML_vs120.vcxproj.filters
 XML/XML_vs140.sln
 XML/XML_vs140.vcxproj
 XML/XML_vs140.vcxproj.filters
+XML/XML_vs150.sln
+XML/XML_vs150.vcxproj
+XML/XML_vs150.vcxproj.filters
 XML/XML_vs90.sln
 XML/XML_vs90.vcproj
 XML/XML_WEC2013_vs110.sln
@@ -5231,6 +5751,9 @@ XML/XML_x64_vs120.vcxproj.filters
 XML/XML_x64_vs140.sln
 XML/XML_x64_vs140.vcxproj
 XML/XML_x64_vs140.vcxproj.filters
+XML/XML_x64_vs150.sln
+XML/XML_x64_vs150.vcxproj
+XML/XML_x64_vs150.vcxproj.filters
 XML/XML_x64_vs90.sln
 XML/XML_x64_vs90.vcproj
 Zip
@@ -5276,6 +5799,7 @@ Zip/samples/samples_vs100.sln
 Zip/samples/samples_vs110.sln
 Zip/samples/samples_vs120.sln
 Zip/samples/samples_vs140.sln
+Zip/samples/samples_vs150.sln
 Zip/samples/samples_vs90.sln
 Zip/samples/samples_WEC2013_vs110.sln
 Zip/samples/samples_WEC2013_vs120.sln
@@ -5283,6 +5807,7 @@ Zip/samples/samples_x64_vs100.sln
 Zip/samples/samples_x64_vs110.sln
 Zip/samples/samples_x64_vs120.sln
 Zip/samples/samples_x64_vs140.sln
+Zip/samples/samples_x64_vs150.sln
 Zip/samples/samples_x64_vs90.sln
 Zip/samples/unzip
 Zip/samples/unzip/CMakeLists.txt
@@ -5299,6 +5824,8 @@ Zip/samples/unzip/unzip_vs120.vcxproj
 Zip/samples/unzip/unzip_vs120.vcxproj.filters
 Zip/samples/unzip/unzip_vs140.vcxproj
 Zip/samples/unzip/unzip_vs140.vcxproj.filters
+Zip/samples/unzip/unzip_vs150.vcxproj
+Zip/samples/unzip/unzip_vs150.vcxproj.filters
 Zip/samples/unzip/unzip_vs90.vcproj
 Zip/samples/unzip/unzip_WEC2013_vs110.vcxproj
 Zip/samples/unzip/unzip_WEC2013_vs110.vcxproj.filters
@@ -5312,6 +5839,8 @@ Zip/samples/unzip/unzip_x64_vs120.vcxproj
 Zip/samples/unzip/unzip_x64_vs120.vcxproj.filters
 Zip/samples/unzip/unzip_x64_vs140.vcxproj
 Zip/samples/unzip/unzip_x64_vs140.vcxproj.filters
+Zip/samples/unzip/unzip_x64_vs150.vcxproj
+Zip/samples/unzip/unzip_x64_vs150.vcxproj.filters
 Zip/samples/unzip/unzip_x64_vs90.vcproj
 Zip/samples/zip
 Zip/samples/zip/CMakeLists.txt
@@ -5328,6 +5857,8 @@ Zip/samples/zip/zip_vs120.vcxproj
 Zip/samples/zip/zip_vs120.vcxproj.filters
 Zip/samples/zip/zip_vs140.vcxproj
 Zip/samples/zip/zip_vs140.vcxproj.filters
+Zip/samples/zip/zip_vs150.vcxproj
+Zip/samples/zip/zip_vs150.vcxproj.filters
 Zip/samples/zip/zip_vs90.vcproj
 Zip/samples/zip/zip_WEC2013_vs110.vcxproj
 Zip/samples/zip/zip_WEC2013_vs110.vcxproj.filters
@@ -5341,6 +5872,8 @@ Zip/samples/zip/zip_x64_vs120.vcxproj
 Zip/samples/zip/zip_x64_vs120.vcxproj.filters
 Zip/samples/zip/zip_x64_vs140.vcxproj
 Zip/samples/zip/zip_x64_vs140.vcxproj.filters
+Zip/samples/zip/zip_x64_vs150.vcxproj
+Zip/samples/zip/zip_x64_vs150.vcxproj.filters
 Zip/samples/zip/zip_x64_vs90.vcproj
 Zip/src
 Zip/src/Add.cpp
@@ -5371,6 +5904,7 @@ Zip/testsuite/data
 Zip/testsuite/data/data.zip
 Zip/testsuite/data/doc.zip
 Zip/testsuite/data/test.zip
+Zip/testsuite/data/vuln.zip
 Zip/testsuite/Makefile
 Zip/testsuite/src
 Zip/testsuite/src/CompressTest.cpp
@@ -5385,7 +5919,6 @@ Zip/testsuite/src/ZipTest.h
 Zip/testsuite/src/ZipTestSuite.cpp
 Zip/testsuite/src/ZipTestSuite.h
 Zip/testsuite/TestSuite.progen
-Zip/testsuite/TestSuite.vxbuild
 Zip/testsuite/TestSuite_CE_vs90.vcproj
 Zip/testsuite/TestSuite_vs100.vcxproj
 Zip/testsuite/TestSuite_vs100.vcxproj.filters
@@ -5395,6 +5928,8 @@ Zip/testsuite/TestSuite_vs120.vcxproj
 Zip/testsuite/TestSuite_vs120.vcxproj.filters
 Zip/testsuite/TestSuite_vs140.vcxproj
 Zip/testsuite/TestSuite_vs140.vcxproj.filters
+Zip/testsuite/TestSuite_vs150.vcxproj
+Zip/testsuite/TestSuite_vs150.vcxproj.filters
 Zip/testsuite/TestSuite_vs90.vcproj
 Zip/testsuite/TestSuite_WEC2013_vs110.vcxproj
 Zip/testsuite/TestSuite_WEC2013_vs110.vcxproj.filters
@@ -5408,9 +5943,10 @@ Zip/testsuite/TestSuite_x64_vs120.vcxproj
 Zip/testsuite/TestSuite_x64_vs120.vcxproj.filters
 Zip/testsuite/TestSuite_x64_vs140.vcxproj
 Zip/testsuite/TestSuite_x64_vs140.vcxproj.filters
+Zip/testsuite/TestSuite_x64_vs150.vcxproj
+Zip/testsuite/TestSuite_x64_vs150.vcxproj.filters
 Zip/testsuite/TestSuite_x64_vs90.vcproj
 Zip/Zip.progen
-Zip/Zip.vxbuild
 Zip/Zip_CE_vs90.sln
 Zip/Zip_CE_vs90.vcproj
 Zip/Zip_vs100.sln
@@ -5425,6 +5961,9 @@ Zip/Zip_vs120.vcxproj.filters
 Zip/Zip_vs140.sln
 Zip/Zip_vs140.vcxproj
 Zip/Zip_vs140.vcxproj.filters
+Zip/Zip_vs150.sln
+Zip/Zip_vs150.vcxproj
+Zip/Zip_vs150.vcxproj.filters
 Zip/Zip_vs90.sln
 Zip/Zip_vs90.vcproj
 Zip/Zip_WEC2013_vs110.sln
@@ -5445,5 +5984,8 @@ Zip/Zip_x64_vs120.vcxproj.filters
 Zip/Zip_x64_vs140.sln
 Zip/Zip_x64_vs140.vcxproj
 Zip/Zip_x64_vs140.vcxproj.filters
+Zip/Zip_x64_vs150.sln
+Zip/Zip_x64_vs150.vcxproj
+Zip/Zip_x64_vs150.vcxproj.filters
 Zip/Zip_x64_vs90.sln
 Zip/Zip_x64_vs90.vcproj

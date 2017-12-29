@@ -1,8 +1,6 @@
 //
 // NumberFormatterTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/NumberFormatterTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -15,6 +13,7 @@
 #include "CppUnit/TestSuite.h"
 #include "Poco/NumberFormatter.h"
 #include <sstream>
+
 
 using Poco::NumberFormatter;
 using Poco::Int64;
@@ -59,6 +58,14 @@ void NumberFormatterTest::testFormat()
 
 	assert (NumberFormatter::format((UInt64) 123) == "123");
 	assert (NumberFormatter::format((UInt64) 123, 5) == "  123");	
+#if defined(POCO_LONG_IS_64_BIT)
+	assert (NumberFormatter::format((long long) 123) == "123");
+	assert (NumberFormatter::format((long long) -123) == "-123");
+	assert (NumberFormatter::format((long long) -123, 5) == " -123");
+
+	assert (NumberFormatter::format((unsigned long long) 123) == "123");
+	assert (NumberFormatter::format((unsigned long long) 123, 5) == "  123");
+#endif
 #endif
 
 	if (sizeof(void*) == 4)
@@ -84,6 +91,11 @@ void NumberFormatterTest::testFormat0()
 	assert (NumberFormatter::format0((Int64) 123, 5) == "00123");
 	assert (NumberFormatter::format0((Int64) -123, 5) == "-0123");
 	assert (NumberFormatter::format0((UInt64) 123, 5) == "00123");
+#if defined(POCO_LONG_IS_64_BIT)
+	assert (NumberFormatter::format0((long long) 123, 5) == "00123");
+	assert (NumberFormatter::format0((long long) -123, 5) == "-0123");
+	assert (NumberFormatter::format0((unsigned long long) 123, 5) == "00123");
+#endif
 #endif
 }
 
@@ -131,6 +143,17 @@ void NumberFormatterTest::testFormatHex()
 	assert (NumberFormatter::formatHex((UInt64) 0xab) == "AB");
 	assert (NumberFormatter::formatHex((UInt64) 0x12, 4) == "0012");
 	assert (NumberFormatter::formatHex((UInt64) 0xab, 4) == "00AB");
+#if defined(POCO_LONG_IS_64_BIT)
+	assert (NumberFormatter::formatHex((long long) 0x12) == "12");
+	assert (NumberFormatter::formatHex((long long) 0xab) == "AB");
+	assert (NumberFormatter::formatHex((long long) 0x12, 4) == "0012");
+	assert (NumberFormatter::formatHex((long long) 0xab, 4) == "00AB");
+
+	assert (NumberFormatter::formatHex((unsigned long long) 0x12) == "12");
+	assert (NumberFormatter::formatHex((unsigned long long) 0xab) == "AB");
+	assert (NumberFormatter::formatHex((unsigned long long) 0x12, 4) == "0012");
+	assert (NumberFormatter::formatHex((unsigned long long) 0xab, 4) == "00AB");
+#endif
 #endif
 
 	assert (NumberFormatter::formatHex(0x12, true) == "0x12");
@@ -175,6 +198,21 @@ void NumberFormatterTest::testFormatHex()
 	assert (NumberFormatter::formatHex((UInt64) 0xab, 4, true) == "0xAB");
 	assert (NumberFormatter::formatHex((UInt64) 0x12, 6, true) == "0x0012");
 	assert (NumberFormatter::formatHex((UInt64) 0xab, 6, true) == "0x00AB");
+#if defined(POCO_LONG_IS_64_BIT)
+	assert (NumberFormatter::formatHex((long long) 0x12, true) == "0x12");
+	assert (NumberFormatter::formatHex((long long) 0xab, true) == "0xAB");
+	assert (NumberFormatter::formatHex((long long) 0x12, 4, true) == "0x12");
+	assert (NumberFormatter::formatHex((long long) 0xab, 4, true) == "0xAB");
+	assert (NumberFormatter::formatHex((long long) 0x12, 6, true) == "0x0012");
+	assert (NumberFormatter::formatHex((long long) 0xab, 6, true) == "0x00AB");
+
+	assert (NumberFormatter::formatHex((unsigned long long) 0x12, true) == "0x12");
+	assert (NumberFormatter::formatHex((unsigned long long) 0xab, true) == "0xAB");
+	assert (NumberFormatter::formatHex((unsigned long long) 0x12, 4, true) == "0x12");
+	assert (NumberFormatter::formatHex((unsigned long long) 0xab, 4, true) == "0xAB");
+	assert (NumberFormatter::formatHex((unsigned long long) 0x12, 6, true) == "0x0012");
+	assert (NumberFormatter::formatHex((unsigned long long) 0xab, 6, true) == "0x00AB");
+#endif
 #endif
 }
 
@@ -208,11 +246,13 @@ void NumberFormatterTest::testFormatFloat()
 	assert(NumberFormatter::format(12.25, 4) == "12.2500");
 	assert(NumberFormatter::format(12.25, 8, 4) == " 12.2500");
 
+	assert (NumberFormatter::format(12.45f, 2) == "12.45");
+
 	assert(NumberFormatter::format(-12.25) == "-12.25");
 	assert(NumberFormatter::format(-12.25, 4) == "-12.2500");
 	assert(NumberFormatter::format(-12.25, 10, 4) == "  -12.2500");
 	assert(NumberFormatter::format(-12.25, 10, 2) == "    -12.25");
-
+	assert(NumberFormatter::format(-12.25, 10, 1) == "     -12.3");
 
 	assert (NumberFormatter::format(50.0, 3) == "50.000");
 	assert (NumberFormatter::format(50.0f, 3) == "50.000");
@@ -220,8 +260,9 @@ void NumberFormatterTest::testFormatFloat()
 	assert (NumberFormatter::format(50.123f, 3) == "50.123");
 	assert (NumberFormatter::format(50.123, 0) == "50");
 	assert (NumberFormatter::format(50.123f, 0) == "50");
-	assert (NumberFormatter::format(50.546, 0) == "50");
-	assert (NumberFormatter::format(50.546f, 0) == "50");
+	assert (NumberFormatter::format(50.546, 0) == "51");
+	assert (NumberFormatter::format(50.546f, 0) == "51");
+	assert (NumberFormatter::format(50.546f, 2) == "50.55");
 }
 
 
@@ -258,7 +299,7 @@ void NumberFormatterTest::testAppend()
 	assert (s == "123.4");
 	s.erase();
 	NumberFormatter::append(s, 123.4567, 2);
-	assert (s == "123.45");
+	assert (s == "123.46");
 	s.erase();
 	NumberFormatter::append(s, 123.4567, 10, 5);
 	assert (s == " 123.45670");
@@ -269,7 +310,7 @@ void NumberFormatterTest::testAppend()
 	NumberFormatter::append(s, static_cast<double>(1234567), 2);
 	assert (s == "1234567.00");
 	s.erase();
-	NumberFormatter::append(s, 1234567, 10, 1);
+	NumberFormatter::append(s, 1234567.0, 10, 1);
 	assert (s == " 1234567.0");
 }
 

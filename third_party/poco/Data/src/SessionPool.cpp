@@ -1,8 +1,6 @@
 //
 // SessionPool.cpp
 //
-// $Id: //poco/Main/Data/src/SessionPool.cpp#3 $
-//
 // Library: Data
 // Package: SessionPooling
 // Module:  SessionPool
@@ -76,12 +74,13 @@ Session SessionPool::get()
 		{
 			Session newSession(SessionFactory::instance().create(_connector, _connectionString));
 			applySettings(newSession.impl());
+			customizeSession(newSession);
 
 			PooledSessionHolderPtr pHolder(new PooledSessionHolder(*this, newSession.impl()));
 			_idleSessions.push_front(pHolder);
 			++_nSessions;
 		}
-		else throw SessionPoolExhaustedException(_connector, _connectionString);
+		else throw SessionPoolExhaustedException(_connector);
 	}
 
 	PooledSessionHolderPtr pHolder(_idleSessions.front());
@@ -218,6 +217,11 @@ void SessionPool::applySettings(SessionImpl* pImpl)
 	PropertyMap::Iterator pmIt = _propertyMap.begin();
 	PropertyMap::Iterator pmEnd = _propertyMap.end();
 	for (; pmIt != pmEnd; ++pmIt) pImpl->setProperty(pmIt->first, pmIt->second);
+}
+
+
+void SessionPool::customizeSession(Session&)
+{
 }
 
 

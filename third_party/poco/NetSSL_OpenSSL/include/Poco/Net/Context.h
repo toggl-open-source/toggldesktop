@@ -1,8 +1,6 @@
 //
 // Context.h
 //
-// $Id: //poco/1.4/NetSSL_OpenSSL/include/Poco/Net/Context.h#2 $
-//
 // Library: NetSSL_OpenSSL
 // Package: SSLCore
 // Module:  Context
@@ -95,6 +93,67 @@ public:
 			///
 			/// Client: Same as VERIFY_RELAXED.	
 	};
+	
+	enum Protocols
+	{
+		PROTO_SSLV2   = 0x01,
+		PROTO_SSLV3   = 0x02,
+		PROTO_TLSV1   = 0x04,
+		PROTO_TLSV1_1 = 0x08,
+		PROTO_TLSV1_2 = 0x10
+	};
+	
+	struct Params
+	{
+		Params();
+			/// Initializes the struct with default values.
+
+		std::string privateKeyFile;
+			/// Path to the private key file used for encryption.
+			/// Can be empty if no private key file is used.
+
+		std::string certificateFile;
+			/// Path to the certificate file (in PEM format).
+			/// If the private key and the certificate are stored in the same file, this
+			/// can be empty if privateKeyFile is given.
+			
+		std::string caLocation;
+			/// Path to the file or directory containing the CA/root certificates. 
+			/// Can be empty if the OpenSSL builtin CA certificates
+			/// are used (see loadDefaultCAs).
+
+		VerificationMode verificationMode;
+			/// Specifies whether and how peer certificates are validated.
+			/// Defaults to VERIFY_RELAXED.
+			
+		int verificationDepth;
+			/// Sets the upper limit for verification chain sizes. Verification
+			/// will fail if a certificate chain larger than this is encountered.
+			/// Defaults to 9.
+
+		bool loadDefaultCAs;
+			/// Specifies whether the builtin CA certificates from OpenSSL are used.
+			/// Defaults to false.
+	
+		std::string cipherList;
+			/// Specifies the supported ciphers in OpenSSL notation.
+			/// Defaults to "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH".
+			
+		std::string dhParamsFile;
+			/// Specifies a file containing Diffie-Hellman parameters.
+			/// If empty, the default parameters are used.
+
+		std::string ecdhCurve;
+			/// Specifies the name of the curve to use for ECDH, based
+			/// on the curve names specified in RFC 4492.
+			/// Defaults to "prime256v1".
+	};
+
+	Context(Usage usage, const Params& params);
+		/// Creates a Context using the given parameters.
+			/// 
+			///   * usage specifies whether the context is used by a client or server.
+			///   * params specifies the context parameters.
 
 	Context(
 		Usage usage,
@@ -119,7 +178,7 @@ public:
 			///   * verificationMode specifies whether and how peer certificates are validated.
 			///   * verificationDepth sets the upper limit for verification chain sizes. Verification
 			///     will fail if a certificate chain larger than this is encountered.
-			///   * loadDefaultCAs specifies wheter the builtin CA certificates from OpenSSL are used.
+			///   * loadDefaultCAs specifies whether the builtin CA certificates from OpenSSL are used.
 			///   * cipherList specifies the supported ciphers in OpenSSL notation.
 			///
 			/// Note: If the private key is protected by a passphrase, a PrivateKeyPassphraseHandler
@@ -142,7 +201,7 @@ public:
 			///   * verificationMode specifies whether and how peer certificates are validated.
 			///   * verificationDepth sets the upper limit for verification chain sizes. Verification
 			///     will fail if a certificate chain larger than this is encountered.
-			///   * loadDefaultCAs specifies wheter the builtin CA certificates from OpenSSL are used.
+			///   * loadDefaultCAs specifies whether the builtin CA certificates from OpenSSL are used.
 			///   * cipherList specifies the supported ciphers in OpenSSL notation.
 			///
 			/// Note that a private key and/or certificate must be specified with
@@ -226,29 +285,29 @@ public:
 		///
 		/// Specifying a size of 0 will set an unlimited cache size.
 		///
-		/// This method may only be called on SERVER_USE Context objets.
+		/// This method may only be called on SERVER_USE Context objects.
 		
 	std::size_t getSessionCacheSize() const;
 		/// Returns the current maximum size of the server session cache.
 		///
-		/// This method may only be called on SERVER_USE Context objets.
+		/// This method may only be called on SERVER_USE Context objects.
 		
 	void setSessionTimeout(long seconds);
 		/// Sets the timeout (in seconds) of cached sessions on the server.
 		/// A cached session will be removed from the cache if it has
 		/// not been used for the given number of seconds.
 		///
-		/// This method may only be called on SERVER_USE Context objets.
+		/// This method may only be called on SERVER_USE Context objects.
 
 	long getSessionTimeout() const;
 		/// Returns the timeout (in seconds) of cached sessions on the server.
 		///
-		/// This method may only be called on SERVER_USE Context objets.
+		/// This method may only be called on SERVER_USE Context objects.
 
 	void flushSessionCache();
 		/// Flushes the SSL session cache on the server.
 		///
-		/// This method may only be called on SERVER_USE Context objets.
+		/// This method may only be called on SERVER_USE Context objects.
 				
 	void enableExtendedCertificateVerification(bool flag = true);
 		/// Enable or disable the automatic post-connection
@@ -265,8 +324,32 @@ public:
 		/// session resumption.
 		///
 		/// The feature can be disabled by calling this method.
+		
+	void disableProtocols(int protocols);
+		/// Disables the given protocols.
+		///
+		/// The protocols to be disabled are specified by OR-ing 
+		/// values from the Protocols enumeration, e.g.:
+		///
+		///   context.disableProtocols(PROTO_SSLV2 | PROTO_SSLV3);
+		
+	void preferServerCiphers();
+		/// When choosing a cipher, use the server's preferences instead of the client 
+		/// preferences. When not called, the SSL server will always follow the clients 
+		/// preferences. When called, the SSL/TLS server will choose following its own 
+		/// preferences.
 
 private:
+	void init(const Params& params);
+		/// Initializes the Context with the given parameters.
+		
+	void initDH(const std::string& dhFile);
+		/// Initializes the Context with Diffie-Hellman parameters.
+		
+	void initECDH(const std::string& curve);
+		/// Initializes the Context with Elliptic-Curve Diffie-Hellman key
+		/// exchange curve parameters.
+
 	void createSSLContext();
 		/// Create a SSL_CTX object according to Context configuration.
 
