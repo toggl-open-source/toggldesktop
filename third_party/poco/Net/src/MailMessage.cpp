@@ -1,8 +1,6 @@
 //
 // MailMessage.cpp
 //
-// $Id: //poco/1.4/Net/src/MailMessage.cpp#2 $
-//
 // Library: Net
 // Package: Mail
 // Module:  MailMessage
@@ -94,32 +92,49 @@ namespace
 						cte = MailMessage::ENCODING_BASE64;
 				}
 
+				std::string contentType = header.get(MailMessage::HEADER_CONTENT_TYPE, "");
+				std::string contentDisp = header.get(MailMessage::HEADER_CONTENT_DISPOSITION, "");
+				std::string filename;
+				if (!contentDisp.empty())
+					filename = getParamFromHeader(contentDisp, "filename");
+				if (filename.empty()) 
+					filename = getParamFromHeader(contentType, "name");
+				PartSource* pPS = _pMsg->createPartStore(tmp, contentType, filename);
+				poco_check_ptr (pPS);
 				NameValueCollection::ConstIterator it = header.begin();
 				NameValueCollection::ConstIterator end = header.end();
-				PartSource* pPS = _pMsg->createPartStore(tmp, 
-					header[MailMessage::HEADER_CONTENT_TYPE], 
-					getFileNameFromDisp(it->second));
-				poco_check_ptr (pPS);
+				bool added = false;
 				for (; it != end; ++it)
 				{
-					if (MailMessage::HEADER_CONTENT_DISPOSITION == it->first)
+					if (!added && MailMessage::HEADER_CONTENT_DISPOSITION == it->first)
 					{
-						if (it->second == "inline") _pMsg->addContent(pPS, cte);
-						else _pMsg->addAttachment("", pPS, cte);
+						if (it->second == "inline") 
+							_pMsg->addContent(pPS, cte);
+						else 
+							_pMsg->addAttachment("", pPS, cte);
+						added = true;
 					}
 					
 					pPS->headers().set(it->first, it->second);
 				}
+
+				if (contentDisp.empty())
+				{
+					_pMsg->addContent(pPS, cte);
+					added = true;
+				}
+
+				if (!added) delete pPS;
 			}
 		}
 		
 	private:
-		std::string getFileNameFromDisp(const std::string& str)
+		std::string getParamFromHeader(const std::string& header, const std::string& param)
 		{
-			StringTokenizer st(str, ";=", StringTokenizer::TOK_IGNORE_EMPTY | StringTokenizer::TOK_TRIM);
+			StringTokenizer st(header, ";=", StringTokenizer::TOK_IGNORE_EMPTY | StringTokenizer::TOK_TRIM);
 			StringTokenizer::Iterator it = st.begin();
 			StringTokenizer::Iterator end = st.end();
-			for (; it != end; ++it) { if (*it == "filename") break; }
+			for (; it != end; ++it) { if (*it == param) break; }
 			if (it != end)
 			{
 				++it;
@@ -184,6 +199,7 @@ const std::string MailMessage::CTE_BASE64("base64");
 
 
 MailMessage::MailMessage(PartStoreFactory* pStoreFactory): 
+	_encoding(),
 	_pStoreFactory(pStoreFactory)
 {
 	Poco::Timestamp now;
@@ -479,29 +495,36 @@ void MailMessage::readMultipart(std::istream& istr, PartHandler& handler)
 
 void MailMessage::readPart(std::istream& istr, const MessageHeader& header, PartHandler& handler)
 {
-	std::string encoding;
-	if (header.has(HEADER_CONTENT_TRANSFER_ENCODING))
-	{
-		encoding = header.get(HEADER_CONTENT_TRANSFER_ENCODING);
-		// get rid of a parameter if one is set
-		std::string::size_type pos = encoding.find(';');
-		if (pos != std::string::npos)
-			encoding.resize(pos);
-	}
-	if (icompare(encoding, CTE_QUOTED_PRINTABLE) == 0)
-	{
-		QuotedPrintableDecoder decoder(istr);
-		handlePart(decoder, header, handler);
-	}
-	else if (icompare(encoding, CTE_BASE64) == 0)
-	{
-		Base64Decoder decoder(istr);
-		handlePart(decoder, header, handler);
-	}
-	else
-	{
-		handlePart(istr, header, handler);
-	}
+    std::string encoding;
+    if (header.has(HEADER_CONTENT_TRANSFER_ENCODING))
+    {
+        encoding = header.get(HEADER_CONTENT_TRANSFER_ENCODING);
+        // get rid of a parameter if one is set
+        std::string::size_type pos = encoding.find(';');
+        if (pos != std::string::npos)
+            encoding.resize(pos);
+    }
+    if (icompare(encoding, CTE_QUOTED_PRINTABLE) == 0)
+    {
+        QuotedPrintableDecoder decoder(istr);
+        handlePart(decoder, header, handler);
+        _encoding = ENCODING_QUOTED_PRINTABLE;
+    }
+    else if (icompare(encoding, CTE_BASE64) == 0)
+    {
+        Base64Decoder decoder(istr);
+        handlePart(decoder, header, handler);
+        _encoding = ENCODING_BASE64;
+    }
+    else
+    {
+        if (icompare(encoding, CTE_7BIT) == 0)
+            _encoding = ENCODING_7BIT;
+        else if (icompare(encoding, CTE_8BIT) == 0)
+            _encoding = ENCODING_8BIT;
+
+        handlePart(istr, header, handler);
+    }
 }
 
 

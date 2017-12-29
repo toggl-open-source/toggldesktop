@@ -1,8 +1,6 @@
 //
 // HashMapTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/HashMapTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -17,7 +15,6 @@
 #include "Poco/Exception.h"
 #include <map>
 
-GCC_DIAG_OFF(unused-variable)
 
 using Poco::HashMap;
 
@@ -192,7 +189,7 @@ void HashMapTest::testIndex()
 	try
 	{
 		const IntMap& im = hm;
-		int x = im[4];
+		int POCO_UNUSED x = im[4];
 		fail("no such key - must throw");
 	}
 	catch (Poco::NotFoundException&)

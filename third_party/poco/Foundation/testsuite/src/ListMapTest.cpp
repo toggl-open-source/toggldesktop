@@ -1,8 +1,6 @@
 //
 // ListMapTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ListMapTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -17,7 +15,6 @@
 #include "Poco/Exception.h"
 #include <map>
 
-GCC_DIAG_OFF(unused-variable)
 
 using Poco::ListMap;
 
@@ -70,6 +67,41 @@ void ListMapTest::testInsert()
 		assert (res->first == i);
 		assert (res->second == 0);
 	}		
+}
+
+
+void ListMapTest::testInsertOrder()
+{
+	const int POCO_UNUSED N = 1000;
+
+	typedef ListMap<std::string, int> StrToIntMap;
+	StrToIntMap lm;
+
+	lm.insert(StrToIntMap::ValueType("foo", 42));
+	lm.insert(StrToIntMap::ValueType("bar", 43));
+
+	StrToIntMap::Iterator it = lm.begin();
+	assert (it != lm.end() && it->first == "foo" && it->second == 42);
+
+	++it;
+	assert (it != lm.end() && it->first == "bar" && it->second == 43);
+
+	++it;
+	assert (it == lm.end());
+
+	lm.insert(StrToIntMap::ValueType("foo", 44));
+
+ 	it = lm.begin();
+	assert (it != lm.end() && it->first == "foo" && it->second == 42);
+
+	++it;
+	assert (it != lm.end() && it->first == "foo" && it->second == 44);
+
+	++it;
+	assert (it != lm.end() && it->first == "bar" && it->second == 43);
+
+	++it;
+	assert (it == lm.end());	 
 }
 
 
@@ -181,16 +213,16 @@ void ListMapTest::testIntIndex()
 	hm[1] = 2;
 	hm[2] = 4;
 	hm[3] = 6;
-	
+
 	assert (hm.size() == 3);
 	assert (hm[1] == 2);
 	assert (hm[2] == 4);
 	assert (hm[3] == 6);
-	
+
 	try
 	{
 		const IntMap& im = hm;
-		int x = im[4];
+		int POCO_UNUSED x = im[4];
 		fail("no such key - must throw");
 	}
 	catch (Poco::NotFoundException&)
@@ -240,6 +272,7 @@ CppUnit::Test* ListMapTest::suite()
 	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("ListMapTest");
 
 	CppUnit_addTest(pSuite, ListMapTest, testInsert);
+	CppUnit_addTest(pSuite, ListMapTest, testInsertOrder);
 	CppUnit_addTest(pSuite, ListMapTest, testErase);
 	CppUnit_addTest(pSuite, ListMapTest, testIterator);
 	CppUnit_addTest(pSuite, ListMapTest, testConstIterator);

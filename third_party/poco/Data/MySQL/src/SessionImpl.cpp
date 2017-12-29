@@ -1,9 +1,7 @@
 //
 // SessionImpl.cpp
 //
-// $Id: //poco/1.4/Data/MySQL/src/SessionImpl.cpp#1 $
-//
-// Library: Data
+// Library: Data/MySQL
 // Package: MySQL
 // Module:  SessionImpl
 //
@@ -55,7 +53,6 @@ SessionImpl::SessionImpl(const std::string& connectionString, std::size_t loginT
 	addProperty("insertId", &SessionImpl::setInsertId, &SessionImpl::getInsertId);
 	setProperty("handle", static_cast<MYSQL*>(_handle));
 	open();
-	setConnectionTimeout(CONNECTION_TIMEOUT_DEFAULT);
 }
 
 

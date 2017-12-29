@@ -1,8 +1,6 @@
 //
 // Task.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Task.cpp#1 $
-//
 // Library: Foundation
 // Package: Tasks
 // Module:  Tasks
@@ -95,9 +93,12 @@ void Task::setProgress(float progress)
 {
 	FastMutex::ScopedLock lock(_mutex);
 
-	_progress = progress;
-	if (_pOwner)
-		_pOwner->taskProgress(this, _progress);
+	if (_progress != progress)
+	{
+		_progress = progress;
+		if (_pOwner)
+			_pOwner->taskProgress(this, _progress);
+	}
 }
 
 

@@ -1,8 +1,6 @@
 //
 // ProcessTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ProcessTest.cpp#2 $
-//
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -157,6 +155,59 @@ void ProcessTest::testLaunchEnv()
 }
 
 
+void ProcessTest::testLaunchArgs()
+{
+#if defined (_WIN32) && !defined(_WIN32_WCE)
+	std::string name("TestApp");
+	std::string cmd = name;
+
+	std::vector<std::string> args;
+	args.push_back("-echo-args");
+	args.push_back("simple");
+	args.push_back("with space");
+	args.push_back("with\ttab");
+	args.push_back("with\vverticaltab");
+	// can't test newline here because TestApp -echo-args uses newline to separate the echoed args
+	//args.push_back("with\nnewline");
+	args.push_back("with \" quotes");
+	args.push_back("ends with \"quotes\"");
+	args.push_back("\"starts\" with quotes");
+	args.push_back("\"");
+	args.push_back("\\");
+	args.push_back("c:\\program files\\ends with backslash\\");
+	args.push_back("\"already quoted \\\" \\\\\"");
+	Pipe outPipe;
+	ProcessHandle ph = Process::launch(cmd, args, 0, &outPipe, 0);
+	PipeInputStream istr(outPipe);
+	std::string receivedArg;
+	int c = istr.get();
+	int argNumber = 1;
+	while (c != -1)
+	{
+		if ('\n' == c)
+		{
+			assert(argNumber < args.size());
+			std::string expectedArg = args[argNumber];
+			if (expectedArg.npos != expectedArg.find("already quoted")) {
+				expectedArg = "already quoted \" \\";
+			} 
+			assert(receivedArg == expectedArg);
+			++argNumber;
+			receivedArg = "";
+		}
+		else if ('\r' != c)
+		{
+			receivedArg += (char)c;
+		}
+		c = istr.get();
+	}
+	assert(argNumber == args.size());
+	int rc = ph.wait();
+	assert(rc == args.size());
+#endif // !defined(_WIN32_WCE)
+}
+
+
 void ProcessTest::testIsRunning()
 {
 #if !defined(_WIN32_WCE)
@@ -183,7 +234,7 @@ void ProcessTest::testIsRunning()
 	PipeOutputStream ostr(inPipe);
 	ostr << std::string(100, 'x');
 	ostr.close();
-	int rc = ph.wait();
+	int POCO_UNUSED rc = ph.wait();
 	assert (!Process::isRunning(ph));
 	assert (!Process::isRunning(id));
 #endif // !defined(_WIN32_WCE)
@@ -208,6 +259,7 @@ CppUnit::Test* ProcessTest::suite()
 	CppUnit_addTest(pSuite, ProcessTest, testLaunchRedirectIn);
 	CppUnit_addTest(pSuite, ProcessTest, testLaunchRedirectOut);
 	CppUnit_addTest(pSuite, ProcessTest, testLaunchEnv);
+	CppUnit_addTest(pSuite, ProcessTest, testLaunchArgs);
 	CppUnit_addTest(pSuite, ProcessTest, testIsRunning);
 
 	return pSuite;

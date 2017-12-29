@@ -1,8 +1,6 @@
 #
 # Makefile
 #
-# $Id: //poco/1.4/Foundation/Makefile#4 $
-#
 # Makefile for Poco Foundation
 #
 
@@ -13,9 +11,9 @@ objects = ArchiveStrategy Ascii ASCIIEncoding AsyncChannel \
 	BinaryReader BinaryWriter Bugcheck ByteOrder Channel Checksum Clock Configurable ConsoleChannel \
 	Condition CountingStream DateTime LocalDateTime DateTimeFormat DateTimeFormatter DateTimeParser \
 	Debugger DeflatingStream DigestEngine DigestStream DirectoryIterator DirectoryWatcher \
-	Environment Event Error EventArgs ErrorHandler Exception FIFOBufferStream FPEnvironment File \
+	Environment Event EventChannel Error EventArgs ErrorHandler Exception FIFOBufferStream FPEnvironment File \
 	FileChannel Formatter FormattingChannel Glob HexBinaryDecoder LineEndingConverter \
-	HexBinaryEncoder InflatingStream Latin1Encoding Latin2Encoding Latin9Encoding LogFile \
+	HexBinaryEncoder InflatingStream JSONString Latin1Encoding Latin2Encoding Latin9Encoding LogFile \
 	Logger LoggingFactory LoggingRegistry LogStream NamedEvent NamedMutex NullChannel \
 	MemoryPool MD4Engine MD5Engine Manifest Message Mutex \
 	NestedDiagnosticContext Notification NotificationCenter \
@@ -46,6 +44,7 @@ pcre_utf8_objects = pcre_ucd pcre_tables
 
 ifdef POCO_UNBUNDLED
 	SYSLIBS += -lpcre -lz
+	objects += $(pcre_utf8_objects)
 else
 	objects += $(zlib_objects) $(pcre_objects) $(pcre_utf8_objects)
 endif

@@ -6,14 +6,16 @@
 # ENABLE_{COMPONENT}
 # ENABLE_TESTS
 
+cmake_minimum_required(VERSION 3.2.0)
+
 project(Poco)
 
-cmake_minimum_required(VERSION 3.0.0)
+set(CMAKE_C_STANDARD 11)
 
-file(STRINGS "${CMAKE_SOURCE_DIR}/libversion" SHARED_LIBRARY_VERSION)
+file(STRINGS "${PROJECT_SOURCE_DIR}/libversion" SHARED_LIBRARY_VERSION)
 
 # Read the version information from the VERSION file
-file (STRINGS "${CMAKE_SOURCE_DIR}/VERSION" PACKAGE_VERSION )
+file(STRINGS "${PROJECT_SOURCE_DIR}/VERSION" PACKAGE_VERSION)
 message(STATUS "Poco package version: ${PACKAGE_VERSION}")
 string(REGEX REPLACE "([0-9]+)\\.[0-9]+\\.[0-9]+.*" "\\1" CPACK_PACKAGE_VERSION_MAJOR ${PACKAGE_VERSION})
 string(REGEX REPLACE "[0-9]+\\.([0-9])+\\.[0-9]+.*" "\\1" CPACK_PACKAGE_VERSION_MINOR ${PACKAGE_VERSION})
@@ -22,6 +24,7 @@ string(REGEX REPLACE "[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" CPACK_PACKAGE_VERSION_
 set(COMPLETE_VERSION ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH})
 set(RELEASE_NAME "Unstable-trunk")
 set(PROJECT_VERSION ${COMPLETE_VERSION})
+set(CMAKE_C_STANDARD 99)
 
 # Put the libaries and binaries that get built into directories at the
 # top of the build tree rather than in hard-to-find leaf
@@ -35,9 +38,37 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Append our module directory to CMake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+# COMMENT REPLACED BY BIICODE
+
 #################################################################################
 # Setup C/C++ compiler options
 #################################################################################
+
+option(DISABLE_CPP11 "Disable C++11 if available" OFF)
+option(DISABLE_CPP14 "Disable C++14 if available" OFF)
+
+if (DISABLE_CPP11 OR DISABLE_CPP14)
+    add_definitions(-DPOCO_DISABLE_CPP11)
+
+    if (DISABLE_CPP14)
+        add_definitions(-DPOCO_DISABLE_CPP14)
+    endif()
+else()
+    # C++11/14 compiler flags
+    include(CXX1x)
+    check_for_cxx11_compiler(CXX11_COMPILER)
+
+    # If a C++11 compiler is available, then set the appropriate flags
+    if(CXX11_COMPILER)
+        enable_cxx11()
+        check_for_cxx14_compiler(CXX14_COMPILER)
+
+        # If a C++14 compiler is available, then set the appropriate flags
+        if(CXX14_COMPILER)
+            enable_cxx14()
+        endif()
+    endif()
+endif()
 
 if(NOT MSVC_IDE)
   if(NOT CMAKE_BUILD_TYPE)
@@ -47,22 +78,9 @@ if(NOT MSVC_IDE)
   message(STATUS "Setting Poco build type - ${CMAKE_BUILD_TYPE}")
 endif()
 
-if (CMAKE_BUILD_TYPE STREQUAL "")
-    set( CMAKE_BUILD_TYPE "RelWithDebInfo" )
-endif ()
-
-# http://www.cmake.org/Wiki/CMake_Useful_Variables :
-# CMAKE_BUILD_TYPE
-#    Choose the type of build. CMake has default flags for these:
-#
-#    * None (CMAKE_C_FLAGS or CMAKE_CXX_FLAGS used)
-#    * Debug (CMAKE_C_FLAGS_DEBUG or CMAKE_CXX_FLAGS_DEBUG)
-#    * Release (CMAKE_C_FLAGS_RELEASE or CMAKE_CXX_FLAGS_RELEASE)
-#    * RelWithDebInfo (CMAKE_C_FLAGS_RELWITHDEBINFO or CMAKE_CXX_FLAGS_RELWITHDEBINFO
-#    * MinSizeRel (CMAKE_C_FLAGS_MINSIZEREL or CMAKE_CXX_FLAGS_MINSIZEREL)
-
-# For Debug build types, append a "d" to the library names.
-set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "Set debug library postfix" FORCE)
+if(CMAKE_BUILD_TYPE STREQUAL "")
+    set(CMAKE_BUILD_TYPE "RelWithDebInfo")
+endif()
 
 # Include some common macros to simpilfy the Poco CMake files
 include(PocoMacros)
@@ -71,6 +89,7 @@ include(PocoMacros)
 option(ENABLE_XML "Enable the XML" ON)
 option(ENABLE_JSON "Enable the JSON" ON)
 option(ENABLE_MONGODB "Enable MongoDB" ON)
+option(ENABLE_REDIS "Enable Redis" ON)
 option(ENABLE_PDF "Enable PDF" OFF)
 option(ENABLE_UTIL "Enable Util" ON)
 option(ENABLE_NET "Enable Net" ON)
@@ -100,90 +119,48 @@ option(POCO_STATIC
 option(POCO_UNBUNDLED
   "Set to OFF|ON (default is OFF) to control linking dependencies as external" OFF)
 
-# Uncomment from next two lines to force statitc or dynamic library, default is autodetection
+if(MSVC)
+    option(POCO_MT
+      "Set to OFF|ON (default is OFF) to control build of POCO as /MT instead of /MD" OFF)
+
+    option(ENABLE_MSVC_MP
+      "Set to OFF|ON (default is OFF) to control parallel build of POCO with MSVC" OFF)
+endif()
+
+# Uncomment from next two lines to force static or dynamic library, default is autodetection
 if(POCO_STATIC)
-    add_definitions( -DPOCO_STATIC -DPOCO_NO_AUTOMATIC_LIBS)
-    set( LIB_MODE STATIC )
+    set(LIB_MODE_DEFINITIONS -DPOCO_STATIC -DPOCO_NO_AUTOMATIC_LIBS)
+    set(LIB_MODE STATIC)
     message(STATUS "Building static libraries")
 else(POCO_STATIC)
-    set( LIB_MODE SHARED )
+    set(LIB_MODE SHARED)
+    set(LIB_MODE_DEFINITIONS -DPOCO_NO_AUTOMATIC_LIBS)
     message(STATUS "Building dynamic libraries")
 endif(POCO_STATIC)
 
-if (ENABLE_TESTS)
+if(ENABLE_TESTS)
   include(CTest)
   enable_testing()
   message(STATUS "Building with unittests & samples")
-else ()
+else()
   message(STATUS "Building without tests & samples")
-endif ()
+endif()
 
-if (POCO_UNBUNDLED)
-  add_definitions( -DPOCO_UNBUNDLED)
+if(POCO_UNBUNDLED)
+  add_definitions(-DPOCO_UNBUNDLED)
   message(STATUS "Build with using external sqlite, libz, pcre, expat ...")
-else ()
+else()
   message(STATUS "Build with using internal copy of sqlite, libz, pcre, expat, ...")
-endif ()
+endif()
 
-include(CheckTypeSize)
-find_package(Cygwin)
-
-# OS Detection
-if(WIN32)
-  add_definitions( -DPOCO_OS_FAMILY_WINDOWS -DUNICODE -D_UNICODE)
-  #set(SYSLIBS iphlpapi gdi32 odbc32)
-endif(WIN32)
-
-if (UNIX AND NOT ANDROID )
-  add_definitions( -DPOCO_OS_FAMILY_UNIX )
-  # Standard 'must be' defines
-  if (APPLE)
-    add_definitions( -DPOCO_HAVE_IPv6 -DPOCO_NO_STAT64)
-    set(SYSLIBS  dl)
-  else (APPLE)
-    add_definitions( -D_XOPEN_SOURCE=500 -D_REENTRANT -D_THREAD_SAFE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64)
-    set(SYSLIBS  pthread dl rt)
-  endif (APPLE)
-endif(UNIX AND NOT ANDROID )
-
-if (CMAKE_SYSTEM MATCHES "SunOS")
-  add_definitions( -DPOCO_OS_FAMILY_UNIX )
-  # Standard 'must be' defines
-  add_definitions( -D_XOPEN_SOURCE=500 -D_REENTRANT -D_THREAD_SAFE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 )
-  set(SYSLIBS  pthread socket xnet nsl resolv rt dl)
-endif(CMAKE_SYSTEM MATCHES "SunOS")
-
-if (CMAKE_COMPILER_IS_MINGW)
-  add_definitions(-DWC_NO_BEST_FIT_CHARS=0x400  -DPOCO_WIN32_UTF8)
-  add_definitions(-D_WIN32 -DMINGW32 -DWINVER=0x500 -DODBCVER=0x0300 -DPOCO_THREAD_STACK_SIZE)
-endif (CMAKE_COMPILER_IS_MINGW)
-
-if (CYGWIN)
-#    add_definitions(-DWC_NO_BEST_FIT_CHARS=0x400  -DPOCO_WIN32_UTF8)
-endif (CYGWIN)
-
-# SunPro C++
-if (${CMAKE_CXX_COMPILER_ID} MATCHES "SunPro")
-  add_definitions( -D_BSD_SOURCE -library=stlport4)
-endif (${CMAKE_CXX_COMPILER_ID} MATCHES "SunPro")
-
-# iOS
-if (IOS)
-  add_definitions( -DPOCO_HAVE_IPv6 -DPOCO_NO_FPENVIRONMENT -DPOCO_NO_STAT64 -DPOCO_NO_SHAREDLIBS -DPOCO_NO_NET_IFTYPES )
-endif(IOS)
-
-#Android
-if (ANDROID)
-  add_definitions( -DPOCO_ANDROID -DPOCO_NO_FPENVIRONMENT -DPOCO_NO_WSTRING -DPOCO_NO_SHAREDMEMORY )
-endif(ANDROID)
-
+include(DefinePlatformSpecifc)
 
 # Collect the built libraries and include dirs, the will be used to create the PocoConfig.cmake file
 set(Poco_COMPONENTS "")
 
-if (ENABLE_TESTS)
+if(ENABLE_TESTS)
    add_subdirectory(CppUnit)
-endif ()
+endif()
 
 add_subdirectory(Foundation)
 if(ENABLE_XML)
@@ -194,14 +171,6 @@ if(ENABLE_JSON)
 add_subdirectory(JSON)
 list(APPEND Poco_COMPONENTS "JSON")
 endif()
-if(ENABLE_MONGODB)
-add_subdirectory(MongoDB)
-list(APPEND Poco_COMPONENTS "MongoDB")
-endif()
-if(ENABLE_PDF)
-add_subdirectory(PDF)
-list(APPEND Poco_COMPONENTS "PDF")
-endif()
 if(ENABLE_UTIL)
 add_subdirectory(Util)
 list(APPEND Poco_COMPONENTS "Util")
@@ -211,37 +180,50 @@ add_subdirectory(Net)
 list(APPEND Poco_COMPONENTS "Net")
 endif()
 
+if(EXISTS ${PROJECT_SOURCE_DIR}/MongoDB AND ENABLE_MONGODB)
+add_subdirectory(MongoDB)
+list(APPEND Poco_COMPONENTS "MongoDB")
+endif()
+if(EXISTS ${PROJECT_SOURCE_DIR}/Redis AND ENABLE_REDIS)
+add_subdirectory(Redis)
+list(APPEND Poco_COMPONENTS "Redis")
+endif()
+if(EXISTS ${PROJECT_SOURCE_DIR}/PDF AND ENABLE_PDF)
+add_subdirectory(PDF)
+list(APPEND Poco_COMPONENTS "PDF")
+endif()
+
 
 #NetSSL
 
 
-if(WIN32 AND ENABLE_NETSSL_WIN)
+if(WIN32 AND EXISTS ${PROJECT_SOURCE_DIR}/NetSSL_Win AND ENABLE_NETSSL_WIN)
     add_subdirectory(NetSSL_Win)
     list(APPEND Poco_COMPONENTS "NetSSL_Win")
-endif(WIN32 AND ENABLE_NETSSL_WIN)
+endif(WIN32 AND EXISTS ${PROJECT_SOURCE_DIR}/NetSSL_Win AND ENABLE_NETSSL_WIN)
 
 find_package(OpenSSL)
 if(OPENSSL_FOUND)
     include_directories("${OPENSSL_INCLUDE_DIR}")
-    if(ENABLE_NETSSL)
+    if(EXISTS ${PROJECT_SOURCE_DIR}/NetSSL_OpenSSL AND ENABLE_NETSSL)
     add_subdirectory(NetSSL_OpenSSL)
     list(APPEND Poco_COMPONENTS "NetSSL_OpenSSL")
     endif()
-    if(ENABLE_CRYPTO)
+    if(EXISTS ${PROJECT_SOURCE_DIR}/Crypto AND ENABLE_CRYPTO)
     add_subdirectory(Crypto)
     list(APPEND Poco_COMPONENTS "Crypto")
     endif()
 endif(OPENSSL_FOUND)
 
-if(ENABLE_DATA)
+if(EXISTS ${PROJECT_SOURCE_DIR}/Data AND ENABLE_DATA)
 add_subdirectory(Data)
 list(APPEND Poco_COMPONENTS "Data")
 endif()
-if(ENABLE_SEVENZIP)
+if(EXISTS ${PROJECT_SOURCE_DIR}/SevenZip AND ENABLE_SEVENZIP)
 add_subdirectory(SevenZip)
 list(APPEND Poco_COMPONENTS "SevenZip")
 endif()
-if(ENABLE_ZIP)
+if(EXISTS ${PROJECT_SOURCE_DIR}/Zip AND ENABLE_ZIP)
 add_subdirectory(Zip)
 list(APPEND Poco_COMPONENTS "Zip")
 endif()
@@ -250,31 +232,32 @@ find_package(APR)
 find_package(Apache2)
 if(APRUTIL_FOUND AND APACHE_FOUND)
     include_directories( "${APACHE_INCLUDE_DIR}" "${APRUTIL_INCLUDE_DIR}" )
-    if(ENABLE_APACHECONNECTOR)
+    if(EXISTS ${PROJECT_SOURCE_DIR}/ApacheConnector AND ENABLE_APACHECONNECTOR)
     add_subdirectory(ApacheConnector)
     list(APPEND Poco_COMPONENTS "ApacheConnector")
     endif()
 endif(APRUTIL_FOUND AND APACHE_FOUND)
 
-if(ENABLE_CPPPARSER)
+if(EXISTS ${PROJECT_SOURCE_DIR}/CppParser AND ENABLE_CPPPARSER)
 add_subdirectory(CppParser)
 list(APPEND Poco_COMPONENTS "CppParser")
 endif()
 
-if(ENABLE_POCODOC)
+if(EXISTS ${PROJECT_SOURCE_DIR}/PocoDoc AND ENABLE_POCODOC)
 add_subdirectory(PocoDoc)
 list(APPEND Poco_COMPONENTS "PocoDoc")
 endif()
 
-if(ENABLE_PAGECOMPILER)
+if(EXISTS ${PROJECT_SOURCE_DIR}/PageCompiler AND ENABLE_PAGECOMPILER)
 add_subdirectory(PageCompiler)
 list(APPEND Poco_COMPONENTS "PageCompiler")
 endif()
 
-if(ENABLE_PAGECOMPILER_FILE2PAGE)
+if(EXISTS ${PROJECT_SOURCE_DIR}/PageCompiler/File2Page AND ENABLE_PAGECOMPILER_FILE2PAGE)
 add_subdirectory(PageCompiler/File2Page)
 list(APPEND Poco_COMPONENTS "File2Page")
 endif()
+
 
 #############################################################
 # Uninstall stuff see: http://www.vtk.org/Wiki/CMake_FAQ
@@ -300,7 +283,7 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "/usr/local")
 include(CPack)
 
 #############################################################
-# cmake config files 
+# cmake config files
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
@@ -328,7 +311,17 @@ message(STATUS "CMake ${CMAKE_VERSION} successfully configured ${PROJECT_NAME} u
 message(STATUS "Installation target path: ${CMAKE_INSTALL_PREFIX}")
 
 message(STATUS "C_FLAGS:  =${CMAKE_C_FLAGS}")
+message(STATUS "CMAKE_C_FLAGS_DEBUG:=${CMAKE_C_FLAGS_DEBUG}")
+message(STATUS "CMAKE_C_FLAGS_RELEASE:=${CMAKE_C_FLAGS_RELEASE}")
+message(STATUS "CMAKE_C_FLAGS_MINSIZEREL:=${CMAKE_C_FLAGS_MINSIZEREL}")
+message(STATUS "CMAKE_C_FLAGS_RELWITHDEBINFO:=${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+message(STATUS "")
+message(STATUS "")
 message(STATUS "CXX_FLAGS:=${CMAKE_CXX_FLAGS}")
+message(STATUS "CMAKE_CXX_FLAGS_DEBUG:=${CMAKE_CXX_FLAGS_DEBUG}")
+message(STATUS "CMAKE_CXX_FLAGS_RELEASE:=${CMAKE_CXX_FLAGS_RELEASE}")
+message(STATUS "CMAKE_CXX_FLAGS_MINSIZEREL:=${CMAKE_CXX_FLAGS_MINSIZEREL}")
+message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO:=${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 
 foreach(component ${Poco_COMPONENTS})
 message(STATUS "Building: ${component}")

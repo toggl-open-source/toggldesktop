@@ -1,8 +1,6 @@
 //
 // FPETest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FPETest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -88,21 +86,27 @@ void FPETest::testFlags()
 	volatile double b = 0;
 	volatile double c = div(a, b);
 
-	assert (FPE::isFlag(FPE::FP_DIVIDE_BY_ZERO));
+#if !defined(POCO_NO_FPENVIRONMENT)
+    assert (FPE::isFlag(FPE::FP_DIVIDE_BY_ZERO));
+#endif
 	assert (FPE::isInfinite(c)); 
 
 	FPE::clearFlags();
 	a = 1.23456789e210;
 	b = 9.87654321e210;
 	c = mult(a, b);
+#if !defined(POCO_NO_FPENVIRONMENT)
 	assert (FPE::isFlag(FPE::FP_OVERFLOW));
+#endif
 	assertEqualDelta(c, c, 0);
 
 	FPE::clearFlags();
 	a = 1.23456789e-99;
 	b = 9.87654321e210;
 	c = div(a, b);	
+#if !defined(POCO_NO_FPENVIRONMENT)
 	assert (FPE::isFlag(FPE::FP_UNDERFLOW));
+#endif
 	assertEqualDelta(c, c, 0);
 }
 
@@ -118,7 +122,7 @@ void FPETest::testFlags()
 
 void FPETest::testRound()
 {
-#if !defined(__osf__) && !defined(__VMS)
+#if !defined(__osf__) && !defined(__VMS) && !defined(POCO_NO_FPENVIRONMENT)
 	FPE::setRoundingMode(FPE::FP_ROUND_TONEAREST);			
 	assert (FPE::getRoundingMode() == FPE::FP_ROUND_TONEAREST);
 	{

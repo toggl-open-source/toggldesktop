@@ -1,9 +1,7 @@
 //
 // Utility.cpp
 //
-// $Id: //poco/Main/Data/SQLite/src/Utility.cpp#5 $
-//
-// Library: SQLite
+// Library: Data/SQLite
 // Package: SQLite
 // Module:  Utility
 //
@@ -97,6 +95,7 @@ Utility::Utility()
 		_types.insert(TypeMap::value_type("TINYINT", MetaColumn::FDT_INT8));
 		_types.insert(TypeMap::value_type("SMALLINT", MetaColumn::FDT_INT16));
 		_types.insert(TypeMap::value_type("BIGINT", MetaColumn::FDT_INT64));
+		_types.insert(TypeMap::value_type("LONGINT", MetaColumn::FDT_INT64));
 		_types.insert(TypeMap::value_type("COUNTER", MetaColumn::FDT_UINT64));
 		_types.insert(TypeMap::value_type("AUTOINCREMENT", MetaColumn::FDT_UINT64));
 		_types.insert(TypeMap::value_type("REAL", MetaColumn::FDT_DOUBLE));
@@ -114,6 +113,7 @@ Utility::Utility()
 		_types.insert(TypeMap::value_type("NCLOB", MetaColumn::FDT_STRING));
 		_types.insert(TypeMap::value_type("NTEXT", MetaColumn::FDT_STRING));
 		_types.insert(TypeMap::value_type("NVARCHAR", MetaColumn::FDT_STRING));
+		_types.insert(TypeMap::value_type("LONGVARCHAR", MetaColumn::FDT_STRING));
 		_types.insert(TypeMap::value_type("BLOB", MetaColumn::FDT_BLOB));
 		_types.insert(TypeMap::value_type("DATE", MetaColumn::FDT_DATE));
 		_types.insert(TypeMap::value_type("TIME", MetaColumn::FDT_TIME));

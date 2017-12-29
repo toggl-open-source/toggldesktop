@@ -1,8 +1,6 @@
 //
 // RegularExpression.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/RegularExpression.h#2 $
-//
 // Library: Foundation
 // Package: RegExp
 // Module:  RegularExpression
@@ -25,18 +23,6 @@
 
 #include "Poco/Foundation.h"
 #include <vector>
-
-
-//
-// Copy these definitions from pcre.h
-// to avoid pulling in the entire header file
-//
-extern "C"
-{
-	struct real_pcre8_or_16;                 /* declaration; the definition is private  */
-	typedef struct real_pcre8_or_16 pcre;
-	struct pcre_extra;
-}
 
 
 namespace Poco {
@@ -209,8 +195,10 @@ protected:
 	std::string::size_type substOne(std::string& subject, std::string::size_type offset, const std::string& replacement, int options) const;
 
 private:
-	pcre*       _pcre;
-	pcre_extra* _extra;
+	// Note: to avoid a dependency on the pcre.h header the following are 
+	// declared as void* and casted to the correct type in the implementation file.
+	void* _pcre;  // Actual type is pcre*
+	void* _extra; // Actual type is struct pcre_extra*
 	
 	static const int OVEC_SIZE;
 	

@@ -1,8 +1,6 @@
 //
 // Process_UNIX.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Process_UNIX.cpp#3 $
-//
 // Library: Foundation
 // Package: Processes
 // Module:  Process
@@ -150,6 +148,7 @@ ProcessHandleImpl* ProcessImpl::launchImpl(const std::string& command, const Arg
 
 ProcessHandleImpl* ProcessImpl::launchByForkExecImpl(const std::string& command, const ArgsImpl& args, const std::string& initialDirectory, Pipe* inPipe, Pipe* outPipe, Pipe* errPipe, const EnvImpl& env)
 {
+#if !defined(POCO_NO_FORK_EXEC)
 	// We must not allocated memory after fork(),
 	// therefore allocate all required buffers first.
 	std::vector<char> envChars = getEnvironmentVariablesBuffer(env);
@@ -200,7 +199,7 @@ ProcessHandleImpl* ProcessImpl::launchByForkExecImpl(const std::string& command,
 		if (outPipe) outPipe->close(Pipe::CLOSE_BOTH);
 		if (errPipe) errPipe->close(Pipe::CLOSE_BOTH);
 		// close all open file descriptors other than stdin, stdout, stderr
-		for (int i = 3; i < getdtablesize(); ++i)
+		for (int i = 3; i < sysconf(_SC_OPEN_MAX); ++i)
 		{
 			close(i);
 		}
@@ -213,6 +212,9 @@ ProcessHandleImpl* ProcessImpl::launchByForkExecImpl(const std::string& command,
 	if (outPipe) outPipe->close(Pipe::CLOSE_WRITE);
 	if (errPipe) errPipe->close(Pipe::CLOSE_WRITE);
 	return new ProcessHandleImpl(pid);
+#else
+	throw Poco::NotImplementedException("platform does not allow fork/exec");
+#endif
 }
 
 

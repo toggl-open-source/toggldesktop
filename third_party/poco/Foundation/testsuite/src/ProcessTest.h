@@ -1,8 +1,6 @@
 //
 // ProcessTest.h
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ProcessTest.h#2 $
-//
 // Definition of the ProcessTest class.
 //
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
@@ -30,6 +28,7 @@ public:
 	void testLaunchRedirectIn();
 	void testLaunchRedirectOut();
 	void testLaunchEnv();
+	void testLaunchArgs();
 	void testIsRunning();
 
 	void setUp();
