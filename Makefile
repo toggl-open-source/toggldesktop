@@ -550,30 +550,30 @@ endif
 ifeq ($(osname), mac)
 ifneq ($(pocodir), )
 	cp -r $(pocolib)/* test/.
-	install_name_tool -change /usr/local/lib/libPocoCrypto.31.dylib @loader_path/libPocoCrypto.31.dylib test/libPocoNetSSL.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoCrypto.31.dylib @loader_path/libPocoCrypto.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoData.31.dylib @loader_path/libPocoData.31.dylib test/libPocoDataSQLite.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoData.31.dylib @loader_path/libPocoData.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoData.31.dylib @loader_path/libPocoData.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoDataSQLite.31.dylib @loader_path/libPocoDataSQLite.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoCrypto.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoData.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoDataSQLite.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoNet.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoNetSSL.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoUtil.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoXML.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.31.dylib @loader_path/libPocoFoundation.31.dylib test/libPocoJSON.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoJSON.31.dylib @loader_path/libPocoJSON.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoNet.31.dylib @loader_path/libPocoNet.31.dylib test/libPocoNetSSL.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoNet.31.dylib @loader_path/libPocoNet.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoNetSSL.31.dylib @loader_path/libPocoNetSSL.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoUtil.31.dylib @loader_path/libPocoUtil.31.dylib test/libPocoNetSSL.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoUtil.31.dylib @loader_path/libPocoUtil.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoXML.31.dylib @loader_path/libPocoXML.31.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoXML.31.dylib @loader_path/libPocoXML.31.dylib test/libPocoUtil.31.dylib
-	install_name_tool -change /usr/local/lib/libPocoJSON.31.dylib @loader_path/libPocoJSON.31.dylib test/libPocoUtil.31.dylib
+	install_name_tool -change /usr/local/lib/libPocoCrypto.50.dylib @loader_path/libPocoCrypto.50.dylib test/libPocoNetSSL.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoCrypto.50.dylib @loader_path/libPocoCrypto.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoData.50.dylib @loader_path/libPocoData.50.dylib test/libPocoDataSQLite.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoData.50.dylib @loader_path/libPocoData.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoData.50.dylib @loader_path/libPocoData.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoDataSQLite.50.dylib @loader_path/libPocoDataSQLite.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoCrypto.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoData.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoDataSQLite.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoNet.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoNetSSL.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoUtil.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoXML.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoJSON.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoJSON.50.dylib @loader_path/libPocoJSON.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoNet.50.dylib @loader_path/libPocoNet.50.dylib test/libPocoNetSSL.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoNet.50.dylib @loader_path/libPocoNet.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoNetSSL.50.dylib @loader_path/libPocoNetSSL.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoUtil.50.dylib @loader_path/libPocoUtil.50.dylib test/libPocoNetSSL.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoUtil.50.dylib @loader_path/libPocoUtil.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoXML.50.dylib @loader_path/libPocoXML.50.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoXML.50.dylib @loader_path/libPocoXML.50.dylib test/libPocoUtil.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoJSON.50.dylib @loader_path/libPocoJSON.50.dylib test/libPocoUtil.50.dylib
 endif
 	cd test && ./toggl_test --gtest_shuffle
 endif
