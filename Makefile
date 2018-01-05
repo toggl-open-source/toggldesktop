@@ -238,7 +238,7 @@ app: lib ui
 
 ifeq ($(osname), mac)
 lib:
-	xcodebuild -sdk macosx10.11 -project src/lib/osx/TogglDesktopLibrary.xcodeproj
+	xcodebuild $(XCODELEGACYSDK) -project src/lib/osx/TogglDesktopLibrary.xcodeproj
 endif
 
 ifeq ($(osname), linux)
@@ -267,7 +267,7 @@ endif
 
 ifeq ($(osname), mac)
 ui:
-	xcodebuild -sdk macosx10.11 -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
+	xcodebuild $(XCODELEGACYSDK) -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
 	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
 endif
 
@@ -341,7 +341,7 @@ ifneq ($(pocodir), )
 	$(opensslconfigure) \
 	&& \
 	make clean && \
-	make
+	make $(LEGACYMACOSSDK)
 endif
 
 third_party/google-astyle/build/google-astyle:
