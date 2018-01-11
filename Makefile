@@ -8,6 +8,7 @@ timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 pocodir=third_party/poco
 openssldir=third_party/openssl
 jsoncppdir=third_party/jsoncpp/dist
+pocoversion=$(shell cat third_party/poco/libversion)
 
 GTEST_ROOT=third_party/googletest-read-only
 
@@ -248,15 +249,15 @@ ifneq ($(openssldir), )
 	cp $(openssldir)/*so* src/lib/linux/TogglDesktopLibrary/build/release
 endif
 ifneq ($(pocodir), )
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.31 src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoJSON.so.31 src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
+	cp $(pocodir)/lib/Linux/$(architecture)/libPocoJSON.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
 endif
 endif
 
@@ -550,30 +551,30 @@ endif
 ifeq ($(osname), mac)
 ifneq ($(pocodir), )
 	cp -r $(pocolib)/* test/.
-	install_name_tool -change /usr/local/lib/libPocoCrypto.50.dylib @loader_path/libPocoCrypto.50.dylib test/libPocoNetSSL.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoCrypto.50.dylib @loader_path/libPocoCrypto.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoData.50.dylib @loader_path/libPocoData.50.dylib test/libPocoDataSQLite.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoData.50.dylib @loader_path/libPocoData.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoData.50.dylib @loader_path/libPocoData.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoDataSQLite.50.dylib @loader_path/libPocoDataSQLite.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoCrypto.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoData.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoDataSQLite.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoNet.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoNetSSL.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoUtil.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoXML.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoFoundation.50.dylib @loader_path/libPocoFoundation.50.dylib test/libPocoJSON.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoJSON.50.dylib @loader_path/libPocoJSON.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoNet.50.dylib @loader_path/libPocoNet.50.dylib test/libPocoNetSSL.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoNet.50.dylib @loader_path/libPocoNet.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoNetSSL.50.dylib @loader_path/libPocoNetSSL.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoUtil.50.dylib @loader_path/libPocoUtil.50.dylib test/libPocoNetSSL.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoUtil.50.dylib @loader_path/libPocoUtil.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoXML.50.dylib @loader_path/libPocoXML.50.dylib test/toggl_test
-	install_name_tool -change /usr/local/lib/libPocoXML.50.dylib @loader_path/libPocoXML.50.dylib test/libPocoUtil.50.dylib
-	install_name_tool -change /usr/local/lib/libPocoJSON.50.dylib @loader_path/libPocoJSON.50.dylib test/libPocoUtil.50.dylib
+	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoData.$(pocoversion).dylib @loader_path/libPocoData.$(pocoversion).dylib test/libPocoDataSQLite.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoData.$(pocoversion).dylib @loader_path/libPocoData.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoData.$(pocoversion).dylib @loader_path/libPocoData.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoDataSQLite.$(pocoversion).dylib @loader_path/libPocoDataSQLite.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoCrypto.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoData.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoDataSQLite.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoNet.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoXML.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoFoundation.$(pocoversion).dylib @loader_path/libPocoFoundation.$(pocoversion).dylib test/libPocoJSON.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoJSON.$(pocoversion).dylib @loader_path/libPocoJSON.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoNet.$(pocoversion).dylib @loader_path/libPocoNet.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoNet.$(pocoversion).dylib @loader_path/libPocoNet.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoNetSSL.$(pocoversion).dylib @loader_path/libPocoNetSSL.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoUtil.$(pocoversion).dylib @loader_path/libPocoUtil.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoUtil.$(pocoversion).dylib @loader_path/libPocoUtil.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libPocoJSON.$(pocoversion).dylib @loader_path/libPocoJSON.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
 endif
 	cd test && ./toggl_test --gtest_shuffle
 endif
