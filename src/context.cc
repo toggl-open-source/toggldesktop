@@ -953,6 +953,8 @@ error Context::displayError(const error err) {
     }
     if (err.find(kUnsupportedAppError) != std::string::npos) {
         urls::SetImATeapot(true);
+    } else {
+        urls::SetImATeapot(false);
     }
 
     // Check for missing WS error and
