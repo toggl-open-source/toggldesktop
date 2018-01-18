@@ -134,7 +134,7 @@ If you have Cygwin installed, you can also build the app from from Cygwin termin
 
 Toggl built and signed app for macOS is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). You need at least macOS 10.8.
 
-## Windows (64 bit only)
+## Windows
 
 Toggl built and signed app for Windows is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=stable). App has been tested on Windows 7, 8, 8.1 and 10.
 
