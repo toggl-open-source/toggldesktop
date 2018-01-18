@@ -12,5 +12,5 @@
 #ifndef HEADER_DSO_CONF_H
 # define HEADER_DSO_CONF_H
 
-# define DSO_EXTENSION ".so"
+# define DSO_EXTENSION ".dylib"
 #endif
