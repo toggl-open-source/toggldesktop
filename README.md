@@ -103,7 +103,11 @@ If you plan to run tests then you might want to install [Cygwin](https://www.cyg
 
 ### Build OpenSSL
 
-To build OpenSSL, from Visual Studio Tools, open up a Developer Command Prompt.
+Use prebuilt OpenSSL libraries as described in [Poco documentation](https://pocoproject.org/docs/00200-GettingStarted.html#4)
+
+Or
+
+build OpenSSL, from Visual Studio Tools, open up a Developer Command Prompt.
 
 cd to the project folder, then
 
