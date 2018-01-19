@@ -103,7 +103,14 @@ If you plan to run tests then you might want to install [Cygwin](https://www.cyg
 
 ### Build OpenSSL
 
-Use prebuilt OpenSSL libraries as described in [Poco documentation](https://pocoproject.org/docs/00200-GettingStarted.html#4)
+Use pre-built OpenSSL binaries (recommended)
+
+Clone OpenSSL distribution provided by Poco project under the poco directory
+
+```
+cd %POCO_BASE%
+git clone https://github.com/pocoproject/openssl
+```
 
 Or
 
