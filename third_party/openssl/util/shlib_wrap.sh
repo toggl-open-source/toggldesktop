@@ -27,6 +27,15 @@ SunOS|IRIX*)
 		LD_PRELOAD_64="$LIBCRYPTOSO $LIBSSLSO"; export LD_PRELOAD_64
 		preload_var=LD_PRELOAD_64
 		;;
+	*ELF\ 32*SPARC*|*ELF\ 32*80386*)
+		# We only need to change LD_PRELOAD_32 and LD_LIBRARY_PATH_32
+		# on a multi-arch system.  Otherwise, trust the fallbacks.
+		if [ -f /lib/64/ld.so.1 ]; then
+		    [ -n "$LD_LIBRARY_PATH_32" ] && rld_var=LD_LIBRARY_PATH_32
+		    LD_PRELOAD_32="$LIBCRYPTOSO $LIBSSLSO"; export LD_PRELOAD_32
+		    preload_var=LD_PRELOAD_32
+		fi
+		;;
 	# Why are newly built .so's preloaded anyway? Because run-time
 	# .so lookup path embedded into application takes precedence
 	# over LD_LIBRARY_PATH and as result application ends up linking
@@ -72,23 +81,9 @@ SunOS|IRIX*)
 	;;
 esac
 
-if [ -f "$LIBCRYPTOSO" -a -z "$preload_var" ]; then
-	# Following three lines are major excuse for isolating them into
-	# this wrapper script. Original reason for setting LD_PRELOAD
-	# was to make it possible to pass 'make test' when user linked
-	# with -rpath pointing to previous version installation. Wrapping
-	# it into a script makes it possible to do so on multi-ABI
-	# platforms.
-	case "$SYSNAME" in
-	*BSD|QNX)	LD_PRELOAD="$LIBCRYPTOSO:$LIBSSLSO" ;;	# *BSD, QNX
-	*)	LD_PRELOAD="$LIBCRYPTOSO $LIBSSLSO" ;;	# SunOS, Linux, ELF HP-UX
-	esac
-	_RLD_LIST="$LIBCRYPTOSO:$LIBSSLSO:DEFAULT"	# Tru64, o32 IRIX
-	DYLD_INSERT_LIBRARIES="$LIBCRYPTOSO:$LIBSSLSO"	# MacOS X
-	export LD_PRELOAD _RLD_LIST DYLD_INSERT_LIBRARIES
-fi
 
-cmd="$1${EXE_EXT}"
+
+cmd="$1"; [ -x "$cmd" ] || cmd="$cmd${EXE_EXT}"
 shift
 if [ $# -eq 0 ]; then
 	exec "$cmd"	# old sh, such as Tru64 4.x, fails to expand empty "$@"
