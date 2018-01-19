@@ -612,7 +612,8 @@ error User::LoadUserAndRelatedDataFromJSONString(
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    // Handle missing workspace issue. If default wid is missing there are no workspaces
+    // Handle missing workspace issue.
+    // If default wid is missing there are no workspaces
 
     if (!root["data"].isMember("default_wid")) {
         return error("You no longer have access to your last workspace"); // NOLINT
@@ -914,7 +915,8 @@ void User::loadUserTimeEntryFromJSON(
 
 bool User::LoadUserPreferencesFromJSON(
     Json::Value data) {
-    if (data.isMember("CollapseTimeEntries") && data["CollapseTimeEntries"].asBool() != CollapseEntries()) {
+    if (data.isMember("CollapseTimeEntries")
+        && data["CollapseTimeEntries"].asBool() != CollapseEntries()) {
         SetCollapseEntries(data["CollapseTimeEntries"].asBool());
         return true;
     }

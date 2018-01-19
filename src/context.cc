@@ -223,7 +223,8 @@ void Context::Shutdown() {
         timer_.cancel(false);
     }
 
-    // Stops all running threads and waits for their completion (maximum 10 seconds).
+    // Stops all running threads and waits
+    // for their completion (maximum 10 seconds).
     Poco::ThreadPool::defaultPool().stopAll();
 }
 
@@ -665,7 +666,8 @@ void Context::updateUI(const UIElements &what) {
             for (unsigned int i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
 
-                std::string date_header = toggl::Formatter::FormatDateHeader(te->Start());
+                std::string date_header =
+                    toggl::Formatter::FormatDateHeader(te->Start());
 
                 // Calculate total duration for each date:
                 // will be displayed in date header
@@ -684,7 +686,8 @@ void Context::updateUI(const UIElements &what) {
                 if (user_->CollapseEntries()) {
                     std::stringstream ss;
                     ss << date_header << te->Description()
-                       << te->PID() << te->TID() << te->Billable() << te->Tags();
+                        << te->PID() << te->TID()
+                        << te->Billable() << te->Tags();
                     std::string group_name = ss.str();
 
                     group_header_id[group_name] = i;
@@ -692,7 +695,6 @@ void Context::updateUI(const UIElements &what) {
                     duration += Formatter::AbsDuration(te->Duration());
                     group_durations[group_name] = duration;
                     group_items[group_name].push_back(i);
-
                 }
             }
 
@@ -712,15 +714,13 @@ void Context::updateUI(const UIElements &what) {
 
                 // Assign group info
                 if (user_->CollapseEntries()) {
-
                     if (group_items[view.GroupName].size() > 1) {
-
                         if (group_header_id[view.GroupName] == i) {
                             // If Group open add all entries in group
-                            if(entry_groups[view.GroupName]) {
-
+                            if (entry_groups[view.GroupName]) {
                                 for (unsigned int j = 0; j < group_items[view.GroupName].size(); j++) {
-                                    TimeEntry *group_entry = time_entries[group_items[view.GroupName][j]];
+                                    TimeEntry *group_entry =
+                                        time_entries[group_items[view.GroupName][j]];
 
                                     view::TimeEntry group_entry_view;
                                     group_entry_view.Fill(group_entry);
@@ -780,7 +780,6 @@ void Context::updateUI(const UIElements &what) {
                     Formatter::FormatDurationForDateHeader(
                         date_durations[view.DateHeader]);
                 time_entry_views.push_back(view);
-
             }
         }
 
@@ -1047,7 +1046,7 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 
     setOnline("Data pulled");
 
-    if(user_->related.NumberOfUnsyncedTimeEntries() < 10) {
+    if (user_->related.NumberOfUnsyncedTimeEntries() < 10) {
         bool something_to_push(true);
         err = pushChanges(&client, &something_to_push);
         if (err != noError) {
@@ -1099,7 +1098,7 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     }
     logger().debug("onPushChanges executing");
     error err;
-    if(user_->related.NumberOfUnsyncedTimeEntries() < 10) {
+    if (user_->related.NumberOfUnsyncedTimeEntries() < 10) {
         TogglClient client(UI());
         bool something_to_push(true);
         err = pushChanges(&client, &something_to_push);
@@ -4575,7 +4574,6 @@ error Context::pushChanges(
             client_stopwatch.stop();
             ss << clients.size() << " clients in "
                << client_stopwatch.elapsed() / 1000 << " ms";
-
         }
 
         // Projects second as time entries may depend on projects
@@ -4777,7 +4775,6 @@ error Context::pushEntries(
         for (std::vector<TimeEntry *>::const_iterator it =
             time_entries.begin();
                 it != time_entries.end(); it++) {
-
             // Avoid trying to POST when we're offline
             if (offline) {
                 // Mark the time entry as unsynced now
@@ -4790,7 +4787,7 @@ error Context::pushEntries(
             Json::StyledWriter writer;
             entry_json = writer.write(entryJson);
 
-            //std::cout << entry_json;
+            // std::cout << entry_json;
 
             HTTPSRequest req;
             req.host = urls::API();
@@ -4826,7 +4823,7 @@ error Context::pushEntries(
 
                 offline = IsNetworkingError(resp.err);
 
-                if(offline) {
+                if (offline) {
                     had_something_to_push_ = false;
                 }
 
@@ -5177,13 +5174,13 @@ error Context::pullUserPreferences(
             return error("Failed to load user preferences");
         }
 
-        if(user_->LoadUserPreferencesFromJSON(root)) {
-            // Reload list if user preferences have changed (collapse time entries)
+        if (user_->LoadUserPreferencesFromJSON(root)) {
+            // Reload list if user preferences
+            // have changed (collapse time entries)
             UIElements render;
             render.display_time_entries = true;
             updateUI(render);
         }
-
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();

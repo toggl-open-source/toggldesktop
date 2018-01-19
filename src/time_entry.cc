@@ -458,7 +458,6 @@ Json::Value TimeEntry::SaveToJSON() const {
 
     Json::Value tag_nodes;
     if (TagNames.size() > 0) {
-
         for (std::vector<std::string>::const_iterator it = TagNames.begin();
                 it != TagNames.end();
                 it++) {

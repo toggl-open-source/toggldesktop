@@ -1014,7 +1014,6 @@ void toggl_get_support(void *context, const int type) {
     } else {
         app(context)->UI()->DisplayURL(kGeneralSupportURL);
     }
-
 }
 
 void toggl_on_workspace_select(
