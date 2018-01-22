@@ -916,7 +916,7 @@ void User::loadUserTimeEntryFromJSON(
 bool User::LoadUserPreferencesFromJSON(
     Json::Value data) {
     if (data.isMember("CollapseTimeEntries")
-        && data["CollapseTimeEntries"].asBool() != CollapseEntries()) {
+            && data["CollapseTimeEntries"].asBool() != CollapseEntries()) {
         SetCollapseEntries(data["CollapseTimeEntries"].asBool());
         return true;
     }

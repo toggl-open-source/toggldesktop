@@ -686,8 +686,8 @@ void Context::updateUI(const UIElements &what) {
                 if (user_->CollapseEntries()) {
                     std::stringstream ss;
                     ss << date_header << te->Description()
-                        << te->PID() << te->TID()
-                        << te->Billable() << te->Tags();
+                       << te->PID() << te->TID()
+                       << te->Billable() << te->Tags();
                     std::string group_name = ss.str();
 
                     group_header_id[group_name] = i;
