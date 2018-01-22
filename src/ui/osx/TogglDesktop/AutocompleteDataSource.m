@@ -132,6 +132,64 @@ extern void *ctx;
 	return index;
 }
 
+- (void)findFilter:(NSString *)filter
+{
+	@synchronized(self)
+	{
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		                   // Code that runs async
+						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
+						   for (int i = 0; i < self.orderedKeys.count; i++)
+						   {
+							   NSString *key = self.orderedKeys[i];
+
+							   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
+							   if (stringArray.count > 1)
+							   {
+		                           // Filter is more than 1 word. Let's search for all the words entered.
+								   int foundCount = 0;
+								   for (int j = 0; j < stringArray.count; j++)
+								   {
+									   NSString *splitFilter = stringArray[j];
+
+									   if ([key rangeOfString:splitFilter options:NSCaseInsensitiveSearch].location != NSNotFound)
+									   {
+										   foundCount++;
+										   if ([key length] > self.textLength)
+										   {
+											   self.textLength = [key length];
+										   }
+
+										   if (foundCount == stringArray.count)
+										   {
+											   [filtered addObject:key];
+										   }
+									   }
+								   }
+							   }
+							   else
+							   {
+		                           // Single word filter
+								   if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
+								   {
+									   if ([key length] > self.textLength)
+									   {
+										   self.textLength = [key length];
+									   }
+									   [filtered addObject:key];
+								   }
+							   }
+						   }
+						   self.filteredOrderedKeys = filtered;
+						   dispatch_sync(dispatch_get_main_queue(), ^{
+		                                     // This will be called on the main thread,
+		                                     // when async calls finish
+											 [self reload];
+										 });
+					   });
+	}
+}
+
 - (void)setFilter:(NSString *)filter
 {
 	self.textLength = 0;
@@ -144,51 +202,9 @@ extern void *ctx;
 			[self reload];
 			return;
 		}
-		NSMutableArray *filtered = [[NSMutableArray alloc] init];
-		for (int i = 0; i < self.orderedKeys.count; i++)
-		{
-			NSString *key = self.orderedKeys[i];
 
-			NSArray *stringArray = [filter componentsSeparatedByString:@" "];
-			if (stringArray.count > 1)
-			{
-				// Filter is more than 1 word. Let's search for all the words entered.
-				int foundCount = 0;
-				for (int j = 0; j < stringArray.count; j++)
-				{
-					NSString *splitFilter = stringArray[j];
-
-					if ([key rangeOfString:splitFilter options:NSCaseInsensitiveSearch].location != NSNotFound)
-					{
-						foundCount++;
-						if ([key length] > self.textLength)
-						{
-							self.textLength = [key length];
-						}
-
-						if (foundCount == stringArray.count)
-						{
-							[filtered addObject:key];
-						}
-					}
-				}
-			}
-			else
-			{
-				// Single word filter
-				if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
-				{
-					if ([key length] > self.textLength)
-					{
-						self.textLength = [key length];
-					}
-					[filtered addObject:key];
-				}
-			}
-		}
-		self.filteredOrderedKeys = filtered;
+		[self findFilter:filter];
 	}
-	[self reload];
 }
 
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
