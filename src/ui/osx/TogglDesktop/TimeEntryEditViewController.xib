@@ -519,7 +519,7 @@
                                                 <outlet property="nextKeyView" destination="sSX-ad-7XC" id="sdQ-RG-g1O"/>
                                             </connections>
                                         </tokenField>
-                                        <button ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
+                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="sSX-ad-7XC">
                                             <rect key="frame" x="13" y="51" width="66" height="18"/>
                                             <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jlI-qI-Cgm">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -548,6 +548,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="83f-e3-qKG" firstAttribute="leading" secondItem="1gU-9P-78Z" secondAttribute="leading" constant="16" id="2is-yT-Khf"/>
+                                        <constraint firstItem="sSX-ad-7XC" firstAttribute="leading" secondItem="1gU-9P-78Z" secondAttribute="leading" constant="15" id="3Ej-PB-3po"/>
                                         <constraint firstItem="sSX-ad-7XC" firstAttribute="top" secondItem="aj8-1w-aCw" secondAttribute="bottom" constant="15" id="Ezt-Hk-3lf"/>
                                         <constraint firstItem="83f-e3-qKG" firstAttribute="baseline" secondItem="feg-gg-X4L" secondAttribute="baseline" id="Mro-xu-w0a"/>
                                         <constraint firstItem="aj8-1w-aCw" firstAttribute="centerY" secondItem="9Uk-YS-6nx" secondAttribute="centerY" id="OXb-d6-ZSH"/>
