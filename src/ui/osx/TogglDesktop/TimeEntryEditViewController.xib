@@ -45,17 +45,17 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="qjv-II-K0N">
-            <rect key="frame" x="0.0" y="0.0" width="347" height="550"/>
+            <rect key="frame" x="0.0" y="0.0" width="347" height="502"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Mka-gG-oqB">
-                    <rect key="frame" x="0.0" y="0.0" width="346" height="550"/>
+                    <rect key="frame" x="0.0" y="0.0" width="346" height="502"/>
                     <view key="contentView" id="gq5-PC-ftr">
-                        <rect key="frame" x="0.0" y="0.0" width="346" height="550"/>
+                        <rect key="frame" x="0.0" y="0.0" width="346" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zwE-pW-vQN" customClass="NSHoverButton">
-                                <rect key="frame" x="315" y="523" width="20" height="25"/>
+                                <rect key="frame" x="315" y="475" width="20" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="O7b-Hm-mwT"/>
                                 </constraints>
@@ -69,7 +69,7 @@
                                 </connections>
                             </button>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6rO-vx-iLH" customClass="NSCustomComboBox">
-                                <rect key="frame" x="15" y="499" width="319" height="26"/>
+                                <rect key="frame" x="15" y="451" width="319" height="26"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Description" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="OPO-6N-qwd" customClass="NSCustomComboBoxCell">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -82,7 +82,7 @@
                                 </connections>
                             </comboBox>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="ProjectBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="6Sh-4d-bKb">
-                                <rect key="frame" x="0.0" y="458" width="346" height="45"/>
+                                <rect key="frame" x="0.0" y="410" width="346" height="45"/>
                                 <view key="contentView" id="x3p-PS-0cI">
                                     <rect key="frame" x="0.0" y="0.0" width="346" height="45"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -125,14 +125,14 @@
                                 </constraints>
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                             </box>
-                            <box hidden="YES" autoresizesSubviews="NO" ambiguous="YES" borderType="line" title="AddProjectBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fz4-yg-eQZ">
-                                <rect key="frame" x="7" y="261" width="332" height="200"/>
+                            <box hidden="YES" autoresizesSubviews="NO" borderType="line" title="AddProjectBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fz4-yg-eQZ">
+                                <rect key="frame" x="7" y="261" width="332" height="147"/>
                                 <view key="contentView" id="m0X-fg-ElY">
-                                    <rect key="frame" x="1" y="1" width="330" height="198"/>
+                                    <rect key="frame" x="1" y="1" width="330" height="145"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4nJ-ND-RNO">
-                                            <rect key="frame" x="6" y="169" width="104" height="17"/>
+                                            <rect key="frame" x="6" y="116" width="104" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="100" id="fBy-xn-b1X"/>
                                             </constraints>
@@ -143,7 +143,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-WE-b3h">
-                                            <rect key="frame" x="118" y="167" width="170" height="22"/>
+                                            <rect key="frame" x="118" y="114" width="170" height="22"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="bkz-aO-Chr">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -154,7 +154,7 @@
                                             </connections>
                                         </textField>
                                         <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="oQ3-ya-PW0" customClass="MKColorWellCustom">
-                                            <rect key="frame" x="292" y="166" width="24" height="24"/>
+                                            <rect key="frame" x="292" y="113" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="TZE-DM-y4R"/>
                                                 <constraint firstAttribute="height" constant="24" id="ovr-dd-VhK"/>
@@ -166,7 +166,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </colorWell>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="b5J-U3-cc3">
-                                            <rect key="frame" x="116" y="141" width="201" height="18"/>
+                                            <rect key="frame" x="116" y="88" width="201" height="18"/>
                                             <buttonCell key="cell" type="check" title="Public (visible to the whole team)" bezelStyle="regularSquare" imagePosition="left" inset="2" id="BcI-iU-p6J">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
@@ -176,7 +176,7 @@
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-y9-OXp">
-                                            <rect key="frame" x="6" y="115" width="104" height="17"/>
+                                            <rect key="frame" x="6" y="62" width="104" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="100" id="vGb-yw-Ul5"/>
                                             </constraints>
@@ -187,7 +187,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q41-iI-nk2" userLabel="Workspace Combo Box">
-                                            <rect key="frame" x="118" y="109" width="200" height="26"/>
+                                            <rect key="frame" x="118" y="56" width="200" height="26"/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="10" id="AZn-Xk-njT">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -200,7 +200,7 @@
                                             </connections>
                                         </comboBox>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qlN-P5-EqC">
-                                            <rect key="frame" x="6" y="85" width="104" height="17"/>
+                                            <rect key="frame" x="6" y="32" width="104" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="100" id="ybv-ED-CK4"/>
                                             </constraints>
@@ -211,7 +211,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kdc-c6-b4n" userLabel="Client Combo Box">
-                                            <rect key="frame" x="118" y="79" width="200" height="26"/>
+                                            <rect key="frame" x="118" y="26" width="200" height="26"/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="10" id="kia-Yb-YgV">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -224,7 +224,7 @@
                                             </connections>
                                         </comboBox>
                                         <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z0P-ED-dJk">
-                                            <rect key="frame" x="268" y="76" width="49" height="29"/>
+                                            <rect key="frame" x="268" y="23" width="49" height="29"/>
                                             <buttonCell key="cell" type="bevel" title="Add" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Act-2y-tZr">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -235,7 +235,7 @@
                                             </connections>
                                         </button>
                                         <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sRN-Rb-j5x">
-                                            <rect key="frame" x="225" y="62" width="90" height="14"/>
+                                            <rect key="frame" x="225" y="9" width="90" height="14"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="90" id="6sX-Q7-orO"/>
                                             </constraints>
@@ -249,7 +249,7 @@
                                             </connections>
                                         </button>
                                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v" userLabel="Client Name Text Field">
-                                            <rect key="frame" x="118" y="81" width="142" height="22"/>
+                                            <rect key="frame" x="118" y="28" width="142" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="22" id="gmi-4N-7RX"/>
                                             </constraints>
@@ -293,6 +293,9 @@
                                         <constraint firstItem="sRN-Rb-j5x" firstAttribute="top" secondItem="TGq-XU-G0v" secondAttribute="bottom" constant="5" id="ztx-Pz-AnK"/>
                                     </constraints>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="250" constant="141" id="ME1-YK-1Vc"/>
+                                </constraints>
                             </box>
                             <box autoresizesSubviews="NO" borderType="line" title="TimeEditBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Uof-FM-Nqj">
                                 <rect key="frame" x="7" y="121" width="332" height="136"/>
@@ -317,9 +320,10 @@
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
-                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EMR-ul-vEb">
-                                                        <rect key="frame" x="118" y="11" width="130" height="22"/>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMR-ul-vEb">
+                                                        <rect key="frame" x="118" y="11" width="125" height="22"/>
                                                         <constraints>
+                                                            <constraint firstAttribute="width" constant="125" id="6rf-F2-ZAy"/>
                                                             <constraint firstAttribute="height" constant="22" id="cU1-ex-C2P"/>
                                                         </constraints>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="g9Z-PC-eSh">
@@ -501,8 +505,8 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <tokenField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-YS-6nx">
-                                            <rect key="frame" x="118" y="77" width="212" height="22"/>
+                                        <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-YS-6nx">
+                                            <rect key="frame" x="118" y="77" width="212" height="18"/>
                                             <tokenFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" placeholderString="" drawsBackground="YES" allowsEditingTextAttributes="YES" id="Ugp-hu-uZB">
                                                 <font key="font" metaFont="miniSystem"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -615,7 +619,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oCY-bD-X7j" customClass="NSResize">
-                    <rect key="frame" x="335" y="266" width="14" height="19"/>
+                    <rect key="frame" x="335" y="242" width="14" height="19"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="||" id="AcP-XE-cJn">
                         <font key="font" metaFont="system" size="15"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -626,7 +630,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0ZT-Dr-aT9" customClass="NSResize">
-                    <rect key="frame" x="-1" y="266" width="14" height="19"/>
+                    <rect key="frame" x="-1" y="242" width="14" height="19"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="||" id="2fC-dQ-TDq">
                         <font key="font" metaFont="system" size="15"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -651,7 +655,7 @@
                 <constraint firstItem="Wpz-9G-IOZ" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" constant="15" id="kcd-Q2-yhe"/>
                 <constraint firstItem="Mka-gG-oqB" firstAttribute="top" secondItem="qjv-II-K0N" secondAttribute="top" id="p8H-wK-rRV"/>
             </constraints>
-            <point key="canvasLocation" x="2.5" y="117"/>
+            <point key="canvasLocation" x="2.5" y="93"/>
         </customView>
     </objects>
     <resources>
