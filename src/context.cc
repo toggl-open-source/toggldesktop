@@ -3552,9 +3552,11 @@ Project *Context::CreateProject(
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
 
-            auto clientIsSame = client_guid == p->ClientGUID();
+            bool clientIsSame = false;
             if (client_id != 0 && p->CID() != 0) {
                 clientIsSame = clientIsSame || client_id == p->CID();
+            } else if (!client_guid.empty() && !p->ClientGUID().empty()) {
+                clientIsSame = client_guid == p->ClientGUID();
             }
 
             if (clientIsSame && p->Name() == trimmed_project_name) {
