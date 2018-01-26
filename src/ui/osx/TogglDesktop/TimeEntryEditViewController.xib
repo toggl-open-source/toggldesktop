@@ -68,8 +68,8 @@
                                     <outlet property="nextKeyView" destination="6rO-vx-iLH" id="4Cd-cr-LPj"/>
                                 </connections>
                             </button>
-                            <comboBox verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6rO-vx-iLH" customClass="NSCustomComboBox">
-                                <rect key="frame" x="15" y="499" width="316" height="26"/>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6rO-vx-iLH" customClass="NSCustomComboBox">
+                                <rect key="frame" x="15" y="499" width="319" height="26"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Description" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="OPO-6N-qwd" customClass="NSCustomComboBoxCell">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -88,7 +88,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX" customClass="NSCustomComboBox">
-                                            <rect key="frame" x="15" y="14" width="316" height="26"/>
+                                            <rect key="frame" x="15" y="14" width="319" height="26"/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb" customClass="NSCustomComboBoxCell">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -101,7 +101,7 @@
                                             </connections>
                                         </comboBox>
                                         <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
-                                            <rect key="frame" x="238" y="0.0" width="90" height="14"/>
+                                            <rect key="frame" x="241" y="0.0" width="90" height="14"/>
                                             <buttonCell key="cell" type="smallSquare" title="Add new project" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" state="on" imageScaling="proportionallyDown" inset="2" id="HzE-Jo-vAm">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
@@ -114,8 +114,8 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mjR-fr-Qy0" firstAttribute="top" secondItem="mxY-tv-UzX" secondAttribute="bottom" constant="4" id="1U1-Ew-4vK"/>
-                                        <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="18" id="JNP-eu-cTK"/>
                                         <constraint firstItem="mxY-tv-UzX" firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" id="UnU-RR-WGD"/>
+                                        <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="15" id="nvn-Y3-baN"/>
                                         <constraint firstAttribute="bottom" secondItem="mjR-fr-Qy0" secondAttribute="bottom" id="zGD-qE-eVU"/>
                                         <constraint firstItem="mxY-tv-UzX" firstAttribute="leading" secondItem="x3p-PS-0cI" secondAttribute="leading" constant="15" id="ziA-uf-6K6"/>
                                     </constraints>
@@ -126,7 +126,7 @@
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                             </box>
                             <box hidden="YES" autoresizesSubviews="NO" ambiguous="YES" borderType="line" title="AddProjectBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fz4-yg-eQZ">
-                                <rect key="frame" x="7" y="251" width="332" height="200"/>
+                                <rect key="frame" x="7" y="261" width="332" height="200"/>
                                 <view key="contentView" id="m0X-fg-ElY">
                                     <rect key="frame" x="1" y="1" width="330" height="198"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -248,8 +248,11 @@
                                                 <outlet property="nextKeyView" destination="EMR-ul-vEb" id="HM7-CZ-dYl"/>
                                             </connections>
                                         </button>
-                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v" userLabel="Client Name Text Field">
+                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v" userLabel="Client Name Text Field">
                                             <rect key="frame" x="118" y="81" width="142" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="22" id="gmi-4N-7RX"/>
+                                            </constraints>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="AMw-dT-8wQ">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -264,6 +267,7 @@
                                         <constraint firstAttribute="trailing" secondItem="2Pz-WE-b3h" secondAttribute="trailing" constant="42" id="8af-AF-96e"/>
                                         <constraint firstAttribute="trailing" secondItem="Kdc-c6-b4n" secondAttribute="trailing" constant="15" id="9s0-dR-OvK"/>
                                         <constraint firstItem="Q41-iI-nk2" firstAttribute="leading" secondItem="IVd-y9-OXp" secondAttribute="trailing" constant="10" id="A39-tw-800"/>
+                                        <constraint firstItem="z0P-ED-dJk" firstAttribute="leading" secondItem="TGq-XU-G0v" secondAttribute="trailing" constant="10" id="Fjw-6d-eDa"/>
                                         <constraint firstItem="z0P-ED-dJk" firstAttribute="top" secondItem="Kdc-c6-b4n" secondAttribute="top" id="FoO-B3-gfT"/>
                                         <constraint firstItem="2Pz-WE-b3h" firstAttribute="centerY" secondItem="4nJ-ND-RNO" secondAttribute="centerY" id="LW4-fc-14f"/>
                                         <constraint firstItem="4nJ-ND-RNO" firstAttribute="top" secondItem="m0X-fg-ElY" secondAttribute="top" constant="12" id="O72-fp-Vy7"/>
@@ -315,6 +319,9 @@
                                                     </textField>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EMR-ul-vEb">
                                                         <rect key="frame" x="118" y="11" width="130" height="22"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="22" id="cU1-ex-C2P"/>
+                                                        </constraints>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="g9Z-PC-eSh">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -577,6 +584,7 @@
                             <constraint firstItem="Uof-FM-Nqj" firstAttribute="top" secondItem="fz4-yg-eQZ" secondAttribute="bottom" constant="10" id="fai-aW-vln"/>
                             <constraint firstItem="fz4-yg-eQZ" firstAttribute="leading" secondItem="gq5-PC-ftr" secondAttribute="leading" constant="10" id="nzB-dK-Zme"/>
                             <constraint firstItem="6rO-vx-iLH" firstAttribute="leading" secondItem="gq5-PC-ftr" secondAttribute="leading" constant="15" id="oT3-RV-pjr"/>
+                            <constraint firstAttribute="trailing" secondItem="6rO-vx-iLH" secondAttribute="trailing" constant="15" id="xhD-hJ-XTD"/>
                         </constraints>
                     </view>
                 </box>
@@ -618,7 +626,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0ZT-Dr-aT9" customClass="NSResize">
-                    <rect key="frame" x="2" y="266" width="14" height="19"/>
+                    <rect key="frame" x="-1" y="266" width="14" height="19"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="||" id="2fC-dQ-TDq">
                         <font key="font" metaFont="system" size="15"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -634,7 +642,7 @@
                 <constraint firstAttribute="bottom" secondItem="Wpz-9G-IOZ" secondAttribute="bottom" constant="5" id="2p9-DC-jaP"/>
                 <constraint firstAttribute="bottom" secondItem="Mka-gG-oqB" secondAttribute="bottom" id="8A3-Iz-2zV"/>
                 <constraint firstItem="Mka-gG-oqB" firstAttribute="centerX" secondItem="qjv-II-K0N" secondAttribute="centerX" id="9y8-TM-UCz"/>
-                <constraint firstItem="0ZT-Dr-aT9" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" constant="4" id="EjI-GB-VFt"/>
+                <constraint firstItem="0ZT-Dr-aT9" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" constant="1" id="EjI-GB-VFt"/>
                 <constraint firstItem="0ZT-Dr-aT9" firstAttribute="baseline" secondItem="oCY-bD-X7j" secondAttribute="baseline" id="J9W-ty-Pi6"/>
                 <constraint firstItem="Mka-gG-oqB" firstAttribute="centerY" secondItem="0ZT-Dr-aT9" secondAttribute="centerY" id="T9a-Oz-2XI"/>
                 <constraint firstAttribute="trailing" secondItem="oCY-bD-X7j" secondAttribute="trailing" id="Tfy-Rg-kAM"/>
