@@ -478,7 +478,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="r22-gF-YfG" secondAttribute="bottom" id="3bE-o9-e2t"/>
                                     <constraint firstItem="TSC-79-BuD" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" constant="41" id="5fu-J1-4Sr"/>
-                                    <constraint firstItem="r22-gF-YfG" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" priority="750" constant="82" id="UV8-qu-mAK"/>
+                                    <constraint firstItem="r22-gF-YfG" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" constant="82" id="UV8-qu-mAK"/>
                                     <constraint firstItem="cGh-Uz-aLx" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="top" id="zLG-V9-ydX"/>
                                 </constraints>
                             </box>
