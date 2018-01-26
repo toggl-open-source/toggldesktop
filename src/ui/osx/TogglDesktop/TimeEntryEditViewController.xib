@@ -299,14 +299,14 @@
                                     <constraint firstAttribute="trailing" secondItem="TGq-XU-G0v" secondAttribute="trailing" constant="66" id="zQv-Th-EnG"/>
                                 </constraints>
                             </box>
-                            <box autoresizesSubviews="NO" misplaced="YES" borderType="line" title="TimeEditBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Uof-FM-Nqj">
-                                <rect key="frame" x="0.0" y="131" width="346" height="123"/>
+                            <box autoresizesSubviews="NO" borderType="line" title="TimeEditBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Uof-FM-Nqj">
+                                <rect key="frame" x="12" y="126" width="323" height="129"/>
                                 <view key="contentView" id="Pne-IK-CeY">
-                                    <rect key="frame" x="1" y="1" width="344" height="121"/>
+                                    <rect key="frame" x="1" y="1" width="321" height="127"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" boxType="custom" borderType="none" title="DurationBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="cGh-Uz-aLx">
-                                            <rect key="frame" x="2" y="82" width="346" height="41"/>
+                                        <box autoresizesSubviews="NO" ambiguous="YES" boxType="custom" borderType="none" title="DurationBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="cGh-Uz-aLx">
+                                            <rect key="frame" x="2" y="85" width="346" height="41"/>
                                             <view key="contentView" id="FA0-yA-Cbt">
                                                 <rect key="frame" x="0.0" y="0.0" width="346" height="41"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -427,8 +427,8 @@
                                             </constraints>
                                             <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                         </box>
-                                        <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" boxType="custom" borderType="none" title="DateBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="r22-gF-YfG">
-                                            <rect key="frame" x="2" y="0.0" width="346" height="41"/>
+                                        <box autoresizesSubviews="NO" ambiguous="YES" boxType="custom" borderType="none" title="DateBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="r22-gF-YfG">
+                                            <rect key="frame" x="2" y="3" width="346" height="41"/>
                                             <view key="contentView" id="9af-L6-Mdd">
                                                 <rect key="frame" x="0.0" y="0.0" width="346" height="41"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -474,9 +474,6 @@
                                             <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                         </box>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstItem="r22-gF-YfG" firstAttribute="top" secondItem="TSC-79-BuD" secondAttribute="bottom" id="Noj-5d-BeR"/>
-                                    </constraints>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="r22-gF-YfG" secondAttribute="bottom" id="3bE-o9-e2t"/>
