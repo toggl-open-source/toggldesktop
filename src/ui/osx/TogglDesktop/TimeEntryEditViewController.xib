@@ -158,7 +158,7 @@
                                             </connections>
                                         </textField>
                                         <colorWell ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQ3-ya-PW0" customClass="MKColorWellCustom">
-                                            <rect key="frame" x="306" y="48" width="24" height="24"/>
+                                            <rect key="frame" x="302" y="48" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="djy-am-I5Z"/>
                                             </constraints>
@@ -270,6 +270,7 @@
                                         <constraint firstItem="b5J-U3-cc3" firstAttribute="top" secondItem="oQ3-ya-PW0" secondAttribute="bottom" constant="12" id="fN6-Pj-9sV"/>
                                         <constraint firstItem="4nJ-ND-RNO" firstAttribute="top" secondItem="m0X-fg-ElY" secondAttribute="top" constant="8" id="k8s-c6-A8n"/>
                                         <constraint firstItem="2Pz-WE-b3h" firstAttribute="top" secondItem="m0X-fg-ElY" secondAttribute="top" constant="8" id="p6E-wV-pTw"/>
+                                        <constraint firstItem="oQ3-ya-PW0" firstAttribute="top" secondItem="m0X-fg-ElY" secondAttribute="top" constant="7" id="vxr-eD-tBG"/>
                                     </constraints>
                                 </view>
                                 <constraints>
