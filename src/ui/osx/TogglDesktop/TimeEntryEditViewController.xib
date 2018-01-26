@@ -608,7 +608,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oCY-bD-X7j" customClass="NSResize">
-                    <rect key="frame" x="335" y="187" width="14" height="19"/>
+                    <rect key="frame" x="335" y="169" width="14" height="19"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="||" id="AcP-XE-cJn">
                         <font key="font" metaFont="system" size="15"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -618,8 +618,8 @@
                         <outlet property="delegate" destination="-2" id="Y7v-ic-XoW"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ZT-Dr-aT9" customClass="NSResize">
-                    <rect key="frame" x="0.0" y="189" width="16" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0ZT-Dr-aT9" customClass="NSResize">
+                    <rect key="frame" x="2" y="169" width="14" height="19"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="||" id="2fC-dQ-TDq">
                         <font key="font" metaFont="system" size="15"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -632,17 +632,17 @@
             </subviews>
             <constraints>
                 <constraint firstItem="0ZT-Dr-aT9" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" constant="4" id="7Jj-f2-0W4"/>
-                <constraint firstItem="0ZT-Dr-aT9" firstAttribute="top" secondItem="qjv-II-K0N" secondAttribute="top" constant="150" id="7as-5D-Q8e"/>
                 <constraint firstAttribute="bottom" secondItem="byc-AI-Ri7" secondAttribute="bottom" constant="5" id="Ajf-70-v6X"/>
                 <constraint firstAttribute="trailing" secondItem="oCY-bD-X7j" secondAttribute="trailing" id="JH8-W0-Oa0"/>
                 <constraint firstItem="Wpz-9G-IOZ" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" constant="15" id="KcK-u3-lTT"/>
                 <constraint firstItem="Mka-gG-oqB" firstAttribute="leading" secondItem="qjv-II-K0N" secondAttribute="leading" id="Obp-pk-sqd"/>
                 <constraint firstAttribute="bottom" secondItem="Mka-gG-oqB" secondAttribute="bottom" id="PGJ-IN-7Ca"/>
                 <constraint firstItem="Mka-gG-oqB" firstAttribute="top" secondItem="qjv-II-K0N" secondAttribute="top" id="TAW-qc-cWw"/>
-                <constraint firstItem="oCY-bD-X7j" firstAttribute="top" secondItem="qjv-II-K0N" secondAttribute="top" constant="150" id="b7h-ul-rhc"/>
                 <constraint firstAttribute="trailing" secondItem="byc-AI-Ri7" secondAttribute="trailing" constant="15" id="fXe-Dr-zdW"/>
                 <constraint firstAttribute="bottom" secondItem="Wpz-9G-IOZ" secondAttribute="bottom" constant="5" id="nN5-CB-K2U"/>
                 <constraint firstAttribute="trailing" secondItem="Mka-gG-oqB" secondAttribute="trailing" id="tNy-no-1kn"/>
+                <constraint firstItem="0ZT-Dr-aT9" firstAttribute="centerY" secondItem="qjv-II-K0N" secondAttribute="centerY" id="x6o-J8-c6X"/>
+                <constraint firstItem="oCY-bD-X7j" firstAttribute="centerY" secondItem="qjv-II-K0N" secondAttribute="centerY" id="yrS-HS-KBs"/>
             </constraints>
             <point key="canvasLocation" x="190.5" y="172"/>
         </customView>
