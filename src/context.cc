@@ -282,6 +282,13 @@ error Context::StartEvents() {
             UpdateChannel(&update_channel);
 
             analytics_.TrackChannel(db_->AnalyticsClientID(), update_channel);
+
+            std::stringstream os_info;
+            os_info << Poco::Environment::osName()
+                    << Poco::Environment::osVersion()
+                    << Poco::Environment::osArchitecture();
+
+            analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());

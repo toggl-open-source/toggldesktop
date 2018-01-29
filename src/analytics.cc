@@ -37,6 +37,15 @@ void Analytics::TrackChannel(const std::string client_id,
     Track(client_id, "channel", ss.str());
 }
 
+void Analytics::TrackOs(const std::string client_id,
+                        const std::string os) {
+    std::stringstream ss;
+    ss << "os-"
+       << os;
+
+    Track(client_id, "os", ss.str());
+}
+
 void Analytics::TrackSettings(const std::string client_id,
                               const bool record_timeline,
                               const Settings settings,
