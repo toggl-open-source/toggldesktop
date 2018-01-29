@@ -283,10 +283,11 @@ error Context::StartEvents() {
 
             analytics_.TrackChannel(db_->AnalyticsClientID(), update_channel);
 
+            // Track user os version
             std::stringstream os_info;
-            os_info << Poco::Environment::osName()
-                    << Poco::Environment::osVersion()
-                    << Poco::Environment::osArchitecture();
+            os_info << Poco::Environment::osDisplayName()
+                    << "_" << Poco::Environment::osVersion()
+                    << "_" << Poco::Environment::osArchitecture();
 
             analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
         }
