@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="10" width="330" height="26"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eux-yk-8iS">
                                 <rect key="frame" x="13" y="2" width="88" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="ABy-En-546"/>
@@ -32,7 +32,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A9Z-Z5-Qzd">
                                 <rect key="frame" x="234" y="2" width="84" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="c0p-f3-udt"/>
@@ -69,7 +69,7 @@
                                     <rect key="frame" x="0.0" y="10" width="190" height="36"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI" customClass="NSTextFieldWithBackground">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" preferredMaxLayoutWidth="176" translatesAutoresizingMaskIntoConstraints="NO" id="4mY-N2-UMI" customClass="NSTextFieldWithBackground">
                                             <rect key="frame" x="12" y="0.0" width="180" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="iQU-pZ-Vow"/>
@@ -80,8 +80,8 @@
                                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="175" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
-                                            <rect key="frame" x="13" y="21" width="179" height="17"/>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="175" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-6P-J70">
+                                            <rect key="frame" x="12" y="21" width="180" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="bVb-c6-mrF"/>
                                             </constraints>
@@ -117,7 +117,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="chv-we-eud">
                                             <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="03:21:30" id="P10-iS-flR">
@@ -167,7 +167,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="7" height="13"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <imageView ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HgZ-sm-ajS">
+                                        <imageView translatesAutoresizingMaskIntoConstraints="NO" id="HgZ-sm-ajS">
                                             <rect key="frame" x="0.0" y="0.0" width="7" height="13"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="7" id="ZuG-bv-Rm0"/>
@@ -176,6 +176,11 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-billable" id="Fxk-x5-AcD"/>
                                         </imageView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="HgZ-sm-ajS" secondAttribute="trailing" id="GKU-OC-hcz"/>
+                                        <constraint firstItem="HgZ-sm-ajS" firstAttribute="centerY" secondItem="MSk-Rc-ADi" secondAttribute="centerY" id="Ij5-X7-lzQ"/>
+                                        <constraint firstItem="HgZ-sm-ajS" firstAttribute="leading" secondItem="MSk-Rc-ADi" secondAttribute="leading" id="bQ5-dJ-mlg"/>
+                                    </constraints>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="13" id="MsQ-Qo-FHh"/>
@@ -209,8 +214,8 @@
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XKl-Hx-jZr" userLabel="GroupBox">
-                                <rect key="frame" x="162" y="7" width="24" height="24"/>
+                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XKl-Hx-jZr" userLabel="GroupBox">
+                                <rect key="frame" x="156" y="6" width="24" height="24"/>
                                 <view key="contentView" id="Dg0-9r-kL2">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -236,6 +241,9 @@
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="XKl-Hx-jZr" firstAttribute="centerY" secondItem="EdZ-gS-7iY" secondAttribute="centerY" id="kDp-ju-YdS"/>
+                        </constraints>
                     </view>
                     <constraints>
                         <constraint firstItem="63N-7j-264" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="15" id="2w9-KP-seh"/>
