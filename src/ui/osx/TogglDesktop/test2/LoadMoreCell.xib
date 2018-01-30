@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -13,14 +15,14 @@
             <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box misplaced="YES" borderWidth="0.0" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NK5-eJ-Rnj" userLabel="Background Box">
-                    <rect key="frame" x="-1" y="0.0" width="252" height="51"/>
+                <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NK5-eJ-Rnj" userLabel="Background Box">
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
                     <view key="contentView" id="26W-Y5-via">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mHA-iF-pCY" userLabel="LoadMore">
-                                <rect key="frame" x="76" y="12" width="100" height="26"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mHA-iF-pCY" userLabel="LoadMore">
+                                <rect key="frame" x="76" y="12" width="100" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="6fw-X1-1lc"/>
                                 </constraints>
@@ -43,7 +45,6 @@
                             <constraint firstItem="mHA-iF-pCY" firstAttribute="centerX" secondItem="26W-Y5-via" secondAttribute="centerX" id="kcz-eC-sLd"/>
                         </constraints>
                     </view>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
             </subviews>
