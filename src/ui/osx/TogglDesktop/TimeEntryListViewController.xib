@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -38,14 +38,14 @@
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz" userLabel="Header View">
-                    <rect key="frame" x="13" y="185" width="225" height="56"/>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz" userLabel="Header View">
+                    <rect key="frame" x="-1" y="205" width="254" height="56"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="56" id="OHB-YG-OkN"/>
                     </constraints>
                 </customView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
-                    <rect key="frame" x="15" y="60" width="122" height="100"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
+                    <rect key="frame" x="-1" y="123" width="254" height="57"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="250" id="XeO-lf-n0a"/>
                     </constraints>
@@ -58,11 +58,11 @@
                         <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
                     </connections>
                 </textField>
-                <scrollView wantsLayer="YES" misplaced="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
-                    <rect key="frame" x="0.0" y="0.0" width="252" height="170"/>
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu8-w4-kYq">
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="205"/>
                     <clipView key="contentView" id="TQQ-db-grk">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="205"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1" customClass="NSUnstripedTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="252" height="205"/>
@@ -88,7 +88,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="252" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MEi-4M-qbG">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEi-4M-qbG">
                                                         <rect key="frame" x="0.0" y="-153" width="6" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="eTT-uV-85C">
