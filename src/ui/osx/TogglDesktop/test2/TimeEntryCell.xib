@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="112" height="50"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
                                             <rect key="frame" x="12" y="31" width="102" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="QDn-DF-0mF"/>
@@ -37,7 +37,7 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
                                             <rect key="frame" x="12" y="11" width="102" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="ffb-Ge-3EA"/>
@@ -48,8 +48,8 @@
                                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                             </textFieldCell>
                                         </textField>
-                                        <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-8A-XnH" userLabel="Unsynced_icon">
-                                            <rect key="frame" x="1" y="27" width="12" height="12"/>
+                                        <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-8A-XnH" userLabel="Unsynced_icon">
+                                            <rect key="frame" x="1" y="19" width="12" height="12"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="12" id="3QB-4M-PwS"/>
                                                 <constraint firstAttribute="height" constant="12" id="DX5-O5-3fw"/>
@@ -57,6 +57,9 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning-icon" id="1cv-nG-4ev"/>
                                         </imageView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Kef-8A-XnH" firstAttribute="leading" secondItem="0ZQ-rn-Eji" secondAttribute="leading" constant="1" id="g1W-Lf-0ua"/>
+                                    </constraints>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="11" id="Bot-1h-oQG"/>
@@ -70,8 +73,8 @@
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
-                            <box autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
-                                <rect key="frame" x="90" y="16" width="24" height="24"/>
+                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
+                                <rect key="frame" x="78" y="13" width="24" height="24"/>
                                 <view key="contentView" id="CDR-O1-RXk">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -102,6 +105,9 @@
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="7lc-zN-Cm5" firstAttribute="centerY" secondItem="Bfr-Wf-nKU" secondAttribute="centerY" id="YsI-Rz-cHp"/>
+                        </constraints>
                     </view>
                     <constraints>
                         <constraint firstItem="dt4-Zf-56t" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" id="D3d-Sd-Wn3"/>
@@ -200,7 +206,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
                                 <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="03:21:30" id="Ten-lK-6RR">
