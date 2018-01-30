@@ -215,7 +215,7 @@
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XKl-Hx-jZr" userLabel="GroupBox">
-                                <rect key="frame" x="156" y="6" width="24" height="24"/>
+                                <rect key="frame" x="166" y="6" width="24" height="24"/>
                                 <view key="contentView" id="Dg0-9r-kL2">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -251,7 +251,7 @@
                         <constraint firstAttribute="height" constant="56" id="9D9-zv-Fzd"/>
                         <constraint firstItem="Nab-h7-r4H" firstAttribute="leading" secondItem="HvF-1T-7Z3" secondAttribute="leading" id="Ans-wp-dfh"/>
                         <constraint firstItem="DdV-RE-Kny" firstAttribute="top" secondItem="HvF-1T-7Z3" secondAttribute="top" constant="19" id="GXW-9T-Fax"/>
-                        <constraint firstAttribute="trailing" secondItem="XKl-Hx-jZr" secondAttribute="trailing" constant="150" id="Ipd-iX-kvt"/>
+                        <constraint firstAttribute="trailing" secondItem="XKl-Hx-jZr" secondAttribute="trailing" constant="140" id="Ipd-iX-kvt"/>
                         <constraint firstAttribute="trailing" secondItem="vMk-19-ANF" secondAttribute="trailing" constant="120" id="Jd6-m7-zbB"/>
                         <constraint firstAttribute="bottom" secondItem="vMk-19-ANF" secondAttribute="bottom" constant="22" id="OSu-k3-8nK"/>
                         <constraint firstAttribute="bottom" secondItem="Nab-h7-r4H" secondAttribute="bottom" id="Xkc-fB-knV"/>

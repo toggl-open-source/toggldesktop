@@ -74,7 +74,7 @@
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
-                                <rect key="frame" x="78" y="13" width="24" height="24"/>
+                                <rect key="frame" x="88" y="13" width="24" height="24"/>
                                 <view key="contentView" id="CDR-O1-RXk">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -111,7 +111,7 @@
                     </view>
                     <constraints>
                         <constraint firstItem="dt4-Zf-56t" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" id="D3d-Sd-Wn3"/>
-                        <constraint firstAttribute="trailing" secondItem="7lc-zN-Cm5" secondAttribute="trailing" constant="150" id="OGc-Vk-SiU"/>
+                        <constraint firstAttribute="trailing" secondItem="7lc-zN-Cm5" secondAttribute="trailing" constant="140" id="OGc-Vk-SiU"/>
                         <constraint firstAttribute="trailing" secondItem="dt4-Zf-56t" secondAttribute="trailing" constant="140" id="bZ1-VC-IKA"/>
                         <constraint firstItem="dt4-Zf-56t" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" id="ewN-Z0-chU"/>
                         <constraint firstAttribute="bottom" secondItem="dt4-Zf-56t" secondAttribute="bottom" id="wpH-TW-gRX"/>
