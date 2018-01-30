@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -31,20 +31,20 @@
             <rect key="frame" x="0.0" y="0.0" width="258" height="46"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" misplaced="YES" boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-10" width="256" height="56"/>
+                <box autoresizesSubviews="NO" boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
+                    <rect key="frame" x="1" y="1" width="256" height="44"/>
                     <view key="contentView" id="gK5-Lo-ktx">
-                        <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="256" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <box autoresizesSubviews="NO" misplaced="YES" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nFI-HH-zd7" userLabel="StartButtonBox">
-                                <rect key="frame" x="197" y="2" width="58" height="56"/>
+                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nFI-HH-zd7" userLabel="StartButtonBox">
+                                <rect key="frame" x="198" y="-1" width="58" height="46"/>
                                 <view key="contentView" id="zsW-hz-Xuu">
-                                    <rect key="frame" x="0.0" y="0.0" width="58" height="56"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="58" height="46"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button toolTip="Start" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Fx-4L-YGZ" customClass="NSHoverButton">
-                                            <rect key="frame" x="17" y="15" width="26" height="26"/>
+                                        <button toolTip="Start" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Fx-4L-YGZ" customClass="NSHoverButton">
+                                            <rect key="frame" x="19" y="6" width="24" height="24"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="start_button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="jVO-3V-i8I">
                                                 <behavior key="behavior" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -67,8 +67,8 @@ DQ
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
-                            <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
-                                <rect key="frame" x="4" y="29" width="215" height="20"/>
+                            <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
+                                <rect key="frame" x="13" y="8" width="206" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="WR0-PJ-917"/>
                                 </constraints>
@@ -83,10 +83,10 @@ DQ
                                     <outlet property="nextKeyView" destination="oie-Un-asQ" id="14S-Ev-aQF"/>
                                 </connections>
                             </comboBox>
-                            <box autoresizesSubviews="NO" misplaced="YES" boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh" userLabel="HidingBox">
-                                <rect key="frame" x="132" y="43" width="5" height="30"/>
+                            <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh" userLabel="HidingBox">
+                                <rect key="frame" x="202" y="6" width="9" height="26"/>
                                 <view key="contentView" id="Z9B-SQ-Ece">
-                                    <rect key="frame" x="0.0" y="0.0" width="5" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="9" height="26"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                                 <constraints>
@@ -94,8 +94,8 @@ DQ
                                 </constraints>
                                 <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="4" y="29" width="142" height="8"/>
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
+                                <rect key="frame" x="13" y="10" width="103" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="6EN-7v-jSX"/>
                                 </constraints>
@@ -108,8 +108,8 @@ DQ
                                     <outlet property="delegate" destination="-2" id="oWZ-rz-Xcn"/>
                                 </connections>
                             </textField>
-                            <box autoresizesSubviews="NO" misplaced="YES" boxType="custom" borderType="line" borderWidth="0.0" title="TagBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aty-o7-z5X">
-                                <rect key="frame" x="121" y="31" width="13" height="11"/>
+                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="TagBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aty-o7-z5X">
+                                <rect key="frame" x="116" y="12" width="13" height="11"/>
                                 <view key="contentView" id="xAN-Mo-XAj">
                                     <rect key="frame" x="0.0" y="0.0" width="13" height="11"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -133,8 +133,8 @@ DQ
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <box autoresizesSubviews="NO" misplaced="YES" boxType="custom" borderType="line" borderWidth="0.0" title="BillableBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H0e-5U-BSu">
-                                <rect key="frame" x="145" y="31" width="7" height="13"/>
+                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="BillableBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H0e-5U-BSu">
+                                <rect key="frame" x="131" y="11" width="7" height="13"/>
                                 <view key="contentView" id="ZEK-ta-Qry">
                                     <rect key="frame" x="0.0" y="0.0" width="7" height="13"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -158,8 +158,8 @@ DQ
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
-                                <rect key="frame" x="132" y="24" width="75" height="18"/>
+                            <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
+                                <rect key="frame" x="141" y="9" width="65" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="x2K-5w-zfF"/>
                                 </constraints>
@@ -174,8 +174,8 @@ DQ
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>
                             </textField>
-                            <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="196" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="3" y="19" width="200" height="11"/>
+                            <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="196" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr" customClass="NSTextFieldClickable">
+                                <rect key="frame" x="12" y="6" width="101" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="wqt-c9-CBt"/>
                                 </constraints>
@@ -219,14 +219,14 @@ DQ
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
-                <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="1" y="-6" width="256" height="56"/>
+                <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
+                    <rect key="frame" x="1" y="1" width="256" height="44"/>
                     <view key="contentView" id="Ott-qi-Egp">
-                        <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="256" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Pm5-UM-PRp" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="57" y="24" width="142" height="18"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Pm5-UM-PRp" customClass="NSTextFieldClickable">
+                                <rect key="frame" x="66" y="13" width="125" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="jI3-Oy-ic9"/>
                                 </constraints>
