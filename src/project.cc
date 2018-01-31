@@ -158,7 +158,9 @@ bool Project::ResourceCannotBeCreated(const toggl::error err) const {
 
 bool Project::clientIsInAnotherWorkspace(const toggl::error err) const {
     return (std::string::npos != std::string(err).find(
-        "client is in another workspace"));
+        "client is in another workspace")
+            || (std::string::npos != std::string(err).find("Client with the ID")
+                && std::string::npos != std::string(err).find("isn't present in workspace")));
 }
 
 bool Project::onlyAdminsCanChangeProjectVisibility(
@@ -178,6 +180,11 @@ bool Project::ResolveError(const toggl::error err) {
     }
     if (!IsPrivate() && onlyAdminsCanChangeProjectVisibility(err)) {
         SetPrivate(true);
+        return true;
+    }
+    if (err.find(kProjectNameAlready) != std::string::npos) {
+        // remove duplicate from db
+        MarkAsDeletedOnServer();
         return true;
     }
     return false;
