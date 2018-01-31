@@ -197,6 +197,7 @@
                                                 </menu>
                                             </popUpButtonCell>
                                             <connections>
+                                                <action selector="workspaceSelectChanged:" target="-2" id="Td7-ty-VMP"/>
                                                 <outlet property="nextKeyView" destination="Kdc-c6-b4n" id="g9Y-zb-8qG"/>
                                             </connections>
                                         </popUpButton>
