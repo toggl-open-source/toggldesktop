@@ -4814,6 +4814,11 @@ error Context::pushEntries(
             }
 
             if (resp.err != noError) {
+                // if we're able to solve the error
+                if ((*it)->ResolveError(resp.body)) {
+                    displayError(save());
+                }
+
                 // Not found on server. Probably deleted already.
                 if ((*it)->isNotFound(resp.body)) {
                     (*it)->MarkAsDeletedOnServer();
