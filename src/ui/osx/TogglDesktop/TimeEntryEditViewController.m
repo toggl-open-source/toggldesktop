@@ -385,7 +385,7 @@ extern void *ctx;
 	}
 	else
 	{
-		[self.tagsTokenField setNextKeyView:self.deleteButton];
+		[self.tagsTokenField setNextKeyView:self.billableCheckbox];
 	}
 
 	// Fixes reverse tabing

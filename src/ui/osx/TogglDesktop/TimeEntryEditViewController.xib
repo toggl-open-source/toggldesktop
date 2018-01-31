@@ -527,6 +527,7 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="billableCheckBoxClicked:" target="-2" id="KhO-KD-YIr"/>
+                                                <outlet property="nextKeyView" destination="Wpz-9G-IOZ" id="gBW-fH-atG"/>
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="83f-e3-qKG">
