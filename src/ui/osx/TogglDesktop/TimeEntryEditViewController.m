@@ -1106,7 +1106,14 @@ extern void *ctx;
 	bool openClientAdd = [self.addClientButton.title isEqualToString:@"cancel"];
 
 	[self toggleAddClient:openClientAdd];
-	[self.clientNameTextField becomeFirstResponder];
+	if (openClientAdd)
+	{
+		[self.clientSelect becomeFirstResponder];
+	}
+	else
+	{
+		[self.clientNameTextField becomeFirstResponder];
+	}
 
 	[self.saveNewClientButton setNextKeyView:self.addClientButton];
 
