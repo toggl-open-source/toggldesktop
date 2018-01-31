@@ -193,7 +193,6 @@ extern void *ctx;
 	[self.descriptionCombobox setNextKeyView:self.projectSelect];
 	[self toggleAddClient:YES];
 	[self.addProjectButton setNextKeyView:self.durationTextField];
-	[self.projectPublicCheckbox setNextKeyView:self.addProjectButton];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -242,8 +241,21 @@ extern void *ctx;
 	[self.addProjectButton setHidden:YES];
 
 	// Updating TAB order
+
+	// skip colorpicker as keyboard handling is not implemented
+	// [self.projectNameTextField setNextKeyView:self.colorPicker];
+	// [self.colorPicker setNextKeyView:self.projectPublicCheckbox];
+
 	[self.projectNameTextField setNextKeyView:self.projectPublicCheckbox];
-	[self.projectPublicCheckbox setNextKeyView:self.addClientButton];
+	if (self.workspaceList.count > 1)
+	{
+		[self.projectPublicCheckbox setNextKeyView:self.workspaceSelect];
+	}
+	else
+	{
+		[self.projectPublicCheckbox setNextKeyView:self.clientSelect];
+	}
+	[self.clientSelect setNextKeyView:self.addClientButton];
 	[self.addClientButton setNextKeyView:self.durationTextField];
 }
 
@@ -552,16 +564,18 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		self.workspaceList = workspaces;
+		NSMutableArray *ws = [[NSMutableArray alloc] init];
+
+		for (int i = 0; i < self.workspaceList.count; i++)
+		{
+			ViewItem *workspace = self.workspaceList[i];
+			[ws addObject:workspace.Name];
+		}
+		[self.workspaceSelect removeAllItems];
+		[self.workspaceSelect addItemsWithTitles:[ws copy]];
 	}
 
 	uint64_t wid = [self selectedWorkspaceID];
-
-	self.workspaceSelect.usesDataSource = YES;
-	if (self.workspaceSelect.dataSource == nil)
-	{
-		self.workspaceSelect.dataSource = self;
-	}
-	[self.workspaceSelect reloadData];
 
 	if (!wid && self.timeEntry)
 	{
@@ -644,7 +658,7 @@ extern void *ctx;
 	for (int i = 0; i < self.workspaceList.count; i++)
 	{
 		ViewItem *workspace = self.workspaceList[i];
-		if ([workspace.Name isEqualToString:self.workspaceSelect.stringValue])
+		if ([workspace.Name isEqualToString:self.workspaceSelect.titleOfSelectedItem])
 		{
 			return workspace.ID;
 		}
@@ -1089,11 +1103,29 @@ extern void *ctx;
 
 - (IBAction)addClientButtonClicked:(id)sender
 {
-	[self toggleAddClient:[self.addClientButton.title isEqualToString:@"cancel"]];
+	bool openClientAdd = [self.addClientButton.title isEqualToString:@"cancel"];
+
+	[self toggleAddClient:openClientAdd];
 	[self.clientNameTextField becomeFirstResponder];
-	[self.addClientButton setNextKeyView:self.durationTextField];
+
 	[self.saveNewClientButton setNextKeyView:self.addClientButton];
-	[self.projectPublicCheckbox setNextKeyView:self.clientNameTextField];
+
+	if (self.workspaceList.count > 1)
+	{
+		[self.projectPublicCheckbox setNextKeyView:self.workspaceSelect];
+		if (openClientAdd)
+		{
+			[self.workspaceSelect setNextKeyView:self.clientSelect];
+		}
+		else
+		{
+			[self.workspaceSelect setNextKeyView:self.clientNameTextField];
+		}
+	}
+	else
+	{
+		[self.projectPublicCheckbox setNextKeyView:self.clientNameTextField];
+	}
 
 	NSLog(@"addClientButtonClicked");
 }

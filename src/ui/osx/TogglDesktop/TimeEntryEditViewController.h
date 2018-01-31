@@ -42,7 +42,7 @@
 @property IBOutlet NSBox *addProjectBox;
 @property IBOutlet NSBox *dataholderBox;
 @property IBOutlet NSTextField *projectNameTextField;
-@property IBOutlet NSCustomComboBox *workspaceSelect;
+@property IBOutlet NSPopUpButton *workspaceSelect;
 @property IBOutlet NSCustomComboBox *clientSelect;
 @property (strong) IBOutlet NSTextField *dateTimeTextField;
 @property (strong) IBOutlet NSBox *timeEditBox;
