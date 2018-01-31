@@ -68,6 +68,11 @@ bool Client::ResolveError(const toggl::error err) {
         SetName(Name() + " 1");
         return true;
     }
+    if (err.find(kClientNameAlreadyExists) != std::string::npos) {
+        // remove duplicate from db
+        MarkAsDeletedOnServer();
+        return true;
+    }
     return false;
 }
 

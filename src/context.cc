@@ -4667,10 +4667,8 @@ error Context::pushClients(
         HTTPSResponse resp = toggl_client.Post(req);
 
         if (resp.err != noError) {
-            err = resp.body;
-            if (err.find(kClientNameAlreadyExists) != std::string::npos) {
-                // remove duplicate from db
-                (*it)->MarkAsDeletedOnServer();
+            // if we're able to solve the error
+            if ((*it)->ResolveError(resp.body)) {
                 displayError(save());
             }
             continue;
