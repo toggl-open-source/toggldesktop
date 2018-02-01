@@ -214,13 +214,14 @@
                                         </textField>
                                         <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kdc-c6-b4n" userLabel="Client Combo Box">
                                             <rect key="frame" x="118" y="26" width="200" height="26"/>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesDataSource="YES" numberOfVisibleItems="10" id="kia-Yb-YgV">
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="kia-Yb-YgV">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </comboBoxCell>
                                             <connections>
                                                 <action selector="clientSelectChanged:" target="-2" id="ZbN-uM-M6d"/>
+                                                <outlet property="dataSource" destination="-2" id="Xh6-Xt-IpP"/>
                                                 <outlet property="delegate" destination="-2" id="FtJ-G7-COO"/>
                                                 <outlet property="nextKeyView" destination="sRN-Rb-j5x" id="T35-U5-0Gm"/>
                                             </connections>

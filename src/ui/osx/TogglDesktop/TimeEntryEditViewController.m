@@ -616,12 +616,7 @@ extern void *ctx;
 	{
 		self.fullClientList = clients;
 		self.workspaceClientList = [self findWorkspaceClientList];
-	}
-
-	self.clientSelect.usesDataSource = YES;
-	if (self.clientSelect.dataSource == nil)
-	{
-		self.clientSelect.dataSource = self;
+		self.filteredClients = [NSMutableArray arrayWithArray:self.workspaceClientList];
 	}
 	[self.clientSelect reloadData];
 }
@@ -925,7 +920,7 @@ extern void *ctx;
 {
 	if (self.clientSelect == aComboBox)
 	{
-		return [self.workspaceClientList count];
+		return [self.filteredClients count];
 	}
 	NSAssert(false, @"Invalid combo box");
 	return 0;
@@ -935,11 +930,11 @@ extern void *ctx;
 {
 	if (self.clientSelect == aComboBox)
 	{
-		if (row >= self.workspaceClientList.count)
+		if (row >= self.filteredClients.count)
 		{
 			return nil;
 		}
-		ViewItem *client = [self.workspaceClientList objectAtIndex:row];
+		ViewItem *client = [self.filteredClients objectAtIndex:row];
 		return client.Name;
 	}
 
@@ -961,20 +956,41 @@ extern void *ctx;
 		}
 		return NSNotFound;
 	}
-	if (self.workspaceSelect == aComboBox)
-	{
-		for (int i = 0; i < self.workspaceList.count; i++)
-		{
-			ViewItem *workspace = [self.workspaceList objectAtIndex:i];
-			if ([workspace.Name isEqualToString:aString])
-			{
-				return i;
-			}
-		}
-		return NSNotFound;
-	}
+
 	NSAssert(false, @"Invalid combo box");
 	return NSNotFound;
+}
+
+/*
+ * - (void)comboBoxWillPopUp:(NSNotification *)notification
+ * {
+ *      [self resultsInComboForString:((NSComboBox *)[notification object]).stringValue];
+ * }
+ */
+
+- (NSArray *)resultsInComboForString:(NSString *)string
+{
+	[self.filteredClients removeAllObjects];
+
+	if (string.length == 0 || [string isEqualToString:@""] || [string isEqualToString:@" "])
+	{
+		[self.filteredClients addObjectsFromArray:self.workspaceClientList];
+	}
+	else
+	{
+		for (int i = 0; i < self.workspaceClientList.count; i++)
+		{
+			ViewItem *client = self.workspaceClientList[i];
+			if ([client.Name rangeOfString:string options:NSCaseInsensitiveSearch].location != NSNotFound)
+			{
+				[self.filteredClients addObject:self.workspaceClientList[i]];
+			}
+		}
+	}
+
+	[self.clientSelect reloadData];
+
+	return self.filteredClients;
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification
@@ -988,13 +1004,25 @@ extern void *ctx;
 	{
 		// If enter was pressed then close editpopup
 		if ([[[aNotification userInfo] objectForKey:@"NSTextMovement"] intValue] == NSReturnTextMovement &&
-			(![[aNotification object] isKindOfClass:[NSCustomComboBox class]] ||
+			((![[aNotification object] isKindOfClass:[NSCustomComboBox class]] && ![[aNotification object] isKindOfClass:[NSComboBox class]] ) ||
 			 ![[aNotification object] isExpanded]))
 		{
 			[self closeEdit];
 		}
+
+		if ([[aNotification object] isKindOfClass:[NSComboBox class]])
+		{
+			NSCustomComboBox *comboBox = [aNotification object];
+			// Reset client if entered text doesn't match any clients
+			if (comboBox == self.clientSelect && !self.filteredClients.count)
+			{
+				[self workspaceSelectChanged:nil];
+			}
+		}
 		return;
 	}
+
+
 	[self applyTags];
 }
 
@@ -1023,10 +1051,17 @@ extern void *ctx;
 	{
 		dataSource = self.descriptionComboboxDataSource;
 	}
+	if (comboBox == self.clientSelect)
+	{
+		[self resultsInComboForString:comboBox.stringValue];
+	}
 
-	[dataSource setFilter:filter];
+	if (dataSource != nil)
+	{
+		[dataSource setFilter:filter];
+	}
 
-	if (!filter || ![filter length] || !dataSource.count)
+	if (!filter || ![filter length] || (dataSource != nil && !dataSource.count))
 	{
 		if ([comboBox isExpanded] == YES)
 		{
@@ -1071,8 +1106,9 @@ extern void *ctx;
 	NSLog(@"workspaceSelectChanged");
 	// Changing workspace should render the clients
 	// of the selected workspace in the client select combobox.
-	self.clientSelect.stringValue = @"";
 	self.workspaceClientList = [self findWorkspaceClientList];
+	self.filteredClients = [NSMutableArray arrayWithArray:self.workspaceClientList];
+	self.clientSelect.stringValue = @"";
 }
 
 - (IBAction)clientSelectChanged:(id)sender
