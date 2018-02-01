@@ -258,6 +258,7 @@ extern void *ctx;
 	}
 	[self.clientSelect setNextKeyView:self.addClientButton];
 	[self.addClientButton setNextKeyView:self.durationTextField];
+	[self.workspaceSelect setNextKeyView:self.clientSelect];
 }
 
 - (void)removeCustomConstraints
