@@ -84,7 +84,7 @@
                             Margin="5">Record timeline</CheckBox>
                         <CheckBox Grid.Column="0" Grid.Row="4"
                             Name="onTopCheckBox" x:FieldModifier="private"
-                            Margin="5">On top of other windows</CheckBox>
+                            Margin="5">Keep Toggl on top of other windows</CheckBox>
 
                     </Grid>
                     
