@@ -193,7 +193,7 @@ extern void *ctx;
 	[self removeCustomConstraints];
 	[self.descriptionCombobox setNextKeyView:self.projectSelect];
 	[self toggleAddClient:YES];
-	[self.addProjectButton setNextKeyView:self.durationTextField];
+	//[self.addProjectButton setNextKeyView:self.durationTextField];
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -247,17 +247,17 @@ extern void *ctx;
 	// [self.projectNameTextField setNextKeyView:self.colorPicker];
 	// [self.colorPicker setNextKeyView:self.projectPublicCheckbox];
 
-	[self.projectNameTextField setNextKeyView:self.projectPublicCheckbox];
+	//[self.projectNameTextField setNextKeyView:self.projectPublicCheckbox];
 	if (self.workspaceList.count > 1)
 	{
-		[self.projectPublicCheckbox setNextKeyView:self.workspaceSelect];
+		//[self.projectPublicCheckbox setNextKeyView:self.workspaceSelect];
 	}
 	else
 	{
-		[self.projectPublicCheckbox setNextKeyView:self.clientSelect];
+		//[self.projectPublicCheckbox setNextKeyView:self.clientSelect];
 	}
-	[self.clientSelect setNextKeyView:self.addClientButton];
-	[self.addClientButton setNextKeyView:self.durationTextField];
+	//[self.clientSelect setNextKeyView:self.addClientButton];
+	//[self.addClientButton setNextKeyView:self.durationTextField];
 }
 
 - (void)removeCustomConstraints
@@ -390,15 +390,15 @@ extern void *ctx;
 
 	if (!self.timeEntry.CanSeeBillable)
 	{
-		[self.tagsTokenField setNextKeyView:self.deleteButton];
+		//[self.tagsTokenField setNextKeyView:self.deleteButton];
 	}
 	else
 	{
-		[self.tagsTokenField setNextKeyView:self.billableCheckbox];
+		//[self.tagsTokenField setNextKeyView:self.billableCheckbox];
 	}
 
 	// Fixes reverse tabing
-	[self.addProjectButton setNextKeyView:self.durationTextField];
+	//[self.addProjectButton setNextKeyView:self.durationTextField];
 
 	if (!self.timeEntry.CanAddProjects)
 	{
@@ -1136,7 +1136,7 @@ extern void *ctx;
 		[self.clientNameTextField becomeFirstResponder];
 	}
 
-	[self.saveNewClientButton setNextKeyView:self.addClientButton];
+	/*[self.saveNewClientButton setNextKeyView:self.addClientButton];
 
 	if (self.workspaceList.count > 1)
 	{
@@ -1154,6 +1154,7 @@ extern void *ctx;
 	{
 		[self.projectPublicCheckbox setNextKeyView:self.clientNameTextField];
 	}
+     */
 
 	NSLog(@"addClientButtonClicked");
 }

@@ -149,6 +149,9 @@
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
+                                            <connections>
+                                                <outlet property="nextKeyView" destination="b5J-U3-cc3" id="1z4-xF-u3e"/>
+                                            </connections>
                                         </textField>
                                         <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="oQ3-ya-PW0" customClass="MKColorWellCustom">
                                             <rect key="frame" x="292" y="113" width="24" height="24"/>
@@ -169,7 +172,7 @@
                                                 <font key="font" metaFont="smallSystem"/>
                                             </buttonCell>
                                             <connections>
-                                                <outlet property="nextKeyView" destination="sRN-Rb-j5x" id="uIp-Gq-dNs"/>
+                                                <outlet property="nextKeyView" destination="ewn-SY-SXJ" id="PzU-Lq-ein"/>
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVd-y9-OXp">
@@ -226,6 +229,20 @@
                                                 <outlet property="nextKeyView" destination="sRN-Rb-j5x" id="T35-U5-0Gm"/>
                                             </connections>
                                         </comboBox>
+                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v" userLabel="Client Name Text Field">
+                                            <rect key="frame" x="118" y="28" width="142" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="22" id="gmi-4N-7RX"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="AMw-dT-8wQ">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <outlet property="nextKeyView" destination="z0P-ED-dJk" id="dzH-jn-zxh"/>
+                                            </connections>
+                                        </textField>
                                         <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z0P-ED-dJk">
                                             <rect key="frame" x="268" y="23" width="49" height="29"/>
                                             <buttonCell key="cell" type="bevel" title="Add" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Act-2y-tZr">
@@ -234,7 +251,7 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="saveAddClientButtonClicked:" target="-2" id="juw-sr-0Vh"/>
-                                                <outlet property="nextKeyView" destination="sRN-Rb-j5x" id="3g1-de-3mY"/>
+                                                <outlet property="nextKeyView" destination="sRN-Rb-j5x" id="F9k-PO-K0g"/>
                                             </connections>
                                         </button>
                                         <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sRN-Rb-j5x">
@@ -251,20 +268,6 @@
                                                 <outlet property="nextKeyView" destination="EMR-ul-vEb" id="HM7-CZ-dYl"/>
                                             </connections>
                                         </button>
-                                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v" userLabel="Client Name Text Field">
-                                            <rect key="frame" x="118" y="28" width="142" height="22"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="22" id="gmi-4N-7RX"/>
-                                            </constraints>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="AMw-dT-8wQ">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <outlet property="nextKeyView" destination="z0P-ED-dJk" id="zjw-ee-r6x"/>
-                                            </connections>
-                                        </textField>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="sRN-Rb-j5x" firstAttribute="top" secondItem="Kdc-c6-b4n" secondAttribute="bottom" constant="7" id="26P-fM-UbK"/>
