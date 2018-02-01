@@ -26,6 +26,7 @@
 @property NSMutableArray *tagsList;
 @property NSMutableArray *fullClientList;
 @property NSMutableArray *workspaceClientList;
+@property NSMutableArray *filteredClients;
 @property NSMutableArray *workspaceList;
 @property NSArray *topConstraint;
 @property NSLayoutConstraint *addProjectBoxHeight;
@@ -350,10 +351,6 @@ extern void *ctx;
 - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
 {
 	if (comboBox == self.clientSelect)
-	{
-		return @"";
-	}
-	if (comboBox == self.workspaceSelect)
 	{
 		return @"";
 	}
@@ -930,10 +927,6 @@ extern void *ctx;
 	{
 		return [self.workspaceClientList count];
 	}
-	if (self.workspaceSelect == aComboBox)
-	{
-		return [self.workspaceList count];
-	}
 	NSAssert(false, @"Invalid combo box");
 	return 0;
 }
@@ -949,15 +942,7 @@ extern void *ctx;
 		ViewItem *client = [self.workspaceClientList objectAtIndex:row];
 		return client.Name;
 	}
-	if (self.workspaceSelect == aComboBox)
-	{
-		if (row >= self.workspaceList.count)
-		{
-			return nil;
-		}
-		ViewItem *workspace = [self.workspaceList objectAtIndex:row];
-		return workspace.Name;
-	}
+
 	NSAssert(false, @"Invalid combo box");
 	return nil;
 }
