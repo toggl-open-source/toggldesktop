@@ -1,6 +1,18 @@
 {
   "versions": [
     {
+        "version": "7.4.112",
+        "rows": [
+          "Fixed wrong error message issue when backend is down",
+          "Fixed invalid 'project name exists' error",
+          "Close reminder popup when user starts tracking",
+          "Improved popup window titles for more clarity",
+          "Fixed long project name issue in timer"
+        ],
+        "date": "February 3rd 2018",
+        "beta": "true"
+    },
+    {
         "version": "7.4.71",
         "rows": [
             "Fixed workspace assignment with Pomodoro Break entry",
