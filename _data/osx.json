@@ -1,6 +1,22 @@
 {
     "versions": [
         {
+            "version": "7.4.111",
+            "rows": [
+                "Fixed wrong error message issue when backend is down",
+                "Faster non-blocking autocomplete",
+                "Fixed layout issues in edit view",
+                "Fixed invalid 'project name exists' error",
+                "Fixed edit view tabbing issues",
+                "Added autocomplete to client select",
+                "Improved workspace select",
+                "Solve easier errors that occur with data sync",
+                "Minor layout tweaks"
+            ],
+            "date": "February 2nd 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.84",
             "rows": [
                 "Improved tags autocomplete to do matching search",
