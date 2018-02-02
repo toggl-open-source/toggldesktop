@@ -24,7 +24,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="300" height="398"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
-            <value key="minSize" type="size" width="300" height="420"/>
+            <value key="minSize" type="size" width="240" height="20"/>
             <value key="maxSize" type="size" width="2500" height="2500"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="300" height="398"/>
@@ -37,7 +37,7 @@
                         </constraints>
                     </customView>
                     <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-Qp-t6E">
-                        <rect key="frame" x="0.0" y="369" width="300" height="29"/>
+                        <rect key="frame" x="0.0" y="327" width="300" height="29"/>
                         <view key="contentView" id="vQT-xs-sl5">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="29"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -95,8 +95,8 @@
                     <constraint firstItem="gBV-Qp-t6E" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="H4l-Qk-9du"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
                     <constraint firstAttribute="bottom" secondItem="fXQ-pa-GDD" secondAttribute="bottom" constant="-1" id="TGf-wj-BiJ"/>
-                    <constraint firstItem="gBV-Qp-t6E" firstAttribute="top" secondItem="2" secondAttribute="top" id="acY-4H-9r7"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" priority="750" id="dey-uV-HtZ"/>
+                    <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="gBV-Qp-t6E" secondAttribute="bottom" id="eKS-t8-isS"/>
                     <constraint firstAttribute="trailing" secondItem="gBV-Qp-t6E" secondAttribute="trailing" id="hAW-oO-ES1"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>
                 </constraints>

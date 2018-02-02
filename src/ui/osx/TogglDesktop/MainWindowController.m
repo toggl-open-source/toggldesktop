@@ -22,6 +22,7 @@
 @property (nonatomic, strong) IBOutlet MissingWSViewController *missingWSViewController;
 @property NSLayoutConstraint *contentViewTop;
 @property NSLayoutConstraint *contentViewBottom;
+@property double troubleBoxDefaultHeight;
 @end
 
 @implementation MainWindowController
@@ -85,22 +86,23 @@ extern void *ctx;
 	[attrTitle addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:range];
 	[attrTitle fixAttributesInRange:range];
 	[self.closeTroubleBoxButton setAttributedTitle:attrTitle];
+	self.troubleBoxDefaultHeight = self.troubleBox.frame.size.height;
 }
 
 - (void)addErrorBoxConstraint
 {
 	if (!self.contentViewTop)
 	{
-		self.contentViewTop = [NSLayoutConstraint constraintWithItem:self.contentView
+		self.contentViewTop = [NSLayoutConstraint constraintWithItem:self.troubleBox
 														   attribute:NSLayoutAttributeTop
 														   relatedBy:NSLayoutRelationEqual
 															  toItem:self.mainView
 														   attribute:NSLayoutAttributeTop
 														  multiplier:1
-															constant:0];
+															constant:-self.troubleBoxDefaultHeight];
 		[self.mainView addConstraint:self.contentViewTop];
 	}
-	self.contentViewTop.constant = 0;
+	self.contentViewTop.constant = -self.troubleBoxDefaultHeight;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -181,7 +183,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	[self.errorLabel setStringValue:msg];
-	self.contentViewTop.constant = 50;
+	self.contentViewTop.constant = 0;
 	[self.troubleBox setHidden:NO];
 }
 
@@ -243,7 +245,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	[self.troubleBox setHidden:YES];
-	self.contentViewTop.constant = 0;
+	self.contentViewTop.constant = -self.troubleBoxDefaultHeight;
 	[self.errorLabel setStringValue:@""];
 }
 
