@@ -6,6 +6,7 @@ echo "QPATH is $QPATH"
 echo "QLIBPATH is $QLIBPATH"
 
 out=out/linux/toggldesktop
+pocoversion=$(cat third_party/poco/libversion)
 
 # Clear output directories
 rm -rf toggldesktop*.tar.gz $out/*
@@ -21,15 +22,15 @@ cp src/ui/linux/README $out/.
 cp third_party/bugsnag-qt/build/release/libbugsnag-qt.so.1 $out/lib
 
 # Copy Poco libraries
-cp third_party/poco/lib/Linux/x86_64/libPocoCrypto.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoData.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoDataSQLite.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoFoundation.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoJSON.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoNet.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoNetSSL.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoUtil.so.50 $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoXML.so.50 $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoCrypto.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoData.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoDataSQLite.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoFoundation.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoJSON.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoNet.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoNetSSL.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoUtil.so.$pocoversion $out/lib
+cp third_party/poco/lib/Linux/x86_64/libPocoXML.so.$pocoversion $out/lib
 
 # Copy executable
 cp src/ui/linux/TogglDesktop/build/release/TogglDesktop $out
