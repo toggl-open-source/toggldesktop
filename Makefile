@@ -311,7 +311,7 @@ ifeq ($(osname), mac)
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make $(LEGACYMACOSSDK)
 endif
 ifeq ($(osname), linux)
-	cd $(openssldir) && ./config -fPIC shared no-dso && make
+	cd $(openssldir) && ./config -fPIC shared no-dso && make clean && make
 endif
 ifeq ($(osname), windows)
 	cd $(openssldir) && ./config shared no-dso && ./Configure Cygwin && make
