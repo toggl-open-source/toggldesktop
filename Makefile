@@ -43,29 +43,22 @@ endif
 
 ifeq ($(uname), Darwin)
 executable=./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
-ifneq ($(pocodir), )
 pocolib=$(pocodir)/lib/Darwin/x86_64/
-endif
 osname=mac
 endif
 
 ifeq ($(uname), Linux)
 executable=./src/ui/linux/TogglDesktop/build/release/TogglDesktop
-ifneq ($(pocodir), )
 pocolib=$(pocodir)/lib/Linux/$(architecture)
-endif
 osname=linux
 endif
 
 ifneq (, $(findstring CYGWIN, $(uname) ))
 executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/Release_VS/TogglDesktop.exe
-ifneq ($(pocodir), )
 pocolib=$(pocodir)/lib/CYGWIN/i686
-endif
 osname=windows
 endif
 
-ifneq ($(pocodir), )
 pococflags = \
 	-I$(pocodir)/Foundation/include \
 	-I$(pocodir)/Util/include \
@@ -76,7 +69,6 @@ pococflags = \
 	-I$(pocodir)/NetSSL_OpenSSL/include
 
 pocolibs = -L$(pocolib)
-endif
 
 ifeq ($(osname), windows)
 pococonfigure = --sqlite-thread-safe=0
@@ -95,7 +87,6 @@ pocolibs += \
 	-lPocoJSON \
 	-lPocoFoundation
 
-ifneq ($(openssldir), )
 ifeq ($(osname), windows)
 opensslincdirname = inc32
 else
@@ -105,7 +96,6 @@ endif
 opensslcflags = -I$(openssldir)/$(opensslincdirname)
 openssllibs = -L$(openssldir)
 opensslconfigure = --include-path=$(pwd)/$(openssldir)/$(opensslincdirname) --library-path=$(pwd)/$(openssldir)
-endif
 
 ifeq ($(osname), mac)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
@@ -120,6 +110,7 @@ endif
 
 ifeq ($(osname), linux)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
+	$(opensslcflags) \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
 	$(pococflags) \
@@ -130,9 +121,10 @@ endif
 
 ifeq ($(osname), windows)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
-	$(pococflags) $(opensslcflags) \
+	$(opensslcflags) \
 	-I$(GTEST_ROOT)/include \
 	-I$(GTEST_ROOT) \
+	$(pococflags) \
 	-I$(jsoncppdir) \
 	-Ithird_party/lua/install/include \
 	-DNDEBUG
@@ -244,11 +236,9 @@ endif
 
 ifeq ($(osname), linux)
 lib:
-	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make
-ifneq ($(openssldir), )
+	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
+	cd ../../../../ && \
 	cp $(openssldir)/*so* src/lib/linux/TogglDesktopLibrary/build/release
-endif
-ifneq ($(pocodir), )
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
@@ -258,7 +248,6 @@ ifneq ($(pocodir), )
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
 	cp $(pocodir)/lib/Linux/$(architecture)/libPocoJSON.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-endif
 endif
 
 ifeq ($(osname), windows)
@@ -295,13 +284,9 @@ run: app
 	$(executable)
 
 clean_deps:
-ifneq ($(pocodir), )
 	cd $(pocodir) && (make clean || true)
 	rm -rf $(pocodir)/**/.dep
-endif
-ifneq ($(openssldir), )
 	cd $(openssldir) && (make clean || true)
-endif
 	cd third_party/lua && make clean
 
 deps: clean_deps openssl poco lua
@@ -322,7 +307,6 @@ lua:
 endif
 
 openssl:
-ifneq ($(openssldir), )
 ifeq ($(osname), mac)
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make $(LEGACYMACOSSDK)
 endif
@@ -332,10 +316,8 @@ endif
 ifeq ($(osname), windows)
 	cd $(openssldir) && ./config shared no-dso && ./Configure Cygwin && make
 endif
-endif
 
 poco:
-ifneq ($(pocodir), )
 	cd $(pocodir) && \
 	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page,CppUnit --no-tests --no-samples \
 	$(pococonfigure) \
@@ -343,7 +325,6 @@ ifneq ($(pocodir), )
 	&& \
 	make clean && \
 	make $(LEGACYMACOSSDK)
-endif
 
 third_party/google-astyle/build/google-astyle:
 	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
@@ -540,16 +521,11 @@ toggl_test: clean_test objects test_objects
 test_lib: lua toggl_test
 	cp src/ssl/cacert.pem test/.
 ifeq ($(osname), linux)
-ifneq ($(pocodir), )
 	cp -r $(pocodir)/lib/Linux/$(architecture)/* test/.
-endif
-ifneq ($(openssldir), )
 	cp -r $(openssldir)/*so* test/.
-endif
 	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
 endif
 ifeq ($(osname), mac)
-ifneq ($(pocodir), )
 	cp -r $(pocolib)/* test/.
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/toggl_test
@@ -575,13 +551,10 @@ ifneq ($(pocodir), )
 	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/toggl_test
 	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoJSON.$(pocoversion).dylib @loader_path/libPocoJSON.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
-endif
 	cd test && ./toggl_test --gtest_shuffle
 endif
 ifeq ($(osname), windows)
-ifneq ($(pocodir), )
 	cp -r $(pocolib)/* test/.
-endif
 	cd test && ./toggl_test --gtest_shuffle
 endif
 
