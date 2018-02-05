@@ -73,8 +73,8 @@ cp -r src/ui/linux/TogglDesktop/icons $out/icons
 # SSL library needs to be copied manually
 # else local system installed library will get packaged?!?!
 rm -rf $out/lib/libssl* $out/lib/libcrypto*
-cp third_party/openssl/libssl.so.1.0.0 $out/lib/
-cp third_party/openssl/libcrypto.so.1.0.0 $out/lib/
+cp third_party/openssl/libssl.so.1.1 $out/lib/
+cp third_party/openssl/libcrypto.so.1.1 $out/lib/
 
 # Copy certificate bundle
 cp src/ssl/cacert.pem $out/.
