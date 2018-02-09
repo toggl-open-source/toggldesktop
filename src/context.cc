@@ -2245,7 +2245,7 @@ error Context::Signup(
         return displayError(err);
     }
 
-    return SetLoggedInUserFromJSON(json);
+    return Login(email, password);
 }
 
 void Context::setUser(User *value, const bool logged_in) {
