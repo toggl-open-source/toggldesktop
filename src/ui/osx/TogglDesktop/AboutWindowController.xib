@@ -23,7 +23,7 @@
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="196" y="240" width="314" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="314" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -106,7 +106,10 @@
                         </textFieldCell>
                     </textField>
                     <comboBox hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TpC-DM-Y6t">
-                        <rect key="frame" x="203" y="12" width="61" height="23"/>
+                        <rect key="frame" x="183" y="12" width="90" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="87" id="Yqg-ag-xsi"/>
+                        </constraints>
                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" title="stable" completes="NO" numberOfVisibleItems="5" id="5rC-XU-Azs">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -141,7 +144,7 @@ DQ
                 <constraints>
                     <constraint firstItem="tj1-p9-ire" firstAttribute="top" secondItem="LJU-VH-pb4" secondAttribute="bottom" constant="14" id="2tD-ng-sDV"/>
                     <constraint firstItem="TpC-DM-Y6t" firstAttribute="centerY" secondItem="tj1-p9-ire" secondAttribute="centerY" id="5ic-5g-iSD"/>
-                    <constraint firstAttribute="trailing" secondItem="TpC-DM-Y6t" secondAttribute="trailing" constant="53" id="7mh-tT-F49"/>
+                    <constraint firstAttribute="trailing" secondItem="TpC-DM-Y6t" secondAttribute="trailing" constant="44" id="7mh-tT-F49"/>
                     <constraint firstAttribute="bottom" secondItem="tj1-p9-ire" secondAttribute="bottom" constant="16" id="GAs-Yz-HGQ"/>
                     <constraint firstAttribute="centerX" secondItem="LJU-VH-pb4" secondAttribute="centerX" id="jWX-Vx-fQr"/>
                     <constraint firstItem="tj1-p9-ire" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="42" id="shg-KC-ONl"/>
