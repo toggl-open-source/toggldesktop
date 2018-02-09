@@ -72,6 +72,7 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     if (item->Next) {
         TogglAutocompleteView *next =
             reinterpret_cast<TogglAutocompleteView *>(item->Next);
+        poco_check_ptr(next);
         autocomplete_item_clear(next);
         item->Next = nullptr;
     }
