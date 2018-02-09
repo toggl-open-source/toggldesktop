@@ -614,11 +614,11 @@ error User::LoadUserAndRelatedDataFromJSONString(
 
     // Handle missing workspace issue.
     // If default wid is missing there are no workspaces
-
+    /*
     if (!root["data"].isMember("workspaces") || root["data"]["workspaces"].size() == 0) {
         return error("You no longer have access to your last workspace"); // NOLINT
     }
-
+     */
     SetSince(root["since"].asUInt64());
 
     Poco::Logger &logger = Poco::Logger::get("json");
