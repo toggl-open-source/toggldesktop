@@ -464,6 +464,9 @@ void RelatedData::workspaceAutocompleteItems(
 void RelatedData::TagList(
     std::vector<std::string> *tags,
     const Poco::UInt64 wid) const {
+
+    poco_check_ptr(tags);
+
     std::set<std::string> unique_names;
 
     for (std::vector<Tag *>::const_iterator it =
@@ -485,6 +488,9 @@ void RelatedData::TagList(
 }
 
 void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
+
+    poco_check_ptr(result);
+
     for (std::vector<Workspace *>::const_iterator it =
         Workspaces.begin();
             it != Workspaces.end();
@@ -499,6 +505,8 @@ void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
 }
 
 void RelatedData::ClientList(std::vector<Client *> *result) const {
+
+    poco_check_ptr(result);
     *result = Clients;
 
     std::sort(result->rbegin(), result->rend(), CompareClientByName);
