@@ -98,6 +98,7 @@ extern void *ctx;
 		if (cell.confrimless_delete)
 		{
 			toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
+			[self setFirstRowAsSelected];
 			return;
 		}
 		NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", cell.descriptionTextField.stringValue];
@@ -116,6 +117,25 @@ extern void *ctx;
 		NSLog(@"Deleting time entry %@", cell.GUID);
 
 		toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
+		[self setFirstRowAsSelected];
+	}
+}
+
+- (void)setFirstRowAsSelected
+{
+	[self deselectAll:nil];
+	if (self.latestSelectedRow > 0)
+	{
+		self.latestSelectedRow -= 1;
+	}
+
+	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.latestSelectedRow];
+	[self selectRowIndexes:indexSet byExtendingSelection:NO];
+
+	TimeEntryCell *cell = [self getSelectedEntryCell];
+	if (cell != nil)
+	{
+		[cell setFocused];
 	}
 }
 

@@ -203,7 +203,7 @@ extern void *ctx;
 			[viewitems addObject:it];
 		}
 	}
-
+	NSInteger i = [self.timeEntriesTableView selectedRow];
 	[self.timeEntriesTableView reloadData];
 	if (cmd.open)
 	{
@@ -234,6 +234,18 @@ extern void *ctx;
 			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y - delta;
 		}
 		[self.timeEntriesTableView scrollPoint:scrollOrigin];
+	}
+
+	// If row was focused before reload we restore that state
+	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:i];
+
+	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
+	TimeEntryCell *cell = [self getSelectedEntryCell:i];
+	if (cell != nil)
+	{
+		[self clearLastSelectedEntry];
+		[cell setFocused];
+		[self.timeEntriesTableView scrollRowToVisible:self.lastSelectedRowIndex];
 	}
 }
 
