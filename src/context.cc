@@ -4029,8 +4029,9 @@ void Context::displayPomodoro() {
         }
 
         wid = current_te->WID();
+        Stop(true);
+        current_te->SetDurationInSeconds(settings_.pomodoro_minutes * 60);
     }
-    Stop(true);
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 
     if (settings_.pomodoro_break) {
@@ -4074,9 +4075,12 @@ void Context::displayPomodoroBreak() {
                 < settings_.pomodoro_break_minutes * 60) {
             return;
         }
+
+        Stop(true);
+        current_te->SetDurationInSeconds(settings_.pomodoro_break_minutes * 60);
     }
     pomodoro_break_entry_ = nullptr;
-    Stop(true);
+
     UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes);
 }
 
