@@ -275,7 +275,7 @@ void GUI::DisplayPomodoroBreak(const Poco::UInt64 minutes) {
     char_t *s1 = copy_string("Pomodoro Break Timer");
 
     std::stringstream ss;
-    ss << "Hope you enjoyed your " << minutes << "-minutes break.";
+    ss << "Hope you enjoyed your " << minutes << "-minute break.";
 
     char_t *s2 = copy_string(ss.str());
     on_display_pomodoro_break_(s1, s2);
