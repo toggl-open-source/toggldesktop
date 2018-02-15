@@ -4011,6 +4011,7 @@ void Context::displayPomodoro() {
             return;
         }
         if (pomodoro_break_entry_ != nullptr
+                && !current_te->GUID().empty()
                 && current_te->GUID().compare(
                     pomodoro_break_entry_->GUID()) == 0) {
             return;
