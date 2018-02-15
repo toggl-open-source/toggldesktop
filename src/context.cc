@@ -321,7 +321,7 @@ error Context::save(const bool push_changes) {
 
         if (push_changes) {
             next_push_changes_at_ =
-                postpone(kRequestThrottleSeconds * kOneSecondInMicros);
+                postpone(kRequestThrottleSeconds * kOneSecondInMicros / 100);
             Poco::Util::TimerTask::Ptr ptask =
                 new Poco::Util::TimerTaskAdapter<Context>(
                     *this, &Context::onPushChanges);
@@ -3149,7 +3149,7 @@ error Context::Stop(const bool prevent_on_app) {
         UI()->DisplayApp();
     }
 
-    error err = save();
+    error err = save(true);
     if (err != noError) {
         return displayError(err);
     }
