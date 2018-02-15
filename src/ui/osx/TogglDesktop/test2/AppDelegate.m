@@ -331,21 +331,21 @@ BOOL manualMode = NO;
 }
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
+			   didDismissAlert:(NSUserNotification *)notification
+{
+	NSLog(@"didDismissAlert %@", notification);
+	// When other notification button is pressed
+}
+
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center
 	   didActivateNotification:(NSUserNotification *)notification
 {
 	NSLog(@"didActivateNotification %@", notification);
 
-	// ignore close button
-	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType &&
-		notification.userInfo[@"pomodoro"] == nil)
+	// handle user clicking on notification alert
+	if (NSUserNotificationActivationTypeContentsClicked == notification.activationType)
 	{
-		return;
-	}
-
-	// ignore close button
-	if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType &&
-		notification.userInfo[@"pomodoro_break"] == nil)
-	{
+		[self onShowMenuItem:self];
 		return;
 	}
 
@@ -389,10 +389,15 @@ BOOL manualMode = NO;
 			}
 			return;
 		}
-	}
 
-	// handle other notifications; we only have reminder at the moment
-	[self onShowMenuItem:self];
+		// handle reminder track button press
+		if (notification.userInfo[@"reminder"] != nil)
+		{
+			char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false);
+			free(guid);
+			return;
+		}
+	}
 }
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
