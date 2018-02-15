@@ -45,10 +45,6 @@ void toggl_password_forgot(void *context) {
 }
 
 void toggl_context_clear(void *context) {
-    if (context) {
-        app(context)->SetQuit();
-        app(context)->Shutdown();
-    }
     delete app(context);
 }
 
