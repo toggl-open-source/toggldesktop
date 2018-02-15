@@ -100,11 +100,12 @@ extern void *ctx;
 			toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
 			return;
 		}
+		NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", cell.descriptionTextField.stringValue];
 
 		NSAlert *alert = [[NSAlert alloc] init];
 		[alert addButtonWithTitle:@"OK"];
 		[alert addButtonWithTitle:@"Cancel"];
-		[alert setMessageText:@"Delete the time entry?"];
+		[alert setMessageText:msg];
 		[alert setInformativeText:@"Deleted time entries cannot be restored."];
 		[alert setAlertStyle:NSWarningAlertStyle];
 		if ([alert runModal] != NSAlertFirstButtonReturn)
