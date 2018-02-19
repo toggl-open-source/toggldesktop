@@ -254,11 +254,11 @@ BOOL manualMode = NO;
 
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
 														   selector:@selector(receiveSleepNote:)
-															   name:NSWorkspaceWillSleepNotification object:NULL];
+															   name:NSWorkspaceWillSleepNotification object:nil];
 
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
 														   selector:@selector(receiveWakeNote:)
-															   name:NSWorkspaceDidWakeNotification object:NULL];
+															   name:NSWorkspaceDidWakeNotification object:nil];
 
 	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
