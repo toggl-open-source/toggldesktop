@@ -407,6 +407,11 @@ extern void *ctx;
 
 - (TimeEntryCell *)getSelectedEntryCell:(NSInteger)row
 {
+	if (row < 0)
+	{
+		return nil;
+	}
+
 	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
 												 makeIfNecessary  :YES];
 
