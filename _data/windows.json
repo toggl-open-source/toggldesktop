@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.4.122",
+            "rows": [
+                "Fixed issue with task select activating entry underneath",
+                "Fixed login crash issues",
+                "Fixed wrong error message issue when backend is down",
+                "Fixed invalid 'project name exists' error",
+                "Fixed login right after signup",
+                "Solve easier errors that occur with data sync",
+                "Minor layout tweaks"
+            ],
+            "date": "February 20th 2018"
+        },
+        {
             "version": "7.4.73",
             "rows": [
                 "Fixed workspace assignment with Pomodoro Break entry",

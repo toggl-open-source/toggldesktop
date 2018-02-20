@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.4.122",
+            "rows": [
+                "Changed edit popup to not be transparent",
+                "Fixed invalid 'project name exists' error",
+                "Fixed login right after signup",
+                "Fixed login crash issues",
+                "Layout fixes"
+            ],
+            "date": "February 20th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.111",
             "rows": [
                 "Fixed wrong error message issue when backend is down",
