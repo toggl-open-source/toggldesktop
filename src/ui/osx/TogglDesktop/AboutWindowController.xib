@@ -142,10 +142,10 @@ DQ
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="tj1-p9-ire" firstAttribute="top" secondItem="LJU-VH-pb4" secondAttribute="bottom" constant="14" id="2tD-ng-sDV"/>
                     <constraint firstItem="TpC-DM-Y6t" firstAttribute="centerY" secondItem="tj1-p9-ire" secondAttribute="centerY" id="5ic-5g-iSD"/>
                     <constraint firstAttribute="trailing" secondItem="TpC-DM-Y6t" secondAttribute="trailing" constant="44" id="7mh-tT-F49"/>
                     <constraint firstAttribute="bottom" secondItem="tj1-p9-ire" secondAttribute="bottom" constant="16" id="GAs-Yz-HGQ"/>
+                    <constraint firstAttribute="bottom" secondItem="LJU-VH-pb4" secondAttribute="bottom" constant="47" id="Pem-sJ-Qmb"/>
                     <constraint firstAttribute="centerX" secondItem="LJU-VH-pb4" secondAttribute="centerX" id="jWX-Vx-fQr"/>
                     <constraint firstItem="tj1-p9-ire" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="42" id="shg-KC-ONl"/>
                 </constraints>
