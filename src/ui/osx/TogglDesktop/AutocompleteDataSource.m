@@ -114,6 +114,11 @@ extern void *ctx;
 {
 	NSString *key = nil;
 
+	if (row >= [self.filteredOrderedKeys count])
+	{
+		return key;
+	}
+
 	@synchronized(self)
 	{
 		key = [self.filteredOrderedKeys objectAtIndex:row];
