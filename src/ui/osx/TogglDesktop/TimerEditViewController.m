@@ -517,6 +517,16 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		return;
 	}
+    
+    if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
+    {
+        AutoCompleteInput *field = [aNotification object];
+        NSRect viewFrameInWindowCoords = [self.view convertRect: [self.view bounds] toView: nil];
+        [field setPos:(int)viewFrameInWindowCoords.origin.y];
+        [field toggleTableView:[[field stringValue] length] > 0];
+        NSLog(@"Filter: %@", [field stringValue]);
+        return;
+    }
 	NSComboBox *box = [aNotification object];
 	NSString *filter = [box stringValue];
 

@@ -12,6 +12,7 @@
 #import "NSCustomTimerComboBox.h"
 #import "NSHoverButton.h"
 #import "NSBoxClickable.h"
+#import "AutoCompleteInput.h"
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate> {
 }
