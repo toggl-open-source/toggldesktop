@@ -10,6 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
                 <outlet property="addEntryLabel" destination="Pm5-UM-PRp" id="jNk-Yh-0Wy"/>
+                <outlet property="autoCompleteInput" destination="9TE-qD-76l" id="NIB-uU-cf9"/>
                 <outlet property="billableFlag" destination="9mO-OH-ebm" id="Ybg-W4-Maf"/>
                 <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="descriptionLabel" destination="Fiv-ao-qiA" id="00j-67-MmI"/>

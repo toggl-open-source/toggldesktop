@@ -10,6 +10,7 @@
 #import "UIEvents.h"
 #import "AutocompleteItem.h"
 #import "AutocompleteDataSource.h"
+#import "LiteAutoCompleteDataSource.h"
 #import "ConvertHexColor.h"
 #import "NSComboBox_Expansion.h"
 #import "TimeEntryViewItem.h"
@@ -21,6 +22,7 @@
 
 @interface TimerEditViewController ()
 @property AutocompleteDataSource *autocompleteDataSource;
+@property LiteAutoCompleteDataSource *liteAutocompleteDataSource;
 @property TimeEntryViewItem *time_entry;
 @property NSTimer *timer;
 @property BOOL constraintsAdded;
@@ -40,6 +42,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	if (self)
 	{
 		self.autocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
+		self.liteAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimerState:)
@@ -88,8 +91,11 @@ NSString *kInactiveTimerColor = @"#999999";
 - (void)viewDidLoad
 {
 	self.autocompleteDataSource.combobox = self.descriptionComboBox;
-
 	[self.autocompleteDataSource setFilter:@""];
+
+	self.liteAutocompleteDataSource.table = self.autoCompleteInput.autocompleteTableView;
+	[self.liteAutocompleteDataSource setFilter:@""];
+
 	NSFont *descriptionFont = [NSFont fontWithName:@"Lucida Grande" size:13.0];
 	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:14.0];
 	NSColor *color = [ConvertHexColor hexCodeToNSColor:kTrackingColor];
@@ -129,6 +135,14 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[super loadView];
 	[self viewDidLoad];
+}
+
+- (void)viewDidAppear
+{
+	NSRect viewFrameInWindowCoords = [self.view convertRect:[self.view bounds] toView:nil];
+
+	[self.autoCompleteInput setPos:(int)viewFrameInWindowCoords.origin.y];
+	[self.autoCompleteInput.autocompleteTableView setDelegate:self];
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -517,16 +531,15 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		return;
 	}
-    
-    if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
-    {
-        AutoCompleteInput *field = [aNotification object];
-        NSRect viewFrameInWindowCoords = [self.view convertRect: [self.view bounds] toView: nil];
-        [field setPos:(int)viewFrameInWindowCoords.origin.y];
-        [field toggleTableView:[[field stringValue] length] > 0];
-        NSLog(@"Filter: %@", [field stringValue]);
-        return;
-    }
+
+	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
+	{
+		AutoCompleteInput *field = [aNotification object];
+		[self.liteAutocompleteDataSource setFilter:[field stringValue]];
+		[self.autoCompleteInput toggleTableView:YES];
+		NSLog(@"Filter: %@", [field stringValue]);
+		return;
+	}
 	NSComboBox *box = [aNotification object];
 	NSString *filter = [box stringValue];
 
@@ -593,6 +606,45 @@ NSString *kInactiveTimerColor = @"#999999";
 	free(guid);
 
 	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+}
+
+#pragma AutocompleteTableView Delegate
+
+- (BOOL)  tableView:(NSTableView *)aTableView
+	shouldSelectRow:(NSInteger)rowIndex
+{
+	return YES;
+}
+
+- (NSView *) tableView:(NSTableView *)tableView
+	viewForTableColumn:(NSTableColumn *)tableColumn
+				   row:(NSInteger)row
+{
+	if (row < 0)
+	{
+		return nil;
+	}
+
+	AutocompleteItem *item = nil;
+
+	@synchronized(self)
+	{
+		item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
+	}
+	NSLog(@"%@", item);
+	NSAssert(item != nil, @"view item from viewitems array is nil");
+
+	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
+															  owner:self];
+
+	[cell render:item];
+	return cell;
+}
+
+- (CGFloat)tableView:(NSTableView *)tableView
+		 heightOfRow:(NSInteger)row
+{
+	return 30;
 }
 
 @end

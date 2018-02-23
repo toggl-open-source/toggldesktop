@@ -10,10 +10,11 @@
 
 @implementation AutoCompleteTableCell
 
-- (void)drawRect:(NSRect)dirtyRect {
-    [super drawRect:dirtyRect];
-    
-    // Drawing code here.
+- (void)drawRect:(NSRect)dirtyRect
+{
+	[super drawRect:dirtyRect];
+
+	// Drawing code here.
 }
 
 @end

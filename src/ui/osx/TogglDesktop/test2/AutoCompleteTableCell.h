@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AutocompleteItem.h"
 
 @interface AutoCompleteTableCell : NSTableCellView
 @property (weak) IBOutlet NSTextField *cellDescription;
-- (void)render:(NSString *)view_item;
+- (void)render:(AutocompleteItem *)view_item;
 @end

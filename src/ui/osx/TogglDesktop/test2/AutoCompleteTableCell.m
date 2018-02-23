@@ -10,17 +10,18 @@
 
 @implementation AutoCompleteTableCell
 
-- (void)drawRect:(NSRect)dirtyRect {
-    [super drawRect:dirtyRect];
-    
-    // Drawing code here.
+- (void)drawRect:(NSRect)dirtyRect
+{
+	[super drawRect:dirtyRect];
+
+	// Drawing code here.
 }
 
-- (void)render:(NSString *)view_item
+- (void)render:(AutocompleteItem *)view_item
 {
-    NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-    
-    self.cellDescription.stringValue = view_item;    
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	self.cellDescription.stringValue = view_item.Text;
 }
 
 @end

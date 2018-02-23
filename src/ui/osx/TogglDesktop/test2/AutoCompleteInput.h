@@ -12,12 +12,12 @@
 #import "AutoCompleteTableCell.h"
 
 @interface AutoCompleteInput : NSTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate> {
-    @private
-        NSMutableArray *viewitems;
+	@private
+	NSMutableArray *viewitems;
 }
 @property NSNib *nibAutoCompleteTableCell;
-@property NSScrollView* autocompleteTableContainer;
-@property AutoCompleteTable* autocompleteTableView;
+@property NSScrollView *autocompleteTableContainer;
+@property AutoCompleteTable *autocompleteTableView;
 @property NSRect *rect;
 @property int posY;
 - (void)toggleTableView:(BOOL)show;

@@ -31,6 +31,7 @@
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
 		3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */; };
+		3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */; };
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
@@ -345,6 +346,8 @@
 		3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteInput.m; sourceTree = "<group>"; };
 		3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTable.m; sourceTree = "<group>"; };
 		3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteTableCell.xib; sourceTree = "<group>"; };
+		3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiteAutoCompleteDataSource.h; sourceTree = "<group>"; };
+		3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiteAutoCompleteDataSource.m; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
@@ -607,6 +610,8 @@
 				3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */,
 				3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */,
 				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
+				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
+				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
 			);
 			name = AutoComplete;
 			sourceTree = "<group>";
@@ -1353,6 +1358,7 @@
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
 				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
