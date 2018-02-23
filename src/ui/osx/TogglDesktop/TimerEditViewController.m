@@ -93,7 +93,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autocompleteDataSource.combobox = self.descriptionComboBox;
 	[self.autocompleteDataSource setFilter:@""];
 
-	self.liteAutocompleteDataSource.table = self.autoCompleteInput.autocompleteTableView;
+	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
 	[self.liteAutocompleteDataSource setFilter:@""];
 
 	NSFont *descriptionFont = [NSFont fontWithName:@"Lucida Grande" size:13.0];
@@ -536,7 +536,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		AutoCompleteInput *field = [aNotification object];
 		[self.liteAutocompleteDataSource setFilter:[field stringValue]];
-		[self.autoCompleteInput toggleTableView:YES];
 		NSLog(@"Filter: %@", [field stringValue]);
 		return;
 	}

@@ -20,6 +20,7 @@
 @property AutoCompleteTable *autocompleteTableView;
 @property NSRect *rect;
 @property int posY;
-- (void)toggleTableView:(BOOL)show;
+@property int lastItemCount;
+- (void)toggleTableView:(int)itemCount;
 - (void)setPos:(int)posy;
 @end

@@ -55,24 +55,25 @@
 	self.posY = posy;
 }
 
-- (void)toggleTableView:(BOOL)show
+- (void)toggleTableView:(int)itemCount
 {
-	NSLog(@"// ** Add table");
-	if (show == YES)
+	NSLog(@"// ** Toggle table (items: %d)  ** //", itemCount);
+	if (itemCount > 0 || (itemCount == 0 && self.lastItemCount > 0))
 	{
+		[self updateDropdownHeight:itemCount];
 		if (self.autocompleteTableView.listVisible == NO)
 		{
-			[self updateDropdownHeight:(int)self.autocompleteTableView.numberOfRows];
 			[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
 			self.autocompleteTableView.listVisible = YES;
 		}
-		[self.autocompleteTableView reloadData];
+		// [self.autocompleteTableView reloadData];
 	}
 	else
 	{
 		self.autocompleteTableView.listVisible = NO;
 		[self.autocompleteTableContainer removeFromSuperview];
 	}
+	self.lastItemCount = itemCount;
 }
 
 - (void)updateDropdownHeight:(int)count
@@ -95,10 +96,16 @@
 	{
 		if (self.autocompleteTableView.listVisible == NO)
 		{
-			[self toggleTableView:YES];
+			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
 		}
 		[[self window] makeFirstResponder:self.autocompleteTableView];
 		[self.autocompleteTableView setFirstRowAsSelected];
+	}
+	else if (event.keyCode == kVK_Escape)
+	{
+		// Hide autocomplete list
+		[self.autocompleteTableContainer removeFromSuperview];
+		self.autocompleteTableView.listVisible = NO;
 	}
 }
 

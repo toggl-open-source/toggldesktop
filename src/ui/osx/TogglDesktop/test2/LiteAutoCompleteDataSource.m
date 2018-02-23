@@ -80,9 +80,9 @@ extern void *ctx;
 		}
 
 		// self.table.usesDataSource = YES;
-		if (self.table.dataSource == nil)
+		if (self.input.autocompleteTableView.dataSource == nil)
 		{
-			self.table.dataSource = self;
+			self.input.autocompleteTableView.dataSource = self;
 		}
 
 		[self setFilter:self.currentFilter];
@@ -93,40 +93,8 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	[self.table reloadData];
-}
-
-- (NSUInteger)count
-{
-	NSUInteger result = 0;
-
-	@synchronized(self)
-	{
-		result = [self.filteredOrderedKeys count];
-	}
-	return result;
-}
-
-- (NSString *)keyAtIndex:(NSInteger)row
-{
-	NSString *key = nil;
-
-	@synchronized(self)
-	{
-		key = [self.filteredOrderedKeys objectAtIndex:row];
-	}
-	return key;
-}
-
-- (NSUInteger)indexOfKey:(NSString *)key
-{
-	NSUInteger index = 0;
-
-	@synchronized(self)
-	{
-		return [self.filteredOrderedKeys indexOfObject:key];
-	}
-	return index;
+	[self.input toggleTableView:(int)[self.filteredOrderedKeys count]];
+	[self.input.autocompleteTableView reloadData];
 }
 
 - (void)findFilter:(NSString *)filter
@@ -193,11 +161,20 @@ extern void *ctx;
 	self.textLength = 0;
 	@synchronized(self)
 	{
+		bool lastFilterWasNonEmpty = ((filter == nil || filter.length == 0) && (self.currentFilter != nil && self.currentFilter.length > 0));
+
 		self.currentFilter = filter;
 		if (filter == nil || filter.length == 0)
 		{
 			self.filteredOrderedKeys = [NSMutableArray arrayWithArray:self.orderedKeys];
-			[self reload];
+			if (lastFilterWasNonEmpty)
+			{
+				[self reload];
+			}
+			else
+			{
+				[self.input.autocompleteTableView reloadData];
+			}
 			return;
 		}
 

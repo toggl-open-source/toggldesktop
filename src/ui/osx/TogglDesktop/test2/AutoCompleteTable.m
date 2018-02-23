@@ -36,7 +36,11 @@
 
 - (void)keyDown:(NSEvent *)event
 {
-	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
+	if (event.keyCode == kVK_UpArrow && self.selectedRow == 0)
+	{
+		// Focus input
+	}
+	else if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
 		/*
 		 * TimeEntryCell *cell = [self getSelectedEntryCell];

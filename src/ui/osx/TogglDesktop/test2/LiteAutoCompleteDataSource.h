@@ -8,9 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
-#import "AutoCompleteTable.h"
+#import "AutoCompleteInput.h"
 #import "AutocompleteItem.h"
-#import "AutocompleteTableCell.h"
+#import "AutoCompleteTableCell.h"
 
 @interface LiteAutoCompleteDataSource : NSObject <NSTableViewDataSource>
 @property NSMutableArray *orderedKeys;
@@ -18,7 +18,7 @@
 @property NSMutableDictionary *dictionary;
 @property NSString *currentFilter;
 @property NSInteger textLength;
-@property AutoCompleteTable *table;
+@property AutoCompleteInput *input;
 - (NSString *)completedString:(NSString *)partialString;
 - (AutocompleteItem *)get:(NSString *)key;
 - (NSUInteger)count;
