@@ -21,6 +21,11 @@
 @property NSRect *rect;
 @property int posY;
 @property int lastItemCount;
+@property int maxVisibleItems;
+@property int itemHeight;
+@property NSArray *verticalConstraint;
+@property NSArray *horisontalConstraint;
+@property NSLayoutConstraint *heightConstraint;
 - (void)toggleTableView:(int)itemCount;
 - (void)setPos:(int)posy;
 @end
