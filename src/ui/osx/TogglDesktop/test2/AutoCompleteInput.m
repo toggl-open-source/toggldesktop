@@ -91,9 +91,9 @@
 				[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
 				[self setupAutocompleteConstraints];
 			}
-			[self updateDropdownHeight:itemCount];
 			[self.autocompleteTableContainer setHidden:NO];
 		}
+        [self updateDropdownHeight:itemCount];
 	}
 	else if (self.autocompleteTableContainer != nil)
 	{
