@@ -55,6 +55,7 @@
 	[self.autocompleteTableContainer setDocumentView:self.autocompleteTableView];
 	[self.autocompleteTableContainer setAutohidesScrollers:YES];
 	[self.autocompleteTableContainer setHasVerticalScroller:YES];
+	[self.autocompleteTableContainer setHidden:YES];
 
 	self.autocompleteTableContainer.translatesAutoresizingMaskIntoConstraints = NO;
 }
@@ -83,10 +84,8 @@
 	NSLog(@"// ** Toggle table (items: %d)  ** //", itemCount);
 	if (itemCount > 0 || (itemCount == 0 && self.lastItemCount > 0))
 	{
-		if (self.autocompleteTableView.listVisible == NO)
+		if (self.autocompleteTableContainer.hidden)
 		{
-			self.autocompleteTableView.listVisible = YES;
-
 			if (self.heightConstraint == nil)
 			{
 				[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
@@ -98,7 +97,7 @@
 	}
 	else if (self.autocompleteTableContainer != nil)
 	{
-		self.autocompleteTableView.listVisible = NO;
+		[self.autocompleteTableContainer setHidden:YES];
 	}
 	self.lastItemCount = itemCount;
 }
@@ -116,7 +115,7 @@
 	NSLog(@"EventCode: %hu", [event keyCode]);
 	if ([event keyCode] == kVK_DownArrow)
 	{
-		if (self.autocompleteTableView.listVisible == NO)
+		if (self.autocompleteTableContainer.hidden)
 		{
 			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
 		}
@@ -129,7 +128,6 @@
 		if (self.autocompleteTableContainer != nil)
 		{
 			[self.autocompleteTableContainer setHidden:YES];
-			self.autocompleteTableView.listVisible = NO;
 		}
 	}
 }

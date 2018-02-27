@@ -16,7 +16,6 @@
 	self = [super initWithFrame:frame];
 	if (self)
 	{
-		self.listVisible = NO;
 		NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"column"];
 		column.width = 400;
 		[self addTableColumn:column];

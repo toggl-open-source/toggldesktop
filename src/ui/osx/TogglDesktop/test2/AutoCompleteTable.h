@@ -9,6 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AutoCompleteTable : NSTableView
-@property BOOL listVisible;
 - (void)setFirstRowAsSelected;
 @end
