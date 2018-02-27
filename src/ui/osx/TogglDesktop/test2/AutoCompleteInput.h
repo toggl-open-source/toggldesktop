@@ -11,20 +11,14 @@
 #import "AutoCompleteTable.h"
 #import "AutoCompleteTableCell.h"
 
-@interface AutoCompleteInput : NSTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate> {
-	@private
-	NSMutableArray *viewitems;
-}
+@interface AutoCompleteInput : NSTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 @property NSNib *nibAutoCompleteTableCell;
 @property NSScrollView *autocompleteTableContainer;
 @property AutoCompleteTable *autocompleteTableView;
-@property NSRect *rect;
 @property int posY;
 @property int lastItemCount;
 @property int maxVisibleItems;
 @property int itemHeight;
-@property NSArray *verticalConstraint;
-@property NSArray *horisontalConstraint;
 @property NSLayoutConstraint *heightConstraint;
 - (void)toggleTableView:(int)itemCount;
 - (void)setPos:(int)posy;

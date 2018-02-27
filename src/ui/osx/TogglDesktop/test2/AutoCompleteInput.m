@@ -22,15 +22,7 @@
 	self = [super initWithCoder:coder];
 	if (self)
 	{
-		// self.rect = NSMakeRect(0, 0, 0, 0);
 		self.posY = 0;
-		NSLog(@"// ** Create ViewItems");
-		viewitems = [NSMutableArray array];
-		[viewitems addObject:@"Test1"];
-		[viewitems addObject:@"Test2"];
-		[viewitems addObject:@"Test3"];
-		[viewitems addObject:@"Test4"];
-		[viewitems addObject:@"Test5"];
 		self.itemHeight = 35;
 		self.maxVisibleItems = 6;
 		[self createAutocomplete];
@@ -40,10 +32,7 @@
 
 - (void)createAutocomplete
 {
-	NSRect s = self.frame;
-	int h = 200;
-
-	self.autocompleteTableContainer = [[NSScrollView alloc] initWithFrame:NSMakeRect(s.origin.x, s.origin.y - h, s.size.width, h)];
+	self.autocompleteTableContainer = [[NSScrollView alloc] initWithFrame:NSMakeRect(0,0,0,0)];
 	self.nibAutoCompleteTableCell = [[NSNib alloc] initWithNibNamed:@"AutoCompleteTableCell" bundle:nil];
 	self.autocompleteTableView = [[AutoCompleteTable alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	[self.autocompleteTableView registerNib:self.nibAutoCompleteTableCell
@@ -105,7 +94,6 @@
 - (void)updateDropdownHeight:(int)count
 {
 	int h = MIN((count * self.itemHeight), self.posY - 100);
-
 	self.heightConstraint.constant = h;
 	NSLog(@"Update table position | H: %d, POSY: %d", h, self.posY);
 }
