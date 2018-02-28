@@ -107,8 +107,11 @@
 		{
 			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
 		}
-		[[self window] makeFirstResponder:self.autocompleteTableView];
-		[self.autocompleteTableView setFirstRowAsSelected];
+		[self.autocompleteTableView nextItem];
+	}
+	else if (event.keyCode == kVK_UpArrow)
+	{
+		[self.autocompleteTableView previousItem];
 	}
 	else if (event.keyCode == kVK_Escape)
 	{

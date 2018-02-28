@@ -36,80 +36,6 @@
 	[super drawGridInClipRect:finalClipRect];
 }
 
-- (void)keyDown:(NSEvent *)event
-{
-	if (event.keyCode == kVK_UpArrow && self.selectedRow == 0)
-	{
-		// Focus input
-	}
-	else if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
-	{
-		/*
-		 * TimeEntryCell *cell = [self getSelectedEntryCell];
-		 * if (cell != nil)
-		 * {
-		 *  [cell openEdit];
-		 * }
-		 */
-	}
-	else if (event.keyCode == kVK_Escape)
-	{
-		// Hide autocomplete list
-		// [self.autocompleteTableContainer removeFromSuperview];
-		// self.listVisible = NO;
-
-		/*
-		 * [[NSNotificationCenter defaultCenter] postNotificationName:kEscapeListing
-		 *                                                  object:nil
-		 *                                                userInfo:nil];
-		 */
-	}
-	/*
-	 * else if (event.keyCode == kVK_RightArrow)
-	 * {
-	 *  TimeEntryCell *cell = [self getSelectedEntryCell];
-	 *  if (cell != nil && cell.GroupName.length && !cell.GroupOpen)
-	 *  {
-	 *      toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
-	 *  }
-	 * }
-	 * else if (event.keyCode == kVK_LeftArrow)
-	 * {
-	 *  TimeEntryCell *cell = [self getSelectedEntryCell];
-	 *  if (cell != nil && cell.GroupName.length && cell.GroupOpen)
-	 *  {
-	 *      toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
-	 *  }
-	 * }
-	 */
-	else
-	{
-		[super keyDown:event];
-	}
-}
-
-/*
- * - (TimeEntryCell *)getSelectedCell
- * {
- *
- *  if (self.selectedRow != -1)
- *  {
- *      self.latestSelectedRow = self.selectedRow;
- *  }
- *  NSView *latestView = [self rowViewAtRow:[self latestSelectedRow]
- *                        makeIfNecessary  :NO];
- *
- *  for (NSView *subview in [latestView subviews])
- *  {
- *      if ([subview isKindOfClass:[TimeEntryCell class]] || [subview isKindOfClass:[TimeEntryCellWithHeader class]])
- *      {
- *          return (TimeEntryCell *)subview;
- *      }
- *  }
- *  return nil;
- * }
- */
-
 - (void)setFirstRowAsSelected
 {
 	[self deselectAll:nil];
@@ -118,29 +44,33 @@
 	[self selectRowIndexes:indexSet byExtendingSelection:NO];
 
 	[self setCurrentSelected:0];
+}
 
-	/*
-	 * TimeEntryCell *cell = [self getSelectedCell];
-	 * if (cell != nil)
-	 * {
-	 *  [cell setFocused];
-	 * }
-	 */
+- (void)nextItem
+{
+	if (self.lastSelected < self.numberOfRows - 1)
+	{
+		[self setCurrentSelected:self.lastSelected + 1];
+	}
+}
+
+- (void)previousItem
+{
+	if (self.lastSelected > 0)
+	{
+		[self setCurrentSelected:self.lastSelected - 1];
+	}
 }
 
 - (void)setCurrentSelected:(NSInteger)index
 {
-	if (self.lastSelected != -1)
-	{
-		AutoCompleteTableCell *cell = [self getSelectedCell:self.lastSelected];
-		[cell setFocused:NO];
-	}
-
+	[self resetSelected];
 	self.lastSelected = index;
 	AutoCompleteTableCell *cell = [self getSelectedCell:index];
 	if (cell != nil)
 	{
 		[cell setFocused:YES];
+		[self scrollRowToVisible:self.lastSelected];
 	}
 }
 
@@ -167,6 +97,16 @@
 	}
 
 	return nil;
+}
+
+- (void)resetSelected
+{
+	if (self.lastSelected != -1)
+	{
+		AutoCompleteTableCell *cell = [self getSelectedCell:self.lastSelected];
+		[cell setFocused:NO];
+	}
+	self.lastSelected = -1;
 }
 
 @end
