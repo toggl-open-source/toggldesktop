@@ -84,9 +84,11 @@ DQ
                                     <outlet property="nextKeyView" destination="oie-Un-asQ" id="14S-Ev-aQF"/>
                                 </connections>
                             </comboBox>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9TE-qD-76l" customClass="AutoCompleteInput">
-                                <rect key="frame" x="80" y="11" width="96" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9TE-qD-76l" customClass="AutoCompleteInput">
+                                <rect key="frame" x="13" y="11" width="180" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="4AP-Cj-GWb"/>
+                                </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="i4n-Pi-FPE">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -203,7 +205,10 @@ DQ
                             </textField>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="9TE-qD-76l" firstAttribute="centerY" secondItem="gK5-Lo-ktx" secondAttribute="centerY" id="F9L-78-GLW"/>
+                            <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="9TE-qD-76l" secondAttribute="trailing" constant="5" id="S3h-2W-mYh"/>
                             <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="ow2-8J-rMh" secondAttribute="bottom" constant="-20" id="bar-Ou-Cs3"/>
+                            <constraint firstItem="9TE-qD-76l" firstAttribute="leading" secondItem="gK5-Lo-ktx" secondAttribute="leading" constant="13" id="rG6-hZ-JD5"/>
                         </constraints>
                     </view>
                     <constraints>
