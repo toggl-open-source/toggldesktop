@@ -16,10 +16,13 @@
 	self = [super initWithFrame:frame];
 	if (self)
 	{
+		self.lastSelected = -1;
 		NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"column"];
 		column.width = 400;
 		[self addTableColumn:column];
 		[self setHeaderView:nil];
+		[self setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
+		[self setIntercellSpacing:NSMakeSize(0, 0)];
 	}
 	return self;
 }
@@ -114,6 +117,8 @@
 	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
 	[self selectRowIndexes:indexSet byExtendingSelection:NO];
 
+	[self setCurrentSelected:0];
+
 	/*
 	 * TimeEntryCell *cell = [self getSelectedCell];
 	 * if (cell != nil)
@@ -121,6 +126,47 @@
 	 *  [cell setFocused];
 	 * }
 	 */
+}
+
+- (void)setCurrentSelected:(NSInteger)index
+{
+	if (self.lastSelected != -1)
+	{
+		AutoCompleteTableCell *cell = [self getSelectedCell:self.lastSelected];
+		[cell setFocused:NO];
+	}
+
+	self.lastSelected = index;
+	AutoCompleteTableCell *cell = [self getSelectedCell:index];
+	if (cell != nil)
+	{
+		[cell setFocused:YES];
+	}
+}
+
+- (AutoCompleteTableCell *)getSelectedCell:(NSInteger)row
+{
+	if (row < 0)
+	{
+		return nil;
+	}
+
+	NSView *latestView = [self rowViewAtRow:row makeIfNecessary:YES];
+
+	if (latestView == nil)
+	{
+		return nil;
+	}
+
+	for (NSView *subview in [latestView subviews])
+	{
+		if ([subview isKindOfClass:[AutoCompleteTableCell class]])
+		{
+			return (AutoCompleteTableCell *)subview;
+		}
+	}
+
+	return nil;
 }
 
 @end

@@ -32,14 +32,13 @@
 
 - (void)createAutocomplete
 {
-	self.autocompleteTableContainer = [[NSScrollView alloc] initWithFrame:NSMakeRect(0,0,0,0)];
+	self.autocompleteTableContainer = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	self.nibAutoCompleteTableCell = [[NSNib alloc] initWithNibNamed:@"AutoCompleteTableCell" bundle:nil];
 	self.autocompleteTableView = [[AutoCompleteTable alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	[self.autocompleteTableView registerNib:self.nibAutoCompleteTableCell
 							  forIdentifier :@"AutoCompleteTableCell"];
 
 	[self.autocompleteTableView setDelegate:self];
-	[self.autocompleteTableView setBackgroundColor:NSColor.greenColor];
 
 	[self.autocompleteTableContainer setDocumentView:self.autocompleteTableView];
 	[self.autocompleteTableContainer setAutohidesScrollers:YES];
@@ -82,7 +81,7 @@
 			}
 			[self.autocompleteTableContainer setHidden:NO];
 		}
-        [self updateDropdownHeight:itemCount];
+		[self updateDropdownHeight:itemCount];
 	}
 	else if (self.autocompleteTableContainer != nil)
 	{
@@ -94,6 +93,7 @@
 - (void)updateDropdownHeight:(int)count
 {
 	int h = MIN((count * self.itemHeight), self.posY - 100);
+
 	self.heightConstraint.constant = h;
 	NSLog(@"Update table position | H: %d, POSY: %d", h, self.posY);
 }

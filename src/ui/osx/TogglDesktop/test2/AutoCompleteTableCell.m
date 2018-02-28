@@ -24,4 +24,15 @@
 	self.cellDescription.stringValue = view_item.Text;
 }
 
+- (void)setFocused:(BOOL)focus
+{
+	NSString *color = @"#ffffff";
+
+	if (focus == YES)
+	{
+		color = @"#f4f4f4";
+	}
+	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:color]];
+}
+
 @end

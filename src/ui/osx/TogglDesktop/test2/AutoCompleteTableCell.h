@@ -8,8 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AutocompleteItem.h"
+#import "ConvertHexColor.h"
 
 @interface AutoCompleteTableCell : NSTableCellView
 @property (weak) IBOutlet NSTextField *cellDescription;
+@property (weak) IBOutlet NSBox *backgroundBox;
 - (void)render:(AutocompleteItem *)view_item;
+- (void)setFocused:(BOOL)focus;
 @end

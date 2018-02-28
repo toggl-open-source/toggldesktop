@@ -7,7 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "AutoCompleteTableCell.h"
 
 @interface AutoCompleteTable : NSTableView
+@property NSInteger lastSelected;
+- (AutoCompleteTableCell *)getSelectedCell:(NSInteger)row;
 - (void)setFirstRowAsSelected;
+- (void)setCurrentSelected:(NSInteger)index;
 @end

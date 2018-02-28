@@ -612,6 +612,9 @@ NSString *kInactiveTimerColor = @"#999999";
 - (BOOL)  tableView:(NSTableView *)aTableView
 	shouldSelectRow:(NSInteger)rowIndex
 {
+	AutoCompleteTable *table = (AutoCompleteTable *)aTableView;
+
+	[table setCurrentSelected:rowIndex];
 	return YES;
 }
 
