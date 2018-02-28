@@ -23,9 +23,10 @@
 	if (self)
 	{
 		self.posY = 0;
-		self.itemHeight = 35;
+		self.itemHeight = 25;
 		self.maxVisibleItems = 6;
 		[self createAutocomplete];
+		[self setPlaceholderString:@"What are you working on?"];
 	}
 	return self;
 }
@@ -92,7 +93,7 @@
 
 - (void)updateDropdownHeight:(int)count
 {
-	int h = MIN((count * self.itemHeight), self.posY - 100);
+	int h = MIN((count * self.itemHeight), self.posY - 50);
 
 	self.heightConstraint.constant = h;
 	NSLog(@"Update table position | H: %d, POSY: %d", h, self.posY);

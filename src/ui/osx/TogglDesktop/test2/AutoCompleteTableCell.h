@@ -15,4 +15,5 @@
 @property (weak) IBOutlet NSBox *backgroundBox;
 - (void)render:(AutocompleteItem *)view_item;
 - (void)setFocused:(BOOL)focus;
+- (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item;
 @end
