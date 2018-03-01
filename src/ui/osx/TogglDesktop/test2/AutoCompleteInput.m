@@ -80,13 +80,13 @@
 				[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
 				[self setupAutocompleteConstraints];
 			}
-			[self.autocompleteTableContainer setHidden:NO];
+			[self showAutoComplete:YES];
 		}
 		[self updateDropdownHeight:itemCount];
 	}
 	else if (self.autocompleteTableContainer != nil)
 	{
-		[self.autocompleteTableContainer setHidden:YES];
+		[self showAutoComplete:NO];
 	}
 	self.lastItemCount = itemCount;
 }
@@ -101,27 +101,64 @@
 
 - (void)keyUp:(NSEvent *)event
 {
-	NSLog(@"EventCode: %hu", [event keyCode]);
+	// NSLog(@"EventCode: %hu", [event keyCode]);
 	if ([event keyCode] == kVK_DownArrow)
 	{
 		if (self.autocompleteTableContainer.hidden)
 		{
 			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
 		}
-		[self.autocompleteTableView nextItem];
+		// [self.autocompleteTableView nextItem];
 	}
 	else if (event.keyCode == kVK_UpArrow)
 	{
-		[self.autocompleteTableView previousItem];
+		// [self.autocompleteTableView previousItem];
 	}
 	else if (event.keyCode == kVK_Escape)
 	{
 		// Hide autocomplete list
 		if (self.autocompleteTableContainer != nil)
 		{
-			[self.autocompleteTableContainer setHidden:YES];
+			[self showAutoComplete:NO];
 		}
 	}
+	else if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
+	{
+		[self showAutoComplete:NO];
+	}
+}
+
+- (void)hide
+{
+	[self showAutoComplete:NO];
+	[self setHidden:YES];
+}
+
+- (void)resetTable
+{
+	[self showAutoComplete:NO];
+	[self.autocompleteTableView resetSelected];
+}
+
+- (void)showAutoComplete:(BOOL)show
+{
+	[self.autocompleteTableContainer setHidden:!show];
+	[self.autocompleteTableView setHidden:!show];
+}
+
+- (BOOL)becomeFirstResponder
+{
+	BOOL success = [super becomeFirstResponder];
+
+	if (success && self.isEditable)
+	{
+		NSTextView *textField = (NSTextView *)[self currentEditor];
+		if ([textField respondsToSelector:@selector(setInsertionPointColor:)])
+		{
+			[textField setInsertionPointColor:[self textColor]];
+		}
+	}
+	return success;
 }
 
 @end

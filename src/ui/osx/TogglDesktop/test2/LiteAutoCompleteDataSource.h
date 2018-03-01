@@ -26,4 +26,5 @@
 - (NSUInteger)indexOfKey:(NSString *)key;
 - (void)setFilter:(NSString *)filter;
 - (id)initWithNotificationName:(NSString *)notificationName;
+- (AutocompleteItem *)itemAtIndex:(NSInteger)row;
 @end

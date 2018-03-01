@@ -20,7 +20,6 @@
 @property (strong) IBOutlet NSBox *hidingBox;
 @property (strong) IBOutlet NSBoxClickable *mainBox;
 @property IBOutlet NSTextFieldDuration *durationTextField;
-@property IBOutlet NSCustomTimerComboBox *descriptionComboBox;
 @property (weak) IBOutlet NSLayoutConstraint *descriptionTrailing;
 @property IBOutlet NSHoverButton *startButton;
 @property IBOutlet NSTextField *projectTextField;
@@ -31,9 +30,10 @@
 @property NSArray *projectComboConstraint;
 @property NSArray *projectLabelConstraint;
 - (IBAction)startButtonClicked:(id)sender;
-- (IBAction)descriptionComboBoxChanged:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
+- (IBAction)autoCompleteChanged:(id)sender;
 @property (strong) IBOutlet NSTextFieldClickable *addEntryLabel;
 @property (weak) IBOutlet AutoCompleteInput *autoCompleteInput;
 - (void)timerFired:(NSTimer *)timer;
+- (void)fillEntryFromAutoComplete:(AutocompleteItem *)item;
 @end

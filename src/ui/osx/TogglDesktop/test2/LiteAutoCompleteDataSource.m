@@ -54,6 +54,17 @@ extern void *ctx;
 	return object;
 }
 
+- (AutocompleteItem *)itemAtIndex:(NSInteger)row
+{
+	AutocompleteItem *item;
+
+	@synchronized(self)
+	{
+		item = [self.filteredOrderedKeys objectAtIndex:row];
+	}
+	return item;
+}
+
 - (void)startDisplayAutocomplete:(NSNotification *)notification
 {
 	[self performSelectorOnMainThread:@selector(displayAutocomplete:)
@@ -191,32 +202,10 @@ extern void *ctx;
 		result = [self.filteredOrderedKeys count];
 	}
 
-	NSLog(@"----- ROWS: %lu", (unsigned long)result);
+	// NSLog(@"----- ROWS: %lu", (unsigned long)result);
 
 	return result;
 }
 
-/*
- *
- * - (NSString *)comboBox:(NSComboBox *)comboBox completedString:(NSString *)partialString
- * {
- *  return [self completedString:partialString];
- * }
- *
- * - (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox
- * {
- *  return [self count];
- * }
- *
- * - (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)row
- * {
- *  return [self keyAtIndex:row];
- * }
- *
- * - (NSUInteger)comboBox:(NSComboBox *)aComboBox indexOfItemWithStringValue:(NSString *)aString
- * {
- *  return [self indexOfKey:aString];
- * }
- */
 @end
 

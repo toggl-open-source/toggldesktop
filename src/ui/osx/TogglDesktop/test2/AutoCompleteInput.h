@@ -22,4 +22,7 @@
 @property NSLayoutConstraint *heightConstraint;
 - (void)toggleTableView:(int)itemCount;
 - (void)setPos:(int)posy;
+- (void)hide;
+- (void)resetTable;
+- (void)showAutoComplete:(BOOL)show;
 @end
