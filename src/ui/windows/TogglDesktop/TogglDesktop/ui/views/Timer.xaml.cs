@@ -259,7 +259,7 @@ namespace TogglDesktop
         {
             if (this.isRunning)
             {
-                if (this.PreventOnApp)
+                if (this.PreventOnApp && e.ClickCount != 2)
                 {
                     e.Handled = true;
                     return;
