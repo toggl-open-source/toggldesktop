@@ -72,11 +72,11 @@
 		[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
 	}
 
-	NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"·"];
+	NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"•"];
 
 	[projectDot setAttributes:
 	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize] * 2],
+		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
 		 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
 	 }
 						range:NSMakeRange(0, [projectDot length])];
