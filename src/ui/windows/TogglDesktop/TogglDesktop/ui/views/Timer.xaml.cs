@@ -259,6 +259,11 @@ namespace TogglDesktop
         {
             if (this.isRunning)
             {
+                if (this.PreventOnApp && e.ClickCount != 2)
+                {
+                    e.Handled = true;
+                    return;
+                }
                 using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
                 {
                     Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
