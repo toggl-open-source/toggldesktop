@@ -1,16 +1,17 @@
 {
   "versions": [
     {
-        "version": "7.4.112",
+        "version": "7.4.122",
         "rows": [
           "Fixed wrong error message issue when backend is down",
           "Fixed invalid 'project name exists' error",
           "Close reminder popup when user starts tracking",
           "Improved popup window titles for more clarity",
-          "Fixed long project name issue in timer"
+          "Fixed long project name issue in timer",
+          "Fixed login after signup",
+          "Fixed login crash issues"
         ],
-        "date": "February 3rd 2018",
-        "beta": "true"
+        "date": "March 5th 2018"
     },
     {
         "version": "7.4.71",
