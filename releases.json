@@ -1049,6 +1049,16 @@
                         "name": "TogglDesktop-7_4_129.dmg"
                     }
                 ]
+            },
+            {
+                "version": "7.4.130",
+                "timestamp": "02-03-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_130.dmg"
+                    }
+                ]
             }
         ],
         "beta": [
@@ -2489,6 +2499,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.71_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.122",
+                "timestamp": "05-03-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_122.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.122_amd64.deb"
                     }
                 ]
             }
