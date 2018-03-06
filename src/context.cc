@@ -3164,6 +3164,9 @@ error Context::DiscardTimeAt(
     const Poco::Int64 at,
     const bool split_into_new_entry) {
 
+    // Reset reminder count when doing idle actions
+    last_tracking_reminder_time_ = time(0);
+
     // Tracking action
     if ("production" == environment_) {
         std::stringstream ss;
@@ -3209,6 +3212,9 @@ error Context::DiscardTimeAt(
 TimeEntry *Context::DiscardTimeAndContinue(
     const std::string guid,
     const Poco::Int64 at) {
+
+    // Reset reminder count when doing idle actions
+    last_tracking_reminder_time_ = time(0);
 
     // Tracking action
     if ("production" == environment_) {
