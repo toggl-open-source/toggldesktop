@@ -22,6 +22,7 @@
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
+	self.cellDescription.toolTip = view_item.Text;
 }
 
 - (void)setFocused:(BOOL)focus

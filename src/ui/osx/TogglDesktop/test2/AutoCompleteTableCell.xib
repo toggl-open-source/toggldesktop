@@ -25,8 +25,11 @@
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Esa-Pm-mxj">
                     <rect key="frame" x="5" y="5" width="190" height="16"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="49S-o0-eD9">
-                        <font key="font" metaFont="system" size="12"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="4pE-iB-o9m"/>
+                    </constraints>
+                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" id="49S-o0-eD9">
+                        <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
