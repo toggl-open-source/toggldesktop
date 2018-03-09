@@ -66,7 +66,7 @@ DQ
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9TE-qD-76l" customClass="AutoCompleteInput">
-                                <rect key="frame" x="11" y="4" width="184" height="22"/>
+                                <rect key="frame" x="11" y="11" width="184" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="4AP-Cj-GWb"/>
                                 </constraints>
@@ -189,9 +189,9 @@ DQ
                         </subviews>
                         <constraints>
                             <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="9TE-qD-76l" secondAttribute="trailing" constant="5" id="S3h-2W-mYh"/>
-                            <constraint firstItem="9TE-qD-76l" firstAttribute="top" secondItem="gK5-Lo-ktx" secondAttribute="top" priority="750" constant="18" id="WcQ-XX-pM8"/>
                             <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="ow2-8J-rMh" secondAttribute="bottom" constant="-20" id="bar-Ou-Cs3"/>
                             <constraint firstItem="9TE-qD-76l" firstAttribute="leading" secondItem="gK5-Lo-ktx" secondAttribute="leading" constant="13" id="rG6-hZ-JD5"/>
+                            <constraint firstItem="9TE-qD-76l" firstAttribute="centerY" secondItem="gK5-Lo-ktx" secondAttribute="centerY" priority="750" id="xd2-Tj-GYo"/>
                         </constraints>
                     </view>
                     <constraints>
