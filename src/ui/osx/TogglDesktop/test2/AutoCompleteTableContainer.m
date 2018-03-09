@@ -18,7 +18,8 @@
 		[self setWantsLayer:YES];
 		self.layer.masksToBounds = YES;
 		self.dropShadow = [[NSShadow alloc] init];
-		[self.dropShadow setShadowColor:[NSColor grayColor]];
+		[self.dropShadow setShadowColor:[[NSColor grayColor]
+										 colorWithAlphaComponent:0.7f]];
 		[self.dropShadow setShadowOffset:NSMakeSize(0, 5.0)];
 		[self.dropShadow setShadowBlurRadius:5.0];
 	}
