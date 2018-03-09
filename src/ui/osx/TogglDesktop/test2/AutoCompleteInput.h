@@ -10,10 +10,11 @@
 #include <Carbon/Carbon.h>
 #import "AutoCompleteTable.h"
 #import "AutoCompleteTableCell.h"
+#import "AutoCompleteTableContainer.h"
 
 @interface AutoCompleteInput : NSTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 @property NSNib *nibAutoCompleteTableCell;
-@property NSScrollView *autocompleteTableContainer;
+@property AutoCompleteTableContainer *autocompleteTableContainer;
 @property AutoCompleteTable *autocompleteTableView;
 @property int posY;
 @property int lastItemCount;

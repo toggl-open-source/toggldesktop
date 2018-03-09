@@ -57,6 +57,7 @@
 		3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C591913B60F00A94967 /* icon-billable@2x.png */; };
 		3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
+		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
 		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
@@ -382,6 +383,8 @@
 		3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tags@2x.png"; sourceTree = "<group>"; };
 		3CE1CABF1C774F2B00D0ADD5 /* LoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadMoreCell.h; sourceTree = "<group>"; };
 		3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadMoreCell.m; sourceTree = "<group>"; };
+		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
+		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
 		3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		3CFE547D201781A5006B673A /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -612,6 +615,8 @@
 				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
 				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
 				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
+				3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */,
+				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
 			);
 			name = AutoComplete;
 			sourceTree = "<group>";
@@ -1389,6 +1394,7 @@
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
+				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,

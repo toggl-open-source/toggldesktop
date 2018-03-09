@@ -33,7 +33,7 @@
 
 - (void)createAutocomplete
 {
-	self.autocompleteTableContainer = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
+	self.autocompleteTableContainer = [[AutoCompleteTableContainer alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	self.nibAutoCompleteTableCell = [[NSNib alloc] initWithNibNamed:@"AutoCompleteTableCell" bundle:nil];
 	self.autocompleteTableView = [[AutoCompleteTable alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	[self.autocompleteTableView registerNib:self.nibAutoCompleteTableCell
