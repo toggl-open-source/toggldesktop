@@ -103,6 +103,11 @@
 	// NSLog(@"EventCode: %hu", [event keyCode]);
 	if ([event keyCode] == kVK_DownArrow)
 	{
+		if ([event modifierFlags] & NSShiftKeyMask)
+		{
+			[super keyUp:event];
+			return;
+		}
 		if (self.autocompleteTableContainer.hidden)
 		{
 			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
