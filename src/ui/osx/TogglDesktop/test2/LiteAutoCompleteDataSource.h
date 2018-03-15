@@ -21,9 +21,6 @@
 @property AutoCompleteInput *input;
 - (NSString *)completedString:(NSString *)partialString;
 - (AutocompleteItem *)get:(NSString *)key;
-- (NSUInteger)count;
-- (NSString *)keyAtIndex:(NSInteger)row;
-- (NSUInteger)indexOfKey:(NSString *)key;
 - (void)setFilter:(NSString *)filter;
 - (id)initWithNotificationName:(NSString *)notificationName;
 - (AutocompleteItem *)itemAtIndex:(NSInteger)row;

@@ -112,11 +112,6 @@
 		{
 			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
 		}
-		// [self.autocompleteTableView nextItem];
-	}
-	else if (event.keyCode == kVK_UpArrow)
-	{
-		// [self.autocompleteTableView previousItem];
 	}
 	else if (event.keyCode == kVK_Escape)
 	{
