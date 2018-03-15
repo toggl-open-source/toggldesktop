@@ -26,7 +26,6 @@
 		self.itemHeight = 25;
 		self.maxVisibleItems = 6;
 		[self createAutocomplete];
-		[self setPlaceholderString:@"What are you working on?"];
 	}
 	return self;
 }
