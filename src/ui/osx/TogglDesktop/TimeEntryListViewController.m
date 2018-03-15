@@ -513,6 +513,10 @@ extern void *ctx;
 {
 	if (self.timeEntrypopover.shown)
 	{
+		if ([self.timeEntryEditViewController autcompleteFocused])
+		{
+			return;
+		}
 		if (self.runningEdit)
 		{
 			[self.timeEntryEditViewController closeEdit];

@@ -108,9 +108,10 @@
 			[super keyUp:event];
 			return;
 		}
-		if (self.autocompleteTableContainer.hidden)
+		if (self.autocompleteTableContainer.isHidden)
 		{
 			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
+			return;
 		}
 	}
 	else if (event.keyCode == kVK_Escape)
@@ -119,12 +120,18 @@
 		if (self.autocompleteTableContainer != nil)
 		{
 			[self showAutoComplete:NO];
+			return;
 		}
 	}
 	else if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
-		[self showAutoComplete:NO];
+		if (!self.autocompleteTableView.isHidden)
+		{
+			[self showAutoComplete:NO];
+			return;
+		}
 	}
+	[super keyUp:event];
 }
 
 - (void)hide
