@@ -472,6 +472,10 @@ class Context : public TimelineDatasource {
     void onWake(Poco::Util::TimerTask& task);  // NOLINT
     void onLoadMore(Poco::Util::TimerTask& task); // NOLINT
 
+    void onTimeEntryAutocompletes(Poco::Util::TimerTask& task);  // NOLINT
+    void onMiniTimerAutocompletes(Poco::Util::TimerTask& task);  // NOLINT
+    void onProjectAutocompletes(Poco::Util::TimerTask& task);  // NOLINT
+
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
 
