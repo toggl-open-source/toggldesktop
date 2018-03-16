@@ -1058,6 +1058,12 @@ extern void *ctx;
 		return;
 	}
 
+	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
+	{
+		AutoCompleteInput *input = [aNotification object];
+		[input resetTable];
+	}
+
 	if (![[aNotification object] isKindOfClass:[NSTokenField class]])
 	{
 		// If enter was pressed then close editpopup
