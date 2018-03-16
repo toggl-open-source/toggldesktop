@@ -426,6 +426,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.durationTextField.stringValue = @"";
 	self.autoCompleteInput.stringValue = @"";
 	[self.autoCompleteInput resetTable];
+	self.liteAutocompleteDataSource.currentFilter = nil;
 	self.projectTextField.stringValue = @"";
 	[self.projectTextField setHidden:YES];
 }
@@ -466,7 +467,7 @@ NSString *kInactiveTimerColor = @"#999999";
 														object:self.time_entry];
 
 	// Reset autocomplete filter
-	[self.liteAutocompleteDataSource setFilter:@""];
+	self.liteAutocompleteDataSource.currentFilter = nil;
 
 	if (self.time_entry.duration_in_seconds >= 0)
 	{
