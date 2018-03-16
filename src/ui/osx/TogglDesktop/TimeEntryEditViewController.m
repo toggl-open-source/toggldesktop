@@ -1366,6 +1366,7 @@ extern void *ctx;
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
 {
 	BOOL retval = NO;
+	BOOL valid = YES;
 	AutoCompleteInput *input = nil;
 	LiteAutoCompleteDataSource *dataSource = nil;
 	NSInteger lastSelected = -1;
@@ -1381,6 +1382,14 @@ extern void *ctx;
 		input = self.projectAutoCompleteInput;
 		lastSelected = input.autocompleteTableView.lastSelected;
 		dataSource = self.liteProjectAutocompleteDataSource;
+
+		// Validate project input
+		if (input.autocompleteTableView.isHidden)
+		{
+			NSString *key = self.projectAutoCompleteInput.stringValue;
+			AutocompleteItem *autocomplete = [self.liteProjectAutocompleteDataSource get:key];
+			valid = (autocomplete != nil);
+		}
 	}
 	if (input != nil)
 	{
@@ -1394,6 +1403,10 @@ extern void *ctx;
 		}
 		if (commandSelector == @selector(insertTab:))
 		{
+			if (input == self.projectAutoCompleteInput && !valid)
+			{
+				self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
+			}
 			[input resetTable];
 		}
 		if (commandSelector == @selector(insertNewline:))
@@ -1401,6 +1414,11 @@ extern void *ctx;
 			// allow default action when autocomplete is closed
 			if (input.autocompleteTableView.isHidden)
 			{
+				if (input == self.projectAutoCompleteInput && !valid)
+				{
+					self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
+				}
+
 				return NO;
 			}
 
