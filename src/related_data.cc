@@ -284,6 +284,10 @@ void RelatedData::taskAutocompleteItems(
             it != Tasks.end(); it++) {
         Task *t = *it;
 
+        if (t == NULL) {
+            continue;
+        }
+
         if (t->IsMarkedAsDeletedOnServer()) {
             continue;
         }
