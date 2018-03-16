@@ -193,24 +193,16 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	self.time_entry = te;
 
-	// Start/stop button title and color depend on
-	// whether time entry is running
-	if (self.time_entry.duration_in_seconds < 0)
-	{
-		self.startButton.toolTip = @"Stop";
-		[self.startButton setImage:[NSImage imageNamed:@"stop_button.pdf"]];
-		toggl_set_settings_manual_mode(ctx, NO);
-	}
-	else
-	{
-		self.startButton.toolTip = @"Start";
-		[self.startButton setImage:[NSImage imageNamed:@"start_button.pdf"]];
-	}
-
 	// Description and duration cannot be edited
 	// while time entry is running
 	if (self.time_entry.duration_in_seconds < 0)
 	{
+		// Start/stop button title and color depend on
+		// whether time entry is running
+		self.startButton.toolTip = @"Stop";
+		[self.startButton setImage:[NSImage imageNamed:@"stop_button.pdf"]];
+		toggl_set_settings_manual_mode(ctx, NO);
+
 		[self.durationTextField setDelegate:self];
 		// Time entry has a description
 		if (self.time_entry.Description && [self.time_entry.Description length] > 0)
@@ -249,16 +241,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	else
 	{
-		[self.autoCompleteInput setHidden:NO];
-		[self.descriptionLabel setHidden:YES];
-		[self.durationTextField setEditable:YES];
-		[self.durationTextField setSelectable:YES];
-		[self.durationTextField setHidden:YES];
-		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
-
-		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
-		[self.tagFlag setHidden:YES];
-		[self.billableFlag setHidden:YES];
+		[self showDefaultTimer];
 	}
 
 	[self checkProjectConstraints];
@@ -335,6 +318,25 @@ NSString *kInactiveTimerColor = @"#999999";
 			self.constraintsAdded = NO;
 		}
 	}
+}
+
+- (void)showDefaultTimer
+{
+	// Start/stop button title and color depend on
+	// whether time entry is running
+	self.startButton.toolTip = @"Start";
+	[self.startButton setImage:[NSImage imageNamed:@"start_button.pdf"]];
+
+	[self.autoCompleteInput setHidden:NO];
+	[self.descriptionLabel setHidden:YES];
+	[self.durationTextField setEditable:YES];
+	[self.durationTextField setSelectable:YES];
+	[self.durationTextField setHidden:YES];
+	[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
+
+	[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
+	[self.tagFlag setHidden:YES];
+	[self.billableFlag setHidden:YES];
 }
 
 - (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
@@ -438,6 +440,14 @@ NSString *kInactiveTimerColor = @"#999999";
 	if (self.time_entry.duration_in_seconds < 0)
 	{
 		[self clear];
+		[self showDefaultTimer];
+		[self.projectTextField setHidden:YES];
+		if (self.constraintsAdded)
+		{
+			[self.view removeConstraints:self.projectComboConstraint];
+			[self.view removeConstraints:self.projectLabelConstraint];
+			self.constraintsAdded = NO;
+		}
 		[[NSNotificationCenter defaultCenter] postNotificationName:kCommandStop
 															object:nil];
 		return;
