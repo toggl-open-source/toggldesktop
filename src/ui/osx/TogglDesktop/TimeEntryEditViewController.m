@@ -1408,6 +1408,7 @@ extern void *ctx;
 				self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
 			}
 			[input resetTable];
+			dataSource.currentFilter = nil;
 		}
 		if (commandSelector == @selector(insertNewline:))
 		{
@@ -1435,7 +1436,7 @@ extern void *ctx;
 				}
 
 				[input resetTable];
-				// [self fillEntryFromAutoComplete:item];
+				dataSource.currentFilter = nil;
 
 				if (input == self.descriptionAutoCompleteInput)
 				{
