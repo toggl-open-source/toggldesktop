@@ -218,6 +218,8 @@ extern void *ctx;
 	self.projectAutoCompleteInput.stringValue = @"";
 	[self.descriptionAutoCompleteInput resetTable];
 	[self.projectAutoCompleteInput resetTable];
+	self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+	self.liteProjectAutocompleteDataSource.currentFilter = nil;
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
@@ -875,35 +877,44 @@ extern void *ctx;
 										 [key UTF8String]);
 		[self.descriptionAutoCompleteInput becomeFirstResponder];
 		[self.descriptionAutoCompleteInput resetTable];
-		return;
-	}
-
-	if (![self.timeEntry.Description isEqualToString:key] &&
-		!toggl_set_time_entry_project(ctx,
-									  GUID,
-									  autocomplete.TaskID,
-									  autocomplete.ProjectID,
-									  0))
-	{
-		[self.descriptionAutoCompleteInput becomeFirstResponder];
-		[self.descriptionAutoCompleteInput resetTable];
+		self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 		return;
 	}
 
 	self.descriptionAutoCompleteInput.stringValue = autocomplete.Description;
-	toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
 
-	const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
-	toggl_set_time_entry_tags(ctx, GUID, value);
-
-	bool_t isBillable = autocomplete.Billable;
-
-	if (isBillable)
+	@synchronized(self)
 	{
-		toggl_set_time_entry_billable(ctx, GUID, isBillable);
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+						   if (![self.timeEntry.Description isEqualToString:key] &&
+							   !toggl_set_time_entry_project(ctx,
+															 GUID,
+															 autocomplete.TaskID,
+															 autocomplete.ProjectID,
+															 0))
+						   {
+							   [self.descriptionAutoCompleteInput becomeFirstResponder];
+							   [self.descriptionAutoCompleteInput resetTable];
+							   self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+							   return;
+						   }
+
+						   toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
+
+						   const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
+						   toggl_set_time_entry_tags(ctx, GUID, value);
+
+						   bool_t isBillable = autocomplete.Billable;
+
+						   if (isBillable)
+						   {
+							   toggl_set_time_entry_billable(ctx, GUID, isBillable);
+						   }
+					   });
 	}
 	[self.descriptionAutoCompleteInput becomeFirstResponder];
 	[self.descriptionAutoCompleteInput resetTable];
+	self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 }
 
 - (IBAction)projectAutoCompleteChanged:(id)sender
@@ -931,20 +942,24 @@ extern void *ctx;
 	uint64_t task_id = 0;
 	uint64_t project_id = 0;
 
-	if (autocomplete != nil)
+	if (autocomplete == nil)
 	{
-		task_id = autocomplete.TaskID;
-		project_id = autocomplete.ProjectID;
-		self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
-	}
-	else
-	{
-		return;
-	}
+        return;
+    }
 
-	toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+    task_id = autocomplete.TaskID;
+    project_id = autocomplete.ProjectID;
+    self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
+
+    @synchronized(self)
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+        });
+    }
 	[self.projectAutoCompleteInput becomeFirstResponder];
 	[self.projectAutoCompleteInput resetTable];
+	self.liteProjectAutocompleteDataSource.currentFilter = nil;
 }
 
 - (IBAction)deleteButtonClicked:(id)sender
@@ -1347,8 +1362,6 @@ extern void *ctx;
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
 	[self updateWithSelectedDescription:item withKey:item.Text];
-	[input becomeFirstResponder];
-	[input resetTable];
 }
 
 - (IBAction)performProjectTableClick:(id)sender
@@ -1365,8 +1378,6 @@ extern void *ctx;
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
 	[self updateWithSelectedProject:item withKey:item.Text];
-	[input becomeFirstResponder];
-	[input resetTable];
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
