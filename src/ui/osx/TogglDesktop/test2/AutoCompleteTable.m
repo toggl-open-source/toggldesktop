@@ -18,7 +18,6 @@
 	{
 		self.lastSelected = -1;
 		NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"column"];
-		column.width = 400;
 		[self addTableColumn:column];
 		[self setHeaderView:nil];
 		[self setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleNone];
