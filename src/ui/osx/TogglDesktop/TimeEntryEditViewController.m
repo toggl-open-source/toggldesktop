@@ -1413,10 +1413,12 @@ extern void *ctx;
 		if (commandSelector == @selector(moveDown:))
 		{
 			[input.autocompleteTableView nextItem];
+			retval = YES;
 		}
 		if (commandSelector == @selector(moveUp:))
 		{
 			[input.autocompleteTableView previousItem];
+			retval = YES;
 		}
 		if (commandSelector == @selector(insertTab:))
 		{
