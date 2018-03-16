@@ -1423,7 +1423,8 @@ extern void *ctx;
 				return NO;
 			}
 
-			retval = YES;                                                                                                                                                 // avoid firing default Enter actions
+			// avoid firing default Enter actions
+			retval = YES;
 
 			// Set data according to selected item
 			if (lastSelected >= 0)
@@ -1447,12 +1448,9 @@ extern void *ctx;
 					[self updateWithSelectedProject:item withKey:item.Text];
 				}
 			}
-
-			// Start entry
-			// [self startButtonClicked:nil];
 		}
 	}
-	// NSLog(@"Selector = %@", NSStringFromSelector( commandSelector ) );
+
 	return retval;
 }
 

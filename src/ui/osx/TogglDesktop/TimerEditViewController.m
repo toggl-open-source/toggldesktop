@@ -618,7 +618,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
 	}
-	NSLog(@"%@", item);
+	// NSLog(@"%@", item);
 	NSAssert(item != nil, @"view item from viewitems array is nil");
 
 	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
@@ -669,7 +669,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 		if (commandSelector == @selector(insertNewline:))
 		{
-			retval = YES;                                                                                                                                                             // avoid firing default Enter actions
+			retval = YES;                                                                                                                                                                         // avoid firing default Enter actions
 
 			// Set data according to selected item
 			if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
