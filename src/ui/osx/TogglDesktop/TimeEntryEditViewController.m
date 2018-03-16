@@ -944,19 +944,19 @@ extern void *ctx;
 
 	if (autocomplete == nil)
 	{
-        return;
-    }
+		return;
+	}
 
-    task_id = autocomplete.TaskID;
-    project_id = autocomplete.ProjectID;
-    self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
+	task_id = autocomplete.TaskID;
+	project_id = autocomplete.ProjectID;
+	self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
 
-    @synchronized(self)
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
-        });
-    }
+	@synchronized(self)
+	{
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+						   toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+					   });
+	}
 	[self.projectAutoCompleteInput becomeFirstResponder];
 	[self.projectAutoCompleteInput resetTable];
 	self.liteProjectAutocompleteDataSource.currentFilter = nil;
