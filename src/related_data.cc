@@ -410,9 +410,6 @@ void RelatedData::MinitimerAutocompleteItems(
     timeEntryAutocompleteItems(&unique_names, result);
     taskAutocompleteItems(&unique_names, nullptr, result);
     projectAutocompleteItems(&unique_names, nullptr, result);
-
-    // Slow with big data. Let's keep different items in groups as they are added
-    //std::sort(result->begin(), result->end(), CompareAutocompleteItems);
 }
 
 void RelatedData::ProjectAutocompleteItems(
@@ -423,9 +420,6 @@ void RelatedData::ProjectAutocompleteItems(
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
     projectAutocompleteItems(&unique_names, &ws_names, result);
     taskAutocompleteItems(&unique_names, &ws_names, result);
-
-    std::sort(result->begin(), result->end(),
-              CompareStructuredAutocompleteItems);
 }
 
 void RelatedData::workspaceAutocompleteItems(
