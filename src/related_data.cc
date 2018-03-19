@@ -456,13 +456,6 @@ void RelatedData::workspaceAutocompleteItems(
 
         std::string ws_name = Poco::UTF8::toUpper(ws->Name());
         (*ws_names)[ws->ID()] = ws_name;
-
-        view::Autocomplete autocomplete_item;
-        autocomplete_item.Text = ws_name;
-        autocomplete_item.WorkspaceName = ws_name;
-        autocomplete_item.WorkspaceID = ws->ID();
-        autocomplete_item.Type = kAutocompleteItemWorkspace;
-        list->push_back(autocomplete_item);
     }
 }
 

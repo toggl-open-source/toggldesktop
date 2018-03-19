@@ -21,12 +21,6 @@
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	// Handle workspace item
-	if (view_item.Type == 3)
-	{
-		self.cellDescription.stringValue = view_item.Text;
-		return;
-	}
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
 	self.cellDescription.toolTip = view_item.Text;
 }
