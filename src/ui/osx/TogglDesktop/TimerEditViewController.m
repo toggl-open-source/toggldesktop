@@ -680,7 +680,8 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 		if (commandSelector == @selector(insertNewline:))
 		{
-			retval = YES;                                                                                                                                                                                                                                     // avoid firing default Enter actions
+			// avoid firing default Enter actions
+			retval = YES;
 
 			// Set data according to selected item
 			if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
