@@ -411,7 +411,8 @@ void RelatedData::MinitimerAutocompleteItems(
     taskAutocompleteItems(&unique_names, nullptr, result);
     projectAutocompleteItems(&unique_names, nullptr, result);
 
-    std::sort(result->begin(), result->end(), CompareAutocompleteItems);
+    // Slow with big data. Let's keep different items in groups as they are added
+    //std::sort(result->begin(), result->end(), CompareAutocompleteItems);
 }
 
 void RelatedData::ProjectAutocompleteItems(
