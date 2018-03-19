@@ -346,6 +346,7 @@ error Context::save(const bool push_changes) {
 
 UIElements UIElements::Reset() {
     UIElements render;
+    render.first_load = true;
     render.display_time_entries = true;
     render.display_time_entry_autocomplete = true;
     render.display_mini_timer_autocomplete = true;
@@ -855,15 +856,27 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_time_entry_autocomplete) {
-        Poco::Util::TimerTask::Ptr teTask =
-            new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onTimeEntryAutocompletes);
-        timer_.schedule(teTask, postpone(10));
+        if (what.first_load) {
+            std::vector<view::Autocomplete> time_entry_autocompletes;
+            user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
+            UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
+        } else {
+            Poco::Util::TimerTask::Ptr teTask =
+                new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onTimeEntryAutocompletes);
+            timer_.schedule(teTask, Poco::Timestamp());
+        }
     }
 
     if (what.display_mini_timer_autocomplete) {
-        Poco::Util::TimerTask::Ptr mtTask =
-            new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onMiniTimerAutocompletes);
-        timer_.schedule(mtTask, postpone(10));
+        if (what.first_load) {
+            std::vector<view::Autocomplete> minitimer_autocompletes;
+            user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+            UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
+        } else {
+            Poco::Util::TimerTask::Ptr mtTask =
+                new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onMiniTimerAutocompletes);
+            timer_.schedule(mtTask, Poco::Timestamp());
+        }
     }
 
     if (what.display_workspace_select) {
@@ -909,9 +922,15 @@ void Context::updateUI(const UIElements &what) {
     // Apply autocomplete as last element,
     // as its depending on selects on Windows
     if (what.display_project_autocomplete) {
-        Poco::Util::TimerTask::Ptr prTask =
-            new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onProjectAutocompletes);
-        timer_.schedule(prTask, postpone(10));
+        if (what.first_load) {
+            std::vector<view::Autocomplete> project_autocompletes;
+            user_->related.ProjectAutocompleteItems(&project_autocompletes);
+            UI()->DisplayProjectAutocomplete(&project_autocompletes);
+        } else {
+            Poco::Util::TimerTask::Ptr prTask =
+                new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onProjectAutocompletes);
+            timer_.schedule(prTask, Poco::Timestamp());
+        }
     }
 
     if (what.display_unsynced_items) {
