@@ -407,7 +407,7 @@ extern void *ctx;
 
 - (TimeEntryCell *)getSelectedEntryCell:(NSInteger)row
 {
-	if (row < 0)
+	if (row < 0 || row >= [self.timeEntriesTableView numberOfRows])
 	{
 		return nil;
 	}
