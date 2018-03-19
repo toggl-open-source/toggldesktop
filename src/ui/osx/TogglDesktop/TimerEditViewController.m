@@ -657,6 +657,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
 	[self fillEntryFromAutoComplete:item];
 	[self.autoCompleteInput becomeFirstResponder];
+	NSRange tRange = [[self.autoCompleteInput currentEditor] selectedRange];
+	[[self.autoCompleteInput currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
 	[self.autoCompleteInput resetTable];
 }
 
