@@ -1328,6 +1328,11 @@ extern void *ctx;
 		dataSource = self.liteProjectAutocompleteDataSource;
 	}
 
+	if (dataSource == nil || row >= dataSource.filteredOrderedKeys.count)
+	{
+		return nil;
+	}
+
 	@synchronized(self)
 	{
 		item = [dataSource.filteredOrderedKeys objectAtIndex:row];

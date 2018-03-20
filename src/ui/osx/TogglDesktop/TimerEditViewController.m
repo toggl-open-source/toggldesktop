@@ -613,7 +613,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	viewForTableColumn:(NSTableColumn *)tableColumn
 				   row:(NSInteger)row
 {
-	if (row < 0)
+	if (row < 0 || row >= self.liteAutocompleteDataSource.filteredOrderedKeys.count)
 	{
 		return nil;
 	}
