@@ -466,14 +466,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNew
 														object:self.time_entry];
 
-	// Reset autocomplete filter
+	// Reset autocomplete
 	self.liteAutocompleteDataSource.currentFilter = nil;
-
-	if (self.time_entry.duration_in_seconds >= 0)
-	{
-		[self clear];
-		self.time_entry = [[TimeEntryViewItem alloc] init];
-	}
+	[self.autoCompleteInput resetTable];
 }
 
 - (IBAction)durationFieldChanged:(id)sender
