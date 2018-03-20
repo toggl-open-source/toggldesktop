@@ -27,6 +27,11 @@
 		3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */; };
 		3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */; };
 		3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7E41DE5757A005586B4 /* continue_regular.pdf */; };
+		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
+		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
+		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
+		3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */; };
+		3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */; };
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
@@ -52,6 +57,7 @@
 		3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C591913B60F00A94967 /* icon-billable@2x.png */; };
 		3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
+		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
 		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
@@ -334,6 +340,15 @@
 		3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_closed.pdf; sourceTree = "<group>"; };
 		3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_open.pdf; sourceTree = "<group>"; };
 		3C65A7E41DE5757A005586B4 /* continue_regular.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue_regular.pdf; sourceTree = "<group>"; };
+		3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableCell.h; sourceTree = "<group>"; };
+		3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableCell.m; sourceTree = "<group>"; };
+		3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteInput.h; sourceTree = "<group>"; };
+		3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTable.h; sourceTree = "<group>"; };
+		3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteInput.m; sourceTree = "<group>"; };
+		3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTable.m; sourceTree = "<group>"; };
+		3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteTableCell.xib; sourceTree = "<group>"; };
+		3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiteAutoCompleteDataSource.h; sourceTree = "<group>"; };
+		3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiteAutoCompleteDataSource.m; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
 		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
@@ -368,6 +383,8 @@
 		3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tags@2x.png"; sourceTree = "<group>"; };
 		3CE1CABF1C774F2B00D0ADD5 /* LoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadMoreCell.h; sourceTree = "<group>"; };
 		3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadMoreCell.m; sourceTree = "<group>"; };
+		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
+		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
 		3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		3CFE547D201781A5006B673A /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -586,6 +603,24 @@
 			path = ../../../../third_party/MKPopoverColorWell;
 			sourceTree = "<group>";
 		};
+		3C6B246F203E01B70063FC08 /* AutoComplete */ = {
+			isa = PBXGroup;
+			children = (
+				3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */,
+				3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */,
+				3C6B2482203E01D80063FC08 /* AutoCompleteTable.h */,
+				3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */,
+				3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */,
+				3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */,
+				3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */,
+				3C6B24A2203FC8200063FC08 /* LiteAutoCompleteDataSource.h */,
+				3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */,
+				3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */,
+				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
+			);
+			name = AutoComplete;
+			sourceTree = "<group>";
+		};
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
@@ -660,6 +695,7 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				3C6B246F203E01B70063FC08 /* AutoComplete */,
 				3C068C681C22F25000874B9A /* MKColorWellCustom.h */,
 				3C068C691C22F25000874B9A /* MKColorWellCustom.m */,
 				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
@@ -1191,6 +1227,7 @@
 				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
 				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
+				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				3CD30F441F58B02C006FAA0D /* MissingWSViewController.xib in Resources */,
@@ -1299,6 +1336,7 @@
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
+				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
@@ -1318,12 +1356,14 @@
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
 				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
 				74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */,
+				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
 				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
@@ -1353,6 +1393,8 @@
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
+				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
+				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,
