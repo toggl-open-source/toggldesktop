@@ -409,13 +409,13 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_autoCompleteInput, _projectTextField);
 
-	self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_autoCompleteInput]-3@1000-[_projectTextField]"
+	self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_autoCompleteInput]-2@1000-[_projectTextField]"
 																		  options:0
 																		  metrics:nil
 																			views:viewsDict];
 
 	NSDictionary *viewsDict_ = NSDictionaryOfVariableBindings(_descriptionLabel, _projectTextField);
-	self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-4@1000-[_projectTextField]"
+	self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-6@1000-[_projectTextField]"
 																		  options:0
 																		  metrics:nil
 																			views:viewsDict_];
