@@ -1,29 +1,49 @@
 ﻿
 using System.Diagnostics;
 using System.Globalization;
+using System.Configuration;
 
 namespace TogglDesktop.Diagnostics
 {
     static class Performance
     {
+
+        static bool debug = true;
+        // ConfigurationSettings.AppSettings["Environment"] == "development"
         public static IPerformanceToken Measure(string activity)
         {
-            return null;//new PerformanceToken(activity);
+            if (debug)
+            {
+                return new PerformanceToken(activity);
+            }
+            return null;
         }
 
         #region Measure() overloads
 
         public static IPerformanceToken Measure(string template, object p0)
         {
-            return null;//Measure(string.Format(template, p0));
+            if (debug)
+            {
+                return Measure(string.Format(template, p0));
+            }
+            return null;
         }
         public static IPerformanceToken Measure(string template, object p0, object p1)
         {
-            return null;//Measure(string.Format(template, p0, p1));
+            if (debug)
+            {
+                return Measure(string.Format(template, p0, p1));
+            }
+            return null;
         }
         public static IPerformanceToken Measure(string template, object p0, object p1, object p2)
         {
-            return null;//Measure(string.Format(template, p0, p1, p2));
+            if (debug)
+            {
+                return Measure(string.Format(template, p0, p1, p2));
+            }
+            return null;
         }
 
         #endregion
