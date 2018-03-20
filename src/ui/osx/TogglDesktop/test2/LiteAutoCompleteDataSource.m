@@ -189,8 +189,9 @@ extern void *ctx;
 			}
 			return;
 		}
-
-		[self findFilter:filter];
+		NSString *trimmedFilter = [filter stringByTrimmingCharactersInSet:
+								   [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		[self findFilter:trimmedFilter];
 	}
 }
 
