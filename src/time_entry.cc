@@ -101,15 +101,22 @@ bool TimeEntry::billableIsAPremiumFeature(const error err) const {
 }
 
 void TimeEntry::DiscardAt(const Poco::UInt64 at) {
+    if (!IsTracking()) {
+        logger().error("Cannot discard time entry that is not tracking");
+        return;
+    }
+
     if (!at) {
         logger().error("Cannot discard time entry without a timestamp");
         return;
     }
 
-    Poco::Int64 duration = at + DurationInSeconds();
-    if (duration < 0) {
-        duration = -1 * duration;
+    if (at < Start()) {
+        logger().error("Cannot discard time entry with start time bigger than current moment");
+        return;
     }
+
+    Poco::Int64 duration = at - Start();
 
     if (duration < 0) {
         logger().error("Discarding with this time entry would result in negative duration");  // NOLINT

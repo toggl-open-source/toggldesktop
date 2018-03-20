@@ -284,6 +284,10 @@ void RelatedData::taskAutocompleteItems(
             it != Tasks.end(); it++) {
         Task *t = *it;
 
+        if (t == NULL) {
+            continue;
+        }
+
         if (t->IsMarkedAsDeletedOnServer()) {
             continue;
         }
@@ -406,8 +410,6 @@ void RelatedData::MinitimerAutocompleteItems(
     timeEntryAutocompleteItems(&unique_names, result);
     taskAutocompleteItems(&unique_names, nullptr, result);
     projectAutocompleteItems(&unique_names, nullptr, result);
-
-    std::sort(result->begin(), result->end(), CompareAutocompleteItems);
 }
 
 void RelatedData::ProjectAutocompleteItems(
@@ -418,9 +420,6 @@ void RelatedData::ProjectAutocompleteItems(
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
     projectAutocompleteItems(&unique_names, &ws_names, result);
     taskAutocompleteItems(&unique_names, &ws_names, result);
-
-    std::sort(result->begin(), result->end(),
-              CompareStructuredAutocompleteItems);
 }
 
 void RelatedData::workspaceAutocompleteItems(
@@ -451,13 +450,6 @@ void RelatedData::workspaceAutocompleteItems(
 
         std::string ws_name = Poco::UTF8::toUpper(ws->Name());
         (*ws_names)[ws->ID()] = ws_name;
-
-        view::Autocomplete autocomplete_item;
-        autocomplete_item.Text = ws_name;
-        autocomplete_item.WorkspaceName = ws_name;
-        autocomplete_item.WorkspaceID = ws->ID();
-        autocomplete_item.Type = kAutocompleteItemWorkspace;
-        list->push_back(autocomplete_item);
     }
 }
 

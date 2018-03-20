@@ -62,8 +62,17 @@ Project *User::CreateProject(
         p->SetColorCode(project_color);
     }
 
-    related.Projects.push_back(p);
-
+    // We should push the project to correct alphabetical position
+    // (since we try to avoid sorting the large list)
+    for (std::vector<Project *>::const_iterator it =
+        related.Projects.begin();
+            it != related.Projects.end(); it++) {
+        Project *pr = *it;
+        if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
+            related.Projects.insert(it,p);
+            break;
+        }
+    }
     return p;
 }
 
@@ -74,7 +83,17 @@ Client *User::CreateClient(
     c->SetWID(workspace_id);
     c->SetName(client_name);
     c->SetUID(ID());
-    related.Clients.push_back(c);
+
+    // We should push the project to correct alphabetical position
+    // (since we try to avoid sorting the large list)
+    for (std::vector<Client *>::const_iterator it =
+        related.Clients.begin();
+            it != related.Clients.end(); it++) {
+        Client *cl = *it;
+        if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
+            related.Clients.insert(it,c);
+        }
+    }
     return c;
 }
 

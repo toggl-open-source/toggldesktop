@@ -8,19 +8,17 @@
 #import "TimeEntryEditViewController.h"
 #import "UIEvents.h"
 #import "TimeEntryViewItem.h"
-#import "AutocompleteItem.h"
 #import "AutocompleteDataSource.h"
+#import "LiteAutoCompleteDataSource.h"
 #import "NSComboBox_Expansion.h"
 #import "ViewItem.h"
-#import "NSCustomComboBoxCell.h"
-#import "NSCustomComboBox.h"
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
 
 @interface TimeEntryEditViewController ()
-@property AutocompleteDataSource *projectAutocompleteDataSource;
-@property AutocompleteDataSource *descriptionComboboxDataSource;
+@property LiteAutoCompleteDataSource *liteDescriptionAutocompleteDataSource;
+@property LiteAutoCompleteDataSource *liteProjectAutocompleteDataSource;
 @property NSTimer *timerMenubarTimer;
 @property TimeEntryViewItem *timeEntry; // Time entry being edited
 @property NSMutableArray *tagsList;
@@ -56,8 +54,9 @@ extern void *ctx;
 		self.endTimeChanged = NO;
 		self.popupOnLeft = NO;
 
-		self.projectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
-		self.descriptionComboboxDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
+		self.liteDescriptionAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
+
+		self.liteProjectAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 
 		self.timerMenubarTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
 																  target:self
@@ -103,11 +102,11 @@ extern void *ctx;
 
 - (void)viewDidLoad
 {
-	self.projectAutocompleteDataSource.combobox = self.projectSelect;
-	self.descriptionComboboxDataSource.combobox = self.descriptionCombobox;
+	self.liteDescriptionAutocompleteDataSource.input = self.descriptionAutoCompleteInput;
+	[self.liteDescriptionAutocompleteDataSource setFilter:@""];
 
-	[self.projectAutocompleteDataSource setFilter:@""];
-	[self.descriptionComboboxDataSource setFilter:@""];
+	self.liteProjectAutocompleteDataSource.input = self.projectAutoCompleteInput;
+	[self.liteProjectAutocompleteDataSource setFilter:@""];
 
 	// Setting "Add project" link color to blue
 	NSColor *color = [NSColor alternateSelectedControlColor];
@@ -148,6 +147,24 @@ extern void *ctx;
 	[self.resizeHandle setCursor:[NSCursor resizeLeftRightCursor]];
 	[self.resizeHandleLeft setCursor:[NSCursor resizeLeftRightCursor]];
 	toggl_get_project_colors(ctx);
+
+	// Setup autocomplete table row click event
+	[self.descriptionAutoCompleteInput.autocompleteTableView setTarget:self];
+	[self.descriptionAutoCompleteInput.autocompleteTableView setAction:@selector(performDescriptionTableClick:)];
+	[self.projectAutoCompleteInput.autocompleteTableView setTarget:self];
+	[self.projectAutoCompleteInput.autocompleteTableView setAction:@selector(performProjectTableClick:)];
+}
+
+- (void)viewDidAppear
+{
+	NSRect descriptionViewFrameInWindowCoords = [self.descriptionAutoCompleteInput convertRect:[self.descriptionAutoCompleteInput bounds] toView:nil];
+	NSRect projectViewFrameInWindowCoords = [self.projectAutoCompleteInput convertRect:[self.projectAutoCompleteInput bounds] toView:nil];
+
+	[self.descriptionAutoCompleteInput setPos:(int)descriptionViewFrameInWindowCoords.origin.y];
+	[self.projectAutoCompleteInput setPos:(int)projectViewFrameInWindowCoords.origin.y];
+
+	[self.descriptionAutoCompleteInput.autocompleteTableView setDelegate:self];
+	[self.projectAutoCompleteInput.autocompleteTableView setDelegate:self];
 }
 
 - (void)loadView
@@ -170,10 +187,10 @@ extern void *ctx;
 	}
 	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
 	{
-		[self.view.window setInitialFirstResponder:self.projectSelect];
+		[self.view.window setInitialFirstResponder:self.projectAutoCompleteInput];
 		return;
 	}
-	[self.view.window setInitialFirstResponder:self.descriptionCombobox];
+	[self.view.window setInitialFirstResponder:self.descriptionAutoCompleteInput];
 }
 
 - (void)setProjectColors:(NSNotification *)notification
@@ -188,19 +205,28 @@ extern void *ctx;
 	[self.addProjectBox setHidden:YES];
 
 	[self.projectSelectBox setHidden:NO];
+	[self.projectAutoCompleteInput setHidden:NO];
 	[self.projectPublicCheckbox setState:NSOffState];
 
 	[self removeCustomConstraints];
-	[self.descriptionCombobox setNextKeyView:self.projectSelect];
+	[self.descriptionAutoCompleteInput setNextKeyView:self.projectAutoCompleteInput];
 	[self toggleAddClient:YES];
 	[self.addProjectButton setNextKeyView:self.durationTextField];
+
+	// reset autocompletes
+	self.descriptionAutoCompleteInput.stringValue = @"";
+	self.projectAutoCompleteInput.stringValue = @"";
+	[self.descriptionAutoCompleteInput resetTable];
+	[self.projectAutoCompleteInput resetTable];
+	self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+	self.liteProjectAutocompleteDataSource.currentFilter = nil;
 }
 
 - (IBAction)addProjectButtonClicked:(id)sender
 {
 	self.projectNameTextField.stringValue = @"";
 	self.clientSelect.stringValue = @"";
-	[self.descriptionCombobox setNextKeyView:self.projectNameTextField];
+	[self.descriptionAutoCompleteInput setNextKeyView:self.projectNameTextField];
 
 	if (!self.addProjectBoxHeight)
 	{
@@ -282,6 +308,23 @@ extern void *ctx;
 	{
 		toggl_view_time_entry_list(ctx);
 	}
+}
+
+// Checks if any autocompletes are focused so we don't close the popup
+- (BOOL)autcompleteFocused
+{
+	if ([self.descriptionAutoCompleteInput currentEditor] != nil
+		&& !self.descriptionAutoCompleteInput.autocompleteTableContainer.isHidden)
+	{
+		return YES;
+	}
+
+	if ([self.projectAutoCompleteInput currentEditor] != nil
+		&& !self.projectAutoCompleteInput.autocompleteTableContainer.isHidden)
+	{
+		return YES;
+	}
+	return NO;
 }
 
 // Returns NO if there's an error and UI should not go out of the add project
@@ -381,8 +424,8 @@ extern void *ctx;
 
 	if (cmd.open)
 	{
-		[self.projectAutocompleteDataSource setFilter:@""];
-		[self.descriptionComboboxDataSource setFilter:@""];
+		[self.liteDescriptionAutocompleteDataSource setFilter:@""];
+		[self.liteProjectAutocompleteDataSource setFilter:@""];
 	}
 
 	[self.billableCheckbox setHidden:!self.timeEntry.CanSeeBillable];
@@ -411,32 +454,32 @@ extern void *ctx;
 	}
 
 	// Overwrite description only if user is not editing it:
-	if (cmd.open || [self.descriptionCombobox currentEditor] == nil)
+	if (cmd.open || [self.descriptionAutoCompleteInput currentEditor] == nil)
 	{
-		self.descriptionCombobox.stringValue = self.timeEntry.Description;
+		self.descriptionAutoCompleteInput.stringValue = self.timeEntry.Description;
 		self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
 	}
 
-	self.projectSelectPreviousStringValue = self.projectSelect.stringValue;
+	self.projectSelectPreviousStringValue = self.projectAutoCompleteInput.stringValue;
 
 	// Overwrite project only if user is not editing it
-	if (cmd.open || [self.projectSelect currentEditor] == nil)
+	if (cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
 	{
 		if (self.timeEntry.ProjectAndTaskLabel != nil)
 		{
-			self.projectSelect.stringValue = self.timeEntry.ProjectAndTaskLabel;
+			self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
 			self.projectSelectPreviousStringValue = self.timeEntry.ProjectAndTaskLabel;
 		}
 		else
 		{
-			self.projectSelect.stringValue = @"";
+			self.projectAutoCompleteInput.stringValue = @"";
 			self.projectSelectPreviousStringValue = @"";
 		}
 		if (cmd.open)
 		{
 			if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
 			{
-				[self.projectSelect becomeFirstResponder];
+				[self.projectAutoCompleteInput becomeFirstResponder];
 			}
 		}
 	}
@@ -738,37 +781,6 @@ extern void *ctx;
 	toggl_set_time_entry_duration(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
-- (IBAction)projectSelectChanged:(id)sender
-{
-	if (self.willTerminate)
-	{
-		return;
-	}
-
-	if (self.projectSelectPreviousStringValue != nil &&
-		[self.projectSelectPreviousStringValue isEqualToString:self.projectSelect.stringValue])
-	{
-		return;
-	}
-
-	NSAssert(self.timeEntry != nil, @"Expected time entry");
-
-	NSString *key = self.projectSelect.stringValue;
-	AutocompleteItem *autocomplete = [self.projectAutocompleteDataSource get:key];
-	uint64_t task_id = 0;
-	uint64_t project_id = 0;
-	if (autocomplete != nil)
-	{
-		task_id = autocomplete.TaskID;
-		project_id = autocomplete.ProjectID;
-	}
-	if ([key length] && project_id == 0)
-	{
-		return;
-	}
-	toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
-}
-
 - (IBAction)startTimeChanged:(id)sender
 {
 	if (self.willTerminate)
@@ -834,28 +846,28 @@ extern void *ctx;
 	toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
-- (IBAction)descriptionComboboxChanged:(id)sender
+- (IBAction)descriptionAutoCompleteChanged:(id)sender
 {
 	if (self.willTerminate)
 	{
 		return;
 	}
 
-	if (self.descriptionCombobox.stringValue != nil &&
-		[self.descriptionCombobox.stringValue isEqualToString:self.descriptionComboboxPreviousStringValue])
+	if (self.descriptionAutoCompleteInput.stringValue != nil &&
+		[self.descriptionAutoCompleteInput.stringValue isEqualToString:self.descriptionComboboxPreviousStringValue])
 	{
 		return;
 	}
 
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
-	NSString *key = self.descriptionCombobox.stringValue;
+	NSString *key = [self.descriptionAutoCompleteInput stringValue];
+	AutocompleteItem *autocomplete = [self.liteDescriptionAutocompleteDataSource get:key];
+	[self updateWithSelectedDescription:autocomplete withKey:key];
+}
 
-	NSLog(@"descriptionComboboxChanged, stringValue = %@", key);
-
-	AutocompleteItem *autocomplete =
-		[self.descriptionComboboxDataSource get:key];
-
+- (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key
+{
 	const char *GUID = [self.timeEntry.GUID UTF8String];
 
 	if (!autocomplete)
@@ -863,31 +875,91 @@ extern void *ctx;
 		toggl_set_time_entry_description(ctx,
 										 GUID,
 										 [key UTF8String]);
+		[self.descriptionAutoCompleteInput becomeFirstResponder];
+		[self.descriptionAutoCompleteInput resetTable];
+		self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 		return;
 	}
 
-	if (![self.timeEntry.Description isEqualToString:key] &&
-		!toggl_set_time_entry_project(ctx,
-									  GUID,
-									  autocomplete.TaskID,
-									  autocomplete.ProjectID,
-									  0))
+	self.descriptionAutoCompleteInput.stringValue = autocomplete.Description;
+
+	@synchronized(self)
+	{
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+						   if (![self.timeEntry.Description isEqualToString:key] &&
+							   !toggl_set_time_entry_project(ctx,
+															 GUID,
+															 autocomplete.TaskID,
+															 autocomplete.ProjectID,
+															 0))
+						   {
+							   [self.descriptionAutoCompleteInput becomeFirstResponder];
+							   [self.descriptionAutoCompleteInput resetTable];
+							   self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+							   return;
+						   }
+
+						   toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
+
+						   const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
+						   toggl_set_time_entry_tags(ctx, GUID, value);
+
+						   bool_t isBillable = autocomplete.Billable;
+
+						   if (isBillable)
+						   {
+							   toggl_set_time_entry_billable(ctx, GUID, isBillable);
+						   }
+					   });
+	}
+	[self.descriptionAutoCompleteInput becomeFirstResponder];
+	[self.descriptionAutoCompleteInput resetTable];
+	self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+}
+
+- (IBAction)projectAutoCompleteChanged:(id)sender
+{
+	if (self.willTerminate)
 	{
 		return;
 	}
 
-	self.descriptionCombobox.stringValue = autocomplete.Description;
-	toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
-
-	const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
-	toggl_set_time_entry_tags(ctx, GUID, value);
-
-	bool_t isBillable = autocomplete.Billable;
-
-	if (isBillable)
+	if (self.projectSelectPreviousStringValue != nil &&
+		[self.projectSelectPreviousStringValue isEqualToString:self.projectAutoCompleteInput.stringValue])
 	{
-		toggl_set_time_entry_billable(ctx, GUID, isBillable);
+		return;
 	}
+
+	NSAssert(self.timeEntry != nil, @"Expected time entry");
+
+	NSString *key = self.projectAutoCompleteInput.stringValue;
+	AutocompleteItem *autocomplete = [self.liteProjectAutocompleteDataSource get:key];
+	[self updateWithSelectedProject:autocomplete withKey:key];
+}
+
+- (void)updateWithSelectedProject:(AutocompleteItem *)autocomplete withKey:(NSString *)key
+{
+	uint64_t task_id = 0;
+	uint64_t project_id = 0;
+
+	if (autocomplete == nil)
+	{
+		return;
+	}
+
+	task_id = autocomplete.TaskID;
+	project_id = autocomplete.ProjectID;
+	self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
+
+	@synchronized(self)
+	{
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+						   toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+					   });
+	}
+	[self.projectAutoCompleteInput becomeFirstResponder];
+	[self.projectAutoCompleteInput resetTable];
+	self.liteProjectAutocompleteDataSource.currentFilter = nil;
 }
 
 - (IBAction)deleteButtonClicked:(id)sender
@@ -1001,6 +1073,12 @@ extern void *ctx;
 		return;
 	}
 
+	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
+	{
+		AutoCompleteInput *input = [aNotification object];
+		[input resetTable];
+	}
+
 	if (![[aNotification object] isKindOfClass:[NSTokenField class]])
 	{
 		// If enter was pressed then close editpopup
@@ -1034,6 +1112,25 @@ extern void *ctx;
 		return;
 	}
 
+	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
+	{
+		AutoCompleteInput *field = [aNotification object];
+		if (field == self.descriptionAutoCompleteInput)
+		{
+			NSLog(@"Filter DESCRIPTION: %@", [field stringValue]);
+			[self.liteDescriptionAutocompleteDataSource setFilter:[field stringValue]];
+		}
+
+		if (field == self.projectAutoCompleteInput)
+		{
+			NSLog(@"Filter PROJECTS: %@", [field stringValue]);
+			[self.liteProjectAutocompleteDataSource setFilter:[field stringValue]];
+		}
+
+		[field.autocompleteTableView resetSelected];
+		return;
+	}
+
 	// Don't trigger combobox autocomplete when inside tags field
 	if (![[aNotification object] isKindOfClass:[NSComboBox class]])
 	{
@@ -1044,14 +1141,6 @@ extern void *ctx;
 	NSString *filter = [comboBox stringValue];
 
 	AutocompleteDataSource *dataSource = nil;
-	if (comboBox == self.projectSelect)
-	{
-		dataSource = self.projectAutocompleteDataSource;
-	}
-	if (comboBox == self.descriptionCombobox)
-	{
-		dataSource = self.descriptionComboboxDataSource;
-	}
 	if (comboBox == self.clientSelect)
 	{
 		[self resultsInComboForString:comboBox.stringValue];
@@ -1204,6 +1293,189 @@ extern void *ctx;
 - (void)closeEdit
 {
 	toggl_edit(ctx, [self.timeEntry.GUID UTF8String], false, "");
+}
+
+#pragma AutocompleteTableView Delegate
+
+- (BOOL)  tableView:(NSTableView *)aTableView
+	shouldSelectRow:(NSInteger)rowIndex
+{
+	AutoCompleteTable *table = (AutoCompleteTable *)aTableView;
+
+	[table setCurrentSelected:rowIndex];
+	return YES;
+}
+
+- (NSView *) tableView:(NSTableView *)tableView
+	viewForTableColumn:(NSTableColumn *)tableColumn
+				   row:(NSInteger)row
+{
+	if (row < 0)
+	{
+		return nil;
+	}
+
+	AutocompleteItem *item = nil;
+	LiteAutoCompleteDataSource *dataSource = nil;
+
+	if (tableView == self.descriptionAutoCompleteInput.autocompleteTableView)
+	{
+		dataSource = self.liteDescriptionAutocompleteDataSource;
+	}
+
+	if (tableView == self.projectAutoCompleteInput.autocompleteTableView)
+	{
+		dataSource = self.liteProjectAutocompleteDataSource;
+	}
+
+	if (dataSource == nil || row >= dataSource.filteredOrderedKeys.count)
+	{
+		return nil;
+	}
+
+	@synchronized(self)
+	{
+		item = [dataSource.filteredOrderedKeys objectAtIndex:row];
+	}
+	NSLog(@"%@", item);
+	NSAssert(item != nil, @"view item from viewitems array is nil");
+
+	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
+															  owner:self];
+
+	[cell render:item];
+	return cell;
+}
+
+- (CGFloat)tableView:(NSTableView *)tableView
+		 heightOfRow:(NSInteger)row
+{
+	return 25;
+}
+
+- (IBAction)performDescriptionTableClick:(id)sender
+{
+	AutoCompleteInput *input = self.descriptionAutoCompleteInput;
+	LiteAutoCompleteDataSource *dataSource = self.liteDescriptionAutocompleteDataSource;
+
+	NSInteger row = [input.autocompleteTableView clickedRow];
+
+	if (row < 0)
+	{
+		return;
+	}
+
+	AutocompleteItem *item = [dataSource itemAtIndex:row];
+	[self updateWithSelectedDescription:item withKey:item.Text];
+}
+
+- (IBAction)performProjectTableClick:(id)sender
+{
+	AutoCompleteInput *input = self.projectAutoCompleteInput;
+	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
+
+	NSInteger row = [input.autocompleteTableView clickedRow];
+
+	if (row < 0)
+	{
+		return;
+	}
+
+	AutocompleteItem *item = [dataSource itemAtIndex:row];
+	[self updateWithSelectedProject:item withKey:item.Text];
+}
+
+- (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
+{
+	BOOL retval = NO;
+	BOOL valid = YES;
+	AutoCompleteInput *input = nil;
+	LiteAutoCompleteDataSource *dataSource = nil;
+	NSInteger lastSelected = -1;
+
+	if ([self.descriptionAutoCompleteInput currentEditor] != nil)
+	{
+		input = self.descriptionAutoCompleteInput;
+		lastSelected = input.autocompleteTableView.lastSelected;
+		dataSource = self.liteDescriptionAutocompleteDataSource;
+	}
+	if ([self.projectAutoCompleteInput currentEditor] != nil)
+	{
+		input = self.projectAutoCompleteInput;
+		lastSelected = input.autocompleteTableView.lastSelected;
+		dataSource = self.liteProjectAutocompleteDataSource;
+
+		// Validate project input
+		if (input.autocompleteTableView.isHidden)
+		{
+			NSString *key = self.projectAutoCompleteInput.stringValue;
+			AutocompleteItem *autocomplete = [self.liteProjectAutocompleteDataSource get:key];
+			valid = (autocomplete != nil);
+		}
+	}
+	if (input != nil)
+	{
+		if (commandSelector == @selector(moveDown:))
+		{
+			[input.autocompleteTableView nextItem];
+			retval = YES;
+		}
+		if (commandSelector == @selector(moveUp:))
+		{
+			[input.autocompleteTableView previousItem];
+			retval = YES;
+		}
+		if (commandSelector == @selector(insertTab:))
+		{
+			if (input == self.projectAutoCompleteInput && !valid)
+			{
+				self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
+			}
+			[input resetTable];
+			dataSource.currentFilter = nil;
+		}
+		if (commandSelector == @selector(insertNewline:))
+		{
+			// allow default action when autocomplete is closed
+			if (input.autocompleteTableView.isHidden)
+			{
+				if (input == self.projectAutoCompleteInput && !valid)
+				{
+					self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
+				}
+
+				return NO;
+			}
+
+			// avoid firing default Enter actions
+			retval = YES;
+
+			// Set data according to selected item
+			if (lastSelected >= 0)
+			{
+				AutocompleteItem *item = [dataSource itemAtIndex:lastSelected];
+
+				if (item == nil)
+				{
+					return NO;
+				}
+
+				[input resetTable];
+				dataSource.currentFilter = nil;
+
+				if (input == self.descriptionAutoCompleteInput)
+				{
+					[self updateWithSelectedDescription:item withKey:item.Text];
+				}
+				else if (input == self.projectAutoCompleteInput)
+				{
+					[self updateWithSelectedProject:item withKey:item.Text];
+				}
+			}
+		}
+	}
+
+	return retval;
 }
 
 @end

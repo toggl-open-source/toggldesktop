@@ -36,7 +36,8 @@ class WindowChangeRecorder;
 class UIElements {
  public:
     UIElements()
-        : display_time_entries(false)
+        : first_load(false)
+    , display_time_entries(false)
     , display_time_entry_autocomplete(false)
     , display_mini_timer_autocomplete(false)
     , display_project_autocomplete(false)
@@ -61,6 +62,7 @@ class UIElements {
         const std::string editor_guid,
         const std::vector<ModelChange> &changes);
 
+    bool first_load;
     bool display_time_entries;
     bool display_time_entry_autocomplete;
     bool display_mini_timer_autocomplete;
@@ -471,6 +473,10 @@ class Context : public TimelineDatasource {
     void onTrackSettingsUsage(Poco::Util::TimerTask& task);  // NOLINT
     void onWake(Poco::Util::TimerTask& task);  // NOLINT
     void onLoadMore(Poco::Util::TimerTask& task); // NOLINT
+
+    void onTimeEntryAutocompletes(Poco::Util::TimerTask& task);  // NOLINT
+    void onMiniTimerAutocompletes(Poco::Util::TimerTask& task);  // NOLINT
+    void onProjectAutocompletes(Poco::Util::TimerTask& task);  // NOLINT
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();

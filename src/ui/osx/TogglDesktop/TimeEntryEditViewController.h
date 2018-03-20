@@ -12,12 +12,12 @@
 #import "NSTextFieldClickable.h"
 #import "NSResize.h"
 #import "MkColorWellCustom.h"
+#import "AutoCompleteInput.h"
+#import "AutoCompleteItem.h"
 
-@interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource> {
+@interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate> {
 }
 @property (strong) IBOutlet MKColorWellCustom *colorPicker;
-@property IBOutlet NSCustomComboBox *descriptionCombobox;
-@property IBOutlet NSCustomComboBox *projectSelect;
 @property IBOutlet NSTextField *durationTextField;
 @property IBOutlet NSTextField *startTime;
 @property IBOutlet NSTextField *endTime;
@@ -49,9 +49,11 @@
 @property (strong) IBOutlet NSButton *addClientButton;
 @property (strong) IBOutlet NSTextField *clientNameTextField;
 @property (strong) IBOutlet NSButton *saveNewClientButton;
-- (IBAction)descriptionComboboxChanged:(id)sender;
+@property (strong) IBOutlet AutoCompleteInput *descriptionAutoCompleteInput;
+- (IBAction)descriptionAutoCompleteChanged:(id)sender;
+@property (strong) IBOutlet AutoCompleteInput *projectAutoCompleteInput;
+- (IBAction)projectAutoCompleteChanged:(id)sender;
 - (IBAction)durationTextFieldChanged:(id)sender;
-- (IBAction)projectSelectChanged:(id)sender;
 - (IBAction)startTimeChanged:(id)sender;
 - (IBAction)endTimeChanged:(id)sender;
 - (IBAction)dateChanged:(id)sender;
@@ -67,4 +69,7 @@
 - (void)setDragHandle:(BOOL)onLeft;
 - (void)setInsertionPointColor;
 - (void)closeEdit;
+- (BOOL)autcompleteFocused;
+- (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key;
+- (void)updateWithSelectedProject:(AutocompleteItem *)autocomplete withKey:(NSString *)key;
 @end

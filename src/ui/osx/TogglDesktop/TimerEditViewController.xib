@@ -10,10 +10,9 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
                 <outlet property="addEntryLabel" destination="Pm5-UM-PRp" id="jNk-Yh-0Wy"/>
+                <outlet property="autoCompleteInput" destination="9TE-qD-76l" id="NIB-uU-cf9"/>
                 <outlet property="billableFlag" destination="9mO-OH-ebm" id="Ybg-W4-Maf"/>
-                <outlet property="descriptionComboBox" destination="ITa-Jc-jOK" id="aF4-Dr-jdX"/>
                 <outlet property="descriptionLabel" destination="Fiv-ao-qiA" id="00j-67-MmI"/>
-                <outlet property="descriptionTrailing" destination="kGj-cM-c4R" id="3fN-yF-b6h"/>
                 <outlet property="durationTextField" destination="oie-Un-asQ" id="6ad-T9-x8d"/>
                 <outlet property="hidingBox" destination="ow2-8J-rMh" id="8fs-gf-fqC"/>
                 <outlet property="mainBox" destination="Fga-BR-x8G" id="PWb-gS-hxU"/>
@@ -54,7 +53,6 @@ DQ
                                             </buttonCell>
                                             <connections>
                                                 <action selector="startButtonClicked:" target="-2" id="mix-z8-qeE"/>
-                                                <outlet property="nextKeyView" destination="ITa-Jc-jOK" id="HSj-gD-Qbq"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -67,22 +65,22 @@ DQ
                                 <color key="borderColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
-                            <comboBox toolTip="Description" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ITa-Jc-jOK" customClass="NSCustomTimerComboBox">
-                                <rect key="frame" x="13" y="8" width="206" height="20"/>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9TE-qD-76l" customClass="AutoCompleteInput">
+                                <rect key="frame" x="12" y="11" width="183" height="22"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="WR0-PJ-917"/>
+                                    <constraint firstAttribute="height" constant="22" id="4AP-Cj-GWb"/>
                                 </constraints>
-                                <comboBoxCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" focusRingType="none" placeholderString="What are you doing?" drawsBackground="YES" buttonBordered="NO" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="SSh-62-AYH" customClass="NSCustomComboBoxCell">
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" placeholderString="What are you doing?" id="i4n-Pi-FPE">
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="backgroundColor" red="0.1764705882" green="0.1764705882" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
-                                </comboBoxCell>
+                                    <color key="textColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </textFieldCell>
                                 <connections>
-                                    <action selector="descriptionComboBoxChanged:" target="-2" id="w65-vA-OhX"/>
-                                    <outlet property="delegate" destination="-2" id="pE4-7B-qZA"/>
-                                    <outlet property="nextKeyView" destination="oie-Un-asQ" id="14S-Ev-aQF"/>
+                                    <action selector="autoCompleteChanged:" target="-2" id="IIL-82-w1V"/>
+                                    <outlet property="delegate" destination="-2" id="AnL-45-hdG"/>
+                                    <outlet property="nextKeyView" destination="oie-Un-asQ" id="oDI-3m-Quk"/>
                                 </connections>
-                            </comboBox>
+                            </textField>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="ow2-8J-rMh" userLabel="HidingBox">
                                 <rect key="frame" x="202" y="6" width="9" height="26"/>
                                 <view key="contentView" id="Z9B-SQ-Ece">
@@ -95,7 +93,7 @@ DQ
                                 <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
                             <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="13" y="10" width="103" height="18"/>
+                                <rect key="frame" x="12" y="10" width="104" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="6EN-7v-jSX"/>
                                 </constraints>
@@ -190,7 +188,10 @@ DQ
                             </textField>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="9TE-qD-76l" secondAttribute="trailing" constant="5" id="S3h-2W-mYh"/>
                             <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="ow2-8J-rMh" secondAttribute="bottom" constant="-20" id="bar-Ou-Cs3"/>
+                            <constraint firstItem="9TE-qD-76l" firstAttribute="leading" secondItem="gK5-Lo-ktx" secondAttribute="leading" constant="14" id="rG6-hZ-JD5"/>
+                            <constraint firstItem="9TE-qD-76l" firstAttribute="centerY" secondItem="gK5-Lo-ktx" secondAttribute="centerY" priority="750" id="xd2-Tj-GYo"/>
                         </constraints>
                     </view>
                     <constraints>
@@ -198,20 +199,17 @@ DQ
                         <constraint firstAttribute="trailing" secondItem="nFI-HH-zd7" secondAttribute="trailing" id="1Ze-X0-Pwj"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="ow2-8J-rMh" secondAttribute="trailing" constant="-13" id="3ho-Zu-c4p"/>
                         <constraint firstItem="aty-o7-z5X" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="21" id="8l6-tH-4Oc"/>
-                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="13" id="BUR-2r-d4a"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="H0e-5U-BSu" secondAttribute="trailing" constant="60" id="CoY-xM-bgY"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="18" id="EdI-fe-SXa"/>
                         <constraint firstAttribute="trailing" secondItem="oie-Un-asQ" secondAttribute="trailing" constant="50" id="Gt7-VK-qKf"/>
                         <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="Fiv-ao-qiA" secondAttribute="trailing" constant="27" id="LOf-kf-ljr"/>
                         <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="6" id="QSu-p4-uqB"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="Qdt-Xf-dun"/>
-                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="15" id="SRK-n5-IbR"/>
+                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="14" id="SRK-n5-IbR"/>
                         <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="14" id="SmU-O3-Nps"/>
                         <constraint firstItem="H0e-5U-BSu" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="20" id="X4h-hO-KhM"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bW9-mQ-DLy"/>
-                        <constraint firstItem="ITa-Jc-jOK" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" priority="750" constant="18" id="dq8-8K-4Gd"/>
                         <constraint firstItem="Fiv-ao-qiA" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" priority="750" constant="16" id="eeT-Vs-QTo"/>
-                        <constraint firstAttribute="trailing" secondItem="ITa-Jc-jOK" secondAttribute="trailing" constant="40" id="kGj-cM-c4R"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="lYl-3T-lth"/>
                         <constraint firstItem="H0e-5U-BSu" firstAttribute="leading" secondItem="aty-o7-z5X" secondAttribute="trailing" constant="2" id="pd9-wy-P12"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="87" id="s0Y-rg-dqD"/>
