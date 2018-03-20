@@ -20,14 +20,14 @@
                 <outlet property="currentWorkspaceLabel" destination="feg-gg-X4L" id="Dae-Qr-tZc"/>
                 <outlet property="dateBox" destination="r22-gF-YfG" id="REl-8J-8Pi"/>
                 <outlet property="deleteButton" destination="Wpz-9G-IOZ" id="opY-mR-5jK"/>
-                <outlet property="descriptionCombobox" destination="6rO-vx-iLH" id="O03-KW-wgi"/>
+                <outlet property="descriptionAutoCompleteInput" destination="cv5-TQ-M7L" id="bC5-Q6-Xrx"/>
                 <outlet property="durationBox" destination="cGh-Uz-aLx" id="cmp-Rv-UBY"/>
                 <outlet property="durationTextField" destination="EMR-ul-vEb" id="qbl-PP-fL8"/>
                 <outlet property="endTime" destination="2xJ-Tl-Bgy" id="Dcb-yl-aR2"/>
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
+                <outlet property="projectAutoCompleteInput" destination="Z6v-zC-TTo" id="eSi-rz-NIa"/>
                 <outlet property="projectNameTextField" destination="2Pz-WE-b3h" id="K15-Cv-8rM"/>
                 <outlet property="projectPublicCheckbox" destination="b5J-U3-cc3" id="qbw-vP-7Yw"/>
-                <outlet property="projectSelect" destination="mxY-tv-UzX" id="eym-qD-quf"/>
                 <outlet property="projectSelectBox" destination="6Sh-4d-bKb" id="gbr-B6-ncX"/>
                 <outlet property="resizeHandle" destination="oCY-bD-X7j" id="jvV-pq-l2V"/>
                 <outlet property="resizeHandleLeft" destination="0ZT-Dr-aT9" id="ukD-qY-mEg"/>
@@ -65,43 +65,52 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="backButtonClicked:" target="-2" id="GSE-4o-Adz"/>
-                                    <outlet property="nextKeyView" destination="6rO-vx-iLH" id="4Cd-cr-LPj"/>
+                                    <outlet property="nextKeyView" destination="cv5-TQ-M7L" id="T8a-DJ-fre"/>
                                 </connections>
                             </button>
-                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6rO-vx-iLH" customClass="NSCustomComboBox">
-                                <rect key="frame" x="15" y="451" width="319" height="26"/>
-                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Description" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="OPO-6N-qwd" customClass="NSCustomComboBoxCell">
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cv5-TQ-M7L" customClass="AutoCompleteInput">
+                                <rect key="frame" x="15" y="455" width="316" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="MF4-Rm-GEg"/>
+                                </constraints>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="What are you doing?" drawsBackground="YES" id="SDE-tz-ohH">
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </comboBoxCell>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </textFieldCell>
                                 <connections>
-                                    <action selector="descriptionComboboxChanged:" target="-2" id="ZHb-go-DNC"/>
-                                    <outlet property="delegate" destination="-2" id="c1M-Pl-g8L"/>
-                                    <outlet property="nextKeyView" destination="mxY-tv-UzX" id="xmm-5f-Z5P"/>
+                                    <action selector="descriptionAutoCompleteChanged:" target="-2" id="3t4-o3-SrR"/>
+                                    <outlet property="delegate" destination="-2" id="nQq-TX-NnF"/>
+                                    <outlet property="nextKeyView" destination="Z6v-zC-TTo" id="0va-sh-uU1"/>
                                 </connections>
-                            </comboBox>
+                            </textField>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="ProjectBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="6Sh-4d-bKb">
                                 <rect key="frame" x="0.0" y="410" width="346" height="45"/>
                                 <view key="contentView" id="x3p-PS-0cI">
                                     <rect key="frame" x="0.0" y="0.0" width="346" height="45"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mxY-tv-UzX" customClass="NSCustomComboBox">
-                                            <rect key="frame" x="15" y="14" width="319" height="26"/>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="z8M-J4-cIb" customClass="NSCustomComboBoxCell">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z6v-zC-TTo" customClass="AutoCompleteInput">
+                                            <rect key="frame" x="15" y="18" width="316" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="22" id="hTE-eN-3fO"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Project" drawsBackground="YES" id="WOr-dn-XwP">
                                                 <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </comboBoxCell>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </textFieldCell>
                                             <connections>
-                                                <action selector="projectSelectChanged:" target="-2" id="zL6-sa-THe"/>
-                                                <outlet property="delegate" destination="-2" id="N4G-rb-QgM"/>
-                                                <outlet property="nextKeyView" destination="mjR-fr-Qy0" id="nU8-El-a5b"/>
+                                                <action selector="projectAutoCompleteChanged:" target="-2" id="5mv-uH-Kg4"/>
+                                                <outlet property="delegate" destination="-2" id="v01-vY-pm7"/>
+                                                <outlet property="nextKeyView" destination="mjR-fr-Qy0" id="WwU-51-hV0"/>
                                             </connections>
-                                        </comboBox>
+                                        </textField>
                                         <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
                                             <rect key="frame" x="241" y="0.0" width="90" height="14"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="tWd-2B-NMH"/>
+                                            </constraints>
                                             <buttonCell key="cell" type="smallSquare" title="Add new project" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="small" state="on" imageScaling="proportionallyDown" inset="2" id="HzE-Jo-vAm">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
@@ -113,11 +122,11 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="mjR-fr-Qy0" firstAttribute="top" secondItem="mxY-tv-UzX" secondAttribute="bottom" constant="4" id="1U1-Ew-4vK"/>
-                                        <constraint firstItem="mxY-tv-UzX" firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" id="UnU-RR-WGD"/>
-                                        <constraint firstAttribute="trailing" secondItem="mxY-tv-UzX" secondAttribute="trailing" constant="15" id="nvn-Y3-baN"/>
-                                        <constraint firstAttribute="bottom" secondItem="mjR-fr-Qy0" secondAttribute="bottom" id="zGD-qE-eVU"/>
-                                        <constraint firstItem="mxY-tv-UzX" firstAttribute="leading" secondItem="x3p-PS-0cI" secondAttribute="leading" constant="15" id="ziA-uf-6K6"/>
+                                        <constraint firstItem="Z6v-zC-TTo" firstAttribute="leading" secondItem="x3p-PS-0cI" secondAttribute="leading" constant="15" id="AFw-hv-TwC"/>
+                                        <constraint firstItem="mjR-fr-Qy0" firstAttribute="top" secondItem="Z6v-zC-TTo" secondAttribute="bottom" constant="4" id="JBC-Bn-ZsP"/>
+                                        <constraint firstAttribute="trailing" secondItem="Z6v-zC-TTo" secondAttribute="trailing" constant="15" id="UeU-Tb-fVI"/>
+                                        <constraint firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" constant="15" id="cu5-4V-nru"/>
+                                        <constraint firstItem="Z6v-zC-TTo" firstAttribute="top" secondItem="x3p-PS-0cI" secondAttribute="top" constant="5" id="nCx-Ud-pYJ"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -580,8 +589,10 @@
                             <constraint firstItem="6Sh-4d-bKb" firstAttribute="leading" secondItem="gq5-PC-ftr" secondAttribute="leading" id="1Qg-QK-Egn"/>
                             <constraint firstAttribute="trailing" secondItem="fz4-yg-eQZ" secondAttribute="trailing" constant="10" id="3gJ-jS-6en"/>
                             <constraint firstItem="ByL-Em-l61" firstAttribute="top" secondItem="Uof-FM-Nqj" secondAttribute="bottom" constant="10" id="3rT-hy-ihj"/>
+                            <constraint firstItem="cv5-TQ-M7L" firstAttribute="leading" secondItem="gq5-PC-ftr" secondAttribute="leading" constant="15" id="7KZ-bG-3Lk"/>
                             <constraint firstItem="zwE-pW-vQN" firstAttribute="top" secondItem="gq5-PC-ftr" secondAttribute="top" constant="2" id="E6a-vh-XAz"/>
-                            <constraint firstItem="6rO-vx-iLH" firstAttribute="top" secondItem="zwE-pW-vQN" secondAttribute="bottom" id="NFT-Md-D7S"/>
+                            <constraint firstItem="cv5-TQ-M7L" firstAttribute="top" secondItem="gq5-PC-ftr" secondAttribute="top" constant="25" id="EFB-l3-BIT"/>
+                            <constraint firstAttribute="trailing" secondItem="cv5-TQ-M7L" secondAttribute="trailing" constant="15" id="FcF-DW-3UI"/>
                             <constraint firstAttribute="trailing" secondItem="ByL-Em-l61" secondAttribute="trailing" id="PCc-pA-fB1"/>
                             <constraint firstAttribute="trailing" secondItem="zwE-pW-vQN" secondAttribute="trailing" constant="11" id="RLp-gq-eeI"/>
                             <constraint firstAttribute="trailing" secondItem="Uof-FM-Nqj" secondAttribute="trailing" constant="10" id="RVu-jt-E0E"/>
@@ -591,8 +602,6 @@
                             <constraint firstItem="ByL-Em-l61" firstAttribute="leading" secondItem="gq5-PC-ftr" secondAttribute="leading" id="dTx-3P-rqs"/>
                             <constraint firstItem="Uof-FM-Nqj" firstAttribute="top" secondItem="fz4-yg-eQZ" secondAttribute="bottom" constant="10" id="fai-aW-vln"/>
                             <constraint firstItem="fz4-yg-eQZ" firstAttribute="leading" secondItem="gq5-PC-ftr" secondAttribute="leading" constant="10" id="nzB-dK-Zme"/>
-                            <constraint firstItem="6rO-vx-iLH" firstAttribute="leading" secondItem="gq5-PC-ftr" secondAttribute="leading" constant="15" id="oT3-RV-pjr"/>
-                            <constraint firstAttribute="trailing" secondItem="6rO-vx-iLH" secondAttribute="trailing" constant="15" id="xhD-hJ-XTD"/>
                         </constraints>
                     </view>
                 </box>
