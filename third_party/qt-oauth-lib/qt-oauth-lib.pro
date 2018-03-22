@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += webkit
+QT       += webenginewidgets
 
 TARGET = qt-oauth-lib
 TEMPLATE = lib
