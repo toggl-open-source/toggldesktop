@@ -12,7 +12,7 @@ ENVIRONMENT = "development"
 
 DEFINES += APP_ENVIRONMENT=\\\"$$ENVIRONMENT\\\"
 
-QT       += core gui network webkitwidgets widgets
+QT       += core gui network webengine webenginewidgets widgets
 
 TARGET = TogglDesktop
 TEMPLATE = app

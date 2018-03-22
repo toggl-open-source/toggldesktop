@@ -2,7 +2,7 @@
 #include "ui_logindialog.h"
 
 #include <QDebug>
-#include <QWebView>
+#include <QtWebEngineWidgets/QWebEngineView>
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
