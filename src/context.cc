@@ -495,6 +495,10 @@ void Context::updateUI(const UIElements &what) {
 
     view::TimeEntry editor_time_entry_view;
 
+    std::vector<view::Autocomplete> time_entry_autocompletes;
+    std::vector<view::Autocomplete> minitimer_autocompletes;
+    std::vector<view::Autocomplete> project_autocompletes;
+
     bool use_proxy(false);
     bool record_timeline(false);
     Poco::Int64 unsynced_item_count(0);
@@ -857,8 +861,9 @@ void Context::updateUI(const UIElements &what) {
 
     if (what.display_time_entry_autocomplete) {
         if (what.first_load) {
-            std::vector<view::Autocomplete> time_entry_autocompletes;
-            user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
+            if (user_) {
+                user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
+            }
             UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
         } else {
             Poco::Util::TimerTask::Ptr teTask =
@@ -869,8 +874,9 @@ void Context::updateUI(const UIElements &what) {
 
     if (what.display_mini_timer_autocomplete) {
         if (what.first_load) {
-            std::vector<view::Autocomplete> minitimer_autocompletes;
-            user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+            if (user_) {
+                user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+            }
             UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
         } else {
             Poco::Util::TimerTask::Ptr mtTask =
@@ -923,8 +929,9 @@ void Context::updateUI(const UIElements &what) {
     // as its depending on selects on Windows
     if (what.display_project_autocomplete) {
         if (what.first_load) {
-            std::vector<view::Autocomplete> project_autocompletes;
-            user_->related.ProjectAutocompleteItems(&project_autocompletes);
+            if (user_) {
+                user_->related.ProjectAutocompleteItems(&project_autocompletes);
+            }
             UI()->DisplayProjectAutocomplete(&project_autocompletes);
         } else {
             Poco::Util::TimerTask::Ptr prTask =
@@ -1089,19 +1096,25 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
 
 void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
     std::vector<view::Autocomplete> time_entry_autocompletes;
-    user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
+    if (user_) {
+        user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
+    }
     UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
 }
 
 void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
     std::vector<view::Autocomplete> minitimer_autocompletes;
-    user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+    if (user_) {
+        user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
+    }
     UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
 }
 
 void Context::onProjectAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
     std::vector<view::Autocomplete> project_autocompletes;
-    user_->related.ProjectAutocompleteItems(&project_autocompletes);
+    if (user_) {
+        user_->related.ProjectAutocompleteItems(&project_autocompletes);
+    }
     UI()->DisplayProjectAutocomplete(&project_autocompletes);
 }
 
