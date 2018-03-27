@@ -70,7 +70,7 @@ DQ
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="4AP-Cj-GWb"/>
                                 </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" placeholderString="What are you doing?" id="i4n-Pi-FPE">
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" placeholderString="What are you doing?" usesSingleLineMode="YES" id="i4n-Pi-FPE">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
