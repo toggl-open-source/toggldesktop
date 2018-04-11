@@ -4140,14 +4140,6 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
         return noError;
     }
 
-    // Update the autotracker titles
-    if (event.Title().size()) {
-        autotracker_titles_.insert(event.Title());
-        UIElements render;
-        render.display_autotracker_rules = true;
-        updateUI(render);
-    }
-
     // Notify user to track using autotracker rules:
     if (user_ && user_->RunningTimeEntry()) {
         return noError;
