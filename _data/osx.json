@@ -1,7 +1,7 @@
 {
     "versions": [
         {
-            "version":"7.4.139",
+            "version":"7.4.140",
             "rows":[
                 "Added new custom autocomplete with colors",
                 "Fixed issue with reminder being show right after coming from Idle mode",
