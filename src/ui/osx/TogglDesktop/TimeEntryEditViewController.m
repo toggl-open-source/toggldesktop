@@ -942,14 +942,12 @@ extern void *ctx;
 	uint64_t task_id = 0;
 	uint64_t project_id = 0;
 
-	if (autocomplete == nil)
+	if (autocomplete != nil)
 	{
-		return;
+		task_id = autocomplete.TaskID;
+		project_id = autocomplete.ProjectID;
+		self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
 	}
-
-	task_id = autocomplete.TaskID;
-	project_id = autocomplete.ProjectID;
-	self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
 
 	@synchronized(self)
 	{
