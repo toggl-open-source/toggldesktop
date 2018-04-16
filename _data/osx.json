@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version":"7.4.139",
+            "rows":[
+                "Added new custom autocomplete with colors",
+                "Fixed issue with reminder being show right after coming from Idle mode",
+                "Do actions in the background for a faster UI"
+            ],
+            "date": "April 16th 2018",
+            "beta": "true"
+        },
+        {
             "version":"7.4.129",
             "rows":[
                 "Fixed wrong error message issue when backend is down",
