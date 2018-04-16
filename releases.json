@@ -961,66 +961,6 @@
     "osx": {
         "dev": [
             {
-                "version": "7.4.120",
-                "timestamp": "09-02-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_120.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.121",
-                "timestamp": "09-02-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_121.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.122",
-                "timestamp": "09-02-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_122.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.123",
-                "timestamp": "17-02-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_123.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.124",
-                "timestamp": "19-02-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_124.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.125",
-                "timestamp": "20-02-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_125.dmg"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.126",
                 "timestamp": "20-02-2018",
                 "filename": [
@@ -1057,6 +997,66 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_130.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.133",
+                "timestamp": "20-03-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_133.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.134",
+                "timestamp": "20-03-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_134.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.135",
+                "timestamp": "20-03-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_135.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.136",
+                "timestamp": "27-03-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_136.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.137",
+                "timestamp": "30-03-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_137.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.139",
+                "timestamp": "12-04-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_139.dmg"
                     }
                 ]
             }
@@ -1419,6 +1419,16 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_129.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.139",
+                "timestamp": "16-04-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_139.dmg"
                     }
                 ]
             }
