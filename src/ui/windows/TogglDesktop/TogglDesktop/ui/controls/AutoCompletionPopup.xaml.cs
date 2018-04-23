@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -8,6 +9,7 @@ using System.Windows.Input;
 using TogglDesktop.AutoCompleteControls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop
 {
@@ -28,6 +30,7 @@ namespace TogglDesktop
         private ToggleButton dropDownButton;
 
         private bool needsToRefreshList;
+        private bool mouseClickedOnListBox = false;
 
         private AutoCompleteController controller;
 
@@ -382,13 +385,21 @@ namespace TogglDesktop
             // fix to make sure list updates layout when first opened
             this.popup.IsOpen = true;
 
+            // Reset listbox scroll position
+            if (this.listBox.SelectedIndex != -1)
+            {
+                this.listBox.SelectedIndex = -1;
+                this.listBox.UpdateLayout();
+                this.listBox.ScrollIntoView(this.listBox.Items[0]);
+            }
+
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
-            this.emptyLabel.ShowOnlyIf(this.controller.VisibleItems.Count == 0);
+            this.emptyLabel.ShowOnlyIf(this.controller.visibleItems.Count == 0);
 
             if (closeIfEmpty)
             {
-                this.popup.IsOpen = this.controller.VisibleItems.Count > 0;   
+                this.popup.IsOpen = this.controller.visibleItems.Count > 0;   
             }
             else
             {
@@ -410,7 +421,8 @@ namespace TogglDesktop
 
             using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
             {
-                this.dropDownList.Children.Clear();
+                //this.dropDownList.Children.Clear();
+                /*
                 if (this.recyclableEntries.Count > 0)
                 {
                     using (Performance.Measure("recycling entries, count: " + this.recyclableEntries.Count))
@@ -422,9 +434,18 @@ namespace TogglDesktop
                         this.recyclableEntries.Clear();
                     }
                 }
-                this.controller.FillList(this.dropDownList, this.select, this.recyclableEntries);
+                */
+                
+                this.controller.FillList(this.listBox, this.select, this.recyclableEntries);
             }
-
+            
+            /*
+            for (var count = 0; count < 1000000; ++count)
+            {
+                items.Add(string.Format("Item {0}", count));
+            }
+            */             
+            
             this.needsToRefreshList = false;
         }
 
@@ -434,5 +455,19 @@ namespace TogglDesktop
                 e(this, EventArgs.Empty);
         }
 
+        private void listBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mouseClickedOnListBox = true;
+        }
+
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (mouseClickedOnListBox)
+            {
+                mouseClickedOnListBox = false;
+                this.confirmCompletion();
+            }
+        }
     }
 }
+

@@ -4,24 +4,101 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:toggl="clr-namespace:TogglDesktop.AutoCompleteControls"
+             xmlns:togglautocompletion="clr-namespace:TogglDesktop.AutoCompletion"
              mc:Ignorable="d"
              Height="0" Width="0">
-
+    
+    <UserControl.Resources>
+        <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
+        <DataTemplate x:Key="project-item-template">
+            <StackPanel Height="30" Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Background" Value="Transparent"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F4F4F4"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <Border Name="projectColor"
+                CornerRadius="100" Width="10" Height="10" BorderThickness="0"
+                Margin="10, 0, 10, 0" 
+                Background="{Binding ProjectColor}"/>
+                <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}"/>
+                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="task-item-template">
+            <TextBlock Name="task"
+                VerticalAlignment="Center" Foreground="DimGray"
+                Margin="10 0" Text="{Binding TaskLabel}" Background="Transparent">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Background" Value="Transparent"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F4F4F4"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="timer-item-template">
+            <StackPanel Margin="10, 0, 0, 0" Orientation="Horizontal" Background="Transparent">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Background" Value="Transparent"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F4F4F4"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <TextBlock Name="description" Text="{Binding Description}"/>
+                <TextBlock Name="task" Foreground="Gray" Text="{Binding TaskLabel}"/>
+                <TextBlock Name="project" Text="{Binding ProjectLabel}"/>
+                <TextBlock Name="client" Foreground="DimGray" Text="{Binding ClientLabel}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="category-item-template">
+            <TextBlock Name="categoryName"
+               Foreground="#a1a1a1"
+               FontSize="11"
+               Margin="0, 5, 0, 2"
+               Text="{Binding Category}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Popup Name="popup" x:FieldModifier="private"
            MaxHeight="500" StaysOpen="True" AllowsTransparency="True">
-        <ScrollViewer Background="White" Margin="10" Style="{StaticResource CustomSrollViewer}">
+        <ScrollViewer Background="White" Margin="10">
 
             <ScrollViewer.Effect>
                 <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
             </ScrollViewer.Effect>
             <Grid>
-
                 <TextBlock Name="emptyLabel" x:FieldModifier="private"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Margin="4"
                                    Text="Hello. Yes, this is list."/>
                 <StackPanel Name="dropDownList" x:FieldModifier="private">
-                    <!-- filled programatically -->
+                    <ListBox x:Name="listBox" HorizontalAlignment="Stretch" Height="200" Margin="0,0,0,0"    
+                        VerticalAlignment="Top" Width="400"    
+                        VirtualizingStackPanel.VirtualizationMode="Recycling"
+                        ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
+                        ItemsSource="{Binding Items}" PreviewMouseDown="listBox_PreviewMouseDown" SelectionChanged="listBox_SelectionChanged">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <!-- filled programatically -->
+                    </ListBox>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

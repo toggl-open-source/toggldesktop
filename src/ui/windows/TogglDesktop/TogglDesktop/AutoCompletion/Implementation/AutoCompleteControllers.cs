@@ -8,25 +8,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
     {
         public static AutoCompleteController ForTimer(IEnumerable<Toggl.TogglAutocompleteView> items)
         {
-            var splitList = items.ToLookup(i => string.IsNullOrEmpty(i.Description));
-            
-            var entries = splitList[false];
-            var projects = splitList[true];
+            var list = items.Select(i => new TimerItem(i, (i.Type == 2))).ToList<IAutoCompleteListItem>();
 
-            int entriesCount;
-            int projectsCount;
-
-            var list = new List<IAutoCompleteListItem>
-            {
-                new SimpleNoncompletingCategory("Time Entries",
-                    entries.Select(i => new TimerItem(i, false)).ToList<IAutoCompleteListItem>().GetCount(out entriesCount)
-                    ),
-                new SimpleNoncompletingCategory("Projects",
-                    projects.Select(i => new TimerItem(i, true)).ToList<IAutoCompleteListItem>().GetCount(out projectsCount)
-                    )
-            };
-
-            return new AutoCompleteController(list, string.Format("Timer(entries: {0}, projects: {1})", entriesCount, projectsCount));
+            return new AutoCompleteController(list, string.Format("Timer items ({0})", list.Count));
         }
 
 
@@ -45,7 +29,11 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         public static AutoCompleteController ForProjects(List<Toggl.TogglAutocompleteView> projects)
         {
+
+            var list = projects.Select(i => new TimerItem(i, true)).ToList<IAutoCompleteListItem>();
+
             // categorise by workspace and client
+            /*
             var list = NoProjectItem.Create()
                 .Prepend(projects
                     .Where(p => p.ProjectID != 0) // TODO: get rid of these at an earlier stage (they are workspace entries which are not needed anymore)
@@ -58,7 +46,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
                             .SelectMany(i => i).ToList()
                         ))
                     ).ToList();
-
+            */
             return new AutoCompleteController(list, string.Format("Projects({0})", projects.Count));
         }
 
