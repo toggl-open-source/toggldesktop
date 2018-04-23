@@ -333,7 +333,10 @@ namespace TogglDesktop
         private void confirmCompletion()
         {
             var item = this.controller.SelectedItem;
-
+            if (item == null)
+            {
+                return;
+            }
             this.select(item, true);
         }
 
@@ -421,30 +424,8 @@ namespace TogglDesktop
 
             using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
             {
-                //this.dropDownList.Children.Clear();
-                /*
-                if (this.recyclableEntries.Count > 0)
-                {
-                    using (Performance.Measure("recycling entries, count: " + this.recyclableEntries.Count))
-                    {
-                        foreach (var entry in this.recyclableEntries)
-                        {
-                            entry.Recycle();
-                        }
-                        this.recyclableEntries.Clear();
-                    }
-                }
-                */
-                
                 this.controller.FillList(this.listBox, this.select, this.recyclableEntries);
-            }
-            
-            /*
-            for (var count = 0; count < 1000000; ++count)
-            {
-                items.Add(string.Format("Item {0}", count));
-            }
-            */             
+            }         
             
             this.needsToRefreshList = false;
         }

@@ -37,17 +37,22 @@ namespace TogglDesktop.AutoCompletion
 
         public AutoCompleteItem SelectedItem
         {
-            get { return (LB.SelectedIndex != -1) ? (AutoCompleteItem)this.list[visibleItems[LB.SelectedIndex].Index] : null; }
+            get {
+                if (LB.SelectedIndex != -1) {
+                    var listitem = visibleItems[LB.SelectedIndex];
+                    if (listitem.Type == -1)
+                    {
+                        return null;
+                    }
+                    return (AutoCompleteItem)this.list[listitem.Index];
+                }
+                return null;
+            }
         }
 
         public List<IAutoCompleteListItem> getList()
         {
             return this.list;
-        }
-
-        public AutoCompleteItem getItemByRow(ListBoxItem listitem)
-        {
-            return (AutoCompleteItem)this.list[listitem.Index];
         }
 
         public void FillList(ListBox listBox, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
@@ -169,6 +174,13 @@ namespace TogglDesktop.AutoCompletion
             var i = this.selectedIndex + 1;
             if (i == this.visibleItems.Count)
                 i = 0;
+
+            if (this.visibleItems[i].Type == -1)
+            {
+                i++;
+                if (i == this.visibleItems.Count)
+                    i = 0;
+            }
             this.selectIndex(i);
         }
 
@@ -180,6 +192,14 @@ namespace TogglDesktop.AutoCompletion
             var i = this.selectedIndex - 1;
             if (i < 0)
                 i = this.visibleItems.Count - 1;
+
+            if (this.visibleItems[i].Type == -1)
+            {
+                i--;
+                if (i < 0)
+                    i = this.visibleItems.Count - 1;
+            }
+
             this.selectIndex(i);
         }
 
