@@ -57,9 +57,10 @@
 
 	if (view_item.TaskID != 0)
 	{
-        if ([string length] > 0) {
-            [string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" -"]];
-        }
+		if ([string length] > 0)
+		{
+			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" -"]];
+		}
 		NSMutableAttributedString *task = [[NSMutableAttributedString alloc] initWithString:view_item.TaskLabel];
 
 		[task setAttributes:
