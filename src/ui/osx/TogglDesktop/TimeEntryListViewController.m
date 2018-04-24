@@ -611,6 +611,8 @@ extern void *ctx;
 														object:nil
 													  userInfo:nil];
 	[self clearLastSelectedEntry];
+	self.lastSelectedRowIndex = -1;
+	[self.timeEntriesTableView deselectAll:nil];
 	self.selectedEntryCell = nil;
 }
 
