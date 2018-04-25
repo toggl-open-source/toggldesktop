@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
         <DataTemplate x:Key="project-item-template">
-            <StackPanel Height="30" Orientation="Horizontal">
+            <StackPanel Height="30" Orientation="Horizontal" Background="Transparent">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -24,7 +24,7 @@
                     </Style>
                 </StackPanel.Style>
                 <Border Name="projectColor"
-                CornerRadius="100" Width="10" Height="10" BorderThickness="0"
+                CornerRadius="100" Width="8" Height="8" BorderThickness="0"
                 Margin="10, 0, 10, 0" 
                 Background="{Binding ProjectColor}"/>
                 <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}"/>
@@ -32,20 +32,24 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="task-item-template">
-            <TextBlock Name="task"
-                VerticalAlignment="Center" Foreground="DimGray"
-                Margin="10 0" Text="{Binding TaskLabel}" Background="Transparent">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
+            <StackPanel Margin="10, 0, 0, 0" Height="30" Orientation="Horizontal" Background="Transparent">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#F4F4F4"/>
+                                <Setter Property="Background" Value="#F4F4F4"></Setter>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </TextBlock.Style>
-            </TextBlock>
+                </StackPanel.Style>
+                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}"/>
+                <Border Name="projectColor"
+                CornerRadius="100" Width="6" Height="6" BorderThickness="0"
+                Margin="10, 0, 10, 0" 
+                Background="{Binding ProjectColor}"/>
+                <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}"/>
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="timer-item-template">
             <StackPanel Margin="10, 0, 0, 0" Orientation="Horizontal" Background="Transparent">
