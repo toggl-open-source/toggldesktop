@@ -119,7 +119,7 @@
 		// Hide autocomplete list
 		if (self.autocompleteTableContainer != nil)
 		{
-			[self showAutoComplete:NO];
+			[self resetTable];
 			return;
 		}
 	}
