@@ -42,14 +42,14 @@
 	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
 	[self selectRowIndexes:indexSet byExtendingSelection:NO];
 
-	[self setCurrentSelected:0];
+	[self setCurrentSelected:1 next:YES];
 }
 
 - (void)nextItem
 {
 	if (self.lastSelected < self.numberOfRows - 1)
 	{
-		[self setCurrentSelected:self.lastSelected + 1];
+		[self setCurrentSelected:self.lastSelected + 1 next:YES];
 	}
 }
 
@@ -57,19 +57,47 @@
 {
 	if (self.lastSelected > 0)
 	{
-		[self setCurrentSelected:self.lastSelected - 1];
+		[self setCurrentSelected:self.lastSelected - 1 next:NO];
 	}
 }
 
-- (void)setCurrentSelected:(NSInteger)index
+- (void)setCurrentSelected:(NSInteger)index next:(BOOL)isNext
 {
-	[self resetSelected];
-	self.lastSelected = index;
 	AutoCompleteTableCell *cell = [self getSelectedCell:index];
+
 	if (cell != nil)
 	{
+		// item not selectable, jump to next/previous item
+		if (!cell.isSelectable)
+		{
+			if (index == 0 && !isNext)
+			{
+				return;
+			}
+			[self resetSelected];
+			self.lastSelected = index;
+			if (isNext)
+			{
+				[self nextItem];
+			}
+			else
+			{
+				[self previousItem];
+			}
+			return;
+		}
+		[self resetSelected];
+		self.lastSelected = index;
+
 		[cell setFocused:YES];
-		[self scrollRowToVisible:self.lastSelected];
+		if (self.lastSelected == 1)
+		{
+			[self scrollRowToVisible:0];
+		}
+		else
+		{
+			[self scrollRowToVisible:self.lastSelected];
+		}
 	}
 }
 

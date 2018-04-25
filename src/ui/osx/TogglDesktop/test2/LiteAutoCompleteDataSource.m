@@ -19,6 +19,8 @@ extern void *ctx;
 	self.orderedKeys = [[NSMutableArray alloc] init];
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
 	self.dictionary = [[NSMutableDictionary alloc] init];
+	self.lastType = -1;
+	self.types = [NSArray arrayWithObjects:@"TIME ENTRIES", @"TASKS", @"PROJECTS", @"WORKSPACES", nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayAutocomplete:)
@@ -62,6 +64,11 @@ extern void *ctx;
 	{
 		item = [self.filteredOrderedKeys objectAtIndex:row];
 	}
+
+	if (item.Type == -1)
+	{
+		return nil;
+	}
 	return item;
 }
 
@@ -82,21 +89,34 @@ extern void *ctx;
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
-			NSString *key = item.Text;
-			if ([self.dictionary objectForKey:key] == nil)
+			if (item.Type != self.lastType)
 			{
-				[self.orderedKeys addObject:item];
-				[self.dictionary setObject:item forKey:key];
+				AutocompleteItem *it = [[AutocompleteItem alloc] init];
+				it.Type = -1;
+				it.Text = self.types[item.Type];
+				[self addItem:it];
+				self.lastType = item.Type;
 			}
+			[self addItem:item];
 		}
 
-		// self.table.usesDataSource = YES;
 		if (self.input.autocompleteTableView.dataSource == nil)
 		{
 			self.input.autocompleteTableView.dataSource = self;
 		}
 
 		[self setFilter:self.currentFilter];
+	}
+}
+
+- (void)addItem:(AutocompleteItem *)item
+{
+	NSString *key = item.Text;
+
+	if ([self.dictionary objectForKey:key] == nil)
+	{
+		[self.orderedKeys addObject:item];
+		[self.dictionary setObject:item forKey:key];
 	}
 }
 
@@ -110,6 +130,7 @@ extern void *ctx;
 
 - (void)findFilter:(NSString *)filter
 {
+	self.lastType = -1;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -118,6 +139,11 @@ extern void *ctx;
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
+		                   // Skip filtering category item
+							   if (item.Type == -1)
+							   {
+								   continue;
+							   }
 							   NSString *key = item.Text;
 
 							   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
@@ -139,6 +165,15 @@ extern void *ctx;
 
 										   if (foundCount == stringArray.count)
 										   {
+											   if (item.Type != self.lastType)
+											   {
+												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+												   it.Type = -1;
+												   it.Text = self.types[item.Type];
+												   [filtered addObject:it];
+												   self.lastType = item.Type;
+											   }
+
 											   [filtered addObject:item];
 										   }
 									   }
@@ -153,6 +188,16 @@ extern void *ctx;
 									   {
 										   self.textLength = [key length];
 									   }
+
+									   if (item.Type != self.lastType)
+									   {
+										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+										   it.Type = -1;
+										   it.Text = self.types[item.Type];
+										   [filtered addObject:it];
+										   self.lastType = item.Type;
+									   }
+
 									   [filtered addObject:item];
 								   }
 							   }

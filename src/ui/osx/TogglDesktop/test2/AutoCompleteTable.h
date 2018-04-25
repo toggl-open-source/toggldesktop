@@ -15,6 +15,6 @@
 - (void)previousItem;
 - (AutoCompleteTableCell *)getSelectedCell:(NSInteger)row;
 - (void)setFirstRowAsSelected;
-- (void)setCurrentSelected:(NSInteger)index;
+- (void)setCurrentSelected:(NSInteger)index next:(BOOL)isNext;
 - (void)resetSelected;
 @end

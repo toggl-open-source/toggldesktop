@@ -23,6 +23,7 @@
 
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
 	self.cellDescription.toolTip = view_item.Text;
+	self.isSelectable = (view_item.Type != -1);
 }
 
 - (void)setFocused:(BOOL)focus
@@ -38,8 +39,22 @@
 
 - (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item
 {
-	// Format is: Description - TaskName ·ProjectName - ClientName
+	// Format is: Description - TaskName · ProjectName - ClientName
 	NSMutableAttributedString *string;
+
+	// Category row
+	if (view_item.Type == -1)
+	{
+		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
+
+		[string setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:11],
+			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+		 }
+						range:NSMakeRange(0, [string length])];
+		return string;
+	}
 
 	string = [[NSMutableAttributedString alloc] initWithString:view_item.Description];
 

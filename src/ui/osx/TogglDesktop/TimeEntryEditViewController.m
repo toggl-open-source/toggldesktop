@@ -1300,7 +1300,7 @@ extern void *ctx;
 {
 	AutoCompleteTable *table = (AutoCompleteTable *)aTableView;
 
-	[table setCurrentSelected:rowIndex];
+	[table setCurrentSelected:rowIndex next:YES];
 	return YES;
 }
 
@@ -1364,6 +1364,11 @@ extern void *ctx;
 	}
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
+	// Category clicked
+	if (item == nil)
+	{
+		return;
+	}
 	[self updateWithSelectedDescription:item withKey:item.Text];
 }
 
@@ -1380,6 +1385,11 @@ extern void *ctx;
 	}
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
+	// Category clicked
+	if (item == nil)
+	{
+		return;
+	}
 	[self updateWithSelectedProject:item withKey:item.Text];
 }
 
