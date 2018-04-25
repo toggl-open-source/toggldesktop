@@ -1074,6 +1074,7 @@ extern void *ctx;
 	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
 	{
 		AutoCompleteInput *input = [aNotification object];
+		input.autocompleteTableView.lastSavedSelected = [input.autocompleteTableView selectedRow];
 		[input resetTable];
 	}
 
@@ -1356,12 +1357,13 @@ extern void *ctx;
 	AutoCompleteInput *input = self.descriptionAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteDescriptionAutocompleteDataSource;
 
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastSavedSelected;
 
 	if (row < 0)
 	{
 		return;
 	}
+	[input.autocompleteTableView resetSelected];
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
 	// Category clicked
@@ -1376,13 +1378,13 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.projectAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
-
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastSavedSelected;
 
 	if (row < 0)
 	{
 		return;
 	}
+	[input.autocompleteTableView resetSelected];
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
 	// Category clicked
