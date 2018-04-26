@@ -80,31 +80,28 @@
     
     <Popup Name="popup" x:FieldModifier="private"
            MaxHeight="500" StaysOpen="True" AllowsTransparency="True">
-        <ScrollViewer Background="White" Margin="10">
-
-            <ScrollViewer.Effect>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
-            </ScrollViewer.Effect>
-            <Grid>
-                <TextBlock Name="emptyLabel" x:FieldModifier="private"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Margin="4"
-                                   Text="Hello. Yes, this is list."/>
-                <StackPanel Name="dropDownList" x:FieldModifier="private">
-                    <ListBox x:Name="listBox" HorizontalAlignment="Stretch" Height="200" Margin="0,0,0,0"    
-                        VerticalAlignment="Top" Width="400"    
-                        VirtualizingStackPanel.VirtualizationMode="Recycling"
-                        ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
-                        ItemsSource="{Binding Items}" PreviewMouseDown="listBox_PreviewMouseDown" SelectionChanged="listBox_SelectionChanged">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <!-- filled programatically -->
-                    </ListBox>
-                </StackPanel>
-            </Grid>
-        </ScrollViewer>
+        <Grid>
+            <TextBlock Name="emptyLabel" x:FieldModifier="private"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Margin="4"
+                                Text="Hello. Yes, this is list."/>
+            <ListBox x:Name="listBox" HorizontalAlignment="Stretch" Height="200" Margin="0,0,0,0"
+                VerticalAlignment="Top" Width="400"
+                VirtualizingStackPanel.VirtualizationMode="Recycling"
+                ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
+                ItemsSource="{Binding Items}" PreviewMouseDown="listBox_PreviewMouseDown"
+                SelectionChanged="listBox_SelectionChanged"
+                Style="{StaticResource CustomListBoxScrollViewer}">
+                <ListBox.Effect>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
+                </ListBox.Effect>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <!-- filled programatically -->
+            </ListBox>
+        </Grid>
     </Popup>
 </UserControl>
