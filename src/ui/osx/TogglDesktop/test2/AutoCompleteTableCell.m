@@ -125,7 +125,11 @@
 		[string appendAttributedString:clientName];
 	}
 
-	return string;
+	// Add padding to the front of regular items
+	NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"  "];
+	[result appendAttributedString:string];
+
+	return result;
 }
 
 @end
