@@ -79,7 +79,8 @@
     </UserControl.Resources>
     
     <Popup Name="popup" x:FieldModifier="private"
-           MaxHeight="500" StaysOpen="True" AllowsTransparency="True">
+           MaxHeight="500" StaysOpen="True" AllowsTransparency="True"
+           HorizontalOffset="-10">
         <Grid>
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
