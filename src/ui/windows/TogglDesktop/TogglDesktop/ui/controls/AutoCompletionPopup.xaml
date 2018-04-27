@@ -90,8 +90,7 @@
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
                 ItemsSource="{Binding Items}" PreviewMouseDown="listBox_PreviewMouseDown"
-                SelectionChanged="listBox_SelectionChanged"
-                Style="{StaticResource CustomListBoxScrollViewer}">
+                SelectionChanged="listBox_SelectionChanged">
                 <ListBox.Effect>
                     <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
                 </ListBox.Effect>
