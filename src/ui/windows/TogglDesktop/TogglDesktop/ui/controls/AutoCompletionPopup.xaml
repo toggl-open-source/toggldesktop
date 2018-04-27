@@ -81,19 +81,20 @@
     <Popup Name="popup" x:FieldModifier="private"
            MaxHeight="500" StaysOpen="True" AllowsTransparency="True">
         <Grid>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
+            </Grid.Effect>
             <TextBlock Name="emptyLabel" x:FieldModifier="private"
                                 HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Margin="4"
                                 Text="Hello. Yes, this is list."/>
-            <ListBox x:Name="listBox" HorizontalAlignment="Stretch" Height="200" Margin="0,0,0,0"
+            <ListBox x:Name="listBox" HorizontalAlignment="Stretch" Height="200" Margin="10,0,10,10"
+                BorderThickness="0"
                 VerticalAlignment="Top" Width="400"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
                 ItemsSource="{Binding Items}" PreviewMouseDown="listBox_PreviewMouseDown"
                 SelectionChanged="listBox_SelectionChanged">
-                <ListBox.Effect>
-                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
-                </ListBox.Effect>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
