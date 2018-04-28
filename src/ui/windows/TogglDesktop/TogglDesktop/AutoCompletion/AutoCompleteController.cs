@@ -122,6 +122,7 @@ namespace TogglDesktop.AutoCompletion
                             });
                         }
                         filteredItems.Add(item);
+                        lastType = (int)item.Type;
                     }
                 }
                 visibleItems = filteredItems;
