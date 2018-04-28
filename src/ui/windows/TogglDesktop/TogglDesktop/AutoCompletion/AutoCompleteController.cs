@@ -107,7 +107,24 @@ namespace TogglDesktop.AutoCompletion
                 }
                 words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
                 filterText = input;
-                visibleItems = visibleItems.Where(i => Filter(i)).ToList();
+
+                int lastType = -1;
+                List<ListBoxItem> filteredItems = new List<ListBoxItem>();
+                foreach (var item in visibleItems)
+                {
+                    if (Filter(item))
+                    {
+                        // Add category title if needed
+                        if (lastType != (int)item.Type) {
+                            filteredItems.Add(new ListBoxItem() {
+                                Category = categories[(int)item.Type],
+                                Type = -1
+                            });
+                        }
+                        filteredItems.Add(item);
+                    }
+                }
+                visibleItems = filteredItems;
             }
             LB.ItemsSource = visibleItems;
         }
@@ -120,7 +137,7 @@ namespace TogglDesktop.AutoCompletion
             var listItem = (ListBoxItem)item;
 
             if (listItem.Type == -1)
-                return true;
+                return false;
 
             foreach (string word in words)
             {
