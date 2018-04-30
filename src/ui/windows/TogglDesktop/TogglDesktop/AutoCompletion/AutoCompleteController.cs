@@ -74,14 +74,19 @@ namespace TogglDesktop.AutoCompletion
                             Type = -1
                         });
                     }
+                    var taskLabel = it.Item.TaskLabel;
+                    if (it.Item.Type == 0) {
+                        taskLabel = (it.Item.TaskLabel.Length > 0) ? ":" + it.Item.TaskLabel : "";
+                    }
+                    var clientLabel = (it.Item.ClientLabel.Length > 0) ? " • " + it.Item.ClientLabel : "";
 
                     items.Add(new ListBoxItem() {
                         Text = it.Item.Text,
                         Description = it.Item.Description,
                         ProjectLabel = it.Item.ProjectLabel,
                         ProjectColor = it.Item.ProjectColor,
-                        TaskLabel = it.Item.TaskLabel,
-                        ClientLabel = it.Item.ClientLabel,
+                        TaskLabel = taskLabel,
+                        ClientLabel = clientLabel,
                         Type = (int)it.Item.Type,
                         Index = count
                     });

@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
         <DataTemplate x:Key="project-item-template">
-            <StackPanel Height="30" Orientation="Horizontal" Background="Transparent">
+            <StackPanel Height="25" Orientation="Horizontal" Background="Transparent">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -25,14 +25,14 @@
                 </StackPanel.Style>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="8" Height="8" BorderThickness="0"
-                Margin="10, 0, 10, 0" 
+                Margin="6, 0, 6, 0" 
                 Background="{Binding ProjectColor}"/>
                 <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}"/>
-                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}"/>
+                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="task-item-template">
-            <StackPanel Margin="10, 0, 0, 0" Height="30" Orientation="Horizontal" Background="Transparent">
+            <StackPanel Margin="10, 0, 0, 0" Height="25" Orientation="Horizontal" Background="Transparent">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -46,13 +46,13 @@
                 <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}"/>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="6" Height="6" BorderThickness="0"
-                Margin="10, 0, 10, 0" 
+                Margin="6, 0, 6, 0" 
                 Background="{Binding ProjectColor}"/>
                 <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="timer-item-template">
-            <StackPanel Margin="10, 0, 0, 0" Orientation="Horizontal" Background="Transparent">
+            <StackPanel Height="25" Margin="10, 0, 0, 0" Orientation="Horizontal" Background="Transparent">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -64,9 +64,12 @@
                     </Style>
                 </StackPanel.Style>
                 <TextBlock Name="description" Text="{Binding Description}"/>
-                <TextBlock Name="task" Foreground="Gray" Text="{Binding TaskLabel}"/>
-                <TextBlock Name="project" Text="{Binding ProjectLabel}"/>
-                <TextBlock Name="client" Foreground="DimGray" Text="{Binding ClientLabel}"/>
+                <Border Name="projectColor"
+                CornerRadius="100" Width="6" Height="6" BorderThickness="0"
+                Margin="6, 0, 6, 0" 
+                Background="{Binding ProjectColor}"/>
+                <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}"/>
+                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="category-item-template">
