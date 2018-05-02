@@ -79,6 +79,12 @@
                Margin="0, 5, 0, 2"
                Text="{Binding Category}"/>
         </DataTemplate>
+        <DataTemplate  x:Key="string-item-template">
+            <TextBlock Name="text" VerticalAlignment="Center"
+               Margin="10, 0, 10, 0"
+               Height="25"
+               Text="{Binding Text}" />
+        </DataTemplate>
     </UserControl.Resources>
     
     <Popup Name="popup" x:FieldModifier="private"

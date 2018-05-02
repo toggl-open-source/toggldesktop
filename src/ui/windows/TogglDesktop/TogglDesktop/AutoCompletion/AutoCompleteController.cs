@@ -17,7 +17,7 @@ namespace TogglDesktop.AutoCompletion
     {
         private static readonly char[] splitChars = { ' ' };
 
-        private string[] categories = { "Time Entries", "Tasks", "Projects", "Workspaces" };
+        private string[] categories = { "Time Entries", "Tasks", "Projects", "Workspaces", "Tags" };
 
         private readonly List<IAutoCompleteListItem> list;
         private List<ListBoxItem> items;
@@ -28,6 +28,7 @@ namespace TogglDesktop.AutoCompletion
         private int selectedIndex;
         private string filterText;
         private string[] words;
+        public int autocompleteType = 0;
 
         public AutoCompleteController(List<IAutoCompleteListItem> list, string debugIdentifier)
         {
@@ -62,35 +63,74 @@ namespace TogglDesktop.AutoCompletion
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
                 items = new List<ListBoxItem>();
-                for (var count = 0; count < this.list.Count; ++count)
-                {
-                    var item = this.list[count];
-                    var it = (TimerItem)item;
 
-                    // Add category title if needed
-                    if (lastType != (int)it.Item.Type) {
-                        items.Add(new ListBoxItem() {
-                            Category = categories[(int)it.Item.Type],
-                            Type = -1
+                // For tags and autotracker terms
+                if (autocompleteType == 1)
+                {
+                    for (var count = 0; count < this.list.Count; ++count)
+                    {
+                        var item = this.list[count];
+                        var it = (StringItem)item;
+
+                        items.Add(new ListBoxItem()
+                        {
+                            Text = it.Item,
+                            Type = 4,
+                            Index = count
                         });
                     }
-                    var taskLabel = it.Item.TaskLabel;
-                    if (it.Item.Type == 0) {
-                        taskLabel = (it.Item.TaskLabel.Length > 0) ? ":" + it.Item.TaskLabel : "";
-                    }
-                    var clientLabel = (it.Item.ClientLabel.Length > 0) ? " • " + it.Item.ClientLabel : "";
+                }
+                else if (autocompleteType == 2)
+                {
+                    for (var count = 0; count < this.list.Count; ++count)
+                    {
+                        var item = this.list[count];
+                        var it = (ModelItem)item;
 
-                    items.Add(new ListBoxItem() {
-                        Text = it.Item.Text,
-                        Description = it.Item.Description,
-                        ProjectLabel = it.Item.ProjectLabel,
-                        ProjectColor = it.Item.ProjectColor,
-                        TaskLabel = taskLabel,
-                        ClientLabel = clientLabel,
-                        Type = (int)it.Item.Type,
-                        Index = count
-                    });
-                    lastType = (int)it.Item.Type;
+                        items.Add(new ListBoxItem()
+                        {
+                            Text = it.Item.Name,
+                            Type = 4,
+                            Index = count
+                        });
+                    }
+                }
+                else
+                {
+                    for (var count = 0; count < this.list.Count; ++count)
+                    {
+                        var item = this.list[count];
+                        var it = (TimerItem)item;
+
+                        // Add category title if needed
+                        if (lastType != (int)it.Item.Type)
+                        {
+                            items.Add(new ListBoxItem()
+                            {
+                                Category = categories[(int)it.Item.Type],
+                                Type = -1
+                            });
+                        }
+                        var taskLabel = it.Item.TaskLabel;
+                        if (it.Item.Type == 0)
+                        {
+                            taskLabel = (it.Item.TaskLabel.Length > 0) ? ":" + it.Item.TaskLabel : "";
+                        }
+                        var clientLabel = (it.Item.ClientLabel.Length > 0) ? " • " + it.Item.ClientLabel : "";
+
+                        items.Add(new ListBoxItem()
+                        {
+                            Text = it.Item.Text,
+                            Description = it.Item.Description,
+                            ProjectLabel = it.Item.ProjectLabel,
+                            ProjectColor = it.Item.ProjectColor,
+                            TaskLabel = taskLabel,
+                            ClientLabel = clientLabel,
+                            Type = (int)it.Item.Type,
+                            Index = count
+                        });
+                        lastType = (int)it.Item.Type;
+                    }
                 }
                 visibleItems = items;
                 LB.ItemsSource = visibleItems;
@@ -120,7 +160,7 @@ namespace TogglDesktop.AutoCompletion
                     if (Filter(item))
                     {
                         // Add category title if needed
-                        if (lastType != (int)item.Type) {
+                        if (autocompleteType == 0 && lastType != (int)item.Type) {
                             filteredItems.Add(new ListBoxItem() {
                                 Category = categories[(int)item.Type],
                                 Type = -1
@@ -264,6 +304,7 @@ namespace TogglDesktop.AutoCompletion
         private const int TASK = 1;
         private const int PROJECT = 2;
         private const int WORKSPACE = 3;
+        private const int STRINGITEM = 4;
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -295,6 +336,12 @@ namespace TogglDesktop.AutoCompletion
             {
                 return
                     element.FindResource("category-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == STRINGITEM)
+            {
+                return
+                    element.FindResource("string-item-template")
                     as DataTemplate;
             }
 

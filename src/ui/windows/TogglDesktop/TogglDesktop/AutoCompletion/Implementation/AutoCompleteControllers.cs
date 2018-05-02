@@ -18,13 +18,17 @@ namespace TogglDesktop.AutoCompletion.Implementation
         {
             var list = items.Select(i => new StringItem(i, ignoreTag)).ToList<IAutoCompleteListItem>();
 
-            return new AutoCompleteController(list, string.Format("Tags({0})", list.Count));
+            var ac = new AutoCompleteController(list, string.Format("Tags({0})", list.Count));
+            ac.autocompleteType = 1;
+            return ac;
         }
         public static AutoCompleteController ForStrings(IEnumerable<string> items)
         {
             var list = items.Select(i => new StringItem(i)).ToList<IAutoCompleteListItem>();
 
-            return new AutoCompleteController(list, string.Format("Strings({0})", list.Count));
+           var ac = new AutoCompleteController(list, string.Format("Strings({0})", list.Count));
+           ac.autocompleteType = 1;
+           return ac;
         }
 
         public static AutoCompleteController ForProjects(List<Toggl.TogglAutocompleteView> projects)
@@ -90,7 +94,11 @@ namespace TogglDesktop.AutoCompletion.Implementation
 
         public static AutoCompleteController ForClients(List<Toggl.TogglGenericView> clients)
         {
+            var list = clients.Select(m => new ModelItem(m))
+                .Cast<IAutoCompleteListItem>().ToList();
+
             // categorise by workspace
+            /*
             var list =
                 ((IAutoCompleteListItem)new NoClientItem()).Prepend(
                     clients.GroupBy(c => c.WID).Select(
@@ -100,8 +108,10 @@ namespace TogglDesktop.AutoCompletion.Implementation
                                 )
                     )
                 ).ToList();
-
-            return new AutoCompleteController(list, string.Format("Clients({0})", clients.Count));
+            */
+            var ac = new AutoCompleteController(list, string.Format("Clients({0})", clients.Count));
+            ac.autocompleteType = 2;
+            return ac;
         }
 
         public static AutoCompleteController ForWorkspaces(List<Toggl.TogglGenericView> list)
@@ -109,7 +119,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
             var items = list.Select(m => new ModelItem(m))
                 .Cast<IAutoCompleteListItem>().ToList();
 
-            return new AutoCompleteController(items, string.Format("Workspaces({0})", list.Count));
+            var ac = new AutoCompleteController(items, string.Format("Workspaces({0})", list.Count));
+            ac.autocompleteType = 2;
+            return ac;
         }
     }
 }
