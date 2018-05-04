@@ -64,7 +64,7 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <TextBlock Name="description" Text="{Binding Description}" ToolTip="{Binding Text}"/>
+                <TextBlock Name="description" VerticalAlignment="Center" Text="{Binding Description}" ToolTip="{Binding Text}"/>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="6" Height="6" BorderThickness="0"
                 Margin="6, 0, 6, 0" 
