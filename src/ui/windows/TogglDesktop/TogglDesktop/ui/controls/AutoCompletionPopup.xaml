@@ -98,8 +98,9 @@
                                 HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Margin="4"
                                 Text="Hello. Yes, this is list."/>
-            <ListBox x:Name="listBox" HorizontalAlignment="Stretch" Height="200" Margin="10,0,10,10"
+            <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
                 BorderThickness="0"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 VerticalAlignment="Top" Width="400"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
