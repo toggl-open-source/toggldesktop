@@ -92,6 +92,7 @@ Client *User::CreateClient(
         Client *cl = *it;
         if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
             related.Clients.insert(it,c);
+            break;
         }
     }
     return c;
