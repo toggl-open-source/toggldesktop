@@ -156,6 +156,7 @@ namespace TogglDesktop
 
                     this.selectedWorkspaceId = timeEntry.WID;
                     this.selectedWorkspaceName = timeEntry.WorkspaceName;
+                    this.reloadWorkspaceClients(timeEntry.WID);
 
                     if (timeEntry.CanAddProjects)
                     {
@@ -719,6 +720,15 @@ namespace TogglDesktop
             }
         }
 
+        private void reloadWorkspaceClients(ulong workspace_id)
+        {
+            var list = this.clients.Where(c => c.WID == workspace_id).ToList();
+            using (Performance.Measure("building Filtered edit view client auto complete controller, {0} items", this.clients.Count))
+            {
+                this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list));
+            }
+        }
+
         private void clientAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
         {
             if (this.clientTextBox.Text == "")
@@ -892,6 +902,7 @@ namespace TogglDesktop
         {
             if (this.selectedWorkspaceId != item.ID && !this.isInNewClientMode)
             {
+                this.reloadWorkspaceClients(item.ID);
                 this.selectClient(new Toggl.TogglGenericView());
             }
 
