@@ -25,14 +25,14 @@
                 </StackPanel.Style>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="8" Height="8" BorderThickness="0"
-                Margin="6, 0, 6, 0" 
+                Margin="10, 0, 6, 0" 
                 Background="{Binding ProjectColor}"/>
                 <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}"/>
                 <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}" ToolTip="{Binding Text}"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="task-item-template">
-            <StackPanel Margin="10, 0, 0, 0" Height="25" Orientation="Horizontal">
+            <StackPanel Height="25" Orientation="Horizontal">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -43,6 +43,7 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
+                <Border Name="padding" Width="10" Height="6" BorderThickness="0"/>
                 <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}" ToolTip="{Binding Text}"/>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="6" Height="6" BorderThickness="0"
@@ -53,7 +54,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="timer-item-template">
-            <StackPanel Height="25" Margin="10, 0, 0, 0" Orientation="Horizontal">
+            <StackPanel Height="25" Orientation="Horizontal">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -64,6 +65,7 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
+                <Border Name="padding" Width="10" Height="6" BorderThickness="0"/>
                 <TextBlock Name="description" VerticalAlignment="Center" Text="{Binding Description}" ToolTip="{Binding Text}"/>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="6" Height="6" BorderThickness="0"
