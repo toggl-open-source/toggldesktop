@@ -39,7 +39,7 @@ namespace TogglDesktop.AutoCompletion
         public AutoCompleteItem SelectedItem
         {
             get {
-                if (LB.SelectedIndex != -1) {
+                if (LB != null && LB.SelectedIndex != -1) {
                     var listitem = visibleItems[LB.SelectedIndex];
                     if (listitem.Type == -1)
                     {
