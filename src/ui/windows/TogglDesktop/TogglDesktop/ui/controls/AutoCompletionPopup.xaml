@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
         <DataTemplate x:Key="project-item-template">
-            <StackPanel Height="25" Orientation="Horizontal" Background="Transparent">
+            <StackPanel Height="25" Orientation="Horizontal">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -32,7 +32,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="task-item-template">
-            <StackPanel Margin="10, 0, 0, 0" Height="25" Orientation="Horizontal" Background="Transparent">
+            <StackPanel Margin="10, 0, 0, 0" Height="25" Orientation="Horizontal">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
@@ -53,7 +53,7 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="timer-item-template">
-            <StackPanel Height="25" Margin="10, 0, 0, 0" Orientation="Horizontal" Background="Transparent">
+            <StackPanel Height="25" Margin="10, 0, 0, 0" Orientation="Horizontal">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Background" Value="Transparent"></Setter>
