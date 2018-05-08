@@ -439,6 +439,18 @@ namespace TogglDesktop
         private void listBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseClickedOnListBox = true;
+
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+
+            while ((dep != null) && !(dep is System.Windows.Controls.ListBoxItem))
+            {
+                dep = System.Windows.Media.VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            listBox.SelectedIndex = listBox.ItemContainerGenerator.IndexFromContainer(dep);
         }
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
