@@ -437,8 +437,6 @@ namespace TogglDesktop
 
             var item = asTimerItem.Item;
 
-            this.descriptionTextBox.SetText(item.Description);
-
             Toggl.SetTimeEntryDescription(this.timeEntry.GUID, item.Description);
 
             if (item.ProjectID != 0)
