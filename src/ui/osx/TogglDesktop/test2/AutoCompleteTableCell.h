@@ -13,6 +13,7 @@
 @interface AutoCompleteTableCell : NSTableCellView
 @property (weak) IBOutlet NSTextField *cellDescription;
 @property (weak) IBOutlet NSBox *backgroundBox;
+@property BOOL isSelectable;
 - (void)render:(AutocompleteItem *)view_item;
 - (void)setFocused:(BOOL)focus;
 - (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item;

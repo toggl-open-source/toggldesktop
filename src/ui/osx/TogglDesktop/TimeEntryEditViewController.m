@@ -942,14 +942,12 @@ extern void *ctx;
 	uint64_t task_id = 0;
 	uint64_t project_id = 0;
 
-	if (autocomplete == nil)
+	if (autocomplete != nil)
 	{
-		return;
+		task_id = autocomplete.TaskID;
+		project_id = autocomplete.ProjectID;
+		self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
 	}
-
-	task_id = autocomplete.TaskID;
-	project_id = autocomplete.ProjectID;
-	self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
 
 	@synchronized(self)
 	{
@@ -1076,6 +1074,7 @@ extern void *ctx;
 	if ([[aNotification object] isKindOfClass:[AutoCompleteInput class]])
 	{
 		AutoCompleteInput *input = [aNotification object];
+		input.autocompleteTableView.lastSavedSelected = [input.autocompleteTableView selectedRow];
 		[input resetTable];
 	}
 
@@ -1302,7 +1301,7 @@ extern void *ctx;
 {
 	AutoCompleteTable *table = (AutoCompleteTable *)aTableView;
 
-	[table setCurrentSelected:rowIndex];
+	[table setCurrentSelected:rowIndex next:YES];
 	return YES;
 }
 
@@ -1358,14 +1357,20 @@ extern void *ctx;
 	AutoCompleteInput *input = self.descriptionAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteDescriptionAutocompleteDataSource;
 
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastSavedSelected;
 
 	if (row < 0)
 	{
 		return;
 	}
+	[input.autocompleteTableView resetSelected];
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
+	// Category clicked
+	if (item == nil)
+	{
+		return;
+	}
 	[self updateWithSelectedDescription:item withKey:item.Text];
 }
 
@@ -1373,15 +1378,20 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.projectAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
-
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastSavedSelected;
 
 	if (row < 0)
 	{
 		return;
 	}
+	[input.autocompleteTableView resetSelected];
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
+	// Category clicked
+	if (item == nil)
+	{
+		return;
+	}
 	[self updateWithSelectedProject:item withKey:item.Text];
 }
 

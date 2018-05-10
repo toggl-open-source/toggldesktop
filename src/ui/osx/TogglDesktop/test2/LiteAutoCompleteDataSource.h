@@ -19,6 +19,8 @@
 @property NSString *currentFilter;
 @property NSInteger textLength;
 @property AutoCompleteInput *input;
+@property NSInteger lastType;
+@property NSArray *types;
 - (NSString *)completedString:(NSString *)partialString;
 - (AutocompleteItem *)get:(NSString *)key;
 - (void)setFilter:(NSString *)filter;

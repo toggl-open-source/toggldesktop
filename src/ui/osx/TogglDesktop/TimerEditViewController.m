@@ -605,7 +605,7 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	AutoCompleteTable *table = (AutoCompleteTable *)aTableView;
 
-	[table setCurrentSelected:rowIndex];
+	[table setCurrentSelected:rowIndex next:YES];
 	return YES;
 }
 
@@ -650,6 +650,11 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
+	// Category clicked
+	if (item == nil)
+	{
+		return;
+	}
 	[self fillEntryFromAutoComplete:item];
 	[self.autoCompleteInput becomeFirstResponder];
 	NSRange tRange = [[self.autoCompleteInput currentEditor] selectedRange];
@@ -684,6 +689,10 @@ NSString *kInactiveTimerColor = @"#999999";
 			if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
 			{
 				AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+				if (item == nil)
+				{
+					return retval;
+				}
 				[self.autoCompleteInput resetTable];
 				[self fillEntryFromAutoComplete:item];
 			}

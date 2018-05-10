@@ -352,51 +352,53 @@ BOOL manualMode = NO;
 	// handle autotracker notification
 	if (notification && notification.userInfo)
 	{
-		if (notification.userInfo[@"autotracker"] != nil)
-		{
-			NSNumber *project_id = notification.userInfo[@"project_id"];
-			NSNumber *task_id = notification.userInfo[@"task_id"];
-			NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
-			char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false);
-			free(guid);
-			return;
-		}
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+						   if (notification.userInfo[@"autotracker"] != nil)
+						   {
+							   NSNumber *project_id = notification.userInfo[@"project_id"];
+							   NSNumber *task_id = notification.userInfo[@"task_id"];
+							   NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
+							   char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false);
+							   free(guid);
+							   return;
+						   }
 
-		// handle pomodoro timer
-		if (notification.userInfo[@"pomodoro"] != nil)
-		{
-			if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
-			{
-				toggl_show_app(ctx);
-			}
-			else
-			{
-				toggl_continue_latest(ctx, false);
-			}
-			return;
-		}
+		                   // handle pomodoro timer
+						   if (notification.userInfo[@"pomodoro"] != nil)
+						   {
+							   if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+							   {
+								   toggl_show_app(ctx);
+							   }
+							   else
+							   {
+								   toggl_continue_latest(ctx, false);
+							   }
+							   return;
+						   }
 
-		// handle pomodoro_break timer
-		if (notification.userInfo[@"pomodoro_break"] != nil)
-		{
-			if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
-			{
-				toggl_show_app(ctx);
-			}
-			else
-			{
-				toggl_continue_latest(ctx, false);
-			}
-			return;
-		}
+		                   // handle pomodoro_break timer
+						   if (notification.userInfo[@"pomodoro_break"] != nil)
+						   {
+							   if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+							   {
+								   toggl_show_app(ctx);
+							   }
+							   else
+							   {
+								   toggl_continue_latest(ctx, false);
+							   }
+							   return;
+						   }
 
-		// handle reminder track button press
-		if (notification.userInfo[@"reminder"] != nil)
-		{
-			char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false);
-			free(guid);
-			return;
-		}
+		                   // handle reminder track button press
+						   if (notification.userInfo[@"reminder"] != nil)
+						   {
+							   char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false);
+							   free(guid);
+							   return;
+						   }
+					   });
 	}
 }
 
@@ -430,22 +432,24 @@ BOOL manualMode = NO;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
-	const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+					   const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
 
-	char *guid = toggl_start(ctx,
-							 [new_time_entry.Description UTF8String],
-							 [new_time_entry.duration UTF8String],
-							 new_time_entry.TaskID,
-							 new_time_entry.ProjectID,
-							 0,
-							 tag_list,
-							 false);
+					   char *guid = toggl_start(ctx,
+												[new_time_entry.Description UTF8String],
+												[new_time_entry.duration UTF8String],
+												new_time_entry.TaskID,
+												new_time_entry.ProjectID,
+												0,
+												tag_list,
+												false);
 
-	if (new_time_entry.billable)
-	{
-		toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
-	}
-	free(guid);
+					   if (new_time_entry.billable)
+					   {
+						   toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
+					   }
+					   free(guid);
+				   });
 }
 
 - (void)startNewShortcut:(NSNotification *)notification
@@ -459,16 +463,17 @@ BOOL manualMode = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
-
-	char *guid = toggl_start(ctx,
-							 [new_time_entry.Description UTF8String],
-							 [new_time_entry.duration UTF8String],
-							 new_time_entry.TaskID,
-							 new_time_entry.ProjectID,
-							 0,
-							 0,
-							 false);
-	free(guid);
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+					   char *guid = toggl_start(ctx,
+												[new_time_entry.Description UTF8String],
+												[new_time_entry.duration UTF8String],
+												new_time_entry.TaskID,
+												new_time_entry.ProjectID,
+												0,
+												0,
+												false);
+					   free(guid);
+				   });
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification
@@ -481,15 +486,16 @@ BOOL manualMode = NO;
 - (void)continueTimeEntry:(NSString *)guid
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	if (guid == nil)
-	{
-		toggl_continue_latest(ctx, false);
-	}
-	else
-	{
-		toggl_continue(ctx, [guid UTF8String]);
-	}
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+					   if (guid == nil)
+					   {
+						   toggl_continue_latest(ctx, false);
+					   }
+					   else
+					   {
+						   toggl_continue(ctx, [guid UTF8String]);
+					   }
+				   });
 }
 
 - (void)startStop:(NSNotification *)notification
@@ -502,8 +508,9 @@ BOOL manualMode = NO;
 - (void)stop
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	toggl_stop(ctx, false);
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+					   toggl_stop(ctx, false);
+				   });
 }
 
 - (void)startToggleGroup:(NSNotification *)notification
@@ -516,8 +523,9 @@ BOOL manualMode = NO;
 - (void)toggleGroup:(NSString *)key
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	toggl_toggle_entries_group(ctx, [key UTF8String]);
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+					   toggl_toggle_entries_group(ctx, [key UTF8String]);
+				   });
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
@@ -1279,14 +1287,16 @@ const NSString *appName = @"osx_native_app";
 					 NSPasteboard *pasteboard  = [NSPasteboard generalPasteboard];
 					 NSString *clipboardText = [pasteboard stringForType:NSPasteboardTypeString];
 
-					 toggl_start(ctx,
-								 [clipboardText UTF8String],
-								 nil,
-								 0,
-								 0,
-								 0,
-								 0,
-								 false);
+					 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+										toggl_start(ctx,
+													[clipboardText UTF8String],
+													nil,
+													0,
+													0,
+													0,
+													0,
+													false);
+									});
 				 }
 			 }
 		 }
