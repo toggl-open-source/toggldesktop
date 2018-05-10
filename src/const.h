@@ -21,6 +21,7 @@
 #define kDebianPackage false
 #define kTimelineUploadIntervalSeconds 60
 #define kTimelineUploadMaxBackoffSeconds (kTimelineUploadIntervalSeconds * 10)  // NOLINT
+#define kMaxFileSize 5242880  // 5MB
 
 #define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
 #define kGeneralSupportURL "https://support.toggl.com/toggl-on-my-desktop/"

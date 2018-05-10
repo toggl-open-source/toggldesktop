@@ -3,7 +3,7 @@
 // No exceptions should be thrown from this library.
 
 #include "./../src/toggl_api.h"
-
+#include <fstream>
 #include <cstring>
 #include <set>
 
@@ -792,7 +792,21 @@ bool_t toggl_feedback_send(
     toggl::Feedback feedback;
     feedback.SetSubject(to_string(topic));
     feedback.SetDetails(to_string(details));
-    feedback.SetAttachmentPath(to_string(filename));
+
+    // Check image size (max 5mb)
+    std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
+
+    if(file.is_open())
+    {
+        long long size = file.tellg();
+        file.close();
+
+        if (size > kMaxFileSize) {
+            // Filesize too big
+            return false;
+        }
+        feedback.SetAttachmentPath(to_string(filename));
+    }
 
     return toggl::noError == app(context)->SendFeedback(feedback);
 }
