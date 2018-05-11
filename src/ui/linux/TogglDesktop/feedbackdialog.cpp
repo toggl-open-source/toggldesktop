@@ -32,12 +32,20 @@ void FeedbackDialog::on_uploadImageButton_clicked() {
 void FeedbackDialog::on_sendButton_clicked() {
     QString content = ui->content->toPlainText();
     if (content.isEmpty()) {
+        QMessageBox(QMessageBox::Information,
+                    "Feedback not sent!",
+                    "Please type in your feedback before sending.",
+                    QMessageBox::Ok).exec();
         ui->content->setFocus();
         return;
     }
     if (!TogglApi::instance->sendFeedback(ui->topic->currentText(),
                                           ui->content->toPlainText(),
                                           path)) {
+        QMessageBox(QMessageBox::Information,
+                    "Feedback not sent!",
+                    "Please check that file you are sending is not larger than 5MB.",
+                    QMessageBox::Ok).exec();
         return;
     }
     ui->topic->setCurrentIndex(0);
