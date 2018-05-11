@@ -180,6 +180,7 @@
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
+    <Compile Include="AutoCompletion\ListBoxItem.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
     <Compile Include="ui\AutoCompleteControls\ProjectCategory.xaml.cs">

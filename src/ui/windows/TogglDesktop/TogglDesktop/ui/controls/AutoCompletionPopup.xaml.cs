@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -8,6 +9,7 @@ using System.Windows.Input;
 using TogglDesktop.AutoCompleteControls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop
 {
@@ -28,6 +30,7 @@ namespace TogglDesktop
         private ToggleButton dropDownButton;
 
         private bool needsToRefreshList;
+        private bool mouseClickedOnListBox = false;
 
         private AutoCompleteController controller;
 
@@ -283,8 +286,8 @@ namespace TogglDesktop
                     {
                         if (this.IsOpen)
                         {
-                            this.confirmCompletion();
-                            e.Handled = true;
+                            if (this.confirmCompletion())
+                                e.Handled = true;
                         }
                         return;
                     }
@@ -327,11 +330,15 @@ namespace TogglDesktop
 
         #endregion
 
-        private void confirmCompletion()
+        private bool confirmCompletion()
         {
             var item = this.controller.SelectedItem;
-
+            if (item == null)
+            {
+                return false;
+            }
             this.select(item, true);
+            return true;
         }
 
         private void select(AutoCompleteItem item)
@@ -382,13 +389,21 @@ namespace TogglDesktop
             // fix to make sure list updates layout when first opened
             this.popup.IsOpen = true;
 
+            // Reset listbox scroll position
+            if (this.listBox.SelectedIndex != -1)
+            {
+                this.listBox.SelectedIndex = -1;
+                this.listBox.UpdateLayout();
+                this.listBox.ScrollIntoView(this.listBox.Items[0]);
+            }
+
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
-            this.emptyLabel.ShowOnlyIf(this.controller.VisibleItems.Count == 0);
+            this.emptyLabel.ShowOnlyIf(this.controller.visibleItems.Count == 0);
 
             if (closeIfEmpty)
             {
-                this.popup.IsOpen = this.controller.VisibleItems.Count > 0;   
+                this.popup.IsOpen = this.controller.visibleItems.Count > 0;   
             }
             else
             {
@@ -410,21 +425,9 @@ namespace TogglDesktop
 
             using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
             {
-                this.dropDownList.Children.Clear();
-                if (this.recyclableEntries.Count > 0)
-                {
-                    using (Performance.Measure("recycling entries, count: " + this.recyclableEntries.Count))
-                    {
-                        foreach (var entry in this.recyclableEntries)
-                        {
-                            entry.Recycle();
-                        }
-                        this.recyclableEntries.Clear();
-                    }
-                }
-                this.controller.FillList(this.dropDownList, this.select, this.recyclableEntries);
-            }
-
+                this.controller.FillList(this.listBox, this.select, this.recyclableEntries);
+            }         
+            
             this.needsToRefreshList = false;
         }
 
@@ -434,5 +437,23 @@ namespace TogglDesktop
                 e(this, EventArgs.Empty);
         }
 
+        private void listBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mouseClickedOnListBox = true;
+
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+
+            while ((dep != null) && !(dep is System.Windows.Controls.ListBoxItem))
+            {
+                dep = System.Windows.Media.VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            listBox.SelectedIndex = listBox.ItemContainerGenerator.IndexFromContainer(dep);
+            this.confirmCompletion();
+        }
     }
 }
+

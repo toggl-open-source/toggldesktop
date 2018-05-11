@@ -1,9 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using TogglDesktop.AutoCompleteControls;
+using TogglDesktop.AutoCompletion.Implementation;
+using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.AutoCompletion
 {
@@ -11,47 +17,184 @@ namespace TogglDesktop.AutoCompletion
     {
         private static readonly char[] splitChars = { ' ' };
 
+        private string[] categories = { "Time Entries", "Tasks", "Projects", "Workspaces", "Tags" };
+
         private readonly List<IAutoCompleteListItem> list;
+        private List<ListBoxItem> items;
+        public List<ListBoxItem> visibleItems;
+        private ListBox LB;
         public string DebugIdentifier { get; private set; }
 
-        private readonly List<AutoCompleteItem> currentlyVisible = new List<AutoCompleteItem>();
-        private readonly ReadOnlyCollection<AutoCompleteItem> currentlyVisibleAsReadonly;
-
         private int selectedIndex;
-        private AutoCompleteItem selectedItem;
+        private string filterText;
+        private string[] words;
+        public int autocompleteType = 0;
 
         public AutoCompleteController(List<IAutoCompleteListItem> list, string debugIdentifier)
         {
             this.list = list;
             this.DebugIdentifier = debugIdentifier;
-
-            this.currentlyVisibleAsReadonly = this.currentlyVisible.AsReadOnly();
         }
 
         public AutoCompleteItem SelectedItem
         {
-            get { return this.selectedItem; }
+            get {
+                if (LB != null && LB.SelectedIndex != -1) {
+                    var listitem = visibleItems[LB.SelectedIndex];
+                    if (listitem.Type == -1)
+                    {
+                        return null;
+                    }
+                    return (AutoCompleteItem)this.list[listitem.Index];
+                }
+                return null;
+            }
         }
 
-        public ReadOnlyCollection<AutoCompleteItem> VisibleItems
+        public List<IAutoCompleteListItem> getList()
         {
-            get { return this.currentlyVisibleAsReadonly; }
+            return this.list;
         }
 
-        public void FillList(Panel list, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
+        public void FillList(ListBox listBox, Action<AutoCompleteItem> selectWithClick, List<IRecyclable> recyclables)
         {
-            foreach (var item in this.list)
+            LB = listBox;
+            int lastType = -1;
+            using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
-                item.CreateFrameworkElement(list, selectWithClick, recyclables, this);
+                items = new List<ListBoxItem>();
+
+                // For tags and autotracker terms
+                if (autocompleteType == 1)
+                {
+                    for (var count = 0; count < this.list.Count; ++count)
+                    {
+                        var item = this.list[count];
+                        var it = (StringItem)item;
+
+                        items.Add(new ListBoxItem()
+                        {
+                            Text = it.Item,
+                            Type = 4,
+                            Index = count
+                        });
+                    }
+                }
+                else if (autocompleteType == 2)
+                {
+                    for (var count = 0; count < this.list.Count; ++count)
+                    {
+                        var item = this.list[count];
+                        var it = (ModelItem)item;
+
+                        items.Add(new ListBoxItem()
+                        {
+                            Text = it.Item.Name,
+                            Type = 4,
+                            Index = count
+                        });
+                    }
+                }
+                else
+                {
+                    for (var count = 0; count < this.list.Count; ++count)
+                    {
+                        var item = this.list[count];
+                        var it = (TimerItem)item;
+
+                        // Add category title if needed
+                        if (lastType != (int)it.Item.Type)
+                        {
+                            items.Add(new ListBoxItem()
+                            {
+                                Category = categories[(int)it.Item.Type],
+                                Type = -1
+                            });
+                        }
+                        var taskLabel = it.Item.TaskLabel;
+                        if (it.Item.Type == 0)
+                        {
+                            taskLabel = (it.Item.TaskLabel.Length > 0) ? ":" + it.Item.TaskLabel : "";
+                        }
+                        var clientLabel = (it.Item.ClientLabel.Length > 0) ? " • " + it.Item.ClientLabel : "";
+
+                        items.Add(new ListBoxItem()
+                        {
+                            Text = it.Item.Text,
+                            Description = it.Item.Description,
+                            ProjectLabel = it.Item.ProjectLabel,
+                            ProjectColor = it.Item.ProjectColor,
+                            TaskLabel = taskLabel,
+                            ClientLabel = clientLabel,
+                            Type = (int)it.Item.Type,
+                            Index = count
+                        });
+                        lastType = (int)it.Item.Type;
+                    }
+                }
+                visibleItems = items;
+                LB.ItemsSource = visibleItems;
+
             }
         }
 
         public void Complete(string input)
         {
-            var words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+            if (String.IsNullOrEmpty(input))
+            {
+                visibleItems = items;
+            }
+            else
+            {
+                if (filterText != null && !input.StartsWith(filterText))
+                {
+                    visibleItems = items;
+                }
+                words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+                filterText = input;
 
-            this.completeWith(i => i.Complete(words));
+                int lastType = -1;
+                List<ListBoxItem> filteredItems = new List<ListBoxItem>();
+                foreach (var item in visibleItems)
+                {
+                    if (Filter(item))
+                    {
+                        // Add category title if needed
+                        if (autocompleteType == 0 && lastType != (int)item.Type) {
+                            filteredItems.Add(new ListBoxItem() {
+                                Category = categories[(int)item.Type],
+                                Type = -1
+                            });
+                        }
+                        filteredItems.Add(item);
+                        lastType = (int)item.Type;
+                    }
+                }
+                visibleItems = filteredItems;
+            }
+            LB.ItemsSource = visibleItems;
         }
+
+        private bool Filter(object item)
+        {
+            if (String.IsNullOrEmpty(filterText))
+                return true;
+
+            var listItem = (ListBoxItem)item;
+
+            if (listItem.Type == -1)
+                return false;
+
+            foreach (string word in words)
+            {
+                if (listItem.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) 
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         public void RefreshVisibleList()
         {
@@ -60,71 +203,80 @@ namespace TogglDesktop.AutoCompletion
 
         private void completeWith(Func<IAutoCompleteListItem, IEnumerable<AutoCompleteItem>> completor)
         {
-            this.currentlyVisible.Clear();
-            this.currentlyVisible.AddRange(this.list.SelectMany(completor));
             this.validateSelection();
+
         }
 
         private void validateSelection()
         {
             if (this.selectedIndex == -1)
                 return;
-            var selectedItemIndex = this.currentlyVisible.IndexOf(this.selectedItem);
+            /* old
+            var selectedItemIndex = this.visibleItems.IndexOf(this.items[LB.SelectedIndex]);
             this.selectIndex(selectedItemIndex);
-            if (this.selectedIndex != -1)
-                this.SelectedItem.Selected = true;
+             * */
         }
 
         private void selectIndex(int index)
         {
-            if(index < -1 || index >= this.currentlyVisible.Count)
+            if (index < -1 || index >= this.visibleItems.Count)
                 throw new ArgumentOutOfRangeException("index");
 
             this.selectedIndex = index;
-            var newItem = index == -1 ? null : this.currentlyVisible[index];
-            if (newItem == this.selectedItem)
-                return;
+            LB.SelectedIndex = index;
 
-            if (this.selectedItem != null)
-                this.selectedItem.Selected = false;
-
-            this.selectedItem = newItem;
-
-            if (this.selectedItem != null)
-                this.selectedItem.Selected = true;
+            LB.UpdateLayout();
+            LB.ScrollIntoView(LB.Items[LB.SelectedIndex]);
         }
 
         public void SelectNext()
         {
-            if (this.currentlyVisible.Count == 0)
+            if (this.visibleItems.Count == 0)
                 return;
 
             var i = this.selectedIndex + 1;
-            if (i == this.currentlyVisible.Count)
+            if (i == this.visibleItems.Count)
                 i = 0;
+
+            if (this.visibleItems[i].Type == -1)
+            {
+                i++;
+                if (i == this.visibleItems.Count)
+                    i = 0;
+            }
             this.selectIndex(i);
         }
 
         public void SelectPrevious()
         {
-            if (this.currentlyVisible.Count == 0)
+            if (this.visibleItems.Count == 0)
                 return;
 
             var i = this.selectedIndex - 1;
             if (i < 0)
-                i = this.currentlyVisible.Count - 1;
+                i = this.visibleItems.Count - 1;
+
+            if (this.visibleItems[i].Type == -1)
+            {
+                i--;
+                if (i < 0)
+                    i = this.visibleItems.Count - 1;
+            }
+
             this.selectIndex(i);
         }
 
         public void SelectItem(AutoCompleteItem item)
         {
-            var i = item == null ? -1 : this.currentlyVisible.IndexOf(item);
+            /*old
+            var i = item == null ? -1 : this.visibleItems.IndexOf(item);
             this.selectIndex(i);
+             * */
         }
 
         public bool TryCollapseCategory()
         {
-            var asItemCategory = this.selectedItem as AutoCompleteItemCategory;
+            var asItemCategory = this.list[visibleItems[LB.SelectedIndex].Index] as AutoCompleteItemCategory;
             if (asItemCategory == null || asItemCategory.Collapsed)
                 return false;
 
@@ -135,13 +287,65 @@ namespace TogglDesktop.AutoCompletion
 
         public bool TryExpandCategory()
         {
-            var asItemCategory = this.selectedItem as AutoCompleteItemCategory;
+            var asItemCategory = this.list[visibleItems[LB.SelectedIndex].Index] as AutoCompleteItemCategory;
             if (asItemCategory == null || !asItemCategory.Collapsed)
                 return false;
 
             asItemCategory.Collapsed = false;
             this.RefreshVisibleList();
             return true;
+        }
+    }
+
+    public class AutocompleteTemplateSelector : DataTemplateSelector
+    {
+        private const int CATEGORY = -1;
+        private const int TIMEENTRY = 0;
+        private const int TASK = 1;
+        private const int PROJECT = 2;
+        private const int WORKSPACE = 3;
+        private const int STRINGITEM = 4;
+
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            FrameworkElement element = container as FrameworkElement;
+
+            var listItem = item as ListBoxItem;
+            if (listItem == null)
+                return null;
+
+            if (listItem.Type == PROJECT)
+            {
+                return
+                    element.FindResource("project-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == TASK)
+            {
+                return
+                    element.FindResource("task-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == TIMEENTRY)
+            {
+                return
+                    element.FindResource("timer-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == CATEGORY)
+            {
+                return
+                    element.FindResource("category-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == STRINGITEM)
+            {
+                return
+                    element.FindResource("string-item-template")
+                    as DataTemplate;
+            }
+
+            return null;
         }
     }
 }
