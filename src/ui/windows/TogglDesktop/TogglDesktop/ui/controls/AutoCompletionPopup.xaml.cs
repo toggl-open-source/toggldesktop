@@ -286,8 +286,8 @@ namespace TogglDesktop
                     {
                         if (this.IsOpen)
                         {
-                            this.confirmCompletion();
-                            e.Handled = true;
+                            if (this.confirmCompletion())
+                                e.Handled = true;
                         }
                         return;
                     }
@@ -330,14 +330,15 @@ namespace TogglDesktop
 
         #endregion
 
-        private void confirmCompletion()
+        private bool confirmCompletion()
         {
             var item = this.controller.SelectedItem;
             if (item == null)
             {
-                return;
+                return false;
             }
             this.select(item, true);
+            return true;
         }
 
         private void select(AutoCompleteItem item)
@@ -451,15 +452,7 @@ namespace TogglDesktop
                 return;
 
             listBox.SelectedIndex = listBox.ItemContainerGenerator.IndexFromContainer(dep);
-        }
-
-        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (mouseClickedOnListBox)
-            {
-                mouseClickedOnListBox = false;
-                this.confirmCompletion();
-            }
+            this.confirmCompletion();
         }
     }
 }

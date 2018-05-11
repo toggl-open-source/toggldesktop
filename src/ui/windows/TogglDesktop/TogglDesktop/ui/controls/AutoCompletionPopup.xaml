@@ -109,7 +109,7 @@
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
                 ItemsSource="{Binding Items}" PreviewMouseDown="listBox_PreviewMouseDown"
-                SelectionChanged="listBox_SelectionChanged">
+                >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
