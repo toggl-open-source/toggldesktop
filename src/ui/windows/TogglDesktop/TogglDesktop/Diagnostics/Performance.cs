@@ -8,7 +8,7 @@ namespace TogglDesktop.Diagnostics
     static class Performance
     {
 
-        static bool debug = true;
+        static bool debug = false;
         // ConfigurationSettings.AppSettings["Environment"] == "development"
         public static IPerformanceToken Measure(string activity)
         {
