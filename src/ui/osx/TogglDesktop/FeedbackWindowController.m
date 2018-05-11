@@ -21,8 +21,8 @@ extern void *ctx;
 		 if (result == NSFileHandlingPanelOKButton)
 		 {
 			 NSURL *url = [[panel URLs] objectAtIndex:0];
-			 NSLog(@"Selected document: %@", url);
-			 [self.selectedImageTextField setStringValue:[url path]];
+			 self.selectedImageTextField.toolTip = [url path];
+			 [self.selectedImageTextField setStringValue:[url lastPathComponent]];
 			 [self.selectedImageTextField setHidden:NO];
 		 }
 	 }];
@@ -33,12 +33,22 @@ extern void *ctx;
 	if (self.topicComboBox.stringValue == nil
 		|| [self.topicComboBox.stringValue isEqualToString:@""])
 	{
+		[[NSAlert alertWithMessageText:@"Feedback not sent!"
+						 defaultButton:nil
+					   alternateButton:nil
+						   otherButton:nil
+			 informativeTextWithFormat:@"Please choose a topic before sending feedback."] runModal];
 		[self.topicComboBox becomeFirstResponder];
 		return;
 	}
 	if (self.contentTextView.string == nil
 		|| [self.contentTextView.string isEqualToString:@""])
 	{
+		[[NSAlert alertWithMessageText:@"Feedback not sent!"
+						 defaultButton:nil
+					   alternateButton:nil
+						   otherButton:nil
+			 informativeTextWithFormat:@"Please type in your feedback before sending."] runModal];
 		[self.contentTextView becomeFirstResponder];
 		return;
 	}
@@ -46,8 +56,13 @@ extern void *ctx;
 	if (!toggl_feedback_send(ctx,
 							 [self.topicComboBox.stringValue UTF8String],
 							 [self.contentTextView.string UTF8String],
-							 [self.selectedImageTextField.stringValue UTF8String]))
+							 [self.selectedImageTextField.toolTip UTF8String]))
 	{
+		[[NSAlert alertWithMessageText:@"Feedback not sent!"
+						 defaultButton:nil
+					   alternateButton:nil
+						   otherButton:nil
+			 informativeTextWithFormat:@"Please check that file you are sending is not larger than 5MB."] runModal];
 		return;
 	}
 
