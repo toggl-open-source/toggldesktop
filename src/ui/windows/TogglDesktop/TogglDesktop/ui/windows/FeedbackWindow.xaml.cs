@@ -18,8 +18,8 @@ namespace TogglDesktop
         {
             this.topicComboBox.SelectedItem = null;
             this.messageTextBox.Text = "";
-            this.attachedFileText.Text = "";
-            this.noTopicText.Visibility = Visibility.Hidden;
+            this.attachedFileText.Text = "(maximum image size 5MB)";
+            this.errorText.Visibility = Visibility.Hidden;
             this.topicEmptyText.Visibility = Visibility.Visible;
             this.attachedFileName = null;
         }
@@ -32,7 +32,7 @@ namespace TogglDesktop
 
         private void onTopicSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.noTopicText.Visibility = Visibility.Hidden;
+            this.errorText.Visibility = Visibility.Hidden;
             this.topicEmptyText.Visibility = Visibility.Hidden;
         }
 
@@ -50,13 +50,17 @@ namespace TogglDesktop
         {
             if (this.topicComboBox.SelectedItem == null)
             {
-                this.noTopicText.Visibility = Visibility.Visible;
+                this.errorText.Text = "Please choose a topic!";
+                this.errorText.Visibility = Visibility.Visible;
+
                 this.topicComboBox.Focus();
                 return;
             }
 
             if (this.messageTextBox.Text == "")
             {
+                this.errorText.Text = "Please type in your feedback!";
+                this.errorText.Visibility = Visibility.Visible;
                 this.messageTextBox.Focus();
                 return;
             }
@@ -66,6 +70,8 @@ namespace TogglDesktop
                 this.messageTextBox.Text,
                 this.attachedFileName))
             {
+                this.errorText.Text = "File upload failed! (check file size)";
+                this.errorText.Visibility = Visibility.Visible;
                 return;
             }
 

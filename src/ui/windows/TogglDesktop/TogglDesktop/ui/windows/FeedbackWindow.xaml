@@ -68,7 +68,7 @@
                 Margin="4" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                 Text="awesome.png"/>
             <TextBlock Grid.Row="1" Grid.Column="0"
-                Name="noTopicText" x:FieldModifier="private"
+                Name="errorText" x:FieldModifier="private"
                 Text="Please select a topic."
                 Foreground="DarkRed"
                 Margin="4" VerticalAlignment="Center"/>
