@@ -56,6 +56,7 @@
 		return string;
 	}
 
+	// Item rows
 	string = [[NSMutableAttributedString alloc] initWithString:view_item.Description];
 
 	[string setAttributes:
@@ -65,64 +66,62 @@
 	 }
 					range:NSMakeRange(0, [string length])];
 
-	if (view_item.ProjectID == 0)
+	if (view_item.ProjectID != 0)
 	{
-		return string;
-	}
+		if (view_item.TaskID != 0)
+		{
+			if ([string length] > 0)
+			{
+				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" -"]];
+			}
+			NSMutableAttributedString *task = [[NSMutableAttributedString alloc] initWithString:view_item.TaskLabel];
 
-	if (view_item.TaskID != 0)
-	{
+			[task setAttributes:
+			 @{
+				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSForegroundColorAttributeName:[NSColor controlTextColor]
+			 }
+						  range:NSMakeRange(0, [task length])];
+			[string appendAttributedString:task];
+		}
 		if ([string length] > 0)
 		{
-			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" -"]];
+			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
 		}
-		NSMutableAttributedString *task = [[NSMutableAttributedString alloc] initWithString:view_item.TaskLabel];
 
-		[task setAttributes:
+		NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"•"];
+
+		[projectDot setAttributes:
 		 @{
 			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[NSColor controlTextColor]
+			 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
 		 }
-					  range:NSMakeRange(0, [task length])];
-		[string appendAttributedString:task];
-	}
-	if ([string length] > 0)
-	{
-		[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
-	}
+							range:NSMakeRange(0, [projectDot length])];
+		[string appendAttributedString:projectDot];
 
-	NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"•"];
+		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:view_item.ProjectLabel];
 
-	[projectDot setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
-	 }
-						range:NSMakeRange(0, [projectDot length])];
-	[string appendAttributedString:projectDot];
-
-	NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:view_item.ProjectLabel];
-
-	[projectName setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
-	 }
-						 range:NSMakeRange(0, [projectName length])];
-
-	[string appendAttributedString:projectName];
-
-	if ([view_item.ClientLabel length] > 0)
-	{
-		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:[@" - " stringByAppendingString:view_item.ClientLabel]];
-
-		[clientName setAttributes:
+		[projectName setAttributes:
 		 @{
 			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+			 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
 		 }
-							range:NSMakeRange(0, [clientName length])];
-		[string appendAttributedString:clientName];
+							 range:NSMakeRange(0, [projectName length])];
+
+		[string appendAttributedString:projectName];
+
+		if ([view_item.ClientLabel length] > 0)
+		{
+			NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:[@" - " stringByAppendingString:view_item.ClientLabel]];
+
+			[clientName setAttributes:
+			 @{
+				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+			 }
+								range:NSMakeRange(0, [clientName length])];
+			[string appendAttributedString:clientName];
+		}
 	}
 
 	// Add padding to the front of regular items
