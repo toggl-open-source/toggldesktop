@@ -1116,13 +1116,13 @@ extern void *ctx;
 		AutoCompleteInput *field = [aNotification object];
 		if (field == self.descriptionAutoCompleteInput)
 		{
-			NSLog(@"Filter DESCRIPTION: %@", [field stringValue]);
+			// NSLog(@"Filter DESCRIPTION: %@", [field stringValue]);
 			[self.liteDescriptionAutocompleteDataSource setFilter:[field stringValue]];
 		}
 
 		if (field == self.projectAutoCompleteInput)
 		{
-			NSLog(@"Filter PROJECTS: %@", [field stringValue]);
+			// NSLog(@"Filter PROJECTS: %@", [field stringValue]);
 			[self.liteProjectAutocompleteDataSource setFilter:[field stringValue]];
 		}
 
@@ -1336,7 +1336,7 @@ extern void *ctx;
 	{
 		item = [dataSource.filteredOrderedKeys objectAtIndex:row];
 	}
-	NSLog(@"%@", item);
+	//NSLog(@"%@", item);
 	NSAssert(item != nil, @"view item from viewitems array is nil");
 
 	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"

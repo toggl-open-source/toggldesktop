@@ -546,7 +546,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		AutoCompleteInput *field = [aNotification object];
 		[self.liteAutocompleteDataSource setFilter:[field stringValue]];
 		[field.autocompleteTableView resetSelected];
-		NSLog(@"Filter: %@", [field stringValue]);
+		//NSLog(@"Filter: %@", [field stringValue]);
 		return;
 	}
 }
