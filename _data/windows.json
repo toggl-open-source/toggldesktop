@@ -1,6 +1,22 @@
 {
     "versions": [
         {
+            "version": "7.4.155",
+            "rows": [
+                "Faster sync at entry stop",
+                "Improved setting duration according to pomodoro setting",
+                "Fixed duplicate project name check",
+                "Open edit view with doubleclick on minitimer",
+                "Fixed issue with tracking reminder being show right after coming from Idle mode",
+                "Autocomplete data is parsed in the background for non-blocking UI",
+                "New Ultrafast autocomplete with categories",
+                "Load clients in add project form based on selected Workspace",
+                "Added error messages and file size restriction to feedback form"
+            ],
+            "date": "May 14th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.122",
             "rows": [
                 "Fixed issue with task select activating entry underneath",
