@@ -1277,10 +1277,15 @@ const NSString *appName = @"osx_native_app";
 		 {
 			 NSString *character = [theEvent charactersIgnoringModifiers];
 			 NSString *windowName = [NSApp orderedWindows][0].frameAutosaveName;
+
+			 NSResponder *currentFirstResponder =  [self.mainWindowController.window firstResponder];
+			 BOOL timerFocused = [currentFirstResponder isKindOfClass:[NSTextView class]];
+
 	         // Execute only if edit view is not opened and focus is on main window
 			 if ([character isEqualToString:@"v"]
 				 && ![self.mainWindowController isEditOpened]
-				 && [windowName isEqualToString:@"MainWindow"])
+				 && [windowName isEqualToString:@"MainWindow"]
+				 && !timerFocused)
 			 {
 				 if (self.lastKnownRunningTimeEntry == nil || self.lastKnownRunningTimeEntry.duration_in_seconds < 0)
 				 {
