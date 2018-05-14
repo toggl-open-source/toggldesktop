@@ -903,13 +903,7 @@ extern void *ctx;
 
 						   const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
 						   toggl_set_time_entry_tags(ctx, GUID, value);
-
-						   bool_t isBillable = autocomplete.Billable;
-
-						   if (isBillable)
-						   {
-							   toggl_set_time_entry_billable(ctx, GUID, isBillable);
-						   }
+						   toggl_set_time_entry_billable(ctx, GUID, autocomplete.Billable);
 					   });
 	}
 	[self.descriptionAutoCompleteInput becomeFirstResponder];
@@ -953,6 +947,7 @@ extern void *ctx;
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 						   toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+						   toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], autocomplete.Billable);
 					   });
 	}
 	[self.projectAutoCompleteInput becomeFirstResponder];
