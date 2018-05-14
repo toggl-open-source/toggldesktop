@@ -316,6 +316,7 @@ error Context::save(const bool push_changes) {
 
         UIElements render;
         render.display_unsynced_items = true;
+        render.display_timer_state = true;
         render.ApplyChanges(time_entry_editor_guid_, changes);
         updateUI(render);
 
