@@ -793,19 +793,21 @@ bool_t toggl_feedback_send(
     feedback.SetSubject(to_string(topic));
     feedback.SetDetails(to_string(details));
 
-    // Check image size (max 5mb)
-    std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
+    if (filename != NULL) {
+        // Check image size (max 5mb)
+        std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
 
-    if(file.is_open())
-    {
-        long long size = file.tellg();
-        file.close();
+        if(file.is_open())
+        {
+            long long size = file.tellg();
+            file.close();
 
-        if (size > kMaxFileSize) {
-            // Filesize too big
-            return false;
+            if (size > kMaxFileSize) {
+                // Filesize too big
+                return false;
+            }
+            feedback.SetAttachmentPath(to_string(filename));
         }
-        feedback.SetAttachmentPath(to_string(filename));
     }
 
     return toggl::noError == app(context)->SendFeedback(feedback);
