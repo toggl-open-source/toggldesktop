@@ -942,12 +942,17 @@ extern void *ctx;
 	uint64_t task_id = 0;
 	uint64_t project_id = 0;
 
-	if (autocomplete != nil)
+	// User inserted free text, revert field value
+	if (autocomplete == nil)
 	{
-		task_id = autocomplete.TaskID;
-		project_id = autocomplete.ProjectID;
-		self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
+		self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
+		self.projectSelectPreviousStringValue = self.timeEntry.ProjectAndTaskLabel;
+		return;
 	}
+
+	task_id = autocomplete.TaskID;
+	project_id = autocomplete.ProjectID;
+	self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
 
 	@synchronized(self)
 	{
