@@ -68,7 +68,6 @@ extern void *ctx;
 
 	[self.window close];
 	[self.selectedImageTextField setStringValue:@""];
-	[self.selectedImageTextField setHidden:YES];
 	[self.contentTextView setString:@""];
 	[self.topicComboBox setStringValue:@""];
 
