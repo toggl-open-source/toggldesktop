@@ -1,7 +1,7 @@
 {
     "versions": [
         {
-            "version": "7.4.155",
+            "version": "7.4.157",
             "rows": [
                 "Faster sync at entry stop",
                 "Improved setting duration according to pomodoro setting",
@@ -13,7 +13,7 @@
                 "Load clients in add project form based on selected Workspace",
                 "Added error messages and file size restriction to feedback form"
             ],
-            "date": "May 14th 2018",
+            "date": "May 15th 2018",
             "beta": "true"
         },
         {
