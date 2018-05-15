@@ -872,12 +872,15 @@ extern void *ctx;
 
 	if (!autocomplete)
 	{
-		toggl_set_time_entry_description(ctx,
-										 GUID,
-										 [key UTF8String]);
-		[self.descriptionAutoCompleteInput becomeFirstResponder];
 		[self.descriptionAutoCompleteInput resetTable];
-		self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+		if ([self.descriptionAutoCompleteInput.autocompleteTableView lastSavedSelected] == -1)
+		{
+			toggl_set_time_entry_description(ctx,
+											 GUID,
+											 [key UTF8String]);
+			[self.descriptionAutoCompleteInput becomeFirstResponder];
+			self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+		}
 		return;
 	}
 
