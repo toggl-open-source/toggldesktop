@@ -1336,7 +1336,7 @@ extern void *ctx;
 	{
 		item = [dataSource.filteredOrderedKeys objectAtIndex:row];
 	}
-	//NSLog(@"%@", item);
+	// NSLog(@"%@", item);
 	NSAssert(item != nil, @"view item from viewitems array is nil");
 
 	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"

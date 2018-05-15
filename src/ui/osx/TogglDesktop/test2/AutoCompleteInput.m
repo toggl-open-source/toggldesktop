@@ -69,7 +69,7 @@
 
 - (void)toggleTableView:(int)itemCount
 {
-	//NSLog(@"// ** Toggle table (items: %d)  ** //", itemCount);
+	// NSLog(@"// ** Toggle table (items: %d)  ** //", itemCount);
 	if (itemCount > 0 || (itemCount == 0 && self.lastItemCount > 0))
 	{
 		if (self.autocompleteTableContainer.hidden)
@@ -95,7 +95,7 @@
 	int h = MIN((count * self.itemHeight), self.posY - 50);
 
 	self.heightConstraint.constant = h;
-	//NSLog(@"Update table position | H: %d, POSY: %d", h, self.posY);
+	// NSLog(@"Update table position | H: %d, POSY: %d", h, self.posY);
 }
 
 - (void)keyUp:(NSEvent *)event
