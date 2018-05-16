@@ -5305,6 +5305,51 @@ error Context::ToggleEntriesGroup(std::string name) {
     return noError;
 }
 
+error Context::PullCountries() {
+    try {
+        TogglClient toggl_client(UI());
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/countries";
+        HTTPSResponse resp = toggl_client.Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+        Json::Value root;
+        Json::Reader reader;
+
+        if (!reader.parse(resp.body, root)) {
+            return error("Error parsing countries response body");
+        }
+
+        TogglCountryView *first = nullptr;
+        for (unsigned int i = root.size() - 1; i > 0; i--) {
+            TogglCountryView *item = new TogglCountryView();
+            item->ID = root[i]["id"].asUInt64();
+            item->Name = copy_string(root[i]["name"].asString());
+            item->VatApplicable = root[i]["vat_applicable"].asBool();
+            item->VatRegex = copy_string(root[i]["vat_regex"].asString());
+            item->VatPercentage = copy_string(root[i]["vat_percentage"].asString());
+            item->Code = copy_string(root[i]["country_code"].asString());
+            item->Next = first;
+            first = item;
+        }
+
+        // update country selectbox
+        UI()->DisplayCountries(first);
+
+        country_item_clear(first);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
 template<typename T>
 void Context::collectPushableModels(
     const std::vector<T *> list,

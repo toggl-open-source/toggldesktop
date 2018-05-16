@@ -179,6 +179,16 @@ extern "C" {
         void *Next;
     } TogglTimelineEventView;
 
+    typedef struct {
+        int64_t ID;
+        char_t *Name;
+        bool_t VatApplicable;
+        char_t *VatRegex;
+        char_t *VatPercentage;
+        char_t *Code;
+        void *Next;
+    } TogglCountryView;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -281,6 +291,9 @@ extern "C" {
     typedef void (*TogglDisplayProjectColors)(
         string_list_t color_list,
         const uint64_t color_count);
+
+    typedef void (*TogglDisplayCountries)(
+        TogglCountryView *first);
 
     // Initialize/destroy an instance of the app
 
@@ -461,6 +474,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_project_colors(
         void *context,
         TogglDisplayProjectColors cb);
+
+    TOGGL_EXPORT void toggl_on_countries(
+        void *context,
+        TogglDisplayCountries cb);
 
     TOGGL_EXPORT void toggl_on_promotion(
         void *context,
@@ -808,6 +825,9 @@ extern "C" {
         const uint64_t tid);
 
     TOGGL_EXPORT void toggl_get_project_colors(
+        void *context);
+
+    TOGGL_EXPORT void toggl_get_countries(
         void *context);
 
     // You must free() the result

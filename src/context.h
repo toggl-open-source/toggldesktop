@@ -438,6 +438,8 @@ class Context : public TimelineDatasource {
     error ToggleEntriesGroup(
         std::string name);
 
+    error PullCountries();
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();

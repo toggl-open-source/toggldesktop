@@ -306,6 +306,26 @@ class TimelineEvent {
     bool operator == (const TimelineEvent& other) const;
 };
 
+class Country {
+ public:
+    Country()
+        : ID(0)
+    , Name("")
+    , VatApplicable(false)
+    , VatRegex("")
+    , VatPercentage("")
+    , Code("") {}
+
+    uint64_t ID;
+    std::string Name;
+    bool VatApplicable;
+    std::string VatRegex;
+    std::string VatPercentage;
+    std::string Code;
+
+    bool operator == (const Country& other) const;
+};
+
 }  // namespace view
 
 class Client;
@@ -392,6 +412,9 @@ class GUI : public SyncStateMonitor {
 
     void DisplayProjectColors();
 
+    void DisplayCountries(
+        TogglCountryView *first);
+
     void DisplayWorkspaceSelect(
         const std::vector<view::Generic> list);
 
@@ -450,6 +473,10 @@ class GUI : public SyncStateMonitor {
 
     void OnDisplayProjectColors(TogglDisplayProjectColors cb) {
         on_display_project_colors_ = cb;
+    }
+
+    void OnDisplayCountries(TogglDisplayCountries cb) {
+        on_display_countries_ = cb;
     }
 
     void OnDisplayUpdateDownloadState(TogglDisplayUpdateDownloadState cb) {
@@ -624,6 +651,7 @@ class GUI : public SyncStateMonitor {
     TogglDisplayPromotion on_display_promotion_;
     TogglDisplayHelpArticles on_display_help_articles_;
     TogglDisplayProjectColors on_display_project_colors_;
+    TogglDisplayCountries on_display_countries_;
     TogglDisplayObmExperiment on_display_obm_experiment_;
 
     // Cached views

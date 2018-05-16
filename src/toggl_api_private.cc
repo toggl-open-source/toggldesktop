@@ -161,6 +161,31 @@ void view_item_clear(TogglGenericView *item) {
     delete item;
 }
 
+void country_item_clear(TogglCountryView *item) {
+    if (!item) {
+        return;
+    }
+
+    item->ID = 0;
+
+    free(item->Name);
+    item->Name = nullptr;
+
+    free(item->VatPercentage);
+    item->VatPercentage = nullptr;
+
+    free(item->VatRegex);
+    item->VatRegex = nullptr;
+
+    if (item->Next) {
+        TogglCountryView *next =
+            reinterpret_cast<TogglCountryView *>(item->Next);
+        country_item_clear(next);
+    }
+
+    delete item;
+}
+
 std::string to_string(const char_t *s) {
     if (!s) {
         return std::string("");

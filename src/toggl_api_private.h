@@ -51,6 +51,8 @@ void view_item_clear(TogglGenericView *item);
 
 void autocomplete_item_clear(TogglAutocompleteView *item);
 
+void country_item_clear(TogglCountryView *item);
+
 TogglTimeEntryView *time_entry_view_item_init(
     const toggl::view::TimeEntry &te);
 

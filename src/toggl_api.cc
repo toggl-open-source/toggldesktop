@@ -832,6 +832,10 @@ void toggl_get_project_colors(
     app(context)->UI()->DisplayProjectColors();
 }
 
+void toggl_get_countries(void *context) {
+    app(context)->PullCountries();
+}
+
 // Close/Open Entries Group
 void toggl_toggle_entries_group(void *context,
                                 const char_t *name) {
@@ -1104,6 +1108,12 @@ void toggl_on_project_colors(
     void *context,
     TogglDisplayProjectColors cb) {
     app(context)->UI()->OnDisplayProjectColors(cb);
+}
+
+void toggl_on_countries(
+    void *context,
+    TogglDisplayCountries cb) {
+    app(context)->UI()->OnDisplayCountries(cb);
 }
 
 void toggl_debug(const char_t *text) {
