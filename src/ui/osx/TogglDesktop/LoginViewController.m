@@ -89,6 +89,18 @@ extern void *ctx;
 		[self changeView:NO];
 		return;
 	}
+
+	if (sender == self.tosLink)
+	{
+		toggl_tos(ctx);
+		return;
+	}
+
+	if (sender == self.privacyLink)
+	{
+		toggl_privacy_policy(ctx);
+		return;
+	}
 }
 
 - (void)changeView:(BOOL)hide
@@ -205,12 +217,23 @@ extern void *ctx;
 		return;
 	}
 
+	// check if tos and privacy policy is checked
+	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
+	if (!tosChecked)
+	{
+		[self.tosCheckbox becomeFirstResponder];
+		return;
+	}
+
 	[self.password setStringValue:@""];
 
 	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String]))
 	{
 		return;
 	}
+
+	// if (!toggl_signup(ctx, [email UTF8String],
+//        [pass UTF8String], self.selectedCountryID, true))
 }
 
 - (IBAction)countrySelected:(id)sender
