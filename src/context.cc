@@ -5274,14 +5274,15 @@ error Context::signup(
         user["created_with"] = Formatter::EscapeJSONString(
             HTTPSClient::Config.UserAgent());
 
-        Json::Value root;
-        root["user"] = user;
+        Json::Value ws;
+        ws["initial_pricing_plan"] = 0;
 
-        // Not implemented in v9 as of 12.05.2017
+        user["workspace"] = ws;
+
         HTTPSRequest req;
         req.host = urls::API();
-        req.relative_url = "/api/v8/signups";
-        req.payload = Json::StyledWriter().write(root);
+        req.relative_url = "/api/v9/signup";
+        req.payload = Json::StyledWriter().write(user);
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
