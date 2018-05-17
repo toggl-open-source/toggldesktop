@@ -511,6 +511,12 @@ extern "C" {
     TOGGL_EXPORT void toggl_password_forgot(
         void *context);
 
+    TOGGL_EXPORT void toggl_tos(
+        void *context);
+
+    TOGGL_EXPORT void toggl_privacy_policy(
+        void *context);
+
     TOGGL_EXPORT void toggl_open_in_browser(
         void *context);
 

@@ -44,6 +44,14 @@ void toggl_password_forgot(void *context) {
     app(context)->UI()->DisplayURL(kLostPasswordURL);
 }
 
+void toggl_tos(void *context) {
+    app(context)->UI()->DisplayURL(kTOSURL);
+}
+
+void toggl_privacy_policy(void *context) {
+    app(context)->UI()->DisplayURL(kPrivacyPolicyURL);
+}
+
 void toggl_context_clear(void *context) {
     delete app(context);
 }
