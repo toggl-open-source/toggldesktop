@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="countrySelect" destination="2LP-pf-f8Y" id="Dhm-hR-keY"/>
                 <outlet property="email" destination="oP1-rJ-O83" id="h76-Hp-DQv"/>
                 <outlet property="forgotPasswordTextField" destination="jUD-k4-kTh" id="dNh-ib-nWu"/>
                 <outlet property="googleLoginTextField" destination="3Xk-yW-T0s" id="AEQ-uX-kJE"/>
@@ -94,7 +95,7 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="icon-google" id="vXI-OM-KgZ"/>
                                         </imageView>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MMO-z4-qcY">
-                                            <rect key="frame" x="15" y="115" width="189" height="42"/>
+                                            <rect key="frame" x="16" y="115" width="189" height="42"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="185" id="OqO-J5-RlP"/>
                                                 <constraint firstAttribute="height" constant="37" id="jpX-2Y-CJF"/>
@@ -136,7 +137,7 @@ DQ
                                             </connections>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-k4-kTh" customClass="NSTextFieldClickablePointer">
-                                            <rect key="frame" x="113" y="170" width="105" height="19"/>
+                                            <rect key="frame" x="115" y="170" width="105" height="19"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Forgot password?" id="sue-36-IQg">
                                                 <font key="font" metaFont="cellTitle"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -193,6 +194,18 @@ DQ
                                                 <outlet property="nextKeyView" destination="oP1-rJ-O83" id="vME-1x-bai"/>
                                             </connections>
                                         </button>
+                                        <comboBox focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2LP-pf-f8Y" userLabel="Country Select" customClass="NSCustomComboBox">
+                                            <rect key="frame" x="20" y="56" width="186" height="26"/>
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="V6r-4T-KXp">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </comboBoxCell>
+                                            <connections>
+                                                <action selector="countrySelected:" target="-2" id="fsN-qG-8ay"/>
+                                                <outlet property="delegate" destination="-2" id="IXJ-zO-yeg"/>
+                                            </connections>
+                                        </comboBox>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sef-d6-OO0" customClass="NSTextFieldClickablePointer">
                                             <rect key="frame" x="66" y="10" width="90" height="17"/>
                                             <constraints>
@@ -208,9 +221,21 @@ DQ
                                                 <outlet property="delegate" destination="-2" id="2Xe-89-qEX"/>
                                             </connections>
                                         </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XMD-cg-kWg" userLabel="Country label">
+                                            <rect key="frame" x="64" y="85" width="95" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Select Country" id="9CP-Hz-JYU">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="2LP-pf-f8Y" firstAttribute="top" secondItem="AJ3-f3-hRV" secondAttribute="bottom" constant="38" id="EMh-Vi-kdd"/>
+                                        <constraint firstItem="2LP-pf-f8Y" firstAttribute="centerX" secondItem="AJ3-f3-hRV" secondAttribute="centerX" id="JPv-Ms-Wph"/>
                                         <constraint firstItem="AJ3-f3-hRV" firstAttribute="centerX" secondItem="pOo-J9-SRM" secondAttribute="centerX" id="etJ-Ia-jgP"/>
+                                        <constraint firstItem="2LP-pf-f8Y" firstAttribute="leading" secondItem="pOo-J9-SRM" secondAttribute="leading" constant="20" symbolic="YES" id="ktw-eF-vZz"/>
                                         <constraint firstItem="Sef-d6-OO0" firstAttribute="top" secondItem="AJ3-f3-hRV" secondAttribute="bottom" constant="91" id="uwf-6o-bMb"/>
                                     </constraints>
                                 </view>
@@ -254,7 +279,7 @@ DQ
                 <constraint firstItem="AeN-Lk-hKy" firstAttribute="leading" secondItem="d50-27-v7r" secondAttribute="leading" id="hTr-Vb-1Zw"/>
                 <constraint firstAttribute="centerX" secondItem="AeN-Lk-hKy" secondAttribute="centerX" id="xdo-yh-fqg"/>
             </constraints>
-            <point key="canvasLocation" x="411" y="292.5"/>
+            <point key="canvasLocation" x="411" y="292"/>
         </customView>
     </objects>
     <resources>

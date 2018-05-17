@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "toggl_api.h"
 
 @interface CountryViewItem : NSObject
-
++ (NSMutableArray *)loadAll:(TogglCountryView *)first;
+- (void)load:(TogglCountryView *)data;
+@property uint64_t ID;
+@property BOOL VatApplicable;
+@property (strong) NSString *Text;
+@property (strong) NSString *Name;
+@property (strong) NSString *VatPercentage;
+@property (strong) NSString *VatRegex;
+@property (strong) NSString *Code;
 @end

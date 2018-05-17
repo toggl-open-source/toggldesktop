@@ -51,6 +51,7 @@ extern NSString *const kToggleManualMode;
 extern NSString *const kToggleTimerMode;
 extern NSString *const kSetProjectColors;
 extern NSString *const kToggleGroup;
+extern NSString *const kDisplayCountries;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;

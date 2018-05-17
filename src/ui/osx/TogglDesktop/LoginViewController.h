@@ -9,8 +9,10 @@
 #import <Cocoa/Cocoa.h>
 #import "toggl_api.h"
 #import "NSTextFieldClickablePointer.h"
+#import "AutocompleteDataSource.h"
+#import "NSCustomComboBox.h"
 
-@interface LoginViewController : NSViewController
+@interface LoginViewController : NSViewController <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
 @property (strong) IBOutlet NSBox *signUpBox;
 @property (strong) IBOutlet NSBox *loginBox;
 @property IBOutlet NSTextField *email;
@@ -19,6 +21,10 @@
 @property IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
 @property (strong) IBOutlet NSTextFieldClickablePointer *signUpLink;
 @property (strong) IBOutlet NSTextFieldClickablePointer *loginLink;
+@property (strong) IBOutlet NSCustomComboBox *countrySelect;
+@property BOOL countriesLoaded;
+@property NSInteger selectedCountryID;
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
+- (IBAction)countrySelected:(id)sender;
 @end

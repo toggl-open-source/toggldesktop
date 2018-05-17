@@ -46,4 +46,14 @@
 			 NSAccessibilityExpandedAttribute] boolValue];
 }
 
+- (void)setExpanded:(BOOL)expanded
+{
+	id ax = NSAccessibilityUnignoredDescendant(self);
+
+	[ax accessibilitySetValue:[NSNumber numberWithBool:expanded]
+				 forAttribute:NSAccessibilityExpandedAttribute];
+}
+
 @end
+
+

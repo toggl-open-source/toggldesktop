@@ -9,11 +9,35 @@
 #import "UIEvents.h"
 #import "GTMOAuth2WindowController.h"
 #import "Utils.h"
+#import "UIEvents.h"
 #import "const.h"
+
+@interface LoginViewController ()
+@property AutocompleteDataSource *countryAutocompleteDataSource;
+@end
 
 @implementation LoginViewController
 
 extern void *ctx;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self)
+	{
+		self.countryAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayCountries];
+	}
+	return self;
+}
+
+- (void)viewDidLoad
+{
+	self.countryAutocompleteDataSource.combobox = self.countrySelect;
+	self.countryAutocompleteDataSource.combobox.dataSource = self.countryAutocompleteDataSource;
+	[self.countryAutocompleteDataSource setFilter:@""];
+	self.countriesLoaded = NO;
+	self.selectedCountryID = -1;
+}
 
 - (IBAction)clickLoginButton:(id)sender
 {
@@ -73,6 +97,17 @@ extern void *ctx;
 														object:nil];
 	[self.loginBox setHidden:hide];
 	[self.signUpBox setHidden:!hide];
+	if (hide)
+	{
+		self.countrySelect.stringValue = @"";
+		[self.countryAutocompleteDataSource setFilter:@""];
+		if (!self.countriesLoaded)
+		{
+			// Load countries in signup view
+			toggl_get_countries(ctx);
+			self.countriesLoaded = YES;
+		}
+	}
 }
 
 - (void)startGoogleLogin
@@ -146,6 +181,7 @@ extern void *ctx;
 
 - (IBAction)clickSignupButton:(id)sender
 {
+	// check if email is inserted
 	NSString *email = [self.email stringValue];
 
 	if (email == nil || !email.length)
@@ -154,10 +190,18 @@ extern void *ctx;
 		return;
 	}
 
+	// check if password is inserted
 	NSString *pass = [self.password stringValue];
 	if (pass == nil || !pass.length)
 	{
 		[self.password becomeFirstResponder];
+		return;
+	}
+
+	// check if country is selected
+	if (self.selectedCountryID == -1)
+	{
+		[self.countrySelect becomeFirstResponder];
 		return;
 	}
 
@@ -166,6 +210,40 @@ extern void *ctx;
 	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String]))
 	{
 		return;
+	}
+}
+
+- (IBAction)countrySelected:(id)sender
+{
+	NSString *key = self.countrySelect.stringValue;
+	AutocompleteItem *item = [self.countryAutocompleteDataSource get:key];
+
+	self.selectedCountryID = item.ID;
+}
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+	if ([[aNotification object] isKindOfClass:[NSCustomComboBox class]])
+	{
+		NSCustomComboBox *box = [aNotification object];
+		NSString *filter = [box stringValue];
+
+		[self.countryAutocompleteDataSource setFilter:filter];
+
+		// Hide dropdown if filter is empty or nothing was found
+		if (!filter || ![filter length] || !self.countryAutocompleteDataSource.count)
+		{
+			if ([box isExpanded] == YES)
+			{
+				[box setExpanded:NO];
+			}
+			return;
+		}
+
+		if ([box isExpanded] == NO)
+		{
+			[box setExpanded:YES];
+		}
 	}
 }
 
