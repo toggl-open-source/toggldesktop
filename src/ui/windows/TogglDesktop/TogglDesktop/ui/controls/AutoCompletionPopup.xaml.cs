@@ -254,24 +254,6 @@ namespace TogglDesktop
                         e.Handled = true;
                         return;
                     }
-                case Key.Left:
-                    {
-                        if (this.IsOpen)
-                        {
-                            if (this.controller.TryCollapseCategory())
-                                e.Handled = true;
-                        }
-                        return;
-                    }
-                case Key.Right:
-                    {
-                        if (this.IsOpen)
-                        {
-                            if (this.controller.TryExpandCategory())
-                                e.Handled = true;
-                        }
-                        return;
-                    }
                 case Key.Escape:
                     {
                         if (this.IsOpen)
