@@ -173,6 +173,7 @@ namespace TogglDesktop.AutoCompletion
                 visibleItems = filteredItems;
             }
             LB.ItemsSource = visibleItems;
+            this.selectIndex(1);
         }
 
         private bool Filter(object item)
@@ -219,14 +220,15 @@ namespace TogglDesktop.AutoCompletion
 
         private void selectIndex(int index)
         {
-            if (index < -1 || index >= this.visibleItems.Count)
-                throw new ArgumentOutOfRangeException("index");
+            if (index < 0 || this.visibleItems.Count == 0 || index >= this.visibleItems.Count)
+                index = 0;
 
             this.selectedIndex = index;
             LB.SelectedIndex = index;
 
             LB.UpdateLayout();
-            LB.ScrollIntoView(LB.Items[LB.SelectedIndex]);
+            if (this.visibleItems.Count > 0)
+                LB.ScrollIntoView(LB.Items[LB.SelectedIndex]);
         }
 
         public void SelectNext()
