@@ -31,4 +31,6 @@
 - (IBAction)clickTosCheckbox:(id)sender;
 @property (strong) IBOutlet NSTextFieldClickablePointer *tosLink;
 @property (strong) IBOutlet NSTextFieldClickablePointer *privacyLink;
+@property (strong) IBOutlet NSButton *loginButton;
+@property (strong) IBOutlet NSButton *SignupButton;
 @end

@@ -119,6 +119,14 @@ extern void *ctx;
 			toggl_get_countries(ctx);
 			self.countriesLoaded = YES;
 		}
+
+		// Update nextkeyView
+		[self.password setNextKeyView:self.countrySelect];
+	}
+	else
+	{
+		// Update nextkeyView
+		[self.password setNextKeyView:self.loginButton];
 	}
 }
 
