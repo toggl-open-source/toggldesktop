@@ -402,9 +402,10 @@ bool_t toggl_login(
 bool_t toggl_signup(
     void *context,
     const char_t *email,
-    const char_t *password) {
+    const char_t *password,
+    const uint64_t country_id) {
     return toggl::noError == app(context)->Signup(to_string(email),
-            to_string(password));
+            to_string(password), country_id);
 }
 
 bool_t toggl_google_login(

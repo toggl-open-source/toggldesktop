@@ -2273,11 +2273,12 @@ error Context::Login(
 
 error Context::Signup(
     const std::string email,
-    const std::string password) {
+    const std::string password,
+    const uint64_t country_id) {
 
     TogglClient client(UI());
     std::string json("");
-    error err = signup(&client, email, password, &json);
+    error err = signup(&client, email, password, &json, country_id);
     if (kBadRequestError == err) {
         return displayError(kCheckYourSignupError);
     }
@@ -5254,7 +5255,8 @@ error Context::signup(
     TogglClient *toggl_client,
     const std::string email,
     const std::string password,
-    std::string *user_data_json) {
+    std::string *user_data_json,
+    const uint64_t country_id) {
 
     if (email.empty()) {
         return "Empty email";
@@ -5276,6 +5278,8 @@ error Context::signup(
 
         Json::Value ws;
         ws["initial_pricing_plan"] = 0;
+        ws["tos_accepted"] = true;
+        ws["country_id"] = country_id;
 
         user["workspace"] = ws;
 

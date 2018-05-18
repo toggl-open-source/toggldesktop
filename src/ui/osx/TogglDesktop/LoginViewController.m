@@ -227,7 +227,7 @@ extern void *ctx;
 
 	[self.password setStringValue:@""];
 
-	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String]))
+	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
 	{
 		return;
 	}

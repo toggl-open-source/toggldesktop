@@ -502,7 +502,8 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_signup(
         void *context,
         const char_t *email,
-        const char_t *password);
+        const char_t *password,
+        const uint64_t country_id);
 
     TOGGL_EXPORT bool_t toggl_google_login(
         void *context,

@@ -23,7 +23,7 @@
 @property (strong) IBOutlet NSTextFieldClickablePointer *loginLink;
 @property (strong) IBOutlet NSCustomComboBox *countrySelect;
 @property BOOL countriesLoaded;
-@property NSInteger selectedCountryID;
+@property uint64_t selectedCountryID;
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
