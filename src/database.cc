@@ -1397,11 +1397,14 @@ error Database::loadProjects(
 
         Poco::Data::Statement select(*session_);
         select <<
-               "SELECT local_id, id, uid, name, guid, wid, color, cid, "
-               "active, billable, client_guid "
+               "SELECT projects.local_id, projects.id, projects.uid, "
+               "projects.name, projects.guid, projects.wid, projects.color, projects.cid, "
+               "projects.active, projects.billable, projects.client_guid, "
+               "clients.name as client_name "
                "FROM projects "
-               "WHERE uid = :uid "
-               "ORDER BY name",
+               "LEFT JOIN clients on projects.cid = clients.id "
+               "WHERE projects.uid = :uid "
+               "ORDER BY client_name COLLATE NOCASE ASC, projects.name COLLATE NOCASE ASC;",
                useRef(UID);
         error err = last_error("loadProjects");
         if (err != noError) {
@@ -1443,6 +1446,11 @@ error Database::loadProjects(
                     model->SetClientGUID("");
                 } else {
                     model->SetClientGUID(rs[10].convert<std::string>());
+                }
+                if (rs[11].isEmpty()) {
+                    model->SetClientName("");
+                } else {
+                    model->SetClientName(rs[11].convert<std::string>());
                 }
                 model->ClearDirty();
                 list->push_back(model);
