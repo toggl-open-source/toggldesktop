@@ -85,6 +85,7 @@ extern void *ctx;
 
 	@synchronized(self)
 	{
+		self.lastType = -1;
 		[self.orderedKeys removeAllObjects];
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
