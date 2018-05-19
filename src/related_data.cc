@@ -222,10 +222,8 @@ void RelatedData::timeEntryAutocompleteItems(
             continue;
         }
 
-        Client *c = clientByProject(p);
-
         std::string project_task_label =
-            Formatter::JoinTaskName(t, p, c);
+            Formatter::JoinTaskName(t, p);
 
         std::string description = te->Description();
 
@@ -253,11 +251,12 @@ void RelatedData::timeEntryAutocompleteItems(
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
             autocomplete_item.ProjectLabel = p->Name();
+            if (p->CID()) {
+                autocomplete_item.ClientLabel = p->ClientName();
+                autocomplete_item.ClientID = p->CID();
+            }
         }
-        if (c) {
-            autocomplete_item.ClientLabel = c->Name();
-            autocomplete_item.ClientID = c->ID();
-        }
+
         if (t) {
             autocomplete_item.TaskID = t->ID();
             autocomplete_item.TaskLabel = t->Name();
@@ -305,9 +304,7 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
-        Client *c = clientByProject(p);
-
-        std::string text = Formatter::JoinTaskName(t, p, c);
+        std::string text = Formatter::JoinTaskName(t, p);
         if (text.empty()) {
             continue;
         }
@@ -322,14 +319,15 @@ void RelatedData::taskAutocompleteItems(
         autocomplete_item.ProjectAndTaskLabel = text;
         autocomplete_item.TaskLabel = t->Name();
         autocomplete_item.TaskID = t->ID();
-        if (c) {
-            autocomplete_item.ClientLabel = c->Name();
-            autocomplete_item.ClientID = c->ID();
-        }
+
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
             autocomplete_item.ProjectLabel = p->Name();
+            if (p->CID()) {
+                autocomplete_item.ClientLabel = p->ClientName();
+                autocomplete_item.ClientID = p->CID();
+            }
         }
         if (ws_names) {
             autocomplete_item.WorkspaceName = (*ws_names)[t->WID()];
@@ -360,7 +358,7 @@ void RelatedData::projectAutocompleteItems(
 
         Client *c = clientByProject(p);
 
-        std::string text = Formatter::JoinTaskName(0, p, c);
+        std::string text = Formatter::JoinTaskName(0, p);
         if (text.empty()) {
             continue;
         }
@@ -540,7 +538,7 @@ void RelatedData::ProjectLabelAndColorCode(
 
     Client *c = clientByProject(p);
 
-    view->ProjectAndTaskLabel = Formatter::JoinTaskName(t, p, c);
+    view->ProjectAndTaskLabel = Formatter::JoinTaskName(t, p);
 
     if (p) {
         view->Color = p->ColorCode();
