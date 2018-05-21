@@ -5279,7 +5279,7 @@ error Context::signup(
         Json::Value ws;
         ws["initial_pricing_plan"] = 0;
         ws["tos_accepted"] = true;
-        ws["country_id"] = country_id;
+        ws["country_id"] = Json::UInt64(country_id);
 
         user["workspace"] = ws;
 
