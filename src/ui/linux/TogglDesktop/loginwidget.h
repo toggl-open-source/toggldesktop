@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include "./timeentryview.h"
+#include "./countryview.h"
 #include "./oauth2.h"
 
 namespace Ui {
@@ -47,10 +48,22 @@ class LoginWidget : public QWidget {
 
     void on_signup_clicked();
 
+    void setCountries(
+        QVector<CountryView * > list);
+
+    void on_viewchangelabel_linkActivated(const QString &link);
+
+    void on_countryComboBox_currentIndexChanged(int index);
+
  private:
     Ui::LoginWidget *ui;
 
     OAuth2 *oauth2;
+
+    bool signupVisible;
+
+    bool countriesLoaded;
+    int64_t selectedCountryId;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_LOGINWIDGET_H_

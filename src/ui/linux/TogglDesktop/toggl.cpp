@@ -17,6 +17,7 @@
 
 #include "./timeentryview.h"
 #include "./genericview.h"
+#include "./countryview.h"
 #include "./autocompleteview.h"
 #include "./settingsview.h"
 #include "./bugsnag.h"
@@ -189,6 +190,12 @@ void on_project_colors(
     TogglApi::instance->setProjectColors(result);
 }
 
+void on_countries(
+    TogglCountryView *first) {
+    TogglApi::instance->setCountries(
+        CountryView::importAll(first));
+}
+
 TogglApi::TogglApi(
     QObject *parent,
     QString logPathOverride,
@@ -255,6 +262,7 @@ TogglApi::TogglApi(
     toggl_on_timer_state(ctx, on_display_timer_state);
     toggl_on_idle_notification(ctx, on_display_idle_notification);
     toggl_on_project_colors(ctx, on_project_colors);
+    toggl_on_countries(ctx, on_countries);
 
     char *env = toggl_environment(ctx);
     if (env) {
@@ -296,7 +304,8 @@ void TogglApi::login(const QString email, const QString password) {
 void TogglApi::signup(const QString email, const QString password) {
     toggl_signup(ctx,
                  email.toStdString().c_str(),
-                 password.toStdString().c_str());
+                 password.toStdString().c_str(),
+                 countryID);
 }
 
 void TogglApi::setEnvironment(const QString environment) {
@@ -705,6 +714,10 @@ QString TogglApi::getContinueStopKey() {
 
 void TogglApi::getProjectColors() {
     toggl_get_project_colors(ctx);
+}
+
+void TogglApi::getCountries() {
+    toggl_get_countries(ctx);
 }
 
 void TogglApi::loadMore() {

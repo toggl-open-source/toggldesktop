@@ -15,6 +15,7 @@ class AutocompleteView;
 class GenericView;
 class SettingsView;
 class TimeEntryView;
+class CountryView;
 
 class TogglApi : public QObject {
     Q_OBJECT
@@ -36,6 +37,8 @@ class TogglApi : public QObject {
         const QString errorClass,
         const QString message,
         const QString context);
+
+    u_int64_t countryID;
 
     bool shutdown;
 
@@ -177,6 +180,7 @@ class TogglApi : public QObject {
     QString getContinueStopKey();
 
     void getProjectColors();
+    void getCountries();
     void loadMore();
 
     bool sendFeedback(const QString topic,
@@ -277,6 +281,9 @@ class TogglApi : public QObject {
 
     void setProjectColors(
         QVector<char *> list);
+
+    void setCountries(
+        QVector<CountryView *> list);
 
  private:
     void *ctx;
