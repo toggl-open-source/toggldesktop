@@ -97,18 +97,22 @@ void LoginWidget::loginDone() {
 bool LoginWidget::validateFields() {
     if (ui->email->text().isEmpty()) {
         ui->email->setFocus();
+        TogglApi::instance->displayError(QString("Please enter valid email address"), true);
         return false;
     }
     if (ui->password->text().isEmpty()) {
         ui->password->setFocus();
+        TogglApi::instance->displayError(QString("A password is required"), true);
         return false;
     }
     if (selectedCountryId == -1) {
         ui->countryComboBox->setFocus();
+        TogglApi::instance->displayError(QString("Please select Country before signing up"), true);
         return false;
     }
     if (ui->tosCheckBox->checkState() == Qt::Unchecked) {
         ui->tosCheckBox->setFocus();
+        TogglApi::instance->displayError(QString("You must agree to the terms of service and privacy policy to use Toggl"), true);
         return false;
     }
     return true;
