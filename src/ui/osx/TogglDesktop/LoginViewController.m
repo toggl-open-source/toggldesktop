@@ -17,7 +17,10 @@
 @end
 
 @implementation LoginViewController
-
+NSString *emailMissingError = @"Please enter valid email address";
+NSString *passwordMissingError = @"A password is required";
+NSString *countryNotSelectedError = @"Please select Country before signing up";
+NSString *tosAgreeError = @"You must agree to the terms of service and privacy policy to use Toggl";
 extern void *ctx;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -199,7 +202,7 @@ extern void *ctx;
 	toggl_google_login(ctx, [auth.accessToken UTF8String]);
 }
 
-- (IBAction)clickSignupButton:(id)sender
+- (BOOL)validateForm
 {
 	// check if email is inserted
 	NSString *email = [self.email stringValue];
@@ -207,22 +210,29 @@ extern void *ctx;
 	if (email == nil || !email.length)
 	{
 		[self.email becomeFirstResponder];
-		return;
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:emailMissingError];
+		return NO;
 	}
 
 	// check if password is inserted
 	NSString *pass = [self.password stringValue];
+
 	if (pass == nil || !pass.length)
 	{
 		[self.password becomeFirstResponder];
-		return;
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:passwordMissingError];
+		return NO;
 	}
 
 	// check if country is selected
 	if (self.selectedCountryID == -1)
 	{
 		[self.countrySelect becomeFirstResponder];
-		return;
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:countryNotSelectedError];
+		return NO;
 	}
 
 	// check if tos and privacy policy is checked
@@ -230,8 +240,24 @@ extern void *ctx;
 	if (!tosChecked)
 	{
 		[self.tosCheckbox becomeFirstResponder];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:tosAgreeError];
+		return NO;
+	}
+
+	return YES;
+}
+
+- (IBAction)clickSignupButton:(id)sender
+{
+	// Validate all values inserted
+	if (![self validateForm])
+	{
 		return;
 	}
+
+	NSString *email = [self.email stringValue];
+	NSString *pass = [self.password stringValue];
 
 	[self.password setStringValue:@""];
 
@@ -239,9 +265,6 @@ extern void *ctx;
 	{
 		return;
 	}
-
-	// if (!toggl_signup(ctx, [email UTF8String],
-//        [pass UTF8String], self.selectedCountryID, true))
 }
 
 - (IBAction)countrySelected:(id)sender
