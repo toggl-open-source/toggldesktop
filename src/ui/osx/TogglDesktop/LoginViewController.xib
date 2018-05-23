@@ -21,6 +21,7 @@
                 <outlet property="privacyLink" destination="dfC-GB-YON" id="Awl-HC-cxp"/>
                 <outlet property="signUpBox" destination="eFn-63-UsG" id="REa-lY-WeP"/>
                 <outlet property="signUpLink" destination="Pac-Wf-TBM" id="OJL-Vy-YNT"/>
+                <outlet property="tosCheckbox" destination="JUm-ju-juG" id="VzR-rO-Xgv"/>
                 <outlet property="tosLink" destination="Ib4-aG-7eD" id="6YF-V1-GnO"/>
                 <outlet property="view" destination="d50-27-v7r" id="fRE-03-vij"/>
             </connections>
