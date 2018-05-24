@@ -136,6 +136,10 @@ namespace TogglDesktop.AutoCompletion
                         }
                         var clientLabel = (it.Item.ClientLabel.Length > 0) ? " • " + it.Item.ClientLabel : "";
 
+                        if (it.Item.Type == 2)
+                        {
+                            clientLabel = it.Item.ClientLabel;
+                        }
                         items.Add(new ListBoxItem()
                         {
                             Text = it.Item.Text,
