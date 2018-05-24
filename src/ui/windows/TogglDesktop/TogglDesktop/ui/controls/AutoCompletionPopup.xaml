@@ -89,10 +89,17 @@
                ToolTip="{Binding Text}" />
         </DataTemplate>
         <DataTemplate x:Key="client-item-template">
-            <TextBlock Name="clientName"
+            <StackPanel Height="25" Orientation="Horizontal">
+                <Border 
+                 Width="0" Height="0" BorderThickness="0"
+                Margin="5,5,5,0" 
+                Background="Transparent"/>
+                <TextBlock Name="clientName"
+               VerticalAlignment="Center"
                Foreground="#a1a1a1"
                FontSize="12"
                Text="{Binding Text}"/>
+            </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
     
