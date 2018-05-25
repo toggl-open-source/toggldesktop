@@ -53,6 +53,9 @@ void autocomplete_item_clear(TogglAutocompleteView *item);
 
 void country_item_clear(TogglCountryView *item);
 
+TogglCountryView *country_view_item_init(
+    const Json::Value v);
+
 TogglTimeEntryView *time_entry_view_item_init(
     const toggl::view::TimeEntry &te);
 

@@ -5330,13 +5330,7 @@ error Context::PullCountries() {
 
         TogglCountryView *first = nullptr;
         for (unsigned int i = root.size() - 1; i > 0; i--) {
-            TogglCountryView *item = new TogglCountryView();
-            item->ID = root[i]["id"].asUInt64();
-            item->Name = copy_string(root[i]["name"].asString());
-            item->VatApplicable = root[i]["vat_applicable"].asBool();
-            item->VatRegex = copy_string(root[i]["vat_regex"].asString());
-            item->VatPercentage = copy_string(root[i]["vat_percentage"].asString());
-            item->Code = copy_string(root[i]["country_code"].asString());
+            TogglCountryView *item = country_view_item_init(root[i]);
             item->Next = first;
             first = item;
         }

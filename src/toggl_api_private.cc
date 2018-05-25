@@ -218,6 +218,24 @@ int compare_string(const char_t *s1, const char_t *s2) {
 #endif
 }
 
+TogglCountryView *country_view_item_init(
+    const Json::Value v) {
+
+    TogglCountryView *item = new TogglCountryView();
+    poco_check_ptr(item);
+
+    item->ID = v["id"].asUInt64();
+    item->Name = copy_string(v["name"].asString());
+    item->VatApplicable = v["vat_applicable"].asBool();
+    item->VatRegex = copy_string(v["vat_regex"].asString());
+    item->VatPercentage = copy_string(v["vat_percentage"].asString());
+    item->Code = copy_string(v["country_code"].asString());
+
+    item->Next = nullptr;
+
+    return item;
+}
+
 TogglTimeEntryView *time_entry_view_item_init(
     const toggl::view::TimeEntry &te) {
 
