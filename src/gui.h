@@ -413,7 +413,7 @@ class GUI : public SyncStateMonitor {
     void DisplayProjectColors();
 
     void DisplayCountries(
-        TogglCountryView *first);
+        std::vector<TogglCountryView> *items);
 
     void DisplayWorkspaceSelect(
         const std::vector<view::Generic> list);

@@ -218,6 +218,30 @@ int compare_string(const char_t *s1, const char_t *s2) {
 #endif
 }
 
+TogglCountryView *country_list_init(
+    std::vector<TogglCountryView> *items) {
+
+    TogglCountryView *first = nullptr;
+    for (std::vector<TogglCountryView>::const_iterator
+            it = items->begin();
+            it != items->end();
+            it++) {
+        TogglCountryView *item = new TogglCountryView();
+        poco_check_ptr(item);
+
+        item->ID = it->ID;
+        item->Name = it->Name;
+        item->VatApplicable = it->VatApplicable;
+        item->VatRegex = it->VatRegex;
+        item->VatPercentage = it->VatPercentage;
+        item->Code = it->Code;
+
+        item->Next = first;
+        first = item;
+    }
+    return first;
+}
+
 TogglCountryView *country_view_item_init(
     const Json::Value v) {
 

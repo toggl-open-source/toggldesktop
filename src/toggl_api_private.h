@@ -51,6 +51,9 @@ void view_item_clear(TogglGenericView *item);
 
 void autocomplete_item_clear(TogglAutocompleteView *item);
 
+TogglCountryView *country_list_init(
+    std::vector<TogglCountryView> *items);
+
 void country_item_clear(TogglCountryView *item);
 
 TogglCountryView *country_view_item_init(
