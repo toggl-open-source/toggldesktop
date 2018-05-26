@@ -504,6 +504,9 @@ namespace TogglDesktop
             var item = asProjectItem.Item;
 
             this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel, item.TaskLabel, item.ProjectColor);
+
+            this.billableCheckBox.IsChecked = item.Billable;
+            this.billableCheckBox_OnClick(null, null);
         }
 
         private void projectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
