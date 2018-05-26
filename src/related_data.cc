@@ -330,6 +330,7 @@ void RelatedData::taskAutocompleteItems(
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
             autocomplete_item.ProjectLabel = p->Name();
+            autocomplete_item.Billable = p->Billable();
         }
         if (ws_names) {
             autocomplete_item.WorkspaceName = (*ws_names)[t->WID()];
