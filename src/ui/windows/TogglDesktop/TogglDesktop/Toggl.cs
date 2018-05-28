@@ -201,12 +201,12 @@ public static partial class Toggl
     }
     #endregion
 
-    public static bool Signup(string email, string password)
+    public static bool Signup(string email, string password, int country_id)
     {
-        return toggl_signup(ctx, email, password);
+        return toggl_signup(ctx, email, password, country_id);
     }
 
-    public static bool Login(string email, string password)
+    public static bool Login(string email, string password, int country_id)
     {
         return toggl_login(ctx, email, password);
     }

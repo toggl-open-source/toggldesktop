@@ -751,7 +751,8 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string email,
         [MarshalAs(UnmanagedType.LPWStr)]
-        string password);
+        string password,
+        Int64 country_id);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]

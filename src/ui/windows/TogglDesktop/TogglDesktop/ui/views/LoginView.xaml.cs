@@ -175,7 +175,7 @@ namespace TogglDesktop
             }
         }
 
-        private async void confirm(Func<string, string, bool> confirmAction, string actionName)
+        private async void confirm(Func<string, string, int, bool> confirmAction, string actionName)
         {
             using (Performance.Measure("attempting " + actionName))
             {
@@ -188,7 +188,7 @@ namespace TogglDesktop
                     var email = this.emailTextBox.Text;
                     var password = this.passwordBox.Text;
 
-                    success = await Task.Run(() => confirmAction(email, password));
+                    success = await Task.Run(() => confirmAction(email, password, selectedCountryID));
                 }
                 finally
                 {
