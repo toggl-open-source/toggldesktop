@@ -302,6 +302,30 @@ public static partial class Toggl
 
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
+    public struct TogglCountryView
+    {
+        public Int64 ID;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string Name;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool VatApplicable;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string VatRegex;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string VatPercentage;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string Code;
+        public IntPtr Next;
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+    }
+
+
     // Callbacks that need to be implemented in UI
 
     [UnmanagedFunctionPointer(convention)]
@@ -456,6 +480,10 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPArray, ArraySubType=UnmanagedType.LPWStr, SizeParamIndex=1)]
         string[] color_list,
         UInt64 color_count);
+
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayCountries(
+        IntPtr first);
 
     // Initialize/destroy an instance of the app
 
@@ -682,6 +710,11 @@ public static partial class Toggl
     private static extern void toggl_on_project_colors(
         IntPtr context,
         TogglDisplayProjectColors cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_countries(
+        IntPtr context,
+        TogglDisplayCountries cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_promotion(
@@ -1229,6 +1262,10 @@ public static partial class Toggl
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_get_project_colors(
         IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_get_countries(
+         IntPtr context);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

@@ -7,6 +7,8 @@ using System.Windows.Media.Animation;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
+using System.Collections.Generic;
+using System.Windows.Navigation;
 
 namespace TogglDesktop
 {
@@ -26,6 +28,9 @@ namespace TogglDesktop
 
         private ConfirmAction confirmAction = ConfirmAction.Unknown;
         private bool loggingIn;
+        private bool countriesLoaded = false;
+        private int selectedCountryID = -1;
+        private List<TogglDesktop.Toggl.TogglCountryView> countriesList;
 
         public LoginView()
         {
@@ -33,7 +38,27 @@ namespace TogglDesktop
             this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
 
             this.IsVisibleChanged += this.onIsVisibleChanged;
+            Toggl.OnDisplayCountries += this.onDisplayCountries;
         }
+
+        private void onDisplayCountries(List<TogglDesktop.Toggl.TogglCountryView> list)
+        {
+            if (this.TryBeginInvoke(this.onDisplayCountries, list))
+                return;
+
+            this.countriesList = list;
+
+            List<ComboItem> items = new List<ComboItem>();
+            foreach (TogglDesktop.Toggl.TogglCountryView c in list)
+            {
+                items.Add(new ComboItem()
+                {
+                    Name = c.Name,
+                    ID = (int)c.ID
+                });
+            }
+            this.countrySelect.ItemsSource = items;
+         }
 
         private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -95,18 +120,34 @@ namespace TogglDesktop
                     this.confirmButtonText.Text = "LOG IN";
                     this.forgotPasswordButton.Visibility = Visibility.Visible;
                     this.googleLoginButton.Visibility = Visibility.Visible;
+                    this.countryLabel.Visibility = Visibility.Collapsed;
+                    this.countrySelect.Visibility = Visibility.Collapsed;
+                    this.tosCheckbox.Visibility = Visibility.Collapsed;
                     this.signupLoginToggle.Content = "Sign up for free";
                     break;
                 case ConfirmAction.SignUp:
                     this.confirmButtonText.Text = "SIGN UP";
-                    this.forgotPasswordButton.Visibility = Visibility.Hidden;
-                    this.googleLoginButton.Visibility = Visibility.Hidden;
+                    this.forgotPasswordButton.Visibility = Visibility.Collapsed;
+                    this.googleLoginButton.Visibility = Visibility.Collapsed;
+                    this.countryLabel.Visibility = Visibility.Visible;
+                    this.countrySelect.Visibility = Visibility.Visible;
+                    this.tosCheckbox.Visibility = Visibility.Visible;
                     this.signupLoginToggle.Content = "Log in";
+                    this.getCountries();
                     break;
                 default:
                     throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
             }
             this.confirmAction = action;
+        }
+
+        private void getCountries()
+        {
+            if (!this.countriesLoaded)
+            {
+                Toggl.GetCountries();
+                this.countriesLoaded = true;
+            }
         }
 
         private void tryConfirm()
@@ -183,11 +224,26 @@ namespace TogglDesktop
             if (this.emailTextBox.Text == "")
             {
                 this.emailTextBox.Focus();
+                Toggl.NewError("Please enter valid email address", true);
                 return false;
             }
             if (this.passwordBox.Text == "")
             {
                 this.passwordBox.Focus();
+                Toggl.NewError("A password is required", true);
+                return false;
+            }
+            if (this.selectedCountryID == -1)
+            {
+                this.countrySelect.Focus();
+                Toggl.NewError("Please select Country before signing up", true);
+                return false;
+            }
+            if (!this.tosCheckbox.IsChecked.Value)
+            {
+                this.tosCheckbox.Focus();
+                Toggl.NewError("You must agree to the terms of service and privacy policy to use Toggl", true);
+
                 return false;
             }
             return true;
@@ -295,5 +351,22 @@ namespace TogglDesktop
 
 
         #endregion
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.ToString());
+        }
+
+        private void countrySelect_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            TogglDesktop.Toggl.TogglCountryView item = this.countriesList[this.countrySelect.SelectedIndex];
+            this.selectedCountryID = (int)item.ID;
+        }
+    }
+
+    class ComboItem
+    {
+        public string Name { get; set; }
+        public int ID { get; set; }
     }
 }
