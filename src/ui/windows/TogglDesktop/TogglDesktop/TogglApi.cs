@@ -1266,7 +1266,7 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_get_countries(
-         IntPtr context);
+        IntPtr context);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
