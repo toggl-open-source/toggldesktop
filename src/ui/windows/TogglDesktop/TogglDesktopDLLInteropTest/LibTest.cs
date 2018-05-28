@@ -143,14 +143,14 @@ public class LibTest
     public void TestSignup()
     {
         // Signing up with fake data in test mode should fail
-        Assert.IsFalse(TogglDesktop.Toggl.Signup("john@doe.com", "foobar"));
+        Assert.IsFalse(TogglDesktop.Toggl.Signup("john@doe.com", "foobar", 1));
     }
 
     [TestMethod]
     public void TestLogin()
     {
         // Logging in with a fake user should fail
-        Assert.IsFalse(TogglDesktop.Toggl.Login("john@doe.com", "foobar"));
+        Assert.IsFalse(TogglDesktop.Toggl.Login("john@doe.com", "foobar", 1));
     }
 
     [TestMethod]
