@@ -20,6 +20,7 @@ extern void *ctx;
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
 	self.dictionary = [[NSMutableDictionary alloc] init];
 	self.lastType = -1;
+	self.lastClientLabel = nil;
 	self.types = [NSArray arrayWithObjects:@"TIME ENTRIES", @"TASKS", @"PROJECTS", @"WORKSPACES", nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -86,6 +87,7 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		self.lastType = -1;
+		self.lastClientLabel = nil;
 		[self.orderedKeys removeAllObjects];
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
@@ -97,6 +99,19 @@ extern void *ctx;
 				it.Text = self.types[item.Type];
 				[self addItem:it];
 				self.lastType = item.Type;
+			}
+
+			if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+			{
+				AutocompleteItem *it = [[AutocompleteItem alloc] init];
+				it.Type = -2;
+				it.Text = item.ClientLabel;
+				if (it.Text.length == 0)
+				{
+					it.Text = @"No Client";
+				}
+				[self addItem:it];
+				self.lastClientLabel = item.ClientLabel;
 			}
 			[self addItem:item];
 		}
@@ -132,6 +147,7 @@ extern void *ctx;
 - (void)findFilter:(NSString *)filter
 {
 	self.lastType = -1;
+	self.lastClientLabel = nil;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -140,8 +156,8 @@ extern void *ctx;
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
-		                   // Skip filtering category item
-							   if (item.Type == -1)
+		                   // Skip filtering category item and client items
+							   if (item.Type == -1 || item.Type == -2)
 							   {
 								   continue;
 							   }
@@ -175,6 +191,19 @@ extern void *ctx;
 												   self.lastType = item.Type;
 											   }
 
+											   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+											   {
+												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+												   it.Type = -2;
+												   it.Text = item.ClientLabel;
+												   if (it.Text.length == 0)
+												   {
+													   it.Text = @"No Client";
+												   }
+												   [filtered addObject:it];
+												   self.lastClientLabel = item.ClientLabel;
+											   }
+
 											   [filtered addObject:item];
 										   }
 									   }
@@ -197,6 +226,19 @@ extern void *ctx;
 										   it.Text = self.types[item.Type];
 										   [filtered addObject:it];
 										   self.lastType = item.Type;
+									   }
+
+									   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+									   {
+										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+										   it.Type = -2;
+										   it.Text = item.ClientLabel;
+										   if (it.Text.length == 0)
+										   {
+											   it.Text = @"No Client";
+										   }
+										   [filtered addObject:it];
+										   self.lastClientLabel = item.ClientLabel;
 									   }
 
 									   [filtered addObject:item];

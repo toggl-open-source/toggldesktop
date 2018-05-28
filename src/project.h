@@ -24,7 +24,8 @@ class Project : public BaseModel {
     , active_(false)
     , private_(false)
     , billable_(false)
-    , client_guid_("") {}
+    , client_guid_("")
+    , client_name_("") {}
 
     const Poco::UInt64 &WID() const {
         return wid_;
@@ -69,6 +70,11 @@ class Project : public BaseModel {
     }
     void SetBillable(const bool value);
 
+    const std::string &ClientName() const {
+        return client_name_;
+    }
+    void SetClientName(const std::string value);
+
     // Override BaseModel
     std::string String() const;
     std::string ModelName() const;
@@ -93,6 +99,7 @@ class Project : public BaseModel {
     bool private_;
     bool billable_;
     std::string client_guid_;
+    std::string client_name_;
 };
 
 template<typename T, size_t N> T *end(T (&ra)[N]);

@@ -819,7 +819,7 @@ void Context::updateUI(const UIElements &what) {
                     Task *t = user_->related.TaskByID(model->TID());
 
                     view::AutotrackerRule rule;
-                    rule.ProjectName = Formatter::JoinTaskName(t, p, nullptr);
+                    rule.ProjectName = Formatter::JoinTaskName(t, p);
                     rule.ID = model->LocalID();
                     rule.Term = model->Term();
                     autotracker_rule_views.push_back(rule);
@@ -3414,7 +3414,7 @@ error Context::DefaultProjectName(std::string *name) {
                 t = user_->related.TaskByID(user_->DefaultTID());
             }
         }
-        *name = Formatter::JoinTaskName(t, p, nullptr);
+        *name = Formatter::JoinTaskName(t, p);
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {

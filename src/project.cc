@@ -110,6 +110,13 @@ void Project::SetCID(const Poco::UInt64 value) {
     }
 }
 
+void Project::SetClientName(const std::string value) {
+    if (client_name_ != value) {
+        client_name_ = value;
+        SetDirty();
+    }
+}
+
 void Project::LoadFromJSON(Json::Value data) {
     if (data.isMember("hex_color")) {
         SetColor(data["hex_color"].asString());

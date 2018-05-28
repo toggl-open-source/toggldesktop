@@ -24,7 +24,7 @@
 @property uint64_t ProjectID;
 @property uint64_t WorkspaceID;
 @property uint64_t TaskID;
-@property uint64_t Type;
+@property int64_t Type;
 @property bool Billable;
 @property (strong) NSArray *tags;
 @end

@@ -325,7 +325,7 @@ void GUI::DisplayAutotrackerNotification(Project *const p, Task *const t) {
         tid = t->ID();
     }
 
-    char_t *label = copy_string(Formatter::JoinTaskName(t, p, nullptr));
+    char_t *label = copy_string(Formatter::JoinTaskName(t, p));
     on_display_autotracker_notification_(label, pid, tid);
     free(label);
 }

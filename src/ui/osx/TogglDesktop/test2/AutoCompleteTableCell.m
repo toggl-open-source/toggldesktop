@@ -23,7 +23,7 @@
 
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
 	self.cellDescription.toolTip = view_item.Text;
-	self.isSelectable = (view_item.Type != -1);
+	self.isSelectable = (view_item.Type != -1 && view_item.Type != -2);
 }
 
 - (void)setFocused:(BOOL)focus
@@ -54,6 +54,24 @@
 		 }
 						range:NSMakeRange(0, [string length])];
 		return string;
+	}
+
+	// Client row
+	if (view_item.Type == -2)
+	{
+		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
+
+		[string setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+		 }
+						range:NSMakeRange(0, [string length])];
+
+		NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"  "];
+		[result appendAttributedString:string];
+
+		return result;
 	}
 
 	// Item rows
@@ -109,19 +127,15 @@
 							 range:NSMakeRange(0, [projectName length])];
 
 		[string appendAttributedString:projectName];
+	}
 
-		if ([view_item.ClientLabel length] > 0)
-		{
-			NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:[@" - " stringByAppendingString:view_item.ClientLabel]];
+	if (view_item.Type == 2)
+	{
+		// Add more padding to the front of project items
+		NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"      "];
+		[result appendAttributedString:string];
 
-			[clientName setAttributes:
-			 @{
-				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-				 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
-			 }
-								range:NSMakeRange(0, [clientName length])];
-			[string appendAttributedString:clientName];
-		}
+		return result;
 	}
 
 	// Add padding to the front of regular items

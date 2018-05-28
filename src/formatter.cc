@@ -45,8 +45,7 @@ std::string Formatter::togglTimeOfDayToPocoFormat(
 
 std::string Formatter::JoinTaskName(
     Task * const t,
-    Project * const p,
-    Client * const c) {
+    Project * const p) {
     std::stringstream ss;
     bool empty = true;
     if (t) {
@@ -59,13 +58,14 @@ std::string Formatter::JoinTaskName(
         }
         ss << p->Name();
         empty = false;
-    }
-    if (c) {
-        if (!empty) {
-            ss << ". ";
+        if (p->CID()) {
+            if (!empty) {
+                ss << ". ";
+            }
+            ss << p->ClientName();
         }
-        ss << c->Name();
     }
+
     return ss.str();
 }
 
