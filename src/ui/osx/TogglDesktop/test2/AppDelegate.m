@@ -28,6 +28,7 @@
 #import "UIEvents.h"
 #import "Utils.h"
 #import "ViewItem.h"
+#import "CountryViewItem.h"
 #import "idler.h"
 #import "toggl_api.h"
 
@@ -1240,6 +1241,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_autotracker_notification(ctx, on_autotracker_notification);
 	toggl_on_promotion(ctx, on_promotion);
 	toggl_on_project_colors(ctx, on_project_colors);
+	toggl_on_countries(ctx, on_countries);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1798,6 +1800,11 @@ void on_project_colors(
 		[colors addObject:[NSString stringWithUTF8String:list[i]]];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSetProjectColors object:colors];
+}
+
+void on_countries(TogglCountryView *first)
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayCountries object:[CountryViewItem loadAll:first]];
 }
 
 @end

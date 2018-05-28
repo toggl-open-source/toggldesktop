@@ -96,6 +96,16 @@ void GUI::DisplayProjectColors() {
     delete[] list;
 }
 
+void GUI::DisplayCountries(
+    std::vector<TogglCountryView> *items) {
+    if (!on_display_countries_) {
+        return;
+    }
+    TogglCountryView *first = country_list_init(items);
+    on_display_countries_(first);
+    country_item_clear(first);
+}
+
 void GUI::DisplaySyncState(const Poco::Int64 state) {
     if (state == lastSyncState) {
         return;

@@ -89,7 +89,8 @@ static int l_toggl_login(lua_State *L) {
 static int l_toggl_signup(lua_State *L) {
     bool_t res = toggl_signup(toggl_app_instance_,
                               checkstring(L, 1),
-                              checkstring(L, 2));
+                              checkstring(L, 2),
+                              1);
     lua_pushboolean(L, res);
     return 1;
 }

@@ -269,7 +269,8 @@ class Context : public TimelineDatasource {
 
     error Signup(
         const std::string email,
-        const std::string password);
+        const std::string password,
+        const uint64_t country_id);
 
     error GoogleLogin(const std::string access_token);
 
@@ -438,6 +439,8 @@ class Context : public TimelineDatasource {
     error ToggleEntriesGroup(
         std::string name);
 
+    error PullCountries();
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -562,7 +565,8 @@ class Context : public TimelineDatasource {
         TogglClient *https_client,
         const std::string email,
         const std::string password,
-        std::string *user_data_json);
+        std::string *user_data_json,
+        const uint64_t country_id);
     static error me(
         TogglClient *https_client,
         const std::string email,

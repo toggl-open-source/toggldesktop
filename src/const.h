@@ -27,6 +27,8 @@
 #define kGeneralSupportURL "https://support.toggl.com/toggl-on-my-desktop/"
 #define kLinuxSupportURL "https://support.toggl.com/toggl-desktop-for-linux/"
 #define kMacSupportURL "https://support.toggl.com/toggl-desktop-for-mac-osx/"
+#define kTOSURL "https://toggl.com/legal/terms/"
+#define kPrivacyPolicyURL "https://toggl.com/legal/privacy/"
 
 #define kContentTypeMultipartFormData "multipart/form-data"
 #define kContentTypeApplicationJSON "application/json"

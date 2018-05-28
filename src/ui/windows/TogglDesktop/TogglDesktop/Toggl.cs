@@ -139,6 +139,9 @@ public static partial class Toggl
     public delegate void DisplayProjectColors(
         string[] colors, ulong count);
 
+    public delegate void DisplayCountries(
+        List<TogglCountryView> list);
+
     public delegate void DisplayPromotion(
         long id);
 
@@ -198,12 +201,12 @@ public static partial class Toggl
     }
     #endregion
 
-    public static bool Signup(string email, string password)
+    public static bool Signup(string email, string password, int country_id)
     {
-        return toggl_signup(ctx, email, password);
+        return toggl_signup(ctx, email, password, country_id);
     }
 
-    public static bool Login(string email, string password)
+    public static bool Login(string email, string password, int country_id)
     {
         return toggl_login(ctx, email, password);
     }
@@ -613,6 +616,11 @@ public static partial class Toggl
         toggl_get_project_colors(ctx);
     }
 
+    public static void GetCountries()
+    {
+        toggl_get_countries(ctx);
+    }
+
     public static void SetKeepEndTimeFixed(bool b)
     {
         toggl_set_keep_end_time_fixed(ctx, b);
@@ -691,6 +699,7 @@ public static partial class Toggl
     public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
     public static event DisplayUpdateDownloadState OnDisplayUpdateDownloadState = delegate { };
     public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
+    public static event DisplayCountries OnDisplayCountries = delegate { };
     public static event DisplayPromotion OnDisplayPromotion = delegate { };
     public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
     public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
@@ -894,6 +903,14 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnProjectColors, count: {0}", count))
             {
                 OnDisplayProjectColors(colors, count);
+            }
+        });
+
+        toggl_on_countries(ctx, (first) =>
+        {
+            using (Performance.Measure("Calling OnCountries"))
+            {
+                OnDisplayCountries(convertToCountryList(first));
             }
         });
 
@@ -1171,6 +1188,11 @@ public static partial class Toggl
     private static List<TogglAutotrackerRuleView> convertToAutotrackerEntryList(IntPtr first)
     {
         return marshalList<TogglAutotrackerRuleView>(first, n => n.Next);
+    }
+
+    private static List<TogglCountryView> convertToCountryList(IntPtr first)
+    {
+        return marshalList<TogglCountryView>(first, n => n.Next);
     }
 
     #endregion
