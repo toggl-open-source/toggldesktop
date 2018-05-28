@@ -44,6 +44,14 @@ void toggl_password_forgot(void *context) {
     app(context)->UI()->DisplayURL(kLostPasswordURL);
 }
 
+void toggl_tos(void *context) {
+    app(context)->UI()->DisplayURL(kTOSURL);
+}
+
+void toggl_privacy_policy(void *context) {
+    app(context)->UI()->DisplayURL(kPrivacyPolicyURL);
+}
+
 void toggl_context_clear(void *context) {
     delete app(context);
 }
@@ -394,9 +402,10 @@ bool_t toggl_login(
 bool_t toggl_signup(
     void *context,
     const char_t *email,
-    const char_t *password) {
+    const char_t *password,
+    const uint64_t country_id) {
     return toggl::noError == app(context)->Signup(to_string(email),
-            to_string(password));
+            to_string(password), country_id);
 }
 
 bool_t toggl_google_login(
@@ -832,6 +841,10 @@ void toggl_get_project_colors(
     app(context)->UI()->DisplayProjectColors();
 }
 
+void toggl_get_countries(void *context) {
+    app(context)->PullCountries();
+}
+
 // Close/Open Entries Group
 void toggl_toggle_entries_group(void *context,
                                 const char_t *name) {
@@ -1104,6 +1117,12 @@ void toggl_on_project_colors(
     void *context,
     TogglDisplayProjectColors cb) {
     app(context)->UI()->OnDisplayProjectColors(cb);
+}
+
+void toggl_on_countries(
+    void *context,
+    TogglDisplayCountries cb) {
+    app(context)->UI()->OnDisplayCountries(cb);
 }
 
 void toggl_debug(const char_t *text) {

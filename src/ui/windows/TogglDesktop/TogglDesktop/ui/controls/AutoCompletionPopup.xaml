@@ -25,10 +25,9 @@
                 </StackPanel.Style>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="8" Height="8" BorderThickness="0"
-                Margin="10, 0, 6, 0" 
+                Margin="20,0,6,0" 
                 Background="{Binding ProjectColor}"/>
                 <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}"/>
-                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}" ToolTip="{Binding Text}"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="task-item-template">
@@ -78,7 +77,7 @@
         <DataTemplate x:Key="category-item-template">
             <TextBlock Name="categoryName"
                Foreground="#a1a1a1"
-               FontSize="11"
+               FontSize="13"
                Margin="0, 5, 0, 2"
                Text="{Binding Category}"/>
         </DataTemplate>
@@ -88,6 +87,19 @@
                Height="25"
                Text="{Binding Text}"
                ToolTip="{Binding Text}" />
+        </DataTemplate>
+        <DataTemplate x:Key="client-item-template">
+            <StackPanel Height="25" Orientation="Horizontal">
+                <Border 
+                 Width="0" Height="0" BorderThickness="0"
+                Margin="5,5,5,0" 
+                Background="Transparent"/>
+                <TextBlock Name="clientName"
+               VerticalAlignment="Center"
+               Foreground="#a1a1a1"
+               FontSize="12"
+               Text="{Binding Text}"/>
+            </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
     

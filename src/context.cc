@@ -819,7 +819,7 @@ void Context::updateUI(const UIElements &what) {
                     Task *t = user_->related.TaskByID(model->TID());
 
                     view::AutotrackerRule rule;
-                    rule.ProjectName = Formatter::JoinTaskName(t, p, nullptr);
+                    rule.ProjectName = Formatter::JoinTaskName(t, p);
                     rule.ID = model->LocalID();
                     rule.Term = model->Term();
                     autotracker_rule_views.push_back(rule);
@@ -2273,11 +2273,12 @@ error Context::Login(
 
 error Context::Signup(
     const std::string email,
-    const std::string password) {
+    const std::string password,
+    const uint64_t country_id) {
 
     TogglClient client(UI());
     std::string json("");
-    error err = signup(&client, email, password, &json);
+    error err = signup(&client, email, password, &json, country_id);
     if (kBadRequestError == err) {
         return displayError(kCheckYourSignupError);
     }
@@ -3413,7 +3414,7 @@ error Context::DefaultProjectName(std::string *name) {
                 t = user_->related.TaskByID(user_->DefaultTID());
             }
         }
-        *name = Formatter::JoinTaskName(t, p, nullptr);
+        *name = Formatter::JoinTaskName(t, p);
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -5254,7 +5255,8 @@ error Context::signup(
     TogglClient *toggl_client,
     const std::string email,
     const std::string password,
-    std::string *user_data_json) {
+    std::string *user_data_json,
+    const uint64_t country_id) {
 
     if (email.empty()) {
         return "Empty email";
@@ -5274,14 +5276,17 @@ error Context::signup(
         user["created_with"] = Formatter::EscapeJSONString(
             HTTPSClient::Config.UserAgent());
 
-        Json::Value root;
-        root["user"] = user;
+        Json::Value ws;
+        ws["initial_pricing_plan"] = 0;
+        ws["tos_accepted"] = true;
+        ws["country_id"] = Json::UInt64(country_id);
 
-        // Not implemented in v9 as of 12.05.2017
+        user["workspace"] = ws;
+
         HTTPSRequest req;
         req.host = urls::API();
-        req.relative_url = "/api/v8/signups";
-        req.payload = Json::StyledWriter().write(root);
+        req.relative_url = "/api/v9/signup";
+        req.payload = Json::StyledWriter().write(user);
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
@@ -5302,6 +5307,45 @@ error Context::signup(
 error Context::ToggleEntriesGroup(std::string name) {
     entry_groups[name] = !entry_groups[name];
     OpenTimeEntryList();
+    return noError;
+}
+
+error Context::PullCountries() {
+    try {
+        TogglClient toggl_client(UI());
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/countries";
+        HTTPSResponse resp = toggl_client.Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+        Json::Value root;
+        Json::Reader reader;
+
+        if (!reader.parse(resp.body, root)) {
+            return error("Error parsing countries response body");
+        }
+
+        std::vector<TogglCountryView> countries;
+
+        for (unsigned int i = root.size() - 1; i > 0; i--) {
+            TogglCountryView *item = country_view_item_init(root[i]);
+            countries.push_back(*item);
+        }
+
+        // update country selectbox
+        UI()->DisplayCountries(&countries);
+
+        //country_item_clear(first);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
     return noError;
 }
 

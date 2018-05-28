@@ -20,6 +20,7 @@
 @property NSInteger textLength;
 @property AutoCompleteInput *input;
 @property NSInteger lastType;
+@property NSString *lastClientLabel;
 @property NSArray *types;
 - (NSString *)completedString:(NSString *)partialString;
 - (AutocompleteItem *)get:(NSString *)key;

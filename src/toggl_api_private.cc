@@ -161,6 +161,31 @@ void view_item_clear(TogglGenericView *item) {
     delete item;
 }
 
+void country_item_clear(TogglCountryView *item) {
+    if (!item) {
+        return;
+    }
+
+    item->ID = 0;
+
+    free(item->Name);
+    item->Name = nullptr;
+
+    free(item->VatPercentage);
+    item->VatPercentage = nullptr;
+
+    free(item->VatRegex);
+    item->VatRegex = nullptr;
+
+    if (item->Next) {
+        TogglCountryView *next =
+            reinterpret_cast<TogglCountryView *>(item->Next);
+        country_item_clear(next);
+    }
+
+    delete item;
+}
+
 std::string to_string(const char_t *s) {
     if (!s) {
         return std::string("");
@@ -191,6 +216,48 @@ int compare_string(const char_t *s1, const char_t *s2) {
 #else
     return strcmp(s1, s2);
 #endif
+}
+
+TogglCountryView *country_list_init(
+    std::vector<TogglCountryView> *items) {
+
+    TogglCountryView *first = nullptr;
+    for (std::vector<TogglCountryView>::const_iterator
+            it = items->begin();
+            it != items->end();
+            it++) {
+        TogglCountryView *item = new TogglCountryView();
+        poco_check_ptr(item);
+
+        item->ID = it->ID;
+        item->Name = it->Name;
+        item->VatApplicable = it->VatApplicable;
+        item->VatRegex = it->VatRegex;
+        item->VatPercentage = it->VatPercentage;
+        item->Code = it->Code;
+
+        item->Next = first;
+        first = item;
+    }
+    return first;
+}
+
+TogglCountryView *country_view_item_init(
+    const Json::Value v) {
+
+    TogglCountryView *item = new TogglCountryView();
+    poco_check_ptr(item);
+
+    item->ID = v["id"].asUInt64();
+    item->Name = copy_string(v["name"].asString());
+    item->VatApplicable = v["vat_applicable"].asBool();
+    item->VatRegex = copy_string(v["vat_regex"].asString());
+    item->VatPercentage = copy_string(v["vat_percentage"].asString());
+    item->Code = copy_string(v["country_code"].asString());
+
+    item->Next = nullptr;
+
+    return item;
 }
 
 TogglTimeEntryView *time_entry_view_item_init(

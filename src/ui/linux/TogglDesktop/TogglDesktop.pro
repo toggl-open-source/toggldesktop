@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     idlenotificationdialog.cpp \
     clickablelabel.cpp \
     colorpicker.cpp \
-    missingwswidget.cpp
+    missingwswidget.cpp \
+    countryview.cpp
 
 HEADERS  += \
     timeentryview.h \
@@ -69,7 +70,8 @@ HEADERS  += \
     idlenotificationdialog.h \
     clickablelabel.h \
     colorpicker.h \
-    missingwswidget.h
+    missingwswidget.h \
+    countryview.h
 
 FORMS    += \
     mainwindowcontroller.ui \

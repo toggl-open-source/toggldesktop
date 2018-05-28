@@ -17,7 +17,7 @@ namespace TogglDesktop.AutoCompletion
     {
         private static readonly char[] splitChars = { ' ' };
 
-        private string[] categories = { "Time Entries", "Tasks", "Projects", "Workspaces", "Tags" };
+        private string[] categories = { "TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
 
         private readonly List<IAutoCompleteListItem> list;
         private List<ListBoxItem> items;
@@ -60,6 +60,7 @@ namespace TogglDesktop.AutoCompletion
         {
             LB = listBox;
             int lastType = -1;
+            string lastClient = null;
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
                 items = new List<ListBoxItem>();
@@ -111,6 +112,23 @@ namespace TogglDesktop.AutoCompletion
                                 Type = -1
                             });
                         }
+
+                        // Add client item if needed
+                        if (it.Item.Type == 2 && lastClient != it.Item.ClientLabel)
+                        {
+                            string text = it.Item.ClientLabel;
+                            if (text.Length == 0)
+                            {
+                                text = "No client";
+                            }
+                            items.Add(new ListBoxItem()
+                            {
+                                Text = text,
+                                Type = -2
+                            });
+                            lastClient = it.Item.ClientLabel;
+                        }
+
                         var taskLabel = it.Item.TaskLabel;
                         if (it.Item.Type == 0)
                         {
@@ -118,6 +136,10 @@ namespace TogglDesktop.AutoCompletion
                         }
                         var clientLabel = (it.Item.ClientLabel.Length > 0) ? " • " + it.Item.ClientLabel : "";
 
+                        if (it.Item.Type == 2)
+                        {
+                            clientLabel = it.Item.ClientLabel;
+                        }
                         items.Add(new ListBoxItem()
                         {
                             Text = it.Item.Text,
@@ -154,6 +176,7 @@ namespace TogglDesktop.AutoCompletion
                 filterText = input;
 
                 int lastType = -1;
+                string lastClient = null;
                 List<ListBoxItem> filteredItems = new List<ListBoxItem>();
                 foreach (var item in visibleItems)
                 {
@@ -165,6 +188,22 @@ namespace TogglDesktop.AutoCompletion
                                 Category = categories[(int)item.Type],
                                 Type = -1
                             });
+                        }
+
+                        // Add client item if needed
+                        if (item.Type == 2 && lastClient != item.ClientLabel)
+                        {
+                            string text = item.ClientLabel;
+                            if (text.Length == 0)
+                            {
+                                text = "No client";
+                            }
+                            filteredItems.Add(new ListBoxItem()
+                            {
+                                Text = text,
+                                Type = -2
+                            });
+                            lastClient = item.ClientLabel;
                         }
                         filteredItems.Add(item);
                         lastType = (int)item.Type;
@@ -183,7 +222,7 @@ namespace TogglDesktop.AutoCompletion
 
             var listItem = (ListBoxItem)item;
 
-            if (listItem.Type == -1)
+            if (listItem.Type < 0)
                 return false;
 
             foreach (string word in words)
@@ -240,7 +279,7 @@ namespace TogglDesktop.AutoCompletion
             if (i == this.visibleItems.Count)
                 i = 0;
 
-            if (this.visibleItems[i].Type == -1)
+            if (this.visibleItems[i].Type < 0)
             {
                 i++;
                 if (i == this.visibleItems.Count)
@@ -258,7 +297,7 @@ namespace TogglDesktop.AutoCompletion
             if (i < 0)
                 i = this.visibleItems.Count - 1;
 
-            if (this.visibleItems[i].Type == -1)
+            if (this.visibleItems[i].Type < 0)
             {
                 i--;
                 if (i < 0)
@@ -302,6 +341,7 @@ namespace TogglDesktop.AutoCompletion
     public class AutocompleteTemplateSelector : DataTemplateSelector
     {
         private const int CATEGORY = -1;
+        private const int CLIENT = -2;
         private const int TIMEENTRY = 0;
         private const int TASK = 1;
         private const int PROJECT = 2;
@@ -344,6 +384,12 @@ namespace TogglDesktop.AutoCompletion
             {
                 return
                     element.FindResource("string-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == CLIENT)
+            {
+                return
+                    element.FindResource("client-item-template")
                     as DataTemplate;
             }
 

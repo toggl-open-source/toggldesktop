@@ -96,6 +96,16 @@ void GUI::DisplayProjectColors() {
     delete[] list;
 }
 
+void GUI::DisplayCountries(
+    std::vector<TogglCountryView> *items) {
+    if (!on_display_countries_) {
+        return;
+    }
+    TogglCountryView *first = country_list_init(items);
+    on_display_countries_(first);
+    country_item_clear(first);
+}
+
 void GUI::DisplaySyncState(const Poco::Int64 state) {
     if (state == lastSyncState) {
         return;
@@ -315,7 +325,7 @@ void GUI::DisplayAutotrackerNotification(Project *const p, Task *const t) {
         tid = t->ID();
     }
 
-    char_t *label = copy_string(Formatter::JoinTaskName(t, p, nullptr));
+    char_t *label = copy_string(Formatter::JoinTaskName(t, p));
     on_display_autotracker_notification_(label, pid, tid);
     free(label);
 }

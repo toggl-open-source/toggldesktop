@@ -179,6 +179,16 @@ extern "C" {
         void *Next;
     } TogglTimelineEventView;
 
+    typedef struct {
+        int64_t ID;
+        char_t *Name;
+        bool_t VatApplicable;
+        char_t *VatRegex;
+        char_t *VatPercentage;
+        char_t *Code;
+        void *Next;
+    } TogglCountryView;
+
     // Callbacks that need to be implemented in UI
 
     typedef void (*TogglDisplayApp)(
@@ -281,6 +291,9 @@ extern "C" {
     typedef void (*TogglDisplayProjectColors)(
         string_list_t color_list,
         const uint64_t color_count);
+
+    typedef void (*TogglDisplayCountries)(
+        TogglCountryView *first);
 
     // Initialize/destroy an instance of the app
 
@@ -462,6 +475,10 @@ extern "C" {
         void *context,
         TogglDisplayProjectColors cb);
 
+    TOGGL_EXPORT void toggl_on_countries(
+        void *context,
+        TogglDisplayCountries cb);
+
     TOGGL_EXPORT void toggl_on_promotion(
         void *context,
         TogglDisplayPromotion cb);
@@ -485,13 +502,20 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_signup(
         void *context,
         const char_t *email,
-        const char_t *password);
+        const char_t *password,
+        const uint64_t country_id);
 
     TOGGL_EXPORT bool_t toggl_google_login(
         void *context,
         const char_t *access_token);
 
     TOGGL_EXPORT void toggl_password_forgot(
+        void *context);
+
+    TOGGL_EXPORT void toggl_tos(
+        void *context);
+
+    TOGGL_EXPORT void toggl_privacy_policy(
         void *context);
 
     TOGGL_EXPORT void toggl_open_in_browser(
@@ -808,6 +832,9 @@ extern "C" {
         const uint64_t tid);
 
     TOGGL_EXPORT void toggl_get_project_colors(
+        void *context);
+
+    TOGGL_EXPORT void toggl_get_countries(
         void *context);
 
     // You must free() the result

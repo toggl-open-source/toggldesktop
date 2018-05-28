@@ -9,11 +9,38 @@
 #import "UIEvents.h"
 #import "GTMOAuth2WindowController.h"
 #import "Utils.h"
+#import "UIEvents.h"
 #import "const.h"
 
-@implementation LoginViewController
+@interface LoginViewController ()
+@property AutocompleteDataSource *countryAutocompleteDataSource;
+@end
 
+@implementation LoginViewController
+NSString *emailMissingError = @"Please enter valid email address";
+NSString *passwordMissingError = @"A password is required";
+NSString *countryNotSelectedError = @"Please select Country before signing up";
+NSString *tosAgreeError = @"You must agree to the terms of service and privacy policy to use Toggl";
 extern void *ctx;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self)
+	{
+		self.countryAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayCountries];
+	}
+	return self;
+}
+
+- (void)viewDidLoad
+{
+	self.countryAutocompleteDataSource.combobox = self.countrySelect;
+	self.countryAutocompleteDataSource.combobox.dataSource = self.countryAutocompleteDataSource;
+	[self.countryAutocompleteDataSource setFilter:@""];
+	self.countriesLoaded = NO;
+	self.selectedCountryID = -1;
+}
 
 - (IBAction)clickLoginButton:(id)sender
 {
@@ -65,6 +92,18 @@ extern void *ctx;
 		[self changeView:NO];
 		return;
 	}
+
+	if (sender == self.tosLink)
+	{
+		toggl_tos(ctx);
+		return;
+	}
+
+	if (sender == self.privacyLink)
+	{
+		toggl_privacy_policy(ctx);
+		return;
+	}
 }
 
 - (void)changeView:(BOOL)hide
@@ -73,6 +112,25 @@ extern void *ctx;
 														object:nil];
 	[self.loginBox setHidden:hide];
 	[self.signUpBox setHidden:!hide];
+	if (hide)
+	{
+		self.countrySelect.stringValue = @"";
+		[self.countryAutocompleteDataSource setFilter:@""];
+		if (!self.countriesLoaded)
+		{
+			// Load countries in signup view
+			toggl_get_countries(ctx);
+			self.countriesLoaded = YES;
+		}
+
+		// Update nextkeyView
+		[self.password setNextKeyView:self.countrySelect];
+	}
+	else
+	{
+		// Update nextkeyView
+		[self.password setNextKeyView:self.loginButton];
+	}
 }
 
 - (void)startGoogleLogin
@@ -144,28 +202,102 @@ extern void *ctx;
 	toggl_google_login(ctx, [auth.accessToken UTF8String]);
 }
 
-- (IBAction)clickSignupButton:(id)sender
+- (BOOL)validateForm
 {
+	// check if email is inserted
 	NSString *email = [self.email stringValue];
 
 	if (email == nil || !email.length)
 	{
 		[self.email becomeFirstResponder];
-		return;
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:emailMissingError];
+		return NO;
 	}
 
+	// check if password is inserted
 	NSString *pass = [self.password stringValue];
+
 	if (pass == nil || !pass.length)
 	{
 		[self.password becomeFirstResponder];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:passwordMissingError];
+		return NO;
+	}
+
+	// check if country is selected
+	if (self.selectedCountryID == -1)
+	{
+		[self.countrySelect becomeFirstResponder];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:countryNotSelectedError];
+		return NO;
+	}
+
+	// check if tos and privacy policy is checked
+	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
+	if (!tosChecked)
+	{
+		[self.tosCheckbox becomeFirstResponder];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
+															object:tosAgreeError];
+		return NO;
+	}
+
+	return YES;
+}
+
+- (IBAction)clickSignupButton:(id)sender
+{
+	// Validate all values inserted
+	if (![self validateForm])
+	{
 		return;
 	}
 
+	NSString *email = [self.email stringValue];
+	NSString *pass = [self.password stringValue];
+
 	[self.password setStringValue:@""];
 
-	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String]))
+	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
 	{
 		return;
+	}
+}
+
+- (IBAction)countrySelected:(id)sender
+{
+	NSString *key = self.countrySelect.stringValue;
+	AutocompleteItem *item = [self.countryAutocompleteDataSource get:key];
+
+	self.selectedCountryID = item.ID;
+}
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+	if ([[aNotification object] isKindOfClass:[NSCustomComboBox class]])
+	{
+		NSCustomComboBox *box = [aNotification object];
+		NSString *filter = [box stringValue];
+
+		[self.countryAutocompleteDataSource setFilter:filter];
+
+		// Hide dropdown if filter is empty or nothing was found
+		if (!filter || ![filter length] || !self.countryAutocompleteDataSource.count)
+		{
+			if ([box isExpanded] == YES)
+			{
+				[box setExpanded:NO];
+			}
+			return;
+		}
+
+		if ([box isExpanded] == NO)
+		{
+			[box setExpanded:YES];
+		}
 	}
 }
 
