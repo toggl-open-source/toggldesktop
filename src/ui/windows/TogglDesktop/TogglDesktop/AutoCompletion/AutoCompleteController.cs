@@ -156,7 +156,6 @@ namespace TogglDesktop.AutoCompletion
                 }
                 visibleItems = items;
                 LB.ItemsSource = visibleItems;
-
             }
         }
 
@@ -212,7 +211,7 @@ namespace TogglDesktop.AutoCompletion
                 visibleItems = filteredItems;
             }
             LB.ItemsSource = visibleItems;
-            this.selectIndex(1);
+            this.selectFirstItem(0);
         }
 
         private bool Filter(object item)
@@ -257,6 +256,19 @@ namespace TogglDesktop.AutoCompletion
              * */
         }
 
+        private void selectFirstItem(int index)
+        {
+            if (this.visibleItems.Count == 0 || index >= this.visibleItems.Count)
+                return;
+
+            if (this.visibleItems[index].Type < 0)
+            {
+                this.selectFirstItem(++index);
+                return;
+            }
+            this.selectIndex(index);
+        }
+
         private void selectIndex(int index)
         {
             if (index < 0 || this.visibleItems.Count == 0 || index >= this.visibleItems.Count)
@@ -277,13 +289,15 @@ namespace TogglDesktop.AutoCompletion
 
             var i = this.selectedIndex + 1;
             if (i == this.visibleItems.Count)
+            {
                 i = 0;
+            }
 
             if (this.visibleItems[i].Type < 0)
             {
-                i++;
-                if (i == this.visibleItems.Count)
-                    i = 0;
+                this.selectedIndex = i;
+                this.SelectNext();
+                return;
             }
             this.selectIndex(i);
         }
@@ -295,15 +309,16 @@ namespace TogglDesktop.AutoCompletion
 
             var i = this.selectedIndex - 1;
             if (i < 0)
-                i = this.visibleItems.Count - 1;
-
+            {
+                i = this.visibleItems.Count - 1;   
+            }
+            
             if (this.visibleItems[i].Type < 0)
             {
-                i--;
-                if (i < 0)
-                    i = this.visibleItems.Count - 1;
+                this.selectedIndex = i;
+                this.SelectPrevious();
+                return;
             }
-
             this.selectIndex(i);
         }
 
