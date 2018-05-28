@@ -62,6 +62,12 @@ Project *User::CreateProject(
         p->SetColorCode(project_color);
     }
 
+    // if no projects present just add
+    if (related.Projects.size() == 0) {
+        related.Projects.push_back(p);
+        return p;
+    }
+
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
     for (std::vector<Project *>::const_iterator it =
@@ -83,6 +89,12 @@ Client *User::CreateClient(
     c->SetWID(workspace_id);
     c->SetName(client_name);
     c->SetUID(ID());
+
+    // if no clients present just add
+    if (related.Clients.size() == 0) {
+        related.Clients.push_back(c);
+        return c;
+    }
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
