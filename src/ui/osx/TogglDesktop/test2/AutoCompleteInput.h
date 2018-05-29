@@ -21,6 +21,10 @@
 @property int maxVisibleItems;
 @property int itemHeight;
 @property NSLayoutConstraint *heightConstraint;
+@property NSLayoutConstraint *leftConstraint;
+@property NSLayoutConstraint *rightConstraint;
+@property NSLayoutConstraint *topConstraint;
+@property BOOL constraintsActive;
 - (void)toggleTableView:(int)itemCount;
 - (void)setPos:(int)posy;
 - (void)hide;

@@ -25,6 +25,7 @@
 		self.posY = 0;
 		self.itemHeight = 25;
 		self.maxVisibleItems = 6;
+		self.constraintsActive = NO;
 		[self createAutocomplete];
 	}
 	return self;
@@ -51,15 +52,13 @@
 - (void)setupAutocompleteConstraints
 {
 	// Set constraints to input field so autocomplete size is always connected to input
-	NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+	self.leftConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
 
-	NSLayoutConstraint *rightConstraint =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+	self.rightConstraint =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0];
 
-	NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:1];
+	self.topConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:1];
 
 	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:self.itemHeight];
-
-	[NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:leftConstraint, rightConstraint, self.heightConstraint, topConstraint, nil]];
 }
 
 - (void)setPos:(int)posy
@@ -148,6 +147,22 @@
 
 - (void)showAutoComplete:(BOOL)show
 {
+	if (show)
+	{
+		if (!self.constraintsActive)
+		{
+			[NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			self.constraintsActive = YES;
+		}
+	}
+	else
+	{
+		if (self.constraintsActive)
+		{
+			[NSLayoutConstraint deactivateConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			self.constraintsActive = NO;
+		}
+	}
 	[self.autocompleteTableContainer setHidden:!show];
 	[self.autocompleteTableView setHidden:!show];
 }
