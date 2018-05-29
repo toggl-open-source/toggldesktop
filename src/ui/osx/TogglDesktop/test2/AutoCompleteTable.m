@@ -70,12 +70,14 @@
 		// item not selectable, jump to next/previous item
 		if (!cell.isSelectable)
 		{
-			if (index == 0 && !isNext)
+			if (index < 2 && !isNext)
 			{
+				[self scrollRowToVisible:0];
 				return;
 			}
 			[self resetSelected];
 			self.lastSelected = index;
+
 			if (isNext)
 			{
 				[self nextItem];
