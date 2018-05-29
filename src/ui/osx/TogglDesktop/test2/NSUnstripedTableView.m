@@ -97,8 +97,11 @@ extern void *ctx;
 		// If description is empty and duration is less than 15 seconds delete without confirmation
 		if (cell.confrimless_delete)
 		{
-			toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
-			[self setFirstRowAsSelected];
+			if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
+			{
+				[self removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:self.selectedRow] withAnimation:NSTableViewAnimationSlideUp];
+				[self setFirstRowAsSelected];
+			}
 			return;
 		}
 		NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", cell.descriptionTextField.stringValue];
@@ -116,8 +119,11 @@ extern void *ctx;
 
 		NSLog(@"Deleting time entry %@", cell.GUID);
 
-		toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
-		[self setFirstRowAsSelected];
+		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
+		{
+			[self removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:self.selectedRow] withAnimation:NSTableViewAnimationSlideUp];
+			[self setFirstRowAsSelected];
+		}
 	}
 }
 
