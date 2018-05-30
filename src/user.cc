@@ -70,7 +70,7 @@ Project *User::CreateProject(
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    for (std::vector<Project *>::const_iterator it =
+    for (std::vector<Project *>::iterator it =
         related.Projects.begin();
             it != related.Projects.end(); it++) {
         Project *pr = *it;
@@ -98,7 +98,7 @@ Client *User::CreateClient(
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    for (std::vector<Client *>::const_iterator it =
+    for (std::vector<Client *>::iterator it =
         related.Clients.begin();
             it != related.Clients.end(); it++) {
         Client *cl = *it;
