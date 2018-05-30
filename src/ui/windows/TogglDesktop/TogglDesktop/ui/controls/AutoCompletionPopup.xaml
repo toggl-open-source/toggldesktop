@@ -105,6 +105,7 @@
     
     <Popup Name="popup" x:FieldModifier="private"
            MaxHeight="500" StaysOpen="True" AllowsTransparency="True"
+           MinWidth="200"
            HorizontalOffset="-10">
         <Grid>
             <Grid.Effect>
@@ -117,7 +118,7 @@
             <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
                 BorderThickness="0"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                VerticalAlignment="Top" Width="400"
+                VerticalAlignment="Top" MinWidth="200"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
                 PreviewMouseDown="listBox_PreviewMouseDown"
