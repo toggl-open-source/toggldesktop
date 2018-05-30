@@ -44,20 +44,14 @@ extern void *ctx;
 
 - (IBAction)clickLoginButton:(id)sender
 {
+	// Validate all values inserted
+	if (![self validateForm:NO])
+	{
+		return;
+	}
+
 	NSString *email = [self.email stringValue];
-
-	if (email == nil || !email.length)
-	{
-		[self.email becomeFirstResponder];
-		return;
-	}
-
 	NSString *pass = [self.password stringValue];
-	if (pass == nil || !pass.length)
-	{
-		[self.password becomeFirstResponder];
-		return;
-	}
 
 	[self.password setStringValue:@""];
 
@@ -202,7 +196,7 @@ extern void *ctx;
 	toggl_google_login(ctx, [auth.accessToken UTF8String]);
 }
 
-- (BOOL)validateForm
+- (BOOL)validateForm:(BOOL)signup
 {
 	// check if email is inserted
 	NSString *email = [self.email stringValue];
@@ -224,6 +218,11 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
 															object:passwordMissingError];
 		return NO;
+	}
+
+	if (!signup)
+	{
+		return YES;
 	}
 
 	// check if country is selected
@@ -251,7 +250,7 @@ extern void *ctx;
 - (IBAction)clickSignupButton:(id)sender
 {
 	// Validate all values inserted
-	if (![self validateForm])
+	if (![self validateForm:YES])
 	{
 		return;
 	}
