@@ -291,6 +291,8 @@ namespace TogglDesktop.AutoCompletion
             if (i == this.visibleItems.Count)
             {
                 i = 0;
+                LB.UpdateLayout();
+                LB.ScrollIntoView(LB.Items[0]);
             }
 
             if (this.visibleItems[i].Type < 0)
