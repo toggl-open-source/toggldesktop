@@ -242,8 +242,13 @@ namespace TogglDesktop
                 case Key.Down:
                     {
                         if (!this.IsOpen)
+                        {
                             this.open(showAll: true);
-                        this.controller.SelectNext();
+                        }
+                        else
+                        {
+                            this.controller.SelectNext();
+                        }
                         e.Handled = true;
                         return;
                     }
