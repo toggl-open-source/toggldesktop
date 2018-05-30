@@ -31,6 +31,7 @@ namespace TogglDesktop
 
         public ProjectColorPicker()
         {
+            this.DataContext = this;
             this.InitializeComponent();
 
             Toggl.OnDisplayProjectColors += this.onDisplayProjectColors;
