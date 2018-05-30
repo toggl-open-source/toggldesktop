@@ -239,18 +239,22 @@ namespace TogglDesktop
                 Toggl.NewError("A password is required", true);
                 return false;
             }
-            if (this.selectedCountryID == -1)
-            {
-                this.countrySelect.Focus();
-                Toggl.NewError("Please select Country before signing up", true);
-                return false;
-            }
-            if (!this.tosCheckbox.IsChecked.Value)
-            {
-                this.tosCheckbox.Focus();
-                Toggl.NewError("You must agree to the terms of service and privacy policy to use Toggl", true);
 
-                return false;
+            if (this.confirmAction == ConfirmAction.SignUp)
+            {
+                if (this.selectedCountryID == -1)
+                {
+                    this.countrySelect.Focus();
+                    Toggl.NewError("Please select Country before signing up", true);
+                    return false;
+                }
+                if (!this.tosCheckbox.IsChecked.Value)
+                {
+                    this.tosCheckbox.Focus();
+                    Toggl.NewError("You must agree to the terms of service and privacy policy to use Toggl", true);
+
+                    return false;
+                }
             }
             return true;
         }
