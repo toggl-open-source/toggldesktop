@@ -120,7 +120,7 @@
                 VerticalAlignment="Top" Width="400"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
-                ItemsSource="{Binding Items}" PreviewMouseDown="listBox_PreviewMouseDown"
+                PreviewMouseDown="listBox_PreviewMouseDown"
                 >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
