@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.4.176",
+            "rows": [
+                "Updated signup form to comply with GDPR",
+                "Group projects by clients in autocomplete",
+                "Improved keyboard actions inside autocomplete list",
+                "Fixed issue with billable not being set when selecting task item from autocomplete",
+                "Minor fixes for faster data handling",
+                "Fixed default project select issue"
+            ],
+            "date": "May 31st 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.157",
             "rows": [
                 "Faster sync at entry stop",
