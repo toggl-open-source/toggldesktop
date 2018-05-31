@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.4.170",
+            "rows": [
+                "Updated signup form to comply with GDPR",
+                "Group projects by clients in autocomplete",
+                "Improved keyboard actions inside autocomplete list",
+                "Fixed issue with billable not being set when selecting task item from autocomplete",
+                "Minor fixes for faster data handling"
+            ],
+            "date": "May 29th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.155",
             "rows": [
                 "Improved autocomplete item text format",
