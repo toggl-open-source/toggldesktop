@@ -27,6 +27,7 @@
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
+- (void)changeView:(BOOL)hide;
 @property (strong) IBOutlet NSButton *tosCheckbox;
 @property (strong) IBOutlet NSTextFieldClickablePointer *tosLink;
 @property (strong) IBOutlet NSTextFieldClickablePointer *privacyLink;

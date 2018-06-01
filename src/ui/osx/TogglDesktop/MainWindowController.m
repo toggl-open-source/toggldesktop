@@ -118,6 +118,7 @@ extern void *ctx;
 	if (cmd.open)
 	{
 		[self addErrorBoxConstraint];
+		[self.loginViewController changeView:NO];
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
 		[self.loginViewController.email becomeFirstResponder];
