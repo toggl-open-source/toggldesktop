@@ -673,7 +673,7 @@ class Context : public TimelineDatasource {
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;
 
-    bool ws_missing_;
+    bool overlay_visible_;
 };
 
 void on_websocket_message(

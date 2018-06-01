@@ -6,13 +6,13 @@
 //  Copyright © 2017 Alari. All rights reserved.
 //
 
-#import "MissingWSViewController.h"
+#import "OverlayViewController.h"
 
-@interface MissingWSViewController ()
+@interface OverlayViewController ()
 
 @end
 
-@implementation MissingWSViewController
+@implementation OverlayViewController
 
 extern void *ctx;
 

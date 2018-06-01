@@ -937,10 +937,10 @@ void toggl_on_error(
     app(context)->UI()->OnDisplayError(cb);
 }
 
-void toggl_on_ws_error(
+void toggl_on_overlay(
     void *context,
-    TogglDisplayWSError cb) {
-    app(context)->UI()->OnDisplayWSError(cb);
+    TogglDisplayOverlay cb) {
+    app(context)->UI()->OnDisplayOverlay(cb);
 }
 
 void toggl_on_online_state(

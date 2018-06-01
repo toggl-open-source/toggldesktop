@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "NSTextFieldClickablePointer.h"
 
-@interface MissingWSViewController : NSViewController
+@interface OverlayViewController : NSViewController
 @property (weak) IBOutlet NSButton *loginButton;
 @property (weak) IBOutlet NSTextFieldClickablePointer *syncLink;
 @end
