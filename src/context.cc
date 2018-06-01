@@ -5304,6 +5304,31 @@ error Context::signup(
     return noError;
 }
 
+error Context::ToSAccept() {
+    TogglClient toggl_client(UI());
+    try {
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/accept_tos";
+
+        HTTPSResponse resp = toggl_client.Post(req);
+        if (resp.err != noError) {
+            return displayError(resp.err);
+        }
+        overlay_visible_ = false;
+    } catch(const Poco::Exception& exc) {
+        displayError(kCannotConnectError);
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        displayError(kCannotConnectError);
+        return ex.what();
+    } catch(const std::string& ex) {
+        displayError(kCannotConnectError);
+        return ex;
+    }
+    return noError;
+}
+
 error Context::ToggleEntriesGroup(std::string name) {
     entry_groups[name] = !entry_groups[name];
     OpenTimeEntryList();

@@ -522,10 +522,12 @@ extern "C" {
     TOGGL_EXPORT void toggl_open_in_browser(
         void *context);
 
+    TOGGL_EXPORT bool_t toggl_accept_tos(
+        void *context);
+
     TOGGL_EXPORT void toggl_get_support(
         void *context,
         const int type);
-
 
     TOGGL_EXPORT bool_t toggl_feedback_send(
         void *context,

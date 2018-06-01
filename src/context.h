@@ -400,6 +400,8 @@ class Context : public TimelineDatasource {
 
     error OpenReportsInBrowser();
 
+    error ToSAccept();
+
     void SetIdleSeconds(const Poco::UInt64 idle_seconds) {
         idle_.SetIdleSeconds(idle_seconds, user_);
     }

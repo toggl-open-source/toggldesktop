@@ -1031,6 +1031,10 @@ void toggl_open_in_browser(void *context) {
     app(context)->OpenReportsInBrowser();
 }
 
+bool_t toggl_accept_tos(void *context) {
+    return toggl::noError == app(context)->ToSAccept();
+}
+
 void toggl_get_support(void *context, const int type) {
     if (type == 1) {
         app(context)->UI()->DisplayURL(kMacSupportURL);
