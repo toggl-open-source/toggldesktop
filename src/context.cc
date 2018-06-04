@@ -2247,6 +2247,11 @@ error Context::Login(
             return displayError(err);
         }
 
+        err = pullDesktopUserPreferences(&client);
+        if (err != noError) {
+            return displayError(err);
+        }
+
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
@@ -4546,6 +4551,8 @@ error Context::pullAllUserData(
 
         pullUserPreferences(toggl_client);
 
+        pullDesktopUserPreferences(toggl_client);
+
         stopwatch.stop();
         std::stringstream ss;
         ss << "User with related data JSON fetched and parsed in "
@@ -5237,6 +5244,58 @@ error Context::pullUserPreferences(
             UIElements render;
             render.display_time_entries = true;
             updateUI(render);
+        }
+    }
+    catch (const Poco::Exception& exc) {
+        return exc.displayText();
+    }
+    catch (const std::exception& ex) {
+        return ex.what();
+    }
+    catch (const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::pullDesktopUserPreferences(
+    TogglClient* toggl_client) {
+    std::string api_token = user_->APIToken();
+
+    if (api_token.empty()) {
+        return error("cannot pull user data without API token");
+    }
+
+    try {
+        std::string json("");
+        std::stringstream ss;
+        ss << "/api/v9/me/preferences/desktop";
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client->Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        json = resp.body;
+
+        if (json.empty())
+            return noError;
+
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(json, root)) {
+            return error("Failed to load desktop user preferences");
+        }
+
+        // Show tos accept overlay
+        if (root.isMember("ToSAcceptNeeded") && root["ToSAcceptNeeded"].asBool()) {
+            UI()->DisplayTosAccept();
         }
     }
     catch (const Poco::Exception& exc) {
