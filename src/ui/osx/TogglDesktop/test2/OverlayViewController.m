@@ -59,8 +59,11 @@ extern void *ctx;
 
 - (void)setupMissingWS
 {
+	NSMutableAttributedString *result =
+		[[NSMutableAttributedString alloc] initWithString:@"You no longer have access to your last Workspace. Create a new workspace on Toggl.com to continue tracking"];
+
 	[self.actionButton setTitle:@"Log in to Toggl.com"];
-	[self.topText setStringValue:@"You no longer have access to your last Workspace. Create a new workspace on Toggl.com to continue tracking"];
+	[[self.mainText textStorage] setAttributedString:result];
 
 	// Setup up text underline for "Force sync" link
 
