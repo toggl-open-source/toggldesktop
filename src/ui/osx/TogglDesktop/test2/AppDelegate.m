@@ -91,6 +91,7 @@
 
 void *ctx;
 BOOL manualMode = NO;
+BOOL onTop = NO;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
@@ -283,6 +284,16 @@ BOOL manualMode = NO;
 															   name:NSWorkspaceWillPowerOffNotification
 															 object:nil];
 
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mainWillMinimize:)
+												 name:NSWindowWillMiniaturizeNotification
+											   object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mainWillRestore:)
+												 name:NSWindowDidDeminiaturizeNotification
+											   object:nil];
+
 	if (self.scriptPath)
 	{
 		[self performSelectorInBackground:@selector(runScript:)
@@ -295,6 +306,24 @@ BOOL manualMode = NO;
 	NSLog(@"System will power off");
 	// FIXME: we could stop timer here, if its running and user has configured
 	// the app to stop the timer automatically.
+}
+
+- (void)mainWillMinimize:(NSNotification *)aNotification
+{
+	if (self.mainWindowController.window.level == NSFloatingWindowLevel)
+	{
+		onTop = YES;
+		[self.mainWindowController.window setLevel:NSNormalWindowLevel];
+	}
+}
+
+- (void)mainWillRestore:(NSNotification *)aNotification
+{
+	if (onTop)
+	{
+		[self.mainWindowController.window setLevel:NSFloatingWindowLevel];
+		onTop = NO;
+	}
 }
 
 - (void)runScript:(NSString *)scriptFile
@@ -621,6 +650,8 @@ BOOL manualMode = NO;
 	{
 		[self.mainWindowController.window setLevel:NSNormalWindowLevel];
 	}
+
+	onTop = cmd.settings.on_top;
 
 	if (cmd.open)
 	{
