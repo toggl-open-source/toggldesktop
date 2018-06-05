@@ -98,22 +98,6 @@ BOOL onTop = NO;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
-<<<<<<< HEAD
-
-	if ([self updateCheckEnabled])
-	{
-		[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
-
-		NSAssert(ctx, @"ctx is not initialized, cannot continue");
-		char *str = toggl_get_update_channel(ctx);
-		NSAssert(str, @"Could not read update channel value");
-		NSString *channel = [NSString stringWithUTF8String:str];
-		free(str);
-		[Utils setUpdaterChannel:channel];
-	}
-	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-=======
->>>>>>> 28d333e... Remove traces of Sparkle
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -274,13 +258,6 @@ BOOL onTop = NO;
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
 
-<<<<<<< HEAD
-	if ([self updateCheckEnabled])
-	{
-		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
-		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
-	}
-
 	// Listen for system shutdown, to automatically stop timer. Experimental feature.
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
 														   selector:@selector(systemWillPowerOff:)
@@ -297,8 +274,6 @@ BOOL onTop = NO;
 												 name:NSWindowDidDeminiaturizeNotification
 											   object:nil];
 
-=======
->>>>>>> 28d333e... Remove traces of Sparkle
 	if (self.scriptPath)
 	{
 		[self performSelectorInBackground:@selector(runScript:)
