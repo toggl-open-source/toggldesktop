@@ -997,6 +997,20 @@
                         "name": "TogglDesktopEnterpriseInstaller-7.4.122.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.176",
+                "timestamp": "05-06-2018",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.176.exe"
+                    },
+                    {
+                        "type": "windows_enterprise",
+                        "name": "TogglDesktopEnterpriseInstaller-7.4.176.exe"
+                    }
+                ]
             }
         ]
     },
