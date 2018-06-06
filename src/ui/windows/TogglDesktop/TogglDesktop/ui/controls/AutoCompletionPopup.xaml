@@ -101,6 +101,18 @@
                Text="{Binding Text}"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="workspace-item-template">
+            <StackPanel Height="25" Orientation="Vertical" HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom">
+                <TextBlock Name="workspaceName"
+                    HorizontalAlignment="Center" Foreground="#a1a1a1"
+                    FontSize="12" Text="{Binding Text}"/>
+                <Border 
+                 HorizontalAlignment="Stretch" Height="1" BorderThickness="0,0,0,1"
+                 BorderBrush="#dbdbdb" 
+                 Background="Transparent"/>
+            </StackPanel>
+        </DataTemplate>
     </UserControl.Resources>
     
     <Popup Name="popup" x:FieldModifier="private"
