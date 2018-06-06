@@ -274,7 +274,11 @@ namespace TogglDesktop
                         if (this.IsOpen)
                         {
                             if (this.confirmCompletion())
+                            {
                                 e.Handled = true;
+                            }
+
+                            this.close();
                         }
                         return;
                     }

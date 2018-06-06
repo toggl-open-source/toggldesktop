@@ -319,7 +319,7 @@ namespace TogglDesktop.AutoCompletion
 
         public void SelectNext()
         {
-            if (this.visibleItems.Count == 0)
+            if (this.visibleItems == null || this.visibleItems.Count == 0)
                 return;
 
             var i = this.selectedIndex + 1;
@@ -341,7 +341,7 @@ namespace TogglDesktop.AutoCompletion
 
         public void SelectPrevious()
         {
-            if (this.visibleItems.Count == 0)
+            if (this.visibleItems == null || this.visibleItems.Count == 0)
                 return;
 
             var i = this.selectedIndex - 1;
