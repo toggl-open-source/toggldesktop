@@ -245,7 +245,8 @@ namespace TogglDesktop.AutoCompletion
                 visibleItems = filteredItems;
             }
             LB.ItemsSource = visibleItems;
-            this.selectFirstItem(0);
+            if (autocompleteType == 3)
+                this.selectFirstItem(0);
         }
 
         private bool Filter(object item)
