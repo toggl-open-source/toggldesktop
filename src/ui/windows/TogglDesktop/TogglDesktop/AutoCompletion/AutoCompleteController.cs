@@ -227,12 +227,12 @@ namespace TogglDesktop.AutoCompletion
 
             foreach (string word in words)
             {
-                if (listItem.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) 
+                if (listItem.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) == -1)
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
 
 
