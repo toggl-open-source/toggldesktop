@@ -542,8 +542,6 @@ class Context : public TimelineDatasource {
     error pullChanges(TogglClient *https_client);
     error pullUserPreferences(
         TogglClient* toggl_client);
-    error pullDesktopUserPreferences(
-        TogglClient* toggl_client);
 
     error pushChanges(
         TogglClient *https_client,
