@@ -410,7 +410,6 @@ namespace TogglDesktop
             if (this.popup.MinWidth > this.listBox.MinWidth)
             {
                 this.popup.Width = this.popup.MinWidth;
-                this.listBox.Width = this.popup.MinWidth;
             }
         }
 
