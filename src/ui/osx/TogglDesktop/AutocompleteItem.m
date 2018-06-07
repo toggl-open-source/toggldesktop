@@ -60,6 +60,7 @@
 	}
 	self.Type = data->Type;
 	self.WorkspaceID = data->WorkspaceID;
+	self.WorkspaceName = [NSString stringWithUTF8String:data->WorkspaceName];
 	self.ProjectID = data->ProjectID;
 	self.TaskID = data->TaskID;
 	if (data->Tags)
