@@ -1404,7 +1404,7 @@ error Database::loadProjects(
                "FROM projects "
                "LEFT JOIN clients on projects.cid = clients.id "
                "WHERE projects.uid = :uid "
-               "ORDER BY client_name COLLATE NOCASE ASC, projects.name COLLATE NOCASE ASC;",
+               "ORDER BY projects.wid, client_name COLLATE NOCASE ASC, projects.name COLLATE NOCASE ASC;",
                useRef(UID);
         error err = last_error("loadProjects");
         if (err != noError) {
