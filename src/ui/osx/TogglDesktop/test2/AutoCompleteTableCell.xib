@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,18 +34,26 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <box hidden="YES" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="vKR-z2-0kP" userLabel="BottomLine">
+                    <rect key="frame" x="0.0" y="-1" width="200" height="5"/>
+                </box>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="rVw-1o-wWS" secondAttribute="bottom" id="DMc-XV-e1Z"/>
                 <constraint firstAttribute="trailing" secondItem="rVw-1o-wWS" secondAttribute="trailing" id="O64-4s-P1q"/>
+                <constraint firstItem="vKR-z2-0kP" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="Zk6-L0-449"/>
                 <constraint firstItem="Esa-Pm-mxj" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="btB-Bx-xNM"/>
                 <constraint firstItem="rVw-1o-wWS" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="cwr-nl-t6F"/>
+                <constraint firstAttribute="bottom" secondItem="vKR-z2-0kP" secondAttribute="bottom" constant="1" id="gPW-ut-VPO"/>
                 <constraint firstItem="rVw-1o-wWS" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="jBP-Pc-heq"/>
                 <constraint firstItem="Esa-Pm-mxj" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="7" id="rSX-Gw-sgh"/>
+                <constraint firstAttribute="trailing" secondItem="vKR-z2-0kP" secondAttribute="trailing" id="v6o-ai-qUJ"/>
                 <constraint firstAttribute="trailing" secondItem="Esa-Pm-mxj" secondAttribute="trailing" constant="7" id="xBK-Cn-kPA"/>
             </constraints>
             <connections>
                 <outlet property="backgroundBox" destination="rVw-1o-wWS" id="788-C8-zTo"/>
+                <outlet property="bottomLIne" destination="vKR-z2-0kP" id="llp-9W-VyZ"/>
+                <outlet property="bottomLine" destination="vKR-z2-0kP" id="Rtm-iZ-ld1"/>
                 <outlet property="cellDescription" destination="Esa-Pm-mxj" id="96O-aS-tkX"/>
             </connections>
         </customView>

@@ -57,7 +57,7 @@ extern void *ctx;
 		self.liteDescriptionAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
 
 		self.liteProjectAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
-
+		self.liteProjectAutocompleteDataSource.showWorkspaces = YES;
 		self.timerMenubarTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
 																  target:self
 																selector:@selector(timerFired:)

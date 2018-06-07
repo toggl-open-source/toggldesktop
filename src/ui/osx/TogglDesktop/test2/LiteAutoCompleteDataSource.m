@@ -16,6 +16,7 @@ extern void *ctx;
 {
 	self = [super init];
 
+	self.showWorkspaces = NO;
 	self.orderedKeys = [[NSMutableArray alloc] init];
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
 	self.dictionary = [[NSMutableDictionary alloc] init];
@@ -88,10 +89,26 @@ extern void *ctx;
 	{
 		self.lastType = -1;
 		self.lastClientLabel = nil;
+		int lastWID = -1;
 		[self.orderedKeys removeAllObjects];
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
+			// Add workspace name item
+			if (self.showWorkspaces)
+			{
+				if (lastWID != (int)item.WorkspaceID)
+				{
+					AutocompleteItem *it = [[AutocompleteItem alloc] init];
+					it.Type = -3;
+					it.Text = item.WorkspaceName;
+					[self addItem:it];
+					lastWID = (int)item.WorkspaceID;
+					self.lastClientLabel = nil;
+				}
+			}
+
+			// Add category name
 			if (item.Type != self.lastType)
 			{
 				AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -101,6 +118,7 @@ extern void *ctx;
 				self.lastType = item.Type;
 			}
 
+			// Add client name
 			if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
 			{
 				AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -152,12 +170,13 @@ extern void *ctx;
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		                   // Code that runs async
+						   int lastWID = 0;
 						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
 		                   // Skip filtering category item and client items
-							   if (item.Type == -1 || item.Type == -2)
+							   if (item.Type < 0)
 							   {
 								   continue;
 							   }
@@ -182,6 +201,21 @@ extern void *ctx;
 
 										   if (foundCount == stringArray.count)
 										   {
+		                                       // Add workspace name item
+											   if (self.showWorkspaces)
+											   {
+												   if (lastWID != (int)item.WorkspaceID)
+												   {
+													   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+													   it.Type = -3;
+													   it.Text = item.WorkspaceName;
+													   [filtered addObject:it];
+													   lastWID = (int)item.WorkspaceID;
+													   self.lastClientLabel = nil;
+												   }
+											   }
+
+		                                       // Add category name
 											   if (item.Type != self.lastType)
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -191,6 +225,7 @@ extern void *ctx;
 												   self.lastType = item.Type;
 											   }
 
+		                                       // Add client name
 											   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -219,6 +254,21 @@ extern void *ctx;
 										   self.textLength = [key length];
 									   }
 
+		                               // Add workspace name item
+									   if (self.showWorkspaces)
+									   {
+										   if (lastWID != (int)item.WorkspaceID)
+										   {
+											   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+											   it.Type = -3;
+											   it.Text = item.WorkspaceName;
+											   [filtered addObject:it];
+											   lastWID = (int)item.WorkspaceID;
+											   self.lastClientLabel = nil;
+										   }
+									   }
+
+		                               // Add category name
 									   if (item.Type != self.lastType)
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -228,6 +278,7 @@ extern void *ctx;
 										   self.lastType = item.Type;
 									   }
 
+		                               // Add client name
 									   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];

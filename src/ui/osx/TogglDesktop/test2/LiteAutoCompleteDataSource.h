@@ -22,6 +22,7 @@
 @property NSInteger lastType;
 @property NSString *lastClientLabel;
 @property NSArray *types;
+@property BOOL showWorkspaces;
 - (NSString *)completedString:(NSString *)partialString;
 - (AutocompleteItem *)get:(NSString *)key;
 - (void)setFilter:(NSString *)filter;

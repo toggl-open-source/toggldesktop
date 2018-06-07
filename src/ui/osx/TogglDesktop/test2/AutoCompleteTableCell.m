@@ -23,7 +23,8 @@
 
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
 	self.cellDescription.toolTip = view_item.Text;
-	self.isSelectable = (view_item.Type != -1 && view_item.Type != -2);
+	self.isSelectable = (view_item.Type > -1);
+	[self.bottomLine setHidden:(view_item.Type != -3)];
 }
 
 - (void)setFocused:(BOOL)focus
@@ -72,6 +73,26 @@
 		[result appendAttributedString:string];
 
 		return result;
+	}
+
+	// Workspace row
+	if (view_item.Type == -3)
+	{
+		NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+
+		paragrapStyle.alignment                = kCTTextAlignmentCenter;
+
+		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
+
+		[string setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:12],
+			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor],
+			 NSParagraphStyleAttributeName: paragrapStyle
+		 }
+						range:NSMakeRange(0, [string length])];
+
+		return string;
 	}
 
 	// Item rows
