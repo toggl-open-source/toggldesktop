@@ -61,6 +61,7 @@ namespace TogglDesktop.AutoCompletion
             LB = listBox;
             int lastType = -1;
             string lastClient = null;
+            int lastWID = -1;
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
                 items = new List<ListBoxItem>();
@@ -81,6 +82,7 @@ namespace TogglDesktop.AutoCompletion
                         });
                     }
                 }
+                // Clients autocomplete
                 else if (autocompleteType == 2)
                 {
                     for (var count = 0; count < this.list.Count; ++count)
@@ -102,6 +104,21 @@ namespace TogglDesktop.AutoCompletion
                     {
                         var item = this.list[count];
                         var it = (TimerItem)item;
+
+                        // Add workspace items if in projects autocomplete
+                        if (autocompleteType == 3)
+                        {
+                            // Add category title if needed
+                            if (lastWID != (int)it.Item.WorkspaceID)
+                            {
+                                items.Add(new ListBoxItem()
+                                {
+                                    Text = it.Item.WorkspaceName,
+                                    Type = -3
+                                });
+                                lastWID = (int)it.Item.WorkspaceID;
+                            }
+                        }
 
                         // Add category title if needed
                         if (lastType != (int)it.Item.Type)
@@ -149,6 +166,7 @@ namespace TogglDesktop.AutoCompletion
                             TaskLabel = taskLabel,
                             ClientLabel = clientLabel,
                             Type = (int)it.Item.Type,
+                            WorkspaceName = it.Item.WorkspaceName,
                             Index = count
                         });
                         lastType = (int)it.Item.Type;
@@ -176,11 +194,27 @@ namespace TogglDesktop.AutoCompletion
 
                 int lastType = -1;
                 string lastClient = null;
+                string lastWSName = null;
                 List<ListBoxItem> filteredItems = new List<ListBoxItem>();
                 foreach (var item in visibleItems)
                 {
                     if (Filter(item))
                     {
+                        // Add workspace items if in projects autocomplete
+                        if (autocompleteType == 3)
+                        {
+                            // Add category title if needed
+                            if (lastWSName != item.WorkspaceName)
+                            {
+                                filteredItems.Add(new ListBoxItem()
+                                {
+                                    Text = item.WorkspaceName,
+                                    Type = -3
+                                });
+                                lastWSName = item.WorkspaceName;
+                            }
+                        }
+
                         // Add category title if needed
                         if (autocompleteType == 0 && lastType != (int)item.Type) {
                             filteredItems.Add(new ListBoxItem() {
@@ -363,7 +397,7 @@ namespace TogglDesktop.AutoCompletion
         private const int TIMEENTRY = 0;
         private const int TASK = 1;
         private const int PROJECT = 2;
-        private const int WORKSPACE = 3;
+        private const int WORKSPACE = -3;
         private const int STRINGITEM = 4;
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -408,6 +442,12 @@ namespace TogglDesktop.AutoCompletion
             {
                 return
                     element.FindResource("client-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == WORKSPACE)
+            {
+                return
+                    element.FindResource("workspace-item-template")
                     as DataTemplate;
             }
 
