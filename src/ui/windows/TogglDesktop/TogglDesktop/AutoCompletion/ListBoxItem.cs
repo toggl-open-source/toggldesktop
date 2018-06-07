@@ -15,7 +15,6 @@ namespace TogglDesktop.AutoCompletion
         public string TaskLabel { get; set; }
         public string ClientLabel { get; set; }
         public string Category { get; set; }
-        public string WorkspaceName { get; set; }
         public int Type { get; set; }
         public int Index { get; set; }
     }

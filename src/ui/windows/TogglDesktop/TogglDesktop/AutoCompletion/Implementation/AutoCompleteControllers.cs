@@ -51,9 +51,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
                         ))
                     ).ToList();
             */
-            var ac = new AutoCompleteController(list, string.Format("Projects({0})", projects.Count));
-            ac.autocompleteType = 3;
-            return ac;
+            return new AutoCompleteController(list, string.Format("Projects({0})", projects.Count));
         }
 
         private static IEnumerable<IAutoCompleteListItem> parseClientGroup(IGrouping<ulong, Toggl.TogglAutocompleteView> c)
