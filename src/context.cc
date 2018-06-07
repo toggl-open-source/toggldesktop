@@ -5310,17 +5310,26 @@ error Context::signup(
 }
 
 error Context::ToSAccept() {
+    std::string api_token = user_->APIToken();
+
+    if (api_token.empty()) {
+        return error("cannot pull user data without API token");
+    }
+
     TogglClient toggl_client(UI());
     try {
         HTTPSRequest req;
         req.host = urls::API();
-        req.relative_url = "/api/v9/accept_tos";
+        req.relative_url = "/api/v9/me/accept_tos";
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
 
         HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
             return displayError(resp.err);
         }
         overlay_visible_ = false;
+        OpenTimeEntryList();
     } catch(const Poco::Exception& exc) {
         displayError(kCannotConnectError);
         return exc.displayText();
