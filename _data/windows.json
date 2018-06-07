@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.4.184",
+            "rows": [
+                "Fixed autocomplete selecting previous items",
+                "Improved autocomplete dropdown closing logic",
+                "Fixed filtering with multi word input text",
+                "Fixed autocomplete small width issue",
+                "Fixed autotracker selecting issue"
+            ],
+            "date": "June 7th 2018"
+        },
+        {
             "version": "7.4.176",
             "rows": [
                 "Autocomplete data is parsed in the background for non-blocking UI",
