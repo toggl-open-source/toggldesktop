@@ -74,7 +74,8 @@ Project *User::CreateProject(
         related.Projects.begin();
             it != related.Projects.end(); it++) {
         Project *pr = *it;
-        if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
+        if (pr->WID() == p->WID() &&
+                Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
             related.Projects.insert(it,p);
             break;
         }
