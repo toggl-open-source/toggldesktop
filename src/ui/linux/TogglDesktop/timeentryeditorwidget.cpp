@@ -131,6 +131,7 @@ void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
 
 void TimeEntryEditorWidget::displayProjectAutocomplete(
     QVector<AutocompleteView *> list) {
+    ui->projectAutocomplete->setData(list);
     projectAutocompleteUpdate = list;
     projectAutocompleteNeedsUpdate = true;
     if (ui->project->hasFocus()) {
@@ -532,4 +533,3 @@ void TimeEntryEditorWidget::on_colorButton_clicked()
 void TimeEntryEditorWidget::setProjectColors(QVector<char *> list) {
     colorPicker->setColors(list);
 }
-

@@ -46,7 +46,10 @@ SOURCES += main.cpp\
     clickablelabel.cpp \
     colorpicker.cpp \
     missingwswidget.cpp \
-    countryview.cpp
+    countryview.cpp \
+    autocompleteinput.cpp \
+    autocompletedropdown.cpp \
+    autocompletecellwidget.cpp
 
 HEADERS  += \
     timeentryview.h \
@@ -71,7 +74,10 @@ HEADERS  += \
     clickablelabel.h \
     colorpicker.h \
     missingwswidget.h \
-    countryview.h
+    countryview.h \
+    autocompleteinput.h \
+    autocompletedropdown.h \
+    autocompletecellwidget.h
 
 FORMS    += \
     mainwindowcontroller.ui \
@@ -87,7 +93,9 @@ FORMS    += \
     feedbackdialog.ui \
     idlenotificationdialog.ui \
     colorpicker.ui \
-    missingwswidget.ui
+    missingwswidget.ui \
+    autocompletedropdown.ui \
+    autocompletecellwidget.ui
 
 QMAKE_RPATHDIR += $$PWD/../../../lib/linux/TogglDesktopLibrary/build/release
 QMAKE_RPATHDIR += $$PWD/../../../../third_party/bugsnag-qt/build/release

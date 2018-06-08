@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>346</width>
-    <height>545</height>
+    <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,6 +60,9 @@
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <widget class="AutocompleteInput" name="projectAutocomplete"/>
    </item>
    <item>
     <widget class="QWidget" name="widget" native="true">
@@ -788,6 +791,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AutocompleteInput</class>
+   <extends>QLineEdit</extends>
+   <header>autocompleteinput.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>description</tabstop>
   <tabstop>project</tabstop>
