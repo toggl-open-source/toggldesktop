@@ -16,8 +16,20 @@ AutocompleteCellWidget::~AutocompleteCellWidget()
 
 
 void AutocompleteCellWidget::display(AutocompleteView *view) {
-    qDebug() << "Cell Disaply: " << view->Text;
-    ui->label->setText(view->Text);
+    QString text("");
+    // project
+    if (view->Type == 2) {
+        qDebug()<<"COLOR: "<< view->ProjectColor << " | " << view->ProjectLabel;
+        text.append("<p><span style='margin:0;padding:0;display:block;width:5px;height:5px;font-size:30px;margin-right:10px;color:");
+        text.append(view->ProjectColor);
+        text.append("'> • </span><span style='background-color:red'>");
+        text.append(view->ProjectLabel);
+        text.append("</span></p>");
+    }
+    qDebug() << "Cell hDisaply: " << view->Text << " || " << view->Type;
+    qDebug() << text;
+
+    ui->label->setText(text);
     //setEllipsisTextToLabel(ui->label, view->Text);
 }
 
