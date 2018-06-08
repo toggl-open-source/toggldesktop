@@ -57,8 +57,8 @@ void AutocompleteInput::keyPressEvent(QKeyEvent* event) {
         if (event->key() == Qt::Key_Down) {
             reloadDropdown();
             updateAndShow();
+            return;
         }
-        return;
     } else {
         if (event->key() == Qt::Key_Down || event->key() == Qt::Key_Up) {
             autocompleteDropdown->onKeyPressEvent(event);
