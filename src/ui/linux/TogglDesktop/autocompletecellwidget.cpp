@@ -22,7 +22,7 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
         qDebug()<<"COLOR: "<< view->ProjectColor << " | " << view->ProjectLabel;
         text.append("<p><span style='margin:0;padding:0;display:block;width:5px;height:5px;font-size:30px;margin-right:10px;color:");
         text.append(view->ProjectColor);
-        text.append("'> • </span><span style='background-color:red'>");
+        text.append("'> • </span><span>");
         text.append(view->ProjectLabel);
         text.append("</span></p>");
     }

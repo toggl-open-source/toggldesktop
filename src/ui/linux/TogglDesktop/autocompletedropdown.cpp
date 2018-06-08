@@ -33,7 +33,7 @@ void AutocompleteDropdown::reload(QVector<AutocompleteView *> list){
     int size = list.size();
     qDebug() << "LIst ssize [" << size << "]";
 
-    //setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     for (int i = 0; i < size; i++) {
         AutocompleteView *a = list.at(i);
@@ -57,6 +57,7 @@ void AutocompleteDropdown::reload(QVector<AutocompleteView *> list){
         }
 
         cell->display(a);
+        item->setSizeHint(QSize(maximumWidth(), 30));
     }
 
     while (ui->list->count() > size) {
@@ -64,7 +65,7 @@ void AutocompleteDropdown::reload(QVector<AutocompleteView *> list){
     }
 
     setVisible(!list.isEmpty());
-    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void AutocompleteDropdown::onKeyPressEvent(QKeyEvent* event) {
