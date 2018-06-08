@@ -182,6 +182,8 @@ class TogglApi : public QObject {
     void getProjectColors();
     void getCountries();
     void loadMore();
+    void tosAccept();
+    void openLegal(const QString &link);
 
     bool sendFeedback(const QString topic,
                       const QString details,

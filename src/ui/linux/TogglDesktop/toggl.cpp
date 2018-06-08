@@ -723,3 +723,15 @@ void TogglApi::getCountries() {
 void TogglApi::loadMore() {
     toggl_load_more(ctx);
 }
+
+void TogglApi::tosAccept() {
+    toggl_accept_tos(ctx);
+}
+
+void TogglApi::openLegal(const QString &link) {
+    if (link == "terms") {
+        toggl_tos(ctx);
+    } else if (link == "privacy") {
+        toggl_privacy_policy(ctx);
+    }
+}

@@ -30,7 +30,7 @@
       <enum>QLayout::SetMinAndMaxSize</enum>
      </property>
      <item>
-      <widget class="QPushButton" name="loginButton">
+      <widget class="QPushButton" name="actionButton">
        <property name="maximumSize">
         <size>
          <width>160</width>
