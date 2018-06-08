@@ -21,7 +21,7 @@
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
-#include "./missingwswidget.h"
+#include "./overlaywidget.h"
 #include "./loginwidget.h"
 #include "./timeentrylistwidget.h"
 #include "./timeentryeditorwidget.h"
@@ -63,7 +63,7 @@ MainWindowController::MainWindowController(
 
     QVBoxLayout *verticalLayout = new QVBoxLayout();
     verticalLayout->addWidget(new ErrorViewController());
-    verticalLayout->addWidget(new MissingWSWidget());
+    verticalLayout->addWidget(new OverlayWidget());
     verticalLayout->addWidget(new LoginWidget());
     verticalLayout->addWidget(new TimeEntryListWidget());
     verticalLayout->addWidget(new TimeEntryEditorWidget());

@@ -1,10 +1,10 @@
-#include "missingwswidget.h"
-#include "ui_missingwswidget.h"
+#include "overlaywidget.h"
+#include "ui_overlaywidget.h"
 #include "./toggl.h"
 
-MissingWSWidget::MissingWSWidget(QWidget *parent) :
+OverlayWidget::OverlayWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::MissingWSWidget)
+    ui(new Ui::OverlayWidget)
 {
     ui->setupUi(this);
     setVisible(false);
@@ -17,20 +17,20 @@ MissingWSWidget::MissingWSWidget(QWidget *parent) :
     connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayWSError()),  // NOLINT
-            this, SLOT(displayWSError()));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayOverlay(int64_t)),  // NOLINT
+            this, SLOT(displayOverlay(int64_t)));  // NOLINT
 }
 
-MissingWSWidget::~MissingWSWidget()
+OverlayWidget::~OverlayWidget()
 {
     delete ui;
 }
 
-void MissingWSWidget::displayWSError() {
+void OverlayWidget::displayOverlay(const int64_t type) {
     setVisible(true);
 }
 
-void MissingWSWidget::displayLogin(
+void OverlayWidget::displayLogin(
     const bool open,
     const uint64_t user_id) {
 
@@ -39,7 +39,7 @@ void MissingWSWidget::displayLogin(
     }
 }
 
-void MissingWSWidget::displayTimeEntryList(
+void OverlayWidget::displayTimeEntryList(
     const bool open,
     QVector<TimeEntryView *> list,
     const bool) {
@@ -48,12 +48,12 @@ void MissingWSWidget::displayTimeEntryList(
     }
 }
 
-void MissingWSWidget::on_loginButton_clicked()
+void OverlayWidget::on_loginButton_clicked()
 {
     TogglApi::instance->openInBrowser();
 }
 
-void MissingWSWidget::on_bottomText_linkActivated(const QString &link)
+void OverlayWidget::on_bottomText_linkActivated(const QString &link)
 {
     TogglApi::instance->fullSync();
 }

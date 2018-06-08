@@ -42,8 +42,8 @@ void on_display_error(
     TogglApi::instance->displayError(QString(errmsg), user_error);
 }
 
-void on_display_ws_error() {
-    TogglApi::instance->displayWSError();
+void on_overlay(const int64_t type) {
+    TogglApi::instance->displayOverlay(type);
 }
 
 void on_display_online_state(
@@ -243,7 +243,7 @@ TogglApi::TogglApi(
     toggl_on_show_app(ctx, on_display_app);
     toggl_on_update(ctx, on_display_update);
     toggl_on_error(ctx, on_display_error);
-    toggl_on_ws_error(ctx, on_display_ws_error);
+    toggl_on_overlay(ctx, on_overlay);
     toggl_on_online_state(ctx, on_display_online_state);
     toggl_on_url(ctx, on_display_url);
     toggl_on_login(ctx, on_display_login);

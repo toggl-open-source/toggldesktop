@@ -30,7 +30,7 @@ class LoginWidget : public QWidget {
  private slots:  // NOLINT
     void on_login_clicked();
 
-    void displayWSError();
+    void displayOverlay(const int64_t type);
 
     void displayLogin(
         const bool open,

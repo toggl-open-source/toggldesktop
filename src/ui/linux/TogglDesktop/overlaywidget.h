@@ -1,28 +1,28 @@
-#ifndef MISSINGWSWIDGET_H
-#define MISSINGWSWIDGET_H
+#ifndef OVERLAYWIDGET_H
+#define OVERLAYWIDGET_H
 
 #include <QWidget>
 #include <stdint.h>
 #include "./timeentryview.h"
 
 namespace Ui {
-class MissingWSWidget;
+class OverlayWidget;
 }
 
-class MissingWSWidget : public QWidget
+class OverlayWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MissingWSWidget(QWidget *parent = 0);
-    ~MissingWSWidget();
+    explicit OverlayWidget(QWidget *parent = 0);
+    ~OverlayWidget();
 
 private:
-    Ui::MissingWSWidget *ui;
+    Ui::OverlayWidget *ui;
 
 private slots:  // NOLINT
 
-   void displayWSError();
+   void displayOverlay(const int64_t type);
 
    void displayLogin(
        const bool open,
@@ -38,4 +38,4 @@ private slots:  // NOLINT
 };
 
 
-#endif // MISSINGWSWIDGET_H
+#endif // OVERLAYWIDGET_H
