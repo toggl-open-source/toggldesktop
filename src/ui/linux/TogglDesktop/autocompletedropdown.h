@@ -20,7 +20,8 @@ public:
     void setData(QVector<AutocompleteView *> list);
     void reload(QVector<AutocompleteView *> list);
     void onKeyPressEvent(QKeyEvent* event);
-
+    void selectNext();
+    void selectPrev();
 
 private:
     Ui::AutocompleteDropdown *ui;

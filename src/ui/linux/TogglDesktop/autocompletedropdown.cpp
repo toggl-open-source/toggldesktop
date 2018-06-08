@@ -1,6 +1,7 @@
 #include "autocompletedropdown.h"
 #include "ui_autocompletedropdown.h"
 #include <QDebug>
+#include <QKeyEvent>
 
 AutocompleteDropdown::AutocompleteDropdown(QWidget *parent) :
     QDialog(parent),
@@ -68,4 +69,26 @@ void AutocompleteDropdown::reload(QVector<AutocompleteView *> list){
 
 void AutocompleteDropdown::onKeyPressEvent(QKeyEvent* event) {
     QDialog::keyPressEvent(event);
+    if (event->key() == Qt::Key_Down) {
+        selectNext();
+    }
+    if (event->key() == Qt::Key_Up) {
+        selectPrev();
+    }
+
 }
+
+void AutocompleteDropdown::selectNext() {
+    int current = ui->list->currentIndex().row();
+    current++;
+    ui->list->setCurrentIndex(ui->list->model()->index(current, 0));
+}
+
+void AutocompleteDropdown::selectPrev() {
+    int current = (int)ui->list->currentIndex().row();
+    if (current > 0) {
+        current--;
+        ui->list->setCurrentIndex(ui->list->model()->index(current, 0));
+    }
+}
+
