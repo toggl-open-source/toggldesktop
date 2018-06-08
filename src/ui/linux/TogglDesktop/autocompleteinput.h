@@ -24,6 +24,10 @@ private:
 
     void filter(const QString &input);
     void reloadDropdown();
+    void updateAndShow();
+
+protected:
+    virtual void keyPressEvent(QKeyEvent *event);
 
 };
 

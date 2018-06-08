@@ -19,6 +19,8 @@ public:
     ~AutocompleteDropdown();
     void setData(QVector<AutocompleteView *> list);
     void reload(QVector<AutocompleteView *> list);
+    void onKeyPressEvent(QKeyEvent* event);
+
 
 private:
     Ui::AutocompleteDropdown *ui;

@@ -8,9 +8,9 @@ AutocompleteDropdown::AutocompleteDropdown(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setModal(true);
+    setModal(false);
     setWindowTitle("");
-    setWindowFlags( Qt::Popup );
+    setWindowFlags(Qt::ToolTip);
 
     // Add shadow
     setAttribute(Qt::WA_TranslucentBackground); //enable MainWindow to be transparent
@@ -18,6 +18,7 @@ AutocompleteDropdown::AutocompleteDropdown(QWidget *parent) :
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setOffset(0);
     effect->setBlurRadius(5);
+    effect->setYOffset(3);
     ui->list->setGraphicsEffect(effect);
 }
 
@@ -29,9 +30,9 @@ AutocompleteDropdown::~AutocompleteDropdown()
 void AutocompleteDropdown::reload(QVector<AutocompleteView *> list){
     qDebug() << "AutocompleteDropdown::reload";
     int size = list.size();
-    qDebug() << "LIst size [" << size << "]";
+    qDebug() << "LIst ssize [" << size << "]";
 
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    //setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     for (int i = 0; i < size; i++) {
         AutocompleteView *a = list.at(i);
@@ -62,6 +63,9 @@ void AutocompleteDropdown::reload(QVector<AutocompleteView *> list){
     }
 
     setVisible(!list.isEmpty());
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
+void AutocompleteDropdown::onKeyPressEvent(QKeyEvent* event) {
+    QDialog::keyPressEvent(event);
+}
