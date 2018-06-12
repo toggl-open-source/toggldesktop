@@ -279,7 +279,7 @@ namespace TogglDesktop.AutoCompletion
             LB.SelectedIndex = index;
 
             LB.UpdateLayout();
-            if (this.visibleItems.Count > 0)
+            if (this.visibleItems.Count > 0 && LB.SelectedIndex != -1)
                 LB.ScrollIntoView(LB.Items[LB.SelectedIndex]);
         }
 
@@ -296,7 +296,7 @@ namespace TogglDesktop.AutoCompletion
                 LB.ScrollIntoView(LB.Items[0]);
             }
 
-            if (this.visibleItems[i].Type < 0)
+            if (i >= 0 && this.visibleItems[i].Type < 0)
             {
                 this.selectedIndex = i;
                 this.SelectNext();
