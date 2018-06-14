@@ -49,6 +49,7 @@ Project *User::CreateProject(
     const std::string project_color,
     const bool billable) {
 
+    bool projectAdded = false;
     Project *p = new Project();
     p->SetWID(workspace_id);
     p->SetName(project_name);
@@ -62,12 +63,6 @@ Project *User::CreateProject(
         p->SetColorCode(project_color);
     }
 
-    // if no projects present just add
-    if (related.Projects.size() == 0) {
-        related.Projects.push_back(p);
-        return p;
-    }
-
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
     for (std::vector<Project *>::iterator it =
@@ -76,25 +71,27 @@ Project *User::CreateProject(
         Project *pr = *it;
         if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
             related.Projects.insert(it,p);
+            projectAdded = true;
             break;
         }
     }
+
+    // if projects vector is empty or project should be added to the end
+    if (!projectAdded) {
+        related.Projects.push_back(p);
+    }
+
     return p;
 }
 
 Client *User::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
+    bool clientAdded = false;
     Client *c = new Client();
     c->SetWID(workspace_id);
     c->SetName(client_name);
     c->SetUID(ID());
-
-    // if no clients present just add
-    if (related.Clients.size() == 0) {
-        related.Clients.push_back(c);
-        return c;
-    }
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
@@ -104,9 +101,16 @@ Client *User::CreateClient(
         Client *cl = *it;
         if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
             related.Clients.insert(it,c);
+            clientAdded = true;
             break;
         }
     }
+
+    // if clients vector is empty or client should be added to the end
+    if (!clientAdded) {
+        related.Clients.push_back(c);
+    }
+
     return c;
 }
 
