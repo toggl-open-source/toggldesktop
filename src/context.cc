@@ -5241,6 +5241,7 @@ error Context::pullUserPreferences(
 
         // Show tos accept overlay
         if (root.isMember("ToSAcceptNeeded") && root["ToSAcceptNeeded"].asBool()) {
+            overlay_visible_ = true;
             UI()->DisplayTosAccept();
         }
     }
