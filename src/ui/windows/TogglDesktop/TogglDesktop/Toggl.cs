@@ -69,7 +69,8 @@ public static partial class Toggl
     public delegate void DisplayApp(
         bool open);
 
-    public delegate void DisplayWSError();
+    public delegate void DisplayOverlay(
+        Int64 type);
 
     public delegate void DisplayError(
         string errmsg,
@@ -224,6 +225,21 @@ public static partial class Toggl
     public static void OpenInBrowser()
     {
         toggl_open_in_browser(ctx);
+    }
+
+    public static void AcceptToS()
+    {
+        toggl_accept_tos(ctx);
+    }
+
+    public static void OpenToS()
+    {
+        toggl_tos(ctx);
+    }
+
+    public static void OpenPrivacy()
+    {
+        toggl_privacy_policy(ctx);
     }
 
     public static bool SendFeedback(
@@ -675,7 +691,7 @@ public static partial class Toggl
     #region callback events
 
     public static event DisplayApp OnApp = delegate { };
-    public static event DisplayWSError OnWSError = delegate { };
+    public static event DisplayOverlay OnOverlay = delegate { };
     public static event DisplayError OnError = delegate { };
     public static event DisplayOnlineState OnOnlineState = delegate { };
     public static event DisplayLogin OnLogin = delegate { };
@@ -715,11 +731,11 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_ws_error(ctx, () =>
+        toggl_on_overlay(ctx, type =>
         {
-            using (Performance.Measure("Calling OnWSError"))
+            using (Performance.Measure("Calling OnOverlay"))
             {
-                OnWSError();
+                OnOverlay(type);
             }
         });
 
