@@ -937,10 +937,10 @@ void toggl_on_error(
     app(context)->UI()->OnDisplayError(cb);
 }
 
-void toggl_on_ws_error(
+void toggl_on_overlay(
     void *context,
-    TogglDisplayWSError cb) {
-    app(context)->UI()->OnDisplayWSError(cb);
+    TogglDisplayOverlay cb) {
+    app(context)->UI()->OnDisplayOverlay(cb);
 }
 
 void toggl_on_online_state(
@@ -1029,6 +1029,10 @@ void toggl_set_online(void *context) {
 
 void toggl_open_in_browser(void *context) {
     app(context)->OpenReportsInBrowser();
+}
+
+bool_t toggl_accept_tos(void *context) {
+    return toggl::noError == app(context)->ToSAccept();
 }
 
 void toggl_get_support(void *context, const int type) {

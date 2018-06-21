@@ -204,7 +204,8 @@ extern "C" {
         const char_t *errmsg,
         const bool_t user_error);
 
-    typedef void (*TogglDisplayWSError)();
+    typedef void (*TogglDisplayOverlay)(
+        const int64_t type);
 
     typedef void (*TogglDisplayOnlineState)(
         const int64_t state);
@@ -376,9 +377,9 @@ extern "C" {
         void *context,
         TogglDisplayError cb);
 
-    TOGGL_EXPORT void toggl_on_ws_error(
+    TOGGL_EXPORT void toggl_on_overlay(
         void *context,
-        TogglDisplayWSError cb);
+        TogglDisplayOverlay cb);
 
     TOGGL_EXPORT void toggl_on_update(
         void *context,
@@ -521,10 +522,12 @@ extern "C" {
     TOGGL_EXPORT void toggl_open_in_browser(
         void *context);
 
+    TOGGL_EXPORT bool_t toggl_accept_tos(
+        void *context);
+
     TOGGL_EXPORT void toggl_get_support(
         void *context,
         const int type);
-
 
     TOGGL_EXPORT bool_t toggl_feedback_send(
         void *context,

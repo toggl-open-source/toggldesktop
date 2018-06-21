@@ -128,7 +128,7 @@
 
         <Grid Name="tutorialPanel" x:FieldModifier="private" />
 
-        <toggl:MissingWSView x:Name="missingWSView" x:FieldModifier="private"/>
+        <toggl:OverlayView x:Name="overlayView" x:FieldModifier="private"/>
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
 

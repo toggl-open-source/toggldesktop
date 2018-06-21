@@ -257,8 +257,8 @@
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
-    <Compile Include="ui\views\MissingWSView.xaml.cs">
-      <DependentUpon>MissingWSView.xaml</DependentUpon>
+    <Compile Include="ui\views\OverlayView.xaml.cs">
+      <DependentUpon>OverlayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
       <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
@@ -684,7 +684,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\views\MissingWSView.xaml">
+    <Page Include="ui\views\OverlayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

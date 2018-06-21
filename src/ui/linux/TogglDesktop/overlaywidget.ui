@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MissingWSWidget</class>
- <widget class="QWidget" name="MissingWSWidget">
+ <class>OverlayWidget</class>
+ <widget class="QWidget" name="OverlayWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -30,7 +30,7 @@
       <enum>QLayout::SetMinAndMaxSize</enum>
      </property>
      <item>
-      <widget class="QPushButton" name="loginButton">
+      <widget class="QPushButton" name="actionButton">
        <property name="maximumSize">
         <size>
          <width>160</width>

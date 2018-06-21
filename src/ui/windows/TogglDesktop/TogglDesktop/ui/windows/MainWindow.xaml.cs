@@ -60,7 +60,7 @@ namespace TogglDesktop
 
             this.interopHelper = new WindowInteropHelper(this);
 
-            this.views = new IMainView[] { this.missingWSView, this.loginView, this.timerEntryListView };
+            this.views = new IMainView[] { this.overlayView, this.loginView, this.timerEntryListView };
 
             this.hideAllViews();
 
@@ -184,7 +184,7 @@ namespace TogglDesktop
         private void initializeEvents()
         {
             Toggl.OnApp += this.onApp;
-            Toggl.OnWSError += this.onWSError;
+            Toggl.OnOverlay += this.onOverlay;
             Toggl.OnError += this.onError;
             Toggl.OnLogin += this.onLogin;
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
@@ -344,13 +344,14 @@ namespace TogglDesktop
             this.updateTracking(null);
         }
 
-        private void onWSError()
+        private void onOverlay(long type)
         {
 
-            if (this.TryBeginInvoke(this.onWSError))
+            if (this.TryBeginInvoke(this.onOverlay, type))
                 return;
 
-            this.setActiveView(this.missingWSView);   
+            this.overlayView.setType((int)type);
+            this.setActiveView(this.overlayView);   
         }
 
         private void onError(string errmsg, bool userError)

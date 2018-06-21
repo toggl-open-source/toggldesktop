@@ -183,7 +183,12 @@ error GUI::DisplayError(const error err) {
 }
 
 error GUI::DisplayWSError() {
-    on_display_ws_error_();
+    on_display_overlay_(0);
+    return noError;
+}
+
+error GUI::DisplayTosAccept() {
+    on_display_overlay_(1);
     return noError;
 }
 

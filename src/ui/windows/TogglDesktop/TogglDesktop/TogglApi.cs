@@ -342,7 +342,8 @@ public static partial class Toggl
         Int64 count);
 
     [UnmanagedFunctionPointer(convention)]
-    private delegate void TogglDisplayWSError();
+    private delegate void TogglDisplayOverlay(
+        Int64 type);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayError(
@@ -587,9 +588,9 @@ public static partial class Toggl
         TogglDisplayUnsyncedItems cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void toggl_on_ws_error(
+    private static extern void toggl_on_overlay(
         IntPtr context,
-        TogglDisplayWSError cb);
+        TogglDisplayOverlay  cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_error(
@@ -767,6 +768,18 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_open_in_browser(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_accept_tos(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_tos(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_privacy_policy(
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

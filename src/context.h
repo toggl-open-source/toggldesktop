@@ -400,6 +400,8 @@ class Context : public TimelineDatasource {
 
     error OpenReportsInBrowser();
 
+    error ToSAccept();
+
     void SetIdleSeconds(const Poco::UInt64 idle_seconds) {
         idle_.SetIdleSeconds(idle_seconds, user_);
     }
@@ -673,7 +675,7 @@ class Context : public TimelineDatasource {
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;
 
-    bool ws_missing_;
+    bool overlay_visible_;
 };
 
 void on_websocket_message(

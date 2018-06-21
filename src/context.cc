@@ -83,7 +83,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , reminder_(this, &Context::reminderActivity)
 , syncer_(this, &Context::syncerActivity)
 , update_path_("")
-, ws_missing_(false) {
+, overlay_visible_(false) {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -982,7 +982,7 @@ error Context::displayError(const error err) {
 
     // Check for missing WS error and
     if (err.find(kMissingWS) != std::string::npos) {
-        ws_missing_ = true;
+        overlay_visible_ = true;
         UI()->DisplayWSError();
         return noError;
     }
@@ -1058,7 +1058,7 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
 
-    ws_missing_ = false;
+    overlay_visible_ = false;
     last_sync_started_ = time(0);
 
     TogglClient client(UI());
@@ -2520,7 +2520,7 @@ TimeEntry *Context::Start(
     }
 
     // Discard Start if WS missing error is present
-    if (ws_missing_) {
+    if (overlay_visible_) {
         return nullptr;
     }
 
@@ -2642,7 +2642,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
     }
 
     // Discard Start if WS missing error is present
-    if (ws_missing_) {
+    if (overlay_visible_) {
         return nullptr;
     }
 
@@ -2711,7 +2711,7 @@ TimeEntry *Context::Continue(
     }
 
     // Discard Start if WS missing error is present
-    if (ws_missing_) {
+    if (overlay_visible_) {
         return nullptr;
     }
 
@@ -4533,7 +4533,7 @@ error Context::pullAllUserData(
             if (err != noError) {
                 return err;
             }
-            ws_missing_ = false;
+            overlay_visible_ = false;
             TimeEntry *new_running_entry = user_->RunningTimeEntry();
 
             // Reset reminder time when entry stopped by sync
@@ -5207,7 +5207,7 @@ error Context::pullUserPreferences(
     try {
         std::string json("");
         std::stringstream ss;
-        ss << "/api/v9/me/preferences";
+        ss << "/api/v9/me/preferences/desktop";
 
         HTTPSRequest req;
         req.host = urls::API();
@@ -5237,6 +5237,11 @@ error Context::pullUserPreferences(
             UIElements render;
             render.display_time_entries = true;
             updateUI(render);
+        }
+
+        // Show tos accept overlay
+        if (root.isMember("ToSAcceptNeeded") && root["ToSAcceptNeeded"].asBool()) {
+            UI()->DisplayTosAccept();
         }
     }
     catch (const Poco::Exception& exc) {
@@ -5299,6 +5304,40 @@ error Context::signup(
     } catch(const std::exception& ex) {
         return ex.what();
     } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::ToSAccept() {
+    std::string api_token = user_->APIToken();
+
+    if (api_token.empty()) {
+        return error("cannot pull user data without API token");
+    }
+
+    TogglClient toggl_client(UI());
+    try {
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/me/accept_tos";
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client.Post(req);
+        if (resp.err != noError) {
+            return displayError(resp.err);
+        }
+        overlay_visible_ = false;
+        OpenTimeEntryList();
+    } catch(const Poco::Exception& exc) {
+        displayError(kCannotConnectError);
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        displayError(kCannotConnectError);
+        return ex.what();
+    } catch(const std::string& ex) {
+        displayError(kCannotConnectError);
         return ex;
     }
     return noError;

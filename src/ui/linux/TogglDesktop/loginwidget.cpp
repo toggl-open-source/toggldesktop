@@ -19,8 +19,8 @@ oauth2(new OAuth2(this)) {
     connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayWSError()),  // NOLINT
-            this, SLOT(displayWSError()));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayOverlay(int64_t)),  // NOLINT
+            this, SLOT(displayOverlay(int64_t)));  // NOLINT
 
     connect(TogglApi::instance, SIGNAL(setCountries(QVector<CountryView * >)),  // NOLINT
             this, SLOT(setCountries(QVector<CountryView * >)));  // NOLINT
@@ -53,7 +53,7 @@ void LoginWidget::mousePressEvent(QMouseEvent* event) {
     setFocus();
 }
 
-void LoginWidget::displayWSError() {
+void LoginWidget::displayOverlay(const int64_t type) {
     setVisible(false);
 }
 
