@@ -27,7 +27,7 @@
                 CornerRadius="100" Width="8" Height="8" BorderThickness="0"
                 Margin="20,0,6,0" 
                 Background="{Binding ProjectColor}"/>
-                <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}"/>
+                <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}" Margin="0,0,10,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="task-item-template">
@@ -49,7 +49,7 @@
                 Margin="6, 0, 6, 0" 
                 Background="{Binding ProjectColor}"/>
                 <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}"/>
-                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}" ToolTip="{Binding Text}"/>
+                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}" ToolTip="{Binding Text}" Margin="0,0,10,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="timer-item-template">
@@ -71,7 +71,7 @@
                 Margin="6, 0, 6, 0" 
                 Background="{Binding ProjectColor}"/>
                 <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}"/>
-                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}" ToolTip="{Binding Text}"/>
+                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}" ToolTip="{Binding Text}" Margin="0,0,10,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="category-item-template">
@@ -117,8 +117,9 @@
                                 Text="Hello. Yes, this is list."/>
             <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
                 BorderThickness="0"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                VerticalAlignment="Top" MinWidth="200"
+                VerticalAlignment="Top"
+                Width="Auto"
+                HorizontalContentAlignment="Stretch"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
                 PreviewMouseDown="listBox_PreviewMouseDown"

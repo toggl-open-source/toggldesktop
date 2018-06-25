@@ -409,10 +409,6 @@ namespace TogglDesktop
             var target = this.Target;
             this.popup.PlacementTarget = target;
             this.popup.MinWidth = target == null ? 0 : target.ActualWidth + 20;
-            if (this.popup.MinWidth > this.listBox.MinWidth)
-            {
-                this.popup.Width = this.popup.MinWidth;
-            }
         }
 
         private void ensureList()
