@@ -201,6 +201,8 @@ namespace TogglDesktop
         {
             this.controller = controller;
             this.needsToRefreshList = true;
+            if (this.popup.IsOpen)
+                this.ensureList();
         }
 
         public void OpenAndShowAll()
@@ -273,7 +275,7 @@ namespace TogglDesktop
                     {
                         if (this.IsOpen)
                         {
-                            if (this.confirmCompletion())
+                            if (this.confirmCompletion(true))
                             {
                                 e.Handled = true;
                             }
@@ -321,14 +323,14 @@ namespace TogglDesktop
 
         #endregion
 
-        private bool confirmCompletion()
+        private bool confirmCompletion(bool withKeyboard)
         {
             var item = this.controller.SelectedItem;
             if (item == null)
             {
                 return false;
             }
-            this.select(item, true);
+            this.select(item, withKeyboard);
             return true;
         }
 
@@ -446,8 +448,25 @@ namespace TogglDesktop
             if (dep == null)
                 return;
 
-            listBox.SelectedIndex = listBox.ItemContainerGenerator.IndexFromContainer(dep);
-            this.confirmCompletion();
+            int index = listBox.ItemContainerGenerator.IndexFromContainer(dep);
+            listBox.SelectedIndex = index;
+
+            this.confirmCompletion(false);
+
+            // Remove selected item from list if tags autocomplete
+            if (this.controller.autocompleteType == 1)
+            {
+                IEditableCollectionView items = listBox.Items; //Cast to interface
+                if (items.CanRemove)
+                {
+                    items.RemoveAt(index);
+                }
+            }
+        }
+
+        internal bool popUpOpen()
+        {
+            return this.popup.IsOpen;
         }
     }
 }

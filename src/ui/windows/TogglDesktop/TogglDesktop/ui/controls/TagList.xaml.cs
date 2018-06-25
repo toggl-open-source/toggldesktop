@@ -173,7 +173,8 @@ namespace TogglDesktop
 
         public void SetKnownTags(IEnumerable<string> tags)
         {
-            this.autoComplete.SetController(AutoCompleteControllers.ForTags(tags, this.Contains));
+            if (!this.autoComplete.popUpOpen())
+                this.autoComplete.SetController(AutoCompleteControllers.ForTags(tags, this.Contains));
         }
 
         public bool Contains(string tag)
