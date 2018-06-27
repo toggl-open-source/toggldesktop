@@ -226,6 +226,10 @@ BOOL onTop = NO;
 											 selector:@selector(startToggleGroup:)
 												 name:kToggleGroup
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startUpdateIconTooltip:)
+												 name:kUpdateIconTooltip
+											   object:nil];
 
 	toggl_set_environment(ctx, [self.environment UTF8String]);
 
@@ -556,6 +560,19 @@ BOOL onTop = NO;
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 					   toggl_toggle_entries_group(ctx, [key UTF8String]);
 				   });
+}
+
+- (void)startUpdateIconTooltip:(NSNotification *)notification
+{
+	[self performSelectorOnMainThread:@selector(updateIconTooltip:)
+						   withObject:notification.object
+						waitUntilDone:NO];
+}
+
+- (void)updateIconTooltip:(NSString *)text
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	[self.statusItem setToolTip:text];
 }
 
 - (void)startDisplaySettings:(NSNotification *)notification
@@ -1627,6 +1644,7 @@ void on_time_entry_list(const bool_t open,
 						TogglTimeEntryView *first,
 						const bool_t show_load_more)
 {
+	NSString *todayTotal = @"Total today: 0h 0min";
 	NSMutableArray *viewitems = [[NSMutableArray alloc] init];
 	TogglTimeEntryView *it = first;
 
@@ -1635,6 +1653,10 @@ void on_time_entry_list(const bool_t open,
 		TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
 		[model load:it];
 		[viewitems addObject:model];
+		if ([model.formattedDate isEqual:@"Today"])
+		{
+			todayTotal = [NSString stringWithFormat:@"Total today: %@", model.dateDuration];
+		}
 		it = it->Next;
 	}
 
@@ -1644,6 +1666,8 @@ void on_time_entry_list(const bool_t open,
 	cmd.show_load_more = show_load_more;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeEntryList
 														object:cmd];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kUpdateIconTooltip
+														object:todayTotal];
 }
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)

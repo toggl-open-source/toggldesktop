@@ -49,6 +49,7 @@ NSString *const kToggleTimerMode = @"kToggleTimerMode";
 NSString *const kSetProjectColors = @"kSetProjectColors";
 NSString *const kToggleGroup = @"ToggleGroup";
 NSString *const kDisplayCountries = @"kDisplayCountries";
+NSString *const kUpdateIconTooltip = @"kUpdateIconTooltip";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
