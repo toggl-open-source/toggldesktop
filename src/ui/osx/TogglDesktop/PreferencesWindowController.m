@@ -539,6 +539,33 @@ const int kUseProxyToConnectToToggl = 2;
 		toggl_set_settings_reminder_minutes(ctx,
 											[self.reminderMinutesTextField.stringValue intValue]);
 	}
+
+	if ([aNotification object] == self.autotrackerProject)
+	{
+		NSCustomComboBox *comboBox = [aNotification object];
+		NSString *filter = [comboBox stringValue];
+
+		AutocompleteDataSource *dataSource = self.autotrackerProjectAutocompleteDataSource;
+
+		if (dataSource != nil)
+		{
+			[dataSource setFilter:filter];
+		}
+
+		if (!filter || ![filter length] || (dataSource != nil && !dataSource.count))
+		{
+			if ([comboBox isExpanded] == YES)
+			{
+				[comboBox setExpanded:NO];
+			}
+			return;
+		}
+
+		if ([comboBox isExpanded] == NO)
+		{
+			[comboBox setExpanded:YES];
+		}
+	}
 }
 
 // Term autocomplete datasource
