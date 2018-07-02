@@ -1,6 +1,20 @@
 {
     "versions": [
         {
+            "version": "7.4.194",
+            "rows": [
+                "Improved login view field validation",
+                "Added ToS Accept view",
+                "Fixed issue with window restore hiding app when 'on top' setting is enabled",
+                "Fixed project create issues with certain scenarios",
+                "Fix for missing GUID issues",
+                "Added today total time to menubar icon tooltip",
+                "Fixed autocomplete in autotracker project selection"
+            ],
+            "date": "July 2nd 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.170",
             "rows": [
                 "Added new custom Autocomplete with colors",
