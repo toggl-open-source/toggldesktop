@@ -56,8 +56,8 @@
 		return string;
 	}
 
-	// Client row
-	if (view_item.Type == -2)
+	// Client row / No project row
+	if (view_item.Type == -2 ||  (view_item.Type == 2 && view_item.ProjectID == 0))
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
 

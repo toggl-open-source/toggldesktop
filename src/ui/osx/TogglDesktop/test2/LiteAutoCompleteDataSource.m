@@ -92,6 +92,7 @@ extern void *ctx;
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
+			// Add category title
 			if (item.Type != self.lastType)
 			{
 				AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -99,8 +100,19 @@ extern void *ctx;
 				it.Text = self.types[item.Type];
 				[self addItem:it];
 				self.lastType = item.Type;
+
+				// Add 'No project' item
+				if (item.Type == 2)
+				{
+					AutocompleteItem *it = [[AutocompleteItem alloc] init];
+					it.Type = 2;
+					it.Text = @"No project";
+					it.ProjectAndTaskLabel = @"";
+					[self addItem:it];
+				}
 			}
 
+			// Add Client name
 			if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
 			{
 				AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -182,6 +194,7 @@ extern void *ctx;
 
 										   if (foundCount == stringArray.count)
 										   {
+		                                       // Add category title
 											   if (item.Type != self.lastType)
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -191,6 +204,7 @@ extern void *ctx;
 												   self.lastType = item.Type;
 											   }
 
+		                                       // Add client name row
 											   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -219,6 +233,7 @@ extern void *ctx;
 										   self.textLength = [key length];
 									   }
 
+		                               // Add category title
 									   if (item.Type != self.lastType)
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
@@ -228,6 +243,7 @@ extern void *ctx;
 										   self.lastType = item.Type;
 									   }
 
+		                               // Add client name row
 									   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
