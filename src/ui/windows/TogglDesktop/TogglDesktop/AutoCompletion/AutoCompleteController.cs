@@ -45,6 +45,11 @@ namespace TogglDesktop.AutoCompletion
                     {
                         return null;
                     }
+                    // no project item
+                    if (listitem.Index == -1)
+                    {
+                        return (AutoCompleteItem)new TimerItem(new Toggl.TogglAutocompleteView(), true);
+                    }
                     return (AutoCompleteItem)this.list[listitem.Index];
                 }
                 return null;
@@ -81,6 +86,7 @@ namespace TogglDesktop.AutoCompletion
                         });
                     }
                 }
+                // workspace/client dropdown
                 else if (autocompleteType == 2)
                 {
                     for (var count = 0; count < this.list.Count; ++count)
@@ -96,6 +102,7 @@ namespace TogglDesktop.AutoCompletion
                         });
                     }
                 }
+                // description and project dropdowns
                 else
                 {
                     for (var count = 0; count < this.list.Count; ++count)
@@ -111,6 +118,21 @@ namespace TogglDesktop.AutoCompletion
                                 Category = categories[(int)it.Item.Type],
                                 Type = -1
                             });
+
+                            // if projects autocomplete show 'no project' item
+                            if (autocompleteType == 3 && (int)it.Item.Type == 2)
+                            {
+                                items.Add(new ListBoxItem()
+                                {
+                                    Text = "No project",
+                                    Description = "No project",
+                                    ProjectLabel = "",
+                                    TaskLabel = "",
+                                    ClientLabel = "",
+                                    Type = 0,
+                                    Index = -1
+                                });
+                            }
                         }
 
                         // Add client item if needed
