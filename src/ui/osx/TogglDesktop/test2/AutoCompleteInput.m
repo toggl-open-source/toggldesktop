@@ -154,6 +154,8 @@
 			[NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
 			self.constraintsActive = YES;
 		}
+		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
+		[[self currentEditor] moveToEndOfLine:nil];
 	}
 	else
 	{
