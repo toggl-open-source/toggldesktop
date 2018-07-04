@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,6 +27,8 @@
                 <outlet property="lastUpdateTextField" destination="byc-AI-Ri7" id="bg3-EU-Pr6"/>
                 <outlet property="projectAutoCompleteInput" destination="Z6v-zC-TTo" id="eSi-rz-NIa"/>
                 <outlet property="projectNameTextField" destination="2Pz-WE-b3h" id="K15-Cv-8rM"/>
+                <outlet property="projectOpenButton" destination="wb9-Zz-BWb" id="Vac-9v-ddD"/>
+                <outlet property="projectOpenButtonClicked" destination="wb9-Zz-BWb" id="izh-s3-6Z2"/>
                 <outlet property="projectPublicCheckbox" destination="b5J-U3-cc3" id="qbw-vP-7Yw"/>
                 <outlet property="projectSelectBox" destination="6Sh-4d-bKb" id="gbr-B6-ncX"/>
                 <outlet property="resizeHandle" destination="oCY-bD-X7j" id="jvV-pq-l2V"/>
@@ -120,13 +122,29 @@
                                                 <outlet property="nextKeyView" destination="EMR-ul-vEb" id="bya-uz-QTd"/>
                                             </connections>
                                         </button>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wb9-Zz-BWb">
+                                            <rect key="frame" x="310" y="19" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="krd-5F-JqQ"/>
+                                                <constraint firstAttribute="width" constant="20" id="wpJ-mu-jA6"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="EtA-aD-CkQ">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system" size="9"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="projectOpenButtonClicked:" target="-2" id="xH4-CU-MSP"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Z6v-zC-TTo" firstAttribute="leading" secondItem="x3p-PS-0cI" secondAttribute="leading" constant="15" id="AFw-hv-TwC"/>
                                         <constraint firstItem="mjR-fr-Qy0" firstAttribute="top" secondItem="Z6v-zC-TTo" secondAttribute="bottom" constant="4" id="JBC-Bn-ZsP"/>
+                                        <constraint firstAttribute="trailing" secondItem="wb9-Zz-BWb" secondAttribute="trailing" constant="16" id="Oof-Lg-uGf"/>
                                         <constraint firstAttribute="trailing" secondItem="Z6v-zC-TTo" secondAttribute="trailing" constant="15" id="UeU-Tb-fVI"/>
                                         <constraint firstAttribute="trailing" secondItem="mjR-fr-Qy0" secondAttribute="trailing" constant="15" id="cu5-4V-nru"/>
                                         <constraint firstItem="Z6v-zC-TTo" firstAttribute="top" secondItem="x3p-PS-0cI" secondAttribute="top" constant="5" id="nCx-Ud-pYJ"/>
+                                        <constraint firstItem="wb9-Zz-BWb" firstAttribute="top" secondItem="x3p-PS-0cI" secondAttribute="top" constant="6" id="zZw-Jb-LEH"/>
                                     </constraints>
                                 </view>
                                 <constraints>

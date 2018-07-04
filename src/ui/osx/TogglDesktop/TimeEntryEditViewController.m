@@ -153,6 +153,8 @@ extern void *ctx;
 	[self.descriptionAutoCompleteInput.autocompleteTableView setAction:@selector(performDescriptionTableClick:)];
 	[self.projectAutoCompleteInput.autocompleteTableView setTarget:self];
 	[self.projectAutoCompleteInput.autocompleteTableView setAction:@selector(performProjectTableClick:)];
+
+	[self.projectAutoCompleteInput setButton:self.projectOpenButton];
 }
 
 - (void)viewDidAppear
@@ -918,6 +920,18 @@ extern void *ctx;
 	[self.descriptionAutoCompleteInput becomeFirstResponder];
 	[self.descriptionAutoCompleteInput resetTable];
 	self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+}
+
+- (IBAction)projectOpenButtonClicked:(id)sender
+{
+	if (self.projectAutoCompleteInput.autocompleteTableContainer.isHidden)
+	{
+		[self.projectAutoCompleteInput toggleTableView:(int)self.projectAutoCompleteInput.autocompleteTableView.numberOfRows];
+	}
+	else
+	{
+		[self.projectAutoCompleteInput showAutoComplete:NO];
+	}
 }
 
 - (IBAction)projectAutoCompleteChanged:(id)sender

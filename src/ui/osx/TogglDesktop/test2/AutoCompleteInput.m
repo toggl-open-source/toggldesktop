@@ -10,6 +10,9 @@
 
 @implementation AutoCompleteInput
 
+NSString *downArrow = @"\u25BC";
+NSString *upArrow = @"\u25B2";
+
 - (void)drawRect:(NSRect)dirtyRect
 {
 	[super drawRect:dirtyRect];
@@ -156,6 +159,10 @@
 		}
 		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
 		[[self currentEditor] moveToEndOfLine:nil];
+		if (self.actionButton != nil)
+		{
+			[self.actionButton setTitle:upArrow];
+		}
 	}
 	else
 	{
@@ -163,6 +170,10 @@
 		{
 			[NSLayoutConstraint deactivateConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
 			self.constraintsActive = NO;
+		}
+		if (self.actionButton != nil)
+		{
+			[self.actionButton setTitle:downArrow];
 		}
 	}
 	[self.autocompleteTableContainer setHidden:!show];
@@ -182,6 +193,12 @@
 		}
 	}
 	return success;
+}
+
+- (void)setButton:(NSButton *)button
+{
+	self.actionButton = button;
+	[self.actionButton setTitle:downArrow];
 }
 
 @end

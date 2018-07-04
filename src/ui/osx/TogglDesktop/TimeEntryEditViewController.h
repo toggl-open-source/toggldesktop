@@ -49,6 +49,7 @@
 @property (strong) IBOutlet NSButton *addClientButton;
 @property (strong) IBOutlet NSTextField *clientNameTextField;
 @property (strong) IBOutlet NSButton *saveNewClientButton;
+@property (strong) IBOutlet NSButton *projectOpenButton;
 @property (strong) IBOutlet AutoCompleteInput *descriptionAutoCompleteInput;
 - (IBAction)descriptionAutoCompleteChanged:(id)sender;
 @property (strong) IBOutlet AutoCompleteInput *projectAutoCompleteInput;
@@ -71,5 +72,6 @@
 - (void)closeEdit;
 - (BOOL)autcompleteFocused;
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key;
+- (IBAction)projectOpenButtonClicked:(id)sender;
 - (void)updateWithSelectedProject:(AutocompleteItem *)autocomplete withKey:(NSString *)key;
 @end
