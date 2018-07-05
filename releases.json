@@ -547,6 +547,20 @@
                         "name": "TogglDesktopEnterpriseInstaller-7.4.184.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.197",
+                "timestamp": "05-07-2018",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.197.exe"
+                    },
+                    {
+                        "type": "windows_enterprise",
+                        "name": "TogglDesktopEnterpriseInstaller-7.4.197.exe"
+                    }
+                ]
             }
         ],
         "stable": [
@@ -1045,36 +1059,6 @@
     "osx": {
         "dev": [
             {
-                "version": "7.4.184",
-                "timestamp": "07-06-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_184.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.186",
-                "timestamp": "14-06-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_186.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.187",
-                "timestamp": "22-06-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_187.dmg"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.188",
                 "timestamp": "22-06-2018",
                 "filename": [
@@ -1141,6 +1125,36 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_194.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.195",
+                "timestamp": "03-07-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_195.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.196",
+                "timestamp": "03-07-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_196.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.197",
+                "timestamp": "04-07-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_197.dmg"
                     }
                 ]
             }
