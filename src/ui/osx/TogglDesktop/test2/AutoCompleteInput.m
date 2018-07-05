@@ -87,7 +87,7 @@ NSString *upArrow = @"\u25B2";
 				{
 					self.parentView = self.window.contentView;
 				}
-				[self.parentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
+				[self.parentView addSubview:self.autocompleteTableContainer];
 				[self setupAutocompleteConstraints];
 			}
 			[self showAutoComplete:YES];
