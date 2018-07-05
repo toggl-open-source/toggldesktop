@@ -1,6 +1,21 @@
 {
     "versions": [
         {
+            "version": "7.4.197",
+            "rows": [
+                "Added ToS Accept view",
+                "Fixed crash with pressing down on autocomplete",
+                "Fixed project and client create issues with certain scenarios",
+                "Fix for missing GUID issues",
+                "Fixed updating billable flag when selecting billable project",
+                "Fixed tag selection issues",
+                "Fixed autocomplete dropdown small width issue",
+                "Added 'no project' item to autocomplete"
+            ],
+            "date": "July 5th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.184",
             "rows": [
                 "Fixed autocomplete selecting previous items",
