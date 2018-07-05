@@ -154,7 +154,7 @@ NSString *upArrow = @"\u25B2";
 	{
 		if (!self.constraintsActive)
 		{
-			[NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			[self.window.contentView addConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
 			self.constraintsActive = YES;
 		}
 		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
@@ -168,7 +168,7 @@ NSString *upArrow = @"\u25B2";
 	{
 		if (self.constraintsActive)
 		{
-			[NSLayoutConstraint deactivateConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			[self.window.contentView removeConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
 			self.constraintsActive = NO;
 		}
 		if (self.actionButton != nil)
