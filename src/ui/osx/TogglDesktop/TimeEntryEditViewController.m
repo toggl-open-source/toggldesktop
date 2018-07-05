@@ -102,9 +102,11 @@ extern void *ctx;
 
 - (void)viewDidLoad
 {
+	[self.descriptionAutoCompleteInput setView:self.view];
 	self.liteDescriptionAutocompleteDataSource.input = self.descriptionAutoCompleteInput;
 	[self.liteDescriptionAutocompleteDataSource setFilter:@""];
 
+	[self.projectAutoCompleteInput setView:self.view];
 	self.liteProjectAutocompleteDataSource.input = self.projectAutoCompleteInput;
 	[self.liteProjectAutocompleteDataSource setFilter:@""];
 

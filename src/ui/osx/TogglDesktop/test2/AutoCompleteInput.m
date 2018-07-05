@@ -34,6 +34,11 @@ NSString *upArrow = @"\u25B2";
 	return self;
 }
 
+- (void)setView:(NSView *)view
+{
+	self.parentView = view;
+}
+
 - (void)createAutocomplete
 {
 	self.autocompleteTableContainer = [[AutoCompleteTableContainer alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
@@ -78,7 +83,11 @@ NSString *upArrow = @"\u25B2";
 		{
 			if (self.heightConstraint == nil)
 			{
-				[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
+				if (self.parentView == nil)
+				{
+					self.parentView = self.window.contentView;
+				}
+				[self.parentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
 				[self setupAutocompleteConstraints];
 			}
 			[self showAutoComplete:YES];
@@ -154,7 +163,7 @@ NSString *upArrow = @"\u25B2";
 	{
 		if (!self.constraintsActive)
 		{
-			[self.window.contentView addConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			[self.parentView addConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
 			self.constraintsActive = YES;
 		}
 		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
@@ -168,7 +177,7 @@ NSString *upArrow = @"\u25B2";
 	{
 		if (self.constraintsActive)
 		{
-			[self.window.contentView removeConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			[self.parentView removeConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
 			self.constraintsActive = NO;
 		}
 		if (self.actionButton != nil)

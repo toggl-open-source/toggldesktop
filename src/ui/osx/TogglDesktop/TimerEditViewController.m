@@ -87,6 +87,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)viewDidLoad
 {
+	[self.autoCompleteInput setView:nil];
 	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
 	[self.liteAutocompleteDataSource setFilter:@""];
 
