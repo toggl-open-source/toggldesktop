@@ -41,10 +41,9 @@ NSString *upArrow = @"\u25B2";
 
 - (void)createAutocomplete
 {
-    // try setting default frame sizes to see if mac 10.9 shows the dropdown then
-	self.autocompleteTableContainer = [[AutoCompleteTableContainer alloc] initWithFrame:NSMakeRect(10, 10, 10, 10)];
+	self.autocompleteTableContainer = [[AutoCompleteTableContainer alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	self.nibAutoCompleteTableCell = [[NSNib alloc] initWithNibNamed:@"AutoCompleteTableCell" bundle:nil];
-	self.autocompleteTableView = [[AutoCompleteTable alloc] initWithFrame:NSMakeRect(10, 10, 10, 10)];
+	self.autocompleteTableView = [[AutoCompleteTable alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	[self.autocompleteTableView registerNib:self.nibAutoCompleteTableCell
 							  forIdentifier :@"AutoCompleteTableCell"];
 
