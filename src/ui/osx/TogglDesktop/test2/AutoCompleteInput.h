@@ -14,7 +14,7 @@
 
 @interface AutoCompleteInput : NSTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 @property NSNib *nibAutoCompleteTableCell;
-@property AutoCompleteTableContainer *autocompleteTableContainer;
+@property (strong, nonatomic) AutoCompleteTableContainer *autocompleteTableContainer;
 @property AutoCompleteTable *autocompleteTableView;
 @property int posY;
 @property int lastItemCount;
