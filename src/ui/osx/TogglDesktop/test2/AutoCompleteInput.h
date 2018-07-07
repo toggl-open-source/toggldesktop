@@ -26,8 +26,6 @@
 @property NSLayoutConstraint *topConstraint;
 @property BOOL constraintsActive;
 @property NSButton *actionButton;
-@property NSView *parentView;
-- (void)setView:(NSView *)view;
 - (void)toggleTableView:(int)itemCount;
 - (void)setPos:(int)posy;
 - (void)hide;
