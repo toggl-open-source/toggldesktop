@@ -132,9 +132,10 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[super loadView];
 	[self viewDidLoad];
+    [self setupAutocompletes];
 }
 
-- (void)viewDidAppear
+- (void)setupAutocompletes
 {
 	NSRect viewFrameInWindowCoords = [self.view convertRect:[self.view bounds] toView:nil];
 
