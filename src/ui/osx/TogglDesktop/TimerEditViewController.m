@@ -132,14 +132,11 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[super loadView];
 	[self viewDidLoad];
-    [self setupAutocompletes];
+	[self setupAutocompletes];
 }
 
 - (void)setupAutocompletes
 {
-	NSRect viewFrameInWindowCoords = [self.view convertRect:[self.view bounds] toView:nil];
-
-	[self.autoCompleteInput setPos:(int)viewFrameInWindowCoords.origin.y];
 	[self.autoCompleteInput.autocompleteTableView setDelegate:self];
 }
 

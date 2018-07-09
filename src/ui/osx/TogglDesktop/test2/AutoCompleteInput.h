@@ -24,10 +24,10 @@
 @property NSLayoutConstraint *leftConstraint;
 @property NSLayoutConstraint *rightConstraint;
 @property NSLayoutConstraint *topConstraint;
+@property NSLayoutConstraint *bottomConstraint;
 @property BOOL constraintsActive;
 @property NSButton *actionButton;
 - (void)toggleTableView:(int)itemCount;
-- (void)setPos:(int)posy;
 - (void)hide;
 - (void)resetTable;
 - (void)showAutoComplete:(BOOL)show;

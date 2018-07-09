@@ -25,7 +25,6 @@ NSString *upArrow = @"\u25B2";
 	self = [super initWithCoder:coder];
 	if (self)
 	{
-		self.posY = 0;
 		self.itemHeight = 25;
 		self.maxVisibleItems = 6;
 		self.constraintsActive = NO;
@@ -61,12 +60,9 @@ NSString *upArrow = @"\u25B2";
 
 	self.topConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:1];
 
-	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:self.itemHeight];
-}
+	self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:self.window.contentView attribute:NSLayoutAttributeBottom multiplier:1 constant:-self.itemHeight];
 
-- (void)setPos:(int)posy
-{
-	self.posY = posy;
+	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.5 constant:self.maxVisibleItems * self.itemHeight];
 }
 
 - (void)toggleTableView:(int)itemCount
@@ -94,10 +90,10 @@ NSString *upArrow = @"\u25B2";
 
 - (void)updateDropdownHeight:(int)count
 {
-	int h = MIN((count * self.itemHeight), self.posY - 50);
-
-	self.heightConstraint.constant = h;
-	// NSLog(@"Update table position | H: %d, POSY: %d", h, self.posY);
+	// if (NSAppKitVersionNumber >= NSAppKitVersionNumber10_11) {
+	NSLog(@"Update autcomplete height -> %d", (count * self.itemHeight));
+	self.heightConstraint.constant = (count * self.itemHeight);
+	// }
 }
 
 - (void)keyUp:(NSEvent *)event
@@ -154,7 +150,7 @@ NSString *upArrow = @"\u25B2";
 	{
 		if (!self.constraintsActive)
 		{
-			[self.window.contentView addConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			[self.window.contentView addConstraints:[NSArray arrayWithObjects:self.heightConstraint, self.leftConstraint, self.rightConstraint, self.bottomConstraint, self.topConstraint, nil]];
 			self.constraintsActive = YES;
 		}
 		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
@@ -168,7 +164,7 @@ NSString *upArrow = @"\u25B2";
 	{
 		if (self.constraintsActive)
 		{
-			[self.window.contentView removeConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
+			[self.window.contentView removeConstraints:[NSArray arrayWithObjects:self.heightConstraint, self.leftConstraint, self.rightConstraint, self.bottomConstraint, self.topConstraint, nil]];
 			self.constraintsActive = NO;
 		}
 		if (self.actionButton != nil)
