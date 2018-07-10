@@ -5370,7 +5370,7 @@ error Context::PullCountries() {
 
         std::vector<TogglCountryView> countries;
 
-        for (unsigned int i = root.size() - 1; i > 0; i--) {
+        for (int i = root.size() - 1; i >= 0; i--) {
             TogglCountryView *item = country_view_item_init(root[i]);
             countries.push_back(*item);
         }
