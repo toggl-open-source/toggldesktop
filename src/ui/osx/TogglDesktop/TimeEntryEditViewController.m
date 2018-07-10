@@ -157,7 +157,7 @@ extern void *ctx;
 	[self.projectAutoCompleteInput setButton:self.projectOpenButton];
 }
 
-- (void)setupAutocompletes
+- (void)viewDidAppear
 {
 	NSRect descriptionViewFrameInWindowCoords = [self.descriptionAutoCompleteInput convertRect:[self.descriptionAutoCompleteInput bounds] toView:nil];
 	NSRect projectViewFrameInWindowCoords = [self.projectAutoCompleteInput convertRect:[self.projectAutoCompleteInput bounds] toView:nil];
@@ -173,7 +173,6 @@ extern void *ctx;
 {
 	[super loadView];
 	[self viewDidLoad];
-    [self setupAutocompletes];
 }
 
 - (void)appWillTerminate:(NSNotification *)notification
