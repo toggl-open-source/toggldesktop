@@ -162,6 +162,11 @@ NSString *upArrow = @"\u25B2";
 	}
 	else
 	{
+		if (self.constraintsActive)
+		{
+			[self.window.contentView removeConstraints:[NSArray arrayWithObjects:self.heightConstraint, self.leftConstraint, self.rightConstraint, self.bottomConstraint, self.topConstraint, nil]];
+			self.constraintsActive = NO;
+		}
 		if (self.actionButton != nil)
 		{
 			[self.actionButton setTitle:downArrow];
