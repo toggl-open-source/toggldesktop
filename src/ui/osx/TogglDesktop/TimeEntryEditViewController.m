@@ -159,6 +159,12 @@ extern void *ctx;
 
 - (void)setupAutocompletes
 {
+	NSRect descriptionViewFrameInWindowCoords = [self.descriptionAutoCompleteInput convertRect:[self.descriptionAutoCompleteInput bounds] toView:nil];
+	NSRect projectViewFrameInWindowCoords = [self.projectAutoCompleteInput convertRect:[self.projectAutoCompleteInput bounds] toView:nil];
+
+	[self.descriptionAutoCompleteInput setPos:(int)descriptionViewFrameInWindowCoords.origin.y];
+	[self.projectAutoCompleteInput setPos:(int)projectViewFrameInWindowCoords.origin.y];
+
 	[self.descriptionAutoCompleteInput.autocompleteTableView setDelegate:self];
 	[self.projectAutoCompleteInput.autocompleteTableView setDelegate:self];
 }
@@ -167,7 +173,7 @@ extern void *ctx;
 {
 	[super loadView];
 	[self viewDidLoad];
-	[self setupAutocompletes];
+    [self setupAutocompletes];
 }
 
 - (void)appWillTerminate:(NSNotification *)notification
