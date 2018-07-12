@@ -1382,6 +1382,11 @@ extern void *ctx;
 
 	NSInteger row = input.autocompleteTableView.lastSavedSelected;
 
+	if (row == -1)
+	{
+		row = [input.autocompleteTableView clickedRow];
+	}
+
 	if (row < 0)
 	{
 		return;
@@ -1402,6 +1407,11 @@ extern void *ctx;
 	AutoCompleteInput *input = self.projectAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
 	NSInteger row = input.autocompleteTableView.lastSavedSelected;
+
+	if (row == -1)
+	{
+		row = [input.autocompleteTableView clickedRow];
+	}
 
 	if (row < 0)
 	{
