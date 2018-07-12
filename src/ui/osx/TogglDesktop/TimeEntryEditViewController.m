@@ -1338,6 +1338,7 @@ extern void *ctx;
 
 	AutocompleteItem *item = nil;
 	LiteAutoCompleteDataSource *dataSource = nil;
+	AutoCompleteTable *tb = tableView;
 
 	if (tableView == self.descriptionAutoCompleteInput.autocompleteTableView)
 	{
@@ -1364,7 +1365,7 @@ extern void *ctx;
 	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
 															  owner:self];
 
-	[cell render:item];
+	[cell render:item selected:(tb.lastSelected != -1 && tb.lastSelected == row)];
 	return cell;
 }
 

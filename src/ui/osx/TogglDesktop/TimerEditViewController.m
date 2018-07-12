@@ -619,6 +619,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	AutocompleteItem *item = nil;
+	AutoCompleteTable *tb = tableView;
 
 	@synchronized(self)
 	{
@@ -630,7 +631,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
 															  owner:self];
 
-	[cell render:item];
+	[cell render:item selected:(tb.lastSelected != -1 && tb.lastSelected == row)];
 	return cell;
 }
 

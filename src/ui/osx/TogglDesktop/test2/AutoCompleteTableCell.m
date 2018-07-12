@@ -17,10 +17,11 @@
 	// Drawing code here.
 }
 
-- (void)render:(AutocompleteItem *)view_item
+- (void)render:(AutocompleteItem *)view_item selected:(BOOL)selected
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
+	[self setFocused:selected];
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
 	self.cellDescription.toolTip = view_item.Text;
 	self.isSelectable = (view_item.Type != -1 && view_item.Type != -2);
