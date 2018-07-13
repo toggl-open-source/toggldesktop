@@ -419,9 +419,10 @@ void RelatedData::TimeEntryAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
     std::map<Poco::UInt64, std::string> ws_names;
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > items;
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
-    timeEntryAutocompleteItems(&unique_names, &ws_names, result, nullptr);
-    std::sort(result->begin(), result->end(), CompareAutocompleteItems);
+    timeEntryAutocompleteItems(&unique_names, &ws_names, result, &items);
+    mergeGroupedAutocompleteItems(result, &items);
 }
 
 void RelatedData::MinitimerAutocompleteItems(
