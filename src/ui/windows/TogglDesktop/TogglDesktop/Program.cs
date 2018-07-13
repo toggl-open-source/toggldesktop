@@ -99,7 +99,7 @@ static class Program
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            RenderOptions.ProcessRenderMode = RenderMode.Default;
+            RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
             new App().Run();
         }
