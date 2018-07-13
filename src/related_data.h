@@ -119,6 +119,10 @@ class RelatedData {
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<view::Autocomplete> *list) const;
 
+    void mergeGroupedAutocompleteItems(
+        std::vector<view::Autocomplete> *result,
+        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
+
     Client *clientByProject(Project *p) const;
 };
 

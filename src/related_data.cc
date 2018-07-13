@@ -435,10 +435,16 @@ void RelatedData::MinitimerAutocompleteItems(
     taskAutocompleteItems(&unique_names, &ws_names, result, &items);
     projectAutocompleteItems(&unique_names, &ws_names, result, &items);
 
+    mergeGroupedAutocompleteItems(result, &items);
+}
+
+void RelatedData::mergeGroupedAutocompleteItems(
+    std::vector<view::Autocomplete> *result,
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const {
     // Join created workspace maps to a single vector
     Poco::UInt64 total_size = 0;
     for(std::map<Poco::Int64, std::vector<view::Autocomplete> >::iterator iter =
-        items.begin(); iter != items.end(); ++iter)
+        items->begin(); iter != items->end(); ++iter)
     {
         total_size += iter->second.size();
     }
@@ -446,11 +452,12 @@ void RelatedData::MinitimerAutocompleteItems(
     result->reserve(total_size);
 
     for(std::map<Poco::Int64, std::vector<view::Autocomplete> >::iterator iter =
-        items.begin(); iter != items.end(); ++iter)
+        items->begin(); iter != items->end(); ++iter)
     {
         result->insert(result->end(), iter->second.begin(), iter->second.end());
     }
 }
+
 
 void RelatedData::ProjectAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
