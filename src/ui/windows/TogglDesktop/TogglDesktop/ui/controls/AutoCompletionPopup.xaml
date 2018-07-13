@@ -77,7 +77,7 @@
         <DataTemplate x:Key="category-item-template">
             <TextBlock Name="categoryName"
                Foreground="#a1a1a1"
-               FontSize="13"
+               FontSize="12"
                Margin="0, 5, 0, 2"
                Text="{Binding Category}"/>
         </DataTemplate>
@@ -106,7 +106,8 @@
                         VerticalAlignment="Bottom">
                 <TextBlock Name="workspaceName"
                     HorizontalAlignment="Center" Foreground="#a1a1a1"
-                    FontSize="12" Text="{Binding Text}"/>
+                    FontSize="13" Text="{Binding Text}" Margin="0,4"
+                    FontWeight="Medium"/>
                 <Border 
                  HorizontalAlignment="Stretch" Height="1" BorderThickness="0,0,0,1"
                  BorderBrush="#dbdbdb" 
