@@ -108,7 +108,7 @@ extern void *ctx;
 			}
 
 			// Add category title
-			if (item.Type != self.lastType)
+			if (item.Type != self.lastType && item.Type != 1)
 			{
 				AutocompleteItem *it = [[AutocompleteItem alloc] init];
 				it.Type = -1;
@@ -183,6 +183,7 @@ extern void *ctx;
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		                   // Code that runs async
+						   NSInteger lastPID = -1;
 						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
@@ -227,7 +228,7 @@ extern void *ctx;
 											   }
 
 		                                       // Add category title
-											   if (item.Type != self.lastType)
+											   if (item.Type != self.lastType && item.Type != 1)
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 												   it.Type = -1;
@@ -237,7 +238,8 @@ extern void *ctx;
 											   }
 
 		                                       // Add client name row
-											   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+											   if ((item.Type == 2 || item.Type == 1)
+												   && ![item.ClientLabel isEqual:self.lastClientLabel])
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 												   it.Type = -2;
@@ -249,6 +251,23 @@ extern void *ctx;
 												   [filtered addObject:it];
 												   self.lastClientLabel = item.ClientLabel;
 											   }
+
+		                                       // In case we have task and project is not completed
+											   if (item.Type == 1 && item.ProjectID != lastPID)
+											   {
+												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+												   it.Type = 2;
+												   it.Text = item.ProjectLabel;
+												   it.ProjectLabel = item.ProjectLabel;
+												   it.ProjectColor = item.ProjectColor;
+												   it.ProjectID = item.ProjectID;
+												   it.Description = item.Description;
+												   it.TaskLabel = @"";
+												   it.ClientLabel = item.ClientLabel;
+												   it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+												   [filtered addObject:it];
+											   }
+											   lastPID = item.ProjectID;
 
 											   [filtered addObject:item];
 										   }
@@ -278,7 +297,7 @@ extern void *ctx;
 									   }
 
 		                               // Add category title
-									   if (item.Type != self.lastType)
+									   if (item.Type != self.lastType && item.Type != 1)
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 										   it.Type = -1;
@@ -288,7 +307,8 @@ extern void *ctx;
 									   }
 
 		                               // Add client name row
-									   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+									   if ((item.Type == 2 || item.Type == 1)
+										   && ![item.ClientLabel isEqual:self.lastClientLabel])
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 										   it.Type = -2;
@@ -301,6 +321,22 @@ extern void *ctx;
 										   self.lastClientLabel = item.ClientLabel;
 									   }
 
+		                               // In case we have task and project is not completed
+									   if (item.Type == 1 && item.ProjectID != lastPID)
+									   {
+										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+										   it.Type = 2;
+										   it.Text = item.ProjectLabel;
+										   it.ProjectLabel = item.ProjectLabel;
+										   it.ProjectColor = item.ProjectColor;
+										   it.ProjectID = item.ProjectID;
+										   it.Description = item.Description;
+										   it.TaskLabel = @"";
+										   it.ClientLabel = item.ClientLabel;
+										   it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+										   [filtered addObject:it];
+									   }
+									   lastPID = item.ProjectID;
 									   [filtered addObject:item];
 								   }
 							   }

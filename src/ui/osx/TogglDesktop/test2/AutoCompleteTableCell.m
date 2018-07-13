@@ -112,6 +112,8 @@
 			{
 				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" -"]];
 			}
+
+			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"        "]];
 			NSMutableAttributedString *task = [[NSMutableAttributedString alloc] initWithString:view_item.TaskLabel];
 
 			[task setAttributes:
@@ -122,31 +124,34 @@
 						  range:NSMakeRange(0, [task length])];
 			[string appendAttributedString:task];
 		}
-		if ([string length] > 0)
+		else
 		{
-			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
+			if ([string length] > 0)
+			{
+				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
+			}
+
+			NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"•"];
+
+			[projectDot setAttributes:
+			 @{
+				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
+			 }
+								range:NSMakeRange(0, [projectDot length])];
+			[string appendAttributedString:projectDot];
+
+			NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:view_item.ProjectLabel];
+
+			[projectName setAttributes:
+			 @{
+				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
+			 }
+								 range:NSMakeRange(0, [projectName length])];
+
+			[string appendAttributedString:projectName];
 		}
-
-		NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"•"];
-
-		[projectDot setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
-		 }
-							range:NSMakeRange(0, [projectDot length])];
-		[string appendAttributedString:projectDot];
-
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:view_item.ProjectLabel];
-
-		[projectName setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
-		 }
-							 range:NSMakeRange(0, [projectName length])];
-
-		[string appendAttributedString:projectName];
 	}
 
 	if (view_item.Type == 2)
