@@ -24,7 +24,7 @@
 	[self setFocused:selected];
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
 	self.cellDescription.toolTip = view_item.Text;
-	self.isSelectable = (view_item.Type != -1 && view_item.Type != -2);
+	self.isSelectable = view_item.Type > -1;
 }
 
 - (void)setFocused:(BOOL)focus
@@ -40,6 +40,7 @@
 
 - (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item
 {
+	[self.bottomLine setHidden:(view_item.Type != -3)];
 	// Format is: Description - TaskName · ProjectName - ClientName
 	NSMutableAttributedString *string;
 
@@ -58,7 +59,7 @@
 	}
 
 	// Client row / No project row
-	if (view_item.Type == -2 ||  (view_item.Type == 2 && view_item.ProjectID == 0))
+	if (view_item.Type == -2 || (view_item.Type == 2 && view_item.ProjectID == 0))
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
 
@@ -73,6 +74,24 @@
 		[result appendAttributedString:string];
 
 		return result;
+	}
+
+	// Workspace row
+	if (view_item.Type == -3)
+	{
+		NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+		paragrapStyle.alignment                = kCTTextAlignmentCenter;
+
+		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
+
+		[string setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont boldSystemFontOfSize:12],
+			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor],
+			 NSParagraphStyleAttributeName:paragrapStyle
+		 }
+						range:NSMakeRange(0, [string length])];
+		return string;
 	}
 
 	// Item rows

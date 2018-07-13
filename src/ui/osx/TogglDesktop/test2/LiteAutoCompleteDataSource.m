@@ -20,6 +20,7 @@ extern void *ctx;
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
 	self.dictionary = [[NSMutableDictionary alloc] init];
 	self.lastType = -1;
+	self.lastWID = -1;
 	self.lastClientLabel = nil;
 	self.types = [NSArray arrayWithObjects:@"TIME ENTRIES", @"TASKS", @"PROJECTS", @"WORKSPACES", nil];
 
@@ -88,10 +89,24 @@ extern void *ctx;
 	{
 		self.lastType = -1;
 		self.lastClientLabel = nil;
+		self.lastWID = -1;
 		[self.orderedKeys removeAllObjects];
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
+			// Add workspace title
+			if (item.WorkspaceID != self.lastWID
+				&& item.WorkspaceName != nil)
+			{
+				AutocompleteItem *it = [[AutocompleteItem alloc] init];
+				it.Type = -3;
+				it.Text = item.WorkspaceName;
+				[self addItem:it];
+				self.lastWID = item.WorkspaceID;
+				self.lastType = -1;
+				self.lastClientLabel = nil;
+			}
+
 			// Add category title
 			if (item.Type != self.lastType)
 			{
@@ -141,7 +156,9 @@ extern void *ctx;
 {
 	NSString *key = item.Text;
 
-	if ([self.dictionary objectForKey:key] == nil)
+	if ([self.dictionary objectForKey:key] == nil
+		|| item.Type < 0
+		|| [item.ProjectAndTaskLabel isEqual:@""])
 	{
 		[self.orderedKeys addObject:item];
 		[self.dictionary setObject:item forKey:key];
@@ -160,6 +177,8 @@ extern void *ctx;
 {
 	self.lastType = -1;
 	self.lastClientLabel = nil;
+	self.lastWID = -1;
+
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -168,8 +187,8 @@ extern void *ctx;
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
-		                   // Skip filtering category item and client items
-							   if (item.Type == -1 || item.Type == -2)
+		                   // Skip filtering category/client/workspace items
+							   if (item.Type < 0)
 							   {
 								   continue;
 							   }
@@ -194,6 +213,19 @@ extern void *ctx;
 
 										   if (foundCount == stringArray.count)
 										   {
+		                                       // Add workspace title
+											   if (item.WorkspaceID != self.lastWID
+												   && item.WorkspaceName != nil)
+											   {
+												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+												   it.Type = -3;
+												   it.Text = item.WorkspaceName;
+												   [filtered addObject:it];
+												   self.lastWID = item.WorkspaceID;
+												   self.lastType = -1;
+												   self.lastClientLabel = nil;
+											   }
+
 		                                       // Add category title
 											   if (item.Type != self.lastType)
 											   {
@@ -231,6 +263,18 @@ extern void *ctx;
 									   if ([key length] > self.textLength)
 									   {
 										   self.textLength = [key length];
+									   }
+		                           // Add workspace title
+									   if (item.WorkspaceID != self.lastWID
+										   && item.WorkspaceName != nil)
+									   {
+										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+										   it.Type = -3;
+										   it.Text = item.WorkspaceName;
+										   [filtered addObject:it];
+										   self.lastWID = item.WorkspaceID;
+										   self.lastType = -1;
+										   self.lastClientLabel = nil;
 									   }
 
 		                               // Add category title

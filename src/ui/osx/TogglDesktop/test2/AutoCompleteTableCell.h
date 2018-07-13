@@ -14,6 +14,7 @@
 @property (weak) IBOutlet NSTextField *cellDescription;
 @property (weak) IBOutlet NSBox *backgroundBox;
 @property BOOL isSelectable;
+@property (strong) IBOutlet NSBox *bottomLine;
 - (void)render:(AutocompleteItem *)view_item selected:(BOOL)selected;
 - (void)setFocused:(BOOL)focus;
 - (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item;

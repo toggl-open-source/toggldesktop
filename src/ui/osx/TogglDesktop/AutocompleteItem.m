@@ -58,6 +58,14 @@
 	{
 		self.ProjectColor = @"";
 	}
+	if (data->WorkspaceName)
+	{
+		self.WorkspaceName = [NSString stringWithUTF8String:data->WorkspaceName];
+	}
+	else
+	{
+		self.WorkspaceName = nil;
+	}
 	self.Type = data->Type;
 	self.WorkspaceID = data->WorkspaceID;
 	self.ProjectID = data->ProjectID;

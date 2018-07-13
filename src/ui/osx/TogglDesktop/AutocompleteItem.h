@@ -20,6 +20,7 @@
 @property NSString *ProjectLabel;
 @property NSString *ClientLabel;
 @property NSString *ProjectColor;
+@property NSString *WorkspaceName;
 @property uint64_t ID;
 @property uint64_t ProjectID;
 @property uint64_t WorkspaceID;
