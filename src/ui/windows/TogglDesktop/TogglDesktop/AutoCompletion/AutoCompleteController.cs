@@ -126,7 +126,7 @@ namespace TogglDesktop.AutoCompletion
                         }
 
                         // Add category title if needed
-                        if (lastType != (int)it.Item.Type)
+                        if (lastType != (int)it.Item.Type && (int)it.Item.Type != 1)
                         {
                             items.Add(new ListBoxItem()
                             {
@@ -213,6 +213,7 @@ namespace TogglDesktop.AutoCompletion
                 filterText = input;
 
                 int lastType = -1;
+                string lastProjectLabel = null;
                 string lastClient = null;
                 string lastWSName = null;
                 List<ListBoxItem> filteredItems = new List<ListBoxItem>();
@@ -234,7 +235,9 @@ namespace TogglDesktop.AutoCompletion
                         }
 
                         // Add category title if needed
-                        if (autocompleteType == 0 && lastType != (int)item.Type) {
+                        if (autocompleteType == 0 && lastType != (int)item.Type
+                            && (int)item.Type != 1)
+                        {
                             filteredItems.Add(new ListBoxItem() {
                                 Category = categories[(int)item.Type],
                                 Type = -1
@@ -242,7 +245,7 @@ namespace TogglDesktop.AutoCompletion
                         }
 
                         // Add client item if needed
-                        if (item.Type == 2 && lastClient != item.ClientLabel)
+                        if ((item.Type == 2 || item.Type == 1) && lastClient != item.ClientLabel)
                         {
                             string text = item.ClientLabel;
                             if (text.Length == 0)
@@ -256,8 +259,27 @@ namespace TogglDesktop.AutoCompletion
                             });
                             lastClient = item.ClientLabel;
                         }
+
+                        // In case we have task and project is not completed
+                        if (item.Type == 1 && item.ProjectLabel != lastProjectLabel)
+                        {
+                            filteredItems.Add(new ListBoxItem()
+                            {
+                                Text = item.ProjectLabel,
+                                Description = "",
+                                ProjectLabel = item.ProjectLabel,
+                                ProjectColor = item.ProjectColor,
+                                TaskLabel = "",
+                                ClientLabel = item.ClientLabel,
+                                Type = 2,
+                                WorkspaceName = item.WorkspaceName,
+                                Index = filteredItems.Count
+                            });
+                        }
+
                         filteredItems.Add(item);
                         lastType = (int)item.Type;
+                        lastProjectLabel = item.ProjectLabel;
                     }
                 }
                 visibleItems = filteredItems;
