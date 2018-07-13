@@ -348,7 +348,7 @@ void RelatedData::taskAutocompleteItems(
         autocomplete_item.Type = kAutocompleteItemTask;
 
         if (items) {
-            (*items)[autocomplete_item.WorkspaceID].push_back(autocomplete_item);
+            (*items)[autocomplete_item.ProjectID].push_back(autocomplete_item);
         } else {
             list->push_back(autocomplete_item);
         }
@@ -361,7 +361,8 @@ void RelatedData::projectAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
     std::vector<view::Autocomplete> *list,
-    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const {
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items,
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *task_items) const {
 
     poco_check_ptr(list);
 
@@ -409,8 +410,24 @@ void RelatedData::projectAutocompleteItems(
 
         if (items) {
             (*items)[autocomplete_item.WorkspaceID].push_back(autocomplete_item);
+            if (task_items) {
+                for (std::vector<view::Autocomplete>::const_iterator it =
+                    (*task_items)[autocomplete_item.ProjectID].begin();
+                        it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                    view::Autocomplete ac = *it;
+                    (*items)[autocomplete_item.WorkspaceID].push_back(ac);
+                }
+            }
         } else {
             list->push_back(autocomplete_item);
+            if (task_items) {
+                for (std::vector<view::Autocomplete>::const_iterator it =
+                    (*task_items)[autocomplete_item.ProjectID].begin();
+                        it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                    view::Autocomplete ac = *it;
+                    list->push_back(ac);
+                }
+            }
         }
     }
 }
@@ -430,11 +447,12 @@ void RelatedData::MinitimerAutocompleteItems(
     std::set<std::string> unique_names;
     std::map<Poco::UInt64, std::string> ws_names;
     std::map<Poco::Int64, std::vector<view::Autocomplete> > items;
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > task_items;
 
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
     timeEntryAutocompleteItems(&unique_names, &ws_names, result, &items);
-    taskAutocompleteItems(&unique_names, &ws_names, result, &items);
-    projectAutocompleteItems(&unique_names, &ws_names, result, &items);
+    taskAutocompleteItems(&unique_names, &ws_names, result, &task_items);
+    projectAutocompleteItems(&unique_names, &ws_names, result, &items, &task_items);
 
     mergeGroupedAutocompleteItems(result, &items);
 }
@@ -464,9 +482,10 @@ void RelatedData::ProjectAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
     std::map<Poco::UInt64, std::string> ws_names;
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > task_items;
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
-    projectAutocompleteItems(&unique_names, &ws_names, result, nullptr);
-    taskAutocompleteItems(&unique_names, &ws_names, result, nullptr);
+    taskAutocompleteItems(&unique_names, &ws_names, result, &task_items);
+    projectAutocompleteItems(&unique_names, &ws_names, result, nullptr, &task_items);
 }
 
 void RelatedData::workspaceAutocompleteItems(
