@@ -1379,12 +1379,11 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.descriptionAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteDescriptionAutocompleteDataSource;
-
-	NSInteger row = input.autocompleteTableView.lastSavedSelected;
+	NSInteger row = [input.autocompleteTableView clickedRow];
 
 	if (row == -1)
 	{
-		row = [input.autocompleteTableView clickedRow];
+		row = input.autocompleteTableView.lastSavedSelected;
 	}
 
 	if (row < 0)
@@ -1406,11 +1405,11 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.projectAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
-	NSInteger row = input.autocompleteTableView.lastSavedSelected;
+	NSInteger row = [input.autocompleteTableView clickedRow];
 
 	if (row == -1)
 	{
-		row = [input.autocompleteTableView clickedRow];
+		row = input.autocompleteTableView.lastSavedSelected;
 	}
 
 	if (row < 0)
