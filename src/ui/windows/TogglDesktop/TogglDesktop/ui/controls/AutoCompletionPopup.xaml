@@ -43,7 +43,7 @@
                     </Style>
                 </StackPanel.Style>
                 <Border Name="padding" Width="10" Height="6" BorderThickness="0"/>
-                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}" ToolTip="{Binding Text}" Margin="30,0,0,0"/>
+                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}" ToolTip="{Binding Text}" Margin="30,0,10,0"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="timer-item-template">
