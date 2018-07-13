@@ -262,6 +262,9 @@ void RelatedData::timeEntryAutocompleteItems(
             autocomplete_item.TaskLabel = t->Name();
         }
         autocomplete_item.WorkspaceID = te->WID();
+        if (ws_names) {
+            autocomplete_item.WorkspaceName = (*ws_names)[te->WID()];
+        }
         autocomplete_item.Tags = te->Tags();
         autocomplete_item.Type = kAutocompleteItemTE;
         autocomplete_item.Billable = te->Billable();

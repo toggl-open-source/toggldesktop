@@ -25,6 +25,7 @@ TogglAutocompleteView *autocomplete_item_init(
     result->ProjectLabel = copy_string(item.ProjectLabel);
     result->ClientLabel = copy_string(item.ClientLabel);
     result->ProjectColor = copy_string(item.ProjectColor);
+    result->WorkspaceName = copy_string(item.WorkspaceName);
     result->TaskID = static_cast<unsigned int>(item.TaskID);
     result->ProjectID = static_cast<unsigned int>(item.ProjectID);
     result->WorkspaceID = static_cast<unsigned int>(item.WorkspaceID);
@@ -62,6 +63,9 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
 
     free(item->ProjectColor);
     item->ProjectColor = nullptr;
+
+    free(item->WorkspaceName);
+    item->WorkspaceName = nullptr;
 
     free(item->Tags);
     item->Tags = nullptr;
