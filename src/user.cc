@@ -69,7 +69,9 @@ Project *User::CreateProject(
         related.Projects.begin();
             it != related.Projects.end(); it++) {
         Project *pr = *it;
-        if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
+        if (p->WID() == pr->WID()
+                && p->CID() == pr->CID()
+                && Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
             related.Projects.insert(it,p);
             projectAdded = true;
             break;
@@ -99,7 +101,8 @@ Client *User::CreateClient(
         related.Clients.begin();
             it != related.Clients.end(); it++) {
         Client *cl = *it;
-        if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
+        if (c->WID() == cl->WID()
+                && Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
             related.Clients.insert(it,c);
             clientAdded = true;
             break;
