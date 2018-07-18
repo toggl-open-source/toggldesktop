@@ -172,9 +172,9 @@ extern void *ctx;
 - (void)loadView
 {
 	[super loadView];
-	[self viewDidLoad];
 	if (NSAppKitVersionNumber < NSAppKitVersionNumber10_11)
 	{
+		[self viewDidLoad];
 		[self viewDidAppear];
 	}
 }
