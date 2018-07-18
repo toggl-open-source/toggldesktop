@@ -33,6 +33,15 @@ extern void *ctx;
 	return self;
 }
 
+- (void)loadView
+{
+	[super loadView];
+	if (NSAppKitVersionNumber < NSAppKitVersionNumber10_11)
+	{
+		[self viewDidLoad];
+	}
+}
+
 - (void)viewDidLoad
 {
 	self.countryAutocompleteDataSource.combobox = self.countrySelect;
