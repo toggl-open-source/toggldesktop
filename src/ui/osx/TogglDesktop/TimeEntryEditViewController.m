@@ -173,6 +173,10 @@ extern void *ctx;
 {
 	[super loadView];
 	[self viewDidLoad];
+	if (NSAppKitVersionNumber < NSAppKitVersionNumber10_11)
+	{
+		[self viewDidAppear];
+	}
 }
 
 - (void)appWillTerminate:(NSNotification *)notification
