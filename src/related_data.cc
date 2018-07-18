@@ -326,7 +326,7 @@ void RelatedData::taskAutocompleteItems(
         unique_names->insert(text);
 
         view::Autocomplete autocomplete_item;
-        autocomplete_item.Text = text;
+        autocomplete_item.Text = t->Name();
         autocomplete_item.ProjectAndTaskLabel = text;
         autocomplete_item.TaskLabel = t->Name();
         autocomplete_item.TaskID = t->ID();
