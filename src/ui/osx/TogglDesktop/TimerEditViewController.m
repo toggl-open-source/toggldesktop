@@ -132,6 +132,10 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[super loadView];
 	[self viewDidLoad];
+	if (NSAppKitVersionNumber < NSAppKitVersionNumber10_11)
+	{
+		[self viewDidAppear];
+	}
 }
 
 - (void)viewDidAppear
