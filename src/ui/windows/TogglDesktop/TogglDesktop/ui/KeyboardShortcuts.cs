@@ -34,7 +34,7 @@ namespace TogglDesktop
                 new CommandBinding(Preferences, onPreferences),
                 new CommandBinding(ToggleManualMode, onToggleManualMode, canExecuteToggleManualMode),
                 new CommandBinding(ClearCache, onClearCache, canExecuteClearCache),
-                new CommandBinding(SendFeedback, onSendFeedback),
+                new CommandBinding(SendFeedback, onSendFeedback, canExecuteSendFeedback),
                 new CommandBinding(About, onAbout),
                 new CommandBinding(Logout, onLogout, canExecuteLogout),
                 new CommandBinding(Quit, onQuit),
@@ -243,6 +243,11 @@ namespace TogglDesktop
 
         public static readonly RoutedUICommand SendFeedback =
             new RoutedUICommand("", "SendFeedback", typeof(Window));
+
+        private static void canExecuteSendFeedback(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = isLoggedIn;
+        }
 
         private static void onSendFeedback(object sender, RoutedEventArgs e)
         {
