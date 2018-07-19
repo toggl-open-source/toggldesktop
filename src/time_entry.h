@@ -161,6 +161,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     void loadTagsFromJSON(Json::Value value);
 
     bool durationTooLarge(const error) const;
+    bool startTimeWrongYear(const error err) const;
     bool stopTimeMustBeAfterStartTime(const error) const;
     bool userCannotAccessTheSelectedProject(const error) const;
     bool userCannotAccessSelectedTask(const error) const;
