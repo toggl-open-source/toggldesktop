@@ -34,6 +34,14 @@ bool TimeEntry::ResolveError(const error err) {
         SetDurationInSeconds(seconds);
         return true;
     }
+    if (startTimeWrongYear(err) && Stop() && Start()) {
+        Poco::UInt64 seconds =
+            (std::min)(Stop() - Start(),
+                       Poco::UInt64(kMaxTimeEntryDurationSeconds));
+        SetDurationInSeconds(seconds);
+        SetStart(Stop() - Duration());
+        return true;
+    }
     if (stopTimeMustBeAfterStartTime(err) && Stop() && Start()) {
         SetStop(Start() + DurationInSeconds());
         return true;
@@ -88,6 +96,11 @@ bool TimeEntry::userCannotAccessSelectedTask(
 bool TimeEntry::durationTooLarge(const error err) const {
     return (std::string::npos != std::string(err).find(
         "Max allowed duration per 1 time entry is 999 hours"));
+}
+
+bool TimeEntry::startTimeWrongYear(const error err) const {
+    return (std::string::npos != std::string(err).find(
+        "Start time year must be between 2006 and 2030"));
 }
 
 bool TimeEntry::stopTimeMustBeAfterStartTime(const error err) const {
