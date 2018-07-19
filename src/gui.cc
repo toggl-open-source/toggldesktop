@@ -146,7 +146,9 @@ error GUI::DisplayError(const error err) {
         return noError;
     }
 
-    if (err == lastErr) {
+    // Don't surpress login errors
+    if (std::string::npos == std::string(err).find(kForbiddenError)
+            && err == lastErr) {
         return err;
     }
 
