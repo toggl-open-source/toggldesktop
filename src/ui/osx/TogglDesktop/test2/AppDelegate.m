@@ -997,10 +997,10 @@ BOOL onTop = NO;
 			 keyEquivalent:@""];
 	[menu addItemWithTitle:@"Send Feedback"
 					action:@selector(onSendFeedbackMenuItem)
-			 keyEquivalent:@""];
+			 keyEquivalent:@""].tag = kMenuItemSendFeedBack;
 	[menu addItemWithTitle:@"Logout"
 					action:@selector(onLogoutMenuItem:)
-			 keyEquivalent:@""].tag = kMenuItemTagLogout;;
+			 keyEquivalent:@""].tag = kMenuItemTagLogout;
 	[menu addItemWithTitle:@"Quit"
 					action:@selector(onQuitMenuItem)
 			 keyEquivalent:@""];
@@ -1413,6 +1413,7 @@ const NSString *appName = @"osx_native_app";
 		case kMenuItemTagClearCache :
 		case kMenuItemTagOpenBrowser :
 		case kMenuItemTagNew :
+		case kMenuItemSendFeedBack :
 			if (!self.lastKnownUserID)
 			{
 				return NO;

@@ -17,3 +17,4 @@
 #define kMenuItemTagEdit        10
 #define kMenuItemRecordTimeline 11
 #define kMenuItemTagMode        12
+#define kMenuItemSendFeedBack   13
