@@ -5,7 +5,7 @@
 
 #define kOneSecondInMicros 1000000
 
-#define kMaxTimeEntryDurationSeconds 3600000
+#define kMaxTimeEntryDurationSeconds 3596400
 #define kHTTPClientTimeoutSeconds 30
 #define kSyncIntervalRangeSeconds 900
 #define kWebsocketRestartRangeSeconds 45
