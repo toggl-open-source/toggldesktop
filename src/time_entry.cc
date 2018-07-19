@@ -87,7 +87,7 @@ bool TimeEntry::userCannotAccessSelectedTask(
 
 bool TimeEntry::durationTooLarge(const error err) const {
     return (std::string::npos != std::string(err).find(
-        "Max allowed duration per 1 time entry is 1000 hours"));
+        "Max allowed duration per 1 time entry is 999 hours"));
 }
 
 bool TimeEntry::stopTimeMustBeAfterStartTime(const error err) const {
