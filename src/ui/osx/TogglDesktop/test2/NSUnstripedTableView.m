@@ -95,7 +95,7 @@ extern void *ctx;
 	if (cell != nil)
 	{
 		// If description is empty and duration is less than 15 seconds delete without confirmation
-		if (cell.confrimless_delete)
+		if (cell.confirmless_delete)
 		{
 			if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 			{
