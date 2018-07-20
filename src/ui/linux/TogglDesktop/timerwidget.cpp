@@ -196,6 +196,7 @@ void TimerWidget::displayMinitimerAutocomplete(
     QVector<AutocompleteView *> list) {
 
     uint64_t lastWID = 0;
+    int64_t lastCID = -1;
     uint64_t lastType;
     QString lastClientLabel;
 
@@ -224,7 +225,7 @@ void TimerWidget::displayMinitimerAutocomplete(
             it->setSizeHint(QSize(it->sizeHint().width(), 50));
 
             lastWID = view->WorkspaceID;
-            lastClientLabel = "";
+            lastCID = -1;
             lastType = 99;
         }
 
@@ -257,12 +258,12 @@ void TimerWidget::displayMinitimerAutocomplete(
                 v->Text = "No project";
                 v->ProjectAndTaskLabel = "";
                 cl->display(v);
-                it->setSizeHint(QSize(it->sizeHint().width(), 50));
+                it->setSizeHint(QSize(it->sizeHint().width(), h));
             }
         }
 
         // Add Client name
-        if (view->Type == 2 && view->ClientLabel != lastClientLabel)
+        if (view->Type == 2 && view->ClientID != lastCID)
         {
             QListWidgetItem *it = new QListWidgetItem(dropdown);
             AutocompleteCellWidget *cl = new AutocompleteCellWidget();
@@ -272,14 +273,10 @@ void TimerWidget::displayMinitimerAutocomplete(
 
             AutocompleteView *v = new AutocompleteView();
             v->Type = 12;
-            v->Text = view->ClientLabel;
-            if (v->Text.count() == 0)
-            {
-                v->Text = "No Client";
-            }
+            v->Text = view->ClientLabel.count() > 0 ? view->ClientLabel : "No client";
             cl->display(v);
-            it->setSizeHint(QSize(it->sizeHint().width(), 50));
-            lastClientLabel = v->ClientLabel;
+            it->setSizeHint(QSize(it->sizeHint().width(), h));
+            lastCID = view->ClientID;
         }
 
         QListWidgetItem *item = new QListWidgetItem(dropdown);
