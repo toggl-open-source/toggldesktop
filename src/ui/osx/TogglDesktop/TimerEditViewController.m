@@ -499,7 +499,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	AutocompleteItem *item = [self.liteAutocompleteDataSource get:key];
 
 	// User has entered free text
-	if (item == nil)
+	if (item == nil || item.Type < 0)
 	{
 		self.time_entry.Description = [self.autoCompleteInput stringValue];
 		return;
@@ -652,7 +652,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
 	// Category clicked
-	if (item == nil)
+	if (item == nil || item.Type < 0)
 	{
 		return;
 	}
