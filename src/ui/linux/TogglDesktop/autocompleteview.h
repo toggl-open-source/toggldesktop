@@ -33,6 +33,7 @@ class AutocompleteView : public QObject {
             view->Type = it->Type;
             view->Billable = it->Billable;
             view->Tags = QString(it->Tags);
+            view->ClientID = it->ClientID;
             result.push_back(view);
             it = static_cast<TogglAutocompleteView *>(it->Next);
         }
@@ -48,6 +49,7 @@ class AutocompleteView : public QObject {
     QString WorkspaceName;
     uint64_t TaskID;
     uint64_t ProjectID;
+    uint64_t ClientID;
     uint64_t WorkspaceID;
     uint64_t Type;
     bool Billable;
