@@ -9,6 +9,7 @@
 #include "./autocompleteview.h"
 #include "./timeentryview.h"
 #include "./toggl.h"
+#include "./autocompletecellwidget.h"
 
 TimerWidget::TimerWidget(QWidget *parent) : QWidget(parent),
 ui(new Ui::TimerWidget),
@@ -16,7 +17,9 @@ timer(new QTimer(this)),
 duration(0),
 timeEntryAutocompleteNeedsUpdate(false),
 tagsHolder(""),
-project("") {
+project(""),
+dropdown(new AutocompleteDropdown(this)),
+types(QStringList()) {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -36,6 +39,9 @@ project("") {
     connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
 
+    ui->description->setModel(dropdown->model());
+    ui->description->setView(dropdown);
+
     ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
     ui->description->completer()->setCompletionMode(
         QCompleter::PopupCompletion);
@@ -47,6 +53,7 @@ project("") {
 
     descriptionPlaceholder = "What are you doing?";
     tagsHolder = "";
+    types << "TIME ENTRIES" << "TASKS" << "PROJECTS" << "WORKSPACES";
 }
 
 TimerWidget::~TimerWidget() {
@@ -187,11 +194,17 @@ void TimerWidget::stop() {
 
 void TimerWidget::displayMinitimerAutocomplete(
     QVector<AutocompleteView *> list) {
+
+    uint64_t lastWID = 0;
+    uint64_t lastType;
+    QString lastClientLabel;
+
     timeEntryAutocompleteUpdate = list;
     timeEntryAutocompleteNeedsUpdate = true;
     if (ui->description->hasFocus()) {
         return;
     }
+    /*
     QString currentText = ui->description->currentText();
     ui->description->clear();
     ui->description->addItem("");
@@ -200,6 +213,118 @@ void TimerWidget::displayMinitimerAutocomplete(
     }
     timeEntryAutocompleteNeedsUpdate = false;
     ui->description->setEditText(currentText);
+    */
+    int size = list.size();
+    for (int i = 0; i < size; i++) {
+        AutocompleteView *view = list.at(i);
+        /*
+        QListWidgetItem *item = new QListWidgetItem(lw);
+        QLabel *ql = new QLabel(view->Text);
+        lw->setItemWidget(item, ql);
+        item->setSizeHint(QSize(item->sizeHint().width(), 100));
+*/
+        /*
+        QListWidgetItem *item = 0;
+        AutocompleteCellWidget *cell = 0;
+
+        if (dropdown->count() > i) {
+            item = dropdown->item(i);
+            cell = static_cast<AutocompleteCellWidget *>(
+                dropdown->itemWidget(item));
+        }
+
+        if (!item) {
+            item = new QListWidgetItem(dropdown);
+            cell = new AutocompleteCellWidget();
+
+            dropdown->addItem(item);
+            dropdown->setItemWidget(item, cell);
+        }
+*/
+
+        // Add workspace title
+        if (view->WorkspaceID != lastWID) {
+            QListWidgetItem *it = new QListWidgetItem(dropdown);
+            AutocompleteCellWidget *cl = new AutocompleteCellWidget();
+            it->setFlags(it->flags() & ~Qt::ItemIsSelectable);
+            dropdown->addItem(it);
+            dropdown->setItemWidget(it, cl);
+
+            AutocompleteView *v = new AutocompleteView();
+            v->Type = 13;
+            v->Text = view->WorkspaceName;
+            cl->display(v);
+            it->setSizeHint(QSize(it->sizeHint().width(), 50));
+
+            lastWID = view->WorkspaceID;
+            lastClientLabel = "";
+            lastType = 99;
+        }
+
+        // Add category title
+        if (view->Type != lastType && view->Type != 1) {
+            QListWidgetItem *it = new QListWidgetItem(dropdown);
+            AutocompleteCellWidget *cl = new AutocompleteCellWidget();
+            it->setFlags(it->flags() & ~Qt::ItemIsSelectable);
+            dropdown->addItem(it);
+            dropdown->setItemWidget(it, cl);
+
+            AutocompleteView *v = new AutocompleteView();
+            v->Type = 11;
+            v->Text = types[view->Type];
+            cl->display(v);
+            it->setSizeHint(QSize(it->sizeHint().width(), 50));
+
+            lastType = view->Type;
+
+            // Add 'No project' item
+            if (view->Type == 2)
+            {
+                QListWidgetItem *it = new QListWidgetItem(dropdown);
+                AutocompleteCellWidget *cl = new AutocompleteCellWidget();
+                dropdown->addItem(it);
+                dropdown->setItemWidget(it, cl);
+
+                AutocompleteView *v = new AutocompleteView();
+                v->Type = 2;
+                v->Text = "No project";
+                v->ProjectAndTaskLabel = "";
+                cl->display(v);
+                it->setSizeHint(QSize(it->sizeHint().width(), 50));
+            }
+        }
+
+        // Add Client name
+        if (view->Type == 2 && view->ClientLabel != lastClientLabel)
+        {
+            QListWidgetItem *it = new QListWidgetItem(dropdown);
+            AutocompleteCellWidget *cl = new AutocompleteCellWidget();
+            dropdown->addItem(it);
+            dropdown->setItemWidget(it, cl);
+
+            AutocompleteView *v = new AutocompleteView();
+            v->Type = 12;
+            v->Text = view->ClientLabel;
+            if (v->Text.count() == 0)
+            {
+                v->Text = "No Client";
+            }
+            cl->display(v);
+            it->setSizeHint(QSize(it->sizeHint().width(), 50));
+            lastClientLabel = v->ClientLabel;
+        }
+
+        QListWidgetItem *item = new QListWidgetItem(dropdown);
+        AutocompleteCellWidget *cell = new AutocompleteCellWidget();
+        dropdown->addItem(item);
+        dropdown->setItemWidget(item, cell);
+        cell->display(view);
+        item->setSizeHint(QSize(item->sizeHint().width(), 50));
+    }
+
+    while (dropdown->count() > size) {
+        dropdown->model()->removeRow(size);
+    }
 }
 
 void TimerWidget::timeout() {
