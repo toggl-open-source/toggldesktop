@@ -74,7 +74,12 @@
 			if (index < 2 && !isNext)
 			{
 				[self scrollRowToVisible:0];
-				return;
+
+				if (index == 0)
+				{
+					[self setCurrentSelected:self.numberOfRows - 1 next:NO];
+					return;
+				}
 			}
 			[self resetSelected];
 			self.lastSelected = index;
