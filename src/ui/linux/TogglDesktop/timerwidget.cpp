@@ -204,43 +204,10 @@ void TimerWidget::displayMinitimerAutocomplete(
     if (ui->description->hasFocus()) {
         return;
     }
-    /*
-    QString currentText = ui->description->currentText();
-    ui->description->clear();
-    ui->description->addItem("");
-    foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
-        ui->description->addItem(view->Text, QVariant::fromValue(view));
-    }
-    timeEntryAutocompleteNeedsUpdate = false;
-    ui->description->setEditText(currentText);
-    */
+
     int size = list.size();
     for (int i = 0; i < size; i++) {
         AutocompleteView *view = list.at(i);
-        /*
-        QListWidgetItem *item = new QListWidgetItem(lw);
-        QLabel *ql = new QLabel(view->Text);
-        lw->setItemWidget(item, ql);
-        item->setSizeHint(QSize(item->sizeHint().width(), 100));
-*/
-        /*
-        QListWidgetItem *item = 0;
-        AutocompleteCellWidget *cell = 0;
-
-        if (dropdown->count() > i) {
-            item = dropdown->item(i);
-            cell = static_cast<AutocompleteCellWidget *>(
-                dropdown->itemWidget(item));
-        }
-
-        if (!item) {
-            item = new QListWidgetItem(dropdown);
-            cell = new AutocompleteCellWidget();
-
-            dropdown->addItem(item);
-            dropdown->setItemWidget(item, cell);
-        }
-*/
 
         // Add workspace title
         if (view->WorkspaceID != lastWID) {
@@ -320,10 +287,6 @@ void TimerWidget::displayMinitimerAutocomplete(
         dropdown->setItemWidget(item, cell);
         cell->display(view);
         item->setSizeHint(QSize(item->sizeHint().width(), 50));
-    }
-
-    while (dropdown->count() > size) {
-        dropdown->model()->removeRow(size);
     }
 }
 
