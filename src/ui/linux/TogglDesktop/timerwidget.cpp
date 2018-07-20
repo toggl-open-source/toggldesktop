@@ -198,7 +198,7 @@ void TimerWidget::displayMinitimerAutocomplete(
     uint64_t lastWID = 0;
     int64_t lastCID = -1;
     uint64_t lastType;
-    QString lastClientLabel;
+    int h = 35;
 
     timeEntryAutocompleteUpdate = list;
     timeEntryAutocompleteNeedsUpdate = true;
@@ -222,7 +222,7 @@ void TimerWidget::displayMinitimerAutocomplete(
             v->Type = 13;
             v->Text = view->WorkspaceName;
             cl->display(v);
-            it->setSizeHint(QSize(it->sizeHint().width(), 50));
+            it->setSizeHint(QSize(it->sizeHint().width(), h));
 
             lastWID = view->WorkspaceID;
             lastCID = -1;
@@ -241,7 +241,7 @@ void TimerWidget::displayMinitimerAutocomplete(
             v->Type = 11;
             v->Text = types[view->Type];
             cl->display(v);
-            it->setSizeHint(QSize(it->sizeHint().width(), 50));
+            it->setSizeHint(QSize(it->sizeHint().width(), h));
 
             lastType = view->Type;
 
@@ -284,7 +284,7 @@ void TimerWidget::displayMinitimerAutocomplete(
         dropdown->addItem(item);
         dropdown->setItemWidget(item, cell);
         cell->display(view);
-        item->setSizeHint(QSize(item->sizeHint().width(), 50));
+        item->setSizeHint(QSize(item->sizeHint().width(), h));
     }
 }
 
