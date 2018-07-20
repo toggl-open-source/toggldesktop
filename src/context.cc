@@ -2953,6 +2953,7 @@ error Context::SetTimeEntryStart(
     if (GUID.empty()) {
         return displayError("Missing GUID");
     }
+    Poco::LocalDateTime now;
 
     TimeEntry *te = nullptr;
 
@@ -2984,6 +2985,13 @@ error Context::SetTimeEntryStart(
     Poco::LocalDateTime dt(
         local.year(), local.month(), local.day(),
         hours, minutes, local.second());
+
+    // check if time is in future and subtrack 1 day if needed
+    if (dt.utcTime() > now.utcTime()) {
+        Poco::LocalDateTime new_date =
+            dt - Poco::Timespan(1 * Poco::Timespan::DAYS);
+        dt = new_date;
+    }
 
     std::string s = Poco::DateTimeFormatter::format(
         dt, Poco::DateTimeFormat::ISO8601_FORMAT);
