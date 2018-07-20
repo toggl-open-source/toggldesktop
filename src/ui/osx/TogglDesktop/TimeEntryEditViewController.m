@@ -1424,7 +1424,7 @@ extern void *ctx;
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
 	// Category clicked
-	if (item == nil)
+	if (item == nil || item.Type < 0)
 	{
 		return;
 	}
