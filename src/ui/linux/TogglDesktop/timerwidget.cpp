@@ -266,6 +266,7 @@ void TimerWidget::displayMinitimerAutocomplete(
         {
             QListWidgetItem *it = new QListWidgetItem(dropdown);
             AutocompleteCellWidget *cl = new AutocompleteCellWidget();
+            it->setFlags(it->flags() & ~Qt::ItemIsSelectable);
             dropdown->addItem(it);
             dropdown->setItemWidget(it, cl);
 
