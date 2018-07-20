@@ -134,17 +134,8 @@
 	{
 		self.Error = nil;
 	}
-	// If description is empty, project is empty and duration is less than 15 seconds delete without confirmation
-	if ([self.Description length] == 0
-		&& self.duration_in_seconds < 15
-		&& (self.ProjectAndTaskLabel == nil || [self.ProjectAndTaskLabel length] == 0))
-	{
-		self.confirmlessDelete = YES;
-	}
-	else
-	{
-		self.confirmlessDelete = NO;
-	}
+	// If duration is less than 15 seconds delete without confirmation
+	self.confirmlessDelete = (self.duration_in_seconds < 15);
 
 	// Grouped mode
 

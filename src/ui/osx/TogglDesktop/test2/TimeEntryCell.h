@@ -24,7 +24,7 @@
 @property (strong) IBOutlet NSBox *durationBox;
 @property (strong) IBOutlet NSBox *backgroundBox;
 @property (strong) IBOutlet NSImageView *unsyncedIcon;
-@property BOOL confrimless_delete;
+@property BOOL confirmless_delete;
 @property (weak) IBOutlet NSBox *DescriptionProjectBox;
 @property (weak) IBOutlet NSLayoutConstraint *descriptionBoxTrail;
 @property (weak) IBOutlet NSLayoutConstraint *descriptionBoxLead;
