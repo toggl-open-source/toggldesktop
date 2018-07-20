@@ -152,8 +152,7 @@ namespace TogglDesktop
             this.labelDuration.Text = item.Duration;
             this.billabeIcon.ShowOnlyIf(item.Billable);
 
-            this.confirmlessDelete = (item.Description.Length == 0
-                    && item.DurationInSeconds < 15 && item.PID == 0);
+            this.confirmlessDelete = (item.DurationInSeconds < 15);
 
             if (string.IsNullOrEmpty(item.Tags))
             {
