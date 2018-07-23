@@ -75,6 +75,8 @@ class Project : public BaseModel {
     }
     void SetClientName(const std::string value);
 
+    std::string FullName() const;
+
     // Override BaseModel
     std::string String() const;
     std::string ModelName() const;
