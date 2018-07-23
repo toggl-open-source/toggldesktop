@@ -1141,7 +1141,10 @@ BOOL onTop = NO;
 
 - (IBAction)onHideMenuItem:(id)sender
 {
-	[self.mainWindowController.window close];
+	NSArray *orderedWindows = [NSApp orderedWindows];
+	NSWindow *frontWindow = orderedWindows[0];
+
+	[frontWindow close];
 }
 
 - (void)onQuitMenuItem

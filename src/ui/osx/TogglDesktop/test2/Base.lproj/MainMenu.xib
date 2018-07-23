@@ -228,7 +228,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="8qb-je-u7S"/>
-                            <menuItem title="Hide Main Window" keyEquivalent="w" id="O2e-Kb-cHX">
+                            <menuItem title="Close Window" keyEquivalent="w" id="O2e-Kb-cHX">
                                 <connections>
                                     <action selector="onHideMenuItem:" target="494" id="dJX-ZW-bid"/>
                                 </connections>
