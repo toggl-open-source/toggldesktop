@@ -50,7 +50,6 @@ cp $QLIBPATH/libQt5Widgets.so.5 $out/lib
 cp $QLIBPATH/libQt5Gui.so.5 $out/lib
 cp $QLIBPATH/libQt5Network.so.5 $out/lib
 cp $QLIBPATH/libQt5Core.so.5 $out/lib
-cp $QLIBPATH/libQt5WebKit.so.5 $out/lib
 cp $QLIBPATH/libQt5Sensors.so.5 $out/lib
 cp $QLIBPATH/libQt5Positioning.so.5 $out/lib
 cp $QLIBPATH/libQt5PrintSupport.so.5 $out/lib
