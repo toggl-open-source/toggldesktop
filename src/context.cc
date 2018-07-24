@@ -3631,9 +3631,14 @@ Project *Context::CreateProject(
         }
 
         std::string client_name("");
-        Client *c = user_->related.ClientByGUID(client_guid);
+        Client *c = user_->related.ClientByID(client_id);
         if (c) {
             client_name = c->Name();
+        } else {
+            c = user_->related.ClientByGUID(client_guid);
+            if (c) {
+                client_name = c->Name();
+            }
         }
 
         result = user_->CreateProject(
