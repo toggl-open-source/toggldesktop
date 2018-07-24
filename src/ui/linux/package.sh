@@ -43,7 +43,8 @@ cp $QLIBPATH/libQt5Svg.so.5 $out/lib
 cp $QLIBPATH/libQt5Xml.so.5 $out/lib
 cp $QLIBPATH/libQt5XcbQpa.so.5 $out/lib
 cp $QLIBPATH/libQt5XcbQpa.so.5 $out/lib
-cp $QLIBPATH/libQt5WebKitWidgets.so.5 $out/lib
+cp $QLIBPATH/libQt5WebEngine.so.5 $out/lib
+cp $QLIBPATH/libQt5WebEngineWidgets.so.5 $out/lib
 cp $QLIBPATH/libQt5DBus.so.5 $out/lib
 cp $QLIBPATH/libQt5Widgets.so.5 $out/lib
 cp $QLIBPATH/libQt5Gui.so.5 $out/lib
