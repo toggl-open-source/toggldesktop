@@ -55,9 +55,9 @@ cp $QLIBPATH/libQt5Positioning.so.5 $out/lib
 cp $QLIBPATH/libQt5PrintSupport.so.5 $out/lib
 cp $QLIBPATH/libQt5OpenGL.so.5 $out/lib
 cp $QLIBPATH/libQt5Sql.so.5 $out/lib
-cp $QLIBPATH/libicui18n.so.54 $out/lib
-cp $QLIBPATH/libicuuc.so.54 $out/lib
-cp $QLIBPATH/libicudata.so.54 $out/lib
+cp $QLIBPATH/libicui18n.so $out/lib
+cp $QLIBPATH/libicuuc.so $out/lib
+cp $QLIBPATH/libicudata.so $out/lib
 cp $QLIBPATH/libQt5Quick.so.5 $out/lib
 cp $QLIBPATH/libQt5Qml.so.5 $out/lib
 cp $QLIBPATH/libQt5WebChannel.so.5 $out/lib
