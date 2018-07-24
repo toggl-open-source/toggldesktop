@@ -192,7 +192,9 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
 // Description - Task. Project. Client
 void RelatedData::timeEntryAutocompleteItems(
     std::set<std::string> *unique_names,
-    std::vector<view::Autocomplete> *list) const {
+    std::map<Poco::UInt64, std::string> *ws_names,
+    std::vector<view::Autocomplete> *list,
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const {
 
     poco_check_ptr(list);
 
@@ -262,10 +264,18 @@ void RelatedData::timeEntryAutocompleteItems(
             autocomplete_item.TaskLabel = t->Name();
         }
         autocomplete_item.WorkspaceID = te->WID();
+        if (ws_names) {
+            autocomplete_item.WorkspaceName = (*ws_names)[te->WID()];
+        }
         autocomplete_item.Tags = te->Tags();
         autocomplete_item.Type = kAutocompleteItemTE;
         autocomplete_item.Billable = te->Billable();
-        list->push_back(autocomplete_item);
+
+        if (items) {
+            (*items)[autocomplete_item.WorkspaceID].push_back(autocomplete_item);
+        } else {
+            list->push_back(autocomplete_item);
+        }
     }
 }
 
@@ -274,7 +284,8 @@ void RelatedData::timeEntryAutocompleteItems(
 void RelatedData::taskAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<toggl::view::Autocomplete> *list) const {
+    std::vector<toggl::view::Autocomplete> *list,
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const {
 
     poco_check_ptr(list);
 
@@ -315,7 +326,7 @@ void RelatedData::taskAutocompleteItems(
         unique_names->insert(text);
 
         view::Autocomplete autocomplete_item;
-        autocomplete_item.Text = text;
+        autocomplete_item.Text = t->Name();
         autocomplete_item.ProjectAndTaskLabel = text;
         autocomplete_item.TaskLabel = t->Name();
         autocomplete_item.TaskID = t->ID();
@@ -335,7 +346,12 @@ void RelatedData::taskAutocompleteItems(
         }
         autocomplete_item.WorkspaceID = t->WID();
         autocomplete_item.Type = kAutocompleteItemTask;
-        list->push_back(autocomplete_item);
+
+        if (items) {
+            (*items)[autocomplete_item.ProjectID].push_back(autocomplete_item);
+        } else {
+            list->push_back(autocomplete_item);
+        }
     }
 }
 
@@ -344,7 +360,9 @@ void RelatedData::taskAutocompleteItems(
 void RelatedData::projectAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<view::Autocomplete> *list) const {
+    std::vector<view::Autocomplete> *list,
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items,
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *task_items) const {
 
     poco_check_ptr(list);
 
@@ -390,35 +408,84 @@ void RelatedData::projectAutocompleteItems(
         autocomplete_item.WorkspaceID = p->WID();
         autocomplete_item.Type = kAutocompleteItemProject;
 
-        list->push_back(autocomplete_item);
+        if (items) {
+            (*items)[autocomplete_item.WorkspaceID].push_back(autocomplete_item);
+            if (task_items) {
+                for (std::vector<view::Autocomplete>::const_iterator it =
+                    (*task_items)[autocomplete_item.ProjectID].begin();
+                        it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                    view::Autocomplete ac = *it;
+                    (*items)[autocomplete_item.WorkspaceID].push_back(ac);
+                }
+            }
+        } else {
+            list->push_back(autocomplete_item);
+            if (task_items) {
+                for (std::vector<view::Autocomplete>::const_iterator it =
+                    (*task_items)[autocomplete_item.ProjectID].begin();
+                        it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                    view::Autocomplete ac = *it;
+                    list->push_back(ac);
+                }
+            }
+        }
     }
 }
 
 void RelatedData::TimeEntryAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
-
-    timeEntryAutocompleteItems(&unique_names, result);
-    std::sort(result->begin(), result->end(), CompareAutocompleteItems);
+    std::map<Poco::UInt64, std::string> ws_names;
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > items;
+    workspaceAutocompleteItems(&unique_names, &ws_names, result);
+    timeEntryAutocompleteItems(&unique_names, &ws_names, result, &items);
+    mergeGroupedAutocompleteItems(result, &items);
 }
 
 void RelatedData::MinitimerAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
+    std::map<Poco::UInt64, std::string> ws_names;
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > items;
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > task_items;
 
-    timeEntryAutocompleteItems(&unique_names, result);
-    taskAutocompleteItems(&unique_names, nullptr, result);
-    projectAutocompleteItems(&unique_names, nullptr, result);
+    workspaceAutocompleteItems(&unique_names, &ws_names, result);
+    timeEntryAutocompleteItems(&unique_names, &ws_names, result, &items);
+    taskAutocompleteItems(&unique_names, &ws_names, result, &task_items);
+    projectAutocompleteItems(&unique_names, &ws_names, result, &items, &task_items);
+
+    mergeGroupedAutocompleteItems(result, &items);
 }
+
+void RelatedData::mergeGroupedAutocompleteItems(
+    std::vector<view::Autocomplete> *result,
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const {
+    // Join created workspace maps to a single vector
+    Poco::UInt64 total_size = 0;
+    for(std::map<Poco::Int64, std::vector<view::Autocomplete> >::iterator iter =
+        items->begin(); iter != items->end(); ++iter)
+    {
+        total_size += iter->second.size();
+    }
+
+    result->reserve(total_size);
+
+    for(std::map<Poco::Int64, std::vector<view::Autocomplete> >::iterator iter =
+        items->begin(); iter != items->end(); ++iter)
+    {
+        result->insert(result->end(), iter->second.begin(), iter->second.end());
+    }
+}
+
 
 void RelatedData::ProjectAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
-
     std::map<Poco::UInt64, std::string> ws_names;
+    std::map<Poco::Int64, std::vector<view::Autocomplete> > task_items;
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
-    projectAutocompleteItems(&unique_names, &ws_names, result);
-    taskAutocompleteItems(&unique_names, &ws_names, result);
+    taskAutocompleteItems(&unique_names, &ws_names, result, &task_items);
+    projectAutocompleteItems(&unique_names, &ws_names, result, nullptr, &task_items);
 }
 
 void RelatedData::workspaceAutocompleteItems(

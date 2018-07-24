@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,14 +19,24 @@
                     <view key="contentView" id="6GU-pd-BZw">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="25"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <box hidden="YES" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-Aw-a0W">
+                                <rect key="frame" x="0.0" y="-2" width="200" height="5"/>
+                            </box>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="8t3-Aw-a0W" secondAttribute="trailing" id="Fvl-ql-Qac"/>
+                            <constraint firstItem="8t3-Aw-a0W" firstAttribute="leading" secondItem="6GU-pd-BZw" secondAttribute="leading" id="Za6-Ew-IU5"/>
+                            <constraint firstAttribute="bottom" secondItem="8t3-Aw-a0W" secondAttribute="bottom" id="scF-GU-XRJ"/>
+                        </constraints>
                     </view>
                     <color key="borderColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.43355683137617618" green="1" blue="0.23677784642988997" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Esa-Pm-mxj">
-                    <rect key="frame" x="5" y="5" width="190" height="16"/>
+                    <rect key="frame" x="5" y="5" width="190" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="16" id="4pE-iB-o9m"/>
+                        <constraint firstAttribute="height" constant="17" id="4pE-iB-o9m"/>
                     </constraints>
                     <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" id="49S-o0-eD9">
                         <font key="font" metaFont="cellTitle"/>
@@ -46,6 +56,7 @@
             </constraints>
             <connections>
                 <outlet property="backgroundBox" destination="rVw-1o-wWS" id="788-C8-zTo"/>
+                <outlet property="bottomLine" destination="8t3-Aw-a0W" id="9Tj-xo-iWJ"/>
                 <outlet property="cellDescription" destination="Esa-Pm-mxj" id="96O-aS-tkX"/>
             </connections>
         </customView>

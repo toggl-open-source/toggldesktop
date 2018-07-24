@@ -1403,8 +1403,11 @@ error Database::loadProjects(
                "clients.name as client_name "
                "FROM projects "
                "LEFT JOIN clients on projects.cid = clients.id "
+               "LEFT JOIN workspaces on projects.wid = workspaces.id "
                "WHERE projects.uid = :uid "
-               "ORDER BY client_name COLLATE NOCASE ASC, projects.name COLLATE NOCASE ASC;",
+               "ORDER BY workspaces.name COLLATE NOCASE ASC,"
+               "client_name COLLATE NOCASE ASC,"
+               "projects.name COLLATE NOCASE ASC;",
                useRef(UID);
         error err = last_error("loadProjects");
         if (err != noError) {

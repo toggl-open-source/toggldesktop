@@ -44,12 +44,15 @@ Project *User::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string client_guid,
+    const std::string client_name,
     const std::string project_name,
     const bool is_private,
     const std::string project_color,
     const bool billable) {
 
     bool projectAdded = false;
+    bool WIDMatch = false;
+    bool CIDMatch = false;
     Project *p = new Project();
     p->SetWID(workspace_id);
     p->SetName(project_name);
@@ -59,6 +62,7 @@ Project *User::CreateProject(
     p->SetActive(true);
     p->SetPrivate(is_private);
     p->SetBillable(billable);
+    p->SetClientName(client_name);
     if (!project_color.empty()) {
         p->SetColorCode(project_color);
     }
@@ -69,7 +73,29 @@ Project *User::CreateProject(
         related.Projects.begin();
             it != related.Projects.end(); it++) {
         Project *pr = *it;
-        if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
+        if (p->WID() == pr->WID()) {
+            WIDMatch = true;
+            if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
+                CIDMatch = true;
+                if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
+                    related.Projects.insert(it,p);
+                    projectAdded = true;
+                    break;
+                }
+            } else if (CIDMatch) {
+                // in case new project is last in client list
+                related.Projects.insert(it,p);
+                projectAdded = true;
+                break;
+            } else if (p->CID() != 0 && pr->CID() != 0) {
+                if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
+                    related.Projects.insert(it,p);
+                    projectAdded = true;
+                    break;
+                }
+            }
+        } else if (WIDMatch) {
+            //In case new project is last in workspace list
             related.Projects.insert(it,p);
             projectAdded = true;
             break;
@@ -88,6 +114,7 @@ Client *User::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
     bool clientAdded = false;
+    bool foundMatch = false;
     Client *c = new Client();
     c->SetWID(workspace_id);
     c->SetName(client_name);
@@ -99,9 +126,17 @@ Client *User::CreateClient(
         related.Clients.begin();
             it != related.Clients.end(); it++) {
         Client *cl = *it;
-        if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
+        if (c->WID() == cl->WID()) {
+            foundMatch = true;
+            if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
+                related.Clients.insert(it,c);
+                clientAdded = true;
+                break;
+            }
+        } else if (foundMatch) {
             related.Clients.insert(it,c);
             clientAdded = true;
+            foundMatch = false;
             break;
         }
     }

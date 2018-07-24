@@ -41,6 +41,13 @@ std::string Project::String() const {
     return ss.str();
 }
 
+std::string Project::FullName() const {
+    std::stringstream ss;
+    ss << client_name_
+       << name_;
+    return ss.str();
+}
+
 void Project::SetClientGUID(const std::string value) {
     if (client_guid_ != value) {
         client_guid_ = value;

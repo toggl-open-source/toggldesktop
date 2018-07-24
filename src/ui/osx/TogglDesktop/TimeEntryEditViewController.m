@@ -1342,6 +1342,7 @@ extern void *ctx;
 
 	AutocompleteItem *item = nil;
 	LiteAutoCompleteDataSource *dataSource = nil;
+	AutoCompleteTable *tb = tableView;
 
 	if (tableView == self.descriptionAutoCompleteInput.autocompleteTableView)
 	{
@@ -1368,7 +1369,7 @@ extern void *ctx;
 	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
 															  owner:self];
 
-	[cell render:item];
+	[cell render:item selected:(tb.lastSelected != -1 && tb.lastSelected == row)];
 	return cell;
 }
 
@@ -1382,8 +1383,12 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.descriptionAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteDescriptionAutocompleteDataSource;
+	NSInteger row = [input.autocompleteTableView clickedRow];
 
-	NSInteger row = input.autocompleteTableView.lastSavedSelected;
+	if (row == -1)
+	{
+		row = input.autocompleteTableView.lastSavedSelected;
+	}
 
 	if (row < 0)
 	{
@@ -1404,7 +1409,12 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.projectAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
-	NSInteger row = input.autocompleteTableView.lastSavedSelected;
+	NSInteger row = [input.autocompleteTableView clickedRow];
+
+	if (row == -1)
+	{
+		row = input.autocompleteTableView.lastSavedSelected;
+	}
 
 	if (row < 0)
 	{
@@ -1414,7 +1424,7 @@ extern void *ctx;
 
 	AutocompleteItem *item = [dataSource itemAtIndex:row];
 	// Category clicked
-	if (item == nil)
+	if (item == nil || item.Type < 0)
 	{
 		return;
 	}

@@ -66,6 +66,7 @@ namespace TogglDesktop.AutoCompletion
             LB = listBox;
             int lastType = -1;
             string lastClient = null;
+            int lastWID = -1;
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
                 items = new List<ListBoxItem>();
@@ -86,6 +87,7 @@ namespace TogglDesktop.AutoCompletion
                         });
                     }
                 }
+
                 // workspace/client dropdown
                 else if (autocompleteType == 2)
                 {
@@ -110,8 +112,21 @@ namespace TogglDesktop.AutoCompletion
                         var item = this.list[count];
                         var it = (TimerItem)item;
 
+                        // Add workspace title
+                        if (lastWID != (int)it.Item.WorkspaceID)
+                        {
+                            items.Add(new ListBoxItem()
+                            {
+                                Text = it.Item.WorkspaceName,
+                                Type = -3
+                            });
+                            lastWID = (int)it.Item.WorkspaceID;
+                            lastType = -1;
+                            lastClient = null;
+                        }
+
                         // Add category title if needed
-                        if (lastType != (int)it.Item.Type)
+                        if (lastType != (int)it.Item.Type && (int)it.Item.Type != 1)
                         {
                             items.Add(new ListBoxItem()
                             {
@@ -171,6 +186,7 @@ namespace TogglDesktop.AutoCompletion
                             TaskLabel = taskLabel,
                             ClientLabel = clientLabel,
                             Type = (int)it.Item.Type,
+                            WorkspaceName = it.Item.WorkspaceName,
                             Index = count
                         });
                         lastType = (int)it.Item.Type;
@@ -197,14 +213,31 @@ namespace TogglDesktop.AutoCompletion
                 filterText = input;
 
                 int lastType = -1;
+                string lastProjectLabel = null;
                 string lastClient = null;
+                string lastWSName = null;
                 List<ListBoxItem> filteredItems = new List<ListBoxItem>();
                 foreach (var item in visibleItems)
                 {
                     if (Filter(item))
                     {
+                        // Add workspace title
+                        if (lastWSName != item.WorkspaceName)
+                        {
+                            filteredItems.Add(new ListBoxItem()
+                            {
+                                Text = item.WorkspaceName,
+                                Type = -3
+                            });
+                            lastWSName = item.WorkspaceName;
+                            lastType = -1;
+                            lastClient = null;
+                        }
+
                         // Add category title if needed
-                        if (autocompleteType == 0 && lastType != (int)item.Type) {
+                        if (autocompleteType == 0 && lastType != (int)item.Type
+                            && (int)item.Type != 1)
+                        {
                             filteredItems.Add(new ListBoxItem() {
                                 Category = categories[(int)item.Type],
                                 Type = -1
@@ -212,7 +245,7 @@ namespace TogglDesktop.AutoCompletion
                         }
 
                         // Add client item if needed
-                        if (item.Type == 2 && lastClient != item.ClientLabel)
+                        if ((item.Type == 2 || item.Type == 1) && lastClient != item.ClientLabel)
                         {
                             string text = item.ClientLabel;
                             if (text.Length == 0)
@@ -226,8 +259,27 @@ namespace TogglDesktop.AutoCompletion
                             });
                             lastClient = item.ClientLabel;
                         }
+
+                        // In case we have task and project is not completed
+                        if (item.Type == 1 && item.ProjectLabel != lastProjectLabel)
+                        {
+                            filteredItems.Add(new ListBoxItem()
+                            {
+                                Text = item.ProjectLabel,
+                                Description = "",
+                                ProjectLabel = item.ProjectLabel,
+                                ProjectColor = item.ProjectColor,
+                                TaskLabel = "",
+                                ClientLabel = item.ClientLabel,
+                                Type = 2,
+                                WorkspaceName = item.WorkspaceName,
+                                Index = filteredItems.Count
+                            });
+                        }
+
                         filteredItems.Add(item);
                         lastType = (int)item.Type;
+                        lastProjectLabel = item.ProjectLabel;
                     }
                 }
                 visibleItems = filteredItems;
@@ -385,7 +437,7 @@ namespace TogglDesktop.AutoCompletion
         private const int TIMEENTRY = 0;
         private const int TASK = 1;
         private const int PROJECT = 2;
-        private const int WORKSPACE = 3;
+        private const int WORKSPACE = -3;
         private const int STRINGITEM = 4;
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -430,6 +482,12 @@ namespace TogglDesktop.AutoCompletion
             {
                 return
                     element.FindResource("client-item-template")
+                    as DataTemplate;
+            }
+            else if (listItem.Type == WORKSPACE)
+            {
+                return
+                    element.FindResource("workspace-item-template")
                     as DataTemplate;
             }
 

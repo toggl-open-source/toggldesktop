@@ -503,7 +503,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	AutocompleteItem *item = [self.liteAutocompleteDataSource get:key];
 
 	// User has entered free text
-	if (item == nil)
+	if (item == nil || item.Type < 0)
 	{
 		self.time_entry.Description = [self.autoCompleteInput stringValue];
 		return;
@@ -623,6 +623,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	AutocompleteItem *item = nil;
+	AutoCompleteTable *tb = tableView;
 
 	@synchronized(self)
 	{
@@ -634,7 +635,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	AutoCompleteTableCell *cell = [tableView makeViewWithIdentifier:@"AutoCompleteTableCell"
 															  owner:self];
 
-	[cell render:item];
+	[cell render:item selected:(tb.lastSelected != -1 && tb.lastSelected == row)];
 	return cell;
 }
 
@@ -655,7 +656,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
 	// Category clicked
-	if (item == nil)
+	if (item == nil || item.Type < 0)
 	{
 		return;
 	}

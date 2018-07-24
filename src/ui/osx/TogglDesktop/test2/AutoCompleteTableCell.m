@@ -17,13 +17,14 @@
 	// Drawing code here.
 }
 
-- (void)render:(AutocompleteItem *)view_item
+- (void)render:(AutocompleteItem *)view_item selected:(BOOL)selected
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
+	[self setFocused:selected];
 	[self.cellDescription setAttributedStringValue:[self setFormatedText:view_item]];
 	self.cellDescription.toolTip = view_item.Text;
-	self.isSelectable = (view_item.Type != -1 && view_item.Type != -2);
+	self.isSelectable = view_item.Type > -1;
 }
 
 - (void)setFocused:(BOOL)focus
@@ -39,6 +40,7 @@
 
 - (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item
 {
+	[self.bottomLine setHidden:(view_item.Type != -3)];
 	// Format is: Description - TaskName · ProjectName - ClientName
 	NSMutableAttributedString *string;
 
@@ -57,7 +59,7 @@
 	}
 
 	// Client row / No project row
-	if (view_item.Type == -2 ||  (view_item.Type == 2 && view_item.ProjectID == 0))
+	if (view_item.Type == -2 || (view_item.Type == 2 && view_item.ProjectID == 0))
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
 
@@ -72,6 +74,24 @@
 		[result appendAttributedString:string];
 
 		return result;
+	}
+
+	// Workspace row
+	if (view_item.Type == -3)
+	{
+		NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+		paragrapStyle.alignment                = kCTTextAlignmentCenter;
+
+		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
+
+		[string setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont boldSystemFontOfSize:12],
+			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor],
+			 NSParagraphStyleAttributeName:paragrapStyle
+		 }
+						range:NSMakeRange(0, [string length])];
+		return string;
 	}
 
 	// Item rows
@@ -92,6 +112,8 @@
 			{
 				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" -"]];
 			}
+
+			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"        "]];
 			NSMutableAttributedString *task = [[NSMutableAttributedString alloc] initWithString:view_item.TaskLabel];
 
 			[task setAttributes:
@@ -102,31 +124,34 @@
 						  range:NSMakeRange(0, [task length])];
 			[string appendAttributedString:task];
 		}
-		if ([string length] > 0)
+		else
 		{
-			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
+			if ([string length] > 0)
+			{
+				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" "]];
+			}
+
+			NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"•"];
+
+			[projectDot setAttributes:
+			 @{
+				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
+			 }
+								range:NSMakeRange(0, [projectDot length])];
+			[string appendAttributedString:projectDot];
+
+			NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:view_item.ProjectLabel];
+
+			[projectName setAttributes:
+			 @{
+				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
+			 }
+								 range:NSMakeRange(0, [projectName length])];
+
+			[string appendAttributedString:projectName];
 		}
-
-		NSMutableAttributedString *projectDot = [[NSMutableAttributedString alloc] initWithString:@"•"];
-
-		[projectDot setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
-		 }
-							range:NSMakeRange(0, [projectDot length])];
-		[string appendAttributedString:projectDot];
-
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:view_item.ProjectLabel];
-
-		[projectName setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
-		 }
-							 range:NSMakeRange(0, [projectName length])];
-
-		[string appendAttributedString:projectName];
 	}
 
 	if (view_item.Type == 2)

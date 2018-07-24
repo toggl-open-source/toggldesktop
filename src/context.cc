@@ -3638,10 +3638,22 @@ Project *Context::CreateProject(
             billable = ws->ProjectsBillableByDefault();
         }
 
+        std::string client_name("");
+        Client *c = user_->related.ClientByID(client_id);
+        if (c) {
+            client_name = c->Name();
+        } else {
+            c = user_->related.ClientByGUID(client_guid);
+            if (c) {
+                client_name = c->Name();
+            }
+        }
+
         result = user_->CreateProject(
             workspace_id,
             client_id,
             client_guid,
+            client_name,
             trimmed_project_name,
             is_private,
             project_color,

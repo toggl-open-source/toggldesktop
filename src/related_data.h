@@ -98,22 +98,31 @@ class RelatedData {
  private:
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
-        std::vector<view::Autocomplete> *list) const;
+        std::map<Poco::UInt64, std::string> *ws_names,
+        std::vector<view::Autocomplete> *list,
+        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
 
     void taskAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<view::Autocomplete> *list) const;
+        std::vector<view::Autocomplete> *list,
+        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
 
     void projectAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
-        std::vector<view::Autocomplete> *list) const;
+        std::vector<view::Autocomplete> *list,
+        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items,
+        std::map<Poco::Int64, std::vector<view::Autocomplete> > *task_items) const;
 
     void workspaceAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<view::Autocomplete> *list) const;
+
+    void mergeGroupedAutocompleteItems(
+        std::vector<view::Autocomplete> *result,
+        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
 
     Client *clientByProject(Project *p) const;
 };

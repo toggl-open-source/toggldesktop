@@ -20,6 +20,7 @@ extern void *ctx;
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
 	self.dictionary = [[NSMutableDictionary alloc] init];
 	self.lastType = -1;
+	self.lastWID = -1;
 	self.lastClientLabel = nil;
 	self.types = [NSArray arrayWithObjects:@"TIME ENTRIES", @"TASKS", @"PROJECTS", @"WORKSPACES", nil];
 
@@ -88,12 +89,26 @@ extern void *ctx;
 	{
 		self.lastType = -1;
 		self.lastClientLabel = nil;
+		self.lastWID = -1;
 		[self.orderedKeys removeAllObjects];
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
+			// Add workspace title
+			if (item.WorkspaceID != self.lastWID
+				&& item.WorkspaceName != nil)
+			{
+				AutocompleteItem *it = [[AutocompleteItem alloc] init];
+				it.Type = -3;
+				it.Text = item.WorkspaceName;
+				[self addItem:it];
+				self.lastWID = item.WorkspaceID;
+				self.lastType = -1;
+				self.lastClientLabel = nil;
+			}
+
 			// Add category title
-			if (item.Type != self.lastType)
+			if (item.Type != self.lastType && item.Type != 1)
 			{
 				AutocompleteItem *it = [[AutocompleteItem alloc] init];
 				it.Type = -1;
@@ -141,7 +156,9 @@ extern void *ctx;
 {
 	NSString *key = item.Text;
 
-	if ([self.dictionary objectForKey:key] == nil)
+	if ([self.dictionary objectForKey:key] == nil
+		|| item.Type < 0
+		|| [item.ProjectAndTaskLabel isEqual:@""])
 	{
 		[self.orderedKeys addObject:item];
 		[self.dictionary setObject:item forKey:key];
@@ -160,16 +177,19 @@ extern void *ctx;
 {
 	self.lastType = -1;
 	self.lastClientLabel = nil;
+	self.lastWID = -1;
+
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		                   // Code that runs async
+						   NSInteger lastPID = -1;
 						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
-		                   // Skip filtering category item and client items
-							   if (item.Type == -1 || item.Type == -2)
+		                   // Skip filtering category/client/workspace items
+							   if (item.Type < 0)
 							   {
 								   continue;
 							   }
@@ -194,8 +214,21 @@ extern void *ctx;
 
 										   if (foundCount == stringArray.count)
 										   {
+		                                       // Add workspace title
+											   if (item.WorkspaceID != self.lastWID
+												   && item.WorkspaceName != nil)
+											   {
+												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+												   it.Type = -3;
+												   it.Text = item.WorkspaceName;
+												   [filtered addObject:it];
+												   self.lastWID = item.WorkspaceID;
+												   self.lastType = -1;
+												   self.lastClientLabel = nil;
+											   }
+
 		                                       // Add category title
-											   if (item.Type != self.lastType)
+											   if (item.Type != self.lastType && item.Type != 1)
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 												   it.Type = -1;
@@ -205,7 +238,8 @@ extern void *ctx;
 											   }
 
 		                                       // Add client name row
-											   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+											   if ((item.Type == 2 || item.Type == 1)
+												   && ![item.ClientLabel isEqual:self.lastClientLabel])
 											   {
 												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 												   it.Type = -2;
@@ -217,6 +251,23 @@ extern void *ctx;
 												   [filtered addObject:it];
 												   self.lastClientLabel = item.ClientLabel;
 											   }
+
+		                                       // In case we have task and project is not completed
+											   if (item.Type == 1 && item.ProjectID != lastPID)
+											   {
+												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+												   it.Type = 2;
+												   it.Text = item.ProjectLabel;
+												   it.ProjectLabel = item.ProjectLabel;
+												   it.ProjectColor = item.ProjectColor;
+												   it.ProjectID = item.ProjectID;
+												   it.Description = item.Description;
+												   it.TaskLabel = @"";
+												   it.ClientLabel = item.ClientLabel;
+												   it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+												   [filtered addObject:it];
+											   }
+											   lastPID = item.ProjectID;
 
 											   [filtered addObject:item];
 										   }
@@ -232,9 +283,21 @@ extern void *ctx;
 									   {
 										   self.textLength = [key length];
 									   }
+		                           // Add workspace title
+									   if (item.WorkspaceID != self.lastWID
+										   && item.WorkspaceName != nil)
+									   {
+										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+										   it.Type = -3;
+										   it.Text = item.WorkspaceName;
+										   [filtered addObject:it];
+										   self.lastWID = item.WorkspaceID;
+										   self.lastType = -1;
+										   self.lastClientLabel = nil;
+									   }
 
 		                               // Add category title
-									   if (item.Type != self.lastType)
+									   if (item.Type != self.lastType && item.Type != 1)
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 										   it.Type = -1;
@@ -244,7 +307,8 @@ extern void *ctx;
 									   }
 
 		                               // Add client name row
-									   if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+									   if ((item.Type == 2 || item.Type == 1)
+										   && ![item.ClientLabel isEqual:self.lastClientLabel])
 									   {
 										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
 										   it.Type = -2;
@@ -257,6 +321,22 @@ extern void *ctx;
 										   self.lastClientLabel = item.ClientLabel;
 									   }
 
+		                               // In case we have task and project is not completed
+									   if (item.Type == 1 && item.ProjectID != lastPID)
+									   {
+										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
+										   it.Type = 2;
+										   it.Text = item.ProjectLabel;
+										   it.ProjectLabel = item.ProjectLabel;
+										   it.ProjectColor = item.ProjectColor;
+										   it.ProjectID = item.ProjectID;
+										   it.Description = item.Description;
+										   it.TaskLabel = @"";
+										   it.ClientLabel = item.ClientLabel;
+										   it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+										   [filtered addObject:it];
+									   }
+									   lastPID = item.ProjectID;
 									   [filtered addObject:item];
 								   }
 							   }
