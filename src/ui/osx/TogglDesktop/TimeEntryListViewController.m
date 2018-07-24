@@ -247,6 +247,18 @@ extern void *ctx;
 		[cell setFocused];
 		[self.timeEntriesTableView scrollRowToVisible:self.lastSelectedRowIndex];
 	}
+
+	// remove highlight from first item
+	NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
+
+	if (selectedRow < 0)
+	{
+		return;
+	}
+	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
+													  makeIfNecessary  :NO];
+	[rowView setEmphasized:NO];
+	[rowView setSelected:NO];
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
