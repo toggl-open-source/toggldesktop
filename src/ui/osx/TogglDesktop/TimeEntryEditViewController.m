@@ -15,7 +15,6 @@
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
-#include <CoreFoundation/CoreFoundation.h>
 
 @interface TimeEntryEditViewController ()
 @property LiteAutoCompleteDataSource *liteDescriptionAutocompleteDataSource;
@@ -173,7 +172,7 @@ extern void *ctx;
 - (void)loadView
 {
 	[super loadView];
-	if (floor(kCFCoreFoundationVersionNumber) > kCFCoreFoundationVersionNumber10_11)
+	if (NSAppKitVersionNumber < NSAppKitVersionNumber10_11)
 	{
 		[self viewDidLoad];
 		[self viewDidAppear];

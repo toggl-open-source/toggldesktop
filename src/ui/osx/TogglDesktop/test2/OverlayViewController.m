@@ -7,7 +7,6 @@
 //
 
 #import "OverlayViewController.h"
-#include <CoreFoundation/CoreFoundation.h>
 
 @interface OverlayViewController ()
 @property int currentType;
@@ -20,7 +19,7 @@ extern void *ctx;
 - (void)loadView
 {
 	[super loadView];
-	if (floor(kCFCoreFoundationVersionNumber) > kCFCoreFoundationVersionNumber10_11)
+	if (NSAppKitVersionNumber < NSAppKitVersionNumber10_11)
 	{
 		[self viewDidLoad];
 	}
