@@ -87,9 +87,13 @@ class User : public BaseModel {
         const std::string project_color,
         const bool billable);
 
+    void AddProjectToList(Project *p);
+
     Client *CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
+
+    void AddClientToList(Client *c);
 
     std::string DateDuration(TimeEntry *te) const;
 

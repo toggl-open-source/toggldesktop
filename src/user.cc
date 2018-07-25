@@ -50,9 +50,6 @@ Project *User::CreateProject(
     const std::string project_color,
     const bool billable) {
 
-    bool projectAdded = false;
-    bool WIDMatch = false;
-    bool CIDMatch = false;
     Project *p = new Project();
     p->SetWID(workspace_id);
     p->SetName(project_name);
@@ -66,6 +63,16 @@ Project *User::CreateProject(
     if (!project_color.empty()) {
         p->SetColorCode(project_color);
     }
+
+    AddProjectToList(p);
+
+    return p;
+}
+
+void User::AddProjectToList(Project *p) {
+    bool projectAdded = false;
+    bool WIDMatch = false;
+    bool CIDMatch = false;
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
@@ -106,19 +113,24 @@ Project *User::CreateProject(
     if (!projectAdded) {
         related.Projects.push_back(p);
     }
-
-    return p;
 }
 
 Client *User::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
-    bool clientAdded = false;
-    bool foundMatch = false;
     Client *c = new Client();
     c->SetWID(workspace_id);
     c->SetName(client_name);
     c->SetUID(ID());
+
+    AddClientToList(c);
+
+    return c;
+}
+
+void User::AddClientToList(Client *c) {
+    bool clientAdded = false;
+    bool foundMatch = false;
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
@@ -145,8 +157,6 @@ Client *User::CreateClient(
     if (!clientAdded) {
         related.Clients.push_back(c);
     }
-
-    return c;
 }
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
