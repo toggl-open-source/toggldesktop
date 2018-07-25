@@ -3,7 +3,7 @@
         {
             "version": "7.4.221",
             "rows": [
-                "Added 'no project' item to autocomoplete",
+                "Added 'no project' item to autocomplete",
                 "Added autocomplete open button to project autocomplete",
                 "Fixed new autocomplete for older MacOs versions",
                 "Fixed country select in signup form",
