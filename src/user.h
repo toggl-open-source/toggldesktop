@@ -261,6 +261,9 @@ class User : public BaseModel {
         Json::Value data,
         std::set<Poco::UInt64> *alive = nullptr);
 
+    void loadUserProjectFromWebsocketJSON(
+        Json::Value data);
+
     void loadUserWorkspaceFromJSON(
         Json::Value data,
         std::set<Poco::UInt64> *alive = nullptr);
@@ -268,6 +271,9 @@ class User : public BaseModel {
     void loadUserClientFromJSON(
         Json::Value data,
         std::set<Poco::UInt64> *alive = nullptr);
+
+    void loadUserClientFromWebsocketJSON(
+        Json::Value data);
 
     void loadUserTaskFromJSON(
         Json::Value data,

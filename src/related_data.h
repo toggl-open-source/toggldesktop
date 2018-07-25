@@ -95,6 +95,8 @@ class RelatedData {
 
     AutotrackerRule *FindAutotrackerRule(const TimelineEvent event) const;
 
+    Client *clientByProject(Project *p) const;
+
  private:
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
@@ -123,8 +125,6 @@ class RelatedData {
     void mergeGroupedAutocompleteItems(
         std::vector<view::Autocomplete> *result,
         std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
-
-    Client *clientByProject(Project *p) const;
 };
 
 template<typename T>
