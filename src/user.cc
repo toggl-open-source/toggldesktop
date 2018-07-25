@@ -630,9 +630,9 @@ void User::loadUserUpdateFromJSON(
     if (kModelWorkspace == model) {
         loadUserWorkspaceFromJSON(data);
     } else if (kModelClient == model) {
-        loadUserClientFromJSON(data);
+        loadUserClientFromWebsocketJSON(data);
     } else if (kModelProject == model) {
-        loadUserProjectFromJSON(data);
+        loadUserProjectFromWebsocketJSON(data);
     } else if (kModelTask == model) {
         loadUserTaskFromJSON(data);
     } else if (kModelTimeEntry == model) {
@@ -886,6 +886,36 @@ void User::loadUserAndRelatedDataFromJSON(
     }
 }
 
+void User::loadUserClientFromWebsocketJSON(
+    Json::Value data) {
+
+    Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
+    Client *model = related.ClientByID(id);
+
+    if (!model) {
+        model = related.ClientByGUID(data["guid"].asString());
+    }
+
+    if (!data["server_deleted_at"].asString().empty()) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new Client();
+    }
+
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
+    AddClientToList(model);
+}
+
 void User::loadUserClientFromJSON(
     Json::Value data,
     std::set<Poco::UInt64> *alive) {
@@ -919,6 +949,41 @@ void User::loadUserClientFromJSON(
     }
     model->SetUID(ID());
     model->LoadFromJSON(data);
+}
+
+void User::loadUserProjectFromWebsocketJSON(
+    Json::Value data) {
+    Poco::UInt64 id = data["id"].asUInt64();
+    if (!id) {
+        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        return;
+    }
+
+    Project *model = related.ProjectByID(id);
+
+    if (!model) {
+        model = related.ProjectByGUID(data["guid"].asString());
+    }
+
+    if (!data["server_deleted_at"].asString().empty()) {
+        if (model) {
+            model->MarkAsDeletedOnServer();
+        }
+        return;
+    }
+
+    if (!model) {
+        model = new Project();
+    }
+
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
+
+    Client *c = related.clientByProject(model);
+
+    model->SetClientName(c->Name());
+
+    AddProjectToList(model);
 }
 
 void User::loadUserProjectFromJSON(
