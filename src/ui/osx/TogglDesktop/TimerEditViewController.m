@@ -18,7 +18,6 @@
 #import "NSCustomComboBox.h"
 #import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
-#include <CoreFoundation/CoreFoundation.h>
 
 @interface TimerEditViewController ()
 @property LiteAutoCompleteDataSource *liteAutocompleteDataSource;
@@ -132,7 +131,7 @@ NSString *kInactiveTimerColor = @"#999999";
 - (void)loadView
 {
 	[super loadView];
-	if (floor(kCFCoreFoundationVersionNumber) > kCFCoreFoundationVersionNumber10_11)
+	if (NSAppKitVersionNumber < NSAppKitVersionNumber10_11)
 	{
 		[self viewDidLoad];
 		[self viewDidAppear];
