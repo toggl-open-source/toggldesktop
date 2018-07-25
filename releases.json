@@ -1059,102 +1059,92 @@
     "osx": {
         "dev": [
             {
-                "version": "7.4.188",
-                "timestamp": "22-06-2018",
+                "version": "7.4.201",
+                "timestamp": "07-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_188.dmg"
+                        "name": "TogglDesktop-7_4_201.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.189",
-                "timestamp": "22-06-2018",
+                "version": "7.4.202",
+                "timestamp": "07-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_189.dmg"
+                        "name": "TogglDesktop-7_4_202.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.190",
-                "timestamp": "25-06-2018",
+                "version": "7.4.203",
+                "timestamp": "09-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_190.dmg"
+                        "name": "TogglDesktop-7_4_203.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.191",
-                "timestamp": "25-06-2018",
+                "version": "7.4.204",
+                "timestamp": "11-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_191.dmg"
+                        "name": "TogglDesktop-7_4_204.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.192",
-                "timestamp": "27-06-2018",
+                "version": "7.4.205",
+                "timestamp": "13-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_192.dmg"
+                        "name": "TogglDesktop-7_4_205.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.193",
-                "timestamp": "29-06-2018",
+                "version": "7.4.206",
+                "timestamp": "14-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_193.dmg"
+                        "name": "TogglDesktop-7_4_206.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.194",
-                "timestamp": "29-06-2018",
+                "version": "7.4.219",
+                "timestamp": "25-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_194.dmg"
+                        "name": "TogglDesktop-7_4_219.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.195",
-                "timestamp": "03-07-2018",
+                "version": "7.4.220",
+                "timestamp": "25-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_195.dmg"
+                        "name": "TogglDesktop-7_4_220.dmg"
                     }
                 ]
             },
             {
-                "version": "7.4.196",
-                "timestamp": "03-07-2018",
+                "version": "7.4.221",
+                "timestamp": "25-07-2018",
                 "filename": [
                     {
                         "type": "macos",
-                        "name": "TogglDesktop-7_4_196.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.197",
-                "timestamp": "04-07-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_197.dmg"
+                        "name": "TogglDesktop-7_4_221.dmg"
                     }
                 ]
             }
@@ -1579,6 +1569,16 @@
                         "name": "TogglDesktop-7_4_194.dmg"
                     }
                 ]
+            },
+            {
+                "version": "7.4.221",
+                "timestamp": "25-07-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_221.dmg"
+                    }
+                ]
             }
         ],
         "stable": [
@@ -1897,90 +1897,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.183",
-                "timestamp": "07-06-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_183.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.183_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.184",
-                "timestamp": "07-06-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_184.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.184_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.185",
-                "timestamp": "12-06-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_185.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.185_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.186",
-                "timestamp": "14-06-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_186.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.186_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.187",
-                "timestamp": "22-06-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_187.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.187_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.188",
-                "timestamp": "22-06-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_188.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.188_amd64.deb"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.189",
                 "timestamp": "22-06-2018",
                 "filename": [
@@ -2033,6 +1949,90 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.192_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.215",
+                "timestamp": "24-07-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_215.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.215_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.216",
+                "timestamp": "24-07-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_216.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.216_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.217",
+                "timestamp": "25-07-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_217.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.217_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.218",
+                "timestamp": "25-07-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_218.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.218_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.219",
+                "timestamp": "25-07-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_219.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.219_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.220",
+                "timestamp": "25-07-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_220.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.220_amd64.deb"
                     }
                 ]
             }
