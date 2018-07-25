@@ -1,6 +1,25 @@
 {
     "versions": [
         {
+            "version": "7.4.221",
+            "rows": [
+                "Added 'no project' item to autocomoplete",
+                "Added autocomplete open button to project autocomplete",
+                "Fixed new autocomplete for older MacOs versions",
+                "Fixed country select in signup form",
+                "Fixed autocomplete wrong item highlight issues",
+                "Fixed autocomplete mouse selecting issues",
+                "Group projects by workspace and client in autocomplete",
+                "Group tasks by project in autocomplete",
+                "Smaller ui updates and tweaks for new autocompelete",
+                "Style fixes for MacOs 10.14",
+                "Confirmless delete for all items shorter than 15 seconds",
+                "Fixed closing windows with Cmd+W"
+            ],
+            "date": "July 25th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.194",
             "rows": [
                 "Improved login view field validation",
