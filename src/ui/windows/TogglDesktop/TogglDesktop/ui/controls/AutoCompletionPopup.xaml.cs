@@ -435,7 +435,7 @@ namespace TogglDesktop
             mouseClickedOnListBox = true;
 
             DependencyObject dep = (DependencyObject)e.OriginalSource;
-
+            e.Handled = true;
             while ((dep != null) && !(dep is System.Windows.Controls.ListBoxItem))
             {
                 dep = System.Windows.Media.VisualTreeHelper.GetParent(dep);
