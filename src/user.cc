@@ -70,7 +70,6 @@ Project *User::CreateProject(
 }
 
 void User::AddProjectToList(Project *p) {
-    bool projectAdded = false;
     bool WIDMatch = false;
     bool CIDMatch = false;
 
@@ -86,33 +85,27 @@ void User::AddProjectToList(Project *p) {
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     related.Projects.insert(it,p);
-                    projectAdded = true;
-                    break;
+                    return;
                 }
             } else if (CIDMatch) {
                 // in case new project is last in client list
                 related.Projects.insert(it,p);
-                projectAdded = true;
-                break;
+                return;
             } else if (p->CID() != 0 && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     related.Projects.insert(it,p);
-                    projectAdded = true;
-                    break;
+                    return;
                 }
             }
         } else if (WIDMatch) {
             //In case new project is last in workspace list
             related.Projects.insert(it,p);
-            projectAdded = true;
-            break;
+            return;
         }
     }
 
     // if projects vector is empty or project should be added to the end
-    if (!projectAdded) {
-        related.Projects.push_back(p);
-    }
+    related.Projects.push_back(p);
 }
 
 Client *User::CreateClient(
@@ -129,7 +122,6 @@ Client *User::CreateClient(
 }
 
 void User::AddClientToList(Client *c) {
-    bool clientAdded = false;
     bool foundMatch = false;
 
     // We should push the project to correct alphabetical position
@@ -142,21 +134,16 @@ void User::AddClientToList(Client *c) {
             foundMatch = true;
             if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
                 related.Clients.insert(it,c);
-                clientAdded = true;
-                break;
+                return;
             }
         } else if (foundMatch) {
             related.Clients.insert(it,c);
-            clientAdded = true;
-            foundMatch = false;
-            break;
+            return;
         }
     }
 
     // if clients vector is empty or client should be added to the end
-    if (!clientAdded) {
-        related.Clients.push_back(c);
-    }
+    related.Clients.push_back(c);
 }
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
