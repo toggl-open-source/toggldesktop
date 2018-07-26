@@ -981,8 +981,9 @@ void User::loadUserProjectFromSyncJSON(
     model->LoadFromJSON(data);
 
     Client *c = related.clientByProject(model);
-
-    model->SetClientName(c->Name());
+    if (c) {
+        model->SetClientName(c->Name());
+    }
 
     if (addNew) {
         AddProjectToList(model);
