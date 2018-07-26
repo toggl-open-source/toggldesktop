@@ -888,7 +888,7 @@ void User::loadUserAndRelatedDataFromJSON(
 
 void User::loadUserClientFromWebsocketJSON(
     Json::Value data) {
-
+    bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
@@ -909,11 +909,15 @@ void User::loadUserClientFromWebsocketJSON(
 
     if (!model) {
         model = new Client();
+        addNew = true;
     }
 
     model->SetUID(ID());
     model->LoadFromJSON(data);
-    AddClientToList(model);
+
+    if (addNew) {
+        AddClientToList(model);
+    }
 }
 
 void User::loadUserClientFromJSON(
@@ -953,6 +957,7 @@ void User::loadUserClientFromJSON(
 
 void User::loadUserProjectFromWebsocketJSON(
     Json::Value data) {
+    bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
@@ -974,6 +979,7 @@ void User::loadUserProjectFromWebsocketJSON(
 
     if (!model) {
         model = new Project();
+        addNew = true;
     }
 
     model->SetUID(ID());
@@ -983,7 +989,9 @@ void User::loadUserProjectFromWebsocketJSON(
 
     model->SetClientName(c->Name());
 
-    AddProjectToList(model);
+    if (addNew) {
+        AddProjectToList(model);
+    }
 }
 
 void User::loadUserProjectFromJSON(
