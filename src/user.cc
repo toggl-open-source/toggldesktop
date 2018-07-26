@@ -617,9 +617,9 @@ void User::loadUserUpdateFromJSON(
     if (kModelWorkspace == model) {
         loadUserWorkspaceFromJSON(data);
     } else if (kModelClient == model) {
-        loadUserClientFromWebsocketJSON(data);
+        loadUserClientFromSyncJSON(data);
     } else if (kModelProject == model) {
-        loadUserProjectFromWebsocketJSON(data);
+        loadUserProjectFromSyncJSON(data);
     } else if (kModelTask == model) {
         loadUserTaskFromJSON(data);
     } else if (kModelTimeEntry == model) {
@@ -783,7 +783,7 @@ void User::loadUserAndRelatedDataFromJSON(
             Json::Value list = data["projects"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserProjectFromJSON(list[i], &alive);
+                loadUserProjectFromSyncJSON(list[i], &alive);
             }
         }
 
@@ -863,7 +863,7 @@ void User::loadUserAndRelatedDataFromJSON(
             Json::Value list = data["clients"];
 
             for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserClientFromJSON(list[i], &alive);
+                loadUserClientFromSyncJSON(list[i], &alive);
             }
         }
 
@@ -873,8 +873,9 @@ void User::loadUserAndRelatedDataFromJSON(
     }
 }
 
-void User::loadUserClientFromWebsocketJSON(
-    Json::Value data) {
+void User::loadUserClientFromSyncJSON(
+    Json::Value data,
+    std::set<Poco::UInt64> *alive) {
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
@@ -897,6 +898,9 @@ void User::loadUserClientFromWebsocketJSON(
     if (!model) {
         model = new Client();
         addNew = true;
+    }
+    if (alive) {
+        alive->insert(id);
     }
 
     model->SetUID(ID());
@@ -942,8 +946,9 @@ void User::loadUserClientFromJSON(
     model->LoadFromJSON(data);
 }
 
-void User::loadUserProjectFromWebsocketJSON(
-    Json::Value data) {
+void User::loadUserProjectFromSyncJSON(
+    Json::Value data,
+    std::set<Poco::UInt64> *alive) {
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
@@ -967,6 +972,9 @@ void User::loadUserProjectFromWebsocketJSON(
     if (!model) {
         model = new Project();
         addNew = true;
+    }
+    if (alive) {
+        alive->insert(id);
     }
 
     model->SetUID(ID());
