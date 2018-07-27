@@ -82,32 +82,22 @@ void User::AddProjectToList(Project *p) {
         if (p->WID() == pr->WID()) {
             WIDMatch = true;
             if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
-                std::cout << "\nADDPROJECT: " << " [WIDMATCH] "
-                << p->ClientName() << " == " << pr->ClientName() << "\n";
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    std::cout << "\nADDPROJECT: " << " [WID CIDMATCH] "
-                    << p->FullName() << " == " << pr->FullName() << "\n";
                     related.Projects.insert(it,p);
                     return;
                 }
             } else if (CIDMatch) {
-                std::cout << "\nADDPROJECT: " << " [CIDMATCH] "
-                << p->FullName() << " == " << pr->FullName() << "\n";
                 // in case new project is last in client list
                 related.Projects.insert(it,p);
                 return;
             } else if (p->CID() != 0 && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    std::cout << "\nADDPROJECT: " << " [CID!=0] "
-                    << p->ClientName() << " == " << pr->ClientName() << "\n";
                     related.Projects.insert(it,p);
                     return;
                 }
             }
         } else if (WIDMatch) {
-            std::cout << "\nADDPROJECT: " << " [WIDMATCH AFTER] "
-            << p->FullName() << " == " << pr->FullName() << "\n";
             //In case new project is last in workspace list
             related.Projects.insert(it,p);
             return;
