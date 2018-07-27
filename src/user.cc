@@ -91,7 +91,7 @@ void User::AddProjectToList(Project *p) {
                 // in case new project is last in client list
                 related.Projects.insert(it,p);
                 return;
-            } else if (p->CID() != 0 && pr->CID() != 0) {
+            } else if ((p->CID() != 0 || !p->ClientGUID().empty()) && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     related.Projects.insert(it,p);
                     return;
