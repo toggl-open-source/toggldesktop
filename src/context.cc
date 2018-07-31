@@ -4095,10 +4095,11 @@ void Context::displayPomodoro() {
                 return;
             }
         }
-
+        const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
         wid = current_te->WID();
         Stop(true);
-        current_te->SetDurationInSeconds(settings_.pomodoro_minutes * 60);
+        current_te->SetDurationInSeconds(pomodoroDuration);
+        current_te->SetStop(current_te->Start() + pomodoroDuration);
     }
     UI()->DisplayPomodoro(settings_.pomodoro_minutes);
 
@@ -4143,9 +4144,10 @@ void Context::displayPomodoroBreak() {
                 < settings_.pomodoro_break_minutes * 60) {
             return;
         }
-
+        const Poco::Int64 pomodoroDuration = settings_.pomodoro_break_minutes * 60;
         Stop(true);
-        current_te->SetDurationInSeconds(settings_.pomodoro_break_minutes * 60);
+        current_te->SetDurationInSeconds(pomodoroDuration);
+        current_te->SetStop(current_te->Start() + pomodoroDuration);
     }
     pomodoro_break_entry_ = nullptr;
 
