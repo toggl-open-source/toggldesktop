@@ -787,70 +787,6 @@ void User::loadUserAndRelatedDataFromJSON(
     {
         std::set<Poco::UInt64> alive;
 
-        if (data.isMember("projects")) {
-            Json::Value list = data["projects"];
-
-            for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserProjectFromSyncJSON(list[i], &alive);
-            }
-        }
-
-        if (including_related_data) {
-            deleteZombies(related.Projects, alive);
-        }
-    }
-
-    {
-        std::set<Poco::UInt64> alive;
-
-        if (data.isMember("tags")) {
-            Json::Value list = data["tags"];
-
-            for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserTagFromJSON(list[i], &alive);
-            }
-        }
-
-        if (including_related_data) {
-            deleteZombies(related.Tags, alive);
-        }
-    }
-
-    {
-        std::set<Poco::UInt64> alive;
-
-        if (data.isMember("tasks")) {
-            Json::Value list = data["tasks"];
-
-            for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserTaskFromJSON(list[i], &alive);
-            }
-        }
-
-        if (including_related_data) {
-            deleteZombies(related.Tasks, alive);
-        }
-    }
-
-    {
-        std::set<Poco::UInt64> alive;
-
-        if (data.isMember("time_entries")) {
-            Json::Value list = data["time_entries"];
-
-            for (unsigned int i = 0; i < list.size(); i++) {
-                loadUserTimeEntryFromJSON(list[i], &alive);
-            }
-        }
-
-        if (including_related_data) {
-            deleteZombies(related.TimeEntries, alive);
-        }
-    }
-
-    {
-        std::set<Poco::UInt64> alive;
-
         if (data.isMember("workspaces")) {
             Json::Value list = data["workspaces"];
 
@@ -877,6 +813,70 @@ void User::loadUserAndRelatedDataFromJSON(
 
         if (including_related_data) {
             deleteZombies(related.Clients, alive);
+        }
+    }
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("projects")) {
+            Json::Value list = data["projects"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserProjectFromSyncJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Projects, alive);
+        }
+    }
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("tasks")) {
+            Json::Value list = data["tasks"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserTaskFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Tasks, alive);
+        }
+    }
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("tags")) {
+            Json::Value list = data["tags"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserTagFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.Tags, alive);
+        }
+    }
+
+    {
+        std::set<Poco::UInt64> alive;
+
+        if (data.isMember("time_entries")) {
+            Json::Value list = data["time_entries"];
+
+            for (unsigned int i = 0; i < list.size(); i++) {
+                loadUserTimeEntryFromJSON(list[i], &alive);
+            }
+        }
+
+        if (including_related_data) {
+            deleteZombies(related.TimeEntries, alive);
         }
     }
 }
