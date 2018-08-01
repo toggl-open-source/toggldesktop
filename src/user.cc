@@ -82,9 +82,17 @@ void User::AddProjectToList(Project *p) {
         if (p->WID() == pr->WID()) {
             WIDMatch = true;
             if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
+                // Handle adding project with client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     related.Projects.insert(it,p);
+                    return;
+                }
+            } else if (p->CID() == 0 && pr->CID() == 0) {
+                // Handle adding project without client
+                CIDMatch = true;
+                if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
+                    related.Projects.insert(it, p);
                     return;
                 }
             } else if (CIDMatch) {
