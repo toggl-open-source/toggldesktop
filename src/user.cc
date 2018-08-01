@@ -81,7 +81,7 @@ void User::AddProjectToList(Project *p) {
         Project *pr = *it;
         if (p->WID() == pr->WID()) {
             WIDMatch = true;
-            if (p->CID() == 0 && pr->CID() == 0) {
+            if ((p->CID() == 0 && p->ClientGUID().empty()) && pr->CID() == 0) {
                 // Handle adding project without client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
