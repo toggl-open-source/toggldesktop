@@ -5303,12 +5303,11 @@ error Context::signup(
         user["password"] = password;
         user["created_with"] = Formatter::EscapeJSONString(
             HTTPSClient::Config.UserAgent());
+        user["tos_accepted"] = true;
+        user["country_id"] = Json::UInt64(country_id);
 
         Json::Value ws;
         ws["initial_pricing_plan"] = 0;
-        ws["tos_accepted"] = true;
-        ws["country_id"] = Json::UInt64(country_id);
-
         user["workspace"] = ws;
 
         HTTPSRequest req;
