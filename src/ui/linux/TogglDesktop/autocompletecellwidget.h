@@ -17,6 +17,7 @@ public:
     ~AutocompleteCellWidget();
 
     void display(AutocompleteView *view);
+    void labelClicked(QString field_name);
 
     AutocompleteView *view_item;
 

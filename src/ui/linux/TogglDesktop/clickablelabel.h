@@ -10,6 +10,7 @@ class ClickableLabel : public QLabel {
  public:
     explicit ClickableLabel(QWidget * parent = 0);
     ~ClickableLabel();
+    int type;
 
  signals:
     void clicked();

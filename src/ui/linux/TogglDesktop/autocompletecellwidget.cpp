@@ -6,6 +6,7 @@ AutocompleteCellWidget::AutocompleteCellWidget(QWidget *parent) :
     ui(new Ui::AutocompleteCellWidget)
 {
     ui->setupUi(this);
+    ui->label->type = 1;
 }
 
 AutocompleteCellWidget::~AutocompleteCellWidget()
@@ -68,3 +69,6 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
     ui->label->setText(text);
 }
 
+void AutocompleteCellWidget::labelClicked(QString field_name) {
+    qDebug() << "MOUSE: [" << view_item->Text << "] || Label - " << ui->label->text();
+}
