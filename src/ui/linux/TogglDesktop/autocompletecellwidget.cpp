@@ -22,11 +22,10 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
 
     // Format is: Description - TaskName · ProjectName - ClientName
 
-
     // Workspace row
     if (view_item->Type == 13) {
         setStyleSheet("border-bottom:1px solid grey;");
-        ui->label->setStyleSheet("; text-align: center;");
+        ui->label->setStyleSheet("text-align: center;");
         ui->label->setText(
                     "<span style='text-align:center;font-weight:bold;font-size:9pt;'>" + view->Text + "</span>");
         return;
@@ -34,14 +33,14 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
 
     // Category row
     if (view_item->Type == 11) {
-        ui->label->setStyleSheet("margin-left:5px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-left:5px;font-size:9pt;");
         ui->label->setText(view->Text);
         return;
     }
 
     // Client row / no project row
     if (view_item->Type == 12 || (view_item->Type == 2 && view_item->ProjectID == 0)) {
-        ui->label->setStyleSheet("margin-left:10px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-left:10px;font-size:9pt;");
         ui->label->setText(view->Text);
         return;
     }
@@ -49,7 +48,7 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
     // Task row
     if (view_item->TaskID != 0)
     {
-        ui->label->setStyleSheet("margin-left:20px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-left:20px;font-size:9pt;");
         ui->label->setText(view->Text);
         return;
     }
@@ -58,12 +57,12 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
     QString text = QString(view->Description);
     if (view_item->ProjectID != 0)
     {
-        ui->label->setStyleSheet("margin-left:15px;font-size:9pt;");
-        text.append(QString("<span style='font-size:20px;color:" +
-                       view->ProjectColor + ";'>•</span> " +
+        ui->label->setStyleSheet("padding-left:15px;font-size:9pt;");
+        text.append(QString(" <span style='font-size:20px;color:" +
+                       view->ProjectColor + ";'> •</span> " +
                        view->ProjectLabel));
     } else {
-        ui->label->setStyleSheet("margin-left:10px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-left:10px;font-size:9pt;");
     }
 
     ui->label->setText(text);
