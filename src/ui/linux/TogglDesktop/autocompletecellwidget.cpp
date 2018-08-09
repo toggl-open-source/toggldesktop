@@ -14,6 +14,12 @@ AutocompleteCellWidget::~AutocompleteCellWidget()
     delete ui;
 }
 
+bool AutocompleteCellWidget::filter(QString filter) {
+    if (view_item->Text.toLower().indexOf(filter.toLower()) != -1)
+        qDebug() << "FF: " << view_item->Text << " -- " << filter << " == " << view_item->Text.indexOf(filter);
+    return (view_item->Text.toLower().indexOf(filter.toLower()) != -1);
+}
+
 void AutocompleteCellWidget::display(AutocompleteView *view) {
     view_item = view;
 

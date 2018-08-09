@@ -20,6 +20,7 @@ public:
     void labelClicked(QString field_name);
 
     AutocompleteView *view_item;
+    bool filter(QString filter);
 
 private:
     Ui::AutocompleteCellWidget *ui;

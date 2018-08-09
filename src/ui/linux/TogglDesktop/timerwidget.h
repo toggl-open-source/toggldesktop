@@ -7,7 +7,7 @@
 #include <QVector>
 #include <QTimer>
 #include <QLabel>
-#include "./autocompletedropdown.h"
+#include "./autocompletedropdownlist.h"
 
 namespace Ui {
 class TimerWidget;
@@ -58,13 +58,12 @@ class TimerWidget : public QWidget {
     QTimer *timer;
 
     int64_t duration;
-    QStringList types;
 
     QString project;
     QString descriptionPlaceholder;
     QString tagsHolder;
 
-    AutocompleteDropdown *dropdown;
+    AutocompleteDropdownList *dropdown;
 
     bool timeEntryAutocompleteNeedsUpdate;
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
