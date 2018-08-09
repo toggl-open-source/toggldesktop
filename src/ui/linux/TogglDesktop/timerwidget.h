@@ -23,6 +23,9 @@ class TimerWidget : public QWidget {
     explicit TimerWidget(QWidget *parent = 0);
     ~TimerWidget();
 
+ public slots:
+    void fillInData(AutocompleteView *view);
+
  signals:
     void buttonClicked();
 
@@ -51,6 +54,7 @@ class TimerWidget : public QWidget {
     void on_duration_returnPressed();
 
     void descriptionReturnPressed();
+    void fillInAndStart();
 
  private:
     Ui::TimerWidget *ui;
@@ -62,6 +66,8 @@ class TimerWidget : public QWidget {
     QString project;
     QString descriptionPlaceholder;
     QString tagsHolder;
+    uint64_t taskId;
+    uint64_t projectId;
 
     AutocompleteDropdownList *dropdown;
 

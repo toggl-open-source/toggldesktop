@@ -6,6 +6,19 @@ AutocompleteDropdownList::AutocompleteDropdownList(QWidget *parent) :
     types(QStringList())
 {
     types << "TIME ENTRIES" << "TASKS" << "PROJECTS" << "WORKSPACES";
+    connect(this, SIGNAL(itemPressed(QListWidgetItem*)),
+            this, SLOT(onListItemClicked(QListWidgetItem*)));
+}
+
+void AutocompleteDropdownList::onListItemClicked(QListWidgetItem* item)
+{
+    AutocompleteCellWidget *cl = 0;
+    cl = static_cast<AutocompleteCellWidget *>(
+            itemWidget(item));
+
+    qDebug() << "Clicked on item: " << cl->view_item->Text;
+
+    fillData(cl->view_item);
 }
 
 void AutocompleteDropdownList::keyPressEvent(QKeyEvent *e)
@@ -17,6 +30,7 @@ void AutocompleteDropdownList::keyPressEvent(QKeyEvent *e)
     case Qt::Key_Enter:
     case Qt::Key_Return:
         qDebug() << "Select: " << currentRow();
+        returnPressed();
         //selectItem();
     case Qt::Key_Escape:
     case Qt::Key_Tab:

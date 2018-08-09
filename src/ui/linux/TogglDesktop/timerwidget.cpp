@@ -5,6 +5,7 @@
 
 #include <QApplication>  // NOLINT
 #include <QCompleter>  // NOLINT
+#include <QDebug>
 
 #include "./autocompleteview.h"
 #include "./timeentryview.h"
@@ -18,7 +19,9 @@ duration(0),
 timeEntryAutocompleteNeedsUpdate(false),
 tagsHolder(""),
 project(""),
-dropdown(new AutocompleteDropdownList(this)) {
+dropdown(new AutocompleteDropdownList(this)),
+taskId(0),
+projectId(0) {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -34,9 +37,16 @@ dropdown(new AutocompleteDropdownList(this)) {
             this, SLOT(focusChanged(QWidget*, QWidget*)));
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
-
+/*
     connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
+    */
+
+    connect(dropdown, SIGNAL(returnPressed()),
+            this, SLOT(fillInAndStart()));
+
+    connect(dropdown, SIGNAL(fillData(AutocompleteView*)),
+            this, SLOT(fillInData(AutocompleteView*)));
 
     ui->description->setModel(dropdown->model());
     ui->description->setView(dropdown);
@@ -54,7 +64,32 @@ TimerWidget::~TimerWidget() {
     delete ui;
 }
 
+void TimerWidget::fillInData(AutocompleteView *view) {
+    taskId = view->TaskID;
+    projectId = view->ProjectID;
+    ui->billable->setVisible(view->Billable);
+    ui->tags->setVisible(!view->Tags.isEmpty());
+    if (!view->Tags.isEmpty()) {
+        tagsHolder = view->Tags;
+    } else {
+        tagsHolder = "";
+    }
+    ui->project->setText(view->ProjectAndTaskLabel);
+    ui->description->setEditText(view->Description);
+    ui->description->hidePopup();
+}
+
+void TimerWidget::fillInAndStart() {
+    QListWidgetItem *it = dropdown->currentItem();
+    AutocompleteCellWidget *cl = static_cast<AutocompleteCellWidget *>(
+        dropdown->itemWidget(it));
+    if (cl){
+        fillInData(cl->view_item);
+    }
+    start();
+}
 void TimerWidget::descriptionReturnPressed() {
+    qDebug() << "Return pressed: " << dropdown->currentIndex() << " || popup -> " << dropdown->isVisible();
     start();
 }
 
@@ -156,16 +191,6 @@ void TimerWidget::on_start_clicked() {
 }
 
 void TimerWidget::start() {
-    uint64_t task_id(0);
-    uint64_t project_id(0);
-
-    QVariant data = ui->description->currentData();
-    if (data.canConvert<AutocompleteView *>()) {
-        AutocompleteView *view = data.value<AutocompleteView *>();
-        task_id = view->TaskID;
-        project_id = view->ProjectID;
-    }
-
     QString description = ui->description->currentText();
     if (description == descriptionPlaceholder) {
         description = "";
@@ -173,11 +198,13 @@ void TimerWidget::start() {
 
     TogglApi::instance->start(description,
                               ui->duration->text(),
-                              task_id,
-                              project_id,
+                              taskId,
+                              projectId,
                               tagsHolder.toStdString().c_str(),
                               ui->billable->isVisible());
     tagsHolder = "";
+    taskId = 0;
+    projectId = 0;
 }
 
 void TimerWidget::stop() {
@@ -210,6 +237,21 @@ void TimerWidget::timeout() {
 }
 
 void TimerWidget::on_description_currentIndexChanged(int index) {
+    qDebug() << "XXXX -- " << index;
+    /*
+     *
+     * QListWidgetItem *it = dropdown->currentItem();
+    AutocompleteCellWidget *cl = static_cast<AutocompleteCellWidget *>(
+        dropdown->itemWidget(it));
+
+    if (cl) {
+        AutocompleteView *view = cl->view_item;
+        task_id = view->TaskID;
+        project_id = view->ProjectID;
+        //tagsHolder = view->Tags;
+    }
+
+
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
@@ -224,6 +266,7 @@ void TimerWidget::on_description_currentIndexChanged(int index) {
         }
 
     }
+    */
 }
 
 void TimerWidget::mousePressEvent(QMouseEvent *event) {

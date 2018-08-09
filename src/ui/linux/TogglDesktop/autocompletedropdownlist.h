@@ -20,8 +20,11 @@ private:
 
 signals:
     void keyPress(QKeyEvent *e);
+    void returnPressed();
+    void fillData(AutocompleteView *view);
 
 public slots:
+    void onListItemClicked(QListWidgetItem* item);
 
 protected:
     void keyPressEvent(QKeyEvent *e);

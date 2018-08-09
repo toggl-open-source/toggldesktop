@@ -1,5 +1,6 @@
 #include "autocompletecellwidget.h"
 #include "ui_autocompletecellwidget.h"
+#include <QDebug>
 
 AutocompleteCellWidget::AutocompleteCellWidget(QWidget *parent) :
     QWidget(parent),
