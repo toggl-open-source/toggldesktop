@@ -1,6 +1,22 @@
 {
     "versions": [
         {
+            "version": "7.4.231",
+            "rows": [
+                "Added 'no project' item to autocomplete",
+                "Fixed country select in signup form",
+                "Fixed autocomplete mouse selecting issues",
+                "Group projects by workspace and client in autocomplete",
+                "Group tasks by project in autocomplete",
+                "Smaller ui updates and tweaks for new autocompelete",
+                "Confirmless delete for all items shorter than 15 seconds",
+                "Fixed transparent empty window issue",
+                "Improved login error display",
+                "Fixed handling future start time for entries"
+            ],
+            "date": "August 9th 2018"
+        },
+        {
             "version": "7.4.197",
             "rows": [
                 "Added ToS Accept view",
