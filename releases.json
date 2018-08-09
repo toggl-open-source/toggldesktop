@@ -1067,6 +1067,20 @@
                         "name": "TogglDesktopEnterpriseInstaller-7.4.184.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.231",
+                "timestamp": "09-08-2018",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.231.exe"
+                    },
+                    {
+                        "type": "windows_enterprise",
+                        "name": "TogglDesktopEnterpriseInstaller-7.4.231.exe"
+                    }
+                ]
             }
         ]
     },
@@ -2043,6 +2057,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.230_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.231",
+                "timestamp": "02-08-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_231.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.231_amd64.deb"
                     }
                 ]
             }
