@@ -55,7 +55,7 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
     // Task row
     if (view_item->TaskID != 0)
     {
-        ui->label->setStyleSheet("padding-left:20px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-left:30px;font-size:9pt;");
         ui->label->setText(view->Text);
         return;
     }
