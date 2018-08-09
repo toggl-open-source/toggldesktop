@@ -18,7 +18,7 @@ duration(0),
 timeEntryAutocompleteNeedsUpdate(false),
 tagsHolder(""),
 project(""),
-dropdown(new AutocompleteDropdownList(this)){
+dropdown(new AutocompleteDropdownList(this)) {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
