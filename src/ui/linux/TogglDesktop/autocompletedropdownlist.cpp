@@ -37,6 +37,7 @@ void AutocompleteDropdownList::keyPressEvent(QKeyEvent *e)
 void AutocompleteDropdownList::filterItems(QString filter) {
     uint64_t lastWID = 0;
     int64_t lastCID = -1;
+    int64_t lastPID = -1;
     uint64_t lastType;
     int h = 35;
     int itemCount = 0;
@@ -170,6 +171,44 @@ void AutocompleteDropdownList::filterItems(QString filter) {
 
             itemCount++;
         }
+
+        // In case we filter task and project is not filtered
+        if (filter.length() > 0 && view->Type == 1
+                && view->ProjectID != lastPID) {
+            QListWidgetItem *it = 0;
+            AutocompleteCellWidget *cl = 0;
+
+            if (count() > itemCount) {
+                it = item(itemCount);
+                cl = static_cast<AutocompleteCellWidget *>(
+                    itemWidget(it));
+            }
+
+            if (!it) {
+                it = new QListWidgetItem();
+                cl = new AutocompleteCellWidget();
+
+                addItem(it);
+                setItemWidget(it, cl);
+            }
+
+            AutocompleteView *v = new AutocompleteView();
+            v->Type = 2;
+            v->Text = view->ProjectLabel;
+            v->ProjectLabel = view->ProjectLabel;
+            v->ProjectColor = view->ProjectColor;
+            v->ProjectID = view->ProjectID;
+            v->Description = view->Description;
+            v->ClientLabel = view->ClientLabel;
+            v->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
+            v->TaskID = 0;
+            cl->display(v);
+            it->setSizeHint(QSize(it->sizeHint().width(), h));
+            lastPID = view->ProjectID;
+
+            itemCount++;
+        }
+
 
         QListWidgetItem *it = 0;
         AutocompleteCellWidget *cl = 0;
