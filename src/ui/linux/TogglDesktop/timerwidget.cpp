@@ -84,13 +84,9 @@ void TimerWidget::fillInAndStart() {
     }
     start();
 }
-void TimerWidget::descriptionReturnPressed() {
-    qDebug() << "Return pressed: " << dropdown->currentIndex() << " || popup -> " << dropdown->isVisible();
-    start();
-}
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
-    if (old == ui->description) {
+    if (old == ui->description && now != dropdown) {
         if (ui->description->currentText().length() == 0) {
             ui->description->setEditText(descriptionPlaceholder);
         }
