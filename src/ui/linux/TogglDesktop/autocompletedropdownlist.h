@@ -3,6 +3,7 @@
 
 #include <QListWidget>
 #include <QKeyEvent>
+#include <QMutex>
 
 #include "./autocompletecellwidget.h"
 
@@ -17,6 +18,7 @@ public:
 private:
     QVector<AutocompleteView *> list;
     QStringList types;
+    QMutex render_m_;
 
 signals:
     void keyPress(QKeyEvent *e);

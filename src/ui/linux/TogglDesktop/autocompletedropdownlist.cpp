@@ -46,6 +46,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
     int itemCount = 0;
     int size = list.size();
 
+    render_m_.lock();
     for (int i = 0; i < size; i++) {
         AutocompleteView *view = list.at(i);
         if (filter.length() > 0
@@ -239,7 +240,8 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
     while (count() > itemCount) {
         model()->removeRow(count()-1);
     }
-    qDebug() << "Count: " << count();
+
+    render_m_.unlock();
 
     return (itemCount != 0);
 }
