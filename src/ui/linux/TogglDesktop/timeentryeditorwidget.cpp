@@ -22,19 +22,16 @@ clientSelectNeedsUpdate(false),
 timer(new QTimer(this)),
 colorPicker(new ColorPicker(this)),
 duration(0),
-previousTagList("") {
+previousTagList(""),
+timeEntryDropdown(new AutocompleteDropdownList(this)),
+projectDropdown(new AutocompleteDropdownList(this)) {
     ui->setupUi(this);
 
-    ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->description->completer()->setCompletionMode(
-        QCompleter::PopupCompletion);
-    ui->description->completer()->setMaxVisibleItems(20);
-    ui->description->completer()->setFilterMode(Qt::MatchContains);
+    ui->description->setModel(timeEntryDropdown->model());
+    ui->description->setView(timeEntryDropdown);
 
-    ui->project->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->project->completer()->setCompletionMode(QCompleter::PopupCompletion);
-    ui->project->completer()->setMaxVisibleItems(20);
-    ui->project->completer()->setFilterMode(Qt::MatchContains);
+    ui->project->setModel(projectDropdown->model());
+    ui->project->setView(projectDropdown);
 
     ui->description->installEventFilter(this);
     ui->project->installEventFilter(this);
@@ -74,6 +71,18 @@ previousTagList("") {
             this, SLOT(setProjectColors(QVector<char*>)));  // NOLINT
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+
+    connect(timeEntryDropdown, SIGNAL(fillData(AutocompleteView*)),
+            this, SLOT(fillInData(AutocompleteView*)));
+
+    connect(timeEntryDropdown, SIGNAL(returnPressed()),
+            this, SLOT(fillInDescriptionReturnData()));
+
+    connect(projectDropdown, SIGNAL(fillData(AutocompleteView*)),
+            this, SLOT(fillInData(AutocompleteView*)));
+
+    connect(projectDropdown, SIGNAL(returnPressed()),
+            this, SLOT(fillInProjectReturnData()));
 
     TogglApi::instance->getProjectColors();
 }
@@ -119,42 +128,18 @@ void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
     if (ui->description->hasFocus()) {
         return;
     }
-    QString currentText = ui->description->currentText();
-    ui->description->clear();
-    ui->description->addItem("");
-    foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
-        ui->description->addItem(view->Text, QVariant::fromValue(view));
-    }
-    timeEntryAutocompleteNeedsUpdate = false;
-    ui->description->setEditText(currentText);
+    QString filter = ui->description->currentText();
+    timeEntryDropdown->setList(list, filter);
 }
 
 void TimeEntryEditorWidget::displayProjectAutocomplete(
     QVector<AutocompleteView *> list) {
     projectAutocompleteUpdate = list;
-    projectAutocompleteNeedsUpdate = true;
     if (ui->project->hasFocus()) {
         return;
     }
-    ui->project->clear();
-    ui->project->addItem("");
-    foreach(AutocompleteView *view, projectAutocompleteUpdate) {
-        ui->project->addItem(view->Text, QVariant::fromValue(view));
-
-        // Disable Workspace items
-        if (view->Type == 3) {
-            // Get the index of the value to disable
-            QModelIndex index = ui->project->model()->index(
-                ui->project->count()-1, 0);
-
-            // This is the effective 'disable' flag
-            QVariant v(0);
-
-            // Setting the disabled flag
-            ui->project->model()->setData(index, v, Qt::UserRole -1);
-        }
-    }
-    projectAutocompleteNeedsUpdate = false;
+    QString filter = ui->project->currentText();
+    projectDropdown->setList(list, filter);
 }
 
 void TimeEntryEditorWidget::displayWorkspaceSelect(
@@ -392,6 +377,56 @@ void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
             if (!tagsSet) {
                 TogglApi::instance->setTimeEntryTags(guid, view->Tags);
             }
+        }
+    }
+}
+
+void TimeEntryEditorWidget::fillInDescriptionReturnData() {
+    QListWidgetItem *it = timeEntryDropdown->currentItem();
+    AutocompleteCellWidget *cl = static_cast<AutocompleteCellWidget *>(
+    timeEntryDropdown->itemWidget(it));
+    if (cl){
+        fillInData(cl->view_item);
+    }
+}
+
+void TimeEntryEditorWidget::fillInProjectReturnData() {
+    QListWidgetItem *it = projectDropdown->currentItem();
+    AutocompleteCellWidget *cl = static_cast<AutocompleteCellWidget *>(
+    projectDropdown->itemWidget(it));
+    if (cl){
+        fillInData(cl->view_item);
+    }
+}
+
+void TimeEntryEditorWidget::fillInData(AutocompleteView *view) {
+    ui->project->setEditText(view->ProjectLabel);
+    TogglApi::instance->setTimeEntryProject(guid,
+                                                view->TaskID,
+                                                view->ProjectID,
+                                                "");
+    if (view->Type == 2) {
+        ui->project->hidePopup();
+        return;
+    }
+    ui->description->hidePopup();
+    ui->description->setEditText(view->Description);
+    TogglApi::instance->setTimeEntryDescription(guid, view->Description);
+    if (view->Billable) {
+        TogglApi::instance->setTimeEntryBillable(guid, view->Billable);
+    }
+
+    if (!view->Tags.isEmpty() && ui->tags->count() > 0) {
+        bool tagsSet = false;
+        for (int i = 0; i < ui->tags->count(); i++) {
+            QListWidgetItem *widgetItem = ui->tags->item(i);
+            if (widgetItem->checkState() == Qt::Checked) {
+                tagsSet = true;
+                break;
+            }
+        }
+        if (!tagsSet) {
+            TogglApi::instance->setTimeEntryTags(guid, view->Tags);
         }
     }
 }

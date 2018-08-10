@@ -27,7 +27,7 @@
     <number>5</number>
    </property>
    <item>
-    <widget class="QComboBox" name="description">
+    <widget class="AutocompleteCombobox" name="description">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -46,7 +46,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="project">
+    <widget class="AutocompleteCombobox" name="project">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -788,6 +788,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AutocompleteCombobox</class>
+   <extends>QComboBox</extends>
+   <header location="global">autocompletecombobox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>description</tabstop>
   <tabstop>project</tabstop>

@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include "./colorpicker.h"
+#include "./autocompletedropdownlist.h"
 
 namespace Ui {
 class TimeEntryEditorWidget;
@@ -26,6 +27,11 @@ class TimeEntryEditorWidget : public QWidget {
     explicit TimeEntryEditorWidget(QWidget *parent = 0);
     ~TimeEntryEditorWidget();
     void setSelectedColor(QString color);
+
+public slots:
+   void fillInData(AutocompleteView *view);
+   void fillInDescriptionReturnData();
+   void fillInProjectReturnData();
 
  private:
     Ui::TimeEntryEditorWidget *ui;
@@ -53,6 +59,9 @@ class TimeEntryEditorWidget : public QWidget {
     QString previousTagList;
 
     bool confirmlessDelete;
+
+    AutocompleteDropdownList *timeEntryDropdown;
+    AutocompleteDropdownList *projectDropdown;
 
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
