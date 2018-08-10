@@ -21,24 +21,26 @@ void AutocompleteCombobox::setView(QAbstractItemView *itemView)
 
 void AutocompleteCombobox::keyPress(QKeyEvent *e)
 {
-    qDebug() << "TRGIRRERED: " << currentText();
-
     keyPressEvent(e);
 }
 
 void AutocompleteCombobox::keyPressEvent(QKeyEvent *e)
 {
-    bool isShortcut = (e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E;
-    if (!isShortcut)
-        QComboBox::keyPressEvent(e); // Don't send the shortcut (CTRL-E) to the text edit.
-
-    qDebug() << "FILTER: " << currentText();
-
-    list->filterItems(currentText());
-    showPopup();
-
-    if (e->key() == Qt::Key_Down) {
+    if (e->key() == Qt::Key_Down && list->count() > 0) {
         qDebug() << "Open popup";
         showPopup();
+        return;
     }
+
+    QComboBox::keyPressEvent(e);
+    QString lastText = currentText();
+    qDebug() << "FILTER: " << currentText();
+
+    if (list->filterItems(currentText())) {
+        showPopup();
+    } else {
+        hidePopup();
+    }
+    setEditText(lastText);
+
 }

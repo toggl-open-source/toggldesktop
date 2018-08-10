@@ -15,8 +15,6 @@ AutocompleteCellWidget::~AutocompleteCellWidget()
 }
 
 bool AutocompleteCellWidget::filter(QString filter) {
-    if (view_item->Text.toLower().indexOf(filter.toLower()) != -1)
-        qDebug() << "FF: " << view_item->Text << " -- " << filter << " == " << view_item->Text.indexOf(filter);
     return (view_item->Text.toLower().indexOf(filter.toLower()) != -1);
 }
 

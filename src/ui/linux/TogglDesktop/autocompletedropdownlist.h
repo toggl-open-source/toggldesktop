@@ -11,7 +11,7 @@ class AutocompleteDropdownList : public QListWidget
     Q_OBJECT
 public:
     explicit AutocompleteDropdownList(QWidget *parent = 0);
-    void filterItems(QString filter);
+    bool filterItems(QString filter);
     void setList(QVector<AutocompleteView *> autocompletelist, QString filter);
 
 private:

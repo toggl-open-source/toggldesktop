@@ -15,40 +15,29 @@ void AutocompleteDropdownList::onListItemClicked(QListWidgetItem* item)
     AutocompleteCellWidget *cl = 0;
     cl = static_cast<AutocompleteCellWidget *>(
             itemWidget(item));
-
-    qDebug() << "Clicked on item: " << cl->view_item->Text;
-
     fillData(cl->view_item);
 }
 
 void AutocompleteDropdownList::keyPressEvent(QKeyEvent *e)
 {
-    qDebug() << "DROPDOWN Key: " << e->key();
-
     switch (e->key())
     {
     case Qt::Key_Enter:
     case Qt::Key_Return:
-        qDebug() << "Select: " << currentRow();
         returnPressed();
-        //selectItem();
     case Qt::Key_Escape:
     case Qt::Key_Tab:
     case Qt::Key_Backtab:
     case Qt::Key_Down:
     case Qt::Key_Up:
-        qDebug() << "DROPDOWN list: " << e->key();
-
         QListWidget::keyPressEvent(e);
-        return; // Let the completer do default behavior
+        return;
     }
-
-    qDebug() << "SLOT Key: " << e->key();
 
     keyPress(e);
 }
 
-void AutocompleteDropdownList::filterItems(QString filter) {
+bool AutocompleteDropdownList::filterItems(QString filter) {
     uint64_t lastWID = 0;
     int64_t lastCID = -1;
     int64_t lastPID = -1;
@@ -251,6 +240,8 @@ void AutocompleteDropdownList::filterItems(QString filter) {
         model()->removeRow(count()-1);
     }
     qDebug() << "Count: " << count();
+
+    return (itemCount != 0);
 }
 
 void AutocompleteDropdownList::setList(QVector<AutocompleteView *> autocompletelist,

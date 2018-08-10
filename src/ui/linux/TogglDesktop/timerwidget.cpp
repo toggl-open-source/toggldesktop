@@ -37,10 +37,6 @@ projectId(0) {
             this, SLOT(focusChanged(QWidget*, QWidget*)));
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
-/*
-    connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
-            this, SLOT(descriptionReturnPressed()));
-    */
 
     connect(dropdown, SIGNAL(returnPressed()),
             this, SLOT(fillInAndStart()));
