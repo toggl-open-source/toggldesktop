@@ -169,6 +169,8 @@ void TimerWidget::displayStoppedTimerState() {
     tagsHolder = "";
 
     duration = 0;
+    taskId = 0;
+    projectId = 0;
 
     disconnect(this, SLOT(start()));
     disconnect(this, SLOT(stop()));
@@ -226,39 +228,6 @@ void TimerWidget::timeout() {
         return;
     }
     ui->duration->setText(TogglApi::formatDurationInSecondsHHMMSS(duration));
-}
-
-void TimerWidget::on_description_currentIndexChanged(int index) {
-    qDebug() << "XXXX -- " << index;
-    /*
-     *
-     * QListWidgetItem *it = dropdown->currentItem();
-    AutocompleteCellWidget *cl = static_cast<AutocompleteCellWidget *>(
-        dropdown->itemWidget(it));
-
-    if (cl) {
-        AutocompleteView *view = cl->view_item;
-        task_id = view->TaskID;
-        project_id = view->ProjectID;
-        //tagsHolder = view->Tags;
-    }
-
-
-    QVariant data = ui->description->currentData();
-    if (data.canConvert<AutocompleteView *>()) {
-        AutocompleteView *view = data.value<AutocompleteView *>();
-        ui->description->setEditText(view->Description);
-        ui->project->setText(view->ProjectAndTaskLabel);
-        ui->billable->setVisible(view->Billable);
-        ui->tags->setVisible(!view->Tags.isEmpty());
-        if (!view->Tags.isEmpty()) {
-            tagsHolder = view->Tags;
-        } else {
-            tagsHolder = "";
-        }
-
-    }
-    */
 }
 
 void TimerWidget::mousePressEvent(QMouseEvent *event) {

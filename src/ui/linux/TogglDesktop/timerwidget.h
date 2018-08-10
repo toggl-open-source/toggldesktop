@@ -49,11 +49,9 @@ class TimerWidget : public QWidget {
 
     void focusChanged(QWidget *old, QWidget *now);
     void on_start_clicked();
-    void on_description_currentIndexChanged(int index);
 
     void on_duration_returnPressed();
 
-    void descriptionReturnPressed();
     void fillInAndStart();
 
  private:
