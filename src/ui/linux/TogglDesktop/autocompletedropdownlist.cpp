@@ -45,12 +45,14 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
     int h = 35;
     int itemCount = 0;
     int size = list.size();
+    QString itemText;
 
     render_m_.lock();
     for (int i = 0; i < size; i++) {
         AutocompleteView *view = list.at(i);
+        itemText = (view->Type == 1) ? view->ProjectAndTaskLabel: view->Text;
         if (filter.length() > 0
-                && view->Text.toLower().indexOf(filter.toLower()) == -1) {
+                && itemText.toLower().indexOf(filter.toLower()) == -1) {
             continue;
         }
         // Add workspace title
