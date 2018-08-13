@@ -234,6 +234,10 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
         cl->display(view);
         it->setSizeHint(QSize(it->sizeHint().width(), h));
 
+        if (view->Type == 2) {
+            lastPID = view->ProjectID;
+        }
+
         itemCount++;
     }
 
