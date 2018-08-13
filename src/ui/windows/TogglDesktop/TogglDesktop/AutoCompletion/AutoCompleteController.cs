@@ -183,6 +183,7 @@ namespace TogglDesktop.AutoCompletion
                             Description = it.Item.Description,
                             ProjectLabel = it.Item.ProjectLabel,
                             ProjectColor = it.Item.ProjectColor,
+                            ProjectAndTaskLabel = it.Item.ProjectAndTaskLabel,
                             TaskLabel = taskLabel,
                             ClientLabel = clientLabel,
                             Type = (int)it.Item.Type,
@@ -299,9 +300,11 @@ namespace TogglDesktop.AutoCompletion
             if (listItem.Type < 0)
                 return false;
 
+            string itemText = (listItem.Type == 1) ? listItem.ProjectAndTaskLabel : listItem.Text;
+
             foreach (string word in words)
             {
-                if (listItem.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) == -1)
+                if (itemText.IndexOf(word, StringComparison.OrdinalIgnoreCase) == -1)
                 {
                     return false;
                 }
