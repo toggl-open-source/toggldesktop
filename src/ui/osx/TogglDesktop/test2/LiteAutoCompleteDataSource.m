@@ -193,7 +193,7 @@ extern void *ctx;
 							   {
 								   continue;
 							   }
-							   NSString *key = item.Text;
+							   NSString *key = (item.Type == 1) ? item.ProjectAndTaskLabel : item.Text;
 
 							   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
 							   if (stringArray.count > 1)
