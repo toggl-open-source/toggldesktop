@@ -526,13 +526,21 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.time_entry.ClientLabel = item.ClientLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
 	self.time_entry.tags = [[NSMutableArray alloc] initWithArray:item.tags copyItems:YES];
-	self.time_entry.Description = ([item.Description length] != 0) ? item.Description : item.TaskLabel;
+	if (item.Description != nil)
+	{
+		self.time_entry.Description = ([item.Description length] != 0) ? item.Description : item.TaskLabel;
+	}
 
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
-	if (item.ProjectID)
+	if (item.ProjectID > 0)
 	{
 		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:self.time_entry]];
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
+	}
+	else
+	{
+		self.projectTextField.stringValue = @"";
+		self.projectTextField.toolTip = nil;
 	}
 	[self checkProjectConstraints];
 
