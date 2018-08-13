@@ -1939,6 +1939,16 @@
                         "name": "TogglDesktop-7_4_170.dmg"
                     }
                 ]
+            },
+            {
+                "version": "7.4.232",
+                "timestamp": "13-08-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_232.dmg"
+                    }
+                ]
             }
         ]
     },
