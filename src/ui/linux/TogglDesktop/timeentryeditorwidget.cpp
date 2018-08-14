@@ -180,10 +180,10 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     TimeEntryView *view,
     const QString focused_field_name) {
 
-    if (!ui->description->hasFocus()) {
+    if (!ui->description->hasFocus() && !timeEntryDropdown->hasFocus()) {
         ui->description->setEditText(view->Description);
     }
-    if (!ui->project->hasFocus()) {
+    if (!ui->project->hasFocus() && !projectDropdown->hasFocus()) {
         ui->project->setEditText(view->ProjectAndTaskLabel);
     }
     if (!ui->duration->hasFocus()) {
