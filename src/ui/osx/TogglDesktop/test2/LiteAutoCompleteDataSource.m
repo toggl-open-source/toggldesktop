@@ -185,6 +185,7 @@ extern void *ctx;
 		                   // Code that runs async
 						   NSInteger lastPID = -1;
 						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
+						   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
@@ -195,7 +196,6 @@ extern void *ctx;
 							   }
 							   NSString *key = (item.Type == 1) ? item.ProjectAndTaskLabel : item.Text;
 
-							   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
 							   if (stringArray.count > 1)
 							   {
 		                           // Filter is more than 1 word. Let's search for all the words entered.
