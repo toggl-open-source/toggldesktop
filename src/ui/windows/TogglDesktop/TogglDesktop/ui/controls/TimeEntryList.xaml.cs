@@ -479,8 +479,6 @@ namespace TogglDesktop
             }
         }
 
-        #endregion
-
         public void SetLoadMoreButtonVisibility(bool showLoadMoreButton)
         {
             if (showLoadMoreButton)
@@ -492,5 +490,7 @@ namespace TogglDesktop
                 this.hideLoadMoreButton();
             }
         }
+
+        #endregion
     }
 }

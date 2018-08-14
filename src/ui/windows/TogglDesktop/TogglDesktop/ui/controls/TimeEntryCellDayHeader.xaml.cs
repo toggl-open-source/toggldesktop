@@ -52,7 +52,7 @@ namespace TogglDesktop
             this.labelDateDuration.Text = durationText;
         }
 
-        public void Display(List<Toggl.TogglTimeEntryView> items, Action<string, TimeEntryCell> registerCellByGUID)
+        public void Display(List<Toggl.TogglTimeEntryView> items, Action<string, TimeEntryCell> registerCellByGUID, bool collapsed)
         {
             var item = items[0];
 
@@ -62,8 +62,9 @@ namespace TogglDesktop
             }
 
             this.date = Toggl.DateTimeFromUnix(item.Started);
+            this.IsCollapsed = collapsed;
 
-            if (this.labelFormattedDate.Text != item.DateHeader)
+            if (!collapsed)
             {
                 this.panel.Visibility = Visibility.Visible;
             }

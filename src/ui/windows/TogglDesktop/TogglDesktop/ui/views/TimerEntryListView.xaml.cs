@@ -110,6 +110,19 @@ namespace TogglDesktop
         {
             var children = this.Entries.Children;
 
+            Dictionary<string, bool> isCollapsed =
+                new Dictionary<string, bool>();
+            var i = 0;
+            // remember which days were collapsed
+            if (children.Count > 0)
+            {
+                for (; i < children.Count; i++)
+                {
+                    var header = (TimeEntryCellDayHeader)children[i];
+                    isCollapsed.Add(header.dateHeader, header.IsCollapsed);
+                }
+            }
+
             // remove superfluous days
             if (children.Count > days.Count)
             {
@@ -117,13 +130,17 @@ namespace TogglDesktop
             }
 
             // update existing days
-            var i = 0;
+            i = 0;
             for (; i < children.Count; i++)
             {
+                var collapsed = false;
                 var day = days[i];
+                var item = (Toggl.TogglTimeEntryView)day[0];
+
+                isCollapsed.TryGetValue(item.DateHeader, out collapsed);
 
                 var header = (TimeEntryCellDayHeader)children[i];
-                header.Display(day, registerCellByGUID);
+                header.Display(day, registerCellByGUID, collapsed);
             }
 
             // add additional days
@@ -132,7 +149,7 @@ namespace TogglDesktop
                 var day = days[i];
 
                 var header = new TimeEntryCellDayHeader();
-                header.Display(day, registerCellByGUID);
+                header.Display(day, registerCellByGUID, false);
 
                 children.Add(header);
             }
