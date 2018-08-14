@@ -46,79 +46,120 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
     int itemCount = 0;
     int size = list.size();
     QString itemText;
+    QStringList stringList = filter.split(" ", QString::SkipEmptyParts);
+    int matchCount = 0;
+    QString currentFilter;
 
     render_m_.lock();
     for (int i = 0; i < size; i++) {
         AutocompleteView *view = list.at(i);
-        itemText = (view->Type == 1) ? view->ProjectAndTaskLabel: view->Text;
-        if (filter.length() > 0
-                && itemText.toLower().indexOf(filter.toLower()) == -1) {
-            continue;
-        }
-        // Add workspace title
-        if (view->WorkspaceID != lastWID) {
+        itemText = (view->Type == 1) ? view->ProjectAndTaskLabel.toLower(): view->Text.toLower();
+        matchCount = 0;
+        for (int j = 0; j < stringList.size(); j++) {
+            currentFilter = stringList.at(j).toLower();
+            if (currentFilter.length() > 0
+                    && itemText.indexOf(currentFilter) == -1) {
+                break;
+            }
+            matchCount++;
+            if (matchCount < stringList.size()) {
+                continue;
+            }
+            // Add workspace title
+            if (view->WorkspaceID != lastWID) {
 
-            QListWidgetItem *it = 0;
-            AutocompleteCellWidget *cl = 0;
+                QListWidgetItem *it = 0;
+                AutocompleteCellWidget *cl = 0;
 
-            if (count() > itemCount) {
-                it = item(itemCount);
-                cl = static_cast<AutocompleteCellWidget *>(
-                    itemWidget(it));
+                if (count() > itemCount) {
+                    it = item(itemCount);
+                    cl = static_cast<AutocompleteCellWidget *>(
+                        itemWidget(it));
+                }
+
+                if (!it) {
+                    it = new QListWidgetItem();
+                    cl = new AutocompleteCellWidget();
+
+                    addItem(it);
+                    setItemWidget(it, cl);
+                }
+
+                AutocompleteView *v = new AutocompleteView();
+                v->Type = 13;
+                v->Text = view->WorkspaceName;
+                cl->display(v);
+                it->setSizeHint(QSize(it->sizeHint().width(), h));
+
+                lastWID = view->WorkspaceID;
+                lastCID = -1;
+                lastType = 99;
+
+                itemCount++;
             }
 
-            if (!it) {
-                it = new QListWidgetItem();
-                cl = new AutocompleteCellWidget();
+            // Add category title
+            if (view->Type != lastType && view->Type != 1) {
+                QListWidgetItem *it = 0;
+                AutocompleteCellWidget *cl = 0;
 
-                addItem(it);
-                setItemWidget(it, cl);
+                if (count() > itemCount) {
+                    it = item(itemCount);
+                    cl = static_cast<AutocompleteCellWidget *>(
+                        itemWidget(it));
+                }
+
+                if (!it) {
+                    it = new QListWidgetItem();
+                    cl = new AutocompleteCellWidget();
+
+                    addItem(it);
+                    setItemWidget(it, cl);
+                }
+
+                AutocompleteView *v = new AutocompleteView();
+                v->Type = 11;
+                v->Text = types[view->Type];
+                cl->display(v);
+                it->setSizeHint(QSize(it->sizeHint().width(), h));
+
+                lastType = view->Type;
+
+                itemCount++;
+
+                // Add 'No project' item
+                if (view->Type == 2 && filter.length() == 0)
+                {
+                    QListWidgetItem *it = 0;
+                    AutocompleteCellWidget *cl = 0;
+
+                    if (count() > itemCount) {
+                        it = item(itemCount);
+                        cl = static_cast<AutocompleteCellWidget *>(
+                            itemWidget(it));
+                    }
+
+                    if (!it) {
+                        it = new QListWidgetItem();
+                        cl = new AutocompleteCellWidget();
+
+                        addItem(it);
+                        setItemWidget(it, cl);
+                    }
+
+                    AutocompleteView *v = new AutocompleteView();
+                    v->Type = 2;
+                    v->Text = "No project";
+                    v->ProjectAndTaskLabel = "";
+                    cl->display(v);
+                    it->setSizeHint(QSize(it->sizeHint().width(), h));
+
+                    itemCount++;
+                }
             }
 
-            AutocompleteView *v = new AutocompleteView();
-            v->Type = 13;
-            v->Text = view->WorkspaceName;
-            cl->display(v);
-            it->setSizeHint(QSize(it->sizeHint().width(), h));
-
-            lastWID = view->WorkspaceID;
-            lastCID = -1;
-            lastType = 99;
-
-            itemCount++;
-        }
-
-        // Add category title
-        if (view->Type != lastType && view->Type != 1) {
-            QListWidgetItem *it = 0;
-            AutocompleteCellWidget *cl = 0;
-
-            if (count() > itemCount) {
-                it = item(itemCount);
-                cl = static_cast<AutocompleteCellWidget *>(
-                    itemWidget(it));
-            }
-
-            if (!it) {
-                it = new QListWidgetItem();
-                cl = new AutocompleteCellWidget();
-
-                addItem(it);
-                setItemWidget(it, cl);
-            }
-
-            AutocompleteView *v = new AutocompleteView();
-            v->Type = 11;
-            v->Text = types[view->Type];
-            cl->display(v);
-            it->setSizeHint(QSize(it->sizeHint().width(), h));
-
-            lastType = view->Type;
-
-            itemCount++;
-
-            // Add 'No project' item
-            if (view->Type == 2 && filter.length() == 0)
+            // Add Client name
+            if (view->Type == 2 && view->ClientID != lastCID)
             {
                 QListWidgetItem *it = 0;
                 AutocompleteCellWidget *cl = 0;
@@ -138,19 +179,53 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                 }
 
                 AutocompleteView *v = new AutocompleteView();
-                v->Type = 2;
-                v->Text = "No project";
-                v->ProjectAndTaskLabel = "";
+                v->Type = 12;
+                v->Text = view->ClientLabel.count() > 0 ? view->ClientLabel : "No client";
                 cl->display(v);
                 it->setSizeHint(QSize(it->sizeHint().width(), h));
+                lastCID = view->ClientID;
 
                 itemCount++;
             }
-        }
 
-        // Add Client name
-        if (view->Type == 2 && view->ClientID != lastCID)
-        {
+            // In case we filter task and project is not filtered
+            if (filter.length() > 0 && view->Type == 1
+                    && view->ProjectID != lastPID) {
+                QListWidgetItem *it = 0;
+                AutocompleteCellWidget *cl = 0;
+
+                if (count() > itemCount) {
+                    it = item(itemCount);
+                    cl = static_cast<AutocompleteCellWidget *>(
+                        itemWidget(it));
+                }
+
+                if (!it) {
+                    it = new QListWidgetItem();
+                    cl = new AutocompleteCellWidget();
+
+                    addItem(it);
+                    setItemWidget(it, cl);
+                }
+
+                AutocompleteView *v = new AutocompleteView();
+                v->Type = 2;
+                v->Text = view->ProjectLabel;
+                v->ProjectLabel = view->ProjectLabel;
+                v->ProjectColor = view->ProjectColor;
+                v->ProjectID = view->ProjectID;
+                v->Description = view->Description;
+                v->ClientLabel = view->ClientLabel;
+                v->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
+                v->TaskID = 0;
+                cl->display(v);
+                it->setSizeHint(QSize(it->sizeHint().width(), h));
+                lastPID = view->ProjectID;
+
+                itemCount++;
+            }
+
+
             QListWidgetItem *it = 0;
             AutocompleteCellWidget *cl = 0;
 
@@ -168,79 +243,15 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                 setItemWidget(it, cl);
             }
 
-            AutocompleteView *v = new AutocompleteView();
-            v->Type = 12;
-            v->Text = view->ClientLabel.count() > 0 ? view->ClientLabel : "No client";
-            cl->display(v);
+            cl->display(view);
             it->setSizeHint(QSize(it->sizeHint().width(), h));
-            lastCID = view->ClientID;
+
+            if (view->Type == 2) {
+                lastPID = view->ProjectID;
+            }
 
             itemCount++;
         }
-
-        // In case we filter task and project is not filtered
-        if (filter.length() > 0 && view->Type == 1
-                && view->ProjectID != lastPID) {
-            QListWidgetItem *it = 0;
-            AutocompleteCellWidget *cl = 0;
-
-            if (count() > itemCount) {
-                it = item(itemCount);
-                cl = static_cast<AutocompleteCellWidget *>(
-                    itemWidget(it));
-            }
-
-            if (!it) {
-                it = new QListWidgetItem();
-                cl = new AutocompleteCellWidget();
-
-                addItem(it);
-                setItemWidget(it, cl);
-            }
-
-            AutocompleteView *v = new AutocompleteView();
-            v->Type = 2;
-            v->Text = view->ProjectLabel;
-            v->ProjectLabel = view->ProjectLabel;
-            v->ProjectColor = view->ProjectColor;
-            v->ProjectID = view->ProjectID;
-            v->Description = view->Description;
-            v->ClientLabel = view->ClientLabel;
-            v->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
-            v->TaskID = 0;
-            cl->display(v);
-            it->setSizeHint(QSize(it->sizeHint().width(), h));
-            lastPID = view->ProjectID;
-
-            itemCount++;
-        }
-
-
-        QListWidgetItem *it = 0;
-        AutocompleteCellWidget *cl = 0;
-
-        if (count() > itemCount) {
-            it = item(itemCount);
-            cl = static_cast<AutocompleteCellWidget *>(
-                itemWidget(it));
-        }
-
-        if (!it) {
-            it = new QListWidgetItem();
-            cl = new AutocompleteCellWidget();
-
-            addItem(it);
-            setItemWidget(it, cl);
-        }
-
-        cl->display(view);
-        it->setSizeHint(QSize(it->sizeHint().width(), h));
-
-        if (view->Type == 2) {
-            lastPID = view->ProjectID;
-        }
-
-        itemCount++;
     }
 
     while (count() > itemCount) {
