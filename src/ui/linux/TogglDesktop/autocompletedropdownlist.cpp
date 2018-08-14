@@ -128,7 +128,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                 itemCount++;
 
                 // Add 'No project' item
-                if (view->Type == 2 && filter.length() == 0)
+                if (view->Type == 2 && currentFilter.length() == 0)
                 {
                     QListWidgetItem *it = 0;
                     AutocompleteCellWidget *cl = 0;
@@ -189,8 +189,38 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
             }
 
             // In case we filter task and project is not filtered
-            if (filter.length() > 0 && view->Type == 1
+            if (currentFilter.length() > 0 && view->Type == 1
                     && view->ProjectID != lastPID) {
+
+                // Also add Client name if needed
+                if (view->ClientID != lastCID) {
+                    QListWidgetItem *it = 0;
+                    AutocompleteCellWidget *cl = 0;
+
+                    if (count() > itemCount) {
+                        it = item(itemCount);
+                        cl = static_cast<AutocompleteCellWidget *>(
+                            itemWidget(it));
+                    }
+
+                    if (!it) {
+                        it = new QListWidgetItem();
+                        cl = new AutocompleteCellWidget();
+
+                        addItem(it);
+                        setItemWidget(it, cl);
+                    }
+
+                    AutocompleteView *v = new AutocompleteView();
+                    v->Type = 12;
+                    v->Text = view->ClientLabel.count() > 0 ? view->ClientLabel : "No client";
+                    cl->display(v);
+                    it->setSizeHint(QSize(it->sizeHint().width(), h));
+                    lastCID = view->ClientID;
+
+                    itemCount++;
+                }
+
                 QListWidgetItem *it = 0;
                 AutocompleteCellWidget *cl = 0;
 
