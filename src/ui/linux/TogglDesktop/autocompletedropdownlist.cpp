@@ -49,12 +49,19 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
     QStringList stringList = filter.split(" ", QString::SkipEmptyParts);
     int matchCount = 0;
     QString currentFilter;
+    bool fullList = false;
+
+    if (filter.length() == 0){
+        stringList << "";
+        fullList = true;
+    }
 
     render_m_.lock();
     for (int i = 0; i < size; i++) {
         AutocompleteView *view = list.at(i);
         itemText = (view->Type == 1) ? view->ProjectAndTaskLabel.toLower(): view->Text.toLower();
         matchCount = 0;
+
         for (int j = 0; j < stringList.size(); j++) {
             currentFilter = stringList.at(j).toLower();
             if (currentFilter.length() > 0
@@ -62,7 +69,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                 break;
             }
             matchCount++;
-            if (matchCount < stringList.size()) {
+            if (matchCount < stringList.size() && !fullList) {
                 continue;
             }
             // Add workspace title
