@@ -91,6 +91,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
                 v->Type = 13;
@@ -123,6 +124,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
                 v->Type = 11;
@@ -153,6 +155,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                         addItem(it);
                         setItemWidget(it, cl);
                     }
+                    it->setFlags(it->flags() | Qt::ItemIsEnabled);
 
                     AutocompleteView *v = new AutocompleteView();
                     v->Type = 2;
@@ -184,6 +187,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
                 v->Type = 12;
@@ -217,6 +221,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                         addItem(it);
                         setItemWidget(it, cl);
                     }
+                    it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                     AutocompleteView *v = new AutocompleteView();
                     v->Type = 12;
@@ -244,6 +249,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setFlags(it->flags() | Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
                 v->Type = 2;
@@ -279,6 +285,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                 addItem(it);
                 setItemWidget(it, cl);
             }
+            it->setFlags(it->flags() | Qt::ItemIsEnabled);
 
             cl->display(view);
             it->setSizeHint(QSize(it->sizeHint().width(), h));
