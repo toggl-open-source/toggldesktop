@@ -150,7 +150,7 @@ void TimerWidget::displayStoppedTimerState() {
     ui->start->setStyleSheet(
         "background-color: #47bc00; color:'white'; font-weight: bold;");
 
-    if (!ui->description->hasFocus()) {
+    if (!ui->description->hasFocus() && !dropdown->hasFocus()) {
         ui->description->setEditText(descriptionPlaceholder);
     }
     ui->description->setEnabled(true);
