@@ -24,15 +24,16 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
     // clear styles
     setStyleSheet("");
     ui->label->setStyleSheet("");
+    ui->label->setAlignment(Qt::AlignLeft);
 
     // Format is: Description - TaskName · ProjectName - ClientName
 
     // Workspace row
     if (view_item->Type == 13) {
         setStyleSheet("border-bottom:1px solid grey;");
-        ui->label->setStyleSheet("text-align: center;");
         ui->label->setText(
-                    "<span style='text-align:center;font-weight:bold;font-size:9pt;'>" + view->Text + "</span>");
+                    "<span style='font-weight:bold;font-size:9pt;'>" + view->Text + "</span>");
+        ui->label->setAlignment(Qt::AlignCenter);
         return;
     }
 
