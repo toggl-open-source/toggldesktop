@@ -405,13 +405,13 @@ void TimeEntryEditorWidget::fillInData(AutocompleteView *view) {
                                                 view->TaskID,
                                                 view->ProjectID,
                                                 "");
-    if (view->Type == 2) {
-        ui->project->hidePopup();
-        return;
+    if (timeEntryDropdown->isVisible()) {
+        ui->description->setEditText(view->Description);
+        TogglApi::instance->setTimeEntryDescription(guid, view->Description);
     }
+    ui->project->setEditText(view->ProjectAndTaskLabel);
+    ui->project->hidePopup();
     ui->description->hidePopup();
-    ui->description->setEditText(view->Description);
-    TogglApi::instance->setTimeEntryDescription(guid, view->Description);
     if (view->Billable) {
         TogglApi::instance->setTimeEntryBillable(guid, view->Billable);
     }
