@@ -39,14 +39,20 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
 
     // Category row
     if (view_item->Type == 11) {
-        ui->label->setStyleSheet("padding-left:5px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-top:7px;padding-left:5px;font-size:9pt;");
         ui->label->setText(view->Text);
         return;
     }
 
     // Client row / no project row
     if (view_item->Type == 12 || (view_item->Type == 2 && view_item->ProjectID == 0)) {
-        ui->label->setStyleSheet("padding-left:10px;font-size:9pt;");
+        QString style = "padding-top:5px;padding-left:10px;font-size:9pt;font-weight:";
+        if (view_item->Type == 2) {
+            style.append("normal;");
+        } else {
+            style.append("800;");
+        }
+        ui->label->setStyleSheet(style);
         ui->label->setText(view->Text);
         return;
     }
@@ -54,8 +60,8 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
     // Task row
     if (view_item->TaskID != 0)
     {
-        ui->label->setStyleSheet("padding-left:30px;font-size:9pt;");
-        ui->label->setText(view->Text);
+        ui->label->setStyleSheet("padding-top:7px;padding-left:30px;font-size:9pt;");
+        ui->label->setText("- " + view->Text);
         return;
     }
 
