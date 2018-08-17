@@ -1342,7 +1342,7 @@ extern void *ctx;
 
 	AutocompleteItem *item = nil;
 	LiteAutoCompleteDataSource *dataSource = nil;
-	AutoCompleteTable *tb = tableView;
+	AutoCompleteTable *tb = (AutoCompleteTable *)tableView;
 
 	if (tableView == self.descriptionAutoCompleteInput.autocompleteTableView)
 	{
