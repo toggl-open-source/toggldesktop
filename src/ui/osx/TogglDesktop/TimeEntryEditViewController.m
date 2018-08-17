@@ -467,8 +467,6 @@ extern void *ctx;
 		self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
 	}
 
-	self.projectSelectPreviousStringValue = self.projectAutoCompleteInput.stringValue;
-
 	// Overwrite project only if user is not editing it
 	if (cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
 	{
@@ -975,6 +973,7 @@ extern void *ctx;
 	task_id = autocomplete.TaskID;
 	project_id = autocomplete.ProjectID;
 	self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
+	self.projectSelectPreviousStringValue = autocomplete.ProjectAndTaskLabel;
 
 	@synchronized(self)
 	{
