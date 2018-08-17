@@ -190,7 +190,7 @@ extern void *ctx;
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
 		                   // Skip filtering category/client/workspace items
-							   if (item.Type < 0)
+							   if (item.Type < 0 || (item.Type == 2 && item.ProjectID == 0))
 							   {
 								   continue;
 							   }
