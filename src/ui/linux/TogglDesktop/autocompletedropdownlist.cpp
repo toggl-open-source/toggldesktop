@@ -50,6 +50,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
     int matchCount = 0;
     QString currentFilter;
     bool fullList = false;
+    bool noProjectAdded = false;
 
     if (filter.length() == 0){
         stringList << "";
@@ -137,7 +138,8 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                 itemCount++;
 
                 // Add 'No project' item
-                if (view->Type == 2 && currentFilter.length() == 0)
+                if (view->Type == 2 && currentFilter.length() == 0
+                        && !noProjectAdded)
                 {
                     QListWidgetItem *it = 0;
                     AutocompleteCellWidget *cl = 0;
@@ -162,9 +164,11 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     v->Text = "No project";
                     v->ProjectAndTaskLabel = "";
                     v->TaskID = 0;
+                    v->ProjectID = 0;
                     cl->display(v);
                     it->setSizeHint(QSize(it->sizeHint().width(), h));
 
+                    noProjectAdded = true;
                     itemCount++;
                 }
             }
