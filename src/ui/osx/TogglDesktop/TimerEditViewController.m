@@ -632,7 +632,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	AutocompleteItem *item = nil;
-	AutoCompleteTable *tb = tableView;
+	AutoCompleteTable *tb = (AutoCompleteTable *)tableView;
 
 	@synchronized(self)
 	{
