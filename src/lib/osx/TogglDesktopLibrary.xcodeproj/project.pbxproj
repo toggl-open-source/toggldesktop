@@ -448,7 +448,7 @@
 				ORGANIZATIONNAME = Toggl;
 				TargetAttributes = {
 					C55DA59B17F06A3B00B42178 = {
-						DevelopmentTeam = G56V5LY6SL;
+						DevelopmentTeam = B227VTMZ94;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -637,7 +637,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = G56V5LY6SL;
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"$(inherited)",
@@ -678,7 +678,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = G56V5LY6SL;
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
