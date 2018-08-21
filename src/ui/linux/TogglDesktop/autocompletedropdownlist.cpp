@@ -161,6 +161,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     v->Type = 2;
                     v->Text = "No project";
                     v->ProjectAndTaskLabel = "";
+                    v->TaskID = 0;
                     cl->display(v);
                     it->setSizeHint(QSize(it->sizeHint().width(), h));
 
