@@ -12,6 +12,7 @@
 @interface AutoCompleteTable : NSTableView
 @property NSInteger lastSelected;
 @property NSInteger lastSavedSelected;
+@property NSInteger lastClicked;
 - (void)nextItem;
 - (void)previousItem;
 - (AutoCompleteTableCell *)getSelectedCell:(NSInteger)row;

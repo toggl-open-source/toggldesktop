@@ -1383,7 +1383,7 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.descriptionAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteDescriptionAutocompleteDataSource;
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastClicked;
 
 	if (row == -1)
 	{
@@ -1409,7 +1409,7 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.projectAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastClicked;
 
 	if (row == -1)
 	{
