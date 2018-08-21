@@ -930,6 +930,7 @@ extern void *ctx;
 	if (self.projectAutoCompleteInput.autocompleteTableContainer.isHidden)
 	{
 		[self.projectAutoCompleteInput toggleTableView:(int)self.projectAutoCompleteInput.autocompleteTableView.numberOfRows];
+		[self.projectAutoCompleteInput becomeFirstResponder];
 	}
 	else
 	{
