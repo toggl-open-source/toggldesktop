@@ -158,6 +158,17 @@ extern void *ctx;
 {
 	NSString *key = item.Text;
 
+	if (item.Type == 1)
+	{
+		// task
+		key = item.ProjectAndTaskLabel;
+	}
+	else if (item.Type == 2 && item.ProjectID != 0)
+	{
+		// project
+		key = [item.ClientLabel stringByAppendingString:item.ProjectLabel];
+	}
+
 	if ([self.dictionary objectForKey:key] == nil
 		|| item.Type < 0
 		|| [item.ProjectAndTaskLabel isEqual:@""])
