@@ -865,10 +865,6 @@ extern void *ctx;
 	}
 
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
-
-	NSString *key = [self.descriptionAutoCompleteInput stringValue];
-	AutocompleteItem *autocomplete = [self.liteDescriptionAutocompleteDataSource get:key];
-	[self updateWithSelectedDescription:autocomplete withKey:key];
 }
 
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key
@@ -952,10 +948,6 @@ extern void *ctx;
 	}
 
 	NSAssert(self.timeEntry != nil, @"Expected time entry");
-
-	NSString *key = self.projectAutoCompleteInput.stringValue;
-	AutocompleteItem *autocomplete = [self.liteProjectAutocompleteDataSource get:key];
-	[self updateWithSelectedProject:autocomplete withKey:key];
 }
 
 - (void)updateWithSelectedProject:(AutocompleteItem *)autocomplete withKey:(NSString *)key

@@ -500,17 +500,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		return;
 	}
-	NSString *key = [self.autoCompleteInput stringValue];
-	AutocompleteItem *item = [self.liteAutocompleteDataSource get:key];
 
-	// User has entered free text
-	if (item == nil || item.Type < 0)
-	{
-		self.time_entry.Description = [self.autoCompleteInput stringValue];
-		return;
-	}
-
-	[self fillEntryFromAutoComplete:item];
+	self.time_entry.Description = [self.autoCompleteInput stringValue];
 }
 
 - (void)fillEntryFromAutoComplete:(AutocompleteItem *)item
