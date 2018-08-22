@@ -151,6 +151,7 @@ namespace TogglDesktop.AutoCompletion
                                 });
                                 noProjectAdded = true;
                             }
+                            lastType = (int)it.Item.Type;
                         }
 
                         // Add client item if needed
@@ -193,7 +194,6 @@ namespace TogglDesktop.AutoCompletion
                             WorkspaceName = it.Item.WorkspaceName,
                             Index = count
                         });
-                        lastType = (int)it.Item.Type;
                     }
                 }
                 visibleItems = items;
@@ -246,6 +246,7 @@ namespace TogglDesktop.AutoCompletion
                                 Category = categories[(int)item.Type],
                                 Type = -1
                             });
+                            lastType = (int)item.Type;
                         }
 
                         // Add client item if needed
@@ -282,7 +283,6 @@ namespace TogglDesktop.AutoCompletion
                         }
 
                         filteredItems.Add(item);
-                        lastType = (int)item.Type;
                         lastProjectLabel = item.ProjectLabel;
                     }
                 }
