@@ -90,6 +90,7 @@ extern void *ctx;
 		self.lastType = -1;
 		self.lastClientLabel = nil;
 		self.lastWID = -1;
+		BOOL noProjectAdded = NO;
 		[self.orderedKeys removeAllObjects];
 		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
@@ -117,13 +118,14 @@ extern void *ctx;
 				self.lastType = item.Type;
 
 				// Add 'No project' item
-				if (item.Type == 2)
+				if (item.Type == 2 && !noProjectAdded)
 				{
 					AutocompleteItem *it = [[AutocompleteItem alloc] init];
 					it.Type = 2;
 					it.Text = @"No project";
 					it.ProjectAndTaskLabel = @"";
 					[self addItem:it];
+					noProjectAdded = YES;
 				}
 			}
 
