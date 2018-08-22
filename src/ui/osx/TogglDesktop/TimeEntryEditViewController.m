@@ -865,6 +865,9 @@ extern void *ctx;
 	}
 
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
+
+	NSString *key = [self.descriptionAutoCompleteInput stringValue];
+	[self updateWithSelectedDescription:nil withKey:key];
 }
 
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key
@@ -876,9 +879,14 @@ extern void *ctx;
 		[self.descriptionAutoCompleteInput resetTable];
 		if ([self.descriptionAutoCompleteInput.autocompleteTableView lastSavedSelected] == -1)
 		{
-			toggl_set_time_entry_description(ctx,
-											 GUID,
-											 [key UTF8String]);
+			@synchronized(self)
+			{
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+								   toggl_set_time_entry_description(ctx,
+																	GUID,
+																	[key UTF8String]);
+							   });
+			}
 			[self.descriptionAutoCompleteInput becomeFirstResponder];
 			self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 		}
