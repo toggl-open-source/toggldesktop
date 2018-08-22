@@ -67,6 +67,7 @@ namespace TogglDesktop.AutoCompletion
             int lastType = -1;
             string lastClient = null;
             int lastWID = -1;
+            bool noProjectAdded = false;
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
                 items = new List<ListBoxItem>();
@@ -135,7 +136,8 @@ namespace TogglDesktop.AutoCompletion
                             });
 
                             // if projects autocomplete show 'no project' item
-                            if (autocompleteType == 3 && (int)it.Item.Type == 2)
+                            if (autocompleteType == 3 && (int)it.Item.Type == 2
+                                && !noProjectAdded)
                             {
                                 items.Add(new ListBoxItem()
                                 {
@@ -147,6 +149,7 @@ namespace TogglDesktop.AutoCompletion
                                     Type = 0,
                                     Index = -1
                                 });
+                                noProjectAdded = true;
                             }
                         }
 
