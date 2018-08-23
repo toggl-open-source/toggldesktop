@@ -18,7 +18,6 @@ extern void *ctx;
 
 	self.orderedKeys = [[NSMutableArray alloc] init];
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
-	self.dictionary = [[NSMutableDictionary alloc] init];
 	self.lastType = -1;
 	self.lastWID = -1;
 	self.lastClientLabel = nil;
@@ -45,17 +44,6 @@ extern void *ctx;
 		}
 	}
 	return @"";
-}
-
-- (NSString *)get:(NSString *)key
-{
-	NSString *object = nil;
-
-	@synchronized(self)
-	{
-		object = [self.dictionary objectForKey:key];
-	}
-	return object;
 }
 
 - (AutocompleteItem *)itemAtIndex:(NSInteger)row
@@ -92,7 +80,6 @@ extern void *ctx;
 		self.lastWID = -1;
 		BOOL noProjectAdded = NO;
 		[self.orderedKeys removeAllObjects];
-		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
 			// Add workspace title
@@ -156,26 +143,7 @@ extern void *ctx;
 
 - (void)addItem:(AutocompleteItem *)item
 {
-	NSString *key = item.Text;
-
-	if (item.Type == 1)
-	{
-		// task
-		key = item.ProjectAndTaskLabel;
-	}
-	else if (item.Type == 2 && item.ProjectID != 0)
-	{
-		// project
-		key = [item.ClientLabel stringByAppendingString:item.ProjectLabel];
-	}
-
-	if ([self.dictionary objectForKey:key] == nil
-		|| item.Type < 0
-		|| [item.ProjectAndTaskLabel isEqual:@""])
-	{
-		[self.orderedKeys addObject:item];
-		[self.dictionary setObject:item forKey:key];
-	}
+	[self.orderedKeys addObject:item];
 }
 
 - (void)reload

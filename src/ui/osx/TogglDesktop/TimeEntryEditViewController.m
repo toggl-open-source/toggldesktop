@@ -1454,14 +1454,6 @@ extern void *ctx;
 		input = self.projectAutoCompleteInput;
 		lastSelected = input.autocompleteTableView.lastSelected;
 		dataSource = self.liteProjectAutocompleteDataSource;
-
-		// Validate project input
-		if (input.autocompleteTableView.isHidden)
-		{
-			NSString *key = self.projectAutoCompleteInput.stringValue;
-			AutocompleteItem *autocomplete = [self.liteProjectAutocompleteDataSource get:key];
-			valid = (autocomplete != nil);
-		}
 	}
 	if (input != nil)
 	{
@@ -1475,9 +1467,9 @@ extern void *ctx;
 			[input.autocompleteTableView previousItem];
 			retval = YES;
 		}
-		if (commandSelector == @selector(insertTab:))
+		if (commandSelector == @selector(insertTab:) || commandSelector == @selector(insertBacktab:))
 		{
-			if (input == self.projectAutoCompleteInput && !valid)
+			if (input == self.projectAutoCompleteInput)
 			{
 				self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
 			}
@@ -1489,11 +1481,6 @@ extern void *ctx;
 			// allow default action when autocomplete is closed
 			if (input.autocompleteTableView.isHidden)
 			{
-				if (input == self.projectAutoCompleteInput && !valid)
-				{
-					self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
-				}
-
 				return NO;
 			}
 
