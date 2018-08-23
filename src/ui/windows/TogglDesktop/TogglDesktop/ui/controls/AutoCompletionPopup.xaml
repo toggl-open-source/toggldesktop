@@ -60,6 +60,7 @@
                 </StackPanel.Style>
                 <Border Name="padding" Width="10" Height="6" BorderThickness="0"/>
                 <TextBlock Name="description" VerticalAlignment="Center" Text="{Binding Description}" ToolTip="{Binding Text}"/>
+                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}" ToolTip="{Binding Text}"/>
                 <Border Name="projectColor"
                 CornerRadius="100" Width="6" Height="6" BorderThickness="0"
                 Margin="6, 0, 6, 0" 
