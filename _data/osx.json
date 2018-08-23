@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.4.250",
+            "rows": [
+                "Fixed autocomplete item select issues",
+                "Fixed 'no project' filtering issues",
+                "Fixed issues with categories shown multiple times in autocomplete",
+                "Fixed issue with autocomplete not showing all tasks",
+                "Fixed date header light text color issue in MacOs 10.14",
+                "Fixes for autocomplete item text formats"
+            ],
+            "date": "August 23rd 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.232",
             "rows": [
                 "Added 'no project' item to autocomplete",
