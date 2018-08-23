@@ -1437,8 +1437,9 @@ extern void *ctx;
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
 {
+	//  NSLog(@"Selector = %@", NSStringFromSelector(commandSelector) );
+
 	BOOL retval = NO;
-	BOOL valid = YES;
 	AutoCompleteInput *input = nil;
 	LiteAutoCompleteDataSource *dataSource = nil;
 	NSInteger lastSelected = -1;
