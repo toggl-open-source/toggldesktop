@@ -172,6 +172,23 @@
 		return result;
 	}
 
+	// For time entries show all params: description, task, project, client
+	if (view_item.Type == 0)
+	{
+		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
+
+		[clientName setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+		 }
+							range:NSMakeRange(0, [clientName length])];
+
+		NSMutableAttributedString *space = [[NSMutableAttributedString alloc] initWithString:@" "];
+		[string appendAttributedString:space];
+		[string appendAttributedString:clientName];
+	}
+
 	// Add padding to the front of regular items
 	NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"  "];
 	[result appendAttributedString:string];
