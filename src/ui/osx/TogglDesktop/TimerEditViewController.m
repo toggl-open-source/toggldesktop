@@ -683,6 +683,16 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 		if (commandSelector == @selector(insertTab:))
 		{
+			// Set data according to selected item
+			if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
+			{
+				AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+				if (item == nil)
+				{
+					return retval;
+				}
+				[self fillEntryFromAutoComplete:item];
+			}
 			[self.autoCompleteInput resetTable];
 		}
 		if (commandSelector == @selector(insertNewline:))
@@ -698,9 +708,9 @@ NSString *kInactiveTimerColor = @"#999999";
 				{
 					return retval;
 				}
-				[self.autoCompleteInput resetTable];
 				[self fillEntryFromAutoComplete:item];
 			}
+			[self.autoCompleteInput resetTable];
 
 			// Start entry
 			[self startButtonClicked:nil];
