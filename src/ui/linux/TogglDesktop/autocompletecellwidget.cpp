@@ -60,12 +60,14 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
     // Task row
     if (view_item->Type == 1)
     {
-        ui->label->setStyleSheet("padding-top:7px;padding-left:30px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-top:8px;padding-left:30px;font-size:9pt;");
         ui->label->setText("- " + view_item->Text);
         return;
     }
 
     // Item rows (projects/time entries)
+    ui->label->setStyleSheet("padding-left:15px;font-size:9pt;");
+
     QString text = QString(view->Description);
     if (view_item->ProjectID != 0)
     {
@@ -78,7 +80,7 @@ void AutocompleteCellWidget::display(AutocompleteView *view) {
                        view->ProjectColor + ";'> •</span> " +
                        view->ProjectLabel));
     } else {
-        ui->label->setStyleSheet("padding-left:10px;font-size:9pt;");
+        ui->label->setStyleSheet("padding-top:7px;padding-left:15px;font-size:9pt;");
     }
 
     // Add client label to time entry items
