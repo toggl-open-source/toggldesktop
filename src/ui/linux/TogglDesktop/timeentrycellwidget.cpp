@@ -22,11 +22,15 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     description =
         (view->Description.length() > 0) ?
         view->Description : "(no description)";
-    project = view->ProjectAndTaskLabel;
+    project =
+        QString("<span style='color: " + getProjectColor(view->Color) + "'>"
+                + view->ProjectLabel + "</span> <span style='color:#878787;font-weight:500;'>" + view->ClientLabel + "</span>");
 
+    if (view->TID != 0) {
+        project.prepend(QString(view->TaskLabel + ". "));
+    }
     setEllipsisTextToLabel(ui->description, description);
-    setEllipsisTextToLabel(ui->project, project);
-    ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
+    ui->project->setText(project);
     ui->duration->setText(view->Duration);
 
     ui->billable->setVisible(view->Billable);
@@ -161,7 +165,6 @@ void TimeEntryCellWidget::on_groupButton_clicked()
 void TimeEntryCellWidget::resizeEvent(QResizeEvent* event)
 {
     setEllipsisTextToLabel(ui->description, description);
-    setEllipsisTextToLabel(ui->project, project);
     QWidget::resizeEvent(event);
 }
 

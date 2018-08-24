@@ -235,14 +235,17 @@
          </item>
          <item>
           <widget class="ClickableLabel" name="project">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="styleSheet">
             <string notr="true">border:none;</string>
            </property>
            <property name="text">
             <string>NEW - TOGGL</string>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
            </property>
           </widget>
          </item>
