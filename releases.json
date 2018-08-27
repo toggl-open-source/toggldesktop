@@ -589,6 +589,20 @@
                         "name": "TogglDesktopEnterpriseInstaller-7.4.235.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.252",
+                "timestamp": "27-08-2018",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.252.exe"
+                    },
+                    {
+                        "type": "windows_enterprise",
+                        "name": "TogglDesktopEnterpriseInstaller-7.4.252.exe"
+                    }
+                ]
             }
         ],
         "stable": [
@@ -1115,26 +1129,6 @@
     "osx": {
         "dev": [
             {
-                "version": "7.4.235",
-                "timestamp": "14-08-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_235.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.236",
-                "timestamp": "14-08-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_236.dmg"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.243",
                 "timestamp": "21-08-2018",
                 "filename": [
@@ -1201,6 +1195,26 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_250.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.251",
+                "timestamp": "23-08-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_251.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.252",
+                "timestamp": "23-08-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_252.dmg"
                     }
                 ]
             }
@@ -2003,62 +2017,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.236",
-                "timestamp": "14-08-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_236.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.236_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.238",
-                "timestamp": "17-08-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_238.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.238_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.239",
-                "timestamp": "17-08-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_239.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.239_amd64.deb"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.240",
-                "timestamp": "21-08-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_240.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.240_amd64.deb"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.242",
                 "timestamp": "21-08-2018",
                 "filename": [
@@ -2139,6 +2097,48 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.249_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.250",
+                "timestamp": "23-08-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_250.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.250_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.251",
+                "timestamp": "23-08-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_251.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.251_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.252",
+                "timestamp": "23-08-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_252.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.252_amd64.deb"
                     }
                 ]
             }
