@@ -129,7 +129,8 @@ void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
         return;
     }
     QString filter = ui->description->currentText();
-    timeEntryDropdown->setList(list, filter);
+    timeEntryDropdown->setList(list, "");
+    ui->description->setEditText(filter);
 }
 
 void TimeEntryEditorWidget::displayProjectAutocomplete(
@@ -139,7 +140,7 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
         return;
     }
     QString filter = ui->project->currentText();
-    projectDropdown->setList(list, filter);
+    projectDropdown->setList(list, "");
 }
 
 void TimeEntryEditorWidget::displayWorkspaceSelect(

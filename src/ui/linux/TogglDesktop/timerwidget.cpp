@@ -217,7 +217,8 @@ void TimerWidget::displayMinitimerAutocomplete(
     if (ui->description->currentText() != descriptionPlaceholder) {
         filter = ui->description->currentText();
     }
-    dropdown->setList(list, filter);
+    dropdown->setList(list, "");
+    ui->description->setEditText(filter);
 }
 
 void TimerWidget::timeout() {
