@@ -139,7 +139,7 @@ If you have Cygwin installed, you can also build the app from from Cygwin termin
 
 ## macOS
 
-Toggl built and signed app for macOS is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). You need at least macOS 10.8.
+Toggl built and signed app for macOS is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). Officially MacOs 10.11 and newer stable MacOS versions are supported.
 
 ## Windows
 
