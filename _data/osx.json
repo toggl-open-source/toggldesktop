@@ -1,7 +1,7 @@
 {
     "versions": [
         {
-            "version": "7.4.250",
+            "version": "7.4.253",
             "rows": [
                 "Fixed autocomplete item select issues",
                 "Fixed 'no project' filtering issues",
@@ -10,7 +10,7 @@
                 "Fixed date header light text color issue in MacOs 10.14",
                 "Fixes for autocomplete item text formats"
             ],
-            "date": "August 23rd 2018",
+            "date": "August 28th 2018",
             "beta": "true"
         },
         {
