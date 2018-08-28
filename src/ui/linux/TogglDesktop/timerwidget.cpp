@@ -70,6 +70,7 @@ void TimerWidget::fillInData(AutocompleteView *view) {
     } else {
         tagsHolder = "";
     }
+    dropdown->filterItems("");
     ui->project->setText(view->ProjectAndTaskLabel);
     ui->description->setEditText(view->Description);
     ui->description->hidePopup();

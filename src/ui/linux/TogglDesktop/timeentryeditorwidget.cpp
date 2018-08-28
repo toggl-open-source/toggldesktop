@@ -263,6 +263,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 void TimeEntryEditorWidget::on_doneButton_clicked() {
     if (applyNewProject()) {
         TogglApi::instance->viewTimeEntryList();
+        timeEntryDropdown->filterItems("");
+        projectDropdown->filterItems("");
     }
 }
 
@@ -401,16 +403,20 @@ void TimeEntryEditorWidget::fillInProjectReturnData() {
 }
 
 void TimeEntryEditorWidget::fillInData(AutocompleteView *view) {
-    ui->project->setEditText(view->ProjectLabel);
+    QString currentDescription = ui->description->currentText();
+    QString currentProject = view->ProjectAndTaskLabel;
+
+    if (timeEntryDropdown->isVisible()) {
+        ui->description->setEditText(view->Description);
+        currentDescription = view->Description;
+        TogglApi::instance->setTimeEntryDescription(guid, view->Description);
+    }
+
+    ui->project->setEditText(view->ProjectAndTaskLabel);
     TogglApi::instance->setTimeEntryProject(guid,
                                                 view->TaskID,
                                                 view->ProjectID,
                                                 "");
-    if (timeEntryDropdown->isVisible()) {
-        ui->description->setEditText(view->Description);
-        TogglApi::instance->setTimeEntryDescription(guid, view->Description);
-    }
-    ui->project->setEditText(view->ProjectAndTaskLabel);
     ui->project->hidePopup();
     ui->description->hidePopup();
     if (view->Billable) {
@@ -430,6 +436,10 @@ void TimeEntryEditorWidget::fillInData(AutocompleteView *view) {
             TogglApi::instance->setTimeEntryTags(guid, view->Tags);
         }
     }
+    timeEntryDropdown->filterItems("");
+    projectDropdown->filterItems("");
+    ui->description->setEditText(currentDescription);
+    ui->project->setEditText(currentProject);
 }
 
 void TimeEntryEditorWidget::on_description_activated(const QString &arg1) {
