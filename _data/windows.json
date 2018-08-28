@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.4.252",
+            "rows": [
+                "Fixed 'no project' filtering issues",
+                "Fixed issues with categories shown multiple times in autocomplete",
+                "Improved project and client name display in autotomcplete time entry items"
+            ],
+            "date": "August 27th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.231",
             "rows": [
                 "Added 'no project' item to autocomplete",
