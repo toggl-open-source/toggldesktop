@@ -26,6 +26,12 @@ void AutocompleteCombobox::keyPress(QKeyEvent *e)
 
 void AutocompleteCombobox::keyPressEvent(QKeyEvent *e)
 {
+    bool modifiers = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+    if (modifiers) {
+        QComboBox::keyPressEvent(e);
+        return;
+    }
+
     if (e->key() == Qt::Key_Down && list->count() > 0) {
         qDebug() << "Open popup";
         showPopup();

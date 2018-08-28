@@ -20,6 +20,12 @@ void AutocompleteDropdownList::onListItemClicked(QListWidgetItem* item)
 
 void AutocompleteDropdownList::keyPressEvent(QKeyEvent *e)
 {
+    bool modifiers = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+    if (modifiers) {
+        keyPress(e);
+        return;
+    }
+
     switch (e->key())
     {
     case Qt::Key_Enter:
