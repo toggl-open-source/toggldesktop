@@ -100,7 +100,7 @@ INCLUDEPATH += $$PWD/../../../
 INCLUDEPATH += $$PWD/../../../../third_party/bugsnag-qt
 INCLUDEPATH += $$PWD/../../../../third_party/qt-oauth-lib
 
-QMAKE_RPATHDIR += .
+QMAKE_RPATHDIR += lib
 
 OTHER_FILES += \
     ../../../ssl/cacert.pem
