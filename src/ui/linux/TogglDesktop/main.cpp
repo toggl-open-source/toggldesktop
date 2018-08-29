@@ -39,6 +39,9 @@ class TogglApplication : public SingleApplication {
 
 int main(int argc, char *argv[]) try {
     Bugsnag::apiKey = "2a46aa1157256f759053289f2d687c2f";
+    
+    // prepare command line arguments
+    static std::vector<char*> arguments(argv, argv + argc);
 
     TogglApplication::setQuitOnLastWindowClosed(false);
 
@@ -51,6 +54,18 @@ int main(int argc, char *argv[]) try {
 
     QApplication::setApplicationName("Toggl Desktop");
     QApplication::setOrganizationName("Toggl");
+
+    #ifdef Q_OS_LINUX
+      // workaround for Qt 5.10.1 bug "Could not find QtWebEngineProcess"
+      // https://bugreports.qt.io/browse/QTBUG-67023
+      // https://bugreports.qt.io/browse/QTBUG-66346
+      static char noSandbox[] = "--no-sandbox";
+      arguments.push_back(noSandbox);
+    #endif
+
+    // re-assign command line arguments
+    argc = (int) arguments.size();
+    argv = &arguments[0];
 
     TogglApplication a(argc, argv);
     if (a.isRunning()) {
