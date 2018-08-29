@@ -60,6 +60,7 @@ cp $QLIBPATH/libicui18n.so.56 $out/lib
 cp $QLIBPATH/libicuuc.so.56 $out/lib
 cp $QLIBPATH/libicudata.so.56 $out/lib
 cp $QLIBPATH/libQt5Quick.so.5 $out/lib
+cp $QLIBPATH/libQt5QuickWidgets.so.5 $out/lib
 cp $QLIBPATH/libQt5Qml.so.5 $out/lib
 cp $QLIBPATH/libQt5WebChannel.so.5 $out/lib
 cp $QLIBPATH/libQt5X11Extras.so.5 $out/lib
