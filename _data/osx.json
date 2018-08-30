@@ -10,8 +10,7 @@
                 "Fixed date header light text color issue in MacOs 10.14",
                 "Fixes for autocomplete item text formats"
             ],
-            "date": "August 28th 2018",
-            "beta": "true"
+            "date": "August 28th 2018"
         },
         {
             "version": "7.4.232",
