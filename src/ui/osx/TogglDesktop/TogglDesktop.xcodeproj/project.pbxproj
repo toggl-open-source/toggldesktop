@@ -16,8 +16,8 @@
 		3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */; };
 		3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */; };
 		3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57171C22E12E00301D77 /* MKColorWell.m */; };
-		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
 		3C10E3A11A88FAE2001D431B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C10E3A01A88FAE1001D431B /* Images.xcassets */; };
+		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A41A2F2AE0007DC17F /* start_button.pdf */; };
 		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
@@ -317,7 +317,6 @@
 		3C068C691C22F25000874B9A /* MKColorWellCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWellCustom.m; sourceTree = "<group>"; };
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
 		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
-
 		3C0A570D1C22E12E00301D77 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorPickerView.h; sourceTree = "<group>"; };
 		3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorPickerView.m; sourceTree = "<group>"; };
@@ -330,8 +329,8 @@
 		3C0A57161C22E12E00301D77 /* MKColorWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWell.h; sourceTree = "<group>"; };
 		3C0A57171C22E12E00301D77 /* MKColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWell.m; sourceTree = "<group>"; };
 		3C0A57181C22E12E00301D77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
 		3C10E3A01A88FAE1001D431B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
+		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2645A41A2F2AE0007DC17F /* start_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = start_button.pdf; sourceTree = "<group>"; };
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
@@ -1083,7 +1082,7 @@
 				ORGANIZATIONNAME = Alari;
 				TargetAttributes = {
 					69FC17F017E6534400B96425 = {
-						DevelopmentTeam = G56V5LY6SL;
+						DevelopmentTeam = B227VTMZ94;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -1553,7 +1552,7 @@
 				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = G56V5LY6SL;
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1580,7 +1579,7 @@
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
@@ -1598,7 +1597,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = G56V5LY6SL;
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1625,7 +1624,7 @@
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
