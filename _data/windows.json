@@ -7,8 +7,7 @@
                 "Fixed issues with categories shown multiple times in autocomplete",
                 "Improved project and client name display in autotomcplete time entry items"
             ],
-            "date": "August 27th 2018",
-            "beta": "true"
+            "date": "August 30th 2018"
         },
         {
             "version": "7.4.231",
