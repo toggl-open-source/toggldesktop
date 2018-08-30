@@ -70,6 +70,9 @@ cp $QPATH/plugins/imageformats/libqsvg.so $out/imageformats
 cp $QPATH/plugins/iconengines/libqsvgicon.so $out/iconengines
 cp $QPATH/plugins/platforms/libqxcb.so $out/platforms
 
+# Copy QtWebEngineProcess
+cp $QPATH/libexec/QtWebEngineProcess $out/lib
+
 # Copy icons
 cp -r src/ui/linux/TogglDesktop/icons $out/icons
 
