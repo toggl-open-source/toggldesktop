@@ -662,7 +662,7 @@
 					../../../third_party/lua/install/lib,
 					../../../third_party/openssl,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = TogglDesktopLibrary;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -699,7 +699,7 @@
 					../../../third_party/lua/install/lib,
 					../../../third_party/openssl,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = TogglDesktopLibrary;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
