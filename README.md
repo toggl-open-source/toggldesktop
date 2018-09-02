@@ -95,7 +95,7 @@ Below are some distribution specific package requirements:
 
 ### Install dev tools
 
-We're building the Windows app using Visual Studio Community 2013 - it's a [free download](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)
+We're building the Windows app using Visual Studio Community - it's a [free download](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)
 
 You'll need to [install ActivePerl](http://www.activestate.com/activeperl/downloads) to build OpenSSL from source.
 
@@ -131,7 +131,7 @@ NASM can be downloaded here: http://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D
 
 ### Build the app
 
-Now, select *Release* from the Solution Configurations combobox in the Visual Studio toolbar, and build the solution.
+Now, select *Release_VS* from the Solution Configurations combobox in the Visual Studio toolbar, and build the solution.
 
 If you have Cygwin installed, you can also build the app from from Cygwin terminal, using make. (See macOS and Linux build instructions on above regarding make).
 
