@@ -39,6 +39,8 @@ class TogglApplication : public SingleApplication {
 };
 
 int main(int argc, char *argv[]) try {
+    QtWebEngine::initialize();
+
     Bugsnag::apiKey = "2a46aa1157256f759053289f2d687c2f";
 
     TogglApplication::setQuitOnLastWindowClosed(false);
@@ -58,8 +60,6 @@ int main(int argc, char *argv[]) try {
         qDebug() << "An instance of the app is already running";
         return 0;
     }
-
-    QtWebEngine::initialize();
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
 
