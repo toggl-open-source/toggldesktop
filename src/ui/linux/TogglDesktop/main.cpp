@@ -6,6 +6,7 @@
 #include <QMetaType>
 #include <QVector>
 #include <QFontDatabase>
+#include <qtwebengineglobal.h>
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -58,6 +59,7 @@ int main(int argc, char *argv[]) try {
         return 0;
     }
 
+    QtWebEngine::initialize();
     a.setApplicationVersion(APP_VERSION);
     Bugsnag::app.version = APP_VERSION;
 
