@@ -73,6 +73,9 @@ cp $QPATH/plugins/platforms/libqxcb.so $out/platforms
 # Copy QtWebEngineProcess
 cp $QPATH/libexec/QtWebEngineProcess $out/lib
 
+# Copy QtWebEngine Resource files
+cp $QPATH/resources/* $out/lib
+
 # Copy icons
 cp -r src/ui/linux/TogglDesktop/icons $out/icons
 
