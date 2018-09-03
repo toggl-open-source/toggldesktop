@@ -92,6 +92,9 @@ cp src/ssl/cacert.pem $out/.
 chmod -x $out/lib/*
 chmod -w $out/lib/*
 
+# Set QtWebEngineProcess to be executable
+chmod +x $out/lib/QtWebEngineProcess
+
 # Create a tar ball
 cd $out/..
 tar cvfz toggldesktop_$(uname -m).tar.gz toggldesktop
