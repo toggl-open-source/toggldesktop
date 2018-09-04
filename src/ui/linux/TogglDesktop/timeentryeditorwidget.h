@@ -63,10 +63,7 @@ class TimeEntryEditorWidget : public QWidget {
         const bool open,
         const uint64_t user_id);
 
-    void displayTimeEntryList(
-        const bool open,
-        QVector<TimeEntryView *> list,
-        const bool show_load_more_button);
+    void aboutToDisplayTimeEntryList();
 
     void displayTimeEntryEditor(
         const bool open,
