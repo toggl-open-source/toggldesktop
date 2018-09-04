@@ -49,8 +49,8 @@ previousTagList("") {
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
-            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
+    connect(TogglApi::instance, SIGNAL(aboutToDisplayTimeEntryList()),  // NOLINT
+            this, SLOT(aboutToDisplayTimeEntryList()));  // NOLINT
 
     connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),  // NOLINT
             this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));  // NOLINT
@@ -180,14 +180,9 @@ void TimeEntryEditorWidget::displayLogin(
     }
 }
 
-void TimeEntryEditorWidget::displayTimeEntryList(
-    const bool open,
-    QVector<TimeEntryView *> list,
-    const bool) {
-    if (open) {
-        setVisible(false);
-        timer->stop();
-    }
+void TimeEntryEditorWidget::aboutToDisplayTimeEntryList() {
+    setVisible(false);
+    timer->stop();
 }
 
 void TimeEntryEditorWidget::displayTimeEntryEditor(
@@ -206,6 +201,9 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     if (open) {
+        // Show the dialog first, hide items later (to preserve size)
+        setVisible(true);
+
         // Reset adding new project
         ui->newProject->setVisible(false);
         ui->addNewProject->setVisible(true);
@@ -216,8 +214,6 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
         // Reset adding new client
         toggleNewClientMode(false);
-
-        setVisible(true);
 
         if (focused_field_name == TogglApi::Duration) {
             ui->duration->setFocus();
