@@ -39,10 +39,12 @@ void on_display_update(const char *url) {
 void on_display_error(
     const char *errmsg,
     const bool_t user_error) {
+    TogglApi::instance->aboutToDisplayError();
     TogglApi::instance->displayError(QString(errmsg), user_error);
 }
 
 void on_overlay(const int64_t type) {
+    TogglApi::instance->aboutToDisplayOverlay();
     TogglApi::instance->displayOverlay(type);
 }
 
@@ -59,6 +61,9 @@ void on_display_url(
 void on_display_login(
     const bool_t open,
     const uint64_t user_id) {
+    if (open) {
+        TogglApi::instance->aboutToDisplayLogin();
+    }
     TogglApi::instance->displayLogin(open, user_id);
     Bugsnag::user.id = user_id;
 }
@@ -91,6 +96,9 @@ void on_display_time_entry_list(
     const bool_t open,
     TogglTimeEntryView *first,
     const bool_t show_load_more_button) {
+    if (open) {
+        TogglApi::instance->aboutToDisplayTimeEntryList();
+    }
     TogglApi::instance->displayTimeEntryList(
         open,
         TimeEntryView::importAll(first),
@@ -137,6 +145,9 @@ void on_display_time_entry_editor(
     const bool_t open,
     TogglTimeEntryView *te,
     const char *focused_field_name) {
+    if (open) {
+        TogglApi::instance->aboutToDisplayTimeEntryEditor();
+    }
     TogglApi::instance->displayTimeEntryEditor(
         open,
         TimeEntryView::importOne(te),

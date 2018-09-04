@@ -205,10 +205,12 @@ class TogglApi : public QObject {
     void displayApp(
         const bool open);
 
+    void aboutToDisplayError();
     void displayError(
         const QString errmsg,
         const bool user_error);
 
+    void aboutToDisplayOverlay();
     void displayOverlay(
         const int64_t type);
 
@@ -218,6 +220,7 @@ class TogglApi : public QObject {
     void displayOnlineState(
         int64_t state);
 
+    void aboutToDisplayLogin();
     void displayLogin(
         const bool open,
         const uint64_t user_id);
@@ -234,11 +237,13 @@ class TogglApi : public QObject {
         const QString title,
         const QString informative_text);
 
+    void aboutToDisplayTimeEntryList();
     void displayTimeEntryList(
         const bool open,
         QVector<TimeEntryView *> list,
         const bool show_load_more_button);
 
+    void aboutToDisplayTimeEntryEditor();
     void displayTimeEntryEditor(
         const bool open,
         TimeEntryView *view,
