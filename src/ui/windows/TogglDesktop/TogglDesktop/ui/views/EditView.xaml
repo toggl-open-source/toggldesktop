@@ -214,7 +214,7 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <toggl:ExtendedTextBox x:Name="startTimeTextBox" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
-                             Style="{StaticResource TimeBox}"
+                             Style="{StaticResource TimeBox}" MoveToEndOnFocus="True"
                              LostKeyboardFocus="startTimeTextBox_OnLostKeyboardFocus"
                              KeyDown="startTimeTextBox_OnKeyDown">12:45</toggl:ExtendedTextBox>
                     <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private"  Grid.Column="1" Grid.Row="0"
@@ -222,7 +222,7 @@
                              LostKeyboardFocus="durationTextBox_OnLostKeyboardFocus"
                              KeyDown="durationTextBox_OnKeyDown">10:12 min</toggl:ExtendedTextBox>
                     <toggl:ExtendedTextBox x:Name="endTimeTextBox" x:FieldModifier="private"  Grid.Column="2" Grid.Row="0"
-                             Style="{StaticResource TimeBox}"
+                             Style="{StaticResource TimeBox}" MoveToEndOnFocus="True"
                              LostKeyboardFocus="endTimeTextBox_OnLostKeyboardFocus"
                              KeyDown="endTimeTextBox_OnKeyDown">12:55</toggl:ExtendedTextBox>
 

@@ -9,9 +9,12 @@ namespace TogglDesktop
 
         public bool SelectAllOnKeyboardFocus { get; set; }
 
+        public bool MoveToEndOnFocus { get; set; }
+
         public ExtendedTextBox()
         {
             this.SelectAllOnKeyboardFocus = true;
+            this.MoveToEndOnFocus = false;
         }
 
         public void SetText(string text)
@@ -26,6 +29,10 @@ namespace TogglDesktop
             if (!this.IsFocused)
             {
                 this.SelectionLength = 0;
+                if (this.MoveToEndOnFocus)
+                {
+                    this.SelectionStart = this.Text.Length;
+                }
             }
 
             base.OnMouseDown(e);
