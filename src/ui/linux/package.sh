@@ -10,7 +10,7 @@ pocoversion=$(cat third_party/poco/libversion)
 
 # Clear output directories
 rm -rf toggldesktop*.tar.gz $out/*
-mkdir -p $out/lib $out/platforms $out/imageformats $out/iconengines
+mkdir -p $out/lib $out/platforms $out/imageformats $out/iconengines $out/resources $out/translations
 
 # Copy Toggl Desktop shared library
 cp src/lib/linux/TogglDesktopLibrary/build/release/libTogglDesktopLibrary.so.1 $out/lib
@@ -74,7 +74,10 @@ cp $QPATH/plugins/platforms/libqxcb.so $out/platforms
 cp $QPATH/libexec/QtWebEngineProcess $out/lib
 
 # Copy QtWebEngine Resource files
-cp $QPATH/resources/* $out/lib
+cp $QPATH/resources/* $out/resources
+
+# Copy QtWebEngine Locale files
+cp -r $QPATH/translations/qtwebengine_locales $out/translations/
 
 # Copy icons
 cp -r src/ui/linux/TogglDesktop/icons $out/icons
@@ -94,6 +97,10 @@ chmod -w $out/lib/*
 
 # Set QtWebEngineProcess to be executable
 chmod +x $out/lib/QtWebEngineProcess
+
+# Copy Qt conf files
+cp src/ui/linux/qt.conf $out/.
+cp src/ui/linux/qt_webengine.conf $out/lib/qt.conf
 
 # Create a tar ball
 cd $out/..
