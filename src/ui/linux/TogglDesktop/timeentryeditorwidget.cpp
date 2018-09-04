@@ -201,6 +201,9 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     if (open) {
+        // Show the dialog first, hide items later (to preserve size)
+        setVisible(true);
+
         // Reset adding new project
         ui->newProject->setVisible(false);
         ui->addNewProject->setVisible(true);
@@ -211,8 +214,6 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
         // Reset adding new client
         toggleNewClientMode(false);
-
-        setVisible(true);
 
         if (focused_field_name == TogglApi::Duration) {
             ui->duration->setFocus();
