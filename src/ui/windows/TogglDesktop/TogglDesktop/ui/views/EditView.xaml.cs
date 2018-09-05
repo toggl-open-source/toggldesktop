@@ -180,7 +180,10 @@ namespace TogglDesktop
         {
             if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
+                textBox.Clear();
                 textBox.SetText(project, task);
+                textBox.IsUndoEnabled = false;
+                textBox.IsUndoEnabled = true;
             }
         }
 
@@ -188,7 +191,10 @@ namespace TogglDesktop
         {
             if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
+                textBox.Clear();
                 textBox.SetText(text);
+                textBox.IsUndoEnabled = false;
+                textBox.IsUndoEnabled = true;
             }
         }
 
@@ -199,8 +205,11 @@ namespace TogglDesktop
                 || textBox.Tag == null
                 || textBox.Text == (textBox.Tag as string))
             {
+                textBox.Clear();
                 textBox.SetText(time);
                 textBox.Tag = time;
+                textBox.IsUndoEnabled = false;
+                textBox.IsUndoEnabled = true;
             }
         }
 
