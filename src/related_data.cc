@@ -194,7 +194,7 @@ void RelatedData::timeEntryAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
     std::vector<view::Autocomplete> *list,
-    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const {
+    std::map<std::string, std::vector<view::Autocomplete> > *items) const {
 
     poco_check_ptr(list);
 
@@ -271,8 +271,8 @@ void RelatedData::timeEntryAutocompleteItems(
         autocomplete_item.Type = kAutocompleteItemTE;
         autocomplete_item.Billable = te->Billable();
 
-        if (items) {
-            (*items)[autocomplete_item.WorkspaceID].push_back(autocomplete_item);
+        if (items && !autocomplete_item.WorkspaceName.empty()) {
+            (*items)[autocomplete_item.WorkspaceName].push_back(autocomplete_item);
         } else {
             list->push_back(autocomplete_item);
         }
@@ -361,7 +361,7 @@ void RelatedData::projectAutocompleteItems(
     std::set<std::string> *unique_names,
     std::map<Poco::UInt64, std::string> *ws_names,
     std::vector<view::Autocomplete> *list,
-    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items,
+    std::map<std::string, std::vector<view::Autocomplete> > *items,
     std::map<Poco::Int64, std::vector<view::Autocomplete> > *task_items) const {
 
     poco_check_ptr(list);
@@ -408,14 +408,14 @@ void RelatedData::projectAutocompleteItems(
         autocomplete_item.WorkspaceID = p->WID();
         autocomplete_item.Type = kAutocompleteItemProject;
 
-        if (items) {
-            (*items)[autocomplete_item.WorkspaceID].push_back(autocomplete_item);
+        if (items && !autocomplete_item.WorkspaceName.empty()) {
+            (*items)[autocomplete_item.WorkspaceName].push_back(autocomplete_item);
             if (task_items) {
                 for (std::vector<view::Autocomplete>::const_iterator it =
                     (*task_items)[autocomplete_item.ProjectID].begin();
                         it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
                     view::Autocomplete ac = *it;
-                    (*items)[autocomplete_item.WorkspaceID].push_back(ac);
+                    (*items)[autocomplete_item.WorkspaceName].push_back(ac);
                 }
             }
         } else {
@@ -436,7 +436,7 @@ void RelatedData::TimeEntryAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
     std::map<Poco::UInt64, std::string> ws_names;
-    std::map<Poco::Int64, std::vector<view::Autocomplete> > items;
+    std::map<std::string, std::vector<view::Autocomplete> > items;
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
     timeEntryAutocompleteItems(&unique_names, &ws_names, result, &items);
     mergeGroupedAutocompleteItems(result, &items);
@@ -446,7 +446,7 @@ void RelatedData::MinitimerAutocompleteItems(
     std::vector<view::Autocomplete> *result) const {
     std::set<std::string> unique_names;
     std::map<Poco::UInt64, std::string> ws_names;
-    std::map<Poco::Int64, std::vector<view::Autocomplete> > items;
+    std::map<std::string, std::vector<view::Autocomplete> > items;
     std::map<Poco::Int64, std::vector<view::Autocomplete> > task_items;
 
     workspaceAutocompleteItems(&unique_names, &ws_names, result);
@@ -459,10 +459,10 @@ void RelatedData::MinitimerAutocompleteItems(
 
 void RelatedData::mergeGroupedAutocompleteItems(
     std::vector<view::Autocomplete> *result,
-    std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const {
+    std::map<std::string, std::vector<view::Autocomplete> > *items) const {
     // Join created workspace maps to a single vector
     Poco::UInt64 total_size = 0;
-    for(std::map<Poco::Int64, std::vector<view::Autocomplete> >::iterator iter =
+    for(std::map<std::string, std::vector<view::Autocomplete> >::iterator iter =
         items->begin(); iter != items->end(); ++iter)
     {
         total_size += iter->second.size();
@@ -470,7 +470,7 @@ void RelatedData::mergeGroupedAutocompleteItems(
 
     result->reserve(total_size);
 
-    for(std::map<Poco::Int64, std::vector<view::Autocomplete> >::iterator iter =
+    for(std::map<std::string, std::vector<view::Autocomplete> >::iterator iter =
         items->begin(); iter != items->end(); ++iter)
     {
         result->insert(result->end(), iter->second.begin(), iter->second.end());

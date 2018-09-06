@@ -102,7 +102,7 @@ class RelatedData {
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<view::Autocomplete> *list,
-        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
+        std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 
     void taskAutocompleteItems(
         std::set<std::string> *unique_names,
@@ -114,7 +114,7 @@ class RelatedData {
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<view::Autocomplete> *list,
-        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items,
+        std::map<std::string, std::vector<view::Autocomplete> > *items,
         std::map<Poco::Int64, std::vector<view::Autocomplete> > *task_items) const;
 
     void workspaceAutocompleteItems(
@@ -124,7 +124,7 @@ class RelatedData {
 
     void mergeGroupedAutocompleteItems(
         std::vector<view::Autocomplete> *result,
-        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
+        std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 };
 
 template<typename T>
