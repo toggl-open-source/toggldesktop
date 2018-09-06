@@ -28,11 +28,11 @@ Windows application works with 64 bit architecture on Windows 7 and newer
 _More detailed description is available at [Windows UI Documentation](win/index.md)_
 
 ### OS X UI
-Mac app is built in Objective-C with Cocoa. The app communicates with library by connections of functions that are described in `AppDelegate.m` in the `init` method. What it basically does is connects methods described in AppDelegate with methods in library.
+Mac app is built in Objective-C. The app communicates with library by connections of functions that are described in `AppDelegate.m` in the `init` method. What it basically does is connects methods described in AppDelegate with methods in library.
 
 There are two release versions of the OS X app. `.dmg` and AppStore. The AppStore version has been lacking behind as there have been several issues with deployment and review process.
 
-OS X application works with 64 bit architecture on OS X 10.8 Mountain Lion and newer
+OS X application works with 64 bit architecture on OS X 10.8 Mountain Lion and newer (We will drop change this to 10.11 with one f the next releases)
 
 _More detailed description is available at [OS X UI Documentation](mac/index.md)_
 

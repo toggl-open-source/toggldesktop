@@ -10,6 +10,9 @@ fi
 LD_LIBRARY_PATH=$dirname/lib
 export LD_LIBRARY_PATH
 
+QTWEBENGINEPROCESS_PATH=$dirname/lib/QtWebEngineProcess
+export QTWEBENGINEPROCESS_PATH
+
 # Xubuntu, i3 and Cinnamon tray icon fix
 XDG=$XDG_CURRENT_DESKTOP
 

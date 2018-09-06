@@ -67,6 +67,7 @@ namespace TogglDesktop.AutoCompletion
             int lastType = -1;
             string lastClient = null;
             int lastWID = -1;
+            bool noProjectAdded = false;
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
                 items = new List<ListBoxItem>();
@@ -135,7 +136,8 @@ namespace TogglDesktop.AutoCompletion
                             });
 
                             // if projects autocomplete show 'no project' item
-                            if (autocompleteType == 3 && (int)it.Item.Type == 2)
+                            if (autocompleteType == 3 && (int)it.Item.Type == 2
+                                && !noProjectAdded)
                             {
                                 items.Add(new ListBoxItem()
                                 {
@@ -147,7 +149,9 @@ namespace TogglDesktop.AutoCompletion
                                     Type = 0,
                                     Index = -1
                                 });
+                                noProjectAdded = true;
                             }
+                            lastType = (int)it.Item.Type;
                         }
 
                         // Add client item if needed
@@ -169,27 +173,23 @@ namespace TogglDesktop.AutoCompletion
                         var taskLabel = it.Item.TaskLabel;
                         if (it.Item.Type == 0)
                         {
-                            taskLabel = (it.Item.TaskLabel.Length > 0) ? ":" + it.Item.TaskLabel : "";
+                            taskLabel = (it.Item.TaskLabel.Length > 0) ? " - " + it.Item.TaskLabel : "";
                         }
-                        var clientLabel = (it.Item.ClientLabel.Length > 0) ? " • " + it.Item.ClientLabel : "";
+                        var clientLabel = (it.Item.ClientLabel.Length > 0) ? " " + it.Item.ClientLabel : "";
 
-                        if (it.Item.Type == 2)
-                        {
-                            clientLabel = it.Item.ClientLabel;
-                        }
                         items.Add(new ListBoxItem()
                         {
                             Text = it.Item.Text,
                             Description = it.Item.Description,
                             ProjectLabel = it.Item.ProjectLabel,
                             ProjectColor = it.Item.ProjectColor,
+                            ProjectAndTaskLabel = it.Item.ProjectAndTaskLabel,
                             TaskLabel = taskLabel,
                             ClientLabel = clientLabel,
                             Type = (int)it.Item.Type,
                             WorkspaceName = it.Item.WorkspaceName,
                             Index = count
                         });
-                        lastType = (int)it.Item.Type;
                     }
                 }
                 visibleItems = items;
@@ -242,6 +242,7 @@ namespace TogglDesktop.AutoCompletion
                                 Category = categories[(int)item.Type],
                                 Type = -1
                             });
+                            lastType = (int)item.Type;
                         }
 
                         // Add client item if needed
@@ -278,7 +279,6 @@ namespace TogglDesktop.AutoCompletion
                         }
 
                         filteredItems.Add(item);
-                        lastType = (int)item.Type;
                         lastProjectLabel = item.ProjectLabel;
                     }
                 }
@@ -299,9 +299,11 @@ namespace TogglDesktop.AutoCompletion
             if (listItem.Type < 0)
                 return false;
 
+            string itemText = (listItem.Type == 1) ? listItem.ProjectAndTaskLabel : listItem.Text;
+
             foreach (string word in words)
             {
-                if (listItem.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) == -1)
+                if (itemText.IndexOf(word, StringComparison.OrdinalIgnoreCase) == -1)
                 {
                     return false;
                 }

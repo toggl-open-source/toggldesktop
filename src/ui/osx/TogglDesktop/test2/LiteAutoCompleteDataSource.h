@@ -15,7 +15,6 @@
 @interface LiteAutoCompleteDataSource : NSObject <NSTableViewDataSource>
 @property NSMutableArray *orderedKeys;
 @property NSMutableArray *filteredOrderedKeys;
-@property NSMutableDictionary *dictionary;
 @property NSString *currentFilter;
 @property NSInteger textLength;
 @property AutoCompleteInput *input;
@@ -24,7 +23,6 @@
 @property NSString *lastClientLabel;
 @property NSArray *types;
 - (NSString *)completedString:(NSString *)partialString;
-- (AutocompleteItem *)get:(NSString *)key;
 - (void)setFilter:(NSString *)filter;
 - (id)initWithNotificationName:(NSString *)notificationName;
 - (AutocompleteItem *)itemAtIndex:(NSInteger)row;

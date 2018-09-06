@@ -12,6 +12,7 @@ TARGET = bugsnag-qt
 TEMPLATE = lib
 
 DEFINES += BUGSNAGQT_LIBRARY
+DEFINES += QT_NO_VERSION_TAGGING
 
 CONFIG(debug, debug|release) {
         DESTDIR = build/debug

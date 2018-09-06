@@ -104,16 +104,21 @@
 	 }
 					range:NSMakeRange(0, [string length])];
 
+	BOOL addProjectLabel = NO;
 	if (view_item.ProjectID != 0)
 	{
 		if (view_item.TaskID != 0)
 		{
 			if ([string length] > 0)
 			{
-				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" -"]];
+				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@" - "]];
+				// Project label should be added when in Time Entries category
+				addProjectLabel = YES;
 			}
-
-			[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"        "]];
+			else
+			{
+				[string appendAttributedString:[[NSMutableAttributedString alloc] initWithString:@"        "]];
+			}
 			NSMutableAttributedString *task = [[NSMutableAttributedString alloc] initWithString:view_item.TaskLabel];
 
 			[task setAttributes:
@@ -125,6 +130,10 @@
 			[string appendAttributedString:task];
 		}
 		else
+		{
+			addProjectLabel = YES;
+		}
+		if (addProjectLabel)
 		{
 			if ([string length] > 0)
 			{
@@ -161,6 +170,23 @@
 		[result appendAttributedString:string];
 
 		return result;
+	}
+
+	// For time entries show all params: description, task, project, client
+	if (view_item.Type == 0)
+	{
+		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
+
+		[clientName setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+		 }
+							range:NSMakeRange(0, [clientName length])];
+
+		NSMutableAttributedString *space = [[NSMutableAttributedString alloc] initWithString:@" "];
+		[string appendAttributedString:space];
+		[string appendAttributedString:clientName];
 	}
 
 	// Add padding to the front of regular items

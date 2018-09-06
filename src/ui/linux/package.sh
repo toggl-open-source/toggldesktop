@@ -10,7 +10,7 @@ pocoversion=$(cat third_party/poco/libversion)
 
 # Clear output directories
 rm -rf toggldesktop*.tar.gz $out/*
-mkdir -p $out/lib $out/platforms $out/imageformats $out/iconengines
+mkdir -p $out/lib $out/platforms $out/imageformats $out/iconengines $out/resources $out/translations
 
 # Copy Toggl Desktop shared library
 cp src/lib/linux/TogglDesktopLibrary/build/release/libTogglDesktopLibrary.so.1 $out/lib
@@ -44,6 +44,7 @@ cp $QLIBPATH/libQt5Xml.so.5 $out/lib
 cp $QLIBPATH/libQt5XcbQpa.so.5 $out/lib
 cp $QLIBPATH/libQt5XcbQpa.so.5 $out/lib
 cp $QLIBPATH/libQt5WebEngine.so.5 $out/lib
+cp $QLIBPATH/libQt5WebEngineCore.so.5 $out/lib
 cp $QLIBPATH/libQt5WebEngineWidgets.so.5 $out/lib
 cp $QLIBPATH/libQt5DBus.so.5 $out/lib
 cp $QLIBPATH/libQt5Widgets.so.5 $out/lib
@@ -55,10 +56,11 @@ cp $QLIBPATH/libQt5Positioning.so.5 $out/lib
 cp $QLIBPATH/libQt5PrintSupport.so.5 $out/lib
 cp $QLIBPATH/libQt5OpenGL.so.5 $out/lib
 cp $QLIBPATH/libQt5Sql.so.5 $out/lib
-cp $QLIBPATH/libicui18n.so $out/lib
-cp $QLIBPATH/libicuuc.so $out/lib
-cp $QLIBPATH/libicudata.so $out/lib
+cp $QLIBPATH/libicui18n.so.56 $out/lib
+cp $QLIBPATH/libicuuc.so.56 $out/lib
+cp $QLIBPATH/libicudata.so.56 $out/lib
 cp $QLIBPATH/libQt5Quick.so.5 $out/lib
+cp $QLIBPATH/libQt5QuickWidgets.so.5 $out/lib
 cp $QLIBPATH/libQt5Qml.so.5 $out/lib
 cp $QLIBPATH/libQt5WebChannel.so.5 $out/lib
 cp $QLIBPATH/libQt5X11Extras.so.5 $out/lib
@@ -67,6 +69,15 @@ cp $QLIBPATH/libQt5X11Extras.so.5 $out/lib
 cp $QPATH/plugins/imageformats/libqsvg.so $out/imageformats
 cp $QPATH/plugins/iconengines/libqsvgicon.so $out/iconengines
 cp $QPATH/plugins/platforms/libqxcb.so $out/platforms
+
+# Copy QtWebEngineProcess
+cp $QPATH/libexec/QtWebEngineProcess $out/lib
+
+# Copy QtWebEngine Resource files
+cp $QPATH/resources/* $out/resources
+
+# Copy QtWebEngine Locale files
+cp -r $QPATH/translations/qtwebengine_locales $out/translations/
 
 # Copy icons
 cp -r src/ui/linux/TogglDesktop/icons $out/icons
@@ -83,6 +94,13 @@ cp src/ssl/cacert.pem $out/.
 # Set permissions
 chmod -x $out/lib/*
 chmod -w $out/lib/*
+
+# Set QtWebEngineProcess to be executable
+chmod +x $out/lib/QtWebEngineProcess
+
+# Copy Qt conf files
+cp src/ui/linux/qt.conf $out/.
+cp src/ui/linux/qt_webengine.conf $out/lib/qt.conf
 
 # Create a tar ball
 cd $out/..

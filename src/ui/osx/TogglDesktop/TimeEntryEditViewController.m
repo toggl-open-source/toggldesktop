@@ -467,8 +467,6 @@ extern void *ctx;
 		self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
 	}
 
-	self.projectSelectPreviousStringValue = self.projectAutoCompleteInput.stringValue;
-
 	// Overwrite project only if user is not editing it
 	if (cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
 	{
@@ -869,8 +867,7 @@ extern void *ctx;
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
 	NSString *key = [self.descriptionAutoCompleteInput stringValue];
-	AutocompleteItem *autocomplete = [self.liteDescriptionAutocompleteDataSource get:key];
-	[self updateWithSelectedDescription:autocomplete withKey:key];
+	[self updateWithSelectedDescription:nil withKey:key];
 }
 
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key
@@ -882,9 +879,14 @@ extern void *ctx;
 		[self.descriptionAutoCompleteInput resetTable];
 		if ([self.descriptionAutoCompleteInput.autocompleteTableView lastSavedSelected] == -1)
 		{
-			toggl_set_time_entry_description(ctx,
-											 GUID,
-											 [key UTF8String]);
+			@synchronized(self)
+			{
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+								   toggl_set_time_entry_description(ctx,
+																	GUID,
+																	[key UTF8String]);
+							   });
+			}
 			[self.descriptionAutoCompleteInput becomeFirstResponder];
 			self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 		}
@@ -932,6 +934,10 @@ extern void *ctx;
 	if (self.projectAutoCompleteInput.autocompleteTableContainer.isHidden)
 	{
 		[self.projectAutoCompleteInput toggleTableView:(int)self.projectAutoCompleteInput.autocompleteTableView.numberOfRows];
+		if ([self.projectAutoCompleteInput currentEditor] == nil)
+		{
+			[self.projectAutoCompleteInput becomeFirstResponder];
+		}
 	}
 	else
 	{
@@ -953,10 +959,6 @@ extern void *ctx;
 	}
 
 	NSAssert(self.timeEntry != nil, @"Expected time entry");
-
-	NSString *key = self.projectAutoCompleteInput.stringValue;
-	AutocompleteItem *autocomplete = [self.liteProjectAutocompleteDataSource get:key];
-	[self updateWithSelectedProject:autocomplete withKey:key];
 }
 
 - (void)updateWithSelectedProject:(AutocompleteItem *)autocomplete withKey:(NSString *)key
@@ -975,6 +977,7 @@ extern void *ctx;
 	task_id = autocomplete.TaskID;
 	project_id = autocomplete.ProjectID;
 	self.projectAutoCompleteInput.stringValue = autocomplete.ProjectAndTaskLabel;
+	self.projectSelectPreviousStringValue = autocomplete.ProjectAndTaskLabel;
 
 	@synchronized(self)
 	{
@@ -1343,7 +1346,7 @@ extern void *ctx;
 
 	AutocompleteItem *item = nil;
 	LiteAutoCompleteDataSource *dataSource = nil;
-	AutoCompleteTable *tb = tableView;
+	AutoCompleteTable *tb = (AutoCompleteTable *)tableView;
 
 	if (tableView == self.descriptionAutoCompleteInput.autocompleteTableView)
 	{
@@ -1384,7 +1387,7 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.descriptionAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteDescriptionAutocompleteDataSource;
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastClicked;
 
 	if (row == -1)
 	{
@@ -1410,7 +1413,7 @@ extern void *ctx;
 {
 	AutoCompleteInput *input = self.projectAutoCompleteInput;
 	LiteAutoCompleteDataSource *dataSource = self.liteProjectAutocompleteDataSource;
-	NSInteger row = [input.autocompleteTableView clickedRow];
+	NSInteger row = input.autocompleteTableView.lastClicked;
 
 	if (row == -1)
 	{
@@ -1434,8 +1437,9 @@ extern void *ctx;
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
 {
+	//  NSLog(@"Selector = %@", NSStringFromSelector(commandSelector) );
+
 	BOOL retval = NO;
-	BOOL valid = YES;
 	AutoCompleteInput *input = nil;
 	LiteAutoCompleteDataSource *dataSource = nil;
 	NSInteger lastSelected = -1;
@@ -1451,14 +1455,6 @@ extern void *ctx;
 		input = self.projectAutoCompleteInput;
 		lastSelected = input.autocompleteTableView.lastSelected;
 		dataSource = self.liteProjectAutocompleteDataSource;
-
-		// Validate project input
-		if (input.autocompleteTableView.isHidden)
-		{
-			NSString *key = self.projectAutoCompleteInput.stringValue;
-			AutocompleteItem *autocomplete = [self.liteProjectAutocompleteDataSource get:key];
-			valid = (autocomplete != nil);
-		}
 	}
 	if (input != nil)
 	{
@@ -1472,9 +1468,9 @@ extern void *ctx;
 			[input.autocompleteTableView previousItem];
 			retval = YES;
 		}
-		if (commandSelector == @selector(insertTab:))
+		if (commandSelector == @selector(insertTab:) || commandSelector == @selector(insertBacktab:))
 		{
-			if (input == self.projectAutoCompleteInput && !valid)
+			if (input == self.projectAutoCompleteInput)
 			{
 				self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
 			}
@@ -1486,11 +1482,6 @@ extern void *ctx;
 			// allow default action when autocomplete is closed
 			if (input.autocompleteTableView.isHidden)
 			{
-				if (input == self.projectAutoCompleteInput && !valid)
-				{
-					self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
-				}
-
 				return NO;
 			}
 

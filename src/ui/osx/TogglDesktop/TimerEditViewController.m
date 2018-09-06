@@ -500,17 +500,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		return;
 	}
-	NSString *key = [self.autoCompleteInput stringValue];
-	AutocompleteItem *item = [self.liteAutocompleteDataSource get:key];
 
-	// User has entered free text
-	if (item == nil || item.Type < 0)
-	{
-		self.time_entry.Description = [self.autoCompleteInput stringValue];
-		return;
-	}
-
-	[self fillEntryFromAutoComplete:item];
+	self.time_entry.Description = [self.autoCompleteInput stringValue];
 }
 
 - (void)fillEntryFromAutoComplete:(AutocompleteItem *)item
@@ -526,13 +517,21 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.time_entry.ClientLabel = item.ClientLabel;
 	self.time_entry.ProjectColor = item.ProjectColor;
 	self.time_entry.tags = [[NSMutableArray alloc] initWithArray:item.tags copyItems:YES];
-	self.time_entry.Description = ([item.Description length] != 0) ? item.Description : item.TaskLabel;
+	if (item.Description != nil)
+	{
+		self.time_entry.Description = ([item.Description length] != 0) ? item.Description : item.TaskLabel;
+	}
 
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
-	if (item.ProjectID)
+	if (item.ProjectID > 0)
 	{
 		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:self.time_entry]];
 		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
+	}
+	else
+	{
+		self.projectTextField.stringValue = @"";
+		self.projectTextField.toolTip = nil;
 	}
 	[self checkProjectConstraints];
 
@@ -624,7 +623,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	AutocompleteItem *item = nil;
-	AutoCompleteTable *tb = tableView;
+	AutoCompleteTable *tb = (AutoCompleteTable *)tableView;
 
 	@synchronized(self)
 	{
@@ -684,6 +683,16 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 		if (commandSelector == @selector(insertTab:))
 		{
+			// Set data according to selected item
+			if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
+			{
+				AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+				if (item == nil)
+				{
+					return retval;
+				}
+				[self fillEntryFromAutoComplete:item];
+			}
 			[self.autoCompleteInput resetTable];
 		}
 		if (commandSelector == @selector(insertNewline:))
@@ -699,9 +708,9 @@ NSString *kInactiveTimerColor = @"#999999";
 				{
 					return retval;
 				}
-				[self.autoCompleteInput resetTable];
 				[self fillEntryFromAutoComplete:item];
 			}
+			[self.autoCompleteInput resetTable];
 
 			// Start entry
 			[self startButtonClicked:nil];

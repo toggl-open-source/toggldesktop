@@ -435,7 +435,7 @@ namespace TogglDesktop
             mouseClickedOnListBox = true;
 
             DependencyObject dep = (DependencyObject)e.OriginalSource;
-            e.Handled = true;
+
             while ((dep != null) && !(dep is System.Windows.Controls.ListBoxItem))
             {
                 dep = System.Windows.Media.VisualTreeHelper.GetParent(dep);
@@ -443,7 +443,7 @@ namespace TogglDesktop
 
             if (dep == null)
                 return;
-
+            e.Handled = true;
             int index = listBox.ItemContainerGenerator.IndexFromContainer(dep);
             listBox.SelectedIndex = index;
 

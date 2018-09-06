@@ -18,7 +18,6 @@ extern void *ctx;
 
 	self.orderedKeys = [[NSMutableArray alloc] init];
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
-	self.dictionary = [[NSMutableDictionary alloc] init];
 	self.lastType = -1;
 	self.lastWID = -1;
 	self.lastClientLabel = nil;
@@ -45,17 +44,6 @@ extern void *ctx;
 		}
 	}
 	return @"";
-}
-
-- (NSString *)get:(NSString *)key
-{
-	NSString *object = nil;
-
-	@synchronized(self)
-	{
-		object = [self.dictionary objectForKey:key];
-	}
-	return object;
 }
 
 - (AutocompleteItem *)itemAtIndex:(NSInteger)row
@@ -90,8 +78,8 @@ extern void *ctx;
 		self.lastType = -1;
 		self.lastClientLabel = nil;
 		self.lastWID = -1;
+		BOOL noProjectAdded = NO;
 		[self.orderedKeys removeAllObjects];
-		[self.dictionary removeAllObjects];
 		for (AutocompleteItem *item in entries)
 		{
 			// Add workspace title
@@ -117,13 +105,14 @@ extern void *ctx;
 				self.lastType = item.Type;
 
 				// Add 'No project' item
-				if (item.Type == 2)
+				if (item.Type == 2 && !noProjectAdded)
 				{
 					AutocompleteItem *it = [[AutocompleteItem alloc] init];
 					it.Type = 2;
 					it.Text = @"No project";
 					it.ProjectAndTaskLabel = @"";
 					[self addItem:it];
+					noProjectAdded = YES;
 				}
 			}
 
@@ -154,15 +143,7 @@ extern void *ctx;
 
 - (void)addItem:(AutocompleteItem *)item
 {
-	NSString *key = item.Text;
-
-	if ([self.dictionary objectForKey:key] == nil
-		|| item.Type < 0
-		|| [item.ProjectAndTaskLabel isEqual:@""])
-	{
-		[self.orderedKeys addObject:item];
-		[self.dictionary setObject:item forKey:key];
-	}
+	[self.orderedKeys addObject:item];
 }
 
 - (void)reload
@@ -185,17 +166,17 @@ extern void *ctx;
 		                   // Code that runs async
 						   NSInteger lastPID = -1;
 						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
+						   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
 						   for (int i = 0; i < self.orderedKeys.count; i++)
 						   {
 							   AutocompleteItem *item = self.orderedKeys[i];
 		                   // Skip filtering category/client/workspace items
-							   if (item.Type < 0)
+							   if (item.Type < 0 || (item.Type == 2 && item.ProjectID == 0))
 							   {
 								   continue;
 							   }
-							   NSString *key = item.Text;
+							   NSString *key = (item.Type == 1) ? item.ProjectAndTaskLabel : item.Text;
 
-							   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
 							   if (stringArray.count > 1)
 							   {
 		                           // Filter is more than 1 word. Let's search for all the words entered.

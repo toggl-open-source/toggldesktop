@@ -27,6 +27,15 @@
 	return self;
 }
 
+- (void)mouseDown:(NSEvent *)theEvent
+{
+	NSPoint globalLocation = [theEvent locationInWindow];
+	NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
+
+	self.lastClicked = [self rowAtPoint:localLocation];
+	[super mouseDown:theEvent];
+}
+
 - (void)drawGridInClipRect:(NSRect)clipRect
 {
 	NSRect lastRowRect = [self rectOfRow:[self numberOfRows] - 1];
