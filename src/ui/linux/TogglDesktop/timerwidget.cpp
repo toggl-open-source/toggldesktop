@@ -50,6 +50,8 @@ projectId(0) {
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
 
+    dropdown->setMinimumWidth(width() * 2 / 3);
+
     descriptionPlaceholder = "What are you doing?";
     tagsHolder = "";
 }
