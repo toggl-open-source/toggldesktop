@@ -8,6 +8,7 @@ AutocompleteDropdownList::AutocompleteDropdownList(QWidget *parent) :
     types << "TIME ENTRIES" << "TASKS" << "PROJECTS" << "WORKSPACES";
     connect(this, SIGNAL(itemPressed(QListWidgetItem*)),
             this, SLOT(onListItemClicked(QListWidgetItem*)));
+    setUniformItemSizes(true);
 }
 
 void AutocompleteDropdownList::onListItemClicked(QListWidgetItem* item)
@@ -63,6 +64,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
         fullList = true;
     }
 
+    setUpdatesEnabled(false);
     render_m_.lock();
     for (int i = 0; i < size; i++) {
         AutocompleteView *view = list.at(i);
@@ -98,6 +100,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setHidden(false);
                 it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
@@ -131,6 +134,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setHidden(false);
                 it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
@@ -163,6 +167,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                         addItem(it);
                         setItemWidget(it, cl);
                     }
+                    it->setHidden(false);
                     it->setFlags(it->flags() | Qt::ItemIsEnabled);
 
                     AutocompleteView *v = new AutocompleteView();
@@ -198,6 +203,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setHidden(false);
                 it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
@@ -232,6 +238,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                         addItem(it);
                         setItemWidget(it, cl);
                     }
+                    it->setHidden(false);
                     it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
 
                     AutocompleteView *v = new AutocompleteView();
@@ -260,6 +267,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                     addItem(it);
                     setItemWidget(it, cl);
                 }
+                it->setHidden(false);
                 it->setFlags(it->flags() | Qt::ItemIsEnabled);
 
                 AutocompleteView *v = new AutocompleteView();
@@ -296,6 +304,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
                 addItem(it);
                 setItemWidget(it, cl);
             }
+            it->setHidden(false);
             it->setFlags(it->flags() | Qt::ItemIsEnabled);
 
             cl->display(view);
@@ -308,13 +317,16 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
             itemCount++;
         }
     }
-
-    while (count() > itemCount) {
-        model()->removeRow(count()-1);
+    int c = count();
+    while (c > itemCount) {
+        QListWidgetItem *it = 0;
+        it = item(c-1);
+        it->setHidden(true);
+        c--;
     }
 
     render_m_.unlock();
-
+    setUpdatesEnabled(true);
     return (itemCount != 0);
 }
 
