@@ -1,9 +1,16 @@
 #include "autocompletecombobox.h"
 
-AutocompleteCombobox::AutocompleteCombobox(QWidget* parent) : QComboBox(parent)
+AutocompleteCombobox::AutocompleteCombobox(QWidget* parent) :
+    QComboBox(parent),
+    timer(new QTimer(this))
 {
-
+    timer->setSingleShot(true);
+    // setup timer signal and slot
+    connect(timer, SIGNAL(timeout()),
+        this, SLOT(triggerFilter()));
 }
+
+
 
 AutocompleteCombobox::~AutocompleteCombobox()
 {
@@ -33,20 +40,28 @@ void AutocompleteCombobox::keyPressEvent(QKeyEvent *e)
     }
 
     if (e->key() == Qt::Key_Down && list->count() > 0) {
-        qDebug() << "Open popup";
+        //qDebug() << "Open popup";
         showPopup();
         return;
     }
 
     QComboBox::keyPressEvent(e);
-    QString lastText = currentText();
-    qDebug() << "FILTER: " << currentText();
+    //qDebug() << "FILTER: " << currentText();
 
+    if (timer->isActive()) {
+        timer->stop();
+    }
+
+    timer->start(200);
+}
+
+void AutocompleteCombobox::triggerFilter()
+{
+    QString lastText = currentText();
     if (list->filterItems(currentText())) {
         showPopup();
     } else {
         hidePopup();
     }
     setEditText(lastText);
-
 }
