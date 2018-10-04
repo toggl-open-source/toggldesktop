@@ -1727,6 +1727,22 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
                      new Poco::Net::FilePartSource(feedback_.AttachmentPath()));
     }
 
+    // Add all log files to feedback
+    int count = 0;
+    bool exists = true;
+
+    while (exists) {
+        std::stringstream ss;
+        ss << log_path_ << "." << std::to_string(count);
+        Poco::File file(ss.str());
+        exists = file.exists();
+        if (exists) {
+            form.addPart("files",
+                         new Poco::Net::FilePartSource(ss.str()));
+        }
+        count++;
+    }
+
     form.addPart("files",
                  new Poco::Net::FilePartSource(log_path_));
 
