@@ -77,7 +77,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 , last_sync_started_(0)
 , sync_interval_seconds_(0)
 , update_check_disabled_(false)
-, had_something_to_push_(false)
+, trigger_sync_(false)
+, trigger_push_(false)
 , quit_(false)
 , ui_updater_(this, &Context::uiUpdaterActivity)
 , reminder_(this, &Context::reminderActivity)
@@ -1068,38 +1069,13 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
     overlay_visible_ = false;
     last_sync_started_ = time(0);
 
-    TogglClient client(UI());
-    error err = pullAllUserData(&client);
-    if (err != noError) {
-        displayError(err);
-        return;
-    }
-
-    setOnline("Data pulled");
-
-    if (user_->related.NumberOfUnsyncedTimeEntries() < 10) {
-        bool something_to_push(true);
-        err = pushChanges(&client, &something_to_push);
-        if (err != noError) {
-            displayError(err);
-        } else if (something_to_push) {
-            setOnline("Changes pushed");
-        }
-    } else {
-        // Sync asyncronously with syncerActivity if there is a lot of unsynced data
-        had_something_to_push_ = true;
+    // Always sync asyncronously with syncerActivity
+    if (!trigger_sync_) {
+        trigger_sync_ = true;
         if (!syncer_.isRunning()) {
             syncer_.start();
         }
     }
-
-    // Push cached OBM action
-    err = pushObmAction();
-    if (err != noError) {
-        logger().error("Error pushing OBM action: " + err);
-    }
-
-    displayError(save(false));
 }
 
 void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
@@ -1152,28 +1128,14 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
         return;
     }
     logger().debug("onPushChanges executing");
-    error err;
-    if (user_->related.NumberOfUnsyncedTimeEntries() < 10) {
-        TogglClient client(UI());
-        bool something_to_push(true);
-        err = pushChanges(&client, &something_to_push);
-        if (err != noError) {
-            displayError(err);
-        } else if (something_to_push) {
-            setOnline("Changes pushed");
+
+    // Always sync asyncronously with syncerActivity
+    if (!trigger_push_) {
+        trigger_push_ = true;
+        if (!syncer_.isRunning()) {
+            syncer_.start();
         }
-    } else {
-        // Sync asyncronously with syncerActivity if there is a lot of unsynced data
-        had_something_to_push_ = true;
     }
-
-    // Push cached OBM action
-    err = pushObmAction();
-    if (err != noError) {
-        logger().error("Error pushing OBM action: " + err);
-    }
-
-    displayError(save(false));
 }
 
 void Context::switchWebSocketOff() {
@@ -4392,21 +4354,77 @@ void Context::syncerActivity() {
         {
             Poco::Mutex::ScopedLock lock(syncer_m_);
 
-            if (had_something_to_push_) {
+            if (trigger_sync_) {
                 TogglClient client(UI());
 
-                error err = pushChanges(&client, &had_something_to_push_);
+                error err = pullAllUserData(&client);
                 if (err != noError) {
                     displayError(err);
-                } else if (!had_something_to_push_) {
+                    return;
+                }
+
+                setOnline("Data pulled");
+
+                err = pushChanges(&client, &trigger_sync_);
+                if (err != noError) {
+                    displayError(err);
+                } else {
                     setOnline("Data pushed");
                 }
+                trigger_sync_ = false;
+
+                // Push cached OBM action
+                err = pushObmAction();
+                if (err != noError) {
+                    logger().error("Error pushing OBM action: " + err);
+                }
+
                 displayError(save(false));
 
                 // Stop Activity when we are done syncing
                 try {
                     {
-                        Poco::Mutex::ScopedLock lock(syncer_m_);
+                        if (syncer_.isRunning()) {
+                            syncer_.stop();
+                            syncer_.wait(5);
+                        }
+                    }
+                } catch(const Poco::Exception& exc) {
+                    logger().debug(exc.displayText());
+                } catch(const std::exception& ex) {
+                    logger().debug(ex.what());
+                } catch(const std::string& ex) {
+                    logger().debug(ex);
+                }
+            }
+
+        }
+
+        {
+            Poco::Mutex::ScopedLock lock(syncer_m_);
+
+            if (trigger_push_) {
+                TogglClient client(UI());
+
+                error err = pushChanges(&client, &trigger_sync_);
+                if (err != noError) {
+                    displayError(err);
+                } else {
+                    setOnline("Data pushed");
+                }
+                trigger_push_ = false;
+
+                // Push cached OBM action
+                err = pushObmAction();
+                if (err != noError) {
+                    logger().error("Error pushing OBM action: " + err);
+                }
+
+                displayError(save(false));
+
+                // Stop Activity when we are done syncing
+                try {
+                    {
                         if (syncer_.isRunning()) {
                             syncer_.stop();
                             syncer_.wait(5);
@@ -4883,85 +4901,83 @@ error Context::pushEntries(
     std::string error_message("");
     bool error_found = false;
     bool offline = false;
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        for (std::vector<TimeEntry *>::const_iterator it =
-            time_entries.begin();
-                it != time_entries.end(); it++) {
-            // Avoid trying to POST when we're offline
-            if (offline) {
-                // Mark the time entry as unsynced now
-                (*it)->SetUnsynced();
-                continue;
+
+    for (std::vector<TimeEntry *>::const_iterator it =
+        time_entries.begin();
+            it != time_entries.end(); it++) {
+        // Avoid trying to POST when we're offline
+        if (offline) {
+            // Mark the time entry as unsynced now
+            (*it)->SetUnsynced();
+            continue;
+        }
+
+        Json::Value entryJson = (*it)->SaveToJSON();
+
+        Json::StyledWriter writer;
+        entry_json = writer.write(entryJson);
+
+        // std::cout << entry_json;
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = (*it)->ModelURL();
+        req.payload = entry_json;
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp;
+
+        if ((*it)->NeedsDELETE()) {
+            req.payload = "";
+            resp = toggl_client.Delete(req);
+        } else if ((*it)->ID()) {
+            resp = toggl_client.Put(req);
+        } else {
+            resp = toggl_client.Post(req);
+        }
+
+        if (resp.err != noError) {
+            // if we're able to solve the error
+            if ((*it)->ResolveError(resp.body)) {
+                displayError(save());
             }
 
-            Json::Value entryJson = (*it)->SaveToJSON();
-
-            Json::StyledWriter writer;
-            entry_json = writer.write(entryJson);
-
-            // std::cout << entry_json;
-
-            HTTPSRequest req;
-            req.host = urls::API();
-            req.relative_url = (*it)->ModelURL();
-            req.payload = entry_json;
-            req.basic_auth_username = api_token;
-            req.basic_auth_password = "api_token";
-
-            HTTPSResponse resp;
-
-            if ((*it)->NeedsDELETE()) {
-                req.payload = "";
-                resp = toggl_client.Delete(req);
-            } else if ((*it)->ID()) {
-                resp = toggl_client.Put(req);
-            } else {
-                resp = toggl_client.Post(req);
-            }
-
-            if (resp.err != noError) {
-                // if we're able to solve the error
-                if ((*it)->ResolveError(resp.body)) {
-                    displayError(save());
-                }
-
-                // Not found on server. Probably deleted already.
-                if ((*it)->isNotFound(resp.body)) {
-                    (*it)->MarkAsDeletedOnServer();
-                    continue;
-                }
-                error_found = true;
-                error_message = resp.body;
-                if (error_message == noError) {
-                    error_message = resp.err;
-                }
-                // Mark the time entry as unsynced now
-                (*it)->SetUnsynced();
-
-                offline = IsNetworkingError(resp.err);
-
-                if (offline) {
-                    had_something_to_push_ = false;
-                }
-
-                continue;
-            }
-
-            if ((*it)->NeedsDELETE()) {
-                // Successfully deleted entry
+            // Not found on server. Probably deleted already.
+            if ((*it)->isNotFound(resp.body)) {
                 (*it)->MarkAsDeletedOnServer();
                 continue;
             }
+            error_found = true;
+            error_message = resp.body;
+            if (error_message == noError) {
+                error_message = resp.err;
+            }
+            // Mark the time entry as unsynced now
+            (*it)->SetUnsynced();
 
-            Json::Value root;
-            Json::Reader reader;
-            if (!reader.parse(resp.body, root)) {
-                return error("error parsing time entry POST response");
+            offline = IsNetworkingError(resp.err);
+
+            if (offline) {
+                trigger_sync_ = false;
             }
 
-            (*it)->LoadFromJSON(root);
+            continue;
         }
+
+        if ((*it)->NeedsDELETE()) {
+            // Successfully deleted entry
+            (*it)->MarkAsDeletedOnServer();
+            continue;
+        }
+
+        Json::Value root;
+        Json::Reader reader;
+        if (!reader.parse(resp.body, root)) {
+            return error("error parsing time entry POST response");
+        }
+
+        (*it)->LoadFromJSON(root);
     }
 
     if (error_found) {
@@ -5224,11 +5240,13 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
 }
 
 error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
-    Poco::Mutex::ScopedLock lock(user_m_);
-
     std::vector<Workspace*> workspaces;
-    user_->related.WorkspaceList(&workspaces);
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        logger().debug("user mutex lock success - c:pullWorkspacePreferences");
 
+        user_->related.WorkspaceList(&workspaces);
+    }
     for (std::vector<Workspace*>::const_iterator
             it = workspaces.begin();
             it != workspaces.end();
