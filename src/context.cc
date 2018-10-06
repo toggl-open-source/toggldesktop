@@ -4196,7 +4196,7 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
         }
 
         user_->CompressTimeline();
-        error err = save();
+        error err = save(false);
         if (err != noError) {
             return displayError(err);
         }
@@ -4227,7 +4227,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
             user_->related.TimelineEvents.push_back(event);
-            return displayError(save());
+            return displayError(save(false));
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
