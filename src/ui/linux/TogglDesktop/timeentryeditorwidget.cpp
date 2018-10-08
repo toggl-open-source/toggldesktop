@@ -402,19 +402,22 @@ void TimeEntryEditorWidget::fillInData(AutocompleteView *view) {
     QString currentDescription = ui->description->currentText();
     QString currentProject = view->ProjectAndTaskLabel;
 
-    if (timeEntryDropdown->isVisible()) {
+    if (timeEntryDropdown->isVisible() || ui->description->hasFocus()) {
         ui->description->setEditText(view->Description);
         currentDescription = view->Description;
         TogglApi::instance->setTimeEntryDescription(guid, view->Description);
     }
 
-    ui->project->setEditText(view->ProjectAndTaskLabel);
+    ui->description->setEditText(currentDescription);
+    ui->project->setEditText(currentProject);
+    ui->project->hidePopup();
+    ui->description->hidePopup();
+
     TogglApi::instance->setTimeEntryProject(guid,
                                                 view->TaskID,
                                                 view->ProjectID,
                                                 "");
-    ui->project->hidePopup();
-    ui->description->hidePopup();
+
     if (view->Billable) {
         TogglApi::instance->setTimeEntryBillable(guid, view->Billable);
     }
@@ -432,10 +435,9 @@ void TimeEntryEditorWidget::fillInData(AutocompleteView *view) {
             TogglApi::instance->setTimeEntryTags(guid, view->Tags);
         }
     }
+
     timeEntryDropdown->filterItems("");
     projectDropdown->filterItems("");
-    ui->description->setEditText(currentDescription);
-    ui->project->setEditText(currentProject);
 }
 
 void TimeEntryEditorWidget::on_description_activated(const QString &arg1) {
