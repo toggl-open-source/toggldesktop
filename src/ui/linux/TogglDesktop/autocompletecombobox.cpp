@@ -39,8 +39,10 @@ void AutocompleteCombobox::keyPressEvent(QKeyEvent *e)
         return;
     }
 
-    if (e->key() == Qt::Key_Down && list->count() > 0) {
-        //qDebug() << "Open popup";
+    if ((e->key() == Qt::Key_Enter
+         || e->key() == Qt::Key_Return
+         || e->key() == Qt::Key_Down)
+            && list->count() > 0) {
         showPopup();
         return;
     }
