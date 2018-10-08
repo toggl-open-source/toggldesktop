@@ -348,6 +348,7 @@ bool AutocompleteDropdownList::filterItems(QString filter) {
 void AutocompleteDropdownList::setList(QVector<AutocompleteView *> autocompletelist,
                                        QString filter)
 {
+    loadedOnce = false;
     list = autocompletelist;
     filterItems(filter);
 }
