@@ -19,6 +19,7 @@ private:
     QVector<AutocompleteView *> list;
     QStringList types;
     QMutex render_m_;
+    bool loadedOnce;
 
 signals:
     void keyPress(QKeyEvent *e);
