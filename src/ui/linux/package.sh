@@ -70,6 +70,11 @@ cp $QPATH/plugins/imageformats/libqsvg.so $out/imageformats
 cp $QPATH/plugins/iconengines/libqsvgicon.so $out/iconengines
 cp $QPATH/plugins/platforms/libqxcb.so $out/platforms
 
+# Fix RPATH for plugin libraries
+chrpath -r '$ORIGIN/../lib' $out/imageformats/libqsvg.so
+chrpath -r '$ORIGIN/../lib' $out/libqsvgicon.so
+chrpath -r '$ORIGIN/../lib' $out/libqxcb.so
+
 # Copy QtWebEngineProcess
 cp $QPATH/libexec/QtWebEngineProcess $out/lib
 
