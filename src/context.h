@@ -643,8 +643,7 @@ class Context : public TimelineDatasource {
 
     bool update_check_disabled_;
 
-    bool trigger_sync_;
-    bool trigger_push_;
+    bool had_something_to_push_;
 
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
