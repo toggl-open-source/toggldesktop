@@ -245,7 +245,6 @@ extern void *ctx;
 	{
 		[self clearLastSelectedEntry];
 		[cell setFocused];
-		[self.timeEntriesTableView scrollRowToVisible:self.lastSelectedRowIndex];
 	}
 
 	// remove highlight from first item
@@ -608,7 +607,6 @@ extern void *ctx;
 	{
 		[self clearLastSelectedEntry];
 		[cell setFocused];
-		[self.timeEntriesTableView scrollRowToVisible:self.lastSelectedRowIndex];
 	}
 }
 
