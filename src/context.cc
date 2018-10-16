@@ -968,8 +968,7 @@ bool Context::isPostponed(
 }
 
 error Context::displayError(const error err) {
-    if ((err.find(kForbiddenError) != std::string::npos)
-            || (err.find(kUnauthorizedError) != std::string::npos)) {
+    if ((err.find(kUnauthorizedError) != std::string::npos)) {
         if (user_) {
             setUser(nullptr);
         }
