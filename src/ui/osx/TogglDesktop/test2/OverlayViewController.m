@@ -72,6 +72,13 @@ extern void *ctx;
 	NSMutableAttributedString *result =
 		[[NSMutableAttributedString alloc] initWithString:@"You no longer have access to your last Workspace. Create a new workspace on Toggl.com to continue tracking"];
 
+	[result setAttributes:
+	 @{
+		 NSFontAttributeName : [NSFont systemFontOfSize:15],
+		 NSForegroundColorAttributeName:[NSColor highlightColor]
+	 }
+					range:NSMakeRange(0, [result length])];
+
 	[self.actionButton setTitle:@"Log in to Toggl.com"];
 	[[self.mainText textStorage] setAttributedString:result];
 
