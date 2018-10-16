@@ -184,6 +184,8 @@ class User : public BaseModel {
         const std::string &json,
         const bool &including_related_data);
 
+    error LoadWorkspacesFromJSONString(const std::string& json);
+
     error LoadTimeEntriesFromJSONString(const std::string &json);
 
     error SetAPITokenFromOfflineData(const std::string password);

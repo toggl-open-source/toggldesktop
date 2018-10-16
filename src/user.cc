@@ -707,6 +707,34 @@ error User::LoadUserAndRelatedDataFromJSONString(
     return noError;
 }
 
+error User::LoadWorkspacesFromJSONString(const std::string& json) {
+    if (json.empty()) {
+        return noError;
+    }
+
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(json, root)) {
+        return error("Failed to LoadWorkspacessFromJSONString");
+    }
+
+    if (root.size() == 0) {
+        // Handle missing workspace issue.
+        // If default wid is missing there are no workspaces
+        return error(kMissingWS); // NOLINT
+    }
+
+    std::set<Poco::UInt64> alive;
+
+    for (unsigned int i = 0; i < root.size(); i++) {
+        loadUserWorkspaceFromJSON(root[i], &alive);
+    }
+
+    deleteZombies(related.TimeEntries, alive);
+
+    return noError;
+}
+
 error User::LoadTimeEntriesFromJSONString(const std::string& json) {
     if (json.empty()) {
         return noError;

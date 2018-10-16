@@ -979,11 +979,19 @@ error Context::displayError(const error err) {
         urls::SetImATeapot(false);
     }
 
-    // Check for missing WS error and
-    if (err.find(kMissingWS) != std::string::npos) {
-        overlay_visible_ = true;
-        UI()->DisplayWSError();
-        return noError;
+    if (err.find(kRequestIsNotPossible) != std::string::npos
+            || (err.find(kForbiddenError) != std::string::npos)) {
+        TogglClient toggl_client(UI());
+
+        error err = pullWorkspaces(&toggl_client);
+        if (err != noError) {
+            // Check for missing WS error and
+            if (err.find(kMissingWS) != std::string::npos) {
+                overlay_visible_ = true;
+                UI()->DisplayWSError();
+                return noError;
+            }
+        }
     }
 
     return UI()->DisplayError(err);
@@ -4584,6 +4592,11 @@ error Context::pullAllUserData(
             }
         }
 
+        err = pullWorkspaces(toggl_client);
+        if (err != noError) {
+            return err;
+        }
+
         pullWorkspacePreferences(toggl_client);
 
         pullUserPreferences(toggl_client);
@@ -5157,6 +5170,51 @@ bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
     if (lockedTime == 0)
         return false;
     return t < lockedTime;
+}
+
+error Context::pullWorkspaces(TogglClient* toggl_client) {
+    std::string api_token = user_->APIToken();
+
+    if (api_token.empty()) {
+        return error("cannot pull user data without API token");
+    }
+
+    std::string json("");
+
+    try {
+        std::stringstream ss;
+        ss << "/api/v9/me/workspaces";
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = toggl_client->Get(req);
+        if (resp.err != noError) {
+            if (resp.err.find(kForbiddenError) != std::string::npos) {
+                // User has no workspaces
+                return error(kMissingWS); // NOLINT
+            }
+            return resp.err;
+        }
+
+        json = resp.body;
+
+        user_->LoadWorkspacesFromJSONString(json);
+
+    }
+    catch (const Poco::Exception& exc) {
+        return exc.displayText();
+    }
+    catch (const std::exception& ex) {
+        return ex.what();
+    }
+    catch (const std::string& ex) {
+        return ex;
+    }
+    return noError;
 }
 
 error Context::pullWorkspacePreferences(TogglClient* toggl_client) {

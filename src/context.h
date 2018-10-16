@@ -583,6 +583,8 @@ class Context : public TimelineDatasource {
 
     error logAndDisplayUserTriedEditingLockedEntry();
 
+    error pullWorkspaces(TogglClient* toggl_client);
+
     error pullWorkspacePreferences(TogglClient* https_client);
     error pullWorkspacePreferences(TogglClient* https_client,
                                    Workspace *workspace, std::string* json);
