@@ -43,7 +43,7 @@
 #define kBackendIsDownError "Backend is down"
 #define kBadRequestError "Data that you are sending is not valid/acceptable"
 #define kRequestIsNotPossible "Request is not possible"
-#define kPaymentRequiredError "Requested action allowed only for Pro workspace. Please upgrade!"  // NOLINT
+#define kPaymentRequiredError "Requested action allowed only for Non-Free workspaces. Please upgrade!"  // NOLINT
 #define kCannotAccessWorkspaceError "cannot access workspace"
 #define kEmailNotFoundCannotLogInOffline "Login failed. Are you online?"  // NOLINT
 #define kInvalidPassword "Invalid password"
