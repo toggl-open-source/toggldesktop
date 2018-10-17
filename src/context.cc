@@ -2282,7 +2282,7 @@ error Context::Login(
                 return displayError(err);
             }
         }
-
+        overlay_visible_ = false;
         return displayError(save());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -2475,7 +2475,7 @@ error Context::Logout() {
         }
 
         logger().debug("setUser from Logout");
-
+        overlay_visible_ = false;
         setUser(nullptr);
 
         UI()->DisplayApp();
