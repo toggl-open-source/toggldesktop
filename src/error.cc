@@ -247,6 +247,10 @@ std::string MakeErrorActionable(const error err) {
     if (err.find(kDatabaseDiskMalformed) != std::string::npos) {
         return "Local database is corrupt. Please clear local data to recreate local database.";
     }
+    if (err.find(kEndpointGoneError) != std::string::npos) {
+        return kOutOfDatePleaseUpgrade;
+    }
+
     return err;
 }
 

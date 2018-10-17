@@ -71,6 +71,7 @@
 #define kClientNameAlreadyExists "Client name already exists"
 #define kDatabaseDiskMalformed "The database disk image is malformed"
 #define kMissingWS "You no longer have access to your last workspace"
+#define kOutOfDatePleaseUpgrade "Your version of Toggl Desktop is out of date, please upgrade!"
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"
