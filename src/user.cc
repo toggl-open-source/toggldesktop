@@ -720,10 +720,8 @@ error User::LoadWorkspacesFromJSONString(const std::string& json) {
     std::set<Poco::UInt64> alive;
 
     for (unsigned int i = 0; i < root.size(); i++) {
-        loadUserWorkspaceFromJSON(root[i], &alive);
+        loadUserWorkspaceFromJSON(root[i]);
     }
-
-    deleteZombies(related.TimeEntries, alive);
 
     return noError;
 }
