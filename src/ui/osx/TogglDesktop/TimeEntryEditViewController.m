@@ -463,6 +463,8 @@ extern void *ctx;
 	// Overwrite description only if user is not editing it:
 	if (cmd.open || [self.descriptionAutoCompleteInput currentEditor] == nil)
 	{
+		[[self.descriptionAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
+		[[self.descriptionAutoCompleteInput currentEditor] moveToEndOfLine:nil];
 		self.descriptionAutoCompleteInput.stringValue = self.timeEntry.Description;
 		self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
 	}
@@ -470,6 +472,8 @@ extern void *ctx;
 	// Overwrite project only if user is not editing it
 	if (cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
 	{
+		[[self.projectAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
+		[[self.projectAutoCompleteInput currentEditor] moveToEndOfLine:nil];
 		if (self.timeEntry.ProjectAndTaskLabel != nil)
 		{
 			self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
@@ -492,6 +496,8 @@ extern void *ctx;
 	// Overwrite duration only if user is not editing it:
 	if (cmd.open || [self.durationTextField currentEditor] == nil)
 	{
+		[[self.durationTextField currentEditor] setSelectedRange:NSMakeRange(0, 0)];
+		[[self.durationTextField currentEditor] moveToEndOfLine:nil];
 		[self.durationTextField setStringValue:self.timeEntry.duration];
 	}
 
