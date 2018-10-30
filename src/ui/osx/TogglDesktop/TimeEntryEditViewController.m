@@ -269,7 +269,7 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
 														object:nil
 													  userInfo:userInfo];
-	[self.projectNameTextField becomeFirstResponder];
+	[self.projectNameTextField.window makeFirstResponder:self.projectNameTextField];
 	[self.addProjectBox setHidden:NO];
 	[self.projectSelectBox setHidden:YES];
 	[self.addProjectButton setHidden:YES];
@@ -351,7 +351,7 @@ extern void *ctx;
 	uint64_t workspaceID = [self selectedWorkspaceID];
 	if (!workspaceID)
 	{
-		[self.workspaceSelect becomeFirstResponder];
+		[self.workspaceSelect.window makeFirstResponder:self.workspaceSelect];
 		return NO;
 	}
 
@@ -886,7 +886,7 @@ extern void *ctx;
 																	[key UTF8String]);
 							   });
 			}
-			[self.descriptionAutoCompleteInput becomeFirstResponder];
+			[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
 			self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 		}
 		return;
@@ -904,7 +904,7 @@ extern void *ctx;
 															 autocomplete.ProjectID,
 															 0))
 						   {
-							   [self.descriptionAutoCompleteInput becomeFirstResponder];
+							   [self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
 							   [self.descriptionAutoCompleteInput resetTable];
 							   self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 							   return;
@@ -923,7 +923,7 @@ extern void *ctx;
 						   }
 					   });
 	}
-	[self.descriptionAutoCompleteInput becomeFirstResponder];
+	[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
 	[self.descriptionAutoCompleteInput resetTable];
 	self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
 }
@@ -935,7 +935,7 @@ extern void *ctx;
 		[self.projectAutoCompleteInput toggleTableView:(int)self.projectAutoCompleteInput.autocompleteTableView.numberOfRows];
 		if ([self.projectAutoCompleteInput currentEditor] == nil)
 		{
-			[self.projectAutoCompleteInput becomeFirstResponder];
+			[self.projectAutoCompleteInput.window makeFirstResponder:self.projectAutoCompleteInput];
 		}
 	}
 	else
@@ -984,7 +984,7 @@ extern void *ctx;
 						   toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
 					   });
 	}
-	[self.projectAutoCompleteInput becomeFirstResponder];
+	[self.projectAutoCompleteInput.window makeFirstResponder:self.projectAutoCompleteInput];
 	[self.projectAutoCompleteInput resetTable];
 	self.liteProjectAutocompleteDataSource.currentFilter = nil;
 }
@@ -1247,11 +1247,11 @@ extern void *ctx;
 	[self toggleAddClient:openClientAdd];
 	if (openClientAdd)
 	{
-		[self.clientSelect becomeFirstResponder];
+		[self.clientSelect.window makeFirstResponder:self.clientSelect];
 	}
 	else
 	{
-		[self.clientNameTextField becomeFirstResponder];
+		[self.clientNameTextField.window makeFirstResponder:self.clientNameTextField];
 	}
 
 	[self.saveNewClientButton setNextKeyView:self.addClientButton];
@@ -1287,7 +1287,7 @@ extern void *ctx;
 	uint64_t workspaceID = [self selectedWorkspaceID];
 	if (!workspaceID)
 	{
-		[self.workspaceSelect becomeFirstResponder];
+		[self.workspaceSelect.window makeFirstResponder:self.workspaceSelect];
 		return;
 	}
 
