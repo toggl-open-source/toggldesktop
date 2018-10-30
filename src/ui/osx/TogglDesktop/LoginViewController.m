@@ -214,7 +214,7 @@ extern void *ctx;
 
 	if (email == nil || !email.length)
 	{
-		[self.email becomeFirstResponder];
+		[self.email.window makeFirstResponder:self.email];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
 															object:emailMissingError];
 		return NO;
@@ -225,7 +225,7 @@ extern void *ctx;
 
 	if (pass == nil || !pass.length)
 	{
-		[self.password becomeFirstResponder];
+		[self.password.window makeFirstResponder:self.password];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
 															object:passwordMissingError];
 		return NO;
@@ -239,7 +239,7 @@ extern void *ctx;
 	// check if country is selected
 	if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
 	{
-		[self.countrySelect becomeFirstResponder];
+		[self.countrySelect.window makeFirstResponder:self.countrySelect];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
 															object:countryNotSelectedError];
 		return NO;
@@ -249,7 +249,7 @@ extern void *ctx;
 	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
 	if (!tosChecked)
 	{
-		[self.tosCheckbox becomeFirstResponder];
+		[self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
 															object:tosAgreeError];
 		return NO;

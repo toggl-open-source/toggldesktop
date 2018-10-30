@@ -212,7 +212,11 @@ extern void *ctx;
 			[self.timeEntrypopover close];
 			[self setDefaultPopupSize];
 		}
-		[self focusListing:nil];
+		// when timer not focused
+		if ([self.timerEditViewController.autoCompleteInput currentEditor] == nil)
+		{
+			[self focusListing:nil];
+		}
 	}
 
 	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;

@@ -25,6 +25,7 @@
 @property NSTimer *timer;
 @property BOOL constraintsAdded;
 @property BOOL disableChange;
+@property BOOL focusNotSet;
 @end
 
 @implementation TimerEditViewController
@@ -39,6 +40,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
+		self.focusNotSet = YES;
 		self.liteAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -160,7 +162,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	else
 	{
-		[self.autoCompleteInput becomeFirstResponder];
+		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 	}
 }
 
@@ -175,9 +177,11 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	if (cmd.open && self.time_entry && self.time_entry.duration_in_seconds >= 0)
+	if (cmd.open && self.time_entry && self.time_entry.duration_in_seconds >= 0
+		&& self.focusNotSet)
 	{
-		[self.autoCompleteInput becomeFirstResponder];
+		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+		self.focusNotSet = NO;
 	}
 }
 
@@ -288,10 +292,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
-	if (cmd.open)
-	{
-		[self.startButton becomeFirstResponder];
-	}
 }
 
 - (void)checkProjectConstraints
@@ -382,7 +382,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)textFieldClicked:(id)sender
 {
-	[self.autoCompleteInput becomeFirstResponder];
+	[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
 														object:nil
@@ -661,7 +661,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		return;
 	}
 	[self fillEntryFromAutoComplete:item];
-	[self.autoCompleteInput becomeFirstResponder];
+	[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 	NSRange tRange = [[self.autoCompleteInput currentEditor] selectedRange];
 	[[self.autoCompleteInput currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
 	[self.autoCompleteInput resetTable];

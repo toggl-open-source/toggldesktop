@@ -19,8 +19,7 @@ void *ctx;
 - (void)windowDidLoad
 {
 	[super windowDidLoad];
-
-	[self.entryTextField becomeFirstResponder];
+	[self.entryTextField.window makeFirstResponder:self.entryTextField];
 }
 
 - (IBAction)onRun:(id)sender

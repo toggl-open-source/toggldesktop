@@ -451,7 +451,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 	if (nil == term || 0 == term.length)
 	{
-		[self.autotrackerTerm becomeFirstResponder];
+		[self.autotrackerTerm.window makeFirstResponder:self.autotrackerTerm];
 		return;
 	}
 
@@ -466,7 +466,7 @@ const int kUseProxyToConnectToToggl = 2;
 	}
 	if (!pid && !tid)
 	{
-		[self.autotrackerProject becomeFirstResponder];
+		[self.autotrackerProject.window makeFirstResponder:self.autotrackerProject];
 		return;
 	}
 

@@ -38,7 +38,7 @@ extern void *ctx;
 					   alternateButton:nil
 						   otherButton:nil
 			 informativeTextWithFormat:@"Please choose a topic before sending feedback."] runModal];
-		[self.topicComboBox becomeFirstResponder];
+		[self.topicComboBox.window makeFirstResponder:self.topicComboBox];
 		return;
 	}
 	if (self.contentTextView.string == nil
@@ -49,7 +49,7 @@ extern void *ctx;
 					   alternateButton:nil
 						   otherButton:nil
 			 informativeTextWithFormat:@"Please type in your feedback before sending."] runModal];
-		[self.contentTextView becomeFirstResponder];
+		[self.contentTextView.window makeFirstResponder:self.contentTextView];
 		return;
 	}
 

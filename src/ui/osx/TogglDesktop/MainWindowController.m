@@ -121,7 +121,7 @@ extern void *ctx;
 		[self.loginViewController changeView:NO];
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
-		[self.loginViewController.email becomeFirstResponder];
+		[self.loginViewController.email.window makeFirstResponder:self.loginViewController.email];
 
 		[self.timeEntryListViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
