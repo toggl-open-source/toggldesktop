@@ -484,13 +484,6 @@ extern void *ctx;
 			self.projectAutoCompleteInput.stringValue = @"";
 			self.projectSelectPreviousStringValue = @"";
 		}
-		if (cmd.open)
-		{
-			if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
-			{
-				[self.projectAutoCompleteInput becomeFirstResponder];
-			}
-		}
 	}
 
 	// Overwrite duration only if user is not editing it:
