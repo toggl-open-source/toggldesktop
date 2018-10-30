@@ -140,17 +140,23 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-		// Close error when loging in
-		if ([self.loginViewController.view superview] != nil)
+		if ([self.loginViewController.view superview] != nil
+			|| [self.timeEntryListViewController.view superview] == nil)
 		{
+			// Close error when loging in
 			[self closeError];
-		}
-		[self addErrorBoxConstraint];
-		[self.contentView addSubview:self.timeEntryListViewController.view];
-		[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
-		[self.loginViewController.view removeFromSuperview];
-		[self.overlayViewController.view removeFromSuperview];
+			[self addErrorBoxConstraint];
+			[self.contentView addSubview:self.timeEntryListViewController.view];
+			[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+
+			[self.loginViewController.view removeFromSuperview];
+			[self.overlayViewController.view removeFromSuperview];
+
+			[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
+																object:nil
+															  userInfo:nil];
+		}
 	}
 }
 
