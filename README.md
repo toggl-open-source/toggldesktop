@@ -118,9 +118,7 @@ cd to the project folder, then
 ```
 cd third_party\openssl
 perl Configure VC-WIN32
-ms\do_nasm
-nmake -f ms\ntdll.mak clean
-nmake -f ms\ntdll.mak 
+nmake
 ```
 
 Instead of do_nasm (use NASM) you can also use do_ms (no asm at all), or do_masm (use MASM). 
