@@ -48,6 +48,7 @@ namespace TogglDesktop
         private bool closing;
         private string trackingTitle;
         private WindowState previousWindowState;
+        private string todaysDuration = "0 h 00 min";
 
         #endregion
 
@@ -321,6 +322,16 @@ namespace TogglDesktop
                 this.errorBar.Hide();
                 this.setActiveView(this.timerEntryListView);
             }
+
+            // Get Today's total duration
+            var i = 0;
+            for (; i < list.Count; i++)
+            {
+                if (list[i].DateHeader == "Today") {
+                    todaysDuration = list[i].DateDuration;
+                    return;
+                }
+            }
         }
 
         private void onLogin(bool open, ulong userID)
@@ -546,7 +557,7 @@ namespace TogglDesktop
 
         private void updateTaskbarTooltip(object sender, string s)
         {
-            this.taskbarIcon.ToolTipText = this.trackingTitle + s;
+            this.taskbarIcon.ToolTipText = this.trackingTitle + s + " | Total today: " + todaysDuration;
         }
 
         #endregion
@@ -756,7 +767,7 @@ namespace TogglDesktop
             {
                 this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
-                this.taskbarIcon.ToolTipText = "Toggl Desktop";
+                this.taskbarIcon.ToolTipText = "Total today: " + todaysDuration;
             }
 
             this.updateStatusIcons(true);
