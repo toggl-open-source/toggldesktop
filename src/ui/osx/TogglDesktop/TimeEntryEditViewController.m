@@ -850,25 +850,6 @@ extern void *ctx;
 	toggl_set_time_entry_billable(ctx, [self.timeEntry.GUID UTF8String], value);
 }
 
-- (IBAction)descriptionAutoCompleteChanged:(id)sender
-{
-	if (self.willTerminate)
-	{
-		return;
-	}
-
-	if (self.descriptionAutoCompleteInput.stringValue != nil &&
-		[self.descriptionAutoCompleteInput.stringValue isEqualToString:self.descriptionComboboxPreviousStringValue])
-	{
-		return;
-	}
-
-	NSAssert(self.timeEntry != nil, @"Time entry expected");
-
-	NSString *key = [self.descriptionAutoCompleteInput stringValue];
-	[self updateWithSelectedDescription:nil withKey:key];
-}
-
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key
 {
 	const char *GUID = [self.timeEntry.GUID UTF8String];
