@@ -866,31 +866,27 @@ extern void *ctx;
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
 	NSString *key = [self.descriptionAutoCompleteInput stringValue];
-	[self updateWithSelectedDescription:nil withKey:key];
+	const char *GUID = [self.timeEntry.GUID UTF8String];
+
+	[self.descriptionAutoCompleteInput resetTable];
+	if ([self.descriptionAutoCompleteInput.autocompleteTableView lastSavedSelected] == -1)
+	{
+		@synchronized(self)
+		{
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+							   toggl_set_time_entry_description(ctx,
+																GUID,
+																[key UTF8String]);
+						   });
+		}
+		[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
+		self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+	}
 }
 
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key
 {
 	const char *GUID = [self.timeEntry.GUID UTF8String];
-
-	if (!autocomplete)
-	{
-		[self.descriptionAutoCompleteInput resetTable];
-		if ([self.descriptionAutoCompleteInput.autocompleteTableView lastSavedSelected] == -1)
-		{
-			@synchronized(self)
-			{
-				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-								   toggl_set_time_entry_description(ctx,
-																	GUID,
-																	[key UTF8String]);
-							   });
-			}
-			[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
-			self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
-		}
-		return;
-	}
 
 	self.descriptionAutoCompleteInput.stringValue = autocomplete.Description;
 
