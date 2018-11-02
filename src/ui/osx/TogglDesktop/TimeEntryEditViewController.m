@@ -38,6 +38,7 @@
 @property NSString *projectSelectPreviousStringValue;
 @property NSMutableAttributedString *clientColorTitle;
 @property NSMutableAttributedString *clientColorTitleCancel;
+@property NSString *GUID;
 @end
 
 @implementation TimeEntryEditViewController
@@ -421,6 +422,8 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	self.timeEntry = cmd.timeEntry;
+
+	self.GUID = cmd.timeEntry.GUID;
 
 	NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
 
@@ -866,7 +869,6 @@ extern void *ctx;
 	NSAssert(self.timeEntry != nil, @"Time entry expected");
 
 	NSString *key = [self.descriptionAutoCompleteInput stringValue];
-	const char *GUID = [self.timeEntry.GUID UTF8String];
 
 	[self.descriptionAutoCompleteInput resetTable];
 	if ([self.descriptionAutoCompleteInput.autocompleteTableView lastSavedSelected] == -1)
@@ -875,7 +877,7 @@ extern void *ctx;
 		{
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 							   toggl_set_time_entry_description(ctx,
-																GUID,
+																[self.GUID UTF8String],
 																[key UTF8String]);
 						   });
 		}
@@ -886,8 +888,10 @@ extern void *ctx;
 
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key
 {
-	const char *GUID = [self.timeEntry.GUID UTF8String];
-
+	if (!autocomplete)
+	{
+		return;
+	}
 	self.descriptionAutoCompleteInput.stringValue = autocomplete.Description;
 
 	@synchronized(self)
@@ -895,7 +899,7 @@ extern void *ctx;
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 						   if (![self.timeEntry.Description isEqualToString:key] &&
 							   !toggl_set_time_entry_project(ctx,
-															 GUID,
+															 [self.GUID UTF8String],
 															 autocomplete.TaskID,
 															 autocomplete.ProjectID,
 															 0))
@@ -906,16 +910,16 @@ extern void *ctx;
 							   return;
 						   }
 
-						   toggl_set_time_entry_description(ctx, GUID, [autocomplete.Description UTF8String]);
+						   toggl_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
 
 						   const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
-						   toggl_set_time_entry_tags(ctx, GUID, value);
+						   toggl_set_time_entry_tags(ctx, [self.GUID UTF8String], value);
 
 						   bool_t isBillable = autocomplete.Billable;
 
 						   if (isBillable)
 						   {
-							   toggl_set_time_entry_billable(ctx, GUID, isBillable);
+							   toggl_set_time_entry_billable(ctx, [self.GUID UTF8String], isBillable);
 						   }
 					   });
 	}
