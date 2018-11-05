@@ -979,8 +979,8 @@ error Context::displayError(const error err) {
         urls::SetImATeapot(false);
     }
 
-    if (err.find(kRequestIsNotPossible) != std::string::npos
-            || (err.find(kForbiddenError) != std::string::npos)) {
+    if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
+                  || (err.find(kForbiddenError) != std::string::npos))) {
         TogglClient toggl_client(UI());
 
         error err = pullWorkspaces(&toggl_client);
