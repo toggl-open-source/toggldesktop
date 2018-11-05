@@ -395,8 +395,8 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         ss  << "Will not overwrite time entry "
             << "[" << String() << "]"
             << " with server data because we have a newer or same updated_at"
-            << " [Server updated_at: " << updated_at << "]"
-            logger().debug(ss.str());
+            << " [Server updated_at: " << updated_at << "]";
+        logger().debug(ss.str());
         return;
     }
 
