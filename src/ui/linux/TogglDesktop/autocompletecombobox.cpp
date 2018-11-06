@@ -39,6 +39,11 @@ void AutocompleteCombobox::keyPressEvent(QKeyEvent *e)
         return;
     }
 
+    if (e->key() == Qt::Key_Print) {
+        QComboBox::keyPressEvent(e);
+        return;
+    }
+
     if ((e->key() == Qt::Key_Enter
          || e->key() == Qt::Key_Return
          || e->key() == Qt::Key_Down)
