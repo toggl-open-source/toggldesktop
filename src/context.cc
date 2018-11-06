@@ -3662,19 +3662,25 @@ Project *Context::CreateProject(
         }
 
         std::string client_name("");
-        Client *c = user_->related.ClientByID(client_id);
+        Poco::UInt64 cid(0);
+        Client *c = nullptr;
+
+        // Search by client ID
+        if (client_id != 0) {
+            c = user_->related.ClientByID(client_id);
+        } else {
+            // Search by Client GUID (when Client is not synced to server yet)
+            c = user_->related.ClientByGUID(client_guid);
+        }
+
         if (c) {
             client_name = c->Name();
-        } else {
-            c = user_->related.ClientByGUID(client_guid);
-            if (c) {
-                client_name = c->Name();
-            }
+            cid = c->ID();
         }
 
         result = user_->CreateProject(
             workspace_id,
-            client_id,
+            cid,
             client_guid,
             client_name,
             trimmed_project_name,
