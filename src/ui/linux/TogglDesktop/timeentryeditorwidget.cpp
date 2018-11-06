@@ -6,6 +6,7 @@
 #include <QCompleter>  // NOLINT
 #include <QDebug>  // NOLINT
 #include <QMessageBox>  // NOLINT
+#include <QKeyEvent> // NOLINT
 
 #include "./autocompleteview.h"
 #include "./genericview.h"
@@ -328,6 +329,17 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
     }
 
     return false;
+}
+
+void TimeEntryEditorWidget::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Return) {
+        if (applyNewProject()) {
+            TogglApi::instance->viewTimeEntryList();
+        }
+    }
+    else {
+        QWidget::keyPressEvent(event);
+    }
 }
 
 void TimeEntryEditorWidget::on_deleteButton_clicked() {
