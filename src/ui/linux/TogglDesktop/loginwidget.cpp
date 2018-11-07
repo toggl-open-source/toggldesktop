@@ -67,6 +67,7 @@ void LoginWidget::displayLogin(
     }
     if (user_id) {
         setVisible(false);
+        ui->password->clear();
     }
 }
 
