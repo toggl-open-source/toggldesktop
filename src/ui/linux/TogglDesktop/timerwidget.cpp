@@ -105,12 +105,14 @@ void TimerWidget::displayRunningTimerState(
     if (te->Description.length() > 0) {
         ui->description->setToolTip(
             QString("<p style='color:white;background-color:black;'>" +
-                    te->Description+"</p>"));
+                    te->Description + "</p>"));
     }
     if (te->ProjectAndTaskLabel.length() > 0) {
         ui->project->setToolTip(
             QString("<p style='color:white;background-color:black;'>" +
                     te->ProjectAndTaskLabel+"</p>"));
+    } else {
+        ui->project->setToolTip(QString(""));
     }
 
     disconnect(this, SLOT(start()));
@@ -136,8 +138,10 @@ void TimerWidget::displayStoppedTimerState() {
         ui->duration->setText("");
     }
     ui->duration->setEnabled(true);
+    ui->duration->setToolTip(QString(""));
 
     ui->project->setText("");
+    ui->project->setToolTip(QString(""));
 
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
