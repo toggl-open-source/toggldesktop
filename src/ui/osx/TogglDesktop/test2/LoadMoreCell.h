@@ -7,6 +7,7 @@
 //
 
 #import "TimeEntryCell.h"
+#import "ConvertHexColor.h"
 
 @interface LoadMoreCell : TimeEntryCell
 @property BOOL isHeader;

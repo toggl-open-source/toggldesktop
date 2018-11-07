@@ -14,6 +14,15 @@ extern void *ctx;
 - (void)initCell
 {
 	[self.loadButton setTitle:@"Load More"];
+
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"Load More"];
+	[string setAttributes:
+	 @{
+		 NSFontAttributeName : [NSFont systemFontOfSize:13],
+		 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:@"#000000"]
+	 }
+					range:NSMakeRange(0, [string length])];
+	self.loadButton.attributedTitle = string;
 	[self.loader stopAnimation:nil];
 	[self.loader setHidden:YES];
 }
