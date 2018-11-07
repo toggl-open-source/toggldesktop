@@ -71,14 +71,14 @@ cp $QPATH/plugins/iconengines/libqsvgicon.so $out/plugins/iconengines
 cp $QPATH/plugins/platforms/libqxcb.so $out/plugins/platforms
 
 # Copy QtWebEngineProcess
-cp $QPATH/libexec/QtWebEngineProcess $out/lib
+cp $QPATH/libexec/QtWebEngineProcess $out
 
 # Fix RPATH for plugin libraries and executables
 chrpath -r '$ORIGIN/../../lib' $out/plugins/imageformats/libqsvg.so
 chrpath -r '$ORIGIN/../../lib' $out/plugins/libqsvgicon.so
 chrpath -r '$ORIGIN/../../lib' $out/plugins/libqxcb.so
-chrpath -r '$ORIGIN' $out/TogglDesktop
-chrpath -r '$ORIGIN' $out/lib/QtWebEngineProcess
+chrpath -r '$ORIGIN/lib' $out/TogglDesktop
+chrpath -r '$ORIGIN/lib' $out/QtWebEngineProcess
 
 # Copy QtWebEngine Resource files
 cp $QPATH/resources/* $out/resources
@@ -103,7 +103,7 @@ chmod -x $out/lib/*
 chmod -w $out/lib/*
 
 # Set QtWebEngineProcess to be executable
-chmod +x $out/lib/QtWebEngineProcess
+chmod +x $out/QtWebEngineProcess
 
 # Copy Qt conf for qtwebengine
 cp src/ui/linux/qt_webengine.conf $out/lib/qt.conf
