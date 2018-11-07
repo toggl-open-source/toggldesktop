@@ -97,6 +97,8 @@ void TimerWidget::displayRunningTimerState(
 
     ui->billable->setVisible(te->Billable);
     ui->tags->setVisible(!te->Tags.isEmpty());
+    ui->tags->setToolTip(QString("<p style='color:white;background-color:black;'>" +
+                                 te->Tags + "</p>"));
 
     duration = te->DurationInSeconds;
 
