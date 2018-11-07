@@ -1,4 +1,4 @@
-set -e
+#set -e
 
 echo "Creating package"
 
@@ -10,7 +10,7 @@ pocoversion=$(cat third_party/poco/libversion)
 
 # Clear output directories
 rm -rf toggldesktop*.tar.gz $out/*
-mkdir -p $out/lib $out/platforms $out/imageformats $out/iconengines $out/resources $out/translations
+mkdir -p $out/lib $out/plugins/platforms $out/plugins/imageformats $out/plugins/iconengines $out/resources $out/translations
 
 # Copy Toggl Desktop shared library
 cp src/lib/linux/TogglDesktopLibrary/build/release/libTogglDesktopLibrary.so.1 $out/lib
@@ -66,17 +66,19 @@ cp $QLIBPATH/libQt5WebChannel.so.5 $out/lib
 cp $QLIBPATH/libQt5X11Extras.so.5 $out/lib
 
 # Copy Qt plugins
-cp $QPATH/plugins/imageformats/libqsvg.so $out/imageformats
-cp $QPATH/plugins/iconengines/libqsvgicon.so $out/iconengines
-cp $QPATH/plugins/platforms/libqxcb.so $out/platforms
-
-# Fix RPATH for plugin libraries
-chrpath -r '$ORIGIN/../lib' $out/imageformats/libqsvg.so
-chrpath -r '$ORIGIN/../lib' $out/libqsvgicon.so
-chrpath -r '$ORIGIN/../lib' $out/libqxcb.so
+cp $QPATH/plugins/imageformats/libqsvg.so $out/plugins/imageformats
+cp $QPATH/plugins/iconengines/libqsvgicon.so $out/plugins/iconengines
+cp $QPATH/plugins/platforms/libqxcb.so $out/plugins/platforms
 
 # Copy QtWebEngineProcess
 cp $QPATH/libexec/QtWebEngineProcess $out/lib
+
+# Fix RPATH for plugin libraries and executables
+chrpath -r '$ORIGIN/../../lib' $out/plugins/imageformats/libqsvg.so
+chrpath -r '$ORIGIN/../../lib' $out/plugins/libqsvgicon.so
+chrpath -r '$ORIGIN/../../lib' $out/plugins/libqxcb.so
+chrpath -r '$ORIGIN' $out/TogglDesktop
+chrpath -r '$ORIGIN' $out/lib/QtWebEngineProcess
 
 # Copy QtWebEngine Resource files
 cp $QPATH/resources/* $out/resources
@@ -103,9 +105,15 @@ chmod -w $out/lib/*
 # Set QtWebEngineProcess to be executable
 chmod +x $out/lib/QtWebEngineProcess
 
-# Copy Qt conf files
-cp src/ui/linux/qt.conf $out/.
+# Copy Qt conf for qtwebengine
 cp src/ui/linux/qt_webengine.conf $out/lib/qt.conf
+
+# Create a custom Qt conf for the binary
+cat <<EOF >$out/qt.conf
+[Paths]
+Prefix=.
+Plugins=plugins
+EOF
 
 # Create a tar ball
 cd $out/..
