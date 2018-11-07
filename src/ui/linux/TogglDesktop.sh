@@ -7,7 +7,7 @@ if [ "${dirname%$tmp}" != "/" ]; then
 dirname=$PWD/$dirname
 fi
 
-QTWEBENGINEPROCESS_PATH=$dirname/lib/QtWebEngineProcess
+QTWEBENGINEPROCESS_PATH=$dirname/QtWebEngineProcess
 export QTWEBENGINEPROCESS_PATH
 
 # Xubuntu, i3 and Cinnamon tray icon fix
