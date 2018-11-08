@@ -1,6 +1,25 @@
 {
     "versions": [
         {
+            "version": "7.4.299",
+            "rows": [
+                "Improved log file sending logic",
+                "Fixed random entry list scrolling issues",
+                "Added handling for 'no wokrspace' scenario",
+                "Overlay view logic and font fixes",
+                "Fixed selected text issue with not focused fields in edit view",
+                "Fixed frozen project field issue in edit view",
+                "Fixed signup country select validation",
+                "Improved field focusing logic in edit popup",
+                "Improved timer description focus logic on first load",
+                "Improved client id setting when creating new project",
+                "All syncing is done in background",
+                "Style fixes for Dark Mode"
+            ],
+            "date": "November 8th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.253",
             "rows": [
                 "Fixed autocomplete item select issues",
