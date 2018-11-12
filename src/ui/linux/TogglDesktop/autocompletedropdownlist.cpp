@@ -10,6 +10,7 @@ AutocompleteDropdownList::AutocompleteDropdownList(QWidget *parent) :
     connect(this, SIGNAL(itemPressed(QListWidgetItem*)),
             this, SLOT(onListItemClicked(QListWidgetItem*)));
     setUniformItemSizes(true);
+    setStyleSheet("QListView::item:selected { background: #e8e8e8 }");
 }
 
 void AutocompleteDropdownList::onListItemClicked(QListWidgetItem* item)
