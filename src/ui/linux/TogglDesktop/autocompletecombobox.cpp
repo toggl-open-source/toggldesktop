@@ -26,6 +26,11 @@ void AutocompleteCombobox::setView(QAbstractItemView *itemView)
 
 }
 
+void AutocompleteCombobox::showPopup()
+{
+    triggerFilter();
+}
+
 void AutocompleteCombobox::keyPress(QKeyEvent *e)
 {
     keyPressEvent(e);
@@ -66,9 +71,9 @@ void AutocompleteCombobox::triggerFilter()
 {
     QString lastText = currentText();
     if (list->filterItems(currentText())) {
-        showPopup();
+        QComboBox::showPopup();
     } else {
-        hidePopup();
+        QComboBox::hidePopup();
     }
     setEditText(lastText);
 }

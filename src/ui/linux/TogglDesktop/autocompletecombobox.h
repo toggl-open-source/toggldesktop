@@ -16,6 +16,8 @@ class AutocompleteCombobox : public QComboBox
         void setView(QAbstractItemView *itemView);
         AutocompleteDropdownList *list;
 
+        void showPopup() override;
+
     private:
         QTimer *timer;
 
