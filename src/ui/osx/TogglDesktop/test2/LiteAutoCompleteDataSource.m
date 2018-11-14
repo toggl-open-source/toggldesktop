@@ -117,7 +117,8 @@ extern void *ctx;
 			}
 
 			// Add Client name
-			if (item.Type == 2 && item.ClientLabel != self.lastClientLabel)
+			if (item.Type == 2 &&
+				![item.ClientLabel isEqualToString:self.lastClientLabel])
 			{
 				AutocompleteItem *it = [[AutocompleteItem alloc] init];
 				it.Type = -2;
