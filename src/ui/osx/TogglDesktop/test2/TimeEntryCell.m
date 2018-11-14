@@ -243,7 +243,10 @@ extern void *ctx;
 
 - (void)openEdit
 {
-	toggl_edit(ctx, [self.GUID UTF8String], false, "");
+	if (self.GUID != nil)
+	{
+		toggl_edit(ctx, [self.GUID UTF8String], false, "");
+	}
 }
 
 @end
