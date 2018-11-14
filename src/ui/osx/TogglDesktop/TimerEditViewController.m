@@ -331,7 +331,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	// whether time entry is running
 	self.startButton.toolTip = @"Start";
 	[self.startButton setImage:[NSImage imageNamed:@"start_button.pdf"]];
-
+	self.autoCompleteInput.stringValue = @"";
 	[self.autoCompleteInput setHidden:NO];
 	[self.descriptionLabel setHidden:YES];
 	[self.durationTextField setEditable:YES];
