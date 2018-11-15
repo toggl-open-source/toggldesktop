@@ -13,6 +13,10 @@
 #import "Utils.h"
 #import "Sparkle.h"
 
+@interface AboutWindowController ()
+@property BOOL unsupportedOS;
+@end
+
 @implementation AboutWindowController
 
 extern void *ctx;
@@ -39,6 +43,9 @@ extern void *ctx;
 	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
 	free(str);
 
+	NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+	self.unsupportedOS = (osVersion.majorVersion == 10 && osVersion.minorVersion < 11);
+
 	if ([self updateCheckEnabled])
 	{
 		self.updateChannelComboBox.hidden = NO;
@@ -51,10 +58,28 @@ extern void *ctx;
 
 		[self displayUpdateStatus];
 	}
+
+	if (self.unsupportedOS)
+	{
+		// MacOs version not supported
+		NSString *text = [NSString stringWithFormat:@"You are using an unsupported version of MacOs(%ld.%ld). Please upgrade your MacOS as Toggl Desktop will stop working on older machines in the very near future!", (long)osVersion.majorVersion, (long)osVersion.minorVersion];
+
+		NSAlert *alert = [[NSAlert alloc] init];
+		[alert addButtonWithTitle:@"OK"];
+		[alert setMessageText:@"Unsupported MacOS version detected!"];
+		[alert setInformativeText:text];
+		[alert setAlertStyle:NSWarningAlertStyle];
+		[alert runModal];
+	}
 }
 
 - (BOOL)updateCheckEnabled
 {
+	if (self.unsupportedOS)
+	{
+		return NO;
+	}
+
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 
 	return [infoDict[@"KopsikCheckForUpdates"] boolValue];
