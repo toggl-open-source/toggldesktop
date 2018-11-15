@@ -587,7 +587,7 @@
 					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 					../../../third_party/openssl/include,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -632,7 +632,7 @@
 					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 					../../../third_party/openssl/include,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				SDKROOT = macosx;
 			};
 			name = Release;
