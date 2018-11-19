@@ -7,6 +7,7 @@
 //
 
 #import "OverlayViewController.h"
+#import "toggl_api.h"
 
 @interface OverlayViewController ()
 @property int currentType;
