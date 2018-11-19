@@ -16,21 +16,6 @@
 
 extern void *ctx;
 
-- (void)loadView
-{
-	[super loadView];
-	NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
-	if (version.minorVersion < 11)
-	{
-		[self viewDidLoad];
-	}
-}
-
-- (void)viewDidLoad
-{
-	[super viewDidLoad];
-}
-
 - (IBAction)actionClicked:(id)sender
 {
 	if (self.currentType == 0)
