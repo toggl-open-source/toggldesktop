@@ -11,7 +11,6 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
 @property (strong) NSStatusItem *statusItem;
-@property (strong) NSImage *activeAppIcon;
 @property (retain, nonatomic) Reachability *reach;
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
