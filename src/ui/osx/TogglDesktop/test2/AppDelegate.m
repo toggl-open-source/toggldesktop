@@ -35,6 +35,7 @@
 #import "UserNotificationCenter.h"
 #import "SystemService.h"
 #import "TogglDesktop-Swift.h"
+#import "AppIconFactory.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -148,9 +149,6 @@ BOOL onTop = NO;
 	{
 		[self onShowMenuItem:self];
 	}
-
-	self.activeAppIcon = [NSImage imageNamed:@"app"];
-	[self.activeAppIcon setTemplate:YES];
 
 	self.preferencesWindowController = [[PreferencesWindowController alloc]
 										initWithWindowNibName:@"PreferencesWindowController"];
@@ -876,7 +874,7 @@ BOOL onTop = NO;
 	{
 		if (!self.willTerminate)
 		{
-			[NSApp setApplicationIconImage:self.activeAppIcon];
+			[NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeActive]];
 		}
 
 		[self updateStatusItem];
@@ -906,7 +904,7 @@ BOOL onTop = NO;
 	{
 		// Change app dock icon to default
 		// See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
-		[NSApp setApplicationIconImage:nil];
+		[NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeDefault]];
 	}
 
 	[self updateStatusItem];
