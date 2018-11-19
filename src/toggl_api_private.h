@@ -33,6 +33,17 @@ int compare_string(const char_t *s1, const char_t *s2);
 char_t *copy_string(const std::string s);
 std::string to_string(const char_t *s);
 
+/**
+ Trim all leading and trailing whitespace from the string. Don't trim on middle of word.
+ Ex: const std::string foo = "    too much   space  ";
+ const std::string text = trim(foo);
+ // Text = "too much   space"
+
+ @param str The string need to be trimmed
+ @return The string after trimming the leading and trailing whitespace
+ */
+std::string trim_whitespace(const std::string str);
+
 TogglGenericView *generic_to_view_item(
     const toggl::view::Generic c);
 
