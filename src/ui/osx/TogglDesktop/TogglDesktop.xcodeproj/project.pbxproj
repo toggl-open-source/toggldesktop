@@ -150,6 +150,7 @@
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
+		BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
@@ -551,6 +552,8 @@
 		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
+		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
@@ -698,6 +701,7 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				BAF87DDB21A3E1E700624EBE /* Extension */,
 				3C6B246F203E01B70063FC08 /* AutoComplete */,
 				3C068C681C22F25000874B9A /* MKColorWellCustom.h */,
 				3C068C691C22F25000874B9A /* MKColorWellCustom.m */,
@@ -1011,6 +1015,15 @@
 			);
 			name = MASShortcut;
 			path = ../../../../third_party/MASShortcut;
+			sourceTree = "<group>";
+		};
+		BAF87DDB21A3E1E700624EBE /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */,
+				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
+			);
+			name = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1357,6 +1370,7 @@
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
+				BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
 				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
