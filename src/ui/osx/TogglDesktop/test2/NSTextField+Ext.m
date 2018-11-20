@@ -12,10 +12,10 @@
 
 -(void)resetCursorColor
 {
-    NSTextView *textField = (NSTextView *)[self currentEditor];
-    if ([textField respondsToSelector:@selector(setInsertionPointColor:)])
+    NSTextView *editor = (NSTextView *)[self currentEditor];
+    if ([editor respondsToSelector:@selector(setInsertionPointColor:)])
     {
-        [textField setInsertionPointColor:[self textColor]];
+        [editor setInsertionPointColor:[self textColor]];
     }
 }
 
