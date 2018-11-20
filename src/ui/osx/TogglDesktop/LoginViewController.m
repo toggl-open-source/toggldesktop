@@ -11,6 +11,7 @@
 #import "Utils.h"
 #import "UIEvents.h"
 #import "const.h"
+#import "NSTextField+Ext.h"
 
 @interface LoginViewController ()
 @property AutocompleteDataSource *countryAutocompleteDataSource;
@@ -51,6 +52,16 @@ extern void *ctx;
 	[self.countryAutocompleteDataSource setFilter:@""];
 	self.countriesLoaded = NO;
 	self.selectedCountryID = -1;
+}
+
+-(void)viewDidAppear
+{
+    [super viewDidAppear];
+
+    // As we change the cursor's color to white
+    // so, we have to reset cursor color
+    [self.email resetCursorColor];
+    [self.password resetCursorColor];
 }
 
 - (IBAction)clickLoginButton:(id)sender
