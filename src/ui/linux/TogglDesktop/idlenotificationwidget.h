@@ -1,27 +1,37 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#ifndef SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONDIALOG_H_
-#define SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONDIALOG_H_
+#ifndef SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONWIDGET_H_
+#define SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONWIDGET_H_
 
 #include <QDialog>
 #include <QTimer>
+#include <QStackedWidget>
+#include <QtDBus>
 
 #include <stdint.h>
 
 #include "./settingsview.h"
 
 namespace Ui {
-class IdleNotificationDialog;
+class IdleNotificationWidget;
 }
 
-class IdleNotificationDialog : public QDialog {
+class IdleNotificationWidget : public QWidget {
     Q_OBJECT
 
  public:
-    explicit IdleNotificationDialog(QWidget *parent = 0);
-    ~IdleNotificationDialog();
+    explicit IdleNotificationWidget(QStackedWidget *parent = nullptr);
+    ~IdleNotificationWidget();
+
+    void display();
+    void hide();
 
  private slots:  // NOLINT
+    void requestIdleHint();
+    void idleHintReceived(QDBusPendingCallWatcher *watcher);
+
+    void displaySettings(const bool open, SettingsView *settings);
+
     void displayStoppedTimerState();
 
     void displayLogin(
@@ -35,28 +45,24 @@ class IdleNotificationDialog : public QDialog {
         const uint64_t started,
         const QString description);
 
-    void displaySettings(
-        const bool open,
-        SettingsView *settings);
-
     void on_keepTimeButton_clicked();
 
     void on_discardTimeButton_clicked();
 
     void on_discardTimeAndContinueButton_clicked();
 
-    void timeout();
-
     void on_pushButton_clicked();
 
  private:
-    Ui::IdleNotificationDialog *ui;
+    Ui::IdleNotificationWidget *ui;
+    QWidget *previousView;
 
     uint64_t idleStarted;
-
-    QTimer *timer;
+    QDBusInterface *screensaver;
 
     QString timeEntryGUID;
+
+    QTimer *idleHintTimer;
 };
 
-#endif  // SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONDIALOG_H_
+#endif  // SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONWIDGET_H_

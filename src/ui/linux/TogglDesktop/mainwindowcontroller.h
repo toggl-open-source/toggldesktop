@@ -16,8 +16,8 @@
 #include "./preferencesdialog.h"
 #include "./aboutdialog.h"
 #include "./feedbackdialog.h"
-#include "./idlenotificationdialog.h"
 #include "./qxtglobalshortcut.h"
+#include "./systemtray.h"
 
 namespace Ui {
 class MainWindowController;
@@ -62,10 +62,6 @@ class MainWindowController : public QMainWindow {
         const QString informative_text);
 
     void displayPomodoroBreak(
-        const QString title,
-        const QString informative_text);
-
-    void displayReminder(
         const QString title,
         const QString informative_text);
 
@@ -117,15 +113,12 @@ class MainWindowController : public QMainWindow {
     PreferencesDialog *preferencesDialog;
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
-    IdleNotificationDialog *idleNotificationDialog;
 
     QIcon icon;
     QIcon iconDisabled;
-    QSystemTrayIcon *trayIcon;
-    QMessageBox *reminderPopup;
+    SystemTray *trayIcon;
 
     bool pomodoro;
-    bool reminder;
 
     QString script;
 
@@ -135,10 +128,6 @@ class MainWindowController : public QMainWindow {
     void connectMenuActions();
     void connectMenuAction(QAction *action);
     void enableMenuActions();
-
-    bool hasTrayIconCached;
-
-    bool hasTrayIcon() const;
 
     bool ui_started;
 };
