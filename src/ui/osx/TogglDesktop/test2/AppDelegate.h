@@ -13,6 +13,8 @@
 @property (strong) NSStatusItem *statusItem;
 @property (strong) NSImage *activeAppIcon;
 @property (retain, nonatomic) Reachability *reach;
+@property (weak, readonly) NSMenuItem *quitMenuItem;
+
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
 - (IBAction)onSyncMenuItem:(id)sender;

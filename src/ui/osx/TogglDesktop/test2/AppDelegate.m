@@ -31,6 +31,7 @@
 #import "CountryViewItem.h"
 #import "idler.h"
 #import "toggl_api.h"
+#import "AppDelegate+Shortcut.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -39,6 +40,7 @@
 @property (nonatomic, strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
 @property (nonatomic, strong) IBOutlet FeedbackWindowController *feedbackWindowController;
 @property (nonatomic, strong) IBOutlet ConsoleViewController *consoleWindowController;
+@property (weak) IBOutlet NSMenuItem *quitMenuItem;
 
 // Remember some app state
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
@@ -676,6 +678,9 @@ BOOL unsupportedOS = NO;
 		NSLog(@"Hiding dock icon.");
 		TransformProcessType(&psn, kProcessTransformToUIElementApplication);
 	}
+
+    // Handle shortcut
+    [self handleShortcutForSetting:cmd.settings];
 
 	// Stay on top
 	if (cmd.settings.on_top)
