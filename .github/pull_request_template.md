@@ -1,16 +1,23 @@
 ## ❓ What's this?
-<!-- Describe concise what is the problem and changed of this PR -->
+<!-- Describe concisely what is the problems and the changes of this PR -->
+
 
 ## 💾 How is it done?
-<!-- It would be nice if we describe how we tacle this problem -->
+<!-- It would be nice if we describe how we tackle this problem. -->
+
 
 ## 🤯 Changelogs 
-<!-- The changelog of this PR. Super useful for a huge PR -->
+<!-- The changelogs of this PR. It's useful for a huge PR. -->
+
 
 ## 👫 Relationships
 <!-- Mention your Issue or other PR, which connects with this PR -->
 
-Closes #
+<!-- If you want to close the main issue automatically after PR is merged.-->
+<!-- https://help.github.com/articles/closing-issues-using-keywords/-->
+
+<!-- Closes #your_issue_number-->
+
 
 ## 🔎 Review hints
-<!-- Review hints to the your teamate, who are responsible for review this PR -->
+<!-- Review hints to your teammates, who are responsible for review this PR. -->

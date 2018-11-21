@@ -5,5 +5,5 @@ about: It's where we can discuss.
 ---
 
 ## 🐞 Description
-<!-- Short and clear what is in your thought -->
+<!-- Short and concise what is in your thought. -->
 
