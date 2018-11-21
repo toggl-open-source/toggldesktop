@@ -320,7 +320,7 @@ BOOL onTop = NO;
 	if (self.mainWindowController.window.level == NSFloatingWindowLevel)
 	{
 		onTop = YES;
-		[self.mainWindowController.window setLevel:NSNormalWindowLevel];
+        [self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 }
 
@@ -328,7 +328,7 @@ BOOL onTop = NO;
 {
 	if (onTop)
 	{
-		[self.mainWindowController.window setLevel:NSFloatingWindowLevel];
+        [self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
 		onTop = NO;
 	}
 }
@@ -669,11 +669,11 @@ BOOL onTop = NO;
 	// Stay on top
 	if (cmd.settings.on_top)
 	{
-		[self.mainWindowController.window setLevel:NSFloatingWindowLevel];
+        [self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
 	}
 	else
 	{
-		[self.mainWindowController.window setLevel:NSNormalWindowLevel];
+        [self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 
 	onTop = cmd.settings.on_top;
