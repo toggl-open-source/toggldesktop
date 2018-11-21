@@ -296,4 +296,18 @@ extern void *ctx;
     }
     [[TrackingService sharedInstance] trackWindowSize:self.window.frame.size];
 }
+
+-(void)setWindowMode:(WindowMode) mode
+{
+    switch (mode)
+    {
+        case WindowModeAlwaysOnTop:
+            [self.window setLevel:NSFloatingWindowLevel];
+            self.window.collectionBehavior = NSWindowCollectionBehaviorManaged;
+            break;
+        case WindowModeDefault:
+            [self.window setLevel:NSNormalWindowLevel];
+            break;
+    }
+}
 @end
