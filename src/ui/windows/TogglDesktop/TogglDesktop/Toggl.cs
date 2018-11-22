@@ -579,7 +579,7 @@ public static partial class Toggl
 
     public static void TrackWindowSize(Size size)
     {
-        track_window_size(ctx, Convert.ToUInt64(size.Width), Convert.ToUInt64(size.Height));
+        track_window_size(ctx, (ulong)size.Width, (ulong)size.Height);
     }
 
     public static void SetWake()
