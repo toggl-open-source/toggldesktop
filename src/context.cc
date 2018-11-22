@@ -5554,8 +5554,8 @@ void on_websocket_message(
 void Context::TrackWindowSize(const Poco::Int64 width,
                               const Poco::Int64 height) {
     if ("production" == environment_) {
-        auto rect = toggl::Rectangle(width, height);
-        analytics_.TrackWindowSize(db_->AnalyticsClientID(), rect);
+        analytics_.TrackWindowSize(db_->AnalyticsClientID(),
+                                   toggl::Rectangle(width, height));
     }
 }
 

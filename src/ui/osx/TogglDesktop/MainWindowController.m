@@ -15,6 +15,7 @@
 #import "MenuItemTags.h"
 #import "DisplayCommand.h"
 #include <Carbon/Carbon.h>
+#import "TrackingService.h"
 
 @interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
@@ -87,6 +88,9 @@ extern void *ctx;
 	[attrTitle fixAttributesInRange:range];
 	[self.closeTroubleBoxButton setAttributedTitle:attrTitle];
 	self.troubleBoxDefaultHeight = self.troubleBox.frame.size.height;
+
+    // Tracking the size of window after loaded
+    [self trackWindowSize];
 }
 
 - (void)addErrorBoxConstraint
@@ -284,4 +288,12 @@ extern void *ctx;
 	return self.timeEntryListViewController.timeEntrypopover.shown;
 }
 
+-(void)trackWindowSize
+{
+    if (self.window == nil)
+    {
+        return;
+    }
+    [[TrackingService sharedInstance] trackWindowSize:self.window.frame.size];
+}
 @end

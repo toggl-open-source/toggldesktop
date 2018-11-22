@@ -13,7 +13,7 @@ namespace toggl {
 
 std::string Rectangle::str() const {
     std::stringstream ss;
-    ss << "{" << width << "}x{" << height << "}";
+    ss << width << "x" << height;
     return ss.str();
 }
     
