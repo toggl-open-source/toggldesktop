@@ -92,7 +92,7 @@ class TimeEntryEditorWidget : public QWidget {
 
     void on_doneButton_clicked();
     void on_deleteButton_clicked();
-    void on_addNewProject_linkActivated(const QString &link);
+    void on_addNewProject_clicked();
     void on_newProjectWorkspace_currentIndexChanged(int index);
     void on_description_currentIndexChanged(int index);
     void on_description_activated(const QString &arg1);
@@ -103,9 +103,9 @@ class TimeEntryEditorWidget : public QWidget {
     void on_dateEdit_editingFinished();
     void on_billable_clicked(bool checked);
     void on_tags_itemClicked(QListWidgetItem *item);
-    void on_addNewClientLabel_linkActivated(const QString &link);
+    void on_addNewClient_clicked();
     void on_addClientButton_clicked();
-    void on_cancelNewClientLabel_linkActivated(const QString &link);
+    void on_cancelNewClient_clicked();
     void on_colorButton_clicked();
 };
 
