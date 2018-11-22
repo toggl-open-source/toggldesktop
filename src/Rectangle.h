@@ -16,13 +16,13 @@ namespace toggl {
 
 class Rectangle {
     private:
-        Poco::UInt64 width;
-        Poco::UInt64 height;
+        const Poco::UInt64 width;
+        const Poco::UInt64 height;
 
     public:
-        Rectangle(Poco::UInt64 w=0, Poco::UInt64 h=0);
+        Rectangle(const Poco::UInt64 w, const Poco::UInt64 h): width(w), height(h) {}
 
-        std::string actionStr() const;
+        std::string str() const;
     };
 }
 

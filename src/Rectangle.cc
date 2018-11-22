@@ -11,13 +11,9 @@
 
 namespace toggl {
 
-std::string Rectangle::actionStr() const {
+std::string Rectangle::str() const {
     std::stringstream ss;
-    ss << "winsize-{"
-        << width
-        << "}x{"
-        << height
-        << "}";
+    ss << "{" << width << "}x{" << height << "}";
     return ss.str();
 }
     

@@ -5551,4 +5551,12 @@ void on_websocket_message(
     ctx->LoadUpdateFromJSONString(json);
 }
 
+void Context::TrackWindowSize(const Poco::Int64 width,
+                              const Poco::Int64 height) {
+    if ("production" == environment_) {
+        auto rect = toggl::Rectangle(width, height);
+        analytics_.TrackWindowSize(db_->AnalyticsClientID(), rect);
+    }
+}
+
 }  // namespace toggl
