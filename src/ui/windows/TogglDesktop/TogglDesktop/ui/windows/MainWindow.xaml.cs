@@ -79,6 +79,7 @@ namespace TogglDesktop
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
+            this.trackingWindowSize();
         }
 
         #region properties
@@ -261,6 +262,16 @@ namespace TogglDesktop
             {
                 this.shutdown(0);
             }
+        }
+
+        private void trackingWindowSize()
+        {
+            var currentWindow = this.childWindows.First();
+            if (currentWindow == null)
+            {
+                return;
+            }
+            Toggl.TrackWindowSize(new System.Windows.Size(currentWindow.Width, currentWindow.Height));
         }
 
         #endregion
