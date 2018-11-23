@@ -92,7 +92,6 @@
 void *ctx;
 BOOL manualMode = NO;
 BOOL onTop = NO;
-BOOL unsupportedOS = NO;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
@@ -101,10 +100,18 @@ BOOL unsupportedOS = NO;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
 
-	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+	if ([self updateCheckEnabled])
+	{
+		[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
 
-	NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
-	unsupportedOS = (osVersion.majorVersion == 10 && osVersion.minorVersion < 11);
+		NSAssert(ctx, @"ctx is not initialized, cannot continue");
+		char *str = toggl_get_update_channel(ctx);
+		NSAssert(str, @"Could not read update channel value");
+		NSString *channel = [NSString stringWithUTF8String:str];
+		free(str);
+		[Utils setUpdaterChannel:channel];
+	}
+	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -271,17 +278,6 @@ BOOL unsupportedOS = NO;
 
 	if ([self updateCheckEnabled])
 	{
-		[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
-
-		NSAssert(ctx, @"ctx is not initialized, cannot continue");
-		char *str = toggl_get_update_channel(ctx);
-
-		NSAssert(str, @"Could not read update channel value");
-		NSString *channel = [NSString stringWithUTF8String:str];
-
-		free(str);
-		[Utils setUpdaterChannel:channel];
-
 		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	}
@@ -347,21 +343,6 @@ BOOL unsupportedOS = NO;
 
 - (BOOL)updateCheckEnabled
 {
-	if (unsupportedOS)
-	{
-		// MacOs version not supported
-		NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
-
-		NSString *text = [NSString stringWithFormat:@"You are using an unsupported version of MacOs(%ld.%ld). Please upgrade your MacOS as Toggl Desktop will stop working on older machines in the very near future!", (long)osVersion.majorVersion, (long)osVersion.minorVersion];
-
-		NSAlert *alert = [[NSAlert alloc] init];
-		[alert addButtonWithTitle:@"OK"];
-		[alert setMessageText:@"Unsupported MacOS version detected!"];
-		[alert setInformativeText:text];
-		[alert setAlertStyle:NSWarningAlertStyle];
-		[alert runModal];
-		return NO;
-	}
 	if (self.scriptPath)
 	{
 		return NO;
