@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QTimer>
 #include <QListWidgetItem>
+#include <QStackedWidget>
 
 #include <stdint.h>
 #include "./colorpicker.h"
@@ -23,9 +24,11 @@ class TimeEntryEditorWidget : public QWidget {
     Q_OBJECT
 
  public:
-    explicit TimeEntryEditorWidget(QWidget *parent = 0);
+    explicit TimeEntryEditorWidget(QStackedWidget *parent = nullptr);
     ~TimeEntryEditorWidget();
     void setSelectedColor(QString color);
+
+    void display();
 
  private:
     Ui::TimeEntryEditorWidget *ui;
