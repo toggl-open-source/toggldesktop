@@ -28,7 +28,6 @@
                 <outlet property="projectAutoCompleteInput" destination="Z6v-zC-TTo" id="eSi-rz-NIa"/>
                 <outlet property="projectNameTextField" destination="2Pz-WE-b3h" id="K15-Cv-8rM"/>
                 <outlet property="projectOpenButton" destination="wb9-Zz-BWb" id="Vac-9v-ddD"/>
-                <outlet property="projectOpenButtonClicked" destination="wb9-Zz-BWb" id="izh-s3-6Z2"/>
                 <outlet property="projectPublicCheckbox" destination="b5J-U3-cc3" id="qbw-vP-7Yw"/>
                 <outlet property="projectSelectBox" destination="6Sh-4d-bKb" id="gbr-B6-ncX"/>
                 <outlet property="resizeHandle" destination="oCY-bD-X7j" id="jvV-pq-l2V"/>
