@@ -12,6 +12,11 @@
 #import "DisplayCommand.h"
 #import "Utils.h"
 #import "Sparkle.h"
+#import "UnsupportedNotice.h"
+
+@interface AboutWindowController ()
+@property BOOL unsupportedOS;
+@end
 
 @implementation AboutWindowController
 
@@ -39,6 +44,9 @@ extern void *ctx;
 	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
 	free(str);
 
+	NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+	self.unsupportedOS = (osVersion.majorVersion == 10 && osVersion.minorVersion < 15);
+
 	if ([self updateCheckEnabled])
 	{
 		self.updateChannelComboBox.hidden = NO;
@@ -55,6 +63,12 @@ extern void *ctx;
 
 - (BOOL)updateCheckEnabled
 {
+	if (self.unsupportedOS)
+	{
+		[[UnsupportedNotice sharedInstance] showNotice];
+		return NO;
+	}
+
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 
 	return [infoDict[@"KopsikCheckForUpdates"] boolValue];

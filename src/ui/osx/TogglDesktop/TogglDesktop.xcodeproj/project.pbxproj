@@ -20,6 +20,7 @@
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A41A2F2AE0007DC17F /* start_button.pdf */; };
 		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
+		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
 		3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237151A9F612E00643059 /* toggl-logo-white.pdf */; };
 		3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237161A9F612E00643059 /* toggl-desktop-bg.png */; };
@@ -336,6 +337,8 @@
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2645A41A2F2AE0007DC17F /* start_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = start_button.pdf; sourceTree = "<group>"; };
 		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
+		3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnsupportedNotice.h; sourceTree = "<group>"; };
+		3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnsupportedNotice.m; sourceTree = "<group>"; };
 		3C3AF64C20ACC6280088A3A6 /* CountryViewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CountryViewItem.h; sourceTree = "<group>"; };
 		3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CountryViewItem.m; sourceTree = "<group>"; };
 		3C4237151A9F612E00643059 /* toggl-logo-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "toggl-logo-white.pdf"; sourceTree = "<group>"; };
@@ -811,6 +814,8 @@
 				3CE1CABF1C774F2B00D0ADD5 /* LoadMoreCell.h */,
 				3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */,
 				3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */,
+				3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */,
+				3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1405,6 +1410,7 @@
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
+				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
