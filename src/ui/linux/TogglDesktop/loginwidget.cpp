@@ -6,12 +6,10 @@
 
 #include "./toggl.h"
 
-LoginWidget::LoginWidget(QWidget *parent) : QWidget(parent),
+LoginWidget::LoginWidget(QStackedWidget *parent) : QWidget(parent),
 ui(new Ui::LoginWidget),
 oauth2(new OAuth2(this)) {
     ui->setupUi(this);
-
-    setVisible(false);
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
@@ -43,6 +41,10 @@ LoginWidget::~LoginWidget() {
     delete ui;
 }
 
+void LoginWidget::display() {
+    qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
+}
+
 void LoginWidget::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         on_login_clicked();
@@ -54,7 +56,6 @@ void LoginWidget::mousePressEvent(QMouseEvent* event) {
 }
 
 void LoginWidget::displayOverlay(const int64_t type) {
-    setVisible(false);
 }
 
 void LoginWidget::displayLogin(
@@ -62,11 +63,10 @@ void LoginWidget::displayLogin(
     const uint64_t user_id) {
 
     if (open) {
-        setVisible(true);
+        display();
         ui->email->setFocus();
     }
     if (user_id) {
-        setVisible(false);
         ui->password->clear();
     }
 }
@@ -75,9 +75,6 @@ void LoginWidget::displayTimeEntryList(
     const bool open,
     QVector<TimeEntryView *> list,
     const bool) {
-    if (open) {
-        setVisible(false);
-    }
 }
 
 void LoginWidget::on_login_clicked() {

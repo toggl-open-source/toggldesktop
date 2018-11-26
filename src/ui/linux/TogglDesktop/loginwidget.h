@@ -5,6 +5,7 @@
 
 #include <QWidget>
 #include <QVector>
+#include <QStackedWidget>
 
 #include <stdint.h>
 
@@ -20,8 +21,10 @@ class LoginWidget : public QWidget {
     Q_OBJECT
 
  public:
-    explicit LoginWidget(QWidget *parent = 0);
+    explicit LoginWidget(QStackedWidget *parent = nullptr);
     ~LoginWidget();
+
+    void display();
 
  protected:
     virtual void keyPressEvent(QKeyEvent *event);

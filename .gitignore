@@ -24,6 +24,7 @@ test/*
 
 third_party/bugsnag-qt/.git
 third_party/bugsnag-qt/build
+third_party/bugsnag-qt/moc_*.h
 
 third_party/openssl/**/*.o-*
 third_party/openssl/stnrUhYw
@@ -121,11 +122,13 @@ src/ui/windows/TogglDesktop/packages
 # QT projects
 build-*-Debug
 *.pro.user
+.qmake.stash
 
 # QT project specific
 src/ui/linux/TogglDesktop/TogglDesktop
 src/ui/linux/TogglDesktop/ui_*.h
 src/ui/linux/TogglDesktop/moc_*.cpp
+src/ui/linux/TogglDesktop/moc_*.h
 src/ui/linux/TogglDesktop/cacert.pem
 
 # qt generated makefiles
@@ -169,3 +172,6 @@ src/ui/windows/TogglDesktop/TogglDesktopDLLInteropTest/bin
 # Sublime text
 *.sublime-workspace
 *.sublime-project
+
+# Qt Creator
+.*.swp

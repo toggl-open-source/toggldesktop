@@ -2,12 +2,11 @@
 #include "ui_overlaywidget.h"
 #include "./toggl.h"
 
-OverlayWidget::OverlayWidget(QWidget *parent) :
+OverlayWidget::OverlayWidget(QStackedWidget *parent) :
     QWidget(parent),
     ui(new Ui::OverlayWidget)
 {
     ui->setupUi(this);
-    setVisible(false);
     current_type = -1;
 
     ui->bottomText->setCursor(Qt::PointingHandCursor);
@@ -25,6 +24,10 @@ OverlayWidget::OverlayWidget(QWidget *parent) :
 OverlayWidget::~OverlayWidget()
 {
     delete ui;
+}
+
+void OverlayWidget::display() {
+    qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
 }
 
 void OverlayWidget::displayOverlay(const int64_t type) {
@@ -60,7 +63,7 @@ void OverlayWidget::displayOverlay(const int64_t type) {
     ui->topText->setText(top);
     ui->actionButton->setText(button);
     ui->bottomText->setText(bottom);
-    setVisible(true);
+    display();
 }
 
 void OverlayWidget::displayLogin(
@@ -68,7 +71,6 @@ void OverlayWidget::displayLogin(
     const uint64_t user_id) {
 
     if (open || user_id) {
-        setVisible(false);
     }
 }
 
@@ -76,9 +78,6 @@ void OverlayWidget::displayTimeEntryList(
     const bool open,
     QVector<TimeEntryView *> list,
     const bool) {
-    if (open) {
-        setVisible(false);
-    }
 }
 
 void OverlayWidget::on_actionButton_clicked()

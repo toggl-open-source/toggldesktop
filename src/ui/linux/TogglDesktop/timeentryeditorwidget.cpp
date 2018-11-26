@@ -15,7 +15,7 @@
 #include "./timeentryview.h"
 #include "./toggl.h"
 
-TimeEntryEditorWidget::TimeEntryEditorWidget(QWidget *parent) : QWidget(parent),
+TimeEntryEditorWidget::TimeEntryEditorWidget(QStackedWidget *parent) : QWidget(parent),
 ui(new Ui::TimeEntryEditorWidget),
 guid(""),
 timeEntryAutocompleteNeedsUpdate(false),
@@ -43,8 +43,6 @@ previousTagList("") {
     ui->project->installEventFilter(this);
 
     toggleNewClientMode(false);
-
-    setVisible(false);
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
@@ -85,6 +83,10 @@ TimeEntryEditorWidget::~TimeEntryEditorWidget() {
 void TimeEntryEditorWidget::setSelectedColor(QString color) {
     QString style = "font-size:72px;" + color;
     ui->colorButton->setStyleSheet(style);
+}
+
+void TimeEntryEditorWidget::display() {
+    qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
 }
 
 void TimeEntryEditorWidget::displayClientSelect(
@@ -175,13 +177,11 @@ void TimeEntryEditorWidget::displayLogin(
     const bool open,
     const uint64_t user_id) {
     if (open || !user_id) {
-        setVisible(false);
         timer->stop();
     }
 }
 
 void TimeEntryEditorWidget::aboutToDisplayTimeEntryList() {
-    setVisible(false);
     timer->stop();
 }
 
@@ -202,7 +202,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
     if (open) {
         // Show the dialog first, hide items later (to preserve size)
-        setVisible(true);
+        display();
 
         // Reset adding new project
         ui->newProject->setVisible(false);

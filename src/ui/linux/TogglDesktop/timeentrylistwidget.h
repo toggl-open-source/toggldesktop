@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QVector>
 #include <QMutex>
+#include <QStackedWidget>
 
 #include <stdint.h>
 
@@ -19,8 +20,10 @@ class TimeEntryListWidget : public QWidget {
     Q_OBJECT
 
  public:
-    explicit TimeEntryListWidget(QWidget *parent = 0);
+    explicit TimeEntryListWidget(QStackedWidget *parent = nullptr);
     ~TimeEntryListWidget();
+
+    void display();
 
  private slots:  // NOLINT
 
