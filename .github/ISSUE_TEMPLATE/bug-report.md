@@ -13,11 +13,11 @@ OS Version: <!-- macOS 10.14 or Windows 10.1 or Linux 14.04 -->
 Toggl Version: <!-- 7.4.253 -->
 
 
-### 🐞 Actual behaviour
+### 🐞 Actual behavior
 <!-- A clear and concise description of what happened -->
 
 
-### 💯 Expected behaviour
+### 💯 Expected behavior
 <!-- A clear and concise description of what you expected to happen -->
 
 
