@@ -1,6 +1,6 @@
 ---
-name: 🌏 Feature request
-about: Suggest enhancements to make Toggl Desktop better
+name: 🛰️ General issue
+about: If the issue doesn't fit into first two, choose this
 
 ---
 <!-- Before submitting a new issue, please make sure that the same issue has not been created already -->
@@ -13,7 +13,3 @@ Platform: <!-- macOS/Windows/Linux -->
 
 ### 📒 Description
 <!-- Short and concise description of the imporovement/feature -->
-
-
-### ⭐️ Why do you want this?
-<!-- Let us know what is the use case that this improvement solves -->
