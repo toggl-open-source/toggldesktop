@@ -7,6 +7,8 @@
 #include <QDebug>  // NOLINT
 #include <QMessageBox>  // NOLINT
 #include <QKeyEvent> // NOLINT
+#include <QTimer> // NOLINT
+#include <QLineEdit> // NOLINT
 
 #include "./autocompleteview.h"
 #include "./genericview.h"
@@ -41,9 +43,6 @@ previousTagList("") {
     ui->project->installEventFilter(this);
 
     toggleNewClientMode(false);
-
-    ui->addNewProject->setText(
-        "<a href=\"#add_new_project\">Add new project</a>");
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
@@ -352,16 +351,13 @@ void TimeEntryEditorWidget::on_deleteButton_clicked() {
     }
 }
 
-void TimeEntryEditorWidget::on_addNewProject_linkActivated(
-    const QString &link) {
-
+void TimeEntryEditorWidget::on_addNewProject_clicked() {
     bool hasMultipleWorkspaces = ui->newProjectWorkspace->count() > 1;
     ui->newProjectWorkspace->setVisible(hasMultipleWorkspaces);
     ui->newProjectWorkspaceLabel->setVisible(hasMultipleWorkspaces);
 
-    ui->addNewProject->setVisible(false);
     ui->newProject->setVisible(true);
-    ui->newProjectName->setFocus();
+    ui->addNewProject->setVisible(false);
 
     if (!hasMultipleWorkspaces) {
         ui->newProjectWorkspace->setCurrentIndex(0);
@@ -479,24 +475,26 @@ void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
 
 void TimeEntryEditorWidget::toggleNewClientMode(const bool visible) {
     // First hide stuff, to avoid expanding
-    ui->cancelNewClientLabel->setVisible(false);
-    ui->addNewClientLabel->setVisible(false);
+    ui->cancelNewClient->setVisible(false);
+    ui->addNewClient->setVisible(false);
     ui->newProjectClient->setVisible(false);
     ui->newClientName->setVisible(false);
     ui->addClientButton->setVisible(false);
 
     // No display whats needed
-    ui->cancelNewClientLabel->setVisible(visible);
-    ui->addNewClientLabel->setVisible(!visible);
+    ui->cancelNewClient->setVisible(visible);
+    ui->addNewClient->setVisible(!visible);
     ui->newProjectClient->setVisible(!visible);
     ui->newClientName->setVisible(visible);
     ui->addClientButton->setVisible(visible);
 
+    ui->newProjectClient->setFocus();
+    ui->newClientName->setFocus();
+
     ui->newClientName->setText("");
 }
 
-void TimeEntryEditorWidget::on_addNewClientLabel_linkActivated(
-    const QString &link) {
+void TimeEntryEditorWidget::on_addNewClient_clicked() {
     toggleNewClientMode(true);
 }
 
@@ -523,8 +521,7 @@ void TimeEntryEditorWidget::on_addClientButton_clicked() {
     toggleNewClientMode(false);
 }
 
-void TimeEntryEditorWidget::on_cancelNewClientLabel_linkActivated(
-    const QString &link) {
+void TimeEntryEditorWidget::on_cancelNewClient_clicked() {
     toggleNewClientMode(false);
 }
 
