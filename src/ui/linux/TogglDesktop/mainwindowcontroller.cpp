@@ -16,6 +16,7 @@
 #include <QMessageBox>  // NOLINT
 #include <QSettings>  // NOLINT
 #include <QVBoxLayout>  // NOLINT
+#include <QStackedWidget>  // NOLINT
 #include <QStatusBar>  // NOLINT
 #include <QPushButton>  // NOLINT
 
@@ -61,15 +62,18 @@ MainWindowController::MainWindowController(
 
     ui->menuBar->setVisible(true);
 
-    QVBoxLayout *verticalLayout = new QVBoxLayout();
-    verticalLayout->addWidget(new ErrorViewController());
-    verticalLayout->addWidget(new OverlayWidget());
-    verticalLayout->addWidget(new LoginWidget());
-    verticalLayout->addWidget(new TimeEntryListWidget());
-    verticalLayout->addWidget(new TimeEntryEditorWidget());
+    QStackedWidget *stacked = new QStackedWidget;
+    stacked->addWidget(new OverlayWidget(stacked));
+    stacked->addWidget(new LoginWidget(stacked));
+    stacked->addWidget(new TimeEntryEditorWidget(stacked));
+    stacked->addWidget(new TimeEntryListWidget(stacked));
+    QVBoxLayout *verticalLayout = new QVBoxLayout;
     verticalLayout->setContentsMargins(0, 0, 0, 0);
     verticalLayout->setSpacing(0);
+    verticalLayout->addWidget(new ErrorViewController());
+    verticalLayout->addWidget(stacked);
     centralWidget()->setLayout(verticalLayout);
+
 
     readSettings();
 

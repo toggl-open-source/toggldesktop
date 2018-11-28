@@ -2,6 +2,7 @@
 #define OVERLAYWIDGET_H
 
 #include <QWidget>
+#include <QStackedWidget>
 #include <stdint.h>
 #include "./timeentryview.h"
 
@@ -14,8 +15,9 @@ class OverlayWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit OverlayWidget(QWidget *parent = 0);
+    explicit OverlayWidget(QStackedWidget *parent = nullptr);
     ~OverlayWidget();
+    void display();
 
 private:
     Ui::OverlayWidget *ui;
