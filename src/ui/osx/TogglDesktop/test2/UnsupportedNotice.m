@@ -25,7 +25,7 @@
 {
 	NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
 
-	return (osVersion.majorVersion == 10 && osVersion.minorVersion < 15);
+	return (osVersion.majorVersion == 10 && osVersion.minorVersion < 11);
 }
 
 - (instancetype)init
