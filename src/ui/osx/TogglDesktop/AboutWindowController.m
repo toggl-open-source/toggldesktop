@@ -56,11 +56,6 @@ extern void *ctx;
 
 - (BOOL)updateCheckEnabled
 {
-	if (![[UnsupportedNotice sharedInstance] validateOSVersion])
-	{
-		return NO;
-	}
-
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 
 	return [infoDict[@"KopsikCheckForUpdates"] boolValue];
@@ -68,6 +63,10 @@ extern void *ctx;
 
 - (void)checkForUpdates
 {
+	if (![[UnsupportedNotice sharedInstance] validateOSVersion])
+	{
+		return;
+	}
 	if (![self updateCheckEnabled])
 	{
 		return;
