@@ -12,8 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UnsupportedNotice : NSAlert
 
+@property (nonatomic, assign, readonly) BOOL unsupportedOS;
+
 + (instancetype)sharedInstance;
 
+- (BOOL)validateOSVersion;
 - (void)showNotice;
 
 @end

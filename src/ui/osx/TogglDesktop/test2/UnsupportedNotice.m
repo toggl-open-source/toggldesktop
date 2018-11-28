@@ -21,6 +21,34 @@
 	return instance;
 }
 
+- (BOOL)unsupportedOS
+{
+	NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+
+	return (osVersion.majorVersion == 10 && osVersion.minorVersion < 15);
+}
+
+- (instancetype)init
+{
+	self = [super init];
+	if (self)
+	{
+		[self addButtonWithTitle:@"OK"];
+		[self setAlertStyle:NSWarningAlertStyle];
+	}
+
+	return self;
+}
+
+- (BOOL)validateOSVersion
+{
+	if (self.unsupportedOS)
+	{
+		[self showNotice];
+	}
+	return !self.unsupportedOS;
+}
+
 - (void)showNotice
 {
 	NSDate *today = [NSDate date];
@@ -39,8 +67,6 @@
 
 	[self setMessageText:title];
 	[self setInformativeText:text];
-	[self addButtonWithTitle:@"OK"];
-	[self setAlertStyle:NSWarningAlertStyle];
 	[self runModal];
 
 	if (result != NSOrderedAscending)

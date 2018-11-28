@@ -93,7 +93,6 @@
 void *ctx;
 BOOL manualMode = NO;
 BOOL onTop = NO;
-BOOL unsupportedOS = NO;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
@@ -103,9 +102,6 @@ BOOL unsupportedOS = NO;
 	self.showMenuBarTimer = NO;
 
 	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-
-	NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
-	unsupportedOS = (osVersion.majorVersion == 10 && osVersion.minorVersion < 15);
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -348,11 +344,11 @@ BOOL unsupportedOS = NO;
 
 - (BOOL)updateCheckEnabled
 {
-	if (unsupportedOS)
+	if (![[UnsupportedNotice sharedInstance] validateOSVersion])
 	{
-		[[UnsupportedNotice sharedInstance] showNotice];
 		return NO;
 	}
+
 	if (self.scriptPath)
 	{
 		return NO;
