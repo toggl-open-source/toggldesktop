@@ -1,5 +1,5 @@
 ---
-name: 🌏 Feature request
+name: 🚀 Feature request
 about: Suggest enhancements to make Toggl Desktop better
 
 ---

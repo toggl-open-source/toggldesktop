@@ -1,5 +1,5 @@
 ---
-name: 🛰️ General issue
+name: 🌏 General issue
 about: If the issue doesn't fit into first two, choose this
 
 ---
