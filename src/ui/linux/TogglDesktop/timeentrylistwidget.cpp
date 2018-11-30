@@ -8,7 +8,7 @@
 #include "./timeentrycellwidget.h"
 
 TimeEntryListWidget::TimeEntryListWidget(QStackedWidget *parent) : QWidget(parent),
-ui(new Ui::TimeEntryListWidget){
+ui(new Ui::TimeEntryListWidget) {
     ui->setupUi(this);
 
 
