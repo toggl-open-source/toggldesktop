@@ -23,6 +23,14 @@ ui(new Ui::PreferencesDialog) {
     connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
             this, SLOT(updateContinueStopShortcut()));  // NOLINT
 
+    connect(ui->dayCheckbox_1, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
+    connect(ui->dayCheckbox_2, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
+    connect(ui->dayCheckbox_3, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
+    connect(ui->dayCheckbox_4, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
+    connect(ui->dayCheckbox_5, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
+    connect(ui->dayCheckbox_6, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
+    connect(ui->dayCheckbox_7, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
+
     keyId = 0;
 }
 
@@ -53,6 +61,15 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->remindToTrackTime->setChecked(settings->Reminder);
     ui->reminderMinutes->setText(QString::number(settings->ReminderMinutes));
     ui->reminderMinutes->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->dayCheckbox_1->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->dayCheckbox_2->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->dayCheckbox_3->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->dayCheckbox_4->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->dayCheckbox_5->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->dayCheckbox_6->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->dayCheckbox_7->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->reminderStartTimeEdit->setEnabled(ui->remindToTrackTime->isChecked());
+    ui->reminderEndTimeEdit->setEnabled(ui->remindToTrackTime->isChecked());
 
     ui->pomodoroTimer->setChecked(settings->Pomodoro);
     ui->pomodoroMinutes->setText(QString::number(settings->PomodoroMinutes));
@@ -67,6 +84,17 @@ void PreferencesDialog::displaySettings(const bool open,
         && ui->pomodoroBreakTimer->isChecked());
 
     ui->focusAppOnShortcut->setChecked((settings->FocusOnShortcut));
+
+    ui->dayCheckbox_1->setChecked(settings->RemindOnMonday);
+    ui->dayCheckbox_2->setChecked(settings->RemindOnTuesday);
+    ui->dayCheckbox_3->setChecked(settings->RemindOnWednesday);
+    ui->dayCheckbox_4->setChecked(settings->RemindOnThursday);
+    ui->dayCheckbox_5->setChecked(settings->RemindOnFriday);
+    ui->dayCheckbox_6->setChecked(settings->RemindOnSaturday);
+    ui->dayCheckbox_7->setChecked(settings->RemindOnSunday);
+
+    ui->reminderStartTimeEdit->setTime(settings->RemindStartTime);
+    ui->reminderEndTimeEdit->setTime(settings->RemindEndTime);
 
     QString sh(TogglApi::instance->getShowHideKey());
     if (sh.length() == 0) {
@@ -84,6 +112,19 @@ void PreferencesDialog::displaySettings(const bool open,
 void PreferencesDialog::displayLogin(const bool open,
                                      const uint64_t user_id) {
     ui->recordTimeline->setEnabled(!open && user_id);
+}
+
+void PreferencesDialog::onDayCheckboxClicked(bool checked) {
+    Q_UNUSED(checked);
+    TogglApi::instance->setSettingsRemindDays(
+        ui->dayCheckbox_1->isChecked(),
+        ui->dayCheckbox_2->isChecked(),
+        ui->dayCheckbox_3->isChecked(),
+        ui->dayCheckbox_4->isChecked(),
+        ui->dayCheckbox_5->isChecked(),
+        ui->dayCheckbox_6->isChecked(),
+        ui->dayCheckbox_7->isChecked()
+    );
 }
 
 void PreferencesDialog::on_proxyHost_editingFinished() {
@@ -153,6 +194,20 @@ void PreferencesDialog::on_continueStopClear_clicked() {
 void PreferencesDialog::on_showHideButton_clicked() {
     ui->showHideButton->setText("Type shortcut");
     keyId = 1;
+}
+
+void PreferencesDialog::on_reminderStartTimeEdit_editingFinished() {
+    TogglApi::instance->setSettingsRemindTimes(
+        ui->reminderStartTimeEdit->time(),
+        ui->reminderEndTimeEdit->time()
+    );
+}
+
+void PreferencesDialog::on_reminderEndTimeEdit_editingFinished() {
+    TogglApi::instance->setSettingsRemindTimes(
+        ui->reminderStartTimeEdit->time(),
+        ui->reminderEndTimeEdit->time()
+    );
 }
 
 void PreferencesDialog::on_continueStopButton_clicked() {
@@ -268,3 +323,4 @@ void PreferencesDialog::on_useSystemProxySettings_clicked(bool checked) {
 void PreferencesDialog::on_focusAppOnShortcut_clicked(bool checked) {
     TogglApi::instance->setSettingsFocusOnShortcut(checked);
 }
+
