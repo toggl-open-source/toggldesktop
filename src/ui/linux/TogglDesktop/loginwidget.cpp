@@ -137,13 +137,13 @@ void LoginWidget::setCountries(
 void LoginWidget::on_viewchangelabel_linkActivated(const QString &link)
 {
     if (signupVisible) {
-        ui->signupFrame->hide();
-        ui->loginFrame->show();
+        ui->signupWidget->hide();
+        ui->loginWidget->show();
         ui->viewchangelabel->setText("<html><head/><body><a href='#' style='cursor:pointer;font-weight:bold;text-decoration:none;color:#fff;'>Sign up for free</a></body></html>");
         signupVisible = false;
     } else {
-        ui->loginFrame->hide();
-        ui->signupFrame->show();
+        ui->loginWidget->hide();
+        ui->signupWidget->show();
         ui->viewchangelabel->setText("<html><head/><body><a href='#' style='cursor:pointer;font-weight:bold;text-decoration:none;color:#fff;'>Back to login</a></body></html>");
         signupVisible = true;
         if (!countriesLoaded) {
