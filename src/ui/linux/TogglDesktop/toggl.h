@@ -173,8 +173,8 @@ class TogglApi : public QObject {
         bool remind_sat,
         bool remind_sun);
     bool setSettingsRemindTimes (
-        const QString &remind_starts,
-        const QString &remind_ends);
+        const QTime &remind_starts,
+        const QTime &remind_ends);
 
     void toggleTimelineRecording(
         const bool recordTimeline);

@@ -494,8 +494,8 @@ bool TogglApi::setSettingsRemindDays(
                                           remind_sun);
 }
 
-bool TogglApi::setSettingsRemindTimes(const QString &remind_starts, const QString &remind_ends) {
-    return toggl_set_settings_remind_times(ctx, qPrintable(remind_starts), qPrintable(remind_ends));
+bool TogglApi::setSettingsRemindTimes(const QTime &remind_starts, const QTime &remind_ends) {
+    return toggl_set_settings_remind_times(ctx, qPrintable(remind_starts.toString("HH:mm")), qPrintable(remind_ends.toString("HH:mm")));
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
