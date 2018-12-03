@@ -996,6 +996,10 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_load_more(void* context);
 
+    TOGGL_EXPORT void track_window_size(void *context,
+                                        const uint64_t width,
+                                        const uint64_t height);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

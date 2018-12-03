@@ -577,6 +577,11 @@ public static partial class Toggl
         toggl_set_sleep(ctx);
     }
 
+    public static void TrackWindowSize(Size size)
+    {
+        track_window_size(ctx, (ulong)size.Width, (ulong)size.Height);
+    }
+
     public static void SetWake()
     {
         toggl_set_wake(ctx);

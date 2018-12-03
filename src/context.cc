@@ -1576,6 +1576,17 @@ const std::string Context::installerPlatform() {
     return ss.str();
 }
 
+const std::string Context::shortOSName() {
+    if (POCO_OS_LINUX == POCO_OS) {
+        return "linux";
+    } else if (POCO_OS_WINDOWS_NT == POCO_OS) {
+        return "win";
+    } else if (POCO_OS_MAC_OS_X == POCO_OS) {
+        return "mac";
+    }
+    return "unknown";
+}
+
 void Context::TimelineUpdateServerSettings() {
     logger().debug("TimelineUpdateServerSettings");
 
@@ -5549,6 +5560,15 @@ void on_websocket_message(
 
     Context *ctx = reinterpret_cast<Context *>(context);
     ctx->LoadUpdateFromJSONString(json);
+}
+
+void Context::TrackWindowSize(const Poco::Int64 width,
+                              const Poco::Int64 height) {
+    if ("production" == environment_) {
+        analytics_.TrackWindowSize(db_->AnalyticsClientID(),
+                                   shortOSName(),
+                                   toggl::Rectangle(width, height));
+    }
 }
 
 }  // namespace toggl

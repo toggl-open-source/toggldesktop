@@ -1341,6 +1341,12 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_window_size(
+        IntPtr context,
+        UInt64 width,
+        UInt64 height);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_wake(
         IntPtr context);
 

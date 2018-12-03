@@ -46,6 +46,15 @@ void Analytics::TrackOs(const std::string client_id,
     Track(client_id, "os", ss.str());
 }
 
+void Analytics::TrackWindowSize(const std::string client_id,
+                                const std::string os,
+                                const toggl::Rectangle rect) {
+    std::stringstream ss;
+    ss << os << "/mainsize-" << rect.str();
+
+    Track(client_id, "stats", ss.str());
+}
+
 void Analytics::TrackSettings(const std::string client_id,
                               const bool record_timeline,
                               const Settings settings,

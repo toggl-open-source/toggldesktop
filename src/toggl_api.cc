@@ -1340,3 +1340,12 @@ bool_t toggl_get_mini_timer_visible(
 void toggl_load_more(void* context) {
     app(context)->LoadMore();
 }
+
+void track_window_size(void *context,
+                       const uint64_t width,
+                       const uint64_t height) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackWindowSize(width, height);
+}

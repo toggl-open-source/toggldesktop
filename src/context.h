@@ -443,6 +443,9 @@ class Context : public TimelineDatasource {
 
     error PullCountries();
 
+    void TrackWindowSize(const Poco::Int64 width,
+                         const Poco::Int64 height);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -454,6 +457,7 @@ class Context : public TimelineDatasource {
 
     static const std::string installerPlatform();
     static const std::string linuxPlatformName();
+    static const std::string shortOSName();
 
     Poco::Logger &logger() const;
 
