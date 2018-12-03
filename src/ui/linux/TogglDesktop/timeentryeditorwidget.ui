@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>346</width>
-    <height>545</height>
+    <height>581</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,29 +77,15 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="addNewProject">
-        <property name="font">
-         <font>
-          <pointsize>-1</pointsize>
-         </font>
-        </property>
+       <widget class="QPushButton" name="addNewProject">
         <property name="styleSheet">
-         <string notr="true">font-size:12px;</string>
+         <string notr="true">padding:1;text-align:right;color:palette(link);text-decoration:underline</string>
         </property>
         <property name="text">
-         <string>&lt;a href=&quot;#&quot;&gt;Add new project&lt;/a&gt;</string>
+         <string>Add new project</string>
         </property>
-        <property name="textFormat">
-         <enum>Qt::RichText</enum>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="openExternalLinks">
-         <bool>false</bool>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::TextBrowserInteraction</set>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -307,38 +293,28 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="addNewClientLabel">
-              <property name="font">
-               <font>
-                <pointsize>-1</pointsize>
-               </font>
+             <widget class="QPushButton" name="addNewClient">
+              <property name="styleSheet">
+               <string notr="true">padding:1px;text-align:right;color:palette(link);text-decoration:underline</string>
               </property>
               <property name="text">
-               <string>&lt;a href=&quot;#&quot;&gt;Add new client&lt;/a&gt;</string>
+               <string>Add new client</string>
               </property>
-              <property name="textFormat">
-               <enum>Qt::RichText</enum>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="cancelNewClientLabel">
-              <property name="font">
-               <font>
-                <pointsize>-1</pointsize>
-               </font>
+             <widget class="QPushButton" name="cancelNewClient">
+              <property name="styleSheet">
+               <string notr="true">padding:1px;text-align:right;color:palette(link);text-decoration:underline</string>
               </property>
               <property name="text">
-               <string>&lt;a href=&quot;#&quot;&gt;cancel&lt;/a&gt;</string>
+               <string>Cancel</string>
               </property>
-              <property name="textFormat">
-               <enum>Qt::RichText</enum>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -791,7 +767,16 @@
  <tabstops>
   <tabstop>description</tabstop>
   <tabstop>project</tabstop>
+  <tabstop>addNewProject</tabstop>
+  <tabstop>newProjectName</tabstop>
+  <tabstop>colorButton</tabstop>
   <tabstop>publicProject</tabstop>
+  <tabstop>newProjectWorkspace</tabstop>
+  <tabstop>newProjectClient</tabstop>
+  <tabstop>newClientName</tabstop>
+  <tabstop>addClientButton</tabstop>
+  <tabstop>addNewClient</tabstop>
+  <tabstop>cancelNewClient</tabstop>
   <tabstop>duration</tabstop>
   <tabstop>start</tabstop>
   <tabstop>stop</tabstop>
@@ -800,10 +785,6 @@
   <tabstop>billable</tabstop>
   <tabstop>doneButton</tabstop>
   <tabstop>deleteButton</tabstop>
-  <tabstop>newProjectWorkspace</tabstop>
-  <tabstop>newProjectClient</tabstop>
-  <tabstop>newClientName</tabstop>
-  <tabstop>addClientButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

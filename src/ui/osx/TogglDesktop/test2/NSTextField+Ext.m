@@ -8,15 +8,16 @@
 
 #import "NSTextField+Ext.h"
 
-@implementation NSTextField(Extension)
+@implementation NSTextField (Extension)
 
--(void)resetCursorColor
+- (void)resetCursorColor
 {
-    NSTextView *editor = (NSTextView *)[self currentEditor];
-    if ([editor respondsToSelector:@selector(setInsertionPointColor:)])
-    {
-        [editor setInsertionPointColor:[self textColor]];
-    }
+	NSTextView *editor = (NSTextView *)[self currentEditor];
+
+	if ([editor respondsToSelector:@selector(setInsertionPointColor:)])
+	{
+		[editor setInsertionPointColor:[self textColor]];
+	}
 }
 
 @end

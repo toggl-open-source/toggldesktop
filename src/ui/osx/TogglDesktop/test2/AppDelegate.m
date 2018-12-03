@@ -29,6 +29,7 @@
 #import "Utils.h"
 #import "ViewItem.h"
 #import "CountryViewItem.h"
+#import "UnsupportedNotice.h"
 #import "idler.h"
 #import "toggl_api.h"
 
@@ -92,7 +93,6 @@
 void *ctx;
 BOOL manualMode = NO;
 BOOL onTop = NO;
-BOOL unsupportedOS = NO;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
@@ -102,9 +102,6 @@ BOOL unsupportedOS = NO;
 	self.showMenuBarTimer = NO;
 
 	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-
-	NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
-	unsupportedOS = (osVersion.majorVersion == 10 && osVersion.minorVersion < 11);
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -347,21 +344,11 @@ BOOL unsupportedOS = NO;
 
 - (BOOL)updateCheckEnabled
 {
-	if (unsupportedOS)
+	if (![[UnsupportedNotice sharedInstance] validateOSVersion])
 	{
-		// MacOs version not supported
-		NSOperatingSystemVersion osVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
-
-		NSString *text = [NSString stringWithFormat:@"You are using an unsupported version of MacOs(%ld.%ld). Please upgrade your MacOS as Toggl Desktop will stop working on older machines in the very near future!", (long)osVersion.majorVersion, (long)osVersion.minorVersion];
-
-		NSAlert *alert = [[NSAlert alloc] init];
-		[alert addButtonWithTitle:@"OK"];
-		[alert setMessageText:@"Unsupported MacOS version detected!"];
-		[alert setInformativeText:text];
-		[alert setAlertStyle:NSWarningAlertStyle];
-		[alert runModal];
 		return NO;
 	}
+
 	if (self.scriptPath)
 	{
 		return NO;

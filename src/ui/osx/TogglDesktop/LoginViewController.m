@@ -54,14 +54,14 @@ extern void *ctx;
 	self.selectedCountryID = -1;
 }
 
--(void)viewDidAppear
+- (void)viewDidAppear
 {
-    [super viewDidAppear];
+	[super viewDidAppear];
 
-    // As we change the cursor's color to white
-    // so, we have to reset cursor color
-    [self.email resetCursorColor];
-    [self.password resetCursorColor];
+	// As we change the cursor's color to white
+	// so, we have to reset cursor color
+	[self.email resetCursorColor];
+	[self.password resetCursorColor];
 }
 
 - (IBAction)clickLoginButton:(id)sender

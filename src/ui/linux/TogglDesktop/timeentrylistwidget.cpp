@@ -7,11 +7,10 @@
 #include "./timerwidget.h"
 #include "./timeentrycellwidget.h"
 
-TimeEntryListWidget::TimeEntryListWidget(QWidget *parent) : QWidget(parent),
+TimeEntryListWidget::TimeEntryListWidget(QStackedWidget *parent) : QWidget(parent),
 ui(new Ui::TimeEntryListWidget) {
     ui->setupUi(this);
 
-    setVisible(false);
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
@@ -32,9 +31,12 @@ TimeEntryListWidget::~TimeEntryListWidget() {
     delete ui;
 }
 
+void TimeEntryListWidget::display() {
+    qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
+}
+
 void TimeEntryListWidget::displayOverlay(
     const int64_t type) {
-    setVisible(false);
 }
 
 void TimeEntryListWidget::displayLogin(
@@ -43,7 +45,6 @@ void TimeEntryListWidget::displayLogin(
 
     if (open || !user_id) {
         ui->list->clear();
-        setVisible(false);
     }
 }
 
@@ -54,7 +55,7 @@ void TimeEntryListWidget::displayTimeEntryList(
 
     int size = list.size();
     if (open) {
-        setVisible(true);
+        display();
     }
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     render_m_.lock();
@@ -105,9 +106,6 @@ void TimeEntryListWidget::displayTimeEntryEditor(
     const bool open,
     TimeEntryView *view,
     const QString focused_field_name) {
-    if (open) {
-        setVisible(false);
-    }
 }
 
 void TimeEntryListWidget::showLoadMoreButton(int size) {

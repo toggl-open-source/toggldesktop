@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSTextField(Extension)
+@interface NSTextField (Extension)
 
--(void)resetCursorColor;
+- (void)resetCursorColor;
 
 @end
 
