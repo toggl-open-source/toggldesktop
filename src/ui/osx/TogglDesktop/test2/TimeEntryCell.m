@@ -209,9 +209,9 @@ extern void *ctx;
 
 - (void)focusFieldName
 {
-	NSPoint globalLocation = [ NSEvent mouseLocation ];
-	NSPoint windowLocation = [ [ self window ] convertScreenToBase:globalLocation ];
-	NSPoint mouseLocation = [ self convertPoint:windowLocation fromView:nil ];
+	NSPoint globalLocation = [NSEvent mouseLocation];
+    NSPoint windowLocation = [self.window convertPointFromScreen:globalLocation];
+	NSPoint mouseLocation = [self convertPoint:windowLocation fromView:nil];
 
 	[self setFocused];
 
