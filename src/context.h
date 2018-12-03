@@ -457,6 +457,7 @@ class Context : public TimelineDatasource {
 
     static const std::string installerPlatform();
     static const std::string linuxPlatformName();
+    static const std::string shortOSName();
 
     Poco::Logger &logger() const;
 

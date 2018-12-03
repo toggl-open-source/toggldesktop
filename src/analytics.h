@@ -51,6 +51,7 @@ class Analytics : public Poco::TaskManager {
         const bool was_using_autocomplete);
 
     void TrackWindowSize(const std::string client_id,
+                         const std::string os,
                          const toggl::Rectangle rect);
 
  private:

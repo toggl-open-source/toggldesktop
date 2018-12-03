@@ -47,9 +47,10 @@ void Analytics::TrackOs(const std::string client_id,
 }
 
 void Analytics::TrackWindowSize(const std::string client_id,
+                                const std::string os,
                                 const toggl::Rectangle rect) {
     std::stringstream ss;
-    ss << "winsize-"<< rect.str();
+    ss << os << "/mainsize-" << rect.str();
 
     Track(client_id, "stats", ss.str());
 }
