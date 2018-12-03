@@ -12,4 +12,4 @@ Platform: <!-- macOS/Windows/Linux -->
 
 
 ### 📒 Description
-<!-- Short and concise description of the imporovement/feature -->
+<!-- Short and concise description of the improvement/feature -->
