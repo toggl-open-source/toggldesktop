@@ -32,6 +32,7 @@
 #import "UnsupportedNotice.h"
 #import "idler.h"
 #import "toggl_api.h"
+#import "UserNotificationCenter.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -1573,76 +1574,20 @@ void on_login(const bool_t open, const uint64_t user_id)
 
 void on_reminder(const char *title, const char *informative_text)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	[notification setTitle:[NSString stringWithUTF8String:title]];
-	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
-	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-
-	notification.userInfo = @{ @"reminder": @"YES" };
-
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Track";
-	notification.otherButtonTitle = @"Close";
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
-
-	// Remove reminder after 45 seconds
-	[center performSelector:@selector(removeDeliveredNotification:)
-				 withObject:notification
-				 afterDelay:45];
+    [[UserNotificationCenter share] scheduleReminderWithTitle:[NSString stringWithUTF8String:title]
+                                              informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_pomodoro(const char *title, const char *informative_text)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	[notification setTitle:[NSString stringWithUTF8String:title]];
-	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
-	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-
-	notification.userInfo = @{ @"pomodoro": @"YES" };
-
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Continue";
-	notification.otherButtonTitle = @"Close";
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
-
-	// Play sound
-	[[NSSound soundNamed:@"Glass"] play];
+    [[UserNotificationCenter share] schedulePomodoroWithTitle:[NSString stringWithUTF8String:title]
+                                              informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_pomodoro_break(const char *title, const char *informative_text)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	[notification setTitle:[NSString stringWithUTF8String:title]];
-	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
-	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-
-	notification.userInfo = @{ @"pomodoro_break": @"YES" };
-
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Continue";
-	notification.otherButtonTitle = @"Close";
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
-
-	// Play sound
-	[[NSSound soundNamed:@"Glass"] play];
+    [[UserNotificationCenter share] schedulePomodoroBreakWithTitle:[NSString stringWithUTF8String:title]
+                                                   informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_url(const char *url)
@@ -1725,26 +1670,9 @@ void on_autotracker_notification(const char_t *project_name,
 								 const uint64_t project_id,
 								 const uint64_t task_id)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	notification.title = @"Toggl Desktop Autotracker";
-	notification.informativeText = [NSString stringWithFormat:@"Track %@?",
-									[NSString stringWithUTF8String:project_name]];
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Start";
-	notification.otherButtonTitle = @"Close";
-	notification.userInfo = @{
-		@"autotracker": @"YES",
-		@"project_id": [NSNumber numberWithLong:project_id],
-		@"task_id": [NSNumber numberWithLong:task_id]
-	};
-	notification.deliveryDate = [NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]];
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
+    [[UserNotificationCenter share] scheduleAutoTrackerWithProjectName:[NSString stringWithUTF8String:project_name]
+                                                             projectID:[NSNumber numberWithLong:project_id]
+                                                                taskID:[NSNumber numberWithLong:task_id]];
 }
 
 void on_promotion(const int64_t promotion_type)

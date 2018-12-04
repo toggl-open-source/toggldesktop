@@ -14,7 +14,7 @@
 
 @implementation UserNotificationCenter
 
--(instancetype) share {
++(instancetype)share {
     static UserNotificationCenter *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -31,7 +31,7 @@
     return self;
 }
 
--(NSUserNotification *) defaultUserNotificationWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
+-(NSUserNotification *)defaultUserNotificationWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     [notification setTitle:title];
     [notification setInformativeText:informativeText];
@@ -43,11 +43,11 @@
     return notification;
 }
 
--(void) deliveryNotification:(NSUserNotification *) notification {
+-(void)scheduleNotification:(NSUserNotification *) notification {
     [self.center scheduleNotification:notification];
 }
 
--(void) deliveryReminderWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
+-(void) scheduleReminderWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
     NSUserNotification *notification = [self defaultUserNotificationWithTitle:title
                                                               informativeText:informativeText];
 
@@ -57,7 +57,7 @@
     notification.otherButtonTitle = @"Close";
 
     // Delivery
-    [self deliveryNotification:notification];
+    [self scheduleNotification:notification];
 
     // Remove reminder after 45 seconds
     [self.center performSelector:@selector(removeDeliveredNotification:)
@@ -65,7 +65,7 @@
                  afterDelay:45];
 }
 
--(void) deliveryPomodoroWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
+-(void)schedulePomodoroWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
     NSUserNotification *notification = [self defaultUserNotificationWithTitle:title
                                                               informativeText:informativeText];
 
@@ -75,13 +75,13 @@
     notification.otherButtonTitle = @"Close";
 
     // Delivery
-    [self deliveryNotification:notification];
+    [self scheduleNotification:notification];
 
     // Play sound
     [[NSSound soundNamed:@"Glass"] play];
 }
 
--(void) deliveryPomodoroBreakWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
+-(void)schedulePomodoroBreakWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
     NSUserNotification *notification = [self defaultUserNotificationWithTitle:title
                                                               informativeText:informativeText];
 
@@ -91,13 +91,13 @@
     notification.otherButtonTitle = @"Close";
 
     // Delivery
-    [self deliveryNotification:notification];
+    [self scheduleNotification:notification];
 
     // Play sound
     [[NSSound soundNamed:@"Glass"] play];
 }
 
--(void) deliveryAutoTrackerWithProjectName:(NSString *) projectName projectID:(NSNumber *) projectID taskID:(NSNumber *) taskID {
+-(void)scheduleAutoTrackerWithProjectName:(NSString *) projectName projectID:(NSNumber *) projectID taskID:(NSNumber *) taskID {
     NSUserNotification *notification = [self defaultUserNotificationWithTitle:@"Toggl Desktop Autotracker"
                                                               informativeText:[NSString stringWithFormat:@"Track %@?", projectName]];
 
@@ -111,7 +111,7 @@
                               };
 
     // Delivery
-    [self deliveryNotification:notification];
+    [self scheduleNotification:notification];
 }
 
 @end

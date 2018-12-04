@@ -12,15 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UserNotificationCenter : NSObject
 
--(instancetype) share;
++(instancetype) share;
 
--(void) deliveryReminderWithTitle:(NSString *) title informativeText:(NSString *) informativeText;
+-(void) scheduleReminderWithTitle:(NSString *) title informativeText:(NSString *) informativeText;
 
--(void) deliveryPomodoroWithTitle:(NSString *) title informativeText:(NSString *) informativeText;
+-(void) schedulePomodoroWithTitle:(NSString *) title informativeText:(NSString *) informativeText;
 
--(void) deliveryPomodoroBreakWithTitle:(NSString *) title informativeText:(NSString *) informativeText;
+-(void) schedulePomodoroBreakWithTitle:(NSString *) title informativeText:(NSString *) informativeText;
 
--(void) deliveryAutoTrackerWithProjectName:(NSString *) projectName projectID:(NSString *) projectID taskID:(NSString *) taskID;
+-(void) scheduleAutoTrackerWithProjectName:(NSString *) projectName projectID:(NSNumber *) projectID taskID:(NSNumber *) taskID;
 
 @end
 
