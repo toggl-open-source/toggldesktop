@@ -47,6 +47,14 @@
     [self.center scheduleNotification:notification];
 }
 
+-(void)removeAllDeliveredNotificationsWithType:(NSString *) type {
+    for (NSUserNotification *notification in self.center.deliveredNotifications) {
+        if ([notification.userInfo objectForKey:type]) {
+            [self.center removeDeliveredNotification:notification];
+        }
+    }
+}
+
 -(void) scheduleReminderWithTitle:(NSString *) title informativeText:(NSString *) informativeText {
     NSUserNotification *notification = [self defaultUserNotificationWithTitle:title
                                                               informativeText:informativeText];
@@ -57,6 +65,7 @@
     notification.otherButtonTitle = @"Close";
 
     // Delivery
+    [self removeAllDeliveredNotificationsWithType:@"reminder"];
     [self scheduleNotification:notification];
 
     // Remove reminder after 45 seconds
@@ -75,6 +84,7 @@
     notification.otherButtonTitle = @"Close";
 
     // Delivery
+    [self removeAllDeliveredNotificationsWithType:@"pomodoro"];
     [self scheduleNotification:notification];
 
     // Play sound
@@ -91,6 +101,7 @@
     notification.otherButtonTitle = @"Close";
 
     // Delivery
+    [self removeAllDeliveredNotificationsWithType:@"pomodoro_break"];
     [self scheduleNotification:notification];
 
     // Play sound
@@ -111,6 +122,7 @@
                               };
 
     // Delivery
+    [self removeAllDeliveredNotificationsWithType:@"autotracker"];
     [self scheduleNotification:notification];
 }
 
