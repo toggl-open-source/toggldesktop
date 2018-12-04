@@ -17,6 +17,7 @@ class TimeEntryEditorWidget;
 }
 
 class AutocompleteView;
+class AutocompleteListModel;
 class GenericView;
 class TimeEntryView;
 
@@ -56,6 +57,9 @@ class TimeEntryEditorWidget : public QWidget {
     QString previousTagList;
 
     bool confirmlessDelete;
+
+    AutocompleteListModel *descriptionModel;
+    AutocompleteListModel *projectModel;
 
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);

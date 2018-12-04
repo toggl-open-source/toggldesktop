@@ -26,9 +26,13 @@ class AutocompleteView : public QObject {
             view->ProjectLabel = QString(it->ProjectLabel);
             view->ClientLabel = QString(it->ClientLabel);
             view->ProjectColor = QString(it->ProjectColor);
+            view->ClientID = it->ClientID;
             view->TaskID = it->TaskID;
+            view->TaskLabel = it->TaskLabel;
             view->ProjectID = it->ProjectID;
+            view->ProjectLabel = QString(it->ProjectLabel);
             view->WorkspaceID = it->WorkspaceID;
+            view->WorkspaceName = QString(it->WorkspaceName);
             view->Type = it->Type;
             view->Billable = it->Billable;
             view->Tags = QString(it->Tags);
@@ -43,9 +47,12 @@ class AutocompleteView : public QObject {
     QString ProjectAndTaskLabel;
     QString ProjectLabel;
     QString ClientLabel;
+    QString TaskLabel;
+    QString WorkspaceName;
     QString ProjectColor;
     uint64_t TaskID;
     uint64_t ProjectID;
+    uint64_t ClientID;
     uint64_t WorkspaceID;
     uint64_t Type;
     bool Billable;

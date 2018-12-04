@@ -10,6 +10,8 @@
 #include <QTimer> // NOLINT
 #include <QLineEdit> // NOLINT
 
+#include "./autocompleteitemview.h"
+#include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
 #include "./genericview.h"
 #include "./timeentryview.h"
@@ -25,19 +27,13 @@ clientSelectNeedsUpdate(false),
 colorPicker(new ColorPicker(this)),
 timer(new QTimer(this)),
 duration(0),
+descriptionModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
+projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
 previousTagList("") {
     ui->setupUi(this);
 
-    ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->description->completer()->setCompletionMode(
-        QCompleter::PopupCompletion);
-    ui->description->completer()->setMaxVisibleItems(20);
-    ui->description->completer()->setFilterMode(Qt::MatchContains);
-
-    ui->project->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->project->completer()->setCompletionMode(QCompleter::PopupCompletion);
-    ui->project->completer()->setMaxVisibleItems(20);
-    ui->project->completer()->setFilterMode(Qt::MatchContains);
+    ui->description->setModel(descriptionModel);
+    ui->project->setModel(projectModel);
 
     ui->description->installEventFilter(this);
     ui->project->installEventFilter(this);
@@ -123,10 +119,13 @@ void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
     }
     QString currentText = ui->description->currentText();
     ui->description->clear();
-    ui->description->addItem("");
+    //ui->description->addItem("");
+    descriptionModel->setList(list);
+    /*
     foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
         ui->description->addItem(view->Text, QVariant::fromValue(view));
     }
+    */
     timeEntryAutocompleteNeedsUpdate = false;
     ui->description->setEditText(currentText);
 }
@@ -140,6 +139,9 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
     }
     ui->project->clear();
     ui->project->addItem("");
+
+    projectModel->setList(list);
+    /*
     foreach(AutocompleteView *view, projectAutocompleteUpdate) {
         ui->project->addItem(view->Text, QVariant::fromValue(view));
 
@@ -156,6 +158,7 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
             ui->project->model()->setData(index, v, Qt::UserRole -1);
         }
     }
+    */
     projectAutocompleteNeedsUpdate = false;
 }
 

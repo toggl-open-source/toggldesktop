@@ -12,6 +12,7 @@ namespace Ui {
 class TimerWidget;
 }
 
+class AutocompleteListModel;
 class AutocompleteView;
 class TimeEntryView;
 
@@ -64,6 +65,7 @@ class TimerWidget : public QWidget {
 
     bool timeEntryAutocompleteNeedsUpdate;
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
+    AutocompleteListModel *descriptionModel;
     void setEllipsisTextToLabel(QLabel *label, QString text);
 };
 

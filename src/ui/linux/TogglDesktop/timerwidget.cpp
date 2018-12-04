@@ -6,6 +6,7 @@
 #include <QApplication>  // NOLINT
 #include <QCompleter>  // NOLINT
 
+#include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
 #include "./timeentryview.h"
 #include "./toggl.h"
@@ -16,7 +17,8 @@ timer(new QTimer(this)),
 duration(0),
 project(""),
 tagsHolder(""),
-timeEntryAutocompleteNeedsUpdate(false) {
+timeEntryAutocompleteNeedsUpdate(false),
+descriptionModel(new AutocompleteListModel(this)) {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -36,11 +38,7 @@ timeEntryAutocompleteNeedsUpdate(false) {
     connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
 
-    ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->description->completer()->setCompletionMode(
-        QCompleter::PopupCompletion);
-    ui->description->completer()->setMaxVisibleItems(20);
-    ui->description->completer()->setFilterMode(Qt::MatchContains);
+    ui->description->setModel(descriptionModel);
 
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
@@ -200,10 +198,13 @@ void TimerWidget::displayMinitimerAutocomplete(
     }
     QString currentText = ui->description->currentText();
     ui->description->clear();
+    descriptionModel->setList(list);
+    /*
     ui->description->addItem("");
     foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
         ui->description->addItem(view->Text, QVariant::fromValue(view));
     }
+    */
     timeEntryAutocompleteNeedsUpdate = false;
     ui->description->setEditText(currentText);
 }

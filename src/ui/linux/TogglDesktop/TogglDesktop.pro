@@ -47,7 +47,10 @@ SOURCES += main.cpp\
     countryview.cpp \
     overlaywidget.cpp \
     systemtray.cpp \
-    idlenotificationwidget.cpp
+    idlenotificationwidget.cpp \
+    autocompletelistmodel.cpp \
+    autocompleteitemview.cpp \
+    autocompletecombobox.cpp
 
 HEADERS  += \
     timeentryview.h \
@@ -73,7 +76,10 @@ HEADERS  += \
     countryview.h \
     overlaywidget.h \
     systemtray.h \
-    idlenotificationwidget.h
+    idlenotificationwidget.h \
+    autocompletelistmodel.h \
+    autocompleteitemview.h \
+    autocompletecombobox.h
 
 FORMS    += \
     mainwindowcontroller.ui \
