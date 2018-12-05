@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.4.321",
+            "rows": [
+                "Fixed issue with invalid edit view opening",
+                "Fixed timer description clear on stop issue",
+                "Fixed client name grouping issue in autocomplete",
+                "Show notification on older macOS (< 10.11) about dropping support",
+                "Fixed cursor color issue in login view",
+                "More analytics for window size tracking"
+            ],
+            "date": "December 5th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.299",
             "rows": [
                 "Improved log file sending logic",
