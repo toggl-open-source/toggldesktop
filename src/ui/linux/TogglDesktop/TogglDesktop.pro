@@ -49,8 +49,8 @@ SOURCES += main.cpp\
     systemtray.cpp \
     idlenotificationwidget.cpp \
     autocompletelistmodel.cpp \
-    autocompleteitemview.cpp \
-    autocompletecombobox.cpp
+    autocompletecombobox.cpp \
+    autocompletelistview.cpp
 
 HEADERS  += \
     timeentryview.h \
@@ -78,8 +78,8 @@ HEADERS  += \
     systemtray.h \
     idlenotificationwidget.h \
     autocompletelistmodel.h \
-    autocompleteitemview.h \
-    autocompletecombobox.h
+    autocompletecombobox.h \
+    autocompletelistview.h
 
 FORMS    += \
     mainwindowcontroller.ui \

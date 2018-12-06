@@ -1,5 +1,5 @@
-#ifndef AUTOCOMPLETEITEMVIEW_H
-#define AUTOCOMPLETEITEMVIEW_H
+#ifndef AUTOCOMPLETELISTVIEW_H
+#define AUTOCOMPLETELISTVIEW_H
 
 #include <QListView>
 #include <QListWidget>
@@ -9,11 +9,11 @@
 
 #include "./autocompleteview.h"
 
-class AutocompleteDropdownList : public QListView
+class AutocompleteListView : public QListView
 {
     Q_OBJECT
 public:
-    explicit AutocompleteDropdownList(QWidget *parent = 0);
+    explicit AutocompleteListView(QWidget *parent = 0);
 
     void paintEvent(QPaintEvent *e) override;
 
@@ -41,4 +41,4 @@ private:
     QString format(const AutocompleteView *view) const;
 };
 
-#endif // AUTOCOMPLETEITEMVIEW_H
+#endif // AUTOCOMPLETELISTVIEW_H

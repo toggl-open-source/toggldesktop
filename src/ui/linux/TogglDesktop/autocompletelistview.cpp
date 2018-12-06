@@ -1,29 +1,29 @@
-#include "autocompleteitemview.h"
+#include "autocompletelistview.h"
 
 #include <QDebug>
 #include <QPainter>
 #include <QTextDocument>
 
-AutocompleteDropdownList::AutocompleteDropdownList(QWidget *parent) :
+AutocompleteListView::AutocompleteListView(QWidget *parent) :
     QListView(parent)
 {
     setViewMode(QListView::ListMode);
     setUniformItemSizes(true);
     setItemDelegate(new AutoCompleteItemDelegate(this));
-    connect(this, &AutocompleteDropdownList::clicked, this, &AutocompleteDropdownList::onItemClicked);
+    connect(this, &AutocompleteListView::clicked, this, &AutocompleteListView::onItemClicked);
 }
 
-void AutocompleteDropdownList::paintEvent(QPaintEvent *e) {
+void AutocompleteListView::paintEvent(QPaintEvent *e) {
     QListView::paintEvent(e);
 }
 
-void AutocompleteDropdownList::onItemClicked(const QModelIndex &index)
+void AutocompleteListView::onItemClicked(const QModelIndex &index)
 {
     qDebug() << "Item clicked";
     qDebug() << qvariant_cast<AutocompleteView*>(index.data())->Description << "clicked";
 }
 
-void AutocompleteDropdownList::keyPressEvent(QKeyEvent *e)
+void AutocompleteListView::keyPressEvent(QKeyEvent *e)
 {
     bool modifiers = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
     if (modifiers) {

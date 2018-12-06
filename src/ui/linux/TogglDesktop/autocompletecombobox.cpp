@@ -1,6 +1,6 @@
 #include "autocompletecombobox.h"
 #include "autocompletelistmodel.h"
-#include "autocompleteitemview.h"
+#include "autocompletelistview.h"
 
 #include <QDebug>
 
@@ -8,7 +8,7 @@ AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     : QComboBox(parent)
 {
     setEditable(true);
-    setView(new AutocompleteDropdownList(this));
+    setView(new AutocompleteListView(this));
     setLineEdit(new AutocompleteLineEdit(this));
 }
 
@@ -39,7 +39,7 @@ AutocompleteCompleter::AutocompleteCompleter(QWidget *parent)
 {
     setCaseSensitivity(Qt::CaseInsensitive);
     setFilterMode(Qt::MatchContains);
-    setPopup(new AutocompleteDropdownList(parent));
+    setPopup(new AutocompleteListView(parent));
 }
 
 AutocompleteLineEdit::AutocompleteLineEdit(AutocompleteComboBox *parent)
