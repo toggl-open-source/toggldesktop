@@ -248,13 +248,15 @@ BOOL onTop = NO;
 		 }
 	 }];
 
-	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-														   selector:@selector(receiveSleepNote:)
-															   name:NSWorkspaceWillSleepNotification object:nil];
-
-	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-														   selector:@selector(receiveWakeNote:)
-															   name:NSWorkspaceDidWakeNotification object:nil];
+    NSDistributedNotificationCenter* distCenter = [NSDistributedNotificationCenter defaultCenter];
+    [distCenter addObserver:self
+                   selector:@selector(onScreenLockedNotification:)
+                       name:@"com.apple.screenIsLocked"
+                     object:nil];
+    [distCenter addObserver:self
+                   selector:@selector(onScreenUnlockedNotification:)
+                       name:@"com.apple.screenIsUnlocked"
+                     object:nil];
 
 	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
@@ -448,15 +450,15 @@ BOOL onTop = NO;
 	NSLog(@"didDeliverNotification %@", notification);
 }
 
-- (void)receiveSleepNote:(NSNotification *)note
+- (void)onScreenLockedNotification:(NSNotification *)note
 {
-	NSLog(@"receiveSleepNote: %@", [note name]);
+	NSLog(@"onScreenLockedNotification: %@", [note name]);
 	toggl_set_sleep(ctx);
 }
 
-- (void)receiveWakeNote:(NSNotification *)note
+- (void)onScreenUnlockedNotification:(NSNotification *)note
 {
-	NSLog(@"receiveWakeNote: %@", [note name]);
+	NSLog(@"onScreenUnlockedNotification: %@", [note name]);
 	toggl_set_wake(ctx);
 }
 
