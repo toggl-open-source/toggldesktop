@@ -31,7 +31,12 @@ QVariant AutocompleteListModel::data(const QModelIndex &index, int role) const {
     if (!view)
         return QVariant();
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
-        return view->Description;
+        switch (view->Type) {
+        case 0:
+            return view->Description;
+        default:
+            return view->Text;
+        }
     }
     if (role == Qt::UserRole)
         return QVariant::fromValue(list.at(index.row()));

@@ -60,7 +60,7 @@ void AutoCompleteItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
     painter->save();
 
     QTextDocument doc;
-    auto view = qvariant_cast<AutocompleteView*>(index.data(Qt::UserRole));
+    auto view = getCurrentView(index);
     doc.setHtml(format(view));
 
     option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &option, painter);
@@ -73,8 +73,16 @@ void AutoCompleteItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 }
 
 QSize AutoCompleteItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+    auto view = getCurrentView(index);
     QSize size = QItemDelegate::sizeHint(option, index);
-    size.setHeight(42);
+    switch (view->Type) {
+    case 0:
+        size.setHeight(42);
+        break;
+    default:
+        size.setHeight(24);
+        break;
+    }
     return size;
 }
 
@@ -119,4 +127,8 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
         //ui->label->setStyleSheet(transparent + "padding-top:7px;padding-left:15px;font-size:9pt;");
         return view->ProjectLabel + view->TaskLabel + view->ClientLabel + view->Description;
     }
+}
+
+AutocompleteView *AutoCompleteItemDelegate::getCurrentView(const QModelIndex &index) const {
+    return qvariant_cast<AutocompleteView*>(index.data(Qt::UserRole));
 }

@@ -39,6 +39,7 @@ public:
 
 private:
     QString format(const AutocompleteView *view) const;
+    AutocompleteView *getCurrentView(const QModelIndex &index) const;
 };
 
 #endif // AUTOCOMPLETELISTVIEW_H
