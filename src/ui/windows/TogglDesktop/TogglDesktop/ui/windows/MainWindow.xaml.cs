@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using Microsoft.Win32;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
 using TogglDesktop.Tutorial;
@@ -73,6 +74,7 @@ namespace TogglDesktop
             this.initializeSyncingIndicator();
             this.initializeTutorialManager();
             this.initializeExperimentManager();
+            this.initializeSessionNotification();
 
             this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
             this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
@@ -129,6 +131,23 @@ namespace TogglDesktop
                 {
                     asMenuItem.CommandTarget = this;
                 }
+            }
+        }
+
+        private void initializeSessionNotification()
+        {
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+        }
+
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionLock)
+            {
+                Toggl.SetSleep();
+            }
+            else if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                Toggl.SetWake();
             }
         }
 
@@ -463,7 +482,7 @@ namespace TogglDesktop
             // fix for when the window is activated from a different process using ShowWindow()
             this.fixVisibilityOnShowWindow();
 
-            Toggl.SetWake();
+            //Toggl.SetWake();
 
             base.OnActivated(e);
         }
