@@ -33,6 +33,8 @@ class PreferencesDialog : public QDialog {
     void displayLogin(const bool open,
                       const uint64_t user_id);
 
+    void onDayCheckboxClicked(bool checked);
+
     void on_proxyHost_editingFinished();
     void on_proxyPort_editingFinished();
     void on_proxyUsername_editingFinished();
@@ -53,6 +55,8 @@ class PreferencesDialog : public QDialog {
     void on_showHideClear_clicked();
     void on_continueStopButton_clicked();
     void on_showHideButton_clicked();
+    void on_reminderStartTimeEdit_editingFinished();
+    void on_reminderEndTimeEdit_editingFinished();
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void saveCurrentShortcut();

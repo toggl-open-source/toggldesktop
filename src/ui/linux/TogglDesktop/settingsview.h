@@ -4,6 +4,7 @@
 #define SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_
 
 #include <QObject>
+#include <QTime>
 
 #include "./toggl_api.h"
 
@@ -35,6 +36,15 @@ class SettingsView : public QObject {
         result->PomodoroMinutes = view->PomodoroMinutes;
         result->PomodoroBreak = view->PomodoroBreak;
         result->PomodoroBreakMinutes = view->PomodoroBreakMinutes;
+        result->RemindOnMonday = view->RemindMon;
+        result->RemindOnTuesday = view->RemindTue;
+        result->RemindOnWednesday = view->RemindWed;
+        result->RemindOnThursday = view->RemindThu;
+        result->RemindOnFriday = view->RemindFri;
+        result->RemindOnSaturday = view->RemindSat;
+        result->RemindOnSunday = view->RemindSun;
+        result->RemindStartTime = QTime::fromString(view->RemindStarts, "HH:mm");
+        result->RemindEndTime = QTime::fromString(view->RemindEnds, "HH:mm");
         return result;
     }
 
@@ -58,6 +68,15 @@ class SettingsView : public QObject {
     uint64_t PomodoroMinutes;
     bool PomodoroBreak;
     uint64_t PomodoroBreakMinutes;
+    bool RemindOnMonday;
+    bool RemindOnTuesday;
+    bool RemindOnWednesday;
+    bool RemindOnThursday;
+    bool RemindOnFriday;
+    bool RemindOnSaturday;
+    bool RemindOnSunday;
+    QTime RemindStartTime;
+    QTime RemindEndTime;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_
