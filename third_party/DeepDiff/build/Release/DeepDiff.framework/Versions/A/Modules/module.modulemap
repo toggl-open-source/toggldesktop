@@ -1,0 +1,4 @@
+framework module DeepDiff {
+  header "DeepDiff-Swift.h"
+  requires objc
+}

@@ -150,6 +150,8 @@
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
+		BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; };
+		BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BAD232D121D495E20039C742 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD232CF21D495E20039C742 /* UserNotificationCenter.m */; };
@@ -288,6 +290,27 @@
 			remoteGlobalIDString = E2D656E5160A18F100DEC117;
 			remoteInfo = TFDatePicker;
 		};
+		BA0CEBC021BA851700F1BF01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5C629401C3A7FAA007F7B7C;
+			remoteInfo = "DeepDiff-macOS";
+		};
+		BA0CEBC221BA851700F1BF01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5C629491C3A7FAA007F7B7C;
+			remoteInfo = "DeepDiff-macOS-Tests";
+		};
+		BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D5C6293F1C3A7FAA007F7B7C;
+			remoteInfo = "DeepDiff-macOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -302,6 +325,7 @@
 				3CB0BCE12004DBB10078AB83 /* libPocoData.50.dylib in CopyFiles */,
 				3CB0BCE22004DBB10078AB83 /* libPocoUtil.50.dylib in CopyFiles */,
 				3CB0BCE32004DBB10078AB83 /* libPocoCrypto.50.dylib in CopyFiles */,
+				BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */,
 				3CB0BCE42004DBB10078AB83 /* libPocoJSON.50.dylib in CopyFiles */,
 				3CB0BCE52004DBB10078AB83 /* libPocoNet.50.dylib in CopyFiles */,
 				3CB0BCE62004DBB10078AB83 /* libPocoFoundation.50.dylib in CopyFiles */,
@@ -557,6 +581,7 @@
 		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeepDiff.xcodeproj; path = ../../../../third_party/DeepDiff/DeepDiff.xcodeproj; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
@@ -590,6 +615,7 @@
 				7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
+				BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */,
 				74A3D06119E418B800C51BB6 /* Sparkle.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
@@ -657,6 +683,7 @@
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
+				BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				745E7FC1192D247300747C18 /* images */,
 				3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */,
@@ -1033,6 +1060,23 @@
 			path = ../../../../third_party/MASShortcut;
 			sourceTree = "<group>";
 		};
+		BAC684F721B6820400B6C9D7 /* UserNotification */ = {
+			isa = PBXGroup;
+			children = (
+				BAC6850721B6822A00B6C9D7 /* UserNotificationCenter.h */,
+				BAC6850821B6822A00B6C9D7 /* UserNotificationCenter.m */,
+			);
+			name = UserNotification;
+		};
+		BA0CEBA421BA851700F1BF01 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */,
+				BA0CEBC321BA851700F1BF01 /* DeepDiff-macOS-Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1097,6 +1141,7 @@
 				74456B9C1A77486B002A6338 /* PBXTargetDependency */,
 				749A3A7318D89F23000AD2DB /* PBXTargetDependency */,
 				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
+				BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */,
 			);
 			name = TogglDesktop;
 			productName = test2;
@@ -1128,6 +1173,10 @@
 				{
 					ProductGroup = 749A3A4418D889BD000AD2DB /* Products */;
 					ProjectRef = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
+				},
+				{
+					ProductGroup = BA0CEBA421BA851700F1BF01 /* Products */;
+					ProjectRef = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
 				},
 				{
 					ProductGroup = 74FD8CD818A8EEE200F7DB80 /* Products */;
@@ -1251,6 +1300,20 @@
 			fileType = wrapper.framework;
 			path = TFDatePicker.framework;
 			remoteRef = 74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = DeepDiff.framework;
+			remoteRef = BA0CEBC021BA851700F1BF01 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BA0CEBC321BA851700F1BF01 /* DeepDiff-macOS-Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "DeepDiff-macOS-Tests.xctest";
+			remoteRef = BA0CEBC221BA851700F1BF01 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1480,6 +1543,11 @@
 			name = TFDatePicker;
 			targetProxy = 74FD8CDD18A8EF4800F7DB80 /* PBXContainerItemProxy */;
 		};
+		BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "DeepDiff-macOS";
+			targetProxy = BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1590,6 +1658,7 @@
 		69FC182317E6534500B96425 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1612,6 +1681,7 @@
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1630,6 +1700,7 @@
 		69FC182417E6534500B96425 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -1653,6 +1724,7 @@
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
