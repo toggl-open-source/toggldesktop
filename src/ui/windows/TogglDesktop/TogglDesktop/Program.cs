@@ -64,7 +64,7 @@ static class Program
 
             Toggl.InitialiseLog();
 
-            bugsnag = new Bugsnag.Clients.BaseClient("2a46aa1157256f759053289f2d687c2f");
+            bugsnag = new Bugsnag.Clients.BaseClient("aa13053a88d5133b688db0f25ec103b7");
 
 #if INVS
             bugsnag.Config.ReleaseStage = "development";

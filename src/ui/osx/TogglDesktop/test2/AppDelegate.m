@@ -1250,7 +1250,7 @@ const NSString *appName = @"osx_native_app";
 		[Utils disallowDuplicateInstances];
 	}
 
-	[Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
+	[Bugsnag startBugsnagWithApiKey:@"aa13053a88d5133b688db0f25ec103b7"];
 	NSAssert(self.environment != nil, @"Missing environment in plist");
 	[Bugsnag configuration].releaseStage = self.environment;
 
