@@ -21,9 +21,6 @@ signals:
     void keyPress(QKeyEvent *e);
     void returnPressed();
 
-public slots:
-    void onItemClicked(const QModelIndex &index);
-
 protected:
     void keyPressEvent(QKeyEvent *e);
 

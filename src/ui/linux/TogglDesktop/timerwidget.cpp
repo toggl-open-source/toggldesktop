@@ -199,12 +199,6 @@ void TimerWidget::displayMinitimerAutocomplete(
     QString currentText = ui->description->currentText();
     ui->description->clear();
     descriptionModel->setList(list);
-    /*
-    ui->description->addItem("");
-    foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
-        ui->description->addItem(view->Text, QVariant::fromValue(view));
-    }
-    */
     timeEntryAutocompleteNeedsUpdate = false;
     ui->description->setEditText(currentText);
 }

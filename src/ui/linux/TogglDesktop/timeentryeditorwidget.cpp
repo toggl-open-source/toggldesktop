@@ -10,7 +10,7 @@
 #include <QTimer> // NOLINT
 #include <QLineEdit> // NOLINT
 
-#include "./autocompleteitemview.h"
+#include "./autocompletelistview.h"
 #include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
 #include "./genericview.h"
@@ -119,13 +119,7 @@ void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
     }
     QString currentText = ui->description->currentText();
     ui->description->clear();
-    //ui->description->addItem("");
     descriptionModel->setList(list);
-    /*
-    foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
-        ui->description->addItem(view->Text, QVariant::fromValue(view));
-    }
-    */
     timeEntryAutocompleteNeedsUpdate = false;
     ui->description->setEditText(currentText);
 }
@@ -141,7 +135,7 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
     ui->project->addItem("");
 
     projectModel->setList(list);
-    /*
+    /* TODO?
     foreach(AutocompleteView *view, projectAutocompleteUpdate) {
         ui->project->addItem(view->Text, QVariant::fromValue(view));
 

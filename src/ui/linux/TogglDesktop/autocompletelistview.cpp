@@ -10,17 +10,10 @@ AutocompleteListView::AutocompleteListView(QWidget *parent) :
     setViewMode(QListView::ListMode);
     setUniformItemSizes(true);
     setItemDelegate(new AutoCompleteItemDelegate(this));
-    connect(this, &AutocompleteListView::clicked, this, &AutocompleteListView::onItemClicked);
 }
 
 void AutocompleteListView::paintEvent(QPaintEvent *e) {
     QListView::paintEvent(e);
-}
-
-void AutocompleteListView::onItemClicked(const QModelIndex &index)
-{
-    qDebug() << "Item clicked";
-    qDebug() << qvariant_cast<AutocompleteView*>(index.data())->Description << "clicked";
 }
 
 void AutocompleteListView::keyPressEvent(QKeyEvent *e)
@@ -36,7 +29,6 @@ void AutocompleteListView::keyPressEvent(QKeyEvent *e)
     case Qt::Key_Enter:
     case Qt::Key_Return:
     case Qt::Key_Escape:
-        qCritical() << __FILE__ << __LINE__ << __FUNCTION__;
         QListView::keyPressEvent(e);
         return;
     case Qt::Key_Tab:
@@ -94,11 +86,11 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
 
     switch (view->Type) {
     case 13: // Workspace row
-        return "<span style='background-color: transparent;font-weight:bold;font-size:9pt;border-bottom:1px solid grey;'>" + view->Text + "</span>";
+        return "<span style='background-color: transparent;font-weight:bold;border-bottom:1px solid grey;'>" + view->Text + "</span>";
     case 11: // Category row
-        return label = "<span style='background-color: transparent;padding-top:7px;padding-left:5px;font-size:9pt;'>" + view->Text + "</span>";
+        return label = "<span style='background-color: transparent;padding-top:7px;padding-left:5px;'>" + view->Text + "</span>";
     case 12: { // Client row / no project row
-        QString style = transparent + "padding-top:5px;padding-left:10px;font-size:9pt;font-weight:";
+        QString style = transparent + "padding-top:5px;padding-left:10px;font-weight:";
         if (view->Type == 2) {
             style.append("normal;");
         } else {
@@ -109,7 +101,7 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
         return label;
     }
     case 1: // Task row
-        return "<span style='background-color:transparent;padding-top:8px;padding-left:30px;font-size:9pt;'>" "- " + view->Text + "</span>";
+        return "<span style='background-color:transparent;padding-top:8px;padding-left:30px;'>" "- " + view->Text + "</span>";
     case 0: { // Item rows (projects/time entries)
         QString table;
         if (!view->Description.isEmpty())
@@ -125,7 +117,7 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
     }
     default:
         //ui->label->setStyleSheet(transparent + "padding-top:7px;padding-left:15px;font-size:9pt;");
-        return view->ProjectLabel + view->TaskLabel + view->ClientLabel + view->Description;
+        return "<span style='background-color: transparent;font-size:13px;'>" + view->ProjectLabel + view->TaskLabel + view->ClientLabel + view->Description + "</span>";
     }
 }
 
