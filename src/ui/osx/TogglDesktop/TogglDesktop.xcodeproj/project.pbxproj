@@ -152,6 +152,8 @@
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; };
 		BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
+		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BAD232D121D495E20039C742 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD232CF21D495E20039C742 /* UserNotificationCenter.m */; };
@@ -582,6 +584,9 @@
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeepDiff.xcodeproj; path = ../../../../third_party/DeepDiff/DeepDiff.xcodeproj; sourceTree = "<group>"; };
+		BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TogglDesktop-Bridging-Header.h"; sourceTree = "<group>"; };
+		BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffer.swift; sourceTree = "<group>"; };
+		BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Diff.swift"; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
@@ -1081,6 +1086,9 @@
 		BA0CEC4C21BE516F00F1BF01 /* Diff */ = {
 			isa = PBXGroup;
 			children = (
+				BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */,
+				BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */,
+				BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */,
 			);
 			path = Diff;
 			sourceTree = "<group>";
@@ -1164,6 +1172,11 @@
 			attributes = {
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Alari;
+				TargetAttributes = {
+					69FC17F017E6534400B96425 = {
+						LastSwiftMigration = 1010;
+					};
+				};
 			};
 			buildConfigurationList = 69FC17EC17E6534400B96425 /* Build configuration list for PBXProject "TogglDesktop" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1462,6 +1475,7 @@
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
+				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
@@ -1501,6 +1515,7 @@
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
+				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
@@ -1668,6 +1683,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1701,6 +1717,9 @@
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1710,6 +1729,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1744,6 +1764,8 @@
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
