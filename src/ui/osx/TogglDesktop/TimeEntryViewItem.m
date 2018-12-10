@@ -168,4 +168,8 @@
 			self.ProjectColor, self.billable, self.tags];
 }
 
+-(NSUInteger)hash {
+    return self.duration_in_seconds ^ self.Description.hash ^ self.ProjectAndTaskLabel.hash ^ self.TaskLabel.hash ^ self.ProjectLabel.hash ^ self.ClientLabel.hash ^ self.WorkspaceID ^ self.ProjectID ^ self.TaskID ^ self.duration.hash ^ self.ProjectColor.hash ^ self.ProjectGUID.hash ^ self.GUID.hash ^ self.billable ^ self.unsynced ^ self.started.hash ^ self.ended.hash ^ self.startTimeString.hash ^ self.endTimeString.hash ^ self.tags.hash ^ self.updatedAt.hash ^ self.formattedDate.hash ^ self.isHeader ^ self.dateDuration.hash ^ self.focusedFieldName.hash ^ self.CanSeeBillable ^ self.DefaultWID ^ self.CanAddProjects ^ self.WorkspaceName.hash ^ self.Error.hash ^ self.loadMore ^ self.confirmlessDelete ^ self.Group ^ self.GroupOpen ^ self.GroupName.hash ^ self.GroupDuration.hash ^ self.GroupItemCount;
+}
+
 @end

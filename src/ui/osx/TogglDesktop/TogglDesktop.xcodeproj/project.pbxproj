@@ -690,6 +690,7 @@
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				74E857AA194F8807007A88B9 /* ssl */,
+				BA0CEC4C21BE516F00F1BF01 /* Diff */,
 				69FC17FA17E6534400B96425 /* ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
@@ -1075,6 +1076,13 @@
 				BA0CEBC321BA851700F1BF01 /* DeepDiff-macOS-Tests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BA0CEC4C21BE516F00F1BF01 /* Diff */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Diff;
 			sourceTree = "<group>";
 		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
