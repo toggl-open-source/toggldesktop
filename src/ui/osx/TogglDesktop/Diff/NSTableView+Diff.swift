@@ -56,7 +56,8 @@ extension NSTableView {
 
     private func internalBatchUpdates(changesWithIndexPath: ChangeWithIndexPath) {
 
-        changesWithIndexPath.deletes.forEach {
+        self.noteNumberOfRowsChanged()
+        changesWithIndexPath.deletes.reversed().forEach {
             removeRows(at: $0, withAnimation: .effectFade)
         }
 

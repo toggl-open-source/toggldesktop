@@ -12,10 +12,7 @@
 #import "NSViewEscapable.h"
 #import "NSTextFieldClickable.h"
 
-@interface TimeEntryListViewController : NSViewController {
-	@private
-	NSMutableArray *viewitems;
-}
+@interface TimeEntryListViewController : NSViewController
 @property (unsafe_unretained) IBOutlet NSView *headerView;
 @property (unsafe_unretained) IBOutlet NSUnstripedTableView *timeEntriesTableView;
 @property (strong) IBOutlet NSPopover *timeEntrypopover;

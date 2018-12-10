@@ -26,7 +26,7 @@ struct TableViewDiffer {
     func diff<T: Hashable>(_ old: [T], new: [T], with tableView: NSTableView) {
 
         // Use Deep-Diff to diff the change
-        let changed = DeepDiff.diff(old: old, new: new)
+        let changed = DeepDiff.diff(old: old, new: new, algorithm: WagnerFischer())
 
         // Early exit if there is no changes
         guard !changed.isEmpty else { return }
