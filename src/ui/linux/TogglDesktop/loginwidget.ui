@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>427</width>
-    <height>461</height>
+    <height>483</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -68,6 +68,18 @@
          <number>0</number>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
@@ -99,10 +111,16 @@
          </item>
          <item>
           <widget class="QLineEdit" name="email">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>320</width>
-             <height>0</height>
+             <width>220</width>
+             <height>35</height>
             </size>
            </property>
            <property name="autoFillBackground">
@@ -118,10 +136,16 @@
          </item>
          <item>
           <widget class="QLineEdit" name="password">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>320</width>
-             <height>0</height>
+             <width>220</width>
+             <height>35</height>
             </size>
            </property>
            <property name="autoFillBackground">
@@ -143,6 +167,12 @@
          </item>
          <item>
           <widget class="QWidget" name="loginWidget" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>320</width>
+             <height>0</height>
+            </size>
+           </property>
            <layout class="QVBoxLayout" name="loginFram">
             <property name="spacing">
              <number>1</number>
@@ -170,7 +200,7 @@
                <bool>true</bool>
               </property>
               <property name="styleSheet">
-               <string notr="true">color:#fff;padding-bottom:18px;</string>
+               <string notr="true">color:#fff;padding-bottom:24px;</string>
               </property>
               <property name="text">
                <string>&lt;a href=&quot;https://www.toggl.com/forgot-password&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#fff;&quot;&gt;Forgot password?&lt;/span&gt;&lt;/a&gt;</string>
@@ -191,10 +221,16 @@
             </item>
             <item>
              <widget class="QPushButton" name="login">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
-                <width>320</width>
-                <height>0</height>
+                <width>220</width>
+                <height>35</height>
                </size>
               </property>
               <property name="autoFillBackground">
@@ -283,8 +319,8 @@
              <widget class="QComboBox" name="countryComboBox">
               <property name="minimumSize">
                <size>
-                <width>353</width>
-                <height>0</height>
+                <width>220</width>
+                <height>35</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -364,10 +400,16 @@
             </item>
             <item>
              <widget class="QPushButton" name="signup">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
-                <width>320</width>
-                <height>0</height>
+                <width>220</width>
+                <height>35</height>
                </size>
               </property>
               <property name="autoFillBackground">
