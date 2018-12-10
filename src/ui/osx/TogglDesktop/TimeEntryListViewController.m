@@ -35,7 +35,6 @@
 @property BOOL runningEdit;
 @property TimeEntryCell *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
-@property (nonatomic, strong) EntryTableViewDiffer *differ;
 @property (nonatomic, strong) NSArray<TimeEntryViewItem *> *viewitems;
 @end
 
@@ -65,7 +64,6 @@ extern void *ctx;
 																	   bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
 														bundle:nil];
-        self.differ = [[EntryTableViewDiffer alloc] init];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
@@ -206,14 +204,9 @@ extern void *ctx;
 
 	NSInteger i = [self.timeEntriesTableView selectedRow];
 
-    NSLog(@"Old count %lu", (unsigned long)self.viewitems.count);
-    NSLog(@"New count %lu", (unsigned long)newTimeEntries.count);
-
     // Diff and reload
     self.viewitems = [newTimeEntries copy];
-    [self.differ reload:oldTimeEntries
-                    new:[newTimeEntries copy]
-                   with:self.timeEntriesTableView];
+    [self.timeEntriesTableView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
 
 	if (cmd.open)
 	{

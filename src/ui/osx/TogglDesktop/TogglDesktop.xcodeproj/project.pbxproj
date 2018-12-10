@@ -156,6 +156,7 @@
 		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
 		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
+		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
@@ -588,6 +589,7 @@
 		BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Diff.swift"; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
+		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -1074,6 +1076,7 @@
 			children = (
 				BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */,
 				BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */,
+				BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */,
 				BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */,
 			);
 			path = Diff;
@@ -1447,6 +1450,7 @@
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
+				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,

@@ -35,18 +35,3 @@ struct TableViewDiffer {
         tableView.reload(changes: changed)
     }
 }
-
-/// EntryTableViewDiffer
-/// An helper class to expose generic func from TableViewDiffer to Objc codebase
-@objc final class EntryTableViewDiffer: NSObject {
-
-    /// Calculate the diff and reload
-    ///
-    /// - Parameters:
-    ///   - old: Old array (conform Hashable)
-    ///   - new: New array (conform Hashable)
-    ///   - tableView: A primary NSTableView
-    @objc func reload(_ old: [TimeEntryViewItem], new: [TimeEntryViewItem], with tableView: NSTableView) {
-        TableViewDiffer().diff(old, new: new, with: tableView)
-    }
-}
