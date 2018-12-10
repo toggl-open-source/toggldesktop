@@ -19,6 +19,7 @@
 #import "TimeEntryEditViewController.h"
 #import "ConvertHexColor.h"
 #include <Carbon/Carbon.h>
+#import "TogglDesktop-Swift.h"
 
 @interface TimeEntryListViewController ()
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
@@ -34,6 +35,7 @@
 @property BOOL runningEdit;
 @property TimeEntryCell *selectedEntryCell;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
+@property (nonatomic, strong) EntryTableViewDiffer *differ;
 @end
 
 @implementation TimeEntryListViewController
@@ -62,6 +64,7 @@ extern void *ctx;
 																	   bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
 														bundle:nil];
+        self.differ = [[EntryTableViewDiffer alloc] init];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
