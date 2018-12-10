@@ -26,27 +26,12 @@ struct TableViewDiffer {
     func diff<T: Hashable>(_ old: [T], new: [T], with tableView: NSTableView) {
 
         // Use Deep-Diff to diff the change
-        let changed = DeepDiff.diff(old: old, new: new)
+        let changed = DeepDiff.diff(old: old, new: new, algorithm: WagnerFischer())
 
         // Early exit if there is no changes
         guard !changed.isEmpty else { return }
 
         // Reload with changes
         tableView.reload(changes: changed)
-    }
-}
-
-/// EntryTableViewDiffer
-/// An helper class to expose generic func from TableViewDiffer to Objc codebase
-@objc final class EntryTableViewDiffer: NSObject {
-
-    /// Calculate the diff and reload
-    ///
-    /// - Parameters:
-    ///   - old: Old array (conform Hashable)
-    ///   - new: New array (conform Hashable)
-    ///   - tableView: A primary NSTableView
-    @objc func reload(_ old: [TimeEntryViewItem], new: [TimeEntryViewItem], with tableView: NSTableView) {
-        TableViewDiffer().diff(old, new: new, with: tableView)
     }
 }

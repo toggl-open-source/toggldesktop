@@ -61,13 +61,7 @@ public final class WagnerFischer: DiffAware {
   // MARK: - Helper
 
   private func isEqual<T: Hashable>(oldItem: T, newItem: T) -> Bool {
-    // Same items must have same hashValue
-    if oldItem.hashValue != newItem.hashValue {
-      return false
-    } else {
-      // Different hashValue does not always mean different items
-      return oldItem == newItem
-    }
+    return oldItem.hashValue == newItem.hashValue
   }
 }
 

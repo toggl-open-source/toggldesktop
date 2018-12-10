@@ -9,6 +9,7 @@
 import Cocoa
 import DeepDiff
 
+/// Represent the changes
 struct ChangeWithIndexPath {
 
     public let inserts: [IndexSet]
@@ -17,8 +18,14 @@ struct ChangeWithIndexPath {
     public let moves: [(from: Int, to: Int)]
 }
 
+/// Helper class to convert the DeepDiff.Change to ChangeWithIndexPath
 struct IndexPathConverter {
 
+    /// Convert the DeepDiff.Change enum
+    /// To helper class ChangeWithIndexPath
+    ///
+    /// - Parameter changes: The enum changes
+    /// - Returns: ChangeWithIndexPath
     func convert<T>(changes: [Change<T>]) -> ChangeWithIndexPath {
         let inserts = changes.compactMap { $0.insert }.map { IndexSet(integer: $0.index) }
         let deletes = changes.compactMap { $0.delete }.map { IndexSet(integer: $0.index) }
@@ -31,8 +38,14 @@ struct IndexPathConverter {
     }
 }
 
+// MARK: - NSTableView
 extension NSTableView {
 
+    /// Reload tableview depends on the diff changes
+    ///
+    /// - Parameters:
+    ///   - changes: The array of Change<T>
+    ///   - completion: Complete Block
     func reload<T: Hashable>(changes: [Change<T>], completion: (() -> Void)? = nil) {
         let changesWithIndexPath = IndexPathConverter().convert(changes: changes)
 
@@ -42,21 +55,25 @@ extension NSTableView {
         endUpdates()
 
         // Replace
-        beginUpdates()
-        let columnIndex = IndexSet.init(integersIn: 0..<numberOfColumns)
-        changesWithIndexPath.replaces.forEach {
-            reloadData(forRowIndexes: $0, columnIndexes: columnIndex)
+        if !changesWithIndexPath.replaces.isEmpty {
+            beginUpdates()
+            let columnIndex = IndexSet.init(integersIn: 0..<numberOfColumns)
+            changesWithIndexPath.replaces.forEach {
+                reloadData(forRowIndexes: $0, columnIndexes: columnIndex)
+            }
+            endUpdates()
         }
-        endUpdates()
 
         completion?()
     }
 
-    // MARK: - Helper
-
+    /// Execute removeRows/insertRows/moveRow appropriately
+    /// It relies on the input changesWithIndexPath
+    ///
+    /// - Parameter changesWithIndexPath: The IndexSet changes
     private func internalBatchUpdates(changesWithIndexPath: ChangeWithIndexPath) {
 
-        changesWithIndexPath.deletes.forEach {
+        changesWithIndexPath.deletes.reversed().forEach {
             removeRows(at: $0, withAnimation: .effectFade)
         }
 

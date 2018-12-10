@@ -30,8 +30,8 @@
 @property (strong, nonatomic) NSDate *ended;
 @property (copy, nonatomic) NSString *startTimeString;
 @property (copy, nonatomic) NSString *endTimeString;
-@property (strong) NSArray *tags;
-@property (strong) NSDate *updatedAt;
+@property (strong, nonatomic) NSArray *tags;
+@property (strong, nonatomic) NSDate *updatedAt;
 @property (copy, nonatomic) NSString *formattedDate;
 // If this is set to YES, a date header is displayed on top of
 // the time entry cell in the time entry list view:

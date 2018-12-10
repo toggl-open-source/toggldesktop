@@ -38,7 +38,7 @@ static CGFloat kTimeEntryCellWithHeaderHeight = 46.0;
 @property TimeEntryCell *selectedEntryCell;
 @property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
-@property (nonatomic, strong) EntryTableViewDiffer *differ;
+@property (nonatomic, strong) NSArray<TimeEntryViewItem *> *viewitems;
 @end
 
 @implementation TimeEntryListViewController
@@ -57,7 +57,7 @@ extern void *ctx;
 		[self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
-		viewitems = [NSMutableArray array];
+		self.viewitems = [[NSArray<TimeEntryViewItem *> alloc] init];
 
 		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
 														 bundle:nil];
@@ -67,7 +67,6 @@ extern void *ctx;
 																	   bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
 														bundle:nil];
-        self.differ = [[EntryTableViewDiffer alloc] init];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryList:)
@@ -194,22 +193,23 @@ extern void *ctx;
 			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
 		}
 	}
-	@synchronized(viewitems)
-	{
-		[viewitems removeAllObjects];
-		[viewitems addObjectsFromArray:cmd.timeEntries];
 
-        // Add Load more button
+    NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
+    NSArray<TimeEntryViewItem *> *oldTimeEntries = self.viewitems;
 
-		if (cmd.show_load_more)
-		{
-			TimeEntryViewItem *it = [TimeEntryViewItem alloc];
-			[it setLoadMore:YES];
-			[viewitems addObject:it];
-		}
-	}
+    if (cmd.show_load_more)
+    {
+        TimeEntryViewItem *it = [TimeEntryViewItem alloc];
+        [it setLoadMore:YES];
+        [newTimeEntries addObject:it];
+    }
+
 	NSInteger i = [self.timeEntriesTableView selectedRow];
-	[self.timeEntriesTableView reloadData];
+
+    // Diff and reload
+    self.viewitems = [newTimeEntries copy];
+    [self.timeEntriesTableView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
+
 	if (cmd.open)
 	{
 		if (self.timeEntrypopover.shown)
@@ -403,9 +403,9 @@ extern void *ctx;
 {
 	int result = 0;
 
-	@synchronized(viewitems)
+	@synchronized(self.viewitems)
 	{
-		result = (int)[viewitems count];
+		result = (int)[self.viewitems count];
 	}
 	return result;
 }
@@ -429,9 +429,9 @@ extern void *ctx;
 {
 	TimeEntryViewItem *item = nil;
 
-	@synchronized(viewitems)
+	@synchronized(self.viewitems)
 	{
-		item = [viewitems objectAtIndex:row];
+		item = [self.viewitems objectAtIndex:row];
 	}
 	NSAssert(item != nil, @"view item from viewitems array is nil");
 
@@ -462,11 +462,11 @@ extern void *ctx;
 {
 	TimeEntryViewItem *item = nil;
 
-	@synchronized(viewitems)
+	@synchronized(self.viewitems)
 	{
-		if (row < viewitems.count)
+		if (row < self.viewitems.count)
 		{
-			item = viewitems[row];
+			item = self.viewitems[row];
 		}
 	}
 	if (item && item.isHeader)
@@ -487,9 +487,9 @@ extern void *ctx;
 	}
 
 	TimeEntryViewItem *item = 0;
-	@synchronized(viewitems)
+	@synchronized(self.viewitems)
 	{
-		item = viewitems[row];
+		item = self.viewitems[row];
 	}
 
 	TimeEntryCell *cell = [self getSelectedEntryCell:row];
@@ -731,8 +731,8 @@ extern void *ctx;
 {
 	if (aTableView == self.timeEntriesTableView)
 	{
-        // Disable drag and drop for load more and group row
-		TimeEntryViewItem *model = [viewitems objectAtIndex:[rowIndexes firstIndex]];
+		// Disable drag and drop for load more and group row
+		TimeEntryViewItem *model = [self.viewitems objectAtIndex:[rowIndexes firstIndex]];
 		if ([model loadMore] || model.Group)
 		{
 			return NO;
@@ -775,13 +775,13 @@ extern void *ctx;
 			dateIndex = (int)row + 1;
 		}
 
-        // Updating the dropped item date
-		TimeEntryViewItem *dateModel = [viewitems objectAtIndex:dateIndex];
-		TimeEntryViewItem *currentModel = [viewitems objectAtIndex:dragRow];
+		// Updating the dropped item date
+		TimeEntryViewItem *dateModel = [self.viewitems objectAtIndex:dateIndex];
+		TimeEntryViewItem *currentModel = [self.viewitems objectAtIndex:dragRow];
 
 		if ([dateModel loadMore])
 		{
-			dateModel = [viewitems objectAtIndex:dateIndex - 1];
+			dateModel = [self.viewitems objectAtIndex:dateIndex - 1];
 		}
 
 		NSCalendar *calendar = [NSCalendar currentCalendar];
