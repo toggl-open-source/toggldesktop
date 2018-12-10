@@ -1,5 +1,5 @@
 //
-//  Rectangle.h
+//  rectangle.h
 //  TogglDesktopLibrary
 //
 //  Created by Nghia Tran on 11/22/18.
@@ -26,4 +26,4 @@ class Rectangle {
     };
 }
 
-#endif /* Rectangle_h */
+#endif /* rectangle_h */

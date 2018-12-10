@@ -1,12 +1,12 @@
 //
-//  Rectangle.c
+//  rectangle.c
 //  TogglDesktopLibrary
 //
 //  Created by Nghia Tran on 11/22/18.
 //  Copyright © 2018 Toggl. All rights reserved.
 //
 
-#include "Rectangle.h"
+#include "rectangle.h"
 #include <sstream>
 
 namespace toggl {

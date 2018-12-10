@@ -10,7 +10,7 @@
 #include "Poco/LocalDateTime.h"
 #include "./proxy.h"
 #include "./settings.h"
-#include "./Rectangle.h"
+#include "./rectangle.h"
 
 namespace toggl {
 
