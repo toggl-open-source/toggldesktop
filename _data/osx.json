@@ -10,8 +10,7 @@
                 "Fixed cursor color issue in login view",
                 "More analytics for window size tracking"
             ],
-            "date": "December 5th 2018",
-            "beta": "true"
+            "date": "December 11th 2018"
         },
         {
             "version": "7.4.299",
