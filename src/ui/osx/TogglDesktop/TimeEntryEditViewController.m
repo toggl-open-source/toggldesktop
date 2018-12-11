@@ -424,7 +424,7 @@ extern void *ctx;
 
 	self.timeEntry = cmd.timeEntry;
     NSLog(@"==== 💥 Editing timeEntry = %@", self.timeEntry);
-    NSLog(@"=== Undo entry = %@", [[UndoManager shared] getUndoPayloadFor:self.timeEntry.GUID]);
+    NSLog(@"=== Undo entry = %@", [[UndoManager shared] getUndoPayloadFor:self.timeEntry]);
 
 	self.GUID = cmd.timeEntry.GUID;
 
@@ -551,6 +551,9 @@ extern void *ctx;
 	{
 		[self setFocus:nil];
 	}
+
+    // Undo
+    [self registerUndo];
 }
 
 - (NSArray *)    tokenField:(NSTokenField *)tokenField
@@ -1516,6 +1519,37 @@ extern void *ctx;
 	}
 
 	return retval;
+}
+
+-(void) registerUndo
+{
+    ObjcTimeEntry *undoEntry = [[UndoManager shared] getUndoPayloadFor:self.timeEntry];
+    if (undoEntry != nil) {
+
+        // Description
+        [self.descriptionAutoCompleteInput.undoManager prepareWithInvocationTarget:self];
+        [self.descriptionAutoCompleteInput.undoManager registerUndoWithTarget:self
+                                                                     selector:@selector(setDescriptionInput:)
+                                                                       object:undoEntry.descriptionEntry];
+        [self.projectAutoCompleteInput.undoManager prepareWithInvocationTarget:self];
+        [self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self
+                                                                     selector:@selector(setProjectInput:)
+                                                                       object:undoEntry.project];
+    }
+}
+
+-(void) setDescriptionInput:(NSString *) value
+{
+    NSString *oldValue = self.descriptionAutoCompleteInput.stringValue;
+    self.descriptionAutoCompleteInput.stringValue = value;
+    [self.descriptionAutoCompleteInput.undoManager registerUndoWithTarget:self selector:@selector(setDescriptionInput:) object:oldValue];
+}
+
+-(void) setProjectInput:(NSString *) value
+{
+    NSString *oldValue = self.projectAutoCompleteInput.stringValue;
+    self.projectAutoCompleteInput.stringValue = value;
+    [self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self selector:@selector(setProjectInput:) object:oldValue];
 }
 
 @end

@@ -55,8 +55,8 @@ extension UndoManager {
         }
     }
 
-    @objc func getUndoPayload(for guid: String) -> ObjcTimeEntry? {
-        guard let undoQueue = get(for: guid, type: UndoQueue<TimeEntryUndoPayload>.self) else {
+    @objc func getUndoPayload(for object: TimeEntryViewItem) -> ObjcTimeEntry? {
+        guard let undoQueue = get(for: object.guid, type: UndoQueue<TimeEntryUndoPayload>.self) else {
             return nil
         }
         return undoQueue.undoItem()?.toObjcTimeEntry()
