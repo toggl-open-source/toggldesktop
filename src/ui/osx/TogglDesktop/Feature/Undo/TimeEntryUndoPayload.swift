@@ -30,7 +30,7 @@ final class TimeEntryUndoPayload: Equatable {
     }
 }
 
-@objc class ObjcTimeEntry: NSObject {
+@objcMembers class ObjcTimeEntry: NSObject {
 
     let descriptionEntry: String
     let project: String
