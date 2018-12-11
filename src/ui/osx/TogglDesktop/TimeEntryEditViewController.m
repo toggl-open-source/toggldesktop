@@ -15,6 +15,7 @@
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
+#import "TogglDesktop-Swift.h"
 
 @interface TimeEntryEditViewController ()
 @property LiteAutoCompleteDataSource *liteDescriptionAutocompleteDataSource;
@@ -422,6 +423,8 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	self.timeEntry = cmd.timeEntry;
+    NSLog(@"==== 💥 Editing timeEntry = %@", self.timeEntry);
+    NSLog(@"=== Undo entry = %@", [[UndoManager shared] getUndoPayloadFor:self.timeEntry.GUID]);
 
 	self.GUID = cmd.timeEntry.GUID;
 
