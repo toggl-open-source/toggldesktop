@@ -1,5 +1,5 @@
 //
-//  UndoStorage.swift
+//  UndoManager.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 12/11/18.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-@objc final class UndoStorage: NSObject {
+@objc final class UndoManager: NSObject {
 
     private struct Constants {
         static let QueueName = "com.toggl.toggldesktop.TogglDesktop.undo"
     }
 
     // MARK: - Variable
-    static let shared = UndoStorage()
+    @objc static let shared = UndoManager()
     private var storage: [String: Any] = [:]
     private lazy var queue: DispatchQueue = {
         let qos: DispatchQoS
@@ -42,13 +42,23 @@ import Foundation
 }
 
 // MARK: - Extension for TimeEntry
-extension UndoStorage {
+extension UndoManager {
 
-    @objc func set(_ object: TimeEntryViewItem) {
-        set(object, for: object.guid)
+    @objc func store(with object: TimeEntryViewItem) {
+        let payload = TimeEntryUndoPayload(descriptionEntry: object.descriptionEntry(),
+                                           project: object.projectAndTaskLabel ?? "")
+        if let undo = get(for: object.guid, type: UndoQueue<TimeEntryUndoPayload>.self) {
+            undo.enqueue(payload)
+        } else {
+            let undo = UndoQueue<TimeEntryUndoPayload>(storage: [payload])
+            set(undo, for: object.guid)
+        }
     }
 
-    @objc func get(for key: String) -> TimeEntryViewItem? {
-        return get(for: key, type: TimeEntryViewItem.self)
+    @objc func getUndoPayload(for guid: String) -> ObjcTimeEntry? {
+        guard let undoQueue = get(for: guid, type: UndoQueue<TimeEntryUndoPayload>.self) else {
+            return nil
+        }
+        return undoQueue.undoItem()?.toObjcTimeEntry()
     }
 }

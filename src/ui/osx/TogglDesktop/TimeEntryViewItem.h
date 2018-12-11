@@ -60,4 +60,7 @@
 @property (copy, nonatomic) NSString *GroupDuration;
 // Group Item Count
 @property (assign, nonatomic) uint64_t GroupItemCount;
+
+-(NSString *) descriptionEntry;
+
 @end

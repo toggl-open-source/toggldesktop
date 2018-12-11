@@ -15,6 +15,7 @@
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
+#import "TogglDesktop-Swift.h"
 
 @interface TimeEntryEditViewController ()
 @property LiteAutoCompleteDataSource *liteDescriptionAutocompleteDataSource;
@@ -441,6 +442,9 @@ extern void *ctx;
 {
 	self.cmd = cmd;
 	self.timeEntry = cmd.timeEntry;
+    NSLog(@"==== 💥 Editing timeEntry = %@", self.timeEntry);
+    NSLog(@"=== Undo entry = %@", [[UndoManager shared] getUndoPayloadFor:self.timeEntry.GUID]);
+
 	self.GUID = cmd.timeEntry.GUID;
 
 	// Only populate if this popover is opening

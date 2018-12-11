@@ -158,7 +158,9 @@
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA712EC221BF907200A2D8DD /* UndoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoStorage.swift */; };
+		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BA712EC621BF913800A2D8DD /* TimeEntryUndoPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntryUndoPayload.swift */; };
+		BA712EC821BF9F1200A2D8DD /* UndoQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoQueue.swift */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAD232D121D495E20039C742 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
@@ -598,7 +600,9 @@
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
 		BA712EC121BF907200A2D8DD /* UndoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStorage.swift; sourceTree = "<group>"; };
+		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
 		BA712EC521BF913800A2D8DD /* TimeEntryUndoPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryUndoPayload.swift; sourceTree = "<group>"; };
+		BA712EC721BF9F1200A2D8DD /* UndoQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoQueue.swift; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
@@ -1112,7 +1116,8 @@
 		BA712EC021BF905B00A2D8DD /* Undo */ = {
 			isa = PBXGroup;
 			children = (
-				BA712EC121BF907200A2D8DD /* UndoStorage.swift */,
+				BA712EC121BF907200A2D8DD /* UndoManager.swift */,
+				BA712EC721BF9F1200A2D8DD /* UndoQueue.swift */,
 				BA712EC521BF913800A2D8DD /* TimeEntryUndoPayload.swift */,
 			);
 			path = Undo;
@@ -1501,6 +1506,7 @@
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
 				BA712EC621BF913800A2D8DD /* TimeEntryUndoPayload.swift in Sources */,
+				BA712EC821BF9F1200A2D8DD /* UndoQueue.swift in Sources */,
 				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
@@ -1548,7 +1554,7 @@
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
-				BA712EC221BF907200A2D8DD /* UndoStorage.swift in Sources */,
+				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,

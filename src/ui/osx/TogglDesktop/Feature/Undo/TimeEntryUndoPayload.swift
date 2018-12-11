@@ -8,8 +8,40 @@
 
 import Foundation
 
-struct TimeEntryUndoPayload {
+final class TimeEntryUndoPayload: Equatable {
 
-    let description: String
+    // MARK: - Variable
+    let descriptionEntry: String
     let project: String
+
+    // MARK: - Init
+    init(descriptionEntry: String, project: String) {
+        self.descriptionEntry = descriptionEntry
+        self.project = project
+    }
+
+    static func == (lhs: TimeEntryUndoPayload, rhs: TimeEntryUndoPayload) -> Bool {
+        return lhs.descriptionEntry == rhs.descriptionEntry &&
+            lhs.project == rhs.project
+    }
+
+    func toObjcTimeEntry() -> ObjcTimeEntry {
+        return ObjcTimeEntry(descriptionEntry: descriptionEntry, project: project)
+    }
+}
+
+@objc class ObjcTimeEntry: NSObject {
+
+    let descriptionEntry: String
+    let project: String
+
+    init(descriptionEntry: String, project: String) {
+        self.descriptionEntry = descriptionEntry
+        self.project = project
+        super.init()
+    }
+
+    override var description: String {
+        return "descriptionEntry \(descriptionEntry), project \(project)"
+    }
 }
