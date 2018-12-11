@@ -194,21 +194,21 @@ extern void *ctx;
 		}
 	}
 
-    NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
-    NSArray<TimeEntryViewItem *> *oldTimeEntries = self.viewitems;
+	NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
+	NSArray<TimeEntryViewItem *> *oldTimeEntries = self.viewitems;
 
-    if (cmd.show_load_more)
-    {
-        TimeEntryViewItem *it = [TimeEntryViewItem alloc];
-        [it setLoadMore:YES];
-        [newTimeEntries addObject:it];
-    }
+	if (cmd.show_load_more)
+	{
+		TimeEntryViewItem *it = [TimeEntryViewItem alloc];
+		[it setLoadMore:YES];
+		[newTimeEntries addObject:it];
+	}
 
 	NSInteger i = [self.timeEntriesTableView selectedRow];
 
     // Diff and reload
-    self.viewitems = [newTimeEntries copy];
-    [self.timeEntriesTableView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
+	self.viewitems = [newTimeEntries copy];
+	[self.timeEntriesTableView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
 
 	if (cmd.open)
 	{
@@ -288,9 +288,9 @@ extern void *ctx;
 
     // Get new selected index depend on last GUID
 	NSInteger newSelectedRow = -1;
-	for (NSInteger i = 0; i < viewitems.count; i++)
+	for (NSInteger i = 0; i < self.viewitems.count; i++)
 	{
-		id item = viewitems[i];
+		id item = self.viewitems[i];
 		if ([item isKindOfClass:[TimeEntryViewItem class]])
 		{
 			TimeEntryViewItem *viewItem = (TimeEntryViewItem *)item;
@@ -731,7 +731,7 @@ extern void *ctx;
 {
 	if (aTableView == self.timeEntriesTableView)
 	{
-		// Disable drag and drop for load more and group row
+        // Disable drag and drop for load more and group row
 		TimeEntryViewItem *model = [self.viewitems objectAtIndex:[rowIndexes firstIndex]];
 		if ([model loadMore] || model.Group)
 		{
@@ -775,7 +775,7 @@ extern void *ctx;
 			dateIndex = (int)row + 1;
 		}
 
-		// Updating the dropped item date
+        // Updating the dropped item date
 		TimeEntryViewItem *dateModel = [self.viewitems objectAtIndex:dateIndex];
 		TimeEntryViewItem *currentModel = [self.viewitems objectAtIndex:dragRow];
 
