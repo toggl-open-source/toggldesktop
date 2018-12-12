@@ -23,7 +23,7 @@ include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 
 if(USE_SYSTEMWIDE_LIBRARIES)
     # Look for Poco
-    find_package(Poco Crypto DataSQLite NetSSL)
+    find_package(Poco COMPONENTS Crypto DataSQLite NetSSL)
 
     # Look for Lua
     pkg_search_module(LUA lua)

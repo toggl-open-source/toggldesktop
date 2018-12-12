@@ -37,7 +37,7 @@ target_link_libraries(Bugsnag PRIVATE
     Qt5::Widgets Qt5::Network
 )
 
-if(NOT POCO_FOUND)
+if(NOT Poco_FOUND)
     # to avoid that annoying check
     option(DISABLE_CPP14 "" ON)
     # to not build unnecessary clutter
@@ -111,7 +111,7 @@ if(NOT LUA_FOUND)
     )
 endif()
 
-if(NOT JSONCPP_FOUND)
+if(NOT jsoncpp_FOUND)
     set(JSON_SOURCE_FILES
         jsoncpp/src/lib_json/json_reader.cpp
         jsoncpp/src/lib_json/json_value.cpp
