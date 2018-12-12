@@ -168,6 +168,9 @@ extern void *ctx;
 
 @end
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 // See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
 BOOL wasLaunchedAsLoginOrResumeItem()
 {
@@ -223,3 +226,4 @@ BOOL wasLaunchedAsHiddenLoginItem()
 	return NO;
 }
 
+#pragma GCC diagnostic pop
