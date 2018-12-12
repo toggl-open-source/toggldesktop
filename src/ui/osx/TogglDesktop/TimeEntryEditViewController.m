@@ -40,6 +40,8 @@
 @property NSMutableAttributedString *clientColorTitle;
 @property NSMutableAttributedString *clientColorTitleCancel;
 @property NSString *GUID;
+@property (strong, nonatomic) DisplayCommand *cmd;
+@property (assign, nonatomic) BOOL isOpen;
 @end
 
 @implementation TimeEntryEditViewController
@@ -55,6 +57,7 @@ extern void *ctx;
 		self.startTimeChanged = NO;
 		self.endTimeChanged = NO;
 		self.popupOnLeft = NO;
+        self.isOpen = NO;
 
 		self.liteDescriptionAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
 
@@ -159,8 +162,19 @@ extern void *ctx;
 	[self.projectAutoCompleteInput setButton:self.projectOpenButton];
 }
 
+-(void) viewWillAppear
+{
+    [super viewWillAppear];
+    self.isOpen = YES;
+
+    // Populate all data with TimeEntry
+    [self populateData];
+}
+
 - (void)viewDidAppear
 {
+    [super viewDidAppear];
+
 	NSRect descriptionViewFrameInWindowCoords = [self.descriptionAutoCompleteInput convertRect:[self.descriptionAutoCompleteInput bounds] toView:nil];
 	NSRect projectViewFrameInWindowCoords = [self.projectAutoCompleteInput convertRect:[self.projectAutoCompleteInput bounds] toView:nil];
 
@@ -169,6 +183,11 @@ extern void *ctx;
 
 	[self.descriptionAutoCompleteInput.autocompleteTableView setDelegate:self];
 	[self.projectAutoCompleteInput.autocompleteTableView setDelegate:self];
+}
+
+-(void)viewDidDisappear {
+    [super viewDidDisappear];
+    self.isOpen = NO;
 }
 
 - (void)loadView
@@ -420,140 +439,144 @@ extern void *ctx;
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
 {
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
+    self.cmd = cmd;
 	self.timeEntry = cmd.timeEntry;
-    NSLog(@"==== 💥 Editing timeEntry = %@", self.timeEntry);
-    NSLog(@"=== Undo entry = %@", [[UndoManager shared] getUndoPayloadFor:self.timeEntry]);
-
 	self.GUID = cmd.timeEntry.GUID;
 
-	NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
+    // Only populate if this popover is opening
+    // If not - it will populate in viewWillAppear
+    if (self.isOpen)
+    {
+        [self populateData];
+    }
+}
 
-	if (nil == self.startDate.listener)
-	{
-		self.startDate.listener = self;
-	}
+-(void) populateData
+{
+    NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+    NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
 
-	if (cmd.open)
-	{
-		[self.liteDescriptionAutocompleteDataSource setFilter:@""];
-		[self.liteProjectAutocompleteDataSource setFilter:@""];
-	}
+    if (nil == self.startDate.listener)
+    {
+        self.startDate.listener = self;
+    }
 
-	[self.billableCheckbox setHidden:!self.timeEntry.CanSeeBillable];
+    if (self.cmd.open)
+    {
+        [self.liteDescriptionAutocompleteDataSource setFilter:@""];
+        [self.liteProjectAutocompleteDataSource setFilter:@""];
+    }
 
-	[self.billableCheckbox setState:[Utils boolToState:self.timeEntry.billable]];
+    [self.billableCheckbox setHidden:!self.timeEntry.CanSeeBillable];
 
-	if (!self.timeEntry.CanSeeBillable)
-	{
-		[self.tagsTokenField setNextKeyView:self.deleteButton];
-	}
-	else
-	{
-		[self.tagsTokenField setNextKeyView:self.billableCheckbox];
-	}
+    [self.billableCheckbox setState:[Utils boolToState:self.timeEntry.billable]];
 
-	// Fixes reverse tabing
-	[self.addProjectButton setNextKeyView:self.durationTextField];
+    if (!self.timeEntry.CanSeeBillable)
+    {
+        [self.tagsTokenField setNextKeyView:self.deleteButton];
+    }
+    else
+    {
+        [self.tagsTokenField setNextKeyView:self.billableCheckbox];
+    }
 
-	if (!self.timeEntry.CanAddProjects)
-	{
-		[self.addProjectButton setHidden:YES];
-	}
-	else if ([self.addProjectBox isHidden])
-	{
-		[self.addProjectButton setHidden:NO];
-	}
+    // Fixes reverse tabing
+    [self.addProjectButton setNextKeyView:self.durationTextField];
 
-	// Overwrite description only if user is not editing it:
-	if (cmd.open || [self.descriptionAutoCompleteInput currentEditor] == nil)
-	{
-		[[self.descriptionAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
-		[[self.descriptionAutoCompleteInput currentEditor] moveToEndOfLine:nil];
-		self.descriptionAutoCompleteInput.stringValue = self.timeEntry.Description;
-		self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
-	}
+    if (!self.timeEntry.CanAddProjects)
+    {
+        [self.addProjectButton setHidden:YES];
+    }
+    else if ([self.addProjectBox isHidden])
+    {
+        [self.addProjectButton setHidden:NO];
+    }
 
-	// Overwrite project only if user is not editing it
-	if (cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
-	{
-		[[self.projectAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
-		[[self.projectAutoCompleteInput currentEditor] moveToEndOfLine:nil];
-		if (self.timeEntry.ProjectAndTaskLabel != nil)
-		{
-			self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
-			self.projectSelectPreviousStringValue = self.timeEntry.ProjectAndTaskLabel;
-		}
-		else
-		{
-			self.projectAutoCompleteInput.stringValue = @"";
-			self.projectSelectPreviousStringValue = @"";
-		}
-	}
+    // Overwrite description only if user is not editing it:
+    if (self.cmd.open || [self.descriptionAutoCompleteInput currentEditor] == nil)
+    {
+        [[self.descriptionAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
+        [[self.descriptionAutoCompleteInput currentEditor] moveToEndOfLine:nil];
+        self.descriptionAutoCompleteInput.stringValue = self.timeEntry.Description;
+        self.descriptionComboboxPreviousStringValue = self.timeEntry.Description;
+    }
 
-	// Overwrite duration only if user is not editing it:
-	if (cmd.open || [self.durationTextField currentEditor] == nil)
-	{
-		[[self.durationTextField currentEditor] setSelectedRange:NSMakeRange(0, 0)];
-		[[self.durationTextField currentEditor] moveToEndOfLine:nil];
-		[self.durationTextField setStringValue:self.timeEntry.duration];
-	}
+    // Overwrite project only if user is not editing it
+    if (self.cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
+    {
+        [[self.projectAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
+        [[self.projectAutoCompleteInput currentEditor] moveToEndOfLine:nil];
+        if (self.timeEntry.ProjectAndTaskLabel != nil)
+        {
+            self.projectAutoCompleteInput.stringValue = self.timeEntry.ProjectAndTaskLabel;
+            self.projectSelectPreviousStringValue = self.timeEntry.ProjectAndTaskLabel;
+        }
+        else
+        {
+            self.projectAutoCompleteInput.stringValue = @"";
+            self.projectSelectPreviousStringValue = @"";
+        }
+    }
 
-	if (cmd.open || [self.startTime currentEditor] == nil || self.startTimeChanged == YES)
-	{
-		[self.startTime setStringValue:self.timeEntry.startTimeString];
-		self.startTimeChanged = NO;
-	}
-	if (cmd.open || [self.endTime currentEditor] == nil || self.endTimeChanged == YES)
-	{
-		[self.endTime setStringValue:self.timeEntry.endTimeString];
-		self.endTimeChanged = NO;
-	}
-	BOOL running = (self.timeEntry.duration_in_seconds >= 0);
-	[self.startDate setDateValue:self.timeEntry.started];
-	[self.startDate setEnabled:running];
-	[self.startDate setDrawsBackground:running];
+    // Overwrite duration only if user is not editing it:
+    if (self.cmd.open || [self.durationTextField currentEditor] == nil)
+    {
+        [[self.durationTextField currentEditor] setSelectedRange:NSMakeRange(0, 0)];
+        [[self.durationTextField currentEditor] moveToEndOfLine:nil];
+        [self.durationTextField setStringValue:self.timeEntry.duration];
+    }
 
-	[self.endTime setHidden:!running];
+    if (self.cmd.open || [self.startTime currentEditor] == nil || self.startTimeChanged == YES)
+    {
+        [self.startTime setStringValue:self.timeEntry.startTimeString];
+        self.startTimeChanged = NO;
+    }
+    if (self.cmd.open || [self.endTime currentEditor] == nil || self.endTimeChanged == YES)
+    {
+        [self.endTime setStringValue:self.timeEntry.endTimeString];
+        self.endTimeChanged = NO;
+    }
+    BOOL running = (self.timeEntry.duration_in_seconds >= 0);
+    [self.startDate setDateValue:self.timeEntry.started];
+    [self.startDate setEnabled:running];
+    [self.startDate setDrawsBackground:running];
 
-	// Overwrite tags only if user is not editing them right now
-	if (cmd.open || [self.tagsTokenField currentEditor] == nil)
-	{
-		if ([self.timeEntry.tags count] == 0)
-		{
-			[self.tagsTokenField setObjectValue:nil];
-		}
-		else
-		{
-			[self.tagsTokenField setObjectValue:self.timeEntry.tags];
-		}
-	}
+    [self.endTime setHidden:!running];
 
-	self.currentWorkspaceLabel.stringValue = self.timeEntry.WorkspaceName;
+    // Overwrite tags only if user is not editing them right now
+    if (self.cmd.open || [self.tagsTokenField currentEditor] == nil)
+    {
+        if ([self.timeEntry.tags count] == 0)
+        {
+            [self.tagsTokenField setObjectValue:nil];
+        }
+        else
+        {
+            [self.tagsTokenField setObjectValue:self.timeEntry.tags];
+        }
+    }
 
-	if (self.timeEntry.updatedAt != nil)
-	{
-		NSDateFormatter *df_local = [[NSDateFormatter alloc] init];
-		[df_local setTimeZone:[NSTimeZone defaultTimeZone]];
-		[df_local setDateFormat:@"yyyy.MM.dd 'at' HH:mm:ss"];
-		NSString *localDate = [df_local stringFromDate:self.timeEntry.updatedAt];
-		NSString *updatedAt = [NSLocalizedString(@"Last update ", nil) stringByAppendingString:localDate];
-		[self.lastUpdateTextField setStringValue:updatedAt];
-		[self.lastUpdateTextField setHidden:NO];
-	}
-	else
-	{
-		[self.lastUpdateTextField setHidden:YES];
-	}
+    self.currentWorkspaceLabel.stringValue = self.timeEntry.WorkspaceName;
 
-	if (cmd.open)
-	{
-		[self setFocus:nil];
-	}
+    if (self.timeEntry.updatedAt != nil)
+    {
+        NSDateFormatter *df_local = [[NSDateFormatter alloc] init];
+        [df_local setTimeZone:[NSTimeZone defaultTimeZone]];
+        [df_local setDateFormat:@"yyyy.MM.dd 'at' HH:mm:ss"];
+        NSString *localDate = [df_local stringFromDate:self.timeEntry.updatedAt];
+        NSString *updatedAt = [NSLocalizedString(@"Last update ", nil) stringByAppendingString:localDate];
+        [self.lastUpdateTextField setStringValue:updatedAt];
+        [self.lastUpdateTextField setHidden:NO];
+    }
+    else
+    {
+        [self.lastUpdateTextField setHidden:YES];
+    }
 
-    // Undo
-    [self registerUndo];
+    if (self.cmd.open)
+    {
+        [self setFocus:nil];
+    }
 }
 
 - (NSArray *)    tokenField:(NSTokenField *)tokenField
