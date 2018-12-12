@@ -23,21 +23,27 @@ include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 
 if(USE_SYSTEMWIDE_LIBRARIES)
     # Look for Poco
-    find_package(Poco REQUIRED Crypto DataSQLite NetSSL)
+    find_package(Poco Crypto DataSQLite NetSSL)
+
+    # Look for Lua
+    pkg_search_module(LUA lua)
+    include_directories(${LUA_INCLUDE_DIRS})
+    
+    # Look for JSON
+    find_package(jsoncpp CONFIG)
+
+    # Look for Qxt
+    pkg_search_module(QXT_CORE REQUIRED QxtCore-qt5)
+    pkg_search_module(QXT_WIDGETS REQUIRED QxtWidgets-qt5)
+    set(QXT_LIBRARIES
+        ${QXT_CORE_LIBRARIES} 
+        ${QXT_WIDGETS_LIBRARIES}
+    )
+    set(QXT_INCLUDE_DIRS
+        ${QXT_CORE_INCLUDE_DIRS} ${QXT_WIDGETS_INCLUDE_DIRS}
+    )
 endif()
 
-# Look for JSON
-find_package(jsoncpp CONFIG REQUIRED)
-
-# Look for Qxt
-pkg_search_module(QXT_CORE REQUIRED QxtCore-qt5)
-pkg_search_module(QXT_WIDGETS REQUIRED QxtWidgets-qt5)
-# For PkgConfig packages, we need to set up the includes manually
-include_directories(${QXT_CORE_INCLUDE_DIRS} ${QXT_WIDGETS_INCLUDE_DIRS})
-
-# Look for Lua
-pkg_search_module(LUA REQUIRED lua)
-include_directories(${LUA_INCLUDE_DIRS})
 
 # Set up some compilation definitions
 add_definitions(

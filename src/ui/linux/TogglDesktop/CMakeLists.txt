@@ -13,6 +13,7 @@ include_directories(
     ${TOGGLDESKTOPLIBRARY_INCLUDE_DIR}
     ${OAUTH_INCLUDE_DIR}
     ${BUGSNAG_INCLUDE_DIR}
+    ${QXT_INCLUDE_DIRS}
 )
 
 # TogglDesktop sources
@@ -52,9 +53,8 @@ target_link_libraries(TogglDesktop PRIVATE
     TogglDesktopLibrary
     Qt5::Widgets Qt5::WebEngine
     OAuth2
-    ${QXT_CORE_LIBRARIES} ${QXT_WIDGETS_LIBRARIES}
+    ${QXT_LIBRARIES}
     Bugsnag 
-    #Poco::Crypto Poco::DataSQLite Poco::NetSSL
     PocoCrypto PocoDataSQLite PocoNetSSL
     -lX11 -lXss
 )
