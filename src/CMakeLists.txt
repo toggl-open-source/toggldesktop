@@ -15,6 +15,9 @@ set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
 include_directories(
     ${OAUTH_INCLUDE_DIR}
     ${BUGSNAG_INCLUDE_DIR}
+    ${LUA_INCLUDE_DIRS}
+    ${JSON_INCLUDE_DIRS}
+    ${POCO_INCLUDE_DIRS}
 )
 
 # TogglDesktopLibrary sources
