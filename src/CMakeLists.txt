@@ -47,6 +47,7 @@ set(LIBRARY_SOURCE_FILES
     obm_action.cc
     project.cc
     proxy.cc
+    rectangle.cc
     related_data.cc
     settings.cc
     tag.cc
@@ -58,8 +59,6 @@ set(LIBRARY_SOURCE_FILES
     websocket_client.cc
     window_change_recorder.cc
     workspace.cc
-
-    Rectangle.cc
 )
 
 # Set up compilation targets
