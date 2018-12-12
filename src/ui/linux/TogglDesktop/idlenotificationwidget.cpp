@@ -80,13 +80,18 @@ void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) 
 
 void IdleNotificationWidget::display() {
     auto sw = qobject_cast<QStackedWidget*>(parent());
-    previousView = sw->currentWidget();
+    if (sw->currentIndex() >= 0)
+        previousView = sw->currentWidget();
+    else
+        previousView = nullptr;
     sw->setCurrentWidget(this);
 }
 
 void IdleNotificationWidget::hide() {
-    if (previousView)
+    if (previousView) {
         qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(previousView);
+        previousView = nullptr;
+    }
 }
 
 IdleNotificationWidget::~IdleNotificationWidget() {
