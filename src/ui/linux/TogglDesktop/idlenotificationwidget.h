@@ -59,6 +59,7 @@ class IdleNotificationWidget : public QWidget {
 
     uint64_t idleStarted;
     QDBusInterface *screensaver;
+    bool dbusApiAvailable;
 
     QString timeEntryGUID;
 

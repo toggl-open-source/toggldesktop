@@ -12,6 +12,7 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
     : QWidget(parent),
   ui(new Ui::IdleNotificationWidget),
   idleStarted(0),
+  dbusApiAvailable(true),
   timeEntryGUID(""),
   idleHintTimer(new QTimer(this)) {
     ui->setupUi(this);
@@ -31,6 +32,8 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
     connect(idleHintTimer, &QTimer::timeout, this, &IdleNotificationWidget::requestIdleHint);
+    idleHintTimer->setInterval(5000);
+    idleHintTimer->start();
 }
 
 void IdleNotificationWidget::displaySettings(const bool open, SettingsView *settings) {
@@ -42,14 +45,30 @@ void IdleNotificationWidget::displaySettings(const bool open, SettingsView *sett
 }
 
 void IdleNotificationWidget::requestIdleHint() {
-    auto pendingCall = screensaver->asyncCall("GetSessionIdleTime");
-    auto watcher = new QDBusPendingCallWatcher(pendingCall, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &IdleNotificationWidget::idleHintReceived);
+    if (dbusApiAvailable) {
+        auto pendingCall = screensaver->asyncCall("GetSessionIdleTime");
+        auto watcher = new QDBusPendingCallWatcher(pendingCall, this);
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, &IdleNotificationWidget::idleHintReceived);
+    }
+    else {
+        Display *display = XOpenDisplay(NULL);
+        if (!display) {
+            return;
+        }
+        XScreenSaverInfo *info = XScreenSaverAllocInfo();
+        if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info)) {
+            uint64_t idleSeconds = info->idle / 1000;
+            TogglApi::instance->setIdleSeconds(idleSeconds);
+        }
+        XFree(info);
+        XCloseDisplay(display);
+    }
 }
 
 void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) {
     QDBusPendingReply<uint> reply = *watcher;
     if (reply.isError()) {
+        dbusApiAvailable = false;
         qWarning() << reply.error();
     }
     else {

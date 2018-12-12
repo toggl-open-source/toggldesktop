@@ -96,7 +96,7 @@ QMAKE_RPATHDIR += $$PWD/../../../../third_party/bugsnag-qt/build/release
 
 LIBS += -L$$PWD/../../../lib/linux/TogglDesktopLibrary/build/release -lTogglDesktopLibrary
 LIBS += -L$$PWD/../../../../third_party/bugsnag-qt/build/release -lbugsnag-qt
-LIBS += -lX11
+LIBS += -lX11 -lXss
 
 INCLUDEPATH += $$PWD/../../../
 INCLUDEPATH += $$PWD/../../../../third_party/bugsnag-qt
