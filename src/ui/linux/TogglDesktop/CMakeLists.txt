@@ -54,6 +54,7 @@ target_link_libraries(TogglDesktop PRIVATE
     OAuth2
     ${QXT_CORE_LIBRARIES} ${QXT_WIDGETS_LIBRARIES}
     Bugsnag 
-    Poco::Crypto Poco::DataSQLite Poco::NetSSL
+    #Poco::Crypto Poco::DataSQLite Poco::NetSSL
+    PocoCrypto PocoDataSQLite PocoNetSSL
     -lX11 -lXss
 )

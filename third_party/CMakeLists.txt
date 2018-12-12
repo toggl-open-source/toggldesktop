@@ -36,3 +36,19 @@ target_link_libraries(OAuth2 PRIVATE
 target_link_libraries(Bugsnag PRIVATE
     Qt5::Widgets Qt5::Network
 )
+
+if(NOT POCO_FOUND)
+    # to avoid that annoying check
+    option(DISABLE_CPP14 "" ON)
+    # to not build unnecessary clutter
+    option(ENABLE_XML "" OFF)
+    option(ENABLE_JSON "" OFF)
+    option(ENABLE_MONGODB "" OFF)
+    option(ENABLE_REDIS "" OFF)
+    option(ENABLE_DATA_MYSQL "" OFF)
+    option(ENABLE_DATA_ODBC "" OFF)
+    option(ENABLE_ZIP "" OFF)
+    option(ENABLE_PAGECOMPILER "" OFF)
+    option(ENABLE_PAGECOMPILER_FILE2PAGE "" OFF)
+    add_subdirectory(poco/)
+endif()

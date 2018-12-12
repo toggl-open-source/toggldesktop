@@ -7,6 +7,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+option(USE_SYSTEMWIDE_LIBRARIES "Prefer system libraries to bundled ones" OFF)
+
 # Use PkgConfig to look for packages without native CMake support
 include(FindPkgConfig)
 
@@ -19,8 +21,10 @@ find_package(Qt5X11Extras CONFIG REQUIRED)
 # We need to include private headers manually
 include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 
-# Look for Poco
-find_package(Poco REQUIRED Crypto DataSQLite NetSSL)
+if(USE_SYSTEMWIDE_LIBRARIES)
+    # Look for Poco
+    find_package(Poco REQUIRED Crypto DataSQLite NetSSL)
+endif()
 
 # Look for JSON
 find_package(jsoncpp CONFIG REQUIRED)
@@ -37,12 +41,11 @@ include_directories(${LUA_INCLUDE_DIRS})
 
 # Set up some compilation definitions
 add_definitions(
-    -std=c++14
     -O2
-    -Wall
-    -Wextra
-    -DAPP_ENVIRONMENT="CMAKE"
-    -DAPP_VERSION="0"
+)
+
+set(TOGGLDESKTOP_BUILDROOT
+    ${CMAKE_CURRENT_BINARY_DIR}/buildroot
 )
 
 add_subdirectory(third_party)
