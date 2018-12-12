@@ -1,11 +1,3 @@
-# Set up some compilation definitions
-add_definitions(
-    -std=c++14
-    -O2
-    -Wall
-    -Wextra
-)
-
 set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}
     PARENT_SCOPE
