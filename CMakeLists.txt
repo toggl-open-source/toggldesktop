@@ -45,11 +45,6 @@ if(NOT USE_BUNDLED_LIBRARIES)
 endif()
 
 
-# Set up some compilation definitions
-add_definitions(
-    -O2
-)
-
 set(TOGGLDESKTOP_BUILDROOT
     ${CMAKE_CURRENT_BINARY_DIR}/buildroot
 )

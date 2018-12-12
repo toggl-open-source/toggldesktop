@@ -1,9 +1,5 @@
 # Set up some compilation definitions
 add_definitions(
-    -std=c++14
-    -O2
-    -Wall
-    -Wextra
     -DAPP_ENVIRONMENT="CMAKE"
     -DAPP_VERSION="0"
 )
