@@ -8,6 +8,7 @@
 
 #import "Utils.h"
 #import "Sparkle.h"
+#import "NSAlert+Utils.h"
 
 #include "toggl_api.h"
 
@@ -107,10 +108,8 @@ extern void *ctx;
 						 stringWithFormat:@"Another copy of %@ is already running.",
 						 [[NSBundle mainBundle]
 						  objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
+        [NSAlert alloc];
 		[[NSAlert alertWithMessageText:msg
-						 defaultButton:nil
-					   alternateButton:nil
-						   otherButton:nil
 			 informativeTextWithFormat:@"This copy will now quit."] runModal];
 
 		[NSApp terminate:nil];

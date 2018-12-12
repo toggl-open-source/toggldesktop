@@ -8,6 +8,7 @@
 
 #import "FeedbackWindowController.h"
 #import "toggl_api.h"
+#import "NSAlert+Utils.h"
 
 @implementation FeedbackWindowController
 
@@ -34,9 +35,6 @@ extern void *ctx;
 		|| [self.topicComboBox.stringValue isEqualToString:@""])
 	{
 		[[NSAlert alertWithMessageText:@"Feedback not sent!"
-						 defaultButton:nil
-					   alternateButton:nil
-						   otherButton:nil
 			 informativeTextWithFormat:@"Please choose a topic before sending feedback."] runModal];
 		[self.topicComboBox.window makeFirstResponder:self.topicComboBox];
 		return;
@@ -45,9 +43,6 @@ extern void *ctx;
 		|| [self.contentTextView.string isEqualToString:@""])
 	{
 		[[NSAlert alertWithMessageText:@"Feedback not sent!"
-						 defaultButton:nil
-					   alternateButton:nil
-						   otherButton:nil
 			 informativeTextWithFormat:@"Please type in your feedback before sending."] runModal];
 		[self.contentTextView.window makeFirstResponder:self.contentTextView];
 		return;
@@ -59,9 +54,6 @@ extern void *ctx;
 							 [self.selectedImageTextField.toolTip UTF8String]))
 	{
 		[[NSAlert alertWithMessageText:@"Feedback not sent!"
-						 defaultButton:nil
-					   alternateButton:nil
-						   otherButton:nil
 			 informativeTextWithFormat:@"Please check that file you are sending is not larger than 5MB."] runModal];
 		return;
 	}
@@ -72,9 +64,6 @@ extern void *ctx;
 	[self.topicComboBox setStringValue:@""];
 
 	[[NSAlert alertWithMessageText:@"Thank you!"
-					 defaultButton:nil
-				   alternateButton:nil
-					   otherButton:nil
 		 informativeTextWithFormat:@"Your feedback was sent successfully."] runModal];
 }
 

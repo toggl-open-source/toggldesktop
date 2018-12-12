@@ -1523,18 +1523,12 @@ extern void *ctx;
 
 - (BOOL)isExpanded
 {
-	id ax = NSAccessibilityUnignoredDescendant(self);
-
-	return [[ax accessibilityAttributeValue:
-			 NSAccessibilityExpandedAttribute] boolValue];
+    return self.accessibilityExpanded;
 }
 
 - (void)setExpanded:(BOOL)expanded
 {
-	id ax = NSAccessibilityUnignoredDescendant(self);
-
-	[ax accessibilitySetValue:[NSNumber numberWithBool:expanded]
-				 forAttribute:NSAccessibilityExpandedAttribute];
+    self.accessibilityExpanded = expanded;
 }
 
 @end
