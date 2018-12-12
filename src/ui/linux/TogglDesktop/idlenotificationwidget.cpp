@@ -25,6 +25,9 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
         this,
         SLOT(displayIdleNotification(QString,QString,QString,uint64_t,QString)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
+            this, SLOT(displaySettings(bool,SettingsView*)));  // NOLINT
+
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),  // NOLINT
             this, SLOT(displayStoppedTimerState()));  // NOLINT
 

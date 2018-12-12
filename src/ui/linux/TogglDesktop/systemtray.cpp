@@ -14,9 +14,6 @@ SystemTray::SystemTray(MainWindowController *parent) :
 
     connect(TogglApi::instance, &TogglApi::displayIdleNotification, this, &SystemTray::displayIdleNotification);
 
-    connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
-            this, SLOT(displaySettings(bool,SettingsView*)));  // NOLINT
-
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
