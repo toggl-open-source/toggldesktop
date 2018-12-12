@@ -21,7 +21,7 @@
 
 #import "GTMOAuth2WindowController.h"
 
-@interface GTMOAuth2WindowController ()
+@interface GTMOAuth2WindowController () <WebResourceLoadDelegate, WebPolicyDelegate>
 @property (nonatomic, retain) GTMOAuth2SignIn *signIn;
 @property (nonatomic, copy) NSURLRequest *initialRequest;
 @property (nonatomic, retain) GTMCookieStorage *cookieStorage;
