@@ -43,7 +43,7 @@
 		NSPoint origin = { 0.0, 0.0 };
 		NSRect rect;
 		rect.origin = origin;
-		rect.size.width  = [self bounds].size.width - 20;
+		rect.size.width = [self bounds].size.width - 20;
 		rect.size.height = [self bounds].size.height;
 
 		NSBezierPath *path;

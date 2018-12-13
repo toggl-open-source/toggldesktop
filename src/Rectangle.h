@@ -15,15 +15,15 @@
 namespace toggl {
 
 class Rectangle {
-    private:
-        const Poco::UInt64 width;
-        const Poco::UInt64 height;
+ private:
+    const Poco::UInt64 width;
+    const Poco::UInt64 height;
 
-    public:
-        Rectangle(const Poco::UInt64 w, const Poco::UInt64 h): width(w), height(h) {}
+ public:
+    Rectangle(const Poco::UInt64 w, const Poco::UInt64 h): width(w), height(h) {}
 
-        std::string str() const;
-    };
+    std::string str() const;
+};
 }
 
 #endif /* Rectangle_h */

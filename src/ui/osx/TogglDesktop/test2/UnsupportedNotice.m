@@ -16,8 +16,8 @@
 	static dispatch_once_t onceToken;
 
 	dispatch_once(&onceToken, ^{
-					  instance = [[UnsupportedNotice alloc] init];
-				  });
+		instance = [[UnsupportedNotice alloc] init];
+	});
 	return instance;
 }
 

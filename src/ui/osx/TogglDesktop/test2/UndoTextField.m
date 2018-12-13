@@ -8,34 +8,36 @@
 
 #import "UndoTextField.h"
 
-@interface UndoTextField()
+@interface UndoTextField ()
 @property (strong, nonatomic) NSUndoManager *undo;
 @end
 
 @implementation UndoTextField
 
--(NSUndoManager *)undoManager {
-    if (self.undo == nil) {
-        self.undo = [[NSUndoManager alloc] init];
-    }
-    return self.undo;
+- (NSUndoManager *)undoManager {
+	if (self.undo == nil)
+	{
+		self.undo = [[NSUndoManager alloc] init];
+	}
+	return self.undo;
 }
 
-- (void)registerUndoWithValue:(NSString *) value
+- (void)registerUndoWithValue:(NSString *)value
 {
-    [self.undoManager removeAllActionsWithTarget:self];
-    [self.undoManager registerUndoWithTarget:self
-                                    selector:@selector(setStringInput:)
-                                      object:value];
+	[self.undoManager removeAllActionsWithTarget:self];
+	[self.undoManager registerUndoWithTarget:self
+									selector:@selector(setStringInput:)
+									  object:value];
 }
 
--(void) setStringInput:(NSString *) value
+- (void)setStringInput:(NSString *)value
 {
-    NSString *oldValue = [self.stringValue copy];
-    self.stringValue = value;
-    [self.undoManager registerUndoWithTarget:self
-                                    selector:@selector(setStringInput:)
-                                      object:oldValue];
+	NSString *oldValue = [self.stringValue copy];
+
+	self.stringValue = value;
+	[self.undoManager registerUndoWithTarget:self
+									selector:@selector(setStringInput:)
+									  object:oldValue];
 }
 
 @end

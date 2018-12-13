@@ -17,7 +17,8 @@
 
 @class UndoTextField;
 
-@interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate> {
+@interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
+{
 }
 @property (strong) IBOutlet MKColorWellCustom *colorPicker;
 @property IBOutlet UndoTextField *durationTextField;

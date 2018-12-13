@@ -223,4 +223,3 @@ BOOL wasLaunchedAsHiddenLoginItem()
 
 	return NO;
 }
-

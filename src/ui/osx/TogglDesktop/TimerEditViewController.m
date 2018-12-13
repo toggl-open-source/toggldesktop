@@ -96,12 +96,12 @@ NSString *kInactiveTimerColor = @"#999999";
 	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:14.0];
 	NSColor *color = [ConvertHexColor hexCodeToNSColor:kTrackingColor];
 	NSDictionary *descriptionDictionary = @{
-		NSFontAttributeName : descriptionFont,
-		NSForegroundColorAttributeName : color
+			NSFontAttributeName : descriptionFont,
+			NSForegroundColorAttributeName : color
 	};
 	NSDictionary *durationDictionary = @{
-		NSFontAttributeName : durationFont,
-		NSForegroundColorAttributeName : color
+			NSFontAttributeName : durationFont,
+			NSForegroundColorAttributeName : color
 	};
 
 	NSAttributedString *descriptionLightString =

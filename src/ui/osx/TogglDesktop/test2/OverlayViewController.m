@@ -71,7 +71,7 @@ extern void *ctx;
 	// Setup up text underline for "Force sync" link
 
 	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-	paragrapStyle.alignment                = kCTTextAlignmentCenter;
+	paragrapStyle.alignment = kCTTextAlignmentCenter;
 
 	NSMutableAttributedString *string =
 		[[NSMutableAttributedString alloc] initWithString:@"Created your new workspace?\n"];
@@ -93,10 +93,10 @@ extern void *ctx;
 
 	// title text
 	NSMutableParagraphStyle *topParagrapStyle = NSMutableParagraphStyle.new;
-	topParagrapStyle.alignment                = kCTTextAlignmentCenter;
+	topParagrapStyle.alignment = kCTTextAlignmentCenter;
 
 	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-	paragrapStyle.alignment                = kCTTextAlignmentCenter;
+	paragrapStyle.alignment = kCTTextAlignmentCenter;
 	paragrapStyle.lineHeightMultiple = 1.5;
 
 	NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@""];
