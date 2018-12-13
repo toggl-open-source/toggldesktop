@@ -114,6 +114,7 @@ HEADERS += \
     ../../../obm_action.h \
     ../../../project.h \
     ../../../proxy.h \
+    ../../../rectangle.h \
     ../../../related_data.h \
     ../../../settings.h \
     ../../../tag.h \
