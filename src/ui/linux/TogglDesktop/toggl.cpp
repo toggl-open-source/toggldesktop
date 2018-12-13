@@ -475,6 +475,29 @@ bool TogglApi::setSettingsPomodoroBreakMinutes(
             pomodoro_break_minutes);
 }
 
+bool TogglApi::setSettingsRemindDays(
+    bool remind_mon,
+    bool remind_tue,
+    bool remind_wed,
+    bool remind_thu,
+    bool remind_fri,
+    bool remind_sat,
+    bool remind_sun)
+{
+    return toggl_set_settings_remind_days(ctx,
+                                          remind_mon,
+                                          remind_tue,
+                                          remind_wed,
+                                          remind_thu,
+                                          remind_fri,
+                                          remind_sat,
+                                          remind_sun);
+}
+
+bool TogglApi::setSettingsRemindTimes(const QTime &remind_starts, const QTime &remind_ends) {
+    return toggl_set_settings_remind_times(ctx, qPrintable(remind_starts.toString("HH:mm")), qPrintable(remind_ends.toString("HH:mm")));
+}
+
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
     toggl_timeline_toggle_recording(ctx, recordTimeline);
 }

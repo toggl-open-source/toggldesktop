@@ -14,7 +14,8 @@
 #import "NSBoxClickable.h"
 #import "AutoCompleteInput.h"
 
-@interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate> {
+@interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
+{
 }
 @property (strong) IBOutlet NSBoxClickable *manualBox;
 @property (strong) IBOutlet NSBox *hidingBox;

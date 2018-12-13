@@ -142,56 +142,56 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		                   // Code that runs async
-						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
-						   for (int i = 0; i < self.orderedKeys.count; i++)
-						   {
-							   NSString *key = self.orderedKeys[i];
+			// Code that runs async
+			NSMutableArray *filtered = [[NSMutableArray alloc] init];
+			for (int i = 0; i < self.orderedKeys.count; i++)
+			{
+				NSString *key = self.orderedKeys[i];
 
-							   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
-							   if (stringArray.count > 1)
-							   {
-		                           // Filter is more than 1 word. Let's search for all the words entered.
-								   int foundCount = 0;
-								   for (int j = 0; j < stringArray.count; j++)
-								   {
-									   NSString *splitFilter = stringArray[j];
+				NSArray *stringArray = [filter componentsSeparatedByString:@" "];
+				if (stringArray.count > 1)
+				{
+			        // Filter is more than 1 word. Let's search for all the words entered.
+					int foundCount = 0;
+					for (int j = 0; j < stringArray.count; j++)
+					{
+						NSString *splitFilter = stringArray[j];
 
-									   if ([key rangeOfString:splitFilter options:NSCaseInsensitiveSearch].location != NSNotFound)
-									   {
-										   foundCount++;
-										   if ([key length] > self.textLength)
-										   {
-											   self.textLength = [key length];
-										   }
+						if ([key rangeOfString:splitFilter options:NSCaseInsensitiveSearch].location != NSNotFound)
+						{
+							foundCount++;
+							if ([key length] > self.textLength)
+							{
+								self.textLength = [key length];
+							}
 
-										   if (foundCount == stringArray.count)
-										   {
-											   [filtered addObject:key];
-										   }
-									   }
-								   }
-							   }
-							   else
-							   {
-		                           // Single word filter
-								   if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
-								   {
-									   if ([key length] > self.textLength)
-									   {
-										   self.textLength = [key length];
-									   }
-									   [filtered addObject:key];
-								   }
-							   }
-						   }
-						   self.filteredOrderedKeys = filtered;
-						   dispatch_sync(dispatch_get_main_queue(), ^{
-		                                     // This will be called on the main thread,
-		                                     // when async calls finish
-											 [self reload];
-										 });
-					   });
+							if (foundCount == stringArray.count)
+							{
+								[filtered addObject:key];
+							}
+						}
+					}
+				}
+				else
+				{
+			        // Single word filter
+					if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
+					{
+						if ([key length] > self.textLength)
+						{
+							self.textLength = [key length];
+						}
+						[filtered addObject:key];
+					}
+				}
+			}
+			self.filteredOrderedKeys = filtered;
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				// This will be called on the main thread,
+				// when async calls finish
+				[self reload];
+			});
+		});
 	}
 }
 

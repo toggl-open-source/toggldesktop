@@ -89,8 +89,8 @@ extern void *ctx;
 	[self.closeTroubleBoxButton setAttributedTitle:attrTitle];
 	self.troubleBoxDefaultHeight = self.troubleBox.frame.size.height;
 
-    // Tracking the size of window after loaded
-    [self trackWindowSize];
+	// Tracking the size of window after loaded
+	[self trackWindowSize];
 }
 
 - (void)addErrorBoxConstraint
@@ -288,12 +288,27 @@ extern void *ctx;
 	return self.timeEntryListViewController.timeEntrypopover.shown;
 }
 
--(void)trackWindowSize
+- (void)trackWindowSize
 {
-    if (self.window == nil)
-    {
-        return;
-    }
-    [[TrackingService sharedInstance] trackWindowSize:self.window.frame.size];
+	if (self.window == nil)
+	{
+		return;
+	}
+	[[TrackingService sharedInstance] trackWindowSize:self.window.frame.size];
 }
+
+- (void)setWindowMode:(WindowMode)mode
+{
+	switch (mode)
+	{
+		case WindowModeAlwaysOnTop :
+			[self.window setLevel:NSFloatingWindowLevel];
+			self.window.collectionBehavior = NSWindowCollectionBehaviorManaged;
+			break;
+		case WindowModeDefault :
+			[self.window setLevel:NSNormalWindowLevel];
+			break;
+	}
+}
+
 @end

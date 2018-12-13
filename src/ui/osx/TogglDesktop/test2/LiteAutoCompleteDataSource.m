@@ -164,173 +164,173 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		                   // Code that runs async
-						   NSInteger lastPID = -1;
-						   NSMutableArray *filtered = [[NSMutableArray alloc] init];
-						   NSArray *stringArray = [filter componentsSeparatedByString:@" "];
-						   for (int i = 0; i < self.orderedKeys.count; i++)
-						   {
-							   AutocompleteItem *item = self.orderedKeys[i];
-		                   // Skip filtering category/client/workspace items
-							   if (item.Type < 0 || (item.Type == 2 && item.ProjectID == 0))
-							   {
-								   continue;
-							   }
-							   NSString *key = (item.Type == 1) ? item.ProjectAndTaskLabel : item.Text;
+			// Code that runs async
+			NSInteger lastPID = -1;
+			NSMutableArray *filtered = [[NSMutableArray alloc] init];
+			NSArray *stringArray = [filter componentsSeparatedByString:@" "];
+			for (int i = 0; i < self.orderedKeys.count; i++)
+			{
+				AutocompleteItem *item = self.orderedKeys[i];
+			    // Skip filtering category/client/workspace items
+				if (item.Type < 0 || (item.Type == 2 && item.ProjectID == 0))
+				{
+					continue;
+				}
+				NSString *key = (item.Type == 1) ? item.ProjectAndTaskLabel : item.Text;
 
-							   if (stringArray.count > 1)
-							   {
-		                           // Filter is more than 1 word. Let's search for all the words entered.
-								   int foundCount = 0;
-								   for (int j = 0; j < stringArray.count; j++)
-								   {
-									   NSString *splitFilter = stringArray[j];
+				if (stringArray.count > 1)
+				{
+			        // Filter is more than 1 word. Let's search for all the words entered.
+					int foundCount = 0;
+					for (int j = 0; j < stringArray.count; j++)
+					{
+						NSString *splitFilter = stringArray[j];
 
-									   if ([key rangeOfString:splitFilter options:NSCaseInsensitiveSearch].location != NSNotFound)
-									   {
-										   foundCount++;
-										   if ([key length] > self.textLength)
-										   {
-											   self.textLength = [key length];
-										   }
+						if ([key rangeOfString:splitFilter options:NSCaseInsensitiveSearch].location != NSNotFound)
+						{
+							foundCount++;
+							if ([key length] > self.textLength)
+							{
+								self.textLength = [key length];
+							}
 
-										   if (foundCount == stringArray.count)
-										   {
-		                                       // Add workspace title
-											   if (item.WorkspaceID != self.lastWID
-												   && item.WorkspaceName != nil)
-											   {
-												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-												   it.Type = -3;
-												   it.Text = item.WorkspaceName;
-												   [filtered addObject:it];
-												   self.lastWID = item.WorkspaceID;
-												   self.lastType = -1;
-												   self.lastClientLabel = nil;
-											   }
+							if (foundCount == stringArray.count)
+							{
+			                    // Add workspace title
+								if (item.WorkspaceID != self.lastWID
+									&& item.WorkspaceName != nil)
+								{
+									AutocompleteItem *it = [[AutocompleteItem alloc] init];
+									it.Type = -3;
+									it.Text = item.WorkspaceName;
+									[filtered addObject:it];
+									self.lastWID = item.WorkspaceID;
+									self.lastType = -1;
+									self.lastClientLabel = nil;
+								}
 
-		                                       // Add category title
-											   if (item.Type != self.lastType && item.Type != 1)
-											   {
-												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-												   it.Type = -1;
-												   it.Text = self.types[item.Type];
-												   [filtered addObject:it];
-												   self.lastType = item.Type;
-											   }
+			                    // Add category title
+								if (item.Type != self.lastType && item.Type != 1)
+								{
+									AutocompleteItem *it = [[AutocompleteItem alloc] init];
+									it.Type = -1;
+									it.Text = self.types[item.Type];
+									[filtered addObject:it];
+									self.lastType = item.Type;
+								}
 
-		                                       // Add client name row
-											   if ((item.Type == 2 || item.Type == 1)
-												   && ![item.ClientLabel isEqual:self.lastClientLabel])
-											   {
-												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-												   it.Type = -2;
-												   it.Text = item.ClientLabel;
-												   if (it.Text.length == 0)
-												   {
-													   it.Text = @"No Client";
-												   }
-												   [filtered addObject:it];
-												   self.lastClientLabel = item.ClientLabel;
-											   }
+			                    // Add client name row
+								if ((item.Type == 2 || item.Type == 1)
+									&& ![item.ClientLabel isEqual:self.lastClientLabel])
+								{
+									AutocompleteItem *it = [[AutocompleteItem alloc] init];
+									it.Type = -2;
+									it.Text = item.ClientLabel;
+									if (it.Text.length == 0)
+									{
+										it.Text = @"No Client";
+									}
+									[filtered addObject:it];
+									self.lastClientLabel = item.ClientLabel;
+								}
 
-		                                       // In case we have task and project is not completed
-											   if (item.Type == 1 && item.ProjectID != lastPID)
-											   {
-												   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-												   it.Type = 2;
-												   it.Text = item.ProjectLabel;
-												   it.ProjectLabel = item.ProjectLabel;
-												   it.ProjectColor = item.ProjectColor;
-												   it.ProjectID = item.ProjectID;
-												   it.Description = item.Description;
-												   it.TaskLabel = @"";
-												   it.ClientLabel = item.ClientLabel;
-												   it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
-												   [filtered addObject:it];
-											   }
-											   lastPID = item.ProjectID;
+			                    // In case we have task and project is not completed
+								if (item.Type == 1 && item.ProjectID != lastPID)
+								{
+									AutocompleteItem *it = [[AutocompleteItem alloc] init];
+									it.Type = 2;
+									it.Text = item.ProjectLabel;
+									it.ProjectLabel = item.ProjectLabel;
+									it.ProjectColor = item.ProjectColor;
+									it.ProjectID = item.ProjectID;
+									it.Description = item.Description;
+									it.TaskLabel = @"";
+									it.ClientLabel = item.ClientLabel;
+									it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+									[filtered addObject:it];
+								}
+								lastPID = item.ProjectID;
 
-											   [filtered addObject:item];
-										   }
-									   }
-								   }
-							   }
-							   else
-							   {
-		                           // Single word filter
-								   if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
-								   {
-									   if ([key length] > self.textLength)
-									   {
-										   self.textLength = [key length];
-									   }
-		                           // Add workspace title
-									   if (item.WorkspaceID != self.lastWID
-										   && item.WorkspaceName != nil)
-									   {
-										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-										   it.Type = -3;
-										   it.Text = item.WorkspaceName;
-										   [filtered addObject:it];
-										   self.lastWID = item.WorkspaceID;
-										   self.lastType = -1;
-										   self.lastClientLabel = nil;
-									   }
+								[filtered addObject:item];
+							}
+						}
+					}
+				}
+				else
+				{
+			        // Single word filter
+					if ([key rangeOfString:filter options:NSCaseInsensitiveSearch].location != NSNotFound)
+					{
+						if ([key length] > self.textLength)
+						{
+							self.textLength = [key length];
+						}
+			        // Add workspace title
+						if (item.WorkspaceID != self.lastWID
+							&& item.WorkspaceName != nil)
+						{
+							AutocompleteItem *it = [[AutocompleteItem alloc] init];
+							it.Type = -3;
+							it.Text = item.WorkspaceName;
+							[filtered addObject:it];
+							self.lastWID = item.WorkspaceID;
+							self.lastType = -1;
+							self.lastClientLabel = nil;
+						}
 
-		                               // Add category title
-									   if (item.Type != self.lastType && item.Type != 1)
-									   {
-										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-										   it.Type = -1;
-										   it.Text = self.types[item.Type];
-										   [filtered addObject:it];
-										   self.lastType = item.Type;
-									   }
+			            // Add category title
+						if (item.Type != self.lastType && item.Type != 1)
+						{
+							AutocompleteItem *it = [[AutocompleteItem alloc] init];
+							it.Type = -1;
+							it.Text = self.types[item.Type];
+							[filtered addObject:it];
+							self.lastType = item.Type;
+						}
 
-		                               // Add client name row
-									   if ((item.Type == 2 || item.Type == 1)
-										   && ![item.ClientLabel isEqual:self.lastClientLabel])
-									   {
-										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-										   it.Type = -2;
-										   it.Text = item.ClientLabel;
-										   if (it.Text.length == 0)
-										   {
-											   it.Text = @"No Client";
-										   }
-										   [filtered addObject:it];
-										   self.lastClientLabel = item.ClientLabel;
-									   }
+			            // Add client name row
+						if ((item.Type == 2 || item.Type == 1)
+							&& ![item.ClientLabel isEqual:self.lastClientLabel])
+						{
+							AutocompleteItem *it = [[AutocompleteItem alloc] init];
+							it.Type = -2;
+							it.Text = item.ClientLabel;
+							if (it.Text.length == 0)
+							{
+								it.Text = @"No Client";
+							}
+							[filtered addObject:it];
+							self.lastClientLabel = item.ClientLabel;
+						}
 
-		                               // In case we have task and project is not completed
-									   if (item.Type == 1 && item.ProjectID != lastPID)
-									   {
-										   AutocompleteItem *it = [[AutocompleteItem alloc] init];
-										   it.Type = 2;
-										   it.Text = item.ProjectLabel;
-										   it.ProjectLabel = item.ProjectLabel;
-										   it.ProjectColor = item.ProjectColor;
-										   it.ProjectID = item.ProjectID;
-										   it.Description = item.Description;
-										   it.TaskLabel = @"";
-										   it.ClientLabel = item.ClientLabel;
-										   it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
-										   [filtered addObject:it];
-									   }
-									   lastPID = item.ProjectID;
-									   [filtered addObject:item];
-								   }
-							   }
-						   }
-		                   // NSLog(@" FILTERED: %@", [filtered count]);
-						   self.filteredOrderedKeys = filtered;
-						   dispatch_sync(dispatch_get_main_queue(), ^{
-		                   // This will be called on the main thread,
-		                   // when async calls finish
-											 [self reload];
-										 });
-					   });
+			            // In case we have task and project is not completed
+						if (item.Type == 1 && item.ProjectID != lastPID)
+						{
+							AutocompleteItem *it = [[AutocompleteItem alloc] init];
+							it.Type = 2;
+							it.Text = item.ProjectLabel;
+							it.ProjectLabel = item.ProjectLabel;
+							it.ProjectColor = item.ProjectColor;
+							it.ProjectID = item.ProjectID;
+							it.Description = item.Description;
+							it.TaskLabel = @"";
+							it.ClientLabel = item.ClientLabel;
+							it.ProjectAndTaskLabel = item.ProjectAndTaskLabel;
+							[filtered addObject:it];
+						}
+						lastPID = item.ProjectID;
+						[filtered addObject:item];
+					}
+				}
+			}
+			// NSLog(@" FILTERED: %@", [filtered count]);
+			self.filteredOrderedKeys = filtered;
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				// This will be called on the main thread,
+				// when async calls finish
+				[self reload];
+			});
+		});
 	}
 }
 

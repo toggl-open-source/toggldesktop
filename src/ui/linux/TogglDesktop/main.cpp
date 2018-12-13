@@ -39,7 +39,7 @@ class TogglApplication : public SingleApplication {
 };
 
 int main(int argc, char *argv[]) try {
-    Bugsnag::apiKey = "2a46aa1157256f759053289f2d687c2f";
+    Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
 
     TogglApplication::setQuitOnLastWindowClosed(false);
 

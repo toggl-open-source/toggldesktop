@@ -12,7 +12,8 @@
 #import "NSViewEscapable.h"
 #import "NSTextFieldClickable.h"
 
-@interface TimeEntryListViewController : NSViewController {
+@interface TimeEntryListViewController : NSViewController
+{
 	@private
 	NSMutableArray *viewitems;
 }

@@ -33,6 +33,7 @@
 #import "idler.h"
 #import "toggl_api.h"
 #import "AppIconFactory.h"
+#import "UserNotificationCenter.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -246,13 +247,15 @@ BOOL onTop = NO;
 		 }
 	 }];
 
-	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-														   selector:@selector(receiveSleepNote:)
-															   name:NSWorkspaceWillSleepNotification object:nil];
-
-	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-														   selector:@selector(receiveWakeNote:)
-															   name:NSWorkspaceDidWakeNotification object:nil];
+	NSDistributedNotificationCenter *distCenter = [NSDistributedNotificationCenter defaultCenter];
+	[distCenter addObserver:self
+				   selector:@selector(onScreenLockedNotification:)
+					   name:@"com.apple.screenIsLocked"
+					 object:nil];
+	[distCenter addObserver:self
+				   selector:@selector(onScreenUnlockedNotification:)
+					   name:@"com.apple.screenIsUnlocked"
+					 object:nil];
 
 	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
@@ -316,7 +319,7 @@ BOOL onTop = NO;
 	if (self.mainWindowController.window.level == NSFloatingWindowLevel)
 	{
 		onTop = YES;
-		[self.mainWindowController.window setLevel:NSNormalWindowLevel];
+		[self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 }
 
@@ -324,7 +327,7 @@ BOOL onTop = NO;
 {
 	if (onTop)
 	{
-		[self.mainWindowController.window setLevel:NSFloatingWindowLevel];
+		[self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
 		onTop = NO;
 	}
 }
@@ -391,52 +394,52 @@ BOOL onTop = NO;
 	if (notification && notification.userInfo)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-						   if (notification.userInfo[@"autotracker"] != nil)
-						   {
-							   NSNumber *project_id = notification.userInfo[@"project_id"];
-							   NSNumber *task_id = notification.userInfo[@"task_id"];
-							   NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
-							   char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false);
-							   free(guid);
-							   return;
-						   }
+			if (notification.userInfo[@"autotracker"] != nil)
+			{
+				NSNumber *project_id = notification.userInfo[@"project_id"];
+				NSNumber *task_id = notification.userInfo[@"task_id"];
+				NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
+				char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false);
+				free(guid);
+				return;
+			}
 
-		                   // handle pomodoro timer
-						   if (notification.userInfo[@"pomodoro"] != nil)
-						   {
-							   if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
-							   {
-								   toggl_show_app(ctx);
-							   }
-							   else
-							   {
-								   toggl_continue_latest(ctx, false);
-							   }
-							   return;
-						   }
+			// handle pomodoro timer
+			if (notification.userInfo[@"pomodoro"] != nil)
+			{
+				if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+				{
+					toggl_show_app(ctx);
+				}
+				else
+				{
+					toggl_continue_latest(ctx, false);
+				}
+				return;
+			}
 
-		                   // handle pomodoro_break timer
-						   if (notification.userInfo[@"pomodoro_break"] != nil)
-						   {
-							   if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
-							   {
-								   toggl_show_app(ctx);
-							   }
-							   else
-							   {
-								   toggl_continue_latest(ctx, false);
-							   }
-							   return;
-						   }
+			// handle pomodoro_break timer
+			if (notification.userInfo[@"pomodoro_break"] != nil)
+			{
+				if (NSUserNotificationActivationTypeActionButtonClicked != notification.activationType)
+				{
+					toggl_show_app(ctx);
+				}
+				else
+				{
+					toggl_continue_latest(ctx, false);
+				}
+				return;
+			}
 
-		                   // handle reminder track button press
-						   if (notification.userInfo[@"reminder"] != nil)
-						   {
-							   char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false);
-							   free(guid);
-							   return;
-						   }
-					   });
+			// handle reminder track button press
+			if (notification.userInfo[@"reminder"] != nil)
+			{
+				char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false);
+				free(guid);
+				return;
+			}
+		});
 	}
 }
 
@@ -446,15 +449,15 @@ BOOL onTop = NO;
 	NSLog(@"didDeliverNotification %@", notification);
 }
 
-- (void)receiveSleepNote:(NSNotification *)note
+- (void)onScreenLockedNotification:(NSNotification *)note
 {
-	NSLog(@"receiveSleepNote: %@", [note name]);
+	NSLog(@"onScreenLockedNotification: %@", [note name]);
 	toggl_set_sleep(ctx);
 }
 
-- (void)receiveWakeNote:(NSNotification *)note
+- (void)onScreenUnlockedNotification:(NSNotification *)note
 {
-	NSLog(@"receiveWakeNote: %@", [note name]);
+	NSLog(@"onScreenUnlockedNotification: %@", [note name]);
 	toggl_set_wake(ctx);
 }
 
@@ -471,23 +474,23 @@ BOOL onTop = NO;
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-					   const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
+		const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
 
-					   char *guid = toggl_start(ctx,
-												[new_time_entry.Description UTF8String],
-												[new_time_entry.duration UTF8String],
-												new_time_entry.TaskID,
-												new_time_entry.ProjectID,
-												0,
-												tag_list,
-												false);
+		char *guid = toggl_start(ctx,
+								 [new_time_entry.Description UTF8String],
+								 [new_time_entry.duration UTF8String],
+								 new_time_entry.TaskID,
+								 new_time_entry.ProjectID,
+								 0,
+								 tag_list,
+								 false);
 
-					   if (new_time_entry.billable)
-					   {
-						   toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
-					   }
-					   free(guid);
-				   });
+		if (new_time_entry.billable)
+		{
+			toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
+		}
+		free(guid);
+	});
 }
 
 - (void)startNewShortcut:(NSNotification *)notification
@@ -502,16 +505,16 @@ BOOL onTop = NO;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-					   char *guid = toggl_start(ctx,
-												[new_time_entry.Description UTF8String],
-												[new_time_entry.duration UTF8String],
-												new_time_entry.TaskID,
-												new_time_entry.ProjectID,
-												0,
-												0,
-												false);
-					   free(guid);
-				   });
+		char *guid = toggl_start(ctx,
+								 [new_time_entry.Description UTF8String],
+								 [new_time_entry.duration UTF8String],
+								 new_time_entry.TaskID,
+								 new_time_entry.ProjectID,
+								 0,
+								 0,
+								 false);
+		free(guid);
+	});
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification
@@ -525,15 +528,15 @@ BOOL onTop = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-					   if (guid == nil)
-					   {
-						   toggl_continue_latest(ctx, false);
-					   }
-					   else
-					   {
-						   toggl_continue(ctx, [guid UTF8String]);
-					   }
-				   });
+		if (guid == nil)
+		{
+			toggl_continue_latest(ctx, false);
+		}
+		else
+		{
+			toggl_continue(ctx, [guid UTF8String]);
+		}
+	});
 }
 
 - (void)startStop:(NSNotification *)notification
@@ -547,8 +550,8 @@ BOOL onTop = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-					   toggl_stop(ctx, false);
-				   });
+		toggl_stop(ctx, false);
+	});
 }
 
 - (void)startToggleGroup:(NSNotification *)notification
@@ -562,8 +565,8 @@ BOOL onTop = NO;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-					   toggl_toggle_entries_group(ctx, [key UTF8String]);
-				   });
+		toggl_toggle_entries_group(ctx, [key UTF8String]);
+	});
 }
 
 - (void)startUpdateIconTooltip:(NSNotification *)notification
@@ -665,11 +668,11 @@ BOOL onTop = NO;
 	// Stay on top
 	if (cmd.settings.on_top)
 	{
-		[self.mainWindowController.window setLevel:NSFloatingWindowLevel];
+		[self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
 	}
 	else
 	{
-		[self.mainWindowController.window setLevel:NSNormalWindowLevel];
+		[self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 
 	onTop = cmd.settings.on_top;
@@ -1248,7 +1251,7 @@ const NSString *appName = @"osx_native_app";
 		[Utils disallowDuplicateInstances];
 	}
 
-	[Bugsnag startBugsnagWithApiKey:@"2a46aa1157256f759053289f2d687c2f"];
+	[Bugsnag startBugsnagWithApiKey:@"aa13053a88d5133b688db0f25ec103b7"];
 	NSAssert(self.environment != nil, @"Missing environment in plist");
 	[Bugsnag configuration].releaseStage = self.environment;
 
@@ -1571,76 +1574,20 @@ void on_login(const bool_t open, const uint64_t user_id)
 
 void on_reminder(const char *title, const char *informative_text)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	[notification setTitle:[NSString stringWithUTF8String:title]];
-	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
-	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-
-	notification.userInfo = @{ @"reminder": @"YES" };
-
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Track";
-	notification.otherButtonTitle = @"Close";
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
-
-	// Remove reminder after 45 seconds
-	[center performSelector:@selector(removeDeliveredNotification:)
-				 withObject:notification
-				 afterDelay:45];
+	[[UserNotificationCenter share] scheduleReminderWithTitle:[NSString stringWithUTF8String:title]
+											  informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_pomodoro(const char *title, const char *informative_text)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	[notification setTitle:[NSString stringWithUTF8String:title]];
-	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
-	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-
-	notification.userInfo = @{ @"pomodoro": @"YES" };
-
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Continue";
-	notification.otherButtonTitle = @"Close";
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
-
-	// Play sound
-	[[NSSound soundNamed:@"Glass"] play];
+	[[UserNotificationCenter share] schedulePomodoroWithTitle:[NSString stringWithUTF8String:title]
+											  informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_pomodoro_break(const char *title, const char *informative_text)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	[notification setTitle:[NSString stringWithUTF8String:title]];
-	[notification setInformativeText:[NSString stringWithUTF8String:informative_text]];
-	[notification setDeliveryDate:[NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]]];
-
-	notification.userInfo = @{ @"pomodoro_break": @"YES" };
-
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Continue";
-	notification.otherButtonTitle = @"Close";
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
-
-	// Play sound
-	[[NSSound soundNamed:@"Glass"] play];
+	[[UserNotificationCenter share] schedulePomodoroBreakWithTitle:[NSString stringWithUTF8String:title]
+												   informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_url(const char *url)
@@ -1712,8 +1659,8 @@ void on_autotracker_rules(TogglAutotrackerRuleView *first, const uint64_t title_
 		[titles addObject:title];
 	}
 	NSDictionary *data = @{
-		@"rules": [AutotrackerRuleItem loadAll:first],
-		@"titles": titles
+			@"rules": [AutotrackerRuleItem loadAll:first],
+			@"titles": titles
 	};
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayAutotrackerRules
 														object:data];
@@ -1723,26 +1670,9 @@ void on_autotracker_notification(const char_t *project_name,
 								 const uint64_t project_id,
 								 const uint64_t task_id)
 {
-	NSUserNotification *notification = [[NSUserNotification alloc] init];
-
-	// http://stackoverflow.com/questions/11676017/nsusernotification-not-showing-action-button
-	[notification setValue:@YES forKey:@"_showsButtons"];
-
-	notification.title = @"Toggl Desktop Autotracker";
-	notification.informativeText = [NSString stringWithFormat:@"Track %@?",
-									[NSString stringWithUTF8String:project_name]];
-	notification.hasActionButton = YES;
-	notification.actionButtonTitle = @"Start";
-	notification.otherButtonTitle = @"Close";
-	notification.userInfo = @{
-		@"autotracker": @"YES",
-		@"project_id": [NSNumber numberWithLong:project_id],
-		@"task_id": [NSNumber numberWithLong:task_id]
-	};
-	notification.deliveryDate = [NSDate dateWithTimeInterval:0 sinceDate:[NSDate date]];
-
-	NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-	[center scheduleNotification:notification];
+	[[UserNotificationCenter share] scheduleAutoTrackerWithProjectName:[NSString stringWithUTF8String:project_name]
+															 projectID:[NSNumber numberWithLong:project_id]
+																taskID:[NSNumber numberWithLong:task_id]];
 }
 
 void on_promotion(const int64_t promotion_type)
@@ -1853,7 +1783,7 @@ void on_idle_notification(
 }
 
 void on_project_colors(
-	const char_t *list[],
+	char_t *list[],
 	const uint64_t count)
 {
 	NSMutableArray *colors = [NSMutableArray array];

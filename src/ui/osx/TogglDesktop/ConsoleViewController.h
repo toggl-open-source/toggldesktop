@@ -7,7 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ConsoleViewController : NSWindowController {
+@interface ConsoleViewController : NSWindowController
+{
 }
 @property (weak) IBOutlet NSTextField *entryTextField;
 @property (weak) IBOutlet NSButton *runButton;

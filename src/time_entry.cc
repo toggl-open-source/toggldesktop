@@ -23,6 +23,7 @@
 #include "Poco/Logger.h"
 #include "Poco/NumberParser.h"
 #include "Poco/Timestamp.h"
+#include "toggl_api_private.h"
 
 namespace toggl {
 
@@ -197,8 +198,9 @@ void TimeEntry::SetStop(const Poco::UInt64 value) {
 }
 
 void TimeEntry::SetDescription(const std::string value) {
-    if (description_ != value) {
-        description_ = value;
+    const std::string trimValue = trim_whitespace(value);
+    if (description_ != trimValue) {
+        description_ = trimValue;
         SetDirty();
     }
 }
