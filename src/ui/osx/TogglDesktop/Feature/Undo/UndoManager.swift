@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Custome Undomanager
+/// It store any UndoPayload with unique key
 @objc final class UndoManager: NSObject {
 
     private struct Constants {
@@ -28,12 +30,26 @@ import Foundation
     }()
 
     // MARK: - Public
+
+    /// Store payload with unique key
+    /// This method is safe-thread by adopting barrier concurrent queue
+    ///
+    /// - Parameters:
+    ///   - object: Store object
+    ///   - key: Unique key
     func set<T>(_ object: T, for key: String) {
         queue.async(flags: .barrier) {[unowned self] in
             self.storage[key] = object
         }
     }
 
+    /// Get the undo payload for specific key
+    /// This method is safe-thread by adopting barrier concurrent queue
+    ///
+    /// - Parameters:
+    ///   - key: Unique key
+    ///   - type: Type of object
+    /// - Returns: The optional value of object
     func get<T>(for key: String, type: T.Type) -> T? {
         return queue.sync {
             return storage[key] as? T
@@ -42,11 +58,17 @@ import Foundation
 }
 
 // MARK: - Extension for TimeEntry
+
+/// Extension for Objc-codebase
+/// Because we're unable of expose Generic <T>
 extension UndoManager {
 
+    /// Store TimeEntryViewItem
+    /// The payload will be enqueue to UndoQueue
+    ///
+    /// - Parameter object: Time Entry obj
     @objc func store(with object: TimeEntryViewItem) {
-        let payload = TimeEntryUndoPayload(descriptionEntry: object.descriptionEntry(),
-                                           project: object.projectAndTaskLabel ?? "")
+        let payload = TimeEntryUndoPayload(timeEntry: object)
         if let undo = get(for: object.guid, type: UndoQueue<TimeEntryUndoPayload>.self) {
             undo.enqueue(payload)
         } else {
@@ -55,7 +77,11 @@ extension UndoManager {
         }
     }
 
-    @objc func getUndoPayload(for object: TimeEntryViewItem) -> ObjcTimeEntry? {
+    /// Undo Payload for TimeEntryViewItem
+    ///
+    /// - Parameter object: TimeEntryViewItem object
+    /// - Returns: ObjcTimeEntryPayload
+    @objc func getUndoPayload(for object: TimeEntryViewItem) -> ObjcTimeEntryPayload? {
         guard let undoQueue = get(for: object.guid, type: UndoQueue<TimeEntryUndoPayload>.self) else {
             return nil
         }

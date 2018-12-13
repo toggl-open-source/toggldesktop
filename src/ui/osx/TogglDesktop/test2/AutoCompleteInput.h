@@ -11,8 +11,9 @@
 #import "AutoCompleteTable.h"
 #import "AutoCompleteTableCell.h"
 #import "AutoCompleteTableContainer.h"
+#import "UndoTextField.h"
 
-@interface AutoCompleteInput : NSTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
+@interface AutoCompleteInput : UndoTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 @property NSNib *nibAutoCompleteTableCell;
 @property AutoCompleteTableContainer *autocompleteTableContainer;
 @property AutoCompleteTable *autocompleteTableView;
