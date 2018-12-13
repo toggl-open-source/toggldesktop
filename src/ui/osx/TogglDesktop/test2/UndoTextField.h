@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UndoTextField : NSTextField
-- (void)registerUndoWithValue:(NSString *) value;
+- (void)registerUndoWithValue:(NSString *)value;
 @end
 
 NS_ASSUME_NONNULL_END

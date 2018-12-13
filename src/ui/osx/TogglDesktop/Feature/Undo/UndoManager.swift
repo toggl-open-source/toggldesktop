@@ -19,6 +19,7 @@ import Foundation
     // MARK: - Variable
     @objc static let shared = UndoManager()
     private var storage: [String: Any] = [:]
+    private let levelOfUndo: Int
     private lazy var queue: DispatchQueue = {
         let qos: DispatchQoS
         if #available(OSX 10.10, *) {
@@ -28,6 +29,11 @@ import Foundation
         }
         return DispatchQueue(label: Constants.QueueName, qos: qos, attributes: .concurrent)
     }()
+
+    // MARK: - Init
+    init(levelOfUndo: Int = 2) {
+        self.levelOfUndo = levelOfUndo
+    }
 
     // MARK: - Public
 
@@ -67,14 +73,16 @@ extension UndoManager {
     /// The payload will be enqueue to UndoQueue
     ///
     /// - Parameter object: Time Entry obj
-    @objc func store(with object: TimeEntryViewItem) {
-        let payload = TimeEntryUndoPayload(timeEntry: object)
-        if let undo = get(for: object.guid, type: UndoQueue<TimeEntryUndoPayload>.self) {
-            undo.enqueue(payload)
-        } else {
-            let undo = UndoQueue<TimeEntryUndoPayload>(storage: [payload])
-            set(undo, for: object.guid)
-        }
+    @objc func store(with item: TimeEntryViewItem) {
+		guard let guid = item.guid else { return }
+
+		// Update existing snapshot or create new
+		if let snapshot = get(for: guid, type: TimeEntrySnapshot.self) {
+			snapshot.update(with: item)
+		} else {
+			let snapshot = TimeEntrySnapshot(timeEntry: item, levelOfUndo: levelOfUndo)
+			set(snapshot, for: guid)
+		}
     }
 
     /// Undo Payload for TimeEntryViewItem
@@ -82,9 +90,6 @@ extension UndoManager {
     /// - Parameter object: TimeEntryViewItem object
     /// - Returns: ObjcTimeEntryPayload
     @objc func getUndoPayload(for object: TimeEntryViewItem) -> ObjcTimeEntryPayload? {
-        guard let undoQueue = get(for: object.guid, type: UndoQueue<TimeEntryUndoPayload>.self) else {
-            return nil
-        }
-        return undoQueue.undoItem()?.toObjcTimeEntry()
+		return nil
     }
 }

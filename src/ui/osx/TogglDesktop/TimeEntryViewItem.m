@@ -155,7 +155,7 @@
 	self.GroupDuration = [NSString stringWithUTF8String:te->GroupDuration];
 	self.GroupItemCount = te->GroupItemCount;
 
-    [[UndoManager shared] storeWith:self];
+	[[UndoManager shared] storeWith:self];
 }
 
 - (void)setLoadMore
@@ -165,7 +165,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"Address: %@, GUID: %@, description: %@, started: %@, ended: %@, project: %@, seconds: %lld, duration: %@, color: %@, billable: %i, tags: %@", [super description],
+	return [NSString stringWithFormat:@"Address: %@, GUID: %@, description: %@, started: %@, ended: %@, project: %@, seconds: %lld, duration: %@, color: %@, billable: %i, tags: %@", [super description],
 			self.GUID, self.Description, self.started, self.ended,
 			self.ProjectAndTaskLabel, self.duration_in_seconds, self.duration,
 			self.ProjectColor, self.billable, self.tags];
@@ -175,8 +175,8 @@
 	return self.duration_in_seconds ^ self.Description.hash ^ self.ProjectAndTaskLabel.hash ^ self.TaskLabel.hash ^ self.ProjectLabel.hash ^ self.ClientLabel.hash ^ self.WorkspaceID ^ self.ProjectID ^ self.TaskID ^ self.duration.hash ^ self.ProjectColor.hash ^ self.ProjectGUID.hash ^ self.GUID.hash ^ self.billable ^ self.unsynced ^ self.started.hash ^ self.ended.hash ^ self.startTimeString.hash ^ self.endTimeString.hash ^ self.tags.hash ^ self.updatedAt.hash ^ self.formattedDate.hash ^ self.isHeader.hash ^ self.dateDuration.hash ^ self.focusedFieldName.hash ^ self.CanSeeBillable ^ self.DefaultWID ^ self.CanAddProjects ^ self.WorkspaceName.hash ^ self.Error.hash ^ self.loadMore ^ self.confirmlessDelete ^ self.Group ^ self.GroupOpen ^ self.GroupName.hash ^ self.GroupDuration.hash ^ self.GroupItemCount;
 }
 
--(NSString *) descriptionEntry {
-    return self.Description;
+- (NSString *)descriptionEntry {
+	return self.Description;
 }
 
 @end

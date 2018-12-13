@@ -1,5 +1,5 @@
 //
-//  UndoQueue.swift
+//  UndoStack.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 12/11/18.
@@ -8,24 +8,20 @@
 
 import Foundation
 
-/// UndoQueue represent the History of value
-/// It's kind of Circular Queues
-/// The enquene new value, it will drop the last value if it excesses the maxCount
-
-protocol UndoItemType {
-
-    func update(with item: Any)
-}
-
-final class UndoQueue<T: Equatable & UndoItemType> {
+final class UndoStack<T: Equatable> {
 
     // MARK: - Variable
     private var storage: [T]
-    private let maxCount = 2
+    private let maxCount: Int
 
     // MARK: - Init
-    init(storage: [T]) {
+    init(storage: [T], maxCount: Int) {
         self.storage = storage
+        self.maxCount = maxCount
+    }
+
+    convenience init(firstItem: T, maxCount: Int) {
+        self.init(storage: [firstItem], maxCount: maxCount)
     }
 
     // MARK: - Public
@@ -33,24 +29,16 @@ final class UndoQueue<T: Equatable & UndoItemType> {
     /// Store value and drop the last value if need
     ///
     /// - Parameter object: Object
-    func enqueue(_ object: T) {
+    func push(_ object: T) {
 
         // We don't store if next object is same the first one
         guard object != storage.first else {
             return
         }
 
-        // Update update value with new one
+        // Insert at top
         var temps = storage
-        if let first = storage.first {
-            if storage.count == maxCount {
-                first.update(with: object)
-            } else {
-                temps.insert(object, at: 0)
-            }
-        } else {
-            temps.append(object)
-        }
+        temps.insert(object, at: 0)
 
         // Drop last it's excess the maxCount
         if temps.count > maxCount {
@@ -62,7 +50,7 @@ final class UndoQueue<T: Equatable & UndoItemType> {
     /// Dequeue last object
     ///
     /// - Returns: The object has been dropped
-    func dequeue() -> T? {
+    func pop() -> T? {
         let last =  storage.last
         storage.removeLast()
         return last
