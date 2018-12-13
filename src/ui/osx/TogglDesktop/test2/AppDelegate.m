@@ -1785,7 +1785,7 @@ void on_idle_notification(
 }
 
 void on_project_colors(
-	const char_t *list[],
+	char_t *list[],
 	const uint64_t count)
 {
 	NSMutableArray *colors = [NSMutableArray array];

@@ -151,6 +151,7 @@
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
+		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BAC6850921B6822A00B6C9D7 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BAC6850821B6822A00B6C9D7 /* UserNotificationCenter.m */; };
 		BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
@@ -558,6 +559,8 @@
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
+		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
+		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
 		BAC6850721B6822A00B6C9D7 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserNotificationCenter.h; sourceTree = "<group>"; };
 		BAC6850821B6822A00B6C9D7 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserNotificationCenter.m; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
@@ -1043,6 +1046,8 @@
 			children = (
 				BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */,
 				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
+				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
+				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1431,6 +1436,7 @@
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
+				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
@@ -1601,7 +1607,7 @@
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
@@ -1642,7 +1648,7 @@
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = TogglDesktop;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;

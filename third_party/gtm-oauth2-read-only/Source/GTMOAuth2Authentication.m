@@ -1253,7 +1253,7 @@ finishedRefreshWithFetcher:(GTMHTTPFetcher *)fetcher
 }
 
 + (NSString *)unencodedOAuthParameterForString:(NSString *)str {
-  NSString *plainStr = [str stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+  NSString *plainStr = [str stringByRemovingPercentEncoding];
   return plainStr;
 }
 

@@ -720,7 +720,7 @@ extern void *ctx;
 		[session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
 										   forView:tableView
 										   classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
-									 searchOptions:nil
+									 searchOptions:[NSDictionary<NSPasteboardReadingOptionKey,id> dictionary]
 										usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
 		 {
              // prepare context
