@@ -16,12 +16,13 @@
 #import "DisplayCommand.h"
 #import "Utils.h"
 #import "TogglDesktop-Swift.h"
+#import "UndoTextField.h"
 
 @interface TimeEntryEditViewController ()
 @property LiteAutoCompleteDataSource *liteDescriptionAutocompleteDataSource;
 @property LiteAutoCompleteDataSource *liteProjectAutocompleteDataSource;
 @property NSTimer *timerMenubarTimer;
-@property TimeEntryViewItem *timeEntry; // Time entry being edited
+@property (strong, nonatomic) TimeEntryViewItem *timeEntry; // Time entry being edited
 @property NSMutableArray *tagsList;
 @property NSMutableArray *fullClientList;
 @property NSMutableArray *workspaceClientList;
@@ -577,8 +578,6 @@ extern void *ctx;
     {
         [self setFocus:nil];
     }
-
-    [self registerUndo];
 }
 
 - (NSArray *)    tokenField:(NSTokenField *)tokenField
@@ -1546,39 +1545,34 @@ extern void *ctx;
 	return retval;
 }
 
--(void) registerUndo
+-(void) registerUndoForAllFields
 {
-    ObjcTimeEntryPayload *undoEntry = [[UndoManager shared] getUndoPayloadFor:self.timeEntry];
-    if (undoEntry != nil) {
+    if (self.timeEntry == nil)
+    {
+        return;
+    }
 
-        // Description
-        [self.descriptionAutoCompleteInput.undoManager prepareWithInvocationTarget:self];
-        [self.descriptionAutoCompleteInput.undoManager registerUndoWithTarget:self
-                                                                     selector:@selector(setDescriptionInput:)
-                                                                       object:undoEntry.descriptionEntry];
-        [self.projectAutoCompleteInput.undoManager prepareWithInvocationTarget:self];
-        [self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self
-                                                                     selector:@selector(setProjectInput:)
-                                                                       object:undoEntry.project];
+    ObjcTimeEntryPayload *undoEntry = [[UndoManager shared] getUndoPayloadFor:self.timeEntry];
+    if (undoEntry != nil)
+    {
+        [self.descriptionAutoCompleteInput registerUndoWithValue:undoEntry.descriptionEntry];
+        [self.projectAutoCompleteInput registerUndoWithValue:undoEntry.project];
+        [self.durationTextField registerUndoWithValue:undoEntry.duration];
+        [self.startTime registerUndoWithValue:undoEntry.startTime];
+        [self.endTime registerUndoWithValue:undoEntry.endTime];
+    } else {
+        [self.descriptionAutoCompleteInput.undoManager removeAllActions];
+        [self.projectAutoCompleteInput.undoManager removeAllActions];
+        [self.durationTextField.undoManager removeAllActions];
+        [self.startTime.undoManager removeAllActions];
+        [self.endTime.undoManager removeAllActions];
     }
 }
 
--(void) setDescriptionInput:(NSString *) value
+-(void)setTimeEntry:(TimeEntryViewItem *)timeEntry
 {
-    NSString *oldValue = self.descriptionAutoCompleteInput.stringValue;
-    self.descriptionAutoCompleteInput.stringValue = value;
-    [self.descriptionAutoCompleteInput.undoManager registerUndoWithTarget:self
-                                                                 selector:@selector(setDescriptionInput:)
-                                                                   object:oldValue];
-}
-
--(void) setProjectInput:(NSString *) value
-{
-    NSString *oldValue = self.projectAutoCompleteInput.stringValue;
-    self.projectAutoCompleteInput.stringValue = value;
-    [self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self
-                                                             selector:@selector(setProjectInput:)
-                                                               object:oldValue];
+    _timeEntry = timeEntry;
+    [self registerUndoForAllFields];
 }
 
 @end

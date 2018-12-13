@@ -29,15 +29,6 @@ import Foundation
         return DispatchQueue(label: Constants.QueueName, qos: qos, attributes: .concurrent)
     }()
 
-    // Maximum undo levels
-    let levelsOfUndo: Int
-
-    // MARK: - Init
-    init(levelsOfUndo: Int = 2) {
-        self.levelsOfUndo = 2
-        super.init()
-    }
-
     // MARK: - Public
 
     /// Store payload with unique key
@@ -77,12 +68,11 @@ extension UndoManager {
     ///
     /// - Parameter object: Time Entry obj
     @objc func store(with object: TimeEntryViewItem) {
-        let payload = TimeEntryUndoPayload(descriptionEntry: object.descriptionEntry(),
-                                           project: object.projectAndTaskLabel ?? "")
+        let payload = TimeEntryUndoPayload(timeEntry: object)
         if let undo = get(for: object.guid, type: UndoQueue<TimeEntryUndoPayload>.self) {
             undo.enqueue(payload)
         } else {
-            let undo = UndoQueue<TimeEntryUndoPayload>(storage: [payload], maxCount: levelsOfUndo)
+            let undo = UndoQueue<TimeEntryUndoPayload>(storage: [payload])
             set(undo, for: object.guid)
         }
     }
