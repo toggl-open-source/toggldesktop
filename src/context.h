@@ -27,6 +27,18 @@
 #include "Poco/Timestamp.h"
 #include "Poco/Util/Timer.h"
 
+#ifdef TOGGL_ALLOW_UPDATE_CHECK
+# define UPDATE_CHECK_DISABLED false
+#else
+# define UPDATE_CHECK_DISABLED true
+#endif
+
+#if defined(TOGGL_PRODUCTION_BUILD) && !defined(APP_ENVIRONMENT)
+# define APP_ENVIRONMENT "production"
+#elif !defined(APP_ENVIRONMENT)
+# define APP_ENVIRONMENT "development"
+#endif
+
 namespace toggl {
 
 class Database;
