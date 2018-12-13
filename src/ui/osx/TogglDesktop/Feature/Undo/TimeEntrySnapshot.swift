@@ -9,7 +9,7 @@
 import Foundation
 
 /// The payload contain the unfo value
-final class TimeEntrySnapshot {
+@objc final class TimeEntrySnapshot: NSObject {
 
     // MARK: - Variable
     private let descriptionEntryStack: UndoStack<String>
@@ -30,6 +30,7 @@ final class TimeEntrySnapshot {
 												maxCount: levelOfUndo)
         self.endTimeStack = UndoStack<String>(firstItem: timeEntry.endTimeString.safeUnwrapped,
 											  maxCount: levelOfUndo)
+		super.init()
     }
 
     func update(with item: TimeEntryViewItem) {
@@ -39,25 +40,32 @@ final class TimeEntrySnapshot {
 		startTimeStack.push(item.startTimeString.safeUnwrapped)
 		endTimeStack.push(item.endTimeString.safeUnwrapped)
     }
+
+	override var debugDescription: String {
+		return "\n💥 Description \(descriptionEntryStack)\nProject \(projectNameStack)\nDuration \(durationStack)\nStartTime \(startTimeStack)\nEndTime \(endTimeStack)"
+	}
 }
 
-/// Exposed Objc-class, which represent the TimeEntryUndoPayload
-@objcMembers final class ObjcTimeEntryPayload: NSObject {
+// MARK: - Objc interfaces
+extension TimeEntrySnapshot {
 
-    // MARK: - Variable
-    let descriptionEntry: String?
-    let project: String?
-    let duration: String?
-    let startTime: String?
-    let endTime: String?
+	@objc var descriptionUndoValue: String? {
+		return descriptionEntryStack.undoItem()
+	}
 
-    // MARK: - Init
-    init(descriptionEntry: String?, project: String?, duration: String?, startTime: String?, endTime: String?) {
-        self.descriptionEntry = descriptionEntry
-        self.project = project
-        self.duration = duration
-        self.startTime = startTime
-        self.endTime = endTime
-        super.init()
-    }
+	@objc var projectNameUndoValue: String? {
+		return projectNameStack.undoItem()
+	}
+
+	@objc var durationUndoValue: String? {
+		return durationStack.undoItem()
+	}
+
+	@objc var startTimeUndoValue: String? {
+		return startTimeStack.undoItem()
+	}
+
+	@objc var endTimeUndoValue: String? {
+		return endTimeStack.undoItem()
+	}
 }

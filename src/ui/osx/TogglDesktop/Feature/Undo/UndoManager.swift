@@ -89,7 +89,8 @@ extension UndoManager {
     ///
     /// - Parameter object: TimeEntryViewItem object
     /// - Returns: ObjcTimeEntryPayload
-    @objc func getUndoPayload(for object: TimeEntryViewItem) -> ObjcTimeEntryPayload? {
-		return nil
+    @objc func getSnapshot(for item: TimeEntryViewItem) -> TimeEntrySnapshot? {
+		guard let guid = item.guid else { return nil }
+		return get(for: guid, type: TimeEntrySnapshot.self)
     }
 }

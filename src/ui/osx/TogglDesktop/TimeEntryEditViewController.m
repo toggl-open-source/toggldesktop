@@ -1553,14 +1553,15 @@ extern void *ctx;
 		return;
 	}
 
-	ObjcTimeEntryPayload *undoEntry = [[UndoManager shared] getUndoPayloadFor:self.timeEntry];
-	if (undoEntry != nil)
+	TimeEntrySnapshot *snapshot = [[UndoManager shared] getSnapshotFor:self.timeEntry];
+	NSLog(@"%@", snapshot.debugDescription);
+	if (snapshot != nil)
 	{
-		[self.descriptionAutoCompleteInput registerUndoWithValue:undoEntry.descriptionEntry];
-		[self.projectAutoCompleteInput registerUndoWithValue:undoEntry.project];
-		[self.durationTextField registerUndoWithValue:undoEntry.duration];
-		[self.startTime registerUndoWithValue:undoEntry.startTime];
-		[self.endTime registerUndoWithValue:undoEntry.endTime];
+		[self.descriptionAutoCompleteInput registerUndoWithValue:snapshot.descriptionUndoValue];
+		[self.projectAutoCompleteInput registerUndoWithValue:snapshot.projectNameUndoValue];
+		[self.durationTextField registerUndoWithValue:snapshot.durationUndoValue];
+		[self.startTime registerUndoWithValue:snapshot.startTimeUndoValue];
+		[self.endTime registerUndoWithValue:snapshot.endTimeUndoValue];
 	}
 	else
 	{

@@ -11,7 +11,7 @@ import Foundation
 final class UndoStack<T: Equatable> {
 
     // MARK: - Variable
-    private var storage: [T]
+    fileprivate var storage: [T]
     private let maxCount: Int
 
     // MARK: - Init
@@ -64,4 +64,12 @@ final class UndoStack<T: Equatable> {
         guard storage.count > 1 else { return nil }
         return storage[1]
     }
+}
+
+// MARK: - CustomDebugStringConvertible
+extension UndoStack: CustomDebugStringConvertible {
+
+	var debugDescription: String {
+		return "Storage: \(storage)"
+	}
 }
