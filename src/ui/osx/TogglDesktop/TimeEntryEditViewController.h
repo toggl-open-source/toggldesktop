@@ -15,7 +15,8 @@
 #import "AutoCompleteInput.h"
 #import "AutoCompleteItem.h"
 
-@interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate> {
+@interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
+{
 }
 @property (strong) IBOutlet MKColorWellCustom *colorPicker;
 @property IBOutlet NSTextField *durationTextField;

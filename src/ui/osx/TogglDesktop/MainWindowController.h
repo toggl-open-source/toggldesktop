@@ -15,7 +15,8 @@
  * - WindowModeAlwaysOnTop: Always in top (NSFloatingWindowLevel)
  * - WindowModeDefault: Normal behavior (NSNormalWindowLevel)
  */
-typedef NS_ENUM (NSUInteger, WindowMode) {
+typedef NS_ENUM (NSUInteger, WindowMode)
+{
 	WindowModeAlwaysOnTop,
 	WindowModeDefault,
 };

@@ -19,8 +19,8 @@ extern void *ctx;
 	static dispatch_once_t onceToken;
 
 	dispatch_once(&onceToken, ^{
-					  instance = [[TrackingService alloc] init];
-				  });
+		instance = [[TrackingService alloc] init];
+	});
 	return instance;
 }
 

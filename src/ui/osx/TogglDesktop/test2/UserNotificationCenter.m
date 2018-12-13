@@ -20,8 +20,8 @@
 	static dispatch_once_t onceToken;
 
 	dispatch_once(&onceToken, ^{
-					  instance = [[UserNotificationCenter alloc] init];
-				  });
+		instance = [[UserNotificationCenter alloc] init];
+	});
 	return instance;
 }
 
@@ -130,9 +130,9 @@
 	notification.actionButtonTitle = @"Start";
 	notification.otherButtonTitle = @"Close";
 	notification.userInfo = @{
-		@"autotracker": @"YES",
-		@"project_id": projectID,
-		@"task_id": taskID
+			@"autotracker": @"YES",
+			@"project_id": projectID,
+			@"task_id": taskID
 	};
 
 	// Delivery

@@ -905,10 +905,10 @@ extern void *ctx;
 		@synchronized(self)
 		{
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-							   toggl_set_time_entry_description(ctx,
-																[self.GUID UTF8String],
-																[key UTF8String]);
-						   });
+				toggl_set_time_entry_description(ctx,
+												 [self.GUID UTF8String],
+												 [key UTF8String]);
+			});
 		}
 		[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
 		self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
@@ -926,31 +926,31 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-						   if (![self.timeEntry.Description isEqualToString:key] &&
-							   !toggl_set_time_entry_project(ctx,
-															 [self.GUID UTF8String],
-															 autocomplete.TaskID,
-															 autocomplete.ProjectID,
-															 0))
-						   {
-							   [self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
-							   [self.descriptionAutoCompleteInput resetTable];
-							   self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
-							   return;
-						   }
+			if (![self.timeEntry.Description isEqualToString:key] &&
+				!toggl_set_time_entry_project(ctx,
+											  [self.GUID UTF8String],
+											  autocomplete.TaskID,
+											  autocomplete.ProjectID,
+											  0))
+			{
+				[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
+				[self.descriptionAutoCompleteInput resetTable];
+				self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+				return;
+			}
 
-						   toggl_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
+			toggl_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
 
-						   const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
-						   toggl_set_time_entry_tags(ctx, [self.GUID UTF8String], value);
+			const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
+			toggl_set_time_entry_tags(ctx, [self.GUID UTF8String], value);
 
-						   bool_t isBillable = autocomplete.Billable;
+			bool_t isBillable = autocomplete.Billable;
 
-						   if (isBillable)
-						   {
-							   toggl_set_time_entry_billable(ctx, [self.GUID UTF8String], isBillable);
-						   }
-					   });
+			if (isBillable)
+			{
+				toggl_set_time_entry_billable(ctx, [self.GUID UTF8String], isBillable);
+			}
+		});
 	}
 	[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
 	[self.descriptionAutoCompleteInput resetTable];
@@ -1010,8 +1010,8 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-						   toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
-					   });
+			toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+		});
 	}
 	[self.projectAutoCompleteInput.window makeFirstResponder:self.projectAutoCompleteInput];
 	[self.projectAutoCompleteInput resetTable];
@@ -1308,6 +1308,7 @@ extern void *ctx;
 - (IBAction)saveAddClientButtonClicked:(id)sender;
 {
 	NSString *clientName = self.clientNameTextField.stringValue;
+
 	if (!clientName || !clientName.length)
 	{
 		return;
