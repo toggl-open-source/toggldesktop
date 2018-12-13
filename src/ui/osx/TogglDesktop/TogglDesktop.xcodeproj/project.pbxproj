@@ -1043,6 +1043,10 @@
 			children = (
 				BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */,
 				BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */,
+			);
+			name = Icon;
+			sourceTree = "<group>";
+		};
 		BAC684F721B6820400B6C9D7 /* UserNotification */ = {
 			isa = PBXGroup;
 			children = (
@@ -1058,9 +1062,9 @@
 				BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */,
 				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
 				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
-				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
+				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */
 			);
-			name = Icon;
+			name = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
