@@ -39,6 +39,8 @@
 @property NSMutableAttributedString *clientColorTitle;
 @property NSMutableAttributedString *clientColorTitleCancel;
 @property NSString *GUID;
+@property (strong, nonatomic) DisplayCommand *cmd;
+@property (assign, nonatomic) BOOL isOpen;
 @end
 
 @implementation TimeEntryEditViewController
@@ -54,6 +56,7 @@ extern void *ctx;
 		self.startTimeChanged = NO;
 		self.endTimeChanged = NO;
 		self.popupOnLeft = NO;
+		self.isOpen = NO;
 
 		self.liteDescriptionAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayTimeEntryAutocomplete];
 
@@ -158,8 +161,19 @@ extern void *ctx;
 	[self.projectAutoCompleteInput setButton:self.projectOpenButton];
 }
 
+- (void)viewWillAppear
+{
+	[super viewWillAppear];
+	self.isOpen = YES;
+
+	// Populate all data with TimeEntry
+	[self populateData];
+}
+
 - (void)viewDidAppear
 {
+	[super viewDidAppear];
+
 	NSRect descriptionViewFrameInWindowCoords = [self.descriptionAutoCompleteInput convertRect:[self.descriptionAutoCompleteInput bounds] toView:nil];
 	NSRect projectViewFrameInWindowCoords = [self.projectAutoCompleteInput convertRect:[self.projectAutoCompleteInput bounds] toView:nil];
 
@@ -168,6 +182,12 @@ extern void *ctx;
 
 	[self.descriptionAutoCompleteInput.autocompleteTableView setDelegate:self];
 	[self.projectAutoCompleteInput.autocompleteTableView setDelegate:self];
+}
+
+- (void)viewDidDisappear
+{
+	[super viewDidDisappear];
+	self.isOpen = NO;
 }
 
 - (void)loadView
@@ -419,12 +439,21 @@ extern void *ctx;
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
 {
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
+	self.cmd = cmd;
 	self.timeEntry = cmd.timeEntry;
-
 	self.GUID = cmd.timeEntry.GUID;
 
+	// Only populate if this popover is opening
+	// If not - it will populate in viewWillAppear
+	if (self.isOpen)
+	{
+		[self populateData];
+	}
+}
+
+- (void)populateData
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
 
 	if (nil == self.startDate.listener)
@@ -432,7 +461,7 @@ extern void *ctx;
 		self.startDate.listener = self;
 	}
 
-	if (cmd.open)
+	if (self.cmd.open)
 	{
 		[self.liteDescriptionAutocompleteDataSource setFilter:@""];
 		[self.liteProjectAutocompleteDataSource setFilter:@""];
@@ -464,7 +493,7 @@ extern void *ctx;
 	}
 
 	// Overwrite description only if user is not editing it:
-	if (cmd.open || [self.descriptionAutoCompleteInput currentEditor] == nil)
+	if (self.cmd.open || [self.descriptionAutoCompleteInput currentEditor] == nil)
 	{
 		[[self.descriptionAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
 		[[self.descriptionAutoCompleteInput currentEditor] moveToEndOfLine:nil];
@@ -473,7 +502,7 @@ extern void *ctx;
 	}
 
 	// Overwrite project only if user is not editing it
-	if (cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
+	if (self.cmd.open || [self.projectAutoCompleteInput currentEditor] == nil)
 	{
 		[[self.projectAutoCompleteInput currentEditor] setSelectedRange:NSMakeRange(0, 0)];
 		[[self.projectAutoCompleteInput currentEditor] moveToEndOfLine:nil];
@@ -490,19 +519,19 @@ extern void *ctx;
 	}
 
 	// Overwrite duration only if user is not editing it:
-	if (cmd.open || [self.durationTextField currentEditor] == nil)
+	if (self.cmd.open || [self.durationTextField currentEditor] == nil)
 	{
 		[[self.durationTextField currentEditor] setSelectedRange:NSMakeRange(0, 0)];
 		[[self.durationTextField currentEditor] moveToEndOfLine:nil];
 		[self.durationTextField setStringValue:self.timeEntry.duration];
 	}
 
-	if (cmd.open || [self.startTime currentEditor] == nil || self.startTimeChanged == YES)
+	if (self.cmd.open || [self.startTime currentEditor] == nil || self.startTimeChanged == YES)
 	{
 		[self.startTime setStringValue:self.timeEntry.startTimeString];
 		self.startTimeChanged = NO;
 	}
-	if (cmd.open || [self.endTime currentEditor] == nil || self.endTimeChanged == YES)
+	if (self.cmd.open || [self.endTime currentEditor] == nil || self.endTimeChanged == YES)
 	{
 		[self.endTime setStringValue:self.timeEntry.endTimeString];
 		self.endTimeChanged = NO;
@@ -515,7 +544,7 @@ extern void *ctx;
 	[self.endTime setHidden:!running];
 
 	// Overwrite tags only if user is not editing them right now
-	if (cmd.open || [self.tagsTokenField currentEditor] == nil)
+	if (self.cmd.open || [self.tagsTokenField currentEditor] == nil)
 	{
 		if ([self.timeEntry.tags count] == 0)
 		{
@@ -544,7 +573,7 @@ extern void *ctx;
 		[self.lastUpdateTextField setHidden:YES];
 	}
 
-	if (cmd.open)
+	if (self.cmd.open)
 	{
 		[self setFocus:nil];
 	}
@@ -876,10 +905,10 @@ extern void *ctx;
 		@synchronized(self)
 		{
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-							   toggl_set_time_entry_description(ctx,
-																[self.GUID UTF8String],
-																[key UTF8String]);
-						   });
+				toggl_set_time_entry_description(ctx,
+												 [self.GUID UTF8String],
+												 [key UTF8String]);
+			});
 		}
 		[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
 		self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
@@ -897,31 +926,31 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-						   if (![self.timeEntry.Description isEqualToString:key] &&
-							   !toggl_set_time_entry_project(ctx,
-															 [self.GUID UTF8String],
-															 autocomplete.TaskID,
-															 autocomplete.ProjectID,
-															 0))
-						   {
-							   [self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
-							   [self.descriptionAutoCompleteInput resetTable];
-							   self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
-							   return;
-						   }
+			if (![self.timeEntry.Description isEqualToString:key] &&
+				!toggl_set_time_entry_project(ctx,
+											  [self.GUID UTF8String],
+											  autocomplete.TaskID,
+											  autocomplete.ProjectID,
+											  0))
+			{
+				[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
+				[self.descriptionAutoCompleteInput resetTable];
+				self.liteDescriptionAutocompleteDataSource.currentFilter = nil;
+				return;
+			}
 
-						   toggl_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
+			toggl_set_time_entry_description(ctx, [self.GUID UTF8String], [autocomplete.Description UTF8String]);
 
-						   const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
-						   toggl_set_time_entry_tags(ctx, [self.GUID UTF8String], value);
+			const char *value = [[autocomplete.tags componentsJoinedByString:@"\t"] UTF8String];
+			toggl_set_time_entry_tags(ctx, [self.GUID UTF8String], value);
 
-						   bool_t isBillable = autocomplete.Billable;
+			bool_t isBillable = autocomplete.Billable;
 
-						   if (isBillable)
-						   {
-							   toggl_set_time_entry_billable(ctx, [self.GUID UTF8String], isBillable);
-						   }
-					   });
+			if (isBillable)
+			{
+				toggl_set_time_entry_billable(ctx, [self.GUID UTF8String], isBillable);
+			}
+		});
 	}
 	[self.descriptionAutoCompleteInput.window makeFirstResponder:self.descriptionAutoCompleteInput];
 	[self.descriptionAutoCompleteInput resetTable];
@@ -981,8 +1010,8 @@ extern void *ctx;
 	@synchronized(self)
 	{
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-						   toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
-					   });
+			toggl_set_time_entry_project(ctx, [self.timeEntry.GUID UTF8String], task_id, project_id, 0);
+		});
 	}
 	[self.projectAutoCompleteInput.window makeFirstResponder:self.projectAutoCompleteInput];
 	[self.projectAutoCompleteInput resetTable];
@@ -1279,6 +1308,7 @@ extern void *ctx;
 - (IBAction)saveAddClientButtonClicked:(id)sender;
 {
 	NSString *clientName = self.clientNameTextField.stringValue;
+
 	if (!clientName || !clientName.length)
 	{
 		return;

@@ -22,7 +22,7 @@ extern void *ctx;
 {
 	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
 
-	paragrapStyle.alignment                = kCTTextAlignmentCenter;
+	paragrapStyle.alignment = kCTTextAlignmentCenter;
 
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"Load More"];
 	[string setAttributes:

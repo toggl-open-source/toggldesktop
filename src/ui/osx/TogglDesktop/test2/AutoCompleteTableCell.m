@@ -80,7 +80,7 @@
 	if (view_item.Type == -3)
 	{
 		NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-		paragrapStyle.alignment                = kCTTextAlignmentCenter;
+		paragrapStyle.alignment = kCTTextAlignmentCenter;
 
 		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
 
