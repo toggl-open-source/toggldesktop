@@ -16,5 +16,5 @@ std::string Rectangle::str() const {
     ss << width << "x" << height;
     return ss.str();
 }
-    
+
 }

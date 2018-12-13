@@ -13,20 +13,22 @@
 
 extern void *ctx;
 
-+(instancetype) sharedInstance
++ (instancetype)sharedInstance
 {
-    static TrackingService *instance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [[TrackingService alloc] init];
-    });
-    return instance;
+	static TrackingService *instance;
+	static dispatch_once_t onceToken;
+
+	dispatch_once(&onceToken, ^{
+					  instance = [[TrackingService alloc] init];
+				  });
+	return instance;
 }
 
--(void)trackWindowSize:(NSSize) size
+- (void)trackWindowSize:(NSSize)size
 {
-    track_window_size(ctx,
-                      @(size.width).integerValue,
-                      @(size.height).integerValue);
+	track_window_size(ctx,
+					  @(size.width).integerValue,
+					  @(size.height).integerValue);
 }
+
 @end

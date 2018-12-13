@@ -249,15 +249,15 @@ BOOL onTop = NO;
 		 }
 	 }];
 
-    NSDistributedNotificationCenter* distCenter = [NSDistributedNotificationCenter defaultCenter];
-    [distCenter addObserver:self
-                   selector:@selector(onScreenLockedNotification:)
-                       name:@"com.apple.screenIsLocked"
-                     object:nil];
-    [distCenter addObserver:self
-                   selector:@selector(onScreenUnlockedNotification:)
-                       name:@"com.apple.screenIsUnlocked"
-                     object:nil];
+	NSDistributedNotificationCenter *distCenter = [NSDistributedNotificationCenter defaultCenter];
+	[distCenter addObserver:self
+				   selector:@selector(onScreenLockedNotification:)
+					   name:@"com.apple.screenIsLocked"
+					 object:nil];
+	[distCenter addObserver:self
+				   selector:@selector(onScreenUnlockedNotification:)
+					   name:@"com.apple.screenIsUnlocked"
+					 object:nil];
 
 	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
@@ -321,7 +321,7 @@ BOOL onTop = NO;
 	if (self.mainWindowController.window.level == NSFloatingWindowLevel)
 	{
 		onTop = YES;
-        [self.mainWindowController setWindowMode:WindowModeDefault];
+		[self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 }
 
@@ -329,7 +329,7 @@ BOOL onTop = NO;
 {
 	if (onTop)
 	{
-        [self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
+		[self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
 		onTop = NO;
 	}
 }
@@ -670,11 +670,11 @@ BOOL onTop = NO;
 	// Stay on top
 	if (cmd.settings.on_top)
 	{
-        [self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
+		[self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
 	}
 	else
 	{
-        [self.mainWindowController setWindowMode:WindowModeDefault];
+		[self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 
 	onTop = cmd.settings.on_top;
@@ -1576,20 +1576,20 @@ void on_login(const bool_t open, const uint64_t user_id)
 
 void on_reminder(const char *title, const char *informative_text)
 {
-    [[UserNotificationCenter share] scheduleReminderWithTitle:[NSString stringWithUTF8String:title]
-                                              informativeText:[NSString stringWithUTF8String:informative_text]];
+	[[UserNotificationCenter share] scheduleReminderWithTitle:[NSString stringWithUTF8String:title]
+											  informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_pomodoro(const char *title, const char *informative_text)
 {
-    [[UserNotificationCenter share] schedulePomodoroWithTitle:[NSString stringWithUTF8String:title]
-                                              informativeText:[NSString stringWithUTF8String:informative_text]];
+	[[UserNotificationCenter share] schedulePomodoroWithTitle:[NSString stringWithUTF8String:title]
+											  informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_pomodoro_break(const char *title, const char *informative_text)
 {
-    [[UserNotificationCenter share] schedulePomodoroBreakWithTitle:[NSString stringWithUTF8String:title]
-                                                   informativeText:[NSString stringWithUTF8String:informative_text]];
+	[[UserNotificationCenter share] schedulePomodoroBreakWithTitle:[NSString stringWithUTF8String:title]
+												   informativeText:[NSString stringWithUTF8String:informative_text]];
 }
 
 void on_url(const char *url)
@@ -1672,9 +1672,9 @@ void on_autotracker_notification(const char_t *project_name,
 								 const uint64_t project_id,
 								 const uint64_t task_id)
 {
-    [[UserNotificationCenter share] scheduleAutoTrackerWithProjectName:[NSString stringWithUTF8String:project_name]
-                                                             projectID:[NSNumber numberWithLong:project_id]
-                                                                taskID:[NSNumber numberWithLong:task_id]];
+	[[UserNotificationCenter share] scheduleAutoTrackerWithProjectName:[NSString stringWithUTF8String:project_name]
+															 projectID:[NSNumber numberWithLong:project_id]
+																taskID:[NSNumber numberWithLong:task_id]];
 }
 
 void on_promotion(const int64_t promotion_type)
