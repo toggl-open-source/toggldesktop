@@ -208,17 +208,17 @@ extern void *ctx;
 
 - (void)setFocus:(NSNotification *)notification
 {
-	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
-	{
-		[self.view.window setInitialFirstResponder:self.durationTextField];
-		return;
-	}
-	if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
-	{
-		[self.view.window setInitialFirstResponder:self.projectAutoCompleteInput];
-		return;
-	}
-	[self.view.window setInitialFirstResponder:self.descriptionAutoCompleteInput];
+    if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameDuration]])
+    {
+        [self.view.window setInitialFirstResponder:self.durationTextField];
+        return;
+    }
+    if ([self.timeEntry.focusedFieldName isEqualToString:[NSString stringWithUTF8String:kFocusedFieldNameProject]])
+    {
+        [self.view.window setInitialFirstResponder:self.projectAutoCompleteInput];
+        return;
+    }
+    [self.view.window setInitialFirstResponder:self.descriptionAutoCompleteInput];
 }
 
 - (void)setProjectColors:(NSNotification *)notification
@@ -577,6 +577,8 @@ extern void *ctx;
     {
         [self setFocus:nil];
     }
+
+    [self registerUndo];
 }
 
 - (NSArray *)    tokenField:(NSTokenField *)tokenField
@@ -1546,7 +1548,7 @@ extern void *ctx;
 
 -(void) registerUndo
 {
-    ObjcTimeEntry *undoEntry = [[UndoManager shared] getUndoPayloadFor:self.timeEntry];
+    ObjcTimeEntryPayload *undoEntry = [[UndoManager shared] getUndoPayloadFor:self.timeEntry];
     if (undoEntry != nil) {
 
         // Description
@@ -1565,14 +1567,18 @@ extern void *ctx;
 {
     NSString *oldValue = self.descriptionAutoCompleteInput.stringValue;
     self.descriptionAutoCompleteInput.stringValue = value;
-    [self.descriptionAutoCompleteInput.undoManager registerUndoWithTarget:self selector:@selector(setDescriptionInput:) object:oldValue];
+    [self.descriptionAutoCompleteInput.undoManager registerUndoWithTarget:self
+                                                                 selector:@selector(setDescriptionInput:)
+                                                                   object:oldValue];
 }
 
 -(void) setProjectInput:(NSString *) value
 {
     NSString *oldValue = self.projectAutoCompleteInput.stringValue;
     self.projectAutoCompleteInput.stringValue = value;
-    [self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self selector:@selector(setProjectInput:) object:oldValue];
+    [self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self
+                                                             selector:@selector(setProjectInput:)
+                                                               object:oldValue];
 }
 
 @end

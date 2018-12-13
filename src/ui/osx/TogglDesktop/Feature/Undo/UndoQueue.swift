@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// UndoQueue represent the History of value
+/// It's kind of Circular Queues
+/// The enquene new value, it will drop the last value if it excesses the maxCount
 final class UndoQueue<T: Equatable> {
 
     // MARK: - Variable
@@ -15,12 +18,16 @@ final class UndoQueue<T: Equatable> {
     private let maxCount: Int
 
     // MARK: - Init
-    init(storage: [T], maxCount: Int = 2) {
+    init(storage: [T], maxCount: Int) {
         self.storage = storage
         self.maxCount = maxCount
     }
 
     // MARK: - Public
+    /// Enqueue object
+    /// Store value and drop the last value if need
+    ///
+    /// - Parameter object: Object
     func enqueue(_ object: T) {
 
         // We don't store if next object is same the first one
@@ -39,12 +46,19 @@ final class UndoQueue<T: Equatable> {
         storage = temps
     }
 
+    /// Dequeue last object
+    ///
+    /// - Returns: The object has been dropped
     func dequeue() -> T? {
         let last =  storage.last
         storage.removeLast()
         return last
     }
 
+    /// Get second-last object
+    /// It's undo value
+    ///
+    /// - Returns: The object
     func undoItem() -> T? {
         guard storage.count > 1 else { return nil }
         return storage[1]
