@@ -42,6 +42,7 @@ SOURCES += \
     ../../../obm_action.cc \
     ../../../project.cc \
     ../../../proxy.cc \
+    ../../../rectangle.cc \
     ../../../related_data.cc \
     ../../../settings.cc \
     ../../../tag.cc \
