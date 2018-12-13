@@ -54,3 +54,5 @@ target_link_libraries(TogglDesktop PRIVATE
     PocoCrypto PocoDataSQLite PocoNetSSL
     -lX11 -lXss
 )
+
+configure_file(${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem cacert.pem COPYONLY)
