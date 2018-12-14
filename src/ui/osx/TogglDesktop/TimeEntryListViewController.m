@@ -188,7 +188,6 @@ extern void *ctx;
 			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
 		}
 	}
-	long delta = (cmd.timeEntries.count + 1 - viewitems.count) * 56;
 	@synchronized(viewitems)
 	{
 		[viewitems removeAllObjects];
@@ -235,7 +234,7 @@ extern void *ctx;
 		if (self.timeEntriesTableView.isFlipped)
 		{
         // calculate new flipped coordinates, height includes the new row
-			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y - delta;
+			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
 		}
 		[self.timeEntriesTableView scrollPoint:scrollOrigin];
 	}
