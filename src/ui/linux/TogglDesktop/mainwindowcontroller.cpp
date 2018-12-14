@@ -51,11 +51,11 @@ MainWindowController::MainWindowController(
   feedbackDialog(new FeedbackDialog(this)),
   idleNotificationDialog(new IdleNotificationDialog(this)),
   trayIcon(0),
-  reminder(false),
+  reminderPopup(0),
   pomodoro(false),
+  reminder(false),
   script(scriptPath),
-  ui_started(false),
-  reminderPopup(0) {
+  ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
     ui->setupUi(this);

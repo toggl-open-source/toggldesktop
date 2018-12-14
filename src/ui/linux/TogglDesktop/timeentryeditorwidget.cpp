@@ -22,8 +22,8 @@ timeEntryAutocompleteNeedsUpdate(false),
 projectAutocompleteNeedsUpdate(false),
 workspaceSelectNeedsUpdate(false),
 clientSelectNeedsUpdate(false),
-timer(new QTimer(this)),
 colorPicker(new ColorPicker(this)),
+timer(new QTimer(this)),
 duration(0),
 previousTagList("") {
     ui->setupUi(this);

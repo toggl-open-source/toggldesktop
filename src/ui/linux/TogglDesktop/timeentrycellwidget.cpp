@@ -7,11 +7,11 @@
 
 TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(0),
 ui(new Ui::TimeEntryCellWidget),
-guid(""),
 description(""),
 project(""),
-groupName(""),
-group(false) {
+guid(""),
+group(false),
+groupName("") {
     ui->setupUi(this);
 }
 
