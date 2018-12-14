@@ -21,7 +21,7 @@ public:
 
 private:
     Ui::OverlayWidget *ui;
-    int current_type;
+    int64_t current_type;
 
 private slots:  // NOLINT
 

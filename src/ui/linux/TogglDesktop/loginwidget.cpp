@@ -26,7 +26,7 @@ oauth2(new OAuth2(this)) {
 
     signupVisible = true;
     countriesLoaded = false;
-    selectedCountryId = -1;
+    selectedCountryId = UINT64_MAX;
 
     on_viewchangelabel_linkActivated("");;
 }
@@ -91,7 +91,7 @@ bool LoginWidget::validateFields(const bool signup) {
         return false;
     }
     if (signup) {
-        if (selectedCountryId == -1) {
+        if (selectedCountryId == UINT64_MAX) {
             ui->countryComboBox->setFocus();
             TogglApi::instance->displayError(QString("Please select Country before signing up"), true);
             return false;
@@ -144,7 +144,7 @@ void LoginWidget::on_viewchangelabel_linkActivated(const QString &link)
 void LoginWidget::on_countryComboBox_currentIndexChanged(int index)
 {
     if (index == 0) {
-        selectedCountryId = -1;
+        selectedCountryId = UINT64_MAX;
         return;
     }
     QVariant data = ui->countryComboBox->currentData();

@@ -60,5 +60,5 @@ QVector<TimeEntryView *> TimeEntryView::importAll(
 
 const QString TimeEntryView::lastUpdate() {
     return QString("Last update ") +
-           QDateTime::fromTime_t(UpdatedAt).toString();
+           QDateTime::fromTime_t(static_cast<uint>(UpdatedAt)).toString();
 }

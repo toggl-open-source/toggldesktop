@@ -60,7 +60,7 @@ class LoginWidget : public QWidget {
     bool signupVisible;
 
     bool countriesLoaded;
-    int64_t selectedCountryId;
+    uint64_t selectedCountryId;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_LOGINWIDGET_H_
