@@ -30,7 +30,7 @@ class TogglApplication : public SingleApplication {
 bool TogglApplication::notify(QObject *receiver, QEvent *event) {
     try {
         return SingleApplication::notify(receiver, event);
-    } catch(std::exception e) {
+    } catch(std::exception &e) {
         TogglApi::notifyBugsnag("std::exception", e.what(),
                                 receiver->objectName());
     } catch(...) {
