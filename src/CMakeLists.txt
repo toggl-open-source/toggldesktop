@@ -62,7 +62,7 @@ add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
 target_link_libraries(TogglDesktopLibrary PRIVATE
-    Qt5::Widgets Qt5::WebEngine
     jsoncpp
     ${LUA_LIBRARIES}
+    PocoCrypto PocoDataSQLite PocoNetSSL
 )

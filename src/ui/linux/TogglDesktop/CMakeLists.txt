@@ -63,8 +63,7 @@ target_link_libraries(TogglDesktop PRIVATE
     Qt5::Widgets Qt5::WebEngine
     OAuth2
     ${QXT_LIBRARIES}
-    Bugsnag 
-    PocoCrypto PocoDataSQLite PocoNetSSL
+    Bugsnag
     -lX11 -lXss
 )
 
