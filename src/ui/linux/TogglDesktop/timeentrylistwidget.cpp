@@ -18,12 +18,6 @@ ui(new Ui::TimeEntryListWidget) {
     connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),  // NOLINT
-            this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));  // NOLINT
-
-    connect(TogglApi::instance, SIGNAL(displayOverlay(int64_t)),  // NOLINT
-            this, SLOT(displayOverlay(int64_t)));  // NOLINT
-
     ui->blankView->setVisible(false);
 }
 
@@ -33,10 +27,6 @@ TimeEntryListWidget::~TimeEntryListWidget() {
 
 void TimeEntryListWidget::display() {
     qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
-}
-
-void TimeEntryListWidget::displayOverlay(
-    const int64_t type) {
 }
 
 void TimeEntryListWidget::displayLogin(
@@ -100,12 +90,6 @@ void TimeEntryListWidget::displayTimeEntryList(
 
     render_m_.unlock();
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-}
-
-void TimeEntryListWidget::displayTimeEntryEditor(
-    const bool open,
-    TimeEntryView *view,
-    const QString focused_field_name) {
 }
 
 void TimeEntryListWidget::showLoadMoreButton(int size) {

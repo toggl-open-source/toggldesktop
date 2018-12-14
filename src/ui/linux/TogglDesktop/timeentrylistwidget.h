@@ -27,8 +27,6 @@ class TimeEntryListWidget : public QWidget {
 
  private slots:  // NOLINT
 
-    void displayOverlay(const int64_t type);
-
     void displayLogin(
         const bool open,
         const uint64_t user_id);
@@ -37,11 +35,6 @@ class TimeEntryListWidget : public QWidget {
         const bool open,
         QVector<TimeEntryView *> list,
         const bool show_load_more_button);
-
-    void displayTimeEntryEditor(
-        const bool open,
-        TimeEntryView *view,
-        const QString focused_field_name);
 
     void showLoadMoreButton(int size);
 

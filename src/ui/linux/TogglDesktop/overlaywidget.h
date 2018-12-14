@@ -31,11 +31,6 @@ private slots:  // NOLINT
        const bool open,
        const uint64_t user_id);
 
-   void displayTimeEntryList(
-       const bool open,
-       QVector<TimeEntryView *> list,
-       const bool show_load_more_button);
-
    void on_actionButton_clicked();
    void on_bottomText_linkActivated(const QString &link);
    void on_topText_linkActivated(const QString &link);

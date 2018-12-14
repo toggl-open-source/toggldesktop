@@ -14,9 +14,6 @@ OverlayWidget::OverlayWidget(QStackedWidget *parent) :
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
-            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
-
     connect(TogglApi::instance, SIGNAL(displayOverlay(int64_t)),  // NOLINT
             this, SLOT(displayOverlay(int64_t)));  // NOLINT
 }
@@ -72,12 +69,6 @@ void OverlayWidget::displayLogin(
 
     if (open || user_id) {
     }
-}
-
-void OverlayWidget::displayTimeEntryList(
-    const bool open,
-    QVector<TimeEntryView *> list,
-    const bool) {
 }
 
 void OverlayWidget::on_actionButton_clicked()
