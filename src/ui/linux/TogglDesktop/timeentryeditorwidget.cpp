@@ -366,10 +366,12 @@ void TimeEntryEditorWidget::on_addNewProject_clicked() {
 
 void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(
     int index) {
+    Q_UNUSED(index);
     displayClientSelect(clientSelectUpdate);
 }
 
 void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
+    Q_UNUSED(index);
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
@@ -405,6 +407,7 @@ void TimeEntryEditorWidget::on_description_activated(const QString &arg1) {
 }
 
 void TimeEntryEditorWidget::on_project_activated(int index) {
+    Q_UNUSED(index);
     QVariant data = ui->project->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
@@ -459,6 +462,7 @@ void TimeEntryEditorWidget::timeout() {
 }
 
 void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
+    Q_UNUSED(item);
     QStringList tags;
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *widgetItem = ui->tags->item(i);

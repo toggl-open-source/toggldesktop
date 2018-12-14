@@ -117,5 +117,6 @@ void TimeEntryListWidget::showLoadMoreButton(int size) {
 }
 
 void TimeEntryListWidget::on_blankView_linkActivated(const QString &link) {
+    Q_UNUSED(link);
     TogglApi::instance->openInBrowser();
 }

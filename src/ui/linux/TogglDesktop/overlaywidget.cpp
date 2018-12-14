@@ -82,6 +82,7 @@ void OverlayWidget::on_actionButton_clicked()
 
 void OverlayWidget::on_bottomText_linkActivated(const QString &link)
 {
+    Q_UNUSED(link);
     if (current_type == 0) {
         TogglApi::instance->fullSync();
     }

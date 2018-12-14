@@ -270,6 +270,7 @@ void PreferencesDialog::keyPressEvent(QKeyEvent *event) {
 }
 
 void PreferencesDialog::keyReleaseEvent(QKeyEvent *event) {
+    Q_UNUSED(event);
     saveCurrentShortcut();
 }
 
@@ -293,6 +294,7 @@ bool PreferencesDialog::setProxySettings() {
 }
 
 void PreferencesDialog::on_useProxy_clicked(bool checked) {
+    Q_UNUSED(checked);
     setProxySettings();
 }
 

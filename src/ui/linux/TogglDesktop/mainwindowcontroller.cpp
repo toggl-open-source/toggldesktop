@@ -257,6 +257,7 @@ void MainWindowController::displayLogin(
 
 void MainWindowController::displayRunningTimerState(
     TimeEntryView *te) {
+    Q_UNUSED(te);
     tracking = true;
     enableMenuActions();
     if (reminder) {

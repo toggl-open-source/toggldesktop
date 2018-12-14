@@ -219,6 +219,7 @@ void TimerWidget::timeout() {
 }
 
 void TimerWidget::on_description_currentIndexChanged(int index) {
+    Q_UNUSED(index);
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();

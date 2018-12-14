@@ -46,6 +46,7 @@ void LoginWidget::keyPressEvent(QKeyEvent* event) {
 }
 
 void LoginWidget::mousePressEvent(QMouseEvent* event) {
+    Q_UNUSED(event);
     setFocus();
 }
 
@@ -70,6 +71,7 @@ void LoginWidget::on_login_clicked() {
 }
 
 void LoginWidget::on_googleLogin_linkActivated(const QString &link) {
+    Q_UNUSED(link);
     oauth2->startLogin(true);
 }
 
@@ -121,6 +123,7 @@ void LoginWidget::setCountries(
 
 void LoginWidget::on_viewchangelabel_linkActivated(const QString &link)
 {
+    Q_UNUSED(link);
     if (signupVisible) {
         ui->signupFrame->hide();
         ui->loginFrame->show();
