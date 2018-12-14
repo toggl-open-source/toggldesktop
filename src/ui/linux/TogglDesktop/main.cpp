@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) try {
 
     parser.process(a);
 
-    MainWindowController w(0,
+    MainWindowController w(nullptr,
                            parser.value(logPathOption),
                            parser.value(dbPathOption),
                            parser.value(scriptPathOption));

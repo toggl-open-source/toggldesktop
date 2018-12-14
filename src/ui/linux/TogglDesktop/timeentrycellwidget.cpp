@@ -5,7 +5,7 @@
 
 #include "./toggl.h"
 
-TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(0),
+TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(nullptr),
 ui(new Ui::TimeEntryCellWidget),
 description(""),
 project(""),

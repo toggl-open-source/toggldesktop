@@ -94,7 +94,7 @@ void IdleNotificationDialog::displayIdleNotification(
 }
 
 void IdleNotificationDialog::timeout() {
-    Display *display = XOpenDisplay(NULL);
+    Display *display = XOpenDisplay(nullptr);
     if (!display) {
         return;
     }

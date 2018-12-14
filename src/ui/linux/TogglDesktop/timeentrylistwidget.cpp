@@ -53,8 +53,8 @@ void TimeEntryListWidget::displayTimeEntryList(
     for (int i = 0; i < size; i++) {
         TimeEntryView *te = list.at(i);
 
-        QListWidgetItem *item = 0;
-        TimeEntryCellWidget *cell = 0;
+        QListWidgetItem *item = nullptr;
+        TimeEntryCellWidget *cell = nullptr;
 
         if (ui->list->count() > i) {
             item = ui->list->item(i);
@@ -93,8 +93,8 @@ void TimeEntryListWidget::displayTimeEntryList(
 }
 
 void TimeEntryListWidget::showLoadMoreButton(int size) {
-    QListWidgetItem *item = 0;
-    TimeEntryCellWidget *cell = 0;
+    QListWidgetItem *item = nullptr;
+    TimeEntryCellWidget *cell = nullptr;
 
     if (ui->list->count() > size) {
         item = ui->list->item(size);
