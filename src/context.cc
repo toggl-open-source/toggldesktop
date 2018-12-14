@@ -1070,11 +1070,9 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
     last_sync_started_ = time(0);
 
     // Always sync asyncronously with syncerActivity
-    if (!trigger_sync_) {
-        trigger_sync_ = true;
-        if (!syncer_.isRunning()) {
-            syncer_.start();
-        }
+    trigger_sync_ = true;
+    if (!syncer_.isRunning()) {
+        syncer_.start();
     }
 }
 
@@ -1130,11 +1128,9 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onPushChanges executing");
 
     // Always sync asyncronously with syncerActivity
-    if (!trigger_push_) {
-        trigger_push_ = true;
-        if (!syncer_.isRunning()) {
-            syncer_.start();
-        }
+    trigger_push_ = true;
+    if (!syncer_.isRunning()) {
+        syncer_.start();
     }
 }
 
