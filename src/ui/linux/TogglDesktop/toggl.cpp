@@ -65,7 +65,7 @@ void on_display_login(
         TogglApi::instance->aboutToDisplayLogin();
     }
     TogglApi::instance->displayLogin(open, user_id);
-    Bugsnag::user.id = user_id;
+    Bugsnag::user.id = QString("%1").arg(user_id);
 }
 
 void on_display_pomodoro(
