@@ -1558,10 +1558,11 @@ extern void *ctx;
 	if (snapshot != nil)
 	{
 		[self.descriptionAutoCompleteInput registerUndoWithValue:snapshot.descriptionUndoValue];
-		[self.projectAutoCompleteInput registerUndoWithValue:snapshot.projectNameUndoValue];
+		[self.projectAutoCompleteInput registerUndoWithValue:snapshot.projectLableUndoValue.projectAndTaskLabel];
 		[self.durationTextField registerUndoWithValue:snapshot.durationUndoValue];
 		[self.startTime registerUndoWithValue:snapshot.startTimeUndoValue];
 		[self.endTime registerUndoWithValue:snapshot.endTimeUndoValue];
+		[self registerUndoForProjectWithSnapshot:snapshot.projectLableUndoValue];
 	}
 	else
 	{
@@ -1577,6 +1578,25 @@ extern void *ctx;
 {
 	_timeEntry = timeEntry;
 	[self registerUndoForAllFields];
+}
+
+- (void)registerUndoForProjectWithSnapshot:(ProjectSnapshot *)snapshot
+{
+	if (snapshot == nil)
+	{
+		return;
+	}
+
+	self.projectAutoCompleteInput.stringValue = snapshot.projectAndTaskLabel;
+	[self.projectAutoCompleteInput.undoManager removeAllActions];
+	[self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self
+															 selector:@selector(updateProjectValueForProjectAutoCompleteInput:)
+															   object:[[AutocompleteItem alloc] initWithSnapshot:snapshot]];
+}
+
+- (void)updateProjectValueForProjectAutoCompleteInput:(AutocompleteItem *)item
+{
+	[self updateWithSelectedProject:item withKey:nil];
 }
 
 @end

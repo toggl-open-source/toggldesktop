@@ -24,10 +24,11 @@
 
 - (void)registerUndoWithValue:(NSString *)value
 {
-	if (value == nil) {
+	if (value == nil)
+	{
 		return;
 	}
-	
+
 	[self.undoManager removeAllActionsWithTarget:self];
 	[self.undoManager registerUndoWithTarget:self
 									selector:@selector(setStringInput:)

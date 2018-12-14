@@ -7,8 +7,21 @@
 //
 
 #import "AutocompleteItem.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation AutocompleteItem
+
+- (instancetype)initWithSnapshot:(ProjectSnapshot *)snapshot
+{
+	self = [super init];
+	if (self)
+	{
+		self.ProjectAndTaskLabel = snapshot.projectAndTaskLabel;
+		self.TaskID = snapshot.taskID;
+		self.ProjectID = snapshot.projectID;
+	}
+	return self;
+}
 
 - (void)load:(TogglAutocompleteView *)data
 {
