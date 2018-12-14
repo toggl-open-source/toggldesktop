@@ -349,6 +349,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
 	[self.tagFlag setHidden:YES];
 	[self.billableFlag setHidden:YES];
+	[self.view.window makeFirstResponder:self.autoCompleteInput];
 }
 
 - (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
