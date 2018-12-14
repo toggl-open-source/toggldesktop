@@ -119,7 +119,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>220</width>
+             <width>320</width>
              <height>35</height>
             </size>
            </property>
@@ -144,7 +144,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>220</width>
+             <width>320</width>
              <height>35</height>
             </size>
            </property>
@@ -229,7 +229,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>220</width>
+                <width>320</width>
                 <height>35</height>
                </size>
               </property>
@@ -305,7 +305,7 @@
             <item>
              <widget class="QLabel" name="countryLabel">
               <property name="styleSheet">
-               <string notr="true">color:#fff;</string>
+               <string notr="true">color:#fff;padding-top:18px</string>
               </property>
               <property name="text">
                <string>Select country</string>
@@ -319,7 +319,7 @@
              <widget class="QComboBox" name="countryComboBox">
               <property name="minimumSize">
                <size>
-                <width>220</width>
+                <width>320</width>
                 <height>35</height>
                </size>
               </property>
@@ -353,7 +353,7 @@
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
-                   <width>40</width>
+                   <width>0</width>
                    <height>20</height>
                   </size>
                  </property>
@@ -389,7 +389,7 @@
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
-                   <width>40</width>
+                   <width>0</width>
                    <height>20</height>
                   </size>
                  </property>
@@ -408,7 +408,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>220</width>
+                <width>320</width>
                 <height>35</height>
                </size>
               </property>
