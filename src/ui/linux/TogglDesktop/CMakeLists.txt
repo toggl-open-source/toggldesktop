@@ -1,3 +1,7 @@
+set(CMAKE_CXX_FLAGS
+    -Wall
+)
+
 add_definitions(-DAPP_VERSION="${TOGGL_VERSION}")
 
 if(TOGGL_PRODUCTION_BUILD)
