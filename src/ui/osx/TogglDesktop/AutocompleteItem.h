@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "toggl_api.h"
 
+@class ProjectSnapshot;
+
 @interface AutocompleteItem : NSObject
+- (instancetype)initWithSnapshot:(ProjectSnapshot *)snapshot;
 + (NSMutableArray *)loadAll:(TogglAutocompleteView *)first;
 - (void)load:(TogglAutocompleteView *)data;
 - (void)save:(TogglAutocompleteView *)data;
