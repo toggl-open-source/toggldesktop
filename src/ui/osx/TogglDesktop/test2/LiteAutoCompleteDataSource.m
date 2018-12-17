@@ -334,6 +334,12 @@ extern void *ctx;
 	}
 }
 
+- (void)clearFilter
+{
+	self.currentFilter = nil;
+	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
+}
+
 - (void)setFilter:(NSString *)filter
 {
 	self.textLength = 0;

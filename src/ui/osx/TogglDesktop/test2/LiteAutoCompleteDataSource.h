@@ -23,6 +23,7 @@
 @property NSString *lastClientLabel;
 @property NSArray *types;
 - (NSString *)completedString:(NSString *)partialString;
+- (void)clearFilter;
 - (void)setFilter:(NSString *)filter;
 - (id)initWithNotificationName:(NSString *)notificationName;
 - (AutocompleteItem *)itemAtIndex:(NSInteger)row;

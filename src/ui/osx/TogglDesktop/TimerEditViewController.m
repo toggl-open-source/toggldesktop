@@ -438,7 +438,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.durationTextField.stringValue = @"";
 	self.autoCompleteInput.stringValue = @"";
 	[self.autoCompleteInput resetTable];
-	self.liteAutocompleteDataSource.currentFilter = nil;
+	[self.liteAutocompleteDataSource clearFilter];
 	self.projectTextField.stringValue = @"";
 	[self.projectTextField setHidden:YES];
 }
@@ -479,8 +479,8 @@ NSString *kInactiveTimerColor = @"#999999";
 														object:self.time_entry];
 
 	// Reset autocomplete
-	self.liteAutocompleteDataSource.currentFilter = nil;
 	[self.autoCompleteInput resetTable];
+	[self.liteAutocompleteDataSource clearFilter];
 }
 
 - (IBAction)durationFieldChanged:(id)sender
@@ -672,6 +672,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	NSRange tRange = [[self.autoCompleteInput currentEditor] selectedRange];
 	[[self.autoCompleteInput currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
 	[self.autoCompleteInput resetTable];
+	[self.liteAutocompleteDataSource clearFilter];
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
@@ -701,6 +702,7 @@ NSString *kInactiveTimerColor = @"#999999";
 				[self fillEntryFromAutoComplete:item];
 			}
 			[self.autoCompleteInput resetTable];
+			[self.liteAutocompleteDataSource clearFilter];
 		}
 		if (commandSelector == @selector(insertNewline:))
 		{
@@ -718,6 +720,7 @@ NSString *kInactiveTimerColor = @"#999999";
 				[self fillEntryFromAutoComplete:item];
 			}
 			[self.autoCompleteInput resetTable];
+			[self.liteAutocompleteDataSource clearFilter];
 
 			// Start entry
 			[self startButtonClicked:nil];
