@@ -4383,26 +4383,11 @@ void Context::syncerActivity() {
                 // Push cached OBM action
                 err = pushObmAction();
                 if (err != noError) {
+                    std::cout << "SYNC: sync-pushObm ERROR\n";
                     logger().error("Error pushing OBM action: " + err);
                 }
 
                 displayError(save(false));
-
-                // Stop Activity when we are done syncing
-                try {
-                    {
-                        if (syncer_.isRunning()) {
-                            syncer_.stop();
-                            syncer_.wait(5);
-                        }
-                    }
-                } catch(const Poco::Exception& exc) {
-                    logger().debug(exc.displayText());
-                } catch(const std::exception& ex) {
-                    logger().debug(ex.what());
-                } catch(const std::string& ex) {
-                    logger().debug(ex);
-                }
             }
 
         }
@@ -4424,26 +4409,11 @@ void Context::syncerActivity() {
                 // Push cached OBM action
                 err = pushObmAction();
                 if (err != noError) {
+                    std::cout << "SYNC: pushObm ERROR\n";
                     logger().error("Error pushing OBM action: " + err);
                 }
 
                 displayError(save(false));
-
-                // Stop Activity when we are done syncing
-                try {
-                    {
-                        if (syncer_.isRunning()) {
-                            syncer_.stop();
-                            syncer_.wait(5);
-                        }
-                    }
-                } catch(const Poco::Exception& exc) {
-                    logger().debug(exc.displayText());
-                } catch(const std::exception& ex) {
-                    logger().debug(ex.what());
-                } catch(const std::string& ex) {
-                    logger().debug(ex);
-                }
             }
         }
     }
