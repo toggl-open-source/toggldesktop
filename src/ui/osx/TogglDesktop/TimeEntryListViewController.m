@@ -262,6 +262,19 @@ extern void *ctx;
 													  makeIfNecessary  :NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
+
+	if (self.timeEntrypopover.shown) {
+		NSView *selectedView = [self getSelectedEntryCell:self.lastSelectedRowIndex];
+
+		if (selectedView) {
+			NSRect positionRect = [self.timeEntriesTableView convertRect:selectedView.bounds fromView:selectedView];
+			if ([selectedView isKindOfClass:[TimeEntryCellWithHeader class]]) {
+				positionRect.origin.y += 46;
+				positionRect.size.height -= 46;
+			}
+			self.timeEntrypopover.positioningRect = positionRect;
+		}
+	}
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -287,12 +300,27 @@ extern void *ctx;
 	if (cmd.open)
 	{
 		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
-		NSRect positionRect = [self.view bounds];
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
-		[self.timeEntrypopover showRelativeToRect:positionRect
-										   ofView:self.view
-									preferredEdge:NSMaxXEdge];
+		NSView *selectedView = [self getSelectedEntryCell:self.lastSelectedRowIndex];
+
+		if (selectedView) {
+			NSRect positionRect = [self.timeEntriesTableView convertRect:selectedView.bounds fromView:selectedView];
+			if ([selectedView isKindOfClass:[TimeEntryCellWithHeader class]]) {
+				positionRect.origin.y += 46;
+				positionRect.size.height -= 46;
+			}
+			[self.timeEntrypopover showRelativeToRect:positionRect
+											   ofView:self.timeEntriesTableView
+										preferredEdge:NSMaxXEdge];
+		} else {
+			[self.timeEntrypopover showRelativeToRect:self.view.bounds
+											   ofView:self.view
+										preferredEdge:NSMaxXEdge];
+		}
+
+
+
 		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 		[self.timeEntryEditViewController setDragHandle:onLeft];
 		[self.timeEntryEditViewController setInsertionPointColor];
