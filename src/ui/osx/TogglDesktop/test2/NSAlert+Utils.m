@@ -10,11 +10,13 @@
 
 @implementation NSAlert (Utils)
 
-+(NSAlert *) alertWithMessageText:(NSString *)message informativeTextWithFormat:(NSString *)format, ... {
-    NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = message;
-    alert.informativeText = format;
-    return alert;
++ (NSAlert *)alertWithMessageText:(NSString *)message informativeTextWithFormat:(NSString *)format, ...
+{
+	NSAlert *alert = [[NSAlert alloc] init];
+
+	alert.messageText = message;
+	alert.informativeText = format;
+	return alert;
 }
 
 @end

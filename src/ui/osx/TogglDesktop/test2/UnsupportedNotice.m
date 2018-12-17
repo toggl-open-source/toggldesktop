@@ -8,7 +8,7 @@
 
 #import "UnsupportedNotice.h"
 
-@interface UnsupportedNotice()
+@interface UnsupportedNotice ()
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @end
 
@@ -40,9 +40,9 @@
 		[self addButtonWithTitle:@"OK"];
 		[self setAlertStyle:NSWarningAlertStyle];
 
-        self.dateFormatter = [[NSDateFormatter alloc] init];
-        self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+		self.dateFormatter = [[NSDateFormatter alloc] init];
+		self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+		self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	}
 
 	return self;
@@ -60,7 +60,7 @@
 - (void)showNotice
 {
 	NSDate *today = [NSDate date];
-    NSDate *deadline = [self.dateFormatter dateFromString:@"2019-01-01 00:00:00"];
+	NSDate *deadline = [self.dateFormatter dateFromString:@"2019-01-01 00:00:00"];
 	NSComparisonResult result = [today compare:deadline];
 
 	NSString *title = [NSString stringWithFormat:@"Mac OS X version not supported"];

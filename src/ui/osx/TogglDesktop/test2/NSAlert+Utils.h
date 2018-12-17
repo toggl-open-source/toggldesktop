@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSAlert (Utils)
 
-+(NSAlert *) alertWithMessageText:(NSString *)message informativeTextWithFormat:(NSString *)format, ...;
++ (NSAlert *)alertWithMessageText:(NSString *)message informativeTextWithFormat:(NSString *)format, ...;
 
 @end
 

@@ -20,6 +20,8 @@
 #import "ConvertHexColor.h"
 #include <Carbon/Carbon.h>
 
+static CGFloat kTimeEntryCellWithHeaderHeight = 46.0;
+
 @interface TimeEntryListViewController ()
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
@@ -33,6 +35,7 @@
 @property NSInteger lastSelectedRowIndex;
 @property BOOL runningEdit;
 @property TimeEntryCell *selectedEntryCell;
+@property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
 
@@ -239,6 +242,9 @@ extern void *ctx;
 		[self.timeEntriesTableView scrollPoint:scrollOrigin];
 	}
 
+    // Adjust the position of arrow of Popover
+	[self adjustPositionOfPopover];
+
     // If row was focused before reload we restore that state
 	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:i];
 
@@ -261,6 +267,39 @@ extern void *ctx;
 													  makeIfNecessary  :NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
+}
+
+- (void)adjustPositionOfPopover {
+	if (!self.timeEntrypopover.shown)
+	{
+		return;
+	}
+	if (self.lastSelectedGUID == nil)
+	{
+		return;
+	}
+
+    // Get new selected index depend on last GUID
+	NSInteger newSelectedRow = -1;
+	for (NSInteger i = 0; i < viewitems.count; i++)
+	{
+		id item = viewitems[i];
+		if ([item isKindOfClass:[TimeEntryViewItem class]])
+		{
+			TimeEntryViewItem *viewItem = (TimeEntryViewItem *)item;
+			if ([viewItem.GUID isEqualToString:self.lastSelectedGUID])
+			{
+				newSelectedRow = i;
+				break;
+			}
+		}
+	}
+
+	if (newSelectedRow >= 0)
+	{
+		NSRect positionRect = [self positionRectOfSelectedRowAtIndex:newSelectedRow];
+		self.timeEntrypopover.positioningRect = positionRect;
+	}
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -286,16 +325,45 @@ extern void *ctx;
 	if (cmd.open)
 	{
 		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
-		NSRect positionRect = [self.view bounds];
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
+		NSView *ofView = self.view;
+		CGRect positionRect = [self positionRectOfSelectedRowAtIndex:self.lastSelectedRowIndex];
+
+		if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
+		{
+			self.lastSelectedGUID = ((TimeEntryCell *)self.selectedEntryCell).GUID;
+			ofView = self.timeEntriesTableView;
+		}
+
+        // Show popover
 		[self.timeEntrypopover showRelativeToRect:positionRect
-										   ofView:self.view
+										   ofView:ofView
 									preferredEdge:NSMaxXEdge];
+
+
+
 		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 		[self.timeEntryEditViewController setDragHandle:onLeft];
 		[self.timeEntryEditViewController setInsertionPointColor];
 	}
+}
+
+- (CGRect)positionRectOfSelectedRowAtIndex:(NSInteger)index {
+	NSView *selectedView = [self getSelectedEntryCell:index];
+	NSRect positionRect = self.view.bounds;
+
+	if (selectedView)
+	{
+		positionRect = [self.timeEntriesTableView convertRect:selectedView.bounds
+													 fromView:selectedView];
+		if ([selectedView isKindOfClass:[TimeEntryCellWithHeader class]])
+		{
+			positionRect.origin.y += kTimeEntryCellWithHeaderHeight;
+			positionRect.size.height -= kTimeEntryCellWithHeaderHeight;
+		}
+	}
+	return positionRect;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -719,7 +787,7 @@ extern void *ctx;
 		[session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
 										   forView:tableView
 										   classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
-									 searchOptions:[NSDictionary<NSPasteboardReadingOptionKey,id> dictionary]
+									 searchOptions:[NSDictionary<NSPasteboardReadingOptionKey, id> dictionary]
 										usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
 		 {
              // prepare context
