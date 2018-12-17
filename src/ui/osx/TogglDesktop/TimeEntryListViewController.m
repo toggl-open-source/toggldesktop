@@ -243,7 +243,7 @@ extern void *ctx;
 		[self.timeEntriesTableView scrollPoint:scrollOrigin];
 	}
 
-	// Adjust the position of arrow of Popover
+    // Adjust the position of arrow of Popover
 	[self adjustPositionOfPopover];
 
     // If row was focused before reload we restore that state
@@ -270,28 +270,34 @@ extern void *ctx;
 	[rowView setSelected:NO];
 }
 
--(void) adjustPositionOfPopover {
-	if (!self.timeEntrypopover.shown) {
+- (void)adjustPositionOfPopover {
+	if (!self.timeEntrypopover.shown)
+	{
 		return;
 	}
-	if (self.lastSelectedGUID == nil) {
+	if (self.lastSelectedGUID == nil)
+	{
 		return;
 	}
 
-	// Get new selected index depend on last GUID
+    // Get new selected index depend on last GUID
 	NSInteger newSelectedRow = -1;
-	for (NSInteger i = 0; i < viewitems.count; i++) {
+	for (NSInteger i = 0; i < viewitems.count; i++)
+	{
 		id item = viewitems[i];
-		if ([item isKindOfClass:[TimeEntryViewItem class]]) {
-			TimeEntryViewItem *viewItem = (TimeEntryViewItem *) item;
-			if ([viewItem.GUID isEqualToString:self.lastSelectedGUID]) {
+		if ([item isKindOfClass:[TimeEntryViewItem class]])
+		{
+			TimeEntryViewItem *viewItem = (TimeEntryViewItem *)item;
+			if ([viewItem.GUID isEqualToString:self.lastSelectedGUID])
+			{
 				newSelectedRow = i;
 				break;
 			}
 		}
 	}
 
-	if (newSelectedRow >= 0) {
+	if (newSelectedRow >= 0)
+	{
 		NSRect positionRect = [self positionRectOfSelectedRowAtIndex:newSelectedRow];
 		self.timeEntrypopover.positioningRect = positionRect;
 	}
@@ -325,12 +331,13 @@ extern void *ctx;
 		NSView *ofView = self.view;
 		CGRect positionRect = [self positionRectOfSelectedRowAtIndex:self.lastSelectedRowIndex];
 
-		if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]]) {
-			self.lastSelectedGUID = ((TimeEntryCell *) self.selectedEntryCell).GUID;
+		if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
+		{
+			self.lastSelectedGUID = ((TimeEntryCell *)self.selectedEntryCell).GUID;
 			ofView = self.timeEntriesTableView;
 		}
 
-		// Show popover
+        // Show popover
 		[self.timeEntrypopover showRelativeToRect:positionRect
 										   ofView:ofView
 									preferredEdge:NSMaxXEdge];
@@ -343,19 +350,21 @@ extern void *ctx;
 	}
 }
 
--(CGRect) positionRectOfSelectedRowAtIndex:(NSInteger) index {
+- (CGRect)positionRectOfSelectedRowAtIndex:(NSInteger)index {
 	NSView *selectedView = [self getSelectedEntryCell:index];
 	NSRect positionRect = self.view.bounds;
 
-	if (selectedView) {
+	if (selectedView)
+	{
 		positionRect = [self.timeEntriesTableView convertRect:selectedView.bounds
-															fromView:selectedView];
-		if ([selectedView isKindOfClass:[TimeEntryCellWithHeader class]]) {
+													 fromView:selectedView];
+		if ([selectedView isKindOfClass:[TimeEntryCellWithHeader class]])
+		{
 			positionRect.origin.y += kTimeEntryCellWithHeaderHeight;
 			positionRect.size.height -= kTimeEntryCellWithHeaderHeight;
 		}
 	}
-	return  positionRect;
+	return positionRect;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -779,7 +788,7 @@ extern void *ctx;
 		[session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
 										   forView:tableView
 										   classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
-									 searchOptions:[NSDictionary<NSPasteboardReadingOptionKey,id> dictionary]
+									 searchOptions:[NSDictionary<NSPasteboardReadingOptionKey, id> dictionary]
 										usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
 		 {
              // prepare context

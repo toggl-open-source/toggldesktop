@@ -40,12 +40,12 @@
 
 - (BOOL)isExpanded
 {
-    return self.accessibilityExpanded;
+	return self.accessibilityExpanded;
 }
 
 - (void)setExpanded:(BOOL)expanded
 {
-    self.accessibilityExpanded = expanded;
+	self.accessibilityExpanded = expanded;
 }
 
 @end

@@ -108,7 +108,7 @@ extern void *ctx;
 						 stringWithFormat:@"Another copy of %@ is already running.",
 						 [[NSBundle mainBundle]
 						  objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
-        [NSAlert alloc];
+		[NSAlert alloc];
 		[[NSAlert alertWithMessageText:msg
 			 informativeTextWithFormat:@"This copy will now quit."] runModal];
 
