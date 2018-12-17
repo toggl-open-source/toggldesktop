@@ -350,6 +350,7 @@ extern void *ctx;
 		{
 			ofView = self.headerView;
 			positionRect = [ofView bounds];
+			self.lastSelectedGUID = nil;
 		}
 		else if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
 		{
