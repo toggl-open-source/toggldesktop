@@ -198,6 +198,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	if (!te)
 	{
+		if ([self.autoCompleteInput currentEditor] != nil)
+		{
+			return;
+		}
 		te = [[TimeEntryViewItem alloc] init];
 	}
 	self.time_entry = te;
@@ -331,7 +335,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	// whether time entry is running
 	self.startButton.toolTip = @"Start";
 	[self.startButton setImage:[NSImage imageNamed:@"start_button.pdf"]];
-	self.autoCompleteInput.stringValue = @"";
+	if ([self.autoCompleteInput currentEditor] == nil)
+	{
+		self.autoCompleteInput.stringValue = @"";
+	}
 	[self.autoCompleteInput setHidden:NO];
 	[self.descriptionLabel setHidden:YES];
 	[self.durationTextField setEditable:YES];
