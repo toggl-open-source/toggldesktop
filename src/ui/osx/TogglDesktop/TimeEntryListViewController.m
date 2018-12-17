@@ -307,6 +307,11 @@ extern void *ctx;
 	NSRect positionRect = [self positionRectOfSelectedRowAtIndex:newSelectedRow];
 	self.timeEntrypopover.positioningRect = positionRect;
 
+	// Scroll to visible selected row
+	if (!NSContainsRect(self.timeEntriesTableView.visibleRect, positionRect)) {
+		[self.timeEntriesTableView scrollRowToVisible:newSelectedRow];
+	}
+
 	// Hightlight selected cell
 	if (self.selectedEntryCell) {
 		[self.selectedEntryCell setFocused];
