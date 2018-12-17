@@ -330,7 +330,12 @@ extern void *ctx;
 		NSView *ofView = self.view;
 		CGRect positionRect = [self positionRectOfSelectedRowAtIndex:self.lastSelectedRowIndex];
 
-		if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
+		if (self.runningEdit)
+		{
+			ofView = self.headerView;
+			positionRect = [ofView bounds];
+		}
+		else if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
 		{
 			self.lastSelectedGUID = ((TimeEntryCell *)self.selectedEntryCell).GUID;
 			ofView = self.timeEntriesTableView;
@@ -340,8 +345,6 @@ extern void *ctx;
 		[self.timeEntrypopover showRelativeToRect:positionRect
 										   ofView:ofView
 									preferredEdge:NSMaxXEdge];
-
-
 
 		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 		[self.timeEntryEditViewController setDragHandle:onLeft];
