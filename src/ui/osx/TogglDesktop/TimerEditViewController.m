@@ -719,11 +719,12 @@ NSString *kInactiveTimerColor = @"#999999";
 				}
 				[self fillEntryFromAutoComplete:item];
 			}
-			[self.autoCompleteInput resetTable];
-			[self.liteAutocompleteDataSource clearFilter];
 
 			// Start entry
 			[self startButtonClicked:nil];
+
+			[self.autoCompleteInput resetTable];
+			[self.liteAutocompleteDataSource clearFilter];
 		}
 	}
 	// NSLog(@"Selector = %@", NSStringFromSelector( commandSelector ) );
