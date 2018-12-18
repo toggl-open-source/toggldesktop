@@ -109,6 +109,7 @@ if(NOT LUA_FOUND)
         Lua
         PARENT_SCOPE
     )
+    install(TARGETS Lua DESTINATION lib)
 endif()
 
 if(NOT jsoncpp_FOUND)
@@ -130,6 +131,7 @@ if(NOT jsoncpp_FOUND)
         jsoncpp
         PARENT_SCOPE
     )
+    install(TARGETS jsoncpp DESTINATION lib)
 endif()
 
 if(NOT QXT_CORE_FOUND)
@@ -163,4 +165,5 @@ if(NOT QXT_CORE_FOUND)
         Qxt
         PARENT_SCOPE
     )
+    install(TARGETS Qxt DESTINATION lib)
 endif()
