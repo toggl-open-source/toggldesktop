@@ -70,4 +70,17 @@ target_link_libraries(TogglDesktop PRIVATE
 configure_file(${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem cacert.pem COPYONLY)
 
 install(FILES ${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem DESTINATION bin)
+
+install(FILES icons/16x16/toggldesktop.png DESTINATION share/icons/hicolor/16x16)
+install(FILES icons/24x24/toggldesktop.png DESTINATION share/icons/hicolor/24x24)
+install(FILES icons/32x32/toggldesktop.png DESTINATION share/icons/hicolor/32x32)
+install(FILES icons/48x48/toggldesktop.png DESTINATION share/icons/hicolor/48x48)
+install(FILES icons/64x64/toggldesktop.png DESTINATION share/icons/hicolor/64x64)
+install(FILES icons/96x96/toggldesktop.png DESTINATION share/icons/hicolor/96x96)
+install(FILES icons/128x128/toggldesktop.png DESTINATION share/icons/hicolor/128x128)
+install(FILES icons/256x256/toggldesktop.png DESTINATION share/icons/hicolor/256x256)
+install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1024x1024)
+install(FILES dist/toggldesktop.desktop DESTINATION share/applications)
+install(FILES dist/toggldesktop.appdata.xml DESTINATION share/appdata)
+
 install(TARGETS TogglDesktop DESTINATION bin)
