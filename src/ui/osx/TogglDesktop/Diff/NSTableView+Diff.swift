@@ -64,6 +64,9 @@ extension NSTableView {
             endUpdates()
         }
 
+		// Update all height of row
+		noteHeightOfRows(withIndexesChanged: IndexSet.init(integersIn: 0..<numberOfRows))
+
         completion?()
     }
 
