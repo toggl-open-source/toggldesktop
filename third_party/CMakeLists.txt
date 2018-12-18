@@ -19,23 +19,21 @@ set(OAUTH2_SOURCE_FILES
     qt-oauth-lib/logindialog.cpp
     qt-oauth-lib/oauth2.cpp
 )
+add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
+target_link_libraries(OAuth2 PRIVATE
+    Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
+)
+install(TARGETS OAuth2 DESTINATION lib)
 
 # Bugsnag has to be bundled
 set(BUGSNAG_SOURCE_FILES
     bugsnag-qt/bugsnag.cpp
 )
-
-# Set up compilation targets
-add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
 add_library(Bugsnag SHARED ${BUGSNAG_SOURCE_FILES})
-
-# And list the dependencies between them (and system libraries)a
-target_link_libraries(OAuth2 PRIVATE
-    Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
-)
 target_link_libraries(Bugsnag PRIVATE
     Qt5::Widgets Qt5::Network
 )
+install(TARGETS Bugsnag DESTINATION lib)
 
 if(NOT Poco_FOUND)
     # to avoid that annoying check
