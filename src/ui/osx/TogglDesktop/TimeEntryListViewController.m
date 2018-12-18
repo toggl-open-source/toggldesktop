@@ -807,7 +807,7 @@ extern void *ctx;
 		[session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
 										   forView:tableView
 										   classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
-									 searchOptions:[NSDictionary<NSPasteboardReadingOptionKey, id> dictionary]
+									 searchOptions:@{}
 										usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
 		 {
              // prepare context
