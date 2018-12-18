@@ -83,5 +83,5 @@ install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1
 install(FILES dist/toggldesktop.desktop DESTINATION share/applications)
 install(FILES dist/toggldesktop.appdata.xml DESTINATION share/appdata)
 
-install(FILES ${PROJECT_SOURCE_DIR}/src/ui/linux/TogglDesktop.sh DESTINATION bin)
+install(FILES ${PROJECT_SOURCE_DIR}/src/ui/linux/TogglDesktop.sh DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(TARGETS TogglDesktop DESTINATION bin)
