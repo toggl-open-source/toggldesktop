@@ -68,3 +68,5 @@ target_link_libraries(TogglDesktop PRIVATE
 )
 
 configure_file(${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem cacert.pem COPYONLY)
+
+install(TARGETS TogglDesktop DESTINATION bin)
