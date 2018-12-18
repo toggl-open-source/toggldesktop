@@ -36,8 +36,8 @@ if(NOT USE_BUNDLED_LIBRARIES)
     find_package(jsoncpp CONFIG)
 
     # Look for Qxt
-    pkg_search_module(QXT_CORE REQUIRED QxtCore-qt5)
-    pkg_search_module(QXT_WIDGETS REQUIRED QxtWidgets-qt5)
+    pkg_search_module(QXT_CORE QxtCore-qt5)
+    pkg_search_module(QXT_WIDGETS QxtWidgets-qt5)
     set(QXT_LIBRARIES
         ${QXT_CORE_LIBRARIES} 
         ${QXT_WIDGETS_LIBRARIES}
