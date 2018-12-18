@@ -152,7 +152,7 @@
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
-		BAC6850921B6822A00B6C9D7 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BAC6850821B6822A00B6C9D7 /* UserNotificationCenter.m */; };
+		BAD232D121D495E20039C742 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD232CF21D495E20039C742 /* UserNotificationCenter.m */; };
 		BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
@@ -561,8 +561,8 @@
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
-		BAC6850721B6822A00B6C9D7 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserNotificationCenter.h; sourceTree = "<group>"; };
-		BAC6850821B6822A00B6C9D7 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserNotificationCenter.m; sourceTree = "<group>"; };
+		BAD232CF21D495E20039C742 /* UserNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNotificationCenter.m; sourceTree = "<group>"; };
+		BAD232D021D495E20039C742 /* UserNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNotificationCenter.h; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -711,7 +711,6 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				BAC684F721B6820400B6C9D7 /* UserNotification */,
 				BAF87DDB21A3E1E700624EBE /* Extension */,
 				3C6B246F203E01B70063FC08 /* AutoComplete */,
 				3C068C681C22F25000874B9A /* MKColorWellCustom.h */,
@@ -826,6 +825,8 @@
 				BA2DA11F21A691FF0027B7A5 /* TrackingService.m */,
 				3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */,
 				3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */,
+				BAD232D021D495E20039C742 /* UserNotificationCenter.h */,
+				BAD232CF21D495E20039C742 /* UserNotificationCenter.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1032,15 +1033,6 @@
 			path = ../../../../third_party/MASShortcut;
 			sourceTree = "<group>";
 		};
-		BAC684F721B6820400B6C9D7 /* UserNotification */ = {
-			isa = PBXGroup;
-			children = (
-				BAC6850721B6822A00B6C9D7 /* UserNotificationCenter.h */,
-				BAC6850821B6822A00B6C9D7 /* UserNotificationCenter.m */,
-			);
-			name = UserNotification;
-			sourceTree = "<group>";
-		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1097,6 +1089,7 @@
 				74A50AA818434D90006F37BB /* CopyFiles */,
 				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
 				74F125D51BB2ED9000487B14 /* Run Script (fix CrashReporter path in main app) */,
+				BA6406F121C8FC690074BC96 /* Run Formatter */,
 			);
 			buildRules = (
 			);
@@ -1363,6 +1356,24 @@
 			shellPath = /bin/sh;
 			shellScript = "install_name_tool -change @rpath/CrashReporter.framework/Versions/A/CrashReporter @executable_path/../../Contents/Frameworks/CrashReporter.framework/Versions/A/CrashReporter $PROJECT_DIR/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop";
 		};
+		BA6406F121C8FC690074BC96 /* Run Formatter */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Formatter";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -e\n\nif ! which uncrustify > /dev/null; then\n    echo \"warning: Uncrustify is not installed.\"\nelse\n    cd $SRCROOT/../../../../\n    make fmt\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1382,7 +1393,6 @@
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
-				BAC6850921B6822A00B6C9D7 /* UserNotificationCenter.m in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
@@ -1391,6 +1401,7 @@
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
+				BAD232D121D495E20039C742 /* UserNotificationCenter.m in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
