@@ -8,6 +8,7 @@
 
 #import "Utils.h"
 #import "Sparkle.h"
+#import "NSAlert+Utils.h"
 
 #include "toggl_api.h"
 
@@ -107,10 +108,8 @@ extern void *ctx;
 						 stringWithFormat:@"Another copy of %@ is already running.",
 						 [[NSBundle mainBundle]
 						  objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey]];
+		[NSAlert alloc];
 		[[NSAlert alertWithMessageText:msg
-						 defaultButton:nil
-					   alternateButton:nil
-						   otherButton:nil
 			 informativeTextWithFormat:@"This copy will now quit."] runModal];
 
 		[NSApp terminate:nil];
@@ -169,6 +168,9 @@ extern void *ctx;
 
 @end
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 // See https://codereview.chromium.org/7497056/patch/2002/4002 for inspiration
 BOOL wasLaunchedAsLoginOrResumeItem()
 {
@@ -224,3 +226,4 @@ BOOL wasLaunchedAsHiddenLoginItem()
 	return NO;
 }
 
+#pragma GCC diagnostic pop

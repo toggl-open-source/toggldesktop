@@ -20,6 +20,8 @@
 #import "ConvertHexColor.h"
 #include <Carbon/Carbon.h>
 
+static CGFloat kTimeEntryCellWithHeaderHeight = 46.0;
+
 @interface TimeEntryListViewController ()
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
@@ -33,6 +35,7 @@
 @property NSInteger lastSelectedRowIndex;
 @property BOOL runningEdit;
 @property TimeEntryCell *selectedEntryCell;
+@property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @end
 
@@ -144,7 +147,7 @@ extern void *ctx;
 {
 	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
 
-	paragrapStyle.alignment                = kCTTextAlignmentCenter;
+	paragrapStyle.alignment = kCTTextAlignmentCenter;
 
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@" reports"];
 
@@ -174,27 +177,26 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
 
-	// Save the current scroll position of entries list
+    // Save the current scroll position of entries list
 	NSPoint scrollOrigin;
 	NSRect rowRect = [self.timeEntriesTableView rectOfRow:0];
 	BOOL adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.timeEntriesTableView.visibleRect, rowRect);
 	if (adjustScroll)
 	{
-		// get scroll position from the bottom: get bottom left of the visible part of the table view
+        // get scroll position from the bottom: get bottom left of the visible part of the table view
 		scrollOrigin = self.timeEntriesTableView.visibleRect.origin;
 		if (self.timeEntriesTableView.isFlipped)
 		{
-			// scrollOrigin is top left, calculate unflipped coordinates
+        // scrollOrigin is top left, calculate unflipped coordinates
 			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
 		}
 	}
-	long delta = (cmd.timeEntries.count + 1 - viewitems.count) * 56;
 	@synchronized(viewitems)
 	{
 		[viewitems removeAllObjects];
 		[viewitems addObjectsFromArray:cmd.timeEntries];
 
-		// Add Load more button
+        // Add Load more button
 
 		if (cmd.show_load_more)
 		{
@@ -212,7 +214,7 @@ extern void *ctx;
 			[self.timeEntrypopover close];
 			[self setDefaultPopupSize];
 		}
-		// when timer not focused
+        // when timer not focused
 		if ([self.timerEditViewController.autoCompleteInput currentEditor] == nil)
 		{
 			[self focusListing:nil];
@@ -222,25 +224,25 @@ extern void *ctx;
 	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;
 	[self.emptyLabel setEnabled:noItems];
 	[self.timeEntryListScrollView setHidden:noItems];
-	// This seems to work for hiding the list when there are no items
+    // This seems to work for hiding the list when there are no items
 	if (noItems)
 	{
 		[self.timeEntryListScrollView setHidden:noItems];
 	}
 
-	// Restore scroll position after list reload
+    // Restore scroll position after list reload
 	if (adjustScroll)
 	{
-		// restore scroll position from the bottom
+        // restore scroll position from the bottom
 		if (self.timeEntriesTableView.isFlipped)
 		{
-			// calculate new flipped coordinates, height includes the new row
-			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y - delta;
+        // calculate new flipped coordinates, height includes the new row
+			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
 		}
 		[self.timeEntriesTableView scrollPoint:scrollOrigin];
 	}
 
-	// If row was focused before reload we restore that state
+    // If row was focused before reload we restore that state
 	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:i];
 
 	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
@@ -251,7 +253,14 @@ extern void *ctx;
 		[cell setFocused];
 	}
 
-	// remove highlight from first item
+    // remove highlight from first item
+	[self removeHighlightOnFirstItem];
+
+	// Adjust the position of arrow of Popover
+	[self adjustPositionOfPopover];
+}
+
+-(void) removeHighlightOnFirstItem {
 	NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
 
 	if (selectedRow < 0)
@@ -259,9 +268,54 @@ extern void *ctx;
 		return;
 	}
 	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
-													  makeIfNecessary  :NO];
+													makeIfNecessary  :NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
+}
+
+- (void)adjustPositionOfPopover {
+	if (!self.timeEntrypopover.shown)
+	{
+		return;
+	}
+	if (self.lastSelectedGUID == nil)
+	{
+		return;
+	}
+
+    // Get new selected index depend on last GUID
+	NSInteger newSelectedRow = -1;
+	for (NSInteger i = 0; i < viewitems.count; i++)
+	{
+		id item = viewitems[i];
+		if ([item isKindOfClass:[TimeEntryViewItem class]])
+		{
+			TimeEntryViewItem *viewItem = (TimeEntryViewItem *)item;
+			if ([viewItem.GUID isEqualToString:self.lastSelectedGUID])
+			{
+				newSelectedRow = i;
+				break;
+			}
+		}
+	}
+
+	if (newSelectedRow < 0) {
+		return;
+	}
+
+	// Adjus the position of arrow
+	NSRect positionRect = [self positionRectOfSelectedRowAtIndex:newSelectedRow];
+	self.timeEntrypopover.positioningRect = positionRect;
+
+	// Scroll to visible selected row
+	if (!NSContainsRect(self.timeEntriesTableView.visibleRect, positionRect)) {
+		[self.timeEntriesTableView scrollRowToVisible:newSelectedRow];
+	}
+
+	// Hightlight selected cell
+	if (self.selectedEntryCell) {
+		[self.selectedEntryCell setFocused];
+	}
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -287,16 +341,49 @@ extern void *ctx;
 	if (cmd.open)
 	{
 		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
-		NSRect positionRect = [self.view bounds];
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
+		NSView *ofView = self.view;
+		CGRect positionRect = [self positionRectOfSelectedRowAtIndex:self.lastSelectedRowIndex];
+
+		if (self.runningEdit)
+		{
+			ofView = self.headerView;
+			positionRect = [ofView bounds];
+			self.lastSelectedGUID = nil;
+		}
+		else if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
+		{
+			self.lastSelectedGUID = ((TimeEntryCell *)self.selectedEntryCell).GUID;
+			ofView = self.timeEntriesTableView;
+		}
+
+        // Show popover
 		[self.timeEntrypopover showRelativeToRect:positionRect
-										   ofView:self.view
+										   ofView:ofView
 									preferredEdge:NSMaxXEdge];
+
 		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 		[self.timeEntryEditViewController setDragHandle:onLeft];
 		[self.timeEntryEditViewController setInsertionPointColor];
 	}
+}
+
+- (CGRect)positionRectOfSelectedRowAtIndex:(NSInteger)index {
+	NSView *selectedView = [self getSelectedEntryCell:index];
+	NSRect positionRect = self.view.bounds;
+
+	if (selectedView)
+	{
+		positionRect = [self.timeEntriesTableView convertRect:selectedView.bounds
+													 fromView:selectedView];
+		if ([selectedView isKindOfClass:[TimeEntryCellWithHeader class]])
+		{
+			positionRect.origin.y += kTimeEntryCellWithHeaderHeight;
+			positionRect.size.height -= kTimeEntryCellWithHeaderHeight;
+		}
+	}
+	return positionRect;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -401,14 +488,14 @@ extern void *ctx;
 
 	TimeEntryCell *cell = [self getSelectedEntryCell:row];
 
-	// Group header clicked, toggle group open/closed
+    // Group header clicked, toggle group open/closed
 	if (cell.Group)
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:cell.GroupName];
 		return;
 	}
 
-	// Load more cell clicked
+    // Load more cell clicked
 	if ([cell isKindOfClass:[LoadMoreCell class]])
 	{
 		return;
@@ -589,7 +676,7 @@ extern void *ctx;
 		return;
 	}
 
-	// If list is focused with keyboard shortcut
+    // If list is focused with keyboard shortcut
 	if (notification != nil && !self.timeEntrypopover.shown)
 	{
 		[self clearLastSelectedEntry];
@@ -638,7 +725,7 @@ extern void *ctx;
 {
 	if (aTableView == self.timeEntriesTableView)
 	{
-		// Disable drag and drop for load more and group row
+        // Disable drag and drop for load more and group row
 		TimeEntryViewItem *model = [viewitems objectAtIndex:[rowIndexes firstIndex]];
 		if ([model loadMore] || model.Group)
 		{
@@ -682,7 +769,7 @@ extern void *ctx;
 			dateIndex = (int)row + 1;
 		}
 
-		// Updating the dropped item date
+        // Updating the dropped item date
 		TimeEntryViewItem *dateModel = [viewitems objectAtIndex:dateIndex];
 		TimeEntryViewItem *currentModel = [viewitems objectAtIndex:dragRow];
 
@@ -699,7 +786,7 @@ extern void *ctx;
 
 		unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
 		NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
-		comps.hour   = hours;
+		comps.hour = hours;
 		comps.minute = minutes;
 		comps.second = seconds;
 		NSDate *newDate = [calendar dateFromComponents:comps];
@@ -720,56 +807,56 @@ extern void *ctx;
 		[session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
 										   forView:tableView
 										   classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
-									 searchOptions:nil
+									 searchOptions:@{}
 										usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
 		 {
-		     // prepare context
+             // prepare context
 			 NSGraphicsContext *theContext = [NSGraphicsContext currentContext];
 			 [theContext saveGraphicsState];
 
-		     // drag image needs to be larger than the content in order to encapsulate the drop shadow
+             // drag image needs to be larger than the content in order to encapsulate the drop shadow
 			 CGFloat imageOffset = 5;
 
-		     // supply a drag background image
+             // supply a drag background image
 			 NSSize contentSize = draggingItem.draggingFrame.size;
 			 contentSize.height = 56;
 			 NSSize imageSize = NSMakeSize(contentSize.width + imageOffset, contentSize.height + imageOffset);
 			 NSImage *image = [[NSImage alloc] initWithSize:imageSize];
 			 [image lockFocus];
 
-		     // define a shadow
+             // define a shadow
 			 NSShadow *shadow = [NSShadow new];
 			 shadow.shadowColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.2];
 			 shadow.shadowOffset = NSMakeSize(imageOffset, -imageOffset);
 			 shadow.shadowBlurRadius = 3;
 			 [shadow set];
 
-		     // define content frame
+             // define content frame
 			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
 			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:contentFrame];
 
-		     // draw content border and shadow
+             // draw content border and shadow
 			 [[[NSColor lightGrayColor] colorWithAlphaComponent:0.6] set];
 			 [contentPath stroke];
 			 [theContext restoreGraphicsState];
 
-		     // fill content
+             // fill content
 			 [[NSColor whiteColor] set];
 			 contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
 			 [contentPath fill];
 
 			 [image unlockFocus];
 
-		     // update the dragging item frame to accomodate larger image
+             // update the dragging item frame to accomodate larger image
 			 draggingItem.draggingFrame = NSMakeRect(draggingItem.draggingFrame.origin.x, draggingItem.draggingFrame.origin.y, imageSize.width, imageSize.height);
 
-		     // define additional image component for drag
+             // define additional image component for drag
 			 NSDraggingImageComponent *backgroundImageComponent = [NSDraggingImageComponent draggingImageComponentWithKey:@"background"];
 			 backgroundImageComponent.contents = image;
 			 backgroundImageComponent.frame = NSMakeRect(0, 0, imageSize.width, imageSize.height);
 
-		     // we can provide custom content by overridding NSTableViewCell -draggingImageComponents
-		     // which defaults to only including the image and text fields
+             // we can provide custom content by overridding NSTableViewCell -draggingImageComponents
+             // which defaults to only including the image and text fields
 			 draggingItem.imageComponentsProvider = ^NSArray *(void) {
 				 NSMutableArray *components = [NSMutableArray arrayWithArray:@[backgroundImageComponent]];
 				 NSArray *cellViewComponents = cellView.draggingImageComponents;

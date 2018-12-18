@@ -280,7 +280,7 @@ extern "C" {
 
     typedef void (*TogglDisplayUpdateDownloadState)(
         const char_t *version,
-        const int download_state);
+        const int64_t download_state);
 
     typedef char_t * string_list_t[];
 

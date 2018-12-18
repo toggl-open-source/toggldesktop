@@ -42,6 +42,7 @@ SOURCES += \
     ../../../obm_action.cc \
     ../../../project.cc \
     ../../../proxy.cc \
+    ../../../rectangle.cc \
     ../../../related_data.cc \
     ../../../settings.cc \
     ../../../tag.cc \
@@ -113,6 +114,7 @@ HEADERS += \
     ../../../obm_action.h \
     ../../../project.h \
     ../../../proxy.h \
+    ../../../rectangle.h \
     ../../../related_data.h \
     ../../../settings.h \
     ../../../tag.h \

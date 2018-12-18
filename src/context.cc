@@ -1070,11 +1070,9 @@ void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
     last_sync_started_ = time(0);
 
     // Always sync asyncronously with syncerActivity
-    if (!trigger_sync_) {
-        trigger_sync_ = true;
-        if (!syncer_.isRunning()) {
-            syncer_.start();
-        }
+    trigger_sync_ = true;
+    if (!syncer_.isRunning()) {
+        syncer_.start();
     }
 }
 
@@ -1130,11 +1128,9 @@ void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
     logger().debug("onPushChanges executing");
 
     // Always sync asyncronously with syncerActivity
-    if (!trigger_push_) {
-        trigger_push_ = true;
-        if (!syncer_.isRunning()) {
-            syncer_.start();
-        }
+    trigger_push_ = true;
+    if (!syncer_.isRunning()) {
+        syncer_.start();
     }
 }
 
@@ -4220,7 +4216,7 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
         }
 
         user_->CompressTimeline();
-        error err = save();
+        error err = save(false);
         if (err != noError) {
             return displayError(err);
         }
@@ -4251,7 +4247,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
             user_->related.TimelineEvents.push_back(event);
-            return displayError(save());
+            return displayError(save(false));
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -4273,7 +4269,7 @@ error Context::MarkTimelineBatchAsUploaded(
             return noError;
         }
         user_->MarkTimelineBatchAsUploaded(events);
-        return displayError(save());
+        return displayError(save(false));
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -4387,26 +4383,11 @@ void Context::syncerActivity() {
                 // Push cached OBM action
                 err = pushObmAction();
                 if (err != noError) {
+                    std::cout << "SYNC: sync-pushObm ERROR\n";
                     logger().error("Error pushing OBM action: " + err);
                 }
 
                 displayError(save(false));
-
-                // Stop Activity when we are done syncing
-                try {
-                    {
-                        if (syncer_.isRunning()) {
-                            syncer_.stop();
-                            syncer_.wait(5);
-                        }
-                    }
-                } catch(const Poco::Exception& exc) {
-                    logger().debug(exc.displayText());
-                } catch(const std::exception& ex) {
-                    logger().debug(ex.what());
-                } catch(const std::string& ex) {
-                    logger().debug(ex);
-                }
             }
 
         }
@@ -4428,26 +4409,11 @@ void Context::syncerActivity() {
                 // Push cached OBM action
                 err = pushObmAction();
                 if (err != noError) {
+                    std::cout << "SYNC: pushObm ERROR\n";
                     logger().error("Error pushing OBM action: " + err);
                 }
 
                 displayError(save(false));
-
-                // Stop Activity when we are done syncing
-                try {
-                    {
-                        if (syncer_.isRunning()) {
-                            syncer_.stop();
-                            syncer_.wait(5);
-                        }
-                    }
-                } catch(const Poco::Exception& exc) {
-                    logger().debug(exc.displayText());
-                } catch(const std::exception& ex) {
-                    logger().debug(ex.what());
-                } catch(const std::string& ex) {
-                    logger().debug(ex);
-                }
             }
         }
     }

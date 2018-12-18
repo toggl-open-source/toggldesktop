@@ -10,14 +10,15 @@
 #import "toggl_api.h"
 
 /**
- The level of window.
-
- - WindowModeAlwaysOnTop: Always in top (NSFloatingWindowLevel)
- - WindowModeDefault: Normal behavior (NSNormalWindowLevel)
+ * The level of window.
+ *
+ * - WindowModeAlwaysOnTop: Always in top (NSFloatingWindowLevel)
+ * - WindowModeDefault: Normal behavior (NSNormalWindowLevel)
  */
-typedef NS_ENUM(NSUInteger, WindowMode) {
-    WindowModeAlwaysOnTop,
-    WindowModeDefault,
+typedef NS_ENUM (NSUInteger, WindowMode)
+{
+	WindowModeAlwaysOnTop,
+	WindowModeDefault,
 };
 
 @interface MainWindowController : NSWindowController
@@ -28,6 +29,6 @@ typedef NS_ENUM(NSUInteger, WindowMode) {
 @property (strong) IBOutlet NSView *mainView;
 @property (strong) IBOutlet NSTextField *onlineStatusTextField;
 - (BOOL)isEditOpened;
--(void)setWindowMode:(WindowMode) mode;
+- (void)setWindowMode:(WindowMode)mode;
 
 @end

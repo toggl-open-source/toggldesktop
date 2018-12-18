@@ -29,13 +29,13 @@
 
 - (void)setFocused:(BOOL)focus
 {
-	NSString *color = @"#ffffff";
+	NSColor *color = [NSColor textBackgroundColor];
 
 	if (focus == YES)
 	{
-		color = @"#f4f4f4";
+		color = [NSColor selectedTextBackgroundColor];
 	}
-	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:color]];
+	[self.backgroundBox setFillColor:color];
 }
 
 - (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item
@@ -80,7 +80,7 @@
 	if (view_item.Type == -3)
 	{
 		NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-		paragrapStyle.alignment                = kCTTextAlignmentCenter;
+		paragrapStyle.alignment = kCTTextAlignmentCenter;
 
 		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
 

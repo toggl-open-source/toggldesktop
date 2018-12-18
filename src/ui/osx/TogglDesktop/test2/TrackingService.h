@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TrackingService : NSObject
 
-+(instancetype) sharedInstance;
++ (instancetype)sharedInstance;
 
--(void)trackWindowSize:(NSSize) size;
+- (void)trackWindowSize:(NSSize)size;
 
 @end
 

@@ -16,7 +16,7 @@
 @property (nonatomic, strong) IBOutlet NSImageView *billableFlag;
 @property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
 @property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
-@property (strong) NSString *GUID;
+@property (nonatomic, copy) NSString *GUID;
 @property (strong) NSString *GroupName;
 @property BOOL Group;
 @property BOOL GroupOpen;
