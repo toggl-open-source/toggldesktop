@@ -4,11 +4,11 @@
 #
 #-------------------------------------------------
 include(../../../../third_party/qxtglobalshortcut5/qxt.pri)
-VERSION = 7.0.0
+VERSION = 
 
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-ENVIRONMENT = "development"
+ENVIRONMENT = "production"
 
 DEFINES += APP_ENVIRONMENT=\\\"$$ENVIRONMENT\\\"
 
