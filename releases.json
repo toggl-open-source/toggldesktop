@@ -1143,36 +1143,6 @@
     "osx": {
         "dev": [
             {
-                "version": "7.4.313",
-                "timestamp": "26-11-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_313.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.314",
-                "timestamp": "26-11-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_314.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.315",
-                "timestamp": "26-11-2018",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_315.dmg"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.316",
                 "timestamp": "26-11-2018",
                 "filename": [
@@ -1229,6 +1199,36 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_322.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.325",
+                "timestamp": "18-12-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_325.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.326",
+                "timestamp": "18-12-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_326.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.330",
+                "timestamp": "19-12-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_330.dmg"
                     }
                 ]
             }
@@ -1733,6 +1733,16 @@
                         "name": "TogglDesktop-7_4_321.dmg"
                     }
                 ]
+            },
+            {
+                "version": "7.4.330",
+                "timestamp": "19-12-2018",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_330.dmg"
+                    }
+                ]
             }
         ],
         "stable": [
@@ -2081,20 +2091,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.306",
-                "timestamp": "19-11-2018",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_306.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.306_amd64.deb"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.307",
                 "timestamp": "19-11-2018",
                 "filename": [
@@ -2217,6 +2213,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.318_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.330",
+                "timestamp": "19-12-2018",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_330.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.330_amd64.deb"
                     }
                 ]
             }
