@@ -32,7 +32,6 @@
 #import "UnsupportedNotice.h"
 #import "idler.h"
 #import "toggl_api.h"
-#import "AppIconFactory.h"
 #import "UserNotificationCenter.h"
 
 @interface AppDelegate ()
@@ -144,6 +143,9 @@ BOOL onTop = NO;
 	{
 		[self onShowMenuItem:self];
 	}
+
+	self.activeAppIcon = [NSImage imageNamed:@"app"];
+	[self.activeAppIcon setTemplate:YES];
 
 	self.preferencesWindowController = [[PreferencesWindowController alloc]
 										initWithWindowNibName:@"PreferencesWindowController"];
@@ -916,7 +918,7 @@ BOOL onTop = NO;
 	{
 		if (!self.willTerminate)
 		{
-			[NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeActive]];
+			[NSApp setApplicationIconImage:self.activeAppIcon];
 		}
 
 		[self updateStatusItem];
@@ -946,7 +948,7 @@ BOOL onTop = NO;
 	{
 		// Change app dock icon to default
 		// See https://developer.apple.com/library/mac/documentation/Carbon/Conceptual/customizing_docktile/dockconcepts.pdf
-		[NSApp setApplicationIconImage:[AppIconFactory appIconWithType:AppIconTypeDefault]];
+		[NSApp setApplicationIconImage:nil];
 	}
 
 	[self updateStatusItem];
