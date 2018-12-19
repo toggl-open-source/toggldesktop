@@ -1,6 +1,27 @@
 {
     "versions": [
         {
+            "version": "7.4.330",
+            "rows": [
+                "Updated app icons to support all sizes",
+                "Remove all old notifications when new one is triggered",
+                "Replaced deprecated convert function",
+                "Trim leading and trailing whitespace in Description of TimeEntry",
+                "Updated build conf form libstdc++ to libc++",
+                "Improved idle detection with screen lock/unlock",
+                "Fixed window dragging issue when 'on top' setting is enabled",
+                "Fixed issues with edit view reload not loading new data",
+                "Fixed syncing issues tha appeared after changing network or going offline",
+                "Fixed background color issues in autocomplete with dark theme",
+                "Added functionality for edit window arrow pointing to correct entry",
+                "Fixed data overwrite issue in timer",
+                "Fixed entry list automatic scrolling issue",
+                "Fixed entry list item highlight item after item position change"
+            ],
+            "date": "December 19th 2018",
+            "beta": "true"
+        },
+        {
             "version": "7.4.321",
             "rows": [
                 "Fixed issue with invalid edit view opening",
