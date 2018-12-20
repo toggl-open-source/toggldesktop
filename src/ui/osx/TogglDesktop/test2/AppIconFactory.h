@@ -10,14 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, AppIconType) {
-    AppIconTypeActive,
-    AppIconTypeDefault,
+typedef NS_ENUM (NSUInteger, AppIconType)
+{
+	AppIconTypeActive,
+	AppIconTypeDefault,
 };
 
 @interface AppIconFactory : NSObject
 
-+(NSImage *)appIconWithType:(AppIconType) type;
++ (NSImage *)appIconWithType:(AppIconType)type;
 
 @end
 
