@@ -1,12 +1,6 @@
 {
   "images" : [
     {
-      "size" : "512x512",
-      "idiom" : "mac",
-      "filename" : "app_inactive512x512@2x.png",
-      "scale" : "2x"
-    },
-    {
       "size" : "16x16",
       "idiom" : "mac",
       "filename" : "app_inactive16x16.png",
@@ -59,6 +53,12 @@
       "idiom" : "mac",
       "filename" : "app_inactive512x512.png",
       "scale" : "1x"
+    },
+    {
+      "size" : "512x512",
+      "idiom" : "mac",
+      "filename" : "app_inactive512x512@2x.png",
+      "scale" : "2x"
     }
   ],
   "info" : {
