@@ -115,7 +115,8 @@ Context::Context(const std::string app_name, const std::string app_version)
         reminder_.start();
     }
 
-    last_tracking_reminder_time_ = time(0);
+    resetLastTrackingReminderTime();
+
     pomodoro_break_entry_ = nullptr;
 }
 
@@ -1174,7 +1175,7 @@ error Context::LoadUpdateFromJSONString(const std::string json) {
 
     // Reset reminder time when entry stopped by websocket
     if (running_entry && !new_running_entry) {
-        last_tracking_reminder_time_ = time(0);
+        resetLastTrackingReminderTime();
     }
 
     return displayError(save());
@@ -1859,8 +1860,12 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
 }
 
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
-    return applySettingsSaveResultToUI(
+    const error err = applySettingsSaveResultToUI(
         db()->SetSettingsReminderMinutes(reminder_minutes));
+    if (err == noError) {
+        resetLastTrackingReminderTime();
+    }
+    return err;
 }
 
 error Context::SetSettingsPomodoroMinutes(const Poco::UInt64 pomodoro_minutes) {
@@ -3178,7 +3183,7 @@ error Context::Stop(const bool prevent_on_app) {
         }
         user_->Stop(&stopped);
 
-        last_tracking_reminder_time_ = time(0);
+        resetLastTrackingReminderTime();
     }
 
     if (stopped.empty()) {
@@ -3206,7 +3211,7 @@ error Context::DiscardTimeAt(
     const bool split_into_new_entry) {
 
     // Reset reminder count when doing idle actions
-    last_tracking_reminder_time_ = time(0);
+    resetLastTrackingReminderTime();
 
     // Tracking action
     if ("production" == environment_) {
@@ -4058,9 +4063,13 @@ void Context::displayReminder() {
         }
     }
 
-    last_tracking_reminder_time_ = time(0);
+    resetLastTrackingReminderTime();
 
     UI()->DisplayReminder();
+}
+
+void Context::resetLastTrackingReminderTime() {
+    last_tracking_reminder_time_ = time(0);
 }
 
 void Context::displayPomodoro() {
@@ -4589,7 +4598,7 @@ error Context::pullAllUserData(
 
             // Reset reminder time when entry stopped by sync
             if (running_entry && !new_running_entry) {
-                last_tracking_reminder_time_ = time(0);
+                resetLastTrackingReminderTime();
             }
         }
 

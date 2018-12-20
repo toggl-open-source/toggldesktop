@@ -505,6 +505,7 @@ class Context : public TimelineDatasource {
                                 TimeEntry *te,
                                 const std::string focused_field_name);
     void displayReminder();
+    void resetLastTrackingReminderTime();
 
     void displayPomodoro();
 
