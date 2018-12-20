@@ -74,12 +74,18 @@ cp $QPATH/plugins/platforms/libqxcb.so $out/plugins/platforms
 cp $QPATH/libexec/QtWebEngineProcess $out
 
 # Fix RPATH for plugin libraries and executables
-chrpath -r '$ORIGIN/../../lib' $out/plugins/imageformats/libqsvg.so
-chrpath -r '$ORIGIN/../../lib' $out/plugins/libqsvgicon.so
-chrpath -r '$ORIGIN/../../lib' $out/plugins/libqxcb.so
-chrpath -r '$ORIGIN/lib' $out/TogglDesktop
-chrpath -r '$ORIGIN/lib' $out/QtWebEngineProcess
-
+patchelf --set-rpath '$ORIGIN/../../lib' $out/plugins/imageformats/libqsvg.so
+patchelf --set-rpath '$ORIGIN/../../lib' $out/plugins/libqsvgicon.so
+patchelf --set-rpath '$ORIGIN/../../lib' $out/plugins/libqxcb.so
+patchelf --set-rpath '$ORIGIN/lib' $out/TogglDesktop
+patchelf --set-rpath '$ORIGIN/lib' $out/QtWebEngineProcess
+for i in `ls -1 $out/lib/libPoco*`; do
+       patchelf --set-rpath '$ORIGIN' $i
+done
+for i in `ls -1 $out/lib/libicu*`; do
+       patchelf --set-rpath '$ORIGIN' $i
+done
+ 
 # Copy QtWebEngine Resource files
 cp $QPATH/resources/* $out/resources
 
