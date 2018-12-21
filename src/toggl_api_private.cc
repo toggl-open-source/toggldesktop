@@ -449,7 +449,7 @@ TogglSettingsView *settings_view_item_init(
     view->PomodoroMinutes = settings.pomodoro_minutes;
     view->PomodoroBreak = settings.pomodoro_break;
     view->PomodoroBreakMinutes = settings.pomodoro_break_minutes;
-
+    view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
     return view;
 }
 

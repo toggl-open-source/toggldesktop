@@ -162,6 +162,14 @@ bool_t toggl_set_settings_pomodoro_break(
            SetSettingsPomodoroBreak(pomodoro_break);
 }
 
+bool_t toggl_set_settings_stop_entry_on_shutdown_sleep(
+    void *context,
+    const bool_t stop_entry) {
+    return toggl::noError == app(context)->
+           SetSettingsStopEntryOnShutdownSleep(stop_entry);
+}
+
+
 bool_t toggl_set_settings_idle_minutes(
     void *context,
     const uint64_t idle_minutes) {
@@ -1018,6 +1026,14 @@ void toggl_set_wake(void *context) {
         return;
     }
     app(context)->SetWake();
+}
+
+void toggl_os_shutdown(void *context) {
+    if (!context) {
+        return;
+    }
+
+    app(context)->osShutdown();
 }
 
 void toggl_set_online(void *context) {

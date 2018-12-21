@@ -1292,6 +1292,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.stop_entry_on_shutdown_sleep",
+        "ALTER TABLE settings "
+        "ADD COLUMN stop_entry_on_shutdown_sleep INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

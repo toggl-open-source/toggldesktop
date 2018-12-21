@@ -108,6 +108,8 @@ class Database {
 
     error SetSettingsPomodoroBreak(const bool &pomodoro_break);
 
+    error SetSettingsStopEntryOnShutdownSleep(const bool &stop_entry);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool &focus_on_shortcut);

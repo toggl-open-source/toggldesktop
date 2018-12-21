@@ -1848,6 +1848,11 @@ error Context::SetSettingsPomodoroBreak(const bool pomodoro_break) {
         db()->SetSettingsPomodoroBreak(pomodoro_break));
 }
 
+error Context::SetSettingsStopEntryOnShutdownSleep(const bool stop_entry) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsStopEntryOnShutdownSleep(stop_entry));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -3997,6 +4002,14 @@ void Context::SetOnline() {
     ss << "Next sync at "
        << Formatter::Format8601(next_sync_at_);
     logger().debug(ss.str());
+}
+
+void Context::osShutdown() {
+    if (!settings_.stop_entry_on_shutdown_sleep) {
+        return;
+    }
+
+    Stop(false);
 }
 
 void Context::displayReminder() {

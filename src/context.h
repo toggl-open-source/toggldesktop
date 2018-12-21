@@ -146,6 +146,8 @@ class Context : public TimelineDatasource {
 
     error SetSettingsPomodoroBreak(const bool pomodoro_break);
 
+    error SetSettingsStopEntryOnShutdownSleep(const bool stop_entry);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
@@ -395,6 +397,8 @@ class Context : public TimelineDatasource {
     void SetSleep();
 
     void SetWake();
+
+    void osShutdown();
 
     void SetOnline();
 
