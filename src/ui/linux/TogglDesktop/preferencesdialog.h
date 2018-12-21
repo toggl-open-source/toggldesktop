@@ -18,6 +18,8 @@ class PreferencesDialog : public QDialog {
     explicit PreferencesDialog(QWidget *parent = 0);
     ~PreferencesDialog();
 
+    void setRemindersEnabled(bool enabled);
+
  private:
     Ui::PreferencesDialog *ui;
     int keyId;

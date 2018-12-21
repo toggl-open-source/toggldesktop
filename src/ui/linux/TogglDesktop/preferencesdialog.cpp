@@ -38,6 +38,17 @@ PreferencesDialog::~PreferencesDialog() {
     delete ui;
 }
 
+void PreferencesDialog::setRemindersEnabled(bool enabled) {
+    if (enabled) {
+        ui->tab_reminder->setEnabled(true);
+        ui->reminderWarning->setVisible(false);
+    }
+    else {
+        ui->tab_reminder->setEnabled(false);
+        ui->reminderWarning->setVisible(true);
+    }
+}
+
 void PreferencesDialog::displaySettings(const bool open,
                                         SettingsView *settings) {
     if (open) {

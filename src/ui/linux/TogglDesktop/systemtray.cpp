@@ -8,7 +8,8 @@
 #include "./mainwindowcontroller.h"
 
 SystemTray::SystemTray(MainWindowController *parent) :
-    QSystemTrayIcon(parent)
+    QSystemTrayIcon(parent),
+    notificationsPresent(true)
 {
     show();
 
@@ -19,8 +20,8 @@ SystemTray::SystemTray(MainWindowController *parent) :
 
     notifications = new QDBusInterface("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", QDBusConnection::sessionBus(), this);
 
-    connect(notifications, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(notificationClosed(uint,uint)));
-    connect(notifications, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(notificationActionInvoked(uint,QString)));
+    notificationsPresent = notificationsPresent && connect(notifications, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(notificationClosed(uint,uint)));
+    notificationsPresent = notificationsPresent && connect(notifications, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(notificationActionInvoked(uint,QString)));
 
     auto pendingCall = notifications->asyncCall("GetCapabilities");
     auto watcher = new QDBusPendingCallWatcher(pendingCall, this);
@@ -38,6 +39,10 @@ bool SystemTray::isVisible() const {
     QString currentDesktop = QProcessEnvironment::systemEnvironment().value(
         "XDG_CURRENT_DESKTOP", "");
     return "Unity" != currentDesktop;
+}
+
+bool SystemTray::notificationsAvailable() {
+    return notificationsPresent;
 }
 
 void SystemTray::notificationCapabilitiesReceived(QDBusPendingCallWatcher *watcher) {

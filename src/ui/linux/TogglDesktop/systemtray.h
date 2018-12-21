@@ -18,6 +18,7 @@ public:
     MainWindowController *mainWindow();
 
     bool isVisible() const;
+    bool notificationsAvailable();
 
 protected slots:
     void notificationCapabilitiesReceived(QDBusPendingCallWatcher *watcher);
@@ -43,6 +44,8 @@ private:
 
     QString lastTimeEntryGuid;
     uint64_t lastStarted;
+
+    bool notificationsPresent;
 };
 
 #endif // SYSTEMTRAY_H
