@@ -52,6 +52,7 @@ class Settings : public BaseModel {
     bool menubar_project;
     bool dock_icon;
     bool on_top;
+	bool stop_entry_on_shutdown_sleep;
     bool reminder;
     Poco::UInt64 idle_minutes;
     bool focus_on_shortcut;

@@ -35,6 +35,7 @@ Json::Value Settings::SaveToJSON() const {
     json["pomodoro_minutes"] = Json::UInt64(pomodoro_minutes);
     json["pomodoro_break"] = pomodoro_break;
     json["pomodoro_break_minutes"] = Json::UInt64(pomodoro_break_minutes);
+	json["stop_entry_on_shutdown_sleep"] = stop_entry_on_shutdown_sleep;
     return json;
 }
 
@@ -67,7 +68,8 @@ std::string Settings::String() const {
        << " pomodoro=" << pomodoro
        << " pomodoro_minutes=" << pomodoro_minutes
        << " pomodoro_break=" << pomodoro_break
-       << " pomodoro_break_minutes=" << pomodoro_break_minutes;
+       << " pomodoro_break_minutes=" << pomodoro_break_minutes
+		<< " stop_entry_on_shutdown_sleep=" << stop_entry_on_shutdown_sleep;
     return ss.str();
 }
 
@@ -98,7 +100,8 @@ bool Settings::IsSame(const Settings &other) const {
             && (pomodoro == other.pomodoro)
             && (pomodoro_minutes == other.pomodoro_minutes)
             && (pomodoro_break == other.pomodoro_break)
-            && (pomodoro_break_minutes == other.pomodoro_break_minutes));
+            && (pomodoro_break_minutes == other.pomodoro_break_minutes)
+			&& (stop_entry_on_shutdown_sleep == other.stop_entry_on_shutdown_sleep));
 }
 
 std::string Settings::ModelName() const {

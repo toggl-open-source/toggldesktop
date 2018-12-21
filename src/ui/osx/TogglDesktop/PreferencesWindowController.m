@@ -25,6 +25,8 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 @property AutocompleteDataSource *autotrackerProjectAutocompleteDataSource;
 @property AutocompleteDataSource *defaultProjectAutocompleteDataSource;
 @property NSMutableArray *termAutocompleteItems;
+@property (weak) IBOutlet NSButtonCell *stopOnShutdownCheckbox;
+
 @end
 
 @implementation PreferencesWindowController
@@ -478,6 +480,12 @@ const int kUseProxyToConnectToToggl = 2;
 	self.autotrackerTerm.stringValue = @"";
 	self.autotrackerProject.stringValue = @"";
 }
+
+- (IBAction)stopOnShutdownAndSleepOnChange:(NSButtonCell *)sender
+{
+	
+}
+
 
 // NSTableViewDataSource - autotracker rules table
 
