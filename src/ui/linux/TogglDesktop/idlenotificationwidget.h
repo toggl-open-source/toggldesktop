@@ -6,7 +6,7 @@
 #include <QDialog>
 #include <QTimer>
 #include <QStackedWidget>
-#include <QtDBus>
+#include <QtDBus/QtDBus>
 
 #include <stdint.h>
 
