@@ -130,8 +130,8 @@
 /* Class = "NSMenuItem"; title = "Show"; ObjectID = "er4-3b-wWC"; */
 "er4-3b-wWC.title" = "Kuva";
 
-/* Class = "NSMenuItem"; title = "Check for update.."; ObjectID = "fZK-ps-0cd"; */
-"fZK-ps-0cd.title" = "Otsi uuendusi..";
+/* Class = "NSMenuItem"; title = "Check for update..."; ObjectID = "fZK-ps-0cd"; */
+"fZK-ps-0cd.title" = "Otsi uuendusi...";
 
 /* Class = "NSMenu"; title = "Timer"; ObjectID = "fl1-3L-kSt"; */
 "fl1-3L-kSt.title" = "Taimer";
