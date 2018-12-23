@@ -342,7 +342,7 @@ const int kUseProxyToConnectToToggl = 2;
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
 	[self.focusOnShortcutCheckbox setState:[Utils boolToState:settings.focus_on_shortcut]];
 	[self.renderTimeline setState:[Utils boolToState:settings.render_timeline]];
-
+	[self.stopOnShutdownCheckbox setState:[Utils boolToState:settings.stopWhenShutdown]];
 	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 	[self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];
 
@@ -483,9 +483,8 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (IBAction)stopOnShutdownAndSleepOnChange:(NSButtonCell *)sender
 {
-	
+	toggl_set_settings_stop_entry_on_shutdown_sleep(ctx, [Utils stateToBool:[self.stopOnShutdownCheckbox state]]);
 }
-
 
 // NSTableViewDataSource - autotracker rules table
 

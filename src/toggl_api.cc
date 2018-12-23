@@ -1032,7 +1032,6 @@ void toggl_os_shutdown(void *context) {
     if (!context) {
         return;
     }
-
     app(context)->osShutdown();
 }
 

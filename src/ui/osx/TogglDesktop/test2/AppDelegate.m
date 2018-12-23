@@ -33,6 +33,7 @@
 #import "idler.h"
 #import "toggl_api.h"
 #import "UserNotificationCenter.h"
+#import "SystemService.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -86,6 +87,9 @@
 
 // Manual mode
 @property NSMenuItem *manualModeMenuItem;
+
+// System Service
+@property (strong, nonatomic) SystemService *systemService;
 
 @end
 
@@ -249,15 +253,8 @@ BOOL onTop = NO;
 		 }
 	 }];
 
-	NSDistributedNotificationCenter *distCenter = [NSDistributedNotificationCenter defaultCenter];
-	[distCenter addObserver:self
-				   selector:@selector(onScreenLockedNotification:)
-					   name:@"com.apple.screenIsLocked"
-					 object:nil];
-	[distCenter addObserver:self
-				   selector:@selector(onScreenUnlockedNotification:)
-					   name:@"com.apple.screenIsUnlocked"
-					 object:nil];
+	// Start system notification
+	[self.systemService registerSystemNotification];
 
 	[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
@@ -449,18 +446,6 @@ BOOL onTop = NO;
 		didDeliverNotification:(NSUserNotification *)notification
 {
 	NSLog(@"didDeliverNotification %@", notification);
-}
-
-- (void)onScreenLockedNotification:(NSNotification *)note
-{
-	NSLog(@"onScreenLockedNotification: %@", [note name]);
-	toggl_set_sleep(ctx);
-}
-
-- (void)onScreenUnlockedNotification:(NSNotification *)note
-{
-	NSLog(@"onScreenUnlockedNotification: %@", [note name]);
-	toggl_set_wake(ctx);
 }
 
 - (void)startNew:(NSNotification *)notification
@@ -1261,6 +1246,7 @@ const NSString *appName = @"osx_native_app";
 	self.db_path = [self.app_path stringByAppendingPathComponent:@"kopsik.db"];
 	self.log_path = [self.app_path stringByAppendingPathComponent:@"toggl_desktop.log"];
 	self.log_level = @"debug";
+	self.systemService = [[SystemService alloc] init];
 
 	[self parseCommandLineArguments];
 

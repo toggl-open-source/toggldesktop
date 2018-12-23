@@ -3772,8 +3772,15 @@ Client *Context::CreateClient(
 }
 
 void Context::SetSleep() {
-    logger().debug("SetSleep");
-    idle_.SetSleep();
+
+    // Stop running entry if need
+    const bool isHandled = handleStopRunningEntry();
+
+    // Set Sleep as usual
+    if (!isHandled) {
+        logger().debug("SetSleep");
+        idle_.SetSleep();
+    }
 }
 
 error Context::OpenReportsInBrowser() {
@@ -4005,11 +4012,18 @@ void Context::SetOnline() {
 }
 
 void Context::osShutdown() {
+    handleStopRunningEntry();
+}
+
+const bool Context::handleStopRunningEntry() {
+
+    // Skip if this feature is not enable
     if (!settings_.stop_entry_on_shutdown_sleep) {
-        return;
+        return false;
     }
 
-    Stop(false);
+    // Stop running entry
+    return Stop(false) == noError;
 }
 
 void Context::displayReminder() {

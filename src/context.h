@@ -688,6 +688,8 @@ class Context : public TimelineDatasource {
     std::map<std::string, bool_t> entry_groups;
 
     bool overlay_visible_;
+
+    const bool handleStopRunningEntry();
 };
 
 void on_websocket_message(
