@@ -137,6 +137,7 @@ namespace TogglDesktop
         private void initializeSessionNotification()
         {
             SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+            SystemEvents.SessionEnded += new SessionEndedEventHandler(SystemEventsSessionEndOnChanged);
         }
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -148,6 +149,15 @@ namespace TogglDesktop
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Toggl.SetWake();
+            }
+        }
+
+        private void SystemEventsSessionEndOnChanged(object sender, SessionEndedEventArgs e)
+        {
+            if (e.Reason == SessionEndReasons.SystemShutdown ||
+                e.Reason == SessionEndReasons.Logoff)
+            {
+                Toggl.SetOSShutdown();
             }
         }
 
