@@ -22,7 +22,6 @@ class Settings : public BaseModel {
     , menubar_project(false)
     , dock_icon(false)
     , on_top(false)
-    , stop_entry_on_shutdown_sleep(false)
     , reminder(false)
     , idle_minutes(0)
     , focus_on_shortcut(true)
@@ -44,7 +43,8 @@ class Settings : public BaseModel {
     , pomodoro(false)
     , pomodoro_minutes(0)
     , pomodoro_break(false)
-    , pomodoro_break_minutes(0) {}
+    , pomodoro_break_minutes(0)
+    , stop_entry_on_shutdown_sleep(false) {}
 
     virtual ~Settings() {}
 
@@ -53,7 +53,6 @@ class Settings : public BaseModel {
     bool menubar_project;
     bool dock_icon;
     bool on_top;
-    bool stop_entry_on_shutdown_sleep;
     bool reminder;
     Poco::UInt64 idle_minutes;
     bool focus_on_shortcut;
@@ -76,6 +75,7 @@ class Settings : public BaseModel {
     bool pomodoro_break;
     Poco::UInt64 pomodoro_minutes;
     Poco::UInt64 pomodoro_break_minutes;
+    bool stop_entry_on_shutdown_sleep;
 
     bool IsSame(const Settings &other) const;
 

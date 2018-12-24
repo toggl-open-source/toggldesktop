@@ -234,7 +234,8 @@ class Settings {
     , Pomodoro(false)
     , PomodoroMinutes(0)
     , PomodoroBreak(false)
-    , PomodoroBreakMinutes(0) {}
+    , PomodoroBreakMinutes(0)
+    , StopEntryOnShutdownSleep(false) {}
 
     bool UseProxy;
     std::string ProxyHost;
@@ -268,6 +269,7 @@ class Settings {
     bool PomodoroBreak;
     uint64_t PomodoroMinutes;
     uint64_t PomodoroBreakMinutes;
+    bool StopEntryOnShutdownSleep;
 
     bool operator == (const Settings& other) const;
 };
