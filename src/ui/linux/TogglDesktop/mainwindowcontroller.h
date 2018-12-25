@@ -89,6 +89,9 @@ class MainWindowController : public QMainWindow {
     void updateShowHideShortcut();
     void updateContinueStopShortcut();
 
+    void commitDataRequest();
+    void stateChanged(Qt::ApplicationState state);
+
  private:
     Ui::MainWindowController *ui;
 

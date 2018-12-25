@@ -119,6 +119,12 @@ MainWindowController::MainWindowController(
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
+
+    // OS shutdown or state change
+    connect(qApp, SIGNAL(commitDataRequest(QSessionManager&)),
+            this, SLOT(commitDataRequest()));
+    connect(qApp, SIGNAL(applicationStateChanged(Qt::ApplicationState)),
+            this, SLOT(stateChanged(Qt::ApplicationState)));
 }
 
 MainWindowController::~MainWindowController() {
@@ -501,5 +507,23 @@ void MainWindowController::displayUpdate(const QString url) {
 void MainWindowController::runScript() {
     if (TogglApi::instance->runScriptFile(script)) {
         quitApp();
+    }
+}
+
+void MainWindowController::commitDataRequest() {
+    TogglApi::instance->stopEntryOnShutdown();
+}
+
+void MainWindowController::stateChanged(Qt::ApplicationState state) {
+    switch(state) {
+    case Qt::ApplicationSuspended:
+        TogglApi::instance->stopEntryOnShutdown();
+        break;
+    case Qt::ApplicationHidden:
+        break;
+    case Qt::ApplicationInactive:
+        break;
+    case Qt::ApplicationActive:
+        break;
     }
 }

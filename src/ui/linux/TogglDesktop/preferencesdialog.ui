@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>451</width>
-    <height>385</height>
+    <height>388</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,6 +27,133 @@
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,0,0">
+       <item row="1" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Pomodoro</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,0">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="pomodoroTimer">
+            <property name="styleSheet">
+             <string notr="true">color:rgb(85, 85, 85);</string>
+            </property>
+            <property name="text">
+             <string>Pomodoro timer</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="pomodoroMinutes">
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>25</string>
+            </property>
+            <property name="maxLength">
+             <number>3</number>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="pomodoroMinutesLabel">
+            <property name="text">
+             <string>minutes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pomodoroBreakTimer">
+            <property name="styleSheet">
+             <string notr="true">color:rgb(85, 85, 85);</string>
+            </property>
+            <property name="text">
+             <string>Pomodoro break timer</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="pomodoroBreakMinutes">
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>25</string>
+            </property>
+            <property name="maxLength">
+             <number>3</number>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="pomodoroBreakMinutesLabel">
+            <property name="text">
+             <string>minutes</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="idleMinutes">
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>5</string>
+         </property>
+         <property name="maxLength">
+          <number>3</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="idleMinutesLabel">
+         <property name="text">
+          <string>minutes</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="idleDetection">
+         <property name="styleSheet">
+          <string notr="true">color:rgb(85, 85, 85);</string>
+         </property>
+         <property name="text">
+          <string>Idle detection</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QCheckBox" name="recordTimeline">
+         <property name="styleSheet">
+          <string notr="true">color:rgb(85, 85, 85);</string>
+         </property>
+         <property name="text">
+          <string>Record timeline</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0" colspan="3">
         <widget class="QGroupBox" name="shortcutsGroupBox">
          <property name="title">
@@ -122,134 +249,7 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="0" colspan="3">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Pomodoro</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,0">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="pomodoroTimer">
-            <property name="styleSheet">
-             <string notr="true">color:rgb(85, 85, 85);</string>
-            </property>
-            <property name="text">
-             <string>Pomodoro timer</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="pomodoroMinutes">
-            <property name="maximumSize">
-             <size>
-              <width>60</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>25</string>
-            </property>
-            <property name="maxLength">
-             <number>3</number>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLabel" name="pomodoroMinutesLabel">
-            <property name="text">
-             <string>minutes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="pomodoroBreakTimer">
-            <property name="styleSheet">
-             <string notr="true">color:rgb(85, 85, 85);</string>
-            </property>
-            <property name="text">
-             <string>Pomodoro break timer</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="pomodoroBreakMinutes">
-            <property name="maximumSize">
-             <size>
-              <width>60</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>25</string>
-            </property>
-            <property name="maxLength">
-             <number>3</number>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="pomodoroBreakMinutesLabel">
-            <property name="text">
-             <string>minutes</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="idleDetection">
-         <property name="styleSheet">
-          <string notr="true">color:rgb(85, 85, 85);</string>
-         </property>
-         <property name="text">
-          <string>Idle detection</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="idleMinutes">
-         <property name="maximumSize">
-          <size>
-           <width>60</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>5</string>
-         </property>
-         <property name="maxLength">
-          <number>3</number>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLabel" name="idleMinutesLabel">
-         <property name="text">
-          <string>minutes</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QCheckBox" name="recordTimeline">
-         <property name="styleSheet">
-          <string notr="true">color:rgb(85, 85, 85);</string>
-         </property>
-         <property name="text">
-          <string>Record timeline</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <spacer name="verticalSpacer_3">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -261,6 +261,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QCheckBox" name="stopEntry">
+         <property name="text">
+          <string>Stop running entry on computer sleep/shutdown</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

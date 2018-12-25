@@ -506,6 +506,14 @@ bool TogglApi::setUpdateChannel(const QString channel) {
     return toggl_set_update_channel(ctx, channel.toStdString().c_str());
 }
 
+bool TogglApi::setSettingsStopEntryOnShutdown(const bool stop_entry) {
+    return toggl_set_settings_stop_entry_on_shutdown_sleep(ctx, stop_entry);
+}
+
+void TogglApi::stopEntryOnShutdown() {
+    toggl_os_shutdown(ctx);
+}
+
 QString TogglApi::updateChannel() {
     char *channel = toggl_get_update_channel(ctx);
     QString res;
