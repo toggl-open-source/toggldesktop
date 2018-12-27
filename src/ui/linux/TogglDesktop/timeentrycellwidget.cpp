@@ -5,13 +5,13 @@
 
 #include "./toggl.h"
 
-TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(0),
+TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(nullptr),
 ui(new Ui::TimeEntryCellWidget),
-guid(""),
 description(""),
 project(""),
-groupName(""),
-group(false) {
+guid(""),
+group(false),
+groupName("") {
     ui->setupUi(this);
 }
 

@@ -14,9 +14,9 @@ TimerWidget::TimerWidget(QWidget *parent) : QWidget(parent),
 ui(new Ui::TimerWidget),
 timer(new QTimer(this)),
 duration(0),
-timeEntryAutocompleteNeedsUpdate(false),
+project(""),
 tagsHolder(""),
-project("") {
+timeEntryAutocompleteNeedsUpdate(false) {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -219,6 +219,7 @@ void TimerWidget::timeout() {
 }
 
 void TimerWidget::on_description_currentIndexChanged(int index) {
+    Q_UNUSED(index);
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();

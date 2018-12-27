@@ -14,12 +14,6 @@ oauth2(new OAuth2(this)) {
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
-            this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
-
-    connect(TogglApi::instance, SIGNAL(displayOverlay(int64_t)),  // NOLINT
-            this, SLOT(displayOverlay(int64_t)));  // NOLINT
-
     connect(TogglApi::instance, SIGNAL(setCountries(QVector<CountryView * >)),  // NOLINT
             this, SLOT(setCountries(QVector<CountryView * >)));  // NOLINT
 
@@ -32,7 +26,7 @@ oauth2(new OAuth2(this)) {
 
     signupVisible = true;
     countriesLoaded = false;
-    selectedCountryId = -1;
+    selectedCountryId = UINT64_MAX;
 
     on_viewchangelabel_linkActivated("");;
 }
@@ -52,10 +46,8 @@ void LoginWidget::keyPressEvent(QKeyEvent* event) {
 }
 
 void LoginWidget::mousePressEvent(QMouseEvent* event) {
+    Q_UNUSED(event);
     setFocus();
-}
-
-void LoginWidget::displayOverlay(const int64_t type) {
 }
 
 void LoginWidget::displayLogin(
@@ -71,12 +63,6 @@ void LoginWidget::displayLogin(
     }
 }
 
-void LoginWidget::displayTimeEntryList(
-    const bool open,
-    QVector<TimeEntryView *> list,
-    const bool) {
-}
-
 void LoginWidget::on_login_clicked() {
     if (!validateFields(false)) {
         return;
@@ -85,6 +71,7 @@ void LoginWidget::on_login_clicked() {
 }
 
 void LoginWidget::on_googleLogin_linkActivated(const QString &link) {
+    Q_UNUSED(link);
     oauth2->startLogin(true);
 }
 
@@ -104,7 +91,7 @@ bool LoginWidget::validateFields(const bool signup) {
         return false;
     }
     if (signup) {
-        if (selectedCountryId == -1) {
+        if (selectedCountryId == UINT64_MAX) {
             ui->countryComboBox->setFocus();
             TogglApi::instance->displayError(QString("Please select Country before signing up"), true);
             return false;
@@ -136,6 +123,7 @@ void LoginWidget::setCountries(
 
 void LoginWidget::on_viewchangelabel_linkActivated(const QString &link)
 {
+    Q_UNUSED(link);
     if (signupVisible) {
         ui->signupWidget->hide();
         ui->loginWidget->show();
@@ -156,7 +144,7 @@ void LoginWidget::on_viewchangelabel_linkActivated(const QString &link)
 void LoginWidget::on_countryComboBox_currentIndexChanged(int index)
 {
     if (index == 0) {
-        selectedCountryId = -1;
+        selectedCountryId = UINT64_MAX;
         return;
     }
     QVariant data = ui->countryComboBox->currentData();

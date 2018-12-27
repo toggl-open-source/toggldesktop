@@ -18,12 +18,6 @@ ui(new Ui::TimeEntryListWidget) {
     connect(TogglApi::instance, SIGNAL(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)),  // NOLINT
             this, SLOT(displayTimeEntryList(bool,QVector<TimeEntryView*>,bool)));  // NOLINT
 
-    connect(TogglApi::instance, SIGNAL(displayTimeEntryEditor(bool,TimeEntryView*,QString)),  // NOLINT
-            this, SLOT(displayTimeEntryEditor(bool,TimeEntryView*,QString)));  // NOLINT
-
-    connect(TogglApi::instance, SIGNAL(displayOverlay(int64_t)),  // NOLINT
-            this, SLOT(displayOverlay(int64_t)));  // NOLINT
-
     ui->blankView->setVisible(false);
 }
 
@@ -33,10 +27,6 @@ TimeEntryListWidget::~TimeEntryListWidget() {
 
 void TimeEntryListWidget::display() {
     qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
-}
-
-void TimeEntryListWidget::displayOverlay(
-    const int64_t type) {
 }
 
 void TimeEntryListWidget::displayLogin(
@@ -63,8 +53,8 @@ void TimeEntryListWidget::displayTimeEntryList(
     for (int i = 0; i < size; i++) {
         TimeEntryView *te = list.at(i);
 
-        QListWidgetItem *item = 0;
-        TimeEntryCellWidget *cell = 0;
+        QListWidgetItem *item = nullptr;
+        TimeEntryCellWidget *cell = nullptr;
 
         if (ui->list->count() > i) {
             item = ui->list->item(i);
@@ -102,15 +92,9 @@ void TimeEntryListWidget::displayTimeEntryList(
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
-void TimeEntryListWidget::displayTimeEntryEditor(
-    const bool open,
-    TimeEntryView *view,
-    const QString focused_field_name) {
-}
-
 void TimeEntryListWidget::showLoadMoreButton(int size) {
-    QListWidgetItem *item = 0;
-    TimeEntryCellWidget *cell = 0;
+    QListWidgetItem *item = nullptr;
+    TimeEntryCellWidget *cell = nullptr;
 
     if (ui->list->count() > size) {
         item = ui->list->item(size);
@@ -133,5 +117,6 @@ void TimeEntryListWidget::showLoadMoreButton(int size) {
 }
 
 void TimeEntryListWidget::on_blankView_linkActivated(const QString &link) {
+    Q_UNUSED(link);
     TogglApi::instance->openInBrowser();
 }

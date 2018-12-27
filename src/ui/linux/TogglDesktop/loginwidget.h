@@ -33,16 +33,9 @@ class LoginWidget : public QWidget {
  private slots:  // NOLINT
     void on_login_clicked();
 
-    void displayOverlay(const int64_t type);
-
     void displayLogin(
         const bool open,
         const uint64_t user_id);
-
-    void displayTimeEntryList(
-        const bool open,
-        QVector<TimeEntryView *> list,
-        const bool show_load_more_button);
 
     void on_googleLogin_linkActivated(const QString &link);
 
@@ -67,7 +60,7 @@ class LoginWidget : public QWidget {
     bool signupVisible;
 
     bool countriesLoaded;
-    int64_t selectedCountryId;
+    uint64_t selectedCountryId;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_LOGINWIDGET_H_
