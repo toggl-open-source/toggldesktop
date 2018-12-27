@@ -28,6 +28,9 @@ class PreferencesDialog : public QDialog {
     bool setSettings();
     bool setProxySettings();
 
+    void resizeEvent(QResizeEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+
  private slots:  // NOLINT
     void displaySettings(const bool open,
                          SettingsView *settings);

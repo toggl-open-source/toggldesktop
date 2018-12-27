@@ -364,6 +364,19 @@
        <string>Reminder</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout" columnstretch="3,0,0">
+       <item row="3" column="1" colspan="2">
+        <widget class="QTimeEdit" name="reminderEndTimeEdit"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="remindToTrackTime">
+         <property name="styleSheet">
+          <string notr="true">color:rgb(85, 85, 85);</string>
+         </property>
+         <property name="text">
+          <string>Remind to track time</string>
+         </property>
+        </widget>
+       </item>
        <item row="10" column="1" colspan="2">
         <widget class="QCheckBox" name="dayCheckbox_7">
          <property name="text">
@@ -378,12 +391,67 @@
          </property>
         </widget>
        </item>
+       <item row="7" column="1" colspan="2">
+        <widget class="QCheckBox" name="dayCheckbox_4">
+         <property name="text">
+          <string>Thursday</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="reminderStartTimeLabel">
+         <property name="text">
+          <string>Reminder start time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" colspan="2">
+        <widget class="QCheckBox" name="dayCheckbox_3">
+         <property name="text">
+          <string>Wednesday</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="reminderDaysLabel">
+         <property name="text">
+          <string>Reminder days</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1" colspan="2">
+        <widget class="QCheckBox" name="dayCheckbox_5">
+         <property name="text">
+          <string>Friday</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1" colspan="2">
+        <widget class="QCheckBox" name="dayCheckbox_6">
+         <property name="text">
+          <string>Saturday</string>
+         </property>
+        </widget>
+       </item>
        <item row="4" column="1" colspan="2">
         <widget class="QCheckBox" name="dayCheckbox_1">
          <property name="text">
           <string>Monday</string>
          </property>
         </widget>
+       </item>
+       <item row="11" column="0" colspan="3">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item row="1" column="1">
         <widget class="QLineEdit" name="reminderMinutes">
@@ -404,66 +472,15 @@
          </property>
         </widget>
        </item>
+       <item row="5" column="1" colspan="2">
+        <widget class="QCheckBox" name="dayCheckbox_2">
+         <property name="text">
+          <string>Tuesday</string>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="1" colspan="2">
         <widget class="QTimeEdit" name="reminderStartTimeEdit"/>
-       </item>
-       <item row="8" column="1" colspan="2">
-        <widget class="QCheckBox" name="dayCheckbox_5">
-         <property name="text">
-          <string>Friday</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1" colspan="2">
-        <widget class="QCheckBox" name="dayCheckbox_6">
-         <property name="text">
-          <string>Saturday</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1" colspan="2">
-        <widget class="QCheckBox" name="dayCheckbox_3">
-         <property name="text">
-          <string>Wednesday</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0" colspan="3">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="reminderDaysLabel">
-         <property name="text">
-          <string>Reminder days</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="remindToTrackTime">
-         <property name="styleSheet">
-          <string notr="true">color:rgb(85, 85, 85);</string>
-         </property>
-         <property name="text">
-          <string>Remind to track time</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="reminderStartTimeLabel">
-         <property name="text">
-          <string>Reminder start time</string>
-         </property>
-        </widget>
        </item>
        <item row="1" column="2">
         <widget class="QLabel" name="reminderMinutesLabel">
@@ -472,37 +489,42 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="1" colspan="2">
-        <widget class="QCheckBox" name="dayCheckbox_4">
-         <property name="text">
-          <string>Thursday</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" colspan="2">
-        <widget class="QTimeEdit" name="reminderEndTimeEdit"/>
-       </item>
-       <item row="5" column="1" colspan="2">
-        <widget class="QCheckBox" name="dayCheckbox_2">
-         <property name="text">
-          <string>Tuesday</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="3">
-        <widget class="QLabel" name="reminderWarning">
-         <property name="styleSheet">
-          <string notr="true">color:red;</string>
-         </property>
-         <property name="text">
-          <string>Notifications are not available on your system</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
       </layout>
+      <widget class="QLabel" name="reminderWarning">
+       <property name="geometry">
+        <rect>
+         <x>-1</x>
+         <y>200</y>
+         <width>331</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:white;background-color:#bb888888</string>
+       </property>
+       <property name="text">
+        <string>&lt;b&gt;Notifications are not available on your system&lt;/b&gt;&lt;br&gt;You do not have a notfication daemon running.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <zorder>reminderEndTimeEdit</zorder>
+      <zorder>remindToTrackTime</zorder>
+      <zorder>dayCheckbox_7</zorder>
+      <zorder>reminderEndTimeLabel</zorder>
+      <zorder>dayCheckbox_4</zorder>
+      <zorder>reminderStartTimeLabel</zorder>
+      <zorder>dayCheckbox_3</zorder>
+      <zorder>reminderDaysLabel</zorder>
+      <zorder>dayCheckbox_5</zorder>
+      <zorder>dayCheckbox_6</zorder>
+      <zorder>dayCheckbox_1</zorder>
+      <zorder>reminderMinutes</zorder>
+      <zorder>dayCheckbox_2</zorder>
+      <zorder>reminderStartTimeEdit</zorder>
+      <zorder>reminderMinutesLabel</zorder>
+      <zorder>reminderWarning</zorder>
      </widget>
     </widget>
    </item>
