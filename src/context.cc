@@ -1830,8 +1830,12 @@ error Context::SetSettingsOnTop(const bool on_top) {
 }
 
 error Context::SetSettingsReminder(const bool reminder) {
-    return applySettingsSaveResultToUI(
+    error err = applySettingsSaveResultToUI(
         db()->SetSettingsReminder(reminder));
+    if (err == noError) {
+        resetLastTrackingReminderTime();
+    }
+    return err;
 }
 
 error Context::SetSettingsPomodoro(const bool pomodoro) {
