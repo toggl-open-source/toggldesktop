@@ -1571,6 +1571,7 @@ extern void *ctx;
 		[self.durationTextField.undoManager removeAllActions];
 		[self.startTime.undoManager removeAllActions];
 		[self.endTime.undoManager removeAllActions];
+		[self.projectAutoCompleteInput.undoManager removeAllActions];
 	}
 }
 
@@ -1587,7 +1588,6 @@ extern void *ctx;
 		return;
 	}
 
-	self.projectAutoCompleteInput.stringValue = snapshot.projectAndTaskLabel;
 	[self.projectAutoCompleteInput.undoManager removeAllActions];
 	[self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self
 															 selector:@selector(updateProjectValueForProjectAutoCompleteInput:)

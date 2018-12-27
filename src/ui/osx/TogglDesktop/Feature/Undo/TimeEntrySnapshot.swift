@@ -97,4 +97,8 @@ extension TimeEntrySnapshot {
 			lhs.taskID == rhs.taskID &&
 			lhs.projectID == rhs.projectID
 	}
+
+	override var debugDescription: String {
+		return "Project Name: \(projectAndTaskLabel)"
+	}
 }
