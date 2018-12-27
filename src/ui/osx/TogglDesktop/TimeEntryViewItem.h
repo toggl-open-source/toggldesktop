@@ -35,7 +35,7 @@
 @property (copy, nonatomic) NSString *formattedDate;
 // If this is set to YES, a date header is displayed on top of
 // the time entry cell in the time entry list view:
-@property (assign, nonatomic) BOOL isHeader;
+@property (strong, nonatomic) NSNumber *isHeader;
 // If it's a header, this is useful:
 @property (copy, nonatomic) NSString *dateDuration;
 // If TE is passed for editing, this is the field that should be focussed

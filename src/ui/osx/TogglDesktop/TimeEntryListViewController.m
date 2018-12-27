@@ -443,7 +443,7 @@ extern void *ctx;
 		return cell;
 	}
 
-	if (item.isHeader)
+	if (item.isHeader.boolValue)
 	{
 		TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier:@"TimeEntryCellWithHeader"
 																	owner:self];
@@ -469,7 +469,7 @@ extern void *ctx;
 			item = self.viewitems[row];
 		}
 	}
-	if (item && item.isHeader)
+	if (item && item.isHeader.boolValue)
 	{
 		return 102;
 	}
