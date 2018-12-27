@@ -256,11 +256,11 @@ extern void *ctx;
     // remove highlight from first item
 	[self removeHighlightOnFirstItem];
 
-	// Adjust the position of arrow of Popover
+    // Adjust the position of arrow of Popover
 	[self adjustPositionOfPopover];
 }
 
--(void) removeHighlightOnFirstItem {
+- (void)removeHighlightOnFirstItem {
 	NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
 
 	if (selectedRow < 0)
@@ -268,7 +268,7 @@ extern void *ctx;
 		return;
 	}
 	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
-													makeIfNecessary  :NO];
+													  makeIfNecessary  :NO];
 	[rowView setEmphasized:NO];
 	[rowView setSelected:NO];
 }
@@ -299,21 +299,24 @@ extern void *ctx;
 		}
 	}
 
-	if (newSelectedRow < 0) {
+	if (newSelectedRow < 0)
+	{
 		return;
 	}
 
-	// Adjus the position of arrow
+    // Adjus the position of arrow
 	NSRect positionRect = [self positionRectOfSelectedRowAtIndex:newSelectedRow];
 	self.timeEntrypopover.positioningRect = positionRect;
 
-	// Scroll to visible selected row
-	if (!NSContainsRect(self.timeEntriesTableView.visibleRect, positionRect)) {
+    // Scroll to visible selected row
+	if (!NSContainsRect(self.timeEntriesTableView.visibleRect, positionRect))
+	{
 		[self.timeEntriesTableView scrollRowToVisible:newSelectedRow];
 	}
 
-	// Hightlight selected cell
-	if (self.selectedEntryCell) {
+    // Hightlight selected cell
+	if (self.selectedEntryCell)
+	{
 		[self.selectedEntryCell setFocused];
 	}
 }
