@@ -55,8 +55,8 @@ void ColorPicker::setColors(QVector<char *> list) {
 }
 
 void ColorPicker::color_clicked() {
-    QString color = ((QPushButton*)sender())->styleSheet();
-    TimeEntryEditorWidget *p =(TimeEntryEditorWidget*)parent();
+    QString color = (qobject_cast<QPushButton*>(sender()))->styleSheet();
+    TimeEntryEditorWidget *p = qobject_cast<TimeEntryEditorWidget*>(parent());
     p->setSelectedColor(color);
     close();
 }

@@ -21,7 +21,7 @@ public:
 
 private:
     Ui::OverlayWidget *ui;
-    int current_type;
+    int64_t current_type;
 
 private slots:  // NOLINT
 
@@ -30,11 +30,6 @@ private slots:  // NOLINT
    void displayLogin(
        const bool open,
        const uint64_t user_id);
-
-   void displayTimeEntryList(
-       const bool open,
-       QVector<TimeEntryView *> list,
-       const bool show_load_more_button);
 
    void on_actionButton_clicked();
    void on_bottomText_linkActivated(const QString &link);

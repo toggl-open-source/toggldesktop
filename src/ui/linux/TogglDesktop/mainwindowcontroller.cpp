@@ -34,28 +34,28 @@ MainWindowController::MainWindowController(
     QString scriptPath)
     : QMainWindow(parent),
   ui(new Ui::MainWindowController),
-  togglApi(new TogglApi(0, logPathOverride, dbPathOverride)),
+  togglApi(new TogglApi(nullptr, logPathOverride, dbPathOverride)),
   tracking(false),
   loggedIn(false),
-  actionEmail(0),
-  actionNew(0),
-  actionContinue(0),
-  actionStop(0),
-  actionSync(0),
-  actionLogout(0),
-  actionClear_Cache(0),
-  actionSend_Feedback(0),
-  actionReports(0),
+  actionEmail(nullptr),
+  actionNew(nullptr),
+  actionContinue(nullptr),
+  actionStop(nullptr),
+  actionSync(nullptr),
+  actionLogout(nullptr),
+  actionClear_Cache(nullptr),
+  actionSend_Feedback(nullptr),
+  actionReports(nullptr),
   preferencesDialog(new PreferencesDialog(this)),
   aboutDialog(new AboutDialog(this)),
   feedbackDialog(new FeedbackDialog(this)),
   idleNotificationDialog(new IdleNotificationDialog(this)),
-  trayIcon(0),
-  reminder(false),
+  trayIcon(nullptr),
+  reminderPopup(nullptr),
   pomodoro(false),
+  reminder(false),
   script(scriptPath),
-  ui_started(false),
-  reminderPopup(0) {
+  ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
     ui->setupUi(this);
@@ -136,7 +136,7 @@ MainWindowController::MainWindowController(
 
 MainWindowController::~MainWindowController() {
     delete togglApi;
-    togglApi = 0;
+    togglApi = nullptr;
 
     delete ui;
 }
@@ -257,6 +257,7 @@ void MainWindowController::displayLogin(
 
 void MainWindowController::displayRunningTimerState(
     TimeEntryView *te) {
+    Q_UNUSED(te);
     tracking = true;
     enableMenuActions();
     if (reminder) {
@@ -389,7 +390,7 @@ void MainWindowController::connectMenuAction(
 }
 
 void MainWindowController::onActionNew() {
-    TogglApi::instance->start("", "", 0, 0, 0, false);
+    TogglApi::instance->start("", "", 0, 0, nullptr, false);
 }
 
 void MainWindowController::onActionContinue() {

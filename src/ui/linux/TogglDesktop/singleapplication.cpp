@@ -9,9 +9,9 @@
 
 SingleApplication::SingleApplication(int &argc, char **argv)
     : QApplication(argc, argv)
-, w(0)
+, w(nullptr)
 , is_running_(false)
-, local_server_(0) {
+, local_server_(nullptr) {
     server_name_ = QFileInfo(
         QCoreApplication::applicationFilePath()).fileName();
 

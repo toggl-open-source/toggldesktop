@@ -270,6 +270,7 @@ void PreferencesDialog::keyPressEvent(QKeyEvent *event) {
 }
 
 void PreferencesDialog::keyReleaseEvent(QKeyEvent *event) {
+    Q_UNUSED(event);
     saveCurrentShortcut();
 }
 
@@ -287,33 +288,34 @@ void PreferencesDialog::saveCurrentShortcut() {
 bool PreferencesDialog::setProxySettings() {
     return TogglApi::instance->setProxySettings(ui->useProxy->isChecked(),
             ui->proxyHost->text(),
-            ui->proxyPort->text().toInt(),
+            ui->proxyPort->text().toULongLong(),
             ui->proxyUsername->text(),
             ui->proxyPassword->text());
 }
 
 void PreferencesDialog::on_useProxy_clicked(bool checked) {
+    Q_UNUSED(checked);
     setProxySettings();
 }
 
 void PreferencesDialog::on_idleMinutes_editingFinished() {
     TogglApi::instance->setSettingsIdleMinutes(
-        ui->idleMinutes->text().toInt());
+        ui->idleMinutes->text().toULongLong());
 }
 
 void PreferencesDialog::on_reminderMinutes_editingFinished() {
     TogglApi::instance->setSettingsReminderMinutes(
-        ui->reminderMinutes->text().toInt());
+        ui->reminderMinutes->text().toULongLong());
 }
 
 void PreferencesDialog::on_pomodoroMinutes_editingFinished() {
     TogglApi::instance->setSettingsPomodoroMinutes(
-        ui->pomodoroMinutes->text().toInt());
+        ui->pomodoroMinutes->text().toULongLong());
 }
 
 void PreferencesDialog::on_pomodoroBreakMinutes_editingFinished() {
     TogglApi::instance->setSettingsPomodoroBreakMinutes(
-        ui->pomodoroBreakMinutes->text().toInt());
+        ui->pomodoroBreakMinutes->text().toULongLong());
 }
 
 void PreferencesDialog::on_useSystemProxySettings_clicked(bool checked) {

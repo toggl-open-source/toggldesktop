@@ -22,7 +22,7 @@
 #include "./settingsview.h"
 #include "./bugsnag.h"
 
-TogglApi *TogglApi::instance = 0;
+TogglApi *TogglApi::instance = nullptr;
 
 QString TogglApi::Project = QString("project");
 QString TogglApi::Duration = QString("duration");
@@ -65,7 +65,7 @@ void on_display_login(
         TogglApi::instance->aboutToDisplayLogin();
     }
     TogglApi::instance->displayLogin(open, user_id);
-    Bugsnag::user.id = user_id;
+    Bugsnag::user.id = QString("%1").arg(user_id);
 }
 
 void on_display_pomodoro(
@@ -213,7 +213,7 @@ TogglApi::TogglApi(
     QString dbPathOverride)
     : QObject(parent)
 , shutdown(false)
-, ctx(0) {
+, ctx(nullptr) {
     QString version = QApplication::applicationVersion();
     ctx = toggl_context_init("linux_native_app",
                              version.toStdString().c_str());
@@ -286,9 +286,9 @@ TogglApi::TogglApi(
 
 TogglApi::~TogglApi() {
     toggl_context_clear(ctx);
-    ctx = 0;
+    ctx = nullptr;
 
-    instance = 0;
+    instance = nullptr;
 }
 
 bool TogglApi::notifyBugsnag(
@@ -538,7 +538,7 @@ QString TogglApi::start(
                              duration.toStdString().c_str(),
                              task_id,
                              project_id,
-                             0 /* project guid */,
+                             nullptr /* project guid */,
                              tags /* tags */,
                              false);
     QString res("");

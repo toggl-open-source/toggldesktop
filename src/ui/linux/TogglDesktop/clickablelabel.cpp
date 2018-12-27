@@ -11,6 +11,7 @@ ClickableLabel::~ClickableLabel() {
 }
 
 void ClickableLabel::mousePressEvent(QMouseEvent * event) {
+    Q_UNUSED(event);
     QWidget* parentObject = this->parentWidget();
 
     while (parentObject->objectName().compare("TimeEntryCellWidget") != 0) {

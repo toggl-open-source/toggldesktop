@@ -47,12 +47,14 @@ void ErrorViewController::displayError(
 
 void ErrorViewController::displayOnlineState(
     int64_t state) {
+    Q_UNUSED(state);
     // FIXME: need separate online state label
 }
 
 void ErrorViewController::displayLogin(
     const bool open,
     const uint64_t user_id) {
+    Q_UNUSED(open);
     uid = user_id;
     if (user_id && isVisible() && loginError) {
         loginError = false;

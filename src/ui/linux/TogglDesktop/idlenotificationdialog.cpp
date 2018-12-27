@@ -68,6 +68,7 @@ void IdleNotificationDialog::on_discardTimeAndContinueButton_clicked() {
 void IdleNotificationDialog::displaySettings(
     const bool open,
     SettingsView *settings) {
+    Q_UNUSED(open);
     if (settings->UseIdleDetection && !timer->isActive()) {
         timer->start(1000);
     } else if (!settings->UseIdleDetection && timer->isActive()) {
@@ -93,7 +94,7 @@ void IdleNotificationDialog::displayIdleNotification(
 }
 
 void IdleNotificationDialog::timeout() {
-    Display *display = XOpenDisplay(NULL);
+    Display *display = XOpenDisplay(nullptr);
     if (!display) {
         return;
     }

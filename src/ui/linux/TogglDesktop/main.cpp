@@ -24,19 +24,21 @@ class TogglApplication : public SingleApplication {
     TogglApplication(int &argc, char **argv)  // NOLINT
         : SingleApplication(argc, argv) {}
 
-    virtual bool notify(QObject *receiver, QEvent *event) {
-        try {
-            return SingleApplication::notify(receiver, event);
-        } catch(std::exception e) {
-            TogglApi::notifyBugsnag("std::exception", e.what(),
-                                    receiver->objectName());
-        } catch(...) {
-            TogglApi::notifyBugsnag("unspecified", "exception",
-                                    receiver->objectName());
-        }
-        return true;
-    }
+    virtual bool notify(QObject *receiver, QEvent *event);
 };
+
+bool TogglApplication::notify(QObject *receiver, QEvent *event) {
+    try {
+        return SingleApplication::notify(receiver, event);
+    } catch(std::exception &e) {
+        TogglApi::notifyBugsnag("std::exception", e.what(),
+                                receiver->objectName());
+    } catch(...) {
+        TogglApi::notifyBugsnag("unspecified", "exception",
+                                receiver->objectName());
+    }
+    return true;
+}
 
 int main(int argc, char *argv[]) try {
     Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
@@ -105,7 +107,7 @@ int main(int argc, char *argv[]) try {
 
     parser.process(a);
 
-    MainWindowController w(0,
+    MainWindowController w(nullptr,
                            parser.value(logPathOption),
                            parser.value(dbPathOption),
                            parser.value(scriptPathOption));
