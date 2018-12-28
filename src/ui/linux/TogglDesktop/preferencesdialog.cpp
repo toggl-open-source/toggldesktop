@@ -10,6 +10,7 @@
 PreferencesDialog::PreferencesDialog(QWidget *parent) : QDialog(parent),
 ui(new Ui::PreferencesDialog) {
     ui->setupUi(this);
+    ui->reminderWarning->setGeometry(ui->tab_reminder->geometry());
 
     connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
             this, SLOT(displaySettings(bool,SettingsView*)));  // NOLINT
@@ -36,6 +37,17 @@ ui(new Ui::PreferencesDialog) {
 
 PreferencesDialog::~PreferencesDialog() {
     delete ui;
+}
+
+void PreferencesDialog::setRemindersEnabled(bool enabled) {
+    if (enabled) {
+        ui->tab_reminder->setEnabled(true);
+        ui->reminderWarning->setVisible(false);
+    }
+    else {
+        ui->tab_reminder->setEnabled(false);
+        ui->reminderWarning->setVisible(true);
+    }
 }
 
 void PreferencesDialog::displaySettings(const bool open,
@@ -291,6 +303,16 @@ bool PreferencesDialog::setProxySettings() {
             ui->proxyPort->text().toULongLong(),
             ui->proxyUsername->text(),
             ui->proxyPassword->text());
+}
+
+void PreferencesDialog::resizeEvent(QResizeEvent *event) {
+    QDialog::resizeEvent(event);
+    ui->reminderWarning->setGeometry(ui->tab_reminder->geometry());
+}
+
+void PreferencesDialog::showEvent(QShowEvent *event) {
+    QDialog::showEvent(event);
+    ui->reminderWarning->setGeometry(ui->tab_reminder->geometry());
 }
 
 void PreferencesDialog::on_useProxy_clicked(bool checked) {
