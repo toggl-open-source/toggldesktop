@@ -1,12 +1,14 @@
 CppUnit
 CppUnit/WinTestRunner
 Foundation
+Encodings
 XML
 JSON
 Util
 Net
 Crypto
 NetSSL_OpenSSL
+NetSSL_Win
 Data
 Data/SQLite
 Data/ODBC
@@ -14,5 +16,9 @@ Data/MySQL
 Zip
 PageCompiler
 PageCompiler/File2Page
+PDF
+CppParser
 MongoDB
 Redis
+PocoDoc
+ProGen

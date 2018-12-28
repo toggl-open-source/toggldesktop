@@ -24,7 +24,7 @@
 #		define __EXTENSIONS__
 #	endif
 #endif
-#if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_MAC_OS_X || POCO_OS == POCO_OS_QNX
+#if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID || POCO_OS == POCO_OS_MAC_OS_X || POCO_OS == POCO_OS_QNX
 #	include <time.h>
 #endif
 
@@ -173,10 +173,8 @@ void ThreadImpl::setStackSizeImpl(int size)
 		const int STACK_PAGE_SIZE = 4096;
 		size = ((size + STACK_PAGE_SIZE - 1)/STACK_PAGE_SIZE)*STACK_PAGE_SIZE;
 #endif
-#if !defined(POCO_ANDROID)
  		if (size < PTHREAD_STACK_MIN)
  			size = PTHREAD_STACK_MIN;
-#endif
 	}
  	_pData->stackSize = size;
 #endif
@@ -276,7 +274,7 @@ void ThreadImpl::sleepImpl(long milliseconds)
 		interval.tv_sec  = milliseconds / 1000;
 		interval.tv_nsec = (milliseconds % 1000)*1000000;
 		pthread_delay_np(&interval);
-#elif POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_MAC_OS_X || POCO_OS == POCO_OS_QNX || POCO_OS == POCO_OS_VXWORKS
+#elif POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID || POCO_OS == POCO_OS_MAC_OS_X || POCO_OS == POCO_OS_QNX || POCO_OS == POCO_OS_VXWORKS
 	Poco::Timespan remainingTime(1000*Poco::Timespan::TimeDiff(milliseconds));
 	int rc;
 	do

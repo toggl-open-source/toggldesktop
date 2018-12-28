@@ -875,33 +875,40 @@ NetworkInterface::List NetworkInterface::list(bool ipOnly, bool upOnly)
 
 		typedef NetworkInterface::AddressList List;
 		const List& ipList = it->second.addressList();
-		List::const_iterator ipIt = ipList.begin();
-		List::const_iterator ipEnd = ipList.end();
-		for (; ipIt != ipEnd; ++ipIt)
+		if (ipList.size() > 0)
 		{
-			IPAddress addr = ipIt->get<NetworkInterface::IP_ADDRESS>();
-			IPAddress mask = ipIt->get<NetworkInterface::SUBNET_MASK>();
-			NetworkInterface ni;
-			if (mask.isWildcard())
+			List::const_iterator ipIt = ipList.begin();
+			List::const_iterator ipEnd = ipList.end();
+			for(; ipIt != ipEnd; ++ipIt)
 			{
-				ni = NetworkInterface(name, displayName, adapterName, addr, index, &mac);
-			}
-			else
-			{
-				IPAddress broadcast = ipIt->get<NetworkInterface::BROADCAST_ADDRESS>();
-				ni = NetworkInterface(name, displayName, adapterName, addr, mask, broadcast, index, &mac);
-			}
+				IPAddress addr = ipIt->get<NetworkInterface::IP_ADDRESS>();
+				IPAddress mask = ipIt->get<NetworkInterface::SUBNET_MASK>();
+				NetworkInterface ni;
+				if(mask.isWildcard())
+				{
+					ni = NetworkInterface(name, displayName, adapterName, addr, index, &mac);
+				}
+				else
+				{
+					IPAddress broadcast = ipIt->get<NetworkInterface::BROADCAST_ADDRESS>();
+					ni = NetworkInterface(name, displayName, adapterName, addr, mask, broadcast, index, &mac);
+				}
 
-			ni._pImpl->_broadcast    = it->second._pImpl->_broadcast;
-			ni._pImpl->_loopback     = it->second._pImpl->_loopback;
-			ni._pImpl->_multicast    = it->second._pImpl->_multicast;
-			ni._pImpl->_pointToPoint = it->second._pImpl->_pointToPoint;
-			ni._pImpl->_up           = it->second._pImpl->_up;
-			ni._pImpl->_running      = it->second._pImpl->_running;
-			ni._pImpl->_mtu          = it->second._pImpl->_mtu;
-			ni._pImpl->_type         = it->second._pImpl->_type;
+				ni._pImpl->_broadcast = it->second._pImpl->_broadcast;
+				ni._pImpl->_loopback = it->second._pImpl->_loopback;
+				ni._pImpl->_multicast = it->second._pImpl->_multicast;
+				ni._pImpl->_pointToPoint = it->second._pImpl->_pointToPoint;
+				ni._pImpl->_up = it->second._pImpl->_up;
+				ni._pImpl->_running = it->second._pImpl->_running;
+				ni._pImpl->_mtu = it->second._pImpl->_mtu;
+				ni._pImpl->_type = it->second._pImpl->_type;
 
-			list.push_back(ni);
+				list.push_back(ni);
+			}
+		}
+		else
+		{
+			list.push_back(NetworkInterface(name, displayName, adapterName, index, &mac));
 		}
 	}
 
@@ -1504,14 +1511,14 @@ NetworkInterface::Map NetworkInterface::map(bool ipOnly, bool upOnly)
 } } // namespace Poco::Net
 
 
-#elif POCO_OS == POCO_OS_LINUX
+#elif POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID
 //
 // Linux
 //
 
 
 #include <sys/types.h>
-#ifndef POCO_ANDROID // Android doesn't have <ifaddrs.h>
+#if POCO_OS != POCO_OS_ANDROID // Android doesn't have <ifaddrs.h>
 #include <ifaddrs.h>
 #endif
 #include <net/if.h>
@@ -1546,7 +1553,7 @@ static NetworkInterface::Type fromNative(unsigned arphrd)
 	}
 }
 
-#ifndef POCO_ANDROID
+#if POCO_OS != POCO_OS_ANDROID
 
 void setInterfaceParams(struct ifaddrs* iface, NetworkInterfaceImpl& impl)
 {
@@ -1602,7 +1609,7 @@ void setInterfaceParams(struct ifaddrs* iface, NetworkInterfaceImpl& impl)
 
 NetworkInterface::Map NetworkInterface::map(bool ipOnly, bool upOnly)
 {
-#ifndef POCO_ANDROID
+#if POCO_OS != POCO_OS_ANDROID
 	FastMutex::ScopedLock lock(_mutex);
 	Map result;
 	unsigned ifIndex = 0;
