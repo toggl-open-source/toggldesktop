@@ -55,7 +55,7 @@ opensslconf.h
 
 third_party/poco/bin
 third_party/poco/**/bin
-third_party/poco/config.make
+#third_party/poco/config.make
 third_party/poco/lib
 third_party/poco/*/samples/*/bin/
 third_party/poco/*/*/testsuite/bin/
