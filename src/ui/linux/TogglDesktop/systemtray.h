@@ -13,7 +13,7 @@ class SystemTray : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
-    SystemTray(MainWindowController *parent = nullptr);
+    SystemTray(MainWindowController *parent = nullptr, QIcon defaultIcon = QIcon());
 
     MainWindowController *mainWindow();
 

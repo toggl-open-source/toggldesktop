@@ -7,10 +7,12 @@
 #include "./systemtray.h"
 #include "./mainwindowcontroller.h"
 
-SystemTray::SystemTray(MainWindowController *parent) :
+SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
     QSystemTrayIcon(parent),
     notificationsPresent(true)
 {
+    setIcon(defaultIcon);
+
     show();
 
     connect(TogglApi::instance, &TogglApi::displayIdleNotification, this, &SystemTray::displayIdleNotification);
