@@ -69,7 +69,7 @@ QSize AutoCompleteItemDelegate::sizeHint(const QStyleOptionViewItem &option, con
     QSize size = QItemDelegate::sizeHint(option, index);
     switch (view->Type) {
     case 0:
-        size.setHeight(42);
+        size.setHeight(24);
         break;
     default:
         size.setHeight(24);
@@ -108,7 +108,7 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
             table.append("<span style='font-size:14px;'>" + view->Description + "</span>");
         if (view->TaskID)
             table.append("<span style='font-size:10px;'> - " + view->TaskLabel + "</span>");
-        table.append("<br>");
+        //table.append("<br>");
         if (view->ProjectID)
             table.append("<span style='font-size:12px;color:" + view->ProjectColor + ";'> •" + view->ProjectLabel + "</span>");
         if (view->ClientID)
