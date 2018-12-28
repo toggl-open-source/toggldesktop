@@ -26,6 +26,10 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
     case Qt::Key_Escape:
         QComboBox::keyPressEvent(event);
         break;
+    case Qt::Key_Down:
+    case Qt::Key_Up:
+        showPopup();
+        break;
     default:
         QComboBox::keyPressEvent(event);
     }
