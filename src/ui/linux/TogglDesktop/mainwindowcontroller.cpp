@@ -109,7 +109,7 @@ MainWindowController::MainWindowController(
 
 
     setWindowIcon(icon);
-    trayIcon = new SystemTray(this);
+    trayIcon = new SystemTray(this, icon);
     preferencesDialog->setRemindersEnabled(trayIcon->notificationsAvailable());
 
     setShortcuts();
