@@ -350,6 +350,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self.tagFlag setHidden:YES];
 	[self.billableFlag setHidden:YES];
 	[self.view.window makeFirstResponder:self.autoCompleteInput];
+
+	self.time_entry = [[TimeEntryViewItem alloc] init];
 }
 
 - (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
