@@ -3,7 +3,6 @@
         {
             "version": "7.4.330",
             "rows": [
-                "Updated app icons to support all sizes",
                 "Remove all old notifications when new one is triggered",
                 "Replaced deprecated convert function",
                 "Trim leading and trailing whitespace in Description of TimeEntry",
@@ -18,8 +17,7 @@
                 "Fixed entry list automatic scrolling issue",
                 "Fixed entry list item highlight item after item position change"
             ],
-            "date": "December 19th 2018",
-            "beta": "true"
+            "date": "January 2nd 2019"
         },
         {
             "version": "7.4.321",
