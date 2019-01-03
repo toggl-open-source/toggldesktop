@@ -35,7 +35,7 @@ set(BINARY_SOURCE_FILES
     errorviewcontroller.cpp
     feedbackdialog.cpp
     genericview.cpp
-    idlenotificationdialog.cpp
+    idlenotificationwidget.cpp
     loginwidget.cpp
     main.cpp
     mainwindowcontroller.cpp
@@ -43,6 +43,7 @@ set(BINARY_SOURCE_FILES
     preferencesdialog.cpp
     settingsview.cpp
     singleapplication.cpp
+    systemtray.cpp
     timeentrycellwidget.cpp
     timeentryeditorwidget.cpp
     timeentrylistwidget.cpp
@@ -60,7 +61,7 @@ add_executable(TogglDesktop ${BINARY_SOURCE_FILES})
 # And list the dependencies between them (and system libraries)
 target_link_libraries(TogglDesktop PRIVATE
     TogglDesktopLibrary
-    Qt5::Widgets Qt5::WebEngine
+    Qt5::Widgets Qt5::DBus Qt5::WebEngine
     OAuth2
     ${QXT_LIBRARIES}
     Bugsnag

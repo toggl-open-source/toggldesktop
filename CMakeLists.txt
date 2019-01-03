@@ -19,6 +19,7 @@ include(FindPkgConfig)
 
 # Look for Qt
 find_package(Qt5Widgets CONFIG REQUIRED)
+find_package(Qt5DBus CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
 find_package(Qt5WebEngine CONFIG REQUIRED)
 find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
