@@ -23,7 +23,7 @@
 #import "MenuItemTags.h"
 #import "PreferencesWindowController.h"
 #import "Settings.h"
-#import "Sparkle.h"
+#import <Sparkle/Sparkle.h>
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Utils.h"

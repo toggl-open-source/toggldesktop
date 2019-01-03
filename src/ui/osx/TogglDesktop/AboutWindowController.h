@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DisplayCommand.h"
-#import "Sparkle.h"
+#import <Sparkle/Sparkle.h>
 
 @interface AboutWindowController : NSWindowController <SUUpdaterDelegate>
 @property IBOutlet NSTextField *appnameTextField;

@@ -7,7 +7,7 @@
 //
 
 #import "Utils.h"
-#import "Sparkle.h"
+#import <Sparkle/Sparkle.h>
 #import "NSAlert+Utils.h"
 
 #include "toggl_api.h"
