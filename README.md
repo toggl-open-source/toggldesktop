@@ -53,40 +53,22 @@ make uitest
 
 ## Linux
 
-You'll need QT to be at least version 5.5
+You'll need these Qt (at version 5.6 or higher) modules: QtWidgets (with private headers), QtWebEngine, QtWebEngineWidgets, QtNetwork, QtDBus, QtX11Extras
 
-If qmake is not on your PATH, set this first, before running make:
+If Qt is not installed from your distribution's package manager, you will need to set the `CMAKE_PREFIX_PATH` environment variable to point to the `lib/cmake` folder in the Qt version you wish to use.
 
-```
-export QMAKE=/usr/bin/qmake-qt5
-```
+These dependencies are mandatory:
+ * libXScrnSaver (`libxss-dev` in deb-based distros and `libXScrnSaver-devel` in rpm-based)
+ 
+These dependencies are optional and will be bundled if the `USE_BUNDLED_LIBRARIES` CMake argument is set or your system does NOT have their development packages installed:
+ * POCO
+ * Lua
+ * jsoncpp
+ * Qxt
 
-Below are some distribution specific package requirements:
-
-## Debian
-
-* libreadline-dev
-* qt5-default
-* libxss-dev
-* libqt5x11extras5-dev
-* libqt5webkit5-dev
-
-## Ubuntu
-
-* libreadline-dev
-* xorg-dev
-* qtcreator
-* libxss-dev
-* libqt5webkit5-dev
-* libqt5x11extras5-dev
-* qtbase5-private-dev
-
-## Fedora
-
-* readline-devel
-* qt5-qtwebkit-devel
-* libXScrnSaver-devel
-* qt5-qtsvg
+These libraries will be bundled regardless of your system:
+ * bugsnag-qt
+ * qt-oauth-lib
 
 ## Windows
 
