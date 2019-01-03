@@ -51,7 +51,6 @@ third_party/openssl/crypto/x86_64cpuid.s
 *.0
 *.pc
 *.time
-opensslconf.h
 
 third_party/poco/bin
 third_party/poco/**/bin
