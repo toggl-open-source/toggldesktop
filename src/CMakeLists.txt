@@ -53,6 +53,7 @@ set(LIBRARY_SOURCE_FILES
     toggl_api_private.cc
     model_change.cc
     obm_action.cc
+    platforminfo.cc
     project.cc
     proxy.cc
     rectangle.cc
