@@ -154,7 +154,8 @@
 		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
-		BA6E86DB21DDB497005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
+		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
+		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAD232D121D495E20039C742 /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -384,6 +385,13 @@
 			remoteGlobalIDString = 5A5ADED7214EDE4900DF0099;
 			remoteInfo = sign_update;
 		};
+		BA6E873721DDC1E2005E2451 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -408,6 +416,7 @@
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
 				74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */,
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
+				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -683,7 +692,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA6E86DB21DDB497005E2451 /* Sparkle.framework in Frameworks */,
 				74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */,
 				743D94281827929C000E6F70 /* Carbon.framework in Frameworks */,
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
@@ -691,6 +699,7 @@
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
 				7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
+				BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */,
 				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
 				BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
@@ -1247,6 +1256,7 @@
 				749A3A7318D89F23000AD2DB /* PBXTargetDependency */,
 				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
 				BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */,
+				BA6E873821DDC1E2005E2451 /* PBXTargetDependency */,
 			);
 			name = TogglDesktop;
 			productName = test2;
@@ -1735,6 +1745,11 @@
 			isa = PBXTargetDependency;
 			name = "DeepDiff-macOS";
 			targetProxy = BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */;
+		};
+		BA6E873821DDC1E2005E2451 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sparkle;
+			targetProxy = BA6E873721DDC1E2005E2451 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
