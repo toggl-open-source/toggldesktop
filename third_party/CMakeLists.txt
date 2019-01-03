@@ -56,6 +56,7 @@ if(NOT Poco_FOUND)
         ${CMAKE_CURRENT_SOURCE_DIR}/poco/NetSSL_OpenSSL/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/poco/Data/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/poco/Data/SQLite/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/poco/Data/SQLite/src/
         ${CMAKE_CURRENT_SOURCE_DIR}/poco/Util/include/
         PARENT_SCOPE
     )
