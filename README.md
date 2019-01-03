@@ -19,6 +19,16 @@ Table of Contents
   * [Documentation](#documentation)
   * [Contribute](#contribute)
 
+# Installation
+```
+## Clone project
+git clone https://github.com/toggl/toggldesktop.git
+
+## Fetch all submodules recursively
+git submodule update --init --recursive
+
+## Happy coding 👨‍💻
+```
 
 # Build instructions
 
