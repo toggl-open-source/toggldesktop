@@ -1598,6 +1598,20 @@
 			shellPath = /usr/bin/ruby;
 			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
 		};
+		74F125D51BB2ED9000487B14 /* Run Script (fix CrashReporter path in main app) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (fix CrashReporter path in main app)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "install_name_tool -change @rpath/CrashReporter.framework/Versions/A/CrashReporter @executable_path/../../Contents/Frameworks/CrashReporter.framework/Versions/A/CrashReporter $PROJECT_DIR/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+		};
 		BA6406F121C8FC690074BC96 /* Run Formatter */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
