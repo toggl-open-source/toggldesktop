@@ -19,7 +19,6 @@ Table of Contents
   * [Documentation](#documentation)
   * [Contribute](#contribute)
 
-
 # Build instructions
 
 Please check OS specific requirements below.

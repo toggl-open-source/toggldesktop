@@ -5,6 +5,7 @@ uname=$(shell uname)
 architecture=$(shell uname -m)
 timestamp=$(shell date "+%Y-%m-%d-%H-%M-%S")
 
+rootdir=$(shell pwd)
 pocodir=third_party/poco
 openssldir=third_party/openssl
 jsoncppdir=third_party/jsoncpp/dist
@@ -288,7 +289,10 @@ clean_deps:
 	cd $(openssldir) && (make clean || true)
 	cd third_party/lua && make clean
 
-deps: clean_deps openssl poco lua
+deps: clean_deps init_submodule openssl poco lua
+
+init_submodule:
+	cd $(rootdir) && git submodule update --init --recursive
 
 ifeq ($(osname), linux)
 lua:
