@@ -1442,7 +1442,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "install_name_tool -change @rpath/CrashReporter.framework/Versions/A/CrashReporter @executable_path/../../Contents/Frameworks/CrashReporter.framework/Versions/A/CrashReporter $PROJECT_DIR/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop";
+			shellScript = "install_name_tool -change @rpath/CrashReporter.framework/Versions/A/CrashReporter @executable_path/../../Contents/Frameworks/CrashReporter.framework/Versions/A/CrashReporter $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/MacOS/TogglDesktop\n";
 		};
 		BA6406F121C8FC690074BC96 /* Run Formatter */ = {
 			isa = PBXShellScriptBuildPhase;
