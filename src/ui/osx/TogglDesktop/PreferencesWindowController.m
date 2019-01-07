@@ -25,7 +25,7 @@ NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcu
 @property AutocompleteDataSource *autotrackerProjectAutocompleteDataSource;
 @property AutocompleteDataSource *defaultProjectAutocompleteDataSource;
 @property NSMutableArray *termAutocompleteItems;
-@property (weak) IBOutlet NSButtonCell *stopOnShutdownCheckbox;
+@property (weak) IBOutlet NSButton *stopOnShutdownCheckbox;
 
 @end
 
@@ -481,7 +481,7 @@ const int kUseProxyToConnectToToggl = 2;
 	self.autotrackerProject.stringValue = @"";
 }
 
-- (IBAction)stopOnShutdownAndSleepOnChange:(NSButtonCell *)sender
+- (IBAction)stopOnShutdownAndSleepOnChange:(NSButton *)sender
 {
 	toggl_set_settings_stop_entry_on_shutdown_sleep(ctx, [Utils stateToBool:[self.stopOnShutdownCheckbox state]]);
 }
