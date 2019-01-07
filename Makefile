@@ -41,10 +41,17 @@ MSBUILD=/cygdrive/c/Program\ Files/MSBuild/12.0/Bin/MSBuild.exe
 endif
 
 ifeq ($(uname), Darwin)
-executable=./src/ui/osx/TogglDesktop/build/Release/TogglDesktop.app/Contents/MacOS/TogglDesktop
+xcodebuild_command=xcodebuild $(XCODELEGACYSDK) \
+				  -scheme TogglDesktop \
+				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
+				  -configuration Release
+executable=$(shell $(xcodebuild_command) \
+			 -showBuildSettings \
+ 			| grep -w 'BUILT_PRODUCTS_DIR' \
+ 			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
 pocolib=$(pocodir)/lib/Darwin/x86_64/
 osname=mac
-endif
+endif	
 
 ifeq ($(uname), Linux)
 executable=./src/ui/linux/TogglDesktop/build/release/TogglDesktop
@@ -256,8 +263,7 @@ endif
 
 ifeq ($(osname), mac)
 ui:
-	xcodebuild $(XCODELEGACYSDK) -scheme "TogglDesktop" -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj && \
-	!(otool -L $(executable) | grep "Users" && echo "Executable should not contain hardcoded paths!")
+	$(xcodebuild_command)
 endif
 
 ifeq ($(osname), linux)
