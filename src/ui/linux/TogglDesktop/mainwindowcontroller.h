@@ -130,6 +130,8 @@ class MainWindowController : public QMainWindow {
     void enableMenuActions();
 
     bool ui_started;
+
+    void restoreLastWindowsFrame();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_

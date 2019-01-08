@@ -778,10 +778,14 @@ QRect const TogglApi::getWindowsFrameSetting() {
     toggl_window_settings(ctx, &x, &y, &h, &w);
     return QRect(static_cast<int>(x),
                  static_cast<int>(y),
-                 static_cast<int>(h),
-                 static_cast<int>(w));
+                 static_cast<int>(w),
+                 static_cast<int>(h));
 }
 
 void TogglApi::setWindowsFrameSetting(const QRect frame) {
-    toggl_set_window_settings(ctx, frame.x(), frame.y(), frame.height(), frame.width());
+    toggl_set_window_settings(ctx,
+                              frame.x(),
+                              frame.y(),
+                              frame.height(),
+                              frame.width());
 }
