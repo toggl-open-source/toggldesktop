@@ -17,7 +17,14 @@ void AutocompleteListModel::setList(QVector<AutocompleteView *> autocompletelist
 }
 
 Qt::ItemFlags AutocompleteListModel::flags(const QModelIndex &index) const {
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    auto view = list.at(index.row());
+    switch (view->Type) {
+    case 0:
+    case 2:
+            return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    default:
+            return Qt::ItemIsSelectable;
+    }
 }
 
 int AutocompleteListModel::rowCount(const QModelIndex &parent) const {

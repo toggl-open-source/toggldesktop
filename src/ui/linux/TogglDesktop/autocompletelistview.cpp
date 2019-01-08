@@ -7,9 +7,11 @@
 AutocompleteListView::AutocompleteListView(QWidget *parent) :
     QListView(parent)
 {
+    setFixedWidth(320);
     setViewMode(QListView::ListMode);
     setUniformItemSizes(true);
     setItemDelegate(new AutoCompleteItemDelegate(this));
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void AutocompleteListView::paintEvent(QPaintEvent *e) {
@@ -52,6 +54,7 @@ void AutoCompleteItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
     painter->save();
 
     QTextDocument doc;
+    doc.setTextWidth(319);
     auto view = getCurrentView(index);
     doc.setHtml(format(view));
 
@@ -67,14 +70,8 @@ void AutoCompleteItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 QSize AutoCompleteItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     auto view = getCurrentView(index);
     QSize size = QItemDelegate::sizeHint(option, index);
-    switch (view->Type) {
-    case 0:
-        size.setHeight(24);
-        break;
-    default:
-        size.setHeight(24);
-        break;
-    }
+    size.setHeight(24);
+    size.setWidth(320);
     return size;
 }
 
@@ -86,9 +83,9 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
 
     switch (view->Type) {
     case 13: // Workspace row
-        return "<span style='background-color: transparent;font-weight:bold;border-bottom:1px solid grey;'>" + view->Text + "</span>";
+        return "<div width=320px style='width:320px;font-size:14px;color:gray;text-align:center;background-color: transparent;font-weight:bold;margin:2px;padding:2px;'>" + view->Description + "</div><div width=320px height=1px style='background-color:gray'/>";
     case 11: // Category row
-        return label = "<span style='background-color: transparent;padding-top:7px;padding-left:5px;'>" + view->Text + "</span>";
+        return "<div width=320px style='width:320px;font-size:14px;color:gray;background-color: transparent;font-weight:bold'>" + view->Description + "</div>";
     case 12: { // Client row / no project row
         QString style = transparent + "padding-top:5px;padding-left:10px;font-weight:";
         if (view->Type == 2) {
@@ -97,11 +94,11 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
             style.append("800;");
         }
         //ui->label->setStyleSheet(style);
-        label = "<span style='" + style + "'>" + view->Text + "</span>";
+        label = "<span style='" + style + "'>" + view->Description + "</span>";
         return label;
     }
     case 1: // Task row
-        return "<span style='background-color:transparent;padding-top:8px;padding-left:30px;'>" "- " + view->Text + "</span>";
+        return "<span style='background-color:transparent;padding-top:8px;padding-left:30px;'>" "- " + view->Description + "</span>";
     case 0: { // Item rows (projects/time entries)
         QString table;
         if (!view->Description.isEmpty())
