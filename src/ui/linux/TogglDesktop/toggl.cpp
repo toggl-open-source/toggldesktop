@@ -769,3 +769,19 @@ void TogglApi::openLegal(const QString &link) {
         toggl_privacy_policy(ctx);
     }
 }
+
+QRect const TogglApi::getWindowsFrameSetting() {
+    int64_t x;
+    int64_t y;
+    int64_t w;
+    int64_t h;
+    toggl_window_settings(ctx, &x, &y, &h, &w);
+    return QRect(static_cast<int>(x),
+                 static_cast<int>(y),
+                 static_cast<int>(h),
+                 static_cast<int>(w));
+}
+
+void TogglApi::setWindowsFrameSetting(const QRect frame) {
+    toggl_set_window_settings(ctx, frame.x(), frame.y(), frame.height(), frame.width());
+}

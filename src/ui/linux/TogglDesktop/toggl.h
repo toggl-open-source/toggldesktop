@@ -212,6 +212,9 @@ class TogglApi : public QObject {
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 
+    QRect const getWindowsFrameSetting();
+    void setWindowsFrameSetting(const QRect frame);
+
  signals:
     void displayApp(
         const bool open);
