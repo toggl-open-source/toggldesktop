@@ -29,6 +29,11 @@ void clearList(std::vector<T *> *list) {
     list->clear();
 }
 
+void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
+    Poco::Mutex::ScopedLock lock(timeEntries_m_);
+    TimeEntries.push_back(timeEntry);
+}
+
 void RelatedData::Clear() {
     clearList(&Workspaces);
     clearList(&Clients);

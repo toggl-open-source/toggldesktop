@@ -11,6 +11,8 @@
 #include "./timeline_event.h"
 #include "./types.h"
 
+#include "Poco/Mutex.h"
+
 namespace toggl {
 
 class AutotrackerRule;
@@ -97,7 +99,11 @@ class RelatedData {
 
     Client *clientByProject(Project *p) const;
 
+    void pushBackTimeEntry(TimeEntry  *timeEntry);
+
  private:
+    Poco::Mutex timeEntries_m_;
+
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,

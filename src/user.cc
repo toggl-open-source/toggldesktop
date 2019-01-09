@@ -215,7 +215,7 @@ TimeEntry *User::Start(
 
     te->SetUIModified();
 
-    related.TimeEntries.push_back(te);
+    related.pushBackTimeEntry(te);
 
     return te;
 }
@@ -256,7 +256,7 @@ TimeEntry *User::Continue(
 
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
 
-    related.TimeEntries.push_back(result);
+    related.pushBackTimeEntry(result);
 
     return result;
 }
@@ -438,7 +438,7 @@ TimeEntry *User::DiscardTimeAt(
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         split->SetWID(te->WID());
-        related.TimeEntries.push_back(split);
+        related.pushBackTimeEntry(split);
         return split;
     }
 
@@ -1080,7 +1080,7 @@ void User::loadUserTimeEntryFromJSON(
 
     if (!model) {
         model = new TimeEntry();
-        related.TimeEntries.push_back(model);
+        related.pushBackTimeEntry(model);
     }
     if (alive) {
         alive->insert(id);
