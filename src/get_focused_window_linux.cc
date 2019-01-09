@@ -65,6 +65,10 @@ static char *get_property(Display *disp, Window win, Atom xa_prop_type,
     // null terminate the result to make string handling easier
     tmp_size = (ret_format / (32 / sizeof(long))) * ret_nitems; // NOLINT
     ret = reinterpret_cast<char *>(malloc(tmp_size + 1));
+    if (!ret) {
+        XFree(ret_prop);
+        return NULL;
+    }
     memcpy(ret, ret_prop, tmp_size);
     ret[tmp_size] = '\0';
 
