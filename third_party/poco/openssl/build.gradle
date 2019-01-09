@@ -1,0 +1,71 @@
+import com.ullink.NuGetSpec;
+import com.ullink.NuGetPack;
+import com.ullink.NuGetPush;
+buildscript {
+}
+
+plugins {
+	id 'com.ullink.nuget' version '2.15'
+//	id 'com.jfrog.artifactory' version '4.1'
+}
+apply plugin: 	'nuget'
+
+nuget {	version = '4.4.1' }
+buildDir = new File('guild')	// DO NOT REMOVE OR CHANGE to 'build' since 'build' is a native build directory
+
+def opensslNugetSpec(arch) {
+	return tasks.create("nugetSpec-$arch", NuGetSpec) {
+		def String dir;
+		def String suffix;
+		if (arch == 'x86') { dir = 'win32'; suffix = '' }
+		if (arch == 'x64') { dir = 'win64'; suffix = '64' }
+		nuspec = [
+			metadata: [
+				id:          	"Pocoproject.OpenSSL.vs120.${arch}",
+				version:     	'1.1.0',
+				title:          'Pocoproject.OpenSSL.vs120',
+				authors:        'https://www.openssl.org/community/committers.html',
+				projectUrl: 	'https://www.openssl.org/',
+				copyright: 		'OpenSSL Copyright 2018',
+				requireLicenseAcceptance: false,
+				description:	'OpenSSL is a robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols. It is also a general-purpose cryptography library.',
+				dependencies: []
+			],
+			files: [
+				{ file(src: "$rootDir\\nuget\\Pocoproject.OpenSSL.vs120.${arch}.targets",	target: "build\\native") },
+				{ file(src: "$rootDir\\build\\$dir\\bin\\debug\\*.dll", 						target: "build\\native\\bin$suffix",	exclude: "$rootDir\\build\\$dir\\bin\\debug\\engine*") },
+				{ file(src: "$rootDir\\build\\$dir\\bin\\debug\\*.pdb", 						target: "build\\native\\bin$suffix",	exclude: "$rootDir\\build\\$dir\\bin\\debug\\engine*") },
+				{ file(src: "$rootDir\\build\\$dir\\bin\\debug\\*.lib", 						target: "build\\native\\lib$suffix",	exclude: "$rootDir\\build\\$dir\\bin\\debug\\engine*") },
+				{ file(src: "$rootDir\\build\\$dir\\bin\\release\\*.dll", 						target: "build\\native\\bin$suffix",	exclude: "$rootDir\\build\\$dir\\bin\\release\\engine*") },
+				{ file(src: "$rootDir\\build\\$dir\\bin\\release\\*.pdb", 						target: "build\\native\\bin$suffix",	exclude: "$rootDir\\build\\$dir\\bin\\release\\engine*") },
+				{ file(src: "$rootDir\\build\\$dir\\bin\\release\\*.lib", 						target: "build\\native\\lib$suffix",	exclude: "$rootDir\\build\\$dir\\bin\\release\\engine*") },
+				{ file(src: "$rootDir\\build\\$dir\\lib\\debug\\*",								target: "build\\native\\lib$suffix", 	exclude: "$rootDir\\build\\$dir\\lib\\debug\\engine*") },
+				{ file(src: "$rootDir\\build\\$dir\\lib\\release\\*",							target: "build\\native\\lib$suffix", 	exclude: "$rootDir\\build\\$dir\\lib\\release\\engine*") },
+				{ file(src: "$rootDir\\build\\include\\**", 									target: "build\\native\\inc") }
+			]
+		]
+	}
+}
+def opensslNugetPack(arch) {
+	return tasks.create("nugetPack-$arch", NuGetPack) {
+		dependsOn opensslNugetSpec(arch)
+	}
+}
+def opensslNugetPush(arch, source, key) {
+	return tasks.create("nugetPush-$arch", NuGetPush) {
+		dependsOn opensslNugetPack(arch)
+		serverUrl = source
+		apiKey = key
+	}
+}
+task pack() {
+//	dependsOn opensslNugetPack('x86')
+//	dependsOn opensslNugetPack('x64')
+}
+task push() {
+	def String source = 'https://www.nuget.org/api/v2/package'
+	def String key = 'oy2m57wltuj3sztm4caqumwvtqtikvgeleykoozpp4fvqm'
+	dependsOn opensslNugetPush('x86', source, key)
+	dependsOn opensslNugetPush('x64', source, key)
+}
+// nuget.org: oy2m57wltuj3sztm4caqumwvtqtikvgeleykoozpp4fvqm

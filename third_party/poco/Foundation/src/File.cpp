@@ -256,6 +256,12 @@ void File::renameTo(const std::string& path)
 }
 
 
+void File::linkTo(const std::string& path, LinkType type) const
+{
+	linkToImpl(path, type);
+}
+
+
 void File::remove(bool recursive)
 {
 	if (recursive && !isLink() && isDirectory())
@@ -345,6 +351,24 @@ void File::list(std::vector<std::string>& files) const
 		files.push_back(it.name());
 		++it;
 	}
+}
+
+
+File::FileSize File::totalSpace() const
+{
+	return totalSpaceImpl();
+}
+
+
+File::FileSize File::usableSpace() const
+{
+	return usableSpaceImpl();
+}
+
+
+File::FileSize File::freeSpace() const
+{
+	return freeSpaceImpl();
 }
 
 

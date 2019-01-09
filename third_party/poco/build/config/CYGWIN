@@ -41,7 +41,7 @@ IMPLIBLINKEXT    = .dll.a
 #
 # Compiler and Linker Flags
 #
-CFLAGS          = -std=c99
+CFLAGS          = 
 CFLAGS32        = 
 CFLAGS64        = 
 CXXFLAGS        = -Wa,-mbig-obj -DPOCO_NO_FPENVIRONMENT -DPOCO_NO_WSTRING

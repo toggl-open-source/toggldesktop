@@ -51,17 +51,6 @@ third_party/openssl/crypto/x86_64cpuid.s
 *.0
 *.pc
 *.time
-opensslconf.h
-
-third_party/poco/bin
-third_party/poco/**/bin
-third_party/poco/config.make
-third_party/poco/lib
-third_party/poco/*/samples/*/bin/
-third_party/poco/*/*/testsuite/bin/
-third_party/poco/Foundation/src/pocomsg.h
-third_party/poco/Foundation/src/pocomsg.rc
-third_party/poco/PageCompiler/File2Page/bin/
 
 .dep
 
@@ -84,10 +73,6 @@ third_party/TFDatePicker/TFDatePicker/build/
 xcshareddata
 
 *.obj
-*.lib
-*.dll
-*.pdb
-*.pdb
 *.tlog
 *.exe
 *.idb
