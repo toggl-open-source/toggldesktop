@@ -346,8 +346,8 @@ ifeq ($(osname), mac)
 	cp $(pocodir)/lib/Darwin/x86_64/libPocoUtil.$(pocoversion).dylib /usr/local/lib/
 	cp $(pocodir)/lib/Darwin/x86_64/libPocoXML.$(pocoversion).dylib /usr/local/lib/
 	cp $(pocodir)/lib/Darwin/x86_64/libPocoJSON.$(pocoversion).dylib /usr/local/lib/
-	cp $(openssldir)/libcrypto.1.1.dylib /usr/local/lib/
-	cp $(openssldir)/libssl.1.1.dylib /usr/local/lib/
+	cp $(openssldir)/libssl.1.1.dylib /usr/local/lib/ 2>/dev/null || :
+	cp $(openssldir)/libcrypto.1.1.dylib /usr/local/lib/ 2>/dev/null || :
 endif
 
 third_party/google-astyle/build/google-astyle:
