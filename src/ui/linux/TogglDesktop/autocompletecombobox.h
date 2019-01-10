@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QCompleter>
+#include <QSortFilterProxyModel>
 
 class AutocompleteComboBox : public QComboBox {
     friend class AutocompleteLineEdit;
@@ -35,6 +36,14 @@ class AutocompleteCompleter : public QCompleter {
     Q_OBJECT
 public:
     AutocompleteCompleter(QWidget *parent = nullptr);
+};
+
+class AutocompleteProxyModel : public QSortFilterProxyModel {
+    Q_OBJECT
+public:
+    AutocompleteProxyModel(QObject *parent = nullptr);
+
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 };
 
 #endif // AUTOCOMPLETECOMBOBOX_H
