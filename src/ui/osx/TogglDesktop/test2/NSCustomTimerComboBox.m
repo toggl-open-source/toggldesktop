@@ -8,6 +8,7 @@
 
 #import "NSCustomTimerComboBox.h"
 #import "UIEvents.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation NSCustomTimerComboBox
 
@@ -15,8 +16,8 @@
 {
 	if (self.isEditable)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
-															object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kForceCloseEditPopover
+																	object:nil];
 		return;
 	}
 }

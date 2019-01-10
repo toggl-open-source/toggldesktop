@@ -9,8 +9,8 @@
 #import "TimeEntryCell.h"
 #import "UIEvents.h"
 #import "ConvertHexColor.h"
-
 #import "toggl_api.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation TimeEntryCell
 
@@ -20,14 +20,14 @@ extern void *ctx;
 {
 	NSLog(@"TimeEntryCell continueTimeEntry GUID=%@", self.GUID);
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandContinue object:self.GUID];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandContinue object:self.GUID];
 }
 
 - (IBAction)toggleGroup:(id)sender
 {
 	if (self.Group)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:self.GroupName];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kToggleGroup object:self.GroupName];
 	}
 }
 

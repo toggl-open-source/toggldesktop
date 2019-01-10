@@ -18,6 +18,7 @@
 #import "NSCustomComboBox.h"
 #import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
+#import "TogglDesktop-Swift.h"
 
 @interface TimerEditViewController ()
 @property LiteAutoCompleteDataSource *liteAutocompleteDataSource;
@@ -168,9 +169,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTimeEntryList:notification.object];
 }
 
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
@@ -187,9 +186,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)startDisplayTimerState:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimerState:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTimerState:notification.object];
 }
 
 - (void)displayTimerState:(TimeEntryViewItem *)te
@@ -286,9 +283,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimeEntryEditor:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTimeEntryEditor:notification.object];
 }
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
@@ -394,9 +389,8 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopoverSize
-														object:nil
-													  userInfo:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResetEditPopoverSize
+																object:nil];
 
 	if (nil == self.time_entry || nil == self.time_entry.GUID)
 	{
@@ -464,13 +458,13 @@ NSString *kInactiveTimerColor = @"#999999";
 			[self.view removeConstraints:self.projectLabelConstraint];
 			self.constraintsAdded = NO;
 		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:kCommandStop
-															object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
+																	object:nil];
 		return;
 	}
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
-														object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kForceCloseEditPopover
+																object:nil];
 
 	self.disableChange = YES;
 	// resign current firstResponder
@@ -478,8 +472,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.disableChange = NO;
 	self.time_entry.duration = self.durationTextField.stringValue;
 	self.time_entry.Description = self.autoCompleteInput.stringValue;
-	[[NSNotificationCenter defaultCenter] postNotificationName:kCommandNew
-														object:self.time_entry];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandNew
+																object:self.time_entry];
 
 	// Reset autocomplete
 	[self.autoCompleteInput resetTable];

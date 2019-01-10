@@ -10,6 +10,7 @@
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "UIEvents.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation IdleNotificationWindowController
 
@@ -58,8 +59,8 @@ extern void *ctx;
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 
 	cmd.open = YES;
-	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayApp
-														object:cmd];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayApp
+																object:cmd];
 }
 
 - (IBAction)discardIdleAndContinue:(id)sender

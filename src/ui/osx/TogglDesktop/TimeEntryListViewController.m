@@ -492,7 +492,8 @@ extern void *ctx;
     // Group header clicked, toggle group open/closed
 	if (cell.Group)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kToggleGroup object:cell.GroupName];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kToggleGroup
+																	object:cell.GroupName];
 		return;
 	}
 

@@ -16,10 +16,7 @@
 #import "DisplayCommand.h"
 #import "Utils.h"
 #import "TogglDesktop-Swift.h"
-<<<<<<< HEAD
 #import "UndoTextField.h"
-=======
->>>>>>> 389e945f8... Refactor on TimeEntry List/Edit and AutoCompleteDatasource (mac)
 
 @interface TimeEntryEditViewController ()
 @property LiteAutoCompleteDataSource *liteDescriptionAutocompleteDataSource;
@@ -291,7 +288,6 @@ extern void *ctx;
 
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedHeight forKey:@"height"];
 
-//    [NSNotificationCenter defaultCenter] postnotifi
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResizeEditForm
 																object:nil
 															  userInfo:userInfo];

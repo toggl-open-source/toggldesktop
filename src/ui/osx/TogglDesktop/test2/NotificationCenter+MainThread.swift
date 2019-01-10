@@ -12,9 +12,9 @@ extension NotificationCenter {
 
     @objc func postNotificationOnMainThread(_ aName: NSNotification.Name,
                                             object anObject: Any?) {
-        runOnMainThreadIfNeed {[unowned self] in
-            self.post(name: aName, object: anObject)
-        }
+        postNotificationOnMainThread(aName,
+                                     object: anObject,
+                                     userInfo: nil)
     }
 
     @objc func postNotificationOnMainThread(_ aName: NSNotification.Name,

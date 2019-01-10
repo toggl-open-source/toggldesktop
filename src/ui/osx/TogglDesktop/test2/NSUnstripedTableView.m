@@ -7,12 +7,11 @@
 //
 
 #import "NSUnstripedTableView.h"
-
 #include <Carbon/Carbon.h>
-
 #import "TimeEntryCell.h"
 #import "TimeEntryCellWithHeader.h"
 #import "UIEvents.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation NSUnstripedTableView
 
@@ -39,9 +38,9 @@ extern void *ctx;
 	}
 	else if (event.keyCode == kVK_Escape)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kEscapeListing
-															object:nil
-														  userInfo:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kEscapeListing
+																	object:nil
+																  userInfo:nil];
 	}
 	else if (event.keyCode == kVK_Delete)
 	{
