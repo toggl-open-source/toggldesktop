@@ -64,9 +64,7 @@ extern void *ctx;
 
 - (void)startDisplayAutocomplete:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayAutocomplete:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayAutocomplete:notification.object];
 }
 
 - (void)displayAutocomplete:(NSMutableArray *)entries

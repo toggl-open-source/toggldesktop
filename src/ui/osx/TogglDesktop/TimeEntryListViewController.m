@@ -168,9 +168,7 @@ extern void *ctx;
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTimeEntryList:notification.object];
 }
 
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
@@ -328,9 +326,8 @@ extern void *ctx;
 {
 	if (notification.object == self.timeEntrypopover)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
-															object:nil
-														  userInfo:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResetEditPopover
+																	object:nil];
 	}
 }
 
@@ -394,9 +391,7 @@ extern void *ctx;
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimeEntryEditor:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTimeEntryEditor:notification.object];
 }
 
 - (int)numberOfRowsInTableView:(NSTableView *)tv
@@ -497,7 +492,7 @@ extern void *ctx;
     // Group header clicked, toggle group open/closed
 	if (cell.Group)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:cell.GroupName];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kToggleGroup object:cell.GroupName];
 		return;
 	}
 
@@ -548,9 +543,8 @@ extern void *ctx;
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kResetEditPopover
-														object:nil
-													  userInfo:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResetEditPopover
+																object:nil];
 	[self setDefaultPopupSize];
 }
 
@@ -652,9 +646,7 @@ extern void *ctx;
 
 - (void)startDisplayLogin:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayLogin:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayLogin:notification.object];
 }
 
 - (void)displayLogin:(DisplayCommand *)cmd
@@ -714,9 +706,8 @@ extern void *ctx;
 		[self closeEditPopup:nil];
 		return;
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
-														object:nil
-													  userInfo:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
+																object:nil];
 	[self clearLastSelectedEntry];
 	self.lastSelectedRowIndex = -1;
 	[self.timeEntriesTableView deselectAll:nil];

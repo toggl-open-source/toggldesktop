@@ -10,9 +10,18 @@ import Foundation
 
 extension NotificationCenter {
 
-    @objc func postNotificationOnMainThread(_ aName: NSNotification.Name, object anObject: Any?) {
+    @objc func postNotificationOnMainThread(_ aName: NSNotification.Name,
+                                            object anObject: Any?) {
         runOnMainThreadIfNeed {[unowned self] in
             self.post(name: aName, object: anObject)
+        }
+    }
+
+    @objc func postNotificationOnMainThread(_ aName: NSNotification.Name,
+                                            object anObject: Any?,
+                                            userInfo: [AnyHashable: Any]?) {
+        runOnMainThreadIfNeed {[unowned self] in
+            self.post(name: aName, object: anObject, userInfo: userInfo)
         }
     }
 }
