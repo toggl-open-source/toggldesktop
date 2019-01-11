@@ -95,7 +95,7 @@ class User : public BaseModel {
 
     void AddClientToList(Client *c);
 
-    std::string DateDuration(TimeEntry *te);
+    std::string DateDuration(TimeEntry *te) const;
 
     const std::string &APIToken() const {
         return api_token_;

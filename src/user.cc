@@ -261,17 +261,21 @@ TimeEntry *User::Continue(
     return result;
 }
 
-std::string User::DateDuration(TimeEntry * const te) {
+std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
     std::string date_header = Formatter::FormatDateHeader(te->Start());
-    related.forEachTimeEntries([&](TimeEntry *n) {
+    for (std::vector<TimeEntry *>::const_iterator it =
+        related.TimeEntries.begin();
+            it != related.TimeEntries.end();
+            it++) {
+        TimeEntry *n = *it;
         if (Formatter::FormatDateHeader(n->Start()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
             if (duration > 0) {
                 date_duration += duration;
             }
         }
-    });
+    }
     return Formatter::FormatDurationForDateHeader(date_duration);
 }
 
@@ -505,13 +509,11 @@ void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
 }
 
 void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
-    for (std::vector<TimeEntry *>::iterator it = related.TimeEntries.begin();
-            it != related.TimeEntries.end(); it++) {
-        TimeEntry *model = *it;
+    related.forEachTimeEntries([&](TimeEntry *model) {
         if (model->TID() == tid) {
             model->SetTID(0);
         }
-    }
+    });
 }
 
 void User::loadUserTagFromJSON(
