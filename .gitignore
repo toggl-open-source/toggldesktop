@@ -160,3 +160,12 @@ src/ui/windows/TogglDesktop/TogglDesktopDLLInteropTest/bin
 
 # Qt Creator
 .*.swp
+
+# Poco binary
+third_party/poco/bin
+third_party/poco/lib
+
+# VS 
+src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin/Release/
+src/lib/windows/TogglDesktopDLL/Debug
+src/ui/windows/TogglDesktop/.vs
