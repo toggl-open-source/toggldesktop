@@ -166,6 +166,10 @@ third_party/poco/bin
 third_party/poco/lib
 
 # VS 
-src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin/Release/
+src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin/Debug
+src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin/Release
 src/lib/windows/TogglDesktopDLL/Debug
+src/lib/windows/TogglDesktopDLL/Release
 src/ui/windows/TogglDesktop/.vs
+src/ui/windows/TogglDesktop/Debug
+src/ui/windows/TogglDesktop/Release
