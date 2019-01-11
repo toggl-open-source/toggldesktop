@@ -87,29 +87,27 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
     case 11: // Category row
         return "<div width=320px style='width:320px;font-size:12px;color:#9e9e9e;background-color:transparent;font-weight:500'>" + view->Description + "</div>";
     case 12: { // Client row / no project row
-        QString style = transparent + "padding-top:5px;padding-left:10px;font-weight:";
-        if (view->Type == 2) {
-            style.append("normal;");
-        } else {
-            style.append("800;");
-        }
-        //ui->label->setStyleSheet(style);
+        QString style = transparent + "padding-top:5px;padding-left:10px;font-weight:800;";
         label = "<span style='" + style + "'>" + view->Description + "</span>";
         return label;
     }
+    case 2: { // Project items rows
+        label.append("<div style='margin-left:15px;font-size:12px;color:" + view->ProjectColor + ";'>• " + view->ProjectLabel + "</div>");
+        return label;
+    }
     case 1: // Task row
-        return "<span style='background-color:transparent;padding-top:8px;padding-left:30px;'>" "- " + view->Description + "</span>";
+        return "<div style='margin-left:15px;background-color:transparent;'>" + view->Description + "</span>";
     case 0: { // Item rows (projects/time entries)
         QString table;
         if (!view->Description.isEmpty())
-            table.append("<span style='font-size:14px;'>" + view->Description + "</span>");
+            table.append("<span style='font-size:12px;'>" + view->Description + " </span>");
         if (view->TaskID)
-            table.append("<span style='font-size:10px;'> - " + view->TaskLabel + "</span>");
+            table.append("<span style='font-size:12px;'> - " + view->TaskLabel + " </span>");
         //table.append("<br>");
         if (view->ProjectID)
-            table.append("<span style='font-size:12px;color:" + view->ProjectColor + ";'> •" + view->ProjectLabel + "</span>");
+            table.append("<span style='font-size:12px;color:" + view->ProjectColor + ";'> •" + view->ProjectLabel + " </span>");
         if (view->ClientID)
-            table.append("<span style='font-size:8px;top-padding:1px;bottom-padding:1px'>" + view->ClientLabel + "</span>");
+            table.append("<span style='font-size:12px;color:#9e9e9e;'> " + view->ClientLabel + "</span>");
         return table;
     }
     default:
