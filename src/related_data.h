@@ -101,6 +101,8 @@ class RelatedData {
 
     void pushBackTimeEntry(TimeEntry  *timeEntry);
 
+    void forEachTimeEntries(std::function<void(TimeEntry *)> f);
+
  private:
     Poco::Mutex timeEntries_m_;
 

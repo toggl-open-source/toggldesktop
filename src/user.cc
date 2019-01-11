@@ -261,21 +261,17 @@ TimeEntry *User::Continue(
     return result;
 }
 
-std::string User::DateDuration(TimeEntry * const te) const {
+std::string User::DateDuration(TimeEntry * const te) {
     Poco::Int64 date_duration(0);
     std::string date_header = Formatter::FormatDateHeader(te->Start());
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
-        TimeEntry *n = *it;
+    related.forEachTimeEntries([&](TimeEntry *n) {
         if (Formatter::FormatDateHeader(n->Start()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
             if (duration > 0) {
                 date_duration += duration;
             }
         }
-    }
+    });
     return Formatter::FormatDurationForDateHeader(date_duration);
 }
 

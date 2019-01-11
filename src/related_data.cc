@@ -17,6 +17,7 @@
 #include "./task.h"
 #include "./time_entry.h"
 #include "./workspace.h"
+#include "Poco/RWLock.h"
 
 namespace toggl {
 
@@ -27,6 +28,11 @@ void clearList(std::vector<T *> *list) {
         delete value;
     }
     list->clear();
+}
+
+void RelatedData::forEachTimeEntries(std::function<void(TimeEntry *)> f) {
+    Poco::Mutex::ScopedLock lock(timeEntries_m_);
+    std::for_each(TimeEntries.begin(), TimeEntries.end(), f);
 }
 
 void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
