@@ -12,6 +12,7 @@
 class AutocompleteListView : public QListView
 {
     Q_OBJECT
+    friend class AutocompleteComboBox;
 public:
     explicit AutocompleteListView(QWidget *parent = 0);
 

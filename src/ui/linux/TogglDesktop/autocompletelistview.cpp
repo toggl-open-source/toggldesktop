@@ -10,8 +10,8 @@ AutocompleteListView::AutocompleteListView(QWidget *parent) :
     setFixedWidth(320);
     setViewMode(QListView::ListMode);
     setUniformItemSizes(true);
-    setItemDelegate(new AutoCompleteItemDelegate(this));
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setItemDelegateForColumn(0, new AutoCompleteItemDelegate(this));
 }
 
 void AutocompleteListView::paintEvent(QPaintEvent *e) {
@@ -35,7 +35,11 @@ void AutocompleteListView::keyPressEvent(QKeyEvent *e)
         return;
     case Qt::Key_Tab:
     case Qt::Key_Backtab:
+        QListView::keyPressEvent(e);
+        return;
     case Qt::Key_Down:
+        QListView::keyPressEvent(e);
+        return;
     case Qt::Key_Up:
         QListView::keyPressEvent(e);
         return;
@@ -68,11 +72,7 @@ void AutoCompleteItemDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 }
 
 QSize AutoCompleteItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    auto view = getCurrentView(index);
-    QSize size = QItemDelegate::sizeHint(option, index);
-    size.setHeight(24);
-    size.setWidth(320);
-    return size;
+    return { 320, 24 };
 }
 
 QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {

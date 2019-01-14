@@ -23,7 +23,7 @@ Qt::ItemFlags AutocompleteListModel::flags(const QModelIndex &index) const {
     case 2:
             return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     default:
-            return Qt::ItemIsSelectable;
+            return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 }
 

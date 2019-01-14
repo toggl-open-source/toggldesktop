@@ -35,7 +35,7 @@ descriptionModel(new AutocompleteListModel(this)) {
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
-    connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
+    connect(ui->description, SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
 
     ui->description->setModel(descriptionModel);
