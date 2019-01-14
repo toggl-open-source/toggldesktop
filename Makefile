@@ -42,7 +42,7 @@ MSBUILD=/cygdrive/c/Program\ Files/MSBuild/12.0/Bin/MSBuild.exe
 endif
 
 ifeq ($(uname), Darwin)
-xcodebuild_command=xcodebuild $(XCODELEGACYSDK) \
+xcodebuild_command=xcodebuild \
 				  -scheme TogglDesktop \
 				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
 				  -configuration Release
@@ -238,7 +238,7 @@ app: lib ui
 
 ifeq ($(osname), mac)
 lib:
-	xcodebuild $(XCODELEGACYSDK) -project src/lib/osx/TogglDesktopLibrary.xcodeproj
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj
 endif
 
 ifeq ($(osname), linux)
