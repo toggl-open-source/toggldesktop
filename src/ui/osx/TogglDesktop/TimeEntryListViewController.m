@@ -368,7 +368,6 @@ extern void *ctx;
 
 		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 		[self.timeEntryEditViewController setDragHandle:onLeft];
-		[self.timeEntryEditViewController setInsertionPointColor];
 	}
 }
 

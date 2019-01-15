@@ -23,19 +23,4 @@
 	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
 }
 
-- (BOOL)becomeFirstResponder
-{
-	BOOL success = [super becomeFirstResponder];
-
-	if (success && self.isEditable)
-	{
-		NSTextView *textField = (NSTextView *)[self currentEditor];
-		if ([textField respondsToSelector:@selector(setInsertionPointColor:)])
-		{
-			[textField setInsertionPointColor:[NSColor whiteColor]];
-		}
-	}
-	return success;
-}
-
 @end
