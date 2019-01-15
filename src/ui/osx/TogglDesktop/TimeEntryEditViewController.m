@@ -15,12 +15,14 @@
 #import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
+#import "TogglDesktop-Swift.h"
+#import "UndoTextField.h"
 
 @interface TimeEntryEditViewController ()
 @property LiteAutoCompleteDataSource *liteDescriptionAutocompleteDataSource;
 @property LiteAutoCompleteDataSource *liteProjectAutocompleteDataSource;
 @property NSTimer *timerMenubarTimer;
-@property TimeEntryViewItem *timeEntry; // Time entry being edited
+@property (strong, nonatomic) TimeEntryViewItem *timeEntry; // Time entry being edited
 @property NSMutableArray *tagsList;
 @property NSMutableArray *fullClientList;
 @property NSMutableArray *workspaceClientList;
@@ -184,8 +186,7 @@ extern void *ctx;
 	[self.projectAutoCompleteInput.autocompleteTableView setDelegate:self];
 }
 
-- (void)viewDidDisappear
-{
+- (void)viewDidDisappear {
 	[super viewDidDisappear];
 	self.isOpen = NO;
 }
@@ -1543,6 +1544,59 @@ extern void *ctx;
 	}
 
 	return retval;
+}
+
+- (void)registerUndoForAllFields
+{
+	if (self.timeEntry == nil)
+	{
+		return;
+	}
+
+	TimeEntrySnapshot *snapshot = [[UndoManager shared] getSnapshotFor:self.timeEntry];
+	NSLog(@"%@", snapshot.debugDescription);
+	if (snapshot != nil)
+	{
+		[self.descriptionAutoCompleteInput registerUndoWithValue:snapshot.descriptionUndoValue];
+		[self.projectAutoCompleteInput registerUndoWithValue:snapshot.projectLableUndoValue.projectAndTaskLabel];
+		[self.durationTextField registerUndoWithValue:snapshot.durationUndoValue];
+		[self.startTime registerUndoWithValue:snapshot.startTimeUndoValue];
+		[self.endTime registerUndoWithValue:snapshot.endTimeUndoValue];
+		[self registerUndoForProjectWithSnapshot:snapshot.projectLableUndoValue];
+	}
+	else
+	{
+		[self.descriptionAutoCompleteInput.undoManager removeAllActions];
+		[self.projectAutoCompleteInput.undoManager removeAllActions];
+		[self.durationTextField.undoManager removeAllActions];
+		[self.startTime.undoManager removeAllActions];
+		[self.endTime.undoManager removeAllActions];
+		[self.projectAutoCompleteInput.undoManager removeAllActions];
+	}
+}
+
+- (void)setTimeEntry:(TimeEntryViewItem *)timeEntry
+{
+	_timeEntry = timeEntry;
+	[self registerUndoForAllFields];
+}
+
+- (void)registerUndoForProjectWithSnapshot:(ProjectSnapshot *)snapshot
+{
+	if (snapshot == nil)
+	{
+		return;
+	}
+
+	[self.projectAutoCompleteInput.undoManager removeAllActions];
+	[self.projectAutoCompleteInput.undoManager registerUndoWithTarget:self
+															 selector:@selector(updateProjectValueForProjectAutoCompleteInput:)
+															   object:[[AutocompleteItem alloc] initWithSnapshot:snapshot]];
+}
+
+- (void)updateProjectValueForProjectAutoCompleteInput:(AutocompleteItem *)item
+{
+	[self updateWithSelectedProject:item withKey:nil];
 }
 
 @end

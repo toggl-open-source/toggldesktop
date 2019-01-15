@@ -15,13 +15,13 @@
 #import "AutoCompleteInput.h"
 #import "AutoCompleteItem.h"
 
+@class UndoTextField;
+
 @interface TimeEntryEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
-{
-}
 @property (strong) IBOutlet MKColorWellCustom *colorPicker;
-@property IBOutlet NSTextField *durationTextField;
-@property IBOutlet NSTextField *startTime;
-@property IBOutlet NSTextField *endTime;
+@property IBOutlet UndoTextField *durationTextField;
+@property IBOutlet UndoTextField *startTime;
+@property IBOutlet UndoTextField *endTime;
 @property IBOutlet NSBox *startEndTimeBox;
 @property IBOutlet TFDatePicker *startDate;
 @property IBOutlet NSTokenField *tagsTokenField;

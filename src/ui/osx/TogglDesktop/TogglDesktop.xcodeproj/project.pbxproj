@@ -148,6 +148,12 @@
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
+		BA712EC221BF907200A2D8DD /* UndoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoStorage.swift */; };
+		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
+		BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
+		BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoStack.swift */; };
+		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
+		BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -655,6 +661,13 @@
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
+		BA712EC121BF907200A2D8DD /* UndoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStorage.swift; sourceTree = "<group>"; };
+		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
+		BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntrySnapshot.swift; sourceTree = "<group>"; };
+		BA712EC721BF9F1200A2D8DD /* UndoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStack.swift; sourceTree = "<group>"; };
+		BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UndoTextField.h; sourceTree = "<group>"; };
+		BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UndoTextField.m; sourceTree = "<group>"; };
+		BA7B4C7B21C293E700B75B14 /* String+Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Optional.swift"; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
 		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
@@ -768,6 +781,7 @@
 				74E1682E180F269F0026261C /* gtm */,
 				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				74E857AA194F8807007A88B9 /* ssl */,
+				BA712EAF21BF904E00A2D8DD /* Feature */,
 				BA0CEC4C21BE516F00F1BF01 /* Diff */,
 				69FC17FA17E6534400B96425 /* ui */,
 				69FC181717E6534500B96425 /* kopsikTests */,
@@ -931,6 +945,8 @@
 				BA2DA11F21A691FF0027B7A5 /* TrackingService.m */,
 				3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */,
 				3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */,
+				BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */,
+				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1156,6 +1172,24 @@
 				BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */,
 			);
 			name = UserNotification;
+		};
+		BA712EAF21BF904E00A2D8DD /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				BA712EC021BF905B00A2D8DD /* Undo */,
+			);
+			path = Feature;
+			sourceTree = "<group>";
+		};
+		BA712EC021BF905B00A2D8DD /* Undo */ = {
+			isa = PBXGroup;
+			children = (
+				BA712EC121BF907200A2D8DD /* UndoManager.swift */,
+				BA712EC721BF9F1200A2D8DD /* UndoStack.swift */,
+				BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */,
+				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
+			);
+			path = Undo;
 			sourceTree = "<group>";
 		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
@@ -1638,6 +1672,8 @@
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
+				BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */,
+				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,
 				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
@@ -1684,6 +1720,7 @@
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
+				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
@@ -1703,10 +1740,12 @@
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
+				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
+				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,
 			);
