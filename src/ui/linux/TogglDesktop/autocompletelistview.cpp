@@ -18,6 +18,36 @@ void AutocompleteListView::paintEvent(QPaintEvent *e) {
     QListView::paintEvent(e);
 }
 
+QModelIndex AutocompleteListView::moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers) {
+    switch(cursorAction) {
+    case MoveDown:
+    case MoveRight:
+    case MoveEnd:
+    case MovePageDown:
+    case MoveNext:
+        for (int i = currentIndex().row() + 1; i < model()->rowCount(); i++) {
+            auto index = model()->index(i, 0);
+            if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                return model()->index(i, 0);
+            }
+        }
+        return QModelIndex();
+    case MoveUp:
+    case MoveLeft:
+    case MoveHome:
+    case MovePageUp:
+    case MovePrevious: {
+        for (int i = currentIndex().row() - 1; i >= 0; i--) {
+            auto index = model()->index(i, 0);
+            if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                return model()->index(i, 0);
+            }
+        }
+        return QModelIndex();
+    }
+    }
+}
+
 void AutocompleteListView::keyPressEvent(QKeyEvent *e)
 {
     bool modifiers = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);

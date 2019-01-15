@@ -55,7 +55,7 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
         if (!listView->isVisible())
             completer->complete();
         else
-            QComboBox::keyPressEvent(event);
+            listView->keyPressEvent(event);
         break;
     default:
         QComboBox::keyPressEvent(event);
@@ -72,6 +72,14 @@ AutocompleteCompleter::AutocompleteCompleter(QWidget *parent)
     setCompletionMode(QCompleter::UnfilteredPopupCompletion);
 }
 
+bool AutocompleteCompleter::eventFilter(QObject *o, QEvent *e) {
+    // completely ignore key events in the filter and let the combobox handle them
+    if (e->type() == QEvent::KeyPress) {
+        return false;
+    }
+    return QCompleter::eventFilter(o, e);
+}
+
 AutocompleteLineEdit::AutocompleteLineEdit(AutocompleteComboBox *parent)
     : QLineEdit(parent)
 {
@@ -83,8 +91,8 @@ AutocompleteComboBox *AutocompleteLineEdit::comboBox() {
 }
 
 void AutocompleteLineEdit::keyPressEvent(QKeyEvent *event) {
-    qCritical() << "AHOY";
     switch (event->key()) {
+        return;
     case Qt::Key_Enter:
     case Qt::Key_Return:
     case Qt::Key_Escape: {

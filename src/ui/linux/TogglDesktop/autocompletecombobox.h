@@ -51,6 +51,8 @@ class AutocompleteCompleter : public QCompleter {
     friend class AutocompleteComboBox;
 public:
     AutocompleteCompleter(QWidget *parent = nullptr);
+
+    bool eventFilter(QObject *o, QEvent *e) override;
 };
 
 class AutocompleteProxyModel : public QSortFilterProxyModel {
