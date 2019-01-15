@@ -33,6 +33,7 @@
         <customView id="ozl-58-bBU" customClass="NSViewEscapable">
             <rect key="frame" x="0.0" y="0.0" width="346" height="356"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <point key="canvasLocation" x="26" y="512"/>
         </customView>
         <customView id="3">
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
