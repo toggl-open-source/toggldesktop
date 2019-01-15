@@ -44,7 +44,7 @@ QVariant AutocompleteListModel::data(const QModelIndex &index, int role) const {
         case 0:
             return view->Description;
         default:
-            return view->Text;
+            return QString();
         }
     }
     if (role == Qt::UserRole)

@@ -32,9 +32,12 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
         case Qt::Key_Escape:
             setCurrentText(oldLabel);
             oldLabel = QString();
-            [[clang::fallthrough]];
+            listView->setVisible(false);
+            return true;
         case Qt::Key_Enter:
         case Qt::Key_Return:
+            if (currentView() && currentView()->Type == 0)
+                emit returnPressed();
             listView->setVisible(false);
             return true;
         case Qt::Key_Up:
@@ -52,6 +55,10 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
     return QComboBox::eventFilter(o, e);
 }
 
+AutocompleteView *AutocompleteComboBox::currentView() {
+    return qvariant_cast<AutocompleteView*>(currentData());
+}
+
 void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
     case Qt::Key_Down:
@@ -64,9 +71,6 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
     default:
         QComboBox::keyPressEvent(event);
     }
-}
-
-void AutocompleteComboBox::onModelChanged() {
 }
 
 void AutocompleteComboBox::onDropdownVisibleChanged() {

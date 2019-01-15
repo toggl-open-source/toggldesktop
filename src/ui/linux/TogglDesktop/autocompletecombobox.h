@@ -6,6 +6,8 @@
 #include <QCompleter>
 #include <QSortFilterProxyModel>
 
+#include "autocompleteview.h"
+
 class AutocompleteLineEdit;
 class AutocompleteCompleter;
 class AutocompleteProxyModel;
@@ -21,12 +23,16 @@ public:
 
     bool eventFilter(QObject *o, QEvent *e) override;
 
+    AutocompleteView *currentView();
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
-    void onModelChanged();
     void onDropdownVisibleChanged();
+
+signals:
+    void returnPressed();
 
 private:
     AutocompleteLineEdit *lineEdit;
