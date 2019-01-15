@@ -32,8 +32,8 @@
                                             </constraints>
                                             <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about ne..." id="KGe-cR-NlL">
                                                 <font key="font" metaFont="system"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
@@ -43,8 +43,8 @@
                                             </constraints>
                                             <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL" id="apI-Za-Hk2">
                                                 <font key="font" metaFont="systemBold"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
                                         <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-8A-XnH" userLabel="Unsynced_icon">
@@ -69,8 +69,6 @@
                                     <constraint firstItem="Kef-8A-XnH" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" id="hxV-rw-GA2"/>
                                     <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" id="nSQ-Fz-0X7"/>
                                 </constraints>
-                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
-                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
                                 <rect key="frame" x="88" y="13" width="24" height="24"/>
@@ -100,8 +98,6 @@
                                     <constraint firstItem="yV9-eP-fCj" firstAttribute="leading" secondItem="7lc-zN-Cm5" secondAttribute="leading" id="H0q-II-jla"/>
                                     <constraint firstAttribute="width" constant="24" id="g2X-HK-drE"/>
                                 </constraints>
-                                <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
-                                <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
                         </subviews>
                         <constraints>
@@ -115,8 +111,6 @@
                         <constraint firstItem="dt4-Zf-56t" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" id="ewN-Z0-chU"/>
                         <constraint firstAttribute="bottom" secondItem="dt4-Zf-56t" secondAttribute="bottom" id="wpH-TW-gRX"/>
                     </constraints>
-                    <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
-                    <color key="fillColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUA-1d-pGg">
                     <rect key="frame" x="151" y="12" width="24" height="24"/>
@@ -146,8 +140,6 @@
                         <constraint firstItem="Gcj-ki-Hus" firstAttribute="leading" secondItem="pUA-1d-pGg" secondAttribute="leading" id="dOT-4w-73G"/>
                         <constraint firstAttribute="width" constant="24" id="zEn-2B-XRB"/>
                     </constraints>
-                    <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
-                    <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="TagBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6v5-Qq-QVS">
                     <rect key="frame" x="119" y="18" width="13" height="11"/>
@@ -171,8 +163,6 @@
                         <constraint firstItem="29c-rg-nft" firstAttribute="centerY" secondItem="6v5-Qq-QVS" secondAttribute="centerY" id="X25-jH-9YZ"/>
                         <constraint firstAttribute="width" constant="13" id="rQy-J7-ueT"/>
                     </constraints>
-                    <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
-                    <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="BillableBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A8h-uh-nk3">
                     <rect key="frame" x="139" y="17" width="7" height="13"/>
@@ -196,8 +186,6 @@
                         <constraint firstAttribute="height" constant="13" id="9nA-ZA-Dcx"/>
                         <constraint firstAttribute="width" constant="7" id="bXb-gf-AYb"/>
                     </constraints>
-                    <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
-                    <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="DurationBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUV-Fj-IYJ">
                     <rect key="frame" x="177" y="16" width="63" height="16"/>
@@ -210,8 +198,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="03:21:30" id="Ten-lK-6RR">
                                     <font key="font" metaFont="cellTitle"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                         </subviews>
@@ -220,8 +208,6 @@
                         <constraint firstAttribute="height" constant="16" id="Nob-mi-BiS"/>
                         <constraint firstAttribute="width" constant="63" id="iL1-tt-qe0"/>
                     </constraints>
-                    <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
-                    <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
             </subviews>
             <constraints>

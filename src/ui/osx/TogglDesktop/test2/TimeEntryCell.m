@@ -203,8 +203,6 @@ extern void *ctx;
 	[self.groupToggleButton setHidden:!self.Group];
 	self.descriptionBoxLead.constant = lead;
 	self.descriptionBoxTrail.constant = trail;
-
-	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:fillColor]];
 }
 
 - (void)focusFieldName
@@ -239,7 +237,7 @@ extern void *ctx;
 
 - (void)setFocused
 {
-	[self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"]];
+	// [self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"]];
 }
 
 - (void)openEdit
