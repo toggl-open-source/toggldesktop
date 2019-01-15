@@ -111,6 +111,7 @@
                         <constraint firstItem="dt4-Zf-56t" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" id="ewN-Z0-chU"/>
                         <constraint firstAttribute="bottom" secondItem="dt4-Zf-56t" secondAttribute="bottom" id="wpH-TW-gRX"/>
                     </constraints>
+                    <color key="fillColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUA-1d-pGg">
                     <rect key="frame" x="151" y="12" width="24" height="24"/>

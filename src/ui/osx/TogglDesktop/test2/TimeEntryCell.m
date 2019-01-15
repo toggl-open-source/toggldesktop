@@ -237,7 +237,6 @@ extern void *ctx;
 
 - (void)setFocused
 {
-	// [self.backgroundBox setFillColor:[ConvertHexColor hexCodeToNSColor:@"#E8E8E8"]];
 }
 
 - (void)openEdit

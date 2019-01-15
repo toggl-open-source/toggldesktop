@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,7 +28,7 @@
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Thu 22. Jan" id="Rk2-8z-I6y">
                                     <font key="font" metaFont="cellTitle"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
@@ -52,6 +53,7 @@
                         <constraint firstAttribute="trailing" secondItem="A9Z-Z5-Qzd" secondAttribute="trailing" constant="14" id="pdU-vs-HlT"/>
                         <constraint firstItem="Eux-yk-8iS" firstAttribute="leading" secondItem="PuG-98-30a" secondAttribute="leading" constant="15" id="zGM-wF-4mT"/>
                     </constraints>
+                    <color key="fillColor" name="alternatingContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="HvF-1T-7Z3">
@@ -250,6 +252,7 @@
                         <constraint firstAttribute="trailing" secondItem="DdV-RE-Kny" secondAttribute="trailing" constant="12" id="wEr-pQ-m6g"/>
                         <constraint firstAttribute="trailing" secondItem="zIj-LV-eXy" secondAttribute="trailing" constant="106" id="ySX-Kj-fCR"/>
                     </constraints>
+                    <color key="fillColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     <size key="contentViewMargins" width="0.0" height="10"/>
                 </box>
             </subviews>
