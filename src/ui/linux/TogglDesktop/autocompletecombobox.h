@@ -26,12 +26,15 @@ protected:
 
 private slots:
     void onModelChanged();
+    void onDropdownVisibleChanged();
 
 private:
     AutocompleteLineEdit *lineEdit;
     AutocompleteCompleter *completer;
     AutocompleteProxyModel *proxyModel;
     AutocompleteListView *listView;
+
+    QString oldLabel {};
 };
 
 class AutocompleteLineEdit : public QLineEdit {

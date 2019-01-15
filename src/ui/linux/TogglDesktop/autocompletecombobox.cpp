@@ -12,12 +12,12 @@ AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     , listView(qobject_cast<AutocompleteListView*>(completer->popup()))
 {
     setEditable(true);
-    lineEdit->installEventFilter(this);
     completer->installEventFilter(this);
     listView->installEventFilter(this);
     completer->setModel(proxyModel);
     setLineEdit(lineEdit);
     setCompleter(completer);
+    connect(listView, &AutocompleteListView::visibleChanged, this, &AutocompleteComboBox::onDropdownVisibleChanged);
     connect(lineEdit, &QLineEdit::textEdited, proxyModel, &AutocompleteProxyModel::setFilterFixedString);
 }
 
@@ -29,6 +29,14 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
     if (e->type() == QEvent::KeyPress) {
         auto ke = reinterpret_cast<QKeyEvent*>(e);
         switch (ke->key()) {
+        case Qt::Key_Escape:
+            setCurrentText(oldLabel);
+            oldLabel = QString();
+            [[clang::fallthrough]];
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            listView->setVisible(false);
+            return true;
         case Qt::Key_Up:
         case Qt::Key_Down:
             if (!listView->isVisible())
@@ -37,7 +45,8 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
                 listView->keyPressEvent(ke);
             return true;
         default:
-            return QComboBox::eventFilter(o, e);
+            lineEdit->keyPressEvent(ke);
+            return true;
         }
     }
     return QComboBox::eventFilter(o, e);
@@ -45,11 +54,6 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
 
 void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
-    case Qt::Key_Escape:
-        QComboBox::keyPressEvent(event);
-        break;
     case Qt::Key_Down:
     case Qt::Key_Up:
         if (!listView->isVisible())
@@ -63,6 +67,12 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
 }
 
 void AutocompleteComboBox::onModelChanged() {
+}
+
+void AutocompleteComboBox::onDropdownVisibleChanged() {
+    if (listView->isVisible()) {
+        oldLabel = currentText();
+    }
 }
 
 AutocompleteCompleter::AutocompleteCompleter(QWidget *parent)
@@ -92,21 +102,6 @@ AutocompleteComboBox *AutocompleteLineEdit::comboBox() {
 
 void AutocompleteLineEdit::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
-        return;
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
-    case Qt::Key_Escape: {
-        // remembering the edit string is a HACK, this should be done in a different way
-        // not sure how to do it atm
-        /*
-        QString previous = text();
-        QLineEdit::keyPressEvent(event);
-        if (text().isEmpty() && !previous.isEmpty()) {
-            setText(previous);
-        }
-        break;
-        */
-    }
     default:
         QLineEdit::keyPressEvent(event);
     }

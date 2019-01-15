@@ -20,9 +20,14 @@ public:
 
     QModelIndex moveCursor(CursorAction cursorAction, Qt::KeyboardModifiers modifiers) override;
 
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
+
 signals:
     void keyPress(QKeyEvent *e);
     void returnPressed();
+
+    void visibleChanged();
 
 protected:
     void keyPressEvent(QKeyEvent *e);

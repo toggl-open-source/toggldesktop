@@ -46,6 +46,17 @@ QModelIndex AutocompleteListView::moveCursor(QAbstractItemView::CursorAction cur
         return QModelIndex();
     }
     }
+    return QModelIndex();
+}
+
+void AutocompleteListView::showEvent(QShowEvent *event) {
+    emit visibleChanged();
+    QListView::showEvent(event);
+}
+
+void AutocompleteListView::hideEvent(QHideEvent *event) {
+    emit visibleChanged();
+    QListView::hideEvent(event);
 }
 
 void AutocompleteListView::keyPressEvent(QKeyEvent *e)
