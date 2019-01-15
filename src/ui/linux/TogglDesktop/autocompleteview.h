@@ -69,6 +69,17 @@ class AutocompleteView : public QObject {
             }
 
             if (view->Type == 0 && currentWorkspace && currentWorkspace->Description == view->WorkspaceName)
+                currentWorkspace->_Children.append(view);
+
+            if (currentLevel1Header)
+                currentLevel1Header->_Children.append(view);
+            if (currentLevel2Header)
+                currentLevel2Header->_Children.append(view);
+            if (currentLevel3Header)
+                currentLevel3Header->_Children.append(view);
+
+/*
+            if (view->Type == 0 && currentWorkspace && currentWorkspace->Description == view->WorkspaceName)
                 currentWorkspace->Text.append(" " + view->Text + " " + view->Description);
 
             if (currentLevel1Header)
@@ -78,6 +89,7 @@ class AutocompleteView : public QObject {
             if (currentLevel3Header)
                 currentLevel3Header->Text.append(" " + view->Text + " " + view->Description + " " + view->ProjectLabel + " " + view->ClientLabel + " " + view->TaskLabel + " " + view->ProjectAndTaskLabel);
 
+*/
             lastType = view->Type;
 
             result.push_back(view);
@@ -102,6 +114,8 @@ class AutocompleteView : public QObject {
     uint64_t Type { 0 };
     bool Billable { false };
     QString Tags {};
+
+    QList<AutocompleteView*> _Children;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_AUTOCOMPLETEVIEW_H_
