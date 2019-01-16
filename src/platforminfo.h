@@ -5,14 +5,14 @@
 
 #if defined(__linux)
 
-void TrackOsDetails(std::stringstream &ss);
+void RetrieveOsDetails(std::stringstream &ss);
 
 #elif defined(_WIN32) || defined(WIN32)
-inline void TrackOsDetails(std::stringstream &ss) {
+inline void RetrieveOsDetails(std::stringstream &ss) {
 
 }
 #elif defined(__APPLE__)
-inline void TrackOsDetails(std::stringstream &ss) {
+inline void RetrieveOsDetails(std::stringstream &ss) {
 
 }
 #endif

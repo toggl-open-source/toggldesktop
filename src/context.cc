@@ -295,6 +295,7 @@ error Context::StartEvents() {
                     << "_" << Poco::Environment::osArchitecture();
 
             analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
+            analytics_.TrackOSDetails(db_->AnalyticsClientID());
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
