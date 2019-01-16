@@ -226,7 +226,10 @@ BOOL onTop = NO;
 												 name:kUpdateIconTooltip
 											   object:nil];
 
-	self.effectiveAppearanceObs = [self.mainWindowController.window observerEffectiveAppearanceNotification];
+	if (@available(macOS 10.14, *))
+	{
+		self.effectiveAppearanceObs = [self.mainWindowController.window observerEffectiveAppearanceNotification];
+	}
 
 	toggl_set_environment(ctx, [self.environment UTF8String]);
 
