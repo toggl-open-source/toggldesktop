@@ -89,6 +89,7 @@
 
 // Manual mode
 @property NSMenuItem *manualModeMenuItem;
+@property (strong, nonatomic) NSKeyValueObservation *effectiveAppearanceObs;
 
 // System Service
 @property (strong, nonatomic) SystemService *systemService;
@@ -224,6 +225,8 @@ BOOL onTop = NO;
 											 selector:@selector(startUpdateIconTooltip:)
 												 name:kUpdateIconTooltip
 											   object:nil];
+
+	self.effectiveAppearanceObs = [self.mainWindowController.window observerEffectiveAppearanceNotification];
 
 	toggl_set_environment(ctx, [self.environment UTF8String]);
 

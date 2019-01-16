@@ -147,6 +147,7 @@
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
+		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA712EC221BF907200A2D8DD /* UndoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoStorage.swift */; };
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
@@ -663,6 +664,7 @@
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
+		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
 		BA712EC121BF907200A2D8DD /* UndoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStorage.swift; sourceTree = "<group>"; };
@@ -1215,6 +1217,7 @@
 			isa = PBXGroup;
 			children = (
 				BA229D0F21EDEDC400DEB4B9 /* Theme.swift */,
+				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 			);
 			name = Theme;
 			sourceTree = "<group>";
@@ -1748,6 +1751,7 @@
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
+				BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,

@@ -112,6 +112,11 @@ extern void *ctx;
 												 selector:@selector(escapeListing:)
 													 name:kEscapeListing
 												   object:nil];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(effectiveAppearanceChangedNotification)
+													 name:NSNotification.EffectiveAppearanceChanged
+												   object:nil];
 	}
 	return self;
 }
@@ -866,6 +871,11 @@ extern void *ctx;
 			 };
 		 }];
 	}
+}
+
+- (void)effectiveAppearanceChangedNotification {
+    // Re-draw hard-code color sheme for all cells in tableview
+	[self.timeEntriesTableView reloadData];
 }
 
 @end
