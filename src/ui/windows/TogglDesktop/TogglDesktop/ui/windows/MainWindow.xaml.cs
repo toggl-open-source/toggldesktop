@@ -587,7 +587,7 @@ namespace TogglDesktop
 
         private void updateTaskbarTooltip(object sender, string s)
         {
-            this.taskbarIcon.ToolTipText = this.trackingTitle + s + " | Total today: " + todaysDuration;
+            this.taskbarIcon.ToolTipText = this.trackingTitle + " (" + s + ") | Total today: " + todaysDuration;
         }
 
         #endregion
@@ -786,7 +786,12 @@ namespace TogglDesktop
                 {
                     this.Title = description + " - Toggl Desktop";
                     this.runningMenuText.Text = description;
-                    this.trackingTitle = description + " - ";
+                    this.trackingTitle = description;
+
+                    if (timeEntry.Value.PID > 0)
+                    {
+                        this.trackingTitle += " - " + timeEntry.Value.ProjectAndTaskLabel;
+                    }
                 }
 
 
