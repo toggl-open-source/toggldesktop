@@ -17,7 +17,6 @@
 #include "./task.h"
 #include "./time_entry.h"
 #include "./workspace.h"
-#include "Poco/RWLock.h"
 
 namespace toggl {
 
