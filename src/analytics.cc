@@ -13,6 +13,7 @@
 
 #include "./const.h"
 #include "./https_client.h"
+#include "./platforminfo.h"
 #include "./settings.h"
 #include "./urls.h"
 #include "./user.h"
@@ -44,6 +45,14 @@ void Analytics::TrackOs(const std::string client_id,
        << os;
 
     Track(client_id, "os", ss.str());
+}
+
+void Analytics::TrackOSDetails(const std::string client_id) {
+    std::stringstream ss;
+
+    RetrieveOsDetails(ss);
+
+    Track(client_id, "osdetails", ss.str());
 }
 
 void Analytics::TrackWindowSize(const std::string client_id,

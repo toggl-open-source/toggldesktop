@@ -3,6 +3,7 @@
 #if defined(__linux)
 
 #include <cstdio>
+#include <fstream>
 
 #include <X11/Xlib.h>
 #include <X11/Xmu/WinUtil.h>
@@ -10,7 +11,7 @@
 
 #define LONG_LENGTH 512
 
-void getWhatever() {
+std::string getWMName() {
     Display *display { nullptr };
     Window *window { nullptr };
     Atom propertyName { 0 };
@@ -20,6 +21,7 @@ void getWhatever() {
     unsigned long returnCount { 0 };
     unsigned long returnOffset { 0 };
     char *wmName { nullptr };
+    std::string result;
 
     display = XOpenDisplay(nullptr);
     if (display) {
@@ -116,8 +118,8 @@ void getWhatever() {
                 }
             }
 
-            // HERE DO SOMETHING ABOUT IT
-            std::fputs(wmName, stderr);
+            // success
+            result = std::string(wmName);
 
             // free the allocated data
             XFree(window);
@@ -125,11 +127,41 @@ void getWhatever() {
                 XFree(wmName);
         }
     }
+    return result;
 }
 
-void TrackOsDetails(std::stringstream &ss)
-{
+std::string getDEName() {
+    char *env = getenv("XDG_CURRENT_DESKTOP");
+    return std::string(env);
+}
 
+std::string getDistro() {
+    std::string name, version;
+    std::ifstream osinfo("/etc/os-release", std::ifstream::in);
+    while (osinfo.good() && !osinfo.eof()) {
+        std::string line;
+        std::getline(osinfo, line);
+        if (line.find("NAME=") == 0)
+            name = line.substr(5);
+        if (line.find("VERSION_ID=") == 0)
+            version = line.substr(11);
+    }
+    return name + version;
+}
+
+void RetrieveOsDetails(std::stringstream &ss) {
+    std::string wm = getWMName();
+    if (!wm.empty()) {
+        ss << "osdetails/wm-" << wm << ";";
+    }
+    std::string de = getDEName();
+    if (!de.empty()) {
+        ss << "osdetails/de-" << de << ";";
+    }
+    std::string distro = getDistro();
+    if (!distro.empty()) {
+        ss << "osdetails/distro-" << distro << ";";
+    }
 }
 
 #endif // __linux
