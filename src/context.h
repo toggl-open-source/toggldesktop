@@ -604,7 +604,7 @@ class Context : public TimelineDatasource {
 
     template<typename T>
     void collectPushableModels(
-        const std::vector<T *> list,
+        const tbb::concurrent_vector<T *> list,
         std::vector<T *> *result,
         std::map<std::string, BaseModel *> *models = nullptr) const;
 

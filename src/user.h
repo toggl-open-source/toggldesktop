@@ -17,6 +17,7 @@
 #include "./workspace.h"
 
 #include "Poco/Types.h"
+#include "Poco/Mutex.h"
 
 namespace toggl {
 
@@ -218,7 +219,7 @@ class User : public BaseModel {
         }
 
         // Try to set first WID available
-        std::vector<Workspace *>::const_iterator it =
+        tbb::concurrent_vector<Workspace *>::const_iterator it =
             related.Workspaces.begin();
         if (it != related.Workspaces.end()) {
             Workspace *ws = *it;
@@ -248,6 +249,8 @@ class User : public BaseModel {
     }
 
  private:
+    Poco::Mutex lockMutex;
+
     void loadUserTagFromJSON(
         Json::Value data,
         std::set<Poco::UInt64> *alive = nullptr);
@@ -329,16 +332,16 @@ class User : public BaseModel {
 
 template<class T>
 void deleteZombies(
-    const std::vector<T> &list,
+    const tbb::concurrent_vector<T> &list,
     const std::set<Poco::UInt64> &alive);
 
 template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      std::vector<T *> *list);
+                                      tbb::concurrent_vector<T *> *list);
 
 template <typename T>
 void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    std::vector<T *> *list);
+                                    tbb::concurrent_vector<T *> *list);
 
 }  // namespace toggl
 

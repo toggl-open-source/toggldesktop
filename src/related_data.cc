@@ -20,43 +20,25 @@
 
 namespace toggl {
 
-template<typename T>
-void clearList(std::vector<T *> *list) {
-    for (size_t i = 0; i < list->size(); i++) {
-        T *value = (*list)[i];
-        delete value;
-    }
-    list->clear();
-}
-
-void RelatedData::forEachTimeEntries(std::function<void(TimeEntry *)> f) {
-    Poco::Mutex::ScopedLock lock(timeEntries_m_);
-    std::for_each(TimeEntries.begin(), TimeEntries.end(), f);
-}
-
-void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
-    Poco::Mutex::ScopedLock lock(timeEntries_m_);
-    TimeEntries.push_back(timeEntry);
-}
-
 void RelatedData::Clear() {
-    clearList(&Workspaces);
-    clearList(&Clients);
-    clearList(&Projects);
-    clearList(&Tasks);
-    clearList(&Tags);
-    clearList(&TimeEntries);
-    clearList(&AutotrackerRules);
-    clearList(&TimelineEvents);
-    clearList(&ObmActions);
-    clearList(&ObmExperiments);
+    Poco::Mutex::ScopedLock lock(lockMutex);
+    Workspaces.clear();
+    Clients.clear();
+    Projects.clear();
+    Tasks.clear();
+    Tags.clear();
+    TimeEntries.clear();
+    AutotrackerRules.clear();
+    TimelineEvents.clear();
+    ObmActions.clear();
+    ObmExperiments.clear();
 }
 
 error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     if (!local_id) {
         return error("cannot delete rule without an ID");
     }
-    for (std::vector<AutotrackerRule *>::iterator it =
+    for (tbb::concurrent_vector<AutotrackerRule *>::iterator it =
         AutotrackerRules.begin();
             it != AutotrackerRules.end(); it++) {
         AutotrackerRule *rule = *it;
@@ -73,7 +55,7 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
 
 AutotrackerRule *RelatedData::FindAutotrackerRule(
     const TimelineEvent event) const {
-    for (std::vector<AutotrackerRule *>::const_iterator it =
+    for (tbb::concurrent_vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();
             it != AutotrackerRules.end(); it++) {
         AutotrackerRule *rule = *it;
@@ -86,7 +68,7 @@ AutotrackerRule *RelatedData::FindAutotrackerRule(
 
 bool RelatedData::HasMatchingAutotrackerRule(
     const std::string lowercase_term) const {
-    for (std::vector<AutotrackerRule *>::const_iterator it =
+    for (tbb::concurrent_vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();
             it != AutotrackerRules.end(); it++) {
         AutotrackerRule *rule = *it;
@@ -100,7 +82,7 @@ bool RelatedData::HasMatchingAutotrackerRule(
 Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
     Poco::Int64 count(0);
 
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (tbb::concurrent_vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
             it != TimeEntries.end(); it++) {
         TimeEntry *te = *it;
@@ -114,7 +96,7 @@ Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
 
 std::vector<TimelineEvent *> RelatedData::VisibleTimelineEvents() const {
     std::vector<TimelineEvent *> result;
-    for (std::vector<TimelineEvent *>::const_iterator i =
+    for (tbb::concurrent_vector<TimelineEvent *>::const_iterator i =
         TimelineEvents.begin();
             i != TimelineEvents.end();
             ++i) {
@@ -128,7 +110,7 @@ std::vector<TimelineEvent *> RelatedData::VisibleTimelineEvents() const {
 
 std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
     std::vector<TimeEntry *> result;
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (tbb::concurrent_vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
             it != TimeEntries.end(); it++) {
         TimeEntry *te = *it;
@@ -146,7 +128,7 @@ std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
 Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
     std::string date_header = Formatter::FormatDateHeader(match->Start());
     Poco::Int64 duration(0);
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (tbb::concurrent_vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
             it != TimeEntries.end(); it++) {
         TimeEntry *te = *it;
@@ -169,7 +151,7 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
     std::string pomodoro_tag("pomodoro-break");
 
     // Find the time entry that was stopped most recently
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (tbb::concurrent_vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
             it != TimeEntries.end(); it++) {
         TimeEntry *te = *it;
@@ -208,7 +190,7 @@ void RelatedData::timeEntryAutocompleteItems(
 
     poco_check_ptr(list);
 
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (tbb::concurrent_vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
             it != TimeEntries.end(); it++) {
         TimeEntry *te = *it;
@@ -299,7 +281,7 @@ void RelatedData::taskAutocompleteItems(
 
     poco_check_ptr(list);
 
-    for (std::vector<Task *>::const_iterator it =
+    for (tbb::concurrent_vector<Task *>::const_iterator it =
         Tasks.begin();
             it != Tasks.end(); it++) {
         Task *t = *it;
@@ -376,7 +358,7 @@ void RelatedData::projectAutocompleteItems(
 
     poco_check_ptr(list);
 
-    for (std::vector<Project *>::const_iterator it =
+    for (tbb::concurrent_vector<Project *>::const_iterator it =
         Projects.begin();
             it != Projects.end(); it++) {
         Project *p = *it;
@@ -505,7 +487,7 @@ void RelatedData::workspaceAutocompleteItems(
 
     // remember workspaces that have projects
     std::set<Poco::UInt64> ws_ids_with_projects;
-    for (std::vector<Project *>::const_iterator it =
+    for (tbb::concurrent_vector<Project *>::const_iterator it =
         Projects.begin();
             it != Projects.end(); it++) {
         Project *p = *it;
@@ -515,7 +497,7 @@ void RelatedData::workspaceAutocompleteItems(
         }
     }
 
-    for (std::vector<Workspace *>::const_iterator it =
+    for (tbb::concurrent_vector<Workspace *>::const_iterator it =
         Workspaces.begin();
             it != Workspaces.end(); it++) {
         Workspace *ws = *it;
@@ -537,7 +519,7 @@ void RelatedData::TagList(
 
     std::set<std::string> unique_names;
 
-    for (std::vector<Tag *>::const_iterator it =
+    for (tbb::concurrent_vector<Tag *>::const_iterator it =
         Tags.begin();
             it != Tags.end();
             it++) {
@@ -559,7 +541,7 @@ void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
 
     poco_check_ptr(result);
 
-    for (std::vector<Workspace *>::const_iterator it =
+    for (tbb::concurrent_vector<Workspace *>::const_iterator it =
         Workspaces.begin();
             it != Workspaces.end();
             it++) {
@@ -575,7 +557,7 @@ void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
 void RelatedData::ClientList(std::vector<Client *> *result) const {
 
     poco_check_ptr(result);
-    *result = Clients;
+    //*result = Clients;
 
     std::sort(result->rbegin(), result->rend(), CompareClientByName);
 }
@@ -684,11 +666,11 @@ Client *RelatedData::ClientByGUID(const guid GUID) const {
 }
 
 template <typename T>
-T *modelByGUID(const guid GUID, std::vector<T *> const *list) {
+T *modelByGUID(const guid GUID, tbb::concurrent_vector<T *> const *list) {
     if (GUID.empty()) {
         return nullptr;
     }
-    typedef typename std::vector<T *>::const_iterator iterator;
+    typedef typename tbb::concurrent_vector<T *>::const_iterator iterator;
     for (iterator it = list->begin(); it != list->end(); it++) {
         T *model = *it;
         if (model->GUID() == GUID) {
@@ -699,11 +681,11 @@ T *modelByGUID(const guid GUID, std::vector<T *> const *list) {
 }
 
 template<typename T>
-T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) {
+T *modelByID(const Poco::UInt64 id, tbb::concurrent_vector<T *> const *list) {
     if (!id) {
         return nullptr;
     }
-    typedef typename std::vector<T *>::const_iterator iterator;
+    typedef typename tbb::concurrent_vector<T *>::const_iterator iterator;
     for (iterator it = list->begin(); it != list->end(); it++) {
         T *model = *it;
         if (model->ID() == id) {

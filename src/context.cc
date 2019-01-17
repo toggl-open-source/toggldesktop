@@ -812,7 +812,7 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_autotracker_rules && user_) {
             if (UI()->CanDisplayAutotrackerRules()) {
                 // Collect rules
-                for (std::vector<toggl::AutotrackerRule *>::const_iterator
+                for (tbb::concurrent_vector<toggl::AutotrackerRule *>::const_iterator
                         it = user_->related.AutotrackerRules.begin();
                         it != user_->related.AutotrackerRules.end();
                         it++) {
@@ -3616,7 +3616,7 @@ Project *Context::CreateProject(
             logger().warning("Cannot add project, user logged out");
             return nullptr;
         }
-        for (std::vector<Project *>::iterator it =
+        for (tbb::concurrent_vector<Project *>::iterator it =
             user_->related.Projects.begin();
                 it != user_->related.Projects.end(); it++) {
             Project *p = *it;
@@ -3750,7 +3750,7 @@ Client *Context::CreateClient(
             logger().warning("Cannot create a client, user logged out");
             return nullptr;
         }
-        for (std::vector<Client *>::iterator it =
+        for (tbb::concurrent_vector<Client *>::iterator it =
             user_->related.Clients.begin();
                 it != user_->related.Clients.end(); it++) {
             Client *c = *it;
@@ -3901,7 +3901,7 @@ error Context::runObmExperiments() {
                 logger().warning("User logged out, cannot OBM experiment");
                 return noError;
             }
-            for (std::vector<ObmExperiment *>::const_iterator it =
+            for (tbb::concurrent_vector<ObmExperiment *>::const_iterator it =
                 user_->related.ObmExperiments.begin();
                     it != user_->related.ObmExperiments.end();
                     it++) {
@@ -5085,7 +5085,7 @@ error Context::pushObmAction() {
             }
 
             // find action that has not been uploaded yet
-            for (std::vector<ObmAction *>::iterator it =
+            for (tbb::concurrent_vector<ObmAction *>::iterator it =
                 user_->related.ObmActions.begin();
                     it != user_->related.ObmActions.end();
                     it++) {
@@ -5531,13 +5531,13 @@ error Context::PullCountries() {
 
 template<typename T>
 void Context::collectPushableModels(
-    const std::vector<T *> list,
+    const tbb::concurrent_vector<T *> list,
     std::vector<T *> *result,
     std::map<std::string, BaseModel *> *models) const {
 
     poco_check_ptr(result);
 
-    for (typename std::vector<T *>::const_iterator it =
+    for (typename tbb::concurrent_vector<T *>::const_iterator it =
         list.begin();
             it != list.end();
             it++) {

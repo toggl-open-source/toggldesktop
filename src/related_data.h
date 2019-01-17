@@ -13,7 +13,7 @@
 #include "./types.h"
 
 #include "Poco/Mutex.h"
-#include <functional>
+#include "tbb/concurrent_vector.h"
 
 namespace toggl {
 
@@ -32,23 +32,23 @@ class TimeEntry;
 };
 
 template<typename T>
-T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
+T *modelByID(const Poco::UInt64 id, tbb::concurrent_vector<T *> const *list);
 
 template <typename T>
-T *modelByGUID(const guid GUID, std::vector<T *> const *list);
+T *modelByGUID(const guid GUID, tbb::concurrent_vector<T *> const *list);
 
 class RelatedData {
  public:
-    std::vector<Workspace *> Workspaces;
-    std::vector<Client *> Clients;
-    std::vector<Project *> Projects;
-    std::vector<Task *> Tasks;
-    std::vector<Tag *> Tags;
-    std::vector<TimeEntry *> TimeEntries;
-    std::vector<AutotrackerRule *> AutotrackerRules;
-    std::vector<TimelineEvent *> TimelineEvents;
-    std::vector<ObmAction *> ObmActions;
-    std::vector<ObmExperiment *> ObmExperiments;
+    tbb::concurrent_vector<Workspace *> Workspaces;
+    tbb::concurrent_vector<Client *> Clients;
+    tbb::concurrent_vector<Project *> Projects;
+    tbb::concurrent_vector<Task *> Tasks;
+    tbb::concurrent_vector<Tag *> Tags;
+    tbb::concurrent_vector<TimeEntry *> TimeEntries;
+    tbb::concurrent_vector<AutotrackerRule *> AutotrackerRules;
+    tbb::concurrent_vector<TimelineEvent *> TimelineEvents;
+    tbb::concurrent_vector<ObmAction *> ObmActions;
+    tbb::concurrent_vector<ObmExperiment *> ObmExperiments;
 
     void Clear();
 
@@ -101,12 +101,8 @@ class RelatedData {
 
     Client *clientByProject(Project *p) const;
 
-    void pushBackTimeEntry(TimeEntry  *timeEntry);
-
-    void forEachTimeEntries(std::function<void(TimeEntry *)> f);
-
  private:
-    Poco::Mutex timeEntries_m_;
+    Poco::Mutex lockMutex;
 
     void timeEntryAutocompleteItems(
         std::set<std::string> *unique_names,
@@ -136,9 +132,6 @@ class RelatedData {
         std::vector<view::Autocomplete> *result,
         std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 };
-
-template<typename T>
-void clearList(std::vector<T *> *list);
 
 }  // namespace toggl
 

@@ -17,6 +17,7 @@
 #include "./model_change.h"
 #include "./timeline_event.h"
 #include "./types.h"
+#include "tbb/concurrent_vector.h"
 
 namespace Poco {
 class Logger;
@@ -286,53 +287,53 @@ class Database {
 
     error loadWorkspaces(
         const Poco::UInt64 &UID,
-        std::vector<Workspace *> *list);
+        tbb::concurrent_vector<Workspace *> *list);
 
     error loadClients(
         const Poco::UInt64 &UID,
-        std::vector<Client *> *list);
+        tbb::concurrent_vector<Client *> *list);
 
     error loadProjects(
         const Poco::UInt64 &UID,
-        std::vector<Project *> *list);
+        tbb::concurrent_vector<Project *> *list);
 
     error loadTasks(
         const Poco::UInt64 &UID,
-        std::vector<Task *> *list);
+        tbb::concurrent_vector<Task *> *list);
 
     error loadTags(
         const Poco::UInt64 &UID,
-        std::vector<Tag *> *list);
+        tbb::concurrent_vector<Tag *> *list);
 
     error loadAutotrackerRules(
         const Poco::UInt64 &UID,
-        std::vector<AutotrackerRule *> *list);
+        tbb::concurrent_vector<AutotrackerRule *> *list);
 
     error loadObmActions(
         const Poco::UInt64 &UID,
-        std::vector<ObmAction *> *list);
+        tbb::concurrent_vector<ObmAction *> *list);
 
     error loadObmExperiments(
         const Poco::UInt64 &UID,
-        std::vector<ObmExperiment *> *list);
+        tbb::concurrent_vector<ObmExperiment *> *list);
 
     error loadTimeEntries(
         const Poco::UInt64 &UID,
-        std::vector<TimeEntry *> *list);
+        tbb::concurrent_vector<TimeEntry *> *list);
 
     error loadTimelineEvents(
         const Poco::UInt64 &UID,
-        std::vector<TimelineEvent *> *list);
+        tbb::concurrent_vector<TimelineEvent *> *list);
 
     error loadTimeEntriesFromSQLStatement(
         Poco::Data::Statement *select,
-        std::vector<TimeEntry *> *list);
+        tbb::concurrent_vector<TimeEntry *> *list);
 
     template <typename T>
     error saveRelatedModels(
         const Poco::UInt64 UID,
         const std::string table_name,
-        std::vector<T *> *list,
+        tbb::concurrent_vector<T *> *list,
         std::vector<ModelChange> *changes);
 
     error deleteAllFromTableByDate(

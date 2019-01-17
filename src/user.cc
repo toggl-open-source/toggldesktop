@@ -70,14 +70,17 @@ Project *User::CreateProject(
 }
 
 void User::AddProjectToList(Project *p) {
+    Poco::Mutex::ScopedLock lock(lockMutex);
+
     bool WIDMatch = false;
     bool CIDMatch = false;
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
+    std::vector<Project *> projects = std::vector<Project *>(related.Projects.begin(), related.Projects.end());
     for (std::vector<Project *>::iterator it =
-        related.Projects.begin();
-            it != related.Projects.end(); it++) {
+        projects.begin();
+            it != projects.end(); it++) {
         Project *pr = *it;
         if (p->WID() == pr->WID()) {
             WIDMatch = true;
@@ -85,35 +88,44 @@ void User::AddProjectToList(Project *p) {
                 // Handle adding project without client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
-                    related.Projects.insert(it, p);
+                    projects.insert(it, p);
                     return;
                 }
             } else if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
                 // Handle adding project with client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    related.Projects.insert(it,p);
+                    projects.insert(it,p);
                     return;
                 }
             } else if (CIDMatch) {
                 // in case new project is last in client list
-                related.Projects.insert(it,p);
+                projects.insert(it,p);
                 return;
             } else if ((p->CID() != 0 || !p->ClientGUID().empty()) && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    related.Projects.insert(it,p);
+                    projects.insert(it,p);
                     return;
                 }
             }
         } else if (WIDMatch) {
             //In case new project is last in workspace list
-            related.Projects.insert(it,p);
+            projects.insert(it,p);
             return;
         }
     }
 
     // if projects vector is empty or project should be added to the end
-    related.Projects.push_back(p);
+    projects.push_back(p);
+
+    // Add again
+    related.Projects.clear();
+    for (std::vector<Project *>::iterator it =
+        projects.begin();
+            it != projects.end(); it++) {
+        Project *pr = *it;
+        related.Projects.push_back(pr);
+    }
 }
 
 Client *User::CreateClient(
@@ -130,28 +142,40 @@ Client *User::CreateClient(
 }
 
 void User::AddClientToList(Client *c) {
+    Poco::Mutex::ScopedLock lock(lockMutex);
+
     bool foundMatch = false;
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
+    std::vector<Client *> clients = std::vector<Client *>(related.Clients.begin(), related.Clients.end());
     for (std::vector<Client *>::iterator it =
-        related.Clients.begin();
-            it != related.Clients.end(); it++) {
+        clients.begin();
+            it != clients.end(); it++) {
         Client *cl = *it;
         if (c->WID() == cl->WID()) {
             foundMatch = true;
             if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
-                related.Clients.insert(it,c);
+                clients.insert(it,c);
                 return;
             }
         } else if (foundMatch) {
-            related.Clients.insert(it,c);
+            clients.insert(it,c);
             return;
         }
     }
 
     // if clients vector is empty or client should be added to the end
-    related.Clients.push_back(c);
+    clients.push_back(c);
+
+    // Add again
+    related.Clients.clear();
+    for (std::vector<Client *>::iterator it =
+        clients.begin();
+            it != clients.end(); it++) {
+        Client *cl = *it;
+        related.Clients.push_back(cl);
+    }
 }
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
@@ -215,7 +239,7 @@ TimeEntry *User::Start(
 
     te->SetUIModified();
 
-    related.pushBackTimeEntry(te);
+    related.TimeEntries.push_back(te);
 
     return te;
 }
@@ -256,7 +280,7 @@ TimeEntry *User::Continue(
 
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
 
-    related.pushBackTimeEntry(result);
+    related.TimeEntries.push_back(result);
 
     return result;
 }
@@ -264,7 +288,7 @@ TimeEntry *User::Continue(
 std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
     std::string date_header = Formatter::FormatDateHeader(te->Start());
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (tbb::concurrent_vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
             it++) {
@@ -280,7 +304,7 @@ std::string User::DateDuration(TimeEntry * const te) const {
 }
 
 bool User::HasPremiumWorkspaces() const {
-    for (std::vector<Workspace *>::const_iterator it =
+    for (tbb::concurrent_vector<Workspace *>::const_iterator it =
         related.Workspaces.begin();
             it != related.Workspaces.end();
             it++) {
@@ -293,7 +317,7 @@ bool User::HasPremiumWorkspaces() const {
 }
 
 bool User::CanAddProjects() const {
-    for (std::vector<Workspace *>::const_iterator it =
+    for (tbb::concurrent_vector<Workspace *>::const_iterator it =
         related.Workspaces.begin();
             it != related.Workspaces.end();
             it++) {
@@ -438,7 +462,7 @@ TimeEntry *User::DiscardTimeAt(
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         split->SetWID(te->WID());
-        related.pushBackTimeEntry(split);
+        related.TimeEntries.push_back(split);
         return split;
     }
 
@@ -446,7 +470,7 @@ TimeEntry *User::DiscardTimeAt(
 }
 
 TimeEntry *User::RunningTimeEntry() const {
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (tbb::concurrent_vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
             it++) {
@@ -494,7 +518,7 @@ void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
 }
 
 void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
-    for (std::vector<Project *>::iterator it = related.Projects.begin();
+    for (tbb::concurrent_vector<Project *>::iterator it = related.Projects.begin();
             it != related.Projects.end(); it++) {
         Project *model = *it;
         if (model->CID() == cid) {
@@ -509,11 +533,13 @@ void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
 }
 
 void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
-    related.forEachTimeEntries([&](TimeEntry *model) {
+    for (tbb::concurrent_vector<TimeEntry *>::iterator it = related.TimeEntries.begin();
+            it != related.TimeEntries.end(); it++) {
+        TimeEntry *model = *it;
         if (model->TID() == tid) {
             model->SetTID(0);
         }
-    });
+    }
 }
 
 void User::loadUserTagFromJSON(
@@ -762,7 +788,7 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
         return;
     }
     ObmExperiment *model = nullptr;
-    for (std::vector<ObmExperiment *>::const_iterator it =
+    for (tbb::concurrent_vector<ObmExperiment *>::const_iterator it =
         related.ObmExperiments.begin();
             it != related.ObmExperiments.end();
             it++) {
@@ -1078,7 +1104,7 @@ void User::loadUserTimeEntryFromJSON(
 
     if (!model) {
         model = new TimeEntry();
-        related.pushBackTimeEntry(model);
+        related.TimeEntries.push_back(model);
     }
     if (alive) {
         alive->insert(id);
@@ -1326,7 +1352,7 @@ void User::CompressTimeline() {
         logger().debug(ss.str());
     }
 
-    for (std::vector<TimelineEvent *>::iterator i =
+    for (tbb::concurrent_vector<TimelineEvent *>::iterator i =
         related.TimelineEvents.begin();
             i != related.TimelineEvents.end();
             ++i) {
@@ -1411,7 +1437,7 @@ void User::CompressTimeline() {
 
 std::vector<TimelineEvent> User::CompressedTimeline() const {
     std::vector<TimelineEvent> list;
-    for (std::vector<TimelineEvent *>::const_iterator i =
+    for (tbb::concurrent_vector<TimelineEvent *>::const_iterator i =
         related.TimelineEvents.begin();
             i != related.TimelineEvents.end();
             ++i) {
@@ -1435,7 +1461,7 @@ std::string User::ModelURL() const {
 
 template<class T>
 void deleteZombies(
-    const std::vector<T> &list,
+    const tbb::concurrent_vector<T> &list,
     const std::set<Poco::UInt64> &alive) {
     for (size_t i = 0; i < list.size(); ++i) {
         BaseModel *model = list[i];
@@ -1453,8 +1479,8 @@ void deleteZombies(
 
 template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
+                                      tbb::concurrent_vector<T *> *list) {
+    typedef typename tbb::concurrent_vector<T *>::iterator iterator;
     for (iterator it = list->begin(); it != list->end(); it++) {
         T *model = *it;
         if (model->WID() == wid) {
@@ -1465,8 +1491,8 @@ void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
 
 template <typename T>
 void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
+                                    tbb::concurrent_vector<T *> *list) {
+    typedef typename tbb::concurrent_vector<T *>::iterator iterator;
     for (iterator it = list->begin(); it != list->end(); it++) {
         T *model = *it;
         if (model->PID() == pid) {

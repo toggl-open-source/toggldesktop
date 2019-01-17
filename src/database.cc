@@ -1265,7 +1265,7 @@ error Database::LoadUserByID(
 
 error Database::loadWorkspaces(
     const Poco::UInt64 &UID,
-    std::vector<Workspace *> *list) {
+    tbb::concurrent_vector<Workspace *> *list) {
 
     if (!UID) {
         return error("Cannot load user workspaces without an user ID");
@@ -1325,7 +1325,7 @@ error Database::loadWorkspaces(
 
 error Database::loadClients(
     const Poco::UInt64 &UID,
-    std::vector<Client *> *list) {
+    tbb::concurrent_vector<Client *> *list) {
 
     if (!UID) {
         return error("Cannot load user clients without an user ID");
@@ -1387,7 +1387,7 @@ error Database::loadClients(
 
 error Database::loadProjects(
     const Poco::UInt64 &UID,
-    std::vector<Project *> *list) {
+    tbb::concurrent_vector<Project *> *list) {
 
     if (!UID) {
         return error("Cannot load user projects without an user ID");
@@ -1477,7 +1477,7 @@ error Database::loadProjects(
 
 error Database::loadTasks(
     const Poco::UInt64 &UID,
-    std::vector<Task *> *list) {
+    tbb::concurrent_vector<Task *> *list) {
 
     if (!UID) {
         return error("Cannot load user tasks without an user ID");
@@ -1539,7 +1539,7 @@ error Database::loadTasks(
 
 error Database::loadTags(
     const Poco::UInt64 &UID,
-    std::vector<Tag *> *list) {
+    tbb::concurrent_vector<Tag *> *list) {
 
     if (!UID) {
         return error("Cannot load user tags without an user ID");
@@ -1600,7 +1600,7 @@ error Database::loadTags(
 
 error Database::loadAutotrackerRules(
     const Poco::UInt64 &UID,
-    std::vector<AutotrackerRule *> *list) {
+    tbb::concurrent_vector<AutotrackerRule *> *list) {
 
     if (!UID) {
         return error("Cannot load autotracker rules without an user ID");
@@ -1654,7 +1654,7 @@ error Database::loadAutotrackerRules(
 
 error Database::loadObmActions(
     const Poco::UInt64 &UID,
-    std::vector<ObmAction *> *list) {
+    tbb::concurrent_vector<ObmAction *> *list) {
 
     if (!UID) {
         return error("Cannot load OBM actions without an user ID");
@@ -1706,7 +1706,7 @@ error Database::loadObmActions(
 
 error Database::loadObmExperiments(
     const Poco::UInt64 &UID,
-    std::vector<ObmExperiment *> *list) {
+    tbb::concurrent_vector<ObmExperiment *> *list) {
 
     if (!UID) {
         return error("Cannot load OBM experiments without an user ID");
@@ -1759,7 +1759,7 @@ error Database::loadObmExperiments(
 
 error Database::loadTimelineEvents(
     const Poco::UInt64 &UID,
-    std::vector<TimelineEvent *> *list) {
+    tbb::concurrent_vector<TimelineEvent *> *list) {
 
     if (!UID) {
         return error("Cannot load user timeline without an user ID");
@@ -1817,7 +1817,7 @@ error Database::loadTimelineEvents(
         }
 
         // Ensure all timeline events have a GUID.
-        for (std::vector<TimelineEvent *>::iterator it = list->begin();
+        for (tbb::concurrent_vector<TimelineEvent *>::iterator it = list->begin();
                 it != list->end();
                 ++it) {
             TimelineEvent *model = *it;
@@ -1835,7 +1835,7 @@ error Database::loadTimelineEvents(
 
 error Database::loadTimeEntries(
     const Poco::UInt64 &UID,
-    std::vector<TimeEntry *> *list) {
+    tbb::concurrent_vector<TimeEntry *> *list) {
 
     if (!UID) {
         return error("Cannot load user time entries without an user ID");
@@ -1868,7 +1868,7 @@ error Database::loadTimeEntries(
         }
 
         // Ensure all time entries have a GUID.
-        for (std::vector<TimeEntry *>::iterator it = list->begin();
+        for (tbb::concurrent_vector<TimeEntry *>::iterator it = list->begin();
                 it != list->end();
                 ++it) {
             TimeEntry *te = *it;
@@ -1889,7 +1889,7 @@ error Database::loadTimeEntries(
 
 error Database::loadTimeEntriesFromSQLStatement(
     Poco::Data::Statement *select,
-    std::vector<TimeEntry *> *list) {
+    tbb::concurrent_vector<TimeEntry *> *list) {
 
     poco_check_ptr(select);
     poco_check_ptr(list);
@@ -1988,7 +1988,7 @@ template <typename T>
 error Database::saveRelatedModels(
     const Poco::UInt64 UID,
     const std::string table_name,
-    std::vector<T *> *list,
+    tbb::concurrent_vector<T *> *list,
     std::vector<ModelChange> *changes) {
 
     if (!UID) {
@@ -1998,7 +1998,7 @@ error Database::saveRelatedModels(
     poco_check_ptr(list);
     poco_check_ptr(changes);
 
-    typedef typename std::vector<T *>::iterator iterator;
+    typedef typename tbb::concurrent_vector<T *>::iterator iterator;
 
     for (size_t i = 0; i < list->size(); i++) {
         T *model = list->at(i);
@@ -2022,15 +2022,15 @@ error Database::saveRelatedModels(
     }
 
     // Purge deleted models from memory
-    iterator it = list->begin();
-    while (it != list->end()) {
-        T *model = *it;
-        if (model->IsMarkedAsDeletedOnServer()) {
-            it = list->erase(it);
-        } else {
-            ++it;
-        }
-    }
+//    iterator it = list->begin();
+//    while (it != list->end()) {
+//        T *model = *it;
+//        if (model->IsMarkedAsDeletedOnServer()) {
+//            it = list->erase(it);
+//        } else {
+//            ++it;
+//        }
+//    }
 
     return noError;
 }
