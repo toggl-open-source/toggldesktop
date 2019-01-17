@@ -71,6 +71,11 @@ Data=lib/qt5
 Translations=lib/qt5/translations
 EOF
 
+echo "Stripping" >&2
+for i in bin/QtWebEngineProcess $(find . -name \*.so); do 
+    strip --strip-unneeded $i; 2>/dev/null >/dev/null
+done
+
 echo "Packaging" >&2
 CHECK tar cvfz ../../toggldesktop_$(uname -m).tar.gz * >/dev/null
 
