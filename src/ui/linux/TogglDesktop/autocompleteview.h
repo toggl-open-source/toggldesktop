@@ -58,6 +58,9 @@ class AutocompleteView : public QObject {
                 case 0:
                     currentLevel1Header->Description = "TIME ENTRIES";
                     break;
+                case 1:
+                    currentLevel1Header->Description = "TASKS";
+                    break;
                 case 2:
                     currentLevel1Header->Description = "PROJECTS";
                     break;
