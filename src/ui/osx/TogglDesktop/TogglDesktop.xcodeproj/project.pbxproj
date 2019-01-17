@@ -140,6 +140,7 @@
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA229D1021EDEDC400DEB4B9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA229D0F21EDEDC400DEB4B9 /* Theme.swift */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
+		BA5A10CB21F03A4500C84C36 /* libtbb.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA5A10CA21F03A4500C84C36 /* libtbb.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
@@ -439,6 +440,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				BA5A10CB21F03A4500C84C36 /* libtbb.dylib in CopyFiles */,
 				3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */,
 				BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */,
 				BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */,
@@ -678,6 +680,7 @@
 		BA229D0F21EDEDC400DEB4B9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
+		BA5A10CA21F03A4500C84C36 /* libtbb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtbb.dylib; path = ../../../../third_party/tbb/build/mac_release/libtbb.dylib; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
@@ -790,6 +793,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BA5A10CA21F03A4500C84C36 /* libtbb.dylib */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
 				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
 				BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */,
@@ -1973,6 +1977,7 @@
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../lib/include",
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
+					"$(SRCROOT)/../../../../third_party/tbb/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -1981,6 +1986,7 @@
 					"$(SRCROOT)",
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+					"$(SRCROOT)/../../../../third_party/tbb/build/mac_release",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2022,6 +2028,7 @@
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../lib/include",
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
+					"$(SRCROOT)/../../../../third_party/tbb/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -2030,6 +2037,7 @@
 					"$(SRCROOT)",
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+					"$(SRCROOT)/../../../../third_party/tbb/build/mac_release",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;

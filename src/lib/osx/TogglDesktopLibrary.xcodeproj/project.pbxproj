@@ -83,6 +83,7 @@
 		74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 74F7CDDA18199FA300630BD0 /* window_change_recorder.h */; };
 		BA2DA11C21A6864D0027B7A5 /* rectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = BA2DA11A21A6864D0027B7A5 /* rectangle.h */; };
 		BA2DA11D21A6864D0027B7A5 /* rectangle.cc in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11B21A6864D0027B7A5 /* rectangle.cc */; };
+		BA5A10AB21F0397100C84C36 /* libtbb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA5A10AA21F0397100C84C36 /* libtbb.dylib */; };
 		BAD233E321D60A4D0039C742 /* libPocoNet.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */; };
 		BAD233E421D60A4D0039C742 /* libPocoFoundation.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD233DB21D60A4D0039C742 /* libPocoFoundation.dylib */; };
 		BAD233E521D60A4D0039C742 /* libPocoUtil.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD233DC21D60A4D0039C742 /* libPocoUtil.dylib */; };
@@ -178,6 +179,7 @@
 		74F7CDDA18199FA300630BD0 /* window_change_recorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = window_change_recorder.h; path = ../../../window_change_recorder.h; sourceTree = "<group>"; };
 		BA2DA11A21A6864D0027B7A5 /* rectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rectangle.h; path = ../../../rectangle.h; sourceTree = "<group>"; };
 		BA2DA11B21A6864D0027B7A5 /* rectangle.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rectangle.cc; path = ../../../rectangle.cc; sourceTree = "<group>"; };
+		BA5A10AA21F0397100C84C36 /* libtbb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtbb.dylib; path = ../../../third_party/tbb/build/mac_release/libtbb.dylib; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
 		BAD233DB21D60A4D0039C742 /* libPocoFoundation.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.dylib; sourceTree = "<group>"; };
 		BAD233DC21D60A4D0039C742 /* libPocoUtil.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.dylib; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA5A10AB21F0397100C84C36 /* libtbb.dylib in Frameworks */,
 				BAD233E321D60A4D0039C742 /* libPocoNet.dylib in Frameworks */,
 				BAD233E421D60A4D0039C742 /* libPocoFoundation.dylib in Frameworks */,
 				BAD233E521D60A4D0039C742 /* libPocoUtil.dylib in Frameworks */,
@@ -228,6 +231,7 @@
 		BAD233D921D60A4D0039C742 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BA5A10AA21F0397100C84C36 /* libtbb.dylib */,
 				BAD233DE21D60A4D0039C742 /* libPocoCrypto.dylib */,
 				BAD233DD21D60A4D0039C742 /* libPocoData.dylib */,
 				BAD233E021D60A4D0039C742 /* libPocoDataSQLite.dylib */,
@@ -674,6 +678,7 @@
 					../../../third_party/poco/NetSSL_OpenSSL/include/,
 					../../../third_party/poco/Crypto/include/,
 					../../../third_party/jsoncpp/dist,
+					../../../third_party/tbb/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -681,6 +686,7 @@
 					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/lua/install/lib,
 					../../../third_party/openssl,
+					../../../third_party/tbb/build/mac_release,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = TogglDesktopLibrary;
@@ -711,6 +717,7 @@
 					../../../third_party/poco/NetSSL_OpenSSL/include/,
 					../../../third_party/poco/Crypto/include/,
 					../../../third_party/jsoncpp/dist,
+					../../../third_party/tbb/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -718,6 +725,7 @@
 					../../../third_party/poco/lib/Darwin/x86_64,
 					../../../third_party/lua/install/lib,
 					../../../third_party/openssl,
+					../../../third_party/tbb/build/mac_release,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = TogglDesktopLibrary;
