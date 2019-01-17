@@ -10,6 +10,7 @@ pocodir=third_party/poco
 openssldir=third_party/openssl
 jsoncppdir=third_party/jsoncpp/dist
 pocoversion=$(shell cat third_party/poco/libversion)
+tbbdir=third_party/tbb
 
 GTEST_ROOT=third_party/googletest-read-only
 
@@ -295,7 +296,7 @@ clean_deps:
 	cd $(openssldir) && (make clean || true)
 	cd third_party/lua && make clean
 
-deps: clean_deps init_submodule openssl poco lua copy_libs
+deps: clean_deps init_submodule openssl poco lua tbb copy_libs
 
 init_submodule:
 	cd $(rootdir) && git submodule update --init --recursive
@@ -601,3 +602,11 @@ package:
 
 authors:
 	git log --all --format='%aN <%cE>' | sort -u > AUTHORS
+
+tbb:
+ifeq ($(osname), mac)
+	cd $(rootdir) && cd third_party/tbb && make tbb_build_prefix=mac
+endif
+ifeq ($(osname), linux)
+	cd $(rootdir) && cd third_party/tbb && make tbb_build_prefix=linux
+endif
