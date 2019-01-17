@@ -1,128 +1,80 @@
-#set -e
+#!/bin/bash
 
-echo "Creating package"
+PLUGINS="imageformats/libqsvg.so iconengines/libqsvgicon.so platforms/libqxcb.so"
 
-echo "QPATH is $QPATH"
-echo "QLIBPATH is $QLIBPATH"
+builddir=$(mktemp -d build-XXXXXX)
+fullbuilddir=$PWD/$builddir
+errorlog=$fullbuilddir/error.log
 
-out=out/linux/toggldesktop
-pocoversion=$(cat third_party/poco/libversion)
+function CHECK() {
+    echo "===================================" >> $errorlog
+    echo "Running $@" >> $errorlog
+    echo "===================================" >> $errorlog
+    if eval $@ 2>> $errorlog ; then
+        echo "OK" >&2
+    else
+        echo "Build failed, see $errorlog for details." >&2
+        exit 1
+    fi
+    echo "" >> $errorlog
+}
 
-# Clear output directories
-rm -rf toggldesktop*.tar.gz $out/*
-mkdir -p $out/lib $out/plugins/platforms $out/plugins/imageformats $out/plugins/iconengines $out/resources $out/translations
+echo "Will build in $fullbuilddir" >&2
 
-# Copy Toggl Desktop shared library
-cp src/lib/linux/TogglDesktopLibrary/build/release/libTogglDesktopLibrary.so.1 $out/lib
+pushd $builddir >/dev/null
+mkdir "package"
 
-# Copy README
-cp src/ui/linux/README $out/.
+echo "Configuring" >&2
+CHECK cmake -DTOGGL_PRODUCTION_BUILD=ON -DTOGGL_ALLOW_UPDATE_CHECK=ON -DUSE_BUNDLED_LIBRARIES=OFF -DCMAKE_INSTALL_PREFIX="$PWD/package" .. > cmake.log
+echo "Building..." >&2
+CHECK make -j8 > build.log
+echo "Installing" >&2
+CHECK make install > install.log
 
-# Copy Bugsnag library
-cp third_party/bugsnag-qt/build/release/libbugsnag-qt.so.1 $out/lib
+pushd package >/dev/null
 
-# Copy Poco libraries
-cp third_party/poco/lib/Linux/x86_64/libPocoCrypto.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoData.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoDataSQLite.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoFoundation.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoJSON.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoNet.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoNetSSL.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoUtil.so.$pocoversion $out/lib
-cp third_party/poco/lib/Linux/x86_64/libPocoXML.so.$pocoversion $out/lib
+echo "Composing the package" >&2
+rm -fr include lib/cmake
+CHECK cp $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 
-# Copy executable
-cp src/ui/linux/TogglDesktop/build/release/TogglDesktop $out
+corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
+libdir=$(dirname "$corelib")
+qmake=$(ls $libdir/../bin/{qmake,qmake-qt5} 2>/dev/null)
+CHECK ls "$qmake" >/dev/null
+libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)
+plugindir=$($qmake -query QT_INSTALL_PLUGINS)
+translationdir=$($qmake -query QT_INSTALL_TRANSLATIONS)
+datadir=$($qmake -query QT_INSTALL_DATA)
 
-# Copy startup script
-cp src/ui/linux/TogglDesktop.sh $out
-
-# Copy Qt libraries
-cp $QLIBPATH/libQt5Svg.so.5 $out/lib
-cp $QLIBPATH/libQt5Xml.so.5 $out/lib
-cp $QLIBPATH/libQt5XcbQpa.so.5 $out/lib
-cp $QLIBPATH/libQt5XcbQpa.so.5 $out/lib
-cp $QLIBPATH/libQt5WebEngine.so.5 $out/lib
-cp $QLIBPATH/libQt5WebEngineCore.so.5 $out/lib
-cp $QLIBPATH/libQt5WebEngineWidgets.so.5 $out/lib
-cp $QLIBPATH/libQt5DBus.so.5 $out/lib
-cp $QLIBPATH/libQt5Widgets.so.5 $out/lib
-cp $QLIBPATH/libQt5Gui.so.5 $out/lib
-cp $QLIBPATH/libQt5Network.so.5 $out/lib
-cp $QLIBPATH/libQt5Core.so.5 $out/lib
-cp $QLIBPATH/libQt5Sensors.so.5 $out/lib
-cp $QLIBPATH/libQt5Positioning.so.5 $out/lib
-cp $QLIBPATH/libQt5PrintSupport.so.5 $out/lib
-cp $QLIBPATH/libQt5OpenGL.so.5 $out/lib
-cp $QLIBPATH/libQt5Sql.so.5 $out/lib
-cp $QLIBPATH/libicui18n.so.56 $out/lib
-cp $QLIBPATH/libicuuc.so.56 $out/lib
-cp $QLIBPATH/libicudata.so.56 $out/lib
-cp $QLIBPATH/libQt5Quick.so.5 $out/lib
-cp $QLIBPATH/libQt5QuickWidgets.so.5 $out/lib
-cp $QLIBPATH/libQt5Qml.so.5 $out/lib
-cp $QLIBPATH/libQt5WebChannel.so.5 $out/lib
-cp $QLIBPATH/libQt5X11Extras.so.5 $out/lib
-
-# Copy Qt plugins
-cp $QPATH/plugins/imageformats/libqsvg.so $out/plugins/imageformats
-cp $QPATH/plugins/iconengines/libqsvgicon.so $out/plugins/iconengines
-cp $QPATH/plugins/platforms/libqxcb.so $out/plugins/platforms
-
-# Copy QtWebEngineProcess
-cp $QPATH/libexec/QtWebEngineProcess $out
-
-# Fix RPATH for plugin libraries and executables
-patchelf --set-rpath '$ORIGIN/../../lib' $out/plugins/imageformats/libqsvg.so
-patchelf --set-rpath '$ORIGIN/../../lib' $out/plugins/libqsvgicon.so
-patchelf --set-rpath '$ORIGIN/../../lib' $out/plugins/libqxcb.so
-patchelf --set-rpath '$ORIGIN/lib' $out/TogglDesktop
-patchelf --set-rpath '$ORIGIN/lib' $out/QtWebEngineProcess
-for i in `ls -1 $out/lib/libPoco*`; do
-       patchelf --set-rpath '$ORIGIN' $i
+CHECK cp "$libexecdir/QtWebEngineProcess" bin
+for i in $PLUGINS; do
+    newpath=lib/qt5/plugins/$(dirname $i)/
+    file=$(basename $i)
+    CHECK mkdir -p $newpath
+    CHECK cp $plugindir/$i $newpath
+    CHECK patchelf --set-rpath '$ORIGIN/../../..' $newpath/$file >> ../patchelf.log
+    CHECK cp -n $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
-for i in `ls -1 $out/lib/libicu*`; do
-       patchelf --set-rpath '$ORIGIN' $i
-done
- 
-# Copy QtWebEngine Resource files
-cp $QPATH/resources/* $out/resources
 
-# Copy QtWebEngine Locale files
-cp -r $QPATH/translations/qtwebengine_locales $out/translations/
+CHECK patchelf --set-rpath '$ORIGIN/../lib' bin/TogglDesktop >> ../patchelf.log
+CHECK patchelf --set-rpath '$ORIGIN/../lib' bin/QtWebEngineProcess >> ../patchelf.log
 
-# Copy icons
-cp -r src/ui/linux/TogglDesktop/icons $out/icons
+CHECK mkdir -p lib/qt5/translations lib/qt5/resources
+CHECK cp -r "$translationdir/qtwebengine_locales" lib/qt5/translations
+CHECK cp "$datadir/resources/qtwebengine"* lib/qt5/resources
 
-# SSL library needs to be copied manually
-# else local system installed library will get packaged?!?!
-rm -rf $out/lib/libssl* $out/lib/libcrypto*
-cp third_party/openssl/libssl.so.1.1 $out/lib/
-cp third_party/openssl/libcrypto.so.1.1 $out/lib/
-
-# Copy certificate bundle
-cp src/ssl/cacert.pem $out/.
-
-# Set permissions
-chmod -x $out/lib/*
-chmod -w $out/lib/*
-
-# Set QtWebEngineProcess to be executable
-chmod +x $out/QtWebEngineProcess
-
-# Copy Qt conf for qtwebengine
-cp src/ui/linux/qt_webengine.conf $out/lib/qt.conf
-
-# Create a custom Qt conf for the binary
-cat <<EOF >$out/qt.conf
+CHECK cat <<EOF >bin/qt.conf
 [Paths]
-Prefix=.
-Plugins=plugins
+Prefix=..
+Plugins=lib/qt5/plugins
+Data=lib/qt5
+Translations=lib/qt5/translations
 EOF
 
-# Create a tar ball
-cd $out/..
-tar cvfz toggldesktop_$(uname -m).tar.gz toggldesktop
+echo "Packaging" >&2
+CHECK tar cvfz ../../toggldesktop_$(uname -m).tar.gz * >/dev/null
 
-echo "Packaging done"
+popd >/dev/null
+popd >/dev/null
+
+echo "Result is: $PWD/toggldesktop_$(uname -m).tar.gz"
