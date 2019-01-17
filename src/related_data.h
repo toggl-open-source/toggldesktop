@@ -12,6 +12,7 @@
 #include "./types.h"
 
 #include "Poco/Mutex.h"
+#include <functional>
 
 namespace toggl {
 
