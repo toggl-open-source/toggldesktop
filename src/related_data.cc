@@ -557,7 +557,14 @@ void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
 void RelatedData::ClientList(std::vector<Client *> *result) const {
 
     poco_check_ptr(result);
-    //*result = Clients;
+
+    for (tbb::concurrent_vector<Client *>::const_iterator it =
+        Clients.begin();
+            it != Clients.end();
+            it++) {
+        Client *cl = *it;
+        result->push_back(cl);
+    }
 
     std::sort(result->rbegin(), result->rend(), CompareClientByName);
 }

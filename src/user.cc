@@ -75,9 +75,16 @@ void User::AddProjectToList(Project *p) {
     bool WIDMatch = false;
     bool CIDMatch = false;
 
+    std::vector<Project *> projects;
+    for (tbb::concurrent_vector<Project *>::iterator it =
+        related.Projects.begin();
+            it != related.Projects.end(); it++) {
+        Project *pr = *it;
+        projects.push_back(pr);
+    }
+
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    std::vector<Project *> projects = std::vector<Project *>(related.Projects.begin(), related.Projects.end());
     for (std::vector<Project *>::iterator it =
         projects.begin();
             it != projects.end(); it++) {
@@ -89,34 +96,36 @@ void User::AddProjectToList(Project *p) {
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
                     projects.insert(it, p);
-                    return;
+                    break;
                 }
             } else if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
                 // Handle adding project with client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     projects.insert(it,p);
-                    return;
+                    break;
                 }
             } else if (CIDMatch) {
                 // in case new project is last in client list
                 projects.insert(it,p);
-                return;
+                break;
             } else if ((p->CID() != 0 || !p->ClientGUID().empty()) && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     projects.insert(it,p);
-                    return;
+                    break;
                 }
             }
         } else if (WIDMatch) {
             //In case new project is last in workspace list
             projects.insert(it,p);
-            return;
+            break;
         }
     }
 
     // if projects vector is empty or project should be added to the end
-    projects.push_back(p);
+    if (projects.empty()) {
+        projects.push_back(p);
+    }
 
     // Add again
     related.Projects.clear();
@@ -146,9 +155,17 @@ void User::AddClientToList(Client *c) {
 
     bool foundMatch = false;
 
+    // Convert to vector
+    std::vector<Client *> clients;
+    for (tbb::concurrent_vector<Client *>::iterator it =
+        related.Clients.begin();
+            it != related.Clients.end(); it++) {
+        Client *cl = *it;
+        clients.push_back(cl);
+    }
+
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    std::vector<Client *> clients = std::vector<Client *>(related.Clients.begin(), related.Clients.end());
     for (std::vector<Client *>::iterator it =
         clients.begin();
             it != clients.end(); it++) {
@@ -157,16 +174,18 @@ void User::AddClientToList(Client *c) {
             foundMatch = true;
             if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
                 clients.insert(it,c);
-                return;
+                break;
             }
         } else if (foundMatch) {
             clients.insert(it,c);
-            return;
+            break;
         }
     }
 
     // if clients vector is empty or client should be added to the end
-    clients.push_back(c);
+    if (clients.empty()) {
+        clients.push_back(c);
+    }
 
     // Add again
     related.Clients.clear();

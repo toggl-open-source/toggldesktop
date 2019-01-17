@@ -1991,6 +1991,8 @@ error Database::saveRelatedModels(
     tbb::concurrent_vector<T *> *list,
     std::vector<ModelChange> *changes) {
 
+    Poco::Mutex::ScopedLock lock(lockMutex);
+
     if (!UID) {
         return error("Cannot save user related data without an user ID");
     }
@@ -1999,13 +2001,15 @@ error Database::saveRelatedModels(
     poco_check_ptr(changes);
 
     typedef typename tbb::concurrent_vector<T *>::iterator iterator;
+    error _err;
 
     for (size_t i = 0; i < list->size(); i++) {
         T *model = list->at(i);
         if (model->IsMarkedAsDeletedOnServer()) {
             error err = DeleteFromTable(table_name, model->LocalID());
             if (err != noError) {
-                return err;
+                _err = err;
+                break;
             }
             changes->push_back(ModelChange(
                 model->ModelName(),
@@ -2017,20 +2021,35 @@ error Database::saveRelatedModels(
         model->SetUID(UID);
         error err = saveModel(model, changes);
         if (err != noError) {
-            return err;
+            _err = err;
+            break;
         }
     }
 
+    // Return if error
+    if (_err != noError) {
+        return _err;
+    }
+
     // Purge deleted models from memory
-//    iterator it = list->begin();
-//    while (it != list->end()) {
-//        T *model = *it;
-//        if (model->IsMarkedAsDeletedOnServer()) {
-//            it = list->erase(it);
-//        } else {
-//            ++it;
-//        }
-//    }
+    std::vector<T *> vectorList;
+    for (typename tbb::concurrent_vector<T *>::const_iterator it =
+        list->begin();
+            it != list->end(); it++) {
+        T *model = *it;
+        if (!model->IsMarkedAsDeletedOnServer()) {
+            vectorList.push_back(model);
+        }
+    }
+
+    // Append again
+    list->clear();
+    for (typename std::vector<T *>::const_iterator it =
+        vectorList.begin();
+            it != vectorList.end(); it++) {
+        T *model = *it;
+        list->push_back(model);
+    }
 
     return noError;
 }
