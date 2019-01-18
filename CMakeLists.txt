@@ -38,6 +38,10 @@ if(NOT USE_BUNDLED_LIBRARIES)
     # Look for JSON
     find_package(jsoncpp CONFIG)
 
+    include(/home/parallels/Desktop/toggldesktop/third_party/tbb/cmake/TBBBuild.cmake)
+    tbb_build(TBB_ROOT /home/parallels/Desktop/toggldesktop/third_party/tbb CONFIG_DIR TBB_DIR)
+    find_package(TBB REQUIRED tbb)
+    
     # Look for Qxt
     pkg_search_module(QXT_CORE QxtCore-qt5)
     pkg_search_module(QXT_WIDGETS QxtWidgets-qt5)
