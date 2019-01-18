@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.10)
 project(TogglDesktop)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -38,10 +38,10 @@ if(NOT USE_BUNDLED_LIBRARIES)
     # Look for JSON
     find_package(jsoncpp CONFIG)
 
-    include(/home/parallels/Desktop/toggldesktop/third_party/tbb/cmake/TBBBuild.cmake)
-    tbb_build(TBB_ROOT /home/parallels/Desktop/toggldesktop/third_party/tbb CONFIG_DIR TBB_DIR)
-    find_package(TBB REQUIRED tbb)
-    
+    # Look for TBB
+    pkg_search_module(TBB tbb)
+    set(TBB_IMPORTED_TARGETS ${TBB_LIBRARIES})
+
     # Look for Qxt
     pkg_search_module(QXT_CORE QxtCore-qt5)
     pkg_search_module(QXT_WIDGETS QxtWidgets-qt5)
@@ -54,6 +54,12 @@ if(NOT USE_BUNDLED_LIBRARIES)
     )
 endif()
 
+# this has to be here instead of third_party because i couldn't find a way to export TBB::tbb from inside that folder
+if(NOT TBB_FOUND)
+    include(${PROJECT_SOURCE_DIR}/third_party/tbb/cmake/TBBBuild.cmake)
+    tbb_build(TBB_ROOT ${PROJECT_SOURCE_DIR}/third_party/tbb CONFIG_DIR TBB_DIR)
+    find_package(TBB REQUIRED tbb)
+endif()
 
 set(TOGGLDESKTOP_BUILDROOT
     ${CMAKE_CURRENT_BINARY_DIR}/buildroot

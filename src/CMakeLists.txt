@@ -65,6 +65,7 @@ target_link_libraries(TogglDesktopLibrary PRIVATE
     jsoncpp
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL
+    ${TBB_IMPORTED_TARGETS}
 )
 
 install(TARGETS TogglDesktopLibrary DESTINATION lib)

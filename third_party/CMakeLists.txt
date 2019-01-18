@@ -166,3 +166,4 @@ if(NOT QXT_CORE_FOUND)
     )
     install(TARGETS Qxt DESTINATION lib)
 endif()
+
