@@ -52,12 +52,13 @@ for i in $PLUGINS; do
     file=$(basename $i)
     CHECK mkdir -p $newpath
     CHECK cp $plugindir/$i $newpath
-    CHECK patchelf --set-rpath '$ORIGIN/../../..' $newpath/$file >> ../patchelf.log
+    CHECK patchelf --set-rpath '\$ORIGIN/../../../' $newpath/$file >> ../patchelf.log
     CHECK cp -n $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
 
-CHECK patchelf --set-rpath '$ORIGIN/../lib' bin/TogglDesktop >> ../patchelf.log
-CHECK patchelf --set-rpath '$ORIGIN/../lib' bin/QtWebEngineProcess >> ../patchelf.log
+CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/TogglDesktop >> ../patchelf.log
+CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/QtWebEngineProcess >> ../patchelf.log
+CHECK patchelf --set-rpath '\$ORIGIN' lib/libTogglDesktopLibrary.so >> ../patchelf.log
 
 CHECK mkdir -p lib/qt5/translations lib/qt5/resources
 CHECK cp -r "$translationdir/qtwebengine_locales" lib/qt5/translations
