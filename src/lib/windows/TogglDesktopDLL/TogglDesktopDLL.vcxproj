@@ -72,7 +72,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TOGGLDESKTOPDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl;$(ProjectDir)..\..\..\..\third_party\openssl\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\third_party\poco\openssl;$(ProjectDir)..\..\..\..\third_party\openssl\include;$(ProjectDir)..\..\..\..\third_party\jsoncpp\dist;$(ProjectDir)..\..\..\..\third_party\poco\Foundation\include;$(ProjectDir)..\..\..\..\third_party\poco\Util\include;$(ProjectDir)..\..\..\..\third_party\poco\Crypto\include;$(ProjectDir)..\..\..\..\third_party\poco\Net\include;$(ProjectDir)..\..\..\..\third_party\poco\NetSSL_OpenSSL\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\include;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\src;$(ProjectDir)..\..\..\..\third_party\lua\src;$(ProjectDir)..\..\..\..\third_party\luafar;$(ProjectDir)..\..\..\..\third_party\tbb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
@@ -81,7 +81,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\src\ui\windows\TogglDesktop\Release\;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\openssl\out32dll;$(ProjectDir)..\..\..\..\third_party\poco\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\src\ui\windows\TogglDesktop\Release\;$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\openssl\out32dll;$(ProjectDir)..\..\..\..\third_party\poco\lib;$(ProjectDir)..\..\..\..\third_party\tbb\build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
