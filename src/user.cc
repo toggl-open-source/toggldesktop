@@ -74,6 +74,7 @@ void User::AddProjectToList(Project *p) {
 
     bool WIDMatch = false;
     bool CIDMatch = false;
+    bool isInsert = false;
 
     std::vector<Project *> projects;
     for (tbb::concurrent_vector<Project *>::iterator it =
@@ -96,6 +97,7 @@ void User::AddProjectToList(Project *p) {
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
                     projects.insert(it, p);
+                    isInsert = true;
                     break;
                 }
             } else if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
@@ -103,27 +105,31 @@ void User::AddProjectToList(Project *p) {
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     projects.insert(it,p);
+                    isInsert = true;
                     break;
                 }
             } else if (CIDMatch) {
                 // in case new project is last in client list
                 projects.insert(it,p);
+                isInsert = true;
                 break;
             } else if ((p->CID() != 0 || !p->ClientGUID().empty()) && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
                     projects.insert(it,p);
+                    isInsert = true;
                     break;
                 }
             }
         } else if (WIDMatch) {
             //In case new project is last in workspace list
             projects.insert(it,p);
+            isInsert = true;
             break;
         }
     }
 
     // if projects vector is empty or project should be added to the end
-    if (projects.empty()) {
+    if (!isInsert) {
         projects.push_back(p);
     }
 
@@ -154,6 +160,7 @@ void User::AddClientToList(Client *c) {
     Poco::Mutex::ScopedLock lock(lockMutex);
 
     bool foundMatch = false;
+    bool isInserted = false;
 
     // Convert to vector
     std::vector<Client *> clients;
@@ -174,16 +181,18 @@ void User::AddClientToList(Client *c) {
             foundMatch = true;
             if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
                 clients.insert(it,c);
+                isInserted = true;
                 break;
             }
         } else if (foundMatch) {
             clients.insert(it,c);
+            isInserted = true;
             break;
         }
     }
 
     // if clients vector is empty or client should be added to the end
-    if (clients.empty()) {
+    if (!isInserted) {
         clients.push_back(c);
     }
 
