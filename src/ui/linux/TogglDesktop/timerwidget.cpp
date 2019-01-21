@@ -18,7 +18,9 @@ duration(0),
 project(""),
 tagsHolder(""),
 timeEntryAutocompleteNeedsUpdate(false),
-descriptionModel(new AutocompleteListModel(this)) {
+descriptionModel(new AutocompleteListModel(this)),
+selectedTaskId(0),
+selectedProjectId(0) {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -37,6 +39,12 @@ descriptionModel(new AutocompleteListModel(this)) {
 
     connect(ui->description, SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
+    connect(ui->description, SIGNAL(timeEntrySelected(QString)),
+            this, SLOT(descriptionTimeEntrySelected(QString)));
+    connect(ui->description, SIGNAL(projectSelected(QString,uint64_t)),
+            this, SLOT(descriptionProjectSelected(QString,uint64_t)));
+    connect(ui->description, SIGNAL(taskSelected(QString,uint64_t)),
+            this, SLOT(descriptionTaskSelected(QString,uint64_t)));
 
     ui->description->setModel(descriptionModel);
 
@@ -55,6 +63,19 @@ TimerWidget::~TimerWidget() {
 
 void TimerWidget::descriptionReturnPressed() {
     start();
+}
+
+void TimerWidget::descriptionTimeEntrySelected(const QString &name) {
+    // do nothing? probably?
+}
+
+void TimerWidget::descriptionTaskSelected(const QString &name, uint64_t id) {
+    // TODO
+}
+
+void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id) {
+    ui->project->setText(name);
+    selectedProjectId = id;
 }
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
@@ -161,15 +182,14 @@ void TimerWidget::on_start_clicked() {
 }
 
 void TimerWidget::start() {
-    uint64_t task_id(0);
-    uint64_t project_id(0);
-
+    /*
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
         task_id = view->TaskID;
         project_id = view->ProjectID;
     }
+    */
 
     QString description = ui->description->currentText();
     if (description == descriptionPlaceholder) {
@@ -178,8 +198,8 @@ void TimerWidget::start() {
 
     TogglApi::instance->start(description,
                               ui->duration->text(),
-                              task_id,
-                              project_id,
+                              selectedTaskId,
+                              selectedProjectId,
                               tagsHolder.toStdString().c_str(),
                               ui->billable->isVisible());
     tagsHolder = "";

@@ -51,6 +51,9 @@ class TimerWidget : public QWidget {
     void on_duration_returnPressed();
 
     void descriptionReturnPressed();
+    void descriptionTimeEntrySelected(const QString &name);
+    void descriptionTaskSelected(const QString &name, uint64_t id);
+    void descriptionProjectSelected(const QString &name, uint64_t id);
 
  private:
     Ui::TimerWidget *ui;
@@ -66,6 +69,10 @@ class TimerWidget : public QWidget {
     bool timeEntryAutocompleteNeedsUpdate;
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
     AutocompleteListModel *descriptionModel;
+
+    uint64_t selectedTaskId;
+    uint64_t selectedProjectId;
+
     void setEllipsisTextToLabel(QLabel *label, QString text);
 };
 

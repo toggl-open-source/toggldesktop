@@ -12,6 +12,14 @@ AutocompleteListView::AutocompleteListView(QWidget *parent) :
     setUniformItemSizes(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setItemDelegateForColumn(0, new AutoCompleteItemDelegate(this));
+
+    connect(this, &QListView::activated, [=](const QModelIndex &index){
+        emit selected(qvariant_cast<AutocompleteView*>(index.data(Qt::UserRole)));
+        setVisible(false);
+    });
+    connect(this, &QListView::clicked, [=](const QModelIndex &index){
+        emit selected(qvariant_cast<AutocompleteView*>(index.data(Qt::UserRole)));
+    });
 }
 
 void AutocompleteListView::paintEvent(QPaintEvent *e) {
@@ -63,7 +71,7 @@ void AutocompleteListView::keyPressEvent(QKeyEvent *e)
 {
     bool modifiers = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
     if (modifiers) {
-        emit keyPress(e);
+        //emit keyPress(e);
         return;
     }
 
@@ -86,7 +94,7 @@ void AutocompleteListView::keyPressEvent(QKeyEvent *e)
         return;
     }
 
-    emit keyPress(e);
+    //emit keyPress(e);
 }
 
 AutoCompleteItemDelegate::AutoCompleteItemDelegate(QObject *parent)

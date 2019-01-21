@@ -24,10 +24,8 @@ public:
     void hideEvent(QHideEvent *event) override;
 
 signals:
-    void keyPress(QKeyEvent *e);
-    void returnPressed();
-
     void visibleChanged();
+    void selected(AutocompleteView *item);
 
 protected:
     void keyPressEvent(QKeyEvent *e);

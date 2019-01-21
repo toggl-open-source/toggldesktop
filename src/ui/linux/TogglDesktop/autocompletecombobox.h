@@ -30,9 +30,13 @@ protected:
 
 private slots:
     void onDropdownVisibleChanged();
+    void onDropdownSelected(AutocompleteView *item);
 
 signals:
     void returnPressed();
+    void timeEntrySelected(const QString &name);
+    void projectSelected(const QString &name, uint64_t id);
+    void taskSelected(const QString &name, uint64_t id);
 
 private:
     AutocompleteLineEdit *lineEdit;

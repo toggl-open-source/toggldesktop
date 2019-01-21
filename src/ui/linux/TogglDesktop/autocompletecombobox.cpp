@@ -19,6 +19,7 @@ AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     setCompleter(completer);
     connect(listView, &AutocompleteListView::visibleChanged, this, &AutocompleteComboBox::onDropdownVisibleChanged);
     connect(lineEdit, &QLineEdit::textEdited, proxyModel, &AutocompleteProxyModel::setFilterFixedString);
+    connect(listView, &AutocompleteListView::selected, this, &AutocompleteComboBox::onDropdownSelected);
 }
 
 void AutocompleteComboBox::setModel(QAbstractItemModel *model) {
@@ -35,11 +36,10 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
             listView->setVisible(false);
             return true;
         case Qt::Key_Enter:
-        case Qt::Key_Return:
-            if (currentView() && currentView()->Type == 0)
-                emit returnPressed();
-            listView->setVisible(false);
+        case Qt::Key_Return: {
+            listView->keyPressEvent(ke);
             return true;
+        }
         case Qt::Key_Up:
         case Qt::Key_Down:
             if (!listView->isVisible())
@@ -61,6 +61,10 @@ AutocompleteView *AutocompleteComboBox::currentView() {
 
 void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+        emit returnPressed();
+        break;
     case Qt::Key_Down:
     case Qt::Key_Up:
         if (!listView->isVisible())
@@ -76,6 +80,22 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
 void AutocompleteComboBox::onDropdownVisibleChanged() {
     if (listView->isVisible()) {
         oldLabel = currentText();
+    }
+}
+
+void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
+    if (item) {
+
+        switch (item->Type) {
+        case 0:
+            emit timeEntrySelected(item->Text);
+            break;
+        case 2:
+            emit projectSelected(item->Text, item->ProjectID);
+            break;
+        default:
+            break;
+        }
     }
 }
 
