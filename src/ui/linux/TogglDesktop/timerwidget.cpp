@@ -47,6 +47,7 @@ selectedProjectId(0) {
             this, SLOT(descriptionTaskSelected(QString,uint64_t)));
 
     ui->description->setModel(descriptionModel);
+    ui->projectFrame->setVisible(false);
 
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
@@ -74,6 +75,7 @@ void TimerWidget::descriptionTaskSelected(const QString &name, uint64_t id) {
 }
 
 void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id) {
+    ui->projectFrame->setVisible(true);
     ui->project->setText(name);
     selectedProjectId = id;
 }
@@ -161,6 +163,7 @@ void TimerWidget::displayStoppedTimerState() {
 
     ui->project->setText("");
     ui->project->setToolTip(QString(""));
+    ui->projectFrame->setVisible(false);
 
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
