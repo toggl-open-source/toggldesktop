@@ -27,9 +27,9 @@ clientSelectNeedsUpdate(false),
 colorPicker(new ColorPicker(this)),
 timer(new QTimer(this)),
 duration(0),
+previousTagList(""),
 descriptionModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
-projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
-previousTagList("") {
+projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())) {
     ui->setupUi(this);
 
     ui->description->setModel(descriptionModel);
