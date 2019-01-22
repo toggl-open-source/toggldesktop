@@ -11,7 +11,7 @@
 #include "./timeentryview.h"
 #include "./toggl.h"
 
-TimerWidget::TimerWidget(QWidget *parent) : QWidget(parent),
+TimerWidget::TimerWidget(QWidget *parent) : QFrame(parent),
 ui(new Ui::TimerWidget),
 timer(new QTimer(this)),
 duration(0),

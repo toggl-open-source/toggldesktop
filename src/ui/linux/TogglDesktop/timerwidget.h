@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QTimer>
 #include <QLabel>
+#include <QFrame>
 
 namespace Ui {
 class TimerWidget;
@@ -16,7 +17,7 @@ class AutocompleteListModel;
 class AutocompleteView;
 class TimeEntryView;
 
-class TimerWidget : public QWidget {
+class TimerWidget : public QFrame {
     Q_OBJECT
 
  public:
