@@ -126,11 +126,13 @@ class HTTPSResponse {
     HTTPSResponse()
         : body("")
     , err(noError)
+    , error_message(noError)
     , status_code(0) {}
     virtual ~HTTPSResponse() {}
 
     std::string body;
     error err;
+    std::string error_message;
     Poco::Int64 status_code;
 };
 

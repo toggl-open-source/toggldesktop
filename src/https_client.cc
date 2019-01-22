@@ -490,6 +490,16 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         }
 
         resp.err = statusCodeToError(resp.status_code);
+
+        // Get human-readable error message from response
+        if (resp.err != noError && response.getContentType() == kContentTypeApplicationJSON) {
+            Json::Value root;
+            Json::Reader reader;
+            if (reader.parse(resp.body, root)) {
+                resp.error_message = root["error_message"].asString();
+            }
+        }
+
     } catch(const Poco::Exception& exc) {
         resp.err = exc.displayText();
         return resp;
