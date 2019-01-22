@@ -37,7 +37,13 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
             return true;
         case Qt::Key_Enter:
         case Qt::Key_Return: {
-            listView->keyPressEvent(ke);
+            if (listView->currentIndex().isValid()) {
+                listView->keyPressEvent(ke);
+            }
+            else {
+                listView->hide();
+                emit returnPressed();
+            }
             return true;
         }
         case Qt::Key_Home:
