@@ -136,9 +136,7 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
     case 11: // Category row
         return "<div width=320px style='width:320px;font-size:12px;color:#9e9e9e;background-color:transparent;font-weight:500'>" + view->Description + "</div>";
     case 12: { // Client row / no project row
-        QString style = transparent + "padding-top:5px;padding-left:10px;font-weight:800;";
-        label = "<span style='" + style + "'>" + view->Description + "</span>";
-        return label;
+        return "<div width=320px style='width:320px;font-size:12px;color:#9e9e9e;background-color:transparent;font-weight:500;padding-left:10px;'>" + view->Description + "</div>";
     }
     case 2: { // Project items rows
         label.append("<div style='margin-left:15px;font-size:12px;color:" + view->ProjectColor + ";'>• " + view->ProjectLabel + "</div>");

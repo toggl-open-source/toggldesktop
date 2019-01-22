@@ -70,8 +70,18 @@ class AutocompleteView : public QObject {
                 }
                 result.push_back(currentLevel1Header);
             }
+            if (view->Type == 2 && (!currentLevel2Header || currentLevel2Header->ClientLabel != view->ClientLabel)) {
+                currentLevel2Header = new AutocompleteView();
+                currentLevel2Header->Type = 12;
+                currentLevel2Header->ClientLabel = view->ClientLabel;
+                if (view->ClientLabel.isEmpty())
+                    currentLevel2Header->Description = "No client";
+                else
+                    currentLevel2Header->Description = view->ClientLabel;
+                result.push_back(currentLevel2Header);
+            }
 
-            if (view->Type == 0 && currentWorkspace && currentWorkspace->Description == view->WorkspaceName)
+            if (currentWorkspace && currentWorkspace->Description == view->WorkspaceName)
                 currentWorkspace->_Children.append(view);
 
             if (currentLevel1Header)
