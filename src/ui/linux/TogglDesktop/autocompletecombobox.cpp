@@ -88,6 +88,8 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
 
         switch (item->Type) {
         case 0:
+            if (item->ProjectID && !item->ProjectLabel.isEmpty())
+                emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor);
             emit timeEntrySelected(item->Text);
             break;
         case 2:
