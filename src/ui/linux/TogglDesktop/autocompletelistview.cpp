@@ -27,32 +27,69 @@ void AutocompleteListView::paintEvent(QPaintEvent *e) {
 }
 
 QModelIndex AutocompleteListView::moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers) {
+    Q_UNUSED(modifiers);
     switch(cursorAction) {
-    case MoveDown:
-    case MoveRight:
-    case MoveEnd:
-    case MovePageDown:
-    case MoveNext:
-        for (int i = currentIndex().row() + 1; i < model()->rowCount(); i++) {
-            auto index = model()->index(i, 0);
-            if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
-                return model()->index(i, 0);
+        case MoveDown:
+        case MoveRight:
+        case MoveNext:
+            for (int i = currentIndex().row() + 1; i < model()->rowCount(); i++) {
+                auto index = model()->index(i, 0);
+                if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                    return model()->index(i, 0);
+                }
             }
-        }
-        return QModelIndex();
-    case MoveUp:
-    case MoveLeft:
-    case MoveHome:
-    case MovePageUp:
-    case MovePrevious: {
-        for (int i = currentIndex().row() - 1; i >= 0; i--) {
-            auto index = model()->index(i, 0);
-            if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
-                return model()->index(i, 0);
+            return QModelIndex();
+        case MovePageDown: {
+            QModelIndex lastValid;
+            int remaining = 19;
+            for (int i = currentIndex().row() + 1; i < model()->rowCount() && remaining > 0; i++, remaining--) {
+                auto index = model()->index(i, 0);
+                if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                    lastValid = model()->index(i, 0);
+                }
             }
+            return lastValid;
         }
-        return QModelIndex();
-    }
+        case MoveEnd: {
+            for (int i = model()->rowCount() - 1; i >= 0; i--) {
+                auto index = model()->index(i, 0);
+                if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                    return index;
+                }
+            }
+            return QModelIndex();
+        }
+        case MoveUp:
+        case MoveLeft:
+        case MovePrevious: {
+            for (int i = currentIndex().row() - 1; i >= 0; i--) {
+                auto index = model()->index(i, 0);
+                if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                    return model()->index(i, 0);
+                }
+            }
+            return QModelIndex();
+        }
+        case MovePageUp: {
+            QModelIndex lastValid;
+            int remaining = 19;
+            for (int i = currentIndex().row() - 1; i >= 0 && remaining > 0; i--, remaining--) {
+                auto index = model()->index(i, 0);
+                if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                    lastValid = model()->index(i, 0);
+                }
+            }
+            return lastValid;
+        }
+        case MoveHome: {
+            for (int i = 0; i < model()->rowCount(); i++) {
+                auto index = model()->index(i, 0);
+                if (index.isValid() && index.flags() & Qt::ItemIsEnabled) {
+                    return index;
+                }
+            }
+            return QModelIndex();
+        }
     }
     return QModelIndex();
 }
@@ -75,25 +112,7 @@ void AutocompleteListView::keyPressEvent(QKeyEvent *e)
         return;
     }
 
-    switch (e->key())
-    {
-    case Qt::Key_Enter:
-    case Qt::Key_Return:
-    case Qt::Key_Escape:
-        QListView::keyPressEvent(e);
-        return;
-    case Qt::Key_Tab:
-    case Qt::Key_Backtab:
-        QListView::keyPressEvent(e);
-        return;
-    case Qt::Key_Down:
-        QListView::keyPressEvent(e);
-        return;
-    case Qt::Key_Up:
-        QListView::keyPressEvent(e);
-        return;
-    }
-
+    QListView::keyPressEvent(e);
     //emit keyPress(e);
 }
 

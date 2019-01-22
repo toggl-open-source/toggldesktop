@@ -40,6 +40,10 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
             listView->keyPressEvent(ke);
             return true;
         }
+        case Qt::Key_Home:
+        case Qt::Key_End:
+        case Qt::Key_PageDown:
+        case Qt::Key_PageUp:
         case Qt::Key_Up:
         case Qt::Key_Down:
             if (!listView->isVisible())
@@ -65,6 +69,10 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
     case Qt::Key_Return:
         emit returnPressed();
         break;
+    case Qt::Key_Home:
+    case Qt::Key_End:
+    case Qt::Key_PageDown:
+    case Qt::Key_PageUp:
     case Qt::Key_Down:
     case Qt::Key_Up:
         if (!listView->isVisible())
@@ -104,6 +112,7 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
 AutocompleteCompleter::AutocompleteCompleter(QWidget *parent)
     : QCompleter(parent)
 {
+    setMaxVisibleItems(20);
     setPopup(new AutocompleteListView(parent));
     setCompletionMode(QCompleter::UnfilteredPopupCompletion);
 }
