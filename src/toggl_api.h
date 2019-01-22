@@ -160,6 +160,7 @@ extern "C" {
         bool_t PomodoroBreak;
         uint64_t PomodoroMinutes;
         uint64_t PomodoroBreakMinutes;
+        bool_t StopEntryOnShutdownSleep;
     } TogglSettingsView;
 
     typedef struct {
@@ -680,6 +681,10 @@ extern "C" {
         void *context,
         const bool_t pomodoro_break);
 
+    TOGGL_EXPORT bool_t toggl_set_settings_stop_entry_on_shutdown_sleep(
+        void *context,
+        const bool_t stop_entry);
+
     TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,
         const uint64_t idle_minutes);
@@ -883,6 +888,9 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT void toggl_set_wake(
+        void *context);
+
+    TOGGL_EXPORT void toggl_os_shutdown(
         void *context);
 
     // Notify lib that client is online again.

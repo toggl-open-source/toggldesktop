@@ -55,6 +55,7 @@ MainWindowController::MainWindowController(
   trayIcon(nullptr),
   pomodoro(false),
   script(scriptPath),
+  powerManagement(new PowerManagement(this)),
   ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 

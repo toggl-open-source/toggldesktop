@@ -43,4 +43,5 @@
 @property BOOL pomodoro_break;
 @property int pomodoro_minutes;
 @property int pomodoro_break_minutes;
+@property (assign, nonatomic) BOOL stopWhenShutdown;
 @end

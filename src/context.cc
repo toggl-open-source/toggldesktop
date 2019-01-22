@@ -1848,6 +1848,11 @@ error Context::SetSettingsPomodoroBreak(const bool pomodoro_break) {
         db()->SetSettingsPomodoroBreak(pomodoro_break));
 }
 
+error Context::SetSettingsStopEntryOnShutdownSleep(const bool stop_entry) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsStopEntryOnShutdownSleep(stop_entry));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -3767,8 +3772,15 @@ Client *Context::CreateClient(
 }
 
 void Context::SetSleep() {
-    logger().debug("SetSleep");
-    idle_.SetSleep();
+
+    // Stop running entry if need
+    const bool isHandled = handleStopRunningEntry();
+
+    // Set Sleep as usual
+    if (!isHandled) {
+        logger().debug("SetSleep");
+        idle_.SetSleep();
+    }
 }
 
 error Context::OpenReportsInBrowser() {
@@ -3997,6 +4009,21 @@ void Context::SetOnline() {
     ss << "Next sync at "
        << Formatter::Format8601(next_sync_at_);
     logger().debug(ss.str());
+}
+
+void Context::osShutdown() {
+    handleStopRunningEntry();
+}
+
+const bool Context::handleStopRunningEntry() {
+
+    // Skip if this feature is not enable
+    if (!settings_.stop_entry_on_shutdown_sleep) {
+        return false;
+    }
+
+    // Stop running entry
+    return Stop(false) == noError;
 }
 
 void Context::displayReminder() {

@@ -7,6 +7,7 @@
 #include <set>
 #include <string>
 #include <map>
+#include <functional>
 
 #include "./timeline_event.h"
 #include "./types.h"

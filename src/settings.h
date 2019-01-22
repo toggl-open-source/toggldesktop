@@ -43,7 +43,8 @@ class Settings : public BaseModel {
     , pomodoro(false)
     , pomodoro_minutes(0)
     , pomodoro_break(false)
-    , pomodoro_break_minutes(0) {}
+    , pomodoro_break_minutes(0)
+    , stop_entry_on_shutdown_sleep(false) {}
 
     virtual ~Settings() {}
 
@@ -74,6 +75,7 @@ class Settings : public BaseModel {
     bool pomodoro_break;
     Poco::UInt64 pomodoro_minutes;
     Poco::UInt64 pomodoro_break_minutes;
+    bool stop_entry_on_shutdown_sleep;
 
     bool IsSame(const Settings &other) const;
 

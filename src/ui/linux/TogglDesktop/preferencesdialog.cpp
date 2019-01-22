@@ -31,7 +31,7 @@ ui(new Ui::PreferencesDialog) {
     connect(ui->dayCheckbox_5, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
     connect(ui->dayCheckbox_6, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
     connect(ui->dayCheckbox_7, &QCheckBox::clicked, this, &PreferencesDialog::onDayCheckboxClicked);
-
+    connect(ui->stopEntry, &QCheckBox::clicked, this, &PreferencesDialog::onStopEntryCheckboxClicked);
     keyId = 0;
 }
 
@@ -107,6 +107,8 @@ void PreferencesDialog::displaySettings(const bool open,
 
     ui->reminderStartTimeEdit->setTime(settings->RemindStartTime);
     ui->reminderEndTimeEdit->setTime(settings->RemindEndTime);
+
+    ui->stopEntry->setChecked(settings->StopEntryOnShutdownSleep);
 
     QString sh(TogglApi::instance->getShowHideKey());
     if (sh.length() == 0) {
@@ -348,3 +350,6 @@ void PreferencesDialog::on_focusAppOnShortcut_clicked(bool checked) {
     TogglApi::instance->setSettingsFocusOnShortcut(checked);
 }
 
+void PreferencesDialog::onStopEntryCheckboxClicked(bool checked) {
+    TogglApi::instance->setSettingsStopEntryOnShutdown(checked);
+}

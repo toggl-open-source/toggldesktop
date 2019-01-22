@@ -5,15 +5,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="500" Width="500"
+        Height="528" Width="500"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Preferences"
         Style="{StaticResource Preferences}"
         >
-    
+
     <!-- content -->
-    <Grid Background="{StaticResource ViewBackgroundLight}">
+    <Grid Background="{StaticResource ViewBackgroundLight}" Height="482">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -25,7 +25,7 @@
         <!-- tabbed content -->
         <TabControl Grid.Row="0" TabStripPlacement="Top">
             <TabItem Header="GENERAL">
-                <StackPanel Margin="11 11">
+                <StackPanel Margin="11" Height="373">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -33,10 +33,11 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="28"/>
                         </Grid.RowDefinitions>
 
                         <CheckBox Grid.Column="0" Grid.Row="0"
@@ -85,9 +86,12 @@
                         <CheckBox Grid.Column="0" Grid.Row="4"
                             Name="onTopCheckBox" x:FieldModifier="private"
                             Margin="5">Keep Toggl on top of other windows</CheckBox>
+                        <CheckBox Grid.Column="0" Grid.Row="5"
+                            x:Name="onStopEntryCheckBox" x:FieldModifier="private"
+                            Margin="5" Content="Stop running entry on computer sleep/shutdown"/>
 
                     </Grid>
-                    
+
                     <GroupBox Header="Global Shortcuts">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -100,7 +104,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Show/Hide Toggl</TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Continue/Stop timer</TextBlock>
-                            
+
 
                             <Border Grid.Column="1" Grid.Row="0"
                                             Style="{StaticResource ShortcutRecordContainer}">
@@ -140,7 +144,7 @@
                                TextAlignment="Right" Margin="0 -2 10 0"
                                FontSize="12" Foreground="Red"
                                Text="No error. Everything is ok." />
-                    
+
                     <TextBlock Text="Default project" Margin="5 5 5 -5"
                                    />
                     <!-- default project selection -->
@@ -186,10 +190,10 @@
                         </TextBlock>
 
                     </Grid>
-                    
+
                     <CheckBox Name="keepEndTimeFixedCheckbox" x:FieldModifier="private"
                         Content="Change duration when changing start time"
-                              Margin="5"></CheckBox>
+                              Margin="5"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="PROXY">

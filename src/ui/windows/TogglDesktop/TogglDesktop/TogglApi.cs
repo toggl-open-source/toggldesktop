@@ -256,8 +256,10 @@ public static partial class Toggl
         public         bool PomodoroBreak;
         public         UInt64 PomodoroMinutes;
         public         UInt64 PomodoroBreakMinutes;
+        [MarshalAs(UnmanagedType.I1)]
+        public         bool StopEntryOnShutdownSleep;
 
-        public override string ToString()
+            public override string ToString()
         {
             return RemindEnds;
         }
@@ -1078,6 +1080,13 @@ public static partial class Toggl
         UInt64 pomodoro_break_minutes);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return: MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_stop_entry_on_shutdown_sleep(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool stop_entry);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_manual_mode(
         IntPtr context,
@@ -1341,6 +1350,10 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_os_shutdown(
+        IntPtr context);
+
+        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void track_window_size(
         IntPtr context,
         UInt64 width,

@@ -127,6 +127,8 @@ namespace TogglDesktop
 
             this.keepEndTimeFixedCheckbox.IsChecked = Toggl.GetKeepEndTimeFixed();
 
+            this.onStopEntryCheckBox.IsChecked = settings.StopEntryOnShutdownSleep;
+
             #endregion
 
             #region proxy
@@ -325,6 +327,8 @@ namespace TogglDesktop
 
                 PomodoroBreak = isChecked(this.enablePomodoroBreakCheckBox),
                 PomodoroBreakMinutes = toULong(this.pomodoroBreakTimerDuration.Text),
+
+                StopEntryOnShutdownSleep = isChecked(this.onStopEntryCheckBox),
 
                 #endregion
 

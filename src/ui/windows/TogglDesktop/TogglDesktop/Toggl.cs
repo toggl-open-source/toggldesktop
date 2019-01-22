@@ -469,6 +469,11 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_stop_entry_on_shutdown_sleep(ctx, settings.StopEntryOnShutdownSleep))
+        {
+            return false;
+        }
+ 
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 
@@ -575,6 +580,11 @@ public static partial class Toggl
     public static void SetSleep()
     {
         toggl_set_sleep(ctx);
+    }
+    
+    public static void SetOSShutdown()
+    {
+        toggl_os_shutdown(ctx);
     }
 
     public static void TrackWindowSize(Size size)

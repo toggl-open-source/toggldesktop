@@ -225,6 +225,9 @@ void GoogleAnalyticsSettingsEvent::runTask() {
     setActionBool("pomodoro_break-", settings.pomodoro_break);
     makeReq();
 
+    setActionBool("stop_entry_on_shutdown_sleep-", settings.stop_entry_on_shutdown_sleep);
+    makeReq();
+
     if (settings.pomodoro_break) {
         setActionInt("pomodoro_break_minutes-",
                      settings.pomodoro_break_minutes);

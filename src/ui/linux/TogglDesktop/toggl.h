@@ -176,6 +176,9 @@ class TogglApi : public QObject {
         const QTime &remind_starts,
         const QTime &remind_ends);
 
+    void stopEntryOnShutdown();
+    bool setSettingsStopEntryOnShutdown(const bool stop_entry);
+
     void toggleTimelineRecording(
         const bool recordTimeline);
 

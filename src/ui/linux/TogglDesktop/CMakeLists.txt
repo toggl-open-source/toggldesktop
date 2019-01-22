@@ -40,6 +40,7 @@ set(BINARY_SOURCE_FILES
     main.cpp
     mainwindowcontroller.cpp
     overlaywidget.cpp
+    powermanagement.cpp
     preferencesdialog.cpp
     settingsview.cpp
     singleapplication.cpp

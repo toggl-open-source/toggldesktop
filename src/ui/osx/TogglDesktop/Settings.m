@@ -51,6 +51,7 @@
 	self.autotrack = data->Autotrack;
 
 	self.open_editor_on_shortcut = data->OpenEditorOnShortcut;
+	self.stopWhenShutdown = data->StopEntryOnShutdownSleep;
 }
 
 @end

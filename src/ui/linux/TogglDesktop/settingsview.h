@@ -45,6 +45,7 @@ class SettingsView : public QObject {
         result->RemindOnSunday = view->RemindSun;
         result->RemindStartTime = QTime::fromString(view->RemindStarts, "HH:mm");
         result->RemindEndTime = QTime::fromString(view->RemindEnds, "HH:mm");
+        result->StopEntryOnShutdownSleep = view->StopEntryOnShutdownSleep;
         return result;
     }
 
@@ -77,6 +78,7 @@ class SettingsView : public QObject {
     bool RemindOnSunday;
     QTime RemindStartTime;
     QTime RemindEndTime;
+    bool StopEntryOnShutdownSleep;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_SETTINGSVIEW_H_
