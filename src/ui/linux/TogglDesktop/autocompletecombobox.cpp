@@ -159,6 +159,8 @@ bool AutocompleteProxyModel::filterAcceptsRow(int source_row, const QModelIndex 
 
     auto view = qvariant_cast<AutocompleteView*>(sourceModel()->data(sourceModel()->index(source_row, 0), Qt::UserRole));
     for (auto word : words) {
+        if (word.isEmpty() && words.count() > 1)
+            continue;
         if (view->Description.contains(word, Qt::CaseInsensitive))
                 return true;
         if (view->Text.contains(word, Qt::CaseInsensitive))
