@@ -35,7 +35,7 @@ private slots:
 signals:
     void returnPressed();
     void timeEntrySelected(const QString &name);
-    void projectSelected(const QString &name, uint64_t id);
+    void projectSelected(const QString &name, uint64_t id, const QString &color);
     void taskSelected(const QString &name, uint64_t id);
 
 private:

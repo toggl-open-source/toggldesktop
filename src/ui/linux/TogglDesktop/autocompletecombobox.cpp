@@ -91,7 +91,7 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
             emit timeEntrySelected(item->Text);
             break;
         case 2:
-            emit projectSelected(item->Text, item->ProjectID);
+            emit projectSelected(item->Text, item->ProjectID, item->ProjectColor);
             break;
         default:
             break;

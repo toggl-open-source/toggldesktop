@@ -54,7 +54,7 @@ class TimerWidget : public QFrame {
     void descriptionReturnPressed();
     void descriptionTimeEntrySelected(const QString &name);
     void descriptionTaskSelected(const QString &name, uint64_t id);
-    void descriptionProjectSelected(const QString &name, uint64_t id);
+    void descriptionProjectSelected(const QString &name, uint64_t id, const QString &color);
 
     void clearProject();
 

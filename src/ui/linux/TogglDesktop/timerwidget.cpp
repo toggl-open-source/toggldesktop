@@ -41,8 +41,8 @@ selectedProjectId(0) {
             this, SLOT(descriptionReturnPressed()));
     connect(ui->description, SIGNAL(timeEntrySelected(QString)),
             this, SLOT(descriptionTimeEntrySelected(QString)));
-    connect(ui->description, SIGNAL(projectSelected(QString,uint64_t)),
-            this, SLOT(descriptionProjectSelected(QString,uint64_t)));
+    connect(ui->description, SIGNAL(projectSelected(QString,uint64_t,QString)),
+            this, SLOT(descriptionProjectSelected(QString,uint64_t,QString)));
     connect(ui->description, SIGNAL(taskSelected(QString,uint64_t)),
             this, SLOT(descriptionTaskSelected(QString,uint64_t)));
 
@@ -76,9 +76,9 @@ void TimerWidget::descriptionTaskSelected(const QString &name, uint64_t id) {
     // TODO
 }
 
-void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id) {
+void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id, const QString &color) {
     ui->projectFrame->setVisible(true);
-    ui->project->setText(name);
+    ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(name));
     selectedProjectId = id;
 }
 
