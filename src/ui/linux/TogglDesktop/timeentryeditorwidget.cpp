@@ -67,6 +67,8 @@ projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())) {
     connect(TogglApi::instance, SIGNAL(setProjectColors(QVector<char*>)),  // NOLINT
             this, SLOT(setProjectColors(QVector<char*>)));  // NOLINT
 
+    connect(ui->project, &AutocompleteComboBox::projectSelected, this, &TimeEntryEditorWidget::onProjectSelected);
+
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
     TogglApi::instance->getProjectColors();
@@ -456,6 +458,11 @@ void TimeEntryEditorWidget::timeout() {
         ui->duration->setText(
             TogglApi::formatDurationInSecondsHHMMSS(duration));
     }
+}
+
+void TimeEntryEditorWidget::onProjectSelected(const QString &name, uint64_t id, const QString &color) {
+    Q_UNUSED(id); Q_UNUSED(color);
+    ui->project->setCurrentText(name);
 }
 
 void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {

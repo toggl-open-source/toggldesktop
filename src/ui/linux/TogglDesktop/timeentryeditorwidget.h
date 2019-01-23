@@ -97,6 +97,8 @@ class TimeEntryEditorWidget : public QWidget {
 
     void timeout();
 
+    void onProjectSelected(const QString &name, uint64_t id, const QString &color);
+
     void on_doneButton_clicked();
     void on_deleteButton_clicked();
     void on_addNewProject_clicked();
