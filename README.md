@@ -58,6 +58,12 @@ If Qt is not installed from your distribution's package manager, you will need t
 
 These dependencies are mandatory:
  * libXScrnSaver (`libxss-dev` in deb-based distros and `libXScrnSaver-devel` in rpm-based)
+
+ You can install them all in debian with a command:
+ ```
+ sudo apt install libxss-dev build-essential libgl-dev libreadline-dev
+
+ ```
  
 These dependencies are optional and will be bundled if the `USE_BUNDLED_LIBRARIES` CMake argument is set or your system does NOT have their development packages installed:
  * POCO
