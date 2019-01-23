@@ -10,22 +10,23 @@
 
 @implementation AppIconFactory
 
-+(NSImage *)appIconWithType:(AppIconType) type
++ (NSImage *)appIconWithType:(AppIconType)type
 {
-    NSImage *icon;
-    switch (type)
-    {
-        case AppIconTypeActive:
-            icon = [NSImage imageNamed:@"AppIconActive"];
-            break;
-        case AppIconTypeDefault:
-            icon = [NSImage imageNamed:@"AppIcon"];
-            break;
-    }
+	NSImage *icon;
 
-    // Adapt well with black/white macOS appearance
-    icon.template = YES;
-    return icon;
+	switch (type)
+	{
+		case AppIconTypeActive :
+			icon = [NSImage imageNamed:@"AppIconActive"];
+			break;
+		case AppIconTypeDefault :
+			icon = [NSImage imageNamed:@"AppIcon"];
+			break;
+	}
+
+	// Adapt well with black/white macOS appearance
+	icon.template = YES;
+	return icon;
 }
 
 @end

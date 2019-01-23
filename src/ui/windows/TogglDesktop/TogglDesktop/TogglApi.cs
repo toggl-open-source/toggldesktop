@@ -259,7 +259,7 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.I1)]
         public         bool StopEntryOnShutdownSleep;
 
-            public override string ToString()
+        public override string ToString()
         {
             return RemindEnds;
         }
@@ -1353,7 +1353,7 @@ public static partial class Toggl
     private static extern void toggl_os_shutdown(
         IntPtr context);
 
-        [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void track_window_size(
         IntPtr context,
         UInt64 width,

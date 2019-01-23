@@ -473,7 +473,7 @@ public static partial class Toggl
         {
             return false;
         }
- 
+
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 
@@ -581,7 +581,7 @@ public static partial class Toggl
     {
         toggl_set_sleep(ctx);
     }
-    
+
     public static void SetOSShutdown()
     {
         toggl_os_shutdown(ctx);
