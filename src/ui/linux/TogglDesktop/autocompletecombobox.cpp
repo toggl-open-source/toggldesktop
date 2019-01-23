@@ -161,10 +161,12 @@ bool AutocompleteProxyModel::filterAcceptsRow(int source_row, const QModelIndex 
     for (auto word : words) {
         if (word.isEmpty() && words.count() > 1)
             continue;
-        if (view->Description.contains(word, Qt::CaseInsensitive))
-                return true;
-        if (view->Text.contains(word, Qt::CaseInsensitive))
-                return true;
+        if (view->_Children.isEmpty()) {
+            if (view->Description.contains(word, Qt::CaseInsensitive))
+                    return true;
+            if (view->Text.contains(word, Qt::CaseInsensitive))
+                    return true;
+        }
         for (auto v : view->_Children) {
             if (v->Description.contains(word, Qt::CaseInsensitive))
                     return true;
