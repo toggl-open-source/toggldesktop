@@ -492,7 +492,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         resp.err = statusCodeToError(resp.status_code);
 
         // Get human-readable error message from response
-        if (resp.err != noError && response.getContentType() == kContentTypeApplicationJSON) {
+        if (resp.err != noError &&
+                response.getContentType().find(kContentTypeApplicationJSON) != std::string::npos) {
             Json::Value root;
             Json::Reader reader;
             if (reader.parse(resp.body, root)) {
