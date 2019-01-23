@@ -9,6 +9,7 @@
 #include <set>
 #include <memory>
 #include <iostream> // NOLINT
+#include <tuple>
 
 #include "./analytics.h"
 #include "./custom_error_handler.h"
@@ -513,6 +514,7 @@ class Context : public TimelineDatasource {
 
     void updateUI(const UIElements &elements);
 
+    error displayError(const error err, const std::string message);
     error displayError(const error err);
 
     void scheduleSync();
@@ -531,7 +533,7 @@ class Context : public TimelineDatasource {
     error attemptOfflineLogin(const std::string email,
                               const std::string password);
 
-    error downloadUpdate();
+    std::tuple<error, std::string> downloadUpdate();
 
     void stopActivities();
 

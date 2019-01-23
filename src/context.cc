@@ -970,6 +970,10 @@ bool Context::isPostponed(
 }
 
 error Context::displayError(const error err) {
+    return displayError(err, "");
+}
+
+error Context::displayError(const error err, const std::string message) {
     if ((err.find(kUnauthorizedError) != std::string::npos)) {
         if (user_) {
             setUser(nullptr);
@@ -996,6 +1000,9 @@ error Context::displayError(const error err) {
         }
     }
 
+    if (!message.empty()) {
+        return UI()->DisplayError(message);
+    }
     return UI()->DisplayError(err);
 }
 
@@ -1391,34 +1398,34 @@ std::string Context::UserEmail() {
 
 void Context::executeUpdateCheck() {
     logger().debug("executeUpdateCheck");
-
-    displayError(downloadUpdate());
+    auto result = downloadUpdate();
+    displayError(std::get<0>(result), std::get<1>(result));
 }
 
-error Context::downloadUpdate() {
+std::tuple<error, std::string> Context::downloadUpdate() {
     try {
         if (update_check_disabled_) {
-            return noError;
+            return std::make_tuple(noError, noError);
         }
 
         // To test updater in development, comment this block out:
         if ("production" != environment_) {
             logger().debug("Not in production, will not download updates");
-            return noError;
+            return std::make_tuple(noError, noError);
         }
 
         // Load current update channel
         std::string update_channel("");
         error err = db()->LoadUpdateChannel(&update_channel);
         if (err != noError) {
-            return err;
+            return std::make_tuple(err, noError);
         }
 
         // Get update check URL
         std::string update_url("");
         err = updateURL(&update_url);
         if (err != noError) {
-            return err;
+            return std::make_tuple(err, noError);
         }
 
         // Ask Toggl server if we have updates
@@ -1432,7 +1439,7 @@ error Context::downloadUpdate() {
             TogglClient client;
             HTTPSResponse resp = client.Get(req);
             if (resp.err != noError) {
-                return resp.err;
+                return std::make_tuple(resp.err, resp.error_message);
             }
 
             if ("null" == resp.body) {
@@ -1440,13 +1447,13 @@ error Context::downloadUpdate() {
                 if (UI()->CanDisplayUpdate()) {
                     UI()->DisplayUpdate("");
                 }
-                return noError;
+                return std::make_tuple(noError, noError);
             }
 
             Json::Value root;
             Json::Reader reader;
             if (!reader.parse(resp.body, root)) {
-                return error("Error parsing update check response body");
+                return std::make_tuple(error("Error parsing update check response body"), noError);
             }
 
             url = root["url"].asString();
@@ -1462,12 +1469,12 @@ error Context::downloadUpdate() {
         // linux users will download the update themselves
         if (UI()->CanDisplayUpdate()) {
             UI()->DisplayUpdate(url);
-            return noError;
+            return std::make_tuple(noError, noError);
         }
 
         // we need a path to download to, when going this way
         if (update_path_.empty()) {
-            return error("update path is empty, cannot download update");
+            return std::make_tuple(error("update path is empty, cannot download update"), noError);
         }
 
         // Ignore update if not compatible with this client version
@@ -1475,7 +1482,7 @@ error Context::downloadUpdate() {
         if (url.find(".exe") == std::string::npos) {
             logger().debug("Update is not compatible with this client,"
                            " will ignore");
-            return noError;
+            return std::make_tuple(noError, noError);
         }
 
         // Download update if it's not downloaded yet.
@@ -1492,7 +1499,7 @@ error Context::downloadUpdate() {
             Poco::File f(file);
             if (f.exists()) {
                 logger().debug("File already exists: " + file);
-                return noError;
+                return std::make_tuple(noError, noError);
             }
 
             Poco::File(update_path_).createDirectory();
@@ -1517,13 +1524,13 @@ error Context::downloadUpdate() {
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return std::make_tuple(exc.displayText(), noError);
     } catch(const std::exception& ex) {
-        return ex.what();
+        return std::make_tuple(ex.what(), noError);
     } catch(const std::string& ex) {
-        return ex;
+        return std::make_tuple(ex, noError);
     }
-    return noError;
+    return std::make_tuple(noError, noError);
 }
 
 error Context::updateURL(std::string *result) {
@@ -1639,7 +1646,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     TogglClient client(UI());
     HTTPSResponse resp = client.Post(req);
     if (resp.err != noError) {
-        displayError(resp.err);
+        displayError(resp.err, resp.error_message);
         logger().error(resp.body);
         logger().error(resp.err);
     }
@@ -1746,7 +1753,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     HTTPSResponse resp = client.Post(req);
     logger().debug("Feedback result: " + resp.err);
     if (resp.err != noError) {
-        displayError(resp.err);
+        displayError(resp.err, resp.error_message);
         return;
     }
 }
@@ -3800,7 +3807,7 @@ error Context::OpenReportsInBrowser() {
     TogglClient client(UI());
     HTTPSResponse resp = client.Post(req);
     if (resp.err != noError) {
-        return displayError(resp.err);
+        return displayError(resp.err, resp.error_message);
     }
     if (resp.body.empty()) {
         return displayError("Unexpected empty response from API");
@@ -4784,7 +4791,7 @@ error Context::pushClients(
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save());
+                displayError(save(), resp.error_message);
             }
             continue;
         }
@@ -4841,7 +4848,7 @@ error Context::pushProjects(
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save());
+                displayError(save(), resp.error_message);
             }
             continue;
         }
@@ -4930,7 +4937,7 @@ error Context::pushEntries(
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save());
+                displayError(save(), resp.error_message);
             }
 
             // Not found on server. Probably deleted already.
@@ -5293,6 +5300,9 @@ error Context::pullWorkspacePreferences(
 
         HTTPSResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
+            if (!resp.error_message.empty()) {
+                return resp.error_message;
+            }
             return resp.err;
         }
 
@@ -5331,6 +5341,9 @@ error Context::pullUserPreferences(
 
         HTTPSResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
+            if (!resp.error_message.empty()) {
+                return resp.error_message;
+            }
             return resp.err;
         }
 
@@ -5440,7 +5453,7 @@ error Context::ToSAccept() {
 
         HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
-            return displayError(resp.err);
+            return displayError(resp.err, resp.error_message);
         }
         overlay_visible_ = false;
         OpenTimeEntryList();
