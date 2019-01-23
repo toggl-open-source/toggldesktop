@@ -74,6 +74,7 @@ public static partial class Toggl
 
     public delegate void DisplayError(
         string errmsg,
+        string message,
         bool user_error);
 
     public delegate void DisplaySyncState(
@@ -744,11 +745,11 @@ public static partial class Toggl
             }
         });
 
-        toggl_on_error(ctx, (errmsg, user_error) =>
+        toggl_on_error(ctx, (errmsg, message, user_error) =>
         {
             using (Performance.Measure("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error))
             {
-                OnError(errmsg, user_error);
+                OnError(errmsg, message, user_error);
             }
         });
 
@@ -1367,7 +1368,7 @@ public static partial class Toggl
 
     public static void NewError(string errmsg, bool user_error)
     {
-        OnError(errmsg, user_error);
+        OnError(errmsg, "", user_error);
     }
 
     public static bool AskToDeleteEntry(string guid)

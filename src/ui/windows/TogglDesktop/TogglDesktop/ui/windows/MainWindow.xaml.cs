@@ -395,12 +395,12 @@ namespace TogglDesktop
             this.setActiveView(this.overlayView);   
         }
 
-        private void onError(string errmsg, bool userError)
+        private void onError(string errmsg, string message, bool userError)
         {
-            if (this.TryBeginInvoke(this.onError, errmsg, userError))
+            if (this.TryBeginInvoke(this.onError, errmsg, message, userError))
                 return;
 
-            this.errorBar.ShowError(errmsg);
+            this.errorBar.ShowError(errmsg + " " + message);
         }
 
         private void onApp(bool open)

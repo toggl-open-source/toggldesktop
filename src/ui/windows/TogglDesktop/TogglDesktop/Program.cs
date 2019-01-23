@@ -77,7 +77,7 @@ static class Program
                 uid = user_id;
             };
 
-            Toggl.OnError += delegate(string errmsg, bool user_error)
+            Toggl.OnError += delegate(string errmsg, string message, bool user_error)
             {
                 Toggl.Debug(errmsg);
                 try

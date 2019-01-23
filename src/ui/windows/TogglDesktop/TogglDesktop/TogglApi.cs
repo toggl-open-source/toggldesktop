@@ -349,6 +349,8 @@ public static partial class Toggl
     private delegate void     TogglDisplayError(
         [MarshalAs(UnmanagedType.LPWStr)]
         string errmsg,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string message,
         [MarshalAs(UnmanagedType.I1)]
         bool user_error);
 
