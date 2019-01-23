@@ -1000,10 +1000,7 @@ error Context::displayError(const error err, const std::string message) {
         }
     }
 
-    if (!message.empty()) {
-        return UI()->DisplayError(message);
-    }
-    return UI()->DisplayError(err);
+    return UI()->DisplayError(err, message);
 }
 
 int Context::nextSyncIntervalSeconds() const {

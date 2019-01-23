@@ -202,6 +202,7 @@ extern "C" {
 
     typedef void (*TogglDisplayError)(
         const char_t *errmsg,
+        const char_t *message,
         const bool_t user_error);
 
     typedef void (*TogglDisplayOverlay)(

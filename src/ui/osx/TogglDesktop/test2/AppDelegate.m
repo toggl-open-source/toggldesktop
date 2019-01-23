@@ -1719,12 +1719,14 @@ void on_app(const bool_t open)
 														object:cmd];
 }
 
-void on_error(const char *errmsg, const bool_t is_user_error)
+void on_error(const char *errmsg, const char *message, const bool_t is_user_error)
 {
 	NSString *msg = [NSString stringWithUTF8String:errmsg];
+	NSString *userMessage = [NSString stringWithUTF8String:message];
+	NSString *text = [NSString stringWithFormat:@"%@ %@", msg, userMessage];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
-														object:msg];
+														object:text];
 	if (!is_user_error)
 	{
 		char *str = toggl_get_update_channel(ctx);

@@ -141,7 +141,7 @@ void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
     lastDisplayLoginUserID = user_id;
 }
 
-error GUI::DisplayError(const error err) {
+error GUI::DisplayError(const error err, const std::string error_message) {
     if (noError == err) {
         return noError;
     }
@@ -177,7 +177,8 @@ error GUI::DisplayError(const error err) {
     }
 
     char_t *err_s = copy_string(actionable);
-    on_display_error_(err_s, is_user_error);
+    char_t *message = copy_string(error_message);
+    on_display_error_(err_s, message, is_user_error);
     free(err_s);
 
     lastErr = err;

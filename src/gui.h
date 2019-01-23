@@ -377,7 +377,7 @@ class GUI : public SyncStateMonitor {
 
     void DisplayApp();
 
-    error DisplayError(const error);
+    error DisplayError(const error, const std::string error_message);
 
     // Overlay screen triggers
     error DisplayWSError();
