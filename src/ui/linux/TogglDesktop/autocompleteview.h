@@ -9,6 +9,15 @@
 
 #include "./toggl_api.h"
 
+enum AutocompleteType {
+    AC_TIME_ENTRY = 0,
+    AC_TASK = 1,
+    AC_PROJECT = 2,
+    AC_HEADER = 11,
+    AC_CLIENT = 12,
+    AC_WORKSPACE = 13
+};
+
 class AutocompleteView : public QObject {
     Q_OBJECT
 
