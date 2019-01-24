@@ -279,9 +279,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (void)startDisplayLogin:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayLogin:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayLogin:notification.object];
 }
 
 - (void)displayLogin:(DisplayCommand *)cmd
@@ -302,9 +300,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (void)startDisplayAutotrackerRules:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayAutotrackerRules:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayAutotrackerRules:notification.object];
 }
 
 - (void)displayAutotrackerRules:(NSDictionary *)data
@@ -321,9 +317,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (void)startDisplaySettings:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displaySettings:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displaySettings:notification.object];
 }
 
 - (void)displaySettings:(DisplayCommand *)cmd

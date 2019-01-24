@@ -8,6 +8,7 @@
 
 #import "NSTextFieldClickable.h"
 #import "UIEvents.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation NSTextFieldClickable
 
@@ -15,8 +16,8 @@
 {
 	if (self.isEditable)
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kForceCloseEditPopover
-															object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kForceCloseEditPopover
+																	object:nil];
 		return;
 	}
 	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];

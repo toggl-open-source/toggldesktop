@@ -12,6 +12,7 @@
 #import "UIEvents.h"
 #import "const.h"
 #import "NSTextField+Ext.h"
+#import "TogglDesktop-Swift.h"
 
 @interface LoginViewController ()
 @property AutocompleteDataSource *countryAutocompleteDataSource;
@@ -124,8 +125,8 @@ extern void *ctx;
 
 - (void)changeView:(BOOL)hide
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kHideDisplayError
-														object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
+																object:nil];
 	[self.loginBox setHidden:hide];
 	[self.signUpBox setHidden:!hide];
 	if (hide)
@@ -167,8 +168,8 @@ extern void *ctx;
 	[windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
 									   delegate:self
 							   finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kHideDisplayError
-														object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
+																object:nil];
 }
 
 - (void)viewController:(GTMOAuth2WindowController *)viewController
@@ -210,8 +211,8 @@ extern void *ctx;
 			errorStr = @"Window was closed before login completed.";
 		}
 
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
-															object:errorStr];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:errorStr];
 		return;
 	}
 
@@ -226,8 +227,8 @@ extern void *ctx;
 	if (email == nil || !email.length)
 	{
 		[self.email.window makeFirstResponder:self.email];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
-															object:emailMissingError];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:emailMissingError];
 		return NO;
 	}
 
@@ -237,8 +238,8 @@ extern void *ctx;
 	if (pass == nil || !pass.length)
 	{
 		[self.password.window makeFirstResponder:self.password];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
-															object:passwordMissingError];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:passwordMissingError];
 		return NO;
 	}
 
@@ -251,8 +252,8 @@ extern void *ctx;
 	if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
 	{
 		[self.countrySelect.window makeFirstResponder:self.countrySelect];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
-															object:countryNotSelectedError];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:countryNotSelectedError];
 		return NO;
 	}
 
@@ -261,8 +262,8 @@ extern void *ctx;
 	if (!tosChecked)
 	{
 		[self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayError
-															object:tosAgreeError];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:tosAgreeError];
 		return NO;
 	}
 

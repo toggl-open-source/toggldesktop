@@ -288,9 +288,9 @@ extern void *ctx;
 
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedHeight forKey:@"height"];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditForm
-														object:nil
-													  userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResizeEditForm
+																object:nil
+															  userInfo:userInfo];
 	[self.projectNameTextField.window makeFirstResponder:self.projectNameTextField];
 	[self.addProjectBox setHidden:NO];
 	[self.projectSelectBox setHidden:YES];
@@ -433,9 +433,7 @@ extern void *ctx;
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimeEntryEditor:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTimeEntryEditor:notification.object];
 }
 
 - (void)displayTimeEntryEditor:(DisplayCommand *)cmd
@@ -456,6 +454,11 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSLog(@"TimeEntryEditViewController render, %@", self.timeEntry);
+
+	if (self.timeEntry == nil)
+	{
+		return;
+	}
 
 	if (nil == self.startDate.listener)
 	{
@@ -614,9 +617,7 @@ extern void *ctx;
 
 - (void)startDisplayTags:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTags:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTags:notification.object];
 }
 
 - (void)displayTags:(NSMutableArray *)tags
@@ -630,9 +631,7 @@ extern void *ctx;
 
 - (void)startDisplayWorkspaceSelect:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayWorkspaceSelect:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayWorkspaceSelect:notification.object];
 }
 
 - (void)displayWorkspaceSelect:(NSMutableArray *)workspaces
@@ -684,9 +683,7 @@ extern void *ctx;
 
 - (void)startDisplayClientSelect:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayClientSelect:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayClientSelect:notification.object];
 }
 
 - (void)displayClientSelect:(NSMutableArray *)clients
@@ -790,9 +787,9 @@ extern void *ctx;
 
 	self.lastPosition = mouseLoc;
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:addedWidth forKey:@"width"];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kResizeEditFormWidth
-														object:nil
-													  userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResizeEditFormWidth
+																object:nil
+															  userInfo:userInfo];
 }
 
 - (IBAction)durationTextFieldChanged:(id)sender

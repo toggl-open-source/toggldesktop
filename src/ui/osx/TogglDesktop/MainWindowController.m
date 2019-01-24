@@ -16,6 +16,7 @@
 #import "DisplayCommand.h"
 #include <Carbon/Carbon.h>
 #import "TrackingService.h"
+#import "TogglDesktop-Swift.h"
 
 @interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
@@ -111,9 +112,7 @@ extern void *ctx;
 
 - (void)startDisplayLogin:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayLogin:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayLogin:notification.object];
 }
 
 - (void)displayLogin:(DisplayCommand *)cmd
@@ -134,9 +133,7 @@ extern void *ctx;
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayTimeEntryList:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayTimeEntryList:notification.object];
 }
 
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
@@ -157,18 +154,15 @@ extern void *ctx;
 			[self.loginViewController.view removeFromSuperview];
 			[self.overlayViewController.view removeFromSuperview];
 
-			[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer
-																object:nil
-															  userInfo:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
+																		object:nil];
 		}
 	}
 }
 
 - (void)startDisplayOverlay:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayOverlay:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayOverlay:notification.object];
 }
 
 - (void)displayOverlay:(NSNumber *)type
@@ -188,9 +182,7 @@ extern void *ctx;
 
 - (void)startDisplayError:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayError:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayError:notification.object];
 }
 
 - (void)displayError:(NSString *)msg
@@ -204,9 +196,7 @@ extern void *ctx;
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
 {
-	[self performSelectorOnMainThread:@selector(displayOnlineState:)
-						   withObject:notification.object
-						waitUntilDone:NO];
+	[self displayOnlineState:notification.object];
 }
 
 - (void)displayOnlineState:(NSNumber *)status
@@ -273,9 +263,8 @@ extern void *ctx;
 {
 	if ([event keyCode] == kVK_DownArrow && ([event modifierFlags] & NSShiftKeyMask))
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:kFocusListing
-															object:nil
-														  userInfo:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusListing
+																	object:nil];
 	}
 	else
 	{
