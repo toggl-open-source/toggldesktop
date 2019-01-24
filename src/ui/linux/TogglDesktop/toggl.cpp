@@ -38,9 +38,12 @@ void on_display_update(const char *url) {
 
 void on_display_error(
     const char *errmsg,
+    const char *message,
     const bool_t user_error) {
     TogglApi::instance->aboutToDisplayError();
-    TogglApi::instance->displayError(QString(errmsg), user_error);
+    QString user_message = QString(message);
+    QString space = QString(" ");
+    TogglApi::instance->displayError(QString(errmsg) + space + user_message, user_error);
 }
 
 void on_overlay(const int64_t type) {
