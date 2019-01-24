@@ -70,7 +70,7 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
 }
 
 AutocompleteView *AutocompleteComboBox::currentView() {
-    return qvariant_cast<AutocompleteView*>(currentData());
+    return qvariant_cast<AutocompleteView*>(listView->currentIndex().data(Qt::UserRole));
 }
 
 void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
@@ -104,7 +104,6 @@ void AutocompleteComboBox::onDropdownVisibleChanged() {
 
 void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
     if (item) {
-
         switch (item->Type) {
         case 0:
             if (item->ProjectID && !item->ProjectLabel.isEmpty())
@@ -118,6 +117,7 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
             break;
         }
     }
+    emit activated(listView->currentIndex().row());
 }
 
 AutocompleteCompleter::AutocompleteCompleter(QWidget *parent)
