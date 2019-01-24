@@ -1,3 +1,6 @@
 [submodule "third_party/Sparkle"]
 	path = third_party/Sparkle
 	url = https://github.com/sparkle-project/Sparkle.git
+[submodule "third_party/MASShortcut"]
+	path = third_party/MASShortcut
+	url = https://github.com/shpakovski/MASShortcut.git
