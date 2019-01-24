@@ -323,19 +323,13 @@ error Context::save(const bool push_changes) {
         updateUI(render);
 
         if (push_changes) {
-            next_push_changes_at_ =
-                postpone(kRequestThrottleSeconds * kOneSecondInMicros / 100);
-            Poco::Util::TimerTask::Ptr ptask =
-                new Poco::Util::TimerTaskAdapter<Context>(
-                    *this, &Context::onPushChanges);
+            logger().debug("onPushChanges executing");
 
-            Poco::Mutex::ScopedLock lock(timer_m_);
-            timer_.schedule(ptask, next_push_changes_at_);
-
-            std::stringstream ss;
-            ss << "Next push at "
-               << Formatter::Format8601(next_push_changes_at_);
-            logger().debug(ss.str());
+            // Always sync asyncronously with syncerActivity
+            trigger_push_ = true;
+            if (!syncer_.isRunning()) {
+                syncer_.start();
+            }
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -1087,26 +1081,6 @@ void Context::setOnline(const std::string reason) {
     UI()->DisplayOnlineState(kOnlineStateOnline);
 
     scheduleSync();
-}
-
-void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_push_changes_at_,
-                    kRequestThrottleSeconds * kOneSecondInMicros)) {
-        logger().debug("onPushChanges postponed");
-        return;
-    }
-
-    if (!user_) {
-        logger().debug("onPushChanges cancelled, user not logged in");
-        return;
-    }
-    logger().debug("onPushChanges executing");
-
-    // Always sync asyncronously with syncerActivity
-    trigger_push_ = true;
-    if (!syncer_.isRunning()) {
-        syncer_.start();
-    }
 }
 
 void Context::switchWebSocketOff() {
