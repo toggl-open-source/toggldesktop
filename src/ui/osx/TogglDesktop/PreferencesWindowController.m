@@ -10,7 +10,6 @@
 
 #import "AutotrackerRuleItem.h"
 #import "DisplayCommand.h"
-#import "MASShortcutView+UserDefaults.h"
 #import "Settings.h"
 #import "UIEvents.h"
 #import "Utils.h"
