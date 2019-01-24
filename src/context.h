@@ -472,7 +472,6 @@ class Context : public TimelineDatasource {
     void fetchUpdates();
 
     // timer_ callbacks
-    void onSync(Poco::Util::TimerTask& task);  // NOLINT
     void onPushChanges(Poco::Util::TimerTask& task);  // NOLINT
     void onSwitchWebSocketOff(Poco::Util::TimerTask& task);  // NOLINT
     void onSwitchWebSocketOn(Poco::Util::TimerTask& task);  // NOLINT
