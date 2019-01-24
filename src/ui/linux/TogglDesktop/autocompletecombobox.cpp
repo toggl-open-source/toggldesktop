@@ -26,6 +26,10 @@ void AutocompleteComboBox::setModel(QAbstractItemModel *model) {
     proxyModel->setSourceModel(model);
 }
 
+void AutocompleteComboBox::showPopup() {
+    completer->complete();
+}
+
 bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
     if (e->type() == QEvent::KeyPress) {
         auto ke = reinterpret_cast<QKeyEvent*>(e);
@@ -94,6 +98,7 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
 void AutocompleteComboBox::onDropdownVisibleChanged() {
     if (listView->isVisible()) {
         oldLabel = currentText();
+        proxyModel->setFilterFixedString(currentText());
     }
 }
 

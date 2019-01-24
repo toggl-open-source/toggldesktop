@@ -21,6 +21,8 @@ public:
 
     void setModel(QAbstractItemModel *model);
 
+    void showPopup() override;
+
     bool eventFilter(QObject *o, QEvent *e) override;
 
     AutocompleteView *currentView();
