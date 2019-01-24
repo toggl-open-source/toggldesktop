@@ -1,8 +1,9 @@
 #include "autocompletelistmodel.h"
 #include <QDebug>
 
-AutocompleteListModel::AutocompleteListModel(QObject *parent, QVector<AutocompleteView*> list) :
-    QAbstractListModel(parent)
+AutocompleteListModel::AutocompleteListModel(QObject *parent, QVector<AutocompleteView*> list, uint64_t displayItem) :
+    QAbstractListModel(parent),
+    displayItem(displayItem)
 {
     setList(list);
 }
@@ -40,10 +41,17 @@ QVariant AutocompleteListModel::data(const QModelIndex &index, int role) const {
     if (!view)
         return QVariant();
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
-        switch (view->Type) {
-        case 0:
-            return view->Description;
-        default:
+        if (view->Type == displayItem) {
+            switch (displayItem) {
+            case 2:
+                return view->ProjectLabel;
+            case 1:
+                return view->TaskLabel;
+            default:
+                return view->Description;
+            }
+        }
+        else {
             return QString();
         }
     }
