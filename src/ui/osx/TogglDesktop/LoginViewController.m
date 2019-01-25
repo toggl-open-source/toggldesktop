@@ -16,6 +16,26 @@
 
 @interface LoginViewController ()
 @property AutocompleteDataSource *countryAutocompleteDataSource;
+@property (strong) IBOutlet NSBox *signUpBox;
+@property (strong) IBOutlet NSBox *loginBox;
+@property IBOutlet NSTextField *email;
+@property IBOutlet NSTextField *password;
+@property IBOutlet NSTextFieldClickablePointer *googleLoginTextField;
+@property IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
+@property (strong) IBOutlet NSTextFieldClickablePointer *signUpLink;
+@property (strong) IBOutlet NSTextFieldClickablePointer *loginLink;
+@property (strong) IBOutlet NSCustomComboBox *countrySelect;
+@property BOOL countriesLoaded;
+@property uint64_t selectedCountryID;
+- (IBAction)clickLoginButton:(id)sender;
+- (IBAction)clickSignupButton:(id)sender;
+- (IBAction)countrySelected:(id)sender;
+- (void)changeView:(BOOL)hide;
+@property (strong) IBOutlet NSButton *tosCheckbox;
+@property (strong) IBOutlet NSTextFieldClickablePointer *tosLink;
+@property (strong) IBOutlet NSTextFieldClickablePointer *privacyLink;
+@property (strong) IBOutlet NSButton *loginButton;
+@property (strong) IBOutlet NSButton *SignupButton;
 @end
 
 @implementation LoginViewController

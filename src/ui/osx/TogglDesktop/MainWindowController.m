@@ -121,10 +121,10 @@ extern void *ctx;
 	if (cmd.open)
 	{
 		[self addErrorBoxConstraint];
-		[self.loginViewController changeView:NO];
+//        [self.loginViewController changeView:NO];
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
-		[self.loginViewController.email.window makeFirstResponder:self.loginViewController.email];
+//        [self.loginViewController.email.window makeFirstResponder:self.loginViewController.email];
 
 		[self.timeEntryListViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
