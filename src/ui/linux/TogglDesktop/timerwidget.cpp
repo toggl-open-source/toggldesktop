@@ -84,6 +84,7 @@ void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id, c
     ui->projectFrame->setVisible(true);
     ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(name));
     selectedProjectId = id;
+    clearTask();
 }
 
 void TimerWidget::clearProject() {
