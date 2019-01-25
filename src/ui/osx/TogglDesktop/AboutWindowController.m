@@ -21,7 +21,7 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
-	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
+	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]]];
 
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = [infoDict objectForKey:@"CFBundleShortVersionString"];

@@ -80,7 +80,7 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
-	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
+	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]]];
 
 	NSMutableAttributedString *attrTitle =
 		[[NSMutableAttributedString alloc] initWithAttributedString:[self.closeTroubleBoxButton attributedTitle]];
