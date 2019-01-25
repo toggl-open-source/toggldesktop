@@ -47,8 +47,10 @@ selectedProjectId(0) {
             this, SLOT(descriptionTaskSelected(QString,uint64_t)));
 
     connect(ui->deleteProject, &QPushButton::clicked, this, &TimerWidget::clearProject);
+    connect(ui->deleteTask, &QPushButton::clicked, this, &TimerWidget::clearTask);
 
     ui->description->setModel(descriptionModel);
+    ui->taskFrame->setVisible(false);
     ui->projectFrame->setVisible(false);
 
     ui->billable->setVisible(false);
@@ -73,7 +75,9 @@ void TimerWidget::descriptionTimeEntrySelected(const QString &name) {
 }
 
 void TimerWidget::descriptionTaskSelected(const QString &name, uint64_t id) {
-    // TODO
+    ui->taskFrame->setVisible(true);
+    ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(name));
+    selectedTaskId = id;
 }
 
 void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id, const QString &color) {
@@ -86,6 +90,13 @@ void TimerWidget::clearProject() {
     selectedProjectId = 0;
     ui->project->clear();
     ui->projectFrame->setVisible(false);
+    clearTask();
+}
+
+void TimerWidget::clearTask() {
+    selectedTaskId = 0;
+    ui->task->clear();
+    ui->taskFrame->setVisible(false);
 }
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {

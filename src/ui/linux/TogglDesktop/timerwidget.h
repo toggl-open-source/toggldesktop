@@ -57,6 +57,7 @@ class TimerWidget : public QFrame {
     void descriptionProjectSelected(const QString &name, uint64_t id, const QString &color);
 
     void clearProject();
+    void clearTask();
 
  private:
     Ui::TimerWidget *ui;
