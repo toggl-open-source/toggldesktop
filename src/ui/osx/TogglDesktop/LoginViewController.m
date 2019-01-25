@@ -14,28 +14,36 @@
 #import "NSTextField+Ext.h"
 #import "TogglDesktop-Swift.h"
 
+typedef NS_ENUM (NSUInteger, TabViewType)
+{
+	TabViewTypeLogin,
+	TabViewTypeSingup,
+};
+
 @interface LoginViewController ()
 @property AutocompleteDataSource *countryAutocompleteDataSource;
-@property (strong) IBOutlet NSBox *signUpBox;
-@property (strong) IBOutlet NSBox *loginBox;
-@property IBOutlet NSTextField *email;
-@property IBOutlet NSTextField *password;
-@property IBOutlet NSTextFieldClickablePointer *googleLoginTextField;
-@property IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
-@property (strong) IBOutlet NSTextFieldClickablePointer *signUpLink;
-@property (strong) IBOutlet NSTextFieldClickablePointer *loginLink;
-@property (strong) IBOutlet NSCustomComboBox *countrySelect;
+@property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSTextField *email;
+@property (weak) IBOutlet NSTextField *password;
+@property (weak) IBOutlet NSButton *loginGooglBtn;
+@property (weak) IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
+@property (weak) IBOutlet NSTextFieldClickablePointer *signUpLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *loginLink;
+@property (weak) IBOutlet NSCustomComboBox *countrySelect;
+
 @property BOOL countriesLoaded;
 @property uint64_t selectedCountryID;
+@property (weak) IBOutlet NSButton *tosCheckbox;
+@property (weak) IBOutlet NSTextFieldClickablePointer *tosLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
+@property (weak) IBOutlet NSButton *loginButton;
+@property (weak) IBOutlet NSButton *SignupButton;
+
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
-- (void)changeView:(BOOL)hide;
-@property (strong) IBOutlet NSButton *tosCheckbox;
-@property (strong) IBOutlet NSTextFieldClickablePointer *tosLink;
-@property (strong) IBOutlet NSTextFieldClickablePointer *privacyLink;
-@property (strong) IBOutlet NSButton *loginButton;
-@property (strong) IBOutlet NSButton *SignupButton;
+- (void)changeTabView:(TabViewType)type;
+
 @end
 
 @implementation LoginViewController
@@ -55,19 +63,21 @@ extern void *ctx;
 	return self;
 }
 
-- (void)loadView
-{
-	[super loadView];
-
-	NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
-	if (version.minorVersion < 11)
-	{
-		[self viewDidLoad];
-	}
-}
-
 - (void)viewDidLoad
 {
+	[super viewDidLoad];
+
+	[self initCommon];
+	[self initCountryAutocomplete];
+}
+
+- (void)initCommon
+{
+	self.signUpLink.delegate = self;
+	self.loginLink.delegate = self;
+}
+
+- (void)initCountryAutocomplete {
 	self.countryAutocompleteDataSource.combobox = self.countrySelect;
 	self.countryAutocompleteDataSource.combobox.dataSource = self.countryAutocompleteDataSource;
 	[self.countryAutocompleteDataSource setFilter:@""];
@@ -106,12 +116,6 @@ extern void *ctx;
 
 - (void)textFieldClicked:(id)sender
 {
-	if (sender == self.googleLoginTextField)
-	{
-		[self startGoogleLogin];
-		return;
-	}
-
 	if (sender == self.forgotPasswordTextField)
 	{
 		toggl_password_forgot(ctx);
@@ -120,13 +124,13 @@ extern void *ctx;
 
 	if (sender == self.signUpLink)
 	{
-		[self changeView:YES];
+		[self changeTabView:TabViewTypeSingup];
 		return;
 	}
 
 	if (sender == self.loginLink)
 	{
-		[self changeView:NO];
+		[self changeTabView:TabViewTypeLogin];
 		return;
 	}
 
@@ -143,30 +147,32 @@ extern void *ctx;
 	}
 }
 
-- (void)changeView:(BOOL)hide
+- (void)changeTabView:(TabViewType)type
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
 																object:nil];
-	[self.loginBox setHidden:hide];
-	[self.signUpBox setHidden:!hide];
-	if (hide)
-	{
-		self.countrySelect.stringValue = @"";
-		[self.countryAutocompleteDataSource setFilter:@""];
-		if (!self.countriesLoaded)
-		{
-			// Load countries in signup view
-			toggl_get_countries(ctx);
-			self.countriesLoaded = YES;
-		}
+	[self.tabView selectTabViewItemAtIndex:type];
 
-		// Update nextkeyView
-		[self.password setNextKeyView:self.countrySelect];
-	}
-	else
+	switch (type)
 	{
-		// Update nextkeyView
-		[self.password setNextKeyView:self.loginButton];
+		case TabViewTypeLogin :
+			// Update nextkeyView
+			[self.password setNextKeyView:self.loginButton];
+			break;
+
+		case TabViewTypeSingup :
+			self.countrySelect.stringValue = @"";
+			[self.countryAutocompleteDataSource setFilter:@""];
+			if (!self.countriesLoaded)
+			{
+				// Load countries in signup view
+				toggl_get_countries(ctx);
+				self.countriesLoaded = YES;
+			}
+
+			// Update nextkeyView
+			[self.password setNextKeyView:self.countrySelect];
+			break;
 	}
 }
 
