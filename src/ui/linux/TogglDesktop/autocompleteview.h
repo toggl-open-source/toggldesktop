@@ -33,6 +33,7 @@ class AutocompleteView : public QObject {
         AutocompleteView *currentLevel1Header = nullptr;
         AutocompleteView *currentLevel2Header = nullptr;
         AutocompleteView *currentLevel3Header = nullptr;
+        AutocompleteView *previousProject = nullptr;
         uint64_t lastType = static_cast<uint64_t>(-1);
 
         while (it) {
@@ -61,23 +62,31 @@ class AutocompleteView : public QObject {
             }
 
             if (view->Type != lastType) {
-                currentLevel1Header = new AutocompleteView();
-                currentLevel1Header->Type = 11;
-                switch (view->Type) {
-                case 0:
-                    currentLevel1Header->Description = "TIME ENTRIES";
-                    break;
-                case 1:
-                    currentLevel1Header->Description = "TASKS";
-                    break;
-                case 2:
-                    currentLevel1Header->Description = "PROJECTS";
-                    break;
-                default:
-                    currentLevel1Header->Description = QString("UNHANDLED TYPE %1").arg(view->Type);
-                    break;
+                if (view->Type == 1) {
+                    if (previousProject)
+                        currentLevel2Header = previousProject;
                 }
-                result.push_back(currentLevel1Header);
+                else {
+                    currentLevel2Header = nullptr;
+                    currentLevel1Header = new AutocompleteView();
+                    currentLevel1Header->Type = 11;
+                    switch (view->Type) {
+                    case 0:
+                        currentLevel1Header->Description = "TIME ENTRIES";
+                        break;
+                    case 1:
+                        // this won't happen, tasks are a special case
+                        currentLevel1Header->Description = "TASKS";
+                        break;
+                    case 2:
+                        currentLevel1Header->Description = "PROJECTS";
+                        break;
+                    default:
+                        currentLevel1Header->Description = QString("UNHANDLED TYPE %1").arg(view->Type);
+                        break;
+                    }
+                    result.push_back(currentLevel1Header);
+                }
             }
             if (view->Type == 2 && (!currentLevel2Header || currentLevel2Header->ClientLabel != view->ClientLabel)) {
                 currentLevel2Header = new AutocompleteView();
@@ -100,19 +109,11 @@ class AutocompleteView : public QObject {
             if (currentLevel3Header)
                 currentLevel3Header->_Children.append(view);
 
-/*
-            if (view->Type == 0 && currentWorkspace && currentWorkspace->Description == view->WorkspaceName)
-                currentWorkspace->Text.append(" " + view->Text + " " + view->Description);
-
-            if (currentLevel1Header)
-                currentLevel1Header->Text.append(" " + view->Text + " " + view->Description + " " + view->ProjectLabel + " " + view->ClientLabel + " " + view->TaskLabel + " " + view->ProjectAndTaskLabel);
-            if (currentLevel2Header)
-                currentLevel2Header->Text.append(" " + view->Text + " " + view->Description + " " + view->ProjectLabel + " " + view->ClientLabel + " " + view->TaskLabel + " " + view->ProjectAndTaskLabel);
-            if (currentLevel3Header)
-                currentLevel3Header->Text.append(" " + view->Text + " " + view->Description + " " + view->ProjectLabel + " " + view->ClientLabel + " " + view->TaskLabel + " " + view->ProjectAndTaskLabel);
-
-*/
             lastType = view->Type;
+
+            if (view->Type == 2) {
+                previousProject = view;
+            }
 
             result.push_back(view);
             it = static_cast<TogglAutocompleteView *>(it->Next);

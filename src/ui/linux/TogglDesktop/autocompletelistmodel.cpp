@@ -23,6 +23,7 @@ Qt::ItemFlags AutocompleteListModel::flags(const QModelIndex &index) const {
     auto view = list.at(index.row());
     switch (view->Type) {
     case 0:
+    case 1:
     case 2:
             return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     default:

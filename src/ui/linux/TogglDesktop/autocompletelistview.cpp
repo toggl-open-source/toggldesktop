@@ -247,13 +247,8 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
         return label;
     }
     case 1: { // Task row
-        QString row = QString("<div style='font-size:12px;margin-left:18px;background-color:transparent;'>");
+        QString row = QString("<div style='font-size:12px;margin-left:27px;background-color:transparent;color:gray'>");
         row += view->TaskLabel;
-        if (!view->ProjectColor.isEmpty())
-            row += "<span style='color:" + view->ProjectColor + "'> • ";
-        row += view->ProjectLabel;
-        if (!view->ProjectColor.isEmpty())
-            row += "</span>";
         row += "</div>";
         return row;
     }
