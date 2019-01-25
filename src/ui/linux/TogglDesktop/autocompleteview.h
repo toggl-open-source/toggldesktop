@@ -59,6 +59,10 @@ class AutocompleteView : public QObject {
                 currentWorkspace->Type = 13;
                 currentWorkspace->Description = view->WorkspaceName;
                 result.push_back(currentWorkspace);
+                currentLevel1Header = nullptr;
+                currentLevel2Header = nullptr;
+                currentLevel3Header = nullptr;
+                lastType = -1;
             }
 
             if (view->Type != lastType) {
@@ -67,6 +71,7 @@ class AutocompleteView : public QObject {
                         currentLevel2Header = previousProject;
                 }
                 else {
+                    currentLevel3Header = nullptr;
                     currentLevel2Header = nullptr;
                     currentLevel1Header = new AutocompleteView();
                     currentLevel1Header->Type = 11;
@@ -89,6 +94,7 @@ class AutocompleteView : public QObject {
                 }
             }
             if (view->Type == 2 && (!currentLevel2Header || currentLevel2Header->ClientLabel != view->ClientLabel)) {
+                currentLevel3Header = nullptr;
                 currentLevel2Header = new AutocompleteView();
                 currentLevel2Header->Type = 12;
                 currentLevel2Header->ClientLabel = view->ClientLabel;
