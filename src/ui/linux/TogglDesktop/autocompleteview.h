@@ -68,7 +68,7 @@ class AutocompleteView : public QObject {
             if (view->Type != lastType && lastType != 1 ) {
                 if (view->Type == 1) {
                     if (previousProject)
-                        currentLevel2Header = previousProject;
+                        currentLevel3Header = previousProject;
                 }
                 else {
                     currentLevel3Header = nullptr;

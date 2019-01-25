@@ -6,7 +6,6 @@
 
 AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     : QComboBox(parent)
-    , lineEdit(new AutocompleteLineEdit(this))
     , completer(new AutocompleteCompleter(this))
     , proxyModel(new AutocompleteProxyModel(this))
     , listView(qobject_cast<AutocompleteListView*>(completer->popup()))
@@ -15,10 +14,9 @@ AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     completer->installEventFilter(this);
     listView->installEventFilter(this);
     completer->setModel(proxyModel);
-    setLineEdit(lineEdit);
     setCompleter(completer);
     connect(listView, &AutocompleteListView::visibleChanged, this, &AutocompleteComboBox::onDropdownVisibleChanged);
-    connect(lineEdit, &QLineEdit::textEdited, proxyModel, &AutocompleteProxyModel::setFilterFixedString);
+    connect(lineEdit(), &QLineEdit::textEdited, proxyModel, &AutocompleteProxyModel::setFilterFixedString);
     connect(listView, &AutocompleteListView::selected, this, &AutocompleteComboBox::onDropdownSelected);
 }
 
@@ -62,7 +60,8 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
                 listView->keyPressEvent(ke);
             return true;
         default:
-            lineEdit->keyPressEvent(ke);
+            QComboBox::keyPressEvent(ke);
+            //lineEdit()->keyPressEvent(ke);
             return true;
         }
     }
@@ -141,23 +140,6 @@ bool AutocompleteCompleter::eventFilter(QObject *o, QEvent *e) {
         return false;
     }
     return QCompleter::eventFilter(o, e);
-}
-
-AutocompleteLineEdit::AutocompleteLineEdit(AutocompleteComboBox *parent)
-    : QLineEdit(parent)
-{
-
-}
-
-AutocompleteComboBox *AutocompleteLineEdit::comboBox() {
-    return qobject_cast<AutocompleteComboBox*>(parent());
-}
-
-void AutocompleteLineEdit::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-    default:
-        QLineEdit::keyPressEvent(event);
-    }
 }
 
 AutocompleteProxyModel::AutocompleteProxyModel(QObject *parent)
