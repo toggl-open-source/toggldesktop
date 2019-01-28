@@ -33,11 +33,11 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 
 @property BOOL countriesLoaded;
 @property uint64_t selectedCountryID;
-@property (weak) IBOutlet NSButton *tosCheckbox;
+@property (weak) IBOutlet FlatButton *tosCheckbox;
 @property (weak) IBOutlet NSTextFieldClickablePointer *tosLink;
 @property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
-@property (weak) IBOutlet NSButton *loginButton;
-@property (weak) IBOutlet NSButton *SignupButton;
+@property (weak) IBOutlet FlatButton *loginButton;
+@property (weak) IBOutlet FlatButton *signupButton;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -75,6 +75,11 @@ extern void *ctx;
 {
 	self.signUpLink.delegate = self;
 	self.loginLink.delegate = self;
+
+	self.forgotPasswordTextField.titleUnderline = YES;
+	self.signUpLink.titleUnderline = YES;
+	self.tosLink.titleUnderline = YES;
+	self.privacyLink.titleUnderline = YES;
 }
 
 - (void)initCountryAutocomplete {
@@ -347,6 +352,10 @@ extern void *ctx;
 			[box setExpanded:YES];
 		}
 	}
+}
+
+- (IBAction)loginGoogleOnTap:(id)sender {
+	[self startGoogleLogin];
 }
 
 @end

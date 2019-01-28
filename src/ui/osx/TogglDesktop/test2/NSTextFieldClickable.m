@@ -12,6 +12,16 @@
 
 @implementation NSTextFieldClickable
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	[self initDefaultValue];
+}
+
+- (void)initDefaultValue {
+	self.titleUnderline = NO;
+}
+
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	if (self.isEditable)
@@ -21,6 +31,24 @@
 		return;
 	}
 	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
+}
+
+- (void)setTitleUnderline:(BOOL)titleUnderline {
+	_titleUnderline = titleUnderline;
+	if (_titleUnderline)
+	{
+		[self drawUnderline];
+	}
+}
+
+- (void)drawUnderline {
+	NSDictionary<NSAttributedStringKey, id> *attributes = @{ NSFontAttributeName: self.font,
+															 NSForegroundColorAttributeName: self.textColor,
+															 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), };
+	NSAttributedString *underlineString = [[NSAttributedString alloc] initWithString:self.stringValue
+																		  attributes:attributes];
+
+	self.attributedStringValue = underlineString;
 }
 
 @end
