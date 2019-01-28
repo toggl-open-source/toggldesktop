@@ -38,11 +38,11 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 @property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
 @property (weak) IBOutlet FlatButton *loginButton;
 @property (weak) IBOutlet FlatButton *signupButton;
+@property (assign, nonatomic) TabViewType currentTab;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
-- (void)changeTabView:(TabViewType)type;
 
 @end
 
@@ -69,12 +69,17 @@ extern void *ctx;
 
 	[self initCommon];
 	[self initCountryAutocomplete];
+
+	// Default
+	[self changeTabView:TabViewTypeLogin];
 }
 
 - (void)initCommon
 {
 	self.signUpLink.delegate = self;
 	self.loginLink.delegate = self;
+	self.countrySelect.delegate = self;
+	self.password.delegate = self;
 
 	self.forgotPasswordTextField.titleUnderline = YES;
 	self.signUpLink.titleUnderline = YES;
@@ -157,12 +162,13 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
 																object:nil];
 	[self.tabView selectTabViewItemAtIndex:type];
+	self.currentTab = type;
 
 	switch (type)
 	{
 		case TabViewTypeLogin :
 			// Update nextkeyView
-			[self.password setNextKeyView:self.loginButton];
+			[self.password setNextKeyView:self.email];
 			break;
 
 		case TabViewTypeSingup :
@@ -352,6 +358,26 @@ extern void *ctx;
 			[box setExpanded:YES];
 		}
 	}
+}
+
+- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
+	if (control == self.password)
+	{
+		if (commandSelector == @selector(insertNewline:))
+		{
+			switch (self.currentTab)
+			{
+				case TabViewTypeLogin :
+					[self clickLoginButton:self.loginButton];
+					break;
+				case TabViewTypeSingup :
+					[self clickSignupButton:self.signupButton];
+					break;
+			}
+			return YES;
+		}
+	}
+	return NO;
 }
 
 - (IBAction)loginGoogleOnTap:(id)sender {
