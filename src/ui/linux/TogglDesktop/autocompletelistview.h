@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QMutex>
 #include <QItemDelegate>
+#include <QTextDocument>
 
 #include "./autocompleteview.h"
 
@@ -38,6 +39,9 @@ class AutoCompleteItemDelegate : public QItemDelegate
 public:
     AutoCompleteItemDelegate(QObject *parent = nullptr);
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void layoutProject(QPainter *painter, const QStyleOptionViewItem &option, AutocompleteView *view) const;
+    void layoutTask(QPainter *painter, const QStyleOptionViewItem &option, AutocompleteView *view) const;
+    void layoutTimeEntry(QPainter *painter, const QStyleOptionViewItem &option, AutocompleteView *view) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
