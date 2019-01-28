@@ -45,6 +45,10 @@ selectedProjectId(0) {
             this, SLOT(descriptionProjectSelected(QString,uint64_t,QString)));
     connect(ui->description, SIGNAL(taskSelected(QString,uint64_t)),
             this, SLOT(descriptionTaskSelected(QString,uint64_t)));
+    connect(ui->description, SIGNAL(billableChanged(bool)),
+            this, SLOT(descriptionBillableChanged(bool)));
+    connect(ui->description, SIGNAL(tagsChanged(QString)),
+            this, SLOT(descriptionTagsChanged(QString)));
 
     connect(ui->deleteProject, &QPushButton::clicked, this, &TimerWidget::clearProject);
     connect(ui->deleteTask, &QPushButton::clicked, this, &TimerWidget::clearTask);
@@ -85,6 +89,15 @@ void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id, c
     ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(name));
     selectedProjectId = id;
     clearTask();
+}
+
+void TimerWidget::descriptionBillableChanged(bool billable) {
+    ui->billable->setVisible(billable);
+}
+
+void TimerWidget::descriptionTagsChanged(const QString &tags) {
+    ui->tags->setVisible(!tags.isEmpty());
+    ui->tags->setToolTip("<p style='color:white;background-color:black;'>" + tags + "</p>");
 }
 
 void TimerWidget::clearProject() {
@@ -136,6 +149,7 @@ void TimerWidget::displayRunningTimerState(
     project = te->ProjectAndTaskLabel;
     setEllipsisTextToLabel(ui->project, project);
 
+    qCritical() << "1";
     ui->billable->setVisible(te->Billable);
     ui->tags->setVisible(!te->Tags.isEmpty());
     ui->tags->setToolTip(QString("<p style='color:white;background-color:black;'>" +
@@ -169,6 +183,7 @@ void TimerWidget::displayStoppedTimerState() {
     ui->start->setStyleSheet(
         "background-color: #47bc00; color:'white'; font-weight: bold;");
 
+    qCritical() << "2";
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(descriptionPlaceholder);
     }
@@ -257,7 +272,7 @@ void TimerWidget::timeout() {
 }
 
 void TimerWidget::on_description_currentIndexChanged(int index) {
-    Q_UNUSED(index);
+    Q_UNUSED(index);/*
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
@@ -272,6 +287,7 @@ void TimerWidget::on_description_currentIndexChanged(int index) {
         }
 
     }
+    */
 }
 
 void TimerWidget::mousePressEvent(QMouseEvent *event) {

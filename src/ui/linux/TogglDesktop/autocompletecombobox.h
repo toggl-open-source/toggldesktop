@@ -37,6 +37,8 @@ signals:
     void timeEntrySelected(const QString &name);
     void projectSelected(const QString &name, uint64_t id, const QString &color);
     void taskSelected(const QString &name, uint64_t id);
+    void billableChanged(bool billable);
+    void tagsChanged(const QString &tags);
 
 private:
     AutocompleteCompleter *completer;
