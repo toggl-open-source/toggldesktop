@@ -24,7 +24,7 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 @property AutocompleteDataSource *countryAutocompleteDataSource;
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTextField *email;
-@property (weak) IBOutlet NSTextField *password;
+@property (weak) IBOutlet NSSecureTextField *password;
 @property (weak) IBOutlet NSButton *loginGooglBtn;
 @property (weak) IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
 @property (weak) IBOutlet NSTextFieldClickablePointer *signUpLink;
@@ -86,6 +86,7 @@ extern void *ctx;
 	self.signUpLink.titleUnderline = YES;
 	self.tosLink.titleUnderline = YES;
 	self.privacyLink.titleUnderline = YES;
+	self.loginLink.titleUnderline = YES;
 
 	self.boxView.wantsLayer = YES;
 	self.boxView.layer.masksToBounds = NO;

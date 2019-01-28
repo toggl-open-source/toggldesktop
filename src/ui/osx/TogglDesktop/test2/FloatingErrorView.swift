@@ -35,27 +35,32 @@ final class FloatingErrorView: NSView {
     }
 
     private func initCommon() {
-        self.wantsLayer = true
-        self.shadow = NSShadow()
-        if #available(OSX 10.13, *) {
-            self.layer?.backgroundColor = NSColor(named: NSColor.Name("error-background-color"))?.cgColor
-        } else {
-            // Fallback on earlier versions
-            self.layer?.backgroundColor = NSColor.white.cgColor
-        }
-        self.layer?.cornerRadius = 8
-        self.layer?.borderWidth = 1;
-        self.layer?.borderColor = NSColor(white: 0.0, alpha: 0.1).cgColor
-        self.layer?.shadowOpacity = 0.13
-        self.layer?.shadowColor = NSColor.black.cgColor
-        self.layer?.shadowOffset = NSMakeSize(0, -2)
-        self.layer?.shadowRadius = 6
+        wantsLayer = true
+        shadow = NSShadow()
+        layer?.cornerRadius = 8
+        layer?.borderWidth = 1;
+        layer?.borderColor = NSColor(white: 0.0, alpha: 0.1).cgColor
+        layer?.shadowOpacity = 0.13
+        layer?.shadowColor = NSColor.black.cgColor
+        layer?.shadowOffset = NSMakeSize(0, -2)
+        layer?.shadowRadius = 6
     }
 
+    override func updateLayer() {
+        super.updateLayer()
+
+        if #available(OSX 10.13, *) {
+            layer?.backgroundColor = NSColor(named: NSColor.Name("error-background-color"))?.cgColor
+        } else {
+            // Fallback on earlier versions
+            layer?.backgroundColor = NSColor.white.cgColor
+        }
+
+    }
     // MARK: Func
 
     @objc func update(error: String) {
-        self.errorLabel.stringValue = error
+        errorLabel.stringValue = error
     }
 
     @IBAction private func closeOnTap(_ sender: Any) {
