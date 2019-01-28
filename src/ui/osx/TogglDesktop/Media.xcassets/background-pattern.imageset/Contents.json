@@ -2,35 +2,17 @@
   "images" : [
     {
       "idiom" : "mac",
-      "filename" : "bg-pattern.jpg",
-      "scale" : "1x"
+      "filename" : "pattern_light@2x.jpg"
     },
     {
       "idiom" : "mac",
-      "filename" : "background-dark.jpg",
+      "filename" : "pattern_dark@2x.jpg",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "dark"
         }
-      ],
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "mac",
-      "filename" : "bg-pattern@2x.jpg",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "mac",
-      "filename" : "background-dark@2x.jpg",
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "scale" : "2x"
+      ]
     }
   ],
   "info" : {

@@ -134,6 +134,9 @@
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
+		BA03727D21FEB46500FC277B /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03727C21FEB46500FC277B /* FloatingErrorView.swift */; };
+		BA03729B21FEB48900FC277B /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA03729A21FEB48900FC277B /* FloatingErrorView.xib */; };
+		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
 		BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; };
 		BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
@@ -672,6 +675,9 @@
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
+		BA03727C21FEB46500FC277B /* FloatingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
+		BA03729A21FEB48900FC277B /* FloatingErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
+		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeepDiff.xcodeproj; path = ../../../../third_party/DeepDiff/DeepDiff.xcodeproj; sourceTree = "<group>"; };
 		BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TogglDesktop-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffer.swift; sourceTree = "<group>"; };
@@ -994,6 +1000,8 @@
 				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
 				BA03725421FE9FD400FC277B /* FlatButton.swift */,
+				BA03727C21FEB46500FC277B /* FloatingErrorView.swift */,
+				BA03729A21FEB48900FC277B /* FloatingErrorView.xib */,
 			);
 			name = ui;
 			path = test2;
@@ -1262,6 +1270,7 @@
 				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
 				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
 				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
+				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1616,6 +1625,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */,
+				BA03729B21FEB48900FC277B /* FloatingErrorView.xib in Resources */,
 				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
@@ -1771,8 +1781,10 @@
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
+				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
+				BA03727D21FEB46500FC277B /* FloatingErrorView.swift in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,

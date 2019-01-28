@@ -18,12 +18,15 @@
 #import "TrackingService.h"
 #import "TogglDesktop-Swift.h"
 
-@interface MainWindowController ()
+@interface MainWindowController () <FloatingErrorViewDelegate>
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) IBOutlet OverlayViewController *overlayViewController;
 @property (nonatomic, strong) NSLayoutConstraint *contentViewBottom;
 @property double troubleBoxDefaultHeight;
+@property (nonatomic, strong) FloatingErrorView *errorView;
+@property (weak) IBOutlet NSView *errorContainerView;
+
 @end
 
 @implementation MainWindowController
@@ -83,6 +86,29 @@ extern void *ctx;
 
 	// Tracking the size of window after loaded
 	[self trackWindowSize];
+
+	// Error View
+	[self initErrorView];
+}
+
+- (void)initErrorView {
+	self.errorView = [FloatingErrorView initFromXib];
+	self.errorView.translatesAutoresizingMaskIntoConstraints = NO;
+	self.errorView.delegate = self;
+
+	[self.errorContainerView addSubview:self.errorView];
+
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
+
+	// Able to draw shadow
+	self.errorContainerView.wantsLayer = YES;
+	self.errorContainerView.layer.masksToBounds = NO;
+
+	// Hidden by default
+	self.errorContainerView.hidden = YES;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -161,6 +187,10 @@ extern void *ctx;
 - (void)displayError:(NSString *)msg
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+
+	self.errorContainerView.hidden = NO;
+	NSString *errorMessage = msg == nil ? @"Error" : msg;
+	[self.errorView updateWithError:errorMessage];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
@@ -216,6 +246,7 @@ extern void *ctx;
 
 - (void)closeError
 {
+	self.errorContainerView.hidden = YES;
 }
 
 - (void)keyUp:(NSEvent *)event
@@ -257,6 +288,10 @@ extern void *ctx;
 			[self.window setLevel:NSNormalWindowLevel];
 			break;
 	}
+}
+
+- (void)floatingErrorShouldHide {
+	[self closeError];
 }
 
 @end

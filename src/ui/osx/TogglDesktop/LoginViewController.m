@@ -39,6 +39,7 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 @property (weak) IBOutlet FlatButton *loginButton;
 @property (weak) IBOutlet FlatButton *signupButton;
 @property (assign, nonatomic) TabViewType currentTab;
+@property (weak) IBOutlet NSBox *boxView;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -85,6 +86,14 @@ extern void *ctx;
 	self.signUpLink.titleUnderline = YES;
 	self.tosLink.titleUnderline = YES;
 	self.privacyLink.titleUnderline = YES;
+
+	self.boxView.wantsLayer = YES;
+	self.boxView.layer.masksToBounds = NO;
+	self.boxView.shadow = [[NSShadow alloc] init];
+	self.boxView.layer.shadowColor = [NSColor colorWithWhite:0 alpha:0.1].CGColor;
+	self.boxView.layer.shadowOpacity = 1.0;
+	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
+	self.boxView.layer.shadowRadius = 6;
 }
 
 - (void)initCountryAutocomplete {
