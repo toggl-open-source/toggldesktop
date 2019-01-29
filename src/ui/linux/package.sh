@@ -2,7 +2,9 @@
 
 PLUGINS="imageformats/libqsvg.so iconengines/libqsvgicon.so platforms/libqxcb.so"
 
-builddir=$(mktemp -d build-XXXXXX)
+if [ -z "$builddir" ]; then
+    builddir=$(mktemp -d build-XXXXXX)
+fi
 fullbuilddir=$PWD/$builddir
 errorlog=$fullbuilddir/error.log
 
@@ -35,6 +37,9 @@ pushd package >/dev/null
 
 echo "Composing the package" >&2
 rm -fr include lib/cmake
+if [ ! -z "$CMAKE_INSTALL_PREFIX" ]; then
+    export LD_LIBRARY_PATH="$CMAKE_INSTALL_PREFIX/../"
+fi
 CHECK cp $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 
 corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
@@ -64,13 +69,14 @@ CHECK mkdir -p lib/qt5/translations lib/qt5/resources
 CHECK cp -r "$translationdir/qtwebengine_locales" lib/qt5/translations
 CHECK cp "$datadir/resources/qtwebengine"* lib/qt5/resources
 
-CHECK cat <<EOF >bin/qt.conf
-[Paths]
-Prefix=..
-Plugins=lib/qt5/plugins
-Data=lib/qt5
-Translations=lib/qt5/translations
-EOF
+# probably not necessary in ubuntu
+#CHECK cat <<EOF >bin/qt.conf
+#[Paths]
+#Prefix=..
+#Plugins=lib/qt5/plugins
+#Data=lib/qt5
+#Translations=lib/qt5/translations
+#EOF
 
 echo "Stripping" >&2
 for i in bin/QtWebEngineProcess $(find . -name \*.so); do 
