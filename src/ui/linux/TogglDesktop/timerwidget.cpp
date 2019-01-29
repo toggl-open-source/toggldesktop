@@ -98,6 +98,7 @@ void TimerWidget::descriptionBillableChanged(bool billable) {
 void TimerWidget::descriptionTagsChanged(const QString &tags) {
     ui->tags->setVisible(!tags.isEmpty());
     ui->tags->setToolTip("<p style='color:white;background-color:black;'>" + tags + "</p>");
+    tagsHolder = tags;
 }
 
 void TimerWidget::clearProject() {
@@ -149,7 +150,6 @@ void TimerWidget::displayRunningTimerState(
     project = te->ProjectAndTaskLabel;
     setEllipsisTextToLabel(ui->project, project);
 
-    qCritical() << "1";
     ui->billable->setVisible(te->Billable);
     ui->tags->setVisible(!te->Tags.isEmpty());
     ui->tags->setToolTip(QString("<p style='color:white;background-color:black;'>" +
@@ -183,10 +183,19 @@ void TimerWidget::displayStoppedTimerState() {
     ui->start->setStyleSheet(
         "background-color: #47bc00; color:'white'; font-weight: bold;");
 
-    qCritical() << "2";
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(descriptionPlaceholder);
+
+        ui->project->setText("");
+        ui->project->setToolTip(QString(""));
+        ui->projectFrame->setVisible(false);
+
+        ui->billable->setVisible(false);
+        ui->tags->setVisible(false);
+
+        tagsHolder = "";
     }
+
     ui->description->setEnabled(true);
     ui->description->setToolTip(QString(""));
 
@@ -195,15 +204,6 @@ void TimerWidget::displayStoppedTimerState() {
     }
     ui->duration->setEnabled(true);
     ui->duration->setToolTip(QString(""));
-
-    ui->project->setText("");
-    ui->project->setToolTip(QString(""));
-    ui->projectFrame->setVisible(false);
-
-    ui->billable->setVisible(false);
-    ui->tags->setVisible(false);
-
-    tagsHolder = "";
 
     duration = 0;
 
