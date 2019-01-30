@@ -61,9 +61,18 @@ for i in $PLUGINS; do
     CHECK cp -n $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
 
+for i in $(ls lib/*.so); do
+    for j in $(ldd $i | grep -e libQt | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
+        CHECK cp $j lib
+    done
+done
+
 CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/TogglDesktop >> ../patchelf.log
 CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/QtWebEngineProcess >> ../patchelf.log
-CHECK patchelf --set-rpath '\$ORIGIN' lib/libTogglDesktopLibrary.so >> ../patchelf.log
+
+for i in $(ls lib/*.so); do
+    CHECK patchelf --set-rpath '\$ORIGIN' $i >> ../patchelf.log
+done
 
 CHECK mkdir -p lib/qt5/translations lib/qt5/resources
 CHECK cp -r "$translationdir/qtwebengine_locales" lib/qt5/translations
