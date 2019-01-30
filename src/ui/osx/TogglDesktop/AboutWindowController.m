@@ -14,7 +14,9 @@
 #import "UnsupportedNotice.h"
 #import "NSTextFieldClickablePointer.h"
 
-@interface AboutWindowController ()
+static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl/toggldesktop";
+
+@interface AboutWindowController () <NSTextFieldDelegate>
 @property (weak) IBOutlet NSTextField *appnameTextField;
 @property (weak) IBOutlet NSTextField *versionTextField;
 @property (weak) IBOutlet NSTextField *updateStatusTextField;
@@ -39,11 +41,8 @@ extern void *ctx;
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = [infoDict objectForKey:@"CFBundleShortVersionString"];
 	[self.versionTextField setStringValue:[NSString stringWithFormat:@"Version %@", version]];
-	NSString *appname = [infoDict objectForKey:@"CFBundleName"];
+	NSString *appname = [[infoDict objectForKey:@"CFBundleName"] uppercaseString];
 	[self.appnameTextField setStringValue:appname];
-
-	NSString *path = [[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"];
-	// [self.creditsTextView readRTFDFromFile:path];
 
 	self.windowHasLoad = YES;
 	self.restart = NO;
@@ -69,6 +68,8 @@ extern void *ctx;
 }
 
 - (void)initCommon {
+	self.findUsInGithub.delegate = self;
+
 	self.findUsInGithub.titleUnderline = YES;
 
 	self.boxView.wantsLayer = YES;
@@ -184,6 +185,15 @@ extern void *ctx;
 - (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
 	NSLog(@"Update check failed with error %@", error);
+}
+
+- (void)textFieldClicked:(id)sender
+{
+	if (sender == self.findUsInGithub)
+	{
+		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kTogglDesktopGithubURL]];
+		return;
+	}
 }
 
 @end

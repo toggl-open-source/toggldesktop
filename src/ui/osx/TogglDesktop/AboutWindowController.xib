@@ -48,7 +48,7 @@
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VEr-3F-c8C">
                                     <rect key="frame" x="70" y="230" width="89" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Version 7.3.321" id="5Rk-hH-pJd">
-                                        <font key="font" metaFont="system" size="12"/>
+                                        <font key="font" metaFont="cellTitle"/>
                                         <color key="textColor" name="login-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -56,7 +56,7 @@
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4jV-sw-sae">
                                     <rect key="frame" x="46" y="169" width="136" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="An open source project" id="A9H-gz-0AR">
-                                        <font key="font" metaFont="system" size="12"/>
+                                        <font key="font" metaFont="cellTitle"/>
                                         <color key="textColor" name="login-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -76,11 +76,14 @@
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         <objectValues>
-                                            <string>Item 1</string>
-                                            <string>Item 2</string>
-                                            <string>Item 3</string>
+                                            <string>stable</string>
+                                            <string>beta</string>
+                                            <string>dev</string>
                                         </objectValues>
                                     </comboBoxCell>
+                                    <connections>
+                                        <action selector="updateChannelSelected:" target="-2" id="lYz-cP-Ojb"/>
+                                    </connections>
                                 </comboBox>
                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fgK-FX-13n">
                                     <rect key="frame" x="104" y="190" width="21" height="20"/>
@@ -89,7 +92,7 @@
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zGj-DF-e90">
                                     <rect key="frame" x="18" y="24" width="100" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Release channel:" id="ibS-Ll-PIY">
-                                        <font key="font" metaFont="system" size="12"/>
+                                        <font key="font" metaFont="cellTitle"/>
                                         <color key="textColor" name="login-text-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
