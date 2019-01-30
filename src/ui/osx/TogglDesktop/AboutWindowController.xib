@@ -9,6 +9,11 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AboutWindowController">
             <connections>
+                <outlet property="appnameTextField" destination="0nj-Ur-G2E" id="trO-DZ-7Sk"/>
+                <outlet property="boxView" destination="07H-pU-KmW" id="Cdn-JO-Aw0"/>
+                <outlet property="findUsInGithub" destination="Zng-kf-hL6" id="m45-fm-zwg"/>
+                <outlet property="updateChannelComboBox" destination="Xcc-XB-zJU" id="gcL-lN-pRP"/>
+                <outlet property="versionTextField" destination="VEr-3F-c8C" id="qsf-hz-Tkz"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>

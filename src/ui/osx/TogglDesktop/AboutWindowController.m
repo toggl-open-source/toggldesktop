@@ -12,6 +12,19 @@
 #import "DisplayCommand.h"
 #import "Utils.h"
 #import "UnsupportedNotice.h"
+#import "NSTextFieldClickablePointer.h"
+
+@interface AboutWindowController ()
+@property (weak) IBOutlet NSTextField *appnameTextField;
+@property (weak) IBOutlet NSTextField *versionTextField;
+@property (weak) IBOutlet NSTextField *updateStatusTextField;
+@property (weak) IBOutlet NSComboBox *updateChannelComboBox;
+@property (weak) IBOutlet NSTextField *updateChannelLabel;
+@property (weak) IBOutlet NSButton *restartButton;
+@property (weak) IBOutlet NSTextFieldClickablePointer *findUsInGithub;
+@property (weak) IBOutlet NSBox *boxView;
+
+@end
 
 @implementation AboutWindowController
 
@@ -30,7 +43,7 @@ extern void *ctx;
 	[self.appnameTextField setStringValue:appname];
 
 	NSString *path = [[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"];
-	[self.creditsTextView readRTFDFromFile:path];
+	// [self.creditsTextView readRTFDFromFile:path];
 
 	self.windowHasLoad = YES;
 	self.restart = NO;
@@ -51,6 +64,20 @@ extern void *ctx;
 
 		[self displayUpdateStatus];
 	}
+
+	[self initCommon];
+}
+
+- (void)initCommon {
+	self.findUsInGithub.titleUnderline = YES;
+
+	self.boxView.wantsLayer = YES;
+	self.boxView.layer.masksToBounds = NO;
+	self.boxView.shadow = [[NSShadow alloc] init];
+	self.boxView.layer.shadowColor = [NSColor colorWithWhite:0 alpha:0.1].CGColor;
+	self.boxView.layer.shadowOpacity = 1.0;
+	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
+	self.boxView.layer.shadowRadius = 6;
 }
 
 - (BOOL)updateCheckEnabled
