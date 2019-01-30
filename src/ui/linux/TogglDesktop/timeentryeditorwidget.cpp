@@ -69,6 +69,12 @@ projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PR
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
+    connect(ui->description, &AutocompleteComboBox::taskSelected, this, &TimeEntryEditorWidget::onTaskSelected);
+    connect(ui->description, &AutocompleteComboBox::billableChanged, this, &TimeEntryEditorWidget::onBillableChanged);
+    connect(ui->description, &AutocompleteComboBox::tagsChanged, this, &TimeEntryEditorWidget::onTagsChanged);
+    connect(ui->project, &AutocompleteComboBox::taskSelected, this, &TimeEntryEditorWidget::onTaskSelected);
+    connect(ui->project, &AutocompleteComboBox::billableChanged, this, &TimeEntryEditorWidget::onBillableChanged);
+
     TogglApi::instance->getProjectColors();
 }
 
@@ -458,7 +464,20 @@ void TimeEntryEditorWidget::timeout() {
 }
 
 void TimeEntryEditorWidget::onProjectSelected(const QString &name, uint64_t id, const QString &color) {
-    Q_UNUSED(id); Q_UNUSED(color);
+    Q_UNUSED(name); Q_UNUSED(id); Q_UNUSED(color);
+}
+
+void TimeEntryEditorWidget::onTaskSelected(const QString &name, uint64_t id) {
+    Q_UNUSED(name); Q_UNUSED(id);
+}
+
+void TimeEntryEditorWidget::onBillableChanged(bool billable) {
+    ui->billable->setDown(billable);
+    TogglApi::instance->setTimeEntryBillable(guid, billable);
+}
+
+void TimeEntryEditorWidget::onTagsChanged(const QString &tags) {
+    TogglApi::instance->setTimeEntryTags(guid, tags);
 }
 
 void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
