@@ -5,11 +5,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MASShortcutView+UserDefaults.h"
 #import "DisplayCommand.h"
 #import "AutocompleteItem.h"
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
+#import <MASShortcut/Shortcut.h>
 
 extern NSString *const kPreferenceGlobalShortcutShowHide;
 extern NSString *const kPreferenceGlobalShortcutStartStop;

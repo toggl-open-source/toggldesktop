@@ -18,7 +18,6 @@
 #import "FeedbackWindowController.h"
 #import "IdleEvent.h"
 #import "IdleNotificationWindowController.h"
-#import "MASShortcut+UserDefaults.h"
 #import "MainWindowController.h"
 #import "MenuItemTags.h"
 #import "PreferencesWindowController.h"
@@ -36,6 +35,7 @@
 #import "SystemService.h"
 #import "TogglDesktop-Swift.h"
 #import "AppIconFactory.h"
+#import <MASShortcut/Shortcut.h>
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -236,25 +236,29 @@ BOOL onTop = NO;
 	bool_t started = toggl_ui_start(ctx);
 	NSAssert(started, @"Failed to start UI");
 
-	[MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutShowHide handler:^{
-		 if ([[NSApplication sharedApplication] isActive] && [self.mainWindowController.window isVisible])
+	__weak typeof(self) weakSelf = self;
+	[[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kPreferenceGlobalShortcutShowHide
+														 toAction:^{
+		 typeof(self) strongSelf = weakSelf;
+		 if ([[NSApplication sharedApplication] isActive] && [strongSelf.mainWindowController.window isVisible])
 		 {
 			 [self.mainWindowController.window close];
 		 }
 		 else
 		 {
-			 [self onShowMenuItem:self];
+			 [strongSelf onShowMenuItem:strongSelf];
 		 }
 	 }];
-
-	[MASShortcut registerGlobalShortcutWithUserDefaultsKey:kPreferenceGlobalShortcutStartStop handler:^{
-		 if (self.lastKnownRunningTimeEntry == nil)
+	[[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:kPreferenceGlobalShortcutStartStop
+														 toAction:^{
+		 typeof(self) strongSelf = weakSelf;
+		 if (strongSelf.lastKnownRunningTimeEntry == nil)
 		 {
-			 [self onContinueMenuItem:self];
+			 [strongSelf onContinueMenuItem:strongSelf];
 		 }
 		 else
 		 {
-			 [self onStopMenuItem:self];
+			 [strongSelf onStopMenuItem:strongSelf];
 		 }
 	 }];
 

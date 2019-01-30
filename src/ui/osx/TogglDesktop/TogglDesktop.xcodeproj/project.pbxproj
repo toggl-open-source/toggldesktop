@@ -127,11 +127,7 @@
 		74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
 		74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
-		74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */; };
-		74FE0D5D18E260A000ECFED2 /* MASShortcut+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */; };
-		74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5418E260A000ECFED2 /* MASShortcut.m */; };
-		74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */; };
-		74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FE0D5818E260A000ECFED2 /* MASShortcutView.m */; };
+		74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
@@ -153,8 +149,11 @@
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoStack.swift */; };
+		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
 		BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
+		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
+		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -403,6 +402,34 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Sparkle;
 		};
+		BA7DB6D121F9C7660059239B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D827CD31990D4420010B8EF;
+			remoteInfo = MASShortcut;
+		};
+		BA7DB6D321F9C7660059239B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D827D8319910AFF0010B8EF;
+			remoteInfo = MASShortcutTests;
+		};
+		BA7DB6D521F9C7660059239B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D827D371990D5E70010B8EF;
+			remoteInfo = Demo;
+		};
+		BA7DB6E521F9C77A0059239B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0D827CD21990D4420010B8EF;
+			remoteInfo = MASShortcut;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -414,6 +441,7 @@
 			files = (
 				3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */,
 				BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */,
+				BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */,
 				BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */,
 				BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */,
 				BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */,
@@ -633,19 +661,7 @@
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
 		74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TFDatePicker.xcodeproj; path = ../../../../third_party/TFDatePicker/TFDatePicker/TFDatePicker.xcodeproj; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
-		74FE0D4D18E260A000ECFED2 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		74FE0D4E18E260A000ECFED2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		74FE0D4F18E260A000ECFED2 /* MASShortcut+Monitoring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASShortcut+Monitoring.h"; sourceTree = "<group>"; };
-		74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MASShortcut+Monitoring.m"; sourceTree = "<group>"; };
-		74FE0D5118E260A000ECFED2 /* MASShortcut+UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASShortcut+UserDefaults.h"; sourceTree = "<group>"; };
-		74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MASShortcut+UserDefaults.m"; sourceTree = "<group>"; };
-		74FE0D5318E260A000ECFED2 /* MASShortcut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASShortcut.h; sourceTree = "<group>"; };
-		74FE0D5418E260A000ECFED2 /* MASShortcut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASShortcut.m; sourceTree = "<group>"; };
-		74FE0D5518E260A000ECFED2 /* MASShortcutView+UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASShortcutView+UserDefaults.h"; sourceTree = "<group>"; };
-		74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MASShortcutView+UserDefaults.m"; sourceTree = "<group>"; };
-		74FE0D5718E260A000ECFED2 /* MASShortcutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASShortcutView.h; sourceTree = "<group>"; };
-		74FE0D5818E260A000ECFED2 /* MASShortcutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASShortcutView.m; sourceTree = "<group>"; };
-		74FE0D5918E260A000ECFED2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app_inactive.icns; sourceTree = "<group>"; };
 		95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBoxCell.h; sourceTree = "<group>"; };
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
@@ -671,9 +687,12 @@
 		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
 		BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntrySnapshot.swift; sourceTree = "<group>"; };
 		BA712EC721BF9F1200A2D8DD /* UndoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStack.swift; sourceTree = "<group>"; };
+		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
+		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
 		BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UndoTextField.h; sourceTree = "<group>"; };
 		BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UndoTextField.m; sourceTree = "<group>"; };
 		BA7B4C7B21C293E700B75B14 /* String+Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Optional.swift"; sourceTree = "<group>"; };
+		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
 		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
@@ -719,6 +738,7 @@
 				7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */,
+				BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */,
 				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
 				BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
@@ -790,11 +810,11 @@
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */,
 				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
+				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
 				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				745E7FC1192D247300747C18 /* images */,
 				3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */,
 				74E1682E180F269F0026261C /* gtm */,
-				74FE0D4C18E260A000ECFED2 /* MASShortcut */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
 				BA0CEC4C21BE516F00F1BF01 /* Diff */,
@@ -966,8 +986,6 @@
 				3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */,
 				BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */,
 				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
-				BAD232D021D495E20039C742 /* UserNotificationCenter.h */,
-				BAD232CF21D495E20039C742 /* UserNotificationCenter.m */,
 				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
 			);
@@ -1145,27 +1163,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		74FE0D4C18E260A000ECFED2 /* MASShortcut */ = {
-			isa = PBXGroup;
-			children = (
-				74FE0D4D18E260A000ECFED2 /* .gitignore */,
-				74FE0D4E18E260A000ECFED2 /* LICENSE */,
-				74FE0D4F18E260A000ECFED2 /* MASShortcut+Monitoring.h */,
-				74FE0D5018E260A000ECFED2 /* MASShortcut+Monitoring.m */,
-				74FE0D5118E260A000ECFED2 /* MASShortcut+UserDefaults.h */,
-				74FE0D5218E260A000ECFED2 /* MASShortcut+UserDefaults.m */,
-				74FE0D5318E260A000ECFED2 /* MASShortcut.h */,
-				74FE0D5418E260A000ECFED2 /* MASShortcut.m */,
-				74FE0D5518E260A000ECFED2 /* MASShortcutView+UserDefaults.h */,
-				74FE0D5618E260A000ECFED2 /* MASShortcutView+UserDefaults.m */,
-				74FE0D5718E260A000ECFED2 /* MASShortcutView.h */,
-				74FE0D5818E260A000ECFED2 /* MASShortcutView.m */,
-				74FE0D5918E260A000ECFED2 /* README.md */,
-			);
-			name = MASShortcut;
-			path = ../../../../third_party/MASShortcut;
-			sourceTree = "<group>";
-		};
 		BA0CEBA421BA851700F1BF01 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1193,6 +1190,24 @@
 				BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */,
 			);
 			name = UserNotification;
+			sourceTree = "<unknown>";
+		};
+		BA6E86A621DDB331005E2451 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BA6E86B621DDB331005E2451 /* Sparkle.framework */,
+				BA6E86B821DDB331005E2451 /* Sparkle Test App.app */,
+				BA6E86BA21DDB331005E2451 /* Sparkle Unit Tests.xctest */,
+				BA6E86BC21DDB331005E2451 /* BinaryDelta */,
+				BA6E86BE21DDB331005E2451 /* Autoupdate.app */,
+				BA6E86C021DDB331005E2451 /* UI Tests.xctest */,
+				BA6E86C221DDB331005E2451 /* fileop */,
+				BA6E86C421DDB331005E2451 /* generate_appcast */,
+				BA6E86C621DDB331005E2451 /* generate_keys */,
+				BA6E86C821DDB331005E2451 /* sign_update */,
+			);
+			name = Products;
+			sourceTree = "<unknown>";
 		};
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
@@ -1222,22 +1237,15 @@
 			name = Theme;
 			sourceTree = "<group>";
 		};
-		BA6E86A621DDB331005E2451 /* Products */ = {
+		BA7DB6BC21F9C7660059239B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BA6E86B621DDB331005E2451 /* Sparkle.framework */,
-				BA6E86B821DDB331005E2451 /* Sparkle Test App.app */,
-				BA6E86BA21DDB331005E2451 /* Sparkle Unit Tests.xctest */,
-				BA6E86BC21DDB331005E2451 /* BinaryDelta */,
-				BA6E86BE21DDB331005E2451 /* Autoupdate.app */,
-				BA6E86C021DDB331005E2451 /* UI Tests.xctest */,
-				BA6E86C221DDB331005E2451 /* fileop */,
-				BA6E86C421DDB331005E2451 /* generate_appcast */,
-				BA6E86C621DDB331005E2451 /* generate_keys */,
-				BA6E86C821DDB331005E2451 /* sign_update */,
+				BA7DB6D221F9C7660059239B /* MASShortcut.framework */,
+				BA7DB6D421F9C7660059239B /* MASShortcutTests.xctest */,
+				BA7DB6D621F9C7660059239B /* Demo.app */,
 			);
 			name = Products;
-			sourceTree = "<unknown>";
+			sourceTree = "<group>";
 		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
 			isa = PBXGroup;
@@ -1315,6 +1323,7 @@
 				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
 				BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */,
 				BA6E873821DDC1E2005E2451 /* PBXTargetDependency */,
+				BA7DB6E621F9C77A0059239B /* PBXTargetDependency */,
 			);
 			name = TogglDesktop;
 			productName = test2;
@@ -1355,6 +1364,10 @@
 				{
 					ProductGroup = BA0CEBA421BA851700F1BF01 /* Products */;
 					ProjectRef = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
+				},
+				{
+					ProductGroup = BA7DB6BC21F9C7660059239B /* Products */;
+					ProjectRef = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
 				},
 				{
 					ProductGroup = BA6E86A621DDB331005E2451 /* Products */;
@@ -1568,6 +1581,27 @@
 			remoteRef = BA6E86C721DDB331005E2451 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BA7DB6D221F9C7660059239B /* MASShortcut.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MASShortcut.framework;
+			remoteRef = BA7DB6D121F9C7660059239B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BA7DB6D421F9C7660059239B /* MASShortcutTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MASShortcutTests.xctest;
+			remoteRef = BA7DB6D321F9C7660059239B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BA7DB6D621F9C7660059239B /* Demo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Demo.app;
+			remoteRef = BA7DB6D521F9C7660059239B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1682,7 +1716,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
-				74FE0D5E18E260A000ECFED2 /* MASShortcut.m in Sources */,
 				7484F622191D92C30038885C /* Settings.m in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
@@ -1704,7 +1737,6 @@
 				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
-				74FE0D5F18E260A000ECFED2 /* MASShortcutView+UserDefaults.m in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
@@ -1715,14 +1747,12 @@
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
 				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
-				74FE0D5C18E260A000ECFED2 /* MASShortcut+Monitoring.m in Sources */,
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
 				748664D0188D6617006DB4C5 /* TimeEntryCellWithHeader.m in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
-				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
@@ -1803,6 +1833,11 @@
 			isa = PBXTargetDependency;
 			name = Sparkle;
 			targetProxy = BA6E873721DDC1E2005E2451 /* PBXContainerItemProxy */;
+		};
+		BA7DB6E621F9C77A0059239B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MASShortcut;
+			targetProxy = BA7DB6E521F9C77A0059239B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
