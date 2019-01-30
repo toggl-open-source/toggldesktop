@@ -69,7 +69,6 @@
 - (IBAction)addClientButtonClicked:(id)sender;
 - (IBAction)saveAddClientButtonClicked:(id)sender;
 - (void)setDragHandle:(BOOL)onLeft;
-- (void)setInsertionPointColor;
 - (void)closeEdit;
 - (BOOL)autcompleteFocused;
 - (void)updateWithSelectedDescription:(AutocompleteItem *)autocomplete withKey:(NSString *)key;

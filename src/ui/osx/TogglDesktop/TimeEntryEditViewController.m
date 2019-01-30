@@ -756,16 +756,6 @@ extern void *ctx;
 	[self.resizeHandleLeft setHidden:!onLeft];
 }
 
-- (void)setInsertionPointColor
-{
-	NSTextView *textField = (NSTextView *)[self.durationTextField currentEditor];
-
-	if ([textField respondsToSelector:@selector(setInsertionPointColor:)])
-	{
-		[textField setInsertionPointColor:[NSColor blackColor]];
-	}
-}
-
 - (void)draggingResizeStart:(id)sender
 {
 	self.lastPosition = [NSEvent mouseLocation];

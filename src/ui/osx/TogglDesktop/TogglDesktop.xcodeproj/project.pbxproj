@@ -142,9 +142,12 @@
 		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
 		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
+		BA229D1021EDEDC400DEB4B9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA229D0F21EDEDC400DEB4B9 /* Theme.swift */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
+		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA712EC221BF907200A2D8DD /* UndoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoStorage.swift */; };
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
@@ -422,7 +425,6 @@
 				BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */,
 				BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */,
 				BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */,
-				74A3D06219E418CB00C51BB6 /* Sparkle.framework in CopyFiles */,
 				BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */,
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
 				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
@@ -657,9 +659,12 @@
 		BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Diff.swift"; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
+		BA229D0F21EDEDC400DEB4B9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
+		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
+		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
 		BA712EC121BF907200A2D8DD /* UndoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStorage.swift; sourceTree = "<group>"; };
@@ -840,6 +845,7 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				BA229D0E21EDEDBA00DEB4B9 /* Theme */,
 				BA13E05B21C7B9F800835EC1 /* UserNotification */,
 				BAF87DDB21A3E1E700624EBE /* Extension */,
 				BAF50DF521A2A16D0090BA95 /* Icon */,
@@ -1207,6 +1213,15 @@
 			path = Undo;
 			sourceTree = "<group>";
 		};
+		BA229D0E21EDEDBA00DEB4B9 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				BA229D0F21EDEDC400DEB4B9 /* Theme.swift */,
+				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
+			);
+			name = Theme;
+			sourceTree = "<group>";
+		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1222,14 +1237,7 @@
 				BA6E86C821DDB331005E2451 /* sign_update */,
 			);
 			name = Products;
-		};
-		BA6E874C21DE12B5005E2451 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				BAD232CF21D495E20039C742 /* UserNotificationCenter.m */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
+			sourceTree = "<unknown>";
 		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
 			isa = PBXGroup;
@@ -1239,6 +1247,7 @@
 				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
 				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
 				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
+				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1647,20 +1656,6 @@
 			shellPath = /usr/bin/ruby;
 			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
 		};
-		74F125D51BB2ED9000487B14 /* Run Script (fix CrashReporter path in main app) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script (fix CrashReporter path in main app)";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "install_name_tool -change @rpath/CrashReporter.framework/Versions/A/CrashReporter @executable_path/../../Contents/Frameworks/CrashReporter.framework/Versions/A/CrashReporter $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/MacOS/TogglDesktop\n";
-		};
 		BA6406F121C8FC690074BC96 /* Run Formatter */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1735,6 +1730,7 @@
 				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
+				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
@@ -1755,6 +1751,7 @@
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
+				BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,
@@ -1770,6 +1767,7 @@
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
+				BA229D1021EDEDC400DEB4B9 /* Theme.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,

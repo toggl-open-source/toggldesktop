@@ -22,21 +22,6 @@
 	}
 }
 
-- (BOOL)becomeFirstResponder
-{
-	BOOL success = [super becomeFirstResponder];
-
-	if (success)
-	{
-		NSTextView *textField = (NSTextView *)[self currentEditor];
-		if ([textField respondsToSelector:@selector(setInsertionPointColor:)])
-		{
-			[textField setInsertionPointColor:[NSColor whiteColor]];
-		}
-	}
-	return success;
-}
-
 - (void)drawRect:(NSRect)dirtyRect
 {
 	if (([[self window] firstResponder] == [self currentEditor]) && [NSApp isActive])

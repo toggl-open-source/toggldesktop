@@ -43,7 +43,6 @@
                             <constraint firstItem="mHA-iF-pCY" firstAttribute="centerX" secondItem="26W-Y5-via" secondAttribute="centerX" id="kcz-eC-sLd"/>
                         </constraints>
                     </view>
-                    <color key="fillColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
             </subviews>
             <constraints>
