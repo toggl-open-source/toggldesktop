@@ -48,13 +48,65 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4jV-sw-sae">
+                                    <rect key="frame" x="46" y="169" width="136" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="An open source project" id="A9H-gz-0AR">
+                                        <font key="font" metaFont="system" size="12"/>
+                                        <color key="textColor" name="login-text-color"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zng-kf-hL6" customClass="NSTextFieldClickablePointer">
+                                    <rect key="frame" x="61" y="151" width="106" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Find us on Github" id="AcO-um-1vS">
+                                        <font key="font" metaFont="systemMedium" size="12"/>
+                                        <color key="textColor" name="login-text-color"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xcc-XB-zJU">
+                                    <rect key="frame" x="126" y="18" width="85" height="26"/>
+                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="Kv9-hE-dtb">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <objectValues>
+                                            <string>Item 1</string>
+                                            <string>Item 2</string>
+                                            <string>Item 3</string>
+                                        </objectValues>
+                                    </comboBoxCell>
+                                </comboBox>
+                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fgK-FX-13n">
+                                    <rect key="frame" x="104" y="190" width="21" height="20"/>
+                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="open-source-logo" id="OwW-R4-R9w"/>
+                                </imageView>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zGj-DF-e90">
+                                    <rect key="frame" x="18" y="24" width="100" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Release channel:" id="ibS-Ll-PIY">
+                                        <font key="font" metaFont="system" size="12"/>
+                                        <color key="textColor" name="login-text-color"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="Zng-kf-hL6" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="1EF-Cf-J8K"/>
+                                <constraint firstItem="fgK-FX-13n" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="2GK-UP-Z4Z"/>
+                                <constraint firstItem="Xcc-XB-zJU" firstAttribute="centerY" secondItem="zGj-DF-e90" secondAttribute="centerY" id="3uL-Xf-MJT"/>
                                 <constraint firstItem="VEr-3F-c8C" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="4fR-4x-mU7"/>
+                                <constraint firstAttribute="bottom" secondItem="zGj-DF-e90" secondAttribute="bottom" constant="24" id="EU5-ev-hIg"/>
+                                <constraint firstAttribute="trailing" secondItem="Xcc-XB-zJU" secondAttribute="trailing" constant="20" id="KJE-gN-LFb"/>
                                 <constraint firstItem="nKH-KV-DqZ" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="Ko7-4e-Q7M"/>
+                                <constraint firstItem="fgK-FX-13n" firstAttribute="top" secondItem="VEr-3F-c8C" secondAttribute="bottom" constant="20" id="QAq-Kc-wV2"/>
                                 <constraint firstItem="0nj-Ur-G2E" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="VPm-QY-hv0"/>
+                                <constraint firstItem="Zng-kf-hL6" firstAttribute="top" secondItem="4jV-sw-sae" secondAttribute="bottom" constant="2" id="W60-0r-v6g"/>
+                                <constraint firstItem="Xcc-XB-zJU" firstAttribute="leading" secondItem="zGj-DF-e90" secondAttribute="trailing" constant="10" id="bCk-8X-rpF"/>
+                                <constraint firstItem="zGj-DF-e90" firstAttribute="leading" secondItem="gFd-Y1-cu2" secondAttribute="leading" constant="20" id="bCo-W4-q7T"/>
                                 <constraint firstItem="0nj-Ur-G2E" firstAttribute="top" secondItem="nKH-KV-DqZ" secondAttribute="bottom" constant="20" id="c8J-Bj-Fpl"/>
+                                <constraint firstItem="4jV-sw-sae" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="hfi-5g-Ne9"/>
                                 <constraint firstItem="nKH-KV-DqZ" firstAttribute="top" secondItem="gFd-Y1-cu2" secondAttribute="top" constant="15" id="joV-5v-4Br"/>
+                                <constraint firstItem="4jV-sw-sae" firstAttribute="top" secondItem="fgK-FX-13n" secondAttribute="bottom" constant="5" id="s2m-Pu-qYx"/>
                                 <constraint firstItem="VEr-3F-c8C" firstAttribute="top" secondItem="0nj-Ur-G2E" secondAttribute="bottom" constant="5" id="xHJ-UW-LJg"/>
                             </constraints>
                         </view>
@@ -82,6 +134,7 @@
         </window>
     </objects>
     <resources>
+        <image name="open-source-logo" width="21" height="20"/>
         <image name="toggl-logo" width="50" height="16"/>
         <namedColor name="login-text-color">
             <color red="0.4823529411764706" green="0.4823529411764706" blue="0.4823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
