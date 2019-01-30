@@ -1,162 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AboutWindowController">
             <connections>
-                <outlet property="appnameTextField" destination="HXc-yf-CF8" id="RMp-tH-ocD"/>
-                <outlet property="creditsTextView" destination="Jz9-TH-vw4" id="SvP-e6-Rah"/>
-                <outlet property="restartButton" destination="LJU-VH-pb4" id="NQB-tH-5Rv"/>
-                <outlet property="updateChannelComboBox" destination="TpC-DM-Y6t" id="oDs-wq-gy6"/>
-                <outlet property="updateChannelLabel" destination="tj1-p9-ire" id="wPi-xR-5uL"/>
-                <outlet property="updateStatusTextField" destination="rWB-tA-6v7" id="bal-I2-3Tw"/>
-                <outlet property="versionTextField" destination="jMa-0K-4wl" id="Ktw-Q8-tBQ"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="196" y="240" width="314" height="356"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="314" height="356"/>
+                <rect key="frame" x="0.0" y="0.0" width="314" height="388"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lzB-Ko-Acx">
-                        <rect key="frame" x="31" y="209" width="265" height="154"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo-white" id="wc6-Qs-F5w"/>
-                    </imageView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HXc-yf-CF8">
-                        <rect key="frame" x="104" y="209" width="102" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="TogglDesktop" id="lS0-7N-1KD">
-                            <font key="font" metaFont="system" size="14"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jMa-0K-4wl">
-                        <rect key="frame" x="104" y="184" width="102" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Version 1.0" id="xJJ-bO-pUr">
-                            <font key="font" metaFont="system" size="10"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bHT-8F-Iuj">
-                        <rect key="frame" x="32" y="159" width="263" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="riA-Im-SQn">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngb-Wq-YM6">
-                        <rect key="frame" x="18" y="121" width="273" height="46"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="CDE-3D-god">
-                            <rect key="frame" x="0.0" y="0.0" width="273" height="46"/>
+                    <box boxType="custom" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="07H-pU-KmW">
+                        <rect key="frame" x="42" y="35" width="230" height="318"/>
+                        <view key="contentView" id="gFd-Y1-cu2">
+                            <rect key="frame" x="1" y="1" width="228" height="316"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textView ambiguous="YES" editable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="Jz9-TH-vw4">
-                                    <rect key="frame" x="0.0" y="0.0" width="273" height="46"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="273" height="46"/>
-                                    <size key="maxSize" width="463" height="10000000"/>
-                                    <color key="insertionPointColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </textView>
+                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nKH-KV-DqZ">
+                                    <rect key="frame" x="89" y="285" width="50" height="16"/>
+                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo" id="xwP-1g-P8n"/>
+                                </imageView>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0nj-Ur-G2E">
+                                    <rect key="frame" x="65" y="251" width="98" height="14"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="TOGGL DESKTOP" id="5cr-k5-6Pf">
+                                        <font key="font" metaFont="systemMedium" size="11"/>
+                                        <color key="textColor" name="login-text-color"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VEr-3F-c8C">
+                                    <rect key="frame" x="70" y="230" width="89" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Version 7.3.321" id="5Rk-hH-pJd">
+                                        <font key="font" metaFont="system" size="12"/>
+                                        <color key="textColor" name="login-text-color"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="pzg-ya-LgB">
-                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="QRD-1B-J1a">
-                            <rect key="frame" x="-100" y="-100" width="15" height="133"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                    </scrollView>
-                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tj1-p9-ire">
-                        <rect key="frame" x="40" y="16" width="111" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Release channel:" id="fGK-t8-HQj">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rWB-tA-6v7">
-                        <rect key="frame" x="20" y="82" width="273" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Checking for updates.." id="t8G-DG-ZEo">
-                            <font key="font" metaFont="systemBold"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <comboBox hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TpC-DM-Y6t">
-                        <rect key="frame" x="183" y="12" width="90" height="23"/>
+                            <constraints>
+                                <constraint firstItem="VEr-3F-c8C" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="4fR-4x-mU7"/>
+                                <constraint firstItem="nKH-KV-DqZ" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="Ko7-4e-Q7M"/>
+                                <constraint firstItem="0nj-Ur-G2E" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="VPm-QY-hv0"/>
+                                <constraint firstItem="0nj-Ur-G2E" firstAttribute="top" secondItem="nKH-KV-DqZ" secondAttribute="bottom" constant="20" id="c8J-Bj-Fpl"/>
+                                <constraint firstItem="nKH-KV-DqZ" firstAttribute="top" secondItem="gFd-Y1-cu2" secondAttribute="top" constant="15" id="joV-5v-4Br"/>
+                                <constraint firstItem="VEr-3F-c8C" firstAttribute="top" secondItem="0nj-Ur-G2E" secondAttribute="bottom" constant="5" id="xHJ-UW-LJg"/>
+                            </constraints>
+                        </view>
                         <constraints>
-                            <constraint firstAttribute="width" constant="87" id="Yqg-ag-xsi"/>
+                            <constraint firstAttribute="height" constant="318" id="BZm-ek-yRp"/>
+                            <constraint firstAttribute="width" constant="230" id="qjN-ot-gFd"/>
                         </constraints>
-                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" alignment="left" title="stable" completes="NO" numberOfVisibleItems="5" id="5rC-XU-Azs">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <objectValues>
-                                <string>stable</string>
-                                <string>beta</string>
-                                <string>dev</string>
-                            </objectValues>
-                        </comboBoxCell>
-                        <connections>
-                            <action selector="updateChannelSelected:" target="-2" id="pMa-RR-oLb"/>
-                        </connections>
-                    </comboBox>
-                    <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LJU-VH-pb4" userLabel="RestartButton">
-                        <rect key="frame" x="77" y="44" width="160" height="37"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="32" id="jux-he-WcP"/>
-                        </constraints>
-                        <buttonCell key="cell" type="bevel" title="Restart Toggl Desktop" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gze-wJ-nWE">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
-                        </buttonCell>
-                        <connections>
-                            <action selector="clickRestartButton:" target="-2" id="vpx-iY-p31"/>
-                        </connections>
-                    </button>
+                        <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="fillColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </box>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="TpC-DM-Y6t" firstAttribute="centerY" secondItem="tj1-p9-ire" secondAttribute="centerY" id="5ic-5g-iSD"/>
-                    <constraint firstAttribute="trailing" secondItem="TpC-DM-Y6t" secondAttribute="trailing" constant="44" id="7mh-tT-F49"/>
-                    <constraint firstAttribute="bottom" secondItem="tj1-p9-ire" secondAttribute="bottom" constant="16" id="GAs-Yz-HGQ"/>
-                    <constraint firstAttribute="bottom" secondItem="LJU-VH-pb4" secondAttribute="bottom" constant="47" id="Pem-sJ-Qmb"/>
-                    <constraint firstAttribute="centerX" secondItem="LJU-VH-pb4" secondAttribute="centerX" id="jWX-Vx-fQr"/>
-                    <constraint firstItem="tj1-p9-ire" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="42" id="shg-KC-ONl"/>
+                    <constraint firstItem="07H-pU-KmW" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="DDA-G7-elu"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="07H-pU-KmW" secondAttribute="bottom" constant="35" id="Hs1-gO-gHQ"/>
+                    <constraint firstItem="07H-pU-KmW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2" secondAttribute="top" constant="35" id="Ix8-nt-wDa"/>
+                    <constraint firstItem="07H-pU-KmW" firstAttribute="centerY" secondItem="2" secondAttribute="centerY" id="ebn-Mw-tqB"/>
+                    <constraint firstItem="07H-pU-KmW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2" secondAttribute="leading" constant="30" id="hI0-m2-X4g"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="07H-pU-KmW" secondAttribute="trailing" constant="30" id="tm4-Vu-C0Q"/>
                 </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
-            <point key="canvasLocation" x="428.5" y="297"/>
+            <point key="canvasLocation" x="383" y="135"/>
         </window>
     </objects>
     <resources>
-        <image name="toggl-logo-white" width="204" height="114"/>
+        <image name="toggl-logo" width="50" height="16"/>
+        <namedColor name="login-text-color">
+            <color red="0.4823529411764706" green="0.4823529411764706" blue="0.4823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
