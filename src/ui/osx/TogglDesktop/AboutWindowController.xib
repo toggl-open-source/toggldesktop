@@ -12,7 +12,10 @@
                 <outlet property="appnameTextField" destination="0nj-Ur-G2E" id="trO-DZ-7Sk"/>
                 <outlet property="boxView" destination="07H-pU-KmW" id="Cdn-JO-Aw0"/>
                 <outlet property="findUsInGithub" destination="Zng-kf-hL6" id="m45-fm-zwg"/>
+                <outlet property="restartButton" destination="Brr-F9-HyT" id="gAI-X8-idH"/>
                 <outlet property="updateChannelComboBox" destination="Xcc-XB-zJU" id="gcL-lN-pRP"/>
+                <outlet property="updateChannelLabel" destination="zGj-DF-e90" id="QCq-z6-iBx"/>
+                <outlet property="updateStatusTextField" destination="dXj-q9-pzn" id="rn2-rk-h1H"/>
                 <outlet property="versionTextField" destination="VEr-3F-c8C" id="qsf-hz-Tkz"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -23,8 +26,8 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="196" y="240" width="314" height="356"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="314" height="388"/>
+            <view key="contentView" misplaced="YES" id="2">
+                <rect key="frame" x="0.0" y="0.0" width="314" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <box boxType="custom" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="07H-pU-KmW">
@@ -61,6 +64,14 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
+                                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dXj-q9-pzn">
+                                    <rect key="frame" x="50" y="95" width="128" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Checking new version" id="B76-qi-z4Q">
+                                        <font key="font" metaFont="cellTitle"/>
+                                        <color key="textColor" name="login-text-color"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zng-kf-hL6" customClass="NSTextFieldClickablePointer">
                                     <rect key="frame" x="61" y="151" width="106" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Find us on Github" id="AcO-um-1vS">
@@ -71,7 +82,7 @@
                                 </textField>
                                 <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xcc-XB-zJU">
                                     <rect key="frame" x="126" y="18" width="85" height="26"/>
-                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="Kv9-hE-dtb">
+                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="3" id="Kv9-hE-dtb">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -97,6 +108,16 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
+                                <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Brr-F9-HyT">
+                                    <rect key="frame" x="27" y="59" width="175" height="32"/>
+                                    <buttonCell key="cell" type="push" title="Restart Toggl Desktop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="A7x-rz-Wd5">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="clickRestartButton:" target="-2" id="Dci-rz-Jal"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="Zng-kf-hL6" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="1EF-Cf-J8K"/>
@@ -109,13 +130,17 @@
                                 <constraint firstItem="fgK-FX-13n" firstAttribute="top" secondItem="VEr-3F-c8C" secondAttribute="bottom" constant="20" id="QAq-Kc-wV2"/>
                                 <constraint firstItem="0nj-Ur-G2E" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="VPm-QY-hv0"/>
                                 <constraint firstItem="Zng-kf-hL6" firstAttribute="top" secondItem="4jV-sw-sae" secondAttribute="bottom" constant="2" id="W60-0r-v6g"/>
+                                <constraint firstItem="Brr-F9-HyT" firstAttribute="top" secondItem="dXj-q9-pzn" secondAttribute="bottom" constant="8" id="YwN-Wv-0hW"/>
                                 <constraint firstItem="Xcc-XB-zJU" firstAttribute="leading" secondItem="zGj-DF-e90" secondAttribute="trailing" constant="10" id="bCk-8X-rpF"/>
                                 <constraint firstItem="zGj-DF-e90" firstAttribute="leading" secondItem="gFd-Y1-cu2" secondAttribute="leading" constant="20" id="bCo-W4-q7T"/>
+                                <constraint firstItem="Brr-F9-HyT" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="bzC-Mc-Y5R"/>
                                 <constraint firstItem="0nj-Ur-G2E" firstAttribute="top" secondItem="nKH-KV-DqZ" secondAttribute="bottom" constant="20" id="c8J-Bj-Fpl"/>
                                 <constraint firstItem="4jV-sw-sae" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="hfi-5g-Ne9"/>
+                                <constraint firstItem="Xcc-XB-zJU" firstAttribute="top" secondItem="Brr-F9-HyT" secondAttribute="bottom" constant="24" id="jcK-ZW-xJU"/>
                                 <constraint firstItem="nKH-KV-DqZ" firstAttribute="top" secondItem="gFd-Y1-cu2" secondAttribute="top" constant="15" id="joV-5v-4Br"/>
                                 <constraint firstItem="4jV-sw-sae" firstAttribute="top" secondItem="fgK-FX-13n" secondAttribute="bottom" constant="5" id="s2m-Pu-qYx"/>
                                 <constraint firstItem="VEr-3F-c8C" firstAttribute="top" secondItem="0nj-Ur-G2E" secondAttribute="bottom" constant="5" id="xHJ-UW-LJg"/>
+                                <constraint firstItem="dXj-q9-pzn" firstAttribute="centerX" secondItem="gFd-Y1-cu2" secondAttribute="centerX" id="y7Z-Yw-ExG"/>
                             </constraints>
                         </view>
                         <constraints>
