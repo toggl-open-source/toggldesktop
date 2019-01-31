@@ -39,8 +39,6 @@ selectedProjectId(0) {
 
     connect(ui->description, SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
-    connect(ui->description, SIGNAL(timeEntrySelected(QString)),
-            this, SLOT(descriptionTimeEntrySelected(QString)));
     connect(ui->description, SIGNAL(projectSelected(QString,uint64_t,QString,QString,uint64_t)),
             this, SLOT(descriptionProjectSelected(QString,uint64_t,QString,QString,uint64_t)));
     connect(ui->description, SIGNAL(billableChanged(bool)),
@@ -262,25 +260,6 @@ void TimerWidget::timeout() {
         return;
     }
     ui->duration->setText(TogglApi::formatDurationInSecondsHHMMSS(duration));
-}
-
-void TimerWidget::on_description_currentIndexChanged(int index) {
-    Q_UNUSED(index);/*
-    QVariant data = ui->description->currentData();
-    if (data.canConvert<AutocompleteView *>()) {
-        AutocompleteView *view = data.value<AutocompleteView *>();
-        ui->description->setEditText(view->Description);
-        ui->project->setText(view->ProjectAndTaskLabel);
-        ui->billable->setVisible(view->Billable);
-        ui->tags->setVisible(!view->Tags.isEmpty());
-        if (!view->Tags.isEmpty()) {
-            tagsHolder = view->Tags;
-        } else {
-            tagsHolder = "";
-        }
-
-    }
-    */
 }
 
 void TimerWidget::mousePressEvent(QMouseEvent *event) {
