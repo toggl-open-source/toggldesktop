@@ -105,22 +105,17 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
     if (item) {
         switch (item->Type) {
         case 0:
-            if (item->ProjectID && !item->ProjectLabel.isEmpty())
-                emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor);
-            if (item->TaskID && !item->TaskLabel.isEmpty())
-                emit taskSelected(item->TaskLabel, item->TaskID);
+            emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
             emit billableChanged(item->Billable);
             emit tagsChanged(item->Tags);
             emit timeEntrySelected(item->Text);
             break;
         case 1:
-            if (item->ProjectID && !item->ProjectLabel.isEmpty())
-                emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor);
+            emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
             emit billableChanged(item->Billable);
-            emit taskSelected(item->TaskLabel, item->TaskID);
             break;
         case 2:
-            emit projectSelected(item->Text, item->ProjectID, item->ProjectColor);
+            emit projectSelected(item->Text, item->ProjectID, item->ProjectColor, QString(), 0);
             break;
         default:
             break;

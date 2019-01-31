@@ -52,9 +52,7 @@ class TimerWidget : public QFrame {
     void on_duration_returnPressed();
 
     void descriptionReturnPressed();
-    void descriptionTimeEntrySelected(const QString &name);
-    void descriptionTaskSelected(const QString &name, uint64_t id);
-    void descriptionProjectSelected(const QString &name, uint64_t id, const QString &color);
+    void descriptionProjectSelected(const QString &projectName, uint64_t projectId, const QString &color, const QString &taskName, uint64_t taskId);
     void descriptionBillableChanged(bool billable);
     void descriptionTagsChanged(const QString &tags);
 

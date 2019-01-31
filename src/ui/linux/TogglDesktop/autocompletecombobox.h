@@ -35,8 +35,7 @@ private slots:
 signals:
     void returnPressed();
     void timeEntrySelected(const QString &name);
-    void projectSelected(const QString &name, uint64_t id, const QString &color);
-    void taskSelected(const QString &name, uint64_t id);
+    void projectSelected(const QString &projectName, uint64_t projectId, const QString &color, const QString &taskName, uint64_t taskId);
     void billableChanged(bool billable);
     void tagsChanged(const QString &tags);
 

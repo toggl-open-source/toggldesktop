@@ -41,10 +41,8 @@ selectedProjectId(0) {
             this, SLOT(descriptionReturnPressed()));
     connect(ui->description, SIGNAL(timeEntrySelected(QString)),
             this, SLOT(descriptionTimeEntrySelected(QString)));
-    connect(ui->description, SIGNAL(projectSelected(QString,uint64_t,QString)),
-            this, SLOT(descriptionProjectSelected(QString,uint64_t,QString)));
-    connect(ui->description, SIGNAL(taskSelected(QString,uint64_t)),
-            this, SLOT(descriptionTaskSelected(QString,uint64_t)));
+    connect(ui->description, SIGNAL(projectSelected(QString,uint64_t,QString,QString,uint64_t)),
+            this, SLOT(descriptionProjectSelected(QString,uint64_t,QString,QString,uint64_t)));
     connect(ui->description, SIGNAL(billableChanged(bool)),
             this, SLOT(descriptionBillableChanged(bool)));
     connect(ui->description, SIGNAL(tagsChanged(QString)),
@@ -74,21 +72,16 @@ void TimerWidget::descriptionReturnPressed() {
     start();
 }
 
-void TimerWidget::descriptionTimeEntrySelected(const QString &name) {
-    // do nothing? probably?
-}
-
-void TimerWidget::descriptionTaskSelected(const QString &name, uint64_t id) {
-    ui->taskFrame->setVisible(true);
-    ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(name));
-    selectedTaskId = id;
-}
-
-void TimerWidget::descriptionProjectSelected(const QString &name, uint64_t id, const QString &color) {
+void TimerWidget::descriptionProjectSelected(const QString &projectName, uint64_t projectId, const QString &color, const QString &taskName, uint64_t taskId) {
     ui->projectFrame->setVisible(true);
-    ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(name));
-    selectedProjectId = id;
+    ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(projectName));
+    selectedProjectId = projectId;
     clearTask();
+    if (taskId && !taskName.isEmpty()) {
+        ui->taskFrame->setVisible(true);
+        ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(taskName));
+        selectedTaskId = taskId;
+    }
 }
 
 void TimerWidget::descriptionBillableChanged(bool billable) {

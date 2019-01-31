@@ -97,17 +97,11 @@ class TimeEntryEditorWidget : public QWidget {
 
     void timeout();
 
-    void onProjectSelected(const QString &name, uint64_t id, const QString &color);
-    void onTaskSelected(const QString &name, uint64_t id);
-    void onBillableChanged(bool billable);
-    void onTagsChanged(const QString &tags);
-
     void on_doneButton_clicked();
     void on_deleteButton_clicked();
     void on_addNewProject_clicked();
     void on_newProjectWorkspace_currentIndexChanged(int index);
-    void on_description_currentIndexChanged(int index);
-    void on_description_activated(const QString &arg1);
+    void on_description_activated(int index);
     void on_project_activated(int index);
     void on_duration_editingFinished();
     void on_start_editingFinished();

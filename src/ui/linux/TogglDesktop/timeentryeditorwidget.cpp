@@ -69,12 +69,6 @@ projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PR
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
-    connect(ui->description, &AutocompleteComboBox::taskSelected, this, &TimeEntryEditorWidget::onTaskSelected);
-    connect(ui->description, &AutocompleteComboBox::billableChanged, this, &TimeEntryEditorWidget::onBillableChanged);
-    connect(ui->description, &AutocompleteComboBox::tagsChanged, this, &TimeEntryEditorWidget::onTagsChanged);
-    connect(ui->project, &AutocompleteComboBox::taskSelected, this, &TimeEntryEditorWidget::onTaskSelected);
-    connect(ui->project, &AutocompleteComboBox::billableChanged, this, &TimeEntryEditorWidget::onBillableChanged);
-
     TogglApi::instance->getProjectColors();
 }
 
@@ -141,24 +135,6 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
     ui->project->addItem("");
 
     projectModel->setList(list);
-    /* TODO?
-    foreach(AutocompleteView *view, projectAutocompleteUpdate) {
-        ui->project->addItem(view->Text, QVariant::fromValue(view));
-
-        // Disable Workspace items
-        if (view->Type == 3) {
-            // Get the index of the value to disable
-            QModelIndex index = ui->project->model()->index(
-                ui->project->count()-1, 0);
-
-            // This is the effective 'disable' flag
-            QVariant v(0);
-
-            // Setting the disabled flag
-            ui->project->model()->setData(index, v, Qt::UserRole -1);
-        }
-    }
-    */
     projectAutocompleteNeedsUpdate = false;
 }
 
@@ -373,11 +349,9 @@ void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(
     displayClientSelect(clientSelectUpdate);
 }
 
-void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
-    Q_UNUSED(index);
-    QVariant data = ui->description->currentData();
-    if (data.canConvert<AutocompleteView *>()) {
-        AutocompleteView *view = data.value<AutocompleteView *>();
+void TimeEntryEditorWidget::on_description_activated(int index) {
+    AutocompleteView *view = ui->description->currentView();
+    if (view) {
         ui->description->setEditText(view->Description);
         ui->project->setFocus();
         ui->description->setFocus();
@@ -403,10 +377,6 @@ void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
             }
         }
     }
-}
-
-void TimeEntryEditorWidget::on_description_activated(const QString &arg1) {
-    TogglApi::instance->setTimeEntryDescription(guid, arg1);
 }
 
 void TimeEntryEditorWidget::on_project_activated(int index) {
@@ -461,23 +431,6 @@ void TimeEntryEditorWidget::timeout() {
         ui->duration->setText(
             TogglApi::formatDurationInSecondsHHMMSS(duration));
     }
-}
-
-void TimeEntryEditorWidget::onProjectSelected(const QString &name, uint64_t id, const QString &color) {
-    Q_UNUSED(name); Q_UNUSED(id); Q_UNUSED(color);
-}
-
-void TimeEntryEditorWidget::onTaskSelected(const QString &name, uint64_t id) {
-    Q_UNUSED(name); Q_UNUSED(id);
-}
-
-void TimeEntryEditorWidget::onBillableChanged(bool billable) {
-    ui->billable->setDown(billable);
-    TogglApi::instance->setTimeEntryBillable(guid, billable);
-}
-
-void TimeEntryEditorWidget::onTagsChanged(const QString &tags) {
-    TogglApi::instance->setTimeEntryTags(guid, tags);
 }
 
 void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
