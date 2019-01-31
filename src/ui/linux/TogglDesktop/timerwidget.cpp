@@ -138,8 +138,20 @@ void TimerWidget::displayRunningTimerState(
         QString("<p style='color:white;background-color:black;'>Started: " +
                 te->StartTimeString+"</p>"));
 
-    project = te->ProjectAndTaskLabel;
-    setEllipsisTextToLabel(ui->project, project);
+    if (!te->ProjectLabel.isEmpty()) {
+        ui->projectFrame->setVisible(true);
+        setEllipsisTextToLabel(ui->project, te->ProjectLabel);
+    }
+    else {
+        ui->projectFrame->setVisible(false);
+    }
+    if (!te->TaskLabel.isEmpty()) {
+        ui->taskFrame->setVisible(true);
+        setEllipsisTextToLabel(ui->task, te->TaskLabel);
+    }
+    else {
+        ui->taskFrame->setVisible(false);
+    }
 
     ui->billable->setVisible(te->Billable);
     ui->tags->setVisible(!te->Tags.isEmpty());

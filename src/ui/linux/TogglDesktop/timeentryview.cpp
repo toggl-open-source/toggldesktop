@@ -13,6 +13,7 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
     result->Description = QString(view->Description);
     result->ProjectLabel = QString(view->ProjectLabel);
+    result->TaskLabel = QString(view->TaskLabel);
     result->ClientLabel = QString(view->ClientLabel);
     result->WID = view->WID;
     result->PID = view->PID;
