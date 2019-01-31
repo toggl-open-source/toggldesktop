@@ -94,15 +94,26 @@ void TimerWidget::descriptionTagsChanged(const QString &tags) {
 
 void TimerWidget::clearProject() {
     selectedProjectId = 0;
-    ui->project->clear();
-    ui->projectFrame->setVisible(false);
+    if (guid.isEmpty()) {
+        ui->project->clear();
+        ui->projectFrame->setVisible(false);
+    }
+    // else branch API call happens in clearTask
     clearTask();
 }
 
 void TimerWidget::clearTask() {
     selectedTaskId = 0;
-    ui->task->clear();
-    ui->taskFrame->setVisible(false);
+    if (guid.isEmpty()) {
+        ui->task->clear();
+        ui->taskFrame->setVisible(false);
+    }
+    else {
+        TogglApi::instance->setTimeEntryProject(guid,
+                                                selectedTaskId,
+                                                selectedProjectId,
+                                                "");
+    }
 }
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
@@ -122,6 +133,10 @@ void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
 
 void TimerWidget::displayRunningTimerState(
     TimeEntryView *te) {
+    guid = te->GUID;
+    selectedTaskId = te->TID;
+    selectedProjectId = te->PID;
+
     ui->start->setText("Stop");
     ui->start->setStyleSheet(
         "background-color: #e20000; color:'white'; font-weight: bold;");
@@ -182,6 +197,10 @@ void TimerWidget::displayRunningTimerState(
 }
 
 void TimerWidget::displayStoppedTimerState() {
+    guid = QString();
+    selectedTaskId = 0;
+    selectedProjectId = 0;
+
     ui->start->setText("Start");
     ui->start->setStyleSheet(
         "background-color: #47bc00; color:'white'; font-weight: bold;");

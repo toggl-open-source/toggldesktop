@@ -76,6 +76,8 @@ class TimerWidget : public QFrame {
     uint64_t selectedTaskId;
     uint64_t selectedProjectId;
 
+    QString guid;
+
     void setEllipsisTextToLabel(QLabel *label, QString text);
 };
 
