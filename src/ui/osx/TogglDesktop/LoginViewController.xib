@@ -29,11 +29,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="d50-27-v7r">
-            <rect key="frame" x="0.0" y="0.0" width="351" height="392"/>
+            <rect key="frame" x="0.0" y="0.0" width="300" height="378"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="5dJ-p6-cHG">
-                    <rect key="frame" x="61" y="37" width="230" height="318"/>
+                    <rect key="frame" x="35" y="30" width="230" height="318"/>
                     <view key="contentView" id="52B-J2-unw">
                         <rect key="frame" x="1" y="1" width="228" height="316"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -65,7 +65,7 @@
                                             <constraint firstAttribute="height" constant="30" id="2h3-wv-XZC"/>
                                         </constraints>
                                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" usesSingleLineMode="YES" bezelStyle="round" id="Lvj-We-IDb">
-                                            <font key="font" metaFont="system" size="12"/>
+                                            <font key="font" metaFont="cellTitle"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <allowedInputSourceLocales>
@@ -140,7 +140,7 @@
                                                             </connections>
                                                         </button>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-yf-qTk">
-                                                            <rect key="frame" x="45" y="36" width="137" height="16"/>
+                                                            <rect key="frame" x="46" y="36" width="137" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Don't have an account?" id="pfV-yA-7TC">
                                                                 <font key="font" metaFont="cellTitle"/>
                                                                 <color key="textColor" name="login-text-color"/>
@@ -328,7 +328,11 @@
                 </box>
             </subviews>
             <constraints>
+                <constraint firstItem="5dJ-p6-cHG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="d50-27-v7r" secondAttribute="top" constant="30" id="3t2-bf-tk4"/>
                 <constraint firstItem="5dJ-p6-cHG" firstAttribute="centerX" secondItem="d50-27-v7r" secondAttribute="centerX" id="aOb-a4-WQC"/>
+                <constraint firstItem="5dJ-p6-cHG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="d50-27-v7r" secondAttribute="leading" constant="35" id="agk-uP-78M"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5dJ-p6-cHG" secondAttribute="trailing" constant="35" id="iY2-bZ-QbU"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5dJ-p6-cHG" secondAttribute="bottom" constant="30" id="uzh-sc-5Da"/>
                 <constraint firstItem="5dJ-p6-cHG" firstAttribute="centerY" secondItem="d50-27-v7r" secondAttribute="centerY" id="wx8-DJ-vgX"/>
             </constraints>
             <point key="canvasLocation" x="380.5" y="251"/>
