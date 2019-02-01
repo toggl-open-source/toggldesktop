@@ -14,26 +14,29 @@ include_directories(
     bugsnag-qt
 )
 
-# OAuth has to be bundled
-set(OAUTH2_SOURCE_FILES
-    qt-oauth-lib/logindialog.cpp
-    qt-oauth-lib/oauth2.cpp
-)
-add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
-target_link_libraries(OAuth2 PRIVATE
-    Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
-)
-install(TARGETS OAuth2 DESTINATION lib)
+if(LINUX)
+    # OAuth has to be bundled
+    set(OAUTH2_SOURCE_FILES
+        qt-oauth-lib/logindialog.cpp
+        qt-oauth-lib/oauth2.cpp
+    )
+    add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
+    target_link_libraries(OAuth2 PRIVATE
+        Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
+    )
+    install(TARGETS OAuth2 DESTINATION lib)
 
-# Bugsnag has to be bundled
-set(BUGSNAG_SOURCE_FILES
-    bugsnag-qt/bugsnag.cpp
-)
-add_library(Bugsnag SHARED ${BUGSNAG_SOURCE_FILES})
-target_link_libraries(Bugsnag PRIVATE
-    Qt5::Widgets Qt5::Network
-)
-install(TARGETS Bugsnag DESTINATION lib)
+    # Bugsnag has to be bundled
+    set(BUGSNAG_SOURCE_FILES
+        bugsnag-qt/bugsnag.cpp
+    )
+    add_definitions(-DBUGSNAGQT_LIBRARY)
+    add_library(Bugsnag SHARED ${BUGSNAG_SOURCE_FILES})
+    target_link_libraries(Bugsnag PRIVATE
+        Qt5::Widgets Qt5::Network
+    )
+    install(TARGETS Bugsnag DESTINATION lib)
+endif()
 
 if(NOT Poco_FOUND)
     # to avoid that annoying check
@@ -133,36 +136,54 @@ if(NOT jsoncpp_FOUND)
     install(TARGETS jsoncpp DESTINATION lib)
 endif()
 
-if(NOT QXT_CORE_FOUND)
-    set(QXT_SOURCE_FILES
-        #qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
-        #qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
-        #qxtglobalshortcut5/gui/qxtglobalshortcut_mac.cpp
-        #qxtglobalshortcut5/gui/qxtwindowsystem_mac.cpp
-        qxtglobalshortcut5/gui/qxtwindowsystem.cpp
-        qxtglobalshortcut5/gui/qxtglobalshortcut_x11.cpp
-        qxtglobalshortcut5/gui/x11info.cpp
-        qxtglobalshortcut5/gui/qxtwindowsystem_x11.cpp
-        qxtglobalshortcut5/gui/qxtglobalshortcut.cpp
-        qxtglobalshortcut5/core/qxtglobal.cpp
-    )
-    set(QXT_INCLUDE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/gui
-        ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/core
-        PARENT_SCOPE
-    )
-    add_library(Qxt SHARED ${QXT_SOURCE_FILES})
-    target_link_libraries(Qxt
-        Qt5::Widgets
-        Qt5::X11Extras
-    )
-    target_include_directories(Qxt PRIVATE
-        qxtglobalshortcut5/gui
-        qxtglobalshortcut5/core
-    )
-    set(QXT_LIBRARIES
-        Qxt
-        PARENT_SCOPE
-    )
-    install(TARGETS Qxt DESTINATION lib)
+if(LINUX)
+    if(NOT QXT_CORE_FOUND)
+        set(QXT_SOURCE_FILES
+            #qxtglobalshortcut5/gui/qxtglobalshortcut_mac.cpp
+            #qxtglobalshortcut5/gui/qxtwindowsystem_mac.cpp
+            qxtglobalshortcut5/gui/qxtwindowsystem.cpp
+            qxtglobalshortcut5/gui/qxtglobalshortcut.cpp
+            qxtglobalshortcut5/core/qxtglobal.cpp
+            qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
+            qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
+        )
+        set(QXT_INCLUDE_DIRS
+            ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/gui
+            ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/core
+            PARENT_SCOPE
+        )
+        add_library(Qxt SHARED ${QXT_SOURCE_FILES})
+        target_link_libraries(Qxt
+            Qt5::Widgets
+        )
+        if(LINUX)
+            set(QXT_SOURCE_FILES
+                ${QXT_SOURCE_FILES}
+                qxtglobalshortcut5/gui/qxtglobalshortcut_x11.cpp
+                qxtglobalshortcut5/gui/qxtwindowsystem_x11.cpp
+                qxtglobalshortcut5/gui/x11info.cpp
+            )
+            target_link_libraries(Qxt
+                Qt5::X11Extras
+            )
+        else()
+            add_definitions(-DBUILD_QXT_GUI -DBUILD_QXT_CORE)
+            set(QXT_SOURCE_FILES
+                qxtglobalshortcut5/gui/qxtwindowsystem.cpp
+                qxtglobalshortcut5/gui/qxtglobalshortcut.cpp
+                qxtglobalshortcut5/core/qxtglobal.cpp
+                qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
+                qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
+            )
+        endif()
+        target_include_directories(Qxt PRIVATE
+            qxtglobalshortcut5/gui
+            qxtglobalshortcut5/core
+        )
+        set(QXT_LIBRARIES
+            Qxt
+            PARENT_SCOPE
+        )
+        install(TARGETS Qxt DESTINATION lib)
+    endif()
 endif()

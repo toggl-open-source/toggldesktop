@@ -19,14 +19,15 @@ option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
 include(FindPkgConfig)
 
 # Look for Qt
-find_package(Qt5Widgets CONFIG REQUIRED)
-find_package(Qt5DBus CONFIG REQUIRED)
-find_package(Qt5Network CONFIG REQUIRED)
-find_package(Qt5WebEngine CONFIG REQUIRED)
-find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
-find_package(Qt5X11Extras CONFIG REQUIRED)
-# We need to include private headers manually
-include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
+if(LINUX)
+    find_package(Qt5Widgets CONFIG REQUIRED)
+    find_package(Qt5Network CONFIG REQUIRED)
+    find_package(Qt5WebEngine CONFIG REQUIRED)
+    find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
+    find_package(Qt5X11Extras CONFIG REQUIRED)
+    # We need to include private headers manually
+    include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
+endif()
 
 if(NOT USE_BUNDLED_LIBRARIES)
     # Look for Poco
@@ -58,4 +59,8 @@ set(TOGGLDESKTOP_BUILDROOT
 
 add_subdirectory(third_party)
 add_subdirectory(src)
+if(LINUX)
 add_subdirectory(src/ui/linux/TogglDesktop)
+elif(WIN32)
+
+endif()
