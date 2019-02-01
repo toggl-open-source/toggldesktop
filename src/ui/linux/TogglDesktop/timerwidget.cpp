@@ -71,14 +71,16 @@ void TimerWidget::descriptionReturnPressed() {
 }
 
 void TimerWidget::descriptionProjectSelected(const QString &projectName, uint64_t projectId, const QString &color, const QString &taskName, uint64_t taskId) {
-    ui->projectFrame->setVisible(true);
-    ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(projectName));
     selectedProjectId = projectId;
-    clearTask();
-    if (taskId && !taskName.isEmpty()) {
-        ui->taskFrame->setVisible(true);
-        ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(taskName));
-        selectedTaskId = taskId;
+    selectedTaskId = taskId;
+    if (projectId && !projectName.isEmpty()) {
+        ui->projectFrame->setVisible(true);
+        ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(projectName));
+        clearTask();
+        if (taskId && !taskName.isEmpty()) {
+            ui->taskFrame->setVisible(true);
+            ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(taskName));
+        }
     }
 }
 
@@ -155,16 +157,20 @@ void TimerWidget::displayRunningTimerState(
 
     if (!te->ProjectLabel.isEmpty()) {
         ui->projectFrame->setVisible(true);
+        ui->deleteProject->setVisible(true);
         setEllipsisTextToLabel(ui->project, te->ProjectLabel);
     }
     else {
+        ui->deleteProject->setVisible(true);
         ui->projectFrame->setVisible(false);
     }
     if (!te->TaskLabel.isEmpty()) {
         ui->taskFrame->setVisible(true);
+        ui->deleteTask->setVisible(true);
         setEllipsisTextToLabel(ui->task, te->TaskLabel);
     }
     else {
+        ui->deleteTask->setVisible(true);
         ui->taskFrame->setVisible(false);
     }
 
@@ -210,6 +216,8 @@ void TimerWidget::displayStoppedTimerState() {
 
         ui->project->setText("");
         ui->project->setToolTip(QString(""));
+        ui->deleteProject->setVisible(true);
+        ui->deleteTask->setVisible(true);
         ui->projectFrame->setVisible(false);
         ui->taskFrame->setVisible(false);
 
