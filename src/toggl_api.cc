@@ -1043,7 +1043,7 @@ void toggl_set_online(void *context) {
 }
 
 void toggl_open_in_browser(void *context) {
-    app(context)->OpenReportsInBrowser();
+    app(context)->AsyncOpenReportsInBrowser();
 }
 
 bool_t toggl_accept_tos(void *context) {
