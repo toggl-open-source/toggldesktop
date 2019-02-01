@@ -211,6 +211,7 @@ void TimerWidget::displayStoppedTimerState() {
         ui->project->setText("");
         ui->project->setToolTip(QString(""));
         ui->projectFrame->setVisible(false);
+        ui->taskFrame->setVisible(false);
 
         ui->billable->setVisible(false);
         ui->tags->setVisible(false);
