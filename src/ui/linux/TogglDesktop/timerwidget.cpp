@@ -272,6 +272,8 @@ void TimerWidget::start() {
                               tagsHolder.toStdString().c_str(),
                               ui->billable->isVisible());
     tagsHolder = "";
+
+    ui->start->setFocus();
 }
 
 void TimerWidget::stop() {
