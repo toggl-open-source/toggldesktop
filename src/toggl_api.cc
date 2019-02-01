@@ -403,7 +403,7 @@ bool_t toggl_login(
     void *context,
     const char_t *email,
     const char_t *password) {
-    return toggl::noError == app(context)->Login(to_string(email),
+    return toggl::noError == app(context)->asyncLogin(to_string(email),
             to_string(password));
 }
 

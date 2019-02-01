@@ -56,6 +56,8 @@
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 #include <mutex> // NOLINT
+#include <thread>
+#include <future>
 
 namespace toggl {
 
@@ -2169,6 +2171,16 @@ error Context::attemptOfflineLogin(const std::string email,
     updateUI(UIElements::Reset());
 
     return save();
+}
+
+error Context::asyncLogin(const std::string email,
+                          const std::string password) {
+    std::future<error> resultFromDB = std::async([&](std::string email, std::string password) {
+        return this->Login(email, password);
+    }, email, password);
+
+    //error result = resultFromDB.get();
+    return noError;
 }
 
 error Context::Login(
