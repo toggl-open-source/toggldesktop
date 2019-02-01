@@ -45,6 +45,7 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
 @property (weak) IBOutlet NSProgressIndicator *loginLoader;
+@property (weak) IBOutlet NSProgressIndicator *loaderView;
 
 @end
 
@@ -139,7 +140,7 @@ extern void *ctx;
 	// for empty State
 	[self setUserSignUp:NO];
 	// Show loader and disable text boxs
-	[self showLoginLoader:YES];
+	[self showLoaderView:YES];
 
 	if (!toggl_login(ctx, [email UTF8String], [pass UTF8String]))
 	{
@@ -350,6 +351,8 @@ extern void *ctx;
 
 	// for empty State
 	[self setUserSignUp:YES];
+	// Show loader and disable text boxs
+	[self showLoaderView:YES];
 
 	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
 	{
@@ -426,23 +429,30 @@ extern void *ctx;
 - (void)showLoginLoader:(BOOL)show 
 {
 	self.loginLoader.hidden = !show;
+}
+
+- (void)showLoaderView:(BOOL)show {
+	self.loaderView.hidden = !show;
 	if (show)
 	{
-		[self.loginLoader startAnimation:self.loginLoader];
+		[self.loaderView startAnimation:self.loaderView];
 	}
 	else
 	{
-		[self.loginLoader stopAnimation:self.loginLoader];
+		[self.loaderView stopAnimation:self.loaderView];
 	}
 
 	self.email.enabled = !show;
 	self.password.enabled = !show;
 	self.loginButton.enabled = !show;
+	self.SignupButton.enabled = !show;
 	self.googleLoginTextField.enabled = !show;
+	self.loginLink.enabled = !show;
+	self.signUpLink.enabled = !show;
 }
 
 - (void)resetLoader {
-	[self showLoginLoader:NO];
+	[self showLoaderView:NO];
 }
 
 @end

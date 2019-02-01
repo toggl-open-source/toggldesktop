@@ -143,6 +143,10 @@ extern void *ctx;
 			[self closeError];
 
 			self.loginViewController.view.hidden = YES;
+			// Reset login
+			[self.loginViewController resetLoader];
+
+			[self addErrorBoxConstraint];
 			[self.contentView addSubview:self.timeEntryListViewController.view];
 			[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
