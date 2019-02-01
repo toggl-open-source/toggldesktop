@@ -5481,6 +5481,14 @@ error Context::ToggleEntriesGroup(std::string name) {
     return noError;
 }
 
+error Context::AsyncPullCountries() {
+    std::thread backgroundThread([&]() {
+        return this->PullCountries();
+    });
+    backgroundThread.detach();
+    return noError;
+}
+
 error Context::PullCountries() {
     try {
         TogglClient toggl_client(UI());

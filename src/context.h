@@ -464,6 +464,7 @@ class Context : public TimelineDatasource {
     error ToggleEntriesGroup(
         std::string name);
 
+    error AsyncPullCountries();
     error PullCountries();
 
     void TrackWindowSize(const Poco::Int64 width,

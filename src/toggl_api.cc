@@ -850,7 +850,7 @@ void toggl_get_project_colors(
 }
 
 void toggl_get_countries(void *context) {
-    app(context)->PullCountries();
+    app(context)->AsyncPullCountries();
 }
 
 // Close/Open Entries Group
