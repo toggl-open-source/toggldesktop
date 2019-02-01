@@ -44,6 +44,7 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
+@property (weak) IBOutlet NSProgressIndicator *loginLoader;
 
 @end
 
@@ -137,6 +138,8 @@ extern void *ctx;
 
 	// for empty State
 	[self setUserSignUp:NO];
+	// Show loader and disable text boxs
+	[self showLoginLoader:YES];
 
 	if (!toggl_login(ctx, [email UTF8String], [pass UTF8String]))
 	{
@@ -418,6 +421,28 @@ extern void *ctx;
 {
 	[[NSUserDefaults standardUserDefaults] setBool:isSignUp forKey:kUserHasBeenSignup];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)showLoginLoader:(BOOL)show 
+{
+	self.loginLoader.hidden = !show;
+	if (show)
+	{
+		[self.loginLoader startAnimation:self.loginLoader];
+	}
+	else
+	{
+		[self.loginLoader stopAnimation:self.loginLoader];
+	}
+
+	self.email.enabled = !show;
+	self.password.enabled = !show;
+	self.loginButton.enabled = !show;
+	self.googleLoginTextField.enabled = !show;
+}
+
+- (void)resetLoader {
+	[self showLoginLoader:NO];
 }
 
 @end

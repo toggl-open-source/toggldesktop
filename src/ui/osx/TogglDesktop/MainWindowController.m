@@ -186,6 +186,13 @@ extern void *ctx;
 
 	NSString *errorMessage = msg == nil ? @"Error" : msg;
 	[[SystemMessage shared] presentError:errorMessage subTitle:nil];
+
+	// Reset loader if there is error
+ 	// Have to check if login is present
+	if (self.loginViewController.view.superview != nil)
+	{
+		[self.loginViewController resetLoader];
+	}
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
