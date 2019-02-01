@@ -276,12 +276,17 @@ class Context : public TimelineDatasource {
     void SetMiniTimerW(
         const int64_t w);
 
-    error asyncLogin(const std::string email,
+    error AsyncLogin(const std::string email,
                      const std::string password);
 
     error Login(
         const std::string email,
         const std::string password);
+
+    error AsyncSignup(
+        const std::string email,
+        const std::string password,
+        const uint64_t country_id);
 
     error Signup(
         const std::string email,

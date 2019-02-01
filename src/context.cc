@@ -2115,7 +2115,7 @@ Database *Context::db() const {
 }
 
 error Context::GoogleLogin(const std::string access_token) {
-    return Login(access_token, "google_access_token");
+    return AsyncLogin(access_token, "google_access_token");
 }
 
 error Context::attemptOfflineLogin(const std::string email,
@@ -2172,7 +2172,7 @@ error Context::attemptOfflineLogin(const std::string email,
     return save();
 }
 
-error Context::asyncLogin(const std::string email,
+error Context::AsyncLogin(const std::string email,
                           const std::string password) {
     std::thread backgroundThread([&](std::string email, std::string password) {
         return this->Login(email, password);
@@ -2239,6 +2239,16 @@ error Context::Login(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
+    return noError;
+}
+
+error Context::AsyncSignup(const std::string email,
+                           const std::string password,
+                           const uint64_t country_id) {
+    std::thread backgroundThread([&](std::string email, std::string password, uint64_t country_id) {
+        return this->Signup(email, password, country_id);
+    }, email, password, country_id);
+    backgroundThread.detach();
     return noError;
 }
 
