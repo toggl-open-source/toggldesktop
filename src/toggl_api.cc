@@ -403,11 +403,28 @@ bool_t toggl_login(
     void *context,
     const char_t *email,
     const char_t *password) {
+    return toggl::noError == app(context)->Login(to_string(email),
+            to_string(password));
+}
+
+bool_t toggl_login_async(
+    void *context,
+    const char_t *email,
+    const char_t *password) {
     return toggl::noError == app(context)->AsyncLogin(to_string(email),
             to_string(password));
 }
 
 bool_t toggl_signup(
+    void *context,
+    const char_t *email,
+    const char_t *password,
+    const uint64_t country_id) {
+    return toggl::noError == app(context)->Signup(to_string(email),
+            to_string(password), country_id);
+}
+
+bool_t toggl_signup_async(
     void *context,
     const char_t *email,
     const char_t *password,
@@ -420,6 +437,12 @@ bool_t toggl_google_login(
     void *context,
     const char_t *access_token) {
     return toggl::noError == app(context)->GoogleLogin(to_string(access_token));
+}
+
+bool_t toggl_google_login_async(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AsyncGoogleLogin(to_string(access_token));
 }
 
 bool_t toggl_logout(

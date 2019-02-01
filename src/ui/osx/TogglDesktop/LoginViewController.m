@@ -142,7 +142,7 @@ extern void *ctx;
 	// Show loader and disable text boxs
 	[self showLoaderView:YES];
 
-	if (!toggl_login(ctx, [email UTF8String], [pass UTF8String]))
+	if (!toggl_login_async(ctx, [email UTF8String], [pass UTF8String]))
 	{
 		return;
 	}
@@ -285,7 +285,7 @@ extern void *ctx;
 	// Show loader and disable text boxs
 	[self showLoaderView:YES];
 
-	toggl_google_login(ctx, [auth.accessToken UTF8String]);
+	toggl_google_login_async(ctx, [auth.accessToken UTF8String]);
 }
 
 - (BOOL)validateForm:(BOOL)signup
@@ -357,7 +357,7 @@ extern void *ctx;
 	// Show loader and disable text boxs
 	[self showLoaderView:YES];
 
-	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
+	if (!toggl_signup_async(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
 	{
 		return;
 	}

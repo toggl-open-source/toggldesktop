@@ -1571,8 +1571,9 @@ void on_pomodoro_break(const char *title, const char *informative_text)
 
 void on_url(const char *url)
 {
-    // Capture url
+	// Capture url
 	NSString *reportURL = [NSString stringWithUTF8String:url];
+
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:reportURL]];
 	});

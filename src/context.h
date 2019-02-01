@@ -294,6 +294,7 @@ class Context : public TimelineDatasource {
         const uint64_t country_id);
 
     error GoogleLogin(const std::string access_token);
+    error AsyncGoogleLogin(const std::string access_token);
 
     error Logout();
 
