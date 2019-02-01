@@ -116,7 +116,9 @@ class MainWindowController : public QMainWindow {
 
     QString script;
 
+#ifdef __linux
     PowerManagement *powerManagement;
+#endif // __linux
     NetworkManagement *networkManagement;
 
     void readSettings();

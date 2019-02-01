@@ -9,7 +9,7 @@
 
 SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
     QSystemTrayIcon(parent),
-    notificationsPresent(true)
+    notificationsPresent(false)
 {
     setIcon(defaultIcon);
 
@@ -20,6 +20,7 @@ SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
     connect(TogglApi::instance, SIGNAL(displayReminder(QString,QString)),  // NOLINT
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
+#ifdef __linux
     notifications = new QDBusInterface("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", QDBusConnection::sessionBus(), this);
     notificationsPresent = notifications->isValid();
 
@@ -29,6 +30,7 @@ SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
     auto pendingCall = notifications->asyncCall("GetCapabilities");
     auto watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, &SystemTray::notificationCapabilitiesReceived);
+#endif __linux
 }
 
 MainWindowController *SystemTray::mainWindow() {
@@ -48,6 +50,7 @@ bool SystemTray::notificationsAvailable() {
     return notificationsPresent;
 }
 
+#ifdef __linux
 void SystemTray::notificationCapabilitiesReceived(QDBusPendingCallWatcher *watcher) {
     QDBusPendingReply<QStringList> reply = *watcher;
     if (reply.isError()) {
@@ -122,6 +125,12 @@ void SystemTray::notificationActionInvoked(uint id, const QString &action) {
     }
 }
 
+#else // __linux
+uint SystemTray::requestNotification(uint previous, const QString &title, const QString &description) {
+    showMessage(title, description);
+}
+#endif // __linux
+
 void SystemTray::displayIdleNotification(
         const QString guid,
         const QString since,
@@ -137,3 +146,4 @@ void SystemTray::displayIdleNotification(
 void SystemTray::displayReminder(QString title, QString description) {
     lastReminder = requestNotification(lastReminder, title, description);
 }
+
