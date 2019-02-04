@@ -17,7 +17,7 @@ oauth2(new OAuth2(this)) {
     connect(TogglApi::instance, SIGNAL(setCountries(QVector<CountryView * >)),  // NOLINT
             this, SLOT(setCountries(QVector<CountryView * >)));  // NOLINT
 
-   connect(TogglApi::instance, SIGNAL(displayError(QString,bool)),  // NOLINT
+    connect(TogglApi::instance, SIGNAL(displayError(QString,bool)),  // NOLINT
             this, SLOT(displayError(QString,bool)));  // NOLINT
 
     oauth2->setScope("profile email");

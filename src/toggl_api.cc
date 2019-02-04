@@ -873,6 +873,10 @@ void toggl_get_project_colors(
 }
 
 void toggl_get_countries(void *context) {
+    app(context)->PullCountries();
+}
+
+void toggl_get_countries_async(void *context) {
     app(context)->AsyncPullCountries();
 }
 

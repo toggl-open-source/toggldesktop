@@ -313,16 +313,16 @@ bool TogglApi::startEvents() {
 
 void TogglApi::login(const QString email, const QString password) {
     toggl_login_async(ctx,
-                email.toStdString().c_str(),
-                password.toStdString().c_str());
+                      email.toStdString().c_str(),
+                      password.toStdString().c_str());
 }
 
 void TogglApi::signup(const QString email, const QString password,
                       const uint64_t countryID) {
     toggl_signup_async(ctx,
-                 email.toStdString().c_str(),
-                 password.toStdString().c_str(),
-                 countryID);
+                       email.toStdString().c_str(),
+                       password.toStdString().c_str(),
+                       countryID);
 }
 
 void TogglApi::setEnvironment(const QString environment) {

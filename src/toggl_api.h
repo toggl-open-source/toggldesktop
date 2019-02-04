@@ -860,6 +860,8 @@ extern "C" {
     TOGGL_EXPORT void toggl_get_countries(
         void *context);
 
+    TOGGL_EXPORT void toggl_get_countries_async(void *context);
+
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_get_default_project_name(
         void *context);

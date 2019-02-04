@@ -56,7 +56,7 @@ class LoginWidget : public QWidget {
         const QString errmsg,
         const bool user_error);
 
-   private:
+ private:
     Ui::LoginWidget *ui;
 
     OAuth2 *oauth2;

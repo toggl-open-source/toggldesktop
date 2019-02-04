@@ -205,7 +205,7 @@ extern void *ctx;
 			if (!self.countriesLoaded)
 			{
 				// Load countries in signup view
-				toggl_get_countries(ctx);
+				toggl_get_countries_async(ctx);
 				self.countriesLoaded = YES;
 			}
 
