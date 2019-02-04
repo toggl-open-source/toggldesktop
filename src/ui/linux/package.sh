@@ -76,16 +76,15 @@ done
 
 CHECK mkdir -p lib/qt5/translations lib/qt5/resources
 CHECK cp -r "$translationdir/qtwebengine_locales" lib/qt5/translations
-CHECK cp "$datadir/resources/qtwebengine"* lib/qt5/resources
+CHECK cp "$datadir/resources/"* lib/qt5/resources
 
-# probably not necessary in ubuntu
-#CHECK cat <<EOF >bin/qt.conf
-#[Paths]
-#Prefix=..
-#Plugins=lib/qt5/plugins
-#Data=lib/qt5
-#Translations=lib/qt5/translations
-#EOF
+CHECK cat <<EOF >bin/qt.conf
+[Paths]
+Prefix=..
+Plugins=lib/qt5/plugins
+Data=lib/qt5
+Translations=lib/qt5/translations
+EOF
 
 echo "Stripping" >&2
 for i in bin/QtWebEngineProcess $(find . -name \*.so); do 
