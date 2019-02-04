@@ -10,6 +10,8 @@
 #include <QTimer> // NOLINT
 #include <QLineEdit> // NOLINT
 
+#include "./autocompletelistview.h"
+#include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
 #include "./genericview.h"
 #include "./timeentryview.h"
@@ -25,19 +27,13 @@ clientSelectNeedsUpdate(false),
 colorPicker(new ColorPicker(this)),
 timer(new QTimer(this)),
 duration(0),
-previousTagList("") {
+previousTagList(""),
+descriptionModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
+projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PROJECT)) {
     ui->setupUi(this);
 
-    ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->description->completer()->setCompletionMode(
-        QCompleter::PopupCompletion);
-    ui->description->completer()->setMaxVisibleItems(20);
-    ui->description->completer()->setFilterMode(Qt::MatchContains);
-
-    ui->project->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->project->completer()->setCompletionMode(QCompleter::PopupCompletion);
-    ui->project->completer()->setMaxVisibleItems(20);
-    ui->project->completer()->setFilterMode(Qt::MatchContains);
+    ui->description->setModel(descriptionModel);
+    ui->project->setModel(projectModel);
 
     ui->description->installEventFilter(this);
     ui->project->installEventFilter(this);
@@ -123,10 +119,7 @@ void TimeEntryEditorWidget::displayTimeEntryAutocomplete(
     }
     QString currentText = ui->description->currentText();
     ui->description->clear();
-    ui->description->addItem("");
-    foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
-        ui->description->addItem(view->Text, QVariant::fromValue(view));
-    }
+    descriptionModel->setList(list);
     timeEntryAutocompleteNeedsUpdate = false;
     ui->description->setEditText(currentText);
 }
@@ -140,22 +133,8 @@ void TimeEntryEditorWidget::displayProjectAutocomplete(
     }
     ui->project->clear();
     ui->project->addItem("");
-    foreach(AutocompleteView *view, projectAutocompleteUpdate) {
-        ui->project->addItem(view->Text, QVariant::fromValue(view));
 
-        // Disable Workspace items
-        if (view->Type == 3) {
-            // Get the index of the value to disable
-            QModelIndex index = ui->project->model()->index(
-                ui->project->count()-1, 0);
-
-            // This is the effective 'disable' flag
-            QVariant v(0);
-
-            // Setting the disabled flag
-            ui->project->model()->setData(index, v, Qt::UserRole -1);
-        }
-    }
+    projectModel->setList(list);
     projectAutocompleteNeedsUpdate = false;
 }
 
@@ -370,11 +349,9 @@ void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(
     displayClientSelect(clientSelectUpdate);
 }
 
-void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
-    Q_UNUSED(index);
-    QVariant data = ui->description->currentData();
-    if (data.canConvert<AutocompleteView *>()) {
-        AutocompleteView *view = data.value<AutocompleteView *>();
+void TimeEntryEditorWidget::on_description_activated(int index) {
+    AutocompleteView *view = ui->description->currentView();
+    if (view) {
         ui->description->setEditText(view->Description);
         ui->project->setFocus();
         ui->description->setFocus();
@@ -402,15 +379,10 @@ void TimeEntryEditorWidget::on_description_currentIndexChanged(int index) {
     }
 }
 
-void TimeEntryEditorWidget::on_description_activated(const QString &arg1) {
-    TogglApi::instance->setTimeEntryDescription(guid, arg1);
-}
-
 void TimeEntryEditorWidget::on_project_activated(int index) {
     Q_UNUSED(index);
-    QVariant data = ui->project->currentData();
-    if (data.canConvert<AutocompleteView *>()) {
-        AutocompleteView *view = data.value<AutocompleteView *>();
+    AutocompleteView *view = ui->project->currentView();
+    if (view) {
         TogglApi::instance->setTimeEntryProject(guid,
                                                 view->TaskID,
                                                 view->ProjectID,

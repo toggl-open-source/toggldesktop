@@ -28,6 +28,9 @@ include_directories(
 # TogglDesktop sources
 set(BINARY_SOURCE_FILES
     aboutdialog.cpp
+    autocompletecombobox.cpp
+    autocompletelistview.cpp
+    autocompletelistmodel.cpp
     autocompleteview.cpp
     clickablelabel.cpp
     colorpicker.cpp

@@ -7,15 +7,17 @@
 #include <QVector>
 #include <QTimer>
 #include <QLabel>
+#include <QFrame>
 
 namespace Ui {
 class TimerWidget;
 }
 
+class AutocompleteListModel;
 class AutocompleteView;
 class TimeEntryView;
 
-class TimerWidget : public QWidget {
+class TimerWidget : public QFrame {
     Q_OBJECT
 
  public:
@@ -45,11 +47,16 @@ class TimerWidget : public QWidget {
 
     void focusChanged(QWidget *old, QWidget *now);
     void on_start_clicked();
-    void on_description_currentIndexChanged(int index);
 
     void on_duration_returnPressed();
 
     void descriptionReturnPressed();
+    void descriptionProjectSelected(const QString &projectName, uint64_t projectId, const QString &color, const QString &taskName, uint64_t taskId);
+    void descriptionBillableChanged(bool billable);
+    void descriptionTagsChanged(const QString &tags);
+
+    void clearProject();
+    void clearTask();
 
  private:
     Ui::TimerWidget *ui;
@@ -64,6 +71,13 @@ class TimerWidget : public QWidget {
 
     bool timeEntryAutocompleteNeedsUpdate;
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
+    AutocompleteListModel *descriptionModel;
+
+    uint64_t selectedTaskId;
+    uint64_t selectedProjectId;
+
+    QString guid;
+
     void setEllipsisTextToLabel(QLabel *label, QString text);
 };
 

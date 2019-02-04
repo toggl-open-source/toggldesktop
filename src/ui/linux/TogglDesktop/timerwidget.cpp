@@ -6,17 +6,21 @@
 #include <QApplication>  // NOLINT
 #include <QCompleter>  // NOLINT
 
+#include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
 #include "./timeentryview.h"
 #include "./toggl.h"
 
-TimerWidget::TimerWidget(QWidget *parent) : QWidget(parent),
+TimerWidget::TimerWidget(QWidget *parent) : QFrame(parent),
 ui(new Ui::TimerWidget),
 timer(new QTimer(this)),
 duration(0),
 project(""),
 tagsHolder(""),
-timeEntryAutocompleteNeedsUpdate(false) {
+timeEntryAutocompleteNeedsUpdate(false),
+descriptionModel(new AutocompleteListModel(this)),
+selectedTaskId(0),
+selectedProjectId(0) {
     ui->setupUi(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
@@ -33,14 +37,21 @@ timeEntryAutocompleteNeedsUpdate(false) {
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
-    connect(ui->description->lineEdit(), SIGNAL(returnPressed()),
+    connect(ui->description, SIGNAL(returnPressed()),
             this, SLOT(descriptionReturnPressed()));
+    connect(ui->description, SIGNAL(projectSelected(QString,uint64_t,QString,QString,uint64_t)),
+            this, SLOT(descriptionProjectSelected(QString,uint64_t,QString,QString,uint64_t)));
+    connect(ui->description, SIGNAL(billableChanged(bool)),
+            this, SLOT(descriptionBillableChanged(bool)));
+    connect(ui->description, SIGNAL(tagsChanged(QString)),
+            this, SLOT(descriptionTagsChanged(QString)));
 
-    ui->description->completer()->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->description->completer()->setCompletionMode(
-        QCompleter::PopupCompletion);
-    ui->description->completer()->setMaxVisibleItems(20);
-    ui->description->completer()->setFilterMode(Qt::MatchContains);
+    connect(ui->deleteProject, &QPushButton::clicked, this, &TimerWidget::clearProject);
+    connect(ui->deleteTask, &QPushButton::clicked, this, &TimerWidget::clearTask);
+
+    ui->description->setModel(descriptionModel);
+    ui->taskFrame->setVisible(false);
+    ui->projectFrame->setVisible(false);
 
     ui->billable->setVisible(false);
     ui->tags->setVisible(false);
@@ -57,6 +68,54 @@ TimerWidget::~TimerWidget() {
 
 void TimerWidget::descriptionReturnPressed() {
     start();
+}
+
+void TimerWidget::descriptionProjectSelected(const QString &projectName, uint64_t projectId, const QString &color, const QString &taskName, uint64_t taskId) {
+    selectedProjectId = projectId;
+    selectedTaskId = taskId;
+    if (projectId && !projectName.isEmpty()) {
+        ui->projectFrame->setVisible(true);
+        ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(projectName));
+        clearTask();
+        if (taskId && !taskName.isEmpty()) {
+            ui->taskFrame->setVisible(true);
+            ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(taskName));
+        }
+    }
+}
+
+void TimerWidget::descriptionBillableChanged(bool billable) {
+    ui->billable->setVisible(billable);
+}
+
+void TimerWidget::descriptionTagsChanged(const QString &tags) {
+    ui->tags->setVisible(!tags.isEmpty());
+    ui->tags->setToolTip("<p style='color:white;background-color:black;'>" + tags + "</p>");
+    tagsHolder = tags;
+}
+
+void TimerWidget::clearProject() {
+    selectedProjectId = 0;
+    if (guid.isEmpty()) {
+        ui->project->clear();
+        ui->projectFrame->setVisible(false);
+    }
+    // else branch API call happens in clearTask
+    clearTask();
+}
+
+void TimerWidget::clearTask() {
+    selectedTaskId = 0;
+    if (guid.isEmpty()) {
+        ui->task->clear();
+        ui->taskFrame->setVisible(false);
+    }
+    else {
+        TogglApi::instance->setTimeEntryProject(guid,
+                                                selectedTaskId,
+                                                selectedProjectId,
+                                                "");
+    }
 }
 
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
@@ -76,6 +135,10 @@ void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
 
 void TimerWidget::displayRunningTimerState(
     TimeEntryView *te) {
+    guid = te->GUID;
+    selectedTaskId = te->TID;
+    selectedProjectId = te->PID;
+
     ui->start->setText("Stop");
     ui->start->setStyleSheet(
         "background-color: #e20000; color:'white'; font-weight: bold;");
@@ -92,8 +155,24 @@ void TimerWidget::displayRunningTimerState(
         QString("<p style='color:white;background-color:black;'>Started: " +
                 te->StartTimeString+"</p>"));
 
-    project = te->ProjectAndTaskLabel;
-    setEllipsisTextToLabel(ui->project, project);
+    if (!te->ProjectLabel.isEmpty()) {
+        ui->projectFrame->setVisible(true);
+        ui->deleteProject->setVisible(true);
+        setEllipsisTextToLabel(ui->project, te->ProjectLabel);
+    }
+    else {
+        ui->deleteProject->setVisible(true);
+        ui->projectFrame->setVisible(false);
+    }
+    if (!te->TaskLabel.isEmpty()) {
+        ui->taskFrame->setVisible(true);
+        ui->deleteTask->setVisible(true);
+        setEllipsisTextToLabel(ui->task, te->TaskLabel);
+    }
+    else {
+        ui->deleteTask->setVisible(true);
+        ui->taskFrame->setVisible(false);
+    }
 
     ui->billable->setVisible(te->Billable);
     ui->tags->setVisible(!te->Tags.isEmpty());
@@ -124,13 +203,30 @@ void TimerWidget::displayRunningTimerState(
 }
 
 void TimerWidget::displayStoppedTimerState() {
+    guid = QString();
+    selectedTaskId = 0;
+    selectedProjectId = 0;
+
     ui->start->setText("Start");
     ui->start->setStyleSheet(
         "background-color: #47bc00; color:'white'; font-weight: bold;");
 
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(descriptionPlaceholder);
+
+        ui->project->setText("");
+        ui->project->setToolTip(QString(""));
+        ui->deleteProject->setVisible(true);
+        ui->deleteTask->setVisible(true);
+        ui->projectFrame->setVisible(false);
+        ui->taskFrame->setVisible(false);
+
+        ui->billable->setVisible(false);
+        ui->tags->setVisible(false);
+
+        tagsHolder = "";
     }
+
     ui->description->setEnabled(true);
     ui->description->setToolTip(QString(""));
 
@@ -139,14 +235,6 @@ void TimerWidget::displayStoppedTimerState() {
     }
     ui->duration->setEnabled(true);
     ui->duration->setToolTip(QString(""));
-
-    ui->project->setText("");
-    ui->project->setToolTip(QString(""));
-
-    ui->billable->setVisible(false);
-    ui->tags->setVisible(false);
-
-    tagsHolder = "";
 
     duration = 0;
 
@@ -163,15 +251,14 @@ void TimerWidget::on_start_clicked() {
 }
 
 void TimerWidget::start() {
-    uint64_t task_id(0);
-    uint64_t project_id(0);
-
+    /*
     QVariant data = ui->description->currentData();
     if (data.canConvert<AutocompleteView *>()) {
         AutocompleteView *view = data.value<AutocompleteView *>();
         task_id = view->TaskID;
         project_id = view->ProjectID;
     }
+    */
 
     QString description = ui->description->currentText();
     if (description == descriptionPlaceholder) {
@@ -180,11 +267,13 @@ void TimerWidget::start() {
 
     TogglApi::instance->start(description,
                               ui->duration->text(),
-                              task_id,
-                              project_id,
+                              selectedTaskId,
+                              selectedProjectId,
                               tagsHolder.toStdString().c_str(),
                               ui->billable->isVisible());
     tagsHolder = "";
+
+    ui->start->setFocus();
 }
 
 void TimerWidget::stop() {
@@ -200,10 +289,7 @@ void TimerWidget::displayMinitimerAutocomplete(
     }
     QString currentText = ui->description->currentText();
     ui->description->clear();
-    ui->description->addItem("");
-    foreach(AutocompleteView *view, timeEntryAutocompleteUpdate) {
-        ui->description->addItem(view->Text, QVariant::fromValue(view));
-    }
+    descriptionModel->setList(list);
     timeEntryAutocompleteNeedsUpdate = false;
     ui->description->setEditText(currentText);
 }
@@ -216,24 +302,6 @@ void TimerWidget::timeout() {
         return;
     }
     ui->duration->setText(TogglApi::formatDurationInSecondsHHMMSS(duration));
-}
-
-void TimerWidget::on_description_currentIndexChanged(int index) {
-    Q_UNUSED(index);
-    QVariant data = ui->description->currentData();
-    if (data.canConvert<AutocompleteView *>()) {
-        AutocompleteView *view = data.value<AutocompleteView *>();
-        ui->description->setEditText(view->Description);
-        ui->project->setText(view->ProjectAndTaskLabel);
-        ui->billable->setVisible(view->Billable);
-        ui->tags->setVisible(!view->Tags.isEmpty());
-        if (!view->Tags.isEmpty()) {
-            tagsHolder = view->Tags;
-        } else {
-            tagsHolder = "";
-        }
-
-    }
 }
 
 void TimerWidget::mousePressEvent(QMouseEvent *event) {

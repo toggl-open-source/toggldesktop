@@ -23,6 +23,7 @@ class TimeEntryView : public QObject {
     QString Description;
     QString ProjectAndTaskLabel;
     QString ProjectLabel;
+    QString TaskLabel;
     QString ClientLabel;
     uint64_t WID;
     uint64_t PID;
