@@ -41,8 +41,8 @@ pushd package >/dev/null
 
 echo "Composing the package" >&2
 rm -fr include lib/cmake
-if [ ! -z "$CMAKE_INSTALL_PREFIX" ]; then
-    export LD_LIBRARY_PATH="$CMAKE_INSTALL_PREFIX/../"
+if [ ! -z "$CMAKE_PREFIX_PATH" ]; then
+    export LD_LIBRARY_PATH="$CMAKE_PREFIX_PATH/../"
 fi
 CHECK cp $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 
