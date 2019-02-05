@@ -1,13 +1,16 @@
 #!/bin/bash
 appname=`basename "$(test -L "$0" && readlink "$0" || echo "$0")" | sed s,\.sh$,,`
-dirname=`dirname "$(test -L "$0" && readlink "$0" || echo "$0")"`
+dirname=`dirname "$(test -L "$0" && readlink "$0" || echo "$0")"/`
+if [ -f "$dirname/bin/TogglDesktop" ]; then
+  dirname="$dirname/bin"
+fi
 tmp="${dirname#?}"
 
 if [ "${dirname%$tmp}" != "/" ]; then
 dirname=$PWD/$dirname
 fi
 
-if [ -f $dirname/QtWebEngineProcess ]; then
+if [ -f "$dirname/QtWebEngineProcess" ]; then
   QTWEBENGINEPROCESS_PATH=$dirname/QtWebEngineProcess
   export QTWEBENGINEPROCESS_PATH
 fi
