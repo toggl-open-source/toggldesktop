@@ -8,6 +8,10 @@ fi
 fullbuilddir=$PWD/$builddir
 errorlog=$fullbuilddir/error.log
 
+if [ ! -z "$TOGGL_VERSION" ]; then
+    VERSION_DEFINE="-DTOGGL_VERSION=$TOGGL_VERSION"
+fi
+
 function CHECK() {
     echo "===================================" >> $errorlog
     echo "Running $@" >> $errorlog
@@ -27,7 +31,7 @@ pushd $builddir >/dev/null
 mkdir "package"
 
 echo "Configuring" >&2
-CHECK cmake -DTOGGL_PRODUCTION_BUILD=ON -DTOGGL_ALLOW_UPDATE_CHECK=ON -DUSE_BUNDLED_LIBRARIES=OFF -DCMAKE_INSTALL_PREFIX="$PWD/package" .. > cmake.log
+CHECK cmake -DTOGGL_PRODUCTION_BUILD=ON -DTOGGL_ALLOW_UPDATE_CHECK=ON $VERSION_DEFINE -DUSE_BUNDLED_LIBRARIES=OFF -DCMAKE_INSTALL_PREFIX="$PWD/package" .. > cmake.log
 echo "Building..." >&2
 CHECK make -j8 > build.log
 echo "Installing" >&2
