@@ -174,11 +174,14 @@ extern void *ctx;
 	[self.tabView selectTabViewItemAtIndex:type];
 	self.currentTab = type;
 
+    // Focus on email when changing mode
+	[self.view.window makeFirstResponder:self.email];
+
 	switch (type)
 	{
 		case TabViewTypeLogin :
 			// Update nextkeyView
-			[self.password setNextKeyView:self.email];
+			[self.password setNextKeyView:self.loginButton];
 			break;
 
 		case TabViewTypeSingup :
