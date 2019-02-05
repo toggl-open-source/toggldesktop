@@ -174,7 +174,7 @@ extern void *ctx;
 	[self.tabView selectTabViewItemAtIndex:type];
 	self.currentTab = type;
 
-    // Focus on email when changing mode
+	// Focus on email when changing mode
 	[self.view.window makeFirstResponder:self.email];
 
 	switch (type)
@@ -182,6 +182,7 @@ extern void *ctx;
 		case TabViewTypeLogin :
 			// Update nextkeyView
 			[self.password setNextKeyView:self.loginButton];
+			[self.loginGooglBtn setNextKeyView:self.email];
 			break;
 
 		case TabViewTypeSingup :
@@ -196,6 +197,7 @@ extern void *ctx;
 
 			// Update nextkeyView
 			[self.password setNextKeyView:self.countrySelect];
+			[self.signupButton setNextKeyView:self.email];
 			break;
 	}
 }
