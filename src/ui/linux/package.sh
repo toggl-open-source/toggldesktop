@@ -78,6 +78,8 @@ CHECK mkdir -p lib/qt5/translations lib/qt5/resources
 CHECK cp -r "$translationdir/qtwebengine_locales" lib/qt5/translations
 CHECK cp "$datadir/resources/"* lib/qt5/resources
 
+CHECK mv "bin/TogglDesktop.sh" "."
+
 CHECK cat <<EOF >bin/qt.conf
 [Paths]
 Prefix=..
