@@ -41,8 +41,6 @@ extern void *ctx;
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = [infoDict objectForKey:@"CFBundleShortVersionString"];
 	[self.versionTextField setStringValue:[NSString stringWithFormat:@"Version %@", version]];
-	NSString *appname = [[infoDict objectForKey:@"CFBundleName"] uppercaseString];
-	[self.appnameTextField setStringValue:appname];
 
 	self.windowHasLoad = YES;
 	self.restart = NO;
