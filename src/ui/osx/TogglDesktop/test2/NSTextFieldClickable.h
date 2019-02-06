@@ -9,4 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSTextFieldClickable : NSTextField <NSTextFieldDelegate>
+@property (assign, nonatomic) BOOL titleUnderline;
 @end

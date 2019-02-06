@@ -133,6 +133,10 @@
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
+		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
+		BA03727D21FEB46500FC277B /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03727C21FEB46500FC277B /* FloatingErrorView.swift */; };
+		BA03729B21FEB48900FC277B /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA03729A21FEB48900FC277B /* FloatingErrorView.xib */; };
+		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
 		BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; };
 		BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
@@ -164,6 +168,7 @@
 		BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
 		BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
 		BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
 		BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
@@ -669,6 +674,10 @@
 		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
+		BA03727C21FEB46500FC277B /* FloatingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
+		BA03729A21FEB48900FC277B /* FloatingErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
+		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeepDiff.xcodeproj; path = ../../../../third_party/DeepDiff/DeepDiff.xcodeproj; sourceTree = "<group>"; };
 		BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TogglDesktop-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffer.swift; sourceTree = "<group>"; };
@@ -703,6 +712,7 @@
 		BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.60.dylib; sourceTree = "<group>"; };
 		BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
 		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
+		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+MainThread.swift"; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
@@ -790,6 +800,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
 				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
 				BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */,
@@ -988,6 +999,9 @@
 				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
 				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
+				BA03725421FE9FD400FC277B /* FlatButton.swift */,
+				BA03727C21FEB46500FC277B /* FloatingErrorView.swift */,
+				BA03729A21FEB48900FC277B /* FloatingErrorView.xib */,
 			);
 			name = ui;
 			path = test2;
@@ -1256,6 +1270,7 @@
 				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
 				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
 				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
+				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1610,6 +1625,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */,
+				BA03729B21FEB48900FC277B /* FloatingErrorView.xib in Resources */,
 				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
@@ -1626,6 +1642,7 @@
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
 				3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */,
 				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
+				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
@@ -1753,6 +1770,8 @@
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
+				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
+				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
@@ -1762,8 +1781,10 @@
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
+				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
+				BA03727D21FEB46500FC277B /* FloatingErrorView.swift in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,

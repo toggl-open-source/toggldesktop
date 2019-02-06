@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "idiom" : "mac",
+      "filename" : "pattern_light@2x.jpg"
+    },
+    {
+      "idiom" : "mac",
+      "filename" : "pattern_dark@2x.jpg",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ]
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

@@ -23,9 +23,6 @@ typedef NS_ENUM (NSUInteger, WindowMode)
 
 @interface MainWindowController : NSWindowController
 @property IBOutlet NSView *contentView;
-@property IBOutlet NSTextField *errorLabel;
-@property IBOutlet NSBox *troubleBox;
-@property IBOutlet NSButton *closeTroubleBoxButton;
 @property (strong) IBOutlet NSView *mainView;
 @property (strong) IBOutlet NSTextField *onlineStatusTextField;
 - (BOOL)isEditOpened;

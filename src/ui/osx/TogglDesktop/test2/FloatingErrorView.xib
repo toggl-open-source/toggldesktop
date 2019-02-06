@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="FloatingErrorView" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="205" height="38"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ur6-hb-DKX">
+                    <rect key="frame" x="13" y="10" width="162" height="18"/>
+                    <textFieldCell key="cell" selectable="YES" title="Multiline Label " id="B1S-5c-RPX">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="error-title-color"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iak-T4-6Zv">
+                    <rect key="frame" x="188" y="21" width="7" height="7"/>
+                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="II2-Ra-GqH">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="closeOnTap:" target="c22-O7-iKe" id="3L4-t2-WT0"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="ur6-hb-DKX" secondAttribute="bottom" constant="10" id="IFa-E8-ogu"/>
+                <constraint firstItem="ur6-hb-DKX" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="15" id="Sgs-QN-f5g"/>
+                <constraint firstItem="iak-T4-6Zv" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="co7-zq-ZvB"/>
+                <constraint firstItem="iak-T4-6Zv" firstAttribute="leading" secondItem="ur6-hb-DKX" secondAttribute="trailing" constant="15" id="opq-Ol-8Gi"/>
+                <constraint firstItem="ur6-hb-DKX" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="qY7-Xn-V8d"/>
+                <constraint firstAttribute="trailing" secondItem="iak-T4-6Zv" secondAttribute="trailing" constant="10" id="vMb-mP-ucu"/>
+            </constraints>
+            <connections>
+                <outlet property="errorLabel" destination="ur6-hb-DKX" id="jXK-pb-V7F"/>
+            </connections>
+            <point key="canvasLocation" x="-143.5" y="-58.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="close-button" width="7" height="7"/>
+        <namedColor name="error-title-color">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

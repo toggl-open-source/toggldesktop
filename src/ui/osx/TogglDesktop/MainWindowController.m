@@ -18,13 +18,15 @@
 #import "TrackingService.h"
 #import "TogglDesktop-Swift.h"
 
-@interface MainWindowController ()
+@interface MainWindowController () <FloatingErrorViewDelegate>
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) IBOutlet OverlayViewController *overlayViewController;
-@property NSLayoutConstraint *contentViewTop;
-@property NSLayoutConstraint *contentViewBottom;
+@property (nonatomic, strong) NSLayoutConstraint *contentViewBottom;
 @property double troubleBoxDefaultHeight;
+@property (nonatomic, strong) FloatingErrorView *errorView;
+@property (weak) IBOutlet NSView *errorContainerView;
+
 @end
 
 @implementation MainWindowController
@@ -80,34 +82,33 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
-	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"toggl-desktop-bg.png"]]];
-
-	NSMutableAttributedString *attrTitle =
-		[[NSMutableAttributedString alloc] initWithAttributedString:[self.closeTroubleBoxButton attributedTitle]];
-	NSRange range = NSMakeRange(0, [attrTitle length]);
-	[attrTitle addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:range];
-	[attrTitle fixAttributesInRange:range];
-	[self.closeTroubleBoxButton setAttributedTitle:attrTitle];
-	self.troubleBoxDefaultHeight = self.troubleBox.frame.size.height;
+	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]]];
 
 	// Tracking the size of window after loaded
 	[self trackWindowSize];
+
+	// Error View
+	[self initErrorView];
 }
 
-- (void)addErrorBoxConstraint
-{
-	if (!self.contentViewTop)
-	{
-		self.contentViewTop = [NSLayoutConstraint constraintWithItem:self.troubleBox
-														   attribute:NSLayoutAttributeTop
-														   relatedBy:NSLayoutRelationEqual
-															  toItem:self.mainView
-														   attribute:NSLayoutAttributeTop
-														  multiplier:1
-															constant:-self.troubleBoxDefaultHeight];
-		[self.mainView addConstraint:self.contentViewTop];
-	}
-	self.contentViewTop.constant = -self.troubleBoxDefaultHeight;
+- (void)initErrorView {
+	self.errorView = [FloatingErrorView initFromXib];
+	self.errorView.translatesAutoresizingMaskIntoConstraints = NO;
+	self.errorView.delegate = self;
+
+	[self.errorContainerView addSubview:self.errorView];
+
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
+	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
+
+	// Able to draw shadow
+	self.errorContainerView.wantsLayer = YES;
+	self.errorContainerView.layer.masksToBounds = NO;
+
+	// Hidden by default
+	self.errorContainerView.hidden = YES;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -120,11 +121,10 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-		[self addErrorBoxConstraint];
-		[self.loginViewController changeView:NO];
+//        [self.loginViewController changeView:NO];
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
-		[self.loginViewController.email.window makeFirstResponder:self.loginViewController.email];
+//        [self.loginViewController.email.window makeFirstResponder:self.loginViewController.email];
 
 		[self.timeEntryListViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
@@ -147,7 +147,6 @@ extern void *ctx;
 			// Close error when loging in
 			[self closeError];
 
-			[self addErrorBoxConstraint];
 			[self.contentView addSubview:self.timeEntryListViewController.view];
 			[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 
@@ -189,9 +188,9 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	[self.errorLabel setStringValue:msg];
-	self.contentViewTop.constant = 0;
-	[self.troubleBox setHidden:NO];
+	self.errorContainerView.hidden = NO;
+	NSString *errorMessage = msg == nil ? @"Error" : msg;
+	[self.errorView updateWithError:errorMessage];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
@@ -247,16 +246,7 @@ extern void *ctx;
 
 - (void)closeError
 {
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	[self.troubleBox setHidden:YES];
-	self.contentViewTop.constant = -self.troubleBoxDefaultHeight;
-	[self.errorLabel setStringValue:@""];
-}
-
-- (IBAction)errorCloseButtonClicked:(id)sender
-{
-	[self closeError];
+	self.errorContainerView.hidden = YES;
 }
 
 - (void)keyUp:(NSEvent *)event
@@ -298,6 +288,10 @@ extern void *ctx;
 			[self.window setLevel:NSNormalWindowLevel];
 			break;
 	}
+}
+
+- (void)floatingErrorShouldHide {
+	[self closeError];
 }
 
 @end

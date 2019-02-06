@@ -25,12 +25,12 @@
 
 - (BOOL)isExpanded
 {
-	return self.accessibilityExpanded;
+	return self.cell.isAccessibilityExpanded;
 }
 
 - (void)setExpanded:(BOOL)expanded
 {
-	self.accessibilityExpanded = expanded;
+	[self.cell setAccessibilityExpanded:expanded];
 }
 
 @end

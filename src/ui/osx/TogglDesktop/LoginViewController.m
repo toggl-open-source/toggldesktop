@@ -14,8 +14,37 @@
 #import "NSTextField+Ext.h"
 #import "TogglDesktop-Swift.h"
 
+typedef NS_ENUM (NSUInteger, TabViewType)
+{
+	TabViewTypeLogin,
+	TabViewTypeSingup,
+};
+
 @interface LoginViewController ()
 @property AutocompleteDataSource *countryAutocompleteDataSource;
+@property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSTextField *email;
+@property (weak) IBOutlet NSSecureTextField *password;
+@property (weak) IBOutlet NSButton *loginGooglBtn;
+@property (weak) IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
+@property (weak) IBOutlet NSTextFieldClickablePointer *signUpLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *loginLink;
+@property (weak) IBOutlet NSCustomComboBox *countrySelect;
+
+@property BOOL countriesLoaded;
+@property uint64_t selectedCountryID;
+@property (weak) IBOutlet FlatButton *tosCheckbox;
+@property (weak) IBOutlet NSTextFieldClickablePointer *tosLink;
+@property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
+@property (weak) IBOutlet FlatButton *loginButton;
+@property (weak) IBOutlet FlatButton *signupButton;
+@property (assign, nonatomic) TabViewType currentTab;
+@property (weak) IBOutlet NSBox *boxView;
+
+- (IBAction)clickLoginButton:(id)sender;
+- (IBAction)clickSignupButton:(id)sender;
+- (IBAction)countrySelected:(id)sender;
+
 @end
 
 @implementation LoginViewController
@@ -35,19 +64,41 @@ extern void *ctx;
 	return self;
 }
 
-- (void)loadView
-{
-	[super loadView];
-
-	NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
-	if (version.minorVersion < 11)
-	{
-		[self viewDidLoad];
-	}
-}
-
 - (void)viewDidLoad
 {
+	[super viewDidLoad];
+
+	[self initCommon];
+	[self initCountryAutocomplete];
+
+	// Default
+	[self changeTabView:TabViewTypeLogin];
+}
+
+- (void)initCommon
+{
+	self.signUpLink.delegate = self;
+	self.loginLink.delegate = self;
+	self.countrySelect.delegate = self;
+	self.email.delegate = self;
+	self.password.delegate = self;
+
+	self.forgotPasswordTextField.titleUnderline = YES;
+	self.signUpLink.titleUnderline = YES;
+	self.tosLink.titleUnderline = YES;
+	self.privacyLink.titleUnderline = YES;
+	self.loginLink.titleUnderline = YES;
+
+	self.boxView.wantsLayer = YES;
+	self.boxView.layer.masksToBounds = NO;
+	self.boxView.shadow = [[NSShadow alloc] init];
+	self.boxView.layer.shadowColor = [NSColor colorWithWhite:0 alpha:0.1].CGColor;
+	self.boxView.layer.shadowOpacity = 1.0;
+	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
+	self.boxView.layer.shadowRadius = 6;
+}
+
+- (void)initCountryAutocomplete {
 	self.countryAutocompleteDataSource.combobox = self.countrySelect;
 	self.countryAutocompleteDataSource.combobox.dataSource = self.countryAutocompleteDataSource;
 	[self.countryAutocompleteDataSource setFilter:@""];
@@ -63,6 +114,9 @@ extern void *ctx;
 	// so, we have to reset cursor color
 	[self.email resetCursorColor];
 	[self.password resetCursorColor];
+
+	[self.email.window makeFirstResponder:self.email];
+	[self changeTabView:TabViewTypeLogin];
 }
 
 - (IBAction)clickLoginButton:(id)sender
@@ -86,12 +140,6 @@ extern void *ctx;
 
 - (void)textFieldClicked:(id)sender
 {
-	if (sender == self.googleLoginTextField)
-	{
-		[self startGoogleLogin];
-		return;
-	}
-
 	if (sender == self.forgotPasswordTextField)
 	{
 		toggl_password_forgot(ctx);
@@ -100,13 +148,13 @@ extern void *ctx;
 
 	if (sender == self.signUpLink)
 	{
-		[self changeView:YES];
+		[self changeTabView:TabViewTypeSingup];
 		return;
 	}
 
 	if (sender == self.loginLink)
 	{
-		[self changeView:NO];
+		[self changeTabView:TabViewTypeLogin];
 		return;
 	}
 
@@ -123,30 +171,38 @@ extern void *ctx;
 	}
 }
 
-- (void)changeView:(BOOL)hide
+- (void)changeTabView:(TabViewType)type
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
 																object:nil];
-	[self.loginBox setHidden:hide];
-	[self.signUpBox setHidden:!hide];
-	if (hide)
-	{
-		self.countrySelect.stringValue = @"";
-		[self.countryAutocompleteDataSource setFilter:@""];
-		if (!self.countriesLoaded)
-		{
-			// Load countries in signup view
-			toggl_get_countries(ctx);
-			self.countriesLoaded = YES;
-		}
+	[self.tabView selectTabViewItemAtIndex:type];
+	self.currentTab = type;
 
-		// Update nextkeyView
-		[self.password setNextKeyView:self.countrySelect];
-	}
-	else
+	// Focus on email when changing mode
+	[self.view.window makeFirstResponder:self.email];
+
+	switch (type)
 	{
-		// Update nextkeyView
-		[self.password setNextKeyView:self.loginButton];
+		case TabViewTypeLogin :
+			// Update nextkeyView
+			[self.password setNextKeyView:self.loginButton];
+			[self.loginGooglBtn setNextKeyView:self.email];
+			break;
+
+		case TabViewTypeSingup :
+			self.countrySelect.stringValue = @"";
+			[self.countryAutocompleteDataSource setFilter:@""];
+			if (!self.countriesLoaded)
+			{
+				// Load countries in signup view
+				toggl_get_countries(ctx);
+				self.countriesLoaded = YES;
+			}
+
+			// Update nextkeyView
+			[self.password setNextKeyView:self.countrySelect];
+			[self.signupButton setNextKeyView:self.email];
+			break;
 	}
 }
 
@@ -321,6 +377,30 @@ extern void *ctx;
 			[box setExpanded:YES];
 		}
 	}
+}
+
+- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
+	if (control == self.email || control == self.password)
+	{
+		if (commandSelector == @selector(insertNewline:))
+		{
+			switch (self.currentTab)
+			{
+				case TabViewTypeLogin :
+					[self clickLoginButton:self.loginButton];
+					break;
+				case TabViewTypeSingup :
+					[self clickSignupButton:self.signupButton];
+					break;
+			}
+			return YES;
+		}
+	}
+	return NO;
+}
+
+- (IBAction)loginGoogleOnTap:(id)sender {
+	[self startGoogleLogin];
 }
 
 @end

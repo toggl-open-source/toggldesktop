@@ -25,8 +25,9 @@
 	return self;
 }
 
-- (void)mouseMoved:(NSEvent *)event
+- (void)mouseEntered:(NSEvent *)event
 {
+	[super mouseEntered:event];
 	if ([self isEditable])
 	{
 		[[NSCursor IBeamCursor] set];
@@ -37,11 +38,17 @@
 	}
 }
 
+- (void)mouseExited:(NSEvent *)event
+{
+	[super mouseExited:event];
+	[[NSCursor arrowCursor] set];
+}
+
 - (void)updateTrackingAreas
 {
 	[super updateTrackingAreas];
 	[self removeTrackingArea:_trackingArea];
-	_trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:(NSTrackingMouseMoved | NSTrackingActiveInKeyWindow) owner:self userInfo:nil];
+	_trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow) owner:self userInfo:nil];
 	[self addTrackingArea:_trackingArea];
 }
 
