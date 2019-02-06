@@ -13,8 +13,17 @@
 #import "Utils.h"
 #import "UnsupportedNotice.h"
 #import "NSTextFieldClickablePointer.h"
+#import "ConvertHexColor.h"
+#import "TogglDesktop-Swift.h"
 
 static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl/toggldesktop";
+
+typedef enum : NSUInteger
+{
+	DownloadStateRestart,
+	DownloadStateDownloading,
+	DownloadStateNone
+} DownloadState;
 
 @interface AboutWindowController () <NSTextFieldDelegate>
 @property (weak) IBOutlet NSTextField *appnameTextField;
@@ -22,10 +31,10 @@ static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl/toggl
 @property (weak) IBOutlet NSTextField *updateStatusTextField;
 @property (weak) IBOutlet NSComboBox *updateChannelComboBox;
 @property (weak) IBOutlet NSTextField *updateChannelLabel;
-@property (weak) IBOutlet NSButton *restartButton;
+@property (weak) IBOutlet FlatButton *restartButton;
 @property (weak) IBOutlet NSTextFieldClickablePointer *findUsInGithub;
 @property (weak) IBOutlet NSBox *boxView;
-
+@property (assign, nonatomic) DownloadState downloadState;
 @end
 
 @implementation AboutWindowController
@@ -77,6 +86,8 @@ extern void *ctx;
 	self.boxView.layer.shadowOpacity = 1.0;
 	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
 	self.boxView.layer.shadowRadius = 6;
+
+	self.downloadState = DownloadStateNone;
 }
 
 - (BOOL)updateCheckEnabled
@@ -113,7 +124,7 @@ extern void *ctx;
 		 item.displayVersionString];
 
 	[self displayUpdateStatus];
-	[self.restartButton setHidden:NO];
+	self.downloadState = DownloadStateRestart;
 }
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
@@ -121,10 +132,10 @@ extern void *ctx;
 	NSLog(@"update found: %@", update.displayVersionString);
 
 	self.updateStatus =
-		[NSString stringWithFormat:@"Update found: %@. Downloading..",
+		[NSString stringWithFormat:@"Update found: %@",
 		 update.displayVersionString];
 
-	[self.restartButton setHidden:YES];
+	self.downloadState = DownloadStateNone;
 	[self displayUpdateStatus];
 	[Utils runClearCommand];
 }
@@ -185,12 +196,51 @@ extern void *ctx;
 	NSLog(@"Update check failed with error %@", error);
 }
 
+- (void)updater:(SUUpdater *)updater willDownloadUpdate:(SUAppcastItem *)item withRequest:(NSMutableURLRequest *)request
+{
+	self.downloadState = DownloadStateDownloading;
+}
+
 - (void)textFieldClicked:(id)sender
 {
 	if (sender == self.findUsInGithub)
 	{
 		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kTogglDesktopGithubURL]];
 		return;
+	}
+}
+
+- (void)setDownloadState:(DownloadState)downloadState
+{
+	_downloadState = downloadState;
+
+	// Render button
+	switch (downloadState)
+	{
+		case DownloadStateNone :
+			self.restartButton.hidden = YES;
+			break;
+		case DownloadStateDownloading :
+			self.restartButton.hidden = NO;
+			self.restartButton.stringValue = @"Downloading...";
+			self.restartButton.enabled = NO;
+			self.restartButton.bgColor = NSColor.controlColor;
+			self.restartButton.textColor = NSColor.textColor;
+			break;
+		case DownloadStateRestart :
+			self.restartButton.hidden = NO;
+			self.restartButton.stringValue = @"Restart";
+			self.restartButton.enabled = YES;
+			if (@available(macOS 10.13, *))
+			{
+				self.restartButton.bgColor = [NSColor colorNamed:@"green-color"];
+			}
+			else
+			{
+				self.restartButton.bgColor = [ConvertHexColor hexCodeToNSColor:@"#28cd41"];
+			}
+			self.restartButton.textColor = [NSColor whiteColor];
+			break;
 	}
 }
 
