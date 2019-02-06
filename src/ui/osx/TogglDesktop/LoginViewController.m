@@ -80,6 +80,7 @@ extern void *ctx;
 	self.signUpLink.delegate = self;
 	self.loginLink.delegate = self;
 	self.countrySelect.delegate = self;
+	self.email.delegate = self;
 	self.password.delegate = self;
 
 	self.forgotPasswordTextField.titleUnderline = YES;
@@ -379,7 +380,7 @@ extern void *ctx;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
-	if (control == self.password)
+	if (control == self.email || control == self.password)
 	{
 		if (commandSelector == @selector(insertNewline:))
 		{
