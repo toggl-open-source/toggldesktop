@@ -115,6 +115,7 @@ extern void *ctx;
 	[self.password resetCursorColor];
 
 	[self.email.window makeFirstResponder:self.email];
+	[self changeTabView:TabViewTypeLogin];
 }
 
 - (IBAction)clickLoginButton:(id)sender
