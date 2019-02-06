@@ -113,6 +113,8 @@ extern void *ctx;
 	// so, we have to reset cursor color
 	[self.email resetCursorColor];
 	[self.password resetCursorColor];
+
+	[self.email.window makeFirstResponder:self.email];
 }
 
 - (IBAction)clickLoginButton:(id)sender
