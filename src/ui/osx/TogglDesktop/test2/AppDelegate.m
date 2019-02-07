@@ -367,10 +367,13 @@ BOOL onTop = NO;
 	{
 		return NO;
 	}
+#ifdef DEBUG
+	return NO;
 
-	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+#else
+	return YES;
 
-	return [infoDict[@"KopsikCheckForUpdates"] boolValue];
+#endif
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center

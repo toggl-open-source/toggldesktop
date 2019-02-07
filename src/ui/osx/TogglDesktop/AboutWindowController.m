@@ -55,9 +55,13 @@ extern void *ctx;
 
 - (BOOL)updateCheckEnabled
 {
-	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+#ifdef DEBUG
+	return NO;
 
-	return [infoDict[@"KopsikCheckForUpdates"] boolValue];
+#else
+	return YES;
+
+#endif
 }
 
 - (void)checkForUpdates
