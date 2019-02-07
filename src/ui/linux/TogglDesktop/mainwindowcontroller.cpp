@@ -307,7 +307,7 @@ void MainWindowController::connectMenuActions() {
     connect(ui->actionHelp,  &QAction::triggered, this, &MainWindowController::onActionHelp);
 
     QMenu *trayMenu = new QMenu(this);
-    for (auto act : ui->menuToggl_Desktop->actions()) {
+for (auto act : ui->menuToggl_Desktop->actions()) {
         trayMenu->addAction(act);
     }
 
@@ -400,9 +400,9 @@ void MainWindowController::closeEvent(QCloseEvent *event) {
 
     // Save current windows frame
     TogglApi::instance->setWindowsFrameSetting(QRect(pos().x(),
-                                                     pos().y(),
-                                                     size().width(),
-                                                     size().height()));
+            pos().y(),
+            size().width(),
+            size().height()));
 
     if (trayIcon->isVisible()) {
         event->ignore();

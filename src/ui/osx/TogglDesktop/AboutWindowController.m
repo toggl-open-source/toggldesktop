@@ -87,7 +87,7 @@ extern void *ctx;
 	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
 	self.boxView.layer.shadowRadius = 6;
 
-	self.downloadState = DownloadStateNone;
+	[self renderRestartButton];
 }
 
 - (BOOL)updateCheckEnabled
@@ -198,6 +198,7 @@ extern void *ctx;
 
 - (void)updater:(SUUpdater *)updater willDownloadUpdate:(SUAppcastItem *)item withRequest:(NSMutableURLRequest *)request
 {
+	NSLog(@"willDownloadUpdate %@", item);
 	self.downloadState = DownloadStateDownloading;
 }
 
@@ -214,23 +215,35 @@ extern void *ctx;
 {
 	_downloadState = downloadState;
 
+	[self renderRestartButton];
+}
+
+- (void)renderRestartButton {
 	// Render button
-	switch (downloadState)
+	switch (self.downloadState)
 	{
 		case DownloadStateNone :
 			self.restartButton.hidden = YES;
 			break;
 		case DownloadStateDownloading :
-			self.restartButton.hidden = NO;
-			self.restartButton.stringValue = @"Downloading...";
 			self.restartButton.enabled = NO;
-			self.restartButton.bgColor = NSColor.controlColor;
-			self.restartButton.textColor = NSColor.textColor;
+			self.restartButton.hidden = NO;
+			self.restartButton.title = @"Downloading...";
+			if (@available(macOS 10.13, *))
+			{
+				self.restartButton.textColor = [NSColor colorNamed:@"grey-text-color"];
+				self.restartButton.bgColor = [NSColor colorWithRed:177.0 / 255.0 green:177.0 / 255.0 blue:177.0 / 255.0 alpha:0.1];
+			}
+			else
+			{
+				self.restartButton.textColor = [ConvertHexColor hexCodeToNSColor:@"#d9d9d9"];
+				self.restartButton.bgColor = [NSColor colorWithRed:177.0 / 255.0 green:177.0 / 255.0 blue:177.0 / 255.0 alpha:0.1];
+			}
 			break;
 		case DownloadStateRestart :
-			self.restartButton.hidden = NO;
-			self.restartButton.stringValue = @"Restart";
 			self.restartButton.enabled = YES;
+			self.restartButton.hidden = NO;
+			self.restartButton.title = @"Restart";
 			if (@available(macOS 10.13, *))
 			{
 				self.restartButton.bgColor = [NSColor colorNamed:@"green-color"];

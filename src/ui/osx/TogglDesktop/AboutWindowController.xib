@@ -26,8 +26,8 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <rect key="contentRect" x="196" y="240" width="314" height="356"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="314" height="388"/>
+            <view key="contentView" misplaced="YES" id="2">
+                <rect key="frame" x="0.0" y="0.0" width="314" height="356"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <box boxType="custom" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="07H-pU-KmW">
@@ -108,13 +108,13 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Brr-F9-HyT" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                <button focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Brr-F9-HyT" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="54" y="71" width="120" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="120" id="eka-c1-zrN"/>
                                         <constraint firstAttribute="height" constant="24" id="hmw-x4-6Yn"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="bevel" title="Restart" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="A7x-rz-Wd5">
+                                    <buttonCell key="cell" type="bevel" title="Restart" bezelStyle="regularSquare" alignment="center" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="A7x-rz-Wd5">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
@@ -124,6 +124,9 @@
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="color" keyPath="textColor">
                                             <color key="value" name="login-button-foreground"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="4"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
