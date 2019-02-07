@@ -29,6 +29,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Zfu-dT-QNC">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <view key="contentView" id="0n9-kQ-v9n">
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </view>
+                        <color key="fillColor" name="feedback-background-color"/>
+                    </box>
                     <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dbV-zH-aRj">
                         <rect key="frame" x="20" y="328" width="263" height="26"/>
                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="- Please specify the topic -" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="EdL-4a-0rc">
@@ -134,7 +142,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="cwt-Qf-BA4">
+                    <box hidden="YES" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="cwt-Qf-BA4">
                         <rect key="frame" x="21" y="119" width="258" height="47"/>
                         <view key="contentView" id="f8w-Ty-Nzy">
                             <rect key="frame" x="1" y="1" width="256" height="45"/>
@@ -175,7 +183,7 @@
                         </constraints>
                         <color key="borderColor" name="lighter-grey-text"/>
                     </box>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F8Z-u0-ZgF">
+                    <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F8Z-u0-ZgF">
                         <rect key="frame" x="19" y="56" width="262" height="32"/>
                         <textFieldCell key="cell" selectable="YES" title="Feedback not sent – please type in your feedback" id="kco-ln-AqF">
                             <font key="font" metaFont="system" size="12"/>
@@ -193,8 +201,10 @@
                     <constraint firstItem="NR5-ST-87O" firstAttribute="top" secondItem="TG8-w0-r91" secondAttribute="bottom" constant="10" id="Lxo-VX-8bU"/>
                     <constraint firstItem="cwt-Qf-BA4" firstAttribute="top" secondItem="NR5-ST-87O" secondAttribute="bottom" constant="10" id="NTE-c2-9yN"/>
                     <constraint firstAttribute="trailing" secondItem="dbV-zH-aRj" secondAttribute="trailing" constant="20" id="OzP-pY-8of"/>
+                    <constraint firstItem="Zfu-dT-QNC" firstAttribute="top" secondItem="2" secondAttribute="top" id="Qna-Qu-9Gv"/>
                     <constraint firstItem="dhE-W6-jv7" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="Qyr-q0-P9b"/>
                     <constraint firstItem="dhE-W6-jv7" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="VsN-h0-MP7"/>
+                    <constraint firstItem="Zfu-dT-QNC" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="Y3j-cE-oNv"/>
                     <constraint firstItem="F8Z-u0-ZgF" firstAttribute="trailing" secondItem="ELz-XL-Qzo" secondAttribute="trailing" id="aAY-NV-xk9"/>
                     <constraint firstItem="F8Z-u0-ZgF" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="cVV-nO-iiQ"/>
                     <constraint firstItem="dbV-zH-aRj" firstAttribute="top" secondItem="dhE-W6-jv7" secondAttribute="bottom" constant="10" id="cXa-bh-JMO"/>
@@ -204,8 +214,10 @@
                     <constraint firstItem="x76-9l-cFh" firstAttribute="trailing" secondItem="ELz-XL-Qzo" secondAttribute="trailing" id="j1E-Du-4UF"/>
                     <constraint firstItem="NiB-Hs-GGA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2" secondAttribute="leading" constant="20" id="jU9-dl-IL4"/>
                     <constraint firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" constant="20" id="mCE-Ch-9AJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Zfu-dT-QNC" secondAttribute="trailing" id="p3U-VM-sPw"/>
                     <constraint firstItem="TG8-w0-r91" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="rgA-CB-ENO"/>
                     <constraint firstItem="cwt-Qf-BA4" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="rik-HK-Avt"/>
+                    <constraint firstAttribute="bottom" secondItem="Zfu-dT-QNC" secondAttribute="bottom" id="sI7-KH-mro"/>
                     <constraint firstItem="dbV-zH-aRj" firstAttribute="leading" secondItem="dhE-W6-jv7" secondAttribute="leading" id="upR-l0-J2g"/>
                     <constraint firstItem="x76-9l-cFh" firstAttribute="centerY" secondItem="NR5-ST-87O" secondAttribute="centerY" id="y93-hp-Svf"/>
                     <constraint firstAttribute="bottom" secondItem="NiB-Hs-GGA" secondAttribute="bottom" constant="20" id="yMY-pR-7fD"/>
@@ -224,6 +236,9 @@
         </namedColor>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="feedback-background-color">
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="green-color">
             <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
