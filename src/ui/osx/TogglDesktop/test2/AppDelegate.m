@@ -1212,11 +1212,14 @@ const NSString *appName = @"osx_native_app";
 {
 	self = [super init];
 
-	#ifdef DEBUG
+	BOOL logUIToFile;
+#ifdef DEBUG
 	self.environment = @"development";
-	#else
+	logUIToFile = NO;
+#else
 	self.environment = @"production";
-	#endif
+	logUIToFile = YES;
+#endif
 
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
 	self.version = infoDict[@"CFBundleShortVersionString"];
@@ -1299,8 +1302,7 @@ const NSString *appName = @"osx_native_app";
 		return nil;
 	}
 
-	id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
-	if ([logToFile boolValue])
+	if (logUIToFile)
 	{
 		NSLog(@"Redirecting UI log to file");
 		NSString *logPath =
